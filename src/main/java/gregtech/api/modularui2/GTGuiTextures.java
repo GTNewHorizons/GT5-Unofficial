@@ -498,22 +498,27 @@ public final class GTGuiTextures {
         .build();
 
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
+        .nonOpaque()
         .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_none")
         .build();
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ITEM = UITexture.builder()
+        .nonOpaque()
         .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_item")
         .build();
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_FLUID = UITexture.builder()
+        .nonOpaque()
         .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_fluid")
         .build();
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ALL = UITexture.builder()
+        .nonOpaque()
         .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_all")
         .build();
     public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = UITexture.builder()
+        .nonOpaque()
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_button/autooutput_fluid")
@@ -538,42 +543,42 @@ public final class GTGuiTextures {
         .fullImage()
         .location(GregTech.ID, "gui/overlay_button/tank_void_all")
         .build();
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/input_separation_on");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/input_separation_on_disabled");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/input_separation_off");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/input_separation_off_disabled");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/recipe_unlocked");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/recipe_unlocked_disabled");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/recipe_locked");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/recipe_locked_disabled");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/batch_mode_on");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/batch_mode_on_disabled");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/batch_mode_off");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/batch_mode_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = UITexture.builder()
+        .nonOpaque()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/input_separation_on")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF = UITexture.builder()
+        .nonOpaque()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/input_separation_off")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED = UITexture.builder()
+        .nonOpaque()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/recipe_unlocked")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED = UITexture.builder()
+        .nonOpaque()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/recipe_locked")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON = UITexture.builder()
+        .nonOpaque()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/batch_mode_on")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF = UITexture.builder()
+        .nonOpaque()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/batch_mode_off")
+        .build();
     public static final UITexture OVERLAY_BUTTON_STRUCTURE_UPDATE = fullImage(
         GregTech.ID,
         "gui/overlay_button/structure_update");
@@ -1023,6 +1028,30 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_TOOLBOX_BATTERY = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_battery")
         .build();
+
+    public static final UITexture OVERLAY_SLOT_TURBINE = UITexture.builder()
+        .location(GTPlusPlus.ID, "gui/overlay_slot/turbine")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_MODULE = UITexture.builder()
+        .location(MainMod.MOD_ID, "GUI/overlay_slot/module")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_DISH = UITexture.builder()
+        .location(MainMod.MOD_ID, "GUI/overlay_slot/dish")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_SLOT_DNA_FLASK = UITexture.builder()
+        .location(MainMod.MOD_ID, "GUI/overlay_slot/dna_flask")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
     // endregion slot overlay
 
     // region progressbar
@@ -1358,6 +1387,12 @@ public final class GTGuiTextures {
         .adaptable(1)
         .canApplyTheme()
         .build();
+    public static final UITexture TOGGLE_BUTTON_STANDARD_DISABLED = UITexture.builder()
+        .location(GregTech.ID, "gui/button/standard_toggle_disabled")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .build();
     public static final SteamTexture BUTTON_STEAM_PRESSED = SteamTexture.builder()
         .location("gui/button/%s_pressed")
         .imageSize(18, 18)
@@ -1571,7 +1606,12 @@ public final class GTGuiTextures {
                 .build())
         .toArray(UITexture[]::new);
 
-    public static final UITexture TT_BUTTON_CELESTIAL_32x32 = UITexture.fullImage(MODID, "gui/button/celestial");
+    public static final UITexture TT_BUTTON_CELESTIAL_32x32 = UITexture.builder()
+        .location(MODID, "gui/button/celestial")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_GORGE)
+        .build();
 
     public static final UITexture OVERLAY_BUTTON_POWER_PASS_ON = UITexture
         .fullImage(MODID, "gui/overlay_button/power_pass_on");
@@ -1587,8 +1627,12 @@ public final class GTGuiTextures {
         .fullImage("goodgenerator", "gui/overlay_button/assembler_mode");
     public static final UITexture OVERLAY_BUTTON_PRECISE_MODE = UITexture
         .fullImage("goodgenerator", "gui/overlay_button/precise_mode");
-    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_ITEM = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/autooutput_item");
+    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_ITEM = UITexture.builder()
+        .nonOpaque()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/autooutput_item")
+        .build();
     public static final UITexture OVERLAY_BUTTON_AUTOPULL_ME = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/auto_pull_me");
     public static final UITexture OVERLAY_BUTTON_AUTOPULL_ME_DISABLED = UITexture
@@ -1790,8 +1834,10 @@ public final class GTGuiTextures {
         .build();
     public static final UITexture PICTURE_GODFORGE_LOGO = UITexture.fullImage(MODID, "gui/picture/gorge_logo");
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
-        .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
+        .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x20")
         .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_BW_LOGO_STANDARD)
         .build();
     public static final UITexture PICTURE_EXOFOUNDRY_LOGO = UITexture.builder()
         .location(GregTech.ID, "gui/picture/exofoundry_logo")
