@@ -75,7 +75,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
 
             if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMELTING)) GTModHandler.addSmeltingRecipe(
                 GTUtility.copyAmount(1, aStack),
-                GTOreDictUnificator.get(OrePrefixes.nugget, aMaterial.mDirectSmelting, aMultiplier));
+                GTOreDictUnificator.get(OrePrefixes.nugget, MU.directSmelting(aMaterial), aMultiplier));
         }
     }
 }

@@ -49,7 +49,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, aStack))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustImpure, MU.macerateInto(aMaterial), 1L))
             .duration(10)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
@@ -59,12 +59,12 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
             .itemOutputs(
                 GTOreDictUnificator.get(
                     OrePrefixes.dustImpure,
-                    aMaterial.mMacerateInto,
-                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
+                    MU.macerateInto(aMaterial),
+                    GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1L),
                     1L),
                 GTOreDictUnificator.get(
                     OrePrefixes.dust,
-                    GTUtility.selectItemInList(0, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
+                    GTUtility.selectItemInList(0, MU.macerateInto(aMaterial), aMaterial.mOreByProducts),
                     1L))
             .outputChances(10000, 1000)
             .duration(20 * SECONDS)
@@ -80,7 +80,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     1L),
                 GTOreDictUnificator.get(
                     OrePrefixes.dust,
-                    GTUtility.selectItemInList(0, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
+                    GTUtility.selectItemInList(0, MU.macerateInto(aMaterial), aMaterial.mOreByProducts),
                     1L),
                 MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(100_00, 11_11, 100_00)
@@ -98,7 +98,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     1L),
                 GTOreDictUnificator.get(
                     OrePrefixes.dust,
-                    GTUtility.selectItemInList(0, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
+                    GTUtility.selectItemInList(0, MU.macerateInto(aMaterial), aMaterial.mOreByProducts),
                     1L),
                 MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(100_00, 11_11, 100_00)
@@ -115,7 +115,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 GTOreDictUnificator.get(prefix, aMaterial, 1L),
                 GTOreDictUnificator.get(
                     OrePrefixes.dust,
-                    GTUtility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
+                    GTUtility.selectItemInList(1, MU.macerateInto(aMaterial), aMaterial.mOreByProducts),
                     1L),
                 MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 1111, 10000)
@@ -143,7 +143,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(
                     GTOreDictUnificator.get(chemicalBathPrefix, material, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, byproduct.mMacerateInto, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(byproduct), 1L),
                     MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(
@@ -162,7 +162,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(
                     GTOreDictUnificator.get(chemicalBathPrefix, material, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, byproduct.mMacerateInto, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(byproduct), 1L),
                     MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 9900, 4000)
                 .fluidInputs(
@@ -181,7 +181,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(
                     GTOreDictUnificator.get(chemicalBathPrefix, material, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, byproduct.mMacerateInto, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(byproduct), 1L),
                     MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(

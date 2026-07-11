@@ -95,7 +95,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             null);
                     }
                 }
-                ItemStack tStack = GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L);
+                ItemStack tStack = GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1L);
                 if ((tStack != null) && ((aMaterial.mBlastFurnaceRequired) || aNoSmelting)) {
                     GTModHandler.removeFurnaceSmelting(tStack);
                 }

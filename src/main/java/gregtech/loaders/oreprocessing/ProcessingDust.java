@@ -100,7 +100,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
                 ItemStack tDustStack;
-                if ((null != (tDustStack = GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L)))
+                if ((null != (tDustStack = GTOreDictUnificator.get(OrePrefixes.ingot, MU.smeltInto(aMaterial), 1L)))
                     && (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMELTING))) {
                     if (aMaterial.mBlastFurnaceRequired) {
                         GTModHandler.removeFurnaceSmelting(aStack);
@@ -111,7 +111,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             if (MU.blastFurnaceTemp(aMaterial) > 1750) {
                                 recipeBuilder.itemOutputs(
                                     GTOreDictUnificator
-                                        .get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, tDustStack, 1L));
+                                        .get(OrePrefixes.ingotHot, MU.smeltInto(aMaterial), tDustStack, 1L));
                             } else {
                                 recipeBuilder.itemOutputs(GTUtility.copyAmount(1, tDustStack));
                             }

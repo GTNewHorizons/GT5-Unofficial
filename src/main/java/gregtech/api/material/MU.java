@@ -202,6 +202,52 @@ public class MU {
         return ml != null ? fuelType(ml) : material.mFuelType;
     }
 
+    /// The legacy `Materials#mSmeltInto` smelting target, resolved from [GTMaterialProperties#SMELT_INTO] --
+    /// or `material` itself when the property is absent, mirroring `mSmeltInto`'s own `= this` default.
+    /// `LegacyMaterials.build` only ever populates the deferred supplier this reads (via `addDeferredRef`),
+    /// never the final field; the actual `mSmeltInto` assignment happens once, for every material, in
+    /// `Materials`'s static initializer (`setSmeltingInto`) -- unconditionally before bartworks' bridge ever
+    /// runs (bartworks mutates its bridge materials no earlier than its own `FMLInitializationEvent`, well
+    /// after `Materials`'s static initializer has already completed for every mod). `mSmeltInto` is never
+    /// reassigned after that, so unlike [GTMaterialProperties#HANDLE_MATERIAL] this needs no bridge-timing
+    /// guard. Chases the referenced material's own `mSmeltInto` once more, mirroring `setSmeltingInto`'s
+    /// `.mMaterialInto.mSmeltInto` indirection (the `mMaterialInto` hop is a proven no-op -- every `Materials`
+    /// constructor sets it to `this`, and bartworks' own bridge mutation reassigns it to itself too).
+    public static @Nullable Materials smeltInto(@Nullable Materials material) {
+        if (material == null) return null;
+        Material ml = material(material);
+        if (ml == null) return material.mSmeltInto;
+        MaterialRef ref = ml.getProperty(GTMaterialProperties.SMELT_INTO);
+        return ref == null ? material : Materials.get(ref.name()).mSmeltInto;
+    }
+
+    /// [#smeltInto], for `Materials#mMacerateInto`/[GTMaterialProperties#MACERATE_INTO].
+    public static @Nullable Materials macerateInto(@Nullable Materials material) {
+        if (material == null) return null;
+        Material ml = material(material);
+        if (ml == null) return material.mMacerateInto;
+        MaterialRef ref = ml.getProperty(GTMaterialProperties.MACERATE_INTO);
+        return ref == null ? material : Materials.get(ref.name()).mMacerateInto;
+    }
+
+    /// [#smeltInto], for `Materials#mArcSmeltInto`/[GTMaterialProperties#ARC_SMELT_INTO].
+    public static @Nullable Materials arcSmeltInto(@Nullable Materials material) {
+        if (material == null) return null;
+        Material ml = material(material);
+        if (ml == null) return material.mArcSmeltInto;
+        MaterialRef ref = ml.getProperty(GTMaterialProperties.ARC_SMELT_INTO);
+        return ref == null ? material : Materials.get(ref.name()).mArcSmeltInto;
+    }
+
+    /// [#smeltInto], for `Materials#mDirectSmelting`/[GTMaterialProperties#DIRECT_SMELTING].
+    public static @Nullable Materials directSmelting(@Nullable Materials material) {
+        if (material == null) return null;
+        Material ml = material(material);
+        if (ml == null) return material.mDirectSmelting;
+        MaterialRef ref = ml.getProperty(GTMaterialProperties.DIRECT_SMELTING);
+        return ref == null ? material : Materials.get(ref.name()).mDirectSmelting;
+    }
+
     /// Whether a material carries a legacy [gregtech.api.enums.SubTag], ported 1:1 to [GTMaterialFlag] of the
     /// same name -- see [GTMaterialProperties#FLAGS]. Mirrors legacy `Materials#contains(SubTag)`/`mSubTags`.
     public static boolean hasFlag(@Nullable Material material, GTMaterialFlag flag) {
