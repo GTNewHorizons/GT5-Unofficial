@@ -15,7 +15,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityHopper;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -262,6 +265,12 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        // Only run on the server; onLeftclick also fires client-side and would otherwise swap the pipe
+        // and send the chat message twice
+        if (!aBaseMetaTileEntity.isServerSide()) {
+            return;
+        }
+
         // Only trigger if the player is sneaking
         if (!aPlayer.isSneaking()) {
             return;
@@ -316,41 +325,50 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
         newPipe.setBaseMetaTileEntity(aBaseMetaTileEntity);
 
         // Construct a change message if needed
-        StringBuilder message = new StringBuilder();
+        IChatComponent message = new ChatComponentText("");
+        boolean hasContent = false;
 
         // Compare item throughput
         if (oldCapacity != newPipe.getMaxPipeCapacity()) {
             int newCapacity = newPipe.getMaxPipeCapacity();
-            message.append(oldCapacity)
-                .append(" → ");
-            message.append(newCapacity > oldCapacity ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                .append(newCapacity)
-                .append(" items")
-                .append(EnumChatFormatting.RESET);
+            message.appendText(
+                oldCapacity + " → "
+                    + (newCapacity > oldCapacity ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                    + newCapacity
+                    + " ");
+            message.appendSibling(new ChatComponentTranslation("GT5U.item.pipe.swap.items"));
+            message.appendText(EnumChatFormatting.RESET.toString());
+            hasContent = true;
         }
 
         // Compare routing value (step size)
         if (oldStepSize != newPipe.mStepSize) {
-            if (message.length() > 0) message.append(" | ");
-            message.append(oldStepSize)
-                .append(" → ");
-            message.append(newPipe.mStepSize > oldStepSize ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                .append(newPipe.mStepSize)
-                .append(" routing")
-                .append(EnumChatFormatting.RESET);
+            if (hasContent) message.appendText(" | ");
+            message.appendText(
+                oldStepSize + " → "
+                    + (newPipe.mStepSize > oldStepSize ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                    + newPipe.mStepSize
+                    + " ");
+            message.appendSibling(new ChatComponentTranslation("GT5U.item.pipe.swap.routing"));
+            message.appendText(EnumChatFormatting.RESET.toString());
+            hasContent = true;
         }
 
         // Compare restrictive flag
         if (oldRestrictive != newPipe.mIsRestrictive) {
-            if (message.length() > 0) message.append(" | ");
-            message.append(newPipe.mIsRestrictive ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
-                .append(newPipe.mIsRestrictive ? "Now Restrictive" : "No Longer Restrictive")
-                .append(EnumChatFormatting.RESET);
+            if (hasContent) message.appendText(" | ");
+            message.appendText((newPipe.mIsRestrictive ? EnumChatFormatting.RED : EnumChatFormatting.GREEN).toString());
+            message.appendSibling(
+                new ChatComponentTranslation(
+                    newPipe.mIsRestrictive ? "GT5U.item.pipe.swap.now_restrictive"
+                        : "GT5U.item.pipe.swap.no_longer_restrictive"));
+            message.appendText(EnumChatFormatting.RESET.toString());
+            hasContent = true;
         }
 
         // Send a chat message if anything changed
-        if (message.length() > 0) {
-            GTUtility.sendChatTrans(aPlayer, "GT5U.item.pipe.swap.s", message.toString());
+        if (hasContent) {
+            GTUtility.sendChatTrans(aPlayer, "GT5U.item.pipe.swap.s", message);
         }
 
         // Force updates to sync changes

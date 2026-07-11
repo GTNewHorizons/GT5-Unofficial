@@ -29,7 +29,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -474,6 +477,12 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        // Only run on the server; onLeftclick also fires client-side and would otherwise swap the pipe
+        // and send the chat message twice
+        if (!aBaseMetaTileEntity.isServerSide()) {
+            return;
+        }
+
         // Only trigger if the player is sneaking
         if (!aPlayer.isSneaking()) {
             return;
@@ -518,46 +527,48 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         newPipe.setBaseMetaTileEntity(aBaseMetaTileEntity);
 
         // Construct a change message if needed
-        StringBuilder message = new StringBuilder();
+        IChatComponent message = new ChatComponentText("");
+        boolean hasContent = false;
 
         // Compare capacity changes
         if (oldCapacity != newPipe.mCapacity) {
-            message.append(oldCapacity * 20)
-                .append("L/seconds → ");
-            message.append(newPipe.mCapacity > oldCapacity ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                .append(newPipe.mCapacity * 20)
-                .append("L/secs")
-                .append(EnumChatFormatting.RESET);
+            message.appendText(String.valueOf(oldCapacity * 20));
+            message.appendSibling(new ChatComponentTranslation("gt.unit.liter_per_second"));
+            message.appendText(
+                " → " + (newPipe.mCapacity > oldCapacity ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                    + newPipe.mCapacity * 20);
+            message.appendSibling(new ChatComponentTranslation("gt.unit.liter_per_second"));
+            message.appendText(EnumChatFormatting.RESET.toString());
+            hasContent = true;
         }
 
         // Compare heat resistance
         if (oldHeatResistance != newPipe.mHeatResistance) {
-            if (message.length() > 0) message.append(" | ");
-            message.append(oldHeatResistance)
-                .append("K → ");
-            message
-                .append(newPipe.mHeatResistance > oldHeatResistance ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                .append(newPipe.mHeatResistance)
-                .append("K")
-                .append(EnumChatFormatting.RESET);
+            if (hasContent) message.appendText(" | ");
+            message.appendText(
+                oldHeatResistance + "K → "
+                    + (newPipe.mHeatResistance > oldHeatResistance ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                    + newPipe.mHeatResistance
+                    + "K"
+                    + EnumChatFormatting.RESET);
+            hasContent = true;
         }
 
         // Compare gas handling
         if (oldGasProof != newPipe.mGasProof) {
-            if (message.length() > 0) message.append(" | ");
-            if (newPipe.mGasProof) {
-                message.append(EnumChatFormatting.GREEN)
-                    .append("Now Gas-Proof");
-            } else {
-                message.append(EnumChatFormatting.RED)
-                    .append("No Longer Gas-Proof");
-            }
-            message.append(EnumChatFormatting.RESET);
+            if (hasContent) message.appendText(" | ");
+            message.appendText((newPipe.mGasProof ? EnumChatFormatting.GREEN : EnumChatFormatting.RED).toString());
+            message.appendSibling(
+                new ChatComponentTranslation(
+                    newPipe.mGasProof ? "GT5U.item.pipe.swap.now_gas_proof"
+                        : "GT5U.item.pipe.swap.no_longer_gas_proof"));
+            message.appendText(EnumChatFormatting.RESET.toString());
+            hasContent = true;
         }
 
         // Send a chat message if anything changed
-        if (message.length() > 0) {
-            GTUtility.sendChatTrans(aPlayer, "GT5U.item.pipe.swap.s", message.toString());
+        if (hasContent) {
+            GTUtility.sendChatTrans(aPlayer, "GT5U.item.pipe.swap.s", message);
         }
 
         // Force updates to sync changes
