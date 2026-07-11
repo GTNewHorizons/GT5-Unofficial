@@ -4,10 +4,9 @@ import gregtech.api.util.CustomGlyphs;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.lang.annotation.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Repository holding frequently-used macros for {@link gregtech.api.util.MultiblockTooltipBuilder}.
@@ -111,11 +110,11 @@ public final class TooltipMacroRepository {
      * @see EnumChatFormatting
      */
     @Transform(contract = "%s, color -> color%s")
-    public static final List<TooltipMacroProcessor> COLORS = Arrays.stream(EnumChatFormatting.values())
+    public static final Set<TooltipMacroProcessor> COLORS = Arrays.stream(EnumChatFormatting.values())
         .map(e -> TooltipMacroProcessor.of(
             e.name().toLowerCase(Locale.ROOT), str -> e + str
         ))
-        .toList();
+        .collect(Collectors.toSet());
 
     /**
      * A collection of modifier-related macros.
@@ -123,7 +122,7 @@ public final class TooltipMacroRepository {
      * @see TooltipMacroRepository#POSITIVE
      * @see TooltipMacroRepository#NEGATIVE
      */
-    public static final List<TooltipMacroProcessor> MODIFIER = List.of(
+    public static final Set<TooltipMacroProcessor> MODIFIER = Set.of(
         POSITIVE, NEGATIVE
     );
 
@@ -135,16 +134,30 @@ public final class TooltipMacroRepository {
      * @see TooltipMacroRepository#POLLUTION
      * @see TooltipMacroRepository#INTERVAL
      */
-    public static final List<TooltipMacroProcessor> ATTRIBUTES = List.of(
+    public static final Set<TooltipMacroProcessor> ATTRIBUTES = Set.of(
         HEAT, PARALLEL, POLLUTION, INTERVAL
     );
 
     /**
      * Universal set of all the macro processors on this repository
      */
-    public static final List<TooltipMacroProcessor> ALL = List.of(
-        LITERAL, HEAT, PARALLEL, POLLUTION, FLUID, SPEED, SPECIAL, INTERVAL, POSITIVE, NEGATIVE
-    );
+    public static final Set<TooltipMacroProcessor> ALL;
+
+    static {
+        // initializer: singleton instances
+        Set<TooltipMacroProcessor> singletonInstances = Set.of(
+            LITERAL, HEAT, PARALLEL, POLLUTION, FLUID, SPEED, SPECIAL, INTERVAL, POSITIVE, NEGATIVE
+        );
+        // initializer: collections
+        List<Set<TooltipMacroProcessor>> collectionInstances = List.of(
+            COLORS
+        );
+
+        Set<TooltipMacroProcessor> universal = new HashSet<>(singletonInstances);
+        collectionInstances.forEach(universal::addAll);
+
+        ALL = universal;
+    }
 
     // Internal class - convenient type for a TooltipMacroProcessor instance
     private static class MacroStub implements TooltipMacroProcessor {
@@ -164,6 +177,18 @@ public final class TooltipMacroRepository {
         @Override
         public String process(String param) {
             return op.apply(param);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+            MacroStub macroStub = (MacroStub) o;
+            return Objects.equals(name, macroStub.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(name);
         }
     }
 
