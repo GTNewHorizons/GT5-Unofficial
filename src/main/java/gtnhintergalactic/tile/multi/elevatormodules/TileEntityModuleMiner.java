@@ -24,13 +24,15 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ggfab.mte.MTELinkedInputBus;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -628,22 +630,32 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         if (fluidStack == null) {
             return 0;
         }
-        if ((fluidStack.isFluidEqual(Materials.Plutonium241.getPlasma(1))
+        if ((fluidStack.isFluidEqual(
+            MaterialLibAPI
+                .getFluidStack(Materials2Materials.Plutonium241, Materials2FluidShapes.shapeFluidPlasma, (int) (1)))
             && fluidStack.amount >= PLASMA_PLUTONIUM241_USAGE)) {
             return 5;
         } else if ((fluidStack.isFluidEqual(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 1))
             && fluidStack.amount >= PLASMA_TECHNETIUM_USAGE)) {
                 return 4;
-            } else
-            if (fluidStack.isFluidEqual(Materials.Radon.getPlasma(1)) && fluidStack.amount >= PLASMA_RADON_USAGE) {
-                return 3;
-            } else if (fluidStack.isFluidEqual(Materials.Bismuth.getPlasma(1))
-                && fluidStack.amount >= PLASMA_BISMUTH_USAGE) {
-                    return 2;
-                } else if (fluidStack.isFluidEqual(Materials.Helium.getPlasma(1))
-                    && fluidStack.amount >= PLASMA_HELIUM_USAGE) {
-                        return 1;
-                    }
+            } else if (fluidStack.isFluidEqual(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.shapeFluidPlasma, (int) (1)))
+                && fluidStack.amount >= PLASMA_RADON_USAGE) {
+                    return 3;
+                } else if (fluidStack.isFluidEqual(
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Bismuth, Materials2FluidShapes.shapeFluidPlasma, (int) (1)))
+                    && fluidStack.amount >= PLASMA_BISMUTH_USAGE) {
+                        return 2;
+                    } else if (fluidStack.isFluidEqual(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.Helium,
+                            Materials2FluidShapes.shapeFluidPlasma,
+                            (int) (1)))
+                        && fluidStack.amount >= PLASMA_HELIUM_USAGE) {
+                            return 1;
+                        }
         return 0;
     }
 
