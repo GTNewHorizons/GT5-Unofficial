@@ -26,10 +26,12 @@ import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.hash.Fnv1a64;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.GTMod;
@@ -76,12 +78,21 @@ public class GTWorldgenerator implements IWorldGenerator {
     private static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
     private static OregenPattern clientOregenPattern = OregenPattern.AXISSYMMETRICAL;
 
-    // Used in VisualProspecting
+    /** Returns the oregen pattern for the current physical or logical server, or the connected client. */
+    public static OregenPattern getOregenPattern() {
+        FMLCommonHandler fml = FMLCommonHandler.instance();
+        boolean server = fml.getSide() == Side.SERVER || fml.getEffectiveSide() == Side.SERVER;
+        return server ? oregenPattern : clientOregenPattern;
+    }
+
+    /** @deprecated Use {@link #getOregenPattern()}. */
+    @Deprecated
     public static OregenPattern getClientOregenPattern() {
         return clientOregenPattern;
     }
 
-    // Used in VisualProspecting
+    /** @deprecated Use {@link #getOregenPattern()}. */
+    @Deprecated
     public static OregenPattern getServerOregenPattern() {
         return oregenPattern;
     }
@@ -162,7 +173,7 @@ public class GTWorldgenerator implements IWorldGenerator {
     }
 
     public static boolean isOreChunk(int chunkX, int chunkZ) {
-        if (getServerOregenPattern() == OregenPattern.EQUAL_SPACING) {
+        if (getOregenPattern() == OregenPattern.EQUAL_SPACING) {
             return Math.floorMod(chunkX, 3) == 1 && Math.floorMod(chunkZ, 3) == 1;
         }
         // add next if statement here or convert to switch when expanding OregenPattern enum
