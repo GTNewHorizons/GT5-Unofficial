@@ -4,8 +4,9 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -33,7 +34,7 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
             return;
         }
 
-        if (aMaterial.contains(SubTag.NO_WORKING)) {
+        if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)) {
             return;
         }
 

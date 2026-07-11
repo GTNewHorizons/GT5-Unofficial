@@ -17,9 +17,10 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
@@ -42,12 +43,12 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
         // Blacklist materials which are handled by Werkstoff loader
         if (aMaterial == Materials.Calcium || aMaterial == Materials.Magnesia) return;
 
-        boolean aNoSmashing = aMaterial.contains(SubTag.NO_SMASHING);
-        boolean aStretchy = aMaterial.contains(SubTag.STRETCHY);
-        boolean aNoSmelting = aMaterial.contains(SubTag.NO_SMELTING);
+        boolean aNoSmashing = MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMASHING);
+        boolean aStretchy = MU.hasFlag(aMaterial, GTMaterialFlag.STRETCHY);
+        boolean aNoSmelting = MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMELTING);
         long aMaterialMass = aMaterial.getMass();
         boolean aSpecialRecipeReq = aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
-            && !aMaterial.contains(SubTag.NO_SMASHING);
+            && !MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMASHING);
 
         switch (aPrefix.getName()) {
             case "ingot" -> {
@@ -99,9 +100,9 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     GTModHandler.removeFurnaceSmelting(tStack);
                 }
                 if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
-                    && !aMaterial.contains(SubTag.NO_WORKING)
-                    && !aMaterial.contains(SubTag.SMELTING_TO_GEM)
-                    && aMaterial.contains(SubTag.MORTAR_GRINDABLE)) {
+                    && !MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)
+                    && !MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_GEM)
+                    && MU.hasFlag(aMaterial, GTMaterialFlag.MORTAR_GRINDABLE)) {
                     GTModHandler.addShapelessCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
                         GTModHandler.RecipeBits.BITS_STD,

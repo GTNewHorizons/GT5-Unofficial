@@ -16,10 +16,11 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -40,11 +41,11 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
-        if (material.contains(SubTag.NO_ORE_PROCESSING)) return;
+        if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) return;
 
         GTModHandler.removeFurnaceSmelting(stack);
 
-        if (material.contains(SubTag.NO_SMELTING)) return;
+        if (MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)) return;
 
         // Blast furnace is required for processing this ore.
         if (material.mBlastFurnaceRequired || material.mDirectSmelting.mBlastFurnaceRequired) {
@@ -92,7 +93,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
 
                 final int outputAmount = GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
 
-                if (!material.contains(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE)
+                if (!MU.hasFlag(material, GTMaterialFlag.DONT_ADD_DEFAULT_BBF_RECIPE)
                     && material.mDirectSmelting.getIngots(1) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(2, stack))
@@ -214,7 +215,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
         ItemStack smeltingOutput = GTOreDictUnificator.get(prefix, material.mDirectSmelting, size);
 
         if (smeltingOutput == null) {
-            smeltingOutput = material.contains(SubTag.SMELTING_TO_GEM)
+            smeltingOutput = MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
                 ? GTOreDictUnificator.get(OrePrefixes.gem, material.mDirectSmelting, 1L)
                 : GTOreDictUnificator.get(OrePrefixes.ingot, material.mDirectSmelting, 1L);
         }

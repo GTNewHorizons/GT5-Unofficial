@@ -13,8 +13,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -36,7 +37,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         // Blacklist materials which are handled by Werkstoff loader
         if (aMaterial == Materials.Calcium || aMaterial == Materials.Magnesia) return;
 
-        if (aMaterial.contains(SubTag.SMELTING_TO_GEM)
+        if (MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_GEM)
             && GTOreDictUnificator.get(OrePrefixes.gem, aMaterial.mSmeltInto, 1L) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(9, aStack), ItemList.Shape_Mold_Ball.get(0L))
@@ -46,7 +47,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .addTo(alloySmelterRecipes);
         }
 
-        if ((!aMaterial.contains(SubTag.SMELTING_TO_GEM))
+        if ((!MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_GEM))
             && GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L) != null
             && aMaterial != Materials.Aluminium) {
             GTValues.RA.stdBuilder()
@@ -73,7 +74,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, true);
         GTRecipeRegistrator
             .registerReverseMacerating(aStack, aMaterial, aPrefix.getMaterialAmount(), null, null, null, false, true);
-        if (!aMaterial.contains(SubTag.NO_SMELTING)
+        if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMELTING)
             && GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(

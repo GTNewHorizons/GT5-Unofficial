@@ -38,12 +38,13 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -82,8 +83,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
 
-        final boolean aNoSmashing = aMaterial.contains(SubTag.NO_SMASHING);
-        final boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
+        final boolean aNoSmashing = MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMASHING);
+        final boolean aNoWorking = MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING);
         final long aMaterialMass = aMaterial.getMass();
 
         switch (aPrefix.getName()) {
@@ -162,7 +163,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 }
             }
 
-            if (aMaterial.contains(SubTag.MORTAR_GRINDABLE)) {
+            if (MU.hasFlag(aMaterial, GTMaterialFlag.MORTAR_GRINDABLE)) {
 
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addShapelessCraftingRecipe(
@@ -181,7 +182,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
 
-        if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
+        if (!aNoSmashing || MU.hasFlag(aMaterial, GTMaterialFlag.STRETCHY)) {
             // 2 double -> 1 quadruple plate
             if (GTOreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L) != null) {
                 GTValues.RA.stdBuilder()
@@ -232,7 +233,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
 
-        if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
+        if (!aNoSmashing || MU.hasFlag(aMaterial, GTMaterialFlag.STRETCHY)) {
             if (GTOreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L) != null) {
                 // 3 triple plates -> 1 dense plate
                 GTValues.RA.stdBuilder()
@@ -295,7 +296,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
 
-        if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
+        if (!aNoSmashing || MU.hasFlag(aMaterial, GTMaterialFlag.STRETCHY)) {
             // Quadruple plate
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L))
@@ -335,7 +336,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
 
-        if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
+        if (!aNoSmashing || MU.hasFlag(aMaterial, GTMaterialFlag.STRETCHY)) {
             // quintuple plate
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 5L))
@@ -375,7 +376,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
 
-        if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
+        if (!aNoSmashing || MU.hasFlag(aMaterial, GTMaterialFlag.STRETCHY)) {
             // Dense plate
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
@@ -391,9 +392,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         final long aMaterialMass) {
         GTModHandler.removeRecipeByOutputDelayed(aStack);
 
-        if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
+        if (!aNoSmashing || MU.hasFlag(aMaterial, GTMaterialFlag.STRETCHY)) {
             int compression_tier = (aMaterial.processingMaterialTierEU >= TierEU.RECIPE_UEV
-                || aMaterial.contains(SubTag.BLACK_HOLE)) ? 2 : 1;
+                || MU.hasFlag(aMaterial, GTMaterialFlag.BLACK_HOLE)) ? 2 : 1;
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 64))
                 .itemOutputs(GTUtility.copyAmount(1, aStack))

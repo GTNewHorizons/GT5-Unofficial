@@ -8,7 +8,8 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
@@ -28,7 +29,7 @@ public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRe
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         if ((aMaterial != Materials.Empty) && (GTUtility.getFluidForFilledItem(aStack, true) == null)
-            && !aMaterial.contains(SubTag.SMELTING_TO_FLUID)
+            && !MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_FLUID)
             && (GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L) != null)) {
             GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
             recipeBuilder.itemInputs(aStack);

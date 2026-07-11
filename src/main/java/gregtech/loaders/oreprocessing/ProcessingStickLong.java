@@ -13,10 +13,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -39,7 +40,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                 GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { " s ", "fSx", " S ", 'S', OrePrefixes.stickLong.get(aMaterial) });
         }
-        if (!aMaterial.contains(SubTag.NO_WORKING)) {
+        if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)) {
 
             if (GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L) != null) {
 
@@ -119,7 +120,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                 }
             }
         }
-        if (!aMaterial.contains(SubTag.NO_SMASHING)) {
+        if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMASHING)) {
             // Bender recipes
             {
                 if (GTOreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L) != null) {

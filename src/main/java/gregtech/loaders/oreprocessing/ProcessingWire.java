@@ -25,11 +25,12 @@ import appeng.core.Api;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -69,7 +70,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
             case "wireGt01" -> {
                 cableWidth = 1;
                 correspondingCable = OrePrefixes.cableGt01;
-                if (!aMaterial.contains(SubTag.NO_SMASHING)) {
+                if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMASHING)) {
                     // Bender recipes
                     {
                         if (GTOreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 1L) != null) {
@@ -99,7 +100,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 // crafting recipe
                 if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
-                    && !aMaterial.contains(SubTag.NO_WORKING)
+                    && !MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)
                     && (aMaterial.getProcessingMaterialTierEU() < TierEU.IV)) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L),

@@ -17,6 +17,7 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2GtppShapes;
@@ -132,6 +133,21 @@ public class MU {
         if (material == null) return false;
         EnumSet<GTMaterialFlag> flags = material.getProperty(GTMaterialProperties.FLAGS);
         return flags != null && flags.contains(flag);
+    }
+
+    /// [#hasFlag(Material, GTMaterialFlag)] for callers still holding the legacy [Materials] enum constant.
+    /// Falls back to a direct legacy `Materials#contains(SubTag)` read when [#material] has no MaterialLib
+    /// counterpart -- the ~291 marker materials `LegacyMarkerMaterials` builds directly (e.g. `AnyBronze`,
+    /// `AnyCopper`) still carry real legacy SubTags of their own despite never being ML-backed, so treating an
+    /// unmapped material as flagless (like the raw [Material] overload does for a genuinely absent property)
+    /// would be wrong here. `GTMaterialFlag` names match `SubTag` names 1:1 for every flag this fallback can
+    /// reach (mirrors `LegacyMaterials`'s own `legacySubTagName`; the two dynamic bartworks-only exceptions,
+    /// `ANAEROBE_GAS`/`NOBLE_GAS`, never apply to a plain `Materials` instance).
+    public static boolean hasFlag(@Nullable Materials material, GTMaterialFlag flag) {
+        if (material == null) return false;
+        Material ml = material(material);
+        if (ml != null) return hasFlag(ml, flag);
+        return material.contains(SubTag.getNewSubTag(flag.name()));
     }
 
     private static String legacyName(Material material) {

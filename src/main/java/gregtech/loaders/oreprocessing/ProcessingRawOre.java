@@ -14,12 +14,13 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -39,11 +40,11 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+        if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
 
-        if (aMaterial.contains(SubTag.ICE_ORE)) {
+        if (MU.hasFlag(aMaterial, GTMaterialFlag.ICE_ORE)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, aStack))
                 .fluidOutputs(aMaterial.getGas(1000L * aMaterial.mOreMultiplier))
@@ -81,7 +82,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
         ItemStack tSmeltInto = tIngot
             == null
                 ? null
-                : aMaterial.contains(SubTag.SMELTING_TO_GEM)
+                : MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_GEM)
                     ? GTOreDictUnificator.get(
                         OrePrefixes.gem,
                         tMaterial.mDirectSmelting,
@@ -134,7 +135,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                     .addSmeltingRecipe(aOreStack, GTUtility.copyAmount(aMaterial.mSmeltingMultiplier, tSmeltInto));
             }
 
-            if (aMaterial.contains(SubTag.BLASTFURNACE_CALCITE_TRIPLE)) {
+            if (MU.hasFlag(aMaterial, GTMaterialFlag.BLASTFURNACE_CALCITE_TRIPLE)) {
                 if (aMaterial.mAutoGenerateBlastFurnaceRecipes) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
@@ -165,7 +166,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                         .metadata(COIL_HEAT, 1500)
                         .addTo(blastFurnaceRecipes);
                 }
-            } else if (aMaterial.contains(SubTag.BLASTFURNACE_CALCITE_DOUBLE)) {
+            } else if (MU.hasFlag(aMaterial, GTMaterialFlag.BLASTFURNACE_CALCITE_DOUBLE)) {
                 if (aMaterial.mAutoGenerateBlastFurnaceRecipes) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
@@ -225,7 +226,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .itemInputs(aOreStack)
                 .itemOutputs(
                     GTUtility.mul(2, tCrushed),
-                    tMaterial.contains(SubTag.PULVERIZING_CINNABAR) ? GTOreDictUnificator.get(
+                    MU.hasFlag(tMaterial, GTMaterialFlag.PULVERIZING_CINNABAR) ? GTOreDictUnificator.get(
                         OrePrefixes.crystal,
                         Materials.Cinnabar,
                         GTOreDictUnificator

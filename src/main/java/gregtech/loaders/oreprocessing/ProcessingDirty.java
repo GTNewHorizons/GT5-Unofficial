@@ -15,11 +15,12 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -42,7 +43,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         net.minecraft.item.ItemStack aStack) {
-        if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+        if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
 
@@ -137,7 +138,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
         OrePrefixes chemicalBathPrefix = prefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified
             : OrePrefixes.dustPure;
 
-        if (byproduct.contains(SubTag.WASHING_MERCURY) && !didMercury) {
+        if (MU.hasFlag(byproduct, GTMaterialFlag.WASHING_MERCURY) && !didMercury) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(
@@ -156,7 +157,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
 
             didMercury = true;
         }
-        if (byproduct.contains(SubTag.WASHING_MERCURY_99_PERCENT) && !didMercury) {
+        if (MU.hasFlag(byproduct, GTMaterialFlag.WASHING_MERCURY_99_PERCENT) && !didMercury) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(
@@ -175,7 +176,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
 
             didMercury = true;
         }
-        if (byproduct.contains(SubTag.WASHING_SODIUMPERSULFATE) && !didPersulfate) {
+        if (MU.hasFlag(byproduct, GTMaterialFlag.WASHING_SODIUMPERSULFATE) && !didPersulfate) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(

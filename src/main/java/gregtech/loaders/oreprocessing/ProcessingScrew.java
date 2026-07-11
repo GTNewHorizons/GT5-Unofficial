@@ -9,8 +9,9 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -27,7 +28,7 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if (!aMaterial.contains(SubTag.NO_WORKING)) {
+        if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)) {
             if (GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L))

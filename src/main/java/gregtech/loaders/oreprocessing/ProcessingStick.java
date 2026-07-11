@@ -15,10 +15,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -47,14 +48,15 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                 GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { " s ", "fPx", 'P', OrePrefixes.stick.get(aMaterial) });
         }
-        if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_WORKING)) {
+        if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)) {
 
-            if ((aMaterial.contains(SubTag.CRYSTAL) ? GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L)
+            if ((MU.hasFlag(aMaterial, GTMaterialFlag.CRYSTAL) ? GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L)
                 : GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L)) != null
                 && GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial.mMacerateInto, 1L) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        aMaterial.contains(SubTag.CRYSTAL) ? GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L)
+                        MU.hasFlag(aMaterial, GTMaterialFlag.CRYSTAL)
+                            ? GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L)
                             : GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L))
                     .itemOutputs(
                         GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
@@ -144,7 +146,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                 }
             }
         }
-        if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMASHING)) {
+        if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMASHING)) {
             // bender recipe
             {
                 if (GTOreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 1L) != null) {
