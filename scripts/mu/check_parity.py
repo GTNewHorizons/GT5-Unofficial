@@ -124,6 +124,35 @@ WERKSTOFF_PATH = DUMPS_DIR / "werkstoff.json"
 # Mirrors gen_materials.py's stage-10 werkstoff fold (WERKSTOFF_LEGACY_ONLY_PREFIXES,
 # werkstoff_special_shape_lines, group_werkstoffs, werkstoff_flag_names).
 WERKSTOFF_LEGACY_ONLY_PREFIXES = {"sheetmetal", "frameGt"}
+
+# Mirrors gen_materials.py's BARTWORKS_CASING_MATERIALS: the dumped casing prefix over-reports membership
+# (legacy hasItemType() granted it to any metalworking-capable werkstoff), so casing shapes are curated to
+# the set legacy bartworks actually shipped a casing for.
+BARTWORKS_CASING_MATERIALS = {
+    "Rhodium-PlatedPalladium",
+    "Ruridit",
+    "HighDurabilityCompoundSteel",
+    "AdemicSteel",
+    "Carbon",
+    "Silver",
+    "Iridium",
+    "Naquadah",
+    "NaquadahAlloy",
+    "Osmiridium",
+    "BlackSteel",
+    "Wood",
+    "AtomicSeparationCatalyst",
+    "ExtremelyUnstableNaquadah",
+    "AdamantiumAlloy",
+    "MAR-M200Steel",
+    "MAR-Ce-M200Steel",
+    "Tairitsu",
+    "PreciousMetalsAlloy",
+    "EnrichedNaquadahAlloy",
+    "MetastableOganesson",
+    "Shirabon",
+    "Mu-metal",
+}
 WERKSTOFF_FLAG_FIELDS = [
     ("sublimation", "SUBLIMATION"),
     ("toxic", "TOXIC"),
@@ -214,7 +243,7 @@ def compute_werkstoff_referenced_names(werkstoff_by_name, display_to_var):
     return referenced
 
 
-def expected_werkstoff_shapes(werkstoff_prefixes, included_names):
+def expected_werkstoff_shapes(material_name, werkstoff_prefixes, included_names):
     names = set(p for p in werkstoff_prefixes if p in included_names)
     if "cell" in werkstoff_prefixes:
         names.add("cell")
@@ -225,9 +254,9 @@ def expected_werkstoff_shapes(werkstoff_prefixes, included_names):
     if "ore" in werkstoff_prefixes:
         names.add("ore")
         names.add("oreSmall")
-    if "blockCasing" in werkstoff_prefixes:
+    if "blockCasing" in werkstoff_prefixes and material_name in BARTWORKS_CASING_MATERIALS:
         names.add("blockCasing")
-    if "blockCasingAdvanced" in werkstoff_prefixes:
+    if "blockCasingAdvanced" in werkstoff_prefixes and material_name in BARTWORKS_CASING_MATERIALS:
         names.add("blockCasingAdvanced")
     return names
 
@@ -473,7 +502,7 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
     if "oreSmall" in gt["generatedPrefixes"]:
         dumped_shapes.add("oreSmall")
     if werkstoff_info:
-        dumped_shapes |= expected_werkstoff_shapes(werkstoff_info["prefixes"], included_names)
+        dumped_shapes |= expected_werkstoff_shapes(name, werkstoff_info["prefixes"], included_names)
     if gtpp_info:
         dumped_shapes |= gtpp_expected_shapes(gtpp_info, gt, used_fluid_names)
     actual_shapes = set(ml["shapes"])
