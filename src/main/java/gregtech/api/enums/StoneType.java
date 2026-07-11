@@ -31,12 +31,15 @@ import com.gtnewhorizon.gtnhlib.util.data.BlockSupplier;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.LazyBlock;
 import com.gtnewhorizon.gtnhlib.util.data.LazyItem;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.interfaces.IStoneType;
@@ -439,10 +442,10 @@ public enum StoneType implements IStoneType {
 
         public LazyItem pureDust = new LazyItem(
             Mods.GregTech,
-            () -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1));
+            () -> MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1)));
         public LazyItem impureDust = new LazyItem(
             Mods.GregTech,
-            () -> GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Stone, 1));
+            () -> MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDustImpure, (int) (1)));
 
         public StoneCategory category = StoneCategory.Stone;
         public HashSet<String> allowedDimensions = null;
