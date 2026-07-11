@@ -11,9 +11,9 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
@@ -51,7 +51,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                         new Object[] { "SSS", "SwS", "SSS", 'S', OrePrefixes.stick.get(material) });
                 }
 
-                if (!material.contains(SubTag.NO_RECIPES)
+                if (!MU.hasFlag(material, GTMaterialFlag.NO_RECIPES)
                     && GTOreDictUnificator.get(OrePrefixes.stick, material, 1) != null) {
                     // Auto generate frame box recipe in an assembler.
                     GTValues.RA.stdBuilder()

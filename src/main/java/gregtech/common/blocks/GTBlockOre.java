@@ -36,13 +36,14 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.items.GTGenericBlock;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTLanguageManager;
@@ -128,7 +129,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
             for (StoneType stoneType : stoneTypes) {
                 if (stoneType == null) continue;
 
-                if (info.material.contains(SubTag.ICE_ORE)) {
+                if (MU.hasFlag(info.material, GTMaterialFlag.ICE_ORE)) {
                     // if this material only has ice ore, we only want to show the ice variants
                     if (stoneType.getCategory() != StoneCategory.Ice) continue;
                     if (stoneType.isExtraneous()) continue;
@@ -159,7 +160,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
             for (StoneType stoneType : stoneTypes) {
                 if (stoneType == null) continue;
 
-                if (info.material.contains(SubTag.ICE_ORE)) {
+                if (MU.hasFlag(info.material, GTMaterialFlag.ICE_ORE)) {
                     // if this material only has ice ore, we only want to show the ice variants
                     if (stoneType.getCategory() != StoneCategory.Ice) continue;
 
