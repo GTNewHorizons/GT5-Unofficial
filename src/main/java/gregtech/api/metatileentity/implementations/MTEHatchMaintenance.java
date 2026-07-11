@@ -31,6 +31,7 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -42,6 +43,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
+import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -89,8 +93,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
 
     public static ItemStack[] getAutoMaintenanceInputs() {
         if (sAutoMaintenanceInputs == null) sAutoMaintenanceInputs = new ItemStack[] { ItemList.Duct_Tape.get(4),
-            GTOreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 2),
-            GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 4),
+            MaterialLibAPI.getStack(Materials2Materials.Lubricant, Materials2CellShapes.shapeCell, (int) (2)),
+            MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeScrew, (int) (4)),
             GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2) };
         return sAutoMaintenanceInputs;
     }

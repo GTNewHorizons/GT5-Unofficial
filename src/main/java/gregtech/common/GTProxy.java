@@ -87,6 +87,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFuelHandler;
@@ -127,6 +128,9 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
@@ -1065,7 +1069,8 @@ public class GTProxy implements IFuelHandler {
 
             FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(
-                    Materials.Milk.getFluid(1_000),
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.shapeFluidLiquid, (int) (1_000)),
                     GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Milk, 1L),
                     GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
         }
@@ -2357,14 +2362,21 @@ public class GTProxy implements IFuelHandler {
             int hydrogenAmount = 2 * i + 2;
             GTValues.RA.stdBuilder()
                 .circuit(i + 1)
-                .fluidInputs(new FluidStack(uncrackedFluid, 1000), Materials.Hydrogen.getGas(hydrogenAmount * 800))
+                .fluidInputs(
+                    new FluidStack(uncrackedFluid, 1000),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Hydrogen,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (hydrogenAmount * 800)))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 1000))
                 .duration((1 + i) * SECONDS)
                 .eut(TierEU.RECIPE_HV / 2)
                 .addTo(crackingRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.Hydrogen.getCells(hydrogenAmount))
+                .itemInputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.Hydrogen, Materials2CellShapes.shapeCell, (int) (hydrogenAmount)))
                 .circuit(i + 1)
                 .itemOutputs(Materials.Empty.getCells(hydrogenAmount))
                 .fluidInputs(new FluidStack(uncrackedFluid, 1000))
@@ -2377,7 +2389,11 @@ public class GTProxy implements IFuelHandler {
                 .itemInputs(aMaterial.getCells(1))
                 .circuit(i + 1)
                 .itemOutputs(Materials.Empty.getCells(1))
-                .fluidInputs(Materials.Hydrogen.getGas(hydrogenAmount * 1000))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Hydrogen,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (hydrogenAmount * 1000)))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -2385,7 +2401,12 @@ public class GTProxy implements IFuelHandler {
 
             GTValues.RA.stdBuilder()
                 .circuit(i + 1)
-                .fluidInputs(new FluidStack(uncrackedFluid, 1000), Materials.Hydrogen.getGas(hydrogenAmount * 1000))
+                .fluidInputs(
+                    new FluidStack(uncrackedFluid, 1000),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Hydrogen,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (hydrogenAmount * 1000)))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((4 + 2 * i) * SECONDS)
                 .eut(TierEU.RECIPE_HV)

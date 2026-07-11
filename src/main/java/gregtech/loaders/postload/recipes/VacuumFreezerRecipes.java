@@ -11,12 +11,18 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -211,22 +217,29 @@ public class VacuumFreezerRecipes implements Runnable {
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.LiquidOxygen, 1L))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Oxygen, Materials2CellShapes.shapeCell, (int) (1)))
+                .itemOutputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.LiquidOxygen, Materials2CellShapes.shapeCell, (int) (1)))
                 .duration(1 * MINUTES)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Nitrogen, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.LiquidNitrogen, 1L))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Nitrogen, Materials2CellShapes.shapeCell, (int) (1)))
+                .itemOutputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.LiquidNitrogen, Materials2CellShapes.shapeCell, (int) (1)))
                 .duration(1 * MINUTES)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(GTModHandler.getIC2Item("airCell", 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.LiquidAir, 1L))
+                .itemOutputs(
+                    MaterialLibAPI.getStack(Materials2Materials.LiquidAir, Materials2CellShapes.shapeCell, (int) (1)))
                 .duration(1 * SECONDS + 8 * TICKS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(vacuumFreezerRecipes);
@@ -291,22 +304,34 @@ public class VacuumFreezerRecipes implements Runnable {
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SuperconductorUEVBase, 1L))
+                .itemInputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.SuperconductorUEVBase, Materials2Shapes.shapeIngotHot, (int) (1)))
+                .itemOutputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.SuperconductorUEVBase, Materials2Shapes.shapeIngot, (int) (1)))
                 .duration(2 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UEV)
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUIVBase, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SuperconductorUIVBase, 1L))
+                .itemInputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.SuperconductorUIVBase, Materials2Shapes.shapeIngotHot, (int) (1)))
+                .itemOutputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.SuperconductorUIVBase, Materials2Shapes.shapeIngot, (int) (1)))
                 .duration(2 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUMVBase, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SuperconductorUMVBase, 1L))
+                .itemInputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.SuperconductorUMVBase, Materials2Shapes.shapeIngotHot, (int) (1)))
+                .itemOutputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.SuperconductorUMVBase, Materials2Shapes.shapeIngot, (int) (1)))
                 .duration(2 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(vacuumFreezerRecipes);
@@ -315,15 +340,25 @@ public class VacuumFreezerRecipes implements Runnable {
         // Plasma Freezing
         {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Americium, 1L))
+                .itemInputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.Americium, Materials2CellShapes.shapeCellPlasma, (int) (1)))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Americium, 1L))
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .fluidInputs(Materials.Boron.getPlasma(1 * INGOTS))
-                .fluidOutputs(Materials.Boron.getMolten(1 * INGOTS))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Boron,
+                        Materials2FluidShapes.shapeFluidPlasma,
+                        (int) (1 * INGOTS)))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Boron,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (1 * INGOTS)))
                 .duration(1 * SECONDS)
                 .eut(12)
                 .addTo(vacuumFreezerRecipes);
@@ -331,11 +366,17 @@ public class VacuumFreezerRecipes implements Runnable {
 
         // hot transcendent metal ingot cooling
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.TranscendentMetal, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.TranscendentMetal, 1L))
+            .itemInputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.shapeIngotHot, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.shapeIngot, (int) (1)))
             .fluidInputs(
                 new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 1 * INGOTS),
-                Materials.SuperCoolant.getFluid(1_000))
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.SuperCoolant,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (1_000)))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
@@ -362,8 +403,12 @@ public class VacuumFreezerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Harmonic_Compound.get(2))
             .fluidInputs(GGMaterial.atomicSeparationCatalyst.getMolten(1 * INGOTS))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Mellion, 1L))
-            .fluidOutputs(Materials.Creon.getMolten(1 * INGOTS))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.shapeIngot, (int) (1)))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Creon,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (1 * INGOTS)))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
@@ -377,7 +422,10 @@ public class VacuumFreezerRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get(prefix, Materials.ProtoHalkonite, multiplier))
             .fluidInputs(
                 Materials.DimensionallyShiftedSuperfluid.getFluid((long) partFraction * multiplier / 4),
-                Materials.SuperCoolant.getFluid(partFraction * multiplier * 4L))
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.SuperCoolant,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (partFraction * multiplier * 4)))
             .duration((int) (multiplier * (SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);

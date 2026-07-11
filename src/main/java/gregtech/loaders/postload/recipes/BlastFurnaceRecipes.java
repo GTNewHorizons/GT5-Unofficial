@@ -14,6 +14,8 @@ import static gregtech.api.util.GTRecipeConstants.NO_GAS_CIRCUIT_CONFIG;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import gregtech.GTMod;
@@ -22,6 +24,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
 
@@ -36,9 +41,13 @@ public class BlastFurnaceRecipes implements Runnable {
 
     public void registerBlastFurnaceRecipes() {
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Gypsum.getDust(8))
-            .itemOutputs(Materials.Quicklime.getDust(1))
-            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(1_500))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Gypsum, Materials2Shapes.shapeDust, (int) (8)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Quicklime, Materials2Shapes.shapeDust, (int) (1)))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.DilutedSulfuricAcid,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (1_500)))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 3200)
@@ -49,190 +58,353 @@ public class BlastFurnaceRecipes implements Runnable {
         int outputIngotAmount = GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.RoastedCopper.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Copper.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedCopper, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Copper, Materials2Shapes.shapeIngot, (int) (outputIngotAmount)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.RoastedAntimony.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Antimony.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedAntimony, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Antimony, Materials2Shapes.shapeIngot, (int) (outputIngotAmount)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.RoastedIron.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedIron, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                Materials.Iron.getIngots(outputIngotAmount),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.RoastedNickel.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Nickel.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedNickel, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Nickel, Materials2Shapes.shapeIngot, (int) (outputIngotAmount)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.RoastedZinc.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Zinc.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedZinc, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Zinc, Materials2Shapes.shapeIngot, (int) (outputIngotAmount)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.RoastedCobalt.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Cobalt.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedCobalt, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Cobalt, Materials2Shapes.shapeIngot, (int) (outputIngotAmount)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.RoastedArsenic.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Arsenic.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedArsenic, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Arsenic, Materials2Shapes.shapeIngot, (int) (outputIngotAmount)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.RoastedLead.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Lead.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedLead, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Lead, Materials2Shapes.shapeIngot, (int) (outputIngotAmount)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Malachite.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Copper.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.Malachite, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Copper, Materials2Shapes.shapeIngot, (int) (outputIngotAmount)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(3_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (3_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.BandedIron.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.BandedIron, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                Materials.Iron.getIngots(outputIngotAmount),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Garnierite.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Nickel.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.Garnierite, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Nickel, Materials2Shapes.shapeIngot, (int) (outputIngotAmount)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Magnetite.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.Magnetite, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                Materials.Iron.getIngots(outputIngotAmount),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.YellowLimonite.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.YellowLimonite, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                Materials.Iron.getIngots(outputIngotAmount),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.BrownLimonite.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.BrownLimonite, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                Materials.Iron.getIngots(outputIngotAmount),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.BasalticMineralSand.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.BasalticMineralSand, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                Materials.Iron.getIngots(outputIngotAmount),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.GraniticMineralSand.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.GraniticMineralSand, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                Materials.Iron.getIngots(outputIngotAmount),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Cassiterite.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Tin.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.Cassiterite, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Tin, Materials2Shapes.shapeIngot, (int) (outputIngotAmount)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.CassiteriteSand.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Tin.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.CassiteriteSand, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Tin, Materials2Shapes.shapeIngot, (int) (outputIngotAmount)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 2222)
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.SiliconDioxide.getDust(3), Materials.Carbon.getDust(2))
-            .itemOutputs(Materials.Silicon.getIngots(1), Materials.Ash.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.shapeDust, (int) (3)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (2)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeIngot, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 1111)
-            .fluidOutputs(Materials.CarbonMonoxide.getGas(2_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonMonoxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (2_000)))
             .duration(4 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -240,150 +412,276 @@ public class BlastFurnaceRecipes implements Runnable {
 
         if (GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.CupricOxide.getDust(2), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Copper.getIngots(1), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.CupricOxide, Materials2Shapes.shapeDust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.shapeIngot, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
                 .addTo(blastFurnaceRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.Malachite.getDust(2), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Copper.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Malachite, Materials2Shapes.shapeDust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.Copper, Materials2Shapes.shapeIngot, (int) (outputIngotAmount)),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(3_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (3_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
                 .addTo(blastFurnaceRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.AntimonyTrioxide.getDust(5), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Antimony.getIngots(2), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.AntimonyTrioxide, Materials2Shapes.shapeDust, (int) (5)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Antimony, Materials2Shapes.shapeIngot, (int) (2)),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(3_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (3_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
                 .addTo(blastFurnaceRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.BandedIron.getDust(5), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Iron.getIngots(2), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.BandedIron, Materials2Shapes.shapeDust, (int) (5)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    Materials.Iron.getIngots(2),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
                 .addTo(blastFurnaceRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.Magnetite.getDust(2), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Magnetite, Materials2Shapes.shapeDust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    Materials.Iron.getIngots(outputIngotAmount),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
                 .addTo(blastFurnaceRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.YellowLimonite.getDust(2), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.YellowLimonite, Materials2Shapes.shapeDust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    Materials.Iron.getIngots(outputIngotAmount),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
                 .addTo(blastFurnaceRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.BrownLimonite.getDust(2), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.BrownLimonite, Materials2Shapes.shapeDust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    Materials.Iron.getIngots(outputIngotAmount),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
                 .addTo(blastFurnaceRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.BasalticMineralSand.getDust(2), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.BasalticMineralSand, Materials2Shapes.shapeDust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    Materials.Iron.getIngots(outputIngotAmount),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
                 .addTo(blastFurnaceRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.GraniticMineralSand.getDust(2), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.GraniticMineralSand, Materials2Shapes.shapeDust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    Materials.Iron.getIngots(outputIngotAmount),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
                 .addTo(blastFurnaceRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.Cassiterite.getDust(2), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Tin.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Cassiterite, Materials2Shapes.shapeDust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.Tin, Materials2Shapes.shapeIngot, (int) (outputIngotAmount)),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
                 .addTo(blastFurnaceRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.CassiteriteSand.getDust(2), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Tin.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.CassiteriteSand, Materials2Shapes.shapeDust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.Tin, Materials2Shapes.shapeIngot, (int) (outputIngotAmount)),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
                 .addTo(blastFurnaceRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.Garnierite.getDust(2), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Nickel.getIngots(1), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Garnierite, Materials2Shapes.shapeDust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.shapeIngot, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
                 .addTo(blastFurnaceRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.CobaltOxide.getDust(2), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Cobalt.getIngots(1), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.CobaltOxide, Materials2Shapes.shapeDust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.shapeIngot, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
                 .addTo(blastFurnaceRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.ArsenicTrioxide.getDust(5), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Arsenic.getIngots(2), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.ArsenicTrioxide, Materials2Shapes.shapeDust, (int) (5)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Arsenic, Materials2Shapes.shapeIngot, (int) (2)),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
                 .addTo(blastFurnaceRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.Massicot.getDust(2), Materials.Carbon.getDustSmall(4))
-                .itemOutputs(Materials.Lead.getIngots(1), Materials.Ash.getDust(1))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Massicot, Materials2Shapes.shapeDust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDustSmall, (int) (4)))
+                .itemOutputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeIngot, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 2222)
-                .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.CarbonDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
@@ -405,7 +703,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 64),
                 ItemList.GalliumArsenideCrystalSmallPart.get(2),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 8))
+                MaterialLibAPI.getStack(Materials2Materials.Phosphorus, Materials2Shapes.shapeDust, (int) (8)))
             .circuit(3)
             .itemOutputs(ItemList.Circuit_Silicon_Ingot2.get(1))
             .duration(10 * MINUTES)
@@ -418,7 +716,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 16),
                 ItemList.GalliumArsenideCrystal.get(1),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 1))
+                MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeIngot, (int) (1)))
             .circuit(3)
             .itemOutputs(ItemList.Circuit_Silicon_Ingot3.get(1))
             .duration(12 * MINUTES + 30 * SECONDS)
@@ -431,7 +729,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 32),
                 ItemList.GalliumArsenideCrystal.get(2),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Europium, 2))
+                MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.shapeIngot, (int) (2)))
             .circuit(3)
             .itemOutputs(ItemList.Circuit_Silicon_Ingot4.get(1))
             .duration(15 * MINUTES)
@@ -444,7 +742,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 64),
                 ItemList.GalliumArsenideCrystal.get(4),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Americium, 4))
+                MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.shapeIngot, (int) (4)))
             .circuit(3)
             .itemOutputs(ItemList.Circuit_Silicon_Ingot5.get(1))
             .duration(17 * MINUTES + 30 * SECONDS)
@@ -458,18 +756,25 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calciumhydride, 3),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 2))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.CalciumDisilicide, 3))
-            .fluidOutputs(Materials.Hydrogen.getGas(2_000))
+                MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (2)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.CalciumDisilicide, Materials2Shapes.shapeDust, (int) (3)))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.shapeFluidGas, (int) (2_000)))
             .duration(15 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1273)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUEVBase, 1))
+            .itemInputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.SuperconductorUEVBase, Materials2Shapes.shapeDust, (int) (1)))
             .circuit(11)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.SuperconductorUEVBase, Materials2Shapes.shapeIngotHot, (int) (1)))
             .duration(13 * MINUTES + 6 * SECONDS)
             .eut((int) TierEU.RECIPE_UV)
             .metadata(COIL_HEAT, 11800)
@@ -479,9 +784,13 @@ public class BlastFurnaceRecipes implements Runnable {
             .addTo(BlastFurnaceWithGas);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUIVBase, 1))
+            .itemInputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.SuperconductorUIVBase, Materials2Shapes.shapeDust, (int) (1)))
             .circuit(11)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUIVBase, 1))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.SuperconductorUIVBase, Materials2Shapes.shapeIngotHot, (int) (1)))
             .duration(13 * MINUTES + 6 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
             .metadata(COIL_HEAT, 12700)
@@ -491,9 +800,13 @@ public class BlastFurnaceRecipes implements Runnable {
             .addTo(BlastFurnaceWithGas);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUMVBase, 1))
+            .itemInputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.SuperconductorUMVBase, Materials2Shapes.shapeDust, (int) (1)))
             .circuit(11)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUMVBase, 1))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.SuperconductorUMVBase, Materials2Shapes.shapeIngotHot, (int) (1)))
             .duration(13 * MINUTES + 6 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
             .metadata(COIL_HEAT, 13600)
@@ -505,9 +818,15 @@ public class BlastFurnaceRecipes implements Runnable {
         // CaO + 3C = CaC2 + CO
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Quicklime.getDust(2), Materials.Carbon.getDust(3))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.Quicklime, Materials2Shapes.shapeDust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (3)))
             .itemOutputs(Materials.CalciumCarbide.getDust(3))
-            .fluidOutputs(Materials.CarbonMonoxide.getGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.CarbonMonoxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(30 * SECONDS)
             .eut((int) TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 2573)
@@ -516,24 +835,40 @@ public class BlastFurnaceRecipes implements Runnable {
         // Ni + 3Al = NiAl3
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Nickel.getDust(1), Materials.Aluminium.getDust(3))
-            .itemOutputs(Materials.NickelAluminide.getIngots(4))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.shapeDust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.shapeDust, (int) (3)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.NickelAluminide, Materials2Shapes.shapeIngot, (int) (4)))
             .duration(45 * SECONDS)
             .eut((int) TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 1688)
             .addTo(blastFurnaceRecipes);
 
-        ItemStack[] tSiliconDioxide = new ItemStack[] { Materials.SiliconDioxide.getDust(3),
-            Materials.NetherQuartz.getDust(3), Materials.CertusQuartz.getDust(3), Materials.Quartzite.getDust(6) };
+        ItemStack[] tSiliconDioxide = new ItemStack[] {
+            MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.shapeDust, (int) (3)),
+            MaterialLibAPI.getStack(Materials2Materials.NetherQuartz, Materials2Shapes.shapeDust, (int) (3)),
+            MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.shapeDust, (int) (3)),
+            MaterialLibAPI.getStack(Materials2Materials.Quartzite, Materials2Shapes.shapeDust, (int) (6)) };
 
         // Roasting
 
         for (ItemStack silicon : tSiliconDioxide) {
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.Chalcopyrite.getDust(1), silicon)
-                .itemOutputs(Materials.RoastedCopper.getDust(1), Materials.Ferrosilite.getDust(5))
-                .fluidInputs(Materials.Oxygen.getGas(3_000))
-                .fluidOutputs(Materials.SulfurDioxide.getGas(2_000))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Chalcopyrite, Materials2Shapes.shapeDust, (int) (1)),
+                    silicon)
+                .itemOutputs(
+                    MaterialLibAPI.getStack(Materials2Materials.RoastedCopper, Materials2Shapes.shapeDust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Ferrosilite, Materials2Shapes.shapeDust, (int) (5)))
+                .fluidInputs(
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (3_000)))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfurDioxide,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (2_000)))
                 .duration(6 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, 1200)
@@ -541,79 +876,143 @@ public class BlastFurnaceRecipes implements Runnable {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Tetrahedrite.getDust(1))
-            .itemOutputs(Materials.RoastedCopper.getDust(1), Materials.RoastedAntimony.getDustTiny(3))
-            .fluidInputs(Materials.Oxygen.getGas(3_000))
-            .fluidOutputs(Materials.SulfurDioxide.getGas(2_000))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.Tetrahedrite, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedCopper, Materials2Shapes.shapeDust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.RoastedAntimony, Materials2Shapes.shapeDustTiny, (int) (3)))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (3_000)))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.SulfurDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (2_000)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Pyrite.getDust(1))
-            .itemOutputs(Materials.RoastedIron.getDust(1), Materials.Ash.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Pyrite, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedIron, Materials2Shapes.shapeDust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 1111)
-            .fluidInputs(Materials.Oxygen.getGas(3_000))
-            .fluidOutputs(Materials.SulfurDioxide.getGas(2_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (3_000)))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.SulfurDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (2_000)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Pentlandite.getDust(1))
-            .itemOutputs(Materials.RoastedNickel.getDust(1), Materials.Ash.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Pentlandite, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedNickel, Materials2Shapes.shapeDust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 1111)
-            .fluidInputs(Materials.Oxygen.getGas(3_000))
-            .fluidOutputs(Materials.SulfurDioxide.getGas(2_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (3_000)))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.SulfurDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (2_000)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Sphalerite.getDust(1))
-            .itemOutputs(Materials.RoastedZinc.getDust(1), Materials.Ash.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Sphalerite, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedZinc, Materials2Shapes.shapeDust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 1111)
-            .fluidInputs(Materials.Oxygen.getGas(3_000))
-            .fluidOutputs(Materials.SulfurDioxide.getGas(1_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (3_000)))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.SulfurDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Cobaltite.getDust(1))
-            .itemOutputs(Materials.RoastedCobalt.getDust(1), Materials.RoastedArsenic.getDust(1))
-            .fluidInputs(Materials.Oxygen.getGas(3_000))
-            .fluidOutputs(Materials.SulfurDioxide.getGas(1_000))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Cobaltite, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedCobalt, Materials2Shapes.shapeDust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.RoastedArsenic, Materials2Shapes.shapeDust, (int) (1)))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (3_000)))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.SulfurDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Stibnite.getDust(1))
-            .itemOutputs(Materials.RoastedAntimony.getDust(1), Materials.Ash.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Stibnite, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedAntimony, Materials2Shapes.shapeDust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 1111)
-            .fluidInputs(Materials.Oxygen.getGas(3_000))
-            .fluidOutputs(Materials.SulfurDioxide.getGas(1_500))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (3_000)))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.SulfurDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_500)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Galena.getDust(1))
-            .itemOutputs(Materials.RoastedLead.getDust(1), Materials.Ash.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Galena, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.RoastedLead, Materials2Shapes.shapeDust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(10000, 1111)
-            .fluidInputs(Materials.Oxygen.getGas(3_000))
-            .fluidOutputs(Materials.SulfurDioxide.getGas(1_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (3_000)))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.SulfurDioxide,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) (1_000)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.TranscendentMetal.getDust(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.shapeDust, (int) (1)))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.TranscendentMetal, 1))
-            .fluidInputs(Materials.Tungsten.getMolten(1 * INGOTS))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.shapeIngotHot, (int) (1)))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Tungsten,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (1 * INGOTS)))
             .fluidOutputs(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(1 * HALF_INGOTS))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_UIV)
@@ -625,8 +1024,11 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 1, 78))
             .circuit(2)
-            .itemOutputs(Materials.RhodiumChloride.getDust(4))
-            .fluidInputs(Materials.Chlorine.getGas(3_000))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.RhodiumChloride, Materials2Shapes.shapeDust, (int) (4)))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, (int) (3_000)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 573)
@@ -636,10 +1038,18 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(
                 ItemList.Phononic_Seed_Crystal.get(1),
                 Materials.SixPhasedCopper.getNanite(1),
-                Materials.Dilithium.getDust(16))
+                MaterialLibAPI.getStack(Materials2Materials.Dilithium, Materials2Shapes.shapeDust, (int) (16)))
             .circuit(2)
-            .fluidInputs(Materials.Mellion.getMolten(48 * INGOTS))
-            .fluidOutputs(Materials.PhononCrystalSolution.getFluid(1_000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Mellion,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (48 * INGOTS)))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.PhononCrystalSolution,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (1_000)))
             .duration(300 * SECONDS)
             .eut((int) TierEU.RECIPE_UIV)
             .metadata(COIL_HEAT, 17000)
@@ -648,30 +1058,43 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Phononic_Seed_Crystal.get(2),
-                Materials.Eternity.getDust(8),
+                MaterialLibAPI.getStack(Materials2Materials.Eternity, Materials2Shapes.shapeDust, (int) (8)),
                 GGMaterial.shirabon.get(OrePrefixes.dust, 8))
             .circuit(2)
-            .fluidInputs(Materials.PhononMedium.getFluid(10L))
-            .fluidOutputs(Materials.PhononCrystalSolution.getFluid(3_000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.PhononMedium,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (10)))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.PhononCrystalSolution,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (3_000)))
             .duration(200 * SECONDS)
             .eut((int) TierEU.RECIPE_UXV)
             .metadata(COIL_HEAT, 50000)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Mellion.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.shapeDust, (int) (1)))
             .circuit(11)
             .itemOutputs(ItemList.Harmonic_Compound.get(2))
-            .fluidInputs(Materials.Creon.getPlasma(1 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Creon,
+                    Materials2FluidShapes.shapeFluidPlasma,
+                    (int) (1 * INGOTS)))
             .duration(30 * SECONDS)
             .eut((int) TierEU.RECIPE_UMV)
             .metadata(COIL_HEAT, 14000)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Shijima, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.shapeDust, (int) (1)))
             .circuit(11)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Shijima, 1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.shapeIngotHot, (int) (1)))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
             .metadata(COIL_HEAT, 7400)
@@ -681,9 +1104,10 @@ public class BlastFurnaceRecipes implements Runnable {
             .addTo(BlastFurnaceWithGas);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Churitsu, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.shapeDust, (int) (1)))
             .circuit(11)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Churitsu, 1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.shapeIngotHot, (int) (1)))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
             .metadata(COIL_HEAT, 7400)
@@ -696,28 +1120,28 @@ public class BlastFurnaceRecipes implements Runnable {
     public void registerPrimitiveBlastFurnaceRecipes() {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Iron.getIngots(1))
-            .itemOutputs(Materials.Steel.getIngots(1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeIngot, (int) (1)))
             .duration(6 * MINUTES)
             .metadata(ADDITIVE_AMOUNT, 4)
             .addTo(primitiveBlastRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Iron.getDust(1))
-            .itemOutputs(Materials.Steel.getIngots(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeIngot, (int) (1)))
             .duration(6 * MINUTES)
             .metadata(ADDITIVE_AMOUNT, 4)
             .addTo(primitiveBlastRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Iron.getBlocks(1))
-            .itemOutputs(Materials.Steel.getIngots(9))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeIngot, (int) (9)))
             .duration(54 * MINUTES)
             .metadata(ADDITIVE_AMOUNT, 36)
             .addTo(primitiveBlastRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Steel.getDust(1))
-            .itemOutputs(Materials.Steel.getIngots(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeIngot, (int) (1)))
             .duration(6 * MINUTES)
             .metadata(ADDITIVE_AMOUNT, 2)
             .addTo(primitiveBlastRecipes);

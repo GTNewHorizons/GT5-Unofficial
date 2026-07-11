@@ -33,6 +33,7 @@ import com.falsepattern.chunk.api.DataRegistry;
 import com.google.common.base.Stopwatch;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.MaterialRegistrationEvent;
 
 import bwcrossmod.galacticgreg.VoidMinerLoader;
@@ -67,6 +68,8 @@ import gregtech.api.enums.Materials2;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -485,11 +488,11 @@ public class GTMod {
         GTOreDictUnificator.addItemData(
             GTModHandler.getRecipeOutput(
                 null,
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.shapeIngot, (int) (1)),
                 null,
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.shapeIngot, (int) (1)),
                 null,
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.shapeIngot, (int) (1)),
                 null,
                 null,
                 null),

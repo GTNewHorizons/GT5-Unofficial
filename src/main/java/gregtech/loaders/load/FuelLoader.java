@@ -15,16 +15,18 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 
 public class FuelLoader implements Runnable {
@@ -45,40 +47,45 @@ public class FuelLoader implements Runnable {
         ItemList.sRocketFuel = GTFluidFactory.of("rocket_fuel", "Rocket Fuel", null, FluidState.LIQUID, 295);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.shapeBolt, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeBolt, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 50_000)
             .addTo(smallNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.shapeStick, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeStick, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 250_000)
             .addTo(largeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Naquadah, 1L))
+            .itemInputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.shapeStickLong, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeStickLong, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 500_000)
             .addTo(hugeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadria, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.shapeBolt, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeBolt, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 250_000)
             .addTo(extremeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadria, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.shapeStick, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeStick, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 1_000_000)

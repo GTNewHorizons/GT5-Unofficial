@@ -14,12 +14,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -34,7 +39,11 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(ItemList.IC2_Energium_Dust.get(9L))
             .itemOutputs(ItemList.IC2_EnergyCrystal.get(1L))
             .outputChances(10000)
-            .fluidInputs(Materials.EnergeticAlloy.getMolten(2 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.EnergeticAlloy,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (2 * INGOTS)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(autoclaveRecipes);
@@ -43,7 +52,11 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(ItemList.IC2_Energium_Dust.get(9L))
             .itemOutputs(ItemList.IC2_EnergyCrystal.get(1L))
             .outputChances(10000)
-            .fluidInputs(Materials.ConductiveIron.getMolten(4 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.ConductiveIron,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (4 * INGOTS)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(autoclaveRecipes);
@@ -121,7 +134,11 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(certusQuartzSeed)
             .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 10))
             .outputChances(10000)
-            .fluidInputs(Materials.Void.getMolten(1 * QUARTER_INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Void,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (1 * QUARTER_INGOTS)))
             .duration(25 * SECONDS)
             .eut(24)
             .addTo(autoclaveRecipes);
@@ -130,7 +147,11 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(netherQuartzSeed)
             .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 11))
             .outputChances(10000)
-            .fluidInputs(Materials.Void.getMolten(1 * QUARTER_INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Void,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (1 * QUARTER_INGOTS)))
             .duration(25 * SECONDS)
             .eut(24)
             .addTo(autoclaveRecipes);
@@ -139,40 +160,54 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(fluixSeed)
             .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 12))
             .outputChances(10000)
-            .fluidInputs(Materials.Void.getMolten(1 * QUARTER_INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Void,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (1 * QUARTER_INGOTS)))
             .duration(25 * SECONDS)
             .eut(24)
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (8)))
             .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 16L))
             .outputChances(10000)
-            .fluidInputs(Materials.Polybenzimidazole.getMolten(9L))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Polybenzimidazole,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (9)))
             .duration(1 * SECONDS + 17 * TICKS)
             .eut((int) TierEU.RECIPE_EV)
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (4)))
             .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 4L))
             .outputChances(10000)
-            .fluidInputs(Materials.Epoxid.getMolten(9L))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Epoxid, Materials2FluidShapes.shapeFluidMolten, (int) (9)))
             .duration(18 * TICKS)
             .eut((int) TierEU.RECIPE_HV)
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (4)))
             .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 2L))
             .outputChances(10000)
-            .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * EIGHTH_INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Polytetrafluoroethylene,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (1 * EIGHTH_INGOTS)))
             .duration(1 * SECONDS + 5 * TICKS)
             .eut((int) TierEU.RECIPE_MV)
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (4)))
             .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 1L))
             .outputChances(10000)
             .fluidInputs(Materials.Polyethylene.getMolten(1 * QUARTER_INGOTS))
@@ -181,7 +216,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.NetherStar, Materials2Shapes.shapeDust, (int) (1)))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1))
             .outputChances(3333)
             .fluidInputs(Materials.UUMatter.getFluid(4 * INGOTS))
@@ -193,7 +228,11 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(ItemList.QuantumStar.get(1L)))
             .itemOutputs(ItemList.Gravistar.get(1L))
             .outputChances(10000)
-            .fluidInputs(Materials.Neutronium.getMolten(2 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Neutronium,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (2 * INGOTS)))
             .duration(24 * SECONDS)
             .eut((int) TierEU.RECIPE_IV)
             .addTo(autoclaveRecipes);
@@ -202,14 +241,19 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(ItemList.Gravistar.get(16L)))
             .itemOutputs(ItemList.NuclearStar.get(1L))
             .outputChances(10000)
-            .fluidInputs(Materials.Infinity.getMolten(2 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Infinity,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (2 * INGOTS)))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.SiliconDioxide.getDust(1))
-            .itemOutputs(Materials.Quartzite.getGems(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Quartzite, Materials2Shapes.shapeGem, (int) (1)))
             .outputChances(750)
             .fluidInputs(Materials.Water.getFluid(200L))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -217,8 +261,9 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.SiliconDioxide.getDust(1))
-            .itemOutputs(Materials.Quartzite.getGems(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Quartzite, Materials2Shapes.shapeGem, (int) (1)))
             .outputChances(1000)
             .fluidInputs(GTModHandler.getDistilledWater(100L))
             .duration(1 * MINUTES + 15 * SECONDS)
@@ -226,18 +271,24 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.SiliconDioxide.getDust(1))
-            .itemOutputs(Materials.Quartzite.getGems(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Quartzite, Materials2Shapes.shapeGem, (int) (1)))
             .outputChances(10000)
-            .fluidInputs(Materials.Void.getMolten(1 * QUARTER_INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Void,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (1 * QUARTER_INGOTS)))
             .duration(50 * SECONDS)
             .eut(24)
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (1)))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.shapeDust, (int) (3)))
             .outputChances(7500)
             .fluidInputs(Materials.Water.getFluid(1_000))
             .duration(60 * SECONDS)
@@ -245,9 +296,10 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (1)))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.shapeDust, (int) (3)))
             .outputChances(9000)
             .fluidInputs(GTModHandler.getDistilledWater(1_000))
             .duration(60 * SECONDS)
@@ -255,26 +307,28 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 15))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Olivine, Materials2Shapes.shapeGem, (int) (15)))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Asbestos, 18),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnetite, 7))
+                MaterialLibAPI.getStack(Materials2Materials.Asbestos, Materials2Shapes.shapeDust, (int) (18)),
+                MaterialLibAPI.getStack(Materials2Materials.Magnetite, Materials2Shapes.shapeDust, (int) (7)))
             .fluidInputs(GTModHandler.getDistilledWater(9_000))
-            .fluidOutputs(Materials.Hydrogen.getGas(14_000))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.shapeFluidGas, (int) (14_000)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(autoclaveRecipes);
 
         // Marble Block
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Calcite, Materials2Shapes.shapeDust, (int) (1)))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Marble, 1L))
             .fluidInputs(Materials.Water.getFluid(1_000L))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Calcite, Materials2Shapes.shapeDust, (int) (1)))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Marble, 1L))
             .fluidInputs(GTModHandler.getDistilledWater(500L))
             .duration(10 * SECONDS)
@@ -284,9 +338,13 @@ public class AutoclaveRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Mellion, 32L))
+                MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.shapeDust, (int) (32)))
             .itemOutputs(ItemList.Phononic_Seed_Crystal.get(8L))
-            .fluidInputs(Materials.Grade8PurifiedWater.getFluid(32_000L))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Grade8PurifiedWater,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (32_000)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(autoclaveRecipes);
@@ -294,7 +352,11 @@ public class AutoclaveRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.round, Materials.MagMatter, 1))
             .itemOutputs(ItemList.Phononic_Seed_Crystal.get(5))
-            .fluidInputs(Materials.PhononCrystalSolution.getFluid(250))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.PhononCrystalSolution,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (250)))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(autoclaveRecipes);
@@ -303,13 +365,14 @@ public class AutoclaveRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
-                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Amalgatite, 3),
+                MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.shapeGemFlawless, (int) (3)),
                 WerkstoffLoader.Olenit.get(OrePrefixes.gemChipped, 64),
                 WerkstoffLoader.Salt.get(OrePrefixes.gemChipped, 64),
-                GTOreDictUnificator.get(OrePrefixes.gemChipped, Materials.Diamond, 64),
+                MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.shapeGemChipped, (int) (64)),
                 WerkstoffLoader.VanadioOxyDravit.get(OrePrefixes.gemChipped, 64))
             .fluidInputs(new FluidStack(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlasma(), 1_000_000))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Amalgatite, 1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.shapeGemExquisite, (int) (1)))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(autoclaveRecipes);
