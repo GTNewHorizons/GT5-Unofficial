@@ -170,18 +170,23 @@ public class ToolVajra extends ItemTool implements IElectricItem {
             Minecraft.getMinecraft().playerController.onPlayerDestroyBlock(x, y, z, side);
             player.swingItem();
         } else {
+            // return false causes packet to not sent on server but changes are still applied.
+            // disable capture snapshot so that forge does not suppress the notification, even though
+            // changes are applied on the server.
+            boolean capturingSnapshots = world.captureBlockSnapshots;
+            world.captureBlockSnapshots = false;
             target.onBlockHarvested(world, x, y, z, metaData, player);
             if (target.removedByPlayer(world, player, x, y, z, true)) {
                 target.onBlockDestroyedByPlayer(world, x, y, z, metaData);
                 target.harvestBlock(world, player, x, y, z, metaData);
                 world.notifyBlocksOfNeighborChange(x, y, z, target);
             }
+            world.captureBlockSnapshots = capturingSnapshots;
         }
         stack.getTagCompound()
             .setBoolean("harvested", true); // prevent onItemRightClick from going through
         ElectricItem.manager.use(stack, baseCost, player);
-        // This allows offhand to be used, since returning false will continue to try to process
-        // offhand and block activations
+        // This allows offhand to be used, since returning false will continue to try to process offhand
         return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
     }
 
