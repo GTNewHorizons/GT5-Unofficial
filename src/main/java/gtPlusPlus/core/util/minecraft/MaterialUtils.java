@@ -15,6 +15,7 @@ import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.BaseItemComponent;
@@ -64,8 +65,8 @@ public class MaterialUtils {
             String name = material.mName;
             final String defaultLocalName = material.mDefaultLocalName;
             final short[] rgba = (customRGB == null ? material.mRGBa : customRGB);
-            final int melting = material.mMeltingPoint;
-            final int boiling = material.mBlastFurnaceTemp;
+            final int melting = MU.meltingPoint(material);
+            final int boiling = MU.blastFurnaceTemp(material);
             final long protons = material.getProtons();
             final long neutrons = material.getNeutrons();
             final boolean blastFurnace = material.mBlastFurnaceRequired;
