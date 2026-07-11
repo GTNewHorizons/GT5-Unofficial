@@ -31,7 +31,6 @@ import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.GTMod;
@@ -76,29 +75,30 @@ public class GTWorldgenerator implements IWorldGenerator {
     public static Long2ObjectOpenHashMap<CachedOreVein> validOreveins = new Long2ObjectOpenHashMap<>(1024);
     public boolean mIsGenerating = false;
     private static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
-    private static OregenPattern clientOregenPattern = OregenPattern.AXISSYMMETRICAL;
 
-    /** Returns the oregen pattern for the current physical or logical server, or the connected client. */
+    /** Returns the oregen pattern used by the current world. */
     public static OregenPattern getOregenPattern() {
-        FMLCommonHandler fml = FMLCommonHandler.instance();
-        boolean server = fml.getSide() == Side.SERVER || fml.getEffectiveSide() == Side.SERVER;
-        return server ? oregenPattern : clientOregenPattern;
+        return oregenPattern;
     }
 
     /** @deprecated Use {@link #getOregenPattern()}. */
     @Deprecated
     public static OregenPattern getClientOregenPattern() {
-        return clientOregenPattern;
+        return getOregenPattern();
     }
 
     /** @deprecated Use {@link #getOregenPattern()}. */
     @Deprecated
     public static OregenPattern getServerOregenPattern() {
-        return oregenPattern;
+        return getOregenPattern();
     }
 
+    /** Called when the server syncs its pattern to the client; no-op when a local server is authoritative. */
     public static void setClientOregenPattern(OregenPattern pattern) {
-        clientOregenPattern = pattern;
+        if (FMLCommonHandler.instance()
+            .getMinecraftServerInstance() == null) {
+            oregenPattern = pattern;
+        }
     }
 
     public GTWorldgenerator() {
@@ -216,7 +216,6 @@ public class GTWorldgenerator implements IWorldGenerator {
                 instance = new OregenPatternSavedData(NAME);
                 world.mapStorage.setData(OregenPatternSavedData.NAME, instance);
             }
-            clientOregenPattern = oregenPattern;
             instance.markDirty();
             loadedWorld = new WeakReference<>(world);
         }
