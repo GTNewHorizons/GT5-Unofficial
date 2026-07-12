@@ -569,15 +569,18 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         for (DroneConnection droneConnection : connectionList) {
             if (droneConnection.isValid()
                 && (activeGroup == 0 || (droneConnection.getGroupMask() & (1L << activeGroup)) != 0)) {
-                MTEMultiBlockBase mte = droneConnection.getLinkedMachine();
-                mte.disableWorking();
-                if (force && mte.getBaseMetaTileEntity() != null) {
-                    for (int i = 0; i < 6; i++) {
-                        if (mte.getBaseMetaTileEntity()
-                            .hasCoverAtSide(ForgeDirection.getOrientation(i))
-                            && mte.getBaseMetaTileEntity()
-                                .getCoverAtSide(ForgeDirection.getOrientation(i)) instanceof CoverControlsWork cover) {
-                            cover.setRedstoneCondition(RedstoneCondition.DISABLE);
+                MTEMultiBlockBase linkedMachine = droneConnection.getLinkedMachine();
+                if (linkedMachine != null) {
+                    linkedMachine.disableWorking();
+                    if (force && linkedMachine.getBaseMetaTileEntity() != null) {
+                        for (int i = 0; i < 6; i++) {
+                            if (linkedMachine.getBaseMetaTileEntity()
+                                .hasCoverAtSide(ForgeDirection.getOrientation(i))
+                                && linkedMachine.getBaseMetaTileEntity()
+                                    .getCoverAtSide(
+                                        ForgeDirection.getOrientation(i)) instanceof CoverControlsWork cover) {
+                                cover.setRedstoneCondition(RedstoneCondition.DISABLE);
+                            }
                         }
                     }
                 }
