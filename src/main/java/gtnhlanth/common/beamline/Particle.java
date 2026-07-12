@@ -14,7 +14,7 @@ public enum Particle {
     // restMass is in MeV/c^2
     // maxSourceEnergy is in keV/c^2
 
-    // Gauge Bosons
+    // Bosons
     PHOTON(false, 0, 0, 0, "photon", "\u03B3", 0, null, 1000, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_PHOTON),
     ZBOSON(false, 1, 91188.00f, 0, "zboson", "Z\u2070", 0, null, 110, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ZBOSON),
     WBOSON(true, 2, 80369.20f, 0, "wboson", "W\u207B", 1, null, 110, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_WBOSON),
