@@ -853,6 +853,10 @@ def build_gtpp_new_block(entry, field, ml_names, included_names, family_shape_me
         lines.append("            .setFluidTint(0xFFFFFFFF)")
     if entry["unlocalizedName"] in GTPP_PRECOLORED_BLOCK_MATERIALS:
         lines.append("            .setProperty(StandardProperties.BLOCK_TINT, 0xFFFFFFFF)")
+    if entry["unlocalizedName"] in GTPP_CELL_TINT_MATERIALS:
+        lines.append(
+            "            .setProperty(StandardProperties.CELL_TINT, "
+            f"{java_int_literal(pack_argb(entry['rgba']))})")
     lines.append("            .addToFamily(Materials2Families.familyAll)")
     for family in families:
         lines.append(f"            .addToFamily(Materials2Families.{family})")
@@ -1642,6 +1646,14 @@ GTPP_PRECOLORED_ITEM_MATERIALS = {"AstralTitanium", "CelestialTungsten", "Chroma
 ## legacy `BlockBaseModular#getBlockColor` rendered every `is_custom` set's block WHITE, so the MaterialLib
 ## block gets the plain-block `StandardProperties.BLOCK_TINT` override instead of the material's item tint.
 GTPP_PRECOLORED_BLOCK_MATERIALS = {"Dragonblood", "Rhugnor"}
+
+## The two `GTPP_PRECOLORED_BLOCK_MATERIALS` also have their cell container's fill layer coupled to
+## `FLUID_UNTINTED_MATERIALS` by default, which would render their molten/plasma cell fills white -- but legacy
+## tinted GT-pp's `BaseItemComponent` items with the material's own rgba whenever the dumped alpha is 0
+## (Dragonblood/Rhugnor's alpha, unlike the `GTPP_PRECOLORED_ITEM_MATERIALS` trio), and a filled cell is an item,
+## not a fluid; `StandardProperties.CELL_TINT` reproduces that legacy cell-fill color, set to the same packed rgba
+## as the material's own (untouched) `setTint`.
+GTPP_CELL_TINT_MATERIALS = {"Dragonblood", "Rhugnor"}
 
 
 def build_material_block(
