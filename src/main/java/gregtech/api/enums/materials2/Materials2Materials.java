@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.StandardProperties;
 import com.ruling_0.materiallib.api.TextureSet;
 
 import gregtech.api.material.AspectRefStack;
@@ -2420,6 +2421,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP, new GTppData(1, 30L, 1792, 6349, 512, false, false, 0, false, "Mn", 25L, 30L, "SOLID", true, false, List.of(), "molten.manganese", null));
         Materials2Materials.Iron = MaterialLibAPI.newMaterial("gregtech", "Iron", TextureSet.of("gregtech", "CUSTOM/iron"))
             .setTint(0xFFC8C8C8)
+            .setProperty(StandardProperties.BLOCK_OVERLAY_TINT, 0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
             .addToFamily(Materials2Families.familyOres)
@@ -2566,6 +2568,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP, new GTppData(1, 30L, 2001, 7185, 64, false, false, 0, false, "Ni", 28L, 30L, "SOLID", true, false, List.of(), "molten.nickel", null));
         Materials2Materials.Copper = MaterialLibAPI.newMaterial("gregtech", "Copper", TextureSet.of("gregtech", "CUSTOM/copper"))
             .setTint(0xFFFF6400)
+            .setProperty(StandardProperties.BLOCK_OVERLAY_TINT, 0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
             .addToFamily(Materials2Families.familyOres)
@@ -4178,6 +4181,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP, new GTppData(2, 120L, 2314, 8437, 64, false, false, 0, false, "Pt", 78L, 117L, "SOLID", true, false, List.of(), "molten.platinum", null));
         Materials2Materials.Gold = MaterialLibAPI.newMaterial("gregtech", "Gold", TextureSet.of("gregtech", "CUSTOM/gold"))
             .setTint(0xFFFFFF1E)
+            .setProperty(StandardProperties.BLOCK_OVERLAY_TINT, 0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
             .addToFamily(Materials2Families.familyOres)
@@ -10712,6 +10716,7 @@ public class Materials2Materials {
             .build();
         Materials2Materials.Diamond = MaterialLibAPI.newMaterial("gregtech", "Diamond", TextureSet.of("gregtech", "CUSTOM/diamond"))
             .setTint(2143879167)
+            .setProperty(StandardProperties.BLOCK_OVERLAY_TINT, 0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyGems)
             .addToFamily(Materials2Families.familyOres)
@@ -10742,6 +10747,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeRotor);
         Materials2Materials.Emerald = MaterialLibAPI.newMaterial("gregtech", "Emerald", TextureSet.of("gregtech", "CUSTOM/emerald"))
             .setTint(2136014672)
+            .setProperty(StandardProperties.BLOCK_OVERLAY_TINT, 0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyGems)
             .addToFamily(Materials2Families.familyOres)
