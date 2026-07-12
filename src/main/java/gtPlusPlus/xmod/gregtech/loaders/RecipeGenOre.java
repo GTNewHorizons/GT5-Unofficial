@@ -66,7 +66,7 @@ public class RecipeGenOre extends RecipeGenBase {
             mStone = MaterialUtils.generateMaterialFromGtENUM(Materials.Stone);
         }
 
-        int tVoltageMultiplier = MaterialUtils.getVoltageForTier(material.vTier);
+        int tVoltageMultiplier = MaterialUtils.getVoltageForTier(material.tier);
 
         final ItemStack dustStone = ItemUtils.getItemStackOfAmountFromOreDict("dustStone", 1);
         Material bonusA = null; // Ni
