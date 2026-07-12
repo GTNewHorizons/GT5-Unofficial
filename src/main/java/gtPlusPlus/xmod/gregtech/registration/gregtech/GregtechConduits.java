@@ -614,10 +614,11 @@ public class GregtechConduits {
 
     public static void generatePipeRecipes(final Material material) {
         // generatePipeRecipes multiplies the voltage multiplier by 8 because ??! reasons.
-        generatePipeRecipes(material, material.getDefaultLocalName(), material.vVoltageMultiplier / 8);
+        generatePipeRecipes(material, material.getDefaultLocalName(), material.voltageMultiplier / 8);
     }
 
-    public static void generatePipeRecipes(final Material material, final String materialName, final long vMulti) {
+    public static void generatePipeRecipes(final Material material, final String materialName,
+        final long voltageMultiplier) {
 
         String output = materialName.substring(0, 1)
             .toUpperCase() + materialName.substring(1);
@@ -636,9 +637,9 @@ public class GregtechConduits {
             }
         }
 
-        int eut = (int) (8 * vMulti);
+        int eut = (int) (8 * voltageMultiplier);
 
-        if (material != null && material.vVoltageMultiplier <= TierEU.RECIPE_IV) {
+        if (material != null && material.voltageMultiplier <= TierEU.RECIPE_IV) {
             // Add the Four Shaped Recipes First
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8),
@@ -794,8 +795,7 @@ public class GregtechConduits {
         ItemStack aFineWire = aMaterial.getFineWire(1);
 
         // Adds manual crafting recipe
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlate, aWire01 })
-            && aMaterial.vVoltageMultiplier < 7680) {
+        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlate, aWire01 }) && aMaterial.voltageMultiplier < 7680) {
             GTModHandler.addCraftingRecipe(
                 aWire01,
                 GTModHandler.RecipeBits.BUFFERED,

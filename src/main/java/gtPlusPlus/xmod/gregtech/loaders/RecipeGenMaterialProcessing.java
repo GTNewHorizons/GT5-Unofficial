@@ -51,12 +51,12 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
         }
 
         if (material.getMaterialComposites().length > 1) {
-            final int tVoltageMultiplier = material.vVoltageMultiplier;
+            final int tVoltageMultiplier = material.voltageMultiplier;
             int[] partSizes = new int[99];
-            if (material.vSmallestRatio != null) {
-                partSizes = new int[material.vSmallestRatio.length];
-                for (int hu = 0; hu < material.vSmallestRatio.length; hu++) {
-                    partSizes[hu] = (int) material.vSmallestRatio[hu];
+            if (material.smallestRatio != null) {
+                partSizes = new int[material.smallestRatio.length];
+                for (int hu = 0; hu < material.smallestRatio.length; hu++) {
+                    partSizes[hu] = (int) material.smallestRatio[hu];
                 }
             }
             ArrayList<Pair<Integer, Material>> componentMap = new ArrayList<>();
