@@ -153,9 +153,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .top(15)
             .left(6)
             .direction(ProgressWidget.Direction.UP)
-            .value(percentageSyncer)
-            .tooltipDynamic(
-                t -> t.addLine(String.format("Stored EU: %d/%d", euSyncer.getValue(), maxEuSyncer.getValue())));
+            .value(percentageSyncer);
     }
 
     private ProgressWidget createEnergyConsumptionBar(PanelSyncManager syncManager) {
