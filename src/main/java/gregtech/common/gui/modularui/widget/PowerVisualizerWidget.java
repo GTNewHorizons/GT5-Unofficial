@@ -12,11 +12,12 @@ import gregtech.api.modularui2.GTGuiTextures;
 
 public class PowerVisualizerWidget extends ParentWidget<PowerVisualizerWidget> {
 
-    public PowerVisualizerWidget(LongSyncValue storedEu, LongSyncValue maxStoredEu, IntSyncValue consumedEu,
-        LongSyncValue averageDrawnEu, LongSyncValue maxEuDraw, LongSyncValue maxEuOverdraw) {
+    public PowerVisualizerWidget(LongSyncValue storedEu, LongSyncValue maxStoredEu, IntSyncValue recipeEu,
+        IntSyncValue consumedEu, LongSyncValue averageDrawnEu, LongSyncValue maxEuDraw, LongSyncValue maxEuOverdraw) {
         size(31, 75);
         child(createEnergyStorageBar(storedEu, maxStoredEu));
         child(createEnergyConsumptionBar(consumedEu, maxEuDraw));
+        child(createEnergyRecipeUsageBar(recipeEu, maxEuDraw));
         child(createEnergyUsageBar(averageDrawnEu, maxEuDraw));
         child(createEnergyOverdrawBar(averageDrawnEu, maxEuDraw, maxEuOverdraw));
         child(createEnergyPanel(storedEu, maxStoredEu, consumedEu, averageDrawnEu, maxEuDraw, maxEuOverdraw));
@@ -42,6 +43,18 @@ public class PowerVisualizerWidget extends ParentWidget<PowerVisualizerWidget> {
             percentageFilled,
             GTGuiTextures.TRANSPARENT,
             GTGuiTextures.PROGRESSBAR_ENERGY_CONSUMPTION,
+            5,
+            11);
+    }
+
+    private IWidget createEnergyRecipeUsageBar(IntSyncValue recipeEu, LongSyncValue maxEuDraw) {
+        DoubleSyncValue percentageFilled = new DoubleSyncValue(
+            () -> recipeEu.getValue() / (double) maxEuDraw.getValue());
+
+        return makeEnergyBar(
+            percentageFilled,
+            GTGuiTextures.TRANSPARENT,
+            GTGuiTextures.PROGRESSBAR_ENERGY_RECIPEY_USAGE,
             5,
             11);
     }

@@ -1357,6 +1357,10 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/progressbar/energy_gauge_full")
         .fullImage()
         .build();
+    public static final UITexture PROGRESSBAR_ENERGY_RECIPEY_USAGE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/energy_recipe_usage_gauge")
+        .fullImage()
+        .build();
     public static final UITexture PROGRESSBAR_ENERGY_CONSUMPTION = UITexture.builder()
         .location(GregTech.ID, "gui/progressbar/energy_consumption_gauge")
         .fullImage()

@@ -107,6 +107,8 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         syncManager.syncValue("storedEu", new LongSyncValue(machine::getEUVar));
         syncManager.syncValue("maxEu", new LongSyncValue(machine::maxEUStore));
         syncManager.syncValue("eut", new IntSyncValue(() -> machine.mEUt));
+        syncManager
+            .syncValue("recipeEut", new IntSyncValue(() -> machine.getRecipeEuT() * machine.getStandardAmperesIn()));
 
         LongSyncValue averageInputSyncer = new LongSyncValue(() -> {
             BaseMetaTileEntity metaTileEntity = ((BaseMetaTileEntity) machine.getBaseMetaTileEntity());
@@ -140,6 +142,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         return new PowerVisualizerWidget(
             syncManager.findSyncHandler("storedEu", LongSyncValue.class),
             syncManager.findSyncHandler("maxEu", LongSyncValue.class),
+            syncManager.findSyncHandler("recipeEut", IntSyncValue.class),
             syncManager.findSyncHandler("eut", IntSyncValue.class),
             syncManager.findSyncHandler("averageInput", LongSyncValue.class),
             syncManager.findSyncHandler("maxStandardInput", LongSyncValue.class),

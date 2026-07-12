@@ -144,6 +144,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         () -> mFluidOut,
         fluidStack -> mFluidOut = fluidStack,
         this::getCapacity);
+    private int recipeEuT;
 
     public FluidStackTank getFluidOutputTank() {
         return this.fluidOutputTank;
@@ -394,6 +395,13 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         return (int) (((VP[mTier] * 2L) * mAmperage) / V[mTier] + 1L);
     }
 
+    /**
+     * The EU consumption of this machine before overclocks.
+     */
+    public int getRecipeEuT() {
+        return recipeEuT;
+    }
+
     @Override
     public List<ItemStack> getNonConsumedInputDisplayItems() {
         if (mLastRecipe == null || mLastRecipe.mInputs == null) return Collections.emptyList();
@@ -544,6 +552,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         aNBT.setInteger("mMaxProgresstime", mMaxProgresstime);
         if (mOutputFluid != null) aNBT.setTag("mOutputFluid", mOutputFluid.writeToNBT(new NBTTagCompound()));
         if (mFluidOut != null) aNBT.setTag("mFluidOut", mFluidOut.writeToNBT(new NBTTagCompound()));
+        if (recipeEuT != 0) aNBT.setInteger("recipeEuT", recipeEuT);
 
         for (int i = 0; i < mOutputItems.length; i++)
             if (mOutputItems[i] != null) GTUtility.saveItem(aNBT, "mOutputItem" + i, mOutputItems[i]);
@@ -563,6 +572,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         mMaxProgresstime = aNBT.getInteger("mMaxProgresstime");
         mOutputFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mOutputFluid"));
         mFluidOut = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluidOut"));
+        recipeEuT = aNBT.getInteger("recipeEuT");
 
         for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = GTUtility.loadItem(aNBT, "mOutputItem" + i);
     }
@@ -1085,6 +1095,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
      *         FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2;
      */
     public int checkRecipe(boolean skipOC) {
+        recipeEuT = 0;
         RecipeMap<?> tMap = getRecipeMap();
         if (tMap == null) return DID_NOT_FIND_RECIPE;
         GTRecipe tRecipe = tMap.findRecipeQuery()
@@ -1143,6 +1154,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
+        recipeEuT = tRecipe.mEUt;
         return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
     }
 
