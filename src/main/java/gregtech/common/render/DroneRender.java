@@ -33,7 +33,7 @@ public class DroneRender {
         GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 
         double time = mc.theWorld.getTotalWorldTime() + (double) timeSinceLastTick;
-        GL11.glTranslated(0, Math.sin(time / 10.0) * 0.15, 0);
+        GL11.glTranslated(0, Math.sin(time * 0.1) * 0.15, 0);
 
         Drone.renderAll();
 
