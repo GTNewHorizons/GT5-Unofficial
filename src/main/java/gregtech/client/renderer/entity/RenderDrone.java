@@ -1,9 +1,11 @@
 package gregtech.client.renderer.entity;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -11,8 +13,6 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.common.entity.EntityDrone;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.util.MathHelper;
 import gregtech.common.render.DroneRender;
 
 @SideOnly(Side.CLIENT)
