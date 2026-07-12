@@ -55,9 +55,16 @@ public class EntityDrone extends EntityLivingBase {
 
     @Override
     public void onUpdate() {
-        if (isAutoMode()) {
+        if (worldObj.isRemote && getEntityId() < 0) {
+            this.lastTickPosX = this.prevPosX;
+            this.lastTickPosY = this.prevPosY;
+            this.lastTickPosZ = this.prevPosZ;
+            this.prevPosX = this.posX;
+            this.prevPosY = this.posY;
+            this.prevPosZ = this.posZ;
+        } else {
             super.onUpdate();
-            if (!worldObj.isRemote) {
+            if (!worldObj.isRemote && isAutoMode()) {
                 totalTicksAlive++;
                 if (totalTicksAlive > MAX_LIFETIME_TICKS) {
                     setDead();
@@ -65,13 +72,6 @@ public class EntityDrone extends EntityLivingBase {
                 }
                 tickAutoFlight();
             }
-        } else {
-            this.lastTickPosX = this.prevPosX;
-            this.lastTickPosY = this.prevPosY;
-            this.lastTickPosZ = this.prevPosZ;
-            this.prevPosX = this.posX;
-            this.prevPosY = this.posY;
-            this.prevPosZ = this.posZ;
         }
     }
 
