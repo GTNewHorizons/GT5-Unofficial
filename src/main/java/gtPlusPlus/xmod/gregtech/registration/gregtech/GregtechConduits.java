@@ -617,7 +617,8 @@ public class GregtechConduits {
         generatePipeRecipes(material, material.getDefaultLocalName(), material.voltageMultiplier / 8);
     }
 
-    public static void generatePipeRecipes(final Material material, final String materialName, final long voltageMultiplier) {
+    public static void generatePipeRecipes(final Material material, final String materialName,
+        final long voltageMultiplier) {
 
         String output = materialName.substring(0, 1)
             .toUpperCase() + materialName.substring(1);
