@@ -48,7 +48,8 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
         short aMetaData = (short) aStack.getItemDamage();
-        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
+        IGT_ItemWithMaterialRenderer aItem = IGT_ItemWithMaterialRenderer.resolve(aStack);
+        if (aItem == null) return;
 
         int passes = 1;
         if (aItem.requiresMultipleRenderPasses()) {
@@ -93,7 +94,8 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
     }
 
     protected void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
-        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
+        IGT_ItemWithMaterialRenderer aItem = IGT_ItemWithMaterialRenderer.resolve(aStack);
+        if (aItem == null) return;
 
         if (shouldModulateColor) {
             short[] tModulation = aItem.getRGBa(aStack);

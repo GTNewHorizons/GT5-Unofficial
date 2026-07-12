@@ -29,7 +29,8 @@ public class InfinityRenderer extends GeneratedMaterialRenderer {
         }
 
         short aMetaData = (short) aStack.getItemDamage();
-        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
+        IGT_ItemWithMaterialRenderer aItem = IGT_ItemWithMaterialRenderer.resolve(aStack);
+        if (aItem == null) return;
 
         int passes = 1;
         if (aItem.requiresMultipleRenderPasses()) {
