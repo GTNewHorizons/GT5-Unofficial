@@ -30786,7 +30786,6 @@ public class Materials2Materials {
         Materials2Materials.GtppDragonblood = MaterialLibAPI.newMaterial("gregtech", "Dragonblood", TextureSet.of("miscutils", "CUSTOM/hypogen"))
             .setTint(0xFFDC2814)
             .setFluidTint(0xFFDC2814)
-            .setProperty(StandardProperties.BLOCK_TINT, 0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
             .addToFamily(Materials2Families.familyGears)

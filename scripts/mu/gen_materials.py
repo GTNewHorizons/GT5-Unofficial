@@ -1650,12 +1650,14 @@ FLUID_UNTINTED_MATERIALS = {
 ## over the shared pre-colored art in legacy. Emitted as a white `setTint` replacing the packed dumped rgba.
 GTPP_PRECOLORED_ITEM_MATERIALS = {"AstralTitanium", "CelestialTungsten", "ChromaticGlass"}
 
-## The two CUSTOM-set gtpp materials whose storage block IS cut over to MaterialLib (unlike
+## The CUSTOM-set gtpp material whose storage block IS cut over to MaterialLib (unlike
 ## `GTPP_ANIMATED_BLOCK_EXCLUDED`, whose legacy blocks stay canonical) and whose block art is pre-colored
 ## (legacy `materialicons/CUSTOM/<set>/block5.png`, hand-copied into the miscutils blocks tree as `block.png`):
-## legacy `BlockBaseModular#getBlockColor` rendered every `is_custom` set's block WHITE, so the MaterialLib
-## block gets the plain-block `StandardProperties.BLOCK_TINT` override instead of the material's item tint.
-GTPP_PRECOLORED_BLOCK_MATERIALS = {"Dragonblood", "Rhugnor"}
+## the pre-baked purple would double-tint under the material tint, so the MaterialLib block gets the
+## plain-block `StandardProperties.BLOCK_TINT` white override instead. Dragonblood's block is also
+## ML-cut-over but has no art of its own -- its texture set shares hypogen's orange `block.png`, which takes
+## the material's red `setTint` like any ordinary block (no `BLOCK_TINT` override).
+GTPP_PRECOLORED_BLOCK_MATERIALS = {"Rhugnor"}
 
 ## Rhugnor's cell container's fill layer is coupled to `FLUID_UNTINTED_MATERIALS` by default, which would render
 ## its molten/plasma cell fill white -- but legacy tinted GT-pp's `BaseItemComponent` items with the material's
