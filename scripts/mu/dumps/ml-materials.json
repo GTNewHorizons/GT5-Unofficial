@@ -154457,12 +154457,11 @@
   {
     "name": "AstralTitanium",
     "legacyName": null,
-    "tint": 48013552,
+    "tint": -1,
     "argb": 48013552,
     "moltenArgb": null,
     "textureSet": "CUSTOM/astraltitanium",
     "shapes": [
-      "block",
       "bolt",
       "cellMolten",
       "cellPlasmaLight",
@@ -154532,7 +154531,7 @@
       "molten": {
         "name": "molten.astraltitanium",
         "temperature": 9714,
-        "texture": null
+        "texture": "miscutils:fluids/fluid.molten.astraltitanium"
       }
     },
     "crackedHydroFluids": [],
@@ -156247,12 +156246,11 @@
   {
     "name": "CelestialTungsten",
     "legacyName": null,
-    "tint": 36844082,
+    "tint": -1,
     "argb": 36844082,
     "moltenArgb": null,
     "textureSet": "CUSTOM/celestialtungsten",
     "shapes": [
-      "block",
       "bolt",
       "cellMolten",
       "cellPlasmaLight",
@@ -156324,7 +156322,7 @@
       "molten": {
         "name": "molten.celestialtungsten",
         "temperature": 9168,
-        "texture": null
+        "texture": "miscutils:fluids/fluid.molten.celestialtungsten"
       }
     },
     "crackedHydroFluids": [],
@@ -156819,12 +156817,11 @@
   {
     "name": "ChromaticGlass",
     "legacyName": null,
-    "tint": 67108863,
+    "tint": -1,
     "argb": 67108863,
     "moltenArgb": null,
     "textureSet": "CUSTOM/chromaticglass",
     "shapes": [
-      "block",
       "bolt",
       "cellMolten",
       "cellPlasmaLight",
@@ -156894,7 +156891,7 @@
       "molten": {
         "name": "molten.chromaticglass",
         "temperature": 9473,
-        "texture": null
+        "texture": "miscutils:fluids/fluid.molten.chromaticglass"
       }
     },
     "crackedHydroFluids": [],
@@ -158548,7 +158545,7 @@
       "molten": {
         "name": "molten.dragonblood",
         "temperature": 10433,
-        "texture": null
+        "texture": "miscutils:fluids/fluid.molten.hypogen"
       }
     },
     "crackedHydroFluids": [],
@@ -162992,7 +162989,6 @@
     "moltenArgb": null,
     "textureSet": "CUSTOM/hypogen",
     "shapes": [
-      "block",
       "bolt",
       "cellMolten",
       "cellPlasmaLight",
@@ -163064,7 +163060,7 @@
       "molten": {
         "name": "molten.hypogen",
         "temperature": 10528,
-        "texture": null
+        "texture": "miscutils:fluids/fluid.molten.hypogen"
       }
     },
     "crackedHydroFluids": [],
@@ -170684,7 +170680,7 @@
       "molten": {
         "name": "molten.rhugnor",
         "temperature": 9023,
-        "texture": null
+        "texture": "miscutils:fluids/fluid.molten.rhugnor"
       }
     },
     "crackedHydroFluids": [],
