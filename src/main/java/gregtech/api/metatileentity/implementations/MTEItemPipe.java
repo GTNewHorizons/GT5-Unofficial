@@ -265,12 +265,6 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        // Only run on the server; onLeftclick also fires client-side and would otherwise swap the pipe
-        // and send the chat message twice
-        if (!aBaseMetaTileEntity.isServerSide()) {
-            return;
-        }
-
         // Only trigger if the player is sneaking
         if (!aPlayer.isSneaking()) {
             return;
@@ -366,8 +360,9 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
             hasContent = true;
         }
 
-        // Send a chat message if anything changed
-        if (hasContent) {
+        // Send a chat message if anything changed. Only send server-side, since this method also runs
+        // client-side for responsive placement and would otherwise send the message twice.
+        if (hasContent && aBaseMetaTileEntity.isServerSide()) {
             GTUtility.sendChatTrans(aPlayer, "GT5U.item.pipe.swap.s", message);
         }
 
