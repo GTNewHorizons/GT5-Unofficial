@@ -8,6 +8,8 @@ import java.util.PriorityQueue;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+
 import it.unimi.dsi.fastutil.longs.Long2DoubleMap;
 import it.unimi.dsi.fastutil.longs.Long2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
@@ -68,10 +70,6 @@ public class DronePathfinder {
         }
     }
 
-    private static long packCoords(int x, int y, int z) {
-        return (((long) x & 0x3FFFFFFL) << 38) | (((long) y & 0xFFFL) << 26) | ((long) z & 0x3FFFFFFL);
-    }
-
     public static List<Node> findSmoothPath(World world, int startX, int startY, int startZ, int endX, int endY,
         int endZ) {
         Long2DoubleMap cache = new Long2DoubleOpenHashMap();
@@ -94,7 +92,7 @@ public class DronePathfinder {
         Long2ObjectMap<Node> allNodes = new Long2ObjectOpenHashMap<>();
         PriorityQueue<Node> openSet = new PriorityQueue<>();
 
-        long startKey = packCoords(startX, startY, startZ);
+        long startKey = CoordinatePacker.pack(startX, startY, startZ);
         allNodes.put(startKey, startNode);
         openSet.add(startNode);
 
@@ -105,7 +103,7 @@ public class DronePathfinder {
             Node current = openSet.poll();
             nodesExpanded++;
 
-            long currentKey = packCoords(current.x, current.y, current.z);
+            long currentKey = CoordinatePacker.pack(current.x, current.y, current.z);
             Node bestTracked = allNodes.get(currentKey);
             if (bestTracked == null || current.gCost > bestTracked.gCost) {
                 continue;
@@ -126,7 +124,7 @@ public class DronePathfinder {
                 double cost = getBlockCost(world, nx, ny, nz, cache);
                 if (cost >= 9999.0) continue;
 
-                long neighborKey = packCoords(nx, ny, nz);
+                long neighborKey = CoordinatePacker.pack(nx, ny, nz);
                 Node trackedNeighbor = allNodes.get(neighborKey);
                 double tentativeGCost = current.gCost + cost;
 
@@ -169,7 +167,7 @@ public class DronePathfinder {
 
     public static double getBlockCost(World world, int x, int y, int z, Long2DoubleMap cache) {
         if (y < 0 || y > 255) return 9999.0;
-        long key = packCoords(x, y, z);
+        long key = CoordinatePacker.pack(x, y, z);
         double cached = cache.get(key);
         if (cached >= 0.0) {
             return cached;
