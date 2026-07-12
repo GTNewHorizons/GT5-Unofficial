@@ -69,6 +69,9 @@ import it.unimi.dsi.fastutil.shorts.Short2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import thaumcraft.api.aspects.Aspect;
 
+/// @deprecated Terminally deprecated; scheduled for removal in 5.10.0.0. Use the MaterialLib-backed
+/// materials2 API instead.
+@Deprecated
 public class Werkstoff implements IColorModulationContainer, IOreMaterial {
 
     public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();

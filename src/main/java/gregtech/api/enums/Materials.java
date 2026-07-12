@@ -55,6 +55,9 @@ import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import gregtech.loaders.materials.MaterialsLegacyBridge;
 
+/// @deprecated Terminally deprecated; scheduled for removal in 5.10.0.0. Use the MaterialLib-backed
+/// materials2 API instead.
+@Deprecated
 @SuppressWarnings("unused") // API Legitimately has unused Members and Methods
 public class Materials implements IColorModulationContainer, IOreMaterial {
 
