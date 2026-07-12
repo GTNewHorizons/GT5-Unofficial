@@ -116,8 +116,8 @@ public class GTPPComb extends Item {
 
     public static void addChemicalRecipe(GTPPCombType aInputStack, ItemStack[] aOutputs, int[] aChances) {
         Material aMat = aInputStack.mMaterial;
-        long aEU = aMat.vVoltageMultiplier;
-        int aTier = Math.max(aMat.vTier / 2, 1);
+        long aEU = aMat.voltageMultiplier;
+        int aTier = Math.max(aMat.tier / 2, 1);
         GTValues.RA.stdBuilder()
             .itemInputs(aInputStack.getStackForType(aTier))
             .itemOutputs(aOutputs)
