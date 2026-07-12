@@ -1865,6 +1865,7 @@ public class MultiblockTooltipBuilder {
         authors = null;
         structureAuthors = null;
         hBlocks = null;
+        iMacros = null;
         return this;
     }
 
