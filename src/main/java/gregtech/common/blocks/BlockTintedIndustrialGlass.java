@@ -15,7 +15,7 @@ import gregtech.api.enums.Textures;
 public class BlockTintedIndustrialGlass extends BlockCasingsAbstract {
 
     public BlockTintedIndustrialGlass() {
-        super(ItemCasings.class, "gt.blocktintedglass", Material.glass, 15);
+        super(ItemCasings.class, "gt.blocktintedglass", Material.glass, 16);
 
         register(0, ItemList.GlassTintedIndustrialWhite);
         register(1, ItemList.GlassTintedIndustrialLightGray);
