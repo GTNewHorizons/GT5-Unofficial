@@ -72,6 +72,14 @@ BLOCK_CUTOVER_EXCLUDED = {
     "Zinc"
 }
 
+# Mirrors gen_materials.py's GTPP_ANIMATED_BLOCK_EXCLUDED (legacy animated storage blocks stay canonical --
+# see its docstring).
+GTPP_ANIMATED_BLOCK_EXCLUDED = {"AstralTitanium", "CelestialTungsten", "ChromaticGlass", "Hypogen"}
+
+# Mirrors gen_materials.py's GTPP_PRECOLORED_ITEM_MATERIALS (legacy alpha>1 untinted-item rule -- see its
+# docstring): these declare a white tint instead of the packed dumped rgba.
+GTPP_PRECOLORED_ITEM_MATERIALS = {"AstralTitanium", "CelestialTungsten", "ChromaticGlass"}
+
 
 def load_legacy_block_materials():
     if not LEGACY_BLOCKS_PATH.exists():
@@ -798,7 +806,7 @@ def gtpp_expected_shapes(entry, gt_entry, used_fluid_names):
         if prefix in GTPP_SIMPLE_PREFIXES:
             names.add(prefix)
         elif prefix == "block":
-            if entry["unlocalizedName"] not in BLOCK_CUTOVER_EXCLUDED:
+            if entry["unlocalizedName"] not in BLOCK_CUTOVER_EXCLUDED                     and entry["unlocalizedName"] not in GTPP_ANIMATED_BLOCK_EXCLUDED:
                 names.add(prefix)
         elif prefix == "milled":
             names.add(prefix)
@@ -899,7 +907,10 @@ def check_gtpp_new_material(errors, entry, ml_by_key, used_fluid_names):
         errors.append(f"{name}: gtpp material missing from ml-materials.json (expected key {key!r})")
         return
 
-    expected_tint = to_unsigned32(pack_argb(entry["rgba"]))
+    if name in GTPP_PRECOLORED_ITEM_MATERIALS:
+        expected_tint = 0xFFFFFFFF
+    else:
+        expected_tint = to_unsigned32(pack_argb(entry["rgba"]))
     actual_tint = to_unsigned32(ml["tint"]) if ml["tint"] is not None else None
     if expected_tint != actual_tint:
         errors.append(f"{name}: gtpp tint expected 0x{expected_tint:08X}, got {ml['tint']!r}")
