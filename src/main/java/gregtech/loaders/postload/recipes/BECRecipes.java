@@ -364,7 +364,7 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MAX, 4), ItemList.EnergisedTesseract.get(1) },
             nanites(9, 8, 7, 7, 8, 7, 8, 9, 8),
-            new FluidStack[] { CondensateType.CelestialTungsten.getEntangled(1_000),
+            new FluidStack[] { CondensateType.BoundlessCosmicSolder.getEntangled(1_000),
                 CondensateType.Infinity.getEntangled(1 * INGOTS) },
             200 * SECONDS,
             TierEU.RECIPE_UMV);
