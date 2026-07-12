@@ -1,12 +1,15 @@
 package gregtech.common.items.armor;
 
+import static java.awt.Color.HSBtoRGB;
+
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
+import org.lwjgl.opengl.GL11;
+
 public class ModelMechArmor extends ModelBiped {
 
-    // fields
     ModelRenderer jettank2;
     ModelRenderer jetconnector2;
     ModelRenderer jetbooster2;
@@ -18,9 +21,65 @@ public class ModelMechArmor extends ModelBiped {
     ModelRenderer core3;
     ModelRenderer core4;
 
+    private short[] color = new short[] { -1 };
+
     public ModelMechArmor(float s) {
         super(s, 0, 64, 128);
+        setupJetpack();
+    }
 
+    @Override
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        super.render(entity, f, f1, f2, f3, f4, f5);
+
+        if (color[0] == -1) {
+            return;
+        }
+
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+
+        // tests for infinity frame
+        if (color[0] == 255 && color[1] == 255 && color[2] == 255) {
+            float ticks = (entity != null) ? (entity.ticksExisted + f2) : 0.0F;
+            float hue = (ticks % 150.0F) / 150.0F;
+
+            int rgb = HSBtoRGB(hue, 1.0F, 1.0F);
+
+            float r = ((rgb >> 16) & 0xFF) / 255.0F;
+            float g = ((rgb >> 8) & 0xFF) / 255.0F;
+            float b = (rgb & 0xFF) / 255.0F;
+
+            GL11.glColor3f(r, g, b);
+        } else {
+            float ticks = (entity != null) ? (entity.ticksExisted + f2) : 0.0F;
+            float pulse = 0.8F + 0.2F * (float) Math.sin(ticks / 30.0F);
+
+            GL11.glColor3f((color[0] / 255.0F) * pulse, (color[1] / 255.0F) * pulse, (color[2] / 255.0F) * pulse);
+        }
+
+        GL11.glMatrixMode(GL11.GL_TEXTURE);
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, 0.5F, 0.0F);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+
+        super.render(entity, f, f1, f2, f3, f4, f5);
+
+        GL11.glMatrixMode(GL11.GL_TEXTURE);
+        GL11.glPopMatrix();
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+
+        GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
+    }
+
+    public void setColor(short[] color) {
+        this.color = color;
+    }
+
+    private void setupJetpack() {
         core1 = new ModelRenderer(this, 32, 0);
         core1.addBox(-2F, 3F, -3F, 4, 4, 1);
         core1.setRotationPoint(0F, 0F, 0F);
@@ -109,12 +168,6 @@ public class ModelMechArmor extends ModelBiped {
 
         jettank1.addChild(jetconnector1);
         jettank1.addChild(jetconnector2);
-    }
-
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        bipedHeadwear.showModel = false;
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
