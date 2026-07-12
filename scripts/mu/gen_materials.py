@@ -1626,9 +1626,19 @@ FLUID_UNTINTED_MATERIALS = {
     "CelestialTungsten",
     "ChromaticGlass",
     "Hypogen",
-    "Dragonblood",
     "Rhugnor",
 }
+
+## Dragonblood is a hand-maintained exception to the white-fluid rule above, not modeled by this generator.
+## Its molten/plasma art (`fluid.molten.hypogen`/`fluid.plasma.hypogen`) is literally Hypogen's shared placeholder
+## texture, not dedicated Dragonblood art -- staying white would make the two fluids indistinguishable in world/
+## tank/NEI even though their cell fill (`CELL_TINT`, matching this same red) already differs. Dragonblood's
+## `Materials2Materials` declaration sets `.setFluidTint(0xFFDC2814)` explicitly (the same red as its own `setTint`)
+## and carries no `CELL_TINT` property, since a cell fill with no `CELL_TINT` set falls back to `FLUID_TINT`
+## (see `ShapeFluidInContainer#getColorFromItemStack`), which is now the identical red -- redundant, not different.
+## Rhugnor keeps `FLUID_UNTINTED_MATERIALS` membership: its molten/plasma art is dedicated, pre-colored purple
+## (already close to its own tint), not a shared placeholder, so tinting it would double-tint rather than
+## differentiate it from anything.
 
 ## gtPlusPlus applies the same untinted-fluid principle through a hard-coded legacy rule instead of a builder
 ## chain: fluids of any `is_custom` texture-set material register WHITE (`FluidUtils.addGTFluid`/`addGTPlasma`
@@ -1647,13 +1657,14 @@ GTPP_PRECOLORED_ITEM_MATERIALS = {"AstralTitanium", "CelestialTungsten", "Chroma
 ## block gets the plain-block `StandardProperties.BLOCK_TINT` override instead of the material's item tint.
 GTPP_PRECOLORED_BLOCK_MATERIALS = {"Dragonblood", "Rhugnor"}
 
-## The two `GTPP_PRECOLORED_BLOCK_MATERIALS` also have their cell container's fill layer coupled to
-## `FLUID_UNTINTED_MATERIALS` by default, which would render their molten/plasma cell fills white -- but legacy
-## tinted GT-pp's `BaseItemComponent` items with the material's own rgba whenever the dumped alpha is 0
-## (Dragonblood/Rhugnor's alpha, unlike the `GTPP_PRECOLORED_ITEM_MATERIALS` trio), and a filled cell is an item,
-## not a fluid; `StandardProperties.CELL_TINT` reproduces that legacy cell-fill color, set to the same packed rgba
-## as the material's own (untouched) `setTint`.
-GTPP_CELL_TINT_MATERIALS = {"Dragonblood", "Rhugnor"}
+## Rhugnor's cell container's fill layer is coupled to `FLUID_UNTINTED_MATERIALS` by default, which would render
+## its molten/plasma cell fill white -- but legacy tinted GT-pp's `BaseItemComponent` items with the material's
+## own rgba whenever the dumped alpha is 0 (Rhugnor's alpha, unlike the `GTPP_PRECOLORED_ITEM_MATERIALS` trio),
+## and a filled cell is an item, not a fluid; `StandardProperties.CELL_TINT` reproduces that legacy cell-fill
+## color, set to the same packed rgba as the material's own (untouched) `setTint`. Dragonblood carries no
+## `CELL_TINT` -- see the `FLUID_UNTINTED_MATERIALS` comment above; its cell fill now reaches the same red through
+## the `FLUID_TINT` fallback instead.
+GTPP_CELL_TINT_MATERIALS = {"Rhugnor"}
 
 
 def build_material_block(
