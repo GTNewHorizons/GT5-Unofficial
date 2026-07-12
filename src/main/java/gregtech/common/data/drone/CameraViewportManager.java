@@ -129,6 +129,10 @@ public class CameraViewportManager {
         private static java.lang.reflect.Method addPlayerMethod;
         private static java.lang.reflect.Method removePlayerMethod;
 
+        /*
+         * Reflectively resolves methods to manually assign players to chunk watchers,
+         * enabling chunk and tile entity synchronization for remote observation.
+         */
         static {
             try {
                 try {
