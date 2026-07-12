@@ -25,9 +25,12 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.ruling_0.materiallib.api.MaterialLibClient;
+
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
@@ -1637,6 +1640,23 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         Materials.HotExoHalkonite.renderer = new InfinityRenderer();
         Materials.PrismaticNaquadah.renderer = new RainbowOverlayRenderer(Materials.PrismaticNaquadah.getRGBA());
         Materials.Amalgatite.renderer = new InfinityRenderer();
+
+        // These 13 materials' special renderers only ever fired through the legacy MetaGeneratedItemRenderer,
+        // which never sees a MaterialLib shape item; registering the same renderer instance here restores the
+        // effect for whichever of each material's shapes have cut over (see IGT_ItemWithMaterialRenderer#resolve).
+        MaterialLibClient.setItemRenderer(Materials2Materials.TranscendentMetal, Materials.TranscendentMetal.renderer);
+        MaterialLibClient.setItemRenderer(Materials2Materials.GaiaSpirit, Materials.GaiaSpirit.renderer);
+        MaterialLibClient.setItemRenderer(Materials2Materials.Infinity, Materials.Infinity.renderer);
+        MaterialLibClient.setItemRenderer(Materials2Materials.CosmicNeutronium, Materials.CosmicNeutronium.renderer);
+        MaterialLibClient.setItemRenderer(Materials2Materials.Universium, Materials.Universium.renderer);
+        MaterialLibClient.setItemRenderer(Materials2Materials.Eternity, Materials.Eternity.renderer);
+        MaterialLibClient.setItemRenderer(Materials2Materials.Magmatter, Materials.MagMatter.renderer);
+        MaterialLibClient.setItemRenderer(Materials2Materials.SixPhasedCopper, Materials.SixPhasedCopper.renderer);
+        MaterialLibClient.setItemRenderer(Materials2Materials.GravitonShard, Materials.GravitonShard.renderer);
+        MaterialLibClient.setItemRenderer(Materials2Materials.exohalkonite, Materials.ExoHalkonite.renderer);
+        MaterialLibClient.setItemRenderer(Materials2Materials.hotexohalkonite, Materials.HotExoHalkonite.renderer);
+        MaterialLibClient.setItemRenderer(Materials2Materials.prismaticnaquadah, Materials.PrismaticNaquadah.renderer);
+        MaterialLibClient.setItemRenderer(Materials2Materials.Amalgatite, Materials.Amalgatite.renderer);
     }
 
     private static void fillGeneratedMaterialsMap() {

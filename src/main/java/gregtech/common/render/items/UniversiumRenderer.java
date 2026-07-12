@@ -48,7 +48,8 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
             return;
         }
 
-        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
+        IGT_ItemWithMaterialRenderer aItem = IGT_ItemWithMaterialRenderer.resolve(aStack);
+        if (aItem == null) return;
 
         int passes = 1;
         if (aItem.requiresMultipleRenderPasses()) {

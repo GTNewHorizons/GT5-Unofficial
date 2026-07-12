@@ -78,7 +78,8 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
         }
 
         short metaData = (short) item.getItemDamage();
-        if (!(item.getItem() instanceof IGT_ItemWithMaterialRenderer itemRenderer)) return;
+        IGT_ItemWithMaterialRenderer itemRenderer = IGT_ItemWithMaterialRenderer.resolve(item);
+        if (itemRenderer == null) return;
 
         int currentFrame = (int) ((System.nanoTime() % (frameTimeNanos * loopFrameCount)) / frameTimeNanos);
         boolean timing = currentFrame <= glitchedDurationCount;

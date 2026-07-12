@@ -44,7 +44,8 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
             return;
         }
 
-        if (!(itemStack.getItem() instanceof final IGT_ItemWithMaterialRenderer itemRenderer)) return;
+        IGT_ItemWithMaterialRenderer itemRenderer = IGT_ItemWithMaterialRenderer.resolve(itemStack);
+        if (itemRenderer == null) return;
 
         GL11.glPushMatrix();
         applyEffect(type, itemRenderer.getRGBa(itemStack), shouldModulateColor);

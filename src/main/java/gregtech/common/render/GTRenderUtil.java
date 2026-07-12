@@ -21,8 +21,8 @@ import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 public class GTRenderUtil {
 
     public static void colorGTItem(ItemStack aStack) {
-        if (aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem) {
-
+        IGT_ItemWithMaterialRenderer aItem = IGT_ItemWithMaterialRenderer.resolve(aStack);
+        if (aItem != null) {
             short[] tModulation = aItem.getRGBa(aStack);
             GL11.glColor4f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F, 1);
         } else {
