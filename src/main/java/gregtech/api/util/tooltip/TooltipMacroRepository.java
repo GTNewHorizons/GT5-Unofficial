@@ -3,8 +3,17 @@ package gregtech.api.util.tooltip;
 import gregtech.api.util.CustomGlyphs;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.lang.annotation.*;
-import java.util.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
