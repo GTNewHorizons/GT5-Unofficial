@@ -63,6 +63,11 @@ public class MTEBasicMachineBronzeGui extends MTEBasicMachineBaseGui<MTEBasicMac
     }
 
     @Override
+    protected boolean showPowerVisualizer() {
+        return machine.maxSteamStore() > 0;
+    }
+
+    @Override
     protected void initErrors(PanelSyncManager syncManager) {
         // this has a different tooltip than the normal powerfail error
         BooleanSyncValue powerfailSyncer = new BooleanSyncValue(machine::isStuttering);

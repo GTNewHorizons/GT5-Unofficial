@@ -86,7 +86,8 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
 
     @Override
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        return super.build(guiData, syncManager, uiSettings).child(createPowerVisualizer(syncManager));
+        return super.build(guiData, syncManager, uiSettings)
+            .childIf(showPowerVisualizer(), () -> createPowerVisualizer(syncManager));
     }
 
     @Override
@@ -137,13 +138,16 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
 
     protected ParentWidget<?> createPowerVisualizer(PanelSyncManager syncManager) {
         return new PowerVisualizerWidget(
-            (_) -> machine.getOverdrawAmperesIn() > 0,
             syncManager.findSyncHandler("storedEu", LongSyncValue.class),
             syncManager.findSyncHandler("maxEu", LongSyncValue.class),
             syncManager.findSyncHandler("eut", IntSyncValue.class),
             syncManager.findSyncHandler("averageInput", LongSyncValue.class),
             syncManager.findSyncHandler("maxStandardInput", LongSyncValue.class),
             syncManager.findSyncHandler("maxOverdrawInput", LongSyncValue.class)).leftRel(0, 0, 1);
+    }
+
+    protected boolean showPowerVisualizer() {
+        return machine.getOverdrawAmperesIn() > 0;
     }
 
     @Override
