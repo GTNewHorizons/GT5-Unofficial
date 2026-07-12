@@ -845,7 +845,14 @@ def build_gtpp_new_block(entry, field, ml_names, included_names, family_shape_me
     lines.append(
         f"        Materials2Materials.{field} = MaterialLibAPI"
         f".newMaterial(\"gregtech\", {name_literal}, TextureSet.of(\"miscutils\", {texture_set_literal}))")
-    lines.append(f"            .setTint({java_int_literal(pack_argb(entry['rgba']))})")
+    if entry["unlocalizedName"] in GTPP_PRECOLORED_ITEM_MATERIALS:
+        lines.append("            .setTint(0xFFFFFFFF)")
+    else:
+        lines.append(f"            .setTint({java_int_literal(pack_argb(entry['rgba']))})")
+    if entry["unlocalizedName"] in FLUID_UNTINTED_MATERIALS:
+        lines.append("            .setFluidTint(0xFFFFFFFF)")
+    if entry["unlocalizedName"] in GTPP_PRECOLORED_BLOCK_MATERIALS:
+        lines.append("            .setProperty(StandardProperties.BLOCK_TINT, 0xFFFFFFFF)")
     lines.append("            .addToFamily(Materials2Families.familyAll)")
     for family in families:
         lines.append(f"            .addToFamily(Materials2Families.{family})")
@@ -1614,7 +1621,27 @@ FLUID_UNTINTED_MATERIALS = {
     "AstralTitanium",
     "CelestialTungsten",
     "ChromaticGlass",
+    "Hypogen",
+    "Dragonblood",
+    "Rhugnor",
 }
+
+## gtPlusPlus applies the same untinted-fluid principle through a hard-coded legacy rule instead of a builder
+## chain: fluids of any `is_custom` texture-set material register WHITE (`FluidUtils.addGTFluid`/`addGTPlasma`
+## force `{255,255,255,255}` when `aMaterial.getTextureSet().is_custom`) -- hence the six CUSTOM-set gtpp
+## materials' `FLUID_UNTINTED_MATERIALS` membership above. Items follow a separate legacy rule: untinted when
+## the material's dumped rgba alpha exceeds 1 (`BaseItemComponent#getColorFromItemStack`: "Animated materials
+## ship baked animated textures; render them untinted"), which among gtpp-only materials selects exactly these
+## three -- Hypogen's tint is already white, and Dragonblood/Rhugnor (alpha 0) kept their red/purple item tint
+## over the shared pre-colored art in legacy. Emitted as a white `setTint` replacing the packed dumped rgba.
+GTPP_PRECOLORED_ITEM_MATERIALS = {"AstralTitanium", "CelestialTungsten", "ChromaticGlass"}
+
+## The two CUSTOM-set gtpp materials whose storage block IS cut over to MaterialLib (unlike
+## `GTPP_ANIMATED_BLOCK_EXCLUDED`, whose legacy blocks stay canonical) and whose block art is pre-colored
+## (legacy `materialicons/CUSTOM/<set>/block5.png`, hand-copied into the miscutils blocks tree as `block.png`):
+## legacy `BlockBaseModular#getBlockColor` rendered every `is_custom` set's block WHITE, so the MaterialLib
+## block gets the plain-block `StandardProperties.BLOCK_TINT` override instead of the material's item tint.
+GTPP_PRECOLORED_BLOCK_MATERIALS = {"Dragonblood", "Rhugnor"}
 
 
 def build_material_block(
