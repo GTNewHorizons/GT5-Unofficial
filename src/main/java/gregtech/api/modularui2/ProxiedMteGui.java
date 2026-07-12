@@ -90,22 +90,25 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
         if (finalIsRemote) {
             syncManager.onCommonTick(new Runnable() {
 
-                private int tickCount = 0;
+                private boolean initialized = false;
 
                 // Lock every slot on remote GUI
                 @Override
                 public void run() {
-                    if (tickCount < 10) {
-                        EntityPlayer player = syncManager.getPlayer();
-                        if (player != null && player.openContainer instanceof ModularContainer mContainer) {
+                    if (initialized) {
+                        return;
+                    }
+                    EntityPlayer player = syncManager.getPlayer();
+                    if (player != null && player.openContainer instanceof ModularContainer mContainer) {
+                        if (mContainer.isInitialized()) {
                             for (Object slotObj : mContainer.inventorySlots) {
                                 if (slotObj instanceof ModularSlot slot) {
                                     slot.accessibility(false, false);
                                     slot.canDragInto(false);
                                 }
                             }
+                            initialized = true;
                         }
-                        tickCount++;
                     }
                 }
             });
