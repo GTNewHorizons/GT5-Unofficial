@@ -12782,6 +12782,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeWireFine);
         Materials2Materials.DimensionallyTranscendentResidue = MaterialLibAPI.newMaterial("gregtech", "DimensionallyTranscendentResidue", TextureSet.of("gregtech", "FLUID"))
             .setTint(16777216)
+            .setFluidTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
             .generateShape(Materials2FluidShapes.shapeFluidLiquid)

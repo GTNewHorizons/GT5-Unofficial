@@ -1597,6 +1597,7 @@ FLUID_UNTINTED_MATERIALS = {
     "ExcitedDTEC",
     "ExcitedDTSC",
     "RawStarMatter",
+    "DimensionallyTranscendentResidue",
 }
 
 
