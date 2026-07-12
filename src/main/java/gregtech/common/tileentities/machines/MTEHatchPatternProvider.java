@@ -104,4 +104,10 @@ public class MTEHatchPatternProvider extends MTEHatchInputBus {
             default -> 9; // should be unreachable
         };
     }
+
+    @Override
+    public int getInventoryStackLimit()
+    {
+        return 1;
+    }
 }
