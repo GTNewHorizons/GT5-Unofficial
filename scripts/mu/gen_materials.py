@@ -556,7 +556,8 @@ def gtpp_shape_lines(entry, owner_prefix=""):
     honors `BLOCK_CUTOVER_EXCLUDED`: a gtpp material sharing a name with one of those (e.g. Copper, whose
     gtpp-side `BlockBaseModular` construction resolves onto the shared legacy `gt.blockmetal2` slot) must not
     gain `shapeBlock` membership through the gtpp fold when the gregtech side of the same declaration was
-    deliberately kept off it."""
+    deliberately kept off it; likewise `GTPP_ANIMATED_BLOCK_EXCLUDED`, for gtpp materials whose legacy block
+    has its own animated icon with no MaterialLib equivalent."""
     refs = []
     deferred = []
     for part in entry["generatedParts"]:
@@ -564,7 +565,8 @@ def gtpp_shape_lines(entry, owner_prefix=""):
         if prefix in GTPP_SIMPLE_PREFIXES:
             refs.append(f"Materials2Shapes.{shape_field_name(prefix)}")
         elif prefix == "block":
-            if entry["unlocalizedName"] not in BLOCK_CUTOVER_EXCLUDED:
+            if entry["unlocalizedName"] not in BLOCK_CUTOVER_EXCLUDED \
+                    and entry["unlocalizedName"] not in GTPP_ANIMATED_BLOCK_EXCLUDED:
                 refs.append("Materials2BlockShapes.shapeBlock")
         elif prefix == "milled":
             refs.append("Materials2GtppShapes.shapeMilled")
@@ -1393,6 +1395,17 @@ BLOCK_CUTOVER_EXCLUDED = {
     "Zinc"
 }
 
+# gtPlusPlus reconstructed materials whose legacy storage block has its own per-material animated icon
+# (`gtPlusPlus.core.handler.events.AnimatedBlockTextureHandler`, forcing off-screen icon-cycle sync against
+# Angelica's on-screen-only default) with no MaterialLib equivalent yet -- mirrors
+# `gtPlusPlus.core.material.MaterialReconstruction#BLOCK_CUTOVER_EXCLUDED`, which keeps the legacy block
+# canonical for these names. Unlike `BLOCK_CUTOVER_EXCLUDED` above (GT materials with structural identity
+# references), this generator previously had no knowledge of the gtPlusPlus set at all, so it kept emitting
+# `shapeBlock` for these names regardless -- MaterialLib generated its own untextured, statically-tinted
+# storage block alongside the legacy one nobody ever intended a player to see. Keep the two Java-side sets in
+# sync if either changes.
+GTPP_ANIMATED_BLOCK_EXCLUDED = {"AstralTitanium", "CelestialTungsten", "ChromaticGlass", "Hypogen"}
+
 
 def load_legacy_block_materials():
     """Every material name with a real legacy storage-block slot (union of the 13 `BlockMetal` instances'
@@ -1598,6 +1611,9 @@ FLUID_UNTINTED_MATERIALS = {
     "ExcitedDTSC",
     "RawStarMatter",
     "DimensionallyTranscendentResidue",
+    "AstralTitanium",
+    "CelestialTungsten",
+    "ChromaticGlass",
 }
 
 
