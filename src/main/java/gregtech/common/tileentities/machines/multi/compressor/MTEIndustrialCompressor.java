@@ -123,7 +123,7 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Compressor, LEC")
             .addBulkMachineInfo(2, 2f, 0.9f)
-            .beginStructureBlock(7, 8, 7, true)
+            .beginStructureBlock(7, 7, 8, true)
             .addController("Front bottom center")
             .addCasing("95-103", "Electric Compressor Casing", false)
             .addCasing("45-61", "Compression Pipe Casing", false)
