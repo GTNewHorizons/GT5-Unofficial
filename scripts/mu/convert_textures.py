@@ -375,12 +375,23 @@ def gtpp_sets_by_prefix(gtpp_materials, ore_material_names):
     return sets
 
 
+# A dumped gtpp part prefix does not always match the MaterialLib shape (and so texture file) name its
+# cutover generates: gtpp's `cell` becomes `shapeCellMolten` for molten-state materials and `cellPlasma`
+# always becomes `shapeCellPlasmaLight` (see `gen_materials.py`'s `gtpp_fluid_shape_lines`). ShapeIcons
+# resolves the icon under the ML shape's own name, so the miscutils copy needs those file names too; sets
+# without a source file for an alias (every flat set -- only the CUSTOM per-material sets and NONE carry
+# `cellMolten`/`cellPlasmaLight` art) skip it and resolve through the NONE fallback at runtime, matching how
+# legacy shared cell art behaved.
+GTPP_PREFIX_FILE_ALIASES = {"cell": ["cellMolten"], "cellPlasma": ["cellPlasmaLight"]}
+
+
 def convert_gtpp_items(gtpp_sets):
     """Copies gregtech's already-converted item-shape art (`DEST_ROOT/<set>/<shape>.png[.mcmeta]`, plus
     `_OVERLAY` where present) into the miscutils domain root, restricted to the (set, shape) pairs
     `gtpp_sets` says a gtpp-only material actually needs -- `block`/`ore`/`milled` are block-kind or have no
     stage-02 item-shape slot and are converted separately (see `convert_gtpp_blocks`/`convert_gtpp_ores`;
-    `milled` has no source art anywhere, see `main`'s report)."""
+    `milled` has no source art anywhere, see `main`'s report). Each prefix also copies its
+    `GTPP_PREFIX_FILE_ALIASES` file names, where the source set has them."""
     files_written = 0
     shapes_with_texture = set()
     shapes_needed = set()
@@ -391,16 +402,17 @@ def convert_gtpp_items(gtpp_sets):
             if prefix in ("block", "ore", "milled", "frameGt") or prefix in GTPP_UNSUPPORTED_PREFIXES:
                 continue
             shapes_needed.add(prefix)
-            for suffix in (f"{prefix}.png", f"{prefix}.png.mcmeta", f"{prefix}_OVERLAY.png",
-                           f"{prefix}_OVERLAY.png.mcmeta"):
-                source = source_dir / suffix
-                if not source.is_file():
-                    continue
-                dest_dir.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(source, dest_dir / suffix)
-                files_written += 1
-                if suffix == f"{prefix}.png":
-                    shapes_with_texture.add(prefix)
+            for file_name in [prefix] + GTPP_PREFIX_FILE_ALIASES.get(prefix, []):
+                for suffix in (f"{file_name}.png", f"{file_name}.png.mcmeta", f"{file_name}_OVERLAY.png",
+                               f"{file_name}_OVERLAY.png.mcmeta"):
+                    source = source_dir / suffix
+                    if not source.is_file():
+                        continue
+                    dest_dir.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(source, dest_dir / suffix)
+                    files_written += 1
+                    if suffix == f"{file_name}.png":
+                        shapes_with_texture.add(prefix)
     return files_written, shapes_needed, shapes_with_texture
 
 
