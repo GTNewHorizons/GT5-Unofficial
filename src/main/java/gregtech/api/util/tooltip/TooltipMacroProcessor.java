@@ -8,6 +8,7 @@ import java.util.function.Function;
  * are looked up by name when a matching macro is encountered in a formatted string.
  *
  * @see TooltipMacroRepository Repository of commonly used macros
+ * @author <a href="https://github.com/RainVaporeon">Rain</a>
  */
 public interface TooltipMacroProcessor {
 

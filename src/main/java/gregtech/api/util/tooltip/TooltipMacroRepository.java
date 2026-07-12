@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
  * be a comprehensive collection of all use-cases.
  * @see TooltipMacroProcessor
  * @see gregtech.api.util.MultiblockTooltipBuilder#addMacro(TooltipMacroProcessor)
+ * @author <a href="https://github.com/RainVaporeon">Rain</a>
  */
 public final class TooltipMacroRepository {
 
