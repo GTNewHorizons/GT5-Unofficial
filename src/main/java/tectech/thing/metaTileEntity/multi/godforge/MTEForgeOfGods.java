@@ -989,18 +989,18 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         }
     }
 
-    private void increaseBattery(int amount) {
-        // Written to be careful of potential overflow
-        long newCharge = Long.sum(data.getInternalBattery(), amount);
+    private void increaseBattery(long amount) {
+        long currentCharge = data.getInternalBattery();
+        long newCharge = Long.MAX_VALUE - currentCharge < amount ? Long.MAX_VALUE : currentCharge + amount;
         if (newCharge <= data.getMaxBatteryCharge()) {
-            data.setInternalBattery((int) newCharge);
+            data.setInternalBattery(newCharge);
         } else {
             data.setInternalBattery(data.getMaxBatteryCharge());
             data.setBatteryCharging(false);
         }
     }
 
-    public void reduceBattery(int amount) {
+    public void reduceBattery(long amount) {
         if (data.getInternalBattery() - amount <= 0) {
             data.setInternalBattery(0);
             if (!moduleHatches.isEmpty()) {
