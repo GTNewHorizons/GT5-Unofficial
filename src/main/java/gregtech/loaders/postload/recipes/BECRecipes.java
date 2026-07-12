@@ -387,7 +387,7 @@ public class BECRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Naquadria, 16),
                     GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Kevlar, 4),
                     GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SuperconductorUIVBase, 4),
-                    GGMaterial.metastableOganesson.get(OrePrefixes.gearGtSmall, 4) },
+                    GGMaterial.metastableOganesson.get(OrePrefixes.gearGtSmall, 16) },
                 nanites(2, 3, 2, 5, 4, 3, 2, 6, 1, 2, 2, 2, 1, 1, 1, 5),
                 new FluidStack[] { CondensateType.SpaceTime.getEntangled(10 * INGOTS),
                     CondensateType.Infinity.getEntangled(100 * INGOTS),
