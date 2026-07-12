@@ -37,10 +37,8 @@ class ComponentRecipeLoader implements Runnable {
                 ItemList.Automation_ChestBuffer_LuV.get(1L))
             .fluidInputs(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Lubricant,
-                    Materials2FluidShapes.shapeFluidLiquid,
-                    (int) (2_000)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
             .itemOutputs(GGItemList.AdvAssLine.get(1L))
             .eut(TierEU.RECIPE_LuV)
             .duration(3 * MINUTES)
@@ -51,13 +49,13 @@ class ComponentRecipeLoader implements Runnable {
                 ItemList.Hatch_Input_Bus_IV.get(1L),
                 ItemList.Emitter_IV.get(1L),
                 ItemList.Sensor_IV.get(1L),
-                MaterialLibAPI.getStack(Materials2Materials.Enderium, Materials2Shapes.shapePlateDense, (int) (1)))
+                MaterialLibAPI.getStack(Materials2Materials.Enderium, Materials2Shapes.plateDense, (int) (1)))
             .circuit(12)
             .itemOutputs(GGItemList.LinkedInputBus.get(1L))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Polybenzimidazole,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)

@@ -71,7 +71,7 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
             GTUtility.getFluidDisplayStack(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.FlocculationWasteLiquid,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 false))) {
                     currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.2"));

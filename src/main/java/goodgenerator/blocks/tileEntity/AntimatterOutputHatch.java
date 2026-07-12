@@ -22,7 +22,7 @@ import gregtech.api.util.GTUtility;
 public class AntimatterOutputHatch extends MTEHatchOutput {
 
     private static final FluidStack ANTIMATTER = MaterialLibAPI
-        .getFluidStack(Materials2Materials.Antimatter, Materials2FluidShapes.shapeFluidLiquid, 1);
+        .getFluidStack(Materials2Materials.Antimatter, Materials2FluidShapes.fluidLiquid, 1);
 
     public AntimatterOutputHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 11);

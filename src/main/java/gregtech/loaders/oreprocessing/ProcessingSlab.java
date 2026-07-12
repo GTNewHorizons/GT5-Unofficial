@@ -33,7 +33,7 @@ public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistr
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials2Materials.Creosote,
-                            Materials2FluidShapes.shapeFluidLiquid,
+                            Materials2FluidShapes.fluidLiquid,
                             (int) (300)))
                     .duration(10 * SECONDS)
                     .eut(4)

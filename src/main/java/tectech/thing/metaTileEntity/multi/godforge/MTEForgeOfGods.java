@@ -278,10 +278,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         {
             add(Materials.DTR.getFluid(1));
             add(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.RawStarMatter,
-                    Materials2FluidShapes.shapeFluidLiquid,
-                    (int) (1)));
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.RawStarMatter, Materials2FluidShapes.fluidLiquid, (int) (1)));
             add(Materials.MHDCSM.getMolten(1));
         }
     };
@@ -407,7 +405,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                         ItemStack itemToAbsorb = STELLAR_FUEL;
                         if (data.isUpgradeActive(END) && data.getInternalBattery() != 0) {
                             itemToAbsorb = MaterialLibAPI
-                                .getStack(Materials2Materials.GravitonShard, Materials2Shapes.shapeGem, (int) (1));
+                                .getStack(Materials2Materials.GravitonShard, Materials2Shapes.gem, (int) (1));
                         }
 
                         int invLength = inputBus.getSizeInventory();
@@ -959,7 +957,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     private void ejectGravitonShards() {
         if (mOutputBusses.size() == 1) {
             ItemStack shard = MaterialLibAPI
-                .getStack(Materials2Materials.GravitonShard, Materials2Shapes.shapeGem, (int) (1));
+                .getStack(Materials2Materials.GravitonShard, Materials2Shapes.gem, (int) (1));
 
             shard.stackSize = data.getGravitonShardsAvailable();
 

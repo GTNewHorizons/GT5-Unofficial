@@ -100,43 +100,38 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     // Valid fuels which the discount will get applied to.
     private static final FluidStack[] valid_fuels = {
-        MaterialLibAPI
-            .getFluidStack(Materials2Materials.ExcitedDTCC, Materials2FluidShapes.shapeFluidLiquid, (int) (1)),
-        MaterialLibAPI
-            .getFluidStack(Materials2Materials.ExcitedDTPC, Materials2FluidShapes.shapeFluidLiquid, (int) (1)),
-        MaterialLibAPI
-            .getFluidStack(Materials2Materials.ExcitedDTRC, Materials2FluidShapes.shapeFluidLiquid, (int) (1)),
-        MaterialLibAPI
-            .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.shapeFluidLiquid, (int) (1)),
-        MaterialLibAPI
-            .getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.shapeFluidLiquid, (int) (1)) };
+        MaterialLibAPI.getFluidStack(Materials2Materials.ExcitedDTCC, Materials2FluidShapes.fluidLiquid, (int) (1)),
+        MaterialLibAPI.getFluidStack(Materials2Materials.ExcitedDTPC, Materials2FluidShapes.fluidLiquid, (int) (1)),
+        MaterialLibAPI.getFluidStack(Materials2Materials.ExcitedDTRC, Materials2FluidShapes.fluidLiquid, (int) (1)),
+        MaterialLibAPI.getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, (int) (1)),
+        MaterialLibAPI.getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (1)) };
 
     private static final HashMap<Fluid, Pair<Long, Float>> FUEL_ENERGY_VALUES = new HashMap<>() {
 
         {
             put(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.ExcitedDTCC, Materials2FluidShapes.shapeFluidLiquid, (int) (1))
+                    .getFluidStack(Materials2Materials.ExcitedDTCC, Materials2FluidShapes.fluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(14_514_983L, 1 / 8f));
             put(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.ExcitedDTPC, Materials2FluidShapes.shapeFluidLiquid, (int) (1))
+                    .getFluidStack(Materials2Materials.ExcitedDTPC, Materials2FluidShapes.fluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(66_768_460L, 1 / 4f));
             put(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.ExcitedDTRC, Materials2FluidShapes.shapeFluidLiquid, (int) (1))
+                    .getFluidStack(Materials2Materials.ExcitedDTRC, Materials2FluidShapes.fluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(269_326_451L, 1 / 2f));
             put(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.shapeFluidLiquid, (int) (1))
+                    .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(1_073_007_393L, 1f));
             put(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.shapeFluidLiquid, (int) (1))
+                    .getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(4_276_767_521L, 2f));
         }

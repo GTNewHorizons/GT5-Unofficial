@@ -65,7 +65,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials2Materials.FierySteel,
-                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    Materials2FluidShapes.fluidLiquid,
                                     (int) (GTUtility
                                         .translateMaterialToAmount(aPrefix.getMaterialAmount(), 250, true))))
                             .duration(5 * SECONDS)
@@ -96,7 +96,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials2Materials.FierySteel,
-                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    Materials2FluidShapes.fluidLiquid,
                                     (int) (GTUtility
                                         .translateMaterialToAmount(aPrefix.getMaterialAmount(), 225, true))))
                             .duration(5 * SECONDS)
@@ -127,7 +127,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials2Materials.FierySteel,
-                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    Materials2FluidShapes.fluidLiquid,
                                     (int) (GTUtility
                                         .translateMaterialToAmount(aPrefix.getMaterialAmount(), 200, true))))
                             .duration(5 * SECONDS)

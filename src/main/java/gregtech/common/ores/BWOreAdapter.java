@@ -52,7 +52,7 @@ import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 /// BW only ever generated ore on two [StoneType]s, both of which already have a [Materials2OreShapes] variant
 /// declared for GT's own ores: `StoneType.Stone` -> variant `"stone"` (index 0) and `StoneType.Moon` -> variant
 /// `"moon"` (index 7). No new ore variants were needed for the BW cutover; BW ore/small-ore joins the exact same
-/// `shapeOre`/`shapeOreSmall` shapes GT ore uses.
+/// `ore`/`oreSmall` shapes GT ore uses.
 ///
 /// [#init] still constructs the eight legacy [BWMetaGeneratedOres] instances (2 stone types x {big, small} x
 /// {natural, non-natural} -- see [#legacyOres]) exactly as before, registered under their original `bw.blockores*`
@@ -234,7 +234,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
             if (!supports(info)) return false;
 
             Material mlMat = MU.material(w.getBridgeMaterial());
-            Shape shape = small ? Materials2OreShapes.shapeOreSmall : Materials2OreShapes.shapeOre;
+            Shape shape = small ? Materials2OreShapes.oreSmall : Materials2OreShapes.ore;
             return mlMat != null && mlMat.hasShape(shape);
         }
     }
@@ -248,7 +248,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
     }
 
     private static boolean isOreShape(Shape shape) {
-        return shape == Materials2OreShapes.shapeOre || shape == Materials2OreShapes.shapeOreSmall;
+        return shape == Materials2OreShapes.ore || shape == Materials2OreShapes.oreSmall;
     }
 
     private static boolean isWerkstoffMaterial(Material material) {
@@ -301,7 +301,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         OreInfo<Werkstoff> info = OreInfo.getNewInfo();
         info.material = w;
         info.stoneType = stoneType;
-        info.isSmall = blockInfo.shape() == Materials2OreShapes.shapeOreSmall;
+        info.isSmall = blockInfo.shape() == Materials2OreShapes.oreSmall;
         info.isNatural = true;
 
         return info;
@@ -317,7 +317,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         if (!w.hasItemType(prefix)) return null;
 
         Material mlMat = MU.material(w.getBridgeMaterial());
-        Shape shape = info.isSmall ? Materials2OreShapes.shapeOreSmall : Materials2OreShapes.shapeOre;
+        Shape shape = info.isSmall ? Materials2OreShapes.oreSmall : Materials2OreShapes.ore;
 
         if (mlMat != null && mlMat.hasShape(shape)) {
             String variant = Materials2OreShapes.variantOf(stoneType.name());

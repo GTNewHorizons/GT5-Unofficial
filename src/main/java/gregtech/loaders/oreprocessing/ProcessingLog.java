@@ -61,8 +61,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
                             .itemOutputs(
                                 GTUtility.copyOrNull(tPlanks),
-                                MaterialLibAPI
-                                    .getStack(Materials2Materials.Wood, Materials2Shapes.shapeDust, (int) (1)))
+                                MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1)))
                             .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1L))
                             .duration(4 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
@@ -71,12 +70,11 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
                             .itemOutputs(
                                 GTUtility.copyOrNull(tPlanks),
-                                MaterialLibAPI
-                                    .getStack(Materials2Materials.Wood, Materials2Shapes.shapeDust, (int) (1)))
+                                MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1)))
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials2Materials.Lubricant,
-                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    Materials2FluidShapes.fluidLiquid,
                                     (int) (1)))
                             .duration(10 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
@@ -87,8 +85,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GTUtility.copyAmount(
                                     GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
-                                MaterialLibAPI
-                                    .getStack(Materials2Materials.Wood, Materials2Shapes.shapeDust, (int) (2)))
+                                MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (2)))
                             .fluidInputs(Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)))
                             .duration(20 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
@@ -99,8 +96,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GTUtility.copyAmount(
                                     GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
-                                MaterialLibAPI
-                                    .getStack(Materials2Materials.Wood, Materials2Shapes.shapeDust, (int) (2)))
+                                MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (2)))
                             .fluidInputs(GTModHandler.getDistilledWater(3))
                             .duration(20 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
@@ -134,7 +130,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(
                             GTUtility.copyOrNull(tPlanks),
-                            MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.shapeDust, (int) (1)))
+                            MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1)))
                         .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1L))
                         .duration(4 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -143,11 +139,11 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(
                             GTUtility.copyOrNull(tPlanks),
-                            MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.shapeDust, (int) (1)))
+                            MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1)))
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials2Materials.Lubricant,
-                                Materials2FluidShapes.shapeFluidLiquid,
+                                Materials2FluidShapes.fluidLiquid,
                                 (int) (1)))
                         .duration(10 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -158,7 +154,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTUtility.copyAmount(
                                 GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
-                            MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.shapeDust, (int) (2)))
+                            MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (2)))
                         .fluidInputs(Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)))
                         .duration(20 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -169,7 +165,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTUtility.copyAmount(
                                 GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
-                            MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.shapeDust, (int) (2)))
+                            MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (2)))
                         .fluidInputs(GTModHandler.getDistilledWater(3))
                         .duration(20 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)

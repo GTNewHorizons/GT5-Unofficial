@@ -223,7 +223,7 @@ public class GTModHandler {
     public static FluidStack getLiquidDNA(long aAmount) {
         if (Gendustry.isModLoaded()) return FluidRegistry.getFluidStack("liquiddna", (int) aAmount);
         else return MaterialLibAPI
-            .getFluidStack(Materials2Materials.Biomass, Materials2FluidShapes.shapeFluidLiquid, (int) (aAmount));
+            .getFluidStack(Materials2Materials.Biomass, Materials2FluidShapes.fluidLiquid, (int) (aAmount));
     }
 
     /**
@@ -284,7 +284,7 @@ public class GTModHandler {
     @Deprecated
     public static FluidStack getMilk(long aAmount) {
         return MaterialLibAPI
-            .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.shapeFluidLiquid, (int) (aAmount));
+            .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (aAmount));
     }
 
     /**

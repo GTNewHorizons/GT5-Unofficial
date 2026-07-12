@@ -48,7 +48,7 @@ public class RecipesMachines {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Tantalum,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (16 * INGOTS)))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_IV)
@@ -64,10 +64,8 @@ public class RecipesMachines {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 2))
             .itemOutputs(new ItemStack(ModBlocks.blockCircuitProgrammer))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Iron,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (4 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Iron, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -77,14 +75,12 @@ public class RecipesMachines {
             .itemInputs(
                 ItemList.Hull_LV.get(1),
                 new OreDictItemStack("plateAnyRubber", 32),
-                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapePlateDense, (int) (9)),
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.plateDense, (int) (9)),
                 new ItemStack(Blocks.chest))
             .itemOutputs(new ItemStack(ModBlocks.blockDecayablesChest))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Lead,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (16 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Lead, Materials2FluidShapes.fluidMolten, (int) (16 * INGOTS)))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(assemblerRecipes);
@@ -96,7 +92,7 @@ public class RecipesMachines {
                 MaterialsAlloy.NITINOL_60.getPlate(8),
                 MaterialsAlloy.MARAGING350.getGear(4),
                 ItemList.Field_Generator_EV.get(8),
-                MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.shapeWireFine, (int) (32)),
+                MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.wireFine, (int) (32)),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4))
             .itemOutputs(GregtechItemList.RTG.get(1))
             .fluidInputs(MaterialsAlloy.NIOBIUM_CARBIDE.getFluidStack(16 * INGOTS))

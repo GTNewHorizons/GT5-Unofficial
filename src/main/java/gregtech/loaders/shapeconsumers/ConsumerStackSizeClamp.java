@@ -27,9 +27,9 @@ public final class ConsumerStackSizeClamp {
     private ConsumerStackSizeClamp() {}
 
     static void register() {
-        clamp(Materials2BlockShapes.shapeBlock, OrePrefixes.block);
-        clamp(Materials2OreShapes.shapeOre, OrePrefixes.ore);
-        clamp(Materials2OreShapes.shapeOreSmall, OrePrefixes.oreSmall);
+        clamp(Materials2BlockShapes.block, OrePrefixes.block);
+        clamp(Materials2OreShapes.ore, OrePrefixes.ore);
+        clamp(Materials2OreShapes.oreSmall, OrePrefixes.oreSmall);
     }
 
     private static void clamp(Shape shape, OrePrefixes prefix) {

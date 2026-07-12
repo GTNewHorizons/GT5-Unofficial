@@ -10,6 +10,6 @@ public final class ConsumerRound {
     private ConsumerRound() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeRound, OrePrefixes.round, () -> ProcessingRound.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.round, OrePrefixes.round, () -> ProcessingRound.INSTANCE);
     }
 }

@@ -230,9 +230,8 @@ public class MTEBioLab extends MTEBasicMachine {
     }
 
     private boolean isEthanolCell(ItemStack stack) {
-        return GTUtility.areStacksEqual(
-            stack,
-            MaterialLibAPI.getStack(Materials2Materials.Ethanol, Materials2CellShapes.shapeCell, 1));
+        return GTUtility
+            .areStacksEqual(stack, MaterialLibAPI.getStack(Materials2Materials.Ethanol, Materials2CellShapes.cell, 1));
     }
 
     private boolean isFluorescentDNACell(ItemStack stack) {

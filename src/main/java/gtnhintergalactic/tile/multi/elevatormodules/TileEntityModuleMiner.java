@@ -632,27 +632,24 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         }
         if ((fluidStack.isFluidEqual(
             MaterialLibAPI
-                .getFluidStack(Materials2Materials.Plutonium241, Materials2FluidShapes.shapeFluidPlasma, (int) (1)))
+                .getFluidStack(Materials2Materials.Plutonium241, Materials2FluidShapes.fluidPlasma, (int) (1)))
             && fluidStack.amount >= PLASMA_PLUTONIUM241_USAGE)) {
             return 5;
         } else if ((fluidStack.isFluidEqual(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 1))
             && fluidStack.amount >= PLASMA_TECHNETIUM_USAGE)) {
                 return 4;
             } else if (fluidStack.isFluidEqual(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.shapeFluidPlasma, (int) (1)))
+                MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (1)))
                 && fluidStack.amount >= PLASMA_RADON_USAGE) {
                     return 3;
                 } else if (fluidStack.isFluidEqual(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Bismuth, Materials2FluidShapes.shapeFluidPlasma, (int) (1)))
+                        .getFluidStack(Materials2Materials.Bismuth, Materials2FluidShapes.fluidPlasma, (int) (1)))
                     && fluidStack.amount >= PLASMA_BISMUTH_USAGE) {
                         return 2;
                     } else if (fluidStack.isFluidEqual(
-                        MaterialLibAPI.getFluidStack(
-                            Materials2Materials.Helium,
-                            Materials2FluidShapes.shapeFluidPlasma,
-                            (int) (1)))
+                        MaterialLibAPI
+                            .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (1)))
                         && fluidStack.amount >= PLASMA_HELIUM_USAGE) {
                             return 1;
                         }

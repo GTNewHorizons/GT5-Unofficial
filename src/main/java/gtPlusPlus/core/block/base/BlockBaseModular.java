@@ -92,7 +92,7 @@ public class BlockBaseModular extends BasicBlock {
     /// Registers the canonical `block<Name>` oredict association for this material's storage block, mirroring
     /// [gregtech.common.blocks.BlockMetal]'s stage-07 storage-block cutover: a reconstructed material whose
     /// `block` part cut over (see [MaterialReconstruction#isBlockCutOver]) associates the MaterialLib
-    /// [gregtech.api.enums.materials2.Materials2BlockShapes#shapeBlock] stack instead of this legacy instance,
+    /// [gregtech.api.enums.materials2.Materials2BlockShapes#block] stack instead of this legacy instance,
     /// which is hidden from NEI but stays constructed and registered -- a pre-migration save's placed/inventory
     /// block still resolves through it (see `gregtech.loaders.postload.PosteaTransformers`), and identity-based
     /// callers that need the legacy instance specifically (`gtPlusPlus.core.handler.events.

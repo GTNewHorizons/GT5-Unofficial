@@ -26,7 +26,7 @@ import gregtech.common.ores.GTPPOreAdapter;
 /// Variants are named after [StoneType]'s enum constants, lowercased, in declaration order -- see
 /// [#STONE_TYPE_NAMES]. This name list is fixed permanently once shipped: a variant name is part of a placed
 /// block's save identity (`materiallib:ore_<variant>`/`materiallib:oreSmall_<variant>`), so it must never be
-/// reordered or renamed. `shapeOreSmall` omits the two `StoneCategory.Ice` variants (`packedice`, `blueice`):
+/// reordered or renamed. `oreSmall` omits the two `StoneCategory.Ice` variants (`packedice`, `blueice`):
 /// legacy small ore never generates on ice stone (`GTOreAdapter#supports`), so those two combinations are
 /// permanently unreachable and were dropped rather than declared and left forever empty.
 ///
@@ -36,7 +36,7 @@ import gregtech.common.ores.GTPPOreAdapter;
 /// class-initializer to run. `Materials`' static initializer rebuilds every legacy field from
 /// `Materials2Materials` (see `MaterialsLegacyBridge`), which is empty until `Materials2Materials#init` runs;
 /// [Materials2.java] calls this class's [#init] earlier than that (block shapes must resolve before
-/// `Materials2Materials#init` references `shapeOre`/`shapeOreSmall`), so an early touch would silently fall back to
+/// `Materials2Materials#init` references `ore`/`oreSmall`), so an early touch would silently fall back to
 /// bare-JUnit stub data (`Materials2Materials.Iron == null`) for every legacy material for the rest of the boot,
 /// not just ore's. [#STONE_TYPE_NAMES]/[#SMALL_ORE_EXCLUDED]/[#KNOWN_VARIANT_BASES] are therefore plain string
 /// data, and [#stoneTypeOf] resolves a variant back to its [StoneType] lazily, called only from behavior hooks
@@ -44,8 +44,8 @@ import gregtech.common.ores.GTPPOreAdapter;
 public class Materials2OreShapes {
 
     // spotless:off
-    public static Shape shapeOre;
-    public static Shape shapeOreSmall;
+    public static Shape ore;
+    public static Shape oreSmall;
 
     /// [StoneType]'s enum constant names, lowercased, in declaration order -- see this class's javadoc for why
     /// this is a hand-copied literal rather than derived by reflecting over the live enum.
@@ -57,7 +57,7 @@ public class Materials2OreShapes {
         "SethIce", "SethClay", "Deepslate", "Tuff", "BlueIce",
     };
 
-    /// [StoneType]s of [gregtech.api.enums.StoneCategory#Ice], excluded from [#shapeOreSmall]'s variant list --
+    /// [StoneType]s of [gregtech.api.enums.StoneCategory#Ice], excluded from [#oreSmall]'s variant list --
     /// see this class's javadoc.
     private static final String[] SMALL_ORE_EXCLUDED = { "PackedIce", "BlueIce" };
     // spotless:on
@@ -147,7 +147,7 @@ public class Materials2OreShapes {
         for (var entry : KNOWN_VARIANT_BASES.entrySet()) {
             oreBuilder.variantBase(variantOf(entry.getKey()), entry.getValue());
         }
-        shapeOre = oreBuilder.build();
+        ore = oreBuilder.build();
 
         var oreSmallBuilder = MaterialLibAPI.newBlockShape("gregtech", "oreSmall")
             .displayName("Small %s Ore")
@@ -167,7 +167,7 @@ public class Materials2OreShapes {
                 oreSmallBuilder.variantBase(variantOf(entry.getKey()), entry.getValue());
             }
         }
-        shapeOreSmall = oreSmallBuilder.build();
+        oreSmall = oreSmallBuilder.build();
     }
 
     private static boolean isSmallOreExcluded(String stoneTypeName) {

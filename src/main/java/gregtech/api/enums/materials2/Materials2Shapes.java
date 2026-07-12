@@ -10,195 +10,195 @@ import com.ruling_0.materiallib.api.Shape;
 public class Materials2Shapes {
 
     // spotless:off
-    public static Shape shapeBolt;
-    public static Shape shapeCrushed;
-    public static Shape shapeCrushedCentrifuged;
-    public static Shape shapeCrushedPurified;
-    public static Shape shapeDust;
-    public static Shape shapeDustImpure;
-    public static Shape shapeDustPure;
-    public static Shape shapeDustSmall;
-    public static Shape shapeDustTiny;
-    public static Shape shapeFoil;
-    public static Shape shapeGearGt;
-    public static Shape shapeGearGtSmall;
-    public static Shape shapeGem;
-    public static Shape shapeGemChipped;
-    public static Shape shapeGemExquisite;
-    public static Shape shapeGemFlawed;
-    public static Shape shapeGemFlawless;
-    public static Shape shapeIngot;
-    public static Shape shapeIngotHot;
-    public static Shape shapeItemCasing;
-    public static Shape shapeLens;
-    public static Shape shapeNugget;
-    public static Shape shapePlate;
-    public static Shape shapePlateDense;
-    public static Shape shapePlateDouble;
-    public static Shape shapePlateQuadruple;
-    public static Shape shapePlateQuintuple;
-    public static Shape shapePlateSuperdense;
-    public static Shape shapePlateTriple;
-    public static Shape shapeRawOre;
-    public static Shape shapeRing;
-    public static Shape shapeRotor;
-    public static Shape shapeRound;
-    public static Shape shapeScrew;
-    public static Shape shapeSpring;
-    public static Shape shapeSpringSmall;
-    public static Shape shapeStick;
-    public static Shape shapeStickLong;
-    public static Shape shapeToolHeadBuzzSaw;
-    public static Shape shapeToolHeadChainsaw;
-    public static Shape shapeToolHeadDrill;
-    public static Shape shapeToolHeadFile;
-    public static Shape shapeToolHeadHammer;
-    public static Shape shapeToolHeadSaw;
-    public static Shape shapeToolHeadWrench;
-    public static Shape shapeTurbineBlade;
-    public static Shape shapeWireFine;
+    public static Shape bolt;
+    public static Shape crushed;
+    public static Shape crushedCentrifuged;
+    public static Shape crushedPurified;
+    public static Shape dust;
+    public static Shape dustImpure;
+    public static Shape dustPure;
+    public static Shape dustSmall;
+    public static Shape dustTiny;
+    public static Shape foil;
+    public static Shape gearGt;
+    public static Shape gearGtSmall;
+    public static Shape gem;
+    public static Shape gemChipped;
+    public static Shape gemExquisite;
+    public static Shape gemFlawed;
+    public static Shape gemFlawless;
+    public static Shape ingot;
+    public static Shape ingotHot;
+    public static Shape itemCasing;
+    public static Shape lens;
+    public static Shape nugget;
+    public static Shape plate;
+    public static Shape plateDense;
+    public static Shape plateDouble;
+    public static Shape plateQuadruple;
+    public static Shape plateQuintuple;
+    public static Shape plateSuperdense;
+    public static Shape plateTriple;
+    public static Shape rawOre;
+    public static Shape ring;
+    public static Shape rotor;
+    public static Shape round;
+    public static Shape screw;
+    public static Shape spring;
+    public static Shape springSmall;
+    public static Shape stick;
+    public static Shape stickLong;
+    public static Shape toolHeadBuzzSaw;
+    public static Shape toolHeadChainsaw;
+    public static Shape toolHeadDrill;
+    public static Shape toolHeadFile;
+    public static Shape toolHeadHammer;
+    public static Shape toolHeadSaw;
+    public static Shape toolHeadWrench;
+    public static Shape turbineBlade;
+    public static Shape wireFine;
     // spotless:on
 
     public static void init() {
-        shapeBolt = MaterialLibAPI.newItemShape("gregtech", "bolt")
+        bolt = MaterialLibAPI.newItemShape("gregtech", "bolt")
             .displayName("%s Bolt")
             .build();
-        shapeCrushed = MaterialLibAPI.newItemShape("gregtech", "crushed")
+        crushed = MaterialLibAPI.newItemShape("gregtech", "crushed")
             .displayName("Crushed %s Ore")
             .build();
-        shapeCrushedCentrifuged = MaterialLibAPI.newItemShape("gregtech", "crushedCentrifuged")
+        crushedCentrifuged = MaterialLibAPI.newItemShape("gregtech", "crushedCentrifuged")
             .displayName("Centrifuged %s Ore")
             .build();
-        shapeCrushedPurified = MaterialLibAPI.newItemShape("gregtech", "crushedPurified")
+        crushedPurified = MaterialLibAPI.newItemShape("gregtech", "crushedPurified")
             .displayName("Purified %s Ore")
             .build();
-        shapeDust = MaterialLibAPI.newItemShape("gregtech", "dust")
+        dust = MaterialLibAPI.newItemShape("gregtech", "dust")
             .displayName("%s Dust")
             .build();
-        shapeDustImpure = MaterialLibAPI.newItemShape("gregtech", "dustImpure")
+        dustImpure = MaterialLibAPI.newItemShape("gregtech", "dustImpure")
             .displayName("Impure Pile of %s Dust")
             .build();
-        shapeDustPure = MaterialLibAPI.newItemShape("gregtech", "dustPure")
+        dustPure = MaterialLibAPI.newItemShape("gregtech", "dustPure")
             .displayName("Purified Pile of %s Dust")
             .build();
-        shapeDustSmall = MaterialLibAPI.newItemShape("gregtech", "dustSmall")
+        dustSmall = MaterialLibAPI.newItemShape("gregtech", "dustSmall")
             .displayName("Small Pile of %s Dust")
             .build();
-        shapeDustTiny = MaterialLibAPI.newItemShape("gregtech", "dustTiny")
+        dustTiny = MaterialLibAPI.newItemShape("gregtech", "dustTiny")
             .displayName("Tiny Pile of %s Dust")
             .build();
-        shapeFoil = MaterialLibAPI.newItemShape("gregtech", "foil")
+        foil = MaterialLibAPI.newItemShape("gregtech", "foil")
             .displayName("%s Foil")
             .build();
-        shapeGearGt = MaterialLibAPI.newItemShape("gregtech", "gearGt")
+        gearGt = MaterialLibAPI.newItemShape("gregtech", "gearGt")
             .displayName("%s Gear")
             .build();
-        shapeGearGtSmall = MaterialLibAPI.newItemShape("gregtech", "gearGtSmall")
+        gearGtSmall = MaterialLibAPI.newItemShape("gregtech", "gearGtSmall")
             .displayName("Small %s Gear")
             .build();
-        shapeGem = MaterialLibAPI.newItemShape("gregtech", "gem")
+        gem = MaterialLibAPI.newItemShape("gregtech", "gem")
             .displayName("%s")
             .build();
-        shapeGemChipped = MaterialLibAPI.newItemShape("gregtech", "gemChipped")
+        gemChipped = MaterialLibAPI.newItemShape("gregtech", "gemChipped")
             .displayName("Chipped %s")
             .build();
-        shapeGemExquisite = MaterialLibAPI.newItemShape("gregtech", "gemExquisite")
+        gemExquisite = MaterialLibAPI.newItemShape("gregtech", "gemExquisite")
             .displayName("Exquisite %s")
             .build();
-        shapeGemFlawed = MaterialLibAPI.newItemShape("gregtech", "gemFlawed")
+        gemFlawed = MaterialLibAPI.newItemShape("gregtech", "gemFlawed")
             .displayName("Flawed %s")
             .build();
-        shapeGemFlawless = MaterialLibAPI.newItemShape("gregtech", "gemFlawless")
+        gemFlawless = MaterialLibAPI.newItemShape("gregtech", "gemFlawless")
             .displayName("Flawless %s")
             .build();
-        shapeIngot = MaterialLibAPI.newItemShape("gregtech", "ingot")
+        ingot = MaterialLibAPI.newItemShape("gregtech", "ingot")
             .displayName("%s Ingot")
             .build();
-        shapeIngotHot = MaterialLibAPI.newItemShape("gregtech", "ingotHot")
+        ingotHot = MaterialLibAPI.newItemShape("gregtech", "ingotHot")
             .displayName("Hot %s Ingot")
             .build();
-        shapeItemCasing = MaterialLibAPI.newItemShape("gregtech", "itemCasing")
+        itemCasing = MaterialLibAPI.newItemShape("gregtech", "itemCasing")
             .displayName("%s Casing")
             .build();
-        shapeLens = MaterialLibAPI.newItemShape("gregtech", "lens")
+        lens = MaterialLibAPI.newItemShape("gregtech", "lens")
             .displayName("%s Lens")
             .build();
-        shapeNugget = MaterialLibAPI.newItemShape("gregtech", "nugget")
+        nugget = MaterialLibAPI.newItemShape("gregtech", "nugget")
             .displayName("%s Nugget")
             .build();
-        shapePlate = MaterialLibAPI.newItemShape("gregtech", "plate")
+        plate = MaterialLibAPI.newItemShape("gregtech", "plate")
             .displayName("%s Plate")
             .build();
-        shapePlateDense = MaterialLibAPI.newItemShape("gregtech", "plateDense")
+        plateDense = MaterialLibAPI.newItemShape("gregtech", "plateDense")
             .displayName("Dense %s Plate")
             .build();
-        shapePlateDouble = MaterialLibAPI.newItemShape("gregtech", "plateDouble")
+        plateDouble = MaterialLibAPI.newItemShape("gregtech", "plateDouble")
             .displayName("Double %s Plate")
             .build();
-        shapePlateQuadruple = MaterialLibAPI.newItemShape("gregtech", "plateQuadruple")
+        plateQuadruple = MaterialLibAPI.newItemShape("gregtech", "plateQuadruple")
             .displayName("Quadruple %s Plate")
             .build();
-        shapePlateQuintuple = MaterialLibAPI.newItemShape("gregtech", "plateQuintuple")
+        plateQuintuple = MaterialLibAPI.newItemShape("gregtech", "plateQuintuple")
             .displayName("Quintuple %s Plate")
             .build();
-        shapePlateSuperdense = MaterialLibAPI.newItemShape("gregtech", "plateSuperdense")
+        plateSuperdense = MaterialLibAPI.newItemShape("gregtech", "plateSuperdense")
             .displayName("Superdense %s Plate")
             .build();
-        shapePlateTriple = MaterialLibAPI.newItemShape("gregtech", "plateTriple")
+        plateTriple = MaterialLibAPI.newItemShape("gregtech", "plateTriple")
             .displayName("Triple %s Plate")
             .build();
-        shapeRawOre = MaterialLibAPI.newItemShape("gregtech", "rawOre")
+        rawOre = MaterialLibAPI.newItemShape("gregtech", "rawOre")
             .displayName("Raw %s Ore")
             .build();
-        shapeRing = MaterialLibAPI.newItemShape("gregtech", "ring")
+        ring = MaterialLibAPI.newItemShape("gregtech", "ring")
             .displayName("%s Ring")
             .build();
-        shapeRotor = MaterialLibAPI.newItemShape("gregtech", "rotor")
+        rotor = MaterialLibAPI.newItemShape("gregtech", "rotor")
             .displayName("%s Rotor")
             .build();
-        shapeRound = MaterialLibAPI.newItemShape("gregtech", "round")
+        round = MaterialLibAPI.newItemShape("gregtech", "round")
             .displayName("%s Round")
             .build();
-        shapeScrew = MaterialLibAPI.newItemShape("gregtech", "screw")
+        screw = MaterialLibAPI.newItemShape("gregtech", "screw")
             .displayName("%s Screw")
             .build();
-        shapeSpring = MaterialLibAPI.newItemShape("gregtech", "spring")
+        spring = MaterialLibAPI.newItemShape("gregtech", "spring")
             .displayName("%s Spring")
             .build();
-        shapeSpringSmall = MaterialLibAPI.newItemShape("gregtech", "springSmall")
+        springSmall = MaterialLibAPI.newItemShape("gregtech", "springSmall")
             .displayName("Small %s Spring")
             .build();
-        shapeStick = MaterialLibAPI.newItemShape("gregtech", "stick")
+        stick = MaterialLibAPI.newItemShape("gregtech", "stick")
             .displayName("%s Rod")
             .build();
-        shapeStickLong = MaterialLibAPI.newItemShape("gregtech", "stickLong")
+        stickLong = MaterialLibAPI.newItemShape("gregtech", "stickLong")
             .displayName("Long %s Rod")
             .build();
-        shapeToolHeadBuzzSaw = MaterialLibAPI.newItemShape("gregtech", "toolHeadBuzzSaw")
+        toolHeadBuzzSaw = MaterialLibAPI.newItemShape("gregtech", "toolHeadBuzzSaw")
             .displayName("%s Buzzsaw Blade")
             .build();
-        shapeToolHeadChainsaw = MaterialLibAPI.newItemShape("gregtech", "toolHeadChainsaw")
+        toolHeadChainsaw = MaterialLibAPI.newItemShape("gregtech", "toolHeadChainsaw")
             .displayName("%s Chainsaw Tip")
             .build();
-        shapeToolHeadDrill = MaterialLibAPI.newItemShape("gregtech", "toolHeadDrill")
+        toolHeadDrill = MaterialLibAPI.newItemShape("gregtech", "toolHeadDrill")
             .displayName("%s Drill Tip")
             .build();
-        shapeToolHeadFile = MaterialLibAPI.newItemShape("gregtech", "toolHeadFile")
+        toolHeadFile = MaterialLibAPI.newItemShape("gregtech", "toolHeadFile")
             .displayName("%s File Head")
             .build();
-        shapeToolHeadHammer = MaterialLibAPI.newItemShape("gregtech", "toolHeadHammer")
+        toolHeadHammer = MaterialLibAPI.newItemShape("gregtech", "toolHeadHammer")
             .displayName("%s Hammer Head")
             .build();
-        shapeToolHeadSaw = MaterialLibAPI.newItemShape("gregtech", "toolHeadSaw")
+        toolHeadSaw = MaterialLibAPI.newItemShape("gregtech", "toolHeadSaw")
             .displayName("%s Saw Blade")
             .build();
-        shapeToolHeadWrench = MaterialLibAPI.newItemShape("gregtech", "toolHeadWrench")
+        toolHeadWrench = MaterialLibAPI.newItemShape("gregtech", "toolHeadWrench")
             .displayName("%s Wrench Tip")
             .build();
-        shapeTurbineBlade = MaterialLibAPI.newItemShape("gregtech", "turbineBlade")
+        turbineBlade = MaterialLibAPI.newItemShape("gregtech", "turbineBlade")
             .displayName("%s Turbine Blade")
             .build();
-        shapeWireFine = MaterialLibAPI.newItemShape("gregtech", "wireFine")
+        wireFine = MaterialLibAPI.newItemShape("gregtech", "wireFine")
             .displayName("Fine %s Wire")
             .build();
     }

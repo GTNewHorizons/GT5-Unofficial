@@ -7,7 +7,7 @@ package gregtech.loaders.postload;
 /// migrates each row's legacy placed block/item stack to `MU.stack(OrePrefixes.ore,
 /// MaterialReconstruction.materialLibOf(unlocalizedName), 1)` -- see
 /// `scripts/mu/gen_gtpp_ore_transformers.py`. A material that never gained
-/// `Materials2OreShapes#shapeOre` membership resolves null and is left on its legacy slot.
+/// `Materials2OreShapes#ore` membership resolves null and is left on its legacy slot.
 public final class GtppOreCutoverTable {
 
     public record Entry(String unlocalizedName, String registryName) {}

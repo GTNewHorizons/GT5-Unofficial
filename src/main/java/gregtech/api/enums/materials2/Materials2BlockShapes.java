@@ -15,19 +15,18 @@ import gregtech.common.blocks.GTStorageShapeBlock;
 /// (its dumped `generationBits` is `0`).
 public class Materials2BlockShapes {
 
-    public static Shape shapeBlock;
-    public static Shape shapeBlockCasing;
-    public static Shape shapeBlockCasingAdvanced;
+    public static Shape block;
+    public static Shape blockCasing;
+    public static Shape blockCasingAdvanced;
 
     public static void init() {
-        shapeBlock = MaterialLibAPI
-            .registerBlockShape(new GTStorageShapeBlock("gregtech", "block", "Block of %s", "block"));
+        block = MaterialLibAPI.registerBlockShape(new GTStorageShapeBlock("gregtech", "block", "Block of %s", "block"));
         // Bartworks' werkstoff casings (see GTCasingShapeBlock); display formats match the legacy
         // blockCasing/blockCasingAdvanced OrePrefixes entries. This shape/variant identity is fixed permanently
-        // once shipped, same as shapeBlock's.
-        shapeBlockCasing = MaterialLibAPI
+        // once shipped, same as block's.
+        blockCasing = MaterialLibAPI
             .registerBlockShape(new GTCasingShapeBlock("gregtech", "blockCasing", "Bolted %s Casing", "blockCasing"));
-        shapeBlockCasingAdvanced = MaterialLibAPI.registerBlockShape(
+        blockCasingAdvanced = MaterialLibAPI.registerBlockShape(
             new GTCasingShapeBlock("gregtech", "blockCasingAdvanced", "Rebolted %s Casing", "blockCasingAdvanced"));
     }
 

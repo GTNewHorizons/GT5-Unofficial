@@ -82,7 +82,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.OilHeavy,
-                        Materials2FluidShapes.shapeFluidLiquid,
+                        Materials2FluidShapes.fluidLiquid,
                         (int) (tIsRich ? 4000 : 2000)))
                 .duration(tIsRich ? 30 * SECONDS : 15 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -168,7 +168,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                         .itemInputs(
                             aOreStack,
                             MaterialLibAPI
-                                .getStack(Materials2Materials.Calcite, Materials2Shapes.shapeDust, (int) (aMultiplier)))
+                                .getStack(Materials2Materials.Calcite, Materials2Shapes.dust, (int) (aMultiplier)))
                         .itemOutputs(
                             GTUtility.mul(aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
@@ -180,10 +180,8 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             aOreStack,
-                            MaterialLibAPI.getStack(
-                                Materials2Materials.Quicklime,
-                                Materials2Shapes.shapeDust,
-                                (int) (aMultiplier)))
+                            MaterialLibAPI
+                                .getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (aMultiplier)))
                         .itemOutputs(
                             GTUtility.mul(aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
@@ -199,7 +197,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                         .itemInputs(
                             aOreStack,
                             MaterialLibAPI
-                                .getStack(Materials2Materials.Calcite, Materials2Shapes.shapeDust, (int) (aMultiplier)))
+                                .getStack(Materials2Materials.Calcite, Materials2Shapes.dust, (int) (aMultiplier)))
                         .itemOutputs(
                             GTUtility.mul(aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
@@ -211,10 +209,8 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             aOreStack,
-                            MaterialLibAPI.getStack(
-                                Materials2Materials.Quicklime,
-                                Materials2Shapes.shapeDust,
-                                (int) (aMultiplier)))
+                            MaterialLibAPI
+                                .getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (aMultiplier)))
                         .itemOutputs(
                             GTUtility.mul(aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))

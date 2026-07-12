@@ -400,9 +400,9 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     private void tryUseModerator() {
         startRecipeProcessing();
         for (ItemStack input : getStoredInputs()) {
-            if (input.isItemEqual(MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, 1))
-                || input.isItemEqual(
-                    MaterialLibAPI.getStack(Materials2Materials.Beryllium, Materials2Shapes.shapeDust, 1))) {
+            if (input.isItemEqual(MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, 1))
+                || input
+                    .isItemEqual(MaterialLibAPI.getStack(Materials2Materials.Beryllium, Materials2Shapes.dust, 1))) {
                 int consume = Math.min(this.eV / 10000000, input.stackSize);
                 depleteInput(GTUtility.copyAmount(consume, input));
                 this.eV -= 10000000 * consume;

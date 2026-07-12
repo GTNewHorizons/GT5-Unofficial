@@ -60,7 +60,7 @@ public class RawOreLoader implements IWerkstoffRunnable {
                 .itemOutputs(
                     werkstoff.get(crushed, 2),
                     werkstoff.contains(SubTag.CRYSTAL) ? werkstoff.get(gem) : werkstoff.getOreByProduct(0, dust),
-                    MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1)))
+                    MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dust, (int) (1)))
                 .outputChances(100_00, werkstoff.getNoOfByProducts() > 0 ? 5_00 : 10_00, 50_00)
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                 .duration(20 * SECONDS)

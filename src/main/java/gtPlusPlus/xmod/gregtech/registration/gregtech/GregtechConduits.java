@@ -1093,7 +1093,7 @@ public class GregtechConduits {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Rubber,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (1 * INGOTS)))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
@@ -1110,7 +1110,7 @@ public class GregtechConduits {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Rubber,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (1 * INGOTS)))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
@@ -1127,7 +1127,7 @@ public class GregtechConduits {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Rubber,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (2 * INGOTS)))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
@@ -1144,7 +1144,7 @@ public class GregtechConduits {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Rubber,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (3 * INGOTS)))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
@@ -1161,7 +1161,7 @@ public class GregtechConduits {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Rubber,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (4 * INGOTS)))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
@@ -1178,7 +1178,7 @@ public class GregtechConduits {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Rubber,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (5 * INGOTS)))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)

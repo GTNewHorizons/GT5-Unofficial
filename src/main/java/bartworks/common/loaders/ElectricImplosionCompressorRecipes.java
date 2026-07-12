@@ -76,7 +76,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Neutronium,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (1 * HALF_INGOTS)))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
@@ -88,7 +88,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Neutronium,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (1 * HALF_INGOTS)))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
@@ -100,7 +100,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Neutronium,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (1 * HALF_INGOTS)))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
@@ -115,7 +115,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.RawStarMatter,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (1 * STACKS)))
             .fluidOutputs(Materials.MHDCSM.getMolten(16 * INGOTS))
             .duration(4 * SECONDS)
@@ -125,7 +125,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         // Infinity Catalyst
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.InfinityCatalyst, Materials2Shapes.shapeDust, (int) (64)))
+                MaterialLibAPI.getStack(Materials2Materials.InfinityCatalyst, Materials2Shapes.dust, (int) (64)))
             .itemOutputs(getModItem(Avaritia.ID, "Resource", 1L, 5))
             .duration(1)
             .eut(TierEU.RECIPE_UIV)
@@ -137,7 +137,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.RawStarMatter,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (2 * STACKS)))
             .fluidOutputs(Materials.MHDCSM.getMolten(36 * INGOTS))
             .duration(1 * SECONDS)
@@ -148,18 +148,17 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
-                MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.shapeGemChipped, (int) (3)),
+                MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.gemChipped, (int) (3)),
                 GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Spinel, 64),
-                MaterialLibAPI.getStack(Materials2Materials.Amethyst, Materials2Shapes.shapeGemFlawless, (int) (64)),
+                MaterialLibAPI.getStack(Materials2Materials.Amethyst, Materials2Shapes.gemFlawless, (int) (64)),
                 WerkstoffLoader.Fluorspar.get(OrePrefixes.gemFlawless, 64),
-                MaterialLibAPI.getStack(Materials2Materials.Tanzanite, Materials2Shapes.shapeGemFlawless, (int) (64)))
+                MaterialLibAPI.getStack(Materials2Materials.Tanzanite, Materials2Shapes.gemFlawless, (int) (64)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.PhononCrystalSolution,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (500)))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.shapeGemFlawed, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.gemFlawed, (int) (1)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(electricImplosionCompressorRecipes);

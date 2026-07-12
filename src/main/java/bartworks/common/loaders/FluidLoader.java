@@ -81,7 +81,7 @@ public class FluidLoader {
         }
 
         FluidStack dnaFluid = Gendustry.isModLoaded() ? GTModHandler.getLiquidDNA(100)
-            : MaterialLibAPI.getFluidStack(Materials2Materials.Biomass, Materials2FluidShapes.shapeFluidLiquid, 100);
+            : MaterialLibAPI.getFluidStack(Materials2Materials.Biomass, Materials2FluidShapes.fluidLiquid, 100);
         for (BioCulture B : BioCultureEnum.BIO_CULTURES) {
             if (B.isBreedable()) {
                 B.setFluid(

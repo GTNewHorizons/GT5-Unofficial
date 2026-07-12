@@ -61,14 +61,14 @@ public class Recipes {
         // Thaumium Reinforced Jar
         final ItemStack[] recipe_jarthaumiumreinforced = {
             GameRegistry.makeItemStack("Thaumcraft:ItemResource", 15, 1, null),
-            MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.shapePlateDense, (int) (1)),
+            MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.plateDense, (int) (1)),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.shapePlateDense, (int) (1)),
+            MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.plateDense, (int) (1)),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
             GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1),
-            MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.shapePlateDense, (int) (1)),
+            MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.plateDense, (int) (1)),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.shapePlateDense, (int) (1)),
+            MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.plateDense, (int) (1)),
             new ItemStack(net.minecraft.init.Blocks.glass_pane), };
         final AspectList aspects_jarthaumiumreinforced = new AspectList().add(Aspect.ARMOR, 64)
             .add(Aspect.ORDER, 32)
@@ -89,7 +89,7 @@ public class Recipes {
         final ItemStack[] recipe_voidjarupgrade = {
             GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Obsidian, 1),
             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1),
-            MaterialLibAPI.getStack(Materials2Materials.EnderEye, Materials2Shapes.shapePlate, (int) (1)),
+            MaterialLibAPI.getStack(Materials2Materials.EnderEye, Materials2Shapes.plate, (int) (1)),
             ItemApi.getItem("itemNugget", 5) };
         final AspectList aspects_voidjarupgrade = new AspectList().add(Aspect.VOID, 14)
             .add(Aspect.MAGIC, 14)
@@ -106,16 +106,16 @@ public class Recipes {
                 recipe_voidjarupgrade));
 
         final ItemStack[] recipe_jarichor = { GTModHandler.getModItem(ThaumicTinkerer.ID, "kamiResource", 1, 0),
-            MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.shapePlate, (int) (1)),
+            MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.plate, (int) (1)),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.shapeFoil, (int) (1)),
-            MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.shapePlate, (int) (1)),
+            MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.foil, (int) (1)),
+            MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.plate, (int) (1)),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.shapeGemExquisite, (int) (1)),
-            MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.shapePlate, (int) (1)),
+            MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.gemExquisite, (int) (1)),
+            MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.plate, (int) (1)),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.shapeFoil, (int) (1)),
-            MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.shapePlate, (int) (1)),
+            MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.foil, (int) (1)),
+            MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.plate, (int) (1)),
             new ItemStack(net.minecraft.init.Blocks.glass_pane), };
         final AspectList aspects_jarichor = new AspectList().add(Aspect.ARMOR, 256)
             .add(Aspect.ELDRITCH, 128)

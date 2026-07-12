@@ -201,23 +201,21 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             50 * 100);
         addCentrifugeToItemStack(
             CombType.PHOSPHORUS,
-            new ItemStack[] {
-                MaterialLibAPI.getStack(Materials2Materials.Phosphorus, Materials2Shapes.shapeDust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.TricalciumPhosphate, Materials2Shapes.shapeDust, (int) (2)),
+            new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Phosphorus, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.TricalciumPhosphate, Materials2Shapes.dust, (int) (2)),
                 ItemList.FR_Wax.get(1) },
             new int[] { 100 * 100, 100 * 100, 100 * 100 },
             Voltage.HV);
         addCentrifugeToItemStack(
             CombType.MICA,
-            new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Mica, Materials2Shapes.shapeDust, (int) (2)),
+            new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Mica, Materials2Shapes.dust, (int) (2)),
                 ItemList.FR_Wax.get(1) },
             new int[] { 100 * 100, 75 * 100 },
             Voltage.HV);
 
         addCentrifugeToItemStack(
             CombType.LIGNIE,
-            new ItemStack[] {
-                MaterialLibAPI.getStack(Materials2Materials.Lignite, Materials2Shapes.shapeGem, (int) (1)),
+            new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Lignite, Materials2Shapes.gem, (int) (1)),
                 ItemList.FR_Wax.get(1) },
             new int[] { 90 * 100, 50 * 100 },
             Voltage.ULV);
@@ -260,13 +258,13 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         addCentrifugeToItemStack(
             CombType.CRYOTHEUM,
             new ItemStack[] { ItemList.FR_RefractoryWax.get(1),
-                MaterialLibAPI.getStack(Materials2Materials.Cryotheum, Materials2Shapes.shapeDust, (int) (1)) },
+                MaterialLibAPI.getStack(Materials2Materials.Cryotheum, Materials2Shapes.dust, (int) (1)) },
             new int[] { 50 * 100, 100 * 100 },
             Voltage.MV);
         addCentrifugeToItemStack(
             CombType.BLIZZ,
             new ItemStack[] { ItemList.FR_RefractoryWax.get(1),
-                MaterialLibAPI.getStack(Materials2Materials.Blizz, Materials2Shapes.shapeDust, (int) (1)) },
+                MaterialLibAPI.getStack(Materials2Materials.Blizz, Materials2Shapes.dust, (int) (1)) },
             new int[] { 50 * 100, 100 * 100 },
             Voltage.MV);
         // Alloy
@@ -283,8 +281,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         addCentrifugeToItemStack(
             CombType.ENDERIUM,
             new ItemStack[] { ItemList.FR_RefractoryWax.get(1),
-                MaterialLibAPI.getStack(Materials2Materials.EnderiumBase, Materials2Shapes.shapeDustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Enderium, Materials2Shapes.shapeDustTiny, (int) (1)) },
+                MaterialLibAPI.getStack(Materials2Materials.EnderiumBase, Materials2Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Enderium, Materials2Shapes.dustTiny, (int) (1)) },
             new int[] { 50 * 100, 30 * 100, 50 * 100 },
             Voltage.HV);
 
@@ -413,7 +411,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         addCentrifugeToItemStack(
             CombType.THAUMINITE,
             new ItemStack[] { GTModHandler.getModItem(ThaumicBases.ID, "resource", 1, 0),
-                MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.shapeDustTiny, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.dustTiny, (int) (1)),
                 GTModHandler.getModItem(MagicBees.ID, "wax", 1, 0) },
             new int[] { 20 * 100, 10 * 100, 50 * 100 },
             Voltage.HV);
@@ -431,8 +429,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             CombType.DIVIDED,
             new ItemStack[] { GTModHandler.getModItem(MagicBees.ID, "wax", 1, 0),
                 GTModHandler.getModItem(ExtraUtilities.ID, "unstableingot", 1, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeDustTiny, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.shapeDustTiny, (int) (1)) },
+                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dustTiny, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.dustTiny, (int) (1)) },
             new int[] { 50 * 100, 20 * 100, 10 * 100, 5 * 100 },
             Voltage.HV);
         addProcessGT(CombType.SPARKLING, new Material[] { Materials2Materials.NetherStar }, Voltage.EV);
@@ -440,7 +438,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             CombType.SPARKLING,
             new ItemStack[] { GTModHandler.getModItem(MagicBees.ID, "wax", 1, 0),
                 GTModHandler.getModItem(MagicBees.ID, "miscResources", 2, 5),
-                MaterialLibAPI.getStack(Materials2Materials.NetherStar, Materials2Shapes.shapeDustTiny, (int) (1)) },
+                MaterialLibAPI.getStack(Materials2Materials.NetherStar, Materials2Shapes.dustTiny, (int) (1)) },
             new int[] { 50 * 100, 10 * 100, 10 * 100 },
             Voltage.EV);
 
@@ -615,10 +613,10 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
         addCentrifugeToItemStack(
             CombType.SALT,
-            new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Salt, Materials2Shapes.shapeDust, (int) (6)),
-                MaterialLibAPI.getStack(Materials2Materials.RockSalt, Materials2Shapes.shapeDust, (int) (6)),
+            new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Salt, Materials2Shapes.dust, (int) (6)),
+                MaterialLibAPI.getStack(Materials2Materials.RockSalt, Materials2Shapes.dust, (int) (6)),
                 ItemList.FR_Wax.get(1),
-                MaterialLibAPI.getStack(Materials2Materials.Saltpeter, Materials2Shapes.shapeDust, (int) (6)) },
+                MaterialLibAPI.getStack(Materials2Materials.Saltpeter, Materials2Shapes.dust, (int) (6)) },
             new int[] { 100 * 100, 100 * 100, 50 * 100, 25 * 100 },
             Voltage.MV,
             160);
@@ -675,7 +673,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             CombType.ENDDUST,
             new ItemStack[] { GTModHandler.getModItem(MagicBees.ID, "wax", 1L, 0),
                 GTBees.propolis.getStackForType(PropolisType.End), GTBees.drop.getStackForType(DropType.ENDERGOO),
-                MaterialLibAPI.getStack(Materials2Materials.Endstone, Materials2Shapes.shapeDust, (int) (1)) },
+                MaterialLibAPI.getStack(Materials2Materials.Endstone, Materials2Shapes.dust, (int) (1)) },
             new int[] { 20 * 100, 15 * 100, 10 * 100, 100 * 100 },
             Voltage.HV);
         addCentrifugeToItemStack(
@@ -822,7 +820,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EuropaStoneDust", 1L, 0),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "GanymedeStoneDust", 1L, 0),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CallistoStoneDust", 1L, 0),
-                MaterialLibAPI.getStack(Materials2Materials.CallistoIce, Materials2Shapes.shapeDustTiny, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.CallistoIce, Materials2Shapes.dustTiny, (int) (1)),
                 ItemList.FR_Wax.get(1L) },
             new int[] { 30 * 100, 30 * 100, 30 * 100, 30 * 100, 30 * 100, 5 * 100, 50 * 100 },
             Voltage.HV,
@@ -940,30 +938,27 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         // (Noble)gas Line
         addFluidExtractorProcess(
             CombType.HELIUM,
-            MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.shapeFluidGas, (int) (250)),
+            MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (250)),
             Voltage.HV);
         addFluidExtractorProcess(
             CombType.ARGON,
-            MaterialLibAPI.getFluidStack(Materials2Materials.Argon, Materials2FluidShapes.shapeFluidGas, (int) (250)),
+            MaterialLibAPI.getFluidStack(Materials2Materials.Argon, Materials2FluidShapes.fluidGas, (int) (250)),
             Voltage.MV);
         addFluidExtractorProcess(
             CombType.NITROGEN,
-            MaterialLibAPI
-                .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.shapeFluidGas, (int) (500)),
+            MaterialLibAPI.getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.fluidGas, (int) (500)),
             Voltage.MV);
         addFluidExtractorProcess(
             CombType.HYDROGEN,
-            MaterialLibAPI
-                .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.shapeFluidGas, (int) (500)),
+            MaterialLibAPI.getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (500)),
             Voltage.MV);
         addFluidExtractorProcess(
             CombType.FLUORINE,
-            MaterialLibAPI
-                .getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.shapeFluidGas, (int) (250)),
+            MaterialLibAPI.getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.fluidGas, (int) (250)),
             Voltage.MV);
         addFluidExtractorProcess(
             CombType.OXYGEN,
-            MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (500)),
+            MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (500)),
             Voltage.MV);
         // Organic part 2, unknown liquid
         // yes, unknowwater. It's not a typo, it's how it is spelled. Stupid game.
@@ -1050,11 +1045,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                     case NEUTRONIUM -> {
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = MaterialLibAPI
-                            .getStack(Materials2Materials.Neutronium, Materials2Shapes.shapeNugget, (int) (1));
+                            .getStack(Materials2Materials.Neutronium, Materials2Shapes.nugget, (int) (1));
                         fluidInput = volt.getFluidAccordingToCombTier();
                         fluidOutput = MaterialLibAPI.getFluidStack(
                             Materials2Materials.Neutronium,
-                            Materials2FluidShapes.shapeFluidMolten,
+                            Materials2FluidShapes.fluidMolten,
                             (int) (4 * INGOTS));
                         durationTicks = volt.getComplexTime() * 17;
                         eut = volt.getChemicalEnergy();
@@ -1063,11 +1058,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                     case OSMIUM -> {
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = MaterialLibAPI
-                            .getStack(Materials2Materials.Osmium, Materials2Shapes.shapeNugget, (int) (1));
+                            .getStack(Materials2Materials.Osmium, Materials2Shapes.nugget, (int) (1));
                         fluidInput = volt.getFluidAccordingToCombTier();
                         fluidOutput = MaterialLibAPI.getFluidStack(
                             Materials2Materials.Osmium,
-                            Materials2FluidShapes.shapeFluidMolten,
+                            Materials2FluidShapes.fluidMolten,
                             (int) (2 * INGOTS));
                         durationTicks = volt.getComplexTime() * 17;
                         eut = volt.getChemicalEnergy();
@@ -1076,11 +1071,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                     case PLATINUM -> {
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = MaterialLibAPI
-                            .getStack(Materials2Materials.Platinum, Materials2Shapes.shapeNugget, (int) (1));
+                            .getStack(Materials2Materials.Platinum, Materials2Shapes.nugget, (int) (1));
                         fluidInput = volt.getFluidAccordingToCombTier();
                         fluidOutput = MaterialLibAPI.getFluidStack(
                             Materials2Materials.Platinum,
-                            Materials2FluidShapes.shapeFluidMolten,
+                            Materials2FluidShapes.fluidMolten,
                             (int) (2 * INGOTS));
                         durationTicks = volt.getComplexTime() * 10;
                         eut = volt.getChemicalEnergy();
@@ -1089,11 +1084,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                     case IRIDIUM -> {
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = MaterialLibAPI
-                            .getStack(Materials2Materials.Iridium, Materials2Shapes.shapeNugget, (int) (1));
+                            .getStack(Materials2Materials.Iridium, Materials2Shapes.nugget, (int) (1));
                         fluidInput = volt.getFluidAccordingToCombTier();
                         fluidOutput = MaterialLibAPI.getFluidStack(
                             Materials2Materials.Iridium,
-                            Materials2FluidShapes.shapeFluidMolten,
+                            Materials2FluidShapes.fluidMolten,
                             (int) (2 * INGOTS));
                         durationTicks = volt.getComplexTime() * 14;
                         eut = volt.getChemicalEnergy();
@@ -1301,7 +1296,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                     /* LV */
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.SulfuricAcid,
-                        Materials2FluidShapes.shapeFluidLiquid,
+                        Materials2FluidShapes.fluidLiquid,
                         (int) (fluidAmount));
                 case 2 ->
                     /* MV */
@@ -1353,12 +1348,10 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         // Manasteel -> Manasteel LCR w/Steel
         GTValues.RA.stdBuilder()
             .itemInputs(GTBees.combs.getStackForType(CombType.MANASTEEL, 4))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Manasteel, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Manasteel, Materials2Shapes.dust, (int) (1)))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Steel,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (1 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(GTRecipeConstants.UniversalChemical);
@@ -1366,12 +1359,10 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         // Manasteel -> Manasteel LCR w/Thaumium
         GTValues.RA.stdBuilder()
             .itemInputs(GTBees.combs.getStackForType(CombType.MANASTEEL, 4))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Manasteel, Materials2Shapes.shapeDust, (int) (4)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Manasteel, Materials2Shapes.dust, (int) (4)))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Thaumium,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (2 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Thaumium, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(GTRecipeConstants.UniversalChemical);
@@ -1380,12 +1371,12 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTBees.combs.getStackForType(CombType.ELVEN, 6),
-                MaterialLibAPI.getStack(Materials2Materials.ManaDiamond, Materials2Shapes.shapeGemFlawless, (int) (1)))
+                MaterialLibAPI.getStack(Materials2Materials.ManaDiamond, Materials2Shapes.gemFlawless, (int) (1)))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Dragonstone, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Void,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (1 * EIGHTH_INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -1403,12 +1394,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         // Elven -> Eleven Elementium LCR w/Manasteel
         GTValues.RA.stdBuilder()
             .itemInputs(GTBees.combs.getStackForType(CombType.ELVEN, 4))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.ElvenElementium, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.ElvenElementium, Materials2Shapes.dust, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Manasteel,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (2 * INGOTS)))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1417,13 +1407,10 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         // Elven -> Eleven Elementium LCR w/Shadowmetal
         GTValues.RA.stdBuilder()
             .itemInputs(GTBees.combs.getStackForType(CombType.ELVEN, 4))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.ElvenElementium, Materials2Shapes.shapeDust, (int) (4)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.ElvenElementium, Materials2Shapes.dust, (int) (4)))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Shadow,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (2 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Shadow, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(GTRecipeConstants.UniversalChemical);
@@ -1437,13 +1424,13 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.ElvenElementium,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (4 * INGOTS)))
             .outputChances(50 * 100)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Terrasteel,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -1459,7 +1446,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.ElvenElementium,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (4 * INGOTS)))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -1475,7 +1462,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Terrasteel,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (2 * INGOTS)))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_LuV)

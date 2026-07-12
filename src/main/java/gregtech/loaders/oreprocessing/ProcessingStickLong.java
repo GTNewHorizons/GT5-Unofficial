@@ -80,7 +80,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials2Materials.Lubricant,
-                            Materials2FluidShapes.shapeFluidLiquid,
+                            Materials2FluidShapes.fluidLiquid,
                             (int) (Math.max(
                                 1,
                                 Math.min(

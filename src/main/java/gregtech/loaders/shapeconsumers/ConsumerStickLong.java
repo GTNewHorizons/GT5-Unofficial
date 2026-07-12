@@ -12,6 +12,6 @@ public final class ConsumerStickLong {
 
     static void register() {
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeStickLong, OrePrefixes.stickLong, () -> ProcessingStickLong.INSTANCE);
+            .delegate(Materials2Shapes.stickLong, OrePrefixes.stickLong, () -> ProcessingStickLong.INSTANCE);
     }
 }

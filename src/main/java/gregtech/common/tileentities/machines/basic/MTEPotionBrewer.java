@@ -167,7 +167,7 @@ public class MTEPotionBrewer extends MTEBasicMachine {
                     };
                 }
                 if (GTUtility.areStacksEqual(
-                    MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.shapeDust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.dust, (int) (1)),
                     getInputAt(0))) {
                     if (!tModifier.startsWith("strong")) {
                         return setOutput(
@@ -179,7 +179,7 @@ public class MTEPotionBrewer extends MTEBasicMachine {
                     return setOutput("potion.thick");
                 }
                 if (GTUtility.areStacksEqual(
-                    MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.shapeDust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, (int) (1)),
                     getInputAt(0))) {
                     if (!tModifier.startsWith("long")) {
                         return setOutput(

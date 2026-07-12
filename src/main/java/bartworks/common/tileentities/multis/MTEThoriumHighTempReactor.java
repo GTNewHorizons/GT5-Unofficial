@@ -241,8 +241,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             if (this.HeliumSupply < MTEThoriumHighTempReactor.HELIUM_NEEDED) {
                 for (FluidStack fluidStack : this.getStoredFluids()) {
                     if (fluidStack.isFluidEqual(
-                        MaterialLibAPI
-                            .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.shapeFluidGas, 1))) {
+                        MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, 1))) {
                         int toget = Math
                             .min(MTEThoriumHighTempReactor.HELIUM_NEEDED - this.HeliumSupply, fluidStack.amount);
                         fluidStack.amount -= toget;
@@ -315,7 +314,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         if (this.emptyingMode) {
             this.addOutputPartial(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.shapeFluidGas, this.HeliumSupply));
+                    .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, this.HeliumSupply));
             this.addOutputPartial(
                 new ItemStack(THTRMaterials.aTHTR_Materials, this.fuelSupply, THTRMaterials.MATERIAL_FUEL_INDEX));
             this.HeliumSupply = 0;

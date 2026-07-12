@@ -93,13 +93,13 @@ public class StackUtils {
         switch (aTier) {
             case 0: // ULV
                 return MaterialLibAPI
-                    .getFluidStack(Materials2Materials.RedAlloy, Materials2FluidShapes.shapeFluidMolten, aAmount);
+                    .getFluidStack(Materials2Materials.RedAlloy, Materials2FluidShapes.fluidMolten, aAmount);
             case 1: // LV
                 return MaterialLibAPI
-                    .getFluidStack(Materials2Materials.TinAlloy, Materials2FluidShapes.shapeFluidMolten, aAmount);
+                    .getFluidStack(Materials2Materials.TinAlloy, Materials2FluidShapes.fluidMolten, aAmount);
             case 2: // MV
                 return MaterialLibAPI
-                    .getFluidStack(Materials2Materials.RoseGold, Materials2FluidShapes.shapeFluidMolten, aAmount);
+                    .getFluidStack(Materials2Materials.RoseGold, Materials2FluidShapes.fluidMolten, aAmount);
             case 3: // HV
                 return GGMaterial.zircaloy4.getMolten(aAmount);
             case 4: // EV
@@ -120,7 +120,7 @@ public class StackUtils {
                 return GGMaterial.metastableOganesson.getMolten(aAmount);
             case 12: // UMV
                 return MaterialLibAPI
-                    .getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.shapeFluidMolten, aAmount);
+                    .getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, aAmount);
             default:
                 return GGMaterial.shirabon.getMolten(aAmount);
         }

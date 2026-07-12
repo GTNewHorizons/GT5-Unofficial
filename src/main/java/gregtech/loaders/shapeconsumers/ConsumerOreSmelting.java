@@ -13,20 +13,19 @@ public final class ConsumerOreSmelting {
 
     static void register() {
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeCrushed, OrePrefixes.crushed, () -> ProcessingOreSmelting.INSTANCE);
+            .delegate(Materials2Shapes.crushed, OrePrefixes.crushed, () -> ProcessingOreSmelting.INSTANCE);
         ShapeConsumerSupport.delegate(
-            Materials2Shapes.shapeCrushedPurified,
+            Materials2Shapes.crushedPurified,
             OrePrefixes.crushedPurified,
             () -> ProcessingOreSmelting.INSTANCE);
         ShapeConsumerSupport.delegate(
-            Materials2Shapes.shapeCrushedCentrifuged,
+            Materials2Shapes.crushedCentrifuged,
             OrePrefixes.crushedCentrifuged,
             () -> ProcessingOreSmelting.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.dust, OrePrefixes.dust, () -> ProcessingOreSmelting.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeDust, OrePrefixes.dust, () -> ProcessingOreSmelting.INSTANCE);
+            .delegate(Materials2Shapes.dustImpure, OrePrefixes.dustImpure, () -> ProcessingOreSmelting.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeDustImpure, OrePrefixes.dustImpure, () -> ProcessingOreSmelting.INSTANCE);
-        ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeDustPure, OrePrefixes.dustPure, () -> ProcessingOreSmelting.INSTANCE);
+            .delegate(Materials2Shapes.dustPure, OrePrefixes.dustPure, () -> ProcessingOreSmelting.INSTANCE);
     }
 }

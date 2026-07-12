@@ -12,10 +12,10 @@ import com.ruling_0.materiallib.api.Shape;
 /// capability bit, gtPlusPlus materials with a dumped `milled` part need a real shape to cut over onto.
 public class Materials2GtppShapes {
 
-    public static Shape shapeMilled;
+    public static Shape milled;
 
     public static void init() {
-        shapeMilled = MaterialLibAPI.newItemShape("gregtech", "milled")
+        milled = MaterialLibAPI.newItemShape("gregtech", "milled")
             .displayName("Milled %s")
             .build();
     }

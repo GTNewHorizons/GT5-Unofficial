@@ -225,7 +225,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     public static void setAir() {
         if (sAirFluidStack == null) {
             sAirFluidStack = MaterialLibAPI
-                .getFluidStack(Materials2Materials.Air, Materials2FluidShapes.shapeFluidGas, (int) (1));
+                .getFluidStack(Materials2Materials.Air, Materials2FluidShapes.fluidGas, (int) (1));
         }
         if (sAirFluid == null && sAirFluidStack != null) {
             sAirFluid = sAirFluidStack.getFluid();
@@ -376,7 +376,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         return this.depleteInput(
             MaterialLibAPI.getFluidStack(
                 Materials2Materials.CarbonDioxide,
-                Materials2FluidShapes.shapeFluidGas,
+                Materials2FluidShapes.fluidGas,
                 (int) (this.boostEu ? 3 : 1)));
     }
 

@@ -14,6 +14,6 @@ public final class ConsumerOrePoor {
 
     static void register() {
         ShapeConsumerSupport
-            .delegate(Materials2OreShapes.shapeOreSmall, OrePrefixes.oreSmall, () -> ProcessingOrePoor.INSTANCE);
+            .delegate(Materials2OreShapes.oreSmall, OrePrefixes.oreSmall, () -> ProcessingOrePoor.INSTANCE);
     }
 }

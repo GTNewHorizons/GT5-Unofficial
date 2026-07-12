@@ -166,7 +166,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             fakeFluids.add(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.GrowthMediumSterilized,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     Integer.MAX_VALUE));
         }
         if (baseMulti.bioT3Active) {
@@ -191,10 +191,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             if (baseMulti.wetwareT3Active && stack.getFluid()
                 .equals(
                     MaterialLibAPI
-                        .getFluidStack(
-                            Materials2Materials.GrowthMediumSterilized,
-                            Materials2FluidShapes.shapeFluidLiquid,
-                            1)
+                        .getFluidStack(Materials2Materials.GrowthMediumSterilized, Materials2FluidShapes.fluidLiquid, 1)
                         .getFluid()))
                 fluidInputs[i] = null;
             if (baseMulti.bioT3Active && stack.getFluid()

@@ -116,8 +116,8 @@ public class AlloySmelterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 3L),
-                MaterialLibAPI.getStack(Materials2Materials.Sulfur, Materials2Shapes.shapeDust, (int) (1L)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Rubber, Materials2Shapes.shapeIngot, (int) (1L)))
+                MaterialLibAPI.getStack(Materials2Materials.Sulfur, Materials2Shapes.dust, (int) (1L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Rubber, Materials2Shapes.ingot, (int) (1L)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(alloySmelterRecipes);
@@ -125,7 +125,7 @@ public class AlloySmelterRecipes implements Runnable {
         // Bartworks Glass Tube
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.shapeDust, (int) (2L)),
+                MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.dust, (int) (2L)),
                 ItemList.Shape_Mold_Rod_Long.get(0L))
             .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
             .duration(15 * SECONDS)
@@ -136,7 +136,7 @@ public class AlloySmelterRecipes implements Runnable {
         for (Dyes dye : Dyes.VALUES) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.shapeDust, (int) (8L)),
+                    MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.dust, (int) (8L)),
                     new OreDictItemStack(dye.name(), 1))
                 .itemOutputs(new net.minecraft.item.ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
                 .duration(10 * SECONDS)

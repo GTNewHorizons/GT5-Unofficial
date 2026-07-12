@@ -22,12 +22,12 @@ public class Autoclave implements Runnable {
     public void run() {
         Material[] gasSterilizers = { Materials2Materials.Ammonia, Materials2Materials.Chlorine };
         for (Material used : gasSterilizers) {
-            addSterilizerRecipes(MaterialLibAPI.getFluidStack(used, Materials2FluidShapes.shapeFluidGas, 8));
+            addSterilizerRecipes(MaterialLibAPI.getFluidStack(used, Materials2FluidShapes.fluidGas, 8));
         }
 
         Material[] liquidSterilizers = { Materials2Materials.Ethanol, Materials2Materials.Methanol };
         for (Material used : liquidSterilizers) {
-            addSterilizerRecipes(MaterialLibAPI.getFluidStack(used, Materials2FluidShapes.shapeFluidLiquid, 16));
+            addSterilizerRecipes(MaterialLibAPI.getFluidStack(used, Materials2FluidShapes.fluidLiquid, 16));
         }
     }
 

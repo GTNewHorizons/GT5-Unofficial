@@ -214,10 +214,8 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
     private boolean tryConsumeFluid() {
         if (!depleteInput(
-            MaterialLibAPI.getFluidStack(
-                Materials2Materials.Concrete,
-                Materials2FluidShapes.shapeFluidMolten,
-                (int) (1 * INGOTS)))) {
+            MaterialLibAPI
+                .getFluidStack(Materials2Materials.Concrete, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))) {
             mMaxProgresstime = 0;
             return false;
         }

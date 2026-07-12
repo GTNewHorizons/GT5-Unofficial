@@ -37,10 +37,8 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.DTCC.getFluid(1_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.ExcitedDTCC,
-                    Materials2FluidShapes.shapeFluidLiquid,
-                    (int) (1_000)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.ExcitedDTCC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_ZPM)
@@ -49,10 +47,8 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.DTPC.getFluid(1_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.ExcitedDTPC,
-                    Materials2FluidShapes.shapeFluidLiquid,
-                    (int) (1_000)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.ExcitedDTPC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UV)
@@ -61,10 +57,8 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.DTRC.getFluid(1_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.ExcitedDTRC,
-                    Materials2FluidShapes.shapeFluidLiquid,
-                    (int) (1_000)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.ExcitedDTRC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
@@ -73,10 +67,8 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.DTEC.getFluid(1_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.ExcitedDTEC,
-                    Materials2FluidShapes.shapeFluidLiquid,
-                    (int) (1_000)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
@@ -85,10 +77,8 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.DTSC.getFluid(1_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.ExcitedDTSC,
-                    Materials2FluidShapes.shapeFluidLiquid,
-                    (int) (1_000)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UIV)
@@ -101,10 +91,8 @@ public class LaserEngraverRecipes implements Runnable {
                 new OreDictItemStack("craftingQuartz", 1))
             .itemOutputs(new net.minecraft.item.ItemStack(Items.comparator, 1, 0))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Concrete,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (1 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Concrete, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(2 * SECONDS)
             .eut(20)
             .addTo(assemblerRecipes);
@@ -316,7 +304,7 @@ public class LaserEngraverRecipes implements Runnable {
         // From ProcessingCrafting - craftingLensRed
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.shapePlate, (int) (1L)),
+                MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.plate, (int) (1L)),
                 new OreDictItemStack("craftingLensRed", 0))
             .itemOutputs(GTModHandler.getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -325,7 +313,7 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.RedAlloy, Materials2Shapes.shapeFoil, (int) (1L)),
+                MaterialLibAPI.getStack(Materials2Materials.RedAlloy, Materials2Shapes.foil, (int) (1L)),
                 new OreDictItemStack("craftingLensRed", 0))
             .itemOutputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EtchedLowVoltageWiring", 1L, 0))
             .duration(10 * SECONDS)

@@ -13,10 +13,10 @@ public final class ConsumerCell {
     private ConsumerCell() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2CellShapes.shapeCell, OrePrefixes.cell, () -> ProcessingCell.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2CellShapes.cell, OrePrefixes.cell, () -> ProcessingCell.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2CellShapes.shapeCellPlasma, OrePrefixes.cellPlasma, () -> ProcessingCell.INSTANCE);
+            .delegate(Materials2CellShapes.cellPlasma, OrePrefixes.cellPlasma, () -> ProcessingCell.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2CellShapes.shapeCellPlasmaLight, OrePrefixes.cellPlasma, () -> ProcessingCell.INSTANCE);
+            .delegate(Materials2CellShapes.cellPlasmaLight, OrePrefixes.cellPlasma, () -> ProcessingCell.INSTANCE);
     }
 }

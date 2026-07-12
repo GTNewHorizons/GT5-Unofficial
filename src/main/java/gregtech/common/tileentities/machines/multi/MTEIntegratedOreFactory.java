@@ -247,7 +247,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             if (fluid.equals(GTModHandler.getDistilledWater(1L))) waterAmount += fluid.amount;
             else if (fluid.equals(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.shapeFluidLiquid, (int) (1))))
+                    .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1))))
                 lubricantAmount += fluid.amount;
         }
 
@@ -297,15 +297,13 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             if (!depleteInput(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Lubricant,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (tryDrain)))) {
                 int maxHatch = 0;
                 for (FluidStack sf : getStoredFluids()) {
                     if (sf != null && sf.isFluidEqual(
-                        MaterialLibAPI.getFluidStack(
-                            Materials2Materials.Lubricant,
-                            Materials2FluidShapes.shapeFluidLiquid,
-                            (int) (1)))
+                        MaterialLibAPI
+                            .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1)))
                         && sf.amount > maxHatch) {
                         maxHatch = sf.amount;
                     }
@@ -315,7 +313,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 if (!depleteInput(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Lubricant,
-                        Materials2FluidShapes.shapeFluidLiquid,
+                        Materials2FluidShapes.fluidLiquid,
                         (int) (tryDrain))))
                     break;
             }
@@ -605,7 +603,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         HashMap<Integer, Integer> merged = new HashMap<>();
         for (ItemStack stack : aList) {
             if (doesVoidStone && GTUtility.areStacksEqual(
-                MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dust, (int) (1)),
                 stack)) continue;
             int id = GTUtility.stackToInt(stack);
             if (id != 0) {

@@ -106,7 +106,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials2Materials.Lubricant,
-                            Materials2FluidShapes.shapeFluidLiquid,
+                            Materials2FluidShapes.fluidLiquid,
                             (int) (Math.max(
                                 1,
                                 Math.min(

@@ -50,7 +50,7 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
 
     static {
         BLACKLIST.add(
-            MaterialLibAPI.getFluidStack(Materials2Materials.Benzene, Materials2FluidShapes.shapeFluidLiquid, (int) (0))
+            MaterialLibAPI.getFluidStack(Materials2Materials.Benzene, Materials2FluidShapes.fluidLiquid, (int) (0))
                 .getFluid());
     }
 

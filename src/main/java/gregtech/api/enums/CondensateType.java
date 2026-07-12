@@ -36,17 +36,17 @@ public enum CondensateType {
         "neutronium",
         () -> Materials.Neutronium,
         144,
-        () -> MaterialLibAPI.getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.shapeFluidMolten, (int) (144)), 20, TierEU.RECIPE_UHV),
+        () -> MaterialLibAPI.getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidMolten, (int) (144)), 20, TierEU.RECIPE_UHV),
     CosmicNeutronium(
         "cosmicneutronium",
         () -> Materials.CosmicNeutronium,
         144,
-        () -> MaterialLibAPI.getFluidStack(Materials2Materials.CosmicNeutronium, Materials2FluidShapes.shapeFluidMolten, (int) (144)), 20, TierEU.RECIPE_UHV),
+        () -> MaterialLibAPI.getFluidStack(Materials2Materials.CosmicNeutronium, Materials2FluidShapes.fluidMolten, (int) (144)), 20, TierEU.RECIPE_UHV),
     Bedrockium(
         "bedrockium",
         () -> Materials.Bedrockium,
         144,
-        () -> MaterialLibAPI.getFluidStack(Materials2Materials.Bedrockium, Materials2FluidShapes.shapeFluidMolten, (int) (144)), 20, TierEU.RECIPE_UEV),
+        () -> MaterialLibAPI.getFluidStack(Materials2Materials.Bedrockium, Materials2FluidShapes.fluidMolten, (int) (144)), 20, TierEU.RECIPE_UEV),
     ChromaticGlass(
         "chromaticglass",
         () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS,
@@ -61,7 +61,7 @@ public enum CondensateType {
         "infinity",
         () -> Materials.Infinity,
         144,
-        () -> MaterialLibAPI.getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.shapeFluidMolten, (int) (144)), 20, TierEU.RECIPE_UEV),
+        () -> MaterialLibAPI.getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, (int) (144)), 20, TierEU.RECIPE_UEV),
     Hypogen(
         "hypogen",
         () -> MaterialsElements.STANDALONE.HYPOGEN,
@@ -71,7 +71,7 @@ public enum CondensateType {
         "transcendentmetal",
         () -> Materials.TranscendentMetal,
         144,
-        () -> MaterialLibAPI.getFluidStack(Materials2Materials.TranscendentMetal, Materials2FluidShapes.shapeFluidMolten, (int) (144)), 40, TierEU.RECIPE_UIV),
+        () -> MaterialLibAPI.getFluidStack(Materials2Materials.TranscendentMetal, Materials2FluidShapes.fluidMolten, (int) (144)), 40, TierEU.RECIPE_UIV),
     DimensionallyShiftedSuperfluid(
         "dimshiftedsuperfluid",
         () -> Materials.DimensionallyShiftedSuperfluid,
@@ -81,17 +81,17 @@ public enum CondensateType {
         "phononmedium",
         () -> Materials.PhononMedium,
         1000,
-        () -> MaterialLibAPI.getFluidStack(Materials2Materials.PhononMedium, Materials2FluidShapes.shapeFluidLiquid, (int) (1000)), 120, TierEU.RECIPE_UIV),
+        () -> MaterialLibAPI.getFluidStack(Materials2Materials.PhononMedium, Materials2FluidShapes.fluidLiquid, (int) (1000)), 120, TierEU.RECIPE_UIV),
     QuarkGluonPlasma(
         "quarkgluonplasma",
         () -> Materials.QuarkGluonPlasma,
         1000,
-        () -> MaterialLibAPI.getFluidStack(Materials2Materials.QuarkGluonPlasma, Materials2FluidShapes.shapeFluidLiquid, (int) (1000)), 120, TierEU.RECIPE_UIV),
+        () -> MaterialLibAPI.getFluidStack(Materials2Materials.QuarkGluonPlasma, Materials2FluidShapes.fluidLiquid, (int) (1000)), 120, TierEU.RECIPE_UIV),
     SpaceTime(
         "spacetime",
         () -> Materials.SpaceTime,
         144,
-        () -> MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.shapeFluidMolten, (int) (144)), 60, TierEU.RECIPE_UIV),
+        () -> MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, (int) (144)), 60, TierEU.RECIPE_UIV),
     Time(
         "time",
         () -> Materials.Time,
@@ -106,7 +106,7 @@ public enum CondensateType {
         "cosmicsolder",
         () -> Materials.BoundlessCosmicSolder,
         1000,
-        () -> MaterialLibAPI.getFluidStack(Materials2Materials.BoundlessCosmicSolder, Materials2FluidShapes.shapeFluidLiquid, (int) (1000)), 160, TierEU.RECIPE_UMV),
+        () -> MaterialLibAPI.getFluidStack(Materials2Materials.BoundlessCosmicSolder, Materials2FluidShapes.fluidLiquid, (int) (1000)), 160, TierEU.RECIPE_UMV),
     MHDCSM(
         "mhdcsm",
         () -> Materials.MHDCSM,
@@ -121,12 +121,12 @@ public enum CondensateType {
         "universium",
         () -> Materials.Universium,
         144,
-        () -> MaterialLibAPI.getFluidStack(Materials2Materials.Universium, Materials2FluidShapes.shapeFluidMolten, (int) (144)), 80, TierEU.RECIPE_UXV),
+        () -> MaterialLibAPI.getFluidStack(Materials2Materials.Universium, Materials2FluidShapes.fluidMolten, (int) (144)), 80, TierEU.RECIPE_UXV),
     Eternity(
         "eternity",
         () -> Materials.Eternity,
         144,
-        () -> MaterialLibAPI.getFluidStack(Materials2Materials.Eternity, Materials2FluidShapes.shapeFluidMolten, (int) (144)), 80, TierEU.RECIPE_UXV),
+        () -> MaterialLibAPI.getFluidStack(Materials2Materials.Eternity, Materials2FluidShapes.fluidMolten, (int) (144)), 80, TierEU.RECIPE_UXV),
     // spotless:on
     ;
 

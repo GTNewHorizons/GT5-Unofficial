@@ -37,7 +37,7 @@ public class RecipeLoaderIndustrialRockBreaker {
             .addTo(multiblockRockBreakerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, (int) (1)))
             .circuit(3)
             .itemOutputs(new ItemStack(Blocks.obsidian, 1))
             .duration(6 * SECONDS + 8 * TICKS)
@@ -45,7 +45,7 @@ public class RecipeLoaderIndustrialRockBreaker {
             .addTo(multiblockRockBreakerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.dust, (int) (1)))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.netherrack, 1))
             .duration(16 * TICKS)

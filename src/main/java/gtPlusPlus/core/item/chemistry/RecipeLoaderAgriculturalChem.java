@@ -207,9 +207,9 @@ public class RecipeLoaderAgriculturalChem {
             .fluidOutputs(
                 new FluidStack(GTPPFluids.Butanol, 18_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Acetone, Materials2FluidShapes.shapeFluidLiquid, (int) (9_000)),
+                    .getFluidStack(Materials2Materials.Acetone, Materials2FluidShapes.fluidLiquid, (int) (9_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Ethanol, Materials2FluidShapes.shapeFluidLiquid, (int) (3_000)))
+                    .getFluidStack(Materials2Materials.Ethanol, Materials2FluidShapes.fluidLiquid, (int) (3_000)))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -221,12 +221,12 @@ public class RecipeLoaderAgriculturalChem {
         GTValues.RA.stdBuilder()
             .circuit(10)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeDustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.shapeDustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.shapeDustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Sulfur, Materials2Shapes.shapeDustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.shapeDustTiny, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeDustTiny, (int) (1)))
+                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Sulfur, Materials2Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.dustTiny, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.dustTiny, (int) (1)))
             .outputChances(3000, 3000, 2000, 2000, 1000, 1000)
             .fluidInputs(new FluidStack(GTPPFluids.RedMud, 1_000))
             .fluidOutputs(Materials.Water.getFluid(500))

@@ -13,9 +13,7 @@ public final class ConsumerPure {
     private ConsumerPure() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(
-            Materials2Shapes.shapeCrushedPurified,
-            OrePrefixes.crushedPurified,
-            () -> ProcessingPure.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(Materials2Shapes.crushedPurified, OrePrefixes.crushedPurified, () -> ProcessingPure.INSTANCE);
     }
 }

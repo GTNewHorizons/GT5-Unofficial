@@ -39,10 +39,9 @@ public class RecipeLoaderGTNH {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Plutonium241,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)),
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.shapeFluidGas, (int) (1_000)))
+                MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (1_000)))
             .fluidOutputs(MaterialsElements.getInstance().CURIUM.getFluidStack(1 * INGOTS))
             .duration(4 * SECONDS + 16 * TICKS)
             .eut(98304)
@@ -53,10 +52,8 @@ public class RecipeLoaderGTNH {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialsElements.getInstance().CURIUM.getFluidStack(1 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Helium,
-                    Materials2FluidShapes.shapeFluidPlasma,
-                    (int) (1 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
             .fluidOutputs(MaterialsElements.getInstance().CALIFORNIUM.getFluidStack(1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(196608)
@@ -67,12 +64,10 @@ public class RecipeLoaderGTNH {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Plutonium241,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)),
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Calcium,
-                    Materials2FluidShapes.shapeFluidPlasma,
-                    (int) (1 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Calcium, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
             .fluidOutputs(Materials.Flerovium.getMolten(1 * INGOTS))
             .duration(8 * SECONDS)
             .eut(196608)
@@ -83,7 +78,7 @@ public class RecipeLoaderGTNH {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Manganese,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)),
                 WerkstoffLoader.Neon.getFluidOrGas(500))
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().BROMINE.getPlasma(), 1 * INGOTS))
@@ -95,7 +90,7 @@ public class RecipeLoaderGTNH {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.shapeFluidGas, (int) (1_000)),
+                    .getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.fluidGas, (int) (1_000)),
                 MaterialsElements.getInstance().SELENIUM.getFluidStack(1 * INGOTS))
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 2 * INGOTS))
             .duration(3 * SECONDS + 4 * TICKS)

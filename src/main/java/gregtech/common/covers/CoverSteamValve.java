@@ -28,13 +28,13 @@ public class CoverSteamValve extends CoverPump {
         return GTModHandler.isAnySteam(fluid) || GTModHandler.isSuperHeatedSteam(fluid)
             || fluidname.equals("supercriticalsteam")
             || fluid.getFluid()
-                == MaterialLibAPI.getFluidStack(Materials2Materials.DenseSteam, Materials2FluidShapes.shapeFluidGas, 1)
+                == MaterialLibAPI.getFluidStack(Materials2Materials.DenseSteam, Materials2FluidShapes.fluidGas, 1)
                     .getFluid()
             || fluid.getFluid() == MaterialLibAPI
-                .getFluidStack(Materials2Materials.DenseSuperheatedSteam, Materials2FluidShapes.shapeFluidGas, 1)
+                .getFluidStack(Materials2Materials.DenseSuperheatedSteam, Materials2FluidShapes.fluidGas, 1)
                 .getFluid()
             || fluid.getFluid() == MaterialLibAPI
-                .getFluidStack(Materials2Materials.DenseSupercriticalSteam, Materials2FluidShapes.shapeFluidGas, 1)
+                .getFluidStack(Materials2Materials.DenseSupercriticalSteam, Materials2FluidShapes.fluidGas, 1)
                 .getFluid();
     }
 }

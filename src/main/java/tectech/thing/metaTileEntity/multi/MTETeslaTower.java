@@ -419,7 +419,7 @@ public class MTETeslaTower extends TTMultiblockBase
             if (fluidHatch.mFluid != null) {
                 if (fluidHatch.mFluid.isFluidEqual(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.shapeFluidPlasma, (int) (1)))
+                        .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (1)))
                     && fluidHatch.mFluid.amount >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM) {
                     fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
                         - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM;
@@ -428,7 +428,7 @@ public class MTETeslaTower extends TTMultiblockBase
                     return;
                 } else if (fluidHatch.mFluid.isFluidEqual(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.shapeFluidPlasma, (int) (1)))
+                        .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, (int) (1)))
                     && fluidHatch.mFluid.amount
                         >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN) {
                             fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
@@ -438,10 +438,8 @@ public class MTETeslaTower extends TTMultiblockBase
                             return;
                         } else
                     if (fluidHatch.mFluid.isFluidEqual(
-                        MaterialLibAPI.getFluidStack(
-                            Materials2Materials.Radon,
-                            Materials2FluidShapes.shapeFluidPlasma,
-                            (int) (1)))
+                        MaterialLibAPI
+                            .getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (1)))
                         && fluidHatch.mFluid.amount
                             >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON) {
                                 fluidHatch.mFluid.amount = fluidHatch.mFluid.amount

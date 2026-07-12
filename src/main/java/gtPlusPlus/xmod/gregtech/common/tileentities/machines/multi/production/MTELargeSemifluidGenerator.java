@@ -130,9 +130,9 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
         // This will allow us to check costs without needing to actually try to deplete fluids
         // (wasting earlier fluids in the check if later fluids turn out to be insufficient).
         FluidStack lubricant = MaterialLibAPI
-            .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.shapeFluidLiquid, (int) (0));
+            .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (0));
         FluidStack oxygen = MaterialLibAPI
-            .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (0));
+            .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (0));
         for (FluidStack hatchFluid : tFluids) {
             if (hatchFluid.isFluidEqual(lubricant)) {
                 lubricant.amount = Math.max(lubricant.amount, hatchFluid.amount);
@@ -162,10 +162,8 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
                 // But check the return values anyway just to be safe.
                 if (boostEu) {
                     if (!depleteInput(
-                        MaterialLibAPI.getFluidStack(
-                            Materials2Materials.Oxygen,
-                            Materials2FluidShapes.shapeFluidGas,
-                            (int) (4)))) {
+                        MaterialLibAPI
+                            .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (4)))) {
                         return SimpleCheckRecipeResult.ofFailure("no_oxygen");
                     }
                 }
@@ -174,7 +172,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
                     if (!depleteInput(
                         MaterialLibAPI.getFluidStack(
                             Materials2Materials.Lubricant,
-                            Materials2FluidShapes.shapeFluidLiquid,
+                            Materials2FluidShapes.fluidLiquid,
                             (int) (lubricantCost)))) {
                         return SimpleCheckRecipeResult.ofFailure("no_lubricant");
                     }

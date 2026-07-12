@@ -28,7 +28,7 @@ public class Mixer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 10),
-                MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.shapeDust, (int) (1)))
+                MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (1)))
             .circuit(2)
             .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials))
             .duration(20 * SECONDS)
@@ -37,8 +37,7 @@ public class Mixer implements Runnable {
 
         if (Gendustry.isModLoaded()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialLibAPI.getStack(Materials2Materials.Radon, Materials2CellShapes.shapeCell, (int) (1L)))
+                .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Radon, Materials2CellShapes.cell, (int) (1L)))
                 .circuit(17)
                 .itemOutputs(Materials.Empty.getCells(1))
                 .fluidInputs(GTModHandler.getLiquidDNA(1_000))

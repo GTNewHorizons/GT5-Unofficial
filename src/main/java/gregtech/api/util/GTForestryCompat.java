@@ -36,7 +36,7 @@ public class GTForestryCompat {
                 .itemOutputs(ItemList.FR_Bee_Drone.getWithName(1L, "Scanned Drone"))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.shapeFluidLiquid, (int) (100)))
+                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.fluidLiquid, (int) (100)))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -49,7 +49,7 @@ public class GTForestryCompat {
                 .itemOutputs(ItemList.FR_Bee_Princess.getWithName(1L, "Scanned Princess"))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.shapeFluidLiquid, (int) (100)))
+                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.fluidLiquid, (int) (100)))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -62,7 +62,7 @@ public class GTForestryCompat {
                 .itemOutputs(ItemList.FR_Bee_Queen.getWithName(1L, "Scanned Queen"))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.shapeFluidLiquid, (int) (100)))
+                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.fluidLiquid, (int) (100)))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -75,7 +75,7 @@ public class GTForestryCompat {
                 .itemOutputs(ItemList.FR_Tree_Sapling.getWithName(1L, "Scanned Sapling"))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.shapeFluidLiquid, (int) (100)))
+                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.fluidLiquid, (int) (100)))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -88,7 +88,7 @@ public class GTForestryCompat {
                 .itemOutputs(ItemList.FR_Butterfly.getWithName(1L, "Scanned Butterfly"))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.shapeFluidLiquid, (int) (100)))
+                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.fluidLiquid, (int) (100)))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -101,7 +101,7 @@ public class GTForestryCompat {
                 .itemOutputs(ItemList.FR_Larvae.getWithName(1L, "Scanned Larvae"))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.shapeFluidLiquid, (int) (100)))
+                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.fluidLiquid, (int) (100)))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -114,7 +114,7 @@ public class GTForestryCompat {
                 .itemOutputs(ItemList.FR_Serum.getWithName(1L, "Scanned Serum"))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.shapeFluidLiquid, (int) (100)))
+                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.fluidLiquid, (int) (100)))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -127,7 +127,7 @@ public class GTForestryCompat {
                 .itemOutputs(ItemList.FR_Caterpillar.getWithName(1L, "Scanned Caterpillar"))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.shapeFluidLiquid, (int) (100)))
+                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.fluidLiquid, (int) (100)))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -140,7 +140,7 @@ public class GTForestryCompat {
                 .itemOutputs(ItemList.FR_PollenFertile.getWithName(1L, "Scanned Pollen"))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.shapeFluidLiquid, (int) (100)))
+                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.fluidLiquid, (int) (100)))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()

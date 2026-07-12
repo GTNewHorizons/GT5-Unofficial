@@ -30,7 +30,7 @@ public class WiremillRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Polycaprolactam, Materials2Shapes.shapeIngot, (int) (1L)))
+                MaterialLibAPI.getStack(Materials2Materials.Polycaprolactam, Materials2Shapes.ingot, (int) (1L)))
             .itemOutputs(new ItemStack(Items.string, 32))
             .duration(4 * SECONDS)
             .eut(48)
