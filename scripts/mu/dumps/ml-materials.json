@@ -154526,12 +154526,12 @@
       "plasma": {
         "name": "plasma.astraltitanium",
         "temperature": 10000,
-        "texture": "miscutils:fluids/fluid.plasma.astraltitanium"
+        "texture": "gregtech:fluids/fluid.plasma.astraltitanium"
       },
       "molten": {
         "name": "molten.astraltitanium",
         "temperature": 9714,
-        "texture": "miscutils:fluids/fluid.molten.astraltitanium"
+        "texture": "gregtech:fluids/fluid.molten.astraltitanium"
       }
     },
     "crackedHydroFluids": [],
@@ -156317,12 +156317,12 @@
       "plasma": {
         "name": "plasma.celestialtungsten",
         "temperature": 10000,
-        "texture": "miscutils:fluids/fluid.plasma.celestialtungsten"
+        "texture": "gregtech:fluids/fluid.plasma.celestialtungsten"
       },
       "molten": {
         "name": "molten.celestialtungsten",
         "temperature": 9168,
-        "texture": "miscutils:fluids/fluid.molten.celestialtungsten"
+        "texture": "gregtech:fluids/fluid.molten.celestialtungsten"
       }
     },
     "crackedHydroFluids": [],
@@ -156886,12 +156886,12 @@
       "plasma": {
         "name": "plasma.chromaticglass",
         "temperature": 10000,
-        "texture": "miscutils:fluids/fluid.plasma.chromaticglass"
+        "texture": "gregtech:fluids/fluid.plasma.chromaticglass"
       },
       "molten": {
         "name": "molten.chromaticglass",
         "temperature": 9473,
-        "texture": "miscutils:fluids/fluid.molten.chromaticglass"
+        "texture": "gregtech:fluids/fluid.molten.chromaticglass"
       }
     },
     "crackedHydroFluids": [],
@@ -158540,12 +158540,12 @@
       "plasma": {
         "name": "plasma.dragonblood",
         "temperature": 10000,
-        "texture": "miscutils:fluids/fluid.plasma.hypogen"
+        "texture": "gregtech:fluids/fluid.plasma.hypogen"
       },
       "molten": {
         "name": "molten.dragonblood",
         "temperature": 10433,
-        "texture": "miscutils:fluids/fluid.molten.hypogen"
+        "texture": "gregtech:fluids/fluid.molten.hypogen"
       }
     },
     "crackedHydroFluids": [],
@@ -163055,12 +163055,12 @@
       "plasma": {
         "name": "plasma.hypogen",
         "temperature": 10000,
-        "texture": "miscutils:fluids/fluid.plasma.hypogen"
+        "texture": "gregtech:fluids/fluid.plasma.hypogen"
       },
       "molten": {
         "name": "molten.hypogen",
         "temperature": 10528,
-        "texture": "miscutils:fluids/fluid.molten.hypogen"
+        "texture": "gregtech:fluids/fluid.molten.hypogen"
       }
     },
     "crackedHydroFluids": [],
@@ -170675,12 +170675,12 @@
       "plasma": {
         "name": "plasma.rhugnor",
         "temperature": 10000,
-        "texture": "miscutils:fluids/fluid.plasma.rhugnor"
+        "texture": "gregtech:fluids/fluid.plasma.rhugnor"
       },
       "molten": {
         "name": "molten.rhugnor",
         "temperature": 9023,
-        "texture": "miscutils:fluids/fluid.molten.rhugnor"
+        "texture": "gregtech:fluids/fluid.molten.rhugnor"
       }
     },
     "crackedHydroFluids": [],
