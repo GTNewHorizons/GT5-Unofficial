@@ -283,4 +283,9 @@ public final class GTGuiThemes {
         .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), new Color(0xFFDBE0).getRGB())
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_LOGO_NANOCHIP)
         .build();
+
+    public static GTGuiTheme BARTWORKS = GTGuiTheme.builder("bartworks")
+        .parent(STANDARD)
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_BW_LOGO_STANDARD)
+        .build();
 }

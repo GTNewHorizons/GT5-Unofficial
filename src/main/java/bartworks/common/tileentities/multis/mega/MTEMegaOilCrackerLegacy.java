@@ -265,6 +265,7 @@ public class MTEMegaOilCrackerLegacy extends MegaMultiBlockBase<MTEMegaOilCracke
         this.mInputOnSide = -1;
         this.mOutputOnSide = -1;
         this.mMiddleInputHatches.clear();
+        this.heatLevel = HeatingCoilLevel.None;
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 6, 6, 0, errors)) return;
         checkOneMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
@@ -294,6 +295,7 @@ public class MTEMegaOilCrackerLegacy extends MegaMultiBlockBase<MTEMegaOilCracke
         if (aMetaTileEntity == null) {
             return false;
         }
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof MTEHatchInput tHatch) {
             if (this.mInputOnSide == 1) {
                 return false;
@@ -324,6 +326,7 @@ public class MTEMegaOilCrackerLegacy extends MegaMultiBlockBase<MTEMegaOilCracke
         if (aMetaTileEntity == null) {
             return false;
         }
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof MTEHatchInput tHatch) {
             if (this.mInputOnSide == 0) {
                 return false;
