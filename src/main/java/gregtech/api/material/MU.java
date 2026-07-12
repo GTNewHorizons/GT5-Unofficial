@@ -29,8 +29,9 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 /// equivalents.
 ///
 /// The prefix-to-shape map reflects [Materials2Shapes]'s, [Materials2CellShapes]'s, [Materials2BlockShapes]'s,
-/// [Materials2OreShapes]'s, and [Materials2GtppShapes]'s `shape<PrefixName>` fields instead of hand-listing the
-/// cutover prefixes, so it always matches whatever those declare. A prefix
+/// [Materials2OreShapes]'s, and [Materials2GtppShapes]'s [Shape] fields (each named identically to the
+/// [OrePrefixes] it cuts over to) instead of hand-listing the cutover prefixes, so it always matches whatever
+/// those declare. A prefix
 /// normally maps to exactly one shape; `cellPlasma` is the one exception (see [Materials2CellShapes]), mapping
 /// to an ordered candidate list that [#stack] resolves per material. The material lookup is keyed by legacy
 /// name (`Materials#mName`), preferring [GTMaterialProperties#LEGACY_NAME] over [Material#getName] because
@@ -298,16 +299,10 @@ public class MU {
 
     private static void collectShapes(Map<String, List<Shape>> map, Class<?> shapesClass) {
         for (Field field : shapesClass.getFields()) {
-            if (field.getType() != Shape.class || !field.getName()
-                .startsWith("shape")) continue;
+            if (field.getType() != Shape.class) continue;
             Shape shape = readStatic(field);
             if (shape == null) continue;
-            String prefixName = Character.toLowerCase(
-                field.getName()
-                    .charAt(5))
-                + field.getName()
-                    .substring(6);
-            map.computeIfAbsent(prefixName, k -> new ArrayList<>())
+            map.computeIfAbsent(field.getName(), k -> new ArrayList<>())
                 .add(shape);
         }
     }
