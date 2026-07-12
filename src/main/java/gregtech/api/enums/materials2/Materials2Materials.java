@@ -24,8 +24,8 @@ import gregtech.api.material.WerkstoffRefStack;
 // One-time output of scripts/mu/gen_materials.py (RETIRED, see its module docstring); hand-maintained from here -- edit
 // this file directly.
 /// The materials maintenance surface: one [Material] field per ported material (name matches the legacy `Materials`
-/// field where the dump's name is already a valid Java identifier, else a sanitized variant; a gtpp-only material's
-/// field is `Gtpp`-prefixed -- see `scripts/mu/gen_materials.py`), then every material's complete final declaration
+/// field where the dump's name is already a valid Java identifier, else a sanitized variant -- see
+/// `scripts/mu/gen_materials.py`), then every material's complete final declaration
 /// (tint, texture set, family membership, shape adds/removes, properties, fluids) as one contiguous statement run in
 /// `initPartN()` (split only to stay under the JVM's 64KB bytecode-per-method limit -- see `MATERIALS_PER_INIT_CHUNK`).
 public class Materials2Materials {
@@ -1236,188 +1236,188 @@ public class Materials2Materials {
     public static Material SodiumTungstate;
     public static Material Phosgene;
     public static Material Nitromethane;
-    public static Material GtppAbyssalAlloy;
-    public static Material GtppAceticAnhydride;
-    public static Material GtppAdvancedNitinol;
-    public static Material GtppAgarditeCd;
-    public static Material GtppAgarditeLa;
-    public static Material GtppAgarditeNd;
-    public static Material GtppAgarditeY;
-    public static Material GtppAlburnite;
-    public static Material GtppAmmoniumBifluoride;
-    public static Material GtppAmmoniumTetrafluoroberyllate;
-    public static Material GtppAncientGranite;
-    public static Material GtppArcanite;
-    public static Material GtppArceusAlloy2B;
-    public static Material GtppAstralTitanium;
-    public static Material GtppBabbitAlloy;
-    public static Material GtppBariteRa;
-    public static Material GtppBerylliumFluoride;
-    public static Material GtppBerylliumHydroxide;
-    public static Material GtppBlackMetal;
-    public static Material GtppBlackTitanium;
-    public static Material GtppBloodSteel;
-    public static Material GtppBotmium;
-    public static Material GtppBrine;
-    public static Material GtppBromine;
-    public static Material GtppBurntReactorFuelI;
-    public static Material GtppBurntReactorFuelII;
-    public static Material GtppCelestialTungsten;
-    public static Material GtppCerite;
-    public static Material GtppChloroaceticAcid;
-    public static Material GtppChloroaceticMixture;
-    public static Material GtppChromaticGlass;
-    public static Material GtppCinobiteA243;
-    public static Material GtppComancheite;
-    public static Material GtppCopperIISulfate;
-    public static Material GtppCopperIISulfatePentahydrate;
-    public static Material GtppCrocoite;
-    public static Material GtppCryoliteF;
-    public static Material GtppCurium;
-    public static Material GtppCyanoaceticAcid;
-    public static Material GtppCyanoacrylatePolymer;
-    public static Material GtppDemicheleiteBr;
-    public static Material GtppDichloroaceticAcid;
-    public static Material GtppDragonblood;
-    public static Material GtppEglinSteel;
-    public static Material GtppEglinSteelBaseCompound;
-    public static Material GtppEnergyCrystal;
-    public static Material GtppEthylCyanoacetate;
-    public static Material GtppEthylCyanoacrylateSuperGlue;
-    public static Material GtppFermium;
-    public static Material GtppFlorencite;
-    public static Material GtppFluorcaphite;
-    public static Material GtppFluorinatedUraniumHexafluorideFUF6;
-    public static Material GtppFluorineSpargedTBSalt;
-    public static Material GtppFluorineSpargedTSalt;
-    public static Material GtppFluoriteF;
-    public static Material GtppGadoliniteCe;
-    public static Material GtppGadoliniteY;
-    public static Material GtppGeikielite;
-    public static Material GtppGermanium;
-    public static Material GtppGreenockite;
-    public static Material GtppGrisium;
-    public static Material GtppHG1223;
-    public static Material GtppHS188A;
-    public static Material GtppHastelloyC276;
-    public static Material GtppHastelloyN;
-    public static Material GtppHastelloyW;
-    public static Material GtppHastelloyX;
-    public static Material GtppHeLiCoPtEr;
-    public static Material GtppHeliumSpargedUSalt;
-    public static Material GtppHibonite;
-    public static Material GtppHoneaite;
-    public static Material GtppHydrogenChlorideMix;
-    public static Material GtppHydrogenCyanide;
-    public static Material GtppHypogen;
-    public static Material GtppIncoloy020;
-    public static Material GtppIncoloyDS;
-    public static Material GtppIncoloyMA956;
-    public static Material GtppInconel625;
-    public static Material GtppInconel690;
-    public static Material GtppInconel792;
-    public static Material GtppIndalloy140;
-    public static Material GtppIrarsite;
-    public static Material GtppKashinite;
-    public static Material GtppKoboldite;
-    public static Material GtppLFTRFuel1;
-    public static Material GtppLFTRFuel2;
-    public static Material GtppLFTRFuel3;
-    public static Material GtppLFTRFuelBase;
-    public static Material GtppLafiumCompound;
-    public static Material GtppLafossaite;
-    public static Material GtppLanthaniteCe;
-    public static Material GtppLanthaniteLa;
-    public static Material GtppLanthaniteNd;
-    public static Material GtppLaurenium;
-    public static Material GtppLautarite;
-    public static Material GtppLepersonnite;
-    public static Material GtppLithium7;
-    public static Material GtppLithiumFluoride;
-    public static Material GtppLithiumTetrafluoroberyllateLFTB;
-    public static Material GtppMaragingSteel250;
-    public static Material GtppMaragingSteel300;
-    public static Material GtppMaragingSteel350;
-    public static Material GtppMiessiite;
-    public static Material GtppMutatedLivingSolder;
-    public static Material GtppNeptunium;
-    public static Material GtppNeptuniumHexafluoride;
-    public static Material GtppNichromite;
-    public static Material GtppNiobiumCarbide;
-    public static Material GtppNitinol60;
-    public static Material GtppOctiron;
-    public static Material GtppPerroudite;
-    public static Material GtppPhosphorousUraniumHexafluoridePUF6;
-    public static Material GtppPikyonium64B;
-    public static Material GtppPlutonium238;
-    public static Material GtppPolonium;
-    public static Material GtppPolycrase;
-    public static Material GtppPotin;
-    public static Material GtppProtactinium;
-    public static Material GtppQuantum;
-    public static Material GtppRadioactiveMineralMix;
-    public static Material GtppRadium;
-    public static Material GtppRareEarthI;
-    public static Material GtppRareEarthII;
-    public static Material GtppRareEarthIII;
-    public static Material GtppRhenium;
-    public static Material GtppRhugnor;
-    public static Material GtppRunite;
-    public static Material GtppSamarskiteY;
-    public static Material GtppSamarskiteYb;
-    public static Material GtppSeleniousAcid;
-    public static Material GtppSelenium;
-    public static Material GtppSeleniumDioxide;
-    public static Material GtppSeleniumHexafluoride;
-    public static Material GtppSiliconCarbide;
-    public static Material GtppSodiumChloride;
-    public static Material GtppSodiumCyanide;
-    public static Material GtppSodiumFluoride;
-    public static Material GtppSolarSaltCold;
-    public static Material GtppSolarSaltHot;
-    public static Material GtppSolidAcidCatalystMixture;
-    public static Material GtppStaballoy;
-    public static Material GtppStableMoltenSaltBase;
-    public static Material GtppStellite;
-    public static Material GtppStrontiumHydroxide;
-    public static Material GtppStrontiumOxide;
-    public static Material GtppTalonite;
-    public static Material GtppTantalloy60;
-    public static Material GtppTantalloy61;
-    public static Material GtppTantalumCarbide;
-    public static Material GtppTechnetium;
-    public static Material GtppTechnetiumHexafluoride;
-    public static Material GtppThallium;
-    public static Material GtppThoriumBerylliumDepletedMoltenSaltTBSalt;
-    public static Material GtppThoriumDepletedMoltenSaltTSalt;
-    public static Material GtppThoriumHexafluoride;
-    public static Material GtppTitanite;
-    public static Material GtppTitansteel;
-    public static Material GtppTrichloroaceticAcid;
-    public static Material GtppTriniumNaquadahAlloy;
-    public static Material GtppTriniumNaquadahCarbonite;
-    public static Material GtppTriniumTitaniumAlloy;
-    public static Material GtppTumbaga;
-    public static Material GtppTungstenTitaniumCarbide;
-    public static Material GtppUranium232;
-    public static Material GtppUranium233;
-    public static Material GtppUraniumDepletedMoltenSaltUSalt;
-    public static Material GtppUraniumHexafluoride;
-    public static Material GtppUraniumTetrafluoride;
-    public static Material GtppWatertightSteel;
-    public static Material GtppWoodsGlass;
-    public static Material GtppXenotime;
-    public static Material GtppYttriaite;
-    public static Material GtppYttrialite;
-    public static Material GtppYttrocerite;
-    public static Material GtppZeron100;
-    public static Material GtppZimbabweite;
-    public static Material GtppZircon;
-    public static Material GtppZirconiumCarbide;
-    public static Material GtppZirconiumTetrafluoride;
-    public static Material GtppZirconolite;
-    public static Material GtppZircophyllite;
-    public static Material GtppZirkelite;
+    public static Material AbyssalAlloy;
+    public static Material AceticAnhydride;
+    public static Material AdvancedNitinol;
+    public static Material AgarditeCd;
+    public static Material AgarditeLa;
+    public static Material AgarditeNd;
+    public static Material AgarditeY;
+    public static Material Alburnite;
+    public static Material AmmoniumBifluoride;
+    public static Material AmmoniumTetrafluoroberyllate;
+    public static Material AncientGranite;
+    public static Material Arcanite;
+    public static Material ArceusAlloy2B;
+    public static Material AstralTitanium;
+    public static Material BabbitAlloy;
+    public static Material BariteRa;
+    public static Material BerylliumFluoride;
+    public static Material BerylliumHydroxide;
+    public static Material BlackMetal;
+    public static Material BlackTitanium;
+    public static Material BloodSteel;
+    public static Material Botmium;
+    public static Material Brine;
+    public static Material Bromine;
+    public static Material BurntReactorFuelI;
+    public static Material BurntReactorFuelII;
+    public static Material CelestialTungsten;
+    public static Material Cerite;
+    public static Material ChloroaceticAcid;
+    public static Material ChloroaceticMixture;
+    public static Material ChromaticGlass;
+    public static Material CinobiteA243;
+    public static Material Comancheite;
+    public static Material CopperIISulfate;
+    public static Material CopperIISulfatePentahydrate;
+    public static Material Crocoite;
+    public static Material CryoliteF;
+    public static Material Curium;
+    public static Material CyanoaceticAcid;
+    public static Material CyanoacrylatePolymer;
+    public static Material DemicheleiteBr;
+    public static Material DichloroaceticAcid;
+    public static Material Dragonblood;
+    public static Material EglinSteel;
+    public static Material EglinSteelBaseCompound;
+    public static Material EnergyCrystal;
+    public static Material EthylCyanoacetate;
+    public static Material EthylCyanoacrylateSuperGlue;
+    public static Material Fermium;
+    public static Material Florencite;
+    public static Material Fluorcaphite;
+    public static Material FluorinatedUraniumHexafluorideFUF6;
+    public static Material FluorineSpargedTBSalt;
+    public static Material FluorineSpargedTSalt;
+    public static Material FluoriteF;
+    public static Material GadoliniteCe;
+    public static Material GadoliniteY;
+    public static Material Geikielite;
+    public static Material Germanium;
+    public static Material Greenockite;
+    public static Material Grisium;
+    public static Material HG1223;
+    public static Material HS188A;
+    public static Material HastelloyC276;
+    public static Material HastelloyN;
+    public static Material HastelloyW;
+    public static Material HastelloyX;
+    public static Material HeLiCoPtEr;
+    public static Material HeliumSpargedUSalt;
+    public static Material Hibonite;
+    public static Material Honeaite;
+    public static Material HydrogenChlorideMix;
+    public static Material HydrogenCyanide;
+    public static Material Hypogen;
+    public static Material Incoloy020;
+    public static Material IncoloyDS;
+    public static Material IncoloyMA956;
+    public static Material Inconel625;
+    public static Material Inconel690;
+    public static Material Inconel792;
+    public static Material Indalloy140;
+    public static Material Irarsite;
+    public static Material Kashinite;
+    public static Material Koboldite;
+    public static Material LFTRFuel1;
+    public static Material LFTRFuel2;
+    public static Material LFTRFuel3;
+    public static Material LFTRFuelBase;
+    public static Material LafiumCompound;
+    public static Material Lafossaite;
+    public static Material LanthaniteCe;
+    public static Material LanthaniteLa;
+    public static Material LanthaniteNd;
+    public static Material Laurenium;
+    public static Material Lautarite;
+    public static Material Lepersonnite;
+    public static Material Lithium7;
+    public static Material LithiumFluoride;
+    public static Material LithiumTetrafluoroberyllateLFTB;
+    public static Material MaragingSteel250;
+    public static Material MaragingSteel300;
+    public static Material MaragingSteel350;
+    public static Material Miessiite;
+    public static Material MutatedLivingSolder;
+    public static Material Neptunium;
+    public static Material NeptuniumHexafluoride;
+    public static Material Nichromite;
+    public static Material NiobiumCarbide;
+    public static Material Nitinol60;
+    public static Material Octiron;
+    public static Material Perroudite;
+    public static Material PhosphorousUraniumHexafluoridePUF6;
+    public static Material Pikyonium64B;
+    public static Material Plutonium238;
+    public static Material Polonium;
+    public static Material Polycrase;
+    public static Material Potin;
+    public static Material Protactinium;
+    public static Material Quantum;
+    public static Material RadioactiveMineralMix;
+    public static Material Radium;
+    public static Material RareEarthI;
+    public static Material RareEarthII;
+    public static Material RareEarthIII;
+    public static Material Rhenium;
+    public static Material Rhugnor;
+    public static Material Runite;
+    public static Material SamarskiteY;
+    public static Material SamarskiteYb;
+    public static Material SeleniousAcid;
+    public static Material Selenium;
+    public static Material SeleniumDioxide;
+    public static Material SeleniumHexafluoride;
+    public static Material SiliconCarbide;
+    public static Material SodiumChloride;
+    public static Material SodiumCyanide;
+    public static Material SodiumFluoride;
+    public static Material SolarSaltCold;
+    public static Material SolarSaltHot;
+    public static Material SolidAcidCatalystMixture;
+    public static Material Staballoy;
+    public static Material StableMoltenSaltBase;
+    public static Material Stellite;
+    public static Material StrontiumHydroxide;
+    public static Material StrontiumOxide;
+    public static Material Talonite;
+    public static Material Tantalloy60;
+    public static Material Tantalloy61;
+    public static Material TantalumCarbide;
+    public static Material Technetium;
+    public static Material TechnetiumHexafluoride;
+    public static Material Thallium;
+    public static Material ThoriumBerylliumDepletedMoltenSaltTBSalt;
+    public static Material ThoriumDepletedMoltenSaltTSalt;
+    public static Material ThoriumHexafluoride;
+    public static Material Titanite;
+    public static Material Titansteel;
+    public static Material TrichloroaceticAcid;
+    public static Material TriniumNaquadahAlloy;
+    public static Material TriniumNaquadahCarbonite;
+    public static Material TriniumTitaniumAlloy;
+    public static Material Tumbaga;
+    public static Material TungstenTitaniumCarbide;
+    public static Material Uranium232;
+    public static Material Uranium233;
+    public static Material UraniumDepletedMoltenSaltUSalt;
+    public static Material UraniumHexafluoride;
+    public static Material UraniumTetrafluoride;
+    public static Material WatertightSteel;
+    public static Material WoodsGlass;
+    public static Material Xenotime;
+    public static Material Yttriaite;
+    public static Material Yttrialite;
+    public static Material Yttrocerite;
+    public static Material Zeron100;
+    public static Material Zimbabweite;
+    public static Material Zircon;
+    public static Material ZirconiumCarbide;
+    public static Material ZirconiumTetrafluoride;
+    public static Material Zirconolite;
+    public static Material Zircophyllite;
+    public static Material Zirkelite;
     // spotless:on
 
     public static void init() {
@@ -29029,7 +29029,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.LEGACY_FLUIDS, new FluidNames(null, new FluidRef("nitromethane", 300, "gregtech:fluids/fluid.autogenerated"), new FluidRef("nitromethane", 300, "gregtech:fluids/fluid.autogenerated"), null, null))
             .setProperty(GTMaterialProperties.WERKSTOFF, new WerkstoffData(List.of(29914), "COMPOUND", "gtnhlanth-bot", 1123, 0, 0L, 0L, 0L, 120, 0, 0.0F, 0, 1.0F, 3, -1.0D, 1.0D, -1, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA), List.of("cell"), List.of(), List.of(new WerkstoffRefStack(new MaterialRef("Nitromethane"), 1L, true), new WerkstoffRefStack(new MaterialRef("Nitromethane"), 1L, true), new WerkstoffRefStack(new MaterialRef("Nitromethane"), 1L, true)), List.of(), List.of(), "CH₃NO₂"))
             .build();
-        Materials2Materials.GtppAbyssalAlloy = MaterialLibAPI.newMaterial("gregtech", "AbyssalAlloy", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.AbyssalAlloy = MaterialLibAPI.newMaterial("gregtech", "AbyssalAlloy", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFBB9BB6)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -29058,7 +29058,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppAceticAnhydride = MaterialLibAPI.newMaterial("gregtech", "AceticAnhydride", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.AceticAnhydride = MaterialLibAPI.newMaterial("gregtech", "AceticAnhydride", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFFAF06E)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -29072,7 +29072,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 4L), new MaterialRefStack(new MaterialRef("Hydrogen"), 6L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 200, 412, 58000, false, false, 0, false, "(CH3CO)2O", 5L, -1L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 4L), new MaterialRefStack(new MaterialRef("Hydrogen"), 6L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)), "molten.aceticanhydride", null))
             .build();
-        Materials2Materials.GtppAdvancedNitinol = MaterialLibAPI.newMaterial("gregtech", "AdvancedNitinol", TextureSet.of("miscutils", "FIERY"))
+        Materials2Materials.AdvancedNitinol = MaterialLibAPI.newMaterial("gregtech", "AdvancedNitinol", TextureSet.of("miscutils", "FIERY"))
             .setTint(0xFFD2B4F5)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -29107,7 +29107,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeStick)
             .removeShape(Materials2Shapes.shapeStickLong)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppAgarditeCd = MaterialLibAPI.newMaterial("gregtech", "AgarditeCd", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.AgarditeCd = MaterialLibAPI.newMaterial("gregtech", "AgarditeCd", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF877DA9)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -29119,7 +29119,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Cadmium"), 1L), new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Copper"), 7L), new MaterialRefStack(new MaterialRef("Arsenic"), 4L), new MaterialRefStack(new MaterialRef("Oxygen"), 21L), new MaterialRefStack(new MaterialRef("Hydrogen"), 11L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 977, 2531, 614000, false, false, 0, true, "CdCaCu₇As₄O₂₁H₁₁", 23L, 28L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Cadmium"), 1L), new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Copper"), 7L), new MaterialRefStack(new MaterialRef("Arsenic"), 4L), new MaterialRefStack(new MaterialRef("Oxygen"), 21L), new MaterialRefStack(new MaterialRef("Hydrogen"), 11L)), null, null))
             .build();
-        Materials2Materials.GtppAgarditeLa = MaterialLibAPI.newMaterial("gregtech", "AgarditeLa", TextureSet.of("miscutils", "FINE"))
+        Materials2Materials.AgarditeLa = MaterialLibAPI.newMaterial("gregtech", "AgarditeLa", TextureSet.of("miscutils", "FINE"))
             .setTint(0xFF968BB6)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -29131,7 +29131,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Lanthanum"), 1L), new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Copper"), 5L), new MaterialRefStack(new MaterialRef("Arsenic"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 19L), new MaterialRefStack(new MaterialRef("Hydrogen"), 10L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1076, 2334, 666000, false, false, 0, true, "LaCaCu₅As₂O₁₉H₁", 24L, 30L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Lanthanum"), 1L), new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Copper"), 5L), new MaterialRefStack(new MaterialRef("Arsenic"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 19L), new MaterialRefStack(new MaterialRef("Hydrogen"), 10L)), null, null))
             .build();
-        Materials2Materials.GtppAgarditeNd = MaterialLibAPI.newMaterial("gregtech", "AgarditeNd", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.AgarditeNd = MaterialLibAPI.newMaterial("gregtech", "AgarditeNd", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF9085AF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -29143,7 +29143,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Neodymium"), 1L), new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Copper"), 6L), new MaterialRefStack(new MaterialRef("Arsenic"), 6L), new MaterialRefStack(new MaterialRef("Oxygen"), 21L), new MaterialRefStack(new MaterialRef("Hydrogen"), 12L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1094, 2351, 678000, false, false, 0, true, "NdCaCu₆As₆O₂₁H₁₂", 25L, 31L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Neodymium"), 1L), new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Copper"), 6L), new MaterialRefStack(new MaterialRef("Arsenic"), 6L), new MaterialRefStack(new MaterialRef("Oxygen"), 21L), new MaterialRefStack(new MaterialRef("Hydrogen"), 12L)), null, null))
             .build();
-        Materials2Materials.GtppAgarditeY = MaterialLibAPI.newMaterial("gregtech", "AgarditeY", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.AgarditeY = MaterialLibAPI.newMaterial("gregtech", "AgarditeY", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFA49EC3)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -29155,7 +29155,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 1L), new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Copper"), 5L), new MaterialRefStack(new MaterialRef("Arsenic"), 6L), new MaterialRefStack(new MaterialRef("Oxygen"), 21L), new MaterialRefStack(new MaterialRef("Hydrogen"), 12L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1177, 2435, 568000, false, false, 0, true, "YCaCu₅As₆O₂₁H₁₂", 21L, 25L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 1L), new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Copper"), 5L), new MaterialRefStack(new MaterialRef("Arsenic"), 6L), new MaterialRefStack(new MaterialRef("Oxygen"), 21L), new MaterialRefStack(new MaterialRef("Hydrogen"), 12L)), null, null))
             .build();
-        Materials2Materials.GtppAlburnite = MaterialLibAPI.newMaterial("gregtech", "Alburnite", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Alburnite = MaterialLibAPI.newMaterial("gregtech", "Alburnite", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFD8D86E)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -29167,7 +29167,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Gold"), 8L), new MaterialRefStack(new MaterialRef("Germanium"), 1L), new MaterialRefStack(new MaterialRef("Tellurium"), 2L), new MaterialRefStack(new MaterialRef("Sulfur"), 4L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1050, 2952, 858000, false, false, 0, true, "Au₈GeTe₂S₄", 44L, 62L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Gold"), 8L), new MaterialRefStack(new MaterialRef("Germanium"), 1L), new MaterialRefStack(new MaterialRef("Tellurium"), 2L), new MaterialRefStack(new MaterialRef("Sulfur"), 4L)), null, null))
             .build();
-        Materials2Materials.GtppAmmoniumBifluoride = MaterialLibAPI.newMaterial("gregtech", "AmmoniumBifluoride", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.AmmoniumBifluoride = MaterialLibAPI.newMaterial("gregtech", "AmmoniumBifluoride", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF5587EC)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -29186,7 +29186,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Ammonium"), 1L), new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 399, 513, 52000, false, false, 0, false, "(NH₄)HF₂", 4L, -1L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Ammonium"), 1L), new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 2L)), "molten.ammoniumbifluoride", null))
             .build();
-        Materials2Materials.GtppAmmoniumTetrafluoroberyllate = MaterialLibAPI.newMaterial("gregtech", "AmmoniumTetrafluoroberyllate", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.AmmoniumTetrafluoroberyllate = MaterialLibAPI.newMaterial("gregtech", "AmmoniumTetrafluoroberyllate", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF5892CA)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -29205,7 +29205,7 @@ public class Materials2Materials {
 
     private static void initPart28() {
         // spotless:off
-        Materials2Materials.GtppAncientGranite = MaterialLibAPI.newMaterial("gregtech", "AncientGranite", TextureSet.of("miscutils", "SAND"))
+        Materials2Materials.AncientGranite = MaterialLibAPI.newMaterial("gregtech", "AncientGranite", TextureSet.of("miscutils", "SAND"))
             .setTint(0xFF6B6B6B)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -29239,7 +29239,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeStick)
             .removeShape(Materials2Shapes.shapeStickLong)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppArcanite = MaterialLibAPI.newMaterial("gregtech", "Arcanite", TextureSet.of("miscutils", "GEM_A"))
+        Materials2Materials.Arcanite = MaterialLibAPI.newMaterial("gregtech", "Arcanite", TextureSet.of("miscutils", "GEM_A"))
             .setTint(0xFF798A6E)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -29269,7 +29269,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppArceusAlloy2B = MaterialLibAPI.newMaterial("gregtech", "ArceusAlloy2B", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.ArceusAlloy2B = MaterialLibAPI.newMaterial("gregtech", "ArceusAlloy2B", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFCDC517)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -29298,7 +29298,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppAstralTitanium = MaterialLibAPI.newMaterial("gregtech", "AstralTitanium", TextureSet.of("miscutils", "CUSTOM/astraltitanium"))
+        Materials2Materials.AstralTitanium = MaterialLibAPI.newMaterial("gregtech", "AstralTitanium", TextureSet.of("miscutils", "CUSTOM/astraltitanium"))
             .setTint(0xFFFFFFFF)
             .setFluidTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
@@ -29328,7 +29328,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppBabbitAlloy = MaterialLibAPI.newMaterial("gregtech", "BabbitAlloy", TextureSet.of("miscutils", "DULL"))
+        Materials2Materials.BabbitAlloy = MaterialLibAPI.newMaterial("gregtech", "BabbitAlloy", TextureSet.of("miscutils", "DULL"))
             .setTint(0xFFD0C6D5)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -29362,7 +29362,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeStick)
             .removeShape(Materials2Shapes.shapeStickLong);
-        Materials2Materials.GtppBariteRa = MaterialLibAPI.newMaterial("gregtech", "BariteRa", TextureSet.of("miscutils", "FLINT"))
+        Materials2Materials.BariteRa = MaterialLibAPI.newMaterial("gregtech", "BariteRa", TextureSet.of("miscutils", "FLINT"))
             .setTint(0xFF9BB49B)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -29374,7 +29374,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Barium"), 32L), new MaterialRefStack(new MaterialRef("Radium"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 16L), new MaterialRefStack(new MaterialRef("Oxygen"), 15L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 808, 2149, 822000, false, false, 0, true, "Ba₃₂RaS₁₆O₁₅", 42L, 60L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Barium"), 32L), new MaterialRefStack(new MaterialRef("Radium"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 16L), new MaterialRefStack(new MaterialRef("Oxygen"), 15L)), null, null))
             .build();
-        Materials2Materials.GtppBerylliumFluoride = MaterialLibAPI.newMaterial("gregtech", "BerylliumFluoride", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.BerylliumFluoride = MaterialLibAPI.newMaterial("gregtech", "BerylliumFluoride", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFB1D9B1)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -29393,7 +29393,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Beryllium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1079, 3499, 54000, false, false, 0, false, "BeF₂", 6L, 7L, "LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Beryllium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 2L)), "molten.berylliumfluoride", null))
             .build();
-        Materials2Materials.GtppBerylliumHydroxide = MaterialLibAPI.newMaterial("gregtech", "BerylliumHydroxide", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.BerylliumHydroxide = MaterialLibAPI.newMaterial("gregtech", "BerylliumHydroxide", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF215DB9)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -29412,7 +29412,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Beryllium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 815, 2443, 52000, false, false, 0, false, "Be(OH)₂", 4L, 4L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Beryllium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L)), "molten.berylliumhydroxide", null))
             .build();
-        Materials2Materials.GtppBlackMetal = MaterialLibAPI.newMaterial("gregtech", "BlackMetal", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.BlackMetal = MaterialLibAPI.newMaterial("gregtech", "BlackMetal", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF050505)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -29442,7 +29442,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppBlackTitanium = MaterialLibAPI.newMaterial("gregtech", "BlackTitanium", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.BlackTitanium = MaterialLibAPI.newMaterial("gregtech", "BlackTitanium", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF97AB91)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -29475,7 +29475,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeStick)
             .removeShape(Materials2Shapes.shapeStickLong)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppBloodSteel = MaterialLibAPI.newMaterial("gregtech", "BloodSteel", TextureSet.of("miscutils", "GEM_VERTICAL"))
+        Materials2Materials.BloodSteel = MaterialLibAPI.newMaterial("gregtech", "BloodSteel", TextureSet.of("miscutils", "GEM_VERTICAL"))
             .setTint(0xFF8E1C00)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -29505,7 +29505,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppBotmium = MaterialLibAPI.newMaterial("gregtech", "Botmium", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
+        Materials2Materials.Botmium = MaterialLibAPI.newMaterial("gregtech", "Botmium", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
             .setTint(0xFF50A050)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -29533,7 +29533,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppBrine = MaterialLibAPI.newMaterial("gregtech", "Brine", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.Brine = MaterialLibAPI.newMaterial("gregtech", "Brine", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF3F58D7)
             .addToFamily(Materials2Families.familyAll)
             .setProperty(GTMaterialProperties.LEGACY_FLUIDS, new FluidNames(null, null, null, null, new FluidRef("molten.brine", 484, null)))
@@ -29545,7 +29545,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("SaltWater"), 1L), new MaterialRefStack(new MaterialRef("SodiumChloride"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 484, 1118, 92000, false, false, 0, false, "((H₂O)₃(NaCl))(NaCl)₂", 11L, 11L, "PURE_LIQUID", true, false, List.of(new MaterialRefStack(new MaterialRef("SaltWater"), 1L), new MaterialRefStack(new MaterialRef("SodiumChloride"), 2L)), "molten.brine", null))
             .build();
-        Materials2Materials.GtppBromine = MaterialLibAPI.newMaterial("gregtech", "Bromine", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
+        Materials2Materials.Bromine = MaterialLibAPI.newMaterial("gregtech", "Bromine", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
             .setTint(0xFFC81919)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -29561,7 +29561,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.BOILING_POINT, 331)
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 266, 331, 51200, false, false, 0, false, "Br", 35L, 45L, "PURE_LIQUID", true, true, List.of(), "molten.bromine", "plasma.bromine"))
             .build();
-        Materials2Materials.GtppBurntReactorFuelI = MaterialLibAPI.newMaterial("gregtech", "BurntReactorFuelI", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.BurntReactorFuelI = MaterialLibAPI.newMaterial("gregtech", "BurntReactorFuelI", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA8CDAC)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -29575,7 +29575,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Lithium"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("Protactinium"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1128, 3083, 752000, false, false, 0, false, "LiBeF₂UF₄FP", 37L, 56L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Lithium"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("Protactinium"), 1L)), "molten.burntreactorfueli", null))
             .build();
-        Materials2Materials.GtppBurntReactorFuelII = MaterialLibAPI.newMaterial("gregtech", "BurntReactorFuelII", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.BurntReactorFuelII = MaterialLibAPI.newMaterial("gregtech", "BurntReactorFuelII", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA8CDAC)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -29589,7 +29589,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Lithium"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("Protactinium"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1128, 3083, 752000, false, false, 0, false, "LiBeF₂UF₄FP", 37L, 56L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Lithium"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("Protactinium"), 1L)), "molten.burntreactorfuelii", null))
             .build();
-        Materials2Materials.GtppCelestialTungsten = MaterialLibAPI.newMaterial("gregtech", "CelestialTungsten", TextureSet.of("miscutils", "CUSTOM/celestialtungsten"))
+        Materials2Materials.CelestialTungsten = MaterialLibAPI.newMaterial("gregtech", "CelestialTungsten", TextureSet.of("miscutils", "CUSTOM/celestialtungsten"))
             .setTint(0xFFFFFFFF)
             .setFluidTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
@@ -29617,7 +29617,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapePlateTriple)
             .removeShape(Materials2Shapes.shapeRound)
             .removeShape(Materials2Shapes.shapeSpringSmall);
-        Materials2Materials.GtppCerite = MaterialLibAPI.newMaterial("gregtech", "Cerite", TextureSet.of("miscutils", "REFINED"))
+        Materials2Materials.Cerite = MaterialLibAPI.newMaterial("gregtech", "Cerite", TextureSet.of("miscutils", "REFINED"))
             .setTint(0xFF8090B6)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -29629,7 +29629,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Cerium"), 9L), new MaterialRefStack(new MaterialRef("Lanthanum"), 9L), new MaterialRefStack(new MaterialRef("Calcium"), 9L), new MaterialRefStack(new MaterialRef("Magnesium"), 3L), new MaterialRefStack(new MaterialRef("Iron"), 3L), new MaterialRefStack(new MaterialRef("Silicon"), 7L), new MaterialRefStack(new MaterialRef("Oxygen"), 20L), new MaterialRefStack(new MaterialRef("Hydrogen"), 4L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1329, 2380, 886000, false, false, 0, true, "Ce₉La₉Ca₉Mg₃Fe₃Si₇O₂H₄", 24L, 30L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Cerium"), 9L), new MaterialRefStack(new MaterialRef("Lanthanum"), 9L), new MaterialRefStack(new MaterialRef("Calcium"), 9L), new MaterialRefStack(new MaterialRef("Magnesium"), 3L), new MaterialRefStack(new MaterialRef("Iron"), 3L), new MaterialRefStack(new MaterialRef("Silicon"), 7L), new MaterialRefStack(new MaterialRef("Oxygen"), 20L), new MaterialRefStack(new MaterialRef("Hydrogen"), 4L)), null, null))
             .build();
-        Materials2Materials.GtppChloroaceticAcid = MaterialLibAPI.newMaterial("gregtech", "ChloroaceticAcid", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.ChloroaceticAcid = MaterialLibAPI.newMaterial("gregtech", "ChloroaceticAcid", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFE6C85A)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -29643,7 +29643,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 3L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 336, 462, 128000, false, false, 0, false, "ClCH2-COOH", 8L, -1L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 3L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 1L)), "molten.chloroaceticacid", null))
             .build();
-        Materials2Materials.GtppChloroaceticMixture = MaterialLibAPI.newMaterial("gregtech", "ChloroaceticMixture", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.ChloroaceticMixture = MaterialLibAPI.newMaterial("gregtech", "ChloroaceticMixture", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFD2A00A)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -29657,7 +29657,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 6L), new MaterialRefStack(new MaterialRef("Hydrogen"), 6L), new MaterialRefStack(new MaterialRef("Oxygen"), 6L), new MaterialRefStack(new MaterialRef("Chlorine"), 6L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 313, 465, 128000, false, false, 0, false, "Cl?H?C-COOH", 8L, -1L, "LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 6L), new MaterialRefStack(new MaterialRef("Hydrogen"), 6L), new MaterialRefStack(new MaterialRef("Oxygen"), 6L), new MaterialRefStack(new MaterialRef("Chlorine"), 6L)), "molten.chloroaceticmixture", null))
             .build();
-        Materials2Materials.GtppChromaticGlass = MaterialLibAPI.newMaterial("gregtech", "ChromaticGlass", TextureSet.of("miscutils", "CUSTOM/chromaticglass"))
+        Materials2Materials.ChromaticGlass = MaterialLibAPI.newMaterial("gregtech", "ChromaticGlass", TextureSet.of("miscutils", "CUSTOM/chromaticglass"))
             .setTint(0xFFFFFFFF)
             .setFluidTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
@@ -29686,7 +29686,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeRound)
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall);
-        Materials2Materials.GtppCinobiteA243 = MaterialLibAPI.newMaterial("gregtech", "CinobiteA243", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.CinobiteA243 = MaterialLibAPI.newMaterial("gregtech", "CinobiteA243", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA09AA2)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -29715,7 +29715,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppComancheite = MaterialLibAPI.newMaterial("gregtech", "Comancheite", TextureSet.of("miscutils", "REFINED"))
+        Materials2Materials.Comancheite = MaterialLibAPI.newMaterial("gregtech", "Comancheite", TextureSet.of("miscutils", "REFINED"))
             .setTint(0xFF767DC0)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -29727,7 +29727,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Mercury"), 13L), new MaterialRefStack(new MaterialRef("Nitrogen"), 7L), new MaterialRefStack(new MaterialRef("Hydrogen"), 3L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 8L), new MaterialRefStack(new MaterialRef("Bromine"), 8L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 361, 640, 692000, false, false, 0, true, "Hg₁₃N₇H₃O₂Cl₈Br₈", 24L, 33L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Mercury"), 13L), new MaterialRefStack(new MaterialRef("Nitrogen"), 7L), new MaterialRefStack(new MaterialRef("Hydrogen"), 3L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 8L), new MaterialRefStack(new MaterialRef("Bromine"), 8L)), null, null))
             .build();
-        Materials2Materials.GtppCopperIISulfate = MaterialLibAPI.newMaterial("gregtech", "CopperIISulfate", TextureSet.of("miscutils", "DULL"))
+        Materials2Materials.CopperIISulfate = MaterialLibAPI.newMaterial("gregtech", "CopperIISulfate", TextureSet.of("miscutils", "DULL"))
             .setTint(0xFFC8C8C8)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -29740,7 +29740,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Copper"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 863, 923, 222000, false, false, 0, false, "CuSO4", 17L, -1L, "SOLID", true, false, List.of(new MaterialRefStack(new MaterialRef("Copper"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)), "molten.copperiisulfate", null))
             .build();
-        Materials2Materials.GtppCopperIISulfatePentahydrate = MaterialLibAPI.newMaterial("gregtech", "CopperIISulfatePentahydrate", TextureSet.of("miscutils", "DULL"))
+        Materials2Materials.CopperIISulfatePentahydrate = MaterialLibAPI.newMaterial("gregtech", "CopperIISulfatePentahydrate", TextureSet.of("miscutils", "DULL"))
             .setTint(0xFF5AAAFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -29753,7 +29753,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Copper"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 863, 923, 222000, false, false, 0, false, "CuSO4∙(H2O)5", 17L, -1L, "SOLID", true, false, List.of(new MaterialRefStack(new MaterialRef("Copper"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)), "molten.copperiisulfatepentahydrate", null))
             .build();
-        Materials2Materials.GtppCrocoite = MaterialLibAPI.newMaterial("gregtech", "Crocoite", TextureSet.of("miscutils", "GEM_VERTICAL"))
+        Materials2Materials.Crocoite = MaterialLibAPI.newMaterial("gregtech", "Crocoite", TextureSet.of("miscutils", "GEM_VERTICAL"))
             .setTint(0xFF8E9CC6)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -29765,7 +29765,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Lead"), 2L), new MaterialRefStack(new MaterialRef("Chrome"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L), new MaterialRefStack(new MaterialRef("Caesium"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1056, 1653, 814000, false, false, 0, true, "Pb₂Cr₂O₃Cs", 42L, 59L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Lead"), 2L), new MaterialRefStack(new MaterialRef("Chrome"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L), new MaterialRefStack(new MaterialRef("Caesium"), 1L)), null, null))
             .build();
-        Materials2Materials.GtppCryoliteF = MaterialLibAPI.newMaterial("gregtech", "CryoliteF", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.CryoliteF = MaterialLibAPI.newMaterial("gregtech", "CryoliteF", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF7F97D7)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -29777,7 +29777,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Sodium"), 3L), new MaterialRefStack(new MaterialRef("Aluminium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 6L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 725, 1403, 132000, false, false, 0, true, "Na₃AlF₆", 11L, 11L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Sodium"), 3L), new MaterialRefStack(new MaterialRef("Aluminium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 6L)), null, null))
             .build();
-        Materials2Materials.GtppCurium = MaterialLibAPI.newMaterial("gregtech", "Curium", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.Curium = MaterialLibAPI.newMaterial("gregtech", "Curium", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFFAF556E)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -29813,7 +29813,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppCyanoaceticAcid = MaterialLibAPI.newMaterial("gregtech", "CyanoaceticAcid", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.CyanoaceticAcid = MaterialLibAPI.newMaterial("gregtech", "CyanoaceticAcid", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF828228)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -29826,7 +29826,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 3L), new MaterialRefStack(new MaterialRef("Hydrogen"), 3L), new MaterialRefStack(new MaterialRef("Nitrogen"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 339, 381, 86000, false, false, 0, false, "C3H3NO2", 5L, -1L, "SOLID", true, false, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 3L), new MaterialRefStack(new MaterialRef("Hydrogen"), 3L), new MaterialRefStack(new MaterialRef("Nitrogen"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L)), "molten.cyanoaceticacid", null))
             .build();
-        Materials2Materials.GtppCyanoacrylatePolymer = MaterialLibAPI.newMaterial("gregtech", "CyanoacrylatePolymer", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.CyanoacrylatePolymer = MaterialLibAPI.newMaterial("gregtech", "CyanoacrylatePolymer", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF8C96A0)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -29840,7 +29840,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 3L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 248, 328, 128000, false, false, 0, false, "(-C6H7NO2-)n", 8L, -1L, "LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 3L)), "molten.cyanoacrylatepolymer", null))
             .build();
-        Materials2Materials.GtppDemicheleiteBr = MaterialLibAPI.newMaterial("gregtech", "DemicheleiteBr", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.DemicheleiteBr = MaterialLibAPI.newMaterial("gregtech", "DemicheleiteBr", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA6803D)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -29852,7 +29852,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Bismuth"), 13L), new MaterialRefStack(new MaterialRef("Sulfur"), 11L), new MaterialRefStack(new MaterialRef("Bromine"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 581, 1535, 640000, false, false, 0, true, "Bi₁₃S₁₁Br", 44L, 62L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Bismuth"), 13L), new MaterialRefStack(new MaterialRef("Sulfur"), 11L), new MaterialRefStack(new MaterialRef("Bromine"), 1L)), null, null))
             .build();
-        Materials2Materials.GtppDichloroaceticAcid = MaterialLibAPI.newMaterial("gregtech", "DichloroaceticAcid", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.DichloroaceticAcid = MaterialLibAPI.newMaterial("gregtech", "DichloroaceticAcid", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFBEA03C)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -29866,7 +29866,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 286, 467, 128000, false, false, 0, false, "Cl2CH-COOH", 8L, -1L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 2L)), "molten.dichloroaceticacid", null))
             .build();
-        Materials2Materials.GtppDragonblood = MaterialLibAPI.newMaterial("gregtech", "Dragonblood", TextureSet.of("miscutils", "CUSTOM/hypogen"))
+        Materials2Materials.Dragonblood = MaterialLibAPI.newMaterial("gregtech", "Dragonblood", TextureSet.of("miscutils", "CUSTOM/hypogen"))
             .setTint(0xFFDC2814)
             .setFluidTint(0xFFDC2814)
             .addToFamily(Materials2Families.familyAll)
@@ -29897,7 +29897,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeRound)
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall);
-        Materials2Materials.GtppEglinSteel = MaterialLibAPI.newMaterial("gregtech", "EglinSteel", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.EglinSteel = MaterialLibAPI.newMaterial("gregtech", "EglinSteel", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF8B4513)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -29926,7 +29926,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeRound)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppEglinSteelBaseCompound = MaterialLibAPI.newMaterial("gregtech", "EglinSteelBaseCompound", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.EglinSteelBaseCompound = MaterialLibAPI.newMaterial("gregtech", "EglinSteelBaseCompound", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFBFC4B5)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -29941,7 +29941,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Iron"), 12L), new MaterialRefStack(new MaterialRef("Kanthal"), 3L), new MaterialRefStack(new MaterialRef("Invar"), 15L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1476, 3287, 312000, false, false, 0, false, "Fe₄(FeAlCr)(Fe₂Ni)₅", 24L, 27L, "SOLID", true, true, List.of(new MaterialRefStack(new MaterialRef("Iron"), 12L), new MaterialRefStack(new MaterialRef("Kanthal"), 3L), new MaterialRefStack(new MaterialRef("Invar"), 15L)), "molten.eglinsteelbasecompound", null))
             .build();
-        Materials2Materials.GtppEnergyCrystal = MaterialLibAPI.newMaterial("gregtech", "EnergyCrystal", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
+        Materials2Materials.EnergyCrystal = MaterialLibAPI.newMaterial("gregtech", "EnergyCrystal", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
             .setTint(0xFFE4FF00)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -29971,7 +29971,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppEthylCyanoacetate = MaterialLibAPI.newMaterial("gregtech", "EthylCyanoacetate", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.EthylCyanoacetate = MaterialLibAPI.newMaterial("gregtech", "EthylCyanoacetate", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF004BA0)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -29985,7 +29985,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 3L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 251, 483, 128000, false, false, 0, false, "C5H7NO2", 8L, -1L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 3L)), "molten.ethylcyanoacetate", null))
             .build();
-        Materials2Materials.GtppEthylCyanoacrylateSuperGlue = MaterialLibAPI.newMaterial("gregtech", "EthylCyanoacrylateSuperGlue", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.EthylCyanoacrylateSuperGlue = MaterialLibAPI.newMaterial("gregtech", "EthylCyanoacrylateSuperGlue", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFAABEC8)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -29999,7 +29999,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 3L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 248, 328, 128000, false, false, 0, false, "C6H7NO2", 8L, -1L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 3L)), "molten.ethylcyanoacrylatesuperglue", null))
             .build();
-        Materials2Materials.GtppFermium = MaterialLibAPI.newMaterial("gregtech", "Fermium", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.Fermium = MaterialLibAPI.newMaterial("gregtech", "Fermium", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFF4B5A19)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30035,7 +30035,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppFlorencite = MaterialLibAPI.newMaterial("gregtech", "Florencite", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Florencite = MaterialLibAPI.newMaterial("gregtech", "Florencite", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF7FA2B3)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30047,7 +30047,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Samarium"), 1L), new MaterialRefStack(new MaterialRef("Aluminium"), 3L), new MaterialRefStack(new MaterialRef("Phosphorus"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 10L), new MaterialRefStack(new MaterialRef("Hydrogen"), 6L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 805, 1190, 446000, false, false, 0, true, "SmAl₃PO₁H₆", 19L, 24L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Samarium"), 1L), new MaterialRefStack(new MaterialRef("Aluminium"), 3L), new MaterialRefStack(new MaterialRef("Phosphorus"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 10L), new MaterialRefStack(new MaterialRef("Hydrogen"), 6L)), null, null))
             .build();
-        Materials2Materials.GtppFluorcaphite = MaterialLibAPI.newMaterial("gregtech", "Fluorcaphite", TextureSet.of("miscutils", "FINE"))
+        Materials2Materials.Fluorcaphite = MaterialLibAPI.newMaterial("gregtech", "Fluorcaphite", TextureSet.of("miscutils", "FINE"))
             .setTint(0xFF9FB69D)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30059,7 +30059,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 5L), new MaterialRefStack(new MaterialRef("StrontiumOxide"), 5L), new MaterialRefStack(new MaterialRef("Cerium"), 5L), new MaterialRefStack(new MaterialRef("Sodium"), 5L), new MaterialRefStack(new MaterialRef("Phosphorus"), 3L), new MaterialRefStack(new MaterialRef("Oxygen"), 12L), new MaterialRefStack(new MaterialRef("Fluorine"), 6L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 777, 1354, 634000, false, false, 0, true, "Ca₅(SrO)₅Ce₅Na₅P₃O₁₂F₆", 20L, 24L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 5L), new MaterialRefStack(new MaterialRef("StrontiumOxide"), 5L), new MaterialRefStack(new MaterialRef("Cerium"), 5L), new MaterialRefStack(new MaterialRef("Sodium"), 5L), new MaterialRefStack(new MaterialRef("Phosphorus"), 3L), new MaterialRefStack(new MaterialRef("Oxygen"), 12L), new MaterialRefStack(new MaterialRef("Fluorine"), 6L)), null, null))
             .build();
-        Materials2Materials.GtppFluorinatedUraniumHexafluorideFUF6 = MaterialLibAPI.newMaterial("gregtech", "FluorinatedUraniumHexafluorideFUF6", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.FluorinatedUraniumHexafluorideFUF6 = MaterialLibAPI.newMaterial("gregtech", "FluorinatedUraniumHexafluorideFUF6", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA4EDA9)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -30073,7 +30073,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("UraniumHexafluoride"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 460, 974, 178000, false, false, 0, false, "UF₆F₂", 19L, 25L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("UraniumHexafluoride"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 2L)), "molten.fluorinateduraniumhexafluoridefuf6", null))
             .build();
-        Materials2Materials.GtppFluorineSpargedTBSalt = MaterialLibAPI.newMaterial("gregtech", "FluorineSpargedTBSalt", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.FluorineSpargedTBSalt = MaterialLibAPI.newMaterial("gregtech", "FluorineSpargedTBSalt", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF94B29C)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -30087,7 +30087,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L), new MaterialRefStack(new MaterialRef("ThoriumTetrafluoride"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 987, 3131, 298000, false, false, 0, false, "LiFBeF₂ThF₄", 20L, 29L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L), new MaterialRefStack(new MaterialRef("ThoriumTetrafluoride"), 1L)), "molten.fluorinespargedtbsalt", null))
             .build();
-        Materials2Materials.GtppFluorineSpargedTSalt = MaterialLibAPI.newMaterial("gregtech", "FluorineSpargedTSalt", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.FluorineSpargedTSalt = MaterialLibAPI.newMaterial("gregtech", "FluorineSpargedTSalt", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA5B2AF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -30101,7 +30101,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("ThoriumTetrafluoride"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 941, 2948, 272000, false, false, 0, false, "LiFThF₄", 27L, 40L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("ThoriumTetrafluoride"), 1L)), "molten.fluorinespargedtsalt", null))
             .build();
-        Materials2Materials.GtppFluoriteF = MaterialLibAPI.newMaterial("gregtech", "FluoriteF", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.FluoriteF = MaterialLibAPI.newMaterial("gregtech", "FluoriteF", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF307D5D)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30120,7 +30120,7 @@ public class Materials2Materials {
 
     private static void initPart29() {
         // spotless:off
-        Materials2Materials.GtppGadoliniteCe = MaterialLibAPI.newMaterial("gregtech", "GadoliniteCe", TextureSet.of("miscutils", "REFINED"))
+        Materials2Materials.GadoliniteCe = MaterialLibAPI.newMaterial("gregtech", "GadoliniteCe", TextureSet.of("miscutils", "REFINED"))
             .setTint(0xFF6C9979)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30132,7 +30132,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Cerium"), 4L), new MaterialRefStack(new MaterialRef("Erbium"), 2L), new MaterialRefStack(new MaterialRef("Lanthanum"), 2L), new MaterialRefStack(new MaterialRef("Neodymium"), 2L), new MaterialRefStack(new MaterialRef("Yttrium"), 2L), new MaterialRefStack(new MaterialRef("Gadolinium"), 1L), new MaterialRefStack(new MaterialRef("Beryllium"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 7L), new MaterialRefStack(new MaterialRef("Oxygen"), 14L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1676, 2214, 1776000, false, false, 0, true, "Ce₄Er₂La₂Nd₂Y₂GdBe₂Si₇O₁₄", 41L, 57L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Cerium"), 4L), new MaterialRefStack(new MaterialRef("Erbium"), 2L), new MaterialRefStack(new MaterialRef("Lanthanum"), 2L), new MaterialRefStack(new MaterialRef("Neodymium"), 2L), new MaterialRefStack(new MaterialRef("Yttrium"), 2L), new MaterialRefStack(new MaterialRef("Gadolinium"), 1L), new MaterialRefStack(new MaterialRef("Beryllium"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 7L), new MaterialRefStack(new MaterialRef("Oxygen"), 14L)), null, null))
             .build();
-        Materials2Materials.GtppGadoliniteY = MaterialLibAPI.newMaterial("gregtech", "GadoliniteY", TextureSet.of("miscutils", "REFINED"))
+        Materials2Materials.GadoliniteY = MaterialLibAPI.newMaterial("gregtech", "GadoliniteY", TextureSet.of("miscutils", "REFINED"))
             .setTint(0xFF6C9979)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30144,7 +30144,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Cerium"), 2L), new MaterialRefStack(new MaterialRef("Erbium"), 2L), new MaterialRefStack(new MaterialRef("Lanthanum"), 2L), new MaterialRefStack(new MaterialRef("Neodymium"), 2L), new MaterialRefStack(new MaterialRef("Yttrium"), 4L), new MaterialRefStack(new MaterialRef("Gadolinium"), 2L), new MaterialRefStack(new MaterialRef("Beryllium"), 3L), new MaterialRefStack(new MaterialRef("Silicon"), 4L), new MaterialRefStack(new MaterialRef("Oxygen"), 9L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1676, 2214, 1776000, false, false, 0, true, "Ce₂Er₂La₂Nd₂Y₄Gd₂Be₃Si₄O₉", 41L, 57L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Cerium"), 2L), new MaterialRefStack(new MaterialRef("Erbium"), 2L), new MaterialRefStack(new MaterialRef("Lanthanum"), 2L), new MaterialRefStack(new MaterialRef("Neodymium"), 2L), new MaterialRefStack(new MaterialRef("Yttrium"), 4L), new MaterialRefStack(new MaterialRef("Gadolinium"), 2L), new MaterialRefStack(new MaterialRef("Beryllium"), 3L), new MaterialRefStack(new MaterialRef("Silicon"), 4L), new MaterialRefStack(new MaterialRef("Oxygen"), 9L)), null, null))
             .build();
-        Materials2Materials.GtppGeikielite = MaterialLibAPI.newMaterial("gregtech", "Geikielite", TextureSet.of("miscutils", "GEM_A"))
+        Materials2Materials.Geikielite = MaterialLibAPI.newMaterial("gregtech", "Geikielite", TextureSet.of("miscutils", "GEM_A"))
             .setTint(0xFF9E99D5)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30156,7 +30156,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Magnesium"), 1L), new MaterialRefStack(new MaterialRef("Titanium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1245, 2222, 176000, false, false, 0, true, "MgTiO₃", 14L, 15L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Magnesium"), 1L), new MaterialRefStack(new MaterialRef("Titanium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)), null, null))
             .build();
-        Materials2Materials.GtppGermanium = MaterialLibAPI.newMaterial("gregtech", "Germanium", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
+        Materials2Materials.Germanium = MaterialLibAPI.newMaterial("gregtech", "Germanium", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
             .setTint(0xFFC8C8C8)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30188,7 +30188,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppGreenockite = MaterialLibAPI.newMaterial("gregtech", "Greenockite", TextureSet.of("miscutils", "GEM_A"))
+        Materials2Materials.Greenockite = MaterialLibAPI.newMaterial("gregtech", "Greenockite", TextureSet.of("miscutils", "GEM_A"))
             .setTint(0xFF7D7D1E)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30200,7 +30200,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Cadmium"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(1, 30L, 764, 2237, 288000, false, false, 0, true, "CdS", 32L, 40L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Cadmium"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L)), null, null))
             .build();
-        Materials2Materials.GtppGrisium = MaterialLibAPI.newMaterial("gregtech", "Grisium", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Grisium = MaterialLibAPI.newMaterial("gregtech", "Grisium", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF355D6A)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30229,7 +30229,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeRound)
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall);
-        Materials2Materials.GtppHG1223 = MaterialLibAPI.newMaterial("gregtech", "HG1223", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.HG1223 = MaterialLibAPI.newMaterial("gregtech", "HG1223", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF27559F)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30261,7 +30261,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeStick)
             .removeShape(Materials2Shapes.shapeStickLong);
-        Materials2Materials.GtppHS188A = MaterialLibAPI.newMaterial("gregtech", "HS188A", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.HS188A = MaterialLibAPI.newMaterial("gregtech", "HS188A", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA5A3A7)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30291,7 +30291,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppHastelloyC276 = MaterialLibAPI.newMaterial("gregtech", "HastelloyC276", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.HastelloyC276 = MaterialLibAPI.newMaterial("gregtech", "HastelloyC276", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFAA8CA6)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30321,7 +30321,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppHastelloyN = MaterialLibAPI.newMaterial("gregtech", "HastelloyN", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.HastelloyN = MaterialLibAPI.newMaterial("gregtech", "HastelloyN", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFD7CCE8)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30351,7 +30351,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppHastelloyW = MaterialLibAPI.newMaterial("gregtech", "HastelloyW", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.HastelloyW = MaterialLibAPI.newMaterial("gregtech", "HastelloyW", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFB7B2E6)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30381,7 +30381,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppHastelloyX = MaterialLibAPI.newMaterial("gregtech", "HastelloyX", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.HastelloyX = MaterialLibAPI.newMaterial("gregtech", "HastelloyX", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFBEBACD)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30411,7 +30411,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppHeLiCoPtEr = MaterialLibAPI.newMaterial("gregtech", "HeLiCoPtEr", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.HeLiCoPtEr = MaterialLibAPI.newMaterial("gregtech", "HeLiCoPtEr", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFC6C09D)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30441,7 +30441,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppHeliumSpargedUSalt = MaterialLibAPI.newMaterial("gregtech", "HeliumSpargedUSalt", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.HeliumSpargedUSalt = MaterialLibAPI.newMaterial("gregtech", "HeliumSpargedUSalt", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA8CDAC)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -30455,7 +30455,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("Protactinium"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1077, 2882, 762000, false, false, 0, false, "LiFBeF₂UF₄FP", 38L, 57L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("Protactinium"), 1L)), "molten.heliumspargedusalt", null))
             .build();
-        Materials2Materials.GtppHibonite = MaterialLibAPI.newMaterial("gregtech", "Hibonite", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Hibonite = MaterialLibAPI.newMaterial("gregtech", "Hibonite", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFA3BAD3)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30467,7 +30467,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Cerium"), 1L), new MaterialRefStack(new MaterialRef("Aluminium"), 12L), new MaterialRefStack(new MaterialRef("Titanium"), 12L), new MaterialRefStack(new MaterialRef("Magnesium"), 12L), new MaterialRefStack(new MaterialRef("Oxygen"), 19L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1278, 1894, 588000, false, false, 0, true, "CaCeAl₁₂Ti₁₂Mg₁₂O₁₉", 22L, 26L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Cerium"), 1L), new MaterialRefStack(new MaterialRef("Aluminium"), 12L), new MaterialRefStack(new MaterialRef("Titanium"), 12L), new MaterialRefStack(new MaterialRef("Magnesium"), 12L), new MaterialRefStack(new MaterialRef("Oxygen"), 19L)), null, null))
             .build();
-        Materials2Materials.GtppHoneaite = MaterialLibAPI.newMaterial("gregtech", "Honeaite", TextureSet.of("miscutils", "FINE"))
+        Materials2Materials.Honeaite = MaterialLibAPI.newMaterial("gregtech", "Honeaite", TextureSet.of("miscutils", "FINE"))
             .setTint(0xFFD5D58A)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30479,7 +30479,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Gold"), 3L), new MaterialRefStack(new MaterialRef("Thallium"), 1L), new MaterialRefStack(new MaterialRef("Tellurium"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 969, 2871, 1056000, false, false, 0, true, "Au₃TlTe₂", 70L, 105L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Gold"), 3L), new MaterialRefStack(new MaterialRef("Thallium"), 1L), new MaterialRefStack(new MaterialRef("Tellurium"), 2L)), null, null))
             .build();
-        Materials2Materials.GtppHydrogenChlorideMix = MaterialLibAPI.newMaterial("gregtech", "HydrogenChlorideMix", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.HydrogenChlorideMix = MaterialLibAPI.newMaterial("gregtech", "HydrogenChlorideMix", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF7F7FFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -30493,7 +30493,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Chlorine"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 365, 643, 72000, false, false, 0, false, "HCl", 9L, 9L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Chlorine"), 1L)), "molten.hydrogenchloridemix", null))
             .build();
-        Materials2Materials.GtppHydrogenCyanide = MaterialLibAPI.newMaterial("gregtech", "HydrogenCyanide", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.HydrogenCyanide = MaterialLibAPI.newMaterial("gregtech", "HydrogenCyanide", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF06389E)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -30507,7 +30507,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Carbon"), 1L), new MaterialRefStack(new MaterialRef("Nitrogen"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 277, 299, 54000, false, false, 0, false, "HCN", 4L, -1L, "PURE_GAS", true, true, List.of(new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Carbon"), 1L), new MaterialRefStack(new MaterialRef("Nitrogen"), 1L)), "hydrogencyanide", null))
             .build();
-        Materials2Materials.GtppHypogen = MaterialLibAPI.newMaterial("gregtech", "Hypogen", TextureSet.of("miscutils", "CUSTOM/hypogen"))
+        Materials2Materials.Hypogen = MaterialLibAPI.newMaterial("gregtech", "Hypogen", TextureSet.of("miscutils", "CUSTOM/hypogen"))
             .setTint(0xFFFFFFFF)
             .setFluidTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
@@ -30535,7 +30535,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeRound)
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall);
-        Materials2Materials.GtppIncoloy020 = MaterialLibAPI.newMaterial("gregtech", "Incoloy020", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.Incoloy020 = MaterialLibAPI.newMaterial("gregtech", "Incoloy020", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFE3B6AA)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30565,7 +30565,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppIncoloyDS = MaterialLibAPI.newMaterial("gregtech", "IncoloyDS", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.IncoloyDS = MaterialLibAPI.newMaterial("gregtech", "IncoloyDS", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFB7B1E8)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30595,7 +30595,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppIncoloyMA956 = MaterialLibAPI.newMaterial("gregtech", "IncoloyMA956", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.IncoloyMA956 = MaterialLibAPI.newMaterial("gregtech", "IncoloyMA956", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFC8DCDE)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30625,7 +30625,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppInconel625 = MaterialLibAPI.newMaterial("gregtech", "Inconel625", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Inconel625 = MaterialLibAPI.newMaterial("gregtech", "Inconel625", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF80C880)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30655,7 +30655,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppInconel690 = MaterialLibAPI.newMaterial("gregtech", "Inconel690", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.Inconel690 = MaterialLibAPI.newMaterial("gregtech", "Inconel690", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF76DC8A)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30685,7 +30685,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppInconel792 = MaterialLibAPI.newMaterial("gregtech", "Inconel792", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Inconel792 = MaterialLibAPI.newMaterial("gregtech", "Inconel792", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF6CF076)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30715,7 +30715,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppIndalloy140 = MaterialLibAPI.newMaterial("gregtech", "Indalloy140", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Indalloy140 = MaterialLibAPI.newMaterial("gregtech", "Indalloy140", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF726A8D)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30749,7 +30749,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeStick)
             .removeShape(Materials2Shapes.shapeStickLong)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppIrarsite = MaterialLibAPI.newMaterial("gregtech", "Irarsite", TextureSet.of("miscutils", "FIERY"))
+        Materials2Materials.Irarsite = MaterialLibAPI.newMaterial("gregtech", "Irarsite", TextureSet.of("miscutils", "FIERY"))
             .setTint(0xFFC6D4BF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30761,7 +30761,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Iridium"), 1L), new MaterialRefStack(new MaterialRef("Ruthenium"), 1L), new MaterialRefStack(new MaterialRef("Rhodium"), 1L), new MaterialRefStack(new MaterialRef("Platinum"), 1L), new MaterialRefStack(new MaterialRef("Arsenic"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1774, 4047, 1428000, false, false, 0, true, "IrRuRhPtAsSO", 43L, 59L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Iridium"), 1L), new MaterialRefStack(new MaterialRef("Ruthenium"), 1L), new MaterialRefStack(new MaterialRef("Rhodium"), 1L), new MaterialRefStack(new MaterialRef("Platinum"), 1L), new MaterialRefStack(new MaterialRef("Arsenic"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 1L)), null, null))
             .build();
-        Materials2Materials.GtppKashinite = MaterialLibAPI.newMaterial("gregtech", "Kashinite", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.Kashinite = MaterialLibAPI.newMaterial("gregtech", "Kashinite", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFDCDC9B)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30773,7 +30773,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Iridium"), 2L), new MaterialRefStack(new MaterialRef("Rhodium"), 2L), new MaterialRefStack(new MaterialRef("Sulfur"), 3L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1964, 3532, 654000, false, false, 0, true, "Ir₂Rh₂S₃", 46L, 63L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Iridium"), 2L), new MaterialRefStack(new MaterialRef("Rhodium"), 2L), new MaterialRefStack(new MaterialRef("Sulfur"), 3L)), null, null))
             .build();
-        Materials2Materials.GtppKoboldite = MaterialLibAPI.newMaterial("gregtech", "Koboldite", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Koboldite = MaterialLibAPI.newMaterial("gregtech", "Koboldite", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF50D2FF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30792,7 +30792,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Nickel"), 35L), new MaterialRefStack(new MaterialRef("Thaumium"), 30L), new MaterialRefStack(new MaterialRef("Iron"), 35L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1452, 4991, 340000, true, false, 0, true, "Ni₇(FeMa)₆Fe₇", 26L, 30L, "SOLID", true, true, List.of(new MaterialRefStack(new MaterialRef("Nickel"), 35L), new MaterialRefStack(new MaterialRef("Thaumium"), 30L), new MaterialRefStack(new MaterialRef("Iron"), 35L)), "molten.koboldite", null))
             .build();
-        Materials2Materials.GtppLFTRFuel1 = MaterialLibAPI.newMaterial("gregtech", "LFTRFuel1", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.LFTRFuel1 = MaterialLibAPI.newMaterial("gregtech", "LFTRFuel1", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFFB5E7B1)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -30811,7 +30811,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 55L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 25L), new MaterialRefStack(new MaterialRef("ZirconiumTetrafluoride"), 6L), new MaterialRefStack(new MaterialRef("Uranium235"), 14L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 863, 1163, 628000, false, true, 5, false, "LiFBeF₂ZrF₄U", 32L, -1L, "LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 55L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 25L), new MaterialRefStack(new MaterialRef("ZirconiumTetrafluoride"), 6L), new MaterialRefStack(new MaterialRef("Uranium235"), 14L)), "molten.lftrfuel1", null))
             .build();
-        Materials2Materials.GtppLFTRFuel2 = MaterialLibAPI.newMaterial("gregtech", "LFTRFuel2", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.LFTRFuel2 = MaterialLibAPI.newMaterial("gregtech", "LFTRFuel2", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFFB5E1B3)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -30830,7 +30830,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 65L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 28L), new MaterialRefStack(new MaterialRef("ZirconiumTetrafluoride"), 5L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 923, 1213, 408000, false, true, 5, false, "LiFBeF₂ZrF₄UF₄", 21L, -1L, "LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 65L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 28L), new MaterialRefStack(new MaterialRef("ZirconiumTetrafluoride"), 5L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 2L)), "molten.lftrfuel2", null))
             .build();
-        Materials2Materials.GtppLFTRFuel3 = MaterialLibAPI.newMaterial("gregtech", "LFTRFuel3", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.LFTRFuel3 = MaterialLibAPI.newMaterial("gregtech", "LFTRFuel3", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFF85BB8D)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -30849,7 +30849,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 65L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 28L), new MaterialRefStack(new MaterialRef("ThoriumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 839, 1143, 548000, false, true, 5, false, "LiFBeF₂ThF₄UF₄", 27L, -1L, "LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 65L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 28L), new MaterialRefStack(new MaterialRef("ThoriumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L)), "molten.lftrfuel3", null))
             .build();
-        Materials2Materials.GtppLFTRFuelBase = MaterialLibAPI.newMaterial("gregtech", "LFTRFuelBase", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.LFTRFuelBase = MaterialLibAPI.newMaterial("gregtech", "LFTRFuelBase", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA3DAAD)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -30863,7 +30863,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("StableMoltenSaltBase"), 1L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 833, 2418, 274000, false, false, 0, false, "LiFBeF₂UF₄", 28L, 40L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("StableMoltenSaltBase"), 1L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L)), "molten.lftrfuelbase", null))
             .build();
-        Materials2Materials.GtppLafiumCompound = MaterialLibAPI.newMaterial("gregtech", "LafiumCompound", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.LafiumCompound = MaterialLibAPI.newMaterial("gregtech", "LafiumCompound", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF8FA89C)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30892,7 +30892,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppLafossaite = MaterialLibAPI.newMaterial("gregtech", "Lafossaite", TextureSet.of("miscutils", "REFINED"))
+        Materials2Materials.Lafossaite = MaterialLibAPI.newMaterial("gregtech", "Lafossaite", TextureSet.of("miscutils", "REFINED"))
             .setTint(0xFFD29797)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30904,7 +30904,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Chlorine"), 1L), new MaterialRefStack(new MaterialRef("Bromine"), 1L), new MaterialRefStack(new MaterialRef("Thallium"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 429, 1006, 638000, false, false, 0, true, "ClBrTl", 44L, 62L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Chlorine"), 1L), new MaterialRefStack(new MaterialRef("Bromine"), 1L), new MaterialRefStack(new MaterialRef("Thallium"), 1L)), null, null))
             .build();
-        Materials2Materials.GtppLanthaniteCe = MaterialLibAPI.newMaterial("gregtech", "LanthaniteCe", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.LanthaniteCe = MaterialLibAPI.newMaterial("gregtech", "LanthaniteCe", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF5E8BD3)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30916,7 +30916,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Cerium"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L), new MaterialRefStack(new MaterialRef("Calcium"), 3L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 734, 807, 426000, false, false, 0, true, "Ce₂O₃Ca₃H₂O", 19L, 23L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Cerium"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L), new MaterialRefStack(new MaterialRef("Calcium"), 3L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 1L)), null, null))
             .build();
-        Materials2Materials.GtppLanthaniteLa = MaterialLibAPI.newMaterial("gregtech", "LanthaniteLa", TextureSet.of("miscutils", "REFINED"))
+        Materials2Materials.LanthaniteLa = MaterialLibAPI.newMaterial("gregtech", "LanthaniteLa", TextureSet.of("miscutils", "REFINED"))
             .setTint(0xFF6278D1)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30928,7 +30928,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Lanthanum"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L), new MaterialRefStack(new MaterialRef("Calcium"), 3L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 759, 832, 422000, false, false, 0, true, "La₂O₃Ca₃H₂O", 18L, 23L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Lanthanum"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L), new MaterialRefStack(new MaterialRef("Calcium"), 3L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 1L)), null, null))
             .build();
-        Materials2Materials.GtppLanthaniteNd = MaterialLibAPI.newMaterial("gregtech", "LanthaniteNd", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.LanthaniteNd = MaterialLibAPI.newMaterial("gregtech", "LanthaniteNd", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF586FC8)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30940,7 +30940,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Neodymium"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L), new MaterialRefStack(new MaterialRef("Calcium"), 3L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 779, 853, 434000, false, false, 0, true, "Nd₂O₃Ca₃H₂O", 19L, 24L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Neodymium"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L), new MaterialRefStack(new MaterialRef("Calcium"), 3L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 1L)), null, null))
             .build();
-        Materials2Materials.GtppLaurenium = MaterialLibAPI.newMaterial("gregtech", "Laurenium", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Laurenium = MaterialLibAPI.newMaterial("gregtech", "Laurenium", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFF4A8FF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -30968,7 +30968,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppLautarite = MaterialLibAPI.newMaterial("gregtech", "Lautarite", TextureSet.of("miscutils", "FINE"))
+        Materials2Materials.Lautarite = MaterialLibAPI.newMaterial("gregtech", "Lautarite", TextureSet.of("miscutils", "FINE"))
             .setTint(0xFF7593B4)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30980,7 +30980,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Iodine"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 6L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 700, 778, 366000, false, false, 0, true, "CaI₂O₆", 27L, 34L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Iodine"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 6L)), null, null))
             .build();
-        Materials2Materials.GtppLepersonnite = MaterialLibAPI.newMaterial("gregtech", "Lepersonnite", TextureSet.of("miscutils", "EMERALD"))
+        Materials2Materials.Lepersonnite = MaterialLibAPI.newMaterial("gregtech", "Lepersonnite", TextureSet.of("miscutils", "EMERALD"))
             .setTint(0xFF56A597)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -30992,7 +30992,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Ytterbium"), 3L), new MaterialRefStack(new MaterialRef("Gadolinium"), 2L), new MaterialRefStack(new MaterialRef("Dysprosium"), 2L), new MaterialRefStack(new MaterialRef("Uranium235"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 29L), new MaterialRefStack(new MaterialRef("Hydrogen"), 24L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1227, 2023, 1570000, false, false, 0, true, "CaYb₃Gd₂Dy₂(U₂₃₅)₂O₂₉H₂₄", 45L, 66L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Ytterbium"), 3L), new MaterialRefStack(new MaterialRef("Gadolinium"), 2L), new MaterialRefStack(new MaterialRef("Dysprosium"), 2L), new MaterialRefStack(new MaterialRef("Uranium235"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 29L), new MaterialRefStack(new MaterialRef("Hydrogen"), 24L)), null, null))
             .build();
-        Materials2Materials.GtppLithium7 = MaterialLibAPI.newMaterial("gregtech", "Lithium7", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.Lithium7 = MaterialLibAPI.newMaterial("gregtech", "Lithium7", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFE1DCFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31023,7 +31023,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeStick)
             .removeShape(Materials2Shapes.shapeStickLong)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppLithiumFluoride = MaterialLibAPI.newMaterial("gregtech", "LithiumFluoride", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.LithiumFluoride = MaterialLibAPI.newMaterial("gregtech", "LithiumFluoride", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFF0EDFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -31042,7 +31042,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Lithium7"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 526, 1287, 50000, false, false, 0, false, "LiF", 6L, 6L, "LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Lithium7"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 1L)), "molten.lithiumfluoride", null))
             .build();
-        Materials2Materials.GtppLithiumTetrafluoroberyllateLFTB = MaterialLibAPI.newMaterial("gregtech", "LithiumTetrafluoroberyllateLFTB", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.LithiumTetrafluoroberyllateLFTB = MaterialLibAPI.newMaterial("gregtech", "LithiumTetrafluoroberyllateLFTB", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFFC1DACB)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -31062,7 +31062,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 2L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 839, 1143, 50000, false, true, 4, false, "Li₂BeF₄", 6L, -1L, "LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 2L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L)), "molten.lithiumtetrafluoroberyllatelftb", null))
             .build();
-        Materials2Materials.GtppMaragingSteel250 = MaterialLibAPI.newMaterial("gregtech", "MaragingSteel250", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.MaragingSteel250 = MaterialLibAPI.newMaterial("gregtech", "MaragingSteel250", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA195D9)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31096,7 +31096,7 @@ public class Materials2Materials {
 
     private static void initPart30() {
         // spotless:off
-        Materials2Materials.GtppMaragingSteel300 = MaterialLibAPI.newMaterial("gregtech", "MaragingSteel300", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.MaragingSteel300 = MaterialLibAPI.newMaterial("gregtech", "MaragingSteel300", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF9799DD)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31126,7 +31126,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppMaragingSteel350 = MaterialLibAPI.newMaterial("gregtech", "MaragingSteel350", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.MaragingSteel350 = MaterialLibAPI.newMaterial("gregtech", "MaragingSteel350", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF8F9DD9)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31156,7 +31156,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppMiessiite = MaterialLibAPI.newMaterial("gregtech", "Miessiite", TextureSet.of("miscutils", "FINE"))
+        Materials2Materials.Miessiite = MaterialLibAPI.newMaterial("gregtech", "Miessiite", TextureSet.of("miscutils", "FINE"))
             .setTint(0xFFC0C0C0)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -31168,7 +31168,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Palladium"), 11L), new MaterialRefStack(new MaterialRef("Tellurium"), 2L), new MaterialRefStack(new MaterialRef("Selenium"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1104, 1440, 626000, false, false, 0, true, "Pd₁₁Te₂Se₂", 44L, 60L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Palladium"), 11L), new MaterialRefStack(new MaterialRef("Tellurium"), 2L), new MaterialRefStack(new MaterialRef("Selenium"), 2L)), null, null))
             .build();
-        Materials2Materials.GtppMutatedLivingSolder = MaterialLibAPI.newMaterial("gregtech", "MutatedLivingSolder", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.MutatedLivingSolder = MaterialLibAPI.newMaterial("gregtech", "MutatedLivingSolder", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF936D9B)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -31182,7 +31182,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Tin"), 1L), new MaterialRefStack(new MaterialRef("Bismuth"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 73, 773, 652000, false, false, 0, false, "?Sn?Bi?If?", 66L, -1L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Tin"), 1L), new MaterialRefStack(new MaterialRef("Bismuth"), 1L)), "molten.mutatedlivingsolder", null))
             .build();
-        Materials2Materials.GtppNeptunium = MaterialLibAPI.newMaterial("gregtech", "Neptunium", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.Neptunium = MaterialLibAPI.newMaterial("gregtech", "Neptunium", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFFC8DCCD)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31218,7 +31218,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppNeptuniumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "NeptuniumHexafluoride", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.NeptuniumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "NeptuniumHexafluoride", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFE3EDE6)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -31237,7 +31237,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Neptunium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 6L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 619, 2330, 510000, false, true, 1, false, "NpF₆", 51L, 76L, "GAS", true, true, List.of(new MaterialRefStack(new MaterialRef("Neptunium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 6L)), "neptuniumhexafluoride", null))
             .build();
-        Materials2Materials.GtppNichromite = MaterialLibAPI.newMaterial("gregtech", "Nichromite", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Nichromite = MaterialLibAPI.newMaterial("gregtech", "Nichromite", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF8FA8E4)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -31249,7 +31249,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Nickel"), 1L), new MaterialRefStack(new MaterialRef("Cobalt"), 1L), new MaterialRefStack(new MaterialRef("Iron"), 3L), new MaterialRefStack(new MaterialRef("Aluminium"), 2L), new MaterialRefStack(new MaterialRef("Chrome"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 8L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1685, 3518, 534000, false, false, 0, true, "NiCoFe₃Al₂Cr₂O₈", 21L, 23L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Nickel"), 1L), new MaterialRefStack(new MaterialRef("Cobalt"), 1L), new MaterialRefStack(new MaterialRef("Iron"), 3L), new MaterialRefStack(new MaterialRef("Aluminium"), 2L), new MaterialRefStack(new MaterialRef("Chrome"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 8L)), null, null))
             .build();
-        Materials2Materials.GtppNiobiumCarbide = MaterialLibAPI.newMaterial("gregtech", "NiobiumCarbide", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.NiobiumCarbide = MaterialLibAPI.newMaterial("gregtech", "NiobiumCarbide", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFCDC5BF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31279,7 +31279,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppNitinol60 = MaterialLibAPI.newMaterial("gregtech", "Nitinol60", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.Nitinol60 = MaterialLibAPI.newMaterial("gregtech", "Nitinol60", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFD2B4F5)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31307,7 +31307,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeRound)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppOctiron = MaterialLibAPI.newMaterial("gregtech", "Octiron", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Octiron = MaterialLibAPI.newMaterial("gregtech", "Octiron", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF7C7880)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31337,7 +31337,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppPerroudite = MaterialLibAPI.newMaterial("gregtech", "Perroudite", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Perroudite = MaterialLibAPI.newMaterial("gregtech", "Perroudite", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFCCA98D)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -31349,7 +31349,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Sulfur"), 5L), new MaterialRefStack(new MaterialRef("Silver"), 4L), new MaterialRefStack(new MaterialRef("Iodine"), 2L), new MaterialRefStack(new MaterialRef("Mercury"), 5L), new MaterialRefStack(new MaterialRef("Bromine"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 628, 1664, 1162000, false, false, 0, true, "S₅Ag₄I₂Hg₅Br₂Cl₂", 41L, 55L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Sulfur"), 5L), new MaterialRefStack(new MaterialRef("Silver"), 4L), new MaterialRefStack(new MaterialRef("Iodine"), 2L), new MaterialRefStack(new MaterialRef("Mercury"), 5L), new MaterialRefStack(new MaterialRef("Bromine"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 2L)), null, null))
             .build();
-        Materials2Materials.GtppPhosphorousUraniumHexafluoridePUF6 = MaterialLibAPI.newMaterial("gregtech", "PhosphorousUraniumHexafluoridePUF6", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.PhosphorousUraniumHexafluoridePUF6 = MaterialLibAPI.newMaterial("gregtech", "PhosphorousUraniumHexafluoridePUF6", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFC2F370)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -31363,7 +31363,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("UraniumHexafluoride"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 3L), new MaterialRefStack(new MaterialRef("Phosphorus"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 503, 1163, 238000, false, false, 0, false, "UF₆F₂FP", 17L, 22L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("UraniumHexafluoride"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 3L), new MaterialRefStack(new MaterialRef("Phosphorus"), 1L)), "molten.phosphorousuraniumhexafluoridepuf6", null))
             .build();
-        Materials2Materials.GtppPikyonium64B = MaterialLibAPI.newMaterial("gregtech", "Pikyonium64B", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Pikyonium64B = MaterialLibAPI.newMaterial("gregtech", "Pikyonium64B", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF3467BA)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31392,7 +31392,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppPlutonium238 = MaterialLibAPI.newMaterial("gregtech", "Plutonium238", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.Plutonium238 = MaterialLibAPI.newMaterial("gregtech", "Plutonium238", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFFFA4646)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31428,7 +31428,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppPolonium = MaterialLibAPI.newMaterial("gregtech", "Polonium", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.Polonium = MaterialLibAPI.newMaterial("gregtech", "Polonium", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFFB4AAB4)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31464,7 +31464,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppPolycrase = MaterialLibAPI.newMaterial("gregtech", "Polycrase", TextureSet.of("miscutils", "ROUGH"))
+        Materials2Materials.Polycrase = MaterialLibAPI.newMaterial("gregtech", "Polycrase", TextureSet.of("miscutils", "ROUGH"))
             .setTint(0xFF83B2AE)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -31476,7 +31476,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 1L), new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Cerium"), 1L), new MaterialRefStack(new MaterialRef("Uranium235"), 1L), new MaterialRefStack(new MaterialRef("Thorium"), 1L), new MaterialRefStack(new MaterialRef("Titanium"), 2L), new MaterialRefStack(new MaterialRef("Niobium"), 2L), new MaterialRefStack(new MaterialRef("Tantalum"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 6L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1999, 3190, 2148000, false, false, 0, true, "YCaCe(U₂₃₅)ThTi₂Nb₂Ta₂O₆", 49L, 70L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 1L), new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Cerium"), 1L), new MaterialRefStack(new MaterialRef("Uranium235"), 1L), new MaterialRefStack(new MaterialRef("Thorium"), 1L), new MaterialRefStack(new MaterialRef("Titanium"), 2L), new MaterialRefStack(new MaterialRef("Niobium"), 2L), new MaterialRefStack(new MaterialRef("Tantalum"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 6L)), null, null))
             .build();
-        Materials2Materials.GtppPotin = MaterialLibAPI.newMaterial("gregtech", "Potin", TextureSet.of("miscutils", "DULL"))
+        Materials2Materials.Potin = MaterialLibAPI.newMaterial("gregtech", "Potin", TextureSet.of("miscutils", "DULL"))
             .setTint(0xFFC99781)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31506,7 +31506,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppProtactinium = MaterialLibAPI.newMaterial("gregtech", "Protactinium", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.Protactinium = MaterialLibAPI.newMaterial("gregtech", "Protactinium", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFFBE96AA)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31542,7 +31542,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppQuantum = MaterialLibAPI.newMaterial("gregtech", "Quantum", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.Quantum = MaterialLibAPI.newMaterial("gregtech", "Quantum", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF989EA2)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31569,7 +31569,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeRound)
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall);
-        Materials2Materials.GtppRadioactiveMineralMix = MaterialLibAPI.newMaterial("gregtech", "RadioactiveMineralMix", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.RadioactiveMineralMix = MaterialLibAPI.newMaterial("gregtech", "RadioactiveMineralMix", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFF8CA096)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -31585,7 +31585,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Radon"), 2L), new MaterialRefStack(new MaterialRef("Radium"), 1L), new MaterialRefStack(new MaterialRef("Uranium235"), 1L), new MaterialRefStack(new MaterialRef("Uranium"), 10L), new MaterialRefStack(new MaterialRef("Thorium"), 25L), new MaterialRefStack(new MaterialRef("Thorium232"), 4L), new MaterialRefStack(new MaterialRef("Fluorcaphite"), 6L), new MaterialRefStack(new MaterialRef("SamarskiteY"), 8L), new MaterialRefStack(new MaterialRef("Titanite"), 4L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1621, 4655, 3292000, false, true, 4, true, "Rn₂Ra(U₂₃₅)U₁Th₂₅(Th)₄(Ca₅(SrO)₅Ce₅Na₅P₃O₁₂F₆)₆(Y₂Fe₁(U₂₃₅)₂Th₃Nb₂Ta₃)₈(Ca₂Ti₂Si₂ThO₁)₄", 72L, 110L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Radon"), 2L), new MaterialRefStack(new MaterialRef("Radium"), 1L), new MaterialRefStack(new MaterialRef("Uranium235"), 1L), new MaterialRefStack(new MaterialRef("Uranium"), 10L), new MaterialRefStack(new MaterialRef("Thorium"), 25L), new MaterialRefStack(new MaterialRef("Thorium232"), 4L), new MaterialRefStack(new MaterialRef("Fluorcaphite"), 6L), new MaterialRefStack(new MaterialRef("SamarskiteY"), 8L), new MaterialRefStack(new MaterialRef("Titanite"), 4L)), null, null))
             .build();
-        Materials2Materials.GtppRadium = MaterialLibAPI.newMaterial("gregtech", "Radium", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.Radium = MaterialLibAPI.newMaterial("gregtech", "Radium", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFFA5A5A5)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31621,7 +31621,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppRareEarthI = MaterialLibAPI.newMaterial("gregtech", "RareEarthI", TextureSet.of("miscutils", "GEM_A"))
+        Materials2Materials.RareEarthI = MaterialLibAPI.newMaterial("gregtech", "RareEarthI", TextureSet.of("miscutils", "GEM_A"))
             .setTint(0xFF868A90)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -31633,7 +31633,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Greenockite"), 1L), new MaterialRefStack(new MaterialRef("LanthaniteCe"), 1L), new MaterialRefStack(new MaterialRef("AgarditeCd"), 1L), new MaterialRefStack(new MaterialRef("Yttrialite"), 1L), new MaterialRefStack(new MaterialRef("NetherQuartz"), 1L), new MaterialRefStack(new MaterialRef("Galena"), 1L), new MaterialRefStack(new MaterialRef("Chalcopyrite"), 1L), new MaterialRefStack(new MaterialRef("CryoliteF"), 1L), new MaterialRefStack(new MaterialRef("Yttrium"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(1, 30L, 1473, 2773, 1256000, false, false, 0, true, "??????", 30L, -1L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Greenockite"), 1L), new MaterialRefStack(new MaterialRef("LanthaniteCe"), 1L), new MaterialRefStack(new MaterialRef("AgarditeCd"), 1L), new MaterialRefStack(new MaterialRef("Yttrialite"), 1L), new MaterialRefStack(new MaterialRef("NetherQuartz"), 1L), new MaterialRefStack(new MaterialRef("Galena"), 1L), new MaterialRefStack(new MaterialRef("Chalcopyrite"), 1L), new MaterialRefStack(new MaterialRef("CryoliteF"), 1L), new MaterialRefStack(new MaterialRef("Yttrium"), 1L)), null, null))
             .build();
-        Materials2Materials.GtppRareEarthII = MaterialLibAPI.newMaterial("gregtech", "RareEarthII", TextureSet.of("miscutils", "FIERY"))
+        Materials2Materials.RareEarthII = MaterialLibAPI.newMaterial("gregtech", "RareEarthII", TextureSet.of("miscutils", "FIERY"))
             .setTint(0xFF92A4BD)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -31645,7 +31645,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("LanthaniteNd"), 1L), new MaterialRefStack(new MaterialRef("AgarditeNd"), 1L), new MaterialRefStack(new MaterialRef("Yttriaite"), 1L), new MaterialRefStack(new MaterialRef("Crocoite"), 1L), new MaterialRefStack(new MaterialRef("Nichromite"), 1L), new MaterialRefStack(new MaterialRef("Zircon"), 1L), new MaterialRefStack(new MaterialRef("AncientGranite"), 1L), new MaterialRefStack(new MaterialRef("BlackMetal"), 1L), new MaterialRefStack(new MaterialRef("Runite"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(3, 480L, 3773, 5273, 1150000, false, false, 0, true, "??????", 29L, -1L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("LanthaniteNd"), 1L), new MaterialRefStack(new MaterialRef("AgarditeNd"), 1L), new MaterialRefStack(new MaterialRef("Yttriaite"), 1L), new MaterialRefStack(new MaterialRef("Crocoite"), 1L), new MaterialRefStack(new MaterialRef("Nichromite"), 1L), new MaterialRefStack(new MaterialRef("Zircon"), 1L), new MaterialRefStack(new MaterialRef("AncientGranite"), 1L), new MaterialRefStack(new MaterialRef("BlackMetal"), 1L), new MaterialRefStack(new MaterialRef("Runite"), 1L)), null, null))
             .build();
-        Materials2Materials.GtppRareEarthIII = MaterialLibAPI.newMaterial("gregtech", "RareEarthIII", TextureSet.of("miscutils", "REFINED"))
+        Materials2Materials.RareEarthIII = MaterialLibAPI.newMaterial("gregtech", "RareEarthIII", TextureSet.of("miscutils", "REFINED"))
             .setTint(0xFF94A788)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -31657,7 +31657,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("GadoliniteY"), 1L), new MaterialRefStack(new MaterialRef("Lepersonnite"), 1L), new MaterialRefStack(new MaterialRef("Florencite"), 1L), new MaterialRefStack(new MaterialRef("Fluorcaphite"), 1L), new MaterialRefStack(new MaterialRef("Lautarite"), 1L), new MaterialRefStack(new MaterialRef("DemicheleiteBr"), 1L), new MaterialRefStack(new MaterialRef("Alburnite"), 1L), new MaterialRefStack(new MaterialRef("SamarskiteY"), 1L), new MaterialRefStack(new MaterialRef("AgarditeLa"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(5, 7680L, 5473, 7773, 1540000, false, false, 0, true, "??????", 36L, -1L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("GadoliniteY"), 1L), new MaterialRefStack(new MaterialRef("Lepersonnite"), 1L), new MaterialRefStack(new MaterialRef("Florencite"), 1L), new MaterialRefStack(new MaterialRef("Fluorcaphite"), 1L), new MaterialRefStack(new MaterialRef("Lautarite"), 1L), new MaterialRefStack(new MaterialRef("DemicheleiteBr"), 1L), new MaterialRefStack(new MaterialRef("Alburnite"), 1L), new MaterialRefStack(new MaterialRef("SamarskiteY"), 1L), new MaterialRefStack(new MaterialRef("AgarditeLa"), 1L)), null, null))
             .build();
-        Materials2Materials.GtppRhenium = MaterialLibAPI.newMaterial("gregtech", "Rhenium", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
+        Materials2Materials.Rhenium = MaterialLibAPI.newMaterial("gregtech", "Rhenium", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
             .setTint(0xFF969696)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31689,7 +31689,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppRhugnor = MaterialLibAPI.newMaterial("gregtech", "Rhugnor", TextureSet.of("miscutils", "CUSTOM/rhugnor"))
+        Materials2Materials.Rhugnor = MaterialLibAPI.newMaterial("gregtech", "Rhugnor", TextureSet.of("miscutils", "CUSTOM/rhugnor"))
             .setTint(0xFFBE00FF)
             .setFluidTint(0xFFFFFFFF)
             .setProperty(StandardProperties.BLOCK_TINT, 0xFFFFFFFF)
@@ -31728,7 +31728,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeStick)
             .removeShape(Materials2Shapes.shapeStickLong);
-        Materials2Materials.GtppRunite = MaterialLibAPI.newMaterial("gregtech", "Runite", TextureSet.of("miscutils", "FINE"))
+        Materials2Materials.Runite = MaterialLibAPI.newMaterial("gregtech", "Runite", TextureSet.of("miscutils", "FINE"))
             .setTint(0xFF3CC8BE)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31767,7 +31767,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeStick)
             .removeShape(Materials2Shapes.shapeStickLong)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppSamarskiteY = MaterialLibAPI.newMaterial("gregtech", "SamarskiteY", TextureSet.of("miscutils", "FIERY"))
+        Materials2Materials.SamarskiteY = MaterialLibAPI.newMaterial("gregtech", "SamarskiteY", TextureSet.of("miscutils", "FIERY"))
             .setTint(0xFF82B69D)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -31779,7 +31779,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 2L), new MaterialRefStack(new MaterialRef("Iron"), 10L), new MaterialRefStack(new MaterialRef("Uranium235"), 2L), new MaterialRefStack(new MaterialRef("Thorium"), 3L), new MaterialRefStack(new MaterialRef("Niobium"), 2L), new MaterialRefStack(new MaterialRef("Tantalum"), 3L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 2468, 5133, 1772000, false, false, 0, true, "Y₂Fe₁(U₂₃₅)₂Th₃Nb₂Ta₃", 60L, 87L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 2L), new MaterialRefStack(new MaterialRef("Iron"), 10L), new MaterialRefStack(new MaterialRef("Uranium235"), 2L), new MaterialRefStack(new MaterialRef("Thorium"), 3L), new MaterialRefStack(new MaterialRef("Niobium"), 2L), new MaterialRefStack(new MaterialRef("Tantalum"), 3L)), null, null))
             .build();
-        Materials2Materials.GtppSamarskiteYb = MaterialLibAPI.newMaterial("gregtech", "SamarskiteYb", TextureSet.of("miscutils", "FIERY"))
+        Materials2Materials.SamarskiteYb = MaterialLibAPI.newMaterial("gregtech", "SamarskiteYb", TextureSet.of("miscutils", "FIERY"))
             .setTint(0xFF65AD86)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -31791,7 +31791,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Ytterbium"), 2L), new MaterialRefStack(new MaterialRef("Iron"), 9L), new MaterialRefStack(new MaterialRef("Uranium235"), 3L), new MaterialRefStack(new MaterialRef("Thorium"), 2L), new MaterialRefStack(new MaterialRef("Niobium"), 3L), new MaterialRefStack(new MaterialRef("Tantalum"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 2351, 5016, 1940000, false, false, 0, true, "Yb₂Fe₉(U₂₃₅)₃Th₂Nb₃Ta₂", 65L, 96L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Ytterbium"), 2L), new MaterialRefStack(new MaterialRef("Iron"), 9L), new MaterialRefStack(new MaterialRef("Uranium235"), 3L), new MaterialRefStack(new MaterialRef("Thorium"), 2L), new MaterialRefStack(new MaterialRef("Niobium"), 3L), new MaterialRefStack(new MaterialRef("Tantalum"), 2L)), null, null))
             .build();
-        Materials2Materials.GtppSeleniousAcid = MaterialLibAPI.newMaterial("gregtech", "SeleniousAcid", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.SeleniousAcid = MaterialLibAPI.newMaterial("gregtech", "SeleniousAcid", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF3F60D7)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -31805,7 +31805,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("SeleniumDioxide"), 1L), new MaterialRefStack(new MaterialRef("Hydrogen"), 8L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 340, 513, 128000, false, false, 0, false, "(SeO₂)H₈O₄", 10L, 11L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("SeleniumDioxide"), 1L), new MaterialRefStack(new MaterialRef("Hydrogen"), 8L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)), "molten.seleniousacid", null))
             .build();
-        Materials2Materials.GtppSelenium = MaterialLibAPI.newMaterial("gregtech", "Selenium", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
+        Materials2Materials.Selenium = MaterialLibAPI.newMaterial("gregtech", "Selenium", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
             .setTint(0xFFBEBEBE)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31837,7 +31837,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppSeleniumDioxide = MaterialLibAPI.newMaterial("gregtech", "SeleniumDioxide", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.SeleniumDioxide = MaterialLibAPI.newMaterial("gregtech", "SeleniumDioxide", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF5F91C3)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -31852,7 +31852,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Selenium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 408, 723, 190000, false, false, 0, false, "SeO₂", 21L, 26L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Selenium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L)), "molten.seleniumdioxide", null))
             .build();
-        Materials2Materials.GtppSeleniumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "SeleniumHexafluoride", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.SeleniumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "SeleniumHexafluoride", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFDEDEDE)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -31871,7 +31871,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Selenium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 6L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 408, 721, 194000, false, false, 0, false, "SeF₆", 21L, 27L, "GAS", true, true, List.of(new MaterialRefStack(new MaterialRef("Selenium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 6L)), "seleniumhexafluoride", null))
             .build();
-        Materials2Materials.GtppSiliconCarbide = MaterialLibAPI.newMaterial("gregtech", "SiliconCarbide", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.SiliconCarbide = MaterialLibAPI.newMaterial("gregtech", "SiliconCarbide", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF283024)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -31901,7 +31901,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppSodiumChloride = MaterialLibAPI.newMaterial("gregtech", "SodiumChloride", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.SodiumChloride = MaterialLibAPI.newMaterial("gregtech", "SodiumChloride", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF7F7FCA)
             .addToFamily(Materials2Families.familyAll)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Sodium Chloride")
@@ -31911,7 +31911,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Sodium"), 1L), new MaterialRefStack(new MaterialRef("Chlorine"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 543, 1355, 114000, false, false, 0, false, "NaCl", 14L, 14L, "PURE_GAS", false, false, List.of(new MaterialRefStack(new MaterialRef("Sodium"), 1L), new MaterialRefStack(new MaterialRef("Chlorine"), 1L)), null, null))
             .build();
-        Materials2Materials.GtppSodiumCyanide = MaterialLibAPI.newMaterial("gregtech", "SodiumCyanide", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.SodiumCyanide = MaterialLibAPI.newMaterial("gregtech", "SodiumCyanide", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFB4BEFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -31924,7 +31924,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Sodium"), 1L), new MaterialRefStack(new MaterialRef("Carbon"), 1L), new MaterialRefStack(new MaterialRef("Nitrogen"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 836, 1769, 96000, false, false, 0, false, "NaCN", 8L, -1L, "SOLID", true, false, List.of(new MaterialRefStack(new MaterialRef("Sodium"), 1L), new MaterialRefStack(new MaterialRef("Carbon"), 1L), new MaterialRefStack(new MaterialRef("Nitrogen"), 1L)), "molten.sodiumcyanide", null))
             .build();
-        Materials2Materials.GtppSodiumFluoride = MaterialLibAPI.newMaterial("gregtech", "SodiumFluoride", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.SodiumFluoride = MaterialLibAPI.newMaterial("gregtech", "SodiumFluoride", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF7F7FCA)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -31939,7 +31939,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Sodium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 484, 1119, 80000, false, false, 0, false, "NaF", 10L, 10L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Sodium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 1L)), "molten.sodiumfluoride", null))
             .build();
-        Materials2Materials.GtppSolarSaltCold = MaterialLibAPI.newMaterial("gregtech", "SolarSaltCold", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.SolarSaltCold = MaterialLibAPI.newMaterial("gregtech", "SolarSaltCold", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF2669C1)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -31953,7 +31953,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("PotassiumNitrate"), 4L), new MaterialRefStack(new MaterialRef("SodiumNitrate"), 6L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 429, 899, 76000, false, false, 0, false, "(KNO₃)₂(NaNO₃)₃", 9L, 9L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("PotassiumNitrate"), 4L), new MaterialRefStack(new MaterialRef("SodiumNitrate"), 6L)), "molten.solarsaltcold", null))
             .build();
-        Materials2Materials.GtppSolarSaltHot = MaterialLibAPI.newMaterial("gregtech", "SolarSaltHot", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.SolarSaltHot = MaterialLibAPI.newMaterial("gregtech", "SolarSaltHot", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFC81919)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -31967,7 +31967,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("PotassiumNitrate"), 4L), new MaterialRefStack(new MaterialRef("SodiumNitrate"), 6L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(1, 30L, 1473, 3573, 76000, false, false, 0, false, "(KNO₃)₂(NaNO₃)₃", 9L, -1L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("PotassiumNitrate"), 4L), new MaterialRefStack(new MaterialRef("SodiumNitrate"), 6L)), "molten.solarsalthot", null))
             .build();
-        Materials2Materials.GtppSolidAcidCatalystMixture = MaterialLibAPI.newMaterial("gregtech", "SolidAcidCatalystMixture", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.SolidAcidCatalystMixture = MaterialLibAPI.newMaterial("gregtech", "SolidAcidCatalystMixture", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF502800)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -31981,7 +31981,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Hydrogen"), 2L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 263, 610, 98000, false, false, 0, false, "?H2SO4?", 8L, -1L, "LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Hydrogen"), 2L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)), "molten.solidacidcatalystmixture", null))
             .build();
-        Materials2Materials.GtppStaballoy = MaterialLibAPI.newMaterial("gregtech", "Staballoy", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.Staballoy = MaterialLibAPI.newMaterial("gregtech", "Staballoy", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF444B42)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32010,7 +32010,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeRound)
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppStableMoltenSaltBase = MaterialLibAPI.newMaterial("gregtech", "StableMoltenSaltBase", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.StableMoltenSaltBase = MaterialLibAPI.newMaterial("gregtech", "StableMoltenSaltBase", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFC1DACB)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -32024,7 +32024,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 802, 2393, 50000, false, false, 0, false, "LiFBeF₂", 6L, 6L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L)), "molten.stablemoltensaltbase", null))
             .build();
-        Materials2Materials.GtppStellite = MaterialLibAPI.newMaterial("gregtech", "Stellite", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.Stellite = MaterialLibAPI.newMaterial("gregtech", "Stellite", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFC9B4F2)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32054,7 +32054,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppStrontiumHydroxide = MaterialLibAPI.newMaterial("gregtech", "StrontiumHydroxide", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.StrontiumHydroxide = MaterialLibAPI.newMaterial("gregtech", "StrontiumHydroxide", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF4C67BC)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -32067,7 +32067,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Strontium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 645, 1763, 208000, false, false, 0, false, "Sr(OH)₂", 15L, 19L, "SOLID", true, false, List.of(new MaterialRefStack(new MaterialRef("Strontium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L)), "molten.strontiumhydroxide", null))
             .build();
-        Materials2Materials.GtppStrontiumOxide = MaterialLibAPI.newMaterial("gregtech", "StrontiumOxide", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.StrontiumOxide = MaterialLibAPI.newMaterial("gregtech", "StrontiumOxide", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF739B9B)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -32085,7 +32085,7 @@ public class Materials2Materials {
 
     private static void initPart31() {
         // spotless:off
-        Materials2Materials.GtppTalonite = MaterialLibAPI.newMaterial("gregtech", "Talonite", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.Talonite = MaterialLibAPI.newMaterial("gregtech", "Talonite", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFC0BAAF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32115,7 +32115,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppTantalloy60 = MaterialLibAPI.newMaterial("gregtech", "Tantalloy60", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.Tantalloy60 = MaterialLibAPI.newMaterial("gregtech", "Tantalloy60", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFD5E7ED)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32145,7 +32145,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppTantalloy61 = MaterialLibAPI.newMaterial("gregtech", "Tantalloy61", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.Tantalloy61 = MaterialLibAPI.newMaterial("gregtech", "Tantalloy61", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFC1D3D9)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32175,7 +32175,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppTantalumCarbide = MaterialLibAPI.newMaterial("gregtech", "TantalumCarbide", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.TantalumCarbide = MaterialLibAPI.newMaterial("gregtech", "TantalumCarbide", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF8B8878)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32205,7 +32205,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppTechnetium = MaterialLibAPI.newMaterial("gregtech", "Technetium", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.Technetium = MaterialLibAPI.newMaterial("gregtech", "Technetium", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFFDCDCDC)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32240,7 +32240,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppTechnetiumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "TechnetiumHexafluoride", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.TechnetiumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "TechnetiumHexafluoride", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFEDEDED)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -32259,7 +32259,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Technetium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 6L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1399, 2817, 232000, false, true, 1, false, "TcF₆", 26L, 32L, "GAS", true, true, List.of(new MaterialRefStack(new MaterialRef("Technetium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 6L)), "technetiumhexafluoride", null))
             .build();
-        Materials2Materials.GtppThallium = MaterialLibAPI.newMaterial("gregtech", "Thallium", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
+        Materials2Materials.Thallium = MaterialLibAPI.newMaterial("gregtech", "Thallium", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
             .setTint(0xFFAFAFAF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32291,7 +32291,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppThoriumBerylliumDepletedMoltenSaltTBSalt = MaterialLibAPI.newMaterial("gregtech", "ThoriumBerylliumDepletedMoltenSaltTBSalt", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt = MaterialLibAPI.newMaterial("gregtech", "ThoriumBerylliumDepletedMoltenSaltTBSalt", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF94B29C)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -32305,7 +32305,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L), new MaterialRefStack(new MaterialRef("ThoriumTetrafluoride"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 987, 3131, 298000, false, false, 0, false, "LiFBeF₂ThF₄", 20L, 29L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L), new MaterialRefStack(new MaterialRef("ThoriumTetrafluoride"), 1L)), "molten.thoriumberylliumdepletedmoltensalttbsalt", null))
             .build();
-        Materials2Materials.GtppThoriumDepletedMoltenSaltTSalt = MaterialLibAPI.newMaterial("gregtech", "ThoriumDepletedMoltenSaltTSalt", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.ThoriumDepletedMoltenSaltTSalt = MaterialLibAPI.newMaterial("gregtech", "ThoriumDepletedMoltenSaltTSalt", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA5B2AF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -32319,7 +32319,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("ThoriumTetrafluoride"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 941, 2948, 272000, false, false, 0, false, "LiFThF₄", 27L, 40L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("ThoriumTetrafluoride"), 1L)), "molten.thoriumdepletedmoltensalttsalt", null))
             .build();
-        Materials2Materials.GtppThoriumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "ThoriumHexafluoride", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.ThoriumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "ThoriumHexafluoride", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFF5A735A)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -32338,7 +32338,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Thorium232"), 1L), new MaterialRefStack(new MaterialRef("Thorium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 12L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1700, 5983, 964000, false, false, 0, false, "(Th)ThF₁₂", 63L, 97L, "LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Thorium232"), 1L), new MaterialRefStack(new MaterialRef("Thorium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 12L)), "molten.thoriumhexafluoride", null))
             .build();
-        Materials2Materials.GtppTitanite = MaterialLibAPI.newMaterial("gregtech", "Titanite", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Titanite = MaterialLibAPI.newMaterial("gregtech", "Titanite", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF6B7799)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -32350,7 +32350,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 2L), new MaterialRefStack(new MaterialRef("Titanium"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 2L), new MaterialRefStack(new MaterialRef("Thorium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 10L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1772, 3073, 728000, false, false, 0, true, "Ca₂Ti₂Si₂ThO₁", 30L, 42L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 2L), new MaterialRefStack(new MaterialRef("Titanium"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 2L), new MaterialRefStack(new MaterialRef("Thorium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 10L)), null, null))
             .build();
-        Materials2Materials.GtppTitansteel = MaterialLibAPI.newMaterial("gregtech", "Titansteel", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
+        Materials2Materials.Titansteel = MaterialLibAPI.newMaterial("gregtech", "Titansteel", TextureSet.of("miscutils", "GEM_HORIZONTAL"))
             .setTint(0xFF7A5D5C)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32379,7 +32379,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppTrichloroaceticAcid = MaterialLibAPI.newMaterial("gregtech", "TrichloroaceticAcid", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.TrichloroaceticAcid = MaterialLibAPI.newMaterial("gregtech", "TrichloroaceticAcid", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF78641E)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -32393,7 +32393,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 3L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 330, 469, 128000, false, false, 0, false, "Cl3C-COOH", 8L, -1L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 2L), new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 3L)), "molten.trichloroaceticacid", null))
             .build();
-        Materials2Materials.GtppTriniumNaquadahAlloy = MaterialLibAPI.newMaterial("gregtech", "TriniumNaquadahAlloy", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.TriniumNaquadahAlloy = MaterialLibAPI.newMaterial("gregtech", "TriniumNaquadahAlloy", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF7D7D82)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32427,7 +32427,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeStick)
             .removeShape(Materials2Shapes.shapeStickLong)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppTriniumNaquadahCarbonite = MaterialLibAPI.newMaterial("gregtech", "TriniumNaquadahCarbonite", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.TriniumNaquadahCarbonite = MaterialLibAPI.newMaterial("gregtech", "TriniumNaquadahCarbonite", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF5A5A5D)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32457,7 +32457,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppTriniumTitaniumAlloy = MaterialLibAPI.newMaterial("gregtech", "TriniumTitaniumAlloy", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.TriniumTitaniumAlloy = MaterialLibAPI.newMaterial("gregtech", "TriniumTitaniumAlloy", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFD2B4E1)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32487,7 +32487,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppTumbaga = MaterialLibAPI.newMaterial("gregtech", "Tumbaga", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.Tumbaga = MaterialLibAPI.newMaterial("gregtech", "Tumbaga", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFFFB20F)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32517,7 +32517,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppTungstenTitaniumCarbide = MaterialLibAPI.newMaterial("gregtech", "TungstenTitaniumCarbide", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.TungstenTitaniumCarbide = MaterialLibAPI.newMaterial("gregtech", "TungstenTitaniumCarbide", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFF8750AB)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32547,7 +32547,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppUranium232 = MaterialLibAPI.newMaterial("gregtech", "Uranium232", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.Uranium232 = MaterialLibAPI.newMaterial("gregtech", "Uranium232", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFF58DC67)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32582,7 +32582,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppUranium233 = MaterialLibAPI.newMaterial("gregtech", "Uranium233", TextureSet.of("miscutils", "NUCLEAR"))
+        Materials2Materials.Uranium233 = MaterialLibAPI.newMaterial("gregtech", "Uranium233", TextureSet.of("miscutils", "NUCLEAR"))
             .setTint(0xFF49DC53)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32617,7 +32617,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppUraniumDepletedMoltenSaltUSalt = MaterialLibAPI.newMaterial("gregtech", "UraniumDepletedMoltenSaltUSalt", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.UraniumDepletedMoltenSaltUSalt = MaterialLibAPI.newMaterial("gregtech", "UraniumDepletedMoltenSaltUSalt", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA8CDAC)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
@@ -32631,7 +32631,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("Protactinium"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1077, 2882, 762000, false, false, 0, false, "LiFBeF₂UF₄FP", 38L, 57L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("Protactinium"), 1L)), "molten.uraniumdepletedmoltensaltusalt", null))
             .build();
-        Materials2Materials.GtppUraniumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "UraniumHexafluoride", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.UraniumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "UraniumHexafluoride", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA4EDA9)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -32650,7 +32650,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 595, 1464, 286000, false, false, 0, false, "((U)F₄)F₂", 29L, 42L, "LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 2L)), "molten.uraniumhexafluoride", null))
             .build();
-        Materials2Materials.GtppUraniumTetrafluoride = MaterialLibAPI.newMaterial("gregtech", "UraniumTetrafluoride", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.UraniumTetrafluoride = MaterialLibAPI.newMaterial("gregtech", "UraniumTetrafluoride", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA4EDA9)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -32669,7 +32669,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Uranium233"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 4L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 865, 2444, 502000, false, true, 1, false, "(U)F₄", 50L, 75L, "LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Uranium233"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 4L)), "molten.uraniumtetrafluoride", null))
             .build();
-        Materials2Materials.GtppWatertightSteel = MaterialLibAPI.newMaterial("gregtech", "WatertightSteel", TextureSet.of("miscutils", "DULL"))
+        Materials2Materials.WatertightSteel = MaterialLibAPI.newMaterial("gregtech", "WatertightSteel", TextureSet.of("miscutils", "DULL"))
             .setTint(0xFF7878B4)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32698,7 +32698,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeRound)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppWoodsGlass = MaterialLibAPI.newMaterial("gregtech", "Wood'sGlass", TextureSet.of("miscutils", "GEM_A"))
+        Materials2Materials.WoodsGlass = MaterialLibAPI.newMaterial("gregtech", "Wood'sGlass", TextureSet.of("miscutils", "GEM_A"))
             .setTint(0xFFDC3CFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -32711,7 +32711,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Silicon"), 40L), new MaterialRefStack(new MaterialRef("Barium"), 30L), new MaterialRefStack(new MaterialRef("Sodium"), 20L), new MaterialRefStack(new MaterialRef("Nickel"), 10L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1615, 3939, 490000, false, false, 0, false, "Si4Ba3Na2Ni", 27L, 34L, "SOLID", true, false, List.of(new MaterialRefStack(new MaterialRef("Silicon"), 40L), new MaterialRefStack(new MaterialRef("Barium"), 30L), new MaterialRefStack(new MaterialRef("Sodium"), 20L), new MaterialRefStack(new MaterialRef("Nickel"), 10L)), "molten.wood'sglass", null))
             .build();
-        Materials2Materials.GtppXenotime = MaterialLibAPI.newMaterial("gregtech", "Xenotime", TextureSet.of("miscutils", "OPAL"))
+        Materials2Materials.Xenotime = MaterialLibAPI.newMaterial("gregtech", "Xenotime", TextureSet.of("miscutils", "OPAL"))
             .setTint(0xFF9CBD8B)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -32723,7 +32723,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 2L), new MaterialRefStack(new MaterialRef("Ytterbium"), 2L), new MaterialRefStack(new MaterialRef("Erbium"), 2L), new MaterialRefStack(new MaterialRef("Europium"), 1L), new MaterialRefStack(new MaterialRef("Phosphorus"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 8L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1301, 1486, 1252000, false, false, 0, true, "Y₂Yb₂Er₂EuP₂O₈", 43L, 60L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 2L), new MaterialRefStack(new MaterialRef("Ytterbium"), 2L), new MaterialRefStack(new MaterialRef("Erbium"), 2L), new MaterialRefStack(new MaterialRef("Europium"), 1L), new MaterialRefStack(new MaterialRef("Phosphorus"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 8L)), null, null))
             .build();
-        Materials2Materials.GtppYttriaite = MaterialLibAPI.newMaterial("gregtech", "Yttriaite", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Yttriaite = MaterialLibAPI.newMaterial("gregtech", "Yttriaite", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFF80B8D0)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -32735,7 +32735,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L), new MaterialRefStack(new MaterialRef("Iron"), 4L), new MaterialRefStack(new MaterialRef("Tin"), 1L), new MaterialRefStack(new MaterialRef("Nitrogen"), 2L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1119, 2276, 586000, false, false, 0, true, "YO₃Fe₄SnN₂", 26L, 32L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L), new MaterialRefStack(new MaterialRef("Iron"), 4L), new MaterialRefStack(new MaterialRef("Tin"), 1L), new MaterialRefStack(new MaterialRef("Nitrogen"), 2L)), null, null))
             .build();
-        Materials2Materials.GtppYttrialite = MaterialLibAPI.newMaterial("gregtech", "Yttrialite", TextureSet.of("miscutils", "RUBY"))
+        Materials2Materials.Yttrialite = MaterialLibAPI.newMaterial("gregtech", "Yttrialite", TextureSet.of("miscutils", "RUBY"))
             .setTint(0xFF466E7D)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -32747,7 +32747,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 2L), new MaterialRefStack(new MaterialRef("Thorium"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 7L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1833, 3460, 730000, false, false, 0, true, "Y₂Th₂Si₂O₇", 37L, 53L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 2L), new MaterialRefStack(new MaterialRef("Thorium"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 7L)), null, null))
             .build();
-        Materials2Materials.GtppYttrocerite = MaterialLibAPI.newMaterial("gregtech", "Yttrocerite", TextureSet.of("miscutils", "DIAMOND"))
+        Materials2Materials.Yttrocerite = MaterialLibAPI.newMaterial("gregtech", "Yttrocerite", TextureSet.of("miscutils", "DIAMOND"))
             .setTint(0xFFD5F0D8)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -32759,7 +32759,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Cerium"), 1L), new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 5L), new MaterialRefStack(new MaterialRef("Yttrium"), 1L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1281, 1321, 574000, false, false, 0, true, "CeCaF₅Y", 31L, 40L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Cerium"), 1L), new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 5L), new MaterialRefStack(new MaterialRef("Yttrium"), 1L)), null, null))
             .build();
-        Materials2Materials.GtppZeron100 = MaterialLibAPI.newMaterial("gregtech", "Zeron100", TextureSet.of("miscutils", "METALLIC"))
+        Materials2Materials.Zeron100 = MaterialLibAPI.newMaterial("gregtech", "Zeron100", TextureSet.of("miscutils", "METALLIC"))
             .setTint(0xFFB4B414)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32789,7 +32789,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppZimbabweite = MaterialLibAPI.newMaterial("gregtech", "Zimbabweite", TextureSet.of("miscutils", "FINE"))
+        Materials2Materials.Zimbabweite = MaterialLibAPI.newMaterial("gregtech", "Zimbabweite", TextureSet.of("miscutils", "FINE"))
             .setTint(0xFFA4AEDB)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -32801,7 +32801,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 2L), new MaterialRefStack(new MaterialRef("Potassium"), 2L), new MaterialRefStack(new MaterialRef("Lead"), 1L), new MaterialRefStack(new MaterialRef("Arsenic"), 4L), new MaterialRefStack(new MaterialRef("Niobium"), 4L), new MaterialRefStack(new MaterialRef("Tantalum"), 4L), new MaterialRefStack(new MaterialRef("Titanium"), 4L), new MaterialRefStack(new MaterialRef("Oxygen"), 18L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1670, 2449, 1398000, false, false, 0, true, "Ca₂K₂PbAs₄Nb₄Ta₄Ti₄O₁₈", 37L, 50L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 2L), new MaterialRefStack(new MaterialRef("Potassium"), 2L), new MaterialRefStack(new MaterialRef("Lead"), 1L), new MaterialRefStack(new MaterialRef("Arsenic"), 4L), new MaterialRefStack(new MaterialRef("Niobium"), 4L), new MaterialRefStack(new MaterialRef("Tantalum"), 4L), new MaterialRefStack(new MaterialRef("Titanium"), 4L), new MaterialRefStack(new MaterialRef("Oxygen"), 18L)), null, null))
             .build();
-        Materials2Materials.GtppZircon = MaterialLibAPI.newMaterial("gregtech", "Zircon", TextureSet.of("miscutils", "GEM_A"))
+        Materials2Materials.Zircon = MaterialLibAPI.newMaterial("gregtech", "Zircon", TextureSet.of("miscutils", "GEM_A"))
             .setTint(0xFF6988A1)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -32813,7 +32813,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Zirconium"), 1L), new MaterialRefStack(new MaterialRef("Silicon"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1667, 2561, 270000, false, false, 0, true, "ZrSiO₄", 20L, 24L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Zirconium"), 1L), new MaterialRefStack(new MaterialRef("Silicon"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)), null, null))
             .build();
-        Materials2Materials.GtppZirconiumCarbide = MaterialLibAPI.newMaterial("gregtech", "ZirconiumCarbide", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.ZirconiumCarbide = MaterialLibAPI.newMaterial("gregtech", "ZirconiumCarbide", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFDECAB4)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyMetals)
@@ -32843,7 +32843,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeSpring)
             .removeShape(Materials2Shapes.shapeSpringSmall)
             .removeShape(Materials2Shapes.shapeWireFine);
-        Materials2Materials.GtppZirconiumTetrafluoride = MaterialLibAPI.newMaterial("gregtech", "ZirconiumTetrafluoride", TextureSet.of("miscutils", "SHINY"))
+        Materials2Materials.ZirconiumTetrafluoride = MaterialLibAPI.newMaterial("gregtech", "ZirconiumTetrafluoride", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFFFFCE6)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyDusts)
@@ -32858,7 +32858,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Zirconium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 4L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1227, 2567, 218000, false, false, 0, false, "ZrF₄", 24L, 30L, "LIQUID", false, true, List.of(new MaterialRefStack(new MaterialRef("Zirconium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 4L)), null, null))
             .build();
-        Materials2Materials.GtppZirconolite = MaterialLibAPI.newMaterial("gregtech", "Zirconolite", TextureSet.of("miscutils", "FINE"))
+        Materials2Materials.Zirconolite = MaterialLibAPI.newMaterial("gregtech", "Zirconolite", TextureSet.of("miscutils", "FINE"))
             .setTint(0xFFAAC1CE)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -32870,7 +32870,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 2L), new MaterialRefStack(new MaterialRef("Zirconium"), 2L), new MaterialRefStack(new MaterialRef("Titanium"), 4L), new MaterialRefStack(new MaterialRef("Cerium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 14L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1479, 2016, 670000, false, false, 0, true, "Ca₂Zr₂Ti₄CeO₁₄", 29L, 37L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 2L), new MaterialRefStack(new MaterialRef("Zirconium"), 2L), new MaterialRefStack(new MaterialRef("Titanium"), 4L), new MaterialRefStack(new MaterialRef("Cerium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 14L)), null, null))
             .build();
-        Materials2Materials.GtppZircophyllite = MaterialLibAPI.newMaterial("gregtech", "Zircophyllite", TextureSet.of("miscutils", "REFINED"))
+        Materials2Materials.Zircophyllite = MaterialLibAPI.newMaterial("gregtech", "Zircophyllite", TextureSet.of("miscutils", "REFINED"))
             .setTint(0xFF9EA2C8)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)
@@ -32882,7 +32882,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Potassium"), 3L), new MaterialRefStack(new MaterialRef("Sodium"), 3L), new MaterialRefStack(new MaterialRef("Manganese"), 7L), new MaterialRefStack(new MaterialRef("Iron"), 7L), new MaterialRefStack(new MaterialRef("Zirconium"), 2L), new MaterialRefStack(new MaterialRef("Titanium"), 2L), new MaterialRefStack(new MaterialRef("Niobium"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 8L), new MaterialRefStack(new MaterialRef("Oxygen"), 13L), new MaterialRefStack(new MaterialRef("Fluorine"), 7L)))
             .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1569, 3064, 934000, false, false, 0, true, "K₃Na₃Mn₇Fe₇Zr₂Ti₂Nb₂Si₈O₁₃F₇", 21L, 25L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Potassium"), 3L), new MaterialRefStack(new MaterialRef("Sodium"), 3L), new MaterialRefStack(new MaterialRef("Manganese"), 7L), new MaterialRefStack(new MaterialRef("Iron"), 7L), new MaterialRefStack(new MaterialRef("Zirconium"), 2L), new MaterialRefStack(new MaterialRef("Titanium"), 2L), new MaterialRefStack(new MaterialRef("Niobium"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 8L), new MaterialRefStack(new MaterialRef("Oxygen"), 13L), new MaterialRefStack(new MaterialRef("Fluorine"), 7L)), null, null))
             .build();
-        Materials2Materials.GtppZirkelite = MaterialLibAPI.newMaterial("gregtech", "Zirkelite", TextureSet.of("miscutils", "GEM_A"))
+        Materials2Materials.Zirkelite = MaterialLibAPI.newMaterial("gregtech", "Zirkelite", TextureSet.of("miscutils", "GEM_A"))
             .setTint(0xFF95A8B0)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyOres)

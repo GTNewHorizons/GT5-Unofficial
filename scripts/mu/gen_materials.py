@@ -1772,11 +1772,9 @@ def write_unified_materials_file(field_lines, material_blocks):
         "/// The materials maintenance surface: one [Material] field per ported material (name matches the "
         "legacy `Materials`")
     lines.append(
-        "/// field where the dump's name is already a valid Java identifier, else a sanitized variant; a "
-        "gtpp-only material's")
+        "/// field where the dump's name is already a valid Java identifier, else a sanitized variant -- see")
     lines.append(
-        "/// field is `Gtpp`-prefixed -- see `scripts/mu/gen_materials.py`), then every material's complete "
-        "final declaration")
+        "/// `scripts/mu/gen_materials.py`), then every material's complete final declaration")
     lines.append(
         "/// (tint, texture set, family membership, shape adds/removes, properties, fluids) as one "
         "contiguous statement run in")
@@ -2132,7 +2130,7 @@ def main():
     for entry in gtpp_new:
         raw = entry["unlocalizedName"]
         mn = ml_name(raw)
-        fn = "Gtpp" + field_name(raw)
+        fn = field_name(raw)
         if mn in gtpp_ml_seen:
             raise SystemExit(
                 f"gen_materials.py: gtpp MaterialLib name collision: {raw!r} sanitizes to {mn!r}, already "
