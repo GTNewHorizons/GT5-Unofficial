@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Iterables;
 import gregtech.api.util.tooltip.*;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
