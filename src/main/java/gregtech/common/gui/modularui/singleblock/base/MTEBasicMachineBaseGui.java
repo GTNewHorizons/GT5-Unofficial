@@ -51,6 +51,7 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.util.MachineModularSlot;
+import gregtech.common.gui.modularui.widget.PowerVisualizerWidget;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 import it.unimi.dsi.fastutil.chars.CharList;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
@@ -135,113 +136,14 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
     }
 
     protected ParentWidget<?> createPowerVisualizer(PanelSyncManager syncManager) {
-        return new ParentWidget<>().size(31, 75)
-            .child(createEnergyStorageBar(syncManager))
-            .child(createEnergyConsumptionBar(syncManager))
-            .child(createEnergyUsageBar(syncManager))
-            .child(createEnergyOverdrawBar(syncManager))
-            .child(createEnergyPanel(syncManager))
-            .setEnabledIf((_) -> machine.getOverdrawAmperesIn() > 0)
-            .leftRel(0, 0, 1);
-    }
-
-    private ProgressWidget createEnergyStorageBar(PanelSyncManager syncManager) {
-        LongSyncValue euSyncer = syncManager.findSyncHandler("storedEu", LongSyncValue.class);
-        LongSyncValue maxEuSyncer = syncManager.findSyncHandler("maxEu", LongSyncValue.class);
-
-        DoubleSyncValue percentageSyncer = new DoubleSyncValue(
-            () -> euSyncer.getValue() / (double) Math.max(1, maxEuSyncer.getValue()));
-
-        return makeEnergyBar(
-            percentageSyncer,
-            GTGuiTextures.PROGRESSBAR_ENERGY_EMPTY,
-            GTGuiTextures.PROGRESSBAR_ENERGY_FULL,
-            14,
-            6);
-    }
-
-    private ProgressWidget createEnergyConsumptionBar(PanelSyncManager syncManager) {
-        IntSyncValue eutSyncer = syncManager.findSyncHandler("eut", IntSyncValue.class);
-        LongSyncValue maxStandardInputSyncer = syncManager.findSyncHandler("maxStandardInput", LongSyncValue.class);
-
-        DoubleSyncValue percentageSyncer = new DoubleSyncValue(
-            () -> eutSyncer.getValue() / (double) maxStandardInputSyncer.getValue());
-
-        return makeEnergyBar(
-            percentageSyncer,
-            GTGuiTextures.TRANSPARENT,
-            GTGuiTextures.PROGRESSBAR_ENERGY_CONSUMPTION,
-            5,
-            11);
-    }
-
-    private ProgressWidget createEnergyUsageBar(PanelSyncManager syncManager) {
-        LongSyncValue averageInputSyncer = syncManager.findSyncHandler("averageInput", LongSyncValue.class);
-        LongSyncValue maxStandardInputSyncer = syncManager.findSyncHandler("maxStandardInput", LongSyncValue.class);
-
-        DoubleSyncValue percentageSyncer = new DoubleSyncValue(
-            () -> Math.min(1d, averageInputSyncer.getValue() / (double) maxStandardInputSyncer.getValue()));
-
-        return makeEnergyBar(
-            percentageSyncer,
-            GTGuiTextures.TRANSPARENT,
-            GTGuiTextures.PROGRESSBAR_ENERGY_USAGE,
-            5,
-            16);
-    }
-
-    private IWidget createEnergyOverdrawBar(PanelSyncManager syncManager) {
-        LongSyncValue averageInputSyncer = syncManager.findSyncHandler("averageInput", LongSyncValue.class);
-        LongSyncValue maxStandardInputSyncer = syncManager.findSyncHandler("maxStandardInput", LongSyncValue.class);
-        LongSyncValue maxOverdrawInputSyncer = syncManager.findSyncHandler("maxOverdrawInput", LongSyncValue.class);
-
-        DoubleSyncValue percentageSyncer = new DoubleSyncValue(
-            () -> Math.max(
-                0d,
-                (averageInputSyncer.getValue() - maxStandardInputSyncer.getValue())
-                    / (double) maxOverdrawInputSyncer.getValue()));
-
-        return makeEnergyBar(
-            percentageSyncer,
-            GTGuiTextures.TRANSPARENT,
-            GTGuiTextures.PROGRESSBAR_ENERGY_OVERDRAW,
-            5,
-            16);
-    }
-
-    private static ProgressWidget makeEnergyBar(DoubleSyncValue percentageSyncer, UITexture background,
-        UITexture texture, int width, int left) {
-        return new ProgressWidget().texture(background, texture, 45)
-            .size(width, 45)
-            .top(15)
-            .left(left)
-            .direction(ProgressWidget.Direction.UP)
-            .value(percentageSyncer);
-    }
-
-    private IWidget createEnergyPanel(PanelSyncManager syncManager) {
-        LongSyncValue euSyncer = syncManager.findSyncHandler("storedEu", LongSyncValue.class);
-        LongSyncValue maxEuSyncer = syncManager.findSyncHandler("maxEu", LongSyncValue.class);
-        IntSyncValue eutSyncer = syncManager.findSyncHandler("eut", IntSyncValue.class);
-        LongSyncValue averageInputSyncer = syncManager.findSyncHandler("averageInput", LongSyncValue.class);
-        LongSyncValue maxStandardInputSyncer = syncManager.findSyncHandler("maxStandardInput", LongSyncValue.class);
-        LongSyncValue maxOverdrawInputSyncer = syncManager.findSyncHandler("maxOverdrawInput", LongSyncValue.class);
-
-        return GTGuiTextures.ENERGY_GAUGE_PANEL.asWidget()
-            .sizeRel(1)
-            .tooltipDynamic(
-                t -> t.addLine(String.format("Stored EU: %d/%d", euSyncer.getValue(), maxEuSyncer.getValue()))
-                    .addLine(
-                        String.format(
-                            "Recipe EU consumption: %d/%d eu/t",
-                            eutSyncer.getValue(),
-                            maxStandardInputSyncer.getValue()))
-                    .addLine(
-                        String.format(
-                            "Average EU usage: %d/%d eu/t",
-                            averageInputSyncer.getValue(),
-                            maxOverdrawInputSyncer.getValue())))
-            .tooltipAutoUpdate(true);
+        return new PowerVisualizerWidget(
+            (_) -> machine.getOverdrawAmperesIn() > 0,
+            syncManager.findSyncHandler("storedEu", LongSyncValue.class),
+            syncManager.findSyncHandler("maxEu", LongSyncValue.class),
+            syncManager.findSyncHandler("eut", IntSyncValue.class),
+            syncManager.findSyncHandler("averageInput", LongSyncValue.class),
+            syncManager.findSyncHandler("maxStandardInput", LongSyncValue.class),
+            syncManager.findSyncHandler("maxOverdrawInput", LongSyncValue.class)).leftRel(0, 0, 1);
     }
 
     @Override
