@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
@@ -325,38 +326,43 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
         // Compare item throughput
         if (oldCapacity != newPipe.getMaxPipeCapacity()) {
             int newCapacity = newPipe.getMaxPipeCapacity();
-            message.appendText(
-                oldCapacity + " → "
-                    + (newCapacity > oldCapacity ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                    + newCapacity
-                    + " ");
-            message.appendSibling(new ChatComponentTranslation("GT5U.item.pipe.swap.items"));
-            message.appendText(EnumChatFormatting.RESET.toString());
+            EnumChatFormatting capacityColor = newCapacity > oldCapacity ? EnumChatFormatting.GREEN
+                : EnumChatFormatting.RED;
+            message.appendText(formatNumber(oldCapacity) + " → ");
+            message.appendSibling(
+                new ChatComponentText(formatNumber(newCapacity) + " ")
+                    .setChatStyle(new ChatStyle().setColor(capacityColor)));
+            message.appendSibling(
+                new ChatComponentTranslation("GT5U.item.pipe.swap.items")
+                    .setChatStyle(new ChatStyle().setColor(capacityColor)));
             hasContent = true;
         }
 
         // Compare routing value (step size)
         if (oldStepSize != newPipe.mStepSize) {
             if (hasContent) message.appendText(" | ");
-            message.appendText(
-                oldStepSize + " → "
-                    + (newPipe.mStepSize > oldStepSize ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                    + newPipe.mStepSize
-                    + " ");
-            message.appendSibling(new ChatComponentTranslation("GT5U.item.pipe.swap.routing"));
-            message.appendText(EnumChatFormatting.RESET.toString());
+            EnumChatFormatting stepSizeColor = newPipe.mStepSize > oldStepSize ? EnumChatFormatting.GREEN
+                : EnumChatFormatting.RED;
+            message.appendText(formatNumber(oldStepSize) + " → ");
+            message.appendSibling(
+                new ChatComponentText(formatNumber(newPipe.mStepSize) + " ")
+                    .setChatStyle(new ChatStyle().setColor(stepSizeColor)));
+            message.appendSibling(
+                new ChatComponentTranslation("GT5U.item.pipe.swap.routing")
+                    .setChatStyle(new ChatStyle().setColor(stepSizeColor)));
             hasContent = true;
         }
 
         // Compare restrictive flag
         if (oldRestrictive != newPipe.mIsRestrictive) {
             if (hasContent) message.appendText(" | ");
-            message.appendText((newPipe.mIsRestrictive ? EnumChatFormatting.RED : EnumChatFormatting.GREEN).toString());
+            EnumChatFormatting restrictiveColor = newPipe.mIsRestrictive ? EnumChatFormatting.RED
+                : EnumChatFormatting.GREEN;
             message.appendSibling(
                 new ChatComponentTranslation(
                     newPipe.mIsRestrictive ? "GT5U.item.pipe.swap.now_restrictive"
-                        : "GT5U.item.pipe.swap.no_longer_restrictive"));
-            message.appendText(EnumChatFormatting.RESET.toString());
+                        : "GT5U.item.pipe.swap.no_longer_restrictive")
+                            .setChatStyle(new ChatStyle().setColor(restrictiveColor)));
             hasContent = true;
         }
 

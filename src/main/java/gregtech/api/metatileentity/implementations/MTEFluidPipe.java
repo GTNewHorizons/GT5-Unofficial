@@ -31,6 +31,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
@@ -526,37 +527,40 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
         // Compare capacity changes
         if (oldCapacity != newPipe.mCapacity) {
-            message.appendText(String.valueOf(oldCapacity * 20));
+            EnumChatFormatting capacityColor = newPipe.mCapacity > oldCapacity ? EnumChatFormatting.GREEN
+                : EnumChatFormatting.RED;
+            message.appendText(formatNumber(oldCapacity * 20));
             message.appendSibling(new ChatComponentTranslation("gt.unit.liter_per_second"));
-            message.appendText(
-                " → " + (newPipe.mCapacity > oldCapacity ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                    + newPipe.mCapacity * 20);
-            message.appendSibling(new ChatComponentTranslation("gt.unit.liter_per_second"));
-            message.appendText(EnumChatFormatting.RESET.toString());
+            message.appendText(" → ");
+            message.appendSibling(
+                new ChatComponentText(formatNumber(newPipe.mCapacity * 20L))
+                    .setChatStyle(new ChatStyle().setColor(capacityColor)));
+            message.appendSibling(
+                new ChatComponentTranslation("gt.unit.liter_per_second")
+                    .setChatStyle(new ChatStyle().setColor(capacityColor)));
             hasContent = true;
         }
 
         // Compare heat resistance
         if (oldHeatResistance != newPipe.mHeatResistance) {
             if (hasContent) message.appendText(" | ");
-            message.appendText(
-                oldHeatResistance + "K → "
-                    + (newPipe.mHeatResistance > oldHeatResistance ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                    + newPipe.mHeatResistance
-                    + "K"
-                    + EnumChatFormatting.RESET);
+            EnumChatFormatting heatColor = newPipe.mHeatResistance > oldHeatResistance ? EnumChatFormatting.GREEN
+                : EnumChatFormatting.RED;
+            message.appendText(formatNumber(oldHeatResistance) + "K → ");
+            message.appendSibling(
+                new ChatComponentText(formatNumber(newPipe.mHeatResistance) + "K")
+                    .setChatStyle(new ChatStyle().setColor(heatColor)));
             hasContent = true;
         }
 
         // Compare gas handling
         if (oldGasProof != newPipe.mGasProof) {
             if (hasContent) message.appendText(" | ");
-            message.appendText((newPipe.mGasProof ? EnumChatFormatting.GREEN : EnumChatFormatting.RED).toString());
+            EnumChatFormatting gasProofColor = newPipe.mGasProof ? EnumChatFormatting.GREEN : EnumChatFormatting.RED;
             message.appendSibling(
                 new ChatComponentTranslation(
-                    newPipe.mGasProof ? "GT5U.item.pipe.swap.now_gas_proof"
-                        : "GT5U.item.pipe.swap.no_longer_gas_proof"));
-            message.appendText(EnumChatFormatting.RESET.toString());
+                    newPipe.mGasProof ? "GT5U.item.pipe.swap.now_gas_proof" : "GT5U.item.pipe.swap.no_longer_gas_proof")
+                        .setChatStyle(new ChatStyle().setColor(gasProofColor)));
             hasContent = true;
         }
 
