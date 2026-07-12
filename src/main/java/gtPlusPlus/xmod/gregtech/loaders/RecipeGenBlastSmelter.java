@@ -65,7 +65,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         int fluidAmount = 0;
         ArrayList<MaterialStack> tMaterial = M.getComposites();
 
-        int tier = Math.max(1, M.vTier);
+        int tier = Math.max(1, M.tier);
         long aVoltage = VP[tier];
 
         // Set a duration
@@ -128,7 +128,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
                 continue;
             }
 
-            final int r = (int) M.vSmallestRatio[irc];
+            final int r = (int) M.smallestRatio[irc];
             inputStackCount = inputStackCount + r;
             if ((M.getComposites()
                 .get(irc)
