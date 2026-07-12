@@ -5,7 +5,6 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2Families;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Formulas;
-import gregtech.api.enums.materials2.Materials2GtppShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
@@ -26,7 +25,6 @@ public class Materials2 {
         Materials2BlockShapes.init();
         Materials2OreShapes.init();
         Materials2Shapes.init();
-        Materials2GtppShapes.init();
         Materials2Families.init();
         Materials2Materials.init();
         Materials2Formulas.init();

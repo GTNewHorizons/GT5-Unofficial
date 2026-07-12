@@ -20,7 +20,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
-import gregtech.api.enums.materials2.Materials2GtppShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
@@ -29,7 +28,7 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 /// equivalents.
 ///
 /// The prefix-to-shape map reflects [Materials2Shapes]'s, [Materials2CellShapes]'s, [Materials2BlockShapes]'s,
-/// [Materials2OreShapes]'s, and [Materials2GtppShapes]'s [Shape] fields (each named identically to the
+/// and [Materials2OreShapes]'s [Shape] fields (each named identically to the
 /// [OrePrefixes] it cuts over to) instead of hand-listing the cutover prefixes, so it always matches whatever
 /// those declare. A prefix
 /// normally maps to exactly one shape; `cellPlasma` is the one exception (see [Materials2CellShapes]), mapping
@@ -284,7 +283,6 @@ public class MU {
             collectShapes(map, Materials2CellShapes.class);
             collectShapes(map, Materials2BlockShapes.class);
             collectShapes(map, Materials2OreShapes.class);
-            collectShapes(map, Materials2GtppShapes.class);
             // cellPlasmaLight is a second candidate shape for the cellPlasma prefix, not a prefix of its own
             // (see Materials2CellShapes); its field name deliberately does not match an OrePrefixes name, so
             // fold it into "cellPlasma"'s candidate list instead of collecting it under its own key.
