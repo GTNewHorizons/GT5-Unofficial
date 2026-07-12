@@ -106,8 +106,7 @@ public class MTEHatchPatternProvider extends MTEHatchInputBus {
     }
 
     @Override
-    public int getInventoryStackLimit()
-    {
+    public int getInventoryStackLimit() {
         return 1;
     }
 }
