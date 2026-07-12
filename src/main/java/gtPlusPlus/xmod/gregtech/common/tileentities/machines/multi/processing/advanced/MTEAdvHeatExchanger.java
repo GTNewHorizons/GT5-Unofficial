@@ -296,11 +296,11 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                 if (depleteInput(distilledStack)) // Consume the distilled water
                 {
                     if (superheated) {
-                        addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU)); // Generate
+                        addFluidOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU)); // Generate
                         // superheated
                         // steam
                     } else {
-                        addOutputPartial(Materials.Steam.getGas(tGeneratedEU)); // Generate regular steam
+                        addFluidOutput(Materials.Steam.getGas(tGeneratedEU)); // Generate regular steam
                     }
                 } else {
                     GTLog.writeExplosionLog(this, "had no more Distilled water!");

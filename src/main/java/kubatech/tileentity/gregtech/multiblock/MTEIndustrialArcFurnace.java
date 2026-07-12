@@ -686,6 +686,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
     @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (!tryFlushPendingOutputs()) return;
         /*
          * Ore mode has two sequences:
          * When recipe is found, a simple no input no output recipe is started that almost takes no power and has

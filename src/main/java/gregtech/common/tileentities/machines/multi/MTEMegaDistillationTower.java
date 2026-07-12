@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
@@ -424,14 +426,8 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
-        boolean succeed = true;
-        for (int i = 0; i < outputFluids.length && i < this.outputHatchesPerLayer.size(); i++) {
-            FluidStack stack = outputFluids[i].copy();
-            addOutputPartial(stack, outputHatchesPerLayer.get(i));
-            if (stack.amount > 0) succeed = false;
-        }
-        return succeed;
+    public boolean addFluidOutputs(FluidStack[] outputFluids, @Nullable List<FluidStack> remaining) {
+        return addFluidOutputsByLayer(outputFluids, outputHatchesPerLayer, remaining);
     }
 
     @Override

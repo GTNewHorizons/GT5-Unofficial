@@ -27,6 +27,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
@@ -402,7 +404,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public boolean addItemOutputs(ItemStack[] stacks) {
+    public boolean addItemOutputs(ItemStack[] stacks, @Nullable List<ItemStack> remaining) {
         for (ItemStack stack : stacks) {
             if (GTUtility.isStackInvalid(stack)) continue;
 

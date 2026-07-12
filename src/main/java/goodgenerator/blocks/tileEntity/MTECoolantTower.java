@@ -142,7 +142,7 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             steam += maybeDrainHatch(tHatch);
         }
-        addOutputPartial(GTModHandler.getDistilledWater(steam / 160));
+        addFluidOutput(GTModHandler.getDistilledWater(steam / 160));
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 

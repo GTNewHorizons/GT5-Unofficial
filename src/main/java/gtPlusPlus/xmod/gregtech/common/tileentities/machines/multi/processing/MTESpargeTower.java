@@ -17,6 +17,8 @@ import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -289,17 +291,8 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     }
 
     @Override
-    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
-        boolean succeed = true;
-        for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
-            FluidStack stack = outputFluids[i] != null ? outputFluids[i].copy() : null;
-            if (stack == null) {
-                continue;
-            }
-            addOutputPartial(stack, mOutputHatchesByLayer.get(i));
-            if (stack.amount > 0) succeed = false;
-        }
-        return succeed;
+    public boolean addFluidOutputs(FluidStack[] outputFluids, @Nullable List<FluidStack> remaining) {
+        return addFluidOutputsByLayer(outputFluids, mOutputHatchesByLayer, remaining);
     }
 
     @Override

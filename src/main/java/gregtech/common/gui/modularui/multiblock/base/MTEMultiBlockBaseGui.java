@@ -302,8 +302,15 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .child(createStructureErrorWidget(syncManager))
             .child(createRecipeResultWidget())
             .childIf(multiblock.showRecipeTextInGUI(), () -> createRecipeInfoTextWidget(syncManager))
-
-            .childIf(multiblock.showRecipeTextInGUI(), () -> createRecipeInfoWidget(syncManager));
+            .childIf(multiblock.showRecipeTextInGUI(), () -> createRecipeInfoWidget(syncManager))
+            .childIf(
+                multiblock.showMachineStatusInGUI(),
+                () -> new TextWidget<>(StatCollector.translateToLocalFormatted("gt.interact.desc.mb.pending"))
+                    .color(Color.WHITE.main)
+                    .setEnabledIf(widget -> !multiblock.mPendingItems.isEmpty() || !multiblock.mPendingFluids.isEmpty())
+                    .marginBottom(2)
+                    .fullWidth())
+            .childIf(multiblock.showMachineStatusInGUI(), () -> createPendingInfoWidget(syncManager));
     }
 
     protected IWidget createShutdownDurationWidget(PanelSyncManager syncManager) {
@@ -431,8 +438,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             return Flow.column()
                 .crossAxisAlignment(Alignment.CrossAxis.START)
                 .coverChildren(0)
-                .child(createItemRecipeInfo(packet, syncManager))
-                .child(createFluidRecipeInfo(packet, syncManager));
+                .child(createItemRecipeInfo(packet, syncManager, showOutputRates()))
+                .child(createFluidRecipeInfo(packet, syncManager, showOutputRates()));
         })
             .allowC2S();
 
@@ -444,6 +451,34 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return new DynamicSyncedWidget<>().widthRel(0.85f)
             .coverChildrenHeight(0)
             .syncHandler(recipeHandler);
+    }
+
+    private IWidget createPendingInfoWidget(PanelSyncManager syncManager) {
+        GenericListSyncHandler<ItemStack> itemPendingSyncer = (GenericListSyncHandler<ItemStack>) syncManager
+            .getSyncHandlerFromMapKey("itemPending:0");
+        GenericListSyncHandler<FluidStack> fluidPendingSyncer = (GenericListSyncHandler<FluidStack>) syncManager
+            .getSyncHandlerFromMapKey("fluidPending:0");
+
+        DynamicSyncHandler recipeHandler = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
+            if (packet == null) {
+                return new EmptyWidget();
+            }
+            return Flow.column()
+                .crossAxisAlignment(Alignment.CrossAxis.START)
+                .coverChildren(0)
+                .child(createItemRecipeInfo(packet, syncManager, false))
+                .child(createFluidRecipeInfo(packet, syncManager, false));
+        })
+            .allowC2S();
+
+        itemPendingSyncer
+            .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemPendingSyncer, fluidPendingSyncer));
+        fluidPendingSyncer
+            .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemPendingSyncer, fluidPendingSyncer));
+        return new DynamicSyncedWidget<>().widthRel(0.85f)
+            .coverChildrenHeight(0)
+            .syncHandler(recipeHandler);
+
     }
 
     private void notifyRecipeHandler(DynamicSyncHandler recipeHandler,
@@ -466,7 +501,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     private static final int DISPLAY_ROW_HEIGHT = 15;
     private static final int DISPLAY_ROW_CHAR_LIMIT = 46;
 
-    private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
+    private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager, boolean showRate) {
         int size = packet.readInt();
         Flow column = Flow.column()
             .coverChildren(0);
@@ -512,7 +547,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .fullWidth()
                     .height(DISPLAY_ROW_HEIGHT)
                     .child(createItemDrawable(key))
-                    .child(createHoverableTextForItem(key, amount, syncManager)));
+                    .child(createHoverableTextForItem(key, amount, syncManager, showRate)));
         }
 
         return column;
@@ -522,7 +557,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return true;
     }
 
-    private IWidget createFluidRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
+    private IWidget createFluidRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager, boolean showRate) {
         int size = packet.readInt();
         Flow column = Flow.column()
             .coverChildren(0);
@@ -562,7 +597,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .fullWidth()
                     .height(DISPLAY_ROW_HEIGHT)
                     .child(createFluidDrawable(fluidStack))
-                    .childIf(showOutputRates(), () -> createHoverableTextForFluid(fluidStack, amount, syncManager)));
+                    .childIf(
+                        showOutputRates(),
+                        () -> createHoverableTextForFluid(fluidStack, amount, syncManager, showRate)));
         }
         return column;
     }
@@ -589,18 +626,19 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .marginRight(2);
     }
 
-    private TextWidget<?> createHoverableTextForItem(ItemDisplayKey key, long amount, PanelSyncManager syncManager) {
+    private TextWidget<?> createHoverableTextForItem(ItemDisplayKey key, long amount, PanelSyncManager syncManager,
+        boolean showRate) {
         // Second argument is stacksize, don't care about it
         ItemStack itemStack = new ItemStack(key.item(), 1, key.damage());
         itemStack.setTagCompound(key.nbt());
         IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
         String itemName = itemStack.getDisplayName();
 
-        return new TextWidget<>(IKey.dynamic(() -> getItemTextLine(itemName, amount, maxProgressTimeSyncer)))
+        return new TextWidget<>(IKey.dynamic(() -> getItemTextLine(itemName, amount, maxProgressTimeSyncer, showRate)))
             .height(DISPLAY_ROW_HEIGHT)
             .scale(0.75f)
             .tooltip(t -> {
-                if (showOutputRates()) {
+                if (showRate) {
                     t.addLine(
                         EnumChatFormatting.AQUA + itemName
                             + "\n"
@@ -609,11 +647,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             });
     }
 
-    private @NotNull String getItemTextLine(String itemName, long amount, IntSyncValue maxProgressTimeSyncer) {
+    private @NotNull String getItemTextLine(String itemName, long amount, IntSyncValue maxProgressTimeSyncer,
+        boolean showRate) {
         String shortenedCount = GTUtility.formatShortenedLong(amount);
-        String rateShort = showOutputRates()
-            ? GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue())
-            : "";
+        String rateShort = showRate ? GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue()) : "";
         int amountLen = (StatCollector
             .translateToLocalFormatted("GT5U.gui.text.item_amount_display", "", shortenedCount) + rateShort).length();
         return StatCollector.translateToLocalFormatted(
@@ -632,12 +669,12 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .marginRight(2);
     }
 
-    private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount,
-        PanelSyncManager syncManager) {
+    private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount, PanelSyncManager syncManager,
+        boolean showRate) {
         IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
         String fluidName = fluidStack.getLocalizedName();
 
-        return new TextWidget<>(IKey.dynamic(() -> getFluidTextLine(fluidName, amount, maxProgressSyncer)))
+        return new TextWidget<>(IKey.dynamic(() -> getFluidTextLine(fluidName, amount, maxProgressSyncer, showRate)))
             .height(DISPLAY_ROW_HEIGHT)
             .scale(0.75f)
             .tooltip(t -> {
@@ -650,11 +687,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             });
     }
 
-    private @NotNull String getFluidTextLine(String fluidName, long amount, IntSyncValue maxProgressTimeSyncer) {
+    private @NotNull String getFluidTextLine(String fluidName, long amount, IntSyncValue maxProgressTimeSyncer,
+        boolean showRate) {
         String shortenedCount = GTUtility.formatShortenedLong(amount);
-        String rateShort = showOutputRates()
-            ? GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue())
-            : "";
+        String rateShort = showRate ? GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue()) : "";
         int amountLen = (StatCollector
             .translateToLocalFormatted("GT5U.gui.text.fluid_amount_display", "", shortenedCount) + rateShort).length();
         return StatCollector.translateToLocalFormatted(
@@ -1256,6 +1292,37 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             (a, b) -> a.isItemEqual(b) && a.stackSize == b.stackSize,
             null);
         syncManager.syncValue("itemOutput", itemOutputSyncer);
+
+        syncManager.syncValue(
+            "fluidPending",
+            new GenericListSyncHandler<FluidStack>(
+                () -> multiblock.mPendingFluids.stream()
+                    .map(fluidStack -> {
+                        if (fluidStack == null) return null;
+                        return new FluidStack(fluidStack, fluidStack.amount) {
+
+                            @Override
+                            public boolean isFluidEqual(FluidStack other) {
+                                return super.isFluidEqual(other) && amount == other.amount;
+                            }
+                        };
+                    })
+                    .collect(Collectors.toList()),
+                val -> multiblock.mPendingFluids = val,
+                NetworkUtils::readFluidStack,
+                NetworkUtils::writeFluidStack,
+                (a, b) -> a.isFluidEqual(b) && a.amount == b.amount,
+                null));
+
+        syncManager.syncValue(
+            "itemPending",
+            new GenericListSyncHandler<>(
+                () -> multiblock.mPendingItems,
+                val -> multiblock.mPendingItems = val,
+                NetworkUtils::readItemStack,
+                NetworkUtils::writeItemStack,
+                (a, b) -> a.isItemEqual(b) && a.stackSize == b.stackSize,
+                null));
 
         // Widget Specific
         BooleanSyncValue powerSwitchSyncer = new BooleanSyncValue(multiblock::isAllowedToWork, bool -> {

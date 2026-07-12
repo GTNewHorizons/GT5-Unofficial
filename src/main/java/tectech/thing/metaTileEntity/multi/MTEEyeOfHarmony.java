@@ -1520,7 +1520,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     private void outputFluidToAENetwork(FluidStack fluid, long amount) {
         if (fluid == null || amount <= 0) return;
 
-        addFluidOutputs(GTUtility.splitFluidStack(fluid, amount), mOutputHatches);
+        addFluidOutputs(GTUtility.splitFluidStack(fluid, amount), protectsExcessFluid() ? mPendingFluids : null);
     }
 
     @Override

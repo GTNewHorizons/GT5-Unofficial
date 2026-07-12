@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -159,14 +161,14 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     }
 
     @Override
-    public boolean addItemOutputs(ItemStack[] outputItems) {
+    public boolean addItemOutputs(ItemStack[] outputItems, @Nullable List<ItemStack> remaining) {
         for (ItemStack stack : outputItems) {
             CircuitComponent circuitComponent = CircuitComponent.tryGetFromFakeStack(stack);
             if (circuitComponent != null && baseMulti != null) {
                 baseMulti.addToHistory(circuitComponent.circuitType, stack.stackSize);
             }
         }
-        return super.addItemOutputs(outputItems);
+        return super.addItemOutputs(outputItems, remaining);
     }
 
     @Override

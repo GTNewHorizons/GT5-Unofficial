@@ -309,8 +309,8 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     public boolean onRunningTick(ItemStack aStack) {
 
         if (this.emptyingMode) {
-            this.addOutputPartial(Materials.Helium.getGas(this.HeliumSupply));
-            this.addOutputPartial(
+            this.addFluidOutput(Materials.Helium.getGas(this.HeliumSupply));
+            this.addItemOutput(
                 new ItemStack(THTRMaterials.aTHTR_Materials, this.fuelSupply, THTRMaterials.MATERIAL_FUEL_INDEX));
             this.HeliumSupply = 0;
             this.fuelSupply = 0;
@@ -333,7 +333,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             }
         }
 
-        if (drainedamount > 0) this.addOutputPartial(FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
+        if (drainedamount > 0) this.addFluidOutput(FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
 
         this.updateSlots();
 

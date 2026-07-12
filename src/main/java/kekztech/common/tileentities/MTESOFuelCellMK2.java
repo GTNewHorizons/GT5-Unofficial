@@ -177,7 +177,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
                         super.mMaxProgresstime = 20;
                         super.mEfficiencyIncrease = 200;
                         if (super.mEfficiency == getMaxEfficiency(null)) {
-                            super.addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", STEAM_PER_SEC));
+                            super.addFluidOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", STEAM_PER_SEC));
                         }
                         return CheckRecipeResultRegistry.GENERATING;
                     }

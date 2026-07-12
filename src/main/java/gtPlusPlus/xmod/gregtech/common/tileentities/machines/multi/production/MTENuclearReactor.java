@@ -506,8 +506,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         if (this.mEfficiency == this.getMaxEfficiency(null)) {
             // Try output some Uranium-233
             if (MathUtils.randInt(1, 300) == 1) {
-                this.addOutputPartial(
-                    MaterialsElements.getInstance().URANIUM233.getFluidStack(MathUtils.randInt(1, 10)));
+                this.addFluidOutput(MaterialsElements.getInstance().URANIUM233.getFluidStack(MathUtils.randInt(1, 10)));
             }
         }
         return super.onRunningTick(aStack);

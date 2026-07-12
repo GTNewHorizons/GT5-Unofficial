@@ -329,7 +329,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         // Since the plant does not run recipes directly, we just continuously loop the base cycle
         if (mMachine) {
             // cycle is running, so simply advance it
-            if (mMaxProgresstime > 0) {
+            if (tryFlushPendingOutputs() && mMaxProgresstime > 0) {
                 // onRunningTick is responsible for draining power
                 if (onRunningTick(mInventory[1])) {
                     markDirty();

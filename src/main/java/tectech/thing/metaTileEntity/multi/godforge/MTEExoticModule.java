@@ -124,7 +124,7 @@ public class MTEExoticModule extends MTEBaseModule {
                                     return copy;
                                 })
                                 .toArray(FluidStack[]::new),
-                            mOutputHatches);
+                            protectsExcessFluid() ? mPendingFluids : null);
                     }
 
                     if (numberOfItems != 0) {

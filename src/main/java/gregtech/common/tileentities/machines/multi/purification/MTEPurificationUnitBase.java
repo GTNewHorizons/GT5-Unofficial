@@ -432,7 +432,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // Note that if there is no space for this, it will be voided regardless of fluid void setting!
         if (mOutputFluids != null) {
             FluidStack outputWater = getDegradedOutputWater();
-            this.addOutputPartial(outputWater);
+            this.addFluidOutput(outputWater);
         }
     }
 

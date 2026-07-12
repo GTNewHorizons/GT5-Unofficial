@@ -26,6 +26,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -403,14 +405,8 @@ public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistill
     }
 
     @Override
-    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
-        boolean succeed = true;
-        for (int i = 0; i < outputFluids.length && i < this.mOutputHatchesByLayer.size(); i++) {
-            FluidStack stack = outputFluids[i].copy();
-            addOutputPartial(stack, mOutputHatchesByLayer.get(i));
-            if (stack.amount > 0) succeed = false;
-        }
-        return succeed;
+    public boolean addFluidOutputs(FluidStack[] outputFluids, @Nullable List<FluidStack> remaining) {
+        return addFluidOutputsByLayer(outputFluids, mOutputHatchesByLayer, remaining);
     }
 
     @Override
