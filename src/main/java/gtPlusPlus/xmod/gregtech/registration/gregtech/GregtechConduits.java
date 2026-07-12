@@ -617,7 +617,7 @@ public class GregtechConduits {
         generatePipeRecipes(material, material.getDefaultLocalName(), material.voltageMultiplier / 8);
     }
 
-    public static void generatePipeRecipes(final Material material, final String materialName, final long vMulti) {
+    public static void generatePipeRecipes(final Material material, final String materialName, final long voltageMultiplier) {
 
         String output = materialName.substring(0, 1)
             .toUpperCase() + materialName.substring(1);
@@ -636,7 +636,7 @@ public class GregtechConduits {
             }
         }
 
-        int eut = (int) (8 * vMulti);
+        int eut = (int) (8 * voltageMultiplier);
 
         if (material != null && material.voltageMultiplier <= TierEU.RECIPE_IV) {
             // Add the Four Shaped Recipes First
