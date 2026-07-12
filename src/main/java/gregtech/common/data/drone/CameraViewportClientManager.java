@@ -2,6 +2,8 @@ package gregtech.common.data.drone;
 
 import static gregtech.api.enums.GTValues.NW;
 
+import java.util.UUID;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.ScaledResolution;
@@ -87,6 +89,11 @@ public class CameraViewportClientManager extends CameraViewportManager {
     @Override
     public boolean isObservingActive() {
         return activeConnection != null;
+    }
+
+    @Override
+    public boolean isObservingActive(UUID uuid) {
+        return isObservingActive();
     }
 
     @Override

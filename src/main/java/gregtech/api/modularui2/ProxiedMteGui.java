@@ -1,5 +1,7 @@
 package gregtech.api.modularui2;
 
+import java.util.UUID;
+
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -77,17 +79,13 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
             syncManager,
             uiSettings);
 
-        boolean isRemote;
-        if (syncManager.isClient()) {
-            isRemote = GTMod.proxy.cameraViewportManager != null
-                && GTMod.proxy.cameraViewportManager.isObservingActive();
-        } else {
-            isRemote = GTMod.proxy.cameraViewportManager != null
-                && GTMod.proxy.cameraViewportManager.isObservingActive((EntityPlayerMP) data.getPlayer());
-        }
+        UUID playerUUID = (syncManager.isClient()) ? null
+            : data.getPlayer()
+                .getUniqueID();
+        boolean isRemote = GTMod.proxy.cameraViewportManager != null
+            && GTMod.proxy.cameraViewportManager.isObservingActive(playerUUID);
 
-        final boolean finalIsRemote = isRemote;
-        if (finalIsRemote) {
+        if (isRemote) {
             syncManager.onCommonTick(new Runnable() {
 
                 private boolean initialized = false;

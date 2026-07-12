@@ -42,8 +42,8 @@ public class CameraViewportManager {
         return false;
     }
 
-    public boolean isObservingActive(EntityPlayerMP player) {
-        return CameraViewportManager.sessions.containsKey(player.getUniqueID());
+    public boolean isObservingActive(UUID uuid) {
+        return CameraViewportManager.sessions.containsKey(uuid);
     }
 
     public static void clearPlayerSession(EntityPlayerMP player) {
