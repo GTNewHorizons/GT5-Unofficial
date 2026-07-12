@@ -533,18 +533,6 @@ public class Material implements IOreMaterial {
                     pendingRegistration.add(this);
                 }
             }
-            StringBuilder ratio = new StringBuilder();
-            if (this.vSmallestRatio != null) {
-                for (long l : this.vSmallestRatio) {
-                    if (ratio.toString()
-                        .isEmpty()) {
-                        ratio = new StringBuilder(String.valueOf(l));
-                    } else {
-                        ratio.append(":")
-                            .append(l);
-                    }
-                }
-            }
 
             sChemicalFormula.put(materialDefaultLocalName.toLowerCase(), this.vChemicalFormula);
         } catch (Throwable t) {
@@ -1149,23 +1137,11 @@ public class Material implements IOreMaterial {
                 final long[] smallestRatio = MathUtils.simplifyNumbersToSmallestForm(tempRatio);
 
                 if (smallestRatio.length > 0) {
-                    StringBuilder tempRatioStringThing1 = new StringBuilder();
-                    for (long value : tempRatio) {
-                        tempRatioStringThing1.append(value)
-                            .append(" : ");
-                    }
-                    StringBuilder tempRatioStringThing = new StringBuilder();
-                    int tempSmallestCraftingUseSize = 0;
-                    for (long l : smallestRatio) {
-                        tempRatioStringThing.append(l)
-                            .append(" : ");
-                        tempSmallestCraftingUseSize = (int) (tempSmallestCraftingUseSize + l);
-                    }
-                    // this.smallestStackSizeWhenProcessing = tempSmallestCraftingUseSize;
                     return smallestRatio;
                 }
             }
         }
+
         return new long[] {};
     }
 
@@ -1426,83 +1402,59 @@ public class Material implements IOreMaterial {
         return (short) avg;
     }
 
-    @SuppressWarnings("ForLoopReplaceableByForEach")
     private byte calculateRadiation() {
-        ArrayList<MaterialStack> list = this.vMaterialInput;
-        int size = list.size();
-        if (size == 0) {
+        if (this.vMaterialInput.isEmpty()) {
             return 0;
         }
         long sum = 0;
-        for (int i = 0; i < size; i++) {
-            sum += list.get(i)
-                .getStackMaterial().vRadiationLevel;
+        for (MaterialStack stack : this.vMaterialInput) {
+            sum += stack.getStackMaterial().vRadiationLevel;
         }
-        return MathUtils.safeByte(sum / size);
+        return MathUtils.safeByte(sum / this.vMaterialInput.size());
     }
 
-    @SuppressWarnings("ForLoopReplaceableByForEach")
     private int calculateMeltingPoint() {
-        final ArrayList<MaterialStack> list = this.vMaterialInput;
-        int size = list.size();
-        if (size == 0) {
+        if (this.vMaterialInput.isEmpty()) {
             return 0;
         }
         long sum = 0;
-        for (int i = 0; i < size; i++) {
-            sum += list.get(i)
-                .getStackMaterial()
-                .getMeltingPointC();
+        for (MaterialStack stack : this.vMaterialInput) {
+            sum += stack.getStackMaterial().getMeltingPointC();
         }
-        return MathUtils.safeInt(sum / size);
+        return MathUtils.safeInt(sum / this.vMaterialInput.size());
     }
 
-    @SuppressWarnings("ForLoopReplaceableByForEach")
     private int calculateBoilingPoint() {
-        final ArrayList<MaterialStack> list = this.vMaterialInput;
-        int size = list.size();
-        if (size == 0) {
+        if (this.vMaterialInput.isEmpty()) {
             return 0;
         }
         long sum = 0;
-        for (int i = 0; i < size; i++) {
-            sum += list.get(i)
-                .getStackMaterial()
-                .getBoilingPointC();
+        for (MaterialStack stack : this.vMaterialInput) {
+            sum += stack.getStackMaterial().getBoilingPointC();
         }
-        return MathUtils.safeInt(sum / size);
+        return MathUtils.safeInt(sum / this.vMaterialInput.size());
     }
 
-    @SuppressWarnings("ForLoopReplaceableByForEach")
     private long calculateProtons() {
-        final ArrayList<MaterialStack> list = this.vMaterialInput;
-        int size = list.size();
-        if (size == 0) {
+        if (this.vMaterialInput.isEmpty()) {
             return 0;
         }
         long sum = 0;
-        for (int i = 0; i < size; i++) {
-            sum += list.get(i)
-                .getStackMaterial()
-                .getProtons();
+        for (MaterialStack stack : this.vMaterialInput) {
+            sum += stack.getStackMaterial().getProtons();
         }
-        return MathUtils.safeInt(sum / size);
+        return MathUtils.safeInt(sum / this.vMaterialInput.size());
     }
 
-    @SuppressWarnings("ForLoopReplaceableByForEach")
     private long calculateNeutrons() {
-        final ArrayList<MaterialStack> list = this.vMaterialInput;
-        int size = list.size();
-        if (size == 0) {
+        if (this.vMaterialInput.isEmpty()) {
             return 0;
         }
         long sum = 0;
-        for (int i = 0; i < size; i++) {
-            sum += list.get(i)
-                .getStackMaterial()
-                .getNeutrons();
+        for (MaterialStack stack : this.vMaterialInput) {
+            sum += stack.getStackMaterial().getNeutrons();
         }
-        return MathUtils.safeInt(sum / size);
+        return MathUtils.safeInt(sum / this.vMaterialInput.size());
     }
 
     @Override
