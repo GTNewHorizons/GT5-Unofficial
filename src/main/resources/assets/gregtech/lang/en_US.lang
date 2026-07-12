@@ -3581,6 +3581,12 @@ GT5U.item.pipe.gas_proof.no=No
 GT5U.item.pipe.amount=Pipe Amount
 GT5U.item.pipe.empty=Empty
 GT5U.item.pipe.swap.s=Pipe swapped: %s
+GT5U.item.pipe.swap.items=items
+GT5U.item.pipe.swap.routing=routing
+GT5U.item.pipe.swap.now_gas_proof=Now Gas-Proof
+GT5U.item.pipe.swap.no_longer_gas_proof=No Longer Gas-Proof
+GT5U.item.pipe.swap.now_restrictive=Now Restrictive
+GT5U.item.pipe.swap.no_longer_restrictive=No Longer Restrictive
 
 # Modular Armor
 
