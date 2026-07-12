@@ -203,9 +203,9 @@ public enum DimensionDef {
         DimensionType.Asteroid)
         .disableVoidMining()),
 
-    DeepDark(new ModDimensionDef(
-        DimNames.DEEPDARK,
-        "",
+    Underworld(new ModDimensionDef(
+        DimNames.UNDERWORLD,
+        "com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.ChunkProviderUnderWorld",
         DimensionType.Planet)),
     ;
     // spotless:on
@@ -328,7 +328,7 @@ public enum DimensionDef {
         public static final String HORUS = "horus";
         public static final String SETH = "seth";
         public static final String MEHENBELT = "asteroidbeltmehen";
-        public static final String DEEPDARK = "Underdark";
+        public static final String UNDERWORLD = "The Underworld";
 
     }
 }

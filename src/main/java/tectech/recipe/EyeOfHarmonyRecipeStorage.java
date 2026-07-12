@@ -69,7 +69,7 @@ public class EyeOfHarmonyRecipeStorage {
                 if (dimensionDef != null && !dimensionDef.hasEoHRecipe()) continue;
 
                 if (dimAbbreviation.equals("DD")) {
-                    specialDeepDarkRecipe(this, blockDimensionDisplay);
+                    specialUnderworldRecipe(this, blockDimensionDisplay);
                 } else {
 
                     NormalOreDimensionWrapper normalOre = GT5OreLayerHelper.getVeinByDim(dimAbbreviation);
@@ -140,7 +140,7 @@ public class EyeOfHarmonyRecipeStorage {
         }
     }
 
-    private void specialDeepDarkRecipe(final HashMap<String, EyeOfHarmonyRecipe> hashMap,
+    private void specialUnderworldRecipe(final HashMap<String, EyeOfHarmonyRecipe> hashMap,
         final BlockDimensionDisplay planetItem) {
 
         final HashSet<Materials> validMaterialSet = new HashSet<>();

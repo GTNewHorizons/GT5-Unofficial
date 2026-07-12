@@ -702,7 +702,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.RECIPE_UIV);
         }
 
-        // Deep Dark Portal
+        // Raw Underworld Portal
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier8", 1, 0),
             16_777_216,

@@ -2731,8 +2731,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
             IBeeMutationCustom tMutation = dis.registerMutation(INFINITYCATALYST, NAQUADRIA, 5);
             tMutation.requireResource(GregTechAPI.sBlockMachines, 4684);
-            tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(100, "Deep Dark")); // Deep Dark
-                                                                                                     // dim
+            tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(100, "Underworld"));
         });
 
     private final GTBranchDefinition branch;
