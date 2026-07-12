@@ -34,7 +34,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
-import codechicken.nei.NEIClientConfig;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -75,7 +74,6 @@ public class CameraViewportClientManager extends CameraViewportManager {
     private int sendUpdateTimer = 0;
     private int switchingToRemoteGuiTimeout = 0;
 
-    private boolean wasNeiHidden = false;
     private boolean wasLDown = false;
     private boolean wasGDown = false;
     private boolean hadNightVisionBefore = false;
@@ -145,15 +143,6 @@ public class CameraViewportClientManager extends CameraViewportManager {
         }
     }
 
-    private boolean isNeiHidden() {
-        return NEIClientConfig.isHidden();
-    }
-
-    private void setNeiHidden(boolean hidden) {
-        NEIClientConfig.getSetting("inventory.hidden")
-            .setBooleanValue(hidden);
-    }
-
     public void hideScreenMainPanel() {
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.currentScreen instanceof GuiContainerWrapper wrapper) {
@@ -169,6 +158,9 @@ public class CameraViewportClientManager extends CameraViewportManager {
                 panel.setEnabledIf(_ -> false);
                 screenObj.drawDarkBackground(false);
             }
+            screenObj.getContext()
+                .getRecipeViewerSettings()
+                .disable();
         }
     }
 
@@ -181,6 +173,10 @@ public class CameraViewportClientManager extends CameraViewportManager {
         if (mc.currentScreen instanceof GuiContainerWrapper wrapper) {
             wrapper.getScreen()
                 .drawDarkBackground(true);
+            wrapper.getScreen()
+                .getContext()
+                .getRecipeViewerSettings()
+                .defaultState();
         }
     }
 
@@ -280,11 +276,6 @@ public class CameraViewportClientManager extends CameraViewportManager {
             mc.renderViewEntity = dummyCamera;
         }
 
-        this.wasNeiHidden = isNeiHidden();
-        if (!wasNeiHidden) {
-            setNeiHidden(true);
-        }
-
         hideScreenMainPanel();
 
         sendObservePacket(true);
@@ -325,10 +316,6 @@ public class CameraViewportClientManager extends CameraViewportManager {
         }
 
         restoreScreenMainPanel();
-
-        if (!wasNeiHidden) {
-            setNeiHidden(false);
-        }
 
         if (originalFov != -1.0F) {
             mc.gameSettings.fovSetting = originalFov;
