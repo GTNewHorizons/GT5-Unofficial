@@ -170,15 +170,15 @@ public class GlassTier {
             // --- EV ---
             addCustomGlass(ItemRegistry.bw_realglas, 1, 4, 0);
             addCustomGlass(GregTechAPI.sBlockGlass1, 0, 4, 1);
-            for (int i = 0; i < 16; i++) {
-                addCustomGlass(GregTechAPI.sBlockTintedGlass, i, 4, i + 2);
-            }
-            addCustomGlass(GregTechAPI.sBlockGlass1, 10, 4, 6);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 10, 4, 2);
             if (BloodArsenal.isModLoaded()) {
-                addCustomGlass(BloodArsenal.ID, "blood_stained_glass", 0, 4, 7);
+                addCustomGlass(BloodArsenal.ID, "blood_stained_glass", 0, 4, 3);
             }
             if (Botania.isModLoaded()) {
-                addCustomGlass(Botania.ID, "manaGlass", 0, 4, 8);
+                addCustomGlass(Botania.ID, "manaGlass", 0, 4, 4);
+            }
+            for (int i = 0; i < 16; i++) {
+                addCustomGlass(GregTechAPI.sBlockTintedGlass, i, 4, i + 5);
             }
 
             // --- IV ---
