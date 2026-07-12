@@ -3,12 +3,10 @@ package gregtech.common.gui.modularui.singleblock;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -54,15 +52,14 @@ public class MTEBasicMachineBronzeGui extends MTEBasicMachineBaseGui<MTEBasicMac
     }
 
     @Override
-    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+    protected ParentWidget<?> createPowerVisualizer(PanelSyncManager syncManager) {
         LongSyncValue steamStoredSyncer = new LongSyncValue(() -> machine.getSteamVar() * 2);
         syncManager.syncValue("steamStored", steamStoredSyncer);
         LongSyncValue maxSteamSyncer = new LongSyncValue(() -> machine.maxSteamStore() * 2);
         syncManager.syncValue("maxSteam", maxSteamSyncer);
 
-        return super.build(guiData, syncManager, uiSettings).child(
-            new SteamGaugeWidget(steamStoredSyncer, maxSteamSyncer).rightRel(1)
-                .top(8));
+        return new SteamGaugeWidget(steamStoredSyncer, maxSteamSyncer).rightRel(1)
+            .top(8);
     }
 
     @Override

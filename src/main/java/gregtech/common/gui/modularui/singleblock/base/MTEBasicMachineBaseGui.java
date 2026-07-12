@@ -85,7 +85,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
 
     @Override
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        return super.build(guiData, syncManager, uiSettings).child(createBatteryWidget(syncManager).leftRel(0, 0, 1));
+        return super.build(guiData, syncManager, uiSettings).child(createPowerVisualizer(syncManager));
     }
 
     @Override
@@ -134,15 +134,15 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
                 GTUtility.translate("GT5U.machines.powersource.power")));
     }
 
-    private ParentWidget<?> createBatteryWidget(PanelSyncManager syncManager) {
-
+    protected ParentWidget<?> createPowerVisualizer(PanelSyncManager syncManager) {
         return new ParentWidget<>().size(31, 75)
             .child(createEnergyStorageBar(syncManager))
             .child(createEnergyConsumptionBar(syncManager))
             .child(createEnergyUsageBar(syncManager))
             .child(createEnergyOverdrawBar(syncManager))
             .child(createEnergyPanel(syncManager))
-            .setEnabledIf((_) -> machine.getOverdrawAmperesIn() > 0);
+            .setEnabledIf((_) -> machine.getOverdrawAmperesIn() > 0)
+            .leftRel(0, 0, 1);
     }
 
     private ProgressWidget createEnergyStorageBar(PanelSyncManager syncManager) {
