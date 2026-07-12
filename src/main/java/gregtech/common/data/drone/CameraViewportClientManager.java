@@ -32,6 +32,7 @@ import com.cleanroommc.modularui.drawable.GuiDraw;
 import com.cleanroommc.modularui.screen.GuiContainerWrapper;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import codechicken.nei.NEIClientConfig;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -55,8 +56,8 @@ public class CameraViewportClientManager extends CameraViewportManager {
     public NBTTagCompound observedMachineStatus = null;
 
     public double cameraX, cameraY, cameraZ;
-    public float cameraYaw, cameraPitch;
     public double spawnX, spawnY, spawnZ;
+    public float cameraYaw, cameraPitch;
     public float spawnYaw;
     public int hoveredMachineX = -1;
     public int hoveredMachineY = -1;
@@ -438,7 +439,9 @@ public class CameraViewportClientManager extends CameraViewportManager {
                         if (Mouse.isGrabbed()) {
                             Mouse.setGrabbed(false);
                         }
-                        PacketOpenRemoteMteGui pkt = new PacketOpenRemoteMteGui(rx, ry, rz, openedFromItem);
+                        PacketOpenRemoteMteGui pkt = new PacketOpenRemoteMteGui(
+                            CoordinatePacker.pack(rx, ry, rz),
+                            openedFromItem);
                         NW.sendToServer(pkt);
                     }
                 }

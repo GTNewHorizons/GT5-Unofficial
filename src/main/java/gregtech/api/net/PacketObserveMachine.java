@@ -9,6 +9,7 @@ import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.GTMod;
@@ -19,8 +20,8 @@ import io.netty.buffer.ByteBuf;
 public class PacketObserveMachine extends GTPacket {
 
     private int dim;
-    private int centreX, centreY, centreZ;
-    private int machineX, machineY, machineZ;
+    private long centreCoord;
+    private long machineCoord;
     private boolean isObserving;
     private double camX, camY, camZ;
     private float yaw;
@@ -36,12 +37,8 @@ public class PacketObserveMachine extends GTPacket {
     public PacketObserveMachine(int dim, int centreX, int centreY, int centreZ, int machineX, int machineY,
         int machineZ, boolean isObserving, double camX, double camY, double camZ, float yaw) {
         this.dim = dim;
-        this.centreX = centreX;
-        this.centreY = centreY;
-        this.centreZ = centreZ;
-        this.machineX = machineX;
-        this.machineY = machineY;
-        this.machineZ = machineZ;
+        this.centreCoord = CoordinatePacker.pack(centreX, centreY, centreZ);
+        this.machineCoord = CoordinatePacker.pack(machineX, machineY, machineZ);
         this.isObserving = isObserving;
         this.camX = camX;
         this.camY = camY;
@@ -57,12 +54,8 @@ public class PacketObserveMachine extends GTPacket {
     @Override
     public void encode(ByteBuf buf) {
         buf.writeInt(dim);
-        buf.writeInt(centreX);
-        buf.writeInt(centreY);
-        buf.writeInt(centreZ);
-        buf.writeInt(machineX);
-        buf.writeInt(machineY);
-        buf.writeInt(machineZ);
+        buf.writeLong(centreCoord);
+        buf.writeLong(machineCoord);
         buf.writeBoolean(isObserving);
         buf.writeDouble(camX);
         buf.writeDouble(camY);
@@ -137,12 +130,12 @@ public class PacketObserveMachine extends GTPacket {
             if (session == null) {
                 session = new CameraViewportManager.ObservationSession(
                     dim,
-                    centreX,
-                    centreY,
-                    centreZ,
-                    machineX,
-                    machineY,
-                    machineZ);
+                    CoordinatePacker.unpackX(centreCoord),
+                    CoordinatePacker.unpackY(centreCoord),
+                    CoordinatePacker.unpackZ(centreCoord),
+                    CoordinatePacker.unpackX(machineCoord),
+                    CoordinatePacker.unpackY(machineCoord),
+                    CoordinatePacker.unpackZ(machineCoord));
                 CameraViewportManager.sessions.put(playerUUID, session);
                 session.init(player);
             }

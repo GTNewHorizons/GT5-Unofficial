@@ -10,6 +10,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -20,16 +21,14 @@ import io.netty.buffer.ByteBuf;
 
 public class PacketOpenRemoteMteGui extends GTPacket {
 
-    private int x, y, z;
+    private long MTEcoord;
     private boolean openedFromItem;
     private EntityPlayerMP player;
 
     public PacketOpenRemoteMteGui() {}
 
-    public PacketOpenRemoteMteGui(int x, int y, int z, boolean openedFromItem) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public PacketOpenRemoteMteGui(long coord, boolean openedFromItem) {
+        MTEcoord = coord;
         this.openedFromItem = openedFromItem;
     }
 
@@ -40,19 +39,15 @@ public class PacketOpenRemoteMteGui extends GTPacket {
 
     @Override
     public void encode(ByteBuf buf) {
-        buf.writeInt(x);
-        buf.writeInt(y);
-        buf.writeInt(z);
+        buf.writeLong(MTEcoord);
         buf.writeBoolean(openedFromItem);
     }
 
     @Override
     public GTPacket decode(ByteArrayDataInput buf) {
-        int x = buf.readInt();
-        int y = buf.readInt();
-        int z = buf.readInt();
+        long coord = buf.readLong();
         boolean openedFromItem = buf.readBoolean();
-        return new PacketOpenRemoteMteGui(x, y, z, openedFromItem);
+        return new PacketOpenRemoteMteGui(coord, openedFromItem);
     }
 
     @Override
@@ -70,7 +65,10 @@ public class PacketOpenRemoteMteGui extends GTPacket {
         if (session != null) {
             session.openedFromItem = this.openedFromItem;
             World serverWorld = player.getServerForPlayer();
-            TileEntity te = serverWorld.getTileEntity(x, y, z);
+            TileEntity te = serverWorld.getTileEntity(
+                CoordinatePacker.unpackX(MTEcoord),
+                CoordinatePacker.unpackY(MTEcoord),
+                CoordinatePacker.unpackZ(MTEcoord));
             if (te instanceof BaseMetaTileEntity baseMte) {
                 IMetaTileEntity mte = baseMte.getMetaTileEntity();
                 if (mte instanceof MetaTileEntity realMte) {
