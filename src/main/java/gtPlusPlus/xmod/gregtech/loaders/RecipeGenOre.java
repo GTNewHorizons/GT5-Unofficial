@@ -66,7 +66,6 @@ public class RecipeGenOre extends RecipeGenBase {
             mStone = MaterialUtils.generateMaterialFromGtENUM(Materials.Stone);
         }
 
-        // if (material.getMaterialComposites().length > 1){
         int tVoltageMultiplier = MaterialUtils.getVoltageForTier(material.tier);
 
         final ItemStack dustStone = ItemUtils.getItemStackOfAmountFromOreDict("dustStone", 1);
