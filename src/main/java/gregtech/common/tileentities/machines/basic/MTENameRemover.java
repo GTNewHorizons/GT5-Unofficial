@@ -257,6 +257,16 @@ public class MTENameRemover extends MTEBasicMachine {
     }
 
     @Override
+    public int getStandardAmperesIn() {
+        return 0;
+    }
+
+    @Override
+    public int getOverdrawAmperesIn() {
+        return 0;
+    }
+
+    @Override
     public long maxAmperesOut() {
         return 0;
     }

@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.GTValues.VP;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
@@ -119,7 +120,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public static final int OTHER_SLOT_COUNT = 5;
     public final ItemStack[] mOutputItems;
     public final int mInputSlotCount;
-    public int mAmperage;
+    protected int mAmperage;
     public boolean mAllowInputFromOutputSide = true, mFluidTransfer = false, mItemTransfer = false, mStuttering = false,
         mCharge = false, mDecharge = false;
     private int errorDisplayID;
@@ -372,6 +373,25 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public long maxAmperesIn() {
         return ((long) mEUt * 2L) / V[mTier] + 1L;
+    }
+
+    /**
+     * Lossless amperes this machine requires for it's most expensive recipe.
+     */
+    public int getStandardAmperesIn() {
+        return mAmperage;
+    }
+
+    /**
+     * Maximum amperes this machine will draw for it's most expensive recipe when accounting for cable loss and empty EU
+     * buffers.
+     * <br>
+     * Should be overridden any time {@link #maxAmperesIn} is overridden.
+     * <br>
+     * Is assumed to be greater than or equal to {@link #getStandardAmperesIn}.
+     */
+    public int getOverdrawAmperesIn() {
+        return (int) (((VP[mTier] * 2L) * mAmperage) / V[mTier] + 1L);
     }
 
     @Override

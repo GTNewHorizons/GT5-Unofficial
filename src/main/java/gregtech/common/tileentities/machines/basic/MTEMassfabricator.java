@@ -142,7 +142,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
 
     @Override
     protected OverclockDescriber createOverclockDescriber() {
-        return new MassfabricatorOverclockDescriber(mTier, mAmperage);
+        return new MassfabricatorOverclockDescriber(mTier, this.getStandardAmperesIn());
     }
 
     @Override
@@ -157,6 +157,11 @@ public class MTEMassfabricator extends MTEBasicMachine {
 
     @Override
     public long maxAmperesIn() {
+        return 10;
+    }
+
+    @Override
+    public int getOverdrawAmperesIn() {
         return 10;
     }
 

@@ -483,6 +483,11 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         return 4L;
     }
 
+    @Override
+    public int getOverdrawAmperesIn() {
+        return 4;
+    }
+
     private void doEffect() {
         final IBeeGenome genome = usedQueenBee.getGenome();
         final IAlleleBeeEffect effect = genome.getEffect();

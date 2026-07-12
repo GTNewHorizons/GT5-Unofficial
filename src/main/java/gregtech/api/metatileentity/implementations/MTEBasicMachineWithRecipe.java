@@ -275,7 +275,7 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             this.hasInputFluidSlot,
             this.hasOutputFluidSlot,
             this.mTankCapacity,
-            this.mAmperage,
+            this.getStandardAmperesIn(),
             this.mTextures,
             this.mSoundResource,
             this.mSpecialEffect).setProgressBarTexture(this.progressBarTexture)
@@ -488,7 +488,7 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
 
     private void refreshMachineOverclockDescriber() {
         this.overclockDescriber = mMachineEUtMultiplier == 1 ? createOverclockDescriber()
-            : new MachineEUtMultiplierOverclockDescriber(mTier, mAmperage, mMachineEUtMultiplier);
+            : new MachineEUtMultiplierOverclockDescriber(mTier, getStandardAmperesIn(), mMachineEUtMultiplier);
     }
 
     private static long saturatingMultiply(long value, int multiplier) {

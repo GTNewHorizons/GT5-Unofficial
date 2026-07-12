@@ -1365,6 +1365,10 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/progressbar/energy_usage_gauge")
         .fullImage()
         .build();
+    public static final UITexture PROGRESSBAR_ENERGY_OVERDRAW = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/energy_overdraw_gauge")
+        .fullImage()
+        .build();
 
     // endregion progressbar
 

@@ -171,6 +171,11 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     }
 
     @Override
+    public int getOverdrawAmperesIn() {
+        return 2;
+    }
+
+    @Override
     public long getMinimumStoredEU() {
         return V[mTier] * 2;
     }

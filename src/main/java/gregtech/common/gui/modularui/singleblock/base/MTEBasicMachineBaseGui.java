@@ -111,9 +111,12 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             return metaTileEntity.getAverageElectricInput();
         });
         syncManager.syncValue("averageInput", averageInputSyncer);
-        syncManager.syncValue("maxEuInput", new LongSyncValue(machine::maxEUInput));
-        syncManager
-            .syncValue("maxAllowedInput", new LongSyncValue(() -> machine.maxAmperesIn() * machine.maxEUInput()));
+        syncManager.syncValue(
+            "maxStandardInput",
+            new LongSyncValue(() -> machine.getStandardAmperesIn() * machine.maxEUInput()));
+        syncManager.syncValue(
+            "maxOverdrawInput",
+            new LongSyncValue(() -> machine.getOverdrawAmperesIn() * machine.maxEUInput()));
 
         initErrors(syncManager);
     }
@@ -137,7 +140,9 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .child(createEnergyStorageBar(syncManager))
             .child(createEnergyConsumptionBar(syncManager))
             .child(createEnergyUsageBar(syncManager))
-            .child(createEnergyPanel(syncManager));
+            .child(createEnergyOverdrawBar(syncManager))
+            .child(createEnergyPanel(syncManager))
+            .setEnabledIf((_) -> machine.getOverdrawAmperesIn() > 0);
     }
 
     private ProgressWidget createEnergyStorageBar(PanelSyncManager syncManager) {
@@ -147,41 +152,69 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         DoubleSyncValue percentageSyncer = new DoubleSyncValue(
             () -> euSyncer.getValue() / (double) Math.max(1, maxEuSyncer.getValue()));
 
-        return new ProgressWidget()
-            .texture(GTGuiTextures.PROGRESSBAR_ENERGY_EMPTY, GTGuiTextures.PROGRESSBAR_ENERGY_FULL, 45)
-            .size(14, 45)
-            .top(15)
-            .left(6)
-            .direction(ProgressWidget.Direction.UP)
-            .value(percentageSyncer);
+        return makeEnergyBar(
+            percentageSyncer,
+            GTGuiTextures.PROGRESSBAR_ENERGY_EMPTY,
+            GTGuiTextures.PROGRESSBAR_ENERGY_FULL,
+            14,
+            6);
     }
 
     private ProgressWidget createEnergyConsumptionBar(PanelSyncManager syncManager) {
         IntSyncValue eutSyncer = syncManager.findSyncHandler("eut", IntSyncValue.class);
-        LongSyncValue maxAllowedInputSyncer = syncManager.findSyncHandler("maxAllowedInput", LongSyncValue.class);
+        LongSyncValue maxStandardInputSyncer = syncManager.findSyncHandler("maxStandardInput", LongSyncValue.class);
 
         DoubleSyncValue percentageSyncer = new DoubleSyncValue(
-            () -> eutSyncer.getValue() / (double) maxAllowedInputSyncer.getValue());
+            () -> eutSyncer.getValue() / (double) maxStandardInputSyncer.getValue());
 
-        return new ProgressWidget().texture(GTGuiTextures.TRANSPARENT, GTGuiTextures.PROGRESSBAR_ENERGY_CONSUMPTION, 45)
-            .size(5, 45)
-            .top(15)
-            .left(11)
-            .direction(ProgressWidget.Direction.UP)
-            .value(percentageSyncer);
+        return makeEnergyBar(
+            percentageSyncer,
+            GTGuiTextures.TRANSPARENT,
+            GTGuiTextures.PROGRESSBAR_ENERGY_CONSUMPTION,
+            5,
+            11);
     }
 
     private ProgressWidget createEnergyUsageBar(PanelSyncManager syncManager) {
         LongSyncValue averageInputSyncer = syncManager.findSyncHandler("averageInput", LongSyncValue.class);
-        LongSyncValue maxAllowedInputSyncer = syncManager.findSyncHandler("maxAllowedInput", LongSyncValue.class);
+        LongSyncValue maxStandardInputSyncer = syncManager.findSyncHandler("maxStandardInput", LongSyncValue.class);
 
         DoubleSyncValue percentageSyncer = new DoubleSyncValue(
-            () -> averageInputSyncer.getValue() / (double) maxAllowedInputSyncer.getValue());
+            () -> Math.min(1d, averageInputSyncer.getValue() / (double) maxStandardInputSyncer.getValue()));
 
-        return new ProgressWidget().texture(GTGuiTextures.TRANSPARENT, GTGuiTextures.PROGRESSBAR_ENERGY_USAGE, 45)
-            .size(5, 45)
+        return makeEnergyBar(
+            percentageSyncer,
+            GTGuiTextures.TRANSPARENT,
+            GTGuiTextures.PROGRESSBAR_ENERGY_USAGE,
+            5,
+            16);
+    }
+
+    private IWidget createEnergyOverdrawBar(PanelSyncManager syncManager) {
+        LongSyncValue averageInputSyncer = syncManager.findSyncHandler("averageInput", LongSyncValue.class);
+        LongSyncValue maxStandardInputSyncer = syncManager.findSyncHandler("maxStandardInput", LongSyncValue.class);
+        LongSyncValue maxOverdrawInputSyncer = syncManager.findSyncHandler("maxOverdrawInput", LongSyncValue.class);
+
+        DoubleSyncValue percentageSyncer = new DoubleSyncValue(
+            () -> Math.max(
+                0d,
+                (averageInputSyncer.getValue() - maxStandardInputSyncer.getValue())
+                    / (double) maxOverdrawInputSyncer.getValue()));
+
+        return makeEnergyBar(
+            percentageSyncer,
+            GTGuiTextures.TRANSPARENT,
+            GTGuiTextures.PROGRESSBAR_ENERGY_OVERDRAW,
+            5,
+            16);
+    }
+
+    private static ProgressWidget makeEnergyBar(DoubleSyncValue percentageSyncer, UITexture background,
+        UITexture texture, int width, int left) {
+        return new ProgressWidget().texture(background, texture, 45)
+            .size(width, 45)
             .top(15)
-            .left(16)
+            .left(left)
             .direction(ProgressWidget.Direction.UP)
             .value(percentageSyncer);
     }
@@ -191,8 +224,8 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         LongSyncValue maxEuSyncer = syncManager.findSyncHandler("maxEu", LongSyncValue.class);
         IntSyncValue eutSyncer = syncManager.findSyncHandler("eut", IntSyncValue.class);
         LongSyncValue averageInputSyncer = syncManager.findSyncHandler("averageInput", LongSyncValue.class);
-        LongSyncValue maxEuInputSyncer = syncManager.findSyncHandler("maxEuInput", LongSyncValue.class);
-        LongSyncValue maxAllowedInputSyncer = syncManager.findSyncHandler("maxAllowedInput", LongSyncValue.class);
+        LongSyncValue maxStandardInputSyncer = syncManager.findSyncHandler("maxStandardInput", LongSyncValue.class);
+        LongSyncValue maxOverdrawInputSyncer = syncManager.findSyncHandler("maxOverdrawInput", LongSyncValue.class);
 
         return GTGuiTextures.ENERGY_GAUGE_PANEL.asWidget()
             .sizeRel(1)
@@ -202,12 +235,12 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
                         String.format(
                             "Recipe EU consumption: %d/%d eu/t",
                             eutSyncer.getValue(),
-                            maxEuInputSyncer.getValue()))
+                            maxStandardInputSyncer.getValue()))
                     .addLine(
                         String.format(
                             "Average EU usage: %d/%d eu/t",
                             averageInputSyncer.getValue(),
-                            maxAllowedInputSyncer.getValue())))
+                            maxOverdrawInputSyncer.getValue())))
             .tooltipAutoUpdate(true);
     }
 

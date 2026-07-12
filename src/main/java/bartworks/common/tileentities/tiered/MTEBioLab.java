@@ -179,7 +179,12 @@ public class MTEBioLab extends MTEBasicMachine {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MTEBioLab(this.mName, this.mTier, this.mAmperage, this.mDescriptionArray, this.mTextures);
+        return new MTEBioLab(
+            this.mName,
+            this.mTier,
+            this.getStandardAmperesIn(),
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override

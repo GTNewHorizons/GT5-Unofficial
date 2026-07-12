@@ -455,11 +455,6 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
     }
 
     @Override
-    public long maxAmperesIn() {
-        return 1;
-    }
-
-    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return null;
     }
