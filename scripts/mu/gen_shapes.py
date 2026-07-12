@@ -35,15 +35,15 @@ GEAR = 128
 EMPTY = 256
 
 FAMILY_BITS = [
-    ("familyDusts", DUST),
-    ("familyMetals", METAL),
-    ("familyGems", GEM),
-    ("familyOres", ORE),
-    ("familyCells", CELL),
-    ("familyPlasmas", PLASMA),
-    ("familyToolParts", TOOL),
-    ("familyGears", GEAR),
-    ("familyEmpties", EMPTY),
+    ("dusts", DUST),
+    ("metals", METAL),
+    ("gems", GEM),
+    ("ores", ORE),
+    ("cells", CELL),
+    ("plasmas", PLASMA),
+    ("toolParts", TOOL),
+    ("gears", GEAR),
+    ("empties", EMPTY),
 ]
 
 # gregtech.api.enums.MaterialIconRegistry.IconType ordinals 65-95 (VOID_14 through VOID_24) are the block
@@ -141,8 +141,18 @@ def load_dropped_prefixes():
     )
 
 
+# gtPlusPlus-only prefixes with no stage-02 constructor slot (the is_included bugfix list excludes
+# milled: no MetaGeneratedItemX32 slot ever existed) but with real per-material legacy items
+# (gtPlusPlus.core.item.base.ore.BaseItemMilledOre), so gtpp materials need a real shape to cut over
+# onto. Folded into Materials2Shapes at the stage-11 gtpp fold; not dump-driven, so no family or
+# ShapeData membership.
+GTPP_EXTRA_SHAPES = [{"name": "milled", "localNameFormat": "Milled %s"}]
+
+
 def shape_field_name(prefix_name):
-    return "shape" + prefix_name[0].upper() + prefix_name[1:]
+    # The field name equals the OrePrefixes name: MU.collectShapes reflects over these fields and keys
+    # its prefix-to-shape map by field name directly.
+    return prefix_name
 
 
 def java_string_literal(value):
@@ -164,9 +174,18 @@ def write_shapes_file(prefixes):
     lines.append(
         "/// a non-zero generation bit mask, excluding block-kind, fluid-container, and complex tool/armor"
     )
-    lines.append("/// prefixes (see `scripts/mu/gen_shapes.py`).")
+    lines.append(
+        "/// prefixes (see `scripts/mu/gen_shapes.py`). `milled` is the one non-dump-driven addition: gtPlusPlus's"
+    )
+    lines.append(
+        "/// `BaseItemMilledOre` constructed real per-material items despite the prefix never holding a legacy"
+    )
+    lines.append(
+        "/// `MetaGeneratedItemX32` slot, so gtpp materials need a real shape to cut over onto (stage-11 gtpp fold)."
+    )
     lines.append("public class Materials2Shapes {")
     lines.append("")
+    prefixes = sorted(prefixes + GTPP_EXTRA_SHAPES, key=lambda p: p["name"])
     lines.append("    // spotless:off")
     for prefix in prefixes:
         lines.append(f"    public static Shape {shape_field_name(prefix['name'])};")
@@ -215,13 +234,13 @@ def write_families_file(prefixes):
     lines.append("public class Materials2Families {")
     lines.append("")
     lines.append("    // spotless:off")
-    lines.append("    public static Family familyAll;")
+    lines.append("    public static Family all;")
     for family_name, _ in FAMILY_BITS:
         lines.append(f"    public static Family {family_name};")
     lines.append("    // spotless:on")
     lines.append("")
     lines.append("    public static void init() {")
-    lines.append("        familyAll = MaterialLibAPI.newFamily(\"gregtech\", \"All\")")
+    lines.append("        all = MaterialLibAPI.newFamily(\"gregtech\", \"All\")")
     lines.append(
         "            .setProperty(StandardProperties.FALLBACK_TEXTURE_SET, TextureSet.of(\"gregtech\", \"NONE\"))"
     )
@@ -229,7 +248,8 @@ def write_families_file(prefixes):
     lines.append("")
     for family_name, bit in FAMILY_BITS:
         members = family_members[family_name]
-        family_key = family_name[len("family"):]
+        # The registered family name string predates the field-name de-prefixing and must not change.
+        family_key = family_name[0].upper() + family_name[1:]
         lines.append(f"        {family_name} = MaterialLibAPI.newFamily(\"gregtech\", {java_string_literal(family_key)})")
         if members:
             lines.append("            .generateShapes(")
