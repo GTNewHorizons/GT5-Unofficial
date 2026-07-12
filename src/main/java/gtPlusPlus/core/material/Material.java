@@ -45,6 +45,9 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
+/// @deprecated Terminally deprecated; scheduled for removal in 5.10.0.0. Use the MaterialLib-backed
+/// materials2 API instead.
+@Deprecated
 public class Material implements IOreMaterial {
 
     public static final Set<Material> mMaterialMap = new HashSet<>();
