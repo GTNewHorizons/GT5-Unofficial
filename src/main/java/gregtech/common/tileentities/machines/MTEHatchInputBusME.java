@@ -775,7 +775,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     public void setSlotConfig(int index, ItemStack config) {
         slots[index] = config == null ? null : new Slot(config.copy());
         configureWatchers();
-        scheduleRecipeCheck(RecipeCheckReason.IMMEDIATE);
     }
 
     /**
