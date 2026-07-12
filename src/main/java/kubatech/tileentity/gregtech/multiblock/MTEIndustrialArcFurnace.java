@@ -981,6 +981,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 // check if we can even process anything
                 if (this.availableVoltage < recipe.mEUt)
                     return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                if (phase == ArcFurnacePhase.Standby && !canOutputAll(recipe.mOutputs))
+                    return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+                if (phase == ArcFurnacePhase.Standby && !canOutputAll(recipe.mFluidOutputs))
+                    return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
                 return result;
             }
 
