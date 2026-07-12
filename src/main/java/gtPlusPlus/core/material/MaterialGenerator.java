@@ -74,8 +74,8 @@ public class MaterialGenerator {
             final boolean hotIngot = matInfo.requiresBlastFurnace();
 
             int sRadiation = 0;
-            if (ItemUtils.getRadioactivityLevel(materialName) > 0 || (matInfo.vRadiationLevel != 0)) {
-                sRadiation = matInfo.vRadiationLevel;
+            if (ItemUtils.getRadioactivityLevel(materialName) > 0 || (matInfo.radiationLevel != 0)) {
+                sRadiation = matInfo.radiationLevel;
             }
 
             if (matInfo.getState() == MaterialState.SOLID) {
@@ -184,8 +184,8 @@ public class MaterialGenerator {
                 .circuit(20)
                 .itemOutputs(matInfo.getDust(1))
                 .fluidInputs(matInfo.getFluidStack(1 * INGOTS))
-                .eut(matInfo.vVoltageMultiplier)
-                .duration(10 * (matInfo.vVoltageMultiplier / 5))
+                .eut(matInfo.voltageMultiplier)
+                .duration(10 * (matInfo.voltageMultiplier / 5))
                 .addTo(chemicalDehydratorRecipes);
         }
     }
