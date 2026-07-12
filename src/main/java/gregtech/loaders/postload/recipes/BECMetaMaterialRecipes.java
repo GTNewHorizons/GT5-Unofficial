@@ -104,7 +104,7 @@ public class BECMetaMaterialRecipes implements Runnable {
                     MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(condensateAmounts[t] * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.TranscendentMetal,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (condensateAmounts[t] * INGOTS)) };
                 addBecAndAal(
                     outputs[t].get(1),
@@ -259,11 +259,11 @@ public class BECMetaMaterialRecipes implements Runnable {
                     MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromatic4TierAmts[t] * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Infinity,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (infinity4TierAmts[t] * INGOTS)),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.TranscendentMetal,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (INGOTS)) };
                 addBecAndAal(
                     outputs[t].get(1),
@@ -302,11 +302,11 @@ public class BECMetaMaterialRecipes implements Runnable {
                     MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromatic4TierAmts[t] * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Infinity,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (infinity4TierAmts[t] * INGOTS)),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.TranscendentMetal,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (INGOTS)) };
                 addBecAndAal(
                     outputs[t].get(1),
@@ -347,11 +347,11 @@ public class BECMetaMaterialRecipes implements Runnable {
                     MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromatic4TierAmts[t] * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Infinity,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (infinity4TierAmts[t] * INGOTS)),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.TranscendentMetal,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (INGOTS)) };
                 addBecAndAal(
                     outputs[t].get(1),
@@ -396,11 +396,11 @@ public class BECMetaMaterialRecipes implements Runnable {
                     MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromatic4TierAmts[t] * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Infinity,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (infinity4TierAmts[t] * INGOTS)),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.TranscendentMetal,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (INGOTS)) };
                 addBecAndAal(
                     outputs[t].get(1),

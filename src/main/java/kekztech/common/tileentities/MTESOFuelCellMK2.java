@@ -172,7 +172,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
                         if (!super.depleteInput(
                             MaterialLibAPI.getFluidStack(
                                 Materials2Materials.Oxygen,
-                                Materials2FluidShapes.shapeFluidGas,
+                                Materials2FluidShapes.fluidGas,
                                 (int) (OXYGEN_PER_SEC)))) {
                             super.mEUt = 0;
                             super.mEfficiency = 0;

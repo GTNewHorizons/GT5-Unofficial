@@ -74,12 +74,12 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// Migrates saved legacy `BlockBaseOre` placed/inventory stacks into the equivalent MaterialLib
-    /// [gregtech.api.enums.materials2.Materials2OreShapes#shapeOre] stack, resolved through
+    /// [gregtech.api.enums.materials2.Materials2OreShapes#ore] stack, resolved through
     /// [GtppOreCutoverTable]'s (unlocalized name, registry name) rows the same way
     /// [gregtech.common.ores.GTPPOreAdapter#getBlock] resolves it live. Unlike every gtpp part/block row
     /// (one distinct registered instance per material, no meta multiplexing), so a single item + block
     /// transformer pair per row is enough, mirroring [#registerGtppItemCutoverTransformers]' `block`-row
-    /// handling. A material that never gained `shapeOre` membership resolves null and is left on its legacy
+    /// handling. A material that never gained `ore` membership resolves null and is left on its legacy
     /// slot, same as every other cutover table here.
     private static void registerGtppOreCutoverTransformers() {
         for (GtppOreCutoverTable.Entry entry : GtppOreCutoverTable.ENTRIES) {
@@ -115,8 +115,8 @@ public class PosteaTransformers implements Runnable {
     /// gtPlusPlus counterpart of [#registerWerkstoffItemCutoverTransformers], differing only in that each row
     /// is its own registered item/block rather than a damage variant of a shared meta-item, so no damage
     /// read/branch is needed. `cell`/`cellPlasma` rows resolve through [MaterialReconstruction#cellStack]
-    /// instead of plain [MU#stack], since a row's material may have claimed `shapeCellMolten` rather than
-    /// `shapeCell` -- see that method's javadoc. `frameGt` is out of the table and migrates separately
+    /// instead of plain [MU#stack], since a row's material may have claimed `cellMolten` rather than
+    /// `cell` -- see that method's javadoc. `frameGt` is out of the table and migrates separately
     /// (deferred). `block` rows additionally get a [BlockReplacementManager] handler for placed instances,
     /// since a storage block (unlike every other gtpp part) is placeable, and are skipped entirely (both the
     /// item and block handler return false/null, leaving the legacy slot canonical) for the small

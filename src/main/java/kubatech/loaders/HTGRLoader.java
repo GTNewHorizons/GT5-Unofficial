@@ -172,27 +172,23 @@ public class HTGRLoader {
         // silver to indium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.shapeDust, (int) (2)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.dust, (int) (2)))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.shapeDust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Indium, Materials2Shapes.shapeDust, (int) (1)))
+                MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Indium, Materials2Shapes.dust, (int) (1)))
             .metadata(
                 FUEL,
-                new Pair[] {
+                new Pair[] { Pair
+                    .of(MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (2)), 1),
                     Pair.of(
-                        MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.shapeDust, (int) (2)),
-                        1),
-                    Pair.of(
-                        MaterialLibAPI
-                            .getStack(Materials2Materials.Plutonium241, Materials2Shapes.shapeDust, (int) (3)),
+                        MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.dust, (int) (3)),
                         2) })
             .metadata(
                 SHELL,
-                new ItemStack[] {
-                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1)) })
+                new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1)) })
             .metadata(FUEL_MODIFICATOR, Triple.of(0.1d, 0.8d, 1.1d))
             .duration(1)
             .eut(1)
@@ -201,25 +197,23 @@ public class HTGRLoader {
         // uranium + plutonium breeding
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (1)))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.shapeDust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.shapeDust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.shapeDust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeDust, (int) (1)))
+                MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.dust, (int) (1)))
             .outputChances(10000, 10000, 2000, 10000)
             .metadata(
                 FUEL,
-                new Pair[] { Pair.of(
-                    MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.shapeDust, (int) (5)),
-                    3) })
+                new Pair[] { Pair
+                    .of(MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.dust, (int) (5)), 3) })
             .metadata(
                 SHELL,
-                new ItemStack[] {
-                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1)) })
+                new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1)) })
             .metadata(FUEL_MODIFICATOR, Triple.of(1d, 1.1d, 1.1d))
             .duration(1)
             .eut(1)
@@ -228,22 +222,20 @@ public class HTGRLoader {
         // plutonium 241 breeding
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.shapeDust, (int) (2)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dust, (int) (2)))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.shapeDust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeDust, (int) (4)))
+                MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.dust, (int) (4)))
             .metadata(
                 FUEL,
-                new Pair[] { Pair.of(
-                    MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.shapeDust, (int) (5)),
-                    2) })
+                new Pair[] { Pair
+                    .of(MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.dust, (int) (5)), 2) })
             .metadata(
                 SHELL,
-                new ItemStack[] {
-                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1)) })
+                new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1)) })
             .metadata(FUEL_MODIFICATOR, Triple.of(2d, 1.2d, 0.9d))
             .duration(1)
             .eut(1)
@@ -252,23 +244,21 @@ public class HTGRLoader {
         // thorium to lutetium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.shapeDust, (int) (5)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (5)))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Lutetium, Materials2Shapes.shapeDust, (int) (4)),
-                MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.shapeDust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeDust, (int) (1)))
+                MaterialLibAPI.getStack(Materials2Materials.Lutetium, Materials2Shapes.dust, (int) (4)),
+                MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.dust, (int) (1)))
             .metadata(
                 FUEL,
-                new Pair[] { Pair.of(
-                    MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.shapeDust, (int) (1)),
-                    0) })
+                new Pair[] { Pair
+                    .of(MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (1)), 0) })
             .metadata(
                 SHELL,
-                new ItemStack[] {
-                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1)) })
+                new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1)) })
             .metadata(FUEL_MODIFICATOR, Triple.of(0.25d, 0.8d, 1.1d))
             .duration(1)
             .eut(1)
@@ -277,24 +267,23 @@ public class HTGRLoader {
         // tungsten to osmium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.shapeDust, (int) (5)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.dust, (int) (5)))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.shapeDust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.shapeDust, (int) (4)),
-                MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.shapeDust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeDust, (int) (2)))
+                MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.dust, (int) (4)),
+                MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.dust, (int) (2)))
             .metadata(
                 FUEL,
                 new Pair[] { Pair.of(
-                    MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.shapeDust, (int) (3)),
+                    MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.dust, (int) (3)),
                     0) })
             .metadata(
                 SHELL,
-                new ItemStack[] {
-                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1)) })
+                new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1)) })
             .metadata(FUEL_MODIFICATOR, Triple.of(0.05d, 0.8d, 0.5d))
             .duration(1)
             .eut(1)
@@ -303,23 +292,21 @@ public class HTGRLoader {
         // praseodymium to promethium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Praseodymium, Materials2Shapes.shapeDust, (int) (2)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Praseodymium, Materials2Shapes.dust, (int) (2)))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Promethium, Materials2Shapes.shapeDust, (int) (2)),
-                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeDust, (int) (3)))
+                MaterialLibAPI.getStack(Materials2Materials.Promethium, Materials2Shapes.dust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.dust, (int) (3)))
             .metadata(
                 FUEL,
                 new Pair[] { Pair.of(
-                    MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.shapeDust, (int) (3)),
+                    MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.dust, (int) (3)),
                     0) })
             .metadata(
                 SHELL,
-                new ItemStack[] {
-                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1)) })
+                new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1)) })
             .metadata(FUEL_MODIFICATOR, Triple.of(0.75d, 1.2d, 0.7d))
             .duration(1)
             .eut(1)
@@ -328,23 +315,21 @@ public class HTGRLoader {
         // lanthanum to praseodymium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Lanthanum, Materials2Shapes.shapeDust, (int) (3)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Lanthanum, Materials2Shapes.dust, (int) (3)))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Praseodymium, Materials2Shapes.shapeDust, (int) (2)),
-                MaterialLibAPI.getStack(Materials2Materials.Cerium, Materials2Shapes.shapeDust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeDust, (int) (3)))
+                MaterialLibAPI.getStack(Materials2Materials.Praseodymium, Materials2Shapes.dust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Cerium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.dust, (int) (3)))
             .metadata(
                 FUEL,
-                new Pair[] { Pair.of(
-                    MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.shapeDust, (int) (3)),
-                    0) })
+                new Pair[] { Pair
+                    .of(MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (3)), 0) })
             .metadata(
                 SHELL,
-                new ItemStack[] {
-                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1)) })
+                new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1)) })
             .metadata(FUEL_MODIFICATOR, Triple.of(0.5d, 0.8d, 0.9d))
             .duration(1)
             .eut(1)
@@ -353,23 +338,21 @@ public class HTGRLoader {
         // caesium to lanthanum
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Caesium, Materials2Shapes.shapeDust, (int) (3)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Caesium, Materials2Shapes.dust, (int) (3)))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Lanthanum, Materials2Shapes.shapeDust, (int) (2)),
-                MaterialLibAPI.getStack(Materials2Materials.Caesium, Materials2Shapes.shapeDust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeDust, (int) (3)))
+                MaterialLibAPI.getStack(Materials2Materials.Lanthanum, Materials2Shapes.dust, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Caesium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.dust, (int) (3)))
             .metadata(
                 FUEL,
-                new Pair[] { Pair.of(
-                    MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.shapeDust, (int) (3)),
-                    0) })
+                new Pair[] { Pair
+                    .of(MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (3)), 0) })
             .metadata(
                 SHELL,
-                new ItemStack[] {
-                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1)) })
+                new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1)) })
             .metadata(FUEL_MODIFICATOR, Triple.of(0.5d, 0.9d, 0.9d))
             .duration(1)
             .eut(1)
@@ -378,27 +361,24 @@ public class HTGRLoader {
         // glowstone to sunnarium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.shapeDust, (int) (5)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.dust, (int) (5)))
             .circuit(2)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Sunnarium, Materials2Shapes.shapeDust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.shapeDust, (int) (4)),
-                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeDust, (int) (3)))
+                MaterialLibAPI.getStack(Materials2Materials.Sunnarium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.dust, (int) (4)),
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.dust, (int) (3)))
             .metadata(
                 FUEL,
-                new Pair[] {
+                new Pair[] { Pair
+                    .of(MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (3)), 1),
                     Pair.of(
-                        MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.shapeDust, (int) (3)),
-                        1),
-                    Pair.of(
-                        MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.shapeDust, (int) (3)),
+                        MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.dust, (int) (3)),
                         2) })
             .metadata(
                 SHELL,
-                new ItemStack[] {
-                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1)) })
+                new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1)) })
             .metadata(FUEL_MODIFICATOR, Triple.of(2d, 1.2d, 1.1d))
             .duration(1)
             .eut(1)
@@ -410,8 +390,8 @@ public class HTGRLoader {
             .itemInputs(
                 ItemList.Beryllium_Shielding_Plate.get(2L),
                 ItemList.Casing_Refined_Graphite.get(1L),
-                MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.shapeStick, (int) (6)),
-                MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.shapeScrew, (int) (12)))
+                MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.stick, (int) (6)),
+                MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.screw, (int) (12)))
             .itemOutputs(ItemList.Casing_Graphite_Moderator.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 15)
             .eut(TierEU.RECIPE_EV)
@@ -422,7 +402,7 @@ public class HTGRLoader {
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Titanium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MicaInsulatorFoil", 16),
-                MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.shapePlate, (int) (4)),
+                MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.plate, (int) (4)),
                 ItemList.Alumina_Support_Ring.get(2L))
             .itemOutputs(ItemList.Casing_Insulated_Fluid_Pipe.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 20)
@@ -432,12 +412,11 @@ public class HTGRLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Beryllium_Shielding_Plate.get(1L),
-                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.shapePlate, (int) (6)),
-                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.shapeScrew, (int) (8)),
+                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plate, (int) (6)),
+                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.screw, (int) (8)),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Lead, Materials2FluidShapes.shapeFluidMolten, (int) (1152)))
+                MaterialLibAPI.getFluidStack(Materials2Materials.Lead, Materials2FluidShapes.fluidMolten, (int) (1152)))
             .itemOutputs(ItemList.Casing_Beryllium_Integrated_Reactor.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 30)
             .eut(TierEU.RECIPE_EV)
@@ -445,11 +424,11 @@ public class HTGRLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Beryllium, Materials2Shapes.shapePlateDense, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.shapeScrew, (int) (4)))
+                MaterialLibAPI.getStack(Materials2Materials.Beryllium, Materials2Shapes.plateDense, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.screw, (int) (4)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Beryllium, Materials2FluidShapes.shapeFluidMolten, (int) (144)))
+                    .getFluidStack(Materials2Materials.Beryllium, Materials2FluidShapes.fluidMolten, (int) (144)))
             .itemOutputs(ItemList.Beryllium_Shielding_Plate.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 30)
             .eut(TierEU.RECIPE_EV)
@@ -471,7 +450,7 @@ public class HTGRLoader {
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (18)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (18)))
             .itemOutputs(ItemList.Casing_Refined_Graphite.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 30)
             .eut(TierEU.RECIPE_MV)

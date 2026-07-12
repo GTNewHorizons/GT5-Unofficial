@@ -11,8 +11,8 @@ public final class ConsumerGear {
     private ConsumerGear() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeGearGt, OrePrefixes.gearGt, () -> ProcessingGear.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.gearGt, OrePrefixes.gearGt, () -> ProcessingGear.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeGearGtSmall, OrePrefixes.gearGtSmall, () -> ProcessingGear.INSTANCE);
+            .delegate(Materials2Shapes.gearGtSmall, OrePrefixes.gearGtSmall, () -> ProcessingGear.INSTANCE);
     }
 }

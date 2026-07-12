@@ -699,10 +699,9 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     private boolean checkFluid(int amount) {
         // checks for fluid in hatch, does not drain it.
-        final FluidStack tFluid = tier2Fluid ? MaterialLibAPI.getFluidStack(
-            Materials2Materials.BiocatalyzedPropulsionFluid,
-            Materials2FluidShapes.shapeFluidLiquid,
-            amount) : new FluidStack(GTPPFluids.Kerosene, amount);
+        final FluidStack tFluid = tier2Fluid ? MaterialLibAPI
+            .getFluidStack(Materials2Materials.BiocatalyzedPropulsionFluid, Materials2FluidShapes.fluidLiquid, amount)
+            : new FluidStack(GTPPFluids.Kerosene, amount);
 
         return this.depleteInput(tFluid, true);
     }
@@ -757,7 +756,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
             FluidStack tFluid = tier2Fluid ? MaterialLibAPI.getFluidStack(
                 Materials2Materials.BiocatalyzedPropulsionFluid,
-                Materials2FluidShapes.shapeFluidLiquid,
+                Materials2FluidShapes.fluidLiquid,
                 amountToDrain) : new FluidStack(GTPPFluids.Kerosene, amountToDrain); // gets fluid to drain
             for (MTEHatchInput mInputHatch : mInputHatches) {
                 if (drain(mInputHatch, tFluid, true)) {

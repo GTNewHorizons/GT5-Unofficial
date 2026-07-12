@@ -23,7 +23,7 @@ public class CircuitAssembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
-                MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.shapeFoil, 4))
+                MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.foil, 4))
             .itemOutputs(CustomItemList.parametrizerMemory.get(1))
             .fluidInputs(Materials.Polyethylene.getMolten(1 * HALF_INGOTS))
             .requiresCleanRoom()

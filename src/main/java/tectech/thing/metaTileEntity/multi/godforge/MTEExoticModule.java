@@ -224,7 +224,7 @@ public class MTEExoticModule extends MTEBaseModule {
                 .addAll(convertItemToPlasma(randomizedItemInput, 9), convertFluidToPlasma(randomizedFluidInput, 1)),
             new FluidStack[] { MaterialLibAPI.getFluidStack(
                 Materials2Materials.QuarkGluonPlasma,
-                Materials2FluidShapes.shapeFluidLiquid,
+                Materials2FluidShapes.fluidLiquid,
                 (int) (1000 * actualParallel)) },
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
@@ -442,7 +442,7 @@ public class MTEExoticModule extends MTEBaseModule {
             } else {
                 outputFluid = MaterialLibAPI.getFluidStack(
                     Materials2Materials.QuarkGluonPlasma,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (1000 * actualParallel));
             }
 

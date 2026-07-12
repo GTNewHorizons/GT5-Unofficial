@@ -80,7 +80,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials2Materials.Lubricant,
-                            Materials2FluidShapes.shapeFluidLiquid,
+                            Materials2FluidShapes.fluidLiquid,
                             (int) (Math.max(
                                 1,
                                 Math.min(250, ((int) Math.max(aMaterial.getMass() * 10, 1)) * TICKS * 30 / 1280)))))
@@ -135,7 +135,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials2Materials.Lubricant,
-                            Materials2FluidShapes.shapeFluidLiquid,
+                            Materials2FluidShapes.fluidLiquid,
                             (int) (Math.max(
                                 1,
                                 Math.min(250, ((int) Math.max(aMaterial.getMass() * 10, 1)) * TICKS * 30 / 1280)))))

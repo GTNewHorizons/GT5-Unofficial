@@ -95,7 +95,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     .itemInputs(
                         MaterialLibAPI.getStack(
                             Materials2Materials.Steel,
-                            Materials2Shapes.shapeRing,
+                            Materials2Shapes.ring,
                             (int) (aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.getMaterialAmount())),
                         GTOreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true))
                     .itemOutputs(GTUtility.copyAmount(1, aStack))

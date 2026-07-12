@@ -21,12 +21,11 @@ public class ChemicalReactor implements Runnable {
 
         // Ceria Dust
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Cerium, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Cerium, Materials2Shapes.dust, (int) (1)))
             .circuit(6)
             .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 3))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (2_000)))
+                MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (2_000)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);

@@ -128,7 +128,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
         } else if (lootWeight == 100) {
             final int rareLoot = MathUtils.randInt(1, 10);
             if (rareLoot <= 4) {
-                loot = MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeNugget, (int) (1));
+                loot = MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.nugget, (int) (1));
             } else if (rareLoot <= 7) {
                 loot = new ItemStack(Items.gold_nugget);
             } else if (rareLoot <= 9) {

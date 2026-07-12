@@ -59,7 +59,7 @@ public class MaterialFix {
         if (material.hasItemType(OrePrefixes.cableGt01)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.get(OrePrefixes.cableGt01))
-                .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDustSmall, 2))
+                .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dustSmall, 2))
                 .fluidOutputs(material.getMolten(1 * HALF_INGOTS))
                 .duration(16 * TICKS)
                 .eut(TierEU.RECIPE_ULV)

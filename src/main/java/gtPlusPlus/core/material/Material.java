@@ -957,8 +957,8 @@ public class Material implements IOreMaterial {
             // Iodine) can have ITS block cut over upstream (stage 07) while gtpp's own BlockBaseModular for it
             // still needs the stage-11 identity-reference sweep first. cell/cellPlasma are excluded from this
             // branch specifically because it resolves through plain `MU.stack`, not `cellStack`'s
-            // shapeCell/shapeCellMolten fallback -- a non-reconstructed material sharing a name with a gtpp
-            // material whose cell landed on shapeCellMolten would silently miss it here; none are known to
+            // cell/cellMolten fallback -- a non-reconstructed material sharing a name with a gtpp
+            // material whose cell landed on cellMolten would silently miss it here; none are known to
             // exist today, but this branch has no reconstruction check to fall back on if one appears.
             Materials gtEquivalent = MaterialUtils.getMaterial(this.unlocalizedName);
             if (gtEquivalent != null && !MaterialUtils.isNullGregtechMaterial(gtEquivalent)) {

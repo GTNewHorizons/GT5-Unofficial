@@ -583,7 +583,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 FluidStack fluidStack = this.getInputFromHatch(
                     heliumInputHatch,
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.shapeFluidGas, (int) (1)));
+                        .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (1)));
                 if (fluidStack != null) {
                     int toget = Math
                         .min(MTEHighTempGasCooledReactor.HELIUM_NEEDED - this.heliumSupply, fluidStack.amount);
@@ -1102,47 +1102,45 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         public static final int MATERIALS_PER_FUEL = sHTGR_Bases.length;
         static final int USABLE_FUEL_INDEX = 4;
         static final int BURNED_OUT_FUEL_INDEX = 5;
-        public static final Fuel_[] sHTGR_Fuel = {
-            new Fuel_(
-                "Thorium",
-                "Thorium",
-                WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 64),
-                MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.shapeDust, (int) (4)),
-                GTValues.NF,
-                new ItemStack[] {
-                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Lutetium, Materials2Shapes.shapeDust, (int) (1)),
-                    WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1) },
-                new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 9900 / 4, 162 / 4 },
-                "Multiplies coolant by 1"),
+        public static final Fuel_[] sHTGR_Fuel = { new Fuel_(
+            "Thorium",
+            "Thorium",
+            WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 64),
+            MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (4)),
+            GTValues.NF,
+            new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Lutetium, Materials2Shapes.dust, (int) (1)),
+                WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1) },
+            new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 9900 / 4, 162 / 4 },
+            "Multiplies coolant by 1"),
             new Fuel_(
                 "Uranium",
                 "Uranium",
-                MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.shapeDust, (int) (64)),
-                MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.shapeDust, (int) (8)),
+                MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (8)),
                 FluidRegistry.getFluidStack("krypton", 4),
                 new ItemStack[] {
-                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.shapeDust, (int) (1)) },
+                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.dust, (int) (1)) },
                 new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 5000 / 4, 5000 / 4 },
                 "Multiplies coolant by 1.5"),
             new Fuel_(
                 "Plutonium",
                 "Plutonium",
-                MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.shapeDust, (int) (64)),
-                MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.shapeDust, (int) (4)),
+                MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.dust, (int) (4)),
                 FluidRegistry.getFluidStack("xenon", 4),
                 new ItemStack[] {
-                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.shapeDust, (int) (1)) },
+                    MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dust, (int) (1)) },
                 new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 5000 / 4, 5000 / 4 },
                 "Multiplies coolant by 2"), };
         public static final CustomHTGRSimpleSubItemClass aHTGR_Materials;

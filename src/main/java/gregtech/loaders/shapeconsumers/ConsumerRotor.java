@@ -10,6 +10,6 @@ public final class ConsumerRotor {
     private ConsumerRotor() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeRotor, OrePrefixes.rotor, () -> ProcessingRotor.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.rotor, OrePrefixes.rotor, () -> ProcessingRotor.INSTANCE);
     }
 }

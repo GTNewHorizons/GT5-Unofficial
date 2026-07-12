@@ -270,7 +270,7 @@ public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEn
                 if ((mRuntime % 72 == 0 || mRuntime == 0) && !depleteInput(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Lubricant,
-                        Materials2FluidShapes.shapeFluidLiquid,
+                        Materials2FluidShapes.fluidLiquid,
                         (int) ((boostEu ? 2 : 1) * getAdditiveFactor()))))
                     return SimpleCheckRecipeResult.ofFailure("no_lubricant");
 

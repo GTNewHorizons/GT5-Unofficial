@@ -1071,7 +1071,7 @@ public class GTProxy implements IFuelHandler {
             FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.shapeFluidLiquid, (int) (1_000)),
+                        .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
                     GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Milk, 1L),
                     GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
         }
@@ -2367,7 +2367,7 @@ public class GTProxy implements IFuelHandler {
                     new FluidStack(uncrackedFluid, 1000),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Hydrogen,
-                        Materials2FluidShapes.shapeFluidGas,
+                        Materials2FluidShapes.fluidGas,
                         (int) (hydrogenAmount * 800)))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 1000))
                 .duration((1 + i) * SECONDS)
@@ -2377,7 +2377,7 @@ public class GTProxy implements IFuelHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     MaterialLibAPI
-                        .getStack(Materials2Materials.Hydrogen, Materials2CellShapes.shapeCell, (int) (hydrogenAmount)))
+                        .getStack(Materials2Materials.Hydrogen, Materials2CellShapes.cell, (int) (hydrogenAmount)))
                 .circuit(i + 1)
                 .itemOutputs(Materials.Empty.getCells(hydrogenAmount))
                 .fluidInputs(new FluidStack(uncrackedFluid, 1000))
@@ -2393,7 +2393,7 @@ public class GTProxy implements IFuelHandler {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Hydrogen,
-                        Materials2FluidShapes.shapeFluidGas,
+                        Materials2FluidShapes.fluidGas,
                         (int) (hydrogenAmount * 1000)))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
@@ -2406,7 +2406,7 @@ public class GTProxy implements IFuelHandler {
                     new FluidStack(uncrackedFluid, 1000),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Hydrogen,
-                        Materials2FluidShapes.shapeFluidGas,
+                        Materials2FluidShapes.fluidGas,
                         (int) (hydrogenAmount * 1000)))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((4 + 2 * i) * SECONDS)

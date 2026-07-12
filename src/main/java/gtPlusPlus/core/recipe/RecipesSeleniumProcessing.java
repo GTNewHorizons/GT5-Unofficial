@@ -53,15 +53,13 @@ public class RecipesSeleniumProcessing {
             .circuit(14)
             .fluidInputs(
                 MaterialMisc.SELENIOUS_ACID.getFluidStack(750),
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.SulfuricAcid,
-                    Materials2FluidShapes.shapeFluidLiquid,
-                    (int) (8_000)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, (int) (8_000)))
             .fluidOutputs(
                 MaterialsElements.getInstance().SELENIUM.getFluidStack(2 * INGOTS + 1 * QUARTER_INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.DilutedSulfuricAcid,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (12_000)))
             .eut(TierEU.RECIPE_IV)
             .duration(5 * MINUTES)

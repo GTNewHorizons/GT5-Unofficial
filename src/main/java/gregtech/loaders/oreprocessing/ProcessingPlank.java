@@ -211,7 +211,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             .itemOutputs(slabOutput)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.shapeFluidLiquid, (int) (1)))
+                    .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1)))
             .duration(25 * TICKS)
             .eut(4)
             .addTo(cutterRecipes);

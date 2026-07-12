@@ -33,9 +33,8 @@ public class NeutronActivatorLoader {
             .addTo(neutronActivatorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(
-                    0,
-                    MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.shapePlate, 1)))
+                GTUtility
+                    .copyAmount(0, MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.plate, 1)))
             .fluidInputs(uraniumBasedLiquidFuel.getFluidOrGas(100))
             .fluidOutputs(uraniumBasedLiquidFuelExcited.getFluidOrGas(100))
             .duration(4 * SECONDS)
@@ -44,9 +43,8 @@ public class NeutronActivatorLoader {
             .addTo(neutronActivatorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(
-                    0,
-                    MaterialLibAPI.getStack(Materials2Materials.Tritanium, Materials2Shapes.shapePlate, 1)))
+                GTUtility
+                    .copyAmount(0, MaterialLibAPI.getStack(Materials2Materials.Tritanium, Materials2Shapes.plate, 1)))
             .fluidInputs(plutoniumBasedLiquidFuel.getFluidOrGas(100))
             .fluidOutputs(plutoniumBasedLiquidFuelExcited.getFluidOrGas(100))
             .duration(4 * SECONDS)

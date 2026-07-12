@@ -75,21 +75,20 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
             Pair.of(Materials.Space.getMolten(20L), ExcitedLiquidCoe[0]),
             Pair.of(GGMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[1]),
             Pair.of(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Naquadah, Materials2FluidShapes.shapeFluidMolten, 20),
+                MaterialLibAPI.getFluidStack(Materials2Materials.Naquadah, Materials2FluidShapes.fluidMolten, 20),
                 ExcitedLiquidCoe[2]),
             Pair.of(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Uranium235, Materials2FluidShapes.shapeFluidMolten, 180),
+                MaterialLibAPI.getFluidStack(Materials2Materials.Uranium235, Materials2FluidShapes.fluidMolten, 180),
                 ExcitedLiquidCoe[3]),
             Pair.of(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Caesium, Materials2FluidShapes.shapeFluidMolten, 180),
+                MaterialLibAPI.getFluidStack(Materials2Materials.Caesium, Materials2FluidShapes.fluidMolten, 180),
                 ExcitedLiquidCoe[4]));
         coolant = Arrays.asList(
             Pair.of(Materials.Time.getMolten(20L), CoolantEfficiency[0]),
             Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
             Pair.of(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.shapeFluidLiquid, 1_000),
+                    .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 1_000),
                 CoolantEfficiency[2]),
             Pair.of(GTModHandler.getIC2Coolant(1_000), CoolantEfficiency[3]));
     }
@@ -239,7 +238,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
                 if (LiquidAirConsumptionPerSecond != 0 && !consumeFuel(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.LiquidAir,
-                        Materials2FluidShapes.shapeFluidLiquid,
+                        Materials2FluidShapes.fluidLiquid,
                         LiquidAirConsumptionPerSecond),
                     input)) {
                     this.mEUt = 0;

@@ -86,7 +86,7 @@ public class CircuitPartsItem extends Item {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.SolderingAlloy,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (4 * INGOTS)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)

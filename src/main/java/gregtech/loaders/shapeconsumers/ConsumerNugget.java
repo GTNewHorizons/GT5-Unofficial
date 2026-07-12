@@ -10,7 +10,6 @@ public final class ConsumerNugget {
     private ConsumerNugget() {}
 
     static void register() {
-        ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeNugget, OrePrefixes.nugget, () -> ProcessingNugget.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.nugget, OrePrefixes.nugget, () -> ProcessingNugget.INSTANCE);
     }
 }

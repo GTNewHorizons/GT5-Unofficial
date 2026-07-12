@@ -24,11 +24,11 @@ public class FermenterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Biomass, Materials2FluidShapes.shapeFluidLiquid, (int) (100)))
+                    .getFluidStack(Materials2Materials.Biomass, Materials2FluidShapes.fluidLiquid, (int) (100)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.FermentedBiomass,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (100)))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(2)
@@ -39,7 +39,7 @@ public class FermenterRecipes implements Runnable {
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.FermentedBiomass,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (100)))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(2)
@@ -47,8 +47,7 @@ public class FermenterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.shapeFluidLiquid, (int) (50)))
+                MaterialLibAPI.getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (50)))
             .fluidOutputs(getFluidStack("potion.mundane", 25))
             .duration(51 * SECONDS + 4 * TICKS)
             .eut(2)

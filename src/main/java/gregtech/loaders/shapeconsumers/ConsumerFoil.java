@@ -10,6 +10,6 @@ public final class ConsumerFoil {
     private ConsumerFoil() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeFoil, OrePrefixes.foil, () -> ProcessingFoil.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.foil, OrePrefixes.foil, () -> ProcessingFoil.INSTANCE);
     }
 }

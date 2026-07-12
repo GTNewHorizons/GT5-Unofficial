@@ -52,17 +52,14 @@ public class NaniteChain {
                 ItemList.Electric_Motor_UV.get(32),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 16 },
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 32),
-                MaterialLibAPI
-                    .getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.shapePlateSuperdense, (int) (4)))
+                MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.plateSuperdense, (int) (4)))
             .fluidInputs(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.HSSS,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (32 * INGOTS)),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HSSS, Materials2FluidShapes.fluidMolten, (int) (32 * INGOTS)),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Osmiridium,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (16 * INGOTS)))
             .itemOutputs(ItemList.NanoForge.get(1))
             .eut(TierEU.RECIPE_ZPM)
@@ -77,9 +74,9 @@ public class NaniteChain {
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 16 },
                 ItemList.Robot_Arm_UV.get(16),
                 ItemList.Circuit_Chip_Stemcell.get(32),
-                MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.shapeRing, (int) (32)),
-                MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.shapeStick, (int) (16)),
-                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (64)))
+                MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.ring, (int) (32)),
+                MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.stick, (int) (16)),
+                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (64)))
             .fluidInputs(Materials.UUMatter.getFluid(10_000), MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS))
             .itemOutputs(Materials.Carbon.getNanite(2))
             .eut(TierEU.RECIPE_UV)
@@ -180,10 +177,8 @@ public class NaniteChain {
             .fluidInputs(
                 Materials.UUMatter.getFluid(500_000),
                 Materials.DTR.getFluid(50_000),
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Creon,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (8 * STACKS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Creon, Materials2FluidShapes.fluidMolten, (int) (8 * STACKS)))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(100 * SECONDS)
             .eut(2_000_000_000)
@@ -204,7 +199,7 @@ public class NaniteChain {
                 Materials.UUMatter.getFluid(500_000),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.RawStarMatter,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (50_000)),
                 Materials.Space.getMolten(5 * INGOTS))
             .metadata(NANO_FORGE_TIER, 3)
@@ -227,7 +222,7 @@ public class NaniteChain {
                 Materials.UUMatter.getFluid(500_000),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.RawStarMatter,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (50_000)),
                 Materials.Time.getMolten(5 * INGOTS))
             .metadata(NANO_FORGE_TIER, 3)
@@ -249,15 +244,13 @@ public class NaniteChain {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.SpaceTime,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)),
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Infinity,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (4 * INGOTS)),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.PrimordialMatter,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (64_000)))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(12 * MINUTES + 30 * SECONDS)
@@ -277,13 +270,11 @@ public class NaniteChain {
             .itemOutputs(Materials.Eternity.getNanite(4))
             .fluidInputs(
                 Materials.Space.getMolten(8 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.ExcitedDTSC,
-                    Materials2FluidShapes.shapeFluidLiquid,
-                    (int) (50_000)),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (50_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.PrimordialMatter,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (64_000)))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(12 * MINUTES + 30 * SECONDS)
@@ -303,15 +294,13 @@ public class NaniteChain {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.QuarkGluonPlasma,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (100_000)),
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.PhononMedium,
-                    Materials2FluidShapes.shapeFluidLiquid,
-                    (int) (64_000)),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.PhononMedium, Materials2FluidShapes.fluidLiquid, (int) (64_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.PrimordialMatter,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (128_000)))
             .metadata(NANO_FORGE_TIER, 4)
             .duration(16 * MINUTES + 40 * SECONDS)

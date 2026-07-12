@@ -293,16 +293,16 @@ public class MaterialGenerator {
                 GTValues.RA.stdBuilder()
                     .itemInputs(matInfo.getDust(37))
                     .itemOutputs(
-                        MaterialLibAPI.getStack(Materials2Materials.Gypsum, Materials2Shapes.shapeDust, (int) (15)),
-                        MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.shapeDust, (int) (1)),
-                        MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.shapeDust, (int) (2)),
-                        MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.shapeDust, (int) (1)),
-                        MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.shapeDust, (int) (2)))
+                        MaterialLibAPI.getStack(Materials2Materials.Gypsum, Materials2Shapes.dust, (int) (15)),
+                        MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.dust, (int) (1)),
+                        MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.dust, (int) (2)),
+                        MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.dust, (int) (1)),
+                        MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.dust, (int) (2)))
                     .outputChances(10000, 1000, 1000, 3000, 2000)
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials2Materials.SulfuricAcid,
-                            Materials2FluidShapes.shapeFluidLiquid,
+                            Materials2FluidShapes.fluidLiquid,
                             (int) (8000)))
                     .fluidOutputs(Materials.HydrofluoricAcid.getFluid(16000))
                     .eut(TierEU.RECIPE_HV / 2)

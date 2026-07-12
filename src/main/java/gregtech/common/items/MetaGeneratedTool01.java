@@ -646,15 +646,15 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
 
     private void initCraftingShapelessRecipes() {
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.shapeDust, 1),
+            MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.dust, 1),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.coal, 1) });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials2Materials.Clay, Materials2Shapes.shapeDust, 1),
+            MaterialLibAPI.getStack(Materials2Materials.Clay, Materials2Shapes.dust, 1),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Blocks.clay, 1) });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials2Materials.Wheat, Materials2Shapes.shapeDust, 1),
+            MaterialLibAPI.getStack(Materials2Materials.Wheat, Materials2Shapes.dust, 1),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.wheat, 1) });
         GTModHandler.addShapelessCraftingRecipe(

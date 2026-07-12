@@ -26,68 +26,68 @@ import gregtech.api.material.GTMaterialProperties;
 public class Materials2FluidShapes {
 
     // spotless:off
-    public static Shape shapeFluidSolid;
-    public static Shape shapeFluidLiquid;
-    public static Shape shapeFluidGas;
-    public static Shape shapeFluidPlasma;
-    public static Shape shapeFluidMolten;
-    public static Shape shapeFluidHydroCracked1;
-    public static Shape shapeFluidHydroCracked2;
-    public static Shape shapeFluidHydroCracked3;
-    public static Shape shapeFluidSteamCracked1;
-    public static Shape shapeFluidSteamCracked2;
-    public static Shape shapeFluidSteamCracked3;
+    public static Shape fluidSolid;
+    public static Shape fluidLiquid;
+    public static Shape fluidGas;
+    public static Shape fluidPlasma;
+    public static Shape fluidMolten;
+    public static Shape fluidHydroCracked1;
+    public static Shape fluidHydroCracked2;
+    public static Shape fluidHydroCracked3;
+    public static Shape fluidSteamCracked1;
+    public static Shape fluidSteamCracked2;
+    public static Shape fluidSteamCracked3;
     // spotless:on
 
     public static void init() {
-        shapeFluidSolid = fluidShape(
+        fluidSolid = fluidShape(
             "fluidSolid",
             "Solid %s",
             legacySlot(FluidNames::solid),
             Materials2FluidShapes::solidAttrs);
-        shapeFluidLiquid = fluidShape(
+        fluidLiquid = fluidShape(
             "fluidLiquid",
             "%s",
             legacySlot(FluidNames::fluid),
             Materials2FluidShapes::liquidAttrs);
-        shapeFluidGas = fluidShape("fluidGas", "%s", legacySlot(FluidNames::gas), Materials2FluidShapes::gasAttrs);
-        shapeFluidPlasma = fluidShape(
+        fluidGas = fluidShape("fluidGas", "%s", legacySlot(FluidNames::gas), Materials2FluidShapes::gasAttrs);
+        fluidPlasma = fluidShape(
             "fluidPlasma",
             "%s Plasma",
             legacySlot(FluidNames::plasma),
             Materials2FluidShapes::plasmaAttrs);
-        shapeFluidMolten = fluidShape(
+        fluidMolten = fluidShape(
             "fluidMolten",
             "Molten %s",
             legacySlot(FluidNames::molten),
             Materials2FluidShapes::moltenAttrs);
 
-        shapeFluidHydroCracked1 = fluidShape(
+        fluidHydroCracked1 = fluidShape(
             "fluidHydroCracked1",
             "Lightly Hydro-Cracked %s",
             crackedSlot(GTMaterialProperties.CRACKED_HYDRO_FLUIDS, 0),
             Materials2FluidShapes::gasAttrs);
-        shapeFluidHydroCracked2 = fluidShape(
+        fluidHydroCracked2 = fluidShape(
             "fluidHydroCracked2",
             "Moderately Hydro-Cracked %s",
             crackedSlot(GTMaterialProperties.CRACKED_HYDRO_FLUIDS, 1),
             Materials2FluidShapes::gasAttrs);
-        shapeFluidHydroCracked3 = fluidShape(
+        fluidHydroCracked3 = fluidShape(
             "fluidHydroCracked3",
             "Severely Hydro-Cracked %s",
             crackedSlot(GTMaterialProperties.CRACKED_HYDRO_FLUIDS, 2),
             Materials2FluidShapes::gasAttrs);
-        shapeFluidSteamCracked1 = fluidShape(
+        fluidSteamCracked1 = fluidShape(
             "fluidSteamCracked1",
             "Lightly Steam-Cracked %s",
             crackedSlot(GTMaterialProperties.CRACKED_STEAM_FLUIDS, 0),
             Materials2FluidShapes::gasAttrs);
-        shapeFluidSteamCracked2 = fluidShape(
+        fluidSteamCracked2 = fluidShape(
             "fluidSteamCracked2",
             "Moderately Steam-Cracked %s",
             crackedSlot(GTMaterialProperties.CRACKED_STEAM_FLUIDS, 1),
             Materials2FluidShapes::gasAttrs);
-        shapeFluidSteamCracked3 = fluidShape(
+        fluidSteamCracked3 = fluidShape(
             "fluidSteamCracked3",
             "Severely Steam-Cracked %s",
             crackedSlot(GTMaterialProperties.CRACKED_STEAM_FLUIDS, 2),

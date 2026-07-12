@@ -442,10 +442,10 @@ public enum StoneType implements IStoneType {
 
         public LazyItem pureDust = new LazyItem(
             Mods.GregTech,
-            () -> MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1)));
+            () -> MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dust, (int) (1)));
         public LazyItem impureDust = new LazyItem(
             Mods.GregTech,
-            () -> MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDustImpure, (int) (1)));
+            () -> MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dustImpure, (int) (1)));
 
         public StoneCategory category = StoneCategory.Stone;
         public HashSet<String> allowedDimensions = null;

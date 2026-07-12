@@ -141,7 +141,7 @@ public final class MaterialReconstruction {
     }
 
     /// Whether a reconstructed material's storage block (`BlockBaseModular` `BlockTypes.STANDARD`) has cut
-    /// over to MaterialLib's [gregtech.api.enums.materials2.Materials2BlockShapes#shapeBlock] -- block-kind is
+    /// over to MaterialLib's [gregtech.api.enums.materials2.Materials2BlockShapes#block] -- block-kind is
     /// handled separately from [#CUT_OVER_PART_PREFIXES] because the cutover happens inside
     /// `BlockBaseModular`'s own constructor (the legacy instance still gets built and registered for every
     /// material, cut over or not -- see that class), not by skipping construction the way item parts do. See
@@ -171,12 +171,12 @@ public final class MaterialReconstruction {
 
     /// The MaterialLib stack for a reconstructed material's `cell`/`cellPlasma` slot, or null if it has none.
     /// Unlike every other cut-over prefix, `cell`/`cellPlasma` cannot resolve through plain `MU.stack`: a gtpp
-    /// material's single fluid may have claimed `Materials2FluidShapes.shapeFluidMolten` instead of the
-    /// liquid/gas slots `Materials2CellShapes.shapeCell` requires (every `SOLID`- and `LIQUID`/`PURE_LIQUID`-
+    /// material's single fluid may have claimed `Materials2FluidShapes.fluidMolten` instead of the
+    /// liquid/gas slots `Materials2CellShapes.cell` requires (every `SOLID`- and `LIQUID`/`PURE_LIQUID`-
     /// state material, whose legacy fluid was always registered `molten.<name>` -- see
     /// `scripts/mu/gen_materials.py`'s `gtpp_fluid_and_cell_shape_lines`), in which case its `cell` item is
-    /// `shapeCellMolten` instead. `cellPlasma` always resolves to the single `shapeCellPlasmaLight` candidate
-    /// gtpp claims (never gregtech's 144 mB `shapeCellPlasma`), so it needs no fallback of its own, but is
+    /// `cellMolten` instead. `cellPlasma` always resolves to the single `cellPlasmaLight` candidate
+    /// gtpp claims (never gregtech's 144 mB `cellPlasma`), so it needs no fallback of its own, but is
     /// routed through this method too for a single call site.
     public static @Nullable ItemStack cellStack(String name, OrePrefixes prefix, long amount) {
         com.ruling_0.materiallib.api.Material ml = materialLibOf(name);

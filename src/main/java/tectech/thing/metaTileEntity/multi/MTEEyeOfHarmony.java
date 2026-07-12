@@ -1408,7 +1408,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             // 2^Tier spacetime released upon recipe failure.
             outputFluidToAENetwork(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.shapeFluidMolten, (int) (1)),
+                    .getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, (int) (1)),
                 (long) ((successChance * MOLTEN_SPACETIME_PER_FAILURE_TIER
                     * GTUtility.powInt(SPACETIME_FAILURE_BASE, currentRecipeRocketTier + 1)) * failedParallelAmount));
             if (parallelAmount == 1) {
@@ -1598,10 +1598,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                         YELLOW + formatNumber(starMatterOutput.amount * 20.0 / currentMaxProgresstime) + RESET));
 
                 FluidStackLong stellarPlasmaOutput = new FluidStackLong(
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.RawStarMatter,
-                        Materials2FluidShapes.shapeFluidLiquid,
-                        (int) (0)),
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.RawStarMatter, Materials2FluidShapes.fluidLiquid, (int) (0)),
                     (long) (stellarPlasma.amount * yield * successChance * parallelAmount));
                 str.add(
                     IGregTechDeviceInformation.encode(

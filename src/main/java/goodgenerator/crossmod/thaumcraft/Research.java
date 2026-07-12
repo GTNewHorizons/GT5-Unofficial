@@ -80,7 +80,7 @@ public class Research {
                         new ItemStack[] { nodeLinkDevice, nitor, alchemicalFurnace, essentiaLocus, alchemicalBoiler,
                             new ItemStack(ConfigBlocks.blockCrystal, 1, 1),
                             new ItemStack(ConfigBlocks.blockMetalDevice, 1, 3), ItemList.Electric_Piston_IV.get(1),
-                            MaterialLibAPI.getStack(Materials2Materials.FierySteel, Materials2Shapes.shapeGearGt, 1),
+                            MaterialLibAPI.getStack(Materials2Materials.FierySteel, Materials2Shapes.gearGt, 1),
                             GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
                             GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
                             GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
@@ -98,8 +98,7 @@ public class Research {
                     GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                         "ESSENTIA_SMELTERY",
                         ItemList.Hatch_Output_HV.get(1),
-                        new ItemStack[] {
-                            new ItemStack(ConfigBlocks.blockJar, 1), ItemRefer.Magic_Casing.get(1),
+                        new ItemStack[] { new ItemStack(ConfigBlocks.blockJar, 1), ItemRefer.Magic_Casing.get(1),
                             new ItemStack(ConfigBlocks.blockTube, 1), ItemList.Electric_Pump_MV.get(1L) },
                         ItemRefer.Essentia_Output_Hatch.get(1),
                         6,
@@ -126,7 +125,7 @@ public class Research {
                         'B',
                         new ItemStack(ConfigBlocks.blockStoneDevice, 1, 14),
                         'C',
-                        MaterialLibAPI.getStack(Materials2Materials.Void, Materials2Shapes.shapeRotor, 1),
+                        MaterialLibAPI.getStack(Materials2Materials.Void, Materials2Shapes.rotor, 1),
                         'D',
                         new ItemStack(GregTechAPI.sBlockCasings3, 1, 11),
                         'E',
@@ -137,10 +136,8 @@ public class Research {
                         "ESSENTIA_SMELTERY",
                         GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Thaumium, 1),
                         new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 1),
-                            MaterialLibAPI
-                                .getStack(Materials2Materials.ElectricalSteel, Materials2Shapes.shapePlate, 1),
-                            MaterialLibAPI
-                                .getStack(Materials2Materials.ElectricalSteel, Materials2Shapes.shapePlate, 1),
+                            MaterialLibAPI.getStack(Materials2Materials.ElectricalSteel, Materials2Shapes.plate, 1),
+                            MaterialLibAPI.getStack(Materials2Materials.ElectricalSteel, Materials2Shapes.plate, 1),
                             ItemList.Electric_Pump_EV.get(1L), new ItemStack(ConfigBlocks.blockTube, 1, 4),
                             new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 2), },
                         ItemRefer.Essentia_Cell_T1.get(1),
@@ -161,71 +158,72 @@ public class Research {
                         'S',
                         new ItemStack(ConfigItems.itemResource, 1, 14),
                         'C',
-                        MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.shapeItemCasing, 1),
+                        MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.itemCasing, 1),
                         'G',
                         ItemList.ReinforcedGlass.get(1L),
                         'A',
                         Ic2Items.advancedMachine) });
 
-        GregTechAPI.sThaumcraftCompat.addResearch(
-            "ESSENTIA_CELL",
-            "Better Cells",
-            "And higher efficiency.",
-            new String[] { "ESSENTIA_SMELTERY" },
-            "ARTIFICE",
-            ItemRefer.Essentia_Cell_T4.get(1),
-            2,
-            0,
-            -10,
-            3,
-            Arrays.asList(
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
-                new TCAspects.TC_AspectStack(TCAspects.VACUOS, 10L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 10L),
-                new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 10L),
-                new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 10L)),
-            null,
-            new Object[] { "research.ESSENTIA_CELL.page.0", GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
+        GregTechAPI.sThaumcraftCompat
+            .addResearch(
                 "ESSENTIA_CELL",
-                ItemRefer.Essentia_Cell_T1.get(1),
-                new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.shapePlate, 1),
-                    ItemList.Electric_Pump_IV.get(1L), ItemList.QuantumStar.get(1L),
-                    new ItemStack(ConfigBlocks.blockMetalDevice, 1, 3), ItemList.Reactor_Coolant_Sp_1.get(1L),
-                    MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.shapeBolt, 1), },
-                ItemRefer.Essentia_Cell_T2.get(1),
-                6,
+                "Better Cells",
+                "And higher efficiency.",
+                new String[] { "ESSENTIA_SMELTERY" },
+                "ARTIFICE",
+                ItemRefer.Essentia_Cell_T4.get(1),
+                2,
+                0,
+                -10,
+                3,
                 Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 64),
-                    new TCAspects.TC_AspectStack(TCAspects.VACUOS, 64),
-                    new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 32))),
-                GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
+                    new TCAspects.TC_AspectStack(TCAspects.VACUOS, 10L),
+                    new TCAspects.TC_AspectStack(TCAspects.ORDO, 10L),
+                    new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 10L),
+                    new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 10L)),
+                null,
+                new Object[] { "research.ESSENTIA_CELL.page.0", GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                     "ESSENTIA_CELL",
+                    ItemRefer.Essentia_Cell_T1.get(1),
+                    new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.plate, 1),
+                        ItemList.Electric_Pump_IV.get(1L), ItemList.QuantumStar.get(1L),
+                        new ItemStack(ConfigBlocks.blockMetalDevice, 1, 3), ItemList.Reactor_Coolant_Sp_1.get(1L),
+                        MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.bolt, 1), },
                     ItemRefer.Essentia_Cell_T2.get(1),
-                    new ItemStack[] { ItemList.Field_Generator_IV.get(1L), ItemList.Electric_Pump_LuV.get(1L),
-                        new ItemStack(ConfigItems.itemResource, 1, 14),
-                        MaterialLibAPI.getStack(Materials2Materials.Ichorium, Materials2Shapes.shapeGearGtSmall, 1),
-                        new ItemStack(ConfigBlocks.blockJar, 1, 0), ItemList.FluidRegulator_LuV.get(1L) },
-                    ItemRefer.Essentia_Cell_T3.get(1),
-                    8,
+                    6,
                     Arrays.asList(
-                        new TCAspects.TC_AspectStack(TCAspects.AQUA, 128),
-                        new TCAspects.TC_AspectStack(TCAspects.VACUOS, 128),
-                        new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 64))),
-                GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
-                    "ESSENTIA_CELL",
-                    ItemRefer.Essentia_Cell_T3.get(1),
-                    new ItemStack[] {
-                        MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.shapeRing, 1),
-                        ItemList.Emitter_LuV.get(1L), new ItemStack(ItemRegistry.bw_realglas, 1, 4),
-                        MaterialLibAPI.getStack(Materials2Materials.StellarAlloy, Materials2Shapes.shapePlate, 1),
-                        GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Helium, 1),
-                        new ItemStack(ConfigItems.itemShard, 1, 6), },
-                    ItemRefer.Essentia_Cell_T4.get(1),
-                    10,
-                    Arrays.asList(
-                        new TCAspects.TC_AspectStack(TCAspects.AQUA, 256),
-                        new TCAspects.TC_AspectStack(TCAspects.VACUOS, 256),
-                        new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 128))) });
+                        new TCAspects.TC_AspectStack(TCAspects.AQUA, 64),
+                        new TCAspects.TC_AspectStack(TCAspects.VACUOS, 64),
+                        new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 32))),
+                    GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
+                        "ESSENTIA_CELL",
+                        ItemRefer.Essentia_Cell_T2.get(1),
+                        new ItemStack[] { ItemList.Field_Generator_IV.get(1L), ItemList.Electric_Pump_LuV.get(1L),
+                            new ItemStack(ConfigItems.itemResource, 1, 14),
+                            MaterialLibAPI.getStack(Materials2Materials.Ichorium, Materials2Shapes.gearGtSmall, 1),
+                            new ItemStack(ConfigBlocks.blockJar, 1, 0), ItemList.FluidRegulator_LuV.get(1L) },
+                        ItemRefer.Essentia_Cell_T3.get(1),
+                        8,
+                        Arrays.asList(
+                            new TCAspects.TC_AspectStack(TCAspects.AQUA, 128),
+                            new TCAspects.TC_AspectStack(TCAspects.VACUOS, 128),
+                            new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 64))),
+                    GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
+                        "ESSENTIA_CELL",
+                        ItemRefer.Essentia_Cell_T3.get(1),
+                        new ItemStack[] {
+                            MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.ring, 1),
+                            ItemList.Emitter_LuV.get(1L), new ItemStack(ItemRegistry.bw_realglas, 1, 4),
+                            MaterialLibAPI.getStack(Materials2Materials.StellarAlloy, Materials2Shapes.plate, 1),
+                            GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Helium, 1),
+                            new ItemStack(ConfigItems.itemShard, 1, 6), },
+                        ItemRefer.Essentia_Cell_T4.get(1),
+                        10,
+                        Arrays.asList(
+                            new TCAspects.TC_AspectStack(TCAspects.AQUA, 256),
+                            new TCAspects.TC_AspectStack(TCAspects.VACUOS, 256),
+                            new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 128))) });
 
         if (ThaumicEnergistics.isModLoaded()) {
             ItemStack essentiaPump = WitchingGadgets.isModLoaded()

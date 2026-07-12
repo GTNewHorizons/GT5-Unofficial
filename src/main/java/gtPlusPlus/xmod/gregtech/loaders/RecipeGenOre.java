@@ -223,10 +223,8 @@ public class RecipeGenOre extends RecipeGenBase {
                 .itemOutputs(material.getCrushedPurified(4), material.getDustImpure(2), material.getDustPurified(1))
                 .outputChances(100_00, 50_00, 10_00)
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Hydrogen,
-                        Materials2FluidShapes.shapeFluidGas,
-                        (int) (1_000)))
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (1_000)))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_HV / 2)
                 .addTo(chemicalBathRecipes);

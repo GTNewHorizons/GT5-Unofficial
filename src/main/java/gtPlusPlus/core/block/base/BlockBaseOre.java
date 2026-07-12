@@ -63,7 +63,7 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
     /// Registers the canonical `ore<Name>` oredict association for this material's ore block, mirroring
     /// [gtPlusPlus.core.block.base.BlockBaseModular#registerStandardOre]'s storage-block cutover: a
     /// reconstructed material associates the MaterialLib
-    /// [gregtech.api.enums.materials2.Materials2OreShapes#shapeOre] stack instead of this legacy instance,
+    /// [gregtech.api.enums.materials2.Materials2OreShapes#ore] stack instead of this legacy instance,
     /// which is hidden from NEI but stays constructed and registered -- a pre-migration save's placed/
     /// inventory ore block still resolves through it (see `gregtech.loaders.postload.PosteaTransformers`).
     private void registerOreAssociation(String oreName) {

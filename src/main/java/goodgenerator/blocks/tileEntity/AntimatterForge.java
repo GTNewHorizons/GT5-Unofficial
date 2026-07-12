@@ -71,18 +71,18 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
     private static final FluidStack[] magneticUpgrades = {
-        MaterialLibAPI.getFluidStack(Materials2Materials.TengamPurified, Materials2FluidShapes.shapeFluidMolten, 1),
+        MaterialLibAPI.getFluidStack(Materials2Materials.TengamPurified, Materials2FluidShapes.fluidMolten, 1),
         Materials.Time.getMolten(1L), Materials.MagMatter.getMolten(1L) };
     private static final FluidStack[] gravityUpgrades = {
-        MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.shapeFluidMolten, 1),
+        MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 1),
         Materials.Space.getMolten(1L),
-        MaterialLibAPI.getFluidStack(Materials2Materials.Eternity, Materials2FluidShapes.shapeFluidMolten, 1) };
+        MaterialLibAPI.getFluidStack(Materials2Materials.Eternity, Materials2FluidShapes.fluidMolten, 1) };
     private static final FluidStack[] containmentUpgrades = { GGMaterial.shirabon.getMolten(1),
         Materials.MHDCSM.getMolten(1L) };
     private static final FluidStack[] activationUpgrades = { GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),
         GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1) };
     private static final FluidStack ZERO_ANTIMATTER = MaterialLibAPI
-        .getFluidStack(Materials2Materials.Antimatter, Materials2FluidShapes.shapeFluidLiquid, 0);
+        .getFluidStack(Materials2Materials.Antimatter, Materials2FluidShapes.fluidLiquid, 0);
 
     public static final String MAIN_NAME = "antimatterForge";
 
@@ -568,13 +568,13 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (!this.depleteInput(
             MaterialLibAPI.getFluidStack(
                 Materials2Materials.Protomatter,
-                Materials2FluidShapes.shapeFluidLiquid,
+                Materials2FluidShapes.fluidLiquid,
                 Math.abs(antimatterChange)))) {
             decimateAntimatter();
             stopMachine(
                 ShutDownReasonRegistry.outOfFluid(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Protomatter, Materials2FluidShapes.shapeFluidLiquid, 1)));
+                        .getFluidStack(Materials2Materials.Protomatter, Materials2FluidShapes.fluidLiquid, 1)));
             setProtoRender(false);
             return CheckRecipeResultRegistry.NO_FUEL_FOUND;
         }
@@ -648,7 +648,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             if (change >= 0) {
                 hatch.fill(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Antimatter, Materials2FluidShapes.shapeFluidLiquid, change),
+                        .getFluidStack(Materials2Materials.Antimatter, Materials2FluidShapes.fluidLiquid, change),
                     true);
             } else {
                 hatch.drain(-change, true);

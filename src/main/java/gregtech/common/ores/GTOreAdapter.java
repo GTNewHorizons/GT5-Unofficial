@@ -288,7 +288,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
     }
 
     private static boolean isOreShape(Shape shape) {
-        return shape == Materials2OreShapes.shapeOre || shape == Materials2OreShapes.shapeOreSmall;
+        return shape == Materials2OreShapes.ore || shape == Materials2OreShapes.oreSmall;
     }
 
     @Override
@@ -306,7 +306,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         Material mlMat = MU.material(gtMat);
         if (mlMat == null) return false;
 
-        return mlMat.hasShape(info.isSmall ? Materials2OreShapes.shapeOreSmall : Materials2OreShapes.shapeOre);
+        return mlMat.hasShape(info.isSmall ? Materials2OreShapes.oreSmall : Materials2OreShapes.ore);
     }
 
     @Override
@@ -327,7 +327,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
 
         info.material = mat;
         info.stoneType = stoneType;
-        info.isSmall = blockInfo.shape() == Materials2OreShapes.shapeOreSmall;
+        info.isSmall = blockInfo.shape() == Materials2OreShapes.oreSmall;
         info.isNatural = true;
 
         return info;
@@ -346,7 +346,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         Material mlMat = MU.material(gtMat);
         if (mlMat == null) return null;
 
-        Shape shape = info.isSmall ? Materials2OreShapes.shapeOreSmall : Materials2OreShapes.shapeOre;
+        Shape shape = info.isSmall ? Materials2OreShapes.oreSmall : Materials2OreShapes.ore;
         if (!mlMat.hasShape(shape)) return null;
 
         ItemStack stack = MaterialLibAPI.getStack(mlMat, shape, Materials2OreShapes.variantOf(stoneType.name()), 1);

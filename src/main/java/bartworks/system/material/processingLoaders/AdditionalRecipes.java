@@ -99,7 +99,7 @@ public class AdditionalRecipes {
             ItemStack Detergent = ItemList.DetergentPowder.get(1);
             ItemStack DNAFlask = ItemList.EmptyDNAFlask.get(1);
             ItemStack EthanolCell = MaterialLibAPI
-                .getStack(Materials2Materials.Ethanol, Materials2CellShapes.shapeCell, (int) (1));
+                .getStack(Materials2Materials.Ethanol, Materials2CellShapes.cell, (int) (1));
             GTValues.RA.stdBuilder()
                 .itemInputs(BioCultureEnum.getPetriDish(culture.bioCulture), DNAFlask, Detergent, EthanolCell)
                 .itemOutputs(
@@ -310,10 +310,8 @@ public class AdditionalRecipes {
             .itemInputs(WerkstoffLoader.YttriumOxide.get(dustSmall, 2), WerkstoffLoader.Thorianit.get(dustSmall, 2))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 0))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Glass,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (1 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Glass, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 3663)
@@ -326,8 +324,8 @@ public class AdditionalRecipes {
                 WerkstoffLoader.Thorianit.get(dust),
                 WerkstoffLoader.Thorianit.get(dust),
                 WerkstoffLoader.Thorianit.get(dust),
-                MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.shapeDust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.shapeDust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (1)),
                 WerkstoffLoader.Thorium232.get(dust))
             .outputChances(7000, 1300, 700, 600, 300, 100)
             .duration(20 * SECONDS)
@@ -338,9 +336,9 @@ public class AdditionalRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 WerkstoffLoader.Thorianit.get(dust, 9),
-                MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.shapeDust, (int) (4)))
+                MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.dust, (int) (4)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.shapeDust, (int) (3)),
+                MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (3)),
                 Materials.Aluminiumoxide.getDust(10))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -350,10 +348,10 @@ public class AdditionalRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 WerkstoffLoader.Thorianit.get(dust, 3),
-                MaterialLibAPI.getStack(Materials2Materials.Magnesium, Materials2Shapes.shapeDust, (int) (2)))
+                MaterialLibAPI.getStack(Materials2Materials.Magnesium, Materials2Shapes.dust, (int) (2)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.shapeDust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Magnesia, Materials2Shapes.shapeDust, (int) (4)))
+                MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Magnesia, Materials2Shapes.dust, (int) (4)))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -362,7 +360,7 @@ public class AdditionalRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(dust, Materials.Quartzite, 4L),
-                MaterialLibAPI.getStack(Materials2Materials.Amethyst, Materials2Shapes.shapeDust, (int) (1)))
+                MaterialLibAPI.getStack(Materials2Materials.Amethyst, Materials2Shapes.dust, (int) (1)))
             .itemOutputs(WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed, 2))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -371,7 +369,7 @@ public class AdditionalRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(dust, Materials.Quartzite, 40L))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Amethyst, Materials2Shapes.shapeDust, (int) (10)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Amethyst, Materials2Shapes.dust, (int) (10)))
             .duration(40 * SECONDS)
             .eut(0)
             .metadata(ADDITIVE_AMOUNT, 6)
@@ -380,12 +378,11 @@ public class AdditionalRecipes {
         // Cubic Circonia
         // 2Y + 3O = Y2O3
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Yttrium, Materials2Shapes.shapeDust, (int) (2)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Yttrium, Materials2Shapes.dust, (int) (2)))
             .circuit(5)
             .itemOutputs(WerkstoffLoader.YttriumOxide.get(dust, 5))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (3_000)))
+                MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (3_000)))
             .duration(3 * MINUTES + 24 * SECONDS + 16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -396,7 +393,7 @@ public class AdditionalRecipes {
             .itemOutputs(WerkstoffLoader.CubicZirconia.get(gemFlawed, 40))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (20_000)))
+                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (20_000)))
             .duration(48 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 2953)
@@ -407,8 +404,8 @@ public class AdditionalRecipes {
             .itemInputs(GTOreDictUnificator.get(crushed, Materials.Lead, 1L))
             .circuit(17)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeIngot, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Tellurium, Materials2Shapes.shapeNugget, (int) (2)))
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.ingot, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Tellurium, Materials2Shapes.nugget, (int) (2)))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 722)
@@ -418,11 +415,11 @@ public class AdditionalRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Plutonium,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (3 * NUGGETS)),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Beryllium,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (3 * NUGGETS)))
             .fluidOutputs(WerkstoffLoader.Californium.getMolten(3 * NUGGETS))
             .duration(12 * SECONDS)
@@ -444,29 +441,22 @@ public class AdditionalRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.LiquidAir,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (100_000_000)))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Nitrogen,
-                    Materials2FluidShapes.shapeFluidGas,
-                    (int) (78_084_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (20_946_000)),
+                    .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.fluidGas, (int) (78_084_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Argon, Materials2FluidShapes.shapeFluidGas, (int) (934_000)),
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.CarbonDioxide,
-                    Materials2FluidShapes.shapeFluidGas,
-                    (int) (40_700)),
+                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (20_946_000)),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Argon, Materials2FluidShapes.fluidGas, (int) (934_000)),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (40_700)),
                 WerkstoffLoader.Neon.getFluidOrGas(1_818),
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.shapeFluidGas, (int) (524)),
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Methane, Materials2FluidShapes.shapeFluidGas, (int) (180)),
+                MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (524)),
+                MaterialLibAPI.getFluidStack(Materials2Materials.Methane, Materials2FluidShapes.fluidGas, (int) (180)),
                 WerkstoffLoader.Krypton.getFluidOrGas(114),
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.shapeFluidGas, (int) (55)),
+                MaterialLibAPI.getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (55)),
                 WerkstoffLoader.Xenon.getFluidOrGas(9))
             .duration(6 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -494,16 +484,16 @@ public class AdditionalRecipes {
         GTValues.RA.stdBuilder()
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Sugar, Materials2Shapes.shapeDustSmall, (int) (21)),
-                MaterialLibAPI.getStack(Materials2Materials.Calcium, Materials2Shapes.shapeDustTiny, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Magnesium, Materials2Shapes.shapeDustTiny, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Potassium, Materials2Shapes.shapeDustTiny, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.shapeDustTiny, (int) (4)),
-                MaterialLibAPI.getStack(Materials2Materials.Phosphorus, Materials2Shapes.shapeDustTiny, (int) (1)))
+                MaterialLibAPI.getStack(Materials2Materials.Sugar, Materials2Shapes.dustSmall, (int) (21)),
+                MaterialLibAPI.getStack(Materials2Materials.Calcium, Materials2Shapes.dustTiny, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Magnesium, Materials2Shapes.dustTiny, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Potassium, Materials2Shapes.dustTiny, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dustTiny, (int) (4)),
+                MaterialLibAPI.getStack(Materials2Materials.Phosphorus, Materials2Shapes.dustTiny, (int) (1)))
             .outputChances(100_00, 100_00, 10_00, 100_00, 10_00, 10_00)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.shapeFluidLiquid, (int) (10_000)))
+                    .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (10_000)))
             .fluidOutputs(Materials.Water.getFluid(8_832))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)

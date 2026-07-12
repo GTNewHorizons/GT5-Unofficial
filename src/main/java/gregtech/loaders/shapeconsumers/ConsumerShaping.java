@@ -13,7 +13,7 @@ public final class ConsumerShaping {
     private ConsumerShaping() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeIngot, OrePrefixes.ingot, () -> ProcessingShaping.INSTANCE);
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeDust, OrePrefixes.dust, () -> ProcessingShaping.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.ingot, OrePrefixes.ingot, () -> ProcessingShaping.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.dust, OrePrefixes.dust, () -> ProcessingShaping.INSTANCE);
     }
 }

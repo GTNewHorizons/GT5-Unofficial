@@ -10,6 +10,6 @@ public final class ConsumerScrew {
     private ConsumerScrew() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeScrew, OrePrefixes.screw, () -> ProcessingScrew.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.screw, OrePrefixes.screw, () -> ProcessingScrew.INSTANCE);
     }
 }

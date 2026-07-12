@@ -941,8 +941,7 @@ public final class RecipeMaps {
                     .setOutputs(
                         aOutput1,
                         aOutput2,
-                        MaterialLibAPI
-                            .getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (aDustAmount)))
+                        MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (aDustAmount)))
                     .setDuration(aDuration * 2 / 3)
                     .setOutputChances(cokeChances);
             }
@@ -964,7 +963,7 @@ public final class RecipeMaps {
                 .setOutputs(
                     aOutput1,
                     aOutput2,
-                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (aDustAmount)))
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (aDustAmount)))
                 .setDuration(aDuration * 2 / 3)
                 .setOutputChances(cactusSugarCokeChances);
             coll.derive()
@@ -972,7 +971,7 @@ public final class RecipeMaps {
                 .setOutputs(
                     aOutput1,
                     aOutput2,
-                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (aDustAmount)))
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (aDustAmount)))
                 .setDuration(aDuration * 2 / 3)
                 .setOutputChances(cactusSugarCokeChances);
             if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6)
@@ -996,7 +995,7 @@ public final class RecipeMaps {
                             aOutput1,
                             aOutput2,
                             MaterialLibAPI
-                                .getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (aCoalAmount / 2)))
+                                .getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount / 2)))
                         .setDuration(aDuration * 20 / 3);
                 }
                 ItemStack cactusCokeBlock = GregtechItemList.BlockCactusCoke.get(aCoalAmount * 2L);
@@ -1007,7 +1006,7 @@ public final class RecipeMaps {
                         aOutput1,
                         aOutput2,
                         MaterialLibAPI
-                            .getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (aCoalAmount * 2)))
+                            .getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount * 2)))
                     .setDuration(aDuration * 20 / 3);
                 coll.derive()
                     .setInputs(aInput1, aInput2, sugarCokeBlock)
@@ -1015,7 +1014,7 @@ public final class RecipeMaps {
                         aOutput1,
                         aOutput2,
                         MaterialLibAPI
-                            .getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (aCoalAmount * 2)))
+                            .getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount * 2)))
                     .setDuration(aDuration * 20 / 3);
                 if (Thaumcraft.isModLoaded()) {
                     ItemStack alumentum = GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", aCoalAmount * 2L, 0);
@@ -1025,7 +1024,7 @@ public final class RecipeMaps {
                             aOutput1,
                             aOutput2,
                             MaterialLibAPI
-                                .getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (aCoalAmount * 2)))
+                                .getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount * 2)))
                         .setDuration(aDuration * 20 / 3);
                 }
             }
@@ -1427,7 +1426,7 @@ public final class RecipeMaps {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Lubricant,
-                        Materials2FluidShapes.shapeFluidLiquid,
+                        Materials2FluidShapes.fluidLiquid,
                         (int) (clamp(aDuration * aEUt / 1280, 1, 250))))
                 .duration(aDuration)
                 .build()

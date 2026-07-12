@@ -159,10 +159,8 @@ public class BioRecipeLoader {
         GTValues.RA.stdBuilder()
             .special(BioCultureEnum.getPetriDish(BioCultureLoader.anaerobicOil))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.FermentedBiomass,
-                    Materials2FluidShapes.shapeFluidLiquid,
-                    10_000))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.FermentedBiomass, Materials2FluidShapes.fluidLiquid, 10_000))
             .fluidOutputs(new FluidStack(FluidLoader.fulvicAcid, 1_000))
             .metadata(GLASS, 3)
             .duration(2 * MINUTES + 17 * SECONDS + 8 * TICKS)

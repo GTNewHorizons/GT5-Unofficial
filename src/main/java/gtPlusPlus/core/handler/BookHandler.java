@@ -86,7 +86,7 @@ public class BookHandler {
         GTModHandler.addShapelessCraftingRecipe(
             new ItemStack(ModItems.itemCustomBook, 1, 4),
             new ItemStack[] { new ItemStack(Items.writable_book),
-                MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.shapeDust, (int) (1)) });
+                MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.dust, (int) (1)) });
 
         for (int meta : mBookMap.keySet()) {
             ItemStack bookstack = new ItemStack(ModItems.itemCustomBook, 1, meta);

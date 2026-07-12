@@ -13,22 +13,20 @@ public final class ConsumerPlate {
     private ConsumerPlate() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapePlate, OrePrefixes.plate, () -> ProcessingPlate.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.plate, OrePrefixes.plate, () -> ProcessingPlate.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapePlateDouble, OrePrefixes.plateDouble, () -> ProcessingPlate.INSTANCE);
+            .delegate(Materials2Shapes.plateDouble, OrePrefixes.plateDouble, () -> ProcessingPlate.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapePlateTriple, OrePrefixes.plateTriple, () -> ProcessingPlate.INSTANCE);
+            .delegate(Materials2Shapes.plateTriple, OrePrefixes.plateTriple, () -> ProcessingPlate.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapePlateQuadruple, OrePrefixes.plateQuadruple, () -> ProcessingPlate.INSTANCE);
+            .delegate(Materials2Shapes.plateQuadruple, OrePrefixes.plateQuadruple, () -> ProcessingPlate.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapePlateQuintuple, OrePrefixes.plateQuintuple, () -> ProcessingPlate.INSTANCE);
+            .delegate(Materials2Shapes.plateQuintuple, OrePrefixes.plateQuintuple, () -> ProcessingPlate.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapePlateDense, OrePrefixes.plateDense, () -> ProcessingPlate.INSTANCE);
-        ShapeConsumerSupport.delegate(
-            Materials2Shapes.shapePlateSuperdense,
-            OrePrefixes.plateSuperdense,
-            () -> ProcessingPlate.INSTANCE);
+            .delegate(Materials2Shapes.plateDense, OrePrefixes.plateDense, () -> ProcessingPlate.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeItemCasing, OrePrefixes.itemCasing, () -> ProcessingPlate.INSTANCE);
+            .delegate(Materials2Shapes.plateSuperdense, OrePrefixes.plateSuperdense, () -> ProcessingPlate.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(Materials2Shapes.itemCasing, OrePrefixes.itemCasing, () -> ProcessingPlate.INSTANCE);
     }
 }

@@ -13,6 +13,6 @@ public final class ConsumerOre {
     private ConsumerOre() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2OreShapes.shapeOre, OrePrefixes.ore, () -> ProcessingOre.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2OreShapes.ore, OrePrefixes.ore, () -> ProcessingOre.INSTANCE);
     }
 }

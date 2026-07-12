@@ -25,10 +25,10 @@ public class Crafting implements Runnable {
         GTModHandler.addCraftingRecipe(
             TileEntities.tfft.getStackForm(1),
             new Object[] { "ESE", "FTF", "CVC", 'E',
-                MaterialLibAPI.getStack(Materials2Materials.EnderEye, Materials2Shapes.shapeScrew, (int) (1)), 'S',
+                MaterialLibAPI.getStack(Materials2Materials.EnderEye, Materials2Shapes.screw, (int) (1)), 'S',
                 ItemList.Cover_Screen.get(1), 'F', ItemList.Field_Generator_LV.get(1), 'T',
                 new ItemStack(Blocks.tfftStorageField, 1), 'C', "circuitData", 'V',
-                MaterialLibAPI.getStack(Materials2Materials.VibrantAlloy, Materials2Shapes.shapeRotor, (int) (1)), });
+                MaterialLibAPI.getStack(Materials2Materials.VibrantAlloy, Materials2Shapes.rotor, (int) (1)), });
 
         // SOFC Controller mk1
         final Object[] mk1_recipe = { "CCC", "PHP", "FBL", 'C', OrePrefixes.circuit.get(Materials.HV), 'P',

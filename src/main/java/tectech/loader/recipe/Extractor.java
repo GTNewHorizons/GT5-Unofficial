@@ -17,53 +17,49 @@ public class Extractor implements Runnable {
         // LV Tesla Capacitor
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.teslaCapacitor.getWithDamage(1, 0))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.shapeItemCasing, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.itemCasing, 4))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
         // MV Tesla Capacitor
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.teslaCapacitor.getWithDamage(1, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.shapeItemCasing, 6))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.itemCasing, 6))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
         // HV Tesla Capacitor
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.teslaCapacitor.getWithDamage(1, 2))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.shapeItemCasing, 8))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.itemCasing, 8))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
         // EV Tesla Capacitor
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.teslaCapacitor.getWithDamage(1, 3))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.shapeItemCasing, 10))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.itemCasing, 10))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
         // IV Tesla Capacitor
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.teslaCapacitor.getWithDamage(1, 4))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.shapeItemCasing, 12))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.itemCasing, 12))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
         // LuV Tesla Capacitor
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.teslaCapacitor.getWithDamage(1, 5))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.shapeItemCasing, 14))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.itemCasing, 14))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
         // ZPM Tesla Capacitor
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.teslaCapacitor.getWithDamage(1, 6))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.shapeItemCasing, 16))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.itemCasing, 16))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);

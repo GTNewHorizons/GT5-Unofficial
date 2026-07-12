@@ -1139,15 +1139,14 @@ public enum Casings implements ICasing {
     /// Verified against the three call sites that reference these eight constants directly (`asElement()`, not
     /// raw block/meta literals): `MTEVoidMiners` (Osmiridium/NaquadahAlloy/Iridium casings, x3 tiers) and
     /// `MTEIndustrialArcFurnace` (kubatech) -- a runServer boot resolving all eight through this method (via a
-    /// temporary verification hook) confirmed every one lands on the correct shapeBlockCasing/
-    /// shapeBlockCasingAdvanced variant of its material.
+    /// temporary verification hook) confirmed every one lands on the correct blockCasing/
+    /// blockCasingAdvanced variant of its material.
     private static ImmutableBlockMeta bwCasing(Materials material, boolean advanced) {
         return BW_CASING_CACHE.computeIfAbsent(material.mName + (advanced ? "!adv" : ""), k -> {
             Material mlMaterial = Objects.requireNonNull(
                 MU.material(material),
                 () -> "No MaterialLib material for casing material " + material.mName);
-            Shape shape = advanced ? Materials2BlockShapes.shapeBlockCasingAdvanced
-                : Materials2BlockShapes.shapeBlockCasing;
+            Shape shape = advanced ? Materials2BlockShapes.blockCasingAdvanced : Materials2BlockShapes.blockCasing;
             ItemStack stack = Objects.requireNonNull(
                 MaterialLibAPI.getStack(mlMaterial, shape, 1),
                 () -> "No " + shape + " stack for casing material " + material.mName);

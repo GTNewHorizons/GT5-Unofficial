@@ -488,11 +488,11 @@ public class GTMod {
         GTOreDictUnificator.addItemData(
             GTModHandler.getRecipeOutput(
                 null,
-                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.shapeIngot, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.ingot, (int) (1)),
                 null,
-                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.shapeIngot, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.ingot, (int) (1)),
                 null,
-                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.shapeIngot, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.ingot, (int) (1)),
                 null,
                 null,
                 null),

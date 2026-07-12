@@ -19,7 +19,7 @@ public class MatterAmplifierRecipes implements Runnable {
             .itemInputs(ItemList.IC2_Scrap.get(9L))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.UUAmplifier, Materials2FluidShapes.shapeFluidLiquid, (int) (1)))
+                    .getFluidStack(Materials2Materials.UUAmplifier, Materials2FluidShapes.fluidLiquid, (int) (1)))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(amplifierRecipes);
@@ -28,7 +28,7 @@ public class MatterAmplifierRecipes implements Runnable {
             .itemInputs(ItemList.IC2_Scrapbox.get(1L))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.UUAmplifier, Materials2FluidShapes.shapeFluidLiquid, (int) (1)))
+                    .getFluidStack(Materials2Materials.UUAmplifier, Materials2FluidShapes.fluidLiquid, (int) (1)))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(amplifierRecipes);

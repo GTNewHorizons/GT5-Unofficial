@@ -117,7 +117,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
 
     // Supplier because werkstoff loads later than multiblock controllers... fml
     private static final Supplier<FluidStack[]> INERT_GASES = () -> new FluidStack[] {
-        MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.shapeFluidGas, (int) (10_000)),
+        MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (10_000)),
         WerkstoffLoader.Neon.getFluidOrGas(7_500), WerkstoffLoader.Krypton.getFluidOrGas(5_000),
         WerkstoffLoader.Xenon.getFluidOrGas(2_500) };
 
@@ -140,26 +140,26 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         new SuperconductorMaterial(
             MaterialLibAPI.getFluidStack(
                 Materials2Materials.SuperconductorUEVBase,
-                Materials2FluidShapes.shapeFluidMolten,
+                Materials2FluidShapes.fluidMolten,
                 (int) (SUPERCON_FLUID_AMOUNT)),
             1.5f),
         new SuperconductorMaterial(
             MaterialLibAPI.getFluidStack(
                 Materials2Materials.SuperconductorUIVBase,
-                Materials2FluidShapes.shapeFluidMolten,
+                Materials2FluidShapes.fluidMolten,
                 (int) (SUPERCON_FLUID_AMOUNT)),
             1.75f),
         new SuperconductorMaterial(
             MaterialLibAPI.getFluidStack(
                 Materials2Materials.SuperconductorUMVBase,
-                Materials2FluidShapes.shapeFluidMolten,
+                Materials2FluidShapes.fluidMolten,
                 (int) (SUPERCON_FLUID_AMOUNT)),
             2.0f), };
 
     private static final FluidStack CATALYST_FLUID = MaterialLibAPI
-        .getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.shapeFluidMolten, (int) (32 * INGOTS));
+        .getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidMolten, (int) (32 * INGOTS));
     private static final FluidStack COOLANT_FLUID = MaterialLibAPI
-        .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.shapeFluidLiquid, (int) (10_000));
+        .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, (int) (10_000));
 
     private static final long CONSUME_INTERVAL = 20;
 

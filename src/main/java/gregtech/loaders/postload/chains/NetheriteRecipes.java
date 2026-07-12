@@ -53,11 +53,11 @@ public class NetheriteRecipes {
             GTValues.RA.stdBuilder() // Prismarine
                 .itemInputs(
                     GregtechItemList.RedAlgaeBiomass.get(32),
-                    MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.shapeDust, (int) (32)))
+                    MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.dust, (int) (32)))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Grade1PurifiedWater,
-                        Materials2FluidShapes.shapeFluidLiquid,
+                        Materials2FluidShapes.fluidLiquid,
                         (int) (8000)))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 8))
                 .duration(15 * SECONDS)
@@ -72,7 +72,7 @@ public class NetheriteRecipes {
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials2Materials.Grade1PurifiedWater,
-                            Materials2FluidShapes.shapeFluidLiquid,
+                            Materials2FluidShapes.fluidLiquid,
                             (int) (8000)))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 16))
                     .duration(15 * SECONDS)
@@ -86,7 +86,7 @@ public class NetheriteRecipes {
                     new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 4000),
                     new FluidStack(GTPPFluids.HydrogenPeroxide, 4000))
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.shapeDust, (int) (4)))
+                    MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.dust, (int) (4)))
                 .fluidOutputs(Materials.PrismarineSolution.getFluid(8000))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
@@ -99,7 +99,7 @@ public class NetheriteRecipes {
                     Materials.PrismarineContaminatedHydrogenPeroxide.getFluid(6000),
                     new FluidStack(GTPPFluids.HydrogenPeroxide, 2000))
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials2Materials.NetherQuartz, Materials2Shapes.shapeDust, (int) (1)))
+                    MaterialLibAPI.getStack(Materials2Materials.NetherQuartz, Materials2Shapes.dust, (int) (1)))
                 .fluidOutputs(Materials.PrismarineSolution.getFluid(8000))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
@@ -129,14 +129,13 @@ public class NetheriteRecipes {
                 .addTo(chemicalBathRecipes);
 
             GTValues.RA.stdBuilder() // Strontium Hydroxide
-                .itemInputs(
-                    MaterialLibAPI.getStack(Materials2Materials.Strontium, Materials2Shapes.shapeDust, (int) (1)))
+                .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Strontium, Materials2Shapes.dust, (int) (1)))
                 .itemOutputs(MaterialMisc.STRONTIUM_HYDROXIDE.getDust(3))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, (int) (1000)),
+                        .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (1000)),
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.shapeFluidGas, (int) (1000)))
+                        .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (1000)))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(multiblockChemicalReactorRecipes);
@@ -160,13 +159,11 @@ public class NetheriteRecipes {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.CrystallineAlloy,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (72)))
                 .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Strontium,
-                        Materials2FluidShapes.shapeFluidMolten,
-                        (int) (288)))
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Strontium, Materials2FluidShapes.fluidMolten, (int) (288)))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(laserEngraverRecipes);
@@ -175,7 +172,7 @@ public class NetheriteRecipes {
                 .itemInputs(ItemList.Prismatic_Crystal.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Boron, Materials2FluidShapes.shapeFluidPlasma, (int) (100)))
+                        .getFluidStack(Materials2Materials.Boron, Materials2FluidShapes.fluidPlasma, (int) (100)))
                 .fluidOutputs(Materials.PrismaticGas.getFluid(1000))
                 .duration(80 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
@@ -187,7 +184,7 @@ public class NetheriteRecipes {
                     Materials.PrismaticGas.getFluid(4000),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.LiquidNitrogen,
-                        Materials2FluidShapes.shapeFluidGas,
+                        Materials2FluidShapes.fluidGas,
                         (int) (12000)))
                 .fluidOutputs(Materials.PrismaticAcid.getFluid(16000))
                 .duration(25 * SECONDS)
@@ -199,8 +196,7 @@ public class NetheriteRecipes {
         {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI
-                        .getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.shapeDust, (int) (32)))
+                    MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.dust, (int) (32)))
                 .circuit(2)
                 .fluidInputs(Materials.PrismaticAcid.getFluid(8000))
                 .fluidOutputs(Materials.PrismaticNaquadah.getMolten(2304))
@@ -212,7 +208,7 @@ public class NetheriteRecipes {
                 .itemInputs(
                     MetaItemCraftingComponent.getInstance()
                         .getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 4),
-                    MaterialLibAPI.getStack(Materials2Materials.Mica, Materials2Shapes.shapeDust, (int) (32)))
+                    MaterialLibAPI.getStack(Materials2Materials.Mica, Materials2Shapes.dust, (int) (32)))
                 .fluidInputs(Materials.PrismaticNaquadah.getMolten(576))
                 .fluidOutputs(Materials.PrismaticNaquadahCompositeSlurry.getFluid(2000))
                 .duration(5 * SECONDS)
@@ -232,9 +228,8 @@ public class NetheriteRecipes {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI
-                        .getStack(Materials2Materials.TungstenCarbide, Materials2Shapes.shapeFoil, (int) (16)),
-                    MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeFoil, (int) (16)))
+                    MaterialLibAPI.getStack(Materials2Materials.TungstenCarbide, Materials2Shapes.foil, (int) (16)),
+                    MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.foil, (int) (16)))
                 .fluidInputs(Materials.PrismaticNaquadahCompositeSlurry.getFluid(8000))
                 .itemOutputs(ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(16))
                 .duration(16 * SECONDS)
@@ -243,13 +238,11 @@ public class NetheriteRecipes {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.shapeFoil, (int) (4)),
+                    MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.foil, (int) (4)),
                     ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(16))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Manyullyn,
-                        Materials2FluidShapes.shapeFluidMolten,
-                        (int) (1152)))
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Manyullyn, Materials2FluidShapes.fluidMolten, (int) (1152)))
                 .itemOutputs(ItemList.Naquarite_Universal_Insulator_Foil.get(8))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
@@ -259,18 +252,12 @@ public class NetheriteRecipes {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.NetherAir.getFluid(10_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NitrogenDioxide,
-                    Materials2FluidShapes.shapeFluidGas,
-                    (int) (1_400)),
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.SulfurDioxide,
-                    Materials2FluidShapes.shapeFluidGas,
-                    (int) (3_800)),
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.SulfurTrioxide,
-                    Materials2FluidShapes.shapeFluidGas,
-                    (int) (2_100)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.NitrogenDioxide, Materials2FluidShapes.fluidGas, (int) (1_400)),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.SulfurDioxide, Materials2FluidShapes.fluidGas, (int) (3_800)),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.SulfurTrioxide, Materials2FluidShapes.fluidGas, (int) (2_100)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeNonCellRecipes);
@@ -289,17 +276,13 @@ public class NetheriteRecipes {
                 Materials.NefariousGas.getFluid(8_000),
                 new FluidStack(GTPPFluids.CoalGas, 16_000),
                 new FluidStack(GTPPFluids.Anthracene, 66_000),
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.SulfurTrioxide,
-                    Materials2FluidShapes.shapeFluidGas,
-                    (int) (210_000)),
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.SulfurDioxide,
-                    Materials2FluidShapes.shapeFluidGas,
-                    (int) (380_000)),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.SulfurTrioxide, Materials2FluidShapes.fluidGas, (int) (210_000)),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.SulfurDioxide, Materials2FluidShapes.fluidGas, (int) (380_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.NitrogenDioxide,
-                    Materials2FluidShapes.shapeFluidGas,
+                    Materials2FluidShapes.fluidGas,
                     (int) (140_000)),
                 WerkstoffLoader.Neon.getFluidOrGas(36_000))
             .duration(24 * SECONDS)
@@ -311,7 +294,7 @@ public class NetheriteRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Grade1PurifiedWater,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (4_000)),
                 Materials.NefariousGas.getFluid(16_000))
             .fluidOutputs(Materials.NefariousOil.getFluid(12_000))
@@ -324,7 +307,7 @@ public class NetheriteRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Grade2PurifiedWater,
-                    Materials2FluidShapes.shapeFluidLiquid,
+                    Materials2FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 Materials.NefariousGas.getFluid(16_000))
             .fluidOutputs(Materials.NefariousOil.getFluid(18_000))
@@ -422,13 +405,13 @@ public class NetheriteRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.HellishMetal,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Thaumium,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (2 * NUGGETS)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -444,13 +427,13 @@ public class NetheriteRecipes {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.HellishMetal,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (1 * INGOTS)))
                 .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(2))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Thaumium,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (2 * NUGGETS)))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
@@ -485,7 +468,7 @@ public class NetheriteRecipes {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.shapeStick, (int) (4)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.stick, (int) (4)))
             .circuit(4)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1))
             .duration(3 * SECONDS + 4 * TICKS)
@@ -493,27 +476,26 @@ public class NetheriteRecipes {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.shapePlate, (int) (64)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.plate, (int) (64)))
             .itemOutputs(
-                MaterialLibAPI
-                    .getStack(Materials2Materials.Netherite, Materials2Shapes.shapePlateSuperdense, (int) (1)))
+                MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.plateSuperdense, (int) (1)))
             .duration(500 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(COMPRESSION_TIER, 1)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.shapeDust, (int) (2)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.dust, (int) (2)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.InfusedGold, Materials2Shapes.shapeDust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.InfusedGold, Materials2Shapes.dust, (int) (1)),
                 ItemList.Netherite_Nanoparticles.get(1))
             .duration(23 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.shapeIngot, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.ingot, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.dust, (int) (1)))
             .duration(4 * SECONDS + 18 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(maceratorRecipes);
@@ -530,10 +512,9 @@ public class NetheriteRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.InfusedGold, Materials2Shapes.shapePlateDense, (int) (8)),
+                MaterialLibAPI.getStack(Materials2Materials.InfusedGold, Materials2Shapes.plateDense, (int) (8)),
                 ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(36))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.shapePlateDense, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.plateDense, (int) (1)))
             .fluidInputs(new FluidStack(GTPPFluids.Pyrotheum, 128_000))
             .duration(180 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -551,12 +532,12 @@ public class NetheriteRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Boron,
-                    Materials2FluidShapes.shapeFluidPlasma,
+                    Materials2FluidShapes.fluidPlasma,
                     (int) (2 * inverseMultiplier)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Boron,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (2 * inverseMultiplier)))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -572,12 +553,12 @@ public class NetheriteRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Boron,
-                    Materials2FluidShapes.shapeFluidPlasma,
+                    Materials2FluidShapes.fluidPlasma,
                     (int) (2 * inverseMultiplier)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Boron,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (2 * inverseMultiplier)))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LuV)

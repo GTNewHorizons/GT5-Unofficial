@@ -24,24 +24,20 @@ public class RecipeLoaderMolecularTransformer {
     public static void run() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.NetherQuartz, Materials2Shapes.shapeDust, (int) (1)))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.NetherQuartz, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.dust, (int) (1)))
             .duration(1 * SECONDS + 13 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.shapeDust, (int) (1)))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.NetherQuartz, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.NetherQuartz, Materials2Shapes.dust, (int) (1)))
             .duration(1 * SECONDS + 13 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.shapeDust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ruby, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ruby, Materials2Shapes.dust, (int) (1)))
             .duration(16 * SECONDS + 6 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
@@ -64,46 +60,44 @@ public class RecipeLoaderMolecularTransformer {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.shapeDust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.dust, (int) (1)))
             .duration(16 * SECONDS + 6 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.shapeDust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.dust, (int) (1)))
             .duration(16 * SECONDS + 6 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.GarnetRed, Materials2Shapes.shapeDust, (int) (1)))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.GarnetYellow, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.GarnetRed, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.GarnetYellow, Materials2Shapes.dust, (int) (1)))
             .duration(16 * SECONDS + 6 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.GarnetYellow, Materials2Shapes.shapeDust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.GarnetRed, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.GarnetYellow, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.GarnetRed, Materials2Shapes.dust, (int) (1)))
             .duration(16 * SECONDS + 6 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.shapeDust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.dust, (int) (1)))
             .duration(32 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Graphene, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Graphene, Materials2Shapes.dust, (int) (1)))
             .duration(32 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.shapeDust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.shapeDust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.dust, (int) (1)))
             .duration(4 * MINUTES + 20 * SECONDS + 9 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
@@ -114,7 +108,7 @@ public class RecipeLoaderMolecularTransformer {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.shapeDust, (int) (1)))
+                        MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.dust, (int) (1)))
                     .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_EV)

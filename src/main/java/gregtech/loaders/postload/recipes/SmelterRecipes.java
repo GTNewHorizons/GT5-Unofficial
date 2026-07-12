@@ -47,27 +47,27 @@ public class SmelterRecipes implements Runnable {
 
         GTModHandler.addSmeltingRecipe(
             GTOreDictUnificator.get(OrePrefixes.ore, Materials.Graphite, 1L),
-            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1L)));
+            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
 
         GTModHandler.addSmeltingRecipe(
             GTOreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials.Graphite, 1L),
-            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1L)));
+            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
 
         GTModHandler.addSmeltingRecipe(
             GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Graphite, 1L),
-            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1L)));
+            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
 
         GTModHandler.addSmeltingRecipe(
             GTOreDictUnificator.get(OrePrefixes.oreNetherrack, Materials.Graphite, 1L),
-            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1L)));
+            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
 
         GTModHandler.addSmeltingRecipe(
-            MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeNugget, (int) (1L)),
-            MaterialLibAPI.getStack(Materials2Materials.CastIron, Materials2Shapes.shapeNugget, (int) (1L)));
+            MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.nugget, (int) (1L)),
+            MaterialLibAPI.getStack(Materials2Materials.CastIron, Materials2Shapes.nugget, (int) (1L)));
 
         GTModHandler.addSmeltingRecipe(
             GTOreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L),
-            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1L)));
+            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
 
         GameRegistry.addSmelting(ItemList.CompressedFireclay.get(1), ItemList.Firebrick.get(1), 0);
     }

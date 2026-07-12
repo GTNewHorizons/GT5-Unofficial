@@ -86,7 +86,7 @@ public class RecipesGeneral {
             GregtechItemList.BlueprintBase.get(2),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PL ", "PL ", "LL ", 'P', new ItemStack(Items.paper), 'L',
-                MaterialLibAPI.getStack(Materials2Materials.Lazurite, Materials2Shapes.shapeDust, (int) (1)) });
+                MaterialLibAPI.getStack(Materials2Materials.Lazurite, Materials2Shapes.dust, (int) (1)) });
 
         // Rainforest Oak Sapling
         GTModHandler.addCraftingRecipe(
@@ -132,7 +132,7 @@ public class RecipesGeneral {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.BorosilicateGlass,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (4000)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -145,7 +145,7 @@ public class RecipesGeneral {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.BorosilicateGlass,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (16000)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -194,10 +194,8 @@ public class RecipesGeneral {
                 new ItemStack(Blocks.gold_block, 32))
             .itemOutputs(GregtechItemList.MagicFeather.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Silver,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (32 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Silver, Materials2FluidShapes.fluidMolten, (int) (32 * INGOTS)))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

@@ -25,10 +25,8 @@ public class FluidSolidifier implements Runnable {
             .itemInputs(new ItemStack(Blocks.lapis_block))
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 0))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Iron,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (9 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Iron, Materials2FluidShapes.fluidMolten, (int) (9 * INGOTS)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(fluidSolidifierRecipes);
@@ -37,10 +35,8 @@ public class FluidSolidifier implements Runnable {
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Titanium,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (8 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Titanium, Materials2FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(fluidSolidifierRecipes);
@@ -51,7 +47,7 @@ public class FluidSolidifier implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.TungstenSteel,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (8 * INGOTS)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -69,10 +65,8 @@ public class FluidSolidifier implements Runnable {
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 4))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Iridium,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (8 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Iridium, Materials2FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(fluidSolidifierRecipes);
@@ -81,10 +75,8 @@ public class FluidSolidifier implements Runnable {
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 5))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Osmium,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (8 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Osmium, Materials2FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(fluidSolidifierRecipes);
@@ -95,7 +87,7 @@ public class FluidSolidifier implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Neutronium,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (8 * INGOTS)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UV)
@@ -105,10 +97,8 @@ public class FluidSolidifier implements Runnable {
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 7))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Infinity,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (8 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(fluidSolidifierRecipes);
@@ -119,7 +109,7 @@ public class FluidSolidifier implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.TranscendentMetal,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (8 * INGOTS)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -133,7 +123,7 @@ public class FluidSolidifier implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Universium,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (8 * INGOTS)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UMV)

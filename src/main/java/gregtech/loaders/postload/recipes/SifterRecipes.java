@@ -37,15 +37,14 @@ public class SifterRecipes implements Runnable {
             .addTo(sifterRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.shapeCrushedPurified, (int) (1L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.crushedPurified, (int) (1L)))
             .itemOutputs(
                 new ItemStack(Items.coal, 1, 0),
                 new ItemStack(Items.coal, 1, 0),
                 new ItemStack(Items.coal, 1, 0),
                 new ItemStack(Items.coal, 1, 0),
                 new ItemStack(Items.coal, 1, 0),
-                MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.shapeDust, (int) (1L)))
+                MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.dust, (int) (1L)))
             .outputChances(10000, 9000, 8000, 7000, 6000, 5000)
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)

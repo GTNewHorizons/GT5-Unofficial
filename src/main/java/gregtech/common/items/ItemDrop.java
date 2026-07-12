@@ -113,7 +113,7 @@ public class ItemDrop extends Item {
         RecipeManagers.squeezerManager.addRecipe(
             40,
             new ItemStack[] { tDrop },
-            MaterialLibAPI.getFluidStack(Materials2Materials.OilHeavy, Materials2FluidShapes.shapeFluidLiquid, 100),
+            MaterialLibAPI.getFluidStack(Materials2Materials.OilHeavy, Materials2FluidShapes.fluidLiquid, 100),
             GTModHandler.getModItem(Forestry.ID, "propolis", 1L, 0),
             30);
         tDrop = getStackForType(DropType.COOLANT);
@@ -133,7 +133,7 @@ public class ItemDrop extends Item {
         tDrop = getStackForType(DropType.SNOW_QUEEN);
         addProcessMV(
             tDrop,
-            MaterialLibAPI.getFluidStack(Materials2Materials.FierySteel, Materials2FluidShapes.shapeFluidLiquid, 200),
+            MaterialLibAPI.getFluidStack(Materials2Materials.FierySteel, Materials2FluidShapes.fluidLiquid, 200),
             GTModHandler.getModItem(NewHorizonsCoreMod.ID, "SnowQueenBloodDrop", 1L, 0),
             1500,
             48);
@@ -147,7 +147,7 @@ public class ItemDrop extends Item {
         tDrop = getStackForType(DropType.HYDRA);
         addProcessMV(
             tDrop,
-            MaterialLibAPI.getFluidStack(Materials2Materials.FierySteel, Materials2FluidShapes.shapeFluidLiquid, 50),
+            MaterialLibAPI.getFluidStack(Materials2Materials.FierySteel, Materials2FluidShapes.fluidLiquid, 50),
             GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 2),
             3000,
             8);
@@ -155,7 +155,7 @@ public class ItemDrop extends Item {
         RecipeManagers.squeezerManager.addRecipe(
             400,
             new ItemStack[] { tDrop },
-            MaterialLibAPI.getFluidStack(Materials2Materials.LiquidOxygen, Materials2FluidShapes.shapeFluidGas, 100),
+            MaterialLibAPI.getFluidStack(Materials2Materials.LiquidOxygen, Materials2FluidShapes.fluidGas, 100),
             GTModHandler.getModItem(ExtraBees.ID, "propolis", 1L, 2),
             30);
         tDrop = getStackForType(DropType.ENDERGOO);

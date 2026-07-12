@@ -14,7 +14,7 @@ public enum Fuels {
 
     RESIDUE(() -> Materials.DTR.getFluid(1)),
     STELLAR(() -> MaterialLibAPI
-        .getFluidStack(Materials2Materials.RawStarMatter, Materials2FluidShapes.shapeFluidLiquid, (int) (1))),
+        .getFluidStack(Materials2Materials.RawStarMatter, Materials2FluidShapes.fluidLiquid, (int) (1))),
     MHDCSM(() -> Materials.MHDCSM.getMolten(1));
 
     public static final Fuels[] VALUES = values();

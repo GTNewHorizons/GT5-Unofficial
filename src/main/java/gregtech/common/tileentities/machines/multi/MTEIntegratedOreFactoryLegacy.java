@@ -306,7 +306,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
                 tWater += fluid.amount;
             } else if (fluid != null && fluid.equals(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.shapeFluidLiquid, (int) (1)))) {
+                    .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1)))) {
                         tLube += fluid.amount;
                     }
         }
@@ -362,7 +362,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
         depleteInput(
             MaterialLibAPI.getFluidStack(
                 Materials2Materials.Lubricant,
-                Materials2FluidShapes.shapeFluidLiquid,
+                Materials2FluidShapes.fluidLiquid,
                 (int) (finalParallel * 2)));
 
         // Consume items and generate outputs
@@ -726,7 +726,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
             int tID = GTUtility.stackToInt(stack);
             if (sVoidStone) {
                 if (GTUtility.areStacksEqual(
-                    MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dust, (int) (1)),
                     stack)) {
                     continue;
                 }

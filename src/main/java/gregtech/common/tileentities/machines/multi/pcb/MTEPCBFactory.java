@@ -506,7 +506,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                             ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
                             : MaterialLibAPI.getFluidStack(
                                 Materials2Materials.SuperCoolant,
-                                Materials2FluidShapes.shapeFluidLiquid,
+                                Materials2FluidShapes.fluidLiquid,
                                 COOLANT_CONSUMED_PER_SEC);
                         if (!drain(compatMode.coolantHatch, tFluid, true)) {
                             stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
@@ -518,7 +518,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     FluidStack tFluid = mCoolingTower.isTier1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
                         : MaterialLibAPI.getFluidStack(
                             Materials2Materials.SuperCoolant,
-                            Materials2FluidShapes.shapeFluidLiquid,
+                            Materials2FluidShapes.fluidLiquid,
                             COOLANT_CONSUMED_PER_SEC);
                     if (!mCoolingTower.drain(mCoolingTower.mCoolantInputHatch, tFluid, true)) {
                         stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));

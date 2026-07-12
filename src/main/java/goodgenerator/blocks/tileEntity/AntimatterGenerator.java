@@ -125,8 +125,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         while (i < inputFluids.size()) {
             FluidStack inputFluid = inputFluids.get(i);
             if (inputFluid.isFluidEqual(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Antimatter, Materials2FluidShapes.shapeFluidLiquid, 1))) {
+                MaterialLibAPI.getFluidStack(Materials2Materials.Antimatter, Materials2FluidShapes.fluidLiquid, 1))) {
                 containedAntimatter += inputFluid.amount;
             } else {
                 catalystFluid = inputFluid.copy();
@@ -155,19 +154,19 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         Float modifier = null;
 
         if (catalyst.isFluidEqual(
-            MaterialLibAPI.getFluidStack(Materials2Materials.Copper, Materials2FluidShapes.shapeFluidMolten, 1))) {
+            MaterialLibAPI.getFluidStack(Materials2Materials.Copper, Materials2FluidShapes.fluidMolten, 1))) {
             modifier = 1.0F;
         } else if (catalyst.isFluidEqual(
             MaterialLibAPI.getFluidStack(
                 Materials2Materials.SuperconductorUIVBase,
-                Materials2FluidShapes.shapeFluidMolten,
+                Materials2FluidShapes.fluidMolten,
                 (int) (1)))) {
                     modifier = 1.02F;
                 } else
             if (catalyst.isFluidEqual(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.SuperconductorUMVBase,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (1)))) {
                         modifier = 1.03F;
                     }

@@ -181,10 +181,8 @@ public class RecipeLoader {
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
                 .fluidInputs(
                     MaterialsAlloy.INDALLOY_140.getFluidStack(3 * STACKS + 8 * INGOTS),
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Honey,
-                        Materials2FluidShapes.shapeFluidLiquid,
-                        (int) (20_000)))
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.fluidLiquid, (int) (20_000)))
                 .itemOutputs(ExtremeIndustrialApiary.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)
@@ -349,7 +347,7 @@ public class RecipeLoader {
                 .itemOutputs(MilkTea.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.shapeFluidLiquid, (int) (100)))
+                        .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (100)))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);

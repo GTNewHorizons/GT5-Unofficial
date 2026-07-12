@@ -30,8 +30,8 @@ public class FishTrapHandler {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
                     .itemOutputs(
-                        MaterialLibAPI.getStack(Materials2Materials.MeatRaw, Materials2Shapes.shapeDust, (int) (1)),
-                        MaterialLibAPI.getStack(Materials2Materials.Bone, Materials2Shapes.shapeDustTiny, (int) (1)))
+                        MaterialLibAPI.getStack(Materials2Materials.MeatRaw, Materials2Shapes.dust, (int) (1)),
+                        MaterialLibAPI.getStack(Materials2Materials.Bone, Materials2Shapes.dustTiny, (int) (1)))
                     .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -39,20 +39,16 @@ public class FishTrapHandler {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
                     .fluidOutputs(
-                        MaterialLibAPI.getFluidStack(
-                            Materials2Materials.Methane,
-                            Materials2FluidShapes.shapeFluidGas,
-                            (int) (48)))
+                        MaterialLibAPI
+                            .getFluidStack(Materials2Materials.Methane, Materials2FluidShapes.fluidGas, (int) (48)))
                     .duration(19 * SECONDS + 4 * TICKS)
                     .eut(5)
                     .addTo(centrifugeRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
                     .fluidOutputs(
-                        MaterialLibAPI.getFluidStack(
-                            Materials2Materials.FishOil,
-                            Materials2FluidShapes.shapeFluidLiquid,
-                            (int) (50)))
+                        MaterialLibAPI
+                            .getFluidStack(Materials2Materials.FishOil, Materials2FluidShapes.fluidLiquid, (int) (50)))
                     .duration(16 * TICKS)
                     .eut(4)
                     .addTo(fluidExtractionRecipes);
@@ -62,8 +58,8 @@ public class FishTrapHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials2Materials.MeatRaw, Materials2Shapes.shapeDust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials2Materials.Bone, Materials2Shapes.shapeDustTiny, (int) (1)))
+                    MaterialLibAPI.getStack(Materials2Materials.MeatRaw, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials2Materials.Bone, Materials2Shapes.dustTiny, (int) (1)))
                 .outputChances(10000, 1000)
                 .duration(20 * SECONDS)
                 .eut(2)
@@ -72,7 +68,7 @@ public class FishTrapHandler {
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Methane, Materials2FluidShapes.shapeFluidGas, (int) (48)))
+                        .getFluidStack(Materials2Materials.Methane, Materials2FluidShapes.fluidGas, (int) (48)))
                 .duration(19 * SECONDS + 4 * TICKS)
                 .eut(5)
                 .addTo(centrifugeRecipes);
@@ -80,7 +76,7 @@ public class FishTrapHandler {
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.FishOil, Materials2FluidShapes.shapeFluidLiquid, (int) (50)))
+                        .getFluidStack(Materials2Materials.FishOil, Materials2FluidShapes.fluidLiquid, (int) (50)))
                 .duration(16 * TICKS)
                 .eut(4)
                 .addTo(fluidExtractionRecipes);

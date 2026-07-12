@@ -20,7 +20,7 @@ public class FormingPress implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials),
-                MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (64)))
+                MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (64)))
             .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 1))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -29,7 +29,7 @@ public class FormingPress implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.shapeDust, (int) (64)))
+                MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (64)))
             .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 2))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -38,7 +38,7 @@ public class FormingPress implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 2),
-                MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (64)))
+                MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (64)))
             .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 3))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)

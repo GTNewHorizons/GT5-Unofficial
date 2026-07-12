@@ -25,8 +25,7 @@ public class PrinterRecipes implements Runnable {
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Paper, Materials2Shapes.shapePlateDouble, (int) (1L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Paper, Materials2Shapes.plateDouble, (int) (1L)))
             .itemOutputs(ItemList.Paper_Punch_Card_Empty.get(1L))
             .fluidInputs(getFluidStack("squidink", 36))
             .duration(5 * SECONDS)

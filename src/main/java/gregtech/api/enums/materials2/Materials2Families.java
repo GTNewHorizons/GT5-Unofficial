@@ -15,105 +15,102 @@ import com.ruling_0.materiallib.api.TextureSet;
 public class Materials2Families {
 
     // spotless:off
-    public static Family familyAll;
-    public static Family familyDusts;
-    public static Family familyMetals;
-    public static Family familyGems;
-    public static Family familyOres;
-    public static Family familyCells;
-    public static Family familyPlasmas;
-    public static Family familyToolParts;
-    public static Family familyGears;
-    public static Family familyEmpties;
+    public static Family all;
+    public static Family dusts;
+    public static Family metals;
+    public static Family gems;
+    public static Family ores;
+    public static Family cells;
+    public static Family plasmas;
+    public static Family toolParts;
+    public static Family gears;
+    public static Family empties;
     // spotless:on
 
     public static void init() {
-        familyAll = MaterialLibAPI.newFamily("gregtech", "All")
+        all = MaterialLibAPI.newFamily("gregtech", "All")
             .setProperty(StandardProperties.FALLBACK_TEXTURE_SET, TextureSet.of("gregtech", "NONE"))
             .build();
 
-        familyDusts = MaterialLibAPI.newFamily("gregtech", "Dusts")
-            .generateShapes(Materials2Shapes.shapeDust, Materials2Shapes.shapeDustSmall, Materials2Shapes.shapeDustTiny)
+        dusts = MaterialLibAPI.newFamily("gregtech", "Dusts")
+            .generateShapes(Materials2Shapes.dust, Materials2Shapes.dustSmall, Materials2Shapes.dustTiny)
             .build();
-        familyMetals = MaterialLibAPI.newFamily("gregtech", "Metals")
+        metals = MaterialLibAPI.newFamily("gregtech", "Metals")
             .generateShapes(
-                Materials2Shapes.shapeBolt,
-                Materials2Shapes.shapeDust,
-                Materials2Shapes.shapeDustSmall,
-                Materials2Shapes.shapeDustTiny,
-                Materials2Shapes.shapeFoil,
-                Materials2Shapes.shapeIngot,
-                Materials2Shapes.shapeIngotHot,
-                Materials2Shapes.shapeItemCasing,
-                Materials2Shapes.shapeNugget,
-                Materials2Shapes.shapePlate,
-                Materials2Shapes.shapePlateDense,
-                Materials2Shapes.shapePlateDouble,
-                Materials2Shapes.shapePlateQuadruple,
-                Materials2Shapes.shapePlateQuintuple,
-                Materials2Shapes.shapePlateSuperdense,
-                Materials2Shapes.shapePlateTriple,
-                Materials2Shapes.shapeRing,
-                Materials2Shapes.shapeRound,
-                Materials2Shapes.shapeScrew,
-                Materials2Shapes.shapeSpring,
-                Materials2Shapes.shapeSpringSmall,
-                Materials2Shapes.shapeStick,
-                Materials2Shapes.shapeStickLong,
-                Materials2Shapes.shapeWireFine)
+                Materials2Shapes.bolt,
+                Materials2Shapes.dust,
+                Materials2Shapes.dustSmall,
+                Materials2Shapes.dustTiny,
+                Materials2Shapes.foil,
+                Materials2Shapes.ingot,
+                Materials2Shapes.ingotHot,
+                Materials2Shapes.itemCasing,
+                Materials2Shapes.nugget,
+                Materials2Shapes.plate,
+                Materials2Shapes.plateDense,
+                Materials2Shapes.plateDouble,
+                Materials2Shapes.plateQuadruple,
+                Materials2Shapes.plateQuintuple,
+                Materials2Shapes.plateSuperdense,
+                Materials2Shapes.plateTriple,
+                Materials2Shapes.ring,
+                Materials2Shapes.round,
+                Materials2Shapes.screw,
+                Materials2Shapes.spring,
+                Materials2Shapes.springSmall,
+                Materials2Shapes.stick,
+                Materials2Shapes.stickLong,
+                Materials2Shapes.wireFine)
             .build();
-        familyGems = MaterialLibAPI.newFamily("gregtech", "Gems")
+        gems = MaterialLibAPI.newFamily("gregtech", "Gems")
             .generateShapes(
-                Materials2Shapes.shapeBolt,
-                Materials2Shapes.shapeDust,
-                Materials2Shapes.shapeDustSmall,
-                Materials2Shapes.shapeDustTiny,
-                Materials2Shapes.shapeGem,
-                Materials2Shapes.shapeGemChipped,
-                Materials2Shapes.shapeGemExquisite,
-                Materials2Shapes.shapeGemFlawed,
-                Materials2Shapes.shapeGemFlawless,
-                Materials2Shapes.shapeItemCasing,
-                Materials2Shapes.shapeLens,
-                Materials2Shapes.shapePlate,
-                Materials2Shapes.shapeScrew,
-                Materials2Shapes.shapeStick,
-                Materials2Shapes.shapeStickLong)
+                Materials2Shapes.bolt,
+                Materials2Shapes.dust,
+                Materials2Shapes.dustSmall,
+                Materials2Shapes.dustTiny,
+                Materials2Shapes.gem,
+                Materials2Shapes.gemChipped,
+                Materials2Shapes.gemExquisite,
+                Materials2Shapes.gemFlawed,
+                Materials2Shapes.gemFlawless,
+                Materials2Shapes.itemCasing,
+                Materials2Shapes.lens,
+                Materials2Shapes.plate,
+                Materials2Shapes.screw,
+                Materials2Shapes.stick,
+                Materials2Shapes.stickLong)
             .build();
-        familyOres = MaterialLibAPI.newFamily("gregtech", "Ores")
+        ores = MaterialLibAPI.newFamily("gregtech", "Ores")
             .generateShapes(
-                Materials2Shapes.shapeCrushed,
-                Materials2Shapes.shapeCrushedCentrifuged,
-                Materials2Shapes.shapeCrushedPurified,
-                Materials2Shapes.shapeDust,
-                Materials2Shapes.shapeDustImpure,
-                Materials2Shapes.shapeDustPure,
-                Materials2Shapes.shapeDustSmall,
-                Materials2Shapes.shapeDustTiny,
-                Materials2Shapes.shapeRawOre)
+                Materials2Shapes.crushed,
+                Materials2Shapes.crushedCentrifuged,
+                Materials2Shapes.crushedPurified,
+                Materials2Shapes.dust,
+                Materials2Shapes.dustImpure,
+                Materials2Shapes.dustPure,
+                Materials2Shapes.dustSmall,
+                Materials2Shapes.dustTiny,
+                Materials2Shapes.rawOre)
             .build();
-        familyCells = MaterialLibAPI.newFamily("gregtech", "Cells")
+        cells = MaterialLibAPI.newFamily("gregtech", "Cells")
             .build();
-        familyPlasmas = MaterialLibAPI.newFamily("gregtech", "Plasmas")
+        plasmas = MaterialLibAPI.newFamily("gregtech", "Plasmas")
             .build();
-        familyToolParts = MaterialLibAPI.newFamily("gregtech", "ToolParts")
+        toolParts = MaterialLibAPI.newFamily("gregtech", "ToolParts")
             .generateShapes(
-                Materials2Shapes.shapeToolHeadBuzzSaw,
-                Materials2Shapes.shapeToolHeadChainsaw,
-                Materials2Shapes.shapeToolHeadDrill,
-                Materials2Shapes.shapeToolHeadFile,
-                Materials2Shapes.shapeToolHeadHammer,
-                Materials2Shapes.shapeToolHeadSaw,
-                Materials2Shapes.shapeToolHeadWrench,
-                Materials2Shapes.shapeTurbineBlade)
+                Materials2Shapes.toolHeadBuzzSaw,
+                Materials2Shapes.toolHeadChainsaw,
+                Materials2Shapes.toolHeadDrill,
+                Materials2Shapes.toolHeadFile,
+                Materials2Shapes.toolHeadHammer,
+                Materials2Shapes.toolHeadSaw,
+                Materials2Shapes.toolHeadWrench,
+                Materials2Shapes.turbineBlade)
             .build();
-        familyGears = MaterialLibAPI.newFamily("gregtech", "Gears")
-            .generateShapes(
-                Materials2Shapes.shapeGearGt,
-                Materials2Shapes.shapeGearGtSmall,
-                Materials2Shapes.shapeRotor)
+        gears = MaterialLibAPI.newFamily("gregtech", "Gears")
+            .generateShapes(Materials2Shapes.gearGt, Materials2Shapes.gearGtSmall, Materials2Shapes.rotor)
             .build();
-        familyEmpties = MaterialLibAPI.newFamily("gregtech", "Empties")
+        empties = MaterialLibAPI.newFamily("gregtech", "Empties")
             .build();
     }
 

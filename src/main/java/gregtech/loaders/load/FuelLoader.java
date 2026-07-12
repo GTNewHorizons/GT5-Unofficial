@@ -48,9 +48,8 @@ public class FuelLoader implements Runnable {
         ItemList.sRocketFuel = GTFluidFactory.of("rocket_fuel", "Rocket Fuel", null, FluidState.LIQUID, 295);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.shapeBolt, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeBolt, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.bolt, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.bolt, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 50_000)
@@ -58,8 +57,8 @@ public class FuelLoader implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.shapeStick, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeStick, (int) (1)))
+                MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.stick, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.stick, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 250_000)
@@ -67,26 +66,24 @@ public class FuelLoader implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI
-                    .getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.shapeStickLong, (int) (1)))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeStickLong, (int) (1)))
+                MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.stickLong, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.stickLong, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 500_000)
             .addTo(hugeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.shapeBolt, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeBolt, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.bolt, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.bolt, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 250_000)
             .addTo(extremeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.shapeStick, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeStick, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.stick, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.stick, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 1_000_000)

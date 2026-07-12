@@ -247,10 +247,8 @@ public class CrushedLoader implements IWerkstoffRunnable {
                     GTOreDictUnificator.get(dust, Materials.Stone, 1L))
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Mercury,
-                        Materials2FluidShapes.shapeFluidLiquid,
-                        (int) (1_000)))
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Mercury, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
                 .duration(40 * SECONDS)
                 .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_ULV))
                 .addTo(chemicalBathRecipes);
@@ -268,7 +266,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.SodiumPersulfate,
-                        Materials2FluidShapes.shapeFluidLiquid,
+                        Materials2FluidShapes.fluidLiquid,
                         (int) (100)))
                 .duration(40 * SECONDS)
                 .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_ULV))

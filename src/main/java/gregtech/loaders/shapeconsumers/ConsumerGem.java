@@ -10,14 +10,13 @@ public final class ConsumerGem {
     private ConsumerGem() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeGem, OrePrefixes.gem, () -> ProcessingGem.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.gem, OrePrefixes.gem, () -> ProcessingGem.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeGemChipped, OrePrefixes.gemChipped, () -> ProcessingGem.INSTANCE);
+            .delegate(Materials2Shapes.gemChipped, OrePrefixes.gemChipped, () -> ProcessingGem.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeGemExquisite, OrePrefixes.gemExquisite, () -> ProcessingGem.INSTANCE);
+            .delegate(Materials2Shapes.gemExquisite, OrePrefixes.gemExquisite, () -> ProcessingGem.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.gemFlawed, OrePrefixes.gemFlawed, () -> ProcessingGem.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeGemFlawed, OrePrefixes.gemFlawed, () -> ProcessingGem.INSTANCE);
-        ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeGemFlawless, OrePrefixes.gemFlawless, () -> ProcessingGem.INSTANCE);
+            .delegate(Materials2Shapes.gemFlawless, OrePrefixes.gemFlawless, () -> ProcessingGem.INSTANCE);
     }
 }

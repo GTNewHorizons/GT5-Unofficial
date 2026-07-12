@@ -37,14 +37,12 @@ public class ArcFurnaceLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hatch_Input_Bus_IV.get(1),
-                MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (4)),
-                MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapePlate, (int) (4)),
+                MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (4)),
+                MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.plate, (int) (4)),
                 new Object[] { OrePrefixes.circuit.get(Materials.IV), 1L })
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.SolderingAlloy,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (1152)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, (int) (1152)))
             .itemOutputs(kubatech.api.enums.ItemList.ElectrodeHatch.get(1))
             .circuit(1)
             .eut(TierEU.RECIPE_IV)
@@ -79,7 +77,7 @@ public class ArcFurnaceLoader {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.SolderingAlloy,
-                        Materials2FluidShapes.shapeFluidMolten,
+                        Materials2FluidShapes.fluidMolten,
                         (int) (1152)))
                 .itemOutputs(electrode.getElectrodeItem(1))
                 .eut(TierEU.RECIPE_IV)
@@ -90,10 +88,8 @@ public class ArcFurnaceLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Neutronium.getNanite(64))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Neutronium,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (64 * 144)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidMolten, (int) (64 * 144)))
             .itemOutputs(ArcFurnaceElectrode.NeutroniumNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UV)
             .duration(2 * MINUTES)
@@ -104,7 +100,7 @@ public class ArcFurnaceLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.TranscendentMetal,
-                    Materials2FluidShapes.shapeFluidMolten,
+                    Materials2FluidShapes.fluidMolten,
                     (int) (16 * 144)))
             .itemOutputs(ArcFurnaceElectrode.TranscendentNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UIV)
@@ -115,10 +111,8 @@ public class ArcFurnaceLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Universium.getNanite(4))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Universium,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    (int) (4 * 144)))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Universium, Materials2FluidShapes.fluidMolten, (int) (4 * 144)))
             .itemOutputs(ArcFurnaceElectrode.UniversiumNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UXV)
             .duration(8 * MINUTES)

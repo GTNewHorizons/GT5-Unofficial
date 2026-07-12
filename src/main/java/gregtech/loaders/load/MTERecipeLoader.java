@@ -1614,7 +1614,7 @@ public class MTERecipeLoader implements Runnable {
                 ItemList.Field_Generator_EV.get(2),
                 ItemList.Robot_Arm_IV.get(4),
                 GregtechItemList.Energy_Core_EV.get(2),
-                MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.shapePlate, 8),
+                MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.plate, 8),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
             .itemOutputs(ItemList.IndustrialArcFurnace.get(1))
             .duration(1 * MINUTES)
@@ -1630,8 +1630,8 @@ public class MTERecipeLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.RoseGold, 1),
-                MaterialLibAPI.getStack(Materials2Materials.RoseGold, Materials2Shapes.shapePlate, 4),
-                MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.shapePlate, 2))
+                MaterialLibAPI.getStack(Materials2Materials.RoseGold, Materials2Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.plate, 2))
             .circuit(1)
             .itemOutputs(ItemList.AlgaeCasing.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -1647,10 +1647,8 @@ public class MTERecipeLoader implements Runnable {
             .circuit(1)
             .itemOutputs(ItemList.NaquadahReactorCasing.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NaquadahEnriched,
-                    Materials2FluidShapes.shapeFluidMolten,
-                    4 * INGOTS))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.NaquadahEnriched, Materials2FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);

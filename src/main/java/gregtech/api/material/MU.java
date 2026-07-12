@@ -83,7 +83,7 @@ public class MU {
     /// fluid-in-container shape's membership does not always mirror every material with a real legacy slot: a
     /// material can hold a legacy `cell` item generated purely from its `CELL` capability flag while never
     /// having a fluid to put in it (MaterialLib's container contract requires a material to also generate one
-    /// of the container's fluid shapes, so such a material is left off `shapeCell`'s membership and keeps its
+    /// of the container's fluid shapes, so such a material is left off `cell`'s membership and keeps its
     /// legacy item instead). Legacy construction code should skip a (prefix, material) pair exactly when this
     /// is true, not merely when [#shape] is non-null.
     public static boolean isCutOver(OrePrefixes prefix, Materials material) {
@@ -287,9 +287,9 @@ public class MU {
             // cellPlasmaLight is a second candidate shape for the cellPlasma prefix, not a prefix of its own
             // (see Materials2CellShapes); its field name deliberately does not match an OrePrefixes name, so
             // fold it into "cellPlasma"'s candidate list instead of collecting it under its own key.
-            if (Materials2CellShapes.shapeCellPlasmaLight != null) {
+            if (Materials2CellShapes.cellPlasmaLight != null) {
                 map.get("cellPlasma")
-                    .add(Materials2CellShapes.shapeCellPlasmaLight);
+                    .add(Materials2CellShapes.cellPlasmaLight);
             }
             prefixToShapes = map;
         }

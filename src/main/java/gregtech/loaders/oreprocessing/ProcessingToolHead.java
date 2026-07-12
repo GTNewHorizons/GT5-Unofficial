@@ -1142,8 +1142,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         GTOreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 4L),
-                        MaterialLibAPI
-                            .getStack(Materials2Materials.Magnalium, Materials2Shapes.shapeStickLong, (int) (1)))
+                        MaterialLibAPI.getStack(Materials2Materials.Magnalium, Materials2Shapes.stickLong, (int) (1)))
                     .itemOutputs(MetaGeneratedTool01.INSTANCE.getToolWithStats(170, 1, aMaterial, aMaterial, null))
                     .duration(8 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 100))
@@ -1151,8 +1150,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         GTOreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 8L),
-                        MaterialLibAPI
-                            .getStack(Materials2Materials.Titanium, Materials2Shapes.shapeStickLong, (int) (1)))
+                        MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.stickLong, (int) (1)))
                     .itemOutputs(MetaGeneratedTool01.INSTANCE.getToolWithStats(172, 1, aMaterial, aMaterial, null))
                     .duration(16 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 400))
@@ -1161,7 +1159,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     .itemInputs(
                         GTOreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 12L),
                         MaterialLibAPI
-                            .getStack(Materials2Materials.TungstenSteel, Materials2Shapes.shapeStickLong, (int) (1)))
+                            .getStack(Materials2Materials.TungstenSteel, Materials2Shapes.stickLong, (int) (1)))
                     .itemOutputs(MetaGeneratedTool01.INSTANCE.getToolWithStats(174, 1, aMaterial, aMaterial, null))
                     .duration(32 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 1600))
@@ -1169,8 +1167,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         GTOreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 16L),
-                        MaterialLibAPI
-                            .getStack(Materials2Materials.Americium, Materials2Shapes.shapeStickLong, (int) (1)))
+                        MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.stickLong, (int) (1)))
                     .itemOutputs(MetaGeneratedTool01.INSTANCE.getToolWithStats(176, 1, aMaterial, aMaterial, null))
                     .duration(1 * MINUTES + 4 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 6400))

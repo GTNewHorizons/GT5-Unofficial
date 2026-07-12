@@ -49,11 +49,11 @@ public class MTECompressedFluidHatch extends MTEHatchInput {
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return GTUtility.areFluidsEqual(
             aFluid,
-            MaterialLibAPI.getFluidStack(Materials2Materials.LiquidAir, Materials2FluidShapes.shapeFluidLiquid, 1))
+            MaterialLibAPI.getFluidStack(Materials2Materials.LiquidAir, Materials2FluidShapes.fluidLiquid, 1))
             || GTUtility.areFluidsEqual(aFluid, Materials.NetherSemiFluid.getFluid(1))
             || GTUtility.areFluidsEqual(
                 aFluid,
-                MaterialLibAPI.getFluidStack(Materials2Materials.ToxicAir, Materials2FluidShapes.shapeFluidGas, 1));
+                MaterialLibAPI.getFluidStack(Materials2Materials.ToxicAir, Materials2FluidShapes.fluidGas, 1));
     }
 
     @Override

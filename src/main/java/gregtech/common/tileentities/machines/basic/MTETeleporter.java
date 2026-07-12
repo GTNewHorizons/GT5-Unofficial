@@ -303,7 +303,7 @@ public class MTETeleporter extends MTEBasicTank {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 
         if (mFluid != null) { // Was if null -> MaterialLibAPI.getFluidStack(Materials2Materials.Nitrogen,
-                              // Materials2FluidShapes.shapeFluidPlasma, (int) (0));
+                              // Materials2FluidShapes.fluidPlasma, (int) (0));
             mFluid = null;
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);

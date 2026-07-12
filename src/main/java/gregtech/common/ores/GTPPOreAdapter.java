@@ -29,12 +29,12 @@ import gtPlusPlus.core.material.MaterialReconstruction;
 /// [BWOreAdapter] ported [bartworks.system.material.Werkstoff] ore: resolves through a material's MaterialLib
 /// counterpart (see [#materialOf]) before falling back to the legacy [BlockBaseOre] instance, which stays
 /// constructed and registered (see that class) for pre-migration saves and for any gtpp material that never
-/// gained [Materials2OreShapes#shapeOre] membership.
+/// gained [Materials2OreShapes#ore] membership.
 ///
 /// Unlike [gregtech.api.enums.Materials]/[bartworks.system.material.Werkstoff] ore, gtpp ore only ever
 /// existed on [StoneType#Stone] (the legacy adapter this replaces hardcoded `StoneType.Stone` unconditionally)
 /// and never had a small-ore variant -- both [#supports(OreInfo)] and [#getBlock] enforce this exactly as the
-/// legacy class did, and no gtpp material ever claims `Materials2OreShapes#shapeOreSmall`. [BlockBaseOre] is
+/// legacy class did, and no gtpp material ever claims `Materials2OreShapes#oreSmall`. [BlockBaseOre] is
 /// also one distinct registered `Block` instance PER MATERIAL (like
 /// [gtPlusPlus.core.block.base.BlockBaseModular], unlike the shared meta-block
 /// [gregtech.common.blocks.GTBlockOre]/[bartworks.system.material.BWMetaGeneratedOres] use), so no per-meta
@@ -56,7 +56,7 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
         if (block instanceof BlockBaseOre) return true;
 
         BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, meta);
-        return info != null && info.shape() == Materials2OreShapes.shapeOre && materialOf(info.material()) != null;
+        return info != null && info.shape() == Materials2OreShapes.ore && materialOf(info.material()) != null;
     }
 
     @Override
@@ -79,7 +79,7 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
         }
 
         BlockMaterialInfo blockInfo = MaterialLibAPI.lookupBlock(block, meta);
-        if (blockInfo == null || blockInfo.shape() != Materials2OreShapes.shapeOre) return null;
+        if (blockInfo == null || blockInfo.shape() != Materials2OreShapes.ore) return null;
 
         Material material = materialOf(blockInfo.material());
         if (material == null) return null;
@@ -98,9 +98,9 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
         Material gtppMat = (Material) info.material;
 
         com.ruling_0.materiallib.api.Material ml = MaterialReconstruction.materialLibOf(gtppMat.getUnlocalizedName());
-        if (ml != null && ml.hasShape(Materials2OreShapes.shapeOre)) {
+        if (ml != null && ml.hasShape(Materials2OreShapes.ore)) {
             ItemStack stack = MaterialLibAPI
-                .getStack(ml, Materials2OreShapes.shapeOre, Materials2OreShapes.variantOf(StoneType.Stone.name()), 1);
+                .getStack(ml, Materials2OreShapes.ore, Materials2OreShapes.variantOf(StoneType.Stone.name()), 1);
             if (stack != null) {
                 return new BlockMeta(Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
             }
