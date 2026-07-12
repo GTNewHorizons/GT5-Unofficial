@@ -236,21 +236,49 @@ public class MultiblockTooltipBuilder {
         return this;
     }
 
+    /**
+     * Registers this macro processor for the builder
+     * @param name the name of the macro
+     * @param transformer the string transformation
+     * @return Instance this method was called on.
+     */
     public MultiblockTooltipBuilder addMacro(String name, UnaryOperator<String> transformer) {
         this.iMacros.put(name, TooltipMacroProcessor.of(name, transformer));
         return this;
     }
 
+    /**
+     * Registers this macro processor for the builder
+     * @param macro the macro processor
+     * @return Instance this method was called on.
+     * @apiNote macros with duplicate names will be replaced
+     */
     public MultiblockTooltipBuilder addMacro(TooltipMacroProcessor macro) {
         this.iMacros.put(macro.getName(), macro);
         return this;
     }
 
+    /**
+     * Registers multiple macro processors for the builder
+     * @param macros the macro processors
+     * @return Instance this method was called on.
+     * @apiNote this method is a convenience method, identical to: <pre>
+     *     for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
+     * </pre>
+     */
     public MultiblockTooltipBuilder addMacros(TooltipMacroProcessor... macros) {
         for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
         return this;
     }
 
+    /**
+     * Registers multiple macro processors for the builder
+     * @param macros the macro processor collection
+     * @return Instance this method was called on.
+     * @apiNote this method is a convenience method, identical to: <pre>
+     *     for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
+     * </pre>
+     */
     public MultiblockTooltipBuilder addMacros(Iterable<TooltipMacroProcessor> macros) {
         for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
         return this;
