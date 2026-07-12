@@ -417,18 +417,31 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     }
 
     long lastOutputTick = 0;
+    long lastInputTick = 0;
     long tickCounter = 0;
-    private long lastAvailableSpace = 0;
+    private long lastPhysicalSpace = 0;
 
     public final long getTickCounter() {
         return tickCounter;
+    }
+
+    public final long getLastInputTick() {
+        return lastInputTick;
+    }
+
+    public final void updateLastInputTick() {
+        lastInputTick = tickCounter;
+    }
+
+    public boolean hasPhysicalSpace() {
+        return getCachedAmount() < getCacheCapacity();
     }
 
     public boolean hasAvailableSpace() {
         return getCachedAmount() < getCacheCapacity();
     }
 
-    public long getAvailableSpace() {
+    public long getPhysicalSpace() {
         return getCacheCapacity() - getCachedAmount();
     }
 
@@ -460,11 +473,11 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             // When free space grows (cache flushed to the network, a fuller cell drained, or capacity increased) a
             // recipe blocked on output-full can run again. Comparing the actual amount works in check mode too, where
             // hasAvailableSpace() stays true even as the remaining space jumps from e.g. 1 to 1000.
-            long availableSpace = getAvailableSpace();
-            if (availableSpace > lastAvailableSpace) {
+            long physicalSpace = getPhysicalSpace();
+            if (physicalSpace > lastPhysicalSpace) {
                 env.notifyOutputSpaceChanged();
             }
-            lastAvailableSpace = availableSpace;
+            lastPhysicalSpace = physicalSpace;
         }
     }
 
@@ -539,10 +552,12 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             input.setStackSize(Math.min(input.getStackSize(), rejected == null ? 0 : rejected.getStackSize()));
             return input.getStackSize() == 0;
         }
-        if (simulate && !hasAvailableSpace()) return false;
+        boolean isAllowed = hasAvailableSpace() || (tickCounter == lastInputTick);
+        if (!isAllowed) return false;
         if (!canStore(input)) return false;
         if (!simulate) {
             addToCache(input);
+            updateLastInputTick();
             env.dispatchMarkDirty();
         }
         input.setStackSize(0);
@@ -557,6 +572,11 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     public boolean isWhiteList() {
         if (handler == null) return false;
         return handler.getWhitelist() == IncludeExclude.WHITELIST;
+    }
+
+    public boolean isDistribution() {
+        if (handler == null) return false;
+        return handler.isDistribution();
     }
 
     public boolean canStore(@NotNull T input) {

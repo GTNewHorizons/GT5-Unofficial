@@ -8,6 +8,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+import codechicken.nei.api.API;
 import gregtech.api.items.armor.AugmentBuilder.AugmentCategory;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.ArmorType;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Augments;
@@ -21,6 +22,7 @@ public class ItemAugment extends ItemAugmentAbstract {
     public ItemAugment(Augments augment) {
         super(augment);
         this.augment = augment;
+        API.setAliases(new ItemStack(this), "gt.alias.mechanical_armor");
     }
 
     @Override
