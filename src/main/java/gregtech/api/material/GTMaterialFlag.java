@@ -2,7 +2,7 @@ package gregtech.api.material;
 
 /// Boolean material flags, mirroring the names of `gregtech.api.enums.SubTag` in the legacy material system.
 ///
-/// Names are kept identical to their `SubTag` counterparts so the stage-03 code generator can map them 1:1,
+/// Names are kept identical to their `SubTag` counterparts so the two systems map 1:1 by name,
 /// except [#ANAEROBE_GAS] and [#NOBLE_GAS] which mirror bartworks' `WerkstoffLoader.ANAEROBE_GAS` /
 /// `WerkstoffLoader.NOBLE_GAS` dynamic `SubTag`s (`"AnaerobeGas"` / `"NobleGas"`) using this enum's own naming
 /// convention instead of their `SubTag#mName` strings.

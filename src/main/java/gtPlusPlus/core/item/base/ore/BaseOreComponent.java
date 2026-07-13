@@ -55,12 +55,12 @@ public class BaseOreComponent extends Item {
         GameRegistry.registerItem(this, this.unlocalName);
         registerComponent();
         // Materials outside the gtpp reconstruction gate (e.g. a base gregtech Materials enum constant that
-        // gained this part's shape purely from a stage-11 codegen name-merge, such as milled ore for
+        // gained this part's shape purely from the gtpp name-merge, such as milled ore for
         // Sphalerite) never skip this constructor -- unlike MaterialGenerator's own cutOver() gate for
         // reconstructed materials. Registering this item into the same oredict name MaterialLib already owns
-        // would create a second entry that races the MaterialLib one across launches (see
-        // MaterialReconstruction census nondeterminism, stage 11 commit 4); keep the item itself (legacy
-        // saves/oredict-name lookups still work through MaterialLib), just skip the duplicate association.
+        // would create a second entry that races the MaterialLib one across launches; keep the item itself
+        // (legacy saves/oredict-name lookups still work through MaterialLib), just skip the duplicate
+        // association.
         if (!MU.isCutOver(componentType.getOrePrefixEnum(), MaterialUtils.getMaterial(material.getUnlocalizedName()))) {
             GTOreDictUnificator
                 .registerOre(componentType.getOrePrefix() + material.getUnlocalizedName(), new ItemStack(this, 1));

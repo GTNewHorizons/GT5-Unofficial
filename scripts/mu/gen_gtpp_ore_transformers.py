@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates the stage-11 commit-4 gtPlusPlus ore-cutover Postea transformer table from `gtpp-ores.json` (a
+"""Generates the gtPlusPlus ore-cutover Postea transformer table from `gtpp-ores.json` (a
 supplementary, non-pinned dump -- see `MaterialDataDump#dumpGtppOres` -- of every legacy `BlockBaseOre`
 registry name, sourced by scanning the live block registry since `BlockBaseOre` never populates
 `Material.mComponentMap` the way every other legacy part item does). One (unlocalized name, registry name)
@@ -41,7 +41,7 @@ def generate(rows):
     lines.append(GENERATED_HEADER)
     lines.append("package gregtech.loaders.postload;")
     lines.append("")
-    lines.append("/// The stage-11 commit-4 gtPlusPlus ore-cutover Postea migration table: one row per legacy")
+    lines.append("/// The gtPlusPlus ore-cutover Postea migration table: one row per legacy")
     lines.append("/// `BlockBaseOre` instance, read from the supplementary `gtpp-ores.json` dump (see")
     lines.append("/// `MaterialDataDump#dumpGtppOres`, not itself pinned like `gtpp-materials.json`). [PosteaTransformers]")
     lines.append("/// migrates each row's legacy placed block/item stack to `MU.stack(OrePrefixes.ore,")

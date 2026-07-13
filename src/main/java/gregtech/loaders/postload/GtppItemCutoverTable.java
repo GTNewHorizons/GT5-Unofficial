@@ -3,7 +3,7 @@ package gregtech.loaders.postload;
 
 import gregtech.api.enums.OrePrefixes;
 
-/// The stage-11 commit-4 gtPlusPlus item-cutover Postea migration table: one row per legacy
+/// The gtPlusPlus item-cutover Postea migration table: one row per legacy
 /// `miscutils:item*`/`miscutils:block*`-registered gtPlusPlus per-material part whose prefix has cut
 /// over to a MaterialLib shape, read from the pinned `gtpp-materials.json` dump's `generatedParts`.
 /// `frameGt` migrates separately (deferred); a handful of `cell` rows for materials whose legacy cell

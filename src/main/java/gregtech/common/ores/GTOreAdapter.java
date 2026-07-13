@@ -52,7 +52,7 @@ import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 /// before -- their oredict registration loop (in [GTBlockOre]'s constructor) now resolves through this class's
 /// [#getBlock]/[#supports], so it registers the MaterialLib stack as the canonical association without any
 /// change to [GTBlockOre] itself, the same "construct, then get overwritten by the MaterialLib association"
-/// pattern stage 07 established for `BlockMetal`. The instances stay registered (never removed) purely so
+/// pattern `BlockMetal` uses. The instances stay registered (never removed) purely so
 /// pre-migration saves have somewhere for their placed blocks to resolve to; [#registerCurrentGenTransformers]
 /// actively converts any of those placed blocks to the MaterialLib equivalent as their chunk loads, so in
 /// practice a fully-loaded world never has a live `GTBlockOre` block a player can interact with.
@@ -183,7 +183,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
 
     /// Actively converts placed/inventory `gt.blockores2`..`gt.blockores7` (see [#init]'s `ores` array) into
     /// the MaterialLib equivalent as a chunk/item loads, decoding each block's own `stoneTypes` list the same
-    /// way [GTBlockOre#getStoneIndex]/[GTBlockOre#getMaterialIndex] do. Mirrors stage 07's
+    /// way [GTBlockOre#getStoneIndex]/[GTBlockOre#getMaterialIndex] do. Mirrors `PosteaTransformers`'
     /// `registerStorageBlockCutoverTransformer`, except the meta space here is too large (up to ~24000 per
     /// block) to enumerate per-meta, so this decodes computationally instead.
     private void registerCurrentGenTransformers() {
@@ -228,7 +228,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         oreBlocksByStoneType.put(stoneType, oreBlock);
     }
 
-    /// Hides every `gt.blockores2`..`gt.blockores7` slot from NEI, mirroring stage 07's `BlockMetal` precedent:
+    /// Hides every `gt.blockores2`..`gt.blockores7` slot from NEI, mirroring `BlockMetal`'s precedent:
     /// the legacy block/item stays fully functional (old saves still resolve through it via the transformers
     /// [#init] registers), only its NEI visibility is suppressed. Meta 0 of each block is always hidden --
     /// [GTBlockOre#getSubBlocks]'s doc explains why it always exists as a dummy entry -- and every other meta is

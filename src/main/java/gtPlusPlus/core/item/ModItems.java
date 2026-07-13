@@ -391,10 +391,9 @@ public final class ModItems {
     private static void runMaterialGenerator() {
         Material.registerAllPending();
         // Just an unusual plate needed for some black magic.
-        // Clay's plate/plateDouble are cut over to MaterialLib (stage 06/07); constructing these
+        // Clay's plate/plateDouble are cut over to MaterialLib; constructing these
         // unconditionally would register a second, competing "plateClay"/"plateDoubleClay" oredict entry that
-        // races the MaterialLib one across launches (see MaterialReconstruction census nondeterminism, stage 11
-        // commit 4).
+        // races the MaterialLib one across launches.
         if (!MU.isCutOver(OrePrefixes.plate, Materials.Clay)) new BaseItemPlate(MaterialsOther.CLAY);
         if (!MU.isCutOver(OrePrefixes.plateDouble, Materials.Clay)) new BaseItemPlateDouble(MaterialsOther.CLAY);
 
@@ -464,7 +463,7 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(SMALLGEAR, MaterialsElements.STANDALONE.HYPOGEN);
 
         // Special Sillyness
-        // Sodium's plate is cut over to MaterialLib (stage 06/07); see the Clay comment above the same fix.
+        // Sodium's plate is cut over to MaterialLib; see the Clay comment above the same fix.
         if (!MU.isCutOver(OrePrefixes.plate, Materials.Sodium))
             new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
 

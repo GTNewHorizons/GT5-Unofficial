@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates the stage-11 commit-4 gtPlusPlus item-cutover Postea transformer table from the pinned
+"""Generates the gtPlusPlus item-cutover Postea transformer table from the pinned
 `gtpp-materials.json` dump's `generatedParts`: one (prefix, material, legacy registry name) row per legacy
 `miscutils:` item whose part prefix has cut over to a MaterialLib shape (see
 `gtPlusPlus.core.material.MaterialReconstruction#isPartCutOver` -- CUTOVER_PREFIXES below must match its
@@ -74,7 +74,7 @@ def generate(rows):
     lines.append("")
     lines.append("import gregtech.api.enums.OrePrefixes;")
     lines.append("")
-    lines.append("/// The stage-11 commit-4 gtPlusPlus item-cutover Postea migration table: one row per legacy")
+    lines.append("/// The gtPlusPlus item-cutover Postea migration table: one row per legacy")
     lines.append("/// `miscutils:item*`/`miscutils:block*`-registered gtPlusPlus per-material part whose prefix has cut")
     lines.append("/// over to a MaterialLib shape, read from the pinned `gtpp-materials.json` dump's `generatedParts`.")
     lines.append("/// `frameGt` migrates separately (deferred); a handful of `cell` rows for materials whose legacy cell")

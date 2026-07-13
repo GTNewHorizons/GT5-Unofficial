@@ -24,7 +24,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
 
-/// Bridges legacy [OrePrefixes]/[Materials] pairs to their stage-05/06/07 cutover MaterialLib [Shape]/[Material]
+/// Bridges legacy [OrePrefixes]/[Materials] pairs to their cutover MaterialLib [Shape]/[Material]
 /// equivalents.
 ///
 /// The prefix-to-shape map reflects [Materials2Shapes]'s, [Materials2CellShapes]'s, [Materials2BlockShapes]'s,

@@ -1920,7 +1920,7 @@ def write_legacy_bridge_file(ported_names, field_names, materials_by_name):
     lines.append("import gregtech.api.enums.materials2.Materials2Materials;")
     lines.append("")
     lines.append(GENERATED_HEADER)
-    lines.append("/// Rebuilds every MaterialLib-backed legacy `Materials` field from the stage-03 port, via")
+    lines.append("/// Rebuilds every MaterialLib-backed legacy `Materials` field from its `Materials2Materials` counterpart, via")
     lines.append("/// [LegacyMaterials#build]. [LegacyMarkerMaterials#loadMarkers] separately rebuilds the legacy")
     lines.append("/// fields that carry no MaterialLib data (never generated an item/fluid/composition and are")
     lines.append("/// unreferenced by a ported material).")

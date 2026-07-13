@@ -24,7 +24,7 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 /// Rebuilds every legacy `gtPlusPlus.core.material.Material` the gtPlusPlus material port carries from
-/// MaterialLib data (the stage-11 counterpart of stage 10's `bartworks.system.material.WerkstoffReconstruction`):
+/// MaterialLib data (the gtPlusPlus counterpart of `bartworks.system.material.WerkstoffReconstruction`):
 /// the pool declaration classes (`MaterialsAlloy`, `MaterialsElements`, `MaterialsOres`, `MaterialMisc`,
 /// `MaterialsFluorides`, `MaterialsNuclides`) initialize every `new Material(...)`-declared field via [#byName],
 /// building each material (and its composition dependencies) on first request.
@@ -40,7 +40,7 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 /// explicit list rather than "every MaterialLib material carrying a [GTMaterialProperties#GTPP] property",
 /// because carrying that property is not enough to tell the two cases apart: 21 of these 203 names (e.g.
 /// `Zirconium`, `Ammonium`, `Thorium232`) are *also* the pool's own facade for a same-named gregtech element
-/// that the stage-11 commit-2 merge folded onto the same MaterialLib material, so `Materials.get(name) != null`
+/// that the port folded onto the same MaterialLib material, so `Materials.get(name) != null`
 /// is true for them too. A composition reference outside this set resolves through
 /// `MaterialUtils#generateMaterialFromGtENUM` instead -- the same lookup (and result cache) the referencing
 /// pool field would have used directly had it named the gregtech material inline instead of through a
@@ -104,9 +104,9 @@ public final class MaterialReconstruction {
     /// [#CUT_OVER_PART_PREFIXES]'s bar: each has its own client-side render hook
     /// (`gtPlusPlus.core.handler.events.AnimatedBlockTextureHandler`) that forces icon-cycle synchronization on
     /// the legacy `BlockBaseModular` instance specifically -- MaterialLib's `GTStorageShapeBlock` has no
-    /// equivalent per-material animated-icon path yet, so cutting these over would silently stop the animation
+    /// equivalent per-material animated-icon path, so cutting these over would silently stop the animation
     /// on the block a player actually sees in world (the handler would keep animating an instance nobody looks
-    /// at). Found by the stage-11 commit-4 identity sweep; revisit once animated storage blocks are ported.
+    /// at).
     private static final Set<String> BLOCK_CUTOVER_EXCLUDED = Set
         .of("AstralTitanium", "CelestialTungsten", "ChromaticGlass", "Hypogen");
 
@@ -153,8 +153,8 @@ public final class MaterialReconstruction {
     /// Whether `prefix` is one of the part families [#CUT_OVER_PART_PREFIXES] has cleared for cutover at all,
     /// independent of any specific material -- the allow-list [Material#getComponentByPrefix] consults for
     /// materials backed by a live gregtech `Materials` constant instead of gtpp reconstruction (a name outside
-    /// [#RECONSTRUCTED_NAMES] that nonetheless picked up a MaterialLib shape for `prefix` from the stage-11
-    /// codegen name-merge, e.g. milled ore for Sphalerite). Excludes block-kind and cell/cellPlasma prefixes for
+    /// [#RECONSTRUCTED_NAMES] that nonetheless picked up a MaterialLib shape for `prefix` from the gtpp
+    /// name-merge, e.g. milled ore for Sphalerite). Excludes block-kind and cell/cellPlasma prefixes for
     /// the same reason [#CUT_OVER_PART_PREFIXES] does: those need their own dedicated cutover work (identity-
     /// reference sweep, fluid-in-container membership) regardless of which material asks.
     public static boolean isPrefixEligibleForCutover(OrePrefixes prefix) {

@@ -9,9 +9,9 @@ import com.ruling_0.materiallib.api.TextureSet;
 /// Capability families mirroring the legacy `OrePrefixes` generation-bit groups (`DUST`, `METAL`,
 /// `GEM`, `ORE`, `CELL`, `PLASMA`, `TOOL`, `GEAR`, `EMPTY`). A shape with generation bits `B` joins
 /// every family whose bit is set in `B`, which over-generates relative to the legacy AND/OR
-/// capability logic where a material's own bits must also overlap; stage 03's codegen corrects
-/// per-material differences with explicit `generateShape`/`removeShape` deltas computed from the
-/// dumped `generatedPrefixes` ground truth.
+/// capability logic where a material's own bits must also overlap; `Materials2Materials`'s
+/// declarations correct per-material differences with explicit `generateShape`/`removeShape` deltas
+/// computed from the dumped `generatedPrefixes` ground truth.
 public class Materials2Families {
 
     // spotless:off

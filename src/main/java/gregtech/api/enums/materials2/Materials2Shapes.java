@@ -8,7 +8,7 @@ import com.ruling_0.materiallib.api.Shape;
 /// a non-zero generation bit mask, excluding block-kind, fluid-container, and complex tool/armor
 /// prefixes (see `scripts/mu/gen_shapes.py`). `milled` is the one non-dump-driven addition: gtPlusPlus's
 /// `BaseItemMilledOre` constructed real per-material items despite the prefix never holding a legacy
-/// `MetaGeneratedItemX32` slot, so gtpp materials need a real shape to cut over onto (stage-11 gtpp fold).
+/// `MetaGeneratedItemX32` slot, so gtpp materials need a real shape to cut over onto.
 public class Materials2Shapes {
 
     // spotless:off
