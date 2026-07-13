@@ -38,8 +38,10 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFreezer>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -104,16 +106,16 @@ public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Vacuum Freezer, VF")
-            .addInfo("Cools hot ingots and cells")
+        tt.addMachineType(GTUtility.translate("gt.multiblock.VacuumFreezer.machine_type"))
+            .addInfo(GTUtility.translate("gt.multiblock.VacuumFreezer.desc1"))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
-            .addCasing("16-21", "Frost Proof Machine Casing", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputAny("1+", "Any casing", 1)
-            .addOutputAny("1+", "Any casing", 1)
-            .addAir("Interior of the structure")
+            .addController(GTUtility.translate("gt.mbtt.structure.front_center"))
+            .addCasing("16-21", Casings.FrostProofMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", GTUtility.translate("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", GTUtility.translate("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("1+", GTUtility.translate("gt.mbtt.structure.any_casing"), 1)
+            .addOutputAny("1+", GTUtility.translate("gt.mbtt.structure.any_casing"), 1)
+            .addAir(GTUtility.translate("gt.mbtt.structure.interior"))
             .toolTipFinisher();
         return tt;
     }

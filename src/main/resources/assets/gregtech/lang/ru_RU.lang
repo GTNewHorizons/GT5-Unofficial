@@ -1670,6 +1670,7 @@ GT5U.MBTT.Tiers.Glass=Стекло
 GT5U.MBTT.Tiers.ComponentAssemblyLineCasing=Корпус компонентной сборочной линии
 GT5U.MBTT.Steam.Speed=На %s быстрее, чем при использовании одноблочных паровых машин того же давления
 GT5U.MBTT.Steam.Eff=Расход пара составляет %s от обычно требуемого расхода
+GT5U.MBTT.Structure.Projector=§fЧтобы увидеть/построить структуру, используйте §9голограммный §1проектор§f мультиблочных структур!
 GT5U.MBTT.Structure.SeeStructure1=Чтобы увидеть структуру, используйте
 GT5U.MBTT.Structure.SeeStructure2=голограммный проект на контроллере!
 GT5U.MBTT.Structure.MinGlassForLaser=-тировое §fстекло§7 требуется для §9Tec§1Tech§7 лазеров
