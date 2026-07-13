@@ -793,48 +793,48 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         .tooltipDynamic(t -> {
                             t.addLine(
                                 StatCollector
-                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.superstablecore.title"));
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.entropiccore.title"));
                             t.addLine(
-                                StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.required"));
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.entropiccore.required"));
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
                                     data.isHRPairPresent ? "GT5U.gui.text.foundry.pairings.activity.on"
                                         : "GT5U.gui.text.foundry.pairings.activity.off"));
                             t.addLine(
-                                StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip1"));
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.entropiccore.tooltip1"));
+                            t.addLine(
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.entropiccore.tooltip2"));
+                            t.addLine(
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.entropiccore.tooltip3"));
+                            t.addLine(
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.entropiccore.tooltip4"));
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip2"));
-                            t.addLine(
-                                StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip3"));
-                            t.addLine(
-                                StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip4"));
-                            t.addLine(
-                                StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip5",
+                                    "GT5U.gui.text.foundry.pairings.entropiccore.tooltip5",
                                     TooltipHelper.SPEED_COLOR));
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip6",
+                                    "GT5U.gui.text.foundry.pairings.entropiccore.tooltip6",
                                     TooltipHelper.EFF_COLOR));
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip7",
+                                    "GT5U.gui.text.foundry.pairings.entropiccore.tooltip7",
                                     TooltipHelper.PARALLEL_COLOR,
                                     TooltipHelper.TIER_COLOR));
                             t.addLine(
-                                StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip8"));
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.entropiccore.tooltip8"));
+                            t.addLine(
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.entropiccore.tooltip9"));
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip9"));
-                            t.addLine(
-                                StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip10"));
+                                    "GT5U.gui.text.foundry.pairings.entropiccore.tooltip10"));
                         }));
         column.child(
             new DynamicDrawable(
