@@ -43,6 +43,8 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
+import codechicken.nei.SearchField;
+import codechicken.nei.api.ItemFilter;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.dronecentre.DroneCentreGuiUtil;
@@ -119,7 +121,8 @@ public class ProductionPanel extends ModularPanel {
                                 }
                             }.height(16)
                                 .expanded()
-                                .value(syncManager.findSyncHandler("productionSearchFilter", StringSyncValue.class))))
+                                .value(syncManager.findSyncHandler("productionSearchFilter", StringSyncValue.class))
+                                .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.tooltip.drone_production_search")))))
                     .child(
                         new DynamicSyncedWidget<>().fullWidth()
                             .heightRel(0.9f)
@@ -419,11 +422,19 @@ public class ProductionPanel extends ModularPanel {
     }
 
     private boolean matchesSearchFilter(Object obj) {
-        String filter = centre.getProductionSearchFilter();
-        if (filter == null || filter.isEmpty()) {
+        String filterText = centre.getProductionSearchFilter();
+        if (filterText == null || filterText.isEmpty()) {
             return true;
         }
-        String search = filter.toLowerCase();
+        if (!NetworkUtils.isClient()) {
+            return false;
+        }
+        return clientMatchesSearchFilter(obj, filterText);
+    }
+
+    private boolean clientMatchesSearchFilter(Object obj, String filterText) {
+        ItemFilter filter = SearchField.searchParser.getFilter(filterText, false);
+        String search = filterText.toLowerCase();
         if (obj instanceof DroneConnection conn) {
             if (conn.getCustomName() != null && conn.getCustomName()
                 .toLowerCase()
@@ -436,36 +447,9 @@ public class ProductionPanel extends ModularPanel {
                 return true;
             }
             ItemStack item = conn.getMachineItem();
-            if (item != null) {
-                if (item.getDisplayName() != null && item.getDisplayName()
-                    .toLowerCase()
-                    .contains(search)) {
-                    return true;
-                }
-                String name = Item.itemRegistry.getNameForObject(item.getItem());
-                if (name != null && name.toLowerCase()
-                    .contains(search)) {
-                    return true;
-                }
-            }
-            return false;
+            return item != null && filter.matches(item);
         } else if (obj instanceof ItemStack stack) {
-            if (stack.getDisplayName() != null && stack.getDisplayName()
-                .toLowerCase()
-                .contains(search)) {
-                return true;
-            }
-            if (stack.getUnlocalizedName() != null && stack.getUnlocalizedName()
-                .toLowerCase()
-                .contains(search)) {
-                return true;
-            }
-            String name = Item.itemRegistry.getNameForObject(stack.getItem());
-            if (name != null && name.toLowerCase()
-                .contains(search)) {
-                return true;
-            }
-            return false;
+            return filter.matches(stack);
         } else if (obj instanceof FluidStack fluid) {
             if (fluid.getLocalizedName() != null && fluid.getLocalizedName()
                 .toLowerCase()

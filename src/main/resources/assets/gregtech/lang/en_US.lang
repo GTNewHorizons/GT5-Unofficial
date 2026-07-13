@@ -3159,6 +3159,7 @@ GT5U.gui.text.cannot_change_when_running=Can't change configuration when running
 GT5U.gui.tooltip.drone_active_production=[Warning] This function is experimental and may reduce performance.
 GT5U.gui.tooltip.drone_maxrecord=Set max record quota. Each output from every machine consumes one quota. [Warning] Large numbers may cause performance issues!
 GT5U.gui.tooltip.drone_production_clear=Clear production data
+GT5U.gui.tooltip.drone_production_search=Filter machines, items and fluids. Also support advanced search!
 GT5U.gui.tooltip.drone_key=Prioritize connecting to the drone centre with the same key
 
 GT5U.gui.tooltip.purification_plant.debug_mode=Toggle debug mode.
