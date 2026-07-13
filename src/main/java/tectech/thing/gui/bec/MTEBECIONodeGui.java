@@ -159,16 +159,12 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        IntSyncValue availableNanitesSyncer = new IntSyncValue(
-            multiblock::getAvailableNanites,
-            multiblock::setAvailableNanites);
+        IntSyncValue availableNanitesSyncer = new IntSyncValue(multiblock::getAvailableNanites);
         EnumSyncValue<MTEBECIONode.NodeState, ?> stateSyncer = new EnumSyncValue<>(
             MTEBECIONode.NodeState.class,
             multiblock::getStateEnum,
             multiblock::setState);
-        NaniteTierSyncValue providedTierSyncer = new NaniteTierSyncValue(
-            multiblock::getProvidedTier,
-            multiblock::setProvidedTier);
+        NaniteTierSyncValue providedTierSyncer = new NaniteTierSyncValue(multiblock::getProvidedTier);
         NaniteTierSyncValue requiredTierSyncer = new NaniteTierSyncValue(
             multiblock::getRequiredTier,
             multiblock::setRequiredTier);
