@@ -140,10 +140,10 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
     }
 
     /// The gtpp material a MaterialLib material was reconstructed from, or null if it carries no
-    /// [GTMaterialProperties#GTPP] data, is not a [MaterialReconstruction]-owned name, or is a name-merge
+    /// [GTMaterialProperties#GTPP_STATE] data, is not a [MaterialReconstruction]-owned name, or is a name-merge
     /// already claimed by a live [gregtech.api.enums.Materials] counterpart (see this class's javadoc).
     private static Material materialOf(com.ruling_0.materiallib.api.Material mlMaterial) {
-        if (mlMaterial == null || mlMaterial.getProperty(GTMaterialProperties.GTPP) == null) return null;
+        if (mlMaterial == null || mlMaterial.getProperty(GTMaterialProperties.GTPP_STATE) == null) return null;
         if (MU.materialOf(mlMaterial) != null) return null;
 
         String name = mlMaterial.getName();

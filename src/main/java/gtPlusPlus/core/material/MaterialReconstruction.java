@@ -15,8 +15,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.material.FluidNames;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.GTppData;
 import gregtech.api.material.MU;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.loaders.materials.LegacyMaterials;
@@ -37,10 +37,10 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 /// gap.
 ///
 /// [#RECONSTRUCTED_NAMES] is the resulting set of names reconstruction actually owns -- necessarily an
-/// explicit list rather than "every MaterialLib material carrying a [GTMaterialProperties#GTPP] property",
-/// because carrying that property is not enough to tell the two cases apart: 21 of these 203 names (e.g.
-/// `Zirconium`, `Ammonium`, `Thorium232`) are *also* the pool's own facade for a same-named gregtech element
-/// that the port folded onto the same MaterialLib material, so `Materials.get(name) != null`
+/// explicit list rather than "every MaterialLib material carrying a [GTMaterialProperties#GTPP_STATE]
+/// property", because carrying that property is not enough to tell the two cases apart: 21 of these 203
+/// names (e.g. `Zirconium`, `Ammonium`, `Thorium232`) are *also* the pool's own facade for a same-named
+/// gregtech element that the port folded onto the same MaterialLib material, so `Materials.get(name) != null`
 /// is true for them too. A composition reference outside this set resolves through
 /// `MaterialUtils#generateMaterialFromGtENUM` instead -- the same lookup (and result cache) the referencing
 /// pool field would have used directly had it named the gregtech material inline instead of through a
@@ -192,8 +192,8 @@ public final class MaterialReconstruction {
     }
 
     /// Resolves a name to a `Material`, whether or not reconstruction owns it -- the composition-reference
-    /// counterpart of [#byName]. See the class javadoc for why ownership (not `GTPP` property presence) is
-    /// the deciding signal.
+    /// counterpart of [#byName]. See the class javadoc for why ownership (not `GTPP_STATE` property presence)
+    /// is the deciding signal.
     private static synchronized Material resolve(String name) {
         Material already = built.get(name);
         if (already != null) return already;
@@ -230,8 +230,8 @@ public final class MaterialReconstruction {
         }
 
         com.ruling_0.materiallib.api.Material ml = MaterialLibAPI.getMaterial("gregtech", name);
-        GTppData data = ml == null ? null : ml.getProperty(GTMaterialProperties.GTPP);
-        if (data == null) {
+        String gtppState = ml == null ? null : ml.getProperty(GTMaterialProperties.GTPP_STATE);
+        if (gtppState == null) {
             throw new IllegalStateException("No MaterialLib gtpp data for reconstructed material " + name);
         }
 
@@ -239,9 +239,9 @@ public final class MaterialReconstruction {
         short[] rgba = { (short) (argb >> 16 & 0xFF), (short) (argb >> 8 & 0xFF), (short) (argb & 0xFF), 0 };
         String localName = ml.getProperty(GTMaterialProperties.LOCAL_NAME);
         TextureSet textureSet = LegacyMaterials.iconSetOf(ml);
-        MaterialState state = MaterialState.valueOf(data.state());
+        MaterialState state = MaterialState.valueOf(gtppState);
 
-        List<MaterialRefStack> composition = data.composition();
+        List<MaterialRefStack> composition = gtppComposition(ml);
         MaterialStack[] composites;
         if (composition == null || composition.isEmpty()) {
             composites = new MaterialStack[0];
@@ -256,7 +256,20 @@ public final class MaterialReconstruction {
             }
         }
 
-        Material material = new Material(name, localName, state, textureSet, rgba, data, composites);
+        Material.GtppScalars scalars = gtppScalars(ml);
+        String fluidName = gtppFluidName(ml, scalars.generatesFluid());
+        String plasmaName = ml.getProperty(GTMaterialProperties.GTPP_PLASMA_NAME);
+
+        Material material = new Material(
+            name,
+            localName,
+            state,
+            textureSet,
+            rgba,
+            scalars,
+            fluidName,
+            plasmaName,
+            composites);
 
         built.put(name, material);
         inProgress.remove(name);
@@ -267,5 +280,67 @@ public final class MaterialReconstruction {
         }
 
         return material;
+    }
+
+    /// The composition [#build] pins for `ml`, preferring [GTMaterialProperties#GTPP_COMPOSITION] (the gtpp
+    /// value, when it needed pinning against [GTMaterialProperties#COMPOSITION] -- see that property's
+    /// javadoc) and falling back to [GTMaterialProperties#COMPOSITION] itself.
+    private static List<MaterialRefStack> gtppComposition(com.ruling_0.materiallib.api.Material ml) {
+        List<MaterialRefStack> pinned = ml.getProperty(GTMaterialProperties.GTPP_COMPOSITION);
+        return pinned != null ? pinned : ml.getProperty(GTMaterialProperties.COMPOSITION);
+    }
+
+    /// The legacy gtpp fluid name for `ml`'s non-plasma fluid, or null when `generatesFluid` is false --
+    /// [GTMaterialProperties#LEGACY_FLUIDS]'s molten/fluid/gas slot reliably reconstructs it (unlike the
+    /// plasma slot, see [GTMaterialProperties#GTPP_PLASMA_NAME]) only when gtpp actually generated a fluid,
+    /// since a material with no gtpp fluid of its own can still carry a `LEGACY_FLUIDS` populated entirely by
+    /// its gregtech/werkstoff side.
+    private static String gtppFluidName(com.ruling_0.materiallib.api.Material ml, boolean generatesFluid) {
+        if (!generatesFluid) return null;
+        FluidNames legacyFluids = ml.getProperty(GTMaterialProperties.LEGACY_FLUIDS);
+        return legacyFluids != null ? legacyFluids.legacyGtppFluidName() : null;
+    }
+
+    /// Assembles [Material.GtppScalars] for `ml` from the decomposed `GTMaterialProperties#GTPP_*`
+    /// properties, resolving each QUIRK property's fallback to its canonical counterpart (see each property's
+    /// javadoc) and each elided-default property back to the default it was elided for.
+    private static Material.GtppScalars gtppScalars(com.ruling_0.materiallib.api.Material ml) {
+        Integer gtppMelting = ml.getProperty(GTMaterialProperties.GTPP_MELTING_POINT_K);
+        int meltingPointK = gtppMelting != null ? gtppMelting : ml.getProperty(GTMaterialProperties.MELTING_POINT);
+        int boilingPointK = ml.getProperty(GTMaterialProperties.BOILING_POINT);
+
+        Integer gtppDurability = ml.getProperty(GTMaterialProperties.GTPP_DURABILITY);
+        int durability = gtppDurability != null ? gtppDurability : ml.getProperty(GTMaterialProperties.DURABILITY);
+
+        Boolean gtppBlast = ml.getProperty(GTMaterialProperties.GTPP_USES_BLAST_FURNACE);
+        boolean usesBlastFurnace = Boolean.TRUE
+            .equals(gtppBlast != null ? gtppBlast : ml.getProperty(GTMaterialProperties.BLAST_REQUIRED));
+
+        return new Material.GtppScalars(
+            orDefault(ml.getProperty(GTMaterialProperties.GTPP_TIER), 0),
+            orDefault(ml.getProperty(GTMaterialProperties.GTPP_VOLTAGE_MULTIPLIER), 16L),
+            meltingPointK,
+            boilingPointK,
+            durability,
+            usesBlastFurnace,
+            Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.GTPP_IS_RADIOACTIVE)),
+            orDefault(ml.getProperty(GTMaterialProperties.GTPP_RADIATION_LEVEL), 0),
+            orDefault(ml.getProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA), ""),
+            orDefault(ml.getProperty(GTMaterialProperties.GTPP_PROTONS), 0L),
+            orDefault(ml.getProperty(GTMaterialProperties.GTPP_NEUTRONS), 0L),
+            Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.GTPP_GENERATES_FLUID)),
+            Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.GTPP_GENERATES_CELLS)));
+    }
+
+    private static int orDefault(Integer value, int fallback) {
+        return value != null ? value : fallback;
+    }
+
+    private static long orDefault(Long value, long fallback) {
+        return value != null ? value : fallback;
+    }
+
+    private static String orDefault(String value, String fallback) {
+        return value != null ? value : fallback;
     }
 }

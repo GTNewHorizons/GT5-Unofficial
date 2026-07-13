@@ -55,7 +55,6 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTWerkstoffFlag;
-import gregtech.api.material.GTppData;
 import gregtech.api.material.MU;
 import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
@@ -760,7 +759,6 @@ public final class MaterialDataDump {
         json.put("arcSmeltInto", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.ARC_SMELT_INTO)));
         json.put("directSmelting", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.DIRECT_SMELTING)));
         json.put("handleMaterial", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.HANDLE_MATERIAL)));
-        json.put("materialInto", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.MATERIAL_INTO)));
         json.put("oreByProducts", dumpMlMaterialRefNames(material.getProperty(GTMaterialProperties.ORE_BYPRODUCTS)));
         json.put("oreMultiplier", material.getProperty(GTMaterialProperties.ORE_MULTIPLIER));
         json.put("byProductMultiplier", material.getProperty(GTMaterialProperties.BYPRODUCT_MULTIPLIER));
@@ -799,31 +797,65 @@ public final class MaterialDataDump {
         json.put("addedPrefixes", material.getProperty(GTMaterialProperties.ADDED_PREFIXES));
         json.put("removedPrefixes", material.getProperty(GTMaterialProperties.REMOVED_PREFIXES));
         json.put("werkstoff", dumpMlWerkstoff(material.getProperty(GTMaterialProperties.WERKSTOFF)));
-        json.put("gtpp", dumpMlGtpp(material.getProperty(GTMaterialProperties.GTPP)));
+        json.put("gtpp", dumpMlGtpp(material));
         return json;
     }
 
-    private static Map<String, Object> dumpMlGtpp(GTppData data) {
-        if (data == null) return null;
+    /// Reassembles the gtpp scalar blob `check_parity.py` compares against `gtpp-materials.json`, from the
+    /// decomposed `GTPP_*` properties -- null when `material` carries none (see
+    /// [GTMaterialProperties#GTPP_STATE]). Field names/values mirror the pre-decomposition blob exactly (each
+    /// QUIRK property's canonical-property fallback resolved here, same as
+    /// `gtPlusPlus.core.material.MaterialReconstruction`), so the parity script's expectations need no changes
+    /// beyond dropping the removed `hasOre` field.
+    private static Map<String, Object> dumpMlGtpp(com.ruling_0.materiallib.api.Material material) {
+        String state = material.getProperty(GTMaterialProperties.GTPP_STATE);
+        if (state == null) return null;
+
+        Integer gtppMelting = material.getProperty(GTMaterialProperties.GTPP_MELTING_POINT_K);
+        Integer meltingPointK = gtppMelting != null ? gtppMelting
+            : material.getProperty(GTMaterialProperties.MELTING_POINT);
+
+        Integer gtppDurability = material.getProperty(GTMaterialProperties.GTPP_DURABILITY);
+        Integer durability = gtppDurability != null ? gtppDurability
+            : material.getProperty(GTMaterialProperties.DURABILITY);
+
+        Boolean gtppBlast = material.getProperty(GTMaterialProperties.GTPP_USES_BLAST_FURNACE);
+        boolean usesBlastFurnace = Boolean.TRUE
+            .equals(gtppBlast != null ? gtppBlast : material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
+
+        Integer tier = material.getProperty(GTMaterialProperties.GTPP_TIER);
+        Long voltageMultiplier = material.getProperty(GTMaterialProperties.GTPP_VOLTAGE_MULTIPLIER);
+        Integer radiationLevel = material.getProperty(GTMaterialProperties.GTPP_RADIATION_LEVEL);
+        Long protons = material.getProperty(GTMaterialProperties.GTPP_PROTONS);
+        Long neutrons = material.getProperty(GTMaterialProperties.GTPP_NEUTRONS);
+
+        List<MaterialRefStack> gtppComposition = material.getProperty(GTMaterialProperties.GTPP_COMPOSITION);
+        List<MaterialRefStack> composition = gtppComposition != null ? gtppComposition
+            : material.getProperty(GTMaterialProperties.COMPOSITION);
+
+        FluidNames legacyFluids = material.getProperty(GTMaterialProperties.LEGACY_FLUIDS);
+        boolean generatesFluid = Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.GTPP_GENERATES_FLUID));
+
         Map<String, Object> json = new LinkedHashMap<>();
-        json.put("tier", data.tier());
-        json.put("voltageMultiplier", data.voltageMultiplier());
-        json.put("meltingPointK", data.meltingPointK());
-        json.put("boilingPointK", data.boilingPointK());
-        json.put("durability", data.durability());
-        json.put("usesBlastFurnace", data.usesBlastFurnace());
-        json.put("isRadioactive", data.isRadioactive());
-        json.put("radiationLevel", data.radiationLevel());
-        json.put("hasOre", data.hasOre());
-        json.put("chemicalFormula", data.chemicalFormula());
-        json.put("protons", data.protons());
-        json.put("neutrons", data.neutrons());
-        json.put("state", data.state());
-        json.put("generatesFluid", data.generatesFluid());
-        json.put("generatesCells", data.generatesCells());
-        json.put("composition", dumpMlMaterialRefStacks(data.composition()));
-        json.put("fluidName", data.fluidName());
-        json.put("plasmaName", data.plasmaName());
+        json.put("tier", tier != null ? tier : 0);
+        json.put("voltageMultiplier", voltageMultiplier != null ? voltageMultiplier : 16L);
+        json.put("meltingPointK", meltingPointK);
+        json.put("boilingPointK", material.getProperty(GTMaterialProperties.BOILING_POINT));
+        json.put("durability", durability != null ? durability : 0);
+        json.put("usesBlastFurnace", usesBlastFurnace);
+        json.put("isRadioactive", Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.GTPP_IS_RADIOACTIVE)));
+        json.put("radiationLevel", radiationLevel != null ? radiationLevel : 0);
+        json.put("chemicalFormula", material.getProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA));
+        json.put("protons", protons != null ? protons : 0L);
+        json.put("neutrons", neutrons != null ? neutrons : 0L);
+        json.put("state", state);
+        json.put("generatesFluid", generatesFluid);
+        json.put(
+            "generatesCells",
+            Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.GTPP_GENERATES_CELLS)));
+        json.put("composition", dumpMlMaterialRefStacks(composition));
+        json.put("fluidName", generatesFluid && legacyFluids != null ? legacyFluids.legacyGtppFluidName() : null);
+        json.put("plasmaName", generatesFluid ? material.getProperty(GTMaterialProperties.GTPP_PLASMA_NAME) : null);
         return json;
     }
 

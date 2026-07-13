@@ -31,7 +31,6 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.material.GTppData;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
@@ -69,10 +68,10 @@ public class Material implements IOreMaterial {
     private Fluid mPlasma;
 
     /// The exact `FluidRegistry` names MaterialLib registered this reconstructed material's fluid/plasma
-    /// under (from [GTppData#fluidName]/[GTppData#plasmaName]), null for every legacy-constructed material.
-    /// Resolved by [#wireMaterialLibFluids], which -- unlike [#pendingRegistration]'s deferred legacy
-    /// construction -- can run long after the reconstruction constructor returns, so these must be fields
-    /// rather than local state.
+    /// under (derived by `MaterialReconstruction#build` from `GTMaterialProperties#LEGACY_FLUIDS`), null for
+    /// every legacy-constructed material. Resolved by [#wireMaterialLibFluids], which -- unlike
+    /// [#pendingRegistration]'s deferred legacy construction -- can run long after the reconstruction
+    /// constructor returns, so these must be fields rather than local state.
     private String reconstructedFluidName;
     private String reconstructedPlasmaName;
 
@@ -566,6 +565,14 @@ public class Material implements IOreMaterial {
         }
     }
 
+    /// The gtpp scalar values the reconstruction constructor below needs, gathered by
+    /// `MaterialReconstruction#build` from the decomposed `GTMaterialProperties#GTPP_*` properties (already
+    /// resolved against their canonical-property fallbacks -- see each property's javadoc). Never stored as a
+    /// MaterialLib property itself; purely a constructor-call convenience local to this package.
+    record GtppScalars(int tier, long voltageMultiplier, int meltingPointK, int boilingPointK, int durability,
+        boolean usesBlastFurnace, boolean isRadioactive, int radiationLevel, String chemicalFormula, long protons,
+        long neutrons, boolean generatesFluid, boolean generatesCells) {}
+
     /// Rebuilds a material from MaterialLib data (`MaterialReconstruction`'s counterpart to the public
     /// constructors above): every scalar `data` carries is already the value the legacy constructor's
     /// heuristics (composite-average color/melting/boiling/radiation, texture-set voting, hash-based grey
@@ -579,8 +586,13 @@ public class Material implements IOreMaterial {
     /// are not MaterialLib-owned, so `performFluidAndCellRegistration` -- itself a
     /// deterministic oredict/registry lookup, not a heuristic -- runs exactly when the dump shows it did
     /// (`data.generatesFluid()`), reproducing the same registered fluid/cell either way.
+    ///
+    /// `data` bundles gtpp's decomposed `GTMaterialProperties` scalars (with their canonical-property
+    /// fallbacks already resolved by `MaterialReconstruction#build`) so this constructor stays a plain
+    /// field-assignment list; `fluidName`/`plasmaName` are `MaterialReconstruction#build`'s derivation from
+    /// `GTMaterialProperties#LEGACY_FLUIDS` rather than a stored property.
     Material(String unlocalizedName, String defaultLocalName, MaterialState defaultState, TextureSet textureSet,
-        short[] rgba, GTppData data, MaterialStack... composites) {
+        short[] rgba, GtppScalars data, String fluidName, String plasmaName, MaterialStack... composites) {
         mMaterialMap.add(this);
 
         this.unlocalizedName = StringUtils.sanitizeString(unlocalizedName);
@@ -636,8 +648,8 @@ public class Material implements IOreMaterial {
         this.textureSet = textureSet;
 
         this.shouldGenerateFluid = data.generatesFluid();
-        this.reconstructedFluidName = data.fluidName();
-        this.reconstructedPlasmaName = data.plasmaName();
+        this.reconstructedFluidName = fluidName;
+        this.reconstructedPlasmaName = plasmaName;
         if (data.generatesFluid()) {
             if (registrationGateOpen) {
                 performFluidAndCellRegistration();
