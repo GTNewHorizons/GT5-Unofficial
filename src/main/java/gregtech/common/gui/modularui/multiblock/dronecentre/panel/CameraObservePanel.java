@@ -297,8 +297,10 @@ public class CameraObservePanel extends ModularPanel {
 
         col.child(
             IKey.dynamic(
-                () -> String
-                    .format(StatCollector.translateToLocal("GT5U.gui.text.drone_cam_x"), (int) Math.floor(cvm.cameraX)))
+                () -> String.format(
+                    StatCollector.translateToLocal("GT5U.gui.text.drone_cam_pos"),
+                    'X',
+                    (int) Math.floor(cvm.cameraX)))
                 .asWidget()
                 .width(innerW)
                 .scale(textScale)
@@ -306,8 +308,10 @@ public class CameraObservePanel extends ModularPanel {
 
         col.child(
             IKey.dynamic(
-                () -> String
-                    .format(StatCollector.translateToLocal("GT5U.gui.text.drone_cam_y"), (int) Math.floor(cvm.cameraY)))
+                () -> String.format(
+                    StatCollector.translateToLocal("GT5U.gui.text.drone_cam_pos"),
+                    'Y',
+                    (int) Math.floor(cvm.cameraY)))
                 .asWidget()
                 .width(innerW)
                 .scale(textScale)
@@ -315,8 +319,10 @@ public class CameraObservePanel extends ModularPanel {
 
         col.child(
             IKey.dynamic(
-                () -> String
-                    .format(StatCollector.translateToLocal("GT5U.gui.text.drone_cam_z"), (int) Math.floor(cvm.cameraZ)))
+                () -> String.format(
+                    StatCollector.translateToLocal("GT5U.gui.text.drone_cam_pos"),
+                    'Z',
+                    (int) Math.floor(cvm.cameraZ)))
                 .asWidget()
                 .width(innerW)
                 .scale(textScale)
