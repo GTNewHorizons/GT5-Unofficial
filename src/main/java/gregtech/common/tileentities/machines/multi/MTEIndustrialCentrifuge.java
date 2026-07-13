@@ -192,7 +192,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInfo("Disable animations with a screwdriver")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, true)
-            .addController("Front center")
+            .addController("Front center, 3rd layer")
             .addCasing("6-32", "Centrifuge Casing", false)
             .addCasing("24", "Eglin Steel Frame Box", false)
             .addCasing("18", "Large Sieve Grate", false)

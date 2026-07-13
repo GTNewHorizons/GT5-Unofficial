@@ -450,7 +450,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
             .beginStructureBlock(17, 17, 17, false)
-            .addController("Front center")
+            .addController("Front center, 9th layer")
             .addCasing("550-712", "Vibration Safe Casing", false)
             .addCasing("264", "SC Turbine Casing", false)
             .addCasing("160", "PBI Pipe Casing", false)

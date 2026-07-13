@@ -117,7 +117,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addInfo("formula: x = input of energy (30000^(1/3)/ x^(1/3)) * (80000^(1/3)/ x^(1/3))")
             .addSupportAny()
             .beginStructureBlock(10, 3, 3, false)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("62-76", "Turbodyne Casing", false)
             .addCasing("8", "Inconel Reinforced Casing", false)
             .addMiscHatch("1+", "Air Intake Hatch", "Any center casing", 1, 2)
