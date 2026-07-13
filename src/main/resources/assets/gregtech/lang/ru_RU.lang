@@ -3601,7 +3601,13 @@ GT5U.item.pipe.gas_proof.yes=Да
 GT5U.item.pipe.gas_proof.no=Нет
 GT5U.item.pipe.amount=Количество труб
 GT5U.item.pipe.empty=Пусто
-GT5U.item.pipe.swap.s=Pipe swapped: %s
+GT5U.item.pipe.swap.s=Труба заменена: %s
+GT5U.item.pipe.swap.items=предметов
+GT5U.item.pipe.swap.routing=маршрутизация
+GT5U.item.pipe.swap.now_gas_proof=Теперь газонепроницаема
+GT5U.item.pipe.swap.no_longer_gas_proof=Больше не газонепроницаема
+GT5U.item.pipe.swap.now_restrictive=Теперь ограничительная
+GT5U.item.pipe.swap.no_longer_restrictive=Больше не ограничительная
 
 # Modular Armor
 

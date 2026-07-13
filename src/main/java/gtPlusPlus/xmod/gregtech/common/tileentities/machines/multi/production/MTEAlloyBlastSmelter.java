@@ -95,6 +95,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
             .addInputBus("1+", "Any casing", 1)
             .addInputHatch("0+", "Any casing", 1)
             .addOutputHatch("1+", "Any casing", 1)
+            .addAir("Interior of the structure")
             .toolTipFinisher();
         return tt;
     }

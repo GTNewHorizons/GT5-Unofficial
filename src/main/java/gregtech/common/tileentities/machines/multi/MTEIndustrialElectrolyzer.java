@@ -149,7 +149,7 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
             .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front center")
+            .addController("Front center, 3rd layer")
             .addCasing("6-43", "Electrolyzer Casing", false)
             .addCasing("12", "Potin Frame Box", false)
             .addCasing("4", "Tin Item Pipe Casing", false)

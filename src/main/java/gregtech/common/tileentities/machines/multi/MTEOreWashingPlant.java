@@ -114,7 +114,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             .addInfo("Can be configured with a screwdriver to also be used as Simple Washer")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 4, false)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("70-85", "Wash Plant Casing", false)
             .addCasing("15", "Steel Frame Box", false)
             .addCasing("7", "Steel Gear Box Casing", false)

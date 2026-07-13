@@ -93,10 +93,10 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
             .addEnergyHatch("2", "Bottom insulated casings", 5)
             .addMaintenanceHatch("1", "Casing behind controller", 1)
             .addMufflerHatch("2", "Top insulated casings", 4)
-            .addInputBus("0+", "Left side insulated casings", 2)
-            .addInputHatch("0+", "Left side insulated casings", 2)
-            .addOutputBus("0+", "Right side insulated casings", 3)
-            .addOutputHatch("0+", "Right side insulated casings", 3)
+            .addInputBus("0+", "Any left side insulated casing", 2)
+            .addInputHatch("0+", "Any left side insulated casing", 2)
+            .addOutputBus("0+", "Any right side insulated casing", 3)
+            .addOutputHatch("0+", "Any right side insulated casing", 3)
             .toolTipFinisher();
         return tt;
     }

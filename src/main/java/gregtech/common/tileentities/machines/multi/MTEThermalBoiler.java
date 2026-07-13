@@ -257,7 +257,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
             .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc3"))
             .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc4"))
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front center")
+            .addController("Front center, 3rd layer")
             .addCasing("20-25", "Thermal Containment Casing", false)
             .addCasing("10-17", "Robust Tungstensteel Machine Casing", false)
             .addCasing("10-17", "Thermal Processing Casing", false)

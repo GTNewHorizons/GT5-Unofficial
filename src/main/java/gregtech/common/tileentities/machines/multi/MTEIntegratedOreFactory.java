@@ -643,7 +643,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addSeparator()
             .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
             .beginStructureBlock(13, 15, 9, false)
-            .addController("Front center")
+            .addController("Front center, 3rd layer")
             .addCasing("462", "Advanced Iridium Plated Machine Casing", false)
             .addCasing("0-163", "Clean Stainless Steel Machine Casing", false)
             .addCasing("96", "Iridium Sheetmetal", false)

@@ -3652,6 +3652,12 @@ GT5U.item.pipe.gas_proof.no=No
 GT5U.item.pipe.amount=Pipe Amount
 GT5U.item.pipe.empty=Empty
 GT5U.item.pipe.swap.s=Pipe swapped: %s
+GT5U.item.pipe.swap.items=items
+GT5U.item.pipe.swap.routing=routing
+GT5U.item.pipe.swap.now_gas_proof=Now Gas-Proof
+GT5U.item.pipe.swap.no_longer_gas_proof=No Longer Gas-Proof
+GT5U.item.pipe.swap.now_restrictive=Now Restrictive
+GT5U.item.pipe.swap.no_longer_restrictive=No Longer Restrictive
 
 # Modular Armor
 
@@ -8633,6 +8639,18 @@ gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
 gt.blocktintedglass.3.name=Tinted Industrial Glass (Black)
+gt.blocktintedglass.4.name=Tinted Industrial Glass (Brown)
+gt.blocktintedglass.5.name=Tinted Industrial Glass (Red)
+gt.blocktintedglass.6.name=Tinted Industrial Glass (Orange)
+gt.blocktintedglass.7.name=Tinted Industrial Glass (Yellow)
+gt.blocktintedglass.8.name=Tinted Industrial Glass (Lime)
+gt.blocktintedglass.9.name=Tinted Industrial Glass (Green)
+gt.blocktintedglass.10.name=Tinted Industrial Glass (Cyan)
+gt.blocktintedglass.11.name=Tinted Industrial Glass (Light Blue)
+gt.blocktintedglass.12.name=Tinted Industrial Glass (Blue)
+gt.blocktintedglass.13.name=Tinted Industrial Glass (Purple)
+gt.blocktintedglass.14.name=Tinted Industrial Glass (Magenta)
+gt.blocktintedglass.15.name=Tinted Industrial Glass (Pink)
 
 # Block Granites
 gt.blockgranites.0.name=Black Granite
@@ -9005,7 +9023,7 @@ GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing aro
 GT5U.tooltip.bec-generator.bec-hatch-pos=Back center casing
 
 # BEC Storage Structure Hints
-GT5U.tooltip.bec-storage.controller-pos=Bottom front of central pillar, 3rd layer
+GT5U.tooltip.bec-storage.controller-pos=Front center of central column, 3rd layer
 GT5U.tooltip.bec-storage.hatch-pos=Any electromagnetically-isolated casing
 GT5U.tooltip.bec-storage.bec-hatch-pos=Any center side casing
 
