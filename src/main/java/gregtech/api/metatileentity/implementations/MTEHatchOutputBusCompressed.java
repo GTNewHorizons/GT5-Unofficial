@@ -372,7 +372,7 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
         }
 
         @Override
-        public void completeItem(GTUtility.ItemId id) {
+        public void complete(GTUtility.ItemId id) {
             // Do nothing
         }
 

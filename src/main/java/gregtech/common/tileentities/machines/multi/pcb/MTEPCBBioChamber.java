@@ -96,8 +96,8 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("PCB Factory Upgrade")
-            .addInfo(EnumChatFormatting.GRAY + "It enables nanites to construct organic circuitry.")
-            .addInfo(EnumChatFormatting.GRAY + "Required for Bioware and Wetware boards.")
+            .addInfo(EnumChatFormatting.GRAY + "Enables nanites to construct organic circuitry")
+            .addInfo(EnumChatFormatting.GRAY + "Unlocks the recipes for Wetware and Bioware circuit boards")
             .addInfo(
                 EnumChatFormatting.GRAY + "Place the controller block within "
                     + EnumChatFormatting.RED

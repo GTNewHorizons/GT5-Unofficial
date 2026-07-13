@@ -1,11 +1,11 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
+import static gregtech.api.recipe.RecipeMaps.liquidFluorineThoriumReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.spargeTowerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
 import static gregtech.api.util.GTRecipeConstants.SPARGE_MAX_BYPRODUCT;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.spargeTowerRecipes;
 
 import java.util.ArrayList;
 

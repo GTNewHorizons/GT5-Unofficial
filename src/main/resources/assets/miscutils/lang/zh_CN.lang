@@ -2897,7 +2897,6 @@ item.itemCellSeleniumDioxide.name=二氧化硒单元
 item.itemCellSeleniousAcid.name=亚硒酸单元
 
 //Added 15/8/19
-gtpp.nei.decayables=可衰变箱子(铅封盒)
 entity.batKing.name=蝙蝠之王
 item.itemCellCarbyne.name=直链乙炔碳单元
 item.itemCellHydrogenCyanide.name=氢氰酸单元
