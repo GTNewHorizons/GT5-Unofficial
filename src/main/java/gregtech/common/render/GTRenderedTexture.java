@@ -74,6 +74,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (ctx instanceof ISBRWorldContext worldCtx) {
+                worldCtx.finishLighting();
+            }
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         final IIcon icon = getIcon(ForgeDirection.EAST, false, ctx);
@@ -89,6 +92,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         renderBlocks.enableAO = enableAO;
         draw(renderBlocks);
+        if (glow && ctx instanceof ISBRWorldContext worldCtx) {
+            worldCtx.tryStartAngelicaLighting();
+        }
     }
 
     @Override
@@ -105,6 +111,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (ctx instanceof ISBRWorldContext worldCtx) {
+                worldCtx.finishLighting();
+            }
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         final IIcon icon = getIcon(ForgeDirection.WEST, false, ctx);
@@ -120,6 +129,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         renderBlocks.enableAO = enableAO;
         draw(renderBlocks);
+        if (glow && ctx instanceof ISBRWorldContext worldCtx) {
+            worldCtx.tryStartAngelicaLighting();
+        }
     }
 
     @Override
@@ -136,6 +148,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (ctx instanceof ISBRWorldContext worldCtx) {
+                worldCtx.finishLighting();
+            }
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         final IIcon icon = getIcon(ForgeDirection.UP, false, ctx);
@@ -151,6 +166,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         renderBlocks.enableAO = enableAO;
         draw(renderBlocks);
+        if (glow && ctx instanceof ISBRWorldContext worldCtx) {
+            worldCtx.tryStartAngelicaLighting();
+        }
     }
 
     @Override
@@ -167,6 +185,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (ctx instanceof ISBRWorldContext worldCtx) {
+                worldCtx.finishLighting();
+            }
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         final IIcon icon = getIcon(ForgeDirection.DOWN, false, ctx);
@@ -182,6 +203,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         renderBlocks.enableAO = enableAO;
         draw(renderBlocks);
+        if (glow && ctx instanceof ISBRWorldContext worldCtx) {
+            worldCtx.tryStartAngelicaLighting();
+        }
     }
 
     @Override
@@ -198,6 +222,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (ctx instanceof ISBRWorldContext worldCtx) {
+                worldCtx.finishLighting();
+            }
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         final IIcon icon = getIcon(ForgeDirection.SOUTH, false, ctx);
@@ -213,6 +240,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         renderBlocks.enableAO = enableAO;
         draw(renderBlocks);
+        if (glow && ctx instanceof ISBRWorldContext worldCtx) {
+            worldCtx.tryStartAngelicaLighting();
+        }
     }
 
     @Override
@@ -229,6 +259,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (ctx instanceof ISBRWorldContext worldCtx) {
+                worldCtx.finishLighting();
+            }
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         final IIcon icon = getIcon(ForgeDirection.NORTH, false, ctx);
@@ -244,6 +277,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         renderBlocks.enableAO = enableAO;
         draw(renderBlocks);
+        if (glow && ctx instanceof ISBRWorldContext worldCtx) {
+            worldCtx.tryStartAngelicaLighting();
+        }
     }
 
     @Override
