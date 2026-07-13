@@ -1,4 +1,4 @@
-package gtPlusPlus.api.recipe;
+package gregtech.api.recipe.maps;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -7,10 +7,9 @@ import net.minecraft.util.StatCollector;
 import codechicken.nei.PositionedStack;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
-import gregtech.api.recipe.maps.LargeNEIFrontend;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.GTNEIDefaultHandler;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEQuantumForceTransformer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 
 @ParametersAreNonnullByDefault
@@ -33,7 +32,8 @@ public class QuantumForceTransformerFrontend extends LargeNEIFrontend {
             }
         }
 
-        final int chance = MTEQuantumForceTransformer.getBaseOutputChance(neiCachedRecipe.mRecipe);
+        GTRecipe tRecipe = neiCachedRecipe.mRecipe;
+        final int chance = 10000 / (tRecipe.mOutputs.length + tRecipe.mFluidOutputs.length);
         for (PositionedStack stack : neiCachedRecipe.mOutputs) {
             if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
                 fixed.setChance(chance * PositionedStack.CHANCE_FULL / 10000);

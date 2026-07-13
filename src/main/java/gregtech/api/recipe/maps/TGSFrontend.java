@@ -1,4 +1,4 @@
-package gtPlusPlus.api.recipe;
+package gregtech.api.recipe.maps;
 
 import java.awt.Rectangle;
 import java.util.Arrays;
@@ -66,17 +66,17 @@ public class TGSFrontend extends RecipeMapFrontend {
         return UIHelper.getGridPositions(Mode.values().length, OUTPUTS_X, OUTPUTS_Y, 2);
     }
 
-    private static final String[] tooltipInputs = { StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.saw"),
-        StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.cutter"),
-        StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.shears"),
-        StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.knife") };
+    private static final String[] tooltipInputs = { StatCollector.translateToLocal("gt.nei.tgs.tooltip.saw"),
+        StatCollector.translateToLocal("gt.nei.tgs.tooltip.cutter"),
+        StatCollector.translateToLocal("gt.nei.tgs.tooltip.shears"),
+        StatCollector.translateToLocal("gt.nei.tgs.tooltip.knife") };
 
-    private static final String[] tooltipOutputs = { StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.needsSaw"),
-        StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.needsCutter"),
-        StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.needsShears"),
-        StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.needsKnife") };
-    private static final String tooltipSapling = StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.sapling");
-    private static final String tooltipMultiplier = StatCollector.translateToLocal("gtpp.nei.tgs.tooltip.multiplier");
+    private static final String[] tooltipOutputs = { StatCollector.translateToLocal("gt.nei.tgs.tooltip.needsSaw"),
+        StatCollector.translateToLocal("gt.nei.tgs.tooltip.needsCutter"),
+        StatCollector.translateToLocal("gt.nei.tgs.tooltip.needsShears"),
+        StatCollector.translateToLocal("gt.nei.tgs.tooltip.needsKnife") };
+    private static final String tooltipSapling = StatCollector.translateToLocal("gt.nei.tgs.tooltip.sapling");
+    private static final String tooltipMultiplier = StatCollector.translateToLocal("gt.nei.tgs.tooltip.multiplier");
 
     @Override
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
@@ -140,9 +140,9 @@ public class TGSFrontend extends RecipeMapFrontend {
         @Override
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             return Arrays.asList(
-                StatCollector.translateToLocal("gtpp.nei.tgs.info-1"),
-                StatCollector.translateToLocal("gtpp.nei.tgs.info-2"),
-                StatCollector.translateToLocal("gtpp.nei.tgs.info-3"));
+                StatCollector.translateToLocal("gt.nei.tgs.info-1"),
+                StatCollector.translateToLocal("gt.nei.tgs.info-2"),
+                StatCollector.translateToLocal("gt.nei.tgs.info-3"));
         }
     }
 }
