@@ -94,6 +94,16 @@ public class EntityDrone extends EntityLivingBase {
     }
 
     @Override
+    public boolean canBeCollidedWith() {
+        return false;
+    }
+
+    @Override
+    public boolean canBePushed() {
+        return false;
+    }
+
+    @Override
     public void setPosition(double x, double y, double z) {
         this.posX = x;
         this.posY = y;
