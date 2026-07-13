@@ -43,13 +43,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTEIndustrialRockBreaker>
@@ -200,7 +200,7 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.multiblockRockBreakerRecipes;
+        return RecipeMaps.multiblockRockBreakerRecipes;
     }
 
     @Override

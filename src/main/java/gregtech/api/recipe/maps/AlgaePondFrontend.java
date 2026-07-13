@@ -1,4 +1,4 @@
-package gtPlusPlus.api.recipe;
+package gregtech.api.recipe.maps;
 
 import static gregtech.common.gui.modularui.UIHelper.getGridPositions;
 
