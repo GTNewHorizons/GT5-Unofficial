@@ -792,7 +792,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             .addCasing("582", "Magmatter Frame Box", false)
             .addCasing("349", "Radiant Naquadah Alloy Casing", false)
             .addCasing("171", "Nanite Replication Framework", false)
-            .addCasing("170", "Europium Reinforced Radiation Proof Machine Casing", false)
+            .addCasing("170", "Advanced Iridium Plated Machine Casing", false)
             .addCasing("166", "White Dwarf Matter Frame Box", false)
             .addCasing("147", "Black Dwarf Matter Frame Box", false)
             .addEnergyHatch("1-2", "Any anchor casing", 1)

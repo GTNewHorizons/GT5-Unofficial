@@ -188,7 +188,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             .addInfo("right away, some of them require certain upgrades to be unlocked")
             .addInfo("This module is specialized towards energy and overclock efficiency")
             .beginStructureBlock(13, 7, 7, false)
-            .addController("Front center")
+            .addController("Front center, 4th layer")
             .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
             .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
             .addCasing("5", "Celestial Matter Guidance Casing", false)
