@@ -9,7 +9,6 @@ import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.GTMod;
@@ -28,17 +27,15 @@ public class PacketObserveMachine extends GTPacket {
     private EntityPlayerMP player;
 
     public NBTTagCompound statusTag;
-    public int hoveredX = -1;
-    public int hoveredY = -1;
-    public int hoveredZ = -1;
+    public long hoveredCoord = CameraViewportManager.NULL_COORD;
 
     public PacketObserveMachine() {}
 
-    public PacketObserveMachine(int dim, int centreX, int centreY, int centreZ, int machineX, int machineY,
-        int machineZ, boolean isObserving, double camX, double camY, double camZ, float yaw) {
+    public PacketObserveMachine(int dim, long centreCoord, long machineCoord, boolean isObserving, double camX,
+        double camY, double camZ, float yaw) {
         this.dim = dim;
-        this.centreCoord = CoordinatePacker.pack(centreX, centreY, centreZ);
-        this.machineCoord = CoordinatePacker.pack(machineX, machineY, machineZ);
+        this.centreCoord = centreCoord;
+        this.machineCoord = machineCoord;
         this.isObserving = isObserving;
         this.camX = camX;
         this.camY = camY;
@@ -61,9 +58,7 @@ public class PacketObserveMachine extends GTPacket {
         buf.writeDouble(camY);
         buf.writeDouble(camZ);
         buf.writeFloat(yaw);
-        buf.writeInt(hoveredX);
-        buf.writeInt(hoveredY);
-        buf.writeInt(hoveredZ);
+        buf.writeLong(hoveredCoord);
         boolean hasNBT = (statusTag != null);
         buf.writeBoolean(hasNBT);
         if (hasNBT) {
@@ -74,20 +69,14 @@ public class PacketObserveMachine extends GTPacket {
     @Override
     public GTPacket decode(ByteArrayDataInput buf) {
         int dim = buf.readInt();
-        int cX = buf.readInt();
-        int cY = buf.readInt();
-        int cZ = buf.readInt();
-        int mX = buf.readInt();
-        int mY = buf.readInt();
-        int mZ = buf.readInt();
+        long centreCoord = buf.readLong();
+        long machineCoord = buf.readLong();
         boolean isObs = buf.readBoolean();
         double camX = buf.readDouble();
         double camY = buf.readDouble();
         double camZ = buf.readDouble();
         float yaw = buf.readFloat();
-        int hX = buf.readInt();
-        int hY = buf.readInt();
-        int hZ = buf.readInt();
+        long hCoord = buf.readLong();
 
         NBTTagCompound tag = null;
         boolean hasNBT = buf.readBoolean();
@@ -95,10 +84,16 @@ public class PacketObserveMachine extends GTPacket {
             tag = GTByteBuffer.readCompoundTagFromGreggyByteBuf(buf);
         }
 
-        PacketObserveMachine pkt = new PacketObserveMachine(dim, cX, cY, cZ, mX, mY, mZ, isObs, camX, camY, camZ, yaw);
-        pkt.hoveredX = hX;
-        pkt.hoveredY = hY;
-        pkt.hoveredZ = hZ;
+        PacketObserveMachine pkt = new PacketObserveMachine(
+            dim,
+            centreCoord,
+            machineCoord,
+            isObs,
+            camX,
+            camY,
+            camZ,
+            yaw);
+        pkt.hoveredCoord = hCoord;
         pkt.statusTag = tag;
         return pkt;
     }
@@ -128,18 +123,11 @@ public class PacketObserveMachine extends GTPacket {
         } else {
             CameraViewportManager.ObservationSession session = CameraViewportManager.sessions.get(playerUUID);
             if (session == null) {
-                session = new CameraViewportManager.ObservationSession(
-                    dim,
-                    CoordinatePacker.unpackX(centreCoord),
-                    CoordinatePacker.unpackY(centreCoord),
-                    CoordinatePacker.unpackZ(centreCoord),
-                    CoordinatePacker.unpackX(machineCoord),
-                    CoordinatePacker.unpackY(machineCoord),
-                    CoordinatePacker.unpackZ(machineCoord));
+                session = new CameraViewportManager.ObservationSession(dim, centreCoord, machineCoord);
                 CameraViewportManager.sessions.put(playerUUID, session);
                 session.init(player);
             }
-            session.update(player, camX, camY, camZ, yaw, hoveredX, hoveredY, hoveredZ);
+            session.update(player, camX, camY, camZ, yaw, hoveredCoord);
         }
     }
 }

@@ -41,7 +41,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.PacketObserveMachine;
 import gregtech.api.net.PacketOpenRemoteMteGui;
 import gregtech.common.entity.EntityDrone;
@@ -58,12 +58,11 @@ public class CameraViewportClientManager extends CameraViewportManager {
     public double spawnX, spawnY, spawnZ;
     public float cameraYaw, cameraPitch;
     public float spawnYaw;
-    public int hoveredMachineX = -1;
-    public int hoveredMachineY = -1;
-    public int hoveredMachineZ = -1;
+    public long hoveredMachineCoord = NULL_COORD;
     public java.util.List<String> cachedWailaLines = null;
     public boolean flashlightActive = false;
     public boolean switchingToRemoteGui = false;
+    public boolean returningFromRemoteGui = false;
     public float zoomLevel = 1.0F;
 
     private ModularPanel originalMainPanelRef = null;
@@ -81,9 +80,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
     private boolean wasF5Down = false;
     private float originalFov = -1.0F;
     private boolean wasPageUpDown = false;
-    private int lastHoveredX = -1;
-    private int lastHoveredY = -1;
-    private int lastHoveredZ = -1;
+    private long lastHoveredCoord = NULL_COORD;
 
     @Override
     public boolean isObservingActive() {
@@ -245,12 +242,9 @@ public class CameraViewportClientManager extends CameraViewportManager {
         this.wasF5Down = false;
         this.hadNightVisionBefore = false;
         this.switchingToRemoteGui = false;
-        this.hoveredMachineX = -1;
-        this.hoveredMachineY = -1;
-        this.hoveredMachineZ = -1;
-        this.lastHoveredX = -1;
-        this.lastHoveredY = -1;
-        this.lastHoveredZ = -1;
+        this.returningFromRemoteGui = false;
+        this.hoveredMachineCoord = NULL_COORD;
+        this.lastHoveredCoord = NULL_COORD;
 
         if (dummyCamera == null || dummyCamera.worldObj != mc.theWorld) {
             dummyCamera = new EntityDrone(mc.theWorld);
@@ -297,13 +291,10 @@ public class CameraViewportClientManager extends CameraViewportManager {
         MinecraftForge.EVENT_BUS.unregister(this);
         activeConnection = null;
         observedMachineStatus = null;
-        hoveredMachineX = -1;
-        hoveredMachineY = -1;
-        hoveredMachineZ = -1;
-        lastHoveredX = -1;
-        lastHoveredY = -1;
-        lastHoveredZ = -1;
+        hoveredMachineCoord = NULL_COORD;
+        lastHoveredCoord = NULL_COORD;
         switchingToRemoteGui = false;
+        returningFromRemoteGui = false;
 
         Minecraft mc = Minecraft.getMinecraft();
         if (dummyCamera != null && mc.theWorld instanceof WorldClient) {
@@ -338,20 +329,14 @@ public class CameraViewportClientManager extends CameraViewportManager {
         if (activeConnection == null) return;
         PacketObserveMachine pkt = new PacketObserveMachine(
             activeConnection.getMachineWorld(),
-            activeConnection.getCentreCoord().posX,
-            activeConnection.getCentreCoord().posY,
-            activeConnection.getCentreCoord().posZ,
-            activeConnection.getMachineCoord().posX,
-            activeConnection.getMachineCoord().posY,
-            activeConnection.getMachineCoord().posZ,
+            CoordinatePacker.pack(activeConnection.getCentreCoord()),
+            CoordinatePacker.pack(activeConnection.getMachineCoord()),
             isObserving,
             cameraX,
             cameraY,
             cameraZ,
             cameraYaw);
-        pkt.hoveredX = this.hoveredMachineX;
-        pkt.hoveredY = this.hoveredMachineY;
-        pkt.hoveredZ = this.hoveredMachineZ;
+        pkt.hoveredCoord = this.hoveredMachineCoord;
         NW.sendToServer(pkt);
     }
 
@@ -404,15 +389,16 @@ public class CameraViewportClientManager extends CameraViewportManager {
 
         boolean isGDown = Keyboard.isKeyDown(Keyboard.KEY_G);
         if (isGDown && !wasGDown) {
-            int rx = this.hoveredMachineX;
-            int ry = this.hoveredMachineY;
-            int rz = this.hoveredMachineZ;
+            int rx = CoordinatePacker.unpackX(this.hoveredMachineCoord);
+            int ry = CoordinatePacker.unpackY(this.hoveredMachineCoord);
+            int rz = CoordinatePacker.unpackZ(this.hoveredMachineCoord);
             World world = mc.theWorld;
             if (world != null && rx != -1) {
                 TileEntity te = world.getTileEntity(rx, ry, rz);
                 if (te instanceof BaseMetaTileEntity baseMte) {
                     IMetaTileEntity mte = baseMte.getMetaTileEntity();
-                    if (mte instanceof MTEMultiBlockBase && !(mte instanceof MTEDroneCentre)) {
+                    if (mte instanceof MetaTileEntity realMte && realMte.hasMui2Gui()
+                        && !(mte instanceof MTEDroneCentre)) {
                         boolean openedFromItem = false;
                         if (mc.currentScreen instanceof GuiContainerWrapper wrapper) {
                             ModularScreen screen = wrapper.getScreen();
@@ -550,11 +536,8 @@ public class CameraViewportClientManager extends CameraViewportManager {
 
         dummyCamera.setPosition(cameraX, cameraY, cameraZ);
 
-        boolean hoveredChanged = (hoveredMachineX != lastHoveredX || hoveredMachineY != lastHoveredY
-            || hoveredMachineZ != lastHoveredZ);
-        lastHoveredX = hoveredMachineX;
-        lastHoveredY = hoveredMachineY;
-        lastHoveredZ = hoveredMachineZ;
+        boolean hoveredChanged = (hoveredMachineCoord != lastHoveredCoord);
+        lastHoveredCoord = hoveredMachineCoord;
 
         if (hoveredChanged) {
             sendUpdateTimer = 0;

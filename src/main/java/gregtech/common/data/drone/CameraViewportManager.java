@@ -16,6 +16,7 @@ import net.minecraft.world.WorldServer;
 
 import com.cleanroommc.modularui.factory.GuiManager;
 import com.cleanroommc.modularui.factory.ItemStackGuiData;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -32,6 +33,8 @@ import gregtech.common.entity.EntityDrone;
 import gregtech.common.items.ItemDroneRemoteInterface;
 
 public class CameraViewportManager {
+
+    public static final long NULL_COORD = CoordinatePacker.pack(-1, -1, -1);
 
     public static final Map<UUID, ObservationSession> sessions = new ConcurrentHashMap<>();
     private static final List<Runnable> pendingServerActions = new ArrayList<>();
@@ -109,15 +112,13 @@ public class CameraViewportManager {
     public static class ObservationSession {
 
         private final int dim;
-        private final int centreX, centreY, centreZ;
-        private final int machineX, machineY, machineZ;
+        private final long centreCoord;
+        private final long machineCoord;
         private final int targetChunkX, targetChunkZ;
         private boolean active = false;
 
         public boolean openedFromItem = false;
-        public int hoveredX = -1;
-        public int hoveredY = -1;
-        public int hoveredZ = -1;
+        public long hoveredCoord = NULL_COORD;
 
         EntityDrone cameraEntity;
 
@@ -207,17 +208,12 @@ public class CameraViewportManager {
             }
         }
 
-        public ObservationSession(int dim, int centreX, int centreY, int centreZ, int machineX, int machineY,
-            int machineZ) {
+        public ObservationSession(int dim, long centreCoord, long machineCoord) {
             this.dim = dim;
-            this.centreX = centreX;
-            this.centreY = centreY;
-            this.centreZ = centreZ;
-            this.machineX = machineX;
-            this.machineY = machineY;
-            this.machineZ = machineZ;
-            this.targetChunkX = machineX >> 4;
-            this.targetChunkZ = machineZ >> 4;
+            this.centreCoord = centreCoord;
+            this.machineCoord = machineCoord;
+            this.targetChunkX = CoordinatePacker.unpackX(machineCoord) >> 4;
+            this.targetChunkZ = CoordinatePacker.unpackZ(machineCoord) >> 4;
         }
 
         public void init(EntityPlayerMP player) {
@@ -226,7 +222,10 @@ public class CameraViewportManager {
             }
             WorldServer world = player.getServerForPlayer();
             PlayerManager pm = world.getPlayerManager();
-            TileEntity centreTe = world.getTileEntity(centreX, centreY, centreZ);
+            TileEntity centreTe = world.getTileEntity(
+                CoordinatePacker.unpackX(centreCoord),
+                CoordinatePacker.unpackY(centreCoord),
+                CoordinatePacker.unpackZ(centreCoord));
 
             if (centreTe == null) {
                 return;
@@ -240,15 +239,16 @@ public class CameraViewportManager {
             }
             active = true;
             cameraEntity = new EntityDrone(world);
-            cameraEntity.setPosition(machineX + 0.5, machineY + 1.5, machineZ + 0.5);
+            cameraEntity.setPosition(
+                CoordinatePacker.unpackX(machineCoord) + 0.5,
+                CoordinatePacker.unpackY(machineCoord) + 1.5,
+                CoordinatePacker.unpackZ(machineCoord) + 0.5);
             world.spawnEntityInWorld(cameraEntity);
         }
 
-        public void update(EntityPlayerMP player, double x, double y, double z, float yaw, int hX, int hY, int hZ) {
+        public void update(EntityPlayerMP player, double x, double y, double z, float yaw, long hCoord) {
             if (!active) return;
-            this.hoveredX = hX;
-            this.hoveredY = hY;
-            this.hoveredZ = hZ;
+            this.hoveredCoord = hCoord;
 
             if (cameraEntity != null) {
                 cameraEntity.setPosition(x, y, z);
@@ -266,39 +266,31 @@ public class CameraViewportManager {
             }
 
             WorldServer world = player.getServerForPlayer();
-            int finalX = machineX;
-            int finalY = machineY;
-            int finalZ = machineZ;
+            int finalX = CoordinatePacker.unpackX(machineCoord);
+            int finalY = CoordinatePacker.unpackY(machineCoord);
+            int finalZ = CoordinatePacker.unpackZ(machineCoord);
 
-            if (hX != -1 && hY != -1 && hZ != -1) {
-                finalX = hX;
-                finalY = hY;
-                finalZ = hZ;
+            if (hCoord != NULL_COORD) {
+                finalX = CoordinatePacker.unpackX(hCoord);
+                finalY = CoordinatePacker.unpackY(hCoord);
+                finalZ = CoordinatePacker.unpackZ(hCoord);
             }
 
             TileEntity te = world.getTileEntity(finalX, finalY, finalZ);
             if (te instanceof BaseMetaTileEntity gte) {
                 NBTTagCompound statusTag = new NBTTagCompound();
                 gte.getWailaNBTData(player, gte, statusTag, world, finalX, finalY, finalZ);
-                statusTag.setInteger("observeX", finalX);
-                statusTag.setInteger("observeY", finalY);
-                statusTag.setInteger("observeZ", finalZ);
+                statusTag.setLong("observePos", (hCoord != NULL_COORD) ? hCoord : machineCoord);
                 PacketObserveMachine reply = new PacketObserveMachine(
                     dim,
-                    centreX,
-                    centreY,
-                    centreZ,
-                    machineX,
-                    machineY,
-                    machineZ,
+                    centreCoord,
+                    machineCoord,
                     true,
                     x,
                     y,
                     z,
                     yaw);
-                reply.hoveredX = hX;
-                reply.hoveredY = hY;
-                reply.hoveredZ = hZ;
+                reply.hoveredCoord = this.hoveredCoord;
                 reply.statusTag = statusTag;
                 GTValues.NW.sendToPlayer(reply, player);
             }
@@ -309,7 +301,10 @@ public class CameraViewportManager {
             try {
                 WorldServer world = player.getServerForPlayer();
                 PlayerManager pm = world.getPlayerManager();
-                TileEntity centreTe = world.getTileEntity(centreX, centreY, centreZ);
+                TileEntity centreTe = world.getTileEntity(
+                    CoordinatePacker.unpackX(centreCoord),
+                    CoordinatePacker.unpackY(centreCoord),
+                    CoordinatePacker.unpackZ(centreCoord));
 
                 int r = getViewRadius(pm);
                 int playerChunkX = ((int) Math.floor(player.posX)) >> 4;
@@ -365,7 +360,10 @@ public class CameraViewportManager {
             } else {
                 WorldServer world = player.getServerForPlayer();
                 if (world == null) return;
-                TileEntity te = world.getTileEntity(session.centreX, session.centreY, session.centreZ);
+                TileEntity te = world.getTileEntity(
+                    CoordinatePacker.unpackX(session.centreCoord),
+                    CoordinatePacker.unpackY(session.centreCoord),
+                    CoordinatePacker.unpackZ(session.centreCoord));
                 if (te instanceof IGregTechTileEntity gte) {
                     IMetaTileEntity mte = gte.getMetaTileEntity();
                     if (mte != null) {

@@ -71,7 +71,7 @@ public class PacketOpenRemoteMteGui extends GTPacket {
                 CoordinatePacker.unpackZ(MTEcoord));
             if (te instanceof BaseMetaTileEntity baseMte) {
                 IMetaTileEntity mte = baseMte.getMetaTileEntity();
-                if (mte instanceof MetaTileEntity realMte) {
+                if (mte instanceof MetaTileEntity realMte && realMte.hasMui2Gui()) {
                     ProxiedMteGui.open(realMte, player);
                 }
             }

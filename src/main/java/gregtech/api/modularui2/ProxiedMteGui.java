@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
 
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.input.Mouse;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.AbstractUIFactory;
@@ -33,6 +32,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.data.drone.CameraViewportManager;
 
 /**
@@ -68,7 +68,7 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
                 if (GTMod.proxy.cameraViewportManager != null
                     && GTMod.proxy.cameraViewportManager.isObservingActive()) {
                     GTMod.proxy.cameraViewportManager.setSwitchingToRemoteGui(true);
-                    Mouse.setGrabbed(false);
+                    ((CameraViewportClientManager) GTMod.proxy.cameraViewportManager).returningFromRemoteGui = true;
                 }
             } else if (player instanceof EntityPlayerMP playerMP
                 && CameraViewportManager.sessions.containsKey(player.getUniqueID())) {

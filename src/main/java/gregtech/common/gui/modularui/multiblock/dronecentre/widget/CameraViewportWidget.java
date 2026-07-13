@@ -33,11 +33,13 @@ import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.widget.Widget;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import gregtech.GTMod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.common.data.drone.CameraViewportClientManager;
+import gregtech.common.data.drone.CameraViewportManager;
 import gregtech.common.gui.modularui.multiblock.dronecentre.panel.CameraObservePanel;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -63,13 +65,18 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
         Minecraft mc = Minecraft.getMinecraft();
 
         int signal = cvm.getSignalStrength();
+
+        if (cvm.returningFromRemoteGui) {
+            cvm.returningFromRemoteGui = false;
+            if (signal > 10) {
+                Mouse.setGrabbed(true);
+            }
+        }
         if (signal <= 10) {
             if (Mouse.isGrabbed()) {
                 Mouse.setGrabbed(false);
             }
-            cvm.hoveredMachineX = -1;
-            cvm.hoveredMachineY = -1;
-            cvm.hoveredMachineZ = -1;
+            cvm.hoveredMachineCoord = CameraViewportManager.NULL_COORD;
             cvm.cachedWailaLines = null;
 
             // A black screen
@@ -132,14 +139,11 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
                 IMetaTileEntity mte = gte.getMetaTileEntity();
                 if (mte != null) {
                     hasHovered = true;
-                    cvm.hoveredMachineX = mop.blockX;
-                    cvm.hoveredMachineY = mop.blockY;
-                    cvm.hoveredMachineZ = mop.blockZ;
+                    long hoverCoord = CoordinatePacker.pack(mop.blockX, mop.blockY, mop.blockZ);
+                    cvm.hoveredMachineCoord = hoverCoord;
 
                     net.minecraft.nbt.NBTTagCompound status = cvm.observedMachineStatus;
-                    boolean hasSyncedNBT = (status != null && status.getInteger("observeX") == mop.blockX
-                        && status.getInteger("observeY") == mop.blockY
-                        && status.getInteger("observeZ") == mop.blockZ);
+                    boolean hasSyncedNBT = (status != null && status.getLong("observePos") == hoverCoord);
 
                     if (hasSyncedNBT) {
                         long stateHash = 17L;
@@ -172,9 +176,7 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
         }
 
         if (!hasHovered) {
-            cvm.hoveredMachineX = -1;
-            cvm.hoveredMachineY = -1;
-            cvm.hoveredMachineZ = -1;
+            cvm.hoveredMachineCoord = CameraViewportManager.NULL_COORD;
             cvm.cachedWailaLines = null;
             lastStateHash = 0L;
             lastLines = null;

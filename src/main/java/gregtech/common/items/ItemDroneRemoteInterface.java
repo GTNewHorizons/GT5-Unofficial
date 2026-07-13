@@ -20,6 +20,7 @@ import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.relauncher.Side;
@@ -48,9 +49,10 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
                 // check whether drone centre is still exists
                 NBTTagCompound centreNbt = stack.getTagCompound()
                     .getCompoundTag("droneCentre");
-                int x = centreNbt.getInteger("x");
-                int y = centreNbt.getInteger("y");
-                int z = centreNbt.getInteger("z");
+                long pos = centreNbt.getLong("pos");
+                int x = CoordinatePacker.unpackX(pos);
+                int y = CoordinatePacker.unpackY(pos);
+                int z = CoordinatePacker.unpackZ(pos);
                 int dim = centreNbt.getInteger("dim");
 
                 World targetWorld = MinecraftServer.getServer()
@@ -80,9 +82,10 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
         if (ItemStackNBT.hasKey(aStack, "droneCentre")) {
             NBTTagCompound centreNbt = aStack.getTagCompound()
                 .getCompoundTag("droneCentre");
-            int x = centreNbt.getInteger("x");
-            int y = centreNbt.getInteger("y");
-            int z = centreNbt.getInteger("z");
+            long pos = centreNbt.getLong("pos");
+            int x = CoordinatePacker.unpackX(pos);
+            int y = CoordinatePacker.unpackY(pos);
+            int z = CoordinatePacker.unpackZ(pos);
             int dim = centreNbt.getInteger("dim");
             aList.add(GTUtility.translate("GT5U.tooltip.drone_remote_connected", x, y, z, dim));
         } else aList.add(GTUtility.translate("GT5U.tooltip.drone_remote_disconnected"));
@@ -96,9 +99,7 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
             && ((IGregTechTileEntity) te).getMetaTileEntity() instanceof MTEDroneCentre) {
             if (!world.isRemote) {
                 final NBTTagCompound centreNbt = new NBTTagCompound();
-                centreNbt.setInteger("x", x);
-                centreNbt.setInteger("y", y);
-                centreNbt.setInteger("z", z);
+                centreNbt.setLong("pos", CoordinatePacker.pack(x, y, z));
                 centreNbt.setInteger("dim", world.provider.dimensionId);
                 ItemStackNBT.setTag(itemStack, "droneCentre", centreNbt);
                 player.addChatMessage(new ChatComponentTranslation("GT5U.gui.chat.bindcentre"));
@@ -115,9 +116,10 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
         if (ItemStackNBT.hasKey(stack, "droneCentre")) {
             NBTTagCompound centreNbt = stack.getTagCompound()
                 .getCompoundTag("droneCentre");
-            int x = centreNbt.getInteger("x");
-            int y = centreNbt.getInteger("y");
-            int z = centreNbt.getInteger("z");
+            long pos = centreNbt.getLong("pos");
+            int x = CoordinatePacker.unpackX(pos);
+            int y = CoordinatePacker.unpackY(pos);
+            int z = CoordinatePacker.unpackZ(pos);
             int dim = centreNbt.getInteger("dim");
             if (NetworkUtils.isClient()) {
                 centre = new MTEDroneCentre("fakeCentre");

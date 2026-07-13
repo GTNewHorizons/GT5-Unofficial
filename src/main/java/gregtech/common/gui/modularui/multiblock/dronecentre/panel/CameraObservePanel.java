@@ -29,9 +29,11 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import gregtech.GTMod;
 import gregtech.common.data.drone.CameraViewportClientManager;
+import gregtech.common.data.drone.CameraViewportManager;
 import gregtech.common.gui.modularui.multiblock.dronecentre.widget.CameraViewportWidget;
 
 public class CameraObservePanel extends ModularPanel {
@@ -42,7 +44,7 @@ public class CameraObservePanel extends ModularPanel {
 
     private int lastUpdateWidth = -1;
     private NBTTagCompound lastObservedStatus = null;
-    private int lastHoveredX = -2, lastHoveredY = -2, lastHoveredZ = -2;
+    private long lastHoveredCoord = CoordinatePacker.pack(-2, -2, -2);
 
     private static final IDrawable BACKGROUND = (_, x, y, width, height, _) -> {
         drawRect(x, y, x + width, y + height, 0x90101010);
@@ -409,39 +411,28 @@ public class CameraObservePanel extends ModularPanel {
             currentRecipeInfo.clear();
             lastUpdateWidth = -1;
             lastObservedStatus = null;
-            lastHoveredX = -2;
-            lastHoveredY = -2;
-            lastHoveredZ = -2;
+            lastHoveredCoord = CoordinatePacker.pack(-2, -2, -2);
             return;
         }
 
         NBTTagCompound tag = cvm.observedMachineStatus;
-        int hX = cvm.hoveredMachineX;
-        int hY = cvm.hoveredMachineY;
-        int hZ = cvm.hoveredMachineZ;
+        long hCoord = cvm.hoveredMachineCoord;
 
-        if (width == lastUpdateWidth && tag == lastObservedStatus
-            && hX == lastHoveredX
-            && hY == lastHoveredY
-            && hZ == lastHoveredZ) {
+        if (width == lastUpdateWidth && tag == lastObservedStatus && hCoord == lastHoveredCoord) {
             return;
         }
 
         lastUpdateWidth = width;
         lastObservedStatus = tag;
-        lastHoveredX = hX;
-        lastHoveredY = hY;
-        lastHoveredZ = hZ;
+        lastHoveredCoord = hCoord;
 
         float textScale = Math.clamp(width / 113.3F, 0.5F, 0.8F);
         int maxWidth = (int) ((width - 8) / textScale);
 
         List<String> newInfo = new ArrayList<>();
 
-        boolean hasHovered = (hX != -1 && hY != -1 && hZ != -1);
-        boolean hasMatchingTag = (tag != null && tag.getInteger("observeX") == hX
-            && tag.getInteger("observeY") == hY
-            && tag.getInteger("observeZ") == hZ);
+        boolean hasHovered = (hCoord != CameraViewportManager.NULL_COORD);
+        boolean hasMatchingTag = tag != null && hasHovered && tag.getLong("observePos") == hCoord;
 
         if (hasHovered && hasMatchingTag) {
             boolean isActive = tag.getBoolean("isActive");
