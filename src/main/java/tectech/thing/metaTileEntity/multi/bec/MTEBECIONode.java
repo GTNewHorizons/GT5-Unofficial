@@ -664,7 +664,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         int availableNanites = assembler == null ? 0 : assembler.getAvailableNanites();
 
         int parallelsDivisor = this.parallelRecipesInProgress;
-        int aboveTierDivisor = this.requiredTier == null || providedTier == null ? 1 : (1 << Math.abs(this.requiredTier.tier - providedTier.tier));
+        int aboveTierDivisor = this.requiredTier == null || providedTier == null ? 1
+            : (1 << Math.abs(this.requiredTier.tier - providedTier.tier));
         int slowdownDivisor = Math.max(this.slowdowns + 1, this.speedDivisorParameter.getValue());
 
         return availableNanites / (float) parallelsDivisor / (float) aboveTierDivisor / (float) slowdownDivisor;
