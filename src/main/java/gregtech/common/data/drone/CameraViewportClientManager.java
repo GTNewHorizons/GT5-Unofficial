@@ -32,6 +32,7 @@ import com.cleanroommc.modularui.drawable.GuiDraw;
 import com.cleanroommc.modularui.screen.GuiContainerWrapper;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.utils.Color;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -637,10 +638,10 @@ public class CameraViewportClientManager extends CameraViewportManager {
                 (float) (x0 + panelW) / sw,
                 0.0F);
         } else {
-            GuiDraw.drawRect(0, 0, x0, sh, 0xFF000000);
-            GuiDraw.drawRect(x0 + panelW, 0, sw - (x0 + panelW), sh, 0xFF000000);
-            GuiDraw.drawRect(x0, 0, panelW, y0, 0xFF000000);
-            GuiDraw.drawRect(x0, y0 + panelH, panelW, sh - (y0 + panelH), 0xFF000000);
+            GuiDraw.drawRect(0, 0, x0, sh, Color.BLACK.main);
+            GuiDraw.drawRect(x0 + panelW, 0, sw - (x0 + panelW), sh, Color.BLACK.main);
+            GuiDraw.drawRect(x0, 0, panelW, y0, Color.BLACK.main);
+            GuiDraw.drawRect(x0, y0 + panelH, panelW, sh - (y0 + panelH), Color.BLACK.main);
         }
     }
 

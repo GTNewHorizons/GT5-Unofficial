@@ -32,6 +32,7 @@ import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.widget.Widget;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
@@ -80,7 +81,7 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
             cvm.cachedWailaLines = null;
 
             // A black screen
-            GuiDraw.drawRect(0, 0, w, h, 0xFF000000);
+            GuiDraw.drawRect(0, 0, w, h, Color.BLACK.main);
 
             String msg = StatCollector.translateToLocal("GT5U.gui.text.drone_signal_interrupted");
             int textW = TextRenderer.getFontRenderer()
@@ -96,9 +97,9 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
             TextRenderer.SHARED.setPos((int) tx, (int) ty);
             TextRenderer.SHARED.setAlignment(Alignment.CenterLeft, w);
 
-            int color = 0xFFFF0000;
+            int color = Color.RED_ACCENT.main;
             if ((System.currentTimeMillis() / 500) % 2 == 0) {
-                color = 0xFF880000;
+                color = Color.RED.darkerSafe(3);
             }
             TextRenderer.SHARED.setColor(color);
             TextRenderer.SHARED.draw(msg);
@@ -114,7 +115,7 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
             TextRenderer.SHARED.setShadow(true);
             TextRenderer.SHARED.setScale(0.7F);
             TextRenderer.SHARED.setPos(8, h - 12);
-            TextRenderer.SHARED.setColor(0xFF00FF00);
+            TextRenderer.SHARED.setColor(Color.GREEN.main);
             TextRenderer.SHARED.setAlignment(Alignment.CenterLeft, w);
             TextRenderer.SHARED.draw(zoomText);
         }
@@ -126,7 +127,7 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
             TextRenderer.SHARED.setShadow(true);
             TextRenderer.SHARED.setScale(0.7F);
             TextRenderer.SHARED.setPos(0, h - 12);
-            TextRenderer.SHARED.setColor(0xFF00FF00);
+            TextRenderer.SHARED.setColor(Color.GREEN.main);
             TextRenderer.SHARED.setAlignment(Alignment.CenterRight, w - 8);
             TextRenderer.SHARED.draw(zoomText);
         }
@@ -210,7 +211,7 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
                 int sy = rand.nextInt(h);
                 int sh = rand.nextInt(3) + 1;
                 int opacity = rand.nextInt(60) + 20;
-                int color = (opacity << 24) | 0x00FFFFFF;
+                int color = Color.withAlpha(Color.WHITE.main, opacity);
                 GuiDraw.drawRect(0, sy, w, sh, color);
             }
 
@@ -218,13 +219,13 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
                 int bandY = rand.nextInt(h);
                 int bandH = rand.nextInt(15) + 5;
                 int opacity = rand.nextInt(40) + 10;
-                int bandColor = (opacity << 24);
+                int bandColor = Color.withAlpha(Color.BLACK.main, opacity);
                 GuiDraw.drawRect(0, bandY, w, bandH, bandColor);
             }
 
             if (signal < 30 && rand.nextFloat() < (1.0 - (signal / 30.0)) * 0.25F) {
                 int flashOpacity = rand.nextInt(80) + 40;
-                int flashColor = (flashOpacity << 24) | 0x00D0D0D0;
+                int flashColor = Color.withAlpha(Color.WHITE.darker(5), flashOpacity);
                 GuiDraw.drawRect(0, 0, w, h, flashColor);
             }
         }
@@ -339,11 +340,11 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
 
         int left = (int) absX;
         int top = (int) absY;
-        GuiDraw.drawRect(left, top, boxW, boxH, 0x80101010);
-        GuiDraw.drawRect(left, top, boxW, 1, 0x60A0A0A0);
-        GuiDraw.drawRect(left, top + boxH - 1, boxW, 1, 0x60A0A0A0);
-        GuiDraw.drawRect(left, top, 1, boxH, 0x60A0A0A0);
-        GuiDraw.drawRect(left + boxW - 1, top, 1, boxH, 0x60A0A0A0);
+        GuiDraw.drawRect(left, top, boxW, boxH, Color.withAlpha(Color.BLACK.brighter(1), 128));
+        GuiDraw.drawRect(left, top, boxW, 1, Color.withAlpha(Color.GREY.main, 96));
+        GuiDraw.drawRect(left, top + boxH - 1, boxW, 1, Color.withAlpha(Color.GREY.main, 96));
+        GuiDraw.drawRect(left, top, 1, boxH, Color.withAlpha(Color.GREY.main, 96));
+        GuiDraw.drawRect(left + boxW - 1, top, 1, boxH, Color.withAlpha(Color.GREY.main, 96));
 
         int textY = (int) absY + 3;
         for (String line : basicInfo) {
@@ -354,7 +355,7 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
             TextRenderer.SHARED.setShadow(false);
             TextRenderer.SHARED.setScale(scale);
             TextRenderer.SHARED.setPos(tx, textY);
-            TextRenderer.SHARED.setColor(0xFFFFFFFF);
+            TextRenderer.SHARED.setColor(Color.WHITE.main);
             TextRenderer.SHARED.setAlignment(Alignment.CenterLeft, boxW);
             TextRenderer.SHARED.draw(line);
             textY += (int) (10 * scale);
