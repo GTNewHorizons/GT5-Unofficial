@@ -39,6 +39,7 @@ public class PosteaTransformers implements Runnable {
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
+        registerBartworksLabPartTransformer();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
@@ -282,5 +283,19 @@ public class PosteaTransformers implements Runnable {
             }
             return false;
         });
+    }
+
+    private static void registerBartworksLabPartTransformer() {
+        ItemStackReplacementManager.addTransformationHandler("bartworks:BioLabParts", (name, nbt) -> {
+            // ensure it has the extra tag
+            if (nbt.hasKey("tag")) {
+                var tag = nbt.getCompoundTag("tag");
+                for (String key : tag.func_150296_c()) {
+                    if (!key.equals("Name")) tag.removeTag(key);
+                }
+            }
+            return true;
+        });
+
     }
 }
