@@ -389,6 +389,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 1)
             .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
             .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
+            .addAir("In front of each computer heat vent")
             .addStructureInfo("")
             .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Base"))
             .addCasing("6-17", "Computer Casing", false)

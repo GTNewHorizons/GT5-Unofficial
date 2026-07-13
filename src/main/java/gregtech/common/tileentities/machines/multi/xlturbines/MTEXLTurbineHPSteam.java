@@ -62,7 +62,7 @@ public class MTEXLTurbineHPSteam extends MTEXLTurbineBase {
             .addInfo("Dense types of steam are so energy packed, they only require 1/1000th of the original flow")
             .addSupportAny()
             .beginStructureBlock(29, 9, 9, true)
-            .addController("Front center")
+            .addController("Front center, 5th layer")
             .addCasing(minCasingAmount() + "-440", "Reinforced HP Steam Turbine Casing", false)
             .addCasing("100", "Titanium Pipe Casing", false)
             .addCasing("36", "Any Tiered Glass", false)
