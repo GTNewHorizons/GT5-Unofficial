@@ -182,7 +182,7 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
             .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)")
             .addSupportAny()
             .beginStructureBlock(26, 9, 9, true)
-            .addController("Front center")
+            .addController("Front center, 5th layer")
             .addCasing(minCasingAmount() + "-352", "Reinforced Plasma Turbine Casing", false)
             .addCasing("100", "Naquadah Coil Block", false)
             .addCasing("72", "Tungstensteel Pipe Casing", false)
