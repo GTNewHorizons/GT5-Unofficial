@@ -86,8 +86,9 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
             int textW = TextRenderer.getFontRenderer()
                 .getStringWidth(msg);
             float scale = 2.0F;
-            float tx = (w - (textW * scale)) / 2.0F;
-            float ty = (h - (TextRenderer.getFontRenderer().FONT_HEIGHT * scale)) / 2.0F;
+            float scaleDivisor = 0.5F;
+            float tx = (w - (textW * scale)) * scaleDivisor;
+            float ty = (h - (TextRenderer.getFontRenderer().FONT_HEIGHT * scale)) * scaleDivisor;
 
             TextRenderer.SHARED.setSimulate(false);
             TextRenderer.SHARED.setShadow(true);
