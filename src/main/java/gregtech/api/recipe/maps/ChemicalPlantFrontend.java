@@ -1,4 +1,4 @@
-package gtPlusPlus.api.recipe;
+package gregtech.api.recipe.maps;
 
 import java.util.List;
 
@@ -53,8 +53,8 @@ public class ChemicalPlantFrontend extends RecipeMapFrontend {
                 && MTEChemicalPlant.isCatalyst(pStack.item)) {
                 fixed.setCustomBadge(
                     "NC*",
-                    StatCollector.translateToLocal("gtpp.nei.chemical_plant.not_consumed"),
-                    StatCollector.translateToLocal("gtpp.nei.chemical_plant.higher_tier_casing"));
+                    StatCollector.translateToLocal("gt.nei.chemical_plant.not_consumed"),
+                    StatCollector.translateToLocal("gt.nei.chemical_plant.higher_tier_casing"));
             }
         }
     }
