@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -38,7 +39,6 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -106,16 +106,16 @@ public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(GTUtility.translate("gt.multiblock.VacuumFreezer.machine_type"))
-            .addInfo(GTUtility.translate("gt.multiblock.VacuumFreezer.desc1"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.VacuumFreezer.machine_type"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.VacuumFreezer.desc1"))
             .beginStructureBlock(3, 3, 3, true)
-            .addController(GTUtility.translate("gt.mbtt.structure.front_center_2nd_layer"))
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("16-21", Casings.FrostProofMachineCasing.getLocalizedName(), false)
-            .addEnergyHatch("1+", GTUtility.translate("gt.mbtt.structure.any_casing"), 1)
-            .addMaintenanceHatch("1", GTUtility.translate("gt.mbtt.structure.any_casing"), 1)
-            .addInputAny("1+", GTUtility.translate("gt.mbtt.structure.any_casing"), 1)
-            .addOutputAny("1+", GTUtility.translate("gt.mbtt.structure.any_casing"), 1)
-            .addAir(GTUtility.translate("gt.mbtt.structure.interior"))
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .toolTipFinisher();
         return tt;
     }
