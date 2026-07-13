@@ -203,7 +203,7 @@ public class FormingPressRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Eternity, 1L),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Eternity, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.WhiteDwarfMatter, 1L),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 16L),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 4L),
