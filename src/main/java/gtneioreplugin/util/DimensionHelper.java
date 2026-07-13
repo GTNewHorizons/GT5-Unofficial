@@ -8,7 +8,6 @@ import static galacticgreg.api.enums.DimensionDef.DimNames.BARNARDF;
 import static galacticgreg.api.enums.DimensionDef.DimNames.CALLISTO;
 import static galacticgreg.api.enums.DimensionDef.DimNames.CENTAURIBB;
 import static galacticgreg.api.enums.DimensionDef.DimNames.CERES;
-import static galacticgreg.api.enums.DimensionDef.DimNames.DEEPDARK;
 import static galacticgreg.api.enums.DimensionDef.DimNames.DEIMOS;
 import static galacticgreg.api.enums.DimensionDef.DimNames.ENCELADUS;
 import static galacticgreg.api.enums.DimensionDef.DimNames.ENDASTEROID;
@@ -41,6 +40,7 @@ import static galacticgreg.api.enums.DimensionDef.DimNames.THE_END;
 import static galacticgreg.api.enums.DimensionDef.DimNames.TITAN;
 import static galacticgreg.api.enums.DimensionDef.DimNames.TRITON;
 import static galacticgreg.api.enums.DimensionDef.DimNames.TWILIGHT_FOREST;
+import static galacticgreg.api.enums.DimensionDef.DimNames.UNDERWORLD;
 import static galacticgreg.api.enums.DimensionDef.DimNames.VEGAB;
 import static galacticgreg.api.enums.DimensionDef.DimNames.VENUS;
 
@@ -174,7 +174,7 @@ public class DimensionHelper {
             ImmutableList.of(StoneType.SethIce, StoneType.SethClay));
 
         // T10
-        register("Underdark", DEEPDARK, "Underdark", "DD", T10, ImmutableList.of(StoneType.Stone));
+        register("Underworld", UNDERWORLD, "Underworld", "DD", T10, ImmutableList.of(StoneType.Stone));
     }
 
     public static void register(String fullName, String internalName, String trimmedName, String abbr, String tierKey,

@@ -199,7 +199,8 @@ public class MachineStats {
             "tile.openblocks.elevator", "tile.openblocks.elevator_rotating", // OpenBlocks elevators
             "tile.blockTravelAnchor", // EnderIO travel anchors
             "tile.blockCosmeticOpaque:2", // TC Warded glass (usually HV tier)
-            "tile.extrautils:etherealglass" // ExtraUtils ineffable glass and variants
+            "tile.extrautils:etherealglass", // ExtraUtils ineffable glass and variants
+            "tile.ethereal_glass" // UiE ethereal glass
         })
         @Config.RequiresMcRestart
         public String[] allowedBlocks;

@@ -7,12 +7,12 @@ import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.UtilitiesInExcess;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -702,14 +702,14 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.RECIPE_UIV);
         }
 
-        // Deep Dark Portal
+        // Raw Underworld Portal
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier8", 1, 0),
             16_777_216,
             2048,
             (int) TierEU.RECIPE_UHV,
             64,
-            new Object[] { getModItem(ExtraUtilities.ID, "cobblestone_compressed", 1, 7),
+            new Object[] { getModItem(UtilitiesInExcess.ID, "compressed_cobblestone", 1, 7),
                 getModItem(IndustrialCraft2.ID, "blockMachine2", 1, 0),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 4L),
                 new Object[] { OrePrefixes.circuit.get(Materials.UIV), 4 }, ItemList.Circuit_Wafer_APIC.get(32),

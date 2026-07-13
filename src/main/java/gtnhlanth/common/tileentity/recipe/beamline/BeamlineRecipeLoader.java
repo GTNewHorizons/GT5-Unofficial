@@ -162,7 +162,7 @@ public class BeamlineRecipeLoader {
          * OMEGA
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Unstable.getDust(1))
+            .itemInputs(Materials.Inverted.getDust(1))
             .itemOutputs(Materials.Ash.getDust(1))
             .outputChances(500)
             .metadata(

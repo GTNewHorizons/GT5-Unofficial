@@ -158,7 +158,7 @@ public class EyeOfHarmonyRecipe {
 
         int plasmaAmount = (int) ((this.spacetimeCasingTierRequired + 1) * 8_000_000L);
 
-        // If DeepDark then it should output all plasmas involved in making exotic catalyst.
+        // If Underworld then it should output all plasmas involved in making exotic catalyst.
         if (rocketTier == 9) {
             for (Materials material : VALID_PLASMAS) {
                 fluidStackLongArrayList.add(new FluidStackLong(material.getPlasma(plasmaAmount), plasmaAmount));

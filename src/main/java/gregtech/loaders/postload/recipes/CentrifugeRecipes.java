@@ -1,11 +1,11 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
+import static gregtech.api.enums.Mods.UtilitiesInExcess;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -825,49 +825,49 @@ public class CentrifugeRecipes implements Runnable {
                 .addTo(centrifugeRecipes);
         }
 
-        if (ExtraUtilities.isModLoaded() && Forestry.isModLoaded()) {
-            // Caelestis red
+        if (UtilitiesInExcess.isModLoaded() && Forestry.isModLoaded()) {
+            // Aetherius red
 
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(combs, 1, 154))
                 .circuit(1)
                 .itemOutputs(
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 2),
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 10),
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 14),
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 1),
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 12),
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 6))
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 2),
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 10),
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 14),
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 1),
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 12),
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 6))
                 .duration(25 * SECONDS + 12 * TICKS)
                 .eut(12)
                 .addTo(centrifugeRecipes);
 
-            // Caelestis green
+            // Aetherius green
 
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(combs, 1, 155))
                 .circuit(1)
                 .itemOutputs(
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 13),
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 5),
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 4),
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 8),
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 0))
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 13),
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 5),
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 4),
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 8),
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 0))
                 .duration(25 * SECONDS + 12 * TICKS)
                 .eut(12)
                 .addTo(centrifugeRecipes);
 
-            // Caelestis blue
+            // Aetherius blue
 
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(combs, 1, 156))
                 .circuit(1)
                 .itemOutputs(
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 3),
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 9),
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 11),
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 7),
-                    getModItem(ExtraUtilities.ID, "greenscreen", 1L, 15))
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 3),
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 9),
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 11),
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 7),
+                    getModItem(UtilitiesInExcess.ID, "lapis_aetherius", 1L, 15))
                 .duration(25 * SECONDS + 12 * TICKS)
                 .eut(12)
                 .addTo(centrifugeRecipes);
@@ -946,7 +946,7 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.NetherStar.getDust(8),
                 Materials.Terbium.getDust(7),
                 MaterialsElements.getInstance().TECHNETIUM.getDust(4),
-                Materials.Unstable.getDust(4),
+                Materials.Inverted.getDust(4),
                 Materials.Flerovium.getDust(3),
                 Materials.InfinityCatalyst.getDust(1))
             .duration(60 * SECONDS)

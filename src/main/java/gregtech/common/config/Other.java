@@ -58,6 +58,8 @@ public class Other {
         "StorageDrawersForestry:halfDrawers4A", "StorageDrawersNatura:fullDrawers1",
         "StorageDrawersNatura:fullDrawers2", "StorageDrawersNatura:fullDrawers4", "StorageDrawersNatura:halfDrawers2",
         "StorageDrawersNatura:halfDrawers4", "Thaumcraft:FocusPouch", "ThaumicTinkerer:ichorPouch",
-        "thebetweenlands:lurkerSkinPouch", "warpbook:warpbook", "witchery:brewbag", "WitchingGadgets:item.WG_Bag" })
+        "thebetweenlands:lurkerSkinPouch", "utilitiesinexcess:bedrockium_ingot", "utilitiesinexcess:bedrockium_block",
+        "utilitiesinexcess:golden_bag", "utilitiesinexcess:mob_jar", "warpbook:warpbook", "witchery:brewbag",
+        "WitchingGadgets:item.WG_Bag" })
     public static String[] toolboxBans;
 }

@@ -59,7 +59,7 @@ import kubatech.network.LoadConfigPacket;
         + "after: mobsinfo; "
         + "after: EnderIO; "
         + "after: AWWayofTime; "
-        + "after: ExtraUtilities; "
+        + "after: UtilitiesInExcess; "
         + "after: InfernalMobs; "
         + "after: Thaumcraft; "
         + "after: MineTweaker3; "

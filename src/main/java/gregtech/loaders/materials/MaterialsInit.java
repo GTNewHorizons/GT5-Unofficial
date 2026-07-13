@@ -4730,8 +4730,7 @@ public class MaterialsInit {
         Materials.SeedOilLin = loadSeedOilLin();
         Materials.Stone = loadStone();
         Materials.TNT = loadTNT();
-        Materials.Unstable = loadUnstable();
-        Materials.UnstableIngot = loadUnstableIngot();
+        Materials.Inverted = loadInverted();
         Materials.Vinegar = loadVinegar();
         Materials.WeedEX9000 = loadWeedEX9000();
         Materials.Wheat = loadWheat();
@@ -5212,24 +5211,14 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadUnstable() {
-        return new MaterialBuilder().setName("Unstable")
-            .setDefaultLocalName("Unstable")
+    private static Materials loadInverted() {
+        return new MaterialBuilder().setName("Inverted")
+            .setDefaultLocalName("Inverted")
             .setChemicalFormula(CustomGlyphs.FIXED_JAPANESE_OPENING_QUOTE + "Fe/C⌋")
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeWhite)
             .setARGB(0x7fdcdcdc)
             .addDustItems()
-            .addAspect(TCAspects.PERDITIO, 4)
-            .addSubTag(SubTag.TRANSPARENT)
-            .constructMaterial();
-    }
-
-    private static Materials loadUnstableIngot() {
-        return new MaterialBuilder().setName("Unstableingot")
-            .setDefaultLocalName("Unstable")
-            .setColor(Dyes.dyeWhite)
-            .setARGB(0x7fffffff)
             .addAspect(TCAspects.PERDITIO, 4)
             .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();

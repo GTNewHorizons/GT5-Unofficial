@@ -283,7 +283,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(393, Materials.Oriharukon);
         r(394, Materials.InfinityCatalyst);
         r(395, Materials.Bedrockium);
-        r(396, Materials.Unstable);
+        r(396, Materials.Inverted);
         r(397, Materials.Infinity);
         r(398, Materials.MysteriousCrystal);
         r(399, Materials.SamariumMagnetic);

@@ -6444,7 +6444,7 @@ achievement.ic2.itemArmorQuantumBoots.desc=Pick up this item to see the recipe i
 achievement.item.graviChestPlate=Gravi Chestplate
 achievement.item.graviChestPlate.desc=Pick up this item to see the recipe in NEI
 
-achievement.gt.blockreinforced.12=Raw Deep Dark Portal Block
+achievement.gt.blockreinforced.12=Raw Underworld Portal Block
 achievement.gt.blockreinforced.12.desc=Pick up this item to see the recipe in NEI
 
 achievement.gt.blockmachines.debug.tt.maintenance=Auto-Taping Maintenance Hatch
@@ -8634,7 +8634,7 @@ gt.blockreinforced.8.name=Steel Reinforced Block
 gt.blockreinforced.9.name=Titanium Reinforced Block
 gt.blockreinforced.10.name=Naquadah Reinforced Block
 gt.blockreinforced.11.name=Neutronium Reinforced Block
-gt.blockreinforced.12.name=Raw Deep Dark Portal Block
+gt.blockreinforced.12.name=Raw Underworld Portal Block
 gt.blockreinforced.13.name=Reinforced Block
 
 # BlockStones
