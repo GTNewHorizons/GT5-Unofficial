@@ -29,8 +29,8 @@ public class ModelMechArmor extends ModelBiped {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
+    public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
         if (color[0] == -1) {
             return;
@@ -40,10 +40,11 @@ public class ModelMechArmor extends ModelBiped {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 
+        double ticks = (entity != null) ? (entity.ticksExisted + ageInTicks) : 0.0;
+
         // tests for infinity frame
         if (color[0] == 255 && color[1] == 255 && color[2] == 255) {
-            float ticks = (entity != null) ? (entity.ticksExisted + f2) : 0.0F;
-            float hue = (ticks % 150.0F) / 150.0F;
+            float hue = (float) ((ticks % 150.0F) / 150.0F);
 
             int rgb = HSBtoRGB(hue, 1.0F, 1.0F);
 
@@ -53,8 +54,7 @@ public class ModelMechArmor extends ModelBiped {
 
             GL11.glColor3f(r, g, b);
         } else {
-            float ticks = (entity != null) ? (entity.ticksExisted + f2) : 0.0F;
-            float pulse = 0.8F + 0.2F * (float) Math.sin(ticks / 30.0F);
+            float pulse = 0.8F + 0.2F * (float) Math.sin(ticks / 30.0);
 
             GL11.glColor3f((color[0] / 255.0F) * pulse, (color[1] / 255.0F) * pulse, (color[2] / 255.0F) * pulse);
         }
@@ -64,7 +64,7 @@ public class ModelMechArmor extends ModelBiped {
         GL11.glTranslatef(0.0F, 0.5F, 0.0F);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
-        super.render(entity, f, f1, f2, f3, f4, f5);
+        super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
         GL11.glMatrixMode(GL11.GL_TEXTURE);
         GL11.glPopMatrix();

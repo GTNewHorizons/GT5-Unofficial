@@ -325,8 +325,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
             model.heldItemRight = entityLiving.getEquipmentInSlot(0) != null ? 1 : 0;
 
-            if (entityLiving instanceof net.minecraft.entity.player.EntityPlayer) {
-                net.minecraft.entity.player.EntityPlayer player = (net.minecraft.entity.player.EntityPlayer) entityLiving;
+            if (entityLiving instanceof EntityPlayer player) {
                 model.aimedBow = player.getItemInUseDuration() > 0;
             }
         }
