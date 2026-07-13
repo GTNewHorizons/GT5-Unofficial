@@ -1819,6 +1819,7 @@ gt.multiblock.NeutralizationEngine.tier_info=§fT%d§7 : §f%s§7 : §9%d§7 : �
 
 gt.multiblock.VacuumFreezer.machine_type=Vacuum Freezer, VF
 gt.multiblock.VacuumFreezer.desc1=Cools hot ingots and cells
+gt.multiblock.VacuumFreezer.controller=Front center, 2nd layer
 
 GT5U.MBTT.masterchannel=Projector stack size determines §b%s
 GT5U.MBTT.subchannel=Subchannel §b%s§7 determines §b%s
@@ -8957,7 +8958,7 @@ GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing aro
 GT5U.tooltip.bec-generator.bec-hatch-pos=Back center casing
 
 # BEC Storage Structure Hints
-GT5U.tooltip.bec-storage.controller-pos=Bottom front of central pillar, 3rd layer
+GT5U.tooltip.bec-storage.controller-pos=Front center of central column, 3rd layer
 GT5U.tooltip.bec-storage.hatch-pos=Any electromagnetically-isolated casing
 GT5U.tooltip.bec-storage.bec-hatch-pos=Any center side casing
 

@@ -109,7 +109,7 @@ public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFr
         tt.addMachineType(GTUtility.translate("gt.multiblock.VacuumFreezer.machine_type"))
             .addInfo(GTUtility.translate("gt.multiblock.VacuumFreezer.desc1"))
             .beginStructureBlock(3, 3, 3, true)
-            .addController(GTUtility.translate("gt.mbtt.structure.front_center"))
+            .addController(GTUtility.translate("gt.multiblock.VacuumFreezer.controller"))
             .addCasing("16-21", Casings.FrostProofMachineCasing.getLocalizedName(), false)
             .addEnergyHatch("1+", GTUtility.translate("gt.mbtt.structure.any_casing"), 1)
             .addMaintenanceHatch("1", GTUtility.translate("gt.mbtt.structure.any_casing"), 1)

@@ -206,7 +206,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 15, 21, true)
-            .addController("Front bottom center")
+            .addController("Front bottom center of central column")
             .addCasing("236", "Pulse Manipulator Casing", true)
             .addCasing("224", "Force Field Glass", false)
             .addCasing("177", "Quantum Force Conductor", false)
