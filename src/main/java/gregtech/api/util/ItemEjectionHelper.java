@@ -52,6 +52,9 @@ public class ItemEjectionHelper {
             if (transaction instanceof IOutputBusTransaction.IRecipeCheckAware tran) {
                 tran.setRecipeCheck(isRecipeCheck);
             }
+            if (transaction instanceof IOutputBusTransaction.IProtectOutputAware tran) {
+                tran.setProtectOutput(protectItems);
+            }
             transactionsByType.computeIfAbsent(bus.getBusType(), x -> new ArrayList<>())
                 .add(transaction);
         }
@@ -115,7 +118,7 @@ public class ItemEjectionHelper {
                 if (ofType == null) continue;
 
                 if (busType.isFiltered()) {
-                    GTDataUtils.addAllFiltered(ofType, transactions, t -> t.isFilteredToItem(parallelData.id));
+                    GTDataUtils.addAllFiltered(ofType, transactions, t -> t.isFilteredTo(parallelData.id));
                 } else {
                     transactions.addAll(ofType);
                 }
@@ -140,13 +143,13 @@ public class ItemEjectionHelper {
 
                 // If this bus is completely full, don't bother checking it.
                 if (!transaction.hasAvailableSpace()) {
-                    transaction.completeItem(output.id);
+                    transaction.complete(output.id);
                     outputBusses.next();
                     continue;
                 }
 
                 // Fill at most one slot with the remaining items
-                if (transaction.storePartial(output.id, output.remaining)) {
+                if (output.storePartial(transaction)) {
                     break;
                 } else {
                     // If we couldn't insert anything into the bus, go to the next one
@@ -194,6 +197,19 @@ public class ItemEjectionHelper {
             this.remaining = id.getItemStack(amount);
             this.perParallel = perParallel;
             this.initialAmount = amount;
+        }
+
+        public boolean storePartial(IOutputBusTransaction transaction) {
+            if (transaction instanceof IOutputBusTransaction.IDynamicCapacityOutputAware sharedOutput
+                && sharedOutput.isDynamicCapacity()) {
+                int origin = remaining.stackSize;
+                int amount = Math.min(origin, perParallel);
+                remaining.stackSize = amount;
+                boolean succeed = transaction.storePartial(id, remaining);
+                remaining.stackSize += origin - amount;
+                return succeed;
+            }
+            return transaction.storePartial(id, remaining);
         }
     }
 }
