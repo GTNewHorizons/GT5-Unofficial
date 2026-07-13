@@ -111,7 +111,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         // MHDCSM V2
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Eternity.getNanite(2))
+            .itemInputs(Materials.Eternity.getNanite(1))
             .fluidInputs(Materials.RawStarMatter.getFluid(4 * STACKS))
             .fluidOutputs(Materials.MHDCSM.getMolten(72 * INGOTS))
             .duration(2 * SECONDS)
