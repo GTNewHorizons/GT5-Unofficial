@@ -4,7 +4,7 @@
 shape set, and every mapped `GTMaterialProperties` value. Per-material shape sets are verified against
 `dumps/legacy-variants.json` (construction-time ground truth), not the `generatedPrefixes` capability-bit
 dump, which can drift from it. Werkstoff-backed materials (stage 10) additionally verify the merged shape
-union (`werkstoff.json` `generatedPrefixes`) and the composite `WERKSTOFF` property round-trip.
+union (`werkstoff.json` `generatedPrefixes`) and the decomposed `WERKSTOFF_*` properties' round-trip.
 
 Regenerate the dumps first (`runServer` with `-Dgt.dumpMaterialData=true`, then copy
 `run/server/material-dump/*.json` over `dumps/*.json`) before running this. EXCEPTIONS -- pinned pre-stage-10
@@ -304,12 +304,14 @@ def check_werkstoff(errors, name, info, ml, display_to_var, legacy_constants):
     check("meltingPoint", first["meltingPoint"])
     check("boilingPoint", first["boilingPoint"])
     check("protons", first["protons"])
-    check("neutrons", first["neutrons"])
+    # neutrons (GTMaterialProperties.WERKSTOFF's former neutrons field) was dropped -- every werkstoff-backed
+    # material carried 0, and bartworks.system.material.WerkstoffReconstruction now hardcodes it; the
+    # dumped werkstoff blob no longer carries this field.
     check("mass", first["mass"])
     check("meltingVoltage", first["meltingVoltage"])
     check("durabilityOverride", first["durability"])
     check("qualityOverride", first["quality"])
-    check("enchantmentLevel", first["enchantmentLevel"])
+    # enchantmentLevel was dropped the same way -- every werkstoff-backed material carried 3, now hardcoded.
     check("mixCircuit", first["mixCircuit"])
     if not floats_equal(actual.get("speedOverride"), first["speed"]):
         errors.append(f"{name}: werkstoff.speedOverride expected {first['speed']!r}")
@@ -344,16 +346,14 @@ def check_werkstoff(errors, name, info, ml, display_to_var, legacy_constants):
             f"{name}: werkstoff.oreByProducts expected {expected_byproducts!r}, "
             f"got {actual_byproducts!r}")
     sub_tags = []
-    additional_oredict = []
     for entry in entries:
         for tag in entry["subTags"]:
             if tag not in sub_tags:
                 sub_tags.append(tag)
-        for oredict in entry["additionalOredict"]:
-            if oredict not in additional_oredict:
-                additional_oredict.append(oredict)
     check("subTags", sub_tags)
-    check("additionalOreDict", additional_oredict)
+    # additionalOreDict was dropped -- every werkstoff-backed material carried an empty list (see
+    # GTMaterialProperties.WERKSTOFF_IDS's class javadoc), so the field was deleted outright rather than
+    # ported as a decomposed property; the dumped werkstoff blob no longer carries this field.
     check("formula", next((e["formula"] for e in entries if e["formula"]), ""))
 
 BLOCK_TEXTURE_INDEX_MIN = 65

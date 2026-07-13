@@ -13,8 +13,8 @@ import gregtech.api.util.CustomGlyphs;
 /// material whose legacy `Materials#mChemicalFormula` was a real formula -- the explicit `MaterialsInit`
 /// overrides verbatim (cross-material concatenations flattened to the literal the legacy loader computed,
 /// [GTMaterialProperties#FORMULA_LOCALIZED] added where the legacy call used its localized overload), every
-/// other material's constructor-derived string as pinned data. Werkstoff-composite materials carry no entry:
-/// their formula lives in `WerkstoffData#formula` (see `MaterialFormulas`). Kept separate from
+/// other material's constructor-derived string as pinned data. Werkstoff-backed materials carry no entry:
+/// their formula lives in [GTMaterialProperties#WERKSTOFF_FORMULA] (see `MaterialFormulas`). Kept separate from
 /// [Materials2Materials] so its hand-maintained declaration blocks stay uncluttered by ~1200 formula lines.
 public class Materials2Formulas {
 

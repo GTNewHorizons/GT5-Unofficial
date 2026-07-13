@@ -2,7 +2,7 @@ package gregtech.api.material;
 
 /// Boolean flags a bartworks `Werkstoff` carried that have no per-material `GTMaterialProperties` key of their
 /// own: the `Werkstoff.Stats` quality booleans, the `GenerationFeatures` extra-recipe markers, and the
-/// unification/auto-recipe toggles. Stored inside [WerkstoffData#flags].
+/// unification/auto-recipe toggles. Stored inside [GTMaterialProperties#WERKSTOFF_FLAGS].
 public enum GTWerkstoffFlag {
     /// `Stats#isSublimation`.
     SUBLIMATION,

@@ -55,10 +55,10 @@ public class GTMaterialProperties {
     /// property still has a real chemical-formula tooltip: `Materials`'s own constructor derives one from
     /// [#ELEMENT] or [#COMPOSITION] when no override is given, and [LegacyMaterials] reproduces that
     /// derivation unconditionally. Materials whose formula instead comes from a bartworks or gtPlusPlus fold
-    /// carry it in [#WERKSTOFF]/[#GTPP_CHEMICAL_FORMULA] instead, never here.
+    /// carry it in [#WERKSTOFF_FORMULA]/[#GTPP_CHEMICAL_FORMULA] instead, never here.
     public static final Property<String> FORMULA = Property.of("gregtech", "formula");
     /// Whether [#FORMULA] is a `GTLanguageManager` localization key rather than literal text -- mirrors
-    /// [GTWerkstoffFlag#LOCALIZED_FORMULA], the same distinction for a [#WERKSTOFF] formula.
+    /// [GTWerkstoffFlag#LOCALIZED_FORMULA], the same distinction for a [#WERKSTOFF_FORMULA].
     public static final Property<Boolean> FORMULA_LOCALIZED = Property.of("gregtech", "formulaLocalized");
     public static final Property<EnumSet<GTMaterialGenerationFlag>> GENERATION_FLAGS = Property
         .of("gregtech", "generationFlags");
@@ -103,8 +103,9 @@ public class GTMaterialProperties {
     /// [#MELTING_POINT].
     public static final Property<Integer> GTPP_MELTING_POINT_K = Property.of("gregtech", "gtppMeltingPointK");
     /// The legacy `Material.vNeutrons`; several `RecipeGen*` consumers key recipe stats (duration, EU cost) off
-    /// this, so it is pinned like every other gtpp scalar rather than recomputed or unified with a
-    /// [#WERKSTOFF]/canonical proton/neutron count on the same material.
+    /// this, so it is pinned like every other gtpp scalar rather than recomputed or unified with
+    /// [#WERKSTOFF_PROTONS] or any canonical proton/neutron count on the same material (werkstoff-backed
+    /// materials carry no neutron count of their own -- every one is `0`).
     public static final Property<Long> GTPP_NEUTRONS = Property.of("gregtech", "gtppNeutrons");
     /// The exact `FluidRegistry` name a legacy gtpp `Material#performFluidAndCellRegistration` registered
     /// this material's plasma fluid under, present only for the 37 materials where it is not
@@ -158,8 +159,110 @@ public class GTMaterialProperties {
     public static final Property<Integer> TOOL_QUALITY = Property.of("gregtech", "toolQuality");
     public static final Property<Float> TOOL_SPEED = Property.of("gregtech", "toolSpeed");
     public static final Property<Boolean> UNIFIABLE = Property.of("gregtech", "unifiable");
-    /// The bartworks-side data of a material that was (or merged with) a `Werkstoff` -- see [WerkstoffData].
-    public static final Property<WerkstoffData> WERKSTOFF = Property.of("gregtech", "werkstoff");
+    /// The bartworks-side data of a material that was (or merged with) a `Werkstoff`, decomposed into
+    /// individual keys rather than kept in one composite property so a reader needing a single value (e.g.
+    /// [MaterialFormulas]) does not depend on the whole werkstoff record shape. Every `WERKSTOFF_*` property
+    /// below exists solely so [bartworks.system.material.WerkstoffReconstruction] can rebuild the deprecated
+    /// bartworks `Werkstoff` facade, and is removed together with that facade in 5.10.0.0.
+    ///
+    /// [#WERKSTOFF_IDS] is always present on a material carrying any werkstoff data -- reconstruction and
+    /// other consumers use it as the "this material has werkstoff data" signal, and its first element as the
+    /// declaration-order sort key (every legacy pool declares its werkstoffe in ascending id order).
+    ///
+    /// [#WERKSTOFF_DURABILITY_OVERRIDE]/[#WERKSTOFF_SPEED_OVERRIDE]/[#WERKSTOFF_QUALITY_OVERRIDE] deliberately
+    /// do *not* fall back to their [#DURABILITY]/[#TOOL_SPEED]/[#TOOL_QUALITY] counterparts the way the
+    /// analogous `GTPP_*` scalars fall back to their canonical counterparts -- see each property's javadoc for
+    /// why a canonical fallback would be wrong here (a real "compute instead" sentinel, not "value absent").
+    public static final Property<Integer> WERKSTOFF_BOILING_POINT = Property.of("gregtech", "werkstoffBoilingPoint");
+    /// The werkstoff `CONTENTS` list (chemical make-up), distinct from [#COMPOSITION] so a merge never alters
+    /// the legacy `Materials` reconstruction. Each entry records which legacy registry it referenced -- see
+    /// [WerkstoffRefStack]. Elided when empty.
+    public static final Property<List<WerkstoffRefStack>> WERKSTOFF_CONTENTS = Property
+        .of("gregtech", "werkstoffContents");
+    /// The legacy `Werkstoff.Stats.durabilityModifier`, elided when `1.0` (the value 391 of 392
+    /// werkstoff-backed materials carry).
+    public static final Property<Float> WERKSTOFF_DURABILITY_MODIFIER = Property
+        .of("gregtech", "werkstoffDurabilityModifier");
+    /// The raw `Werkstoff.Stats` tool-durability override, elided when `0`. The legacy constructor computes
+    /// durability from protons/melting point/mass/contents instead when its own field is `0`, so absence must
+    /// keep meaning "compute", not "use [#DURABILITY]": 128 of the 392 werkstoff-backed materials carry a
+    /// nonzero canonical [#DURABILITY] despite never overriding durability themselves (an unrelated
+    /// gregtech/gtpp tool-durability value), so falling back to it here would silently replace the legacy
+    /// computed value for those 128. Present only for the 7 materials whose legacy declaration overrode it,
+    /// and equals [#DURABILITY] whenever both are present; reconstruction reads this raw with a `0` default.
+    public static final Property<Integer> WERKSTOFF_DURABILITY_OVERRIDE = Property
+        .of("gregtech", "werkstoffDurabilityOverride");
+    /// As [#WERKSTOFF_EBF_GAS_AMOUNT_MULTIPLIER], for `BlastFurnaceGasStat`'s recipe-time multiplier. Elided
+    /// when `-1.0` (the proton-count default; the value 388 of 392 carry).
+    public static final Property<Double> WERKSTOFF_EBF_GAS_TIME_MULTIPLIER = Property
+        .of("gregtech", "werkstoffEbfGasTimeMultiplier");
+    /// `BlastFurnaceGasStat`'s recipe consumed-amount multiplier for a blast-furnace gas recipe. Elided when
+    /// `1.0` (the value 388 of 392 carry).
+    public static final Property<Double> WERKSTOFF_EBF_GAS_AMOUNT_MULTIPLIER = Property
+        .of("gregtech", "werkstoffEbfGasAmountMultiplier");
+    /// [GTWerkstoffFlag] booleans a legacy `Werkstoff` carried, elided when empty.
+    public static final Property<EnumSet<GTWerkstoffFlag>> WERKSTOFF_FLAGS = Property.of("gregtech", "werkstoffFlags");
+    /// The `Werkstoff` chemical-formula tooltip string, elided when empty. [MaterialFormulas] reads this
+    /// together with [#WERKSTOFF_FLAGS] (for [GTWerkstoffFlag#LOCALIZED_FORMULA]) whenever [#WERKSTOFF_IDS] is
+    /// present, ahead of [#FORMULA]/[#GTPP_CHEMICAL_FORMULA] -- see that class's javadoc for why. Promoted
+    /// as-is from the pre-decomposition blob; not unified with [#FORMULA] this round, since that property is
+    /// populated by a separate codegen pass ([gregtech.api.enums.materials2.Materials2Formulas]) that feeds
+    /// the legacy `Materials` facade independently.
+    public static final Property<String> WERKSTOFF_FORMULA = Property.of("gregtech", "werkstoffFormula");
+    /// Every legacy werkstoff `mID` this material covers (more than one when two same-name werkstoffe folded
+    /// into one MaterialLib declaration) -- see the class javadoc for its role as both the presence signal and
+    /// reconstruction's declaration-order sort key.
+    public static final Property<List<Integer>> WERKSTOFF_IDS = Property.of("gregtech", "werkstoffIds");
+    /// The legacy `Werkstoff.Stats.mass`, elided when `0` (the legacy constructor computes it from contents
+    /// instead when its own field is `0`, the same compute-sentinel semantics as [#WERKSTOFF_PROTONS]).
+    public static final Property<Long> WERKSTOFF_MASS = Property.of("gregtech", "werkstoffMass");
+    /// The legacy `Werkstoff.Stats.meltingPoint`, present only when it differs from [#MELTING_POINT] or
+    /// [#MELTING_POINT] is absent (4 materials -- AquaRegia, RockSalt, Salt, Spodumene -- carry no canonical
+    /// melting point at all); reconstruction reads this, falling back to [#MELTING_POINT]. Diverges from
+    /// [#MELTING_POINT] for 2 materials (Alumina 1123K vs 2054K, Tellurium 1123K vs 722K); equal for the
+    /// remaining 386.
+    public static final Property<Integer> WERKSTOFF_MELTING_POINT = Property.of("gregtech", "werkstoffMeltingPoint");
+    /// The legacy `Werkstoff.Stats.meltingVoltage`, elided when `120` (the value 386 of 392 carry).
+    public static final Property<Integer> WERKSTOFF_MELTING_VOLTAGE = Property
+        .of("gregtech", "werkstoffMeltingVoltage");
+    /// The programmed-circuit number for the legacy mixer recipe, elided when `-1` (unset -- the value 377 of
+    /// 392 carry).
+    public static final Property<Integer> WERKSTOFF_MIX_CIRCUIT = Property.of("gregtech", "werkstoffMixCircuit");
+    /// The werkstoff byproduct list exactly as the `Werkstoff` constructor left it (three self entries --
+    /// werkstoff-kind references to this material's own name -- when the declaration passed no list, else the
+    /// declared list verbatim); amounts are always 1. Elided when empty, though in practice always present
+    /// (self-padding). Kept independent of [#ORE_BYPRODUCTS] -- structurally distinct in 22 materials
+    /// (self-padding vs a genuinely declared list) despite no genuine value conflict -- because reconstruction's
+    /// padding logic depends on the exact structure, not just the resolved set.
+    public static final Property<List<WerkstoffRefStack>> WERKSTOFF_ORE_BYPRODUCTS = Property
+        .of("gregtech", "werkstoffOreByProducts");
+    /// The declaring pool identifier (`WerkstoffLoader`/`GGMaterial`/`WerkstoffMaterialPool`/
+    /// `BotWerkstoffMaterialPool`/...), consulted by reconstruction's `ownerOf` for the legacy
+    /// `Werkstoff#getOwner` attribution.
+    public static final Property<String> WERKSTOFF_POOL = Property.of("gregtech", "werkstoffPool");
+    /// The dumped `generatedPrefixes` ground truth (every `OrePrefixes` name `hasItemType` reported),
+    /// including the prefixes that stay on legacy blocks (`sheetmetal`, `frameGt`) and so have no MaterialLib
+    /// shape. Elided when empty.
+    public static final Property<List<String>> WERKSTOFF_PREFIXES = Property.of("gregtech", "werkstoffPrefixes");
+    /// The legacy `Werkstoff.Stats.protons`, elided when `0` (the legacy constructor computes it from contents
+    /// instead when its own field is `0`). Diverges from [#GTPP_PROTONS] on 4 of the 15 materials that also
+    /// carry gtpp data (Alumina, Hafnium, SodiumNitrate, ThoriumTetrafluoride) -- kept independent rather than
+    /// unified, since [#GTPP_PROTONS] is itself pinned independently of any canonical count (see that
+    /// property's javadoc).
+    public static final Property<Long> WERKSTOFF_PROTONS = Property.of("gregtech", "werkstoffProtons");
+    /// As [#WERKSTOFF_DURABILITY_OVERRIDE], for `Werkstoff.Stats`'s tool-quality override and [#TOOL_QUALITY]:
+    /// 369 of 392 carry a nonzero canonical [#TOOL_QUALITY] despite never overriding quality themselves; only
+    /// 4 materials carry a real override.
+    public static final Property<Integer> WERKSTOFF_QUALITY_OVERRIDE = Property
+        .of("gregtech", "werkstoffQualityOverride");
+    /// As [#WERKSTOFF_DURABILITY_OVERRIDE], for `Werkstoff.Stats`'s tool-speed override and [#TOOL_SPEED]: 109
+    /// of 392 carry a nonzero canonical [#TOOL_SPEED] despite never overriding speed themselves; only 10
+    /// materials carry a real override.
+    public static final Property<Float> WERKSTOFF_SPEED_OVERRIDE = Property.of("gregtech", "werkstoffSpeedOverride");
+    /// The explicitly-added `SubTag` names (contents-derived tags stay dynamic), elided when empty.
+    public static final Property<List<String>> WERKSTOFF_SUB_TAGS = Property.of("gregtech", "werkstoffSubTags");
+    /// The `Werkstoff.Types` enum constant name.
+    public static final Property<String> WERKSTOFF_TYPE = Property.of("gregtech", "werkstoffType");
 
     private GTMaterialProperties() {}
 }

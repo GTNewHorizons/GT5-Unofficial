@@ -184,7 +184,7 @@ public class Materials2OreShapes {
     /// material to the adapter that actually owns its ore behavior (BW ore had a flat harvest level and no
     /// per-material `isValidForStone` gate, unlike GT's).
     private static boolean isWerkstoff(Material material) {
-        return material.getProperty(GTMaterialProperties.WERKSTOFF) != null;
+        return material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null;
     }
 
     /// Whether `material` is a *pure* gtpp material with no live [gregtech.api.enums.Materials] counterpart --
