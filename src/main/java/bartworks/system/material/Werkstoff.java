@@ -443,8 +443,8 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     }
 
     /// Registers an additional legacy id resolving to `werkstoff` -- used when two same-name werkstoffe
-    /// folded into one MaterialLib declaration (see `WerkstoffData#ids`); item damage lookups on either id
-    /// find the one reconstructed instance.
+    /// folded into one MaterialLib declaration (see `GTMaterialProperties#WERKSTOFF_IDS`); item damage lookups
+    /// on either id find the one reconstructed instance.
     static void registerAdditionalId(Werkstoff werkstoff, int id) {
         if (Werkstoff.idHashSet.contains((short) id))
             throw new UnsupportedOperationException("ID (" + id + ") is already in use!");

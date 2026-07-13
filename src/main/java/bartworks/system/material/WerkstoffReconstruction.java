@@ -4,6 +4,7 @@ import static net.minecraft.util.EnumChatFormatting.GREEN;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -20,7 +21,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTWerkstoffFlag;
-import gregtech.api.material.WerkstoffData;
 import gregtech.api.material.WerkstoffRefStack;
 import gregtech.loaders.materials.LegacyMaterials;
 
@@ -30,13 +30,13 @@ import gregtech.loaders.materials.LegacyMaterials;
 /// lookup builds ALL werkstoff-backed materials in ascending-first-id order (matching declaration-order
 /// dependencies -- every werkstoff-to-werkstoff contents reference points at a lower id, validated at build).
 ///
-/// Reconstruction inputs are the composite `GTMaterialProperties#WERKSTOFF` property (bartworks-side data,
-/// pool scalars preserved even where the gregtech dump won the shared keys) plus the shared
-/// `ARGB`/`LOCAL_NAME`/`TEXTURE_SET`/`PROCESSING_MATERIAL_TIER_EU` values. Contents/byproduct references
-/// resolve against the registry the legacy declaration used (see `WerkstoffRefStack#werkstoff`); a
-/// werkstoff-kind byproduct naming this material itself resolves to the instance under construction
-/// (byproduct self-padding). `bridgeMaterial` stays null here -- `BridgeMaterialsLoader` assigns it at
-/// bartworks' init exactly as before.
+/// Reconstruction inputs are the decomposed `GTMaterialProperties#WERKSTOFF_*` properties (bartworks-side
+/// data, pool scalars preserved even where the gregtech dump won the shared keys -- see each property's
+/// javadoc) plus the shared `ARGB`/`LOCAL_NAME`/`TEXTURE_SET`/`PROCESSING_MATERIAL_TIER_EU` values.
+/// Contents/byproduct references resolve against the registry the legacy declaration used (see
+/// `WerkstoffRefStack#werkstoff`); a werkstoff-kind byproduct naming this material itself resolves to the
+/// instance under construction (byproduct self-padding). `bridgeMaterial` stays null here --
+/// `BridgeMaterialsLoader` assigns it at bartworks' init exactly as before.
 ///
 /// [#applyGenerationBits] must run after `Werkstoff.GenerationFeatures.initPrefixLogic()` (see
 /// `WerkstoffLoader#setUp`): construction encodes the prefix ground truth purely as explicit per-prefix
@@ -87,7 +87,7 @@ public final class WerkstoffReconstruction {
         Map<String, Material> pending = new HashMap<>();
         for (Material material : MaterialLibAPI.getMaterials()) {
             if (!"gregtech".equals(material.getModId())) continue;
-            if (material.getProperty(GTMaterialProperties.WERKSTOFF) != null) {
+            if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
                 werkstoffMaterials.add(material);
                 pending.put(material.getName(), material);
             }
@@ -96,8 +96,7 @@ public final class WerkstoffReconstruction {
         // one: AtomicSeparationCatalyst 10022 -> Orundum 10023) recurses through resolveRef instead.
         werkstoffMaterials.sort(
             Comparator.comparingInt(
-                material -> material.getProperty(GTMaterialProperties.WERKSTOFF)
-                    .ids()
+                material -> material.getProperty(GTMaterialProperties.WERKSTOFF_IDS)
                     .get(0)));
         Map<Integer, Werkstoff> built = new HashMap<>();
         Map<String, Werkstoff> byName = new HashMap<>();
@@ -114,74 +113,64 @@ public final class WerkstoffReconstruction {
         if (!inProgress.add(ml.getName())) {
             throw new IllegalStateException("Werkstoff contents reference cycle: " + inProgress);
         }
-        WerkstoffData data = ml.getProperty(GTMaterialProperties.WERKSTOFF);
+
+        List<Integer> ids = ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
+        EnumSet<GTWerkstoffFlag> flags = orEmpty(ml.getProperty(GTMaterialProperties.WERKSTOFF_FLAGS));
 
         int argb = ml.getProperty(GTMaterialProperties.ARGB);
         short[] rgba = { (short) (argb >> 16 & 0xFF), (short) (argb >> 8 & 0xFF), (short) (argb & 0xFF), 0 };
 
-        Werkstoff.Stats stats = new Werkstoff.Stats().setMeltingPoint(data.meltingPoint())
-            .setBoilingPoint(data.boilingPoint())
-            .setProtons(data.protons())
-            .setNeutrons(data.neutrons())
-            .setMass(data.mass())
-            .setMeltingVoltage(data.meltingVoltage())
-            .setDurOverride(data.durabilityOverride())
-            .setSpeedOverride(data.speedOverride())
-            .setQualityOverride((byte) data.qualityOverride())
-            .setEnchantmentlvl((byte) data.enchantmentLevel())
-            .setEbfGasRecipeTimeMultiplier(data.ebfGasTimeMultiplier())
-            .setEbfGasRecipeConsumedAmountMultiplier(data.ebfGasAmountMultiplier())
-            .setSublimation(
-                data.flags()
-                    .contains(GTWerkstoffFlag.SUBLIMATION))
-            .setToxic(
-                data.flags()
-                    .contains(GTWerkstoffFlag.TOXIC))
-            .setRadioactive(
-                data.flags()
-                    .contains(GTWerkstoffFlag.RADIOACTIVE))
-            .setBlastFurnace(
-                data.flags()
-                    .contains(GTWerkstoffFlag.BLAST_FURNACE))
-            .setElektrolysis(
-                data.flags()
-                    .contains(GTWerkstoffFlag.ELECTROLYSIS))
-            .setCentrifuge(
-                data.flags()
-                    .contains(GTWerkstoffFlag.CENTRIFUGE))
-            .setGas(
-                data.flags()
-                    .contains(GTWerkstoffFlag.GAS));
-        stats.setDurMod(data.durabilityModifier());
+        Integer werkstoffMeltingPoint = ml.getProperty(GTMaterialProperties.WERKSTOFF_MELTING_POINT);
+        int meltingPoint = werkstoffMeltingPoint != null ? werkstoffMeltingPoint
+            : ml.getProperty(GTMaterialProperties.MELTING_POINT);
+
+        Werkstoff.Stats stats = new Werkstoff.Stats().setMeltingPoint(meltingPoint)
+            .setBoilingPoint(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_BOILING_POINT), 0))
+            .setProtons(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_PROTONS), 0L))
+            .setNeutrons(0)
+            .setMass(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_MASS), 0L))
+            .setMeltingVoltage(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_MELTING_VOLTAGE), 120))
+            .setDurOverride(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_DURABILITY_OVERRIDE), 0))
+            .setSpeedOverride(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_SPEED_OVERRIDE), 0f))
+            .setQualityOverride(
+                (byte) (int) orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_QUALITY_OVERRIDE), 0))
+            .setEnchantmentlvl((byte) 3)
+            .setEbfGasRecipeTimeMultiplier(
+                orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_EBF_GAS_TIME_MULTIPLIER), -1.0))
+            .setEbfGasRecipeConsumedAmountMultiplier(
+                orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_EBF_GAS_AMOUNT_MULTIPLIER), 1.0))
+            .setSublimation(flags.contains(GTWerkstoffFlag.SUBLIMATION))
+            .setToxic(flags.contains(GTWerkstoffFlag.TOXIC))
+            .setRadioactive(flags.contains(GTWerkstoffFlag.RADIOACTIVE))
+            .setBlastFurnace(flags.contains(GTWerkstoffFlag.BLAST_FURNACE))
+            .setElektrolysis(flags.contains(GTWerkstoffFlag.ELECTROLYSIS))
+            .setCentrifuge(flags.contains(GTWerkstoffFlag.CENTRIFUGE))
+            .setGas(flags.contains(GTWerkstoffFlag.GAS));
+        stats.setDurMod(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_DURABILITY_MODIFIER), 1.0f));
         Integer tierEU = ml.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
         if (tierEU != null) stats.setProcessingMaterialTierEU(tierEU);
-        if (data.flags()
-            .contains(GTWerkstoffFlag.NO_AUTO_BLAST_FURNACE_RECIPES)) stats.disableAutoGeneratedBlastFurnaceRecipes();
-        if (data.flags()
-            .contains(GTWerkstoffFlag.NO_AUTO_VACUUM_FREEZER_RECIPES)) stats.disableAutoGeneratedVacuumFreezerRecipes();
+        if (flags.contains(GTWerkstoffFlag.NO_AUTO_BLAST_FURNACE_RECIPES))
+            stats.disableAutoGeneratedBlastFurnaceRecipes();
+        if (flags.contains(GTWerkstoffFlag.NO_AUTO_VACUUM_FREEZER_RECIPES))
+            stats.disableAutoGeneratedVacuumFreezerRecipes();
 
+        int mixCircuit = orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_MIX_CIRCUIT), -1);
         Werkstoff.GenerationFeatures features = new Werkstoff.GenerationFeatures().disable();
-        for (String prefixName : data.prefixes()) {
+        for (String prefixName : orEmptyList(ml.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES))) {
             features.addPrefix(OrePrefixes.getPrefix(prefixName));
         }
-        if (data.flags()
-            .contains(GTWerkstoffFlag.ENFORCE_UNIFICATION)) features.enforceUnification();
-        if (data.flags()
-            .contains(GTWerkstoffFlag.CHEMICAL_SYNTHESIS)) features.addChemicalRecipes();
-        if (data.flags()
-            .contains(GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION)) features.addMetalCraftingSolidifierRecipes();
-        if (data.flags()
-            .contains(GTWerkstoffFlag.METAL_SOLIDIFICATION)) features.addMetaSolidifierRecipes();
-        if (data.flags()
-            .contains(GTWerkstoffFlag.SIFTING)) features.addSifterRecipes();
-        if (data.flags()
-            .contains(GTWerkstoffFlag.MIXING)) {
-            if (data.mixCircuit() >= 1) features.addMixerRecipes((short) data.mixCircuit());
+        if (flags.contains(GTWerkstoffFlag.ENFORCE_UNIFICATION)) features.enforceUnification();
+        if (flags.contains(GTWerkstoffFlag.CHEMICAL_SYNTHESIS)) features.addChemicalRecipes();
+        if (flags.contains(GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION)) features.addMetalCraftingSolidifierRecipes();
+        if (flags.contains(GTWerkstoffFlag.METAL_SOLIDIFICATION)) features.addMetaSolidifierRecipes();
+        if (flags.contains(GTWerkstoffFlag.SIFTING)) features.addSifterRecipes();
+        if (flags.contains(GTWerkstoffFlag.MIXING)) {
+            if (mixCircuit >= 1) features.addMixerRecipes((short) mixCircuit);
             else features.addMixerRecipes();
         }
 
         LinkedHashSet<Pair<ISubTagContainer, Integer>> contents = new LinkedHashSet<>();
-        for (WerkstoffRefStack stack : data.contents()) {
+        for (WerkstoffRefStack stack : orEmptyList(ml.getProperty(GTMaterialProperties.WERKSTOFF_CONTENTS))) {
             contents.add(
                 Pair.of(
                     resolveRef(stack, ml.getName(), null, built, byName, pending, inProgress),
@@ -196,43 +185,69 @@ public final class WerkstoffReconstruction {
         }
 
         List<SubTag> subTags = new ArrayList<>();
-        for (String tagName : data.subTags()) {
+        for (String tagName : orEmptyList(ml.getProperty(GTMaterialProperties.WERKSTOFF_SUB_TAGS))) {
             subTags.add(SubTag.getNewSubTag(tagName));
         }
 
         Werkstoff werkstoff = new Werkstoff(
             rgba,
             ml.getProperty(GTMaterialProperties.LOCAL_NAME),
-            data.formula(),
-            data.flags()
-                .contains(GTWerkstoffFlag.LOCALIZED_FORMULA),
+            orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_FORMULA), ""),
+            flags.contains(GTWerkstoffFlag.LOCALIZED_FORMULA),
             stats,
-            Werkstoff.Types.valueOf(data.type()),
+            Werkstoff.Types.valueOf(ml.getProperty(GTMaterialProperties.WERKSTOFF_TYPE)),
             features,
-            data.ids()
-                .get(0),
+            ids.get(0),
             LegacyMaterials.iconSetOf(ml),
             new ArrayList<>(),
             contents,
             subTags,
-            data.additionalOreDict(),
-            ownerOf(data.pool()));
+            List.of(),
+            ownerOf(ml.getProperty(GTMaterialProperties.WERKSTOFF_POOL)));
 
         // Byproducts may self-reference (padding), so they resolve after construction.
         List<ISubTagContainer> byProducts = werkstoff.getRawOreByProducts();
-        for (WerkstoffRefStack stack : data.oreByProducts()) {
+        for (WerkstoffRefStack stack : orEmptyList(ml.getProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS))) {
             byProducts.add(resolveRef(stack, ml.getName(), werkstoff, built, byName, pending, inProgress));
         }
 
         byName.put(ml.getName(), werkstoff);
         inProgress.remove(ml.getName());
-        for (int id : data.ids()) {
+        for (int id : ids) {
             if (id == werkstoff.getmID()) built.put(id, werkstoff);
             else {
                 Werkstoff.registerAdditionalId(werkstoff, id);
                 built.put(id, werkstoff);
             }
         }
+    }
+
+    private static <T> List<T> orEmptyList(List<T> value) {
+        return value != null ? value : List.of();
+    }
+
+    private static EnumSet<GTWerkstoffFlag> orEmpty(EnumSet<GTWerkstoffFlag> value) {
+        return value != null ? value : EnumSet.noneOf(GTWerkstoffFlag.class);
+    }
+
+    private static int orDefault(Integer value, int fallback) {
+        return value != null ? value : fallback;
+    }
+
+    private static long orDefault(Long value, long fallback) {
+        return value != null ? value : fallback;
+    }
+
+    private static float orDefault(Float value, float fallback) {
+        return value != null ? value : fallback;
+    }
+
+    private static double orDefault(Double value, double fallback) {
+        return value != null ? value : fallback;
+    }
+
+    private static String orDefault(String value, String fallback) {
+        return value != null ? value : fallback;
     }
 
     private static ISubTagContainer resolveRef(WerkstoffRefStack stack, String ownName, Werkstoff self,

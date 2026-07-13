@@ -39,7 +39,6 @@ import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
-import gregtech.api.material.WerkstoffData;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
@@ -252,17 +251,15 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
     }
 
     private static boolean isWerkstoffMaterial(Material material) {
-        return material != null && material.getProperty(GTMaterialProperties.WERKSTOFF) != null;
+        return material != null && material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null;
     }
 
     /// The [Werkstoff] a MaterialLib material was reconstructed from, or null if it carries no
-    /// [GTMaterialProperties#WERKSTOFF] data.
+    /// [GTMaterialProperties#WERKSTOFF_IDS] data.
     private static Werkstoff werkstoffOf(Material mlMaterial) {
-        WerkstoffData data = mlMaterial.getProperty(GTMaterialProperties.WERKSTOFF);
-        if (data == null) return null;
-        return WerkstoffReconstruction.byId(
-            data.ids()
-                .get(0));
+        List<Integer> ids = mlMaterial.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
+        if (ids == null) return null;
+        return WerkstoffReconstruction.byId(ids.get(0));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package gregtech.api.material;
 
+import java.util.EnumSet;
+
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
@@ -10,14 +12,14 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 
 /// Resolves the legacy chemical-formula display string for a MaterialLib [Material] from declaration data
-/// alone, reading whichever of [GTMaterialProperties#WERKSTOFF], [GTMaterialProperties#FORMULA], or
-/// [GTMaterialProperties#GTPP_CHEMICAL_FORMULA] carries it -- in that priority order, which reproduces what the legacy
-/// item
-/// each ML stack replaced actually rendered: a werkstoff-backed material's legacy items (both the bartworks
-/// ones and the gregtech bridge ones, whose `Materials` formula `BridgeMaterialsLoader` overwrote from the
-/// werkstoff side unconditionally -- hence no fall-through past a present WERKSTOFF property, even when its
-/// formula is empty) showed the werkstoff formula; a gregtech-dumped material's items showed
-/// `Materials#mChemicalFormula`
+/// alone, reading whichever of [GTMaterialProperties#WERKSTOFF_IDS], [GTMaterialProperties#FORMULA], or
+/// [GTMaterialProperties#GTPP_CHEMICAL_FORMULA] carries it -- in that priority order, which reproduces what the
+/// legacy item each ML stack replaced actually rendered: a werkstoff-backed material's legacy items (both the
+/// bartworks ones and the gregtech bridge ones, whose `Materials` formula `BridgeMaterialsLoader` overwrote
+/// from the werkstoff side unconditionally -- hence no fall-through past a present
+/// [GTMaterialProperties#WERKSTOFF_IDS], even when [GTMaterialProperties#WERKSTOFF_FORMULA] is empty) showed
+/// the werkstoff formula; a gregtech-dumped
+/// material's items showed `Materials#mChemicalFormula`
 /// (baked per material into [gregtech.api.enums.materials2.Materials2Formulas] as
 /// [GTMaterialProperties#FORMULA], covering both explicit legacy overrides and constructor-derived strings, so
 /// gtpp-merged materials keep the gregtech-side formula their dominant legacy items showed); only a gtpp-only
@@ -38,9 +40,9 @@ public final class MaterialFormulas {
     public static @Nullable String forSearch(@Nullable Material ml) {
         if (ml == null) return null;
 
-        WerkstoffData werkstoff = ml.getProperty(GTMaterialProperties.WERKSTOFF);
-        if (werkstoff != null) {
-            return GTUtility.isStringValid(werkstoff.formula()) ? localizedWerkstoffFormula(ml, werkstoff) : null;
+        if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
+            String formula = ml.getProperty(GTMaterialProperties.WERKSTOFF_FORMULA);
+            return GTUtility.isStringValid(formula) ? localizedWerkstoffFormula(ml, formula) : null;
         }
 
         String formula = ml.getProperty(GTMaterialProperties.FORMULA);
@@ -62,10 +64,10 @@ public final class MaterialFormulas {
     public static @Nullable String forTooltip(@Nullable Material ml) {
         if (ml == null) return null;
 
-        WerkstoffData werkstoff = ml.getProperty(GTMaterialProperties.WERKSTOFF);
-        if (werkstoff != null) {
-            if (!GTUtility.isStringValid(werkstoff.formula())) return null;
-            String formula = localizedWerkstoffFormula(ml, werkstoff);
+        if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
+            String werkstoffFormula = ml.getProperty(GTMaterialProperties.WERKSTOFF_FORMULA);
+            if (!GTUtility.isStringValid(werkstoffFormula)) return null;
+            String formula = localizedWerkstoffFormula(ml, werkstoffFormula);
             return GTUtility.isStringValid(formula) ? formula : null;
         }
 
@@ -86,10 +88,11 @@ public final class MaterialFormulas {
         return null;
     }
 
-    private static String localizedWerkstoffFormula(Material ml, WerkstoffData werkstoff) {
-        return werkstoff.flags()
-            .contains(GTWerkstoffFlag.LOCALIZED_FORMULA) ? StatCollector.translateToLocal(werkstoffFormulaKey(ml))
-                : werkstoff.formula();
+    private static String localizedWerkstoffFormula(Material ml, String formula) {
+        EnumSet<GTWerkstoffFlag> flags = ml.getProperty(GTMaterialProperties.WERKSTOFF_FLAGS);
+        return flags != null && flags.contains(GTWerkstoffFlag.LOCALIZED_FORMULA)
+            ? StatCollector.translateToLocal(werkstoffFormulaKey(ml))
+            : formula;
     }
 
     /// Mirrors `IOreMaterial#getLocalizedNameKey` (`"Material." + getInternalName().toLowerCase()`) for the

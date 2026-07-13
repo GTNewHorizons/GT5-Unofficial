@@ -317,7 +317,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         // via MU#materialOf, since it shares the legacy-name index with every other Materials constant; defer
         // to BWOreAdapter, which owns werkstoff ore behavior (see Materials2OreShapes#isWerkstoff).
         if (blockInfo.material()
-            .getProperty(GTMaterialProperties.WERKSTOFF) != null) return null;
+            .getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) return null;
 
         Materials mat = MU.materialOf(blockInfo.material());
         StoneType stoneType = Materials2OreShapes.stoneTypeOf(blockInfo.variant());

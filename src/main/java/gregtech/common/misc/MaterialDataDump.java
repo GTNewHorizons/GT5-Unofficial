@@ -58,7 +58,6 @@ import gregtech.api.material.GTWerkstoffFlag;
 import gregtech.api.material.MU;
 import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
-import gregtech.api.material.WerkstoffData;
 import gregtech.api.material.WerkstoffRefStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMap;
@@ -796,7 +795,7 @@ public final class MaterialDataDump {
         json.put("processingMaterialTierEU", material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU));
         json.put("addedPrefixes", material.getProperty(GTMaterialProperties.ADDED_PREFIXES));
         json.put("removedPrefixes", material.getProperty(GTMaterialProperties.REMOVED_PREFIXES));
-        json.put("werkstoff", dumpMlWerkstoff(material.getProperty(GTMaterialProperties.WERKSTOFF)));
+        json.put("werkstoff", dumpMlWerkstoff(material));
         json.put("gtpp", dumpMlGtpp(material));
         return json;
     }
@@ -859,37 +858,86 @@ public final class MaterialDataDump {
         return json;
     }
 
-    private static Map<String, Object> dumpMlWerkstoff(WerkstoffData data) {
-        if (data == null) return null;
+    /// Reassembles the werkstoff scalar blob `check_parity.py` compares against `werkstoff.json`, from the
+    /// decomposed `WERKSTOFF_*` properties -- null when `material` carries none (see
+    /// [GTMaterialProperties#WERKSTOFF_IDS]). Field names/values mirror the pre-decomposition blob exactly,
+    /// except `neutrons`/`enchantmentLevel`/`additionalOreDict` are no longer emitted: every werkstoff-backed
+    /// material carried `0`/`3`/`[]` for these (see [GTMaterialProperties#WERKSTOFF_IDS]'s class javadoc),
+    /// `bartworks.system.material.WerkstoffReconstruction` now hardcodes them, and `check_parity.py`'s
+    /// `check_werkstoff` no longer checks them.
+    private static Map<String, Object> dumpMlWerkstoff(com.ruling_0.materiallib.api.Material material) {
+        List<Integer> ids = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
+        if (ids == null) return null;
+
+        Integer werkstoffMeltingPoint = material.getProperty(GTMaterialProperties.WERKSTOFF_MELTING_POINT);
+        Integer meltingPoint = werkstoffMeltingPoint != null ? werkstoffMeltingPoint
+            : material.getProperty(GTMaterialProperties.MELTING_POINT);
+
         Map<String, Object> json = new LinkedHashMap<>();
-        json.put("ids", data.ids());
-        json.put("type", data.type());
-        json.put("pool", data.pool());
-        json.put("meltingPoint", data.meltingPoint());
-        json.put("boilingPoint", data.boilingPoint());
-        json.put("protons", data.protons());
-        json.put("neutrons", data.neutrons());
-        json.put("mass", data.mass());
-        json.put("meltingVoltage", data.meltingVoltage());
-        json.put("durabilityOverride", data.durabilityOverride());
-        json.put("speedOverride", data.speedOverride());
-        json.put("qualityOverride", data.qualityOverride());
-        json.put("durabilityModifier", data.durabilityModifier());
-        json.put("enchantmentLevel", data.enchantmentLevel());
-        json.put("ebfGasTimeMultiplier", data.ebfGasTimeMultiplier());
-        json.put("ebfGasAmountMultiplier", data.ebfGasAmountMultiplier());
-        json.put("mixCircuit", data.mixCircuit());
+        json.put("ids", ids);
+        json.put("type", material.getProperty(GTMaterialProperties.WERKSTOFF_TYPE));
+        json.put("pool", material.getProperty(GTMaterialProperties.WERKSTOFF_POOL));
+        json.put("meltingPoint", meltingPoint);
+        json.put("boilingPoint", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_BOILING_POINT), 0));
+        json.put("protons", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_PROTONS), 0L));
+        json.put("mass", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_MASS), 0L));
+        json.put(
+            "meltingVoltage",
+            orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_MELTING_VOLTAGE), 120));
+        json.put(
+            "durabilityOverride",
+            orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_DURABILITY_OVERRIDE), 0));
+        json.put("speedOverride", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_SPEED_OVERRIDE), 0f));
+        json.put(
+            "qualityOverride",
+            orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_QUALITY_OVERRIDE), 0));
+        json.put(
+            "durabilityModifier",
+            orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_DURABILITY_MODIFIER), 1.0f));
+        json.put(
+            "ebfGasTimeMultiplier",
+            orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_EBF_GAS_TIME_MULTIPLIER), -1.0));
+        json.put(
+            "ebfGasAmountMultiplier",
+            orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_EBF_GAS_AMOUNT_MULTIPLIER), 1.0));
+        json.put("mixCircuit", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_MIX_CIRCUIT), -1));
         List<String> flags = new ArrayList<>();
-        for (GTWerkstoffFlag flag : data.flags()) flags.add(flag.name());
+        EnumSet<GTWerkstoffFlag> flagSet = material.getProperty(GTMaterialProperties.WERKSTOFF_FLAGS);
+        if (flagSet != null) for (GTWerkstoffFlag flag : flagSet) flags.add(flag.name());
         Collections.sort(flags);
         json.put("flags", flags);
-        json.put("prefixes", data.prefixes());
-        json.put("contents", dumpMlWerkstoffRefStacks(data.contents()));
-        json.put("oreByProducts", dumpMlWerkstoffRefStacks(data.oreByProducts()));
-        json.put("subTags", data.subTags());
-        json.put("additionalOreDict", data.additionalOreDict());
-        json.put("formula", data.formula());
+        json.put("prefixes", orEmpty(material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES)));
+        json.put("contents", dumpMlWerkstoffRefStacks(material.getProperty(GTMaterialProperties.WERKSTOFF_CONTENTS)));
+        json.put(
+            "oreByProducts",
+            dumpMlWerkstoffRefStacks(material.getProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS)));
+        json.put("subTags", orEmpty(material.getProperty(GTMaterialProperties.WERKSTOFF_SUB_TAGS)));
+        json.put("formula", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_FORMULA), ""));
         return json;
+    }
+
+    private static <T> List<T> orEmpty(List<T> value) {
+        return value != null ? value : List.of();
+    }
+
+    private static int orDefault(Integer value, int fallback) {
+        return value != null ? value : fallback;
+    }
+
+    private static long orDefault(Long value, long fallback) {
+        return value != null ? value : fallback;
+    }
+
+    private static float orDefault(Float value, float fallback) {
+        return value != null ? value : fallback;
+    }
+
+    private static double orDefault(Double value, double fallback) {
+        return value != null ? value : fallback;
+    }
+
+    private static String orDefault(String value, String fallback) {
+        return value != null ? value : fallback;
     }
 
     private static List<Map<String, Object>> dumpMlWerkstoffRefStacks(List<WerkstoffRefStack> stacks) {

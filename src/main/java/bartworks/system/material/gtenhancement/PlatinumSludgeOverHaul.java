@@ -1359,7 +1359,7 @@ public class PlatinumSludgeOverHaul {
             return false;
         }
         return info.material()
-            .getProperty(GTMaterialProperties.WERKSTOFF) != null
+            .getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null
             || info.material()
                 .getProperty(GTMaterialProperties.GTPP_STATE) != null;
     }
