@@ -1701,6 +1701,7 @@ GT5U.MBTT.Structure.DataStick.Waterline=Link to the §bWater Purification Plant�
 GT5U.MBTT.Structure.DataStick.PCB=Link to the §bPCB Factory§7 with a §aData Stick
 gt.mbtt.structure.front_center=Front center
 gt.mbtt.structure.back_center=Back center
+gt.mbtt.structure.front_center_2nd_layer=Front center, 2nd layer
 gt.mbtt.structure.any_casing=Any casing
 gt.mbtt.structure.interior=Interior of the structure
 GT5U.MBTT.HatchInfo=Any %s
@@ -1819,7 +1820,6 @@ gt.multiblock.NeutralizationEngine.tier_info=§fT%d§7 : §f%s§7 : §9%d§7 : �
 
 gt.multiblock.VacuumFreezer.machine_type=Vacuum Freezer, VF
 gt.multiblock.VacuumFreezer.desc1=Cools hot ingots and cells
-gt.multiblock.VacuumFreezer.controller=Front center, 2nd layer
 
 GT5U.MBTT.masterchannel=Projector stack size determines §b%s
 GT5U.MBTT.subchannel=Subchannel §b%s§7 determines §b%s
