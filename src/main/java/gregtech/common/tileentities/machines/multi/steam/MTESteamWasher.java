@@ -69,7 +69,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTESteamMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -296,7 +295,7 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
     @Override
     public RecipeMap<?> getRecipeMap() {
         if (machineMode == MACHINEMODE_SIMPLEWASH) {
-            return GTPPRecipeMaps.simpleWasherRecipes;
+            return RecipeMaps.simpleWasherRecipes;
         }
         return RecipeMaps.oreWasherRecipes;
     }
@@ -304,7 +303,7 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
     @NotNull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(GTPPRecipeMaps.simpleWasherRecipes, RecipeMaps.oreWasherRecipes);
+        return Arrays.asList(RecipeMaps.simpleWasherRecipes, RecipeMaps.oreWasherRecipes);
     }
 
     @Override

@@ -388,7 +388,7 @@ public class Client {
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting ticBoltMolding = ENABLE;
 
-            @Config.LangKey("gtpp.recipe.category.abs_non_alloy_recipes")
+            @Config.LangKey("gt.recipe.category.abs_non_alloy_recipes")
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting absNonAlloyRecipes = ENABLE;
         }

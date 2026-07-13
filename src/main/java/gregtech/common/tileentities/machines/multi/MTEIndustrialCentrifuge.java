@@ -47,6 +47,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
@@ -58,7 +59,6 @@ import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -353,7 +353,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.centrifugeNonCellRecipes;
+        return RecipeMaps.centrifugeNonCellRecipes;
     }
 
     @Override
