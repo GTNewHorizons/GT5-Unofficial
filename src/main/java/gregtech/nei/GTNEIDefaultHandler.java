@@ -923,11 +923,11 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         @Override
         public PositionedStack getResult() {
-            return null;
+            return this.mOutputs.getFirst();
         }
 
         @Override
-        public List<PositionedStack> getOtherStacks() {
+        public List<PositionedStack> getResults() {
             return this.mOutputs;
         }
     }
