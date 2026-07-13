@@ -26,6 +26,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
@@ -111,8 +112,8 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     public List<String> group = IntStream.rangeClosed(0, 7)
         .mapToObj(String::valueOf)
         .collect(Collectors.toCollection(ArrayList::new));
-    private final HashMap<String, String> connectionNames = new HashMap<>();
-    private final HashMap<String, Long> connectionGroups = new HashMap<>();
+    private final HashMap<UUID, String> connectionNames = new HashMap<>();
+    private final HashMap<UUID, Long> connectionGroups = new HashMap<>();
     private boolean renamingActiveGroup = false;
     public ProductionRecord productionDataRecorder = new ProductionRecord();
     public List<DroneConnection> connectionList = new ArrayList<>();
@@ -372,15 +373,17 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         autoUpdate = aNBT.getBoolean("dynamicUpdate");
         key = aNBT.getString("key");
 
-        NBTTagCompound connNamesNBT = aNBT.getCompoundTag("connectionNames");
+        NBTTagList connNamesList = aNBT.getTagList("connectionNames", 10);
         connectionNames.clear();
-        for (String uuidStr : connNamesNBT.func_150296_c()) {
-            connectionNames.put(uuidStr, connNamesNBT.getString(uuidStr));
+        for (int i = 0; i < connNamesList.tagCount(); i++) {
+            NBTTagCompound entry = connNamesList.getCompoundTagAt(i);
+            connectionNames.put(new UUID(entry.getLong("m"), entry.getLong("l")), entry.getString("n"));
         }
-        NBTTagCompound connGroupsNBT = aNBT.getCompoundTag("connectionGroups");
+        NBTTagList connGroupsList = aNBT.getTagList("connectionGroups", 10);
         connectionGroups.clear();
-        for (String uuidStr : connGroupsNBT.func_150296_c()) {
-            connectionGroups.put(uuidStr, connGroupsNBT.getLong(uuidStr));
+        for (int i = 0; i < connGroupsList.tagCount(); i++) {
+            NBTTagCompound entry = connGroupsList.getCompoundTagAt(i);
+            connectionGroups.put(new UUID(entry.getLong("m"), entry.getLong("l")), entry.getLong("g"));
         }
     }
 
@@ -399,13 +402,25 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         aNBT.setBoolean("dynamicUpdate", autoUpdate);
         aNBT.setString("key", key);
 
-        NBTTagCompound connNamesNBT = new NBTTagCompound();
-        connectionNames.forEach(connNamesNBT::setString);
-        aNBT.setTag("connectionNames", connNamesNBT);
+        NBTTagList connNamesList = new NBTTagList();
+        connectionNames.forEach((uuid, name) -> {
+            NBTTagCompound entry = new NBTTagCompound();
+            entry.setLong("m", uuid.getMostSignificantBits());
+            entry.setLong("l", uuid.getLeastSignificantBits());
+            entry.setString("n", name);
+            connNamesList.appendTag(entry);
+        });
+        aNBT.setTag("connectionNames", connNamesList);
 
-        NBTTagCompound connGroupsNBT = new NBTTagCompound();
-        connectionGroups.forEach(connGroupsNBT::setLong);
-        aNBT.setTag("connectionGroups", connGroupsNBT);
+        NBTTagList connGroupsList = new NBTTagList();
+        connectionGroups.forEach((uuid, mask) -> {
+            NBTTagCompound entry = new NBTTagCompound();
+            entry.setLong("m", uuid.getMostSignificantBits());
+            entry.setLong("l", uuid.getLeastSignificantBits());
+            entry.setLong("g", mask);
+            connGroupsList.appendTag(entry);
+        });
+        aNBT.setTag("connectionGroups", connGroupsList);
     }
 
     @Override
@@ -672,20 +687,20 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         this.productionSearchFilter = productionSearchFilter;
     }
 
-    public void setConnectionName(String uuidStr, String name) {
-        connectionNames.put(uuidStr, name);
+    public void setConnectionName(UUID uuid, String name) {
+        connectionNames.put(uuid, name);
     }
 
-    public String getConnectionName(String uuidStr, String defaultName) {
-        return connectionNames.getOrDefault(uuidStr, defaultName);
+    public String getConnectionName(UUID uuid, String defaultName) {
+        return connectionNames.getOrDefault(uuid, defaultName);
     }
 
-    public void setConnectionGroups(String uuidStr, long mask) {
-        connectionGroups.put(uuidStr, mask);
+    public void setConnectionGroups(UUID uuid, long mask) {
+        connectionGroups.put(uuid, mask);
     }
 
-    public long getConnectionGroups(String uuidStr) {
-        return connectionGroups.getOrDefault(uuidStr, 0L);
+    public long getConnectionGroups(UUID uuid) {
+        return connectionGroups.getOrDefault(uuid, 0L);
     }
 
     public boolean getRenamingActiveGroup() {
@@ -711,7 +726,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                 long upperBits = (mask >> 1) & -(1L << index);
                 conn.setGroupMask(lowerBits | upperBits);
             }
-            HashMap<String, Long> updatedGroups = new HashMap<>();
+            HashMap<UUID, Long> updatedGroups = new HashMap<>();
             connectionGroups.forEach((uuid, mask) -> {
                 long lowerBits = mask & ((1L << index) - 1);
                 long upperBits = (mask >> 1) & -(1L << index);

@@ -58,8 +58,8 @@ public class DroneConnection {
             .ordinal();
         this.uuid = UUID.nameUUIDFromBytes((machineCoord.toString() + machineWorld).getBytes());
         this.unlocalizedName = machine.mName;
-        this.customName = centre.getConnectionName(uuid.toString(), machine.getLocalName());
-        this.groupMask = centre.getConnectionGroups(uuid.toString());
+        this.customName = centre.getConnectionName(uuid, machine.getLocalName());
+        this.groupMask = centre.getConnectionGroups(uuid);
         this.machineStatus = machine.isAllowedToWork();
         this.shutdownReason = machine.getBaseMetaTileEntity()
             .getLastShutDownReason()
@@ -132,7 +132,7 @@ public class DroneConnection {
     public void setCustomName(String name) {
         customName = name;
         if (cachedCentre instanceof MTEDroneCentre dc) {
-            dc.setConnectionName(uuid.toString(), name);
+            dc.setConnectionName(uuid, name);
         }
     }
 
@@ -226,7 +226,7 @@ public class DroneConnection {
     public void setGroupMask(long groupMask) {
         this.groupMask = groupMask;
         if (cachedCentre instanceof MTEDroneCentre dc) {
-            dc.setConnectionGroups(uuid.toString(), groupMask);
+            dc.setConnectionGroups(uuid, groupMask);
         }
     }
 
