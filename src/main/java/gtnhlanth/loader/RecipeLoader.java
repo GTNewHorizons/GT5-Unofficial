@@ -156,7 +156,6 @@ import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
-import ic2.core.Ic2Items;
 
 public class RecipeLoader {
 
@@ -780,7 +779,7 @@ public class RecipeLoader {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             new ItemStack(LanthItemList.maskMap.get(MaskList.CPU)),
-                            GTUtility.copyAmount(16, Ic2Items.carbonFiber))
+                            ItemList.Carbon_Fiber_Bundle.get(16))
                         .fluidInputs(Materials.Glowstone.getMolten(4 * INGOTS))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrCPU)))
                         .duration(60 * GTRecipeBuilder.SECONDS)

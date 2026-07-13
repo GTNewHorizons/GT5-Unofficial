@@ -28,7 +28,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -259,7 +258,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 1L),
-                GTModHandler.getIC2Item("carbonMesh", 1L))
+                ItemList.Carbon_Fiber_Mesh.get(1))
             .circuit(10)
             .itemOutputs(ItemList.Duct_Tape.get(16L))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(100))
