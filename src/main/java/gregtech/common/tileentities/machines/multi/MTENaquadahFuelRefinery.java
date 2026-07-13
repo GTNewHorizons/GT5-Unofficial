@@ -213,7 +213,7 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase
             .addSupportAny()
             .addUnlimitedTierSkips()
             .beginStructureBlock(5, 27, 27, false)
-            .addController("Front center")
+            .addController("Front center, 14th layer")
             .addCasing("470-483", "Naquadah Fuel Refinery Casing", false)
             .addCasing("192", "Field Restriction Glass", false)
             .addCasing("124", "Europium Reinforced Radiation Proof Machine Casing", false)
