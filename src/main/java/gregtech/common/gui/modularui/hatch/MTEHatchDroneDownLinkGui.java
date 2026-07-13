@@ -2,6 +2,8 @@ package gregtech.common.gui.modularui.hatch;
 
 import java.util.List;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -19,7 +21,6 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.multiblock.dronecentre.DroneCentreGuiUtil;
 import gregtech.common.gui.modularui.multiblock.dronecentre.sync.DroneConnectionListSyncHandler;
@@ -81,7 +82,7 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
                 }
                 return true;
             })
-            .addTooltipLine(GTUtility.translate("GT5U.gui.button.drone_key_panel"));
+            .addTooltipLine(StatCollector.translateToLocal("GT5U.gui.button.drone_key_panel"));
     }
 
     private IWidget createDynamicTextWidget(PanelSyncManager syncManager) {

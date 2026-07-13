@@ -1,5 +1,7 @@
 package gregtech.api.modularui2.common;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.text.TextRenderer;
@@ -17,7 +19,6 @@ import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
 import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
 
@@ -112,8 +113,8 @@ public final class CommonWidgets {
                     .size(16))
             .child(
                 IKey.dynamic(
-                    () -> invertedSyncer.getValue() ? GTUtility.translate("gt.interact.desc.inverted")
-                        : GTUtility.translate("gt.interact.desc.normal"))
+                    () -> invertedSyncer.getValue() ? StatCollector.translateToLocal("gt.interact.desc.inverted")
+                        : StatCollector.translateToLocal("gt.interact.desc.normal"))
                     .asWidget())
             .coverChildren()
             .childPadding(2);
