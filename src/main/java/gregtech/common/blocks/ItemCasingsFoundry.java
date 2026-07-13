@@ -116,29 +116,32 @@ public class ItemCasingsFoundry extends ItemCasings {
                         "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3"));
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4",
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4"));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5"));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6",
                         TooltipHelper.SPEED_COLOR));
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5",
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7",
                         TooltipHelper.EFF_COLOR));
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6"));
-                tooltip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7",
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8",
                         TooltipHelper.PARALLEL_COLOR,
                         TooltipHelper.TIER_COLOR));
-                tooltip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8"));
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9"));
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10"));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip11"));
                 tooltip.add(createTierLine(11));
                 tooltip.add(
                     createFoundryFlavorText("gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor"));

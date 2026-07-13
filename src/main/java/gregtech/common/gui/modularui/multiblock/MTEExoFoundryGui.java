@@ -641,21 +641,26 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         TooltipHelper.EFF_COLOR));
                 t.addLine(
                     StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6"));
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6",
+                        TooltipHelper.SPEED_COLOR));
                 t.addLine(
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7",
-                        TooltipHelper.PARALLEL_COLOR,
-                        TooltipHelper.TIER_COLOR));
+                        TooltipHelper.EFF_COLOR));
                 t.addLine(
                     StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8"));
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8",
+                        TooltipHelper.PARALLEL_COLOR,
+                        TooltipHelper.TIER_COLOR));
                 t.addLine(
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9"));
                 t.addLine(
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip11"));
             }
             case UNIVERSAL_COLLAPSER -> {
                 t.addLine(createModuleLimitText());
@@ -804,29 +809,32 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                     "GT5U.gui.text.foundry.pairings.superstablecore.tooltip2"));
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip3",
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip3"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip4"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip5",
                                     TooltipHelper.SPEED_COLOR));
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip4",
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip6",
                                     TooltipHelper.EFF_COLOR));
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip5"));
-                            t.addLine(
-                                StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip6",
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip7",
                                     TooltipHelper.PARALLEL_COLOR,
                                     TooltipHelper.TIER_COLOR));
-                            t.addLine(
-                                StatCollector.translateToLocalFormatted(
-                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip7"));
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
                                     "GT5U.gui.text.foundry.pairings.superstablecore.tooltip8"));
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
                                     "GT5U.gui.text.foundry.pairings.superstablecore.tooltip9"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip10"));
                         }));
         column.child(
             new DynamicDrawable(
