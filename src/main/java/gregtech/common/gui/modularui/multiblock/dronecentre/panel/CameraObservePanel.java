@@ -9,6 +9,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.input.Mouse;
 
@@ -413,7 +415,7 @@ public class CameraObservePanel extends ModularPanel {
             return;
         }
 
-        net.minecraft.nbt.NBTTagCompound tag = cvm.observedMachineStatus;
+        NBTTagCompound tag = cvm.observedMachineStatus;
         int hX = cvm.hoveredMachineX;
         int hY = cvm.hoveredMachineY;
         int hZ = cvm.hoveredMachineZ;
@@ -449,19 +451,23 @@ public class CameraObservePanel extends ModularPanel {
 
                 int itemLength = tag.getInteger("outputItemLength");
                 for (int i = 0; i < itemLength; i++) {
-                    String name = tag.getString("outputItemName" + i);
-                    int count = tag.getInteger("outputItemCount" + i);
-                    if (!name.isEmpty()) {
+                    NBTTagCompound itemNBT = tag.getCompoundTag("outputItemStack" + i);
+                    ItemStack outputStack = ItemStack.loadItemStackFromNBT(itemNBT);
+                    if (outputStack != null) {
+                        String name = outputStack.getDisplayName();
+                        int count = tag.getInteger("outputItemCount" + i);
                         newInfo.add("§b" + name + " x" + count);
                     }
                 }
 
                 int fluidLength = tag.getInteger("outputFluidLength");
                 for (int i = 0; i < fluidLength; i++) {
-                    String name = tag.getString("outputFluidName" + i);
-                    int count = tag.getInteger("outputFluidCount" + i);
-                    if (!name.isEmpty()) {
-                        newInfo.add("§3" + name + " x" + count + "L");
+                    String internalName = tag.getString("outputFluidName" + i);
+                    if (!internalName.isEmpty()) {
+                        net.minecraftforge.fluids.Fluid fluid = FluidRegistry.getFluid(internalName);
+                        String fluidName = fluid != null ? new FluidStack(fluid, 1).getLocalizedName() : internalName;
+                        int count = tag.getInteger("outputFluidCount" + i);
+                        newInfo.add("§3" + fluidName + " x" + count + "L");
                     }
                 }
 
