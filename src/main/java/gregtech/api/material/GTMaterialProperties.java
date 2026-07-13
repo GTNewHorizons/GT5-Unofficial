@@ -26,8 +26,9 @@ public class GTMaterialProperties {
     public static final Property<Boolean> BLAST_REQUIRED = Property.of("gregtech", "blastRequired");
     public static final Property<Integer> BLAST_TEMP = Property.of("gregtech", "blastTemp");
     /// The Kelvin boiling point, present only for materials sourced from `gtpp-materials.json` (gtPlusPlus's
-    /// `Material.boilingPointC`, converted -- see [GTppData]). GregTech's own dump never carried a boiling
-    /// point, so unlike [#MELTING_POINT] this has no gt-materials.json-sourced counterpart.
+    /// `Material.boilingPointC`, converted with the same formula `Material`'s own `MathUtils#celsiusToKelvin`
+    /// used). GregTech's own dump never carried a boiling point, so unlike [#MELTING_POINT] this has no
+    /// gt-materials.json-sourced counterpart.
     public static final Property<Integer> BOILING_POINT = Property.of("gregtech", "boilingPoint");
     public static final Property<Integer> BYPRODUCT_MULTIPLIER = Property.of("gregtech", "byProductMultiplier");
     public static final Property<Boolean> CAN_BE_CRACKED = Property.of("gregtech", "canBeCracked");
@@ -54,7 +55,7 @@ public class GTMaterialProperties {
     /// property still has a real chemical-formula tooltip: `Materials`'s own constructor derives one from
     /// [#ELEMENT] or [#COMPOSITION] when no override is given, and [LegacyMaterials] reproduces that
     /// derivation unconditionally. Materials whose formula instead comes from a bartworks or gtPlusPlus fold
-    /// carry it in [#WERKSTOFF]/[#GTPP] instead, never here.
+    /// carry it in [#WERKSTOFF]/[#GTPP_CHEMICAL_FORMULA] instead, never here.
     public static final Property<String> FORMULA = Property.of("gregtech", "formula");
     /// Whether [#FORMULA] is a `GTLanguageManager` localization key rather than literal text -- mirrors
     /// [GTWerkstoffFlag#LOCALIZED_FORMULA], the same distinction for a [#WERKSTOFF] formula.
@@ -68,9 +69,67 @@ public class GTMaterialProperties {
     public static final Property<Boolean> HAS_ELECTROLYZER_RECIPE = Property.of("gregtech", "hasElectrolyzerRecipe");
     public static final Property<Boolean> HAS_GLOWING_ORE = Property.of("gregtech", "hasGlowingOre");
     public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "heatDamage");
-    /// The gtPlusPlus-side data of a material that was (or merged with) a `gtPlusPlus.core.material.Material`
-    /// -- see [GTppData].
-    public static final Property<GTppData> GTPP = Property.of("gregtech", "gtpp");
+    /// The `gtPlusPlus.core.material.Material` scalar data of a material that was (or merged with) a legacy
+    /// gtpp material, decomposed into individual keys rather than kept in one composite property so a reader
+    /// needing a single value (e.g. [MaterialFormulas]) does not depend on the whole gtpp record shape. Every
+    /// `GTPP_*` property below exists solely so [gtPlusPlus.core.material.MaterialReconstruction] can rebuild
+    /// the deprecated gtPlusPlus `Material` facade, and is removed together with that facade in 5.10.0.0.
+    ///
+    /// [#GTPP_STATE] is always present on a material carrying any gtpp data -- reconstruction and other
+    /// consumers use it (rather than any single scalar below, several of which elide their common default) as
+    /// the "this material has gtpp data" signal.
+    public static final Property<String> GTPP_CHEMICAL_FORMULA = Property.of("gregtech", "gtppChemicalFormula");
+    /// The legacy `Material.vMaterialInput` composition breakdown, present only when it diverges from
+    /// [#COMPOSITION] (a same-name merge leaves the shared property whatever the gregtech/werkstoff side's own
+    /// codegen set, often nothing comparable) in a way [#COMPOSITION] cannot safely absorb: either the two
+    /// disagree outright, or [#COMPOSITION] is absent and backfilling it would feed
+    /// `gregtech.loaders.materials.LegacyMaterials#build`'s `addMaterial` for a
+    /// `gregtech.loaders.materials.MaterialsLegacyBridge`-built material, changing the legacy `Materials`
+    /// facade. Reconstruction reads this, falling back to [#COMPOSITION].
+    public static final Property<List<MaterialRefStack>> GTPP_COMPOSITION = Property.of("gregtech", "gtppComposition");
+    /// The legacy `Material.vDurability`, a broader "toughness" stat on a different scale than [#DURABILITY]
+    /// (gregtech's narrower tool-durability field) -- present only when it differs from [#DURABILITY] or
+    /// [#DURABILITY] is absent; reconstruction reads this, falling back to [#DURABILITY].
+    public static final Property<Integer> GTPP_DURABILITY = Property.of("gregtech", "gtppDurability");
+    /// The legacy `Material` constructor's `vGenerateCells` flag, elided when `false`.
+    public static final Property<Boolean> GTPP_GENERATES_CELLS = Property.of("gregtech", "gtppGeneratesCells");
+    /// The legacy `Material` constructor's `generateFluid` flag, elided when `false`.
+    public static final Property<Boolean> GTPP_GENERATES_FLUID = Property.of("gregtech", "gtppGeneratesFluid");
+    /// The legacy `Material.isRadioactive`, elided when `false`.
+    public static final Property<Boolean> GTPP_IS_RADIOACTIVE = Property.of("gregtech", "gtppIsRadioactive");
+    /// The legacy `Material.meltingPointC`, converted to Kelvin with the same formula `Material`'s own
+    /// `MathUtils#celsiusToKelvin` used (`round(celsius + 273.15)`) -- present only when it differs from
+    /// [#MELTING_POINT] or [#MELTING_POINT] is absent; reconstruction reads this, falling back to
+    /// [#MELTING_POINT].
+    public static final Property<Integer> GTPP_MELTING_POINT_K = Property.of("gregtech", "gtppMeltingPointK");
+    /// The legacy `Material.vNeutrons`; several `RecipeGen*` consumers key recipe stats (duration, EU cost) off
+    /// this, so it is pinned like every other gtpp scalar rather than recomputed or unified with a
+    /// [#WERKSTOFF]/canonical proton/neutron count on the same material.
+    public static final Property<Long> GTPP_NEUTRONS = Property.of("gregtech", "gtppNeutrons");
+    /// The exact `FluidRegistry` name a legacy gtpp `Material#performFluidAndCellRegistration` registered
+    /// this material's plasma fluid under, present only for the 37 materials where it is not
+    /// [FluidNames#plasma] on [GTMaterialProperties#LEGACY_FLUIDS] -- unlike the non-plasma fluid slot (whose
+    /// [FluidNames#molten]/[FluidNames#fluid]/[FluidNames#gas] priority reliably reconstructs
+    /// [#GTPP_GENERATES_FLUID]'s fluid), a merged material's combined `LEGACY_FLUIDS.plasma` may instead be a
+    /// gregtech-side plasma sharing the slot (e.g. every noble gas/metal element gregtech itself plasma-ionizes,
+    /// none of which gtpp itself ever registered a plasma for), so it cannot be trusted as gtpp's own
+    /// contribution without this pin.
+    public static final Property<String> GTPP_PLASMA_NAME = Property.of("gregtech", "gtppPlasmaName");
+    /// As [#GTPP_NEUTRONS], for `Material.vProtons`.
+    public static final Property<Long> GTPP_PROTONS = Property.of("gregtech", "gtppProtons");
+    /// The legacy `Material.vRadiationLevel`, elided when `0`.
+    public static final Property<Integer> GTPP_RADIATION_LEVEL = Property.of("gregtech", "gtppRadiationLevel");
+    /// The legacy `gtPlusPlus.core.material.state.MaterialState` enum constant name -- see the class javadoc
+    /// for why this, not a scalar below, is the presence signal for "this material carries gtpp data".
+    public static final Property<String> GTPP_STATE = Property.of("gregtech", "gtppState");
+    /// The legacy `Material.vTier`; no gregtech equivalent. Elided when `0`.
+    public static final Property<Integer> GTPP_TIER = Property.of("gregtech", "gtppTier");
+    /// The legacy `Material.usesBlastFurnace`, present only when it differs from [#BLAST_REQUIRED] (both
+    /// default to `false` when absent); reconstruction reads this, falling back to [#BLAST_REQUIRED].
+    public static final Property<Boolean> GTPP_USES_BLAST_FURNACE = Property.of("gregtech", "gtppUsesBlastFurnace");
+    /// The legacy `Material.vVoltageMultiplier`; no gregtech equivalent. Elided when `16` (the value every
+    /// [#GTPP_TIER]-elided, i.e. tier-0, material carries).
+    public static final Property<Long> GTPP_VOLTAGE_MULTIPLIER = Property.of("gregtech", "gtppVoltageMultiplier");
     public static final Property<FluidNames> LEGACY_FLUIDS = Property.of("gregtech", "legacyFluids");
     public static final Property<String> LOCAL_NAME = Property.of("gregtech", "localName");
     public static final Property<MaterialRef> MACERATE_INTO = Property.of("gregtech", "macerateInto");
@@ -78,7 +137,6 @@ public class GTMaterialProperties {
     /// whitespace, e.g. `"Computation Base"`) and MaterialLib's own registration name is therefore a sanitized
     /// variant. Absent when the two already match -- see `ml_name()` in `scripts/mu/gen_materials.py`.
     public static final Property<String> LEGACY_NAME = Property.of("gregtech", "legacyName");
-    public static final Property<MaterialRef> MATERIAL_INTO = Property.of("gregtech", "materialInto");
     public static final Property<Integer> MELTING_POINT = Property.of("gregtech", "meltingPoint");
     /// The exact `argbMolten` legacy `MaterialBuilder#setMoltenARGB` was given; see [#ARGB]. Absent when it
     /// equals [#ARGB] (legacy `Materials#mMoltenRGBa` then defaults to `mRGBa`, matching `setARGB`'s own

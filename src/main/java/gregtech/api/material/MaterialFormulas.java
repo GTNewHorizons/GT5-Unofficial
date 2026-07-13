@@ -11,7 +11,8 @@ import gregtech.api.util.StringUtils;
 
 /// Resolves the legacy chemical-formula display string for a MaterialLib [Material] from declaration data
 /// alone, reading whichever of [GTMaterialProperties#WERKSTOFF], [GTMaterialProperties#FORMULA], or
-/// [GTMaterialProperties#GTPP] carries it -- in that priority order, which reproduces what the legacy item
+/// [GTMaterialProperties#GTPP_CHEMICAL_FORMULA] carries it -- in that priority order, which reproduces what the legacy
+/// item
 /// each ML stack replaced actually rendered: a werkstoff-backed material's legacy items (both the bartworks
 /// ones and the gregtech bridge ones, whose `Materials` formula `BridgeMaterialsLoader` overwrote from the
 /// werkstoff side unconditionally -- hence no fall-through past a present WERKSTOFF property, even when its
@@ -49,9 +50,9 @@ public final class MaterialFormulas {
                 : formula;
         }
 
-        GTppData gtpp = ml.getProperty(GTMaterialProperties.GTPP);
-        if (gtpp != null && GTUtility.isStringValid(gtpp.chemicalFormula())) {
-            return gtpp.chemicalFormula();
+        String gtppFormula = ml.getProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA);
+        if (GTUtility.isStringValid(gtppFormula)) {
+            return gtppFormula;
         }
 
         return null;
@@ -76,11 +77,10 @@ public final class MaterialFormulas {
             return GTUtility.isStringValid(formula) && !"?".equals(formula) ? formula : null;
         }
 
-        GTppData gtpp = ml.getProperty(GTMaterialProperties.GTPP);
-        if (gtpp != null && GTUtility.isStringValid(gtpp.chemicalFormula())) {
-            String raw = gtpp.chemicalFormula();
-            return raw.contains("?") ? StringUtils.sanitizeStringKeepBracketsQuestion(raw)
-                : StringUtils.sanitizeStringKeepBrackets(raw);
+        String gtppFormula = ml.getProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA);
+        if (GTUtility.isStringValid(gtppFormula)) {
+            return gtppFormula.contains("?") ? StringUtils.sanitizeStringKeepBracketsQuestion(gtppFormula)
+                : StringUtils.sanitizeStringKeepBrackets(gtppFormula);
         }
 
         return null;

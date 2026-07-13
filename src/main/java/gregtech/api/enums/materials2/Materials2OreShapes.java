@@ -192,7 +192,7 @@ public class Materials2OreShapes {
     /// captured real per-material formulas that predate gtpp entirely), so this excludes any material
     /// [MU#materialOf] can still resolve, mirroring [GTPPOreAdapter#materialOf]'s own discriminator.
     private static boolean isGtpp(Material material) {
-        return material.getProperty(GTMaterialProperties.GTPP) != null && MU.materialOf(material) == null;
+        return material.getProperty(GTMaterialProperties.GTPP_STATE) != null && MU.materialOf(material) == null;
     }
 
     private static Block stoneBlock(String variant) {

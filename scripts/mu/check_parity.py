@@ -571,6 +571,16 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
 
     expected_composition = [(ml_name(c["material"]), c["amount"]) for c in gt["composition"] if c]
     actual_composition = [(c["material"], c["amount"]) for c in ml["composition"]]
+    # A material gregtech never dumped a composition for gets one backfilled from gtpp's own pinned
+    # composition (GTMaterialProperties.COMPOSITION's javadoc) when that does not risk feeding
+    # gregtech.loaders.materials.LegacyMaterials#build's addMaterial for a bridge-built material -- accept the
+    # backfill as correct only when it exactly reproduces gtpp's own ground truth, so an unrelated composition
+    # populated some other way still fails loudly.
+    if not expected_composition and actual_composition and gtpp_info:
+        gtpp_own_composition = [
+            (ml_name(c["name"]), c["amount"]) for c in gtpp_info["composition"] if c.get("name")]
+        if gtpp_own_composition == actual_composition:
+            expected_composition = actual_composition
     if expected_composition != actual_composition:
         errors.append(f"{name}: composition expected {expected_composition!r}, got {actual_composition!r}")
 
@@ -579,7 +589,8 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
     check_ref_field(errors, name, "arcSmeltInto", gt["arcSmeltInto"], ml["arcSmeltInto"])
     check_ref_field(errors, name, "directSmelting", gt["directSmelting"], ml["directSmelting"])
     check_ref_field(errors, name, "handleMaterial", gt["handleMaterial"], ml["handleMaterial"])
-    check_ref_field(errors, name, "materialInto", gt["materialInto"], ml["materialInto"])
+    # materialInto was GTMaterialProperties.MATERIAL_INTO, removed as dead (never set, only read by the dump
+    # tool) -- ml-materials.json no longer carries this field.
 
     expected_byproducts = sorted(ml_name(b) for b in gt["oreByProducts"])
     actual_byproducts = sorted(ml["oreByProducts"])
@@ -860,8 +871,9 @@ def fold_gtpp_materials(gtpp_ported, gt_by_name, ported_name_set):
 
 
 def check_gtpp_data(errors, name, entry, ml):
-    """Verifies `GTMaterialProperties.GTPP` round-trips against the dumped gtpp scalar fields (existence +
-    every mapped [GTppData] field), for both merges and new declarations."""
+    """Verifies the decomposed `GTMaterialProperties.GTPP_*` properties round-trip against the dumped gtpp
+    scalar fields (existence + every field `MaterialDataDump#dumpMlGtpp` reassembles from them), for both
+    merges and new declarations."""
     data = ml.get("gtpp")
     if data is None:
         errors.append(f"{name}: missing gtpp property")
@@ -879,7 +891,8 @@ def check_gtpp_data(errors, name, entry, ml):
     check("usesBlastFurnace", bool(entry["usesBlastFurnace"]))
     check("isRadioactive", bool(entry["isRadioactive"]))
     check("radiationLevel", entry["radiationLevel"])
-    check("hasOre", bool(entry["hasOre"]))
+    # hasOre (GTMaterialProperties.GTPP's former hasOre field) was dropped -- never read by reconstruction,
+    # informational only; ml-materials.json's gtpp blob no longer carries it.
     check("chemicalFormula", entry["chemicalFormula"])
     check("protons", entry["protons"])
     check("neutrons", entry["neutrons"])
