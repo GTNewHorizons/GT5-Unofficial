@@ -107,7 +107,7 @@ public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFr
         tt.addMachineType("Vacuum Freezer, VF")
             .addInfo("Cools hot ingots and cells")
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("16-21", "Frost Proof Machine Casing", false)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)

@@ -2084,6 +2084,77 @@ gt.recipe.category.forge_hammer_recycling=Forge Hammer Recycling
 gt.recipe.category.tic_part_extruding=TiC Part Extruding
 gt.recipe.category.tic_bolt_molding=TiC Bolt Molding
 
+gt.recipe.industrialcokeoven=Industrial Coke Oven
+gt.recipe.matterfab2=Matter Fabricator
+gt.recipe.rocketenginefuel=Rocket Engine Fuel
+gt.recipe.quantumforcesmelter=Quantum Force Transformer
+gt.recipe.chemicaldehydrator=Dehydrator
+gt.recipe.vacfurnace=Vacuum Furnace
+gt.recipe.alloyblastsmelter=Alloy Blast Smelter
+gt.recipe.lftr=Liquid Fluoride Thorium Reactor
+gt.recipe.lftr.sparging=LFTR Gas Sparging
+gt.recipe.nuclearsaltprocessingplant=Nuclear Salt Processing Plant
+gt.recipe.oremill=Milling
+gt.recipe.fissionfuel=Nuclear Fuel Processing
+gt.recipe.coldtrap=Cold Trap
+gt.recipe.reactorprocessingunit=Reactor Processing Unit
+gt.recipe.simplewasher=Simple Dust Washer
+gt.recipe.moleculartransformer=Molecular Transformer
+gt.recipe.fluidchemicaleactor=Chemical Plant
+gt.recipe.RTGgenerators=RTG
+gt.recipe.thermalboiler=Thermal Boiler
+gt.recipe.solartower=Solar Tower
+gt.recipe.cyclotron=COMET - Compact Cyclotron
+gt.recipe.fishpond=Zhuhai - Fishing Port
+gt.recipe.multicentrifuge=Multiblock Centrifuge
+gt.recipe.multielectro=Multiblock Electrolyzer
+gt.recipe.multimixer=Multiblock Mixer
+gt.recipe.multidehydrator=Multiblock Dehydrator
+gt.recipe.semifluidgeneratorfuels=Semifluid Generator Fuels
+gt.recipe.flotationcell=Flotation Cell
+gt.recipe.treefarm=Tree Growth Simulator
+gt.recipe.algae_pond=Algae Pond
+gt.recipe.multiblockrockbreaker=Boldarnator
+gt.recipe.category.abs_non_alloy_recipes=ABS Non-Alloy Recipes
+
+# NEI keys
+gt.nei.lftr.power=Power: %s EU/t per Dynamo
+gt.nei.lftr.dynamo=Dynamo: %s EU
+gt.nei.lftr.total=Total: %s EU
+gt.nei.milling.not_consumed=Does not always get consumed in the process
+gt.nei.chemical_plant.not_consumed=Does not always get consumed in the process
+gt.nei.chemical_plant.higher_tier_casing=Higher tier Pipe Casings allow this item to last longer
+gt.nei.chemplant.tier.1=Bronze
+gt.nei.chemplant.tier.2=Steel
+gt.nei.chemplant.tier.3=Aluminium
+gt.nei.chemplant.tier.4=Stainless Steel
+gt.nei.chemplant.tier.5=Titanium
+gt.nei.chemplant.tier.6=Tungstensteel
+gt.nei.chemplant.tier.7=Laurenium
+gt.nei.chemplant.tier.8=Botmium
+gt.nei.rtg.days=Fuel Value: %s Minecraft Days
+gt.nei.solar_tower.1=Solar Heater rings boost tier
+gt.nei.solar_tower.2=R1:T1, R2:T2, R3:T4, R4:T8, R5:T16
+gt.nei.solar_tower.3=Input Amount = 1000 x T
+gt.nei.tgs.1=The sapling is not consumed.
+gt.nei.tgs.2=If %s is provided,
+gt.nei.tgs.3=Saplings are made instead.
+gt.nei.tgs.sapling=Outputted if %s is provided
+gt.nei.tgs.tooltip.sapling=Place in machine controller slot
+gt.nei.tgs.tooltip.saw=Place in an input bus to harvest logs
+gt.nei.tgs.tooltip.needsSaw=Requires a Saw to harvest
+gt.nei.tgs.tooltip.cutter=Place in an input bus to harvest saplings
+gt.nei.tgs.tooltip.needsCutter=Requires a Branch Cutter to harvest
+gt.nei.tgs.tooltip.shears=Place in an input bus to harvest leaves
+gt.nei.tgs.tooltip.needsShears=Requires Shears to harvest
+gt.nei.tgs.tooltip.knife=Place in an input bus to harvest fruit
+gt.nei.tgs.tooltip.needsKnife=Requires a Knife to harvest
+gt.nei.tgs.tooltip.multiplier=Output multiplier:
+gt.nei.tgs.info-1=Output is further boosted
+gt.nei.tgs.info-2=by machine energy tier
+gt.nei.tgs.info-3=and tool type
+gt.nei.ap.tier=Algae Pond Tier: %s
+
 GT5U.recipes.recipe_by.original=Original Recipe by: %s
 GT5U.recipes.recipe_by.modified=Modified by: %s
 GT5U.recipes.recipe_by=Original Recipe by: %s
@@ -8568,6 +8639,18 @@ gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
 gt.blocktintedglass.3.name=Tinted Industrial Glass (Black)
+gt.blocktintedglass.4.name=Tinted Industrial Glass (Brown)
+gt.blocktintedglass.5.name=Tinted Industrial Glass (Red)
+gt.blocktintedglass.6.name=Tinted Industrial Glass (Orange)
+gt.blocktintedglass.7.name=Tinted Industrial Glass (Yellow)
+gt.blocktintedglass.8.name=Tinted Industrial Glass (Lime)
+gt.blocktintedglass.9.name=Tinted Industrial Glass (Green)
+gt.blocktintedglass.10.name=Tinted Industrial Glass (Cyan)
+gt.blocktintedglass.11.name=Tinted Industrial Glass (Light Blue)
+gt.blocktintedglass.12.name=Tinted Industrial Glass (Blue)
+gt.blocktintedglass.13.name=Tinted Industrial Glass (Purple)
+gt.blocktintedglass.14.name=Tinted Industrial Glass (Magenta)
+gt.blocktintedglass.15.name=Tinted Industrial Glass (Pink)
 
 # Block Granites
 gt.blockgranites.0.name=Black Granite
@@ -8940,7 +9023,7 @@ GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing aro
 GT5U.tooltip.bec-generator.bec-hatch-pos=Back center casing
 
 # BEC Storage Structure Hints
-GT5U.tooltip.bec-storage.controller-pos=Bottom front of central pillar, 3rd layer
+GT5U.tooltip.bec-storage.controller-pos=Front center of central column, 3rd layer
 GT5U.tooltip.bec-storage.hatch-pos=Any electromagnetically-isolated casing
 GT5U.tooltip.bec-storage.bec-hatch-pos=Any center side casing
 
