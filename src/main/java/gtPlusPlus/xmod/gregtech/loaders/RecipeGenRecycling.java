@@ -172,8 +172,8 @@ public class RecipeGenRecycling implements Runnable {
             final FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
             // Temporary: align fluid extraction recycling EU/t with GT++ fluid recipe tiering
             // to avoid mid-tier uptiers (e.g., Tumbaga/Potin). This uses the same tier->voltage
-            // mapping as RecipeGenFluids via material.vVoltageMultiplier.
-            long powerUsage = Math.max(8L, material.vVoltageMultiplier);
+            // mapping as RecipeGenFluids via material.voltageMultiplier.
+            long powerUsage = Math.max(8L, material.voltageMultiplier);
             final int powerTier = GTUtility.getTier(powerUsage);
             if (powerTier > 0 && powerTier < VP.length && powerUsage > VP[powerTier]) {
                 powerUsage = VP[powerTier];

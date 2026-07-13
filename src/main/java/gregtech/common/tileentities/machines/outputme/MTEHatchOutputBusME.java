@@ -57,6 +57,7 @@ import gregtech.api.enums.OutputBusType;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
+import gregtech.api.interfaces.IOutputTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -191,16 +192,20 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             .getItemInventory();
     }
 
-    class MEOutputBusTransaction implements IOutputBusTransaction, IOutputBusTransaction.IRecipeCheckAware {
+    class MEOutputBusTransaction implements IOutputBusTransaction, IOutputTransaction.IRecipeCheckAware,
+        IOutputTransaction.IProtectOutputAware, IOutputTransaction.IDynamicCapacityOutputAware {
 
         private final AECacheCounter<GTUtility.ItemId> cache = new AECacheCounter<>();
         private final long availableSpace;
         private boolean active = true;
+        private boolean allowAnyInput = false;
         private boolean isRecipeCheck = false;
+        private boolean isProtectOutput = true;
+        private boolean isDynamicCapacity = false;
         private IMEInventoryHandler<IAEItemStack> cell = null;
 
         public MEOutputBusTransaction() {
-            availableSpace = provider.getAvailableSpace();
+            availableSpace = provider.getPhysicalSpace();
         }
 
         public void setRecipeCheck(boolean isRecipeCheck) {
@@ -212,6 +217,22 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                     .cell()
                     .getCellInventory(getCellStack().copy(), getISaveProvider(), getChannel());
             }
+            updateFlags();
+        }
+
+        public void setProtectOutput(boolean isProtectOutput) {
+            this.isProtectOutput = isProtectOutput;
+            updateFlags();
+        }
+
+        private void updateFlags() {
+            isDynamicCapacity = isRecipeCheck && isProtectOutput && shouldCheck() && !provider.isDistribution();
+            allowAnyInput = isRecipeCheck ? availableSpace > 0
+                : provider.getLastInputTick() == provider.getTickCounter();
+        }
+
+        public boolean isDynamicCapacity() {
+            return isDynamicCapacity;
         }
 
         @Override
@@ -221,11 +242,11 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
         @Override
         public boolean hasAvailableSpace() {
-            return !isRecipeCheck || cache.getTotal() < availableSpace;
+            return allowAnyInput || cache.getTotal() < availableSpace;
         }
 
         @Override
-        public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
+        public boolean storePartial(GTUtility.ItemId id, @NotNull ItemStack stack) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             if (isRecipeCheck && provider.shouldCheck()) {
@@ -236,31 +257,31 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                 stack.stackSize -= inserted;
                 return stack.stackSize == 0;
             }
-            if (!hasAvailableSpace() || !isFilteredToItem(id)) {
+            if (!hasAvailableSpace() || !isFilteredTo(id)) {
                 return false;
             }
-
             cache.insert(id, stack.stackSize);
             stack.stackSize = 0;
-
             return true;
         }
 
         @Override
-        public void completeItem(GTUtility.ItemId id) {
+        public void complete(GTUtility.ItemId id) {
             // Do nothing
         }
 
         @Override
         public void commit() {
-            cache.iterateAll(
-                (id, amount) -> {
-                    provider.addToCache(
-                        AEItemStack.create(id.getItemStack())
-                            .setStackSize(amount));
-                });
-
-            MTEHatchOutputBusME.this.markDirty();
+            if (cache.getTotal() > 0) {
+                cache.iterateAll(
+                    (id, amount) -> {
+                        provider.addToCache(
+                            AEItemStack.create(id.getItemStack())
+                                .setStackSize(amount));
+                    });
+                provider.updateLastInputTick();
+                MTEHatchOutputBusME.this.markDirty();
+            }
             active = false;
         }
     }
@@ -332,6 +353,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     public boolean shouldCheck() {
         return provider.shouldCheck();
+    }
+
+    public boolean hasPhysicalSpace() {
+        return provider.hasPhysicalSpace();
     }
 
     public boolean hasAvailableSpace() {
