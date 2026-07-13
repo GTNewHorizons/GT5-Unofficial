@@ -514,10 +514,11 @@ public class CameraViewportClientManager extends CameraViewportManager {
             double centerZ = activeConnection.getMachineCoord().posZ + 0.5;
             double dx = dummyCamera.posX - centerX;
             double dz = dummyCamera.posZ - centerZ;
-            double dist = Math.sqrt(dx * dx + dz * dz);
+            double distSq = dx * dx + dz * dz;
             double R = 32.0;
 
-            if (dist > R) {
+            if (distSq > R * R) {
+                double dist = Math.sqrt(distSq);
                 cameraX = centerX + (dx / dist) * R;
                 cameraZ = centerZ + (dz / dist) * R;
             } else {
@@ -714,14 +715,16 @@ public class CameraViewportClientManager extends CameraViewportManager {
         double centerZ = activeConnection.getMachineCoord().posZ + 0.5;
         double dx = cameraX - centerX;
         double dz = cameraZ - centerZ;
-        double r = Math.sqrt(dx * dx + dz * dz);
-        double distToCircleEdge = 32.0 - r;
+        double rSq = dx * dx + dz * dz;
 
-        if (distToCircleEdge > 12.0) {
+        if (rSq < 400.0) {
             return 100;
-        } else if (distToCircleEdge <= 0.0) {
+        } else if (rSq >= 1024.0) {
             return 10;
         } else {
+            // At very edge
+            double r = Math.sqrt(rSq);
+            double distToCircleEdge = 32.0 - r;
             return 10 + (int) (distToCircleEdge * 7.5);
         }
     }
