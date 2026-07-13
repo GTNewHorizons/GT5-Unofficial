@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTDataUtils.oneshot;
 import static gregtech.api.util.GTDataUtils.zip;
+import static gregtech.api.util.GTUtility.mulSafe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -541,8 +542,11 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             return;
         }
 
-        int divisor = this.parallelRecipesInProgress
-            * Math.max(this.slowdowns + 1, this.speedDivisorParameter.getValue());
+        int parallelsDivisor = this.parallelRecipesInProgress;
+        int aboveTierDivisor = 1 << Math.abs(this.requiredTier.tier - providedTier.tier);
+        int slowdownDivisor = Math.max(this.slowdowns + 1, this.speedDivisorParameter.getValue());
+
+        int divisor = mulSafe(mulSafe(parallelsDivisor, aboveTierDivisor), slowdownDivisor);
 
         this.subtickCounter += availableNanites;
 
@@ -660,9 +664,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         int availableNanites = assembler == null ? 0 : assembler.getAvailableNanites();
 
         int parallelsDivisor = this.parallelRecipesInProgress;
+        int aboveTierDivisor = this.requiredTier == null || providedTier == null ? 1 : (1 << Math.abs(this.requiredTier.tier - providedTier.tier));
         int slowdownDivisor = Math.max(this.slowdowns + 1, this.speedDivisorParameter.getValue());
 
-        return availableNanites / (float) parallelsDivisor / (float) slowdownDivisor;
+        return availableNanites / (float) parallelsDivisor / (float) aboveTierDivisor / (float) slowdownDivisor;
     }
 
     @OCMethod

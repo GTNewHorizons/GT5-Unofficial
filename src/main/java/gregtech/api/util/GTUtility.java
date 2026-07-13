@@ -3674,6 +3674,19 @@ public class GTUtility {
         return result;
     }
 
+    /// Multiplies two integers, clamping to the min/max for an int if the result overflows.
+    public static int mulSafe(int a, int b) {
+        try {
+            return Math.multiplyExact(a, b);
+        } catch (ArithmeticException ignored) {
+            if (a > 0 == b > 0) {
+                return Integer.MAX_VALUE;
+            } else {
+                return Integer.MIN_VALUE;
+            }
+        }
+    }
+
     /**
      * Hash an item stack for the purpose of storing hash across launches
      */
