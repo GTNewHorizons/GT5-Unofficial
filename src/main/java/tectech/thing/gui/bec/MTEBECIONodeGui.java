@@ -101,6 +101,7 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
                             CondensateType.getCondensateName(e.getKey()),
                             consumed,
                             e.getLongValue()));
+                    ret.append("\n");
                 }
             }
 
