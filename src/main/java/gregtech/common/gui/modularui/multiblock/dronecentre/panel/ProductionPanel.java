@@ -55,6 +55,7 @@ import gregtech.common.tileentities.machines.multi.drone.DroneConnection;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.production.RecordUtil;
 import gregtech.common.tileentities.machines.multi.drone.production.StatsBundle;
+import it.unimi.dsi.fastutil.objects.Object2LongLinkedOpenHashMap;
 
 public class ProductionPanel extends ModularPanel {
 
@@ -383,30 +384,31 @@ public class ProductionPanel extends ModularPanel {
 
     private <T> IWidget createStatsGrid(Map<T, Long> data, int childPadding,
         Function<T, IWidget> displayWidgetFactory) {
-        Map<T, Long> filteredData = data.entrySet()
-            .stream()
-            .filter(entry -> matchesSearchFilter(entry.getKey()))
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        Object2LongLinkedOpenHashMap<T> filteredData = new Object2LongLinkedOpenHashMap<>();
+        data.forEach((key, value) -> {
+            if (matchesSearchFilter(key)) {
+                filteredData.put(key, value.longValue());
+            }
+        });
 
         if (filteredData.isEmpty()) {
             return IKey.lang("GT5U.gui.text.drone_no_data")
                 .asWidget();
         }
-        List<IWidget> cells = filteredData.entrySet()
-            .stream()
-            .map(entry -> {
-                T item = entry.getKey();
-                Long stackSize = entry.getValue();
-                return (IWidget) Flow.row()
+        List<IWidget> cells = new ArrayList<>();
+        for (var entry : filteredData.object2LongEntrySet()) {
+            T item = entry.getKey();
+            long stackSize = entry.getLongValue();
+            cells.add(
+                Flow.row()
                     .coverChildren()
                     .childPadding(childPadding)
                     .paddingRight(2)
                     .child(displayWidgetFactory.apply(item))
                     .child(
                         new TextWidget<>(DroneCentreGuiUtil.formatValueWithUnits(stackSize))
-                            .tooltipBuilder(builder -> builder.add(formatNumber(stackSize))));
-            })
-            .collect(Collectors.toList());
+                            .tooltipBuilder(builder -> builder.add(formatNumber(stackSize)))));
+        }
 
         Grid grid = new Grid().widthRel(1f)
             .scrollable(new VerticalScrollData(true))
