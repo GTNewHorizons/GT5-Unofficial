@@ -42,8 +42,8 @@ public enum FoundryModule {
             if(foundryData.universalCollapserPresent) return;
             foundryData.universalCollapserPresent = true;
             foundryData.UIVRecipesEnabled = true;
-            foundryData.euEffMultiplier *= 2;
-            foundryData.speedMultiplier *= 2;
+            foundryData.euEffMultiplier *= 4;
+            foundryData.speedMultiplier *= 4;
         }
     ),
     POWER_EFFICIENT_SUBSYSTEMS(
