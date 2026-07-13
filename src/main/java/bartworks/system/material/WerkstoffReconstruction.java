@@ -24,9 +24,9 @@ import gregtech.api.material.WerkstoffData;
 import gregtech.api.material.WerkstoffRefStack;
 import gregtech.loaders.materials.LegacyMaterials;
 
-/// Rebuilds every legacy `Werkstoff` from MaterialLib data (the stage-10 mirror of the stage-04
-/// `MaterialsLegacyBridge` flip): the pool declaration lists (`WerkstoffLoader`, `GGMaterial`,
-/// `WerkstoffMaterialPool`, `BotWerkstoffMaterialPool`) now initialize each field via [#byId], and the first
+/// Rebuilds every legacy `Werkstoff` from MaterialLib data (the werkstoff counterpart of
+/// `MaterialsLegacyBridge`): the pool declaration lists (`WerkstoffLoader`, `GGMaterial`,
+/// `WerkstoffMaterialPool`, `BotWerkstoffMaterialPool`) initialize each field via [#byId], and the first
 /// lookup builds ALL werkstoff-backed materials in ascending-first-id order (matching declaration-order
 /// dependencies -- every werkstoff-to-werkstoff contents reference points at a lower id, validated at build).
 ///

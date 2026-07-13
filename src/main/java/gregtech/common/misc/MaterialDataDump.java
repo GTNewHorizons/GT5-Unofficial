@@ -71,7 +71,7 @@ import gregtech.common.fluid.GTFluid;
 import gtPlusPlus.core.material.Material;
 
 /// Dumps the four legacy material systems -- GregTech `Materials`, `OrePrefixes`, bartworks `Werkstoff`, and
-/// gtPlusPlus `Material` -- plus the resolved MaterialLib registry view of the stage-03 `Materials2` port, to
+/// gtPlusPlus `Material` -- plus the resolved MaterialLib registry view of the `Materials2` port, to
 /// JSON, for consumption by the material unification tooling.
 ///
 /// Triggered from `GTMod`'s `FMLLoadCompleteEvent` handler when the `gt.dumpMaterialData` system property is
@@ -108,10 +108,9 @@ public final class MaterialDataDump {
         write(new File(directory, "recipe-census.json"), dumpRecipeCensus(), COMPACT_GSON);
     }
 
-    /// Maps every public static `Werkstoff` field of the pool declaration classes to its werkstoff id, so the
-    /// stage-10 reconstruction flip can rewrite each field to a `byId(...)` lookup without parsing the
-    /// declaration source (field names do not reliably match werkstoff names, e.g. `Bismuthinit` vs
-    /// "Bismuthinite").
+    /// Maps every public static `Werkstoff` field of the pool declaration classes to its werkstoff id -- the
+    /// field-to-id ground truth behind those classes' `byId(...)` initializers, needed because field names do
+    /// not reliably match werkstoff names (e.g. `Bismuthinit` vs "Bismuthinite").
     private static List<Map<String, Object>> dumpWerkstoffFields() {
         List<Map<String, Object>> out = new ArrayList<>();
         Class<?>[] pools = { bartworks.system.material.WerkstoffLoader.class, goodgenerator.items.GGMaterial.class,
@@ -427,9 +426,8 @@ public final class MaterialDataDump {
         return json;
     }
 
-    /// Keyed by [MaterialIconRegistry.IconType] ordinal. The plan for this dump assumed 192 slots sourced
-    /// directly from `TextureSet`; the actual per-slot suffixes live on `MaterialIconRegistry.IconType`, which
-    /// currently declares 158 entries -- see the stage-01 report for details.
+    /// Keyed by [MaterialIconRegistry.IconType] ordinal -- the per-slot suffixes live on
+    /// `MaterialIconRegistry.IconType` (currently 158 entries), not on `TextureSet`.
     private static Map<Integer, String> dumpTextureSlots() {
         Map<Integer, String> slots = new TreeMap<>();
         for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.values()) {
@@ -564,7 +562,7 @@ public final class MaterialDataDump {
         return out;
     }
 
-    /// PINNED-CAPTURE TRAP: the committed `scripts/mu/dumps/werkstoff.json` is a pre-stage-10 capture and
+    /// PINNED-CAPTURE TRAP: the committed `scripts/mu/dumps/werkstoff.json` is a pre-reconstruction capture and
     /// must not be refreshed from a post-fold boot. `hasItemType` reflects `addItemsForGeneration`'s reroute
     /// loop, which removes any prefix whose item the oredict already provides -- on a post-fold tree that
     /// includes MaterialLib's own unified shapes (generated FROM this dump), so a refresh would shrink the
@@ -586,8 +584,8 @@ public final class MaterialDataDump {
     /// unlocalized name to make the dump byte-identical between runs (see the `gtpp-materials.json` ordering
     /// note in the material-unification tooling).
     ///
-    /// PINNED-CAPTURE TRAP: the committed `scripts/mu/dumps/gtpp-materials.json` is pinned at its stage-11
-    /// commit-1 capture and must not be refreshed from a later boot. `Material#setTextureSet`'s composition
+    /// PINNED-CAPTURE TRAP: the committed `scripts/mu/dumps/gtpp-materials.json` is a pre-reconstruction
+    /// capture and must not be refreshed from a later boot. `Material#setTextureSet`'s composition
     /// heuristic is registration-order-sensitive for 15 materials (AceticAnhydride, CopperIISulfate,
     /// CopperIISulfatePentahydrate, CyanoaceticAcid, EglinSteel, Grisium, HydrogenCyanide, Indalloy140,
     /// Laurenium, Octiron, PotassiumNitrate, SodiumCyanide, SodiumNitrate, SolidAcidCatalystMixture,
@@ -991,7 +989,7 @@ public final class MaterialDataDump {
     // region legacy-variants.json
 
     /// Every (metaItemName, prefixName, materialName, damage) tuple a [MetaGeneratedItemX32] constructor
-    /// actually created, captured while `gt.dumpMaterialData` bypassed the stage-05 cutover skip. Ground
+    /// actually created, captured while `gt.dumpMaterialData` bypassed the item-cutover skip. Ground
     /// truth for which shapes had a real legacy item, since [#dumpGeneratedPrefixes] alone overcounts:
     /// capability bits (`doGenerateItem`) can be set for a prefix that never held a constructor slot, and can
     /// drift between construction time and this dump.
@@ -1063,8 +1061,8 @@ public final class MaterialDataDump {
 
     /// Per-[RecipeMap] recipe count plus a stable digest of every recipe's item/fluid inputs and outputs, and
     /// the number of vanilla crafting-table recipes with a MaterialLib [ShapeItem] among their ingredients --
-    /// ground truth for stage 09's before/after parity check on the `Processing*` -> `ShapeConsumer` recipe
-    /// generation port. Every recipe map's digest list is written pre-sorted lexicographically, which is what
+    /// ground truth for before/after parity checks on recipe generation (e.g. the `Processing*` ->
+    /// `ShapeConsumer` dispatch). Every recipe map's digest list is written pre-sorted lexicographically, which is what
     /// makes this deterministic across runs regardless of a given [RecipeMapBackend]'s internal (possibly
     /// hash-based) iteration order: only the multiset of digests is ground truth, never their order.
     private static Map<String, Object> dumpRecipeCensus() {

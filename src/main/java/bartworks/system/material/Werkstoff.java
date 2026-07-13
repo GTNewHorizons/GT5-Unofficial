@@ -956,7 +956,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             return this;
         }
 
-        /// Whether `p` was explicitly enabled via [#addPrefix] -- consulted by the stage-10 reconstruction's
+        /// Whether `p` was explicitly enabled via [#addPrefix] -- consulted by the reconstruction's
         /// generation-bit pass (see [WerkstoffReconstruction#applyGenerationBits]).
         boolean isExplicitlyEnabled(OrePrefixes p) {
             return this.enablePrefixes.contains(p);

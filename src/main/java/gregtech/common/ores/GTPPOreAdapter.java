@@ -25,8 +25,8 @@ import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialReconstruction;
 
-/// The gtPlusPlus-material [IOreAdapter], reimplemented over MaterialLib the same way stage 10.2's
-/// [BWOreAdapter] ported [bartworks.system.material.Werkstoff] ore: resolves through a material's MaterialLib
+/// The gtPlusPlus-material [IOreAdapter], reimplemented over MaterialLib the same way [BWOreAdapter]
+/// reimplements [bartworks.system.material.Werkstoff] ore: resolves through a material's MaterialLib
 /// counterpart (see [#materialOf]) before falling back to the legacy [BlockBaseOre] instance, which stays
 /// constructed and registered (see that class) for pre-migration saves and for any gtpp material that never
 /// gained [Materials2OreShapes#ore] membership.

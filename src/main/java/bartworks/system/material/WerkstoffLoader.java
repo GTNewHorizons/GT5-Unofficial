@@ -301,13 +301,13 @@ public class WerkstoffLoader {
     }
 
     public static ItemStack getCorrespondingItemStackUnsafe(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
-        // Stage-10 item/ore/block/casing cutover: a werkstoff's item prefixes resolve to the MaterialLib stack
+        // Item/ore/block/casing cutover: a werkstoff's item prefixes resolve to the MaterialLib stack
         // (via the bridge material, which maps proxies and reconstructed werkstoffe alike; a third-party
         // werkstoff's bridge is unknown to MU and falls through to the legacy paths). `ore`/`oreSmall`/`block`/
-        // `blockCasing`/`blockCasingAdvanced` now resolve through MU too (Materials2OreShapes/
+        // `blockCasing`/`blockCasingAdvanced` resolve through MU too (Materials2OreShapes/
         // Materials2BlockShapes; the multiblock structure matchers referencing the casing blocks by identity
-        // resolve dynamically now too, see Casings#bwCasing). `sheetmetal`/`frameGt` stay legacy-canonical --
-        // out of scope for the stage-10 block cutover.
+        // resolve dynamically as well, see Casings#bwCasing). `sheetmetal`/`frameGt` stay legacy-canonical --
+        // not part of the block cutover.
         if (orePrefixes != OrePrefixes.sheetmetal && orePrefixes != OrePrefixes.frameGt) {
             ItemStack mlStack = MU.stack(orePrefixes, werkstoff.getBridgeMaterial(), amount);
             if (mlStack != null) return mlStack;
@@ -464,7 +464,7 @@ public class WerkstoffLoader {
     private static void addItemsForGeneration() {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             // Reconstructed werkstoffe resolve their fluids from the registry: MaterialLib registered every
-            // werkstoff fluid at its own preInit (each bridge mirror's stage-06 LEGACY_FLUIDS capture), and
+            // werkstoff fluid at its own preInit (each bridge mirror's LEGACY_FLUIDS capture), and
             // rebuilding through GTFluidFactory would re-configure the live fluid from reconstructed stats
             // (whose dump-masked melting point turns legacy "unset" into 1123 K). Only a third-party
             // WerkstoffAdder's werkstoff, unknown to MaterialLib, still builds its fluid here.
@@ -716,7 +716,7 @@ public class WerkstoffLoader {
 
     /// Resolves a reconstructed werkstoff's MaterialLib-registered fluid, fail-loud (mirrors
     /// `LegacyMaterials#wireFluids`): the registered name is the Forge-lowercased default name with the given
-    /// prefix, exactly what the stage-06 fluid shapes registered.
+    /// prefix, exactly what MaterialLib's fluid shapes registered.
     private static Fluid resolveMaterialLibFluid(Werkstoff werkstoff, String prefix) {
         String name = prefix + werkstoff.getDefaultName()
             .toLowerCase(java.util.Locale.ENGLISH);

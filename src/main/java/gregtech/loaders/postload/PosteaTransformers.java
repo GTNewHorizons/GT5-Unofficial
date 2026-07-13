@@ -159,8 +159,8 @@ public class PosteaTransformers implements Runnable {
 
     /// The five materials whose legacy `cell` item was `miscutils:itemCell<Name>` (the same naming convention
     /// as every other gtpp-owned cell -- see `scripts/mu/gen_gtpp_item_transformers.py`) at some point in
-    /// history, but had already resolved to a gregtech-owned `materiallib:cell` stack by the time the stage-11
-    /// dump ran (these five are also plain gregtech elements whose own fluid/cell cutover -- stage 06 -- claims
+    /// history, but had already resolved to a gregtech-owned `materiallib:cell` stack by the time the pinned
+    /// dump was captured (these five are also plain gregtech elements whose own fluid/cell cutover claims
     /// the oredict `cell<Name>` slot before gtpp's `Material` construction ever runs, so their dump never
     /// captured the miscutils registry name at all). [GtppItemCutoverTable] is generated purely from that dump
     /// and so cannot include a row for them; they are migrated by hand instead, to the same fallback

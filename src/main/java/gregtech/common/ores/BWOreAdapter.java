@@ -56,8 +56,8 @@ import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 ///
 /// [#init] still constructs the eight legacy [BWMetaGeneratedOres] instances (2 stone types x {big, small} x
 /// {natural, non-natural} -- see [#legacyOres]) exactly as before, registered under their original `bw.blockores*`
-/// ids -- the same "construct, then get superseded by the MaterialLib association" pattern stage 07/08
-/// established for `BlockMetal`/`GTBlockOre`. A reconstructed werkstoff's placed/inventory legacy ore actively
+/// ids -- the same "construct, then get superseded by the MaterialLib association" pattern
+/// `BlockMetal`/`GTBlockOre` use. A reconstructed werkstoff's placed/inventory legacy ore actively
 /// converts to the MaterialLib equivalent as it loads (see [#registerCurrentGenTransformers]); a third-party
 /// (non-reconstructed) werkstoff has no MaterialLib ore material at all -- [#getBlock] falls back to the legacy
 /// block for it, same as before the cutover, so it keeps every legacy path.

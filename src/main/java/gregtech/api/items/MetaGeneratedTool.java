@@ -134,7 +134,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     /// Tool durability/speed/quality/enchant are read from [GTMaterialProperties] on the MaterialLib material a
     /// legacy [Materials] ported from, not from the legacy fields directly, even though the legacy facade
     /// populates those fields from the same properties (see `LegacyMaterials#build`) -- this keeps
-    /// `MetaGeneratedTool`'s stat computation off the legacy type ahead of its stage-13 removal.
+    /// `MetaGeneratedTool`'s stat computation off the deprecated legacy type.
     private static int getToolDurability(Materials aMaterial) {
         com.ruling_0.materiallib.api.Material mlMaterial = MU.material(aMaterial);
         Integer durability = mlMaterial == null ? null : mlMaterial.getProperty(GTMaterialProperties.DURABILITY);

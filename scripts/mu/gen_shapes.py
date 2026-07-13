@@ -141,11 +141,11 @@ def load_dropped_prefixes():
     )
 
 
-# gtPlusPlus-only prefixes with no stage-02 constructor slot (the is_included bugfix list excludes
+# gtPlusPlus-only prefixes with no legacy constructor slot (the is_included bugfix list excludes
 # milled: no MetaGeneratedItemX32 slot ever existed) but with real per-material legacy items
 # (gtPlusPlus.core.item.base.ore.BaseItemMilledOre), so gtpp materials need a real shape to cut over
-# onto. Folded into Materials2Shapes at the stage-11 gtpp fold; not dump-driven, so no family or
-# ShapeData membership.
+# onto. Emitted into Materials2Shapes alongside the dump-driven prefixes; not dump-driven itself, so
+# no family or ShapeData membership.
 GTPP_EXTRA_SHAPES = [{"name": "milled", "localNameFormat": "Milled %s"}]
 
 
@@ -181,7 +181,7 @@ def write_shapes_file(prefixes):
         "/// `BaseItemMilledOre` constructed real per-material items despite the prefix never holding a legacy"
     )
     lines.append(
-        "/// `MetaGeneratedItemX32` slot, so gtpp materials need a real shape to cut over onto (stage-11 gtpp fold)."
+        "/// `MetaGeneratedItemX32` slot, so gtpp materials need a real shape to cut over onto."
     )
     lines.append("public class Materials2Shapes {")
     lines.append("")
@@ -228,9 +228,9 @@ def write_families_file(prefixes):
     lines.append("/// Capability families mirroring the legacy `OrePrefixes` generation-bit groups (`DUST`, `METAL`,")
     lines.append("/// `GEM`, `ORE`, `CELL`, `PLASMA`, `TOOL`, `GEAR`, `EMPTY`). A shape with generation bits `B` joins")
     lines.append("/// every family whose bit is set in `B`, which over-generates relative to the legacy AND/OR")
-    lines.append("/// capability logic where a material's own bits must also overlap; stage 03's codegen corrects")
-    lines.append("/// per-material differences with explicit `generateShape`/`removeShape` deltas computed from the")
-    lines.append("/// dumped `generatedPrefixes` ground truth.")
+    lines.append("/// capability logic where a material's own bits must also overlap; `Materials2Materials`'s")
+    lines.append("/// declarations correct per-material differences with explicit `generateShape`/`removeShape` deltas")
+    lines.append("/// computed from the dumped `generatedPrefixes` ground truth.")
     lines.append("public class Materials2Families {")
     lines.append("")
     lines.append("    // spotless:off")

@@ -11,7 +11,7 @@ import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
-/// Hands the ore-dictionary unificator MaterialLib stacks for the stage-05 item cutover: every (prefix,
+/// Hands the ore-dictionary unificator MaterialLib stacks for the item cutover: every (prefix,
 /// material) pair [MU] maps to a MaterialLib shape gets unified the same way
 /// [gregtech.api.items.MetaGeneratedItemX32]'s constructor unifies its own generated stacks (including the
 /// soldering-metal and toolbox bookkeeping), run after that constructor so the MaterialLib stack becomes

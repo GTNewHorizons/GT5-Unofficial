@@ -10,7 +10,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 
-/// The legacy `Materials` fields `MaterialsInit` built directly (not through the MaterialLib stage-03 port):
+/// The legacy `Materials` fields built directly rather than through the MaterialLib port:
 /// materials with no generated items, fluids, or composition of their own, and never referenced by a ported
 /// material's composition/ore-byproduct/smelt-macerate-arc-smelt-direct-smelt links (`gen_materials.py`'s
 /// marker-skip rule -- see `scripts/mu/gen_materials.py`'s `compute_ported`). MaterialLib carries no data for

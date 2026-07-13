@@ -569,14 +569,14 @@ public class Material implements IOreMaterial {
     /// Rebuilds a material from MaterialLib data (`MaterialReconstruction`'s counterpart to the public
     /// constructors above): every scalar `data` carries is already the value the legacy constructor's
     /// heuristics (composite-average color/melting/boiling/radiation, texture-set voting, hash-based grey
-    /// fallback) would have computed, captured by the stage-11 dump after those heuristics ran. Assigning them
+    /// fallback) would have computed, captured by the pinned dump after those heuristics ran. Assigning them
     /// directly instead of replaying the heuristics matters because several of them are registration-order
     /// sensitive (`setTextureSet`'s composition vote varied run-to-run for 15 legacy materials -- see
     /// `MaterialDataDump`'s gtpp-materials.json capture note) and would not reliably reproduce the pinned
     /// result if re-run against a differently-ordered reconstruction pass.
     ///
     /// Fluid/cell registration is the one legacy side effect still replayed rather than pinned: gtpp fluids
-    /// are not MaterialLib-owned yet (that is a later stage), so `performFluidAndCellRegistration` -- itself a
+    /// are not MaterialLib-owned, so `performFluidAndCellRegistration` -- itself a
     /// deterministic oredict/registry lookup, not a heuristic -- runs exactly when the dump shows it did
     /// (`data.generatesFluid()`), reproducing the same registered fluid/cell either way.
     Material(String unlocalizedName, String defaultLocalName, MaterialState defaultState, TextureSet textureSet,
@@ -704,7 +704,7 @@ public class Material implements IOreMaterial {
     /// already registered under [#reconstructedFluidName]/[#reconstructedPlasmaName], instead of gtpp's
     /// legacy `generateFluid`/`generatePlasma`/`checkForCellAndGenerate` construction path: those would either
     /// register a duplicate fluid MaterialLib now owns, or re-configure a live one with reconstruction-era
-    /// values (the stage-10 werkstoff trap this mirrors -- see `WerkstoffLoader#addItemsForGeneration`).
+    /// values (the same werkstoff trap -- see `WerkstoffLoader#addItemsForGeneration`).
     /// Resolution is fail-loud: MaterialLib resolves every material fluid before gtPlusPlus's own construction
     /// runs, so a missing name here is a bug, not a legitimate absence (a material with no fluid at all never
     /// reaches this method, gated by `data.generatesFluid()` at the call site).
@@ -946,16 +946,15 @@ public class Material implements IOreMaterial {
             if (mlStack != null) return mlStack;
         } else if (MaterialReconstruction.isPrefixEligibleForCutover(aPrefix)) {
             // A material backed by a live gregtech `Materials` constant (not gtpp-reconstructed) can still
-            // carry a MaterialLib shape for `aPrefix` from the stage-11 codegen name-merge (e.g. milled ore for
-            // Sphalerite, edited onto the existing gregtech material's own declaration). Resolving through
+            // carry a MaterialLib shape for `aPrefix` from the gtpp name-merge (e.g. milled ore for
+            // Sphalerite, declared on the existing gregtech material). Resolving through
             // MaterialLib before the `mComponentMap` cache below matters here: that cache is first-write-wins,
             // populated as a side effect of whichever legacy part item happens to construct first, so leaving
             // this branch out lets a legacy item that races MaterialLib's own registration win the cache and
-            // stick for the rest of the boot (see MaterialReconstruction census nondeterminism, stage 11
-            // commit 4). Gated to the same prefixes reconstruction itself has cleared for cutover -- block-kind
-            // prefixes are NOT eligible here either, since a material with a live gregtech equivalent (e.g.
-            // Iodine) can have ITS block cut over upstream (stage 07) while gtpp's own BlockBaseModular for it
-            // still needs the stage-11 identity-reference sweep first. cell/cellPlasma are excluded from this
+            // stick for the rest of the boot. Gated to the same prefixes reconstruction itself has cleared
+            // for cutover -- block-kind prefixes are NOT eligible here either, since a material with a live
+            // gregtech equivalent (e.g. Iodine) can have ITS block cut over upstream (see `BlockMetal`) while
+            // gtpp's own BlockBaseModular for it stays legacy-canonical. cell/cellPlasma are excluded from this
             // branch specifically because it resolves through plain `MU.stack`, not `cellStack`'s
             // cell/cellMolten fallback -- a non-reconstructed material sharing a name with a gtpp
             // material whose cell landed on cellMolten would silently miss it here; none are known to

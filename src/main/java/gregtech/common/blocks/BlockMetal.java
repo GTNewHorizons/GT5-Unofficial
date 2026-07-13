@@ -18,7 +18,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 /// One of 13 hand-curated batches of up to 16 [Materials] (metadata = array index), instantiated unconditionally
 /// in `LoaderGTBlockFluid` regardless of whether any of its materials cut over to the MaterialLib `block` shape
-/// (see [gregtech.api.enums.materials2.Materials2BlockShapes]) -- unlike the stage-05 item cutover, which skips
+/// (see [gregtech.api.enums.materials2.Materials2BlockShapes]) -- unlike the item cutover, which skips
 /// constructing a legacy slot entirely, several of these 13 instances are hard-referenced by `Block` identity
 /// from multiblock casing matchers, a machine-block-update listener, and a client-side icon fallback (see
 /// `scripts/mu/gen_materials.py`'s `BLOCK_CUTOVER_EXCLUDED`), so the instances themselves must keep existing and
