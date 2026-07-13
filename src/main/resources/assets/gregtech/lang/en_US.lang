@@ -8952,7 +8952,7 @@ GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing aro
 GT5U.tooltip.bec-generator.bec-hatch-pos=Back center casing
 
 # BEC Storage Structure Hints
-GT5U.tooltip.bec-storage.controller-pos=Bottom front of central pillar, 3rd layer
+GT5U.tooltip.bec-storage.controller-pos=Front center of central column, 3rd layer
 GT5U.tooltip.bec-storage.hatch-pos=Any electromagnetically-isolated casing
 GT5U.tooltip.bec-storage.bec-hatch-pos=Any center side casing
 

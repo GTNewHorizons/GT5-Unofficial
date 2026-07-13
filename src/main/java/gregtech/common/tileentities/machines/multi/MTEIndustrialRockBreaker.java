@@ -110,7 +110,7 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo("Needs Soul Sand and Magma in input bus for deepslate")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
-            .addController("Front center")
+            .addController("Front center, 3rd layer")
             .addCasing("50-55", "Thermal Processing Casing", false)
             .addCasing("36", "Tungsten Frame Box", false)
             .addCasing("12", "Any Tiered Glass", false)
