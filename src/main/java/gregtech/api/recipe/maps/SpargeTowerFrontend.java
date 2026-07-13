@@ -1,4 +1,4 @@
-package gtPlusPlus.api.recipe;
+package gregtech.api.recipe.maps;
 
 import static gregtech.api.util.GTRecipeConstants.SPARGE_MAX_BYPRODUCT;
 
@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import codechicken.nei.PositionedStack;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
-import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.nei.GTNEIDefaultHandler;
