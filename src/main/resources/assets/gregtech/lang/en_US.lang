@@ -6273,8 +6273,9 @@ gt.blockmachines.multimachine.foundry.universalcollapser.flavor=Fractured Univer
 gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1=- Multiplies Speed by %s2x
 gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2=- Multiplies EU Consumption by §c4x
 gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3=- Reduces Hatch Space by §615
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Multiplies Speed by an additional %s2x§7 and EU Consumption by an additional §c2x§7 when
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=   paired with the §bHypercooler§7 module
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Additionally allows for §1§nUIV+§7 Recipes to be processed
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=- Multiplies Speed by an additional %s2x§7 and EU Consumption by an additional §c2x§7 when
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip6=   paired with the §bHypercooler§7 module
 
 gt.blockmachines.multimachine.foundry.efficientoc.flavor=Optimized Overclocks
 gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- Increases Overclock Factor by §d0.4

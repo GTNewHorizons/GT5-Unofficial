@@ -41,7 +41,8 @@ public enum FoundryModule {
         13, foundryData -> {
             if(foundryData.universalCollapserPresent) return;
             foundryData.universalCollapserPresent = true;
-            foundryData.euEffMultiplier*=4;
+            foundryData.UIVRecipesEnabled = true;
+            foundryData.euEffMultiplier *= 2;
             foundryData.speedMultiplier *= 2;
         }
     ),

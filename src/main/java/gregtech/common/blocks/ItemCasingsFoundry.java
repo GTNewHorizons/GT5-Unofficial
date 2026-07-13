@@ -52,11 +52,14 @@ public class ItemCasingsFoundry extends ItemCasings {
                         "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3"));
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4",
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4"));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5",
                         TooltipHelper.SPEED_COLOR));
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5"));
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip6"));
                 tooltip.add(createTierLine(13));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.universalcollapser.flavor"));
             }

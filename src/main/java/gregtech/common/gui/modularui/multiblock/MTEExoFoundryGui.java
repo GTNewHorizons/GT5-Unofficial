@@ -671,11 +671,14 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3"));
                 t.addLine(
                     StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4",
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5",
                         TooltipHelper.SPEED_COLOR));
                 t.addLine(
                     StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5"));
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip6"));
             }
         }
         if (module != FoundryModule.UNSET) t.addLine(createTierLine(module.voltageTier));
