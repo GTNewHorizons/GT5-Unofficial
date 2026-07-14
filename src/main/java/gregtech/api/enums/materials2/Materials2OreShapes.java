@@ -187,12 +187,16 @@ public class Materials2OreShapes {
         return material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null;
     }
 
-    /// Whether `material` is a *pure* gtpp material with no live [gregtech.api.enums.Materials] counterpart --
-    /// [GTOreAdapter] already owns drop/harvest-level behavior for a gtpp name-merge material (its own dump
-    /// captured real per-material formulas that predate gtpp entirely), so this excludes any material
-    /// [MU#materialOf] can still resolve, mirroring [GTPPOreAdapter#materialOf]'s own discriminator.
+    /// Whether `material` is a *pure* gtpp material with no live, id-backed [gregtech.api.enums.Materials]
+    /// counterpart -- [GTOreAdapter] already owns drop/harvest-level behavior for a gtpp name-merge material (its
+    /// own dump captured real per-material formulas that predate gtpp entirely), so this excludes any material
+    /// [MU#materialOf] resolves to a real legacy id. A `GtppBridgeMaterialsLoader` bridge Materials also resolves
+    /// through [MU#materialOf] but carries no real id (`mMetaItemSubID` stays `-1`), so it still counts as gtpp
+    /// here, mirroring [GTPPOreAdapter#materialOf]'s own discriminator.
     private static boolean isGtpp(Material material) {
-        return material.getProperty(GTMaterialProperties.GTPP_STATE) != null && MU.materialOf(material) == null;
+        if (material.getProperty(GTMaterialProperties.GTPP_STATE) == null) return false;
+        gregtech.api.enums.Materials gtEquivalent = MU.materialOf(material);
+        return gtEquivalent == null || gtEquivalent.mMetaItemSubID < 0;
     }
 
     private static Block stoneBlock(String variant) {
