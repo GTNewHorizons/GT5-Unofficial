@@ -57,6 +57,12 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 
+/// Composition decomposition (electrolyzer/centrifuge/chemical-synthesis/mixer), dust-crafting, dust<->ingot
+/// smelting (including the gas-aware and primitive-blast-furnace fallback paths), vacuum freezer, and reverse
+/// maceration for dust-bearing werkstoffe. The `dustTiny`/`dustSmall`<->`dust` packager directions keyed on
+/// `Schematic_Dust`/`Schematic_Dust_Small` are covered by the canonical autogen (`ProcessingDust`, dispatched
+/// by `gregtech.loaders.shapeconsumers.ConsumerDust`); the `Schematic_3by3`/`Schematic_2by2`-keyed packager
+/// directions have no canonical equivalent and stay here.
 public class DustLoader implements IWerkstoffRunnable {
 
     @Override
@@ -327,20 +333,6 @@ public class DustLoader implements IWerkstoffRunnable {
                 new Object[] { "T  ", 'T', werkstoff.get(dust) });
 
             GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(dustTiny, 9), ItemList.Schematic_Dust.get(0L))
-                .itemOutputs(werkstoff.get(dust))
-                .duration(5 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
-                .addTo(packagerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(dustSmall, 4), ItemList.Schematic_Dust.get(0L))
-                .itemOutputs(werkstoff.get(dust))
-                .duration(5 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
-                .addTo(packagerRecipes);
-
-            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dustTiny, 9), ItemList.Schematic_3by3.get(0L))
                 .itemOutputs(werkstoff.get(dust))
                 .duration(5 * SECONDS)
@@ -350,13 +342,6 @@ public class DustLoader implements IWerkstoffRunnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dustSmall, 4), ItemList.Schematic_2by2.get(0L))
                 .itemOutputs(werkstoff.get(dust))
-                .duration(5 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
-                .addTo(packagerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(dust, 1), ItemList.Schematic_Dust_Small.get(0L))
-                .itemOutputs(werkstoff.get(dustSmall, 4))
                 .duration(5 * SECONDS)
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
                 .addTo(packagerRecipes);
