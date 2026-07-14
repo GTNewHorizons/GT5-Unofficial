@@ -15,7 +15,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.material.FluidNames;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
@@ -287,13 +286,11 @@ public final class MaterialReconstruction {
         }
         if (gtEquivalent != null && gtEquivalent != Materials._NULL) {
             MaterialUtils.seedGeneratedMaterial(gtEquivalent, material);
-        } else if (!ml.hasShape(Materials2OreShapes.ore)) {
-            // An ore-shaped material is excluded from the bridge: gregtech.common.ores.GTPPOreAdapter only
-            // drives its own gtpp-flavored ore drops/harvest level while MU#materialOf stays null for this ml
-            // material, deferring to gregtech.common.ores.GTOreAdapter once a bridge exists -- but that
-            // adapter's harvestLevel/shapeDrops read the bridge's mMetaItemSubID/mOreByProducts directly,
-            // neither of which this bridge (or any MaterialBuilder-built id-less Materials) populates, so the
-            // handoff would read a mChangeHarvestLevels-indexed array at mMetaItemSubID's -1 default.
+        } else {
+            // An ore-shaped material's bridge Materials carries no real legacy id (mMetaItemSubID stays -1, see
+            // MaterialBuilder), so gregtech.common.ores.GTOreAdapter/Materials2OreShapes defer ore-block concerns
+            // for it back to gregtech.common.ores.GTPPOreAdapter (see that pair's own javadoc/isGtpp) instead of
+            // indexing an array with it.
             GtppBridgeMaterialsLoader.register(ml, name, localName, textureSet, rgba, scalars, material);
         }
 
