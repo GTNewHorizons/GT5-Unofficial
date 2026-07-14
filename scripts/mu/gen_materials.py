@@ -509,12 +509,14 @@ GTPP_MARKER_NAMES = ("Brine", "Magic", "SaltWater", "SodiumChloride", "SoulSand"
 
 # gtpp-only materials that are pure elements: the gtpp dump carries no element reference, but the computed
 # atomic quantities (gregtech.api.material.MaterialAtomics) need canonical ELEMENT to read the Element table
-# rather than fall back to Tc. Isotope materials without an Element entry (Uranium232/Uranium233/
-# Plutonium238/Thorium232) are deliberately absent.
+# rather than fall back to Tc. Uranium232/Uranium233/Plutonium238 gained their Element.java isotope entries
+# (U_232/U_233/Pu_238) in the U2 pass; Thorium232 is folded through the werkstoff/gt merge path instead (see
+# GT_ELEMENT_BACKFILL below).
 GTPP_ELEMENT_BACKFILL = {
     "Bromine": "Br", "Curium": "Cm", "Fermium": "Fm", "Germanium": "Ge", "Lithium7": "Li",
-    "Neptunium": "Np", "Polonium": "Po", "Protactinium": "Pa", "Radium": "Ra", "Rhenium": "Re",
-    "Selenium": "Se", "Technetium": "Tc", "Thallium": "Tl",
+    "Neptunium": "Np", "Plutonium238": "Pu_238", "Polonium": "Po", "Protactinium": "Pa", "Radium": "Ra",
+    "Rhenium": "Re", "Selenium": "Se", "Technetium": "Tc", "Thallium": "Tl", "Uranium232": "U_232",
+    "Uranium233": "U_233",
 }
 
 
@@ -1253,6 +1255,13 @@ def fluid_ref_literal(fluid, fluid_textures):
     return f"new FluidRef({java_string_literal(fluid['name'])}, {fluid['temperature']}, {texture_literal})"
 
 
+# gt-materials.json-ported materials that are pure isotopes: the pinned dump's `element` field is null
+# because the legacy `Materials.Thorium232`/`Materials.Thorium234` objects never set `mElement`, but the
+# computed atomic quantities (gregtech.api.material.MaterialAtomics) need canonical ELEMENT to read the new
+# Element.java isotope entries (Th_232/Th_234) rather than fall back to Tc.
+GT_ELEMENT_BACKFILL = {"Thorium232": "Th_232", "Thorium234": "Th_234"}
+
+
 def build_property_lines(material, ml_names, fluid_textures):
     lines = []
 
@@ -1299,8 +1308,9 @@ def build_property_lines(material, ml_names, fluid_textures):
         lines.append(
             f".setProperty(GTMaterialProperties.MOLTEN_TINT, {java_int_literal(pack_argb(material['moltenRgba']))})")
 
-    if material["element"] is not None:
-        lines.append(f".setProperty(GTMaterialProperties.ELEMENT, {java_string_literal(material['element'])})")
+    element = material["element"] or GT_ELEMENT_BACKFILL.get(material["name"])
+    if element is not None:
+        lines.append(f".setProperty(GTMaterialProperties.ELEMENT, {java_string_literal(element)})")
 
     if material["composition"]:
         lines.append(

@@ -2481,13 +2481,13 @@
     "material": "Arcanite",
     "field": "neutrons",
     "legacy": -1,
-    "canonical": 55
+    "canonical": 89
    },
    {
     "material": "Arcanite",
     "field": "protons",
     "legacy": 66,
-    "canonical": 43
+    "canonical": 61
    },
    {
     "material": "ArceusAlloy2B",
@@ -2601,25 +2601,25 @@
     "material": "BurntReactorFuelI",
     "field": "neutrons",
     "legacy": 56,
-    "canonical": 41
+    "canonical": 46
    },
    {
     "material": "BurntReactorFuelI",
     "field": "protons",
     "legacy": 37,
-    "canonical": 29
+    "canonical": 31
    },
    {
     "material": "BurntReactorFuelII",
     "field": "neutrons",
     "legacy": 56,
-    "canonical": 41
+    "canonical": 46
    },
    {
     "material": "BurntReactorFuelII",
     "field": "protons",
     "legacy": 37,
-    "canonical": 29
+    "canonical": 31
    },
    {
     "material": "CelestialTungsten",
@@ -2895,37 +2895,37 @@
     "material": "FluorinatedUraniumHexafluorideFUF6",
     "field": "neutrons",
     "legacy": 25,
-    "canonical": 10
+    "canonical": 11
    },
    {
     "material": "FluorinatedUraniumHexafluorideFUF6",
     "field": "protons",
     "legacy": 19,
-    "canonical": 9
+    "canonical": 10
    },
    {
     "material": "FluorineSpargedTBSalt",
     "field": "neutrons",
     "legacy": 29,
-    "canonical": 10
+    "canonical": 16
    },
    {
     "material": "FluorineSpargedTBSalt",
     "field": "protons",
     "legacy": 20,
-    "canonical": 9
+    "canonical": 12
    },
    {
     "material": "FluorineSpargedTSalt",
     "field": "neutrons",
     "legacy": 40,
-    "canonical": 12
+    "canonical": 20
    },
    {
     "material": "FluorineSpargedTSalt",
     "field": "protons",
     "legacy": 27,
-    "canonical": 10
+    "canonical": 15
    },
    {
     "material": "FluoriteF",
@@ -3087,13 +3087,13 @@
     "material": "HeliumSpargedUSalt",
     "field": "neutrons",
     "legacy": 57,
-    "canonical": 42
+    "canonical": 46
    },
    {
     "material": "HeliumSpargedUSalt",
     "field": "protons",
     "legacy": 38,
-    "canonical": 29
+    "canonical": 32
    },
    {
     "material": "Hibonite",
@@ -3225,7 +3225,7 @@
     "material": "LFTRFuel2",
     "field": "protons",
     "legacy": 21,
-    "canonical": 6
+    "canonical": 7
    },
    {
     "material": "LFTRFuel3",
@@ -3243,13 +3243,13 @@
     "material": "LFTRFuelBase",
     "field": "neutrons",
     "legacy": 40,
-    "canonical": 12
+    "canonical": 20
    },
    {
     "material": "LFTRFuelBase",
     "field": "protons",
     "legacy": 28,
-    "canonical": 10
+    "canonical": 15
    },
    {
     "material": "LafiumCompound",
@@ -3405,13 +3405,13 @@
     "material": "Octiron",
     "field": "neutrons",
     "legacy": -1,
-    "canonical": 45
+    "canonical": 55
    },
    {
     "material": "Octiron",
     "field": "protons",
     "legacy": 50,
-    "canonical": 35
+    "canonical": 41
    },
    {
     "material": "Perroudite",
@@ -3429,13 +3429,13 @@
     "material": "PhosphorousUraniumHexafluoridePUF6",
     "field": "neutrons",
     "legacy": 22,
-    "canonical": 10
+    "canonical": 11
    },
    {
     "material": "PhosphorousUraniumHexafluoridePUF6",
     "field": "protons",
     "legacy": 17,
-    "canonical": 10
+    "canonical": 11
    },
    {
     "material": "Pikyonium64B",
@@ -3448,18 +3448,6 @@
     "field": "protons",
     "legacy": 49,
     "canonical": 40
-   },
-   {
-    "material": "Plutonium238",
-    "field": "neutrons",
-    "legacy": 144,
-    "canonical": 55
-   },
-   {
-    "material": "Plutonium238",
-    "field": "protons",
-    "legacy": 94,
-    "canonical": 43
    },
    {
     "material": "Polonium",
@@ -3525,13 +3513,7 @@
     "material": "RadioactiveMineralMix",
     "field": "neutrons",
     "legacy": 110,
-    "canonical": 106
-   },
-   {
-    "material": "RadioactiveMineralMix",
-    "field": "protons",
-    "legacy": 72,
-    "canonical": 69
+    "canonical": 112
    },
    {
     "material": "Radium",
@@ -3804,64 +3786,52 @@
     "canonical": 140
    },
    {
-    "material": "Thorium232",
-    "field": "neutrons",
-    "legacy": 142,
-    "canonical": 55
-   },
-   {
-    "material": "Thorium232",
-    "field": "protons",
-    "legacy": 90,
-    "canonical": 43
-   },
-   {
     "material": "ThoriumBerylliumDepletedMoltenSaltTBSalt",
     "field": "neutrons",
     "legacy": 29,
-    "canonical": 10
+    "canonical": 16
    },
    {
     "material": "ThoriumBerylliumDepletedMoltenSaltTBSalt",
     "field": "protons",
     "legacy": 20,
-    "canonical": 9
+    "canonical": 12
    },
    {
     "material": "ThoriumDepletedMoltenSaltTSalt",
     "field": "neutrons",
     "legacy": 40,
-    "canonical": 12
+    "canonical": 20
    },
    {
     "material": "ThoriumDepletedMoltenSaltTSalt",
     "field": "protons",
     "legacy": 27,
-    "canonical": 10
+    "canonical": 15
    },
    {
     "material": "ThoriumHexafluoride",
     "field": "neutrons",
     "legacy": 97,
-    "canonical": 21
+    "canonical": 27
    },
    {
     "material": "ThoriumHexafluoride",
     "field": "protons",
     "legacy": 63,
-    "canonical": 17
+    "canonical": 20
    },
    {
     "material": "ThoriumTetrafluoride",
     "field": "neutrons",
     "legacy": 75,
-    "canonical": 18
+    "canonical": 35
    },
    {
     "material": "ThoriumTetrafluoride",
     "field": "protons",
     "legacy": 49,
-    "canonical": 15
+    "canonical": 25
    },
    {
     "material": "Titanite",
@@ -3960,64 +3930,40 @@
     "canonical": 34
    },
    {
-    "material": "Uranium232",
-    "field": "neutrons",
-    "legacy": 140,
-    "canonical": 55
-   },
-   {
-    "material": "Uranium232",
-    "field": "protons",
-    "legacy": 92,
-    "canonical": 43
-   },
-   {
-    "material": "Uranium233",
-    "field": "neutrons",
-    "legacy": 141,
-    "canonical": 55
-   },
-   {
-    "material": "Uranium233",
-    "field": "protons",
-    "legacy": 92,
-    "canonical": 43
-   },
-   {
     "material": "UraniumDepletedMoltenSaltUSalt",
     "field": "neutrons",
     "legacy": 57,
-    "canonical": 42
+    "canonical": 46
    },
    {
     "material": "UraniumDepletedMoltenSaltUSalt",
     "field": "protons",
     "legacy": 38,
-    "canonical": 29
+    "canonical": 32
    },
    {
     "material": "UraniumHexafluoride",
     "field": "neutrons",
     "legacy": 42,
-    "canonical": 12
+    "canonical": 17
    },
    {
     "material": "UraniumHexafluoride",
     "field": "protons",
     "legacy": 29,
-    "canonical": 11
+    "canonical": 14
    },
    {
     "material": "UraniumTetrafluoride",
     "field": "neutrons",
     "legacy": 75,
-    "canonical": 18
+    "canonical": 35
    },
    {
     "material": "UraniumTetrafluoride",
     "field": "protons",
     "legacy": 50,
-    "canonical": 15
+    "canonical": 25
    },
    {
     "material": "Water",
@@ -7641,15 +7587,9 @@
    },
    {
     "material": "Thorium-232Tetrafluoride",
-    "field": "mass",
-    "legacy": 60,
-    "canonical": 34
-   },
-   {
-    "material": "Thorium-232Tetrafluoride",
     "field": "protons",
     "legacy": 126,
-    "canonical": 15
+    "canonical": 25
    },
    {
     "material": "Thorium-PhosphateCake",
@@ -7676,28 +7616,16 @@
     "canonical": 43
    },
    {
-    "material": "Thorium232",
-    "field": "mass",
-    "legacy": 232,
-    "canonical": 98
-   },
-   {
-    "material": "Thorium232",
-    "field": "protons",
-    "legacy": 90,
-    "canonical": 43
-   },
-   {
     "material": "Thorium234",
     "field": "mass",
     "legacy": 0,
-    "canonical": 98
+    "canonical": 234
    },
    {
     "material": "Thorium234",
     "field": "protons",
     "legacy": 0,
-    "canonical": 43
+    "canonical": 90
    },
    {
     "material": "ThoriumBasedLiquidFuel",
@@ -7787,13 +7715,13 @@
     "material": "ThoriumTetrafluoride",
     "field": "mass",
     "legacy": 0,
-    "canonical": 34
+    "canonical": 60
    },
    {
     "material": "ThoriumTetrafluoride",
     "field": "protons",
     "legacy": 0,
-    "canonical": 15
+    "canonical": 25
    },
    {
     "material": "ThuliumChlorideConcentrate",
@@ -7917,15 +7845,9 @@
    },
    {
     "material": "UraniumCarbide-ThoriumMixture",
-    "field": "mass",
-    "legacy": 189,
-    "canonical": 181
-   },
-   {
-    "material": "UraniumCarbide-ThoriumMixture",
     "field": "protons",
     "legacy": 1190,
-    "canonical": 71
+    "canonical": 74
    },
    {
     "material": "UraniumFiltrate",
@@ -13012,6 +12934,462 @@
     "field": "durabilityModifier",
     "legacy": 10.0,
     "canonical": 2918
+   }
+  ],
+  "centrifuge_merge": [
+   {
+    "material": "AdamantiumAlloy",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "AdemicSteel",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Artherium-Sn",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "BArTiMaEuSNeK",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "CircuitCompoundMK3",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Dalisenite",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "EnrichedNaquadahAlloy",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "HighDurabilityCompoundSteel",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Hikarium",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Incoloy-903",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "MAR-Ce-M200Steel",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "MAR-M200Steel",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "MetallicSludgeDustResidue",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Mu-metal",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Permalloy",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "PlutoniumOxide-UraniumMixture",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "PreciousMetalsAlloy",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "RawAdemicSteel",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Rhodium-PlatedPalladium",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Ruridit",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "SludgeDustResidue",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Tairitsu",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "TanmolyiumBeta-C",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "UraniumCarbide-ThoriumMixture",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Zircaloy-2",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Zircaloy-4",
+    "field": "hasCentrifugeRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   }
+  ],
+  "electrolyzer_merge": [
+   {
+    "material": "2-Ethyl-1-Hexanol",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Adamantine",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Arsenopyrite",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Atheneite",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "BismuthTelluride",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Bismuthinite",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Bismutite",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Bornite",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "BoronTrichloride",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "BoronTrioxide",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "CalciumChloride",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "CalciumFluoride",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Cerium(III)Oxide",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "CubicZirconia",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Dibismuthhydroborat",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Djurleite",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Enriched-NaquadahSulphate",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Ether",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Fluoroform",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Fluorspar",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "HexafluorosilicicAcid",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "LanthaniumChloride",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Loellingite",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "MagnesiumSulphate",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "MagnetoResonatic",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "NaquadriaSulphate",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "NeodymiumOxide",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "OrangeDescloizite",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "OxalicAcid",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "P-507",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "PotassiumCarbonate",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "PotassiumDisulfate",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Potassiumfluorosilicate",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "RedDescloizite",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "RockSalt",
+    "field": "hasElectrolyzerRecipe(werkstoff)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Roquesite",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "SamariumOxide",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "SodiumSulfate",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Temagamite",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "TerbiumNitrate",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Terlinguaite",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Thorianite",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "VanadiumPentoxide",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "Wittichenite",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "YttriumOxide",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "ZincChloride",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   },
+   {
+    "material": "ZincSulfate",
+    "field": "hasElectrolyzerRecipe(gt)",
+    "legacy": false,
+    "canonical": true
+   }
+  ],
+  "element_gt": [
+   {
+    "material": "Thorium232",
+    "field": "element",
+    "legacy": null,
+    "canonical": "Th_232"
+   },
+   {
+    "material": "Thorium234",
+    "field": "element",
+    "legacy": null,
+    "canonical": "Th_234"
    }
   ]
  }
