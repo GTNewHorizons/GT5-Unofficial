@@ -21,25 +21,25 @@ import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.plate;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
-import static gregtech.api.recipe.RecipeMaps.benderRecipes;
-import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 
 import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.system.material.Werkstoff;
-import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.util.BWUtil;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 
+/// Crafting-table shaping recipes, gem-material lathe stick cutting, the stick-to-long-rod hammer step and
+/// plate-cover registration for plate-bearing werkstoffe. Plate/foil bending, ingot lathing and plate/rod
+/// extrusion are covered by the canonical autogen (`ProcessingIngot`/`ProcessingShaping`/`ProcessingPlate`,
+/// dispatched by `gregtech.loaders.shapeconsumers`).
 public class SimpleMetalLoader implements IWerkstoffRunnable {
 
     @Override
@@ -108,18 +108,6 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 new Object[] { "hX", 'X', werkstoff.get(plate) });
 
             GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot))
-                .circuit(1)
-                .itemOutputs(werkstoff.get(plate))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass(),
-                        1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
-                .addTo(benderRecipes);
-
-            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot, 3))
                 .itemOutputs(werkstoff.get(plate, 2))
                 .duration(
@@ -135,43 +123,6 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 TextureFactory.of(werkstoff.getTexSet().mTextures[71], werkstoff.getRGBA()));
 
             GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot))
-                .itemOutputs(werkstoff.get(stick), werkstoff.get(dustSmall, 2))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 5L,
-                        1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
-                .addTo(latheRecipes);
-
-            if (werkstoff != WerkstoffLoader.Fluorophlogopite) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(plate))
-                    .circuit(1)
-                    .itemOutputs(werkstoff.get(foil, 4))
-                    .duration(
-                        (int) Math.max(
-                            werkstoff.getStats()
-                                .getMass(),
-                            1L))
-                    .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
-                    .addTo(benderRecipes);
-            }
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot))
-                .circuit(10)
-                .itemOutputs(werkstoff.get(foil, 4))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 2L,
-                        1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
-                .addTo(benderRecipes);
-
-            GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(stick, 2))
                 .itemOutputs(werkstoff.get(stickLong))
                 .duration(
@@ -181,31 +132,6 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         1L))
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                 .addTo(hammerRecipes);
-
-            int voltageMultiplier = werkstoff.getStats()
-                .getMeltingPoint() >= 2800 ? 60 : 15;
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Plate.get(0))
-                .itemOutputs(werkstoff.get(plate))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass(),
-                        1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * voltageMultiplier))
-                .addTo(extruderRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Rod.get(0))
-                .itemOutputs(werkstoff.get(stick, 2))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 2L,
-                        1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 6 * voltageMultiplier))
-                .addTo(extruderRecipes);
         }
     }
 }
