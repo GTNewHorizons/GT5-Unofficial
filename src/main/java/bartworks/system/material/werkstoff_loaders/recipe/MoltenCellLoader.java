@@ -13,24 +13,17 @@
 
 package bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.dustSmall;
 import static gregtech.api.enums.OrePrefixes.dustTiny;
-import static gregtech.api.enums.OrePrefixes.gearGt;
-import static gregtech.api.enums.OrePrefixes.gearGtSmall;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.nugget;
 import static gregtech.api.enums.OrePrefixes.plate;
-import static gregtech.api.enums.OrePrefixes.ring;
-import static gregtech.api.enums.OrePrefixes.rotor;
-import static gregtech.api.enums.OrePrefixes.screw;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
-import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
@@ -48,6 +41,11 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeCategories;
 
+/// Molten-fluid recipes for cellMolten-bearing werkstoffe: fluid-extractor melting of the solid shapes,
+/// ingot/nugget mold solidification, and the molten-cell fluid-container registration. Solidification into
+/// the worked shapes (plate/stick/stickLong and screw/bolt/ring/gear/gearSmall/rotor molds) is covered by the
+/// canonical autogen -- `ProcessingShaping`, `ProcessingPlate`, `ProcessingGear` and `ProcessingRotor`,
+/// dispatched per MaterialLib shape by `gregtech.loaders.shapeconsumers`.
 public class MoltenCellLoader implements IWerkstoffRunnable {
 
     @Override
@@ -55,9 +53,6 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
         if (!werkstoff.hasItemType(cellMolten)) {
             return;
         }
-
-        int voltageMultiplier = werkstoff.getStats()
-            .getMeltingPoint() >= 2800 ? 60 : 15;
 
         if (!werkstoff.hasItemType(ingot)) {
             if (!werkstoff.hasItemType(dust)) {
@@ -149,99 +144,6 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .addTo(fluidExtractionRecipes);
-        }
-
-        if (werkstoff.getGenerationFeatures()
-            .hasMetalCraftingSolidifierRecipes()) {
-
-            if (!werkstoff.hasItemType(plate)) {
-                return;
-            }
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Rod_Long.get(0))
-                .itemOutputs(werkstoff.get(stickLong))
-                .fluidInputs(werkstoff.getMolten(1 * INGOTS))
-                .duration(15 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * voltageMultiplier))
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Rod.get(0))
-                .itemOutputs(werkstoff.get(stick))
-                .fluidInputs(werkstoff.getMolten(1 * HALF_INGOTS))
-                .duration(7 * SECONDS + 10 * TICKS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * voltageMultiplier))
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Plate.get(0))
-                .itemOutputs(werkstoff.get(plate))
-                .fluidInputs(werkstoff.getMolten(1 * INGOTS))
-                .duration(1 * SECONDS + 12 * TICKS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8))
-                .addTo(fluidSolidifierRecipes);
-
-        }
-
-        if (werkstoff.getGenerationFeatures()
-            .hasMetaSolidifierRecipes()) {
-            if (!werkstoff.hasItemType(screw)) {
-                return;
-            }
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Screw.get(0))
-                .itemOutputs(werkstoff.get(screw))
-                .fluidInputs(werkstoff.getMolten(1 * EIGHTH_INGOTS))
-                .duration(2 * SECONDS + 10 * TICKS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 2 * voltageMultiplier))
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Gear.get(0))
-                .itemOutputs(werkstoff.get(gearGt))
-                .fluidInputs(werkstoff.getMolten(4 * INGOTS))
-                .duration(6 * SECONDS + 8 * TICKS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8))
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Gear_Small.get(0))
-                .itemOutputs(werkstoff.get(gearGtSmall))
-                .fluidInputs(werkstoff.getMolten(1 * INGOTS))
-                .duration(16 * TICKS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8))
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Bolt.get(0))
-                .itemOutputs(werkstoff.get(bolt))
-                .fluidInputs(werkstoff.getMolten(1 * EIGHTH_INGOTS))
-                .duration(2 * SECONDS + 10 * TICKS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 2 * voltageMultiplier))
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Ring.get(0))
-                .itemOutputs(werkstoff.get(ring))
-                .fluidInputs(werkstoff.getMolten(1 * QUARTER_INGOTS))
-                .duration(5 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 4 * voltageMultiplier))
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Rotor.get(0))
-                .itemOutputs(werkstoff.get(rotor))
-                .fluidInputs(werkstoff.getMolten(612))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass(),
-                        1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
-                .addTo(fluidSolidifierRecipes);
-
         }
 
         // Tank "Recipe"

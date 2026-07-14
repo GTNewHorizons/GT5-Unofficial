@@ -850,10 +850,11 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         private enum ExtraRecipes {
             /// Adds a chemical reactor recipe that synthesizes this material from its contained parts.
             ChemicalSynthesis,
-            /// Adds solidification recipes for metal crafting parts (see [#initPrefixLogic()] and
-            /// [#CRAFTING_METALWORKING]).
+            /// Marker for stickLong/stick/plate mold solidification; the recipes themselves come from the
+            /// canonical solidifier autogen (`GTMaterialProperties#HAS_METAL_CRAFTING_SOLIDIFIER_RECIPE`).
             MetalCraftingSolidification,
-            /// Adds solidification recipes for metal parts (see [#initPrefixLogic()] and [#SIMPLE_METALWORKING]).
+            /// Marker for screw/gear/gearSmall/bolt/ring/rotor mold solidification; the recipes themselves
+            /// come from the canonical solidifier autogen (`GTMaterialProperties#HAS_METAL_SOLIDIFIER_RECIPE`).
             MetalSolidification,
             /// Adds mixing recipe that creates this material from its contained parts.
             Mixing,
@@ -977,8 +978,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             return this.extraRecipes.contains(ExtraRecipes.ChemicalSynthesis);
         }
 
-        /// Adds solidification recipes for metal crafting parts (see [#initPrefixLogic()] and
-        /// [#CRAFTING_METALWORKING]).
+        /// Sets the [ExtraRecipes#MetalCraftingSolidification] marker.
         public Werkstoff.GenerationFeatures addMetalCraftingSolidifierRecipes() {
             this.extraRecipes.add(ExtraRecipes.MetalCraftingSolidification);
             return this;
@@ -988,7 +988,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             return this.extraRecipes.contains(ExtraRecipes.MetalCraftingSolidification);
         }
 
-        /// Adds solidification recipes for metal parts (see [#initPrefixLogic()] and [#SIMPLE_METALWORKING]).
+        /// Sets the [ExtraRecipes#MetalSolidification] marker.
         public Werkstoff.GenerationFeatures addMetaSolidifierRecipes() {
             this.extraRecipes.add(ExtraRecipes.MetalSolidification);
             return this;

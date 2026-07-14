@@ -86,18 +86,17 @@ public class GTMaterialProperties {
     /// mirror) and is not gated on this.
     public static final Property<Boolean> HAS_GAS = Property.of("gregtech", "hasGas");
     public static final Property<Boolean> HAS_GLOWING_ORE = Property.of("gregtech", "hasGlowingOre");
-    /// Whether the werkstoff facade's fluid-solidifier autogen builds the stickLong/stick/plate molds from
-    /// [MoltenCellLoader] (the `GenerationFeatures#hasMetalCraftingSolidifierRecipes` marker). The canonical
-    /// legacy-pipeline solidifier
-    /// autogen (`gregtech.loaders.oreprocessing.ProcessingIngot` et al) is unconditional on a registered molten
-    /// fluid and does not need this gate, but it only reaches a material once its item shapes are `ShapeConsumer`-
-    /// reachable -- bartworks item generation has not cut over to MaterialLib shapes yet (see
-    /// `WerkstoffLoader`'s own meta-item system), so removing this gate outright drops the recipe entirely for
-    /// its carriers instead of falling through to the canonical generator; kept as a marker until that cutover.
+    /// The werkstoff facade's `GenerationFeatures#hasMetalCraftingSolidifierRecipes` marker (stickLong/stick/
+    /// plate solidification). No recipe generator reads it: the canonical solidifier autogen
+    /// (`ProcessingShaping`/`ProcessingPlate`, dispatched by `gregtech.loaders.shapeconsumers`) covers those
+    /// molds unconditionally for any material with a molten fluid. Retained because the marker round-trips
+    /// through `WerkstoffReconstruction` into the facade's `GenerationFeatures`, which `MaterialDataDump`
+    /// emits and `scripts/mu/check_parity.py` verifies against the pinned werkstoff dump.
     public static final Property<Boolean> HAS_METAL_CRAFTING_SOLIDIFIER_RECIPE = Property
         .of("gregtech", "hasMetalCraftingSolidifierRecipe");
-    /// As [#HAS_METAL_CRAFTING_SOLIDIFIER_RECIPE], for `MoltenCellLoader`'s screw/gear/gearSmall/bolt/ring/rotor
-    /// molds (the `GenerationFeatures#hasMetaSolidifierRecipes` marker).
+    /// As [#HAS_METAL_CRAFTING_SOLIDIFIER_RECIPE], for the screw/gear/gearSmall/bolt/ring/rotor molds (the
+    /// `GenerationFeatures#hasMetaSolidifierRecipes` marker, covered canonically by `ProcessingShaping`/
+    /// `ProcessingGear`/`ProcessingRotor`).
     public static final Property<Boolean> HAS_METAL_SOLIDIFIER_RECIPE = Property
         .of("gregtech", "hasMetalSolidifierRecipe");
     /// Whether the auto-generated Mixer recipe (from [#COMPOSITION] plus [#MIX_CIRCUIT]) should be built (the
