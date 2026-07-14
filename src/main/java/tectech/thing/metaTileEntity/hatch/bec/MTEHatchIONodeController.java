@@ -2,6 +2,7 @@ package tectech.thing.metaTileEntity.hatch.bec;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +22,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
@@ -38,15 +38,15 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
         @Override
         public String toString() {
             return switch (this) {
-                case PAUSE_INSTANT -> GTUtility.translate("GT5U.gui.text.pause-immediately");
-                case PAUSE_STEP -> GTUtility.translate("GT5U.gui.text.pause-next-step");
+                case PAUSE_INSTANT -> StatCollector.translateToLocal("GT5U.gui.text.pause-immediately");
+                case PAUSE_STEP -> StatCollector.translateToLocal("GT5U.gui.text.pause-next-step");
             };
         }
 
         public String getTooltip() {
             return switch (this) {
-                case PAUSE_INSTANT -> GTUtility.translate("GT5U.gui.text.pause-immediately.tooltip");
-                case PAUSE_STEP -> GTUtility.translate("GT5U.gui.text.pause-next-step.tooltip");
+                case PAUSE_INSTANT -> StatCollector.translateToLocal("GT5U.gui.text.pause-immediately.tooltip");
+                case PAUSE_STEP -> StatCollector.translateToLocal("GT5U.gui.text.pause-next-step.tooltip");
             };
         }
     }

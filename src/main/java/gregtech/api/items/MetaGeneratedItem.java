@@ -228,8 +228,8 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         String aToolTipKey, Object[] aToolTipArgs, Object... aRandomData) {
         return addItem(
             aID,
-            $ -> GTUtility.translate(aNameKey, aNameArgs),
-            $ -> GTUtility.translate(aToolTipKey, aToolTipArgs),
+            $ -> StatCollector.translateToLocalFormatted(aNameKey, aNameArgs),
+            $ -> StatCollector.translateToLocalFormatted(aToolTipKey, aToolTipArgs),
             aRandomData);
     }
 
