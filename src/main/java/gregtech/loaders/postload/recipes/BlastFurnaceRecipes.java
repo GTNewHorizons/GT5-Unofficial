@@ -637,7 +637,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 32),
+                MaterialLibAPI.getStack(Materials2Materials.SiliconSolarGrade, Materials2Shapes.dust, 32),
                 ItemList.GalliumArsenideCrystalSmallPart.get(1))
             .circuit(2)
             .itemOutputs(ItemList.Circuit_Silicon_Ingot.get(1))
@@ -648,7 +648,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 64),
+                MaterialLibAPI.getStack(Materials2Materials.SiliconSolarGrade, Materials2Shapes.dust, 64),
                 ItemList.GalliumArsenideCrystalSmallPart.get(2),
                 MaterialLibAPI.getStack(Materials2Materials.Phosphorus, Materials2Shapes.dust, (int) (8)))
             .circuit(3)
@@ -702,7 +702,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calciumhydride, 3),
+                MaterialLibAPI.getStack(Materials2Materials.CalciumHydride, Materials2Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (2)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.CalciumDisilicide, Materials2Shapes.dust, (int) (3)))
@@ -765,7 +765,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (3)))
-            .itemOutputs(Materials.CalciumCarbide.getDust(3))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.CacliumCarbide, Materials2Shapes.dust, 3))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
