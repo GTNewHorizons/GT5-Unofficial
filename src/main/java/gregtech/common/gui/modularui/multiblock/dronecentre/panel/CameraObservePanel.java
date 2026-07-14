@@ -39,6 +39,16 @@ import gregtech.common.gui.modularui.multiblock.dronecentre.widget.CameraViewpor
 
 public class CameraObservePanel extends ModularPanel {
 
+    private static final int COLOR_OVERLAY_BG = Color.withAlpha(Color.BLACK.brighter(1), 144);
+    private static final int COLOR_BORDER = Color.CYAN.main;
+    private static final int COLOR_BACKGROUND = Color.WHITE.darker(6);
+    private static final int COLOR_OUTER_LINE = Color.BLACK.main;
+    private static final int COLOR_INNER_LINE_LIGHT = Color.WHITE.main;
+    private static final int COLOR_INNER_LINE_DARK = Color.GREY.darker(1);
+    private static final int COLOR_RESCUE_TEXT = Color.WHITE.main;
+    private static final int COLOR_DECORATIVE_LINE = Color.withAlpha(Color.CYAN.main, 80);
+    private static final int COLOR_RECIPE_TEXT = Color.WHITE.darker(5);
+
     private final Runnable closeCallback;
     private final List<String> rawRecipeInfo = new ArrayList<>();
     private final List<String> currentRecipeInfo = new ArrayList<>();
@@ -48,8 +58,8 @@ public class CameraObservePanel extends ModularPanel {
     private long lastHoveredCoord = CoordinatePacker.pack(-2, -2, -2);
 
     private static final IDrawable BACKGROUND = (_, x, y, width, height, _) -> {
-        drawRect(x, y, x + width, y + height, Color.withAlpha(Color.BLACK.brighter(1), 144));
-        drawFrame(x, y, x + width, y + height, Color.CYAN.main);
+        drawRect(x, y, x + width, y + height, COLOR_OVERLAY_BG);
+        drawFrame(x, y, x + width, y + height, COLOR_BORDER);
     };
 
     public CameraObservePanel(PanelSyncManager syncManager, Runnable closeCallback) {
@@ -71,29 +81,28 @@ public class CameraObservePanel extends ModularPanel {
             int avy = y + vy;
 
             // Background
-            drawRect(x, y, x + w, avy, Color.WHITE.darker(6));
-            drawRect(x, avy + vh, x + w, y + h, Color.WHITE.darker(6));
-            drawRect(x, avy, avx, avy + vh, Color.WHITE.darker(6));
-            drawRect(avx + vw, avy, x + w, avy + vh, Color.WHITE.darker(6));
+            drawRect(x, y, x + w, avy, COLOR_BACKGROUND);
+            drawRect(x, avy + vh, x + w, y + h, COLOR_BACKGROUND);
+            drawRect(x, avy, avx, avy + vh, COLOR_BACKGROUND);
+            drawRect(avx + vw, avy, x + w, avy + vh, COLOR_BACKGROUND);
 
             // Border
-            int borderColor = Color.CYAN.main;
-            drawRect(avx - 1, avy - 1, avx + vw + 1, avy, borderColor);
-            drawRect(avx - 1, avy - 1, avx, avy + vh + 1, borderColor);
-            drawRect(avx - 1, avy + vh, avx + vw + 1, avy + vh + 1, borderColor);
-            drawRect(avx + vw, avy - 1, avx + vw + 1, avy + vh + 1, borderColor);
+            drawRect(avx - 1, avy - 1, avx + vw + 1, avy, COLOR_BORDER);
+            drawRect(avx - 1, avy - 1, avx, avy + vh + 1, COLOR_BORDER);
+            drawRect(avx - 1, avy + vh, avx + vw + 1, avy + vh + 1, COLOR_BORDER);
+            drawRect(avx + vw, avy - 1, avx + vw + 1, avy + vh + 1, COLOR_BORDER);
 
             // Outer line
-            drawRect(x, y, x + w, y + 1, Color.BLACK.main);
-            drawRect(x, y, x + 1, y + h, Color.BLACK.main);
-            drawRect(x, y + h - 1, x + w, y + h, Color.BLACK.main);
-            drawRect(x + w - 1, y, x + w, y + h, Color.BLACK.main);
+            drawRect(x, y, x + w, y + 1, COLOR_OUTER_LINE);
+            drawRect(x, y, x + 1, y + h, COLOR_OUTER_LINE);
+            drawRect(x, y + h - 1, x + w, y + h, COLOR_OUTER_LINE);
+            drawRect(x + w - 1, y, x + w, y + h, COLOR_OUTER_LINE);
 
             // Inner line
-            drawRect(x + 1, y + 1, x + w - 1, y + 2, Color.WHITE.main);
-            drawRect(x + 1, y + 1, x + 2, y + h - 1, Color.WHITE.main);
-            drawRect(x + 1, y + h - 2, x + w - 1, y + h - 1, Color.GREY.darker(1));
-            drawRect(x + w - 2, y + 1, x + w - 1, y + h - 1, Color.GREY.darker(1));
+            drawRect(x + 1, y + 1, x + w - 1, y + 2, COLOR_INNER_LINE_LIGHT);
+            drawRect(x + 1, y + 1, x + 2, y + h - 1, COLOR_INNER_LINE_LIGHT);
+            drawRect(x + 1, y + h - 2, x + w - 1, y + h - 1, COLOR_INNER_LINE_DARK);
+            drawRect(x + w - 2, y + 1, x + w - 1, y + h - 1, COLOR_INNER_LINE_DARK);
         })
             .onCloseAction(() -> {
                 if (syncManager.isClient()) {
@@ -183,7 +192,7 @@ public class CameraObservePanel extends ModularPanel {
                 .overlay(
                     IKey.lang("GT5U.gui.button.drone_rescue")
                         .alignment(Alignment.CENTER)
-                        .color(Color.WHITE.main))
+                        .color(COLOR_RESCUE_TEXT))
                 .tooltipBuilder(t -> {
                     if (!Mouse.isGrabbed()) {
                         t.add(IKey.lang("GT5U.gui.button.drone_rescue.tooltip"));
@@ -258,7 +267,7 @@ public class CameraObservePanel extends ModularPanel {
         // Decorative line
         col.child(
             ((IDrawable) (_, x, y, width1, height1,
-                _) -> drawRect(x, y, x + width1, y + height1, Color.withAlpha(Color.CYAN.main, 80))).asWidget()
+                _) -> drawRect(x, y, x + width1, y + height1, COLOR_DECORATIVE_LINE)).asWidget()
                     .width(innerW)
                     .height(2)
                     .marginBottom(4));
@@ -367,7 +376,7 @@ public class CameraObservePanel extends ModularPanel {
         // line
         col.child(
             ((IDrawable) (_, x, y, width1, height1,
-                _) -> drawRect(x, y, x + width1, y + height1, Color.withAlpha(Color.CYAN.main, 80))).asWidget()
+                _) -> drawRect(x, y, x + width1, y + height1, COLOR_DECORATIVE_LINE)).asWidget()
                     .width(innerW)
                     .height(2)
                     .marginBottom(4));
@@ -382,7 +391,7 @@ public class CameraObservePanel extends ModularPanel {
                 }
                 return "";
             })
-                .color(Color.WHITE.darker(5))
+                .color(COLOR_RECIPE_TEXT)
                 .asWidget()
                 .width(innerW)
                 .scale(textScale)

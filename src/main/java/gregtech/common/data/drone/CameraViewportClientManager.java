@@ -52,6 +52,8 @@ import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 @SideOnly(Side.CLIENT)
 public class CameraViewportClientManager extends CameraViewportManager {
 
+    private static final int COLOR_OBSERVATION_MASK = Color.BLACK.main;
+
     public DroneConnection activeConnection = null;
     public NBTTagCompound observedMachineStatus = null;
 
@@ -638,10 +640,10 @@ public class CameraViewportClientManager extends CameraViewportManager {
                 (float) (x0 + panelW) / sw,
                 0.0F);
         } else {
-            GuiDraw.drawRect(0, 0, x0, sh, Color.BLACK.main);
-            GuiDraw.drawRect(x0 + panelW, 0, sw - (x0 + panelW), sh, Color.BLACK.main);
-            GuiDraw.drawRect(x0, 0, panelW, y0, Color.BLACK.main);
-            GuiDraw.drawRect(x0, y0 + panelH, panelW, sh - (y0 + panelH), Color.BLACK.main);
+            GuiDraw.drawRect(0, 0, x0, sh, COLOR_OBSERVATION_MASK);
+            GuiDraw.drawRect(x0 + panelW, 0, sw - (x0 + panelW), sh, COLOR_OBSERVATION_MASK);
+            GuiDraw.drawRect(x0, 0, panelW, y0, COLOR_OBSERVATION_MASK);
+            GuiDraw.drawRect(x0, y0 + panelH, panelW, sh - (y0 + panelH), COLOR_OBSERVATION_MASK);
         }
     }
 
