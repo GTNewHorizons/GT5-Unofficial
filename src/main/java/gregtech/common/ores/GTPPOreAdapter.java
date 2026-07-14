@@ -16,6 +16,7 @@ import com.ruling_0.materiallib.api.BlockMaterialInfo;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.material.GTMaterialProperties;
@@ -141,10 +142,15 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
 
     /// The gtpp material a MaterialLib material was reconstructed from, or null if it carries no
     /// [GTMaterialProperties#GTPP_STATE] data, is not a [MaterialReconstruction]-owned name, or is a name-merge
-    /// already claimed by a live [gregtech.api.enums.Materials] counterpart (see this class's javadoc).
+    /// already claimed by a live, id-backed [gregtech.api.enums.Materials] counterpart (see this class's
+    /// javadoc). A [gtPlusPlus.core.material.GtppBridgeMaterialsLoader] bridge Materials also resolves through
+    /// [MU#materialOf], but carries no real legacy id (`mMetaItemSubID` stays at its `-1` default, since a
+    /// [gregtech.api.enums.MaterialBuilder] material is never assigned one) -- ore-block concerns still belong to
+    /// this adapter for those, so only a positive-id resolution excludes.
     private static Material materialOf(com.ruling_0.materiallib.api.Material mlMaterial) {
         if (mlMaterial == null || mlMaterial.getProperty(GTMaterialProperties.GTPP_STATE) == null) return null;
-        if (MU.materialOf(mlMaterial) != null) return null;
+        Materials gtEquivalent = MU.materialOf(mlMaterial);
+        if (gtEquivalent != null && gtEquivalent.mMetaItemSubID >= 0) return null;
 
         String name = mlMaterial.getName();
         if (!MaterialReconstruction.isReconstructed(name)) return null;

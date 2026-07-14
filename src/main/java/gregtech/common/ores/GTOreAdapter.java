@@ -320,6 +320,13 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             .getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) return null;
 
         Materials mat = MU.materialOf(blockInfo.material());
+        // A gtpp bridge Materials instance (see GtppBridgeMaterialsLoader) carries no real legacy id
+        // (mMetaItemSubID stays -1); defer to GTPPOreAdapter, which owns ore-block concerns for it (see
+        // Materials2OreShapes#isGtpp), instead of returning an id-less OreInfo callers would index arrays with.
+        if (mat != null && mat.mMetaItemSubID < 0
+            && blockInfo.material()
+                .getProperty(GTMaterialProperties.GTPP_STATE) != null)
+            return null;
         StoneType stoneType = Materials2OreShapes.stoneTypeOf(blockInfo.variant());
         if (mat == null || stoneType == null) return null;
 
