@@ -18,7 +18,8 @@ import gregtech.api.metatileentity.implementations.MTESpecialFilter;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
-import xyz.wagyourtail.jvmdg.util.Pair;
+import it.unimi.dsi.fastutil.booleans.BooleanObjectImmutablePair;
+import it.unimi.dsi.fastutil.booleans.BooleanObjectPair;
 
 public abstract class MTESpecialFilterBaseGui<T extends MTESpecialFilter> extends MTEFilterBaseGui<T> {
 
@@ -84,13 +85,13 @@ public abstract class MTESpecialFilterBaseGui<T extends MTESpecialFilter> extend
     protected abstract List<String> getFilledFilterSlotTooltip(ModularPanel panel, PanelSyncManager syncManager);
 
     @Override
-    protected List<Pair<Boolean, Supplier<IWidget>>> createButtonList(ModularPanel panel,
+    protected List<BooleanObjectPair<Supplier<IWidget>>> createButtonList(ModularPanel panel,
         PanelSyncManager syncManager) {
-        List<Pair<Boolean, Supplier<IWidget>>> buttons = super.createButtonList(panel, syncManager);
+        List<BooleanObjectPair<Supplier<IWidget>>> buttons = super.createButtonList(panel, syncManager);
 
         // allow NBT button
         buttons.add(
-            new Pair<>(
+            new BooleanObjectImmutablePair<>(
                 supportsAllowNBT(),
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
                     new BooleanSyncValue(machine::isAllowNbt, machine::setAllowNbt).allowC2S(),
