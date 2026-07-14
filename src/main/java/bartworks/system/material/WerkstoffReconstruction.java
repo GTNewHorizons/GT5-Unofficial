@@ -54,6 +54,40 @@ public final class WerkstoffReconstruction {
     /// unrelated to the legacy `Werkstoff` declaration, which never read it).
     private static final Set<String> COLLAPSED_BOILING_POINT_WERKSTOFFE = Set.of("Calcium", "Iodine", "LiquidHelium");
 
+    /// Werkstoffe whose legacy `Stats#durOverride`/`#speedOverride`/`#qualityOverride` the U1 tool-stats
+    /// collapse repointed at [GTMaterialProperties#DURABILITY]/[#TOOL_SPEED]/[#TOOL_QUALITY] -- each of these
+    /// (former `WERKSTOFF_DURABILITY_OVERRIDE`/`WERKSTOFF_SPEED_OVERRIDE`/`WERKSTOFF_QUALITY_OVERRIDE`) equaled
+    /// its canonical counterpart wherever it was present, so the override behavior survives the collapse by
+    /// sourcing it from canonical for exactly this closed set instead -- every other werkstoff-backed material
+    /// keeps computing the stat from protons/mass/melting point/contents (`Werkstoff#getDurability`/
+    /// `#getToolSpeed`/`#getToolQuality`) even when it separately carries a nonzero canonical value of its own
+    /// (128/109/369 of 392 do, entirely unrelated to any override -- see each canonical property's ordinary
+    /// role). `HighDurabilityCompoundSteel` durability-overrides here though its legacy declaration used
+    /// `Stats#durMod` (a 10x multiplier on the computed formula, also deleted) rather than a raw override --
+    /// both landed on the same 2918 canonical value, so sourcing it as an override reproduces the same number.
+    private static final Set<String> DURABILITY_OVERRIDE_WERKSTOFFE = Set.of(
+        "CubicZirconia",
+        "AdemicSteel",
+        "TantalumHafniumCarbide",
+        "ExtremelyUnstableNaquadah",
+        "AdamantiumAlloy",
+        "MAR-Ce-M200Steel",
+        "Shirabon",
+        "HighDurabilityCompoundSteel");
+    private static final Set<String> SPEED_OVERRIDE_WERKSTOFFE = Set.of(
+        "HighDurabilityCompoundSteel",
+        "AdemicSteel",
+        "TantalumHafniumCarbide",
+        "ExtremelyUnstableNaquadah",
+        "AdamantiumAlloy",
+        "MAR-Ce-M200Steel",
+        "PreciousMetalsAlloy",
+        "EnrichedNaquadahAlloy",
+        "Shirabon",
+        "Mu-metal");
+    private static final Set<String> QUALITY_OVERRIDE_WERKSTOFFE = Set
+        .of("AdemicSteel", "TantalumHafniumCarbide", "ExtremelyUnstableNaquadah", "Shirabon");
+
     private static Map<Integer, Werkstoff> byId;
 
     private WerkstoffReconstruction() {}
@@ -138,10 +172,15 @@ public final class WerkstoffReconstruction {
             .setNeutrons(0)
             .setMass(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_MASS), 0L))
             .setMeltingVoltage(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_MELTING_VOLTAGE), 120))
-            .setDurOverride(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_DURABILITY_OVERRIDE), 0))
-            .setSpeedOverride(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_SPEED_OVERRIDE), 0f))
+            .setDurOverride(
+                DURABILITY_OVERRIDE_WERKSTOFFE.contains(ml.getName()) ? ml.getProperty(GTMaterialProperties.DURABILITY)
+                    : 0)
+            .setSpeedOverride(
+                SPEED_OVERRIDE_WERKSTOFFE.contains(ml.getName()) ? ml.getProperty(GTMaterialProperties.TOOL_SPEED) : 0f)
             .setQualityOverride(
-                (byte) (int) orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_QUALITY_OVERRIDE), 0))
+                (byte) (QUALITY_OVERRIDE_WERKSTOFFE.contains(ml.getName())
+                    ? ml.getProperty(GTMaterialProperties.TOOL_QUALITY)
+                    : 0))
             .setEnchantmentlvl((byte) 3)
             .setEbfGasRecipeTimeMultiplier(
                 orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_EBF_GAS_TIME_MULTIPLIER), -1.0))
@@ -154,7 +193,6 @@ public final class WerkstoffReconstruction {
             .setElektrolysis(flags.contains(GTWerkstoffFlag.ELECTROLYSIS))
             .setCentrifuge(flags.contains(GTWerkstoffFlag.CENTRIFUGE))
             .setGas(flags.contains(GTWerkstoffFlag.GAS));
-        stats.setDurMod(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_DURABILITY_MODIFIER), 1.0f));
         Integer tierEU = ml.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
         if (tierEU != null) stats.setProcessingMaterialTierEU(tierEU);
         if (flags.contains(GTWerkstoffFlag.NO_AUTO_BLAST_FURNACE_RECIPES))
