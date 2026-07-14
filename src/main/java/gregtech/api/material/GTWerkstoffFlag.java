@@ -23,8 +23,5 @@ public enum GTWerkstoffFlag {
     /// `GenerationFeatures` Mixing extra recipe.
     MIXING,
     /// `GenerationFeatures` Sifting extra recipe.
-    SIFTING,
-    /// The chemical-formula tooltip is a localization key rather than literal text
-    /// (`Werkstoff#isFormulaNeededLocalized`).
-    LOCALIZED_FORMULA
+    SIFTING
 }

@@ -269,8 +269,8 @@ public final class WerkstoffReconstruction {
         Werkstoff werkstoff = new Werkstoff(
             rgba,
             ml.getProperty(GTMaterialProperties.LOCAL_NAME),
-            orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_FORMULA), ""),
-            flags.contains(GTWerkstoffFlag.LOCALIZED_FORMULA),
+            orDefault(ml.getProperty(GTMaterialProperties.FORMULA), ""),
+            Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.FORMULA_LOCALIZED)),
             stats,
             Werkstoff.Types.valueOf(ml.getProperty(GTMaterialProperties.WERKSTOFF_TYPE)),
             features,

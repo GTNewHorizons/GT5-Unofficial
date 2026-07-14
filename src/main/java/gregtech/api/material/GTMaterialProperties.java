@@ -55,16 +55,18 @@ public class GTMaterialProperties {
     public static final Property<Integer> GAS_TEMP = Property.of("gregtech", "gasTemp");
     public static final Property<Integer> FUEL_POWER = Property.of("gregtech", "fuelPower");
     public static final Property<Integer> FUEL_TYPE = Property.of("gregtech", "fuelType");
-    /// The legacy `Materials#mChemicalFormula` override string, present only for a material whose legacy
-    /// declaration called `MaterialBuilder#setChemicalFormula` explicitly (the deleted `MaterialsInit`'s ~170
-    /// non-derivable formulas -- isotope notation, joke/flavor formulas, etc.). A material without this
-    /// property still has a real chemical-formula tooltip: `Materials`'s own constructor derives one from
-    /// [#ELEMENT] or [#COMPOSITION] when no override is given, and [LegacyMaterials] reproduces that
-    /// derivation unconditionally. Materials whose formula instead comes from a bartworks or gtPlusPlus fold
-    /// carry it in [#WERKSTOFF_FORMULA]/[#GTPP_CHEMICAL_FORMULA] instead, never here.
+    /// The single chemical-formula display string [MaterialFormulas] resolves, whichever legacy system
+    /// sourced it: a werkstoff-backed material carries its `Werkstoff` formula-tooltip string (it beat any
+    /// same-name gtpp value), a gregtech-dumped material the `Materials#mChemicalFormula` override its legacy
+    /// declaration set explicitly (see [gregtech.api.enums.materials2.Materials2Formulas], which also beat
+    /// any same-name gtpp value), and a remaining gtpp material its `Material#vChemicalFormula` as displayed
+    /// (the legacy renderer's `StringUtils#sanitizeStringKeepBrackets` cleanup baked in). A gregtech-dumped
+    /// material without this property still has a real chemical-formula tooltip: `Materials`'s own
+    /// constructor derives one from [#ELEMENT] or [#COMPOSITION] when no override is given, and
+    /// [LegacyMaterials] reproduces that derivation unconditionally.
     public static final Property<String> FORMULA = Property.of("gregtech", "formula");
-    /// Whether [#FORMULA] is a `GTLanguageManager` localization key rather than literal text -- mirrors
-    /// [GTWerkstoffFlag#LOCALIZED_FORMULA], the same distinction for a [#WERKSTOFF_FORMULA].
+    /// Whether [#FORMULA] is a `GTLanguageManager` localization key rather than literal text (the legacy
+    /// `setChemicalFormula` localized overload / `Werkstoff#isFormulaNeededLocalized`).
     public static final Property<Boolean> FORMULA_LOCALIZED = Property.of("gregtech", "formulaLocalized");
     public static final Property<EnumSet<GTMaterialGenerationFlag>> GENERATION_FLAGS = Property
         .of("gregtech", "generationFlags");
@@ -80,14 +82,14 @@ public class GTMaterialProperties {
     public static final Property<Boolean> IS_RADIOACTIVE = Property.of("gregtech", "isRadioactive");
     /// The `gtPlusPlus.core.material.Material` scalar data of a material that was (or merged with) a legacy
     /// gtpp material, decomposed into individual keys rather than kept in one composite property so a reader
-    /// needing a single value (e.g. [MaterialFormulas]) does not depend on the whole gtpp record shape. Every
-    /// `GTPP_*` property below exists solely so [gtPlusPlus.core.material.MaterialReconstruction] can rebuild
-    /// the deprecated gtPlusPlus `Material` facade, and is removed together with that facade in 5.10.0.0.
+    /// needing a single value does not depend on the whole gtpp record shape. Every `GTPP_*` property below
+    /// exists solely so [gtPlusPlus.core.material.MaterialReconstruction] can rebuild the deprecated
+    /// gtPlusPlus `Material` facade, and is removed together with that facade in 5.10.0.0.
     ///
     /// [#GTPP_STATE] is always present on a material carrying any gtpp data -- reconstruction and other
     /// consumers use it (rather than any single scalar below, several of which elide their common default) as
     /// the "this material has gtpp data" signal.
-    public static final Property<String> GTPP_CHEMICAL_FORMULA = Property.of("gregtech", "gtppChemicalFormula");
+    ///
     /// The legacy `Material` constructor's `vGenerateCells` flag, elided when `false`.
     public static final Property<Boolean> GTPP_GENERATES_CELLS = Property.of("gregtech", "gtppGeneratesCells");
     /// The legacy `Material` constructor's `generateFluid` flag, elided when `false`.
@@ -162,8 +164,8 @@ public class GTMaterialProperties {
     /// tier-0 material carries).
     public static final Property<Long> VOLTAGE_MULTIPLIER = Property.of("gregtech", "voltageMultiplier");
     /// The bartworks-side data of a material that was (or merged with) a `Werkstoff`, decomposed into
-    /// individual keys rather than kept in one composite property so a reader needing a single value (e.g.
-    /// [MaterialFormulas]) does not depend on the whole werkstoff record shape. Every `WERKSTOFF_*` property
+    /// individual keys rather than kept in one composite property so a reader needing a single value
+    /// does not depend on the whole werkstoff record shape. Every `WERKSTOFF_*` property
     /// below exists solely so [bartworks.system.material.WerkstoffReconstruction] can rebuild the deprecated
     /// bartworks `Werkstoff` facade, and is removed together with that facade in 5.10.0.0.
     ///
@@ -172,13 +174,6 @@ public class GTMaterialProperties {
     /// declaration-order sort key (every legacy pool declares its werkstoffe in ascending id order).
     /// [GTWerkstoffFlag] booleans a legacy `Werkstoff` carried, elided when empty.
     public static final Property<EnumSet<GTWerkstoffFlag>> WERKSTOFF_FLAGS = Property.of("gregtech", "werkstoffFlags");
-    /// The `Werkstoff` chemical-formula tooltip string, elided when empty. [MaterialFormulas] reads this
-    /// together with [#WERKSTOFF_FLAGS] (for [GTWerkstoffFlag#LOCALIZED_FORMULA]) whenever [#WERKSTOFF_IDS] is
-    /// present, ahead of [#FORMULA]/[#GTPP_CHEMICAL_FORMULA] -- see that class's javadoc for why. Promoted
-    /// as-is from the pre-decomposition blob; not unified with [#FORMULA] this round, since that property is
-    /// populated by a separate codegen pass ([gregtech.api.enums.materials2.Materials2Formulas]) that feeds
-    /// the legacy `Materials` facade independently.
-    public static final Property<String> WERKSTOFF_FORMULA = Property.of("gregtech", "werkstoffFormula");
     /// Every legacy werkstoff `mID` this material covers (more than one when two same-name werkstoffe folded
     /// into one MaterialLib declaration) -- see the class javadoc for its role as both the presence signal and
     /// reconstruction's declaration-order sort key.

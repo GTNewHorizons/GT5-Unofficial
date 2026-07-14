@@ -313,7 +313,7 @@ public final class MaterialReconstruction {
             usesBlastFurnace,
             Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.IS_RADIOACTIVE)),
             orDefault(ml.getProperty(GTMaterialProperties.RADIATION_LEVEL), 0),
-            orDefault(ml.getProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA), ""),
+            orDefault(ml.getProperty(GTMaterialProperties.FORMULA), ""),
             orDefault(ml.getProperty(GTMaterialProperties.GTPP_PROTONS), 0L),
             orDefault(ml.getProperty(GTMaterialProperties.GTPP_NEUTRONS), 0L),
             Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.GTPP_GENERATES_FLUID)),
