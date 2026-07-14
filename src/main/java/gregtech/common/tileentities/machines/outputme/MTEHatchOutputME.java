@@ -59,6 +59,7 @@ import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.IOutputHatchTransaction;
+import gregtech.api.interfaces.IOutputTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -162,6 +163,10 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     public boolean shouldCheck() {
         return provider.shouldCheck();
+    }
+
+    public boolean hasPhysicalSpace() {
+        return provider.hasPhysicalSpace();
     }
 
     public boolean hasAvailableSpace() {
@@ -533,16 +538,20 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         return new MEOutputHatchTransaction();
     }
 
-    class MEOutputHatchTransaction implements IOutputHatchTransaction, IOutputHatchTransaction.IRecipeCheckAware {
+    class MEOutputHatchTransaction implements IOutputHatchTransaction, IOutputTransaction.IRecipeCheckAware,
+        IOutputTransaction.IProtectOutputAware, IOutputTransaction.IDynamicCapacityOutputAware {
 
         private final AECacheCounter<GTUtility.FluidId> cache = new AECacheCounter<>();
         private final long availableSpace;
         private boolean active = true;
+        private boolean allowAnyInput = false;
         private boolean isRecipeCheck = false;
+        private boolean isProtectOutput = true;
+        private boolean isDynamicCapacity = false;
         private IMEInventoryHandler<IAEFluidStack> cell = null;
 
         public MEOutputHatchTransaction() {
-            availableSpace = provider.getAvailableSpace();
+            availableSpace = provider.getPhysicalSpace();
         }
 
         public void setRecipeCheck(boolean isRecipeCheck) {
@@ -554,6 +563,22 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     .cell()
                     .getCellInventory(getCellStack().copy(), getISaveProvider(), getChannel());
             }
+            updateFlags();
+        }
+
+        public void setProtectOutput(boolean isProtectOutput) {
+            this.isProtectOutput = isProtectOutput;
+            updateFlags();
+        }
+
+        private void updateFlags() {
+            isDynamicCapacity = isRecipeCheck && isProtectOutput && shouldCheck() && !provider.isDistribution();
+            allowAnyInput = isRecipeCheck ? availableSpace > 0
+                : provider.getLastInputTick() == provider.getTickCounter();
+        }
+
+        public boolean isDynamicCapacity() {
+            return isDynamicCapacity;
         }
 
         @Override
@@ -563,11 +588,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
         @Override
         public boolean hasAvailableSpace() {
-            return !isRecipeCheck || cache.getTotal() < availableSpace;
+            return allowAnyInput || cache.getTotal() < availableSpace;
         }
 
         @Override
-        public boolean storePartial(GTUtility.FluidId id, FluidStack stack) {
+        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             if (isRecipeCheck && provider.shouldCheck()) {
@@ -579,7 +604,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                 GTUtility.decFluidAmount(stack, inserted);
                 return stack.amount == 0;
             }
-            if (!hasAvailableSpace() || !isFilteredToFluid(id)) {
+            if (!hasAvailableSpace() || !isFilteredTo(id)) {
                 return false;
             }
             cache.insert(id, GTUtility.getFluidAmount(stack));
@@ -588,20 +613,22 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
 
         @Override
-        public void completeFluid(GTUtility.FluidId id) {
+        public void complete(GTUtility.FluidId id) {
             // Do nothing
         }
 
         @Override
         public void commit() {
-            cache.iterateAll(
-                (id, amount) -> {
-                    provider.addToCache(
-                        AEFluidStack.create(id.getFluidStack())
-                            .setStackSize(amount));
-                });
-
-            MTEHatchOutputME.this.markDirty();
+            if (cache.getTotal() > 0) {
+                cache.iterateAll(
+                    (id, amount) -> {
+                        provider.addToCache(
+                            AEFluidStack.create(id.getFluidStack())
+                                .setStackSize(amount));
+                    });
+                provider.updateLastInputTick();
+                MTEHatchOutputME.this.markDirty();
+            }
             active = false;
         }
     }

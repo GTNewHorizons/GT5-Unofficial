@@ -52,6 +52,9 @@ public class ItemEjectionHelper {
             if (transaction instanceof IOutputBusTransaction.IRecipeCheckAware tran) {
                 tran.setRecipeCheck(isRecipeCheck);
             }
+            if (transaction instanceof IOutputBusTransaction.IProtectOutputAware tran) {
+                tran.setProtectOutput(protectItems);
+            }
             transactionsByType.computeIfAbsent(bus.getBusType(), x -> new ArrayList<>())
                 .add(transaction);
         }
@@ -112,7 +115,7 @@ public class ItemEjectionHelper {
                 if (ofType == null) continue;
 
                 if (busType.isFiltered()) {
-                    GTDataUtils.addAllFiltered(ofType, transactions, t -> t.isFilteredToItem(parallelData.id));
+                    GTDataUtils.addAllFiltered(ofType, transactions, t -> t.isFilteredTo(parallelData.id));
                 } else {
                     transactions.addAll(ofType);
                 }
@@ -137,18 +140,13 @@ public class ItemEjectionHelper {
 
                 // If this bus is completely full, don't bother checking it.
                 if (!transaction.hasAvailableSpace()) {
-                    transaction.completeItem(output.id);
+                    transaction.complete(output.id);
                     outputBusses.next();
                     continue;
                 }
 
-                int amount = GTUtility.longToInt(output.remainingAmount);
-                ItemStack tmp = output.id.getItemStack(amount);
-                boolean stored = transaction.storePartial(output.id, tmp);
-                output.remainingAmount -= amount - tmp.stackSize;
-
                 // Fill at most one slot with the remaining items
-                if (stored) {
+                if (output.storePartial(transaction)) {
                     break;
                 } else {
                     // If we couldn't insert anything into the bus, go to the next one
@@ -190,12 +188,29 @@ public class ItemEjectionHelper {
         public long initialAmount, remainingAmount;
         public long perParallel;
         public PeekingIterator<IOutputBusTransaction> outputs;
+        private final ItemStack tmpStack;
 
         private ItemParallelData(GTUtility.ItemId id, long amount, long perParallel) {
             this.id = id;
             this.remainingAmount = amount;
             this.perParallel = perParallel;
             this.initialAmount = amount;
+            this.tmpStack = id.getItemStack();
+        }
+
+        public boolean storePartial(IOutputBusTransaction transaction) {
+            boolean isSharedoutput = transaction instanceof IOutputBusTransaction.IDynamicCapacityOutputAware sharedOutput
+                && sharedOutput.isDynamicCapacity();
+            long targetAmount = remainingAmount;
+            if (isSharedoutput) {
+                targetAmount = Math.min(remainingAmount, perParallel);
+            }
+            int amount = GTUtility.longToInt(targetAmount);
+            tmpStack.stackSize = amount;
+            transaction.storePartial(id, tmpStack);
+            long actuallyInsert = amount - tmpStack.stackSize;
+            remainingAmount -= actuallyInsert;
+            return actuallyInsert > 0;
         }
     }
 }

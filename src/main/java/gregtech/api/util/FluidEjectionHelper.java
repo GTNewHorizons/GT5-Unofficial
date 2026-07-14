@@ -44,6 +44,9 @@ public class FluidEjectionHelper {
             if (transaction instanceof IOutputHatchTransaction.IRecipeCheckAware tran) {
                 tran.setRecipeCheck(isRecipeCheck);
             }
+            if (transaction instanceof IOutputHatchTransaction.IProtectOutputAware tran) {
+                tran.setProtectOutput(protectFluids);
+            }
             transactionsByType.computeIfAbsent(hatch.getHatchType(), x -> new ArrayList<>())
                 .add(transaction);
         }
@@ -104,7 +107,7 @@ public class FluidEjectionHelper {
                 if (ofType == null) continue;
 
                 GTDataUtils
-                    .addAllFiltered(ofType, transactions, t -> !t.isFiltered() || t.isFilteredToFluid(parallelData.id));
+                    .addAllFiltered(ofType, transactions, t -> !t.isFiltered() || t.isFilteredTo(parallelData.id));
             }
 
             parallelData.outputs = Iterators.peekingIterator(transactions.iterator());
@@ -126,18 +129,13 @@ public class FluidEjectionHelper {
 
                 // If this hatch is completely full, don't bother checking it.
                 if (!transaction.hasAvailableSpace()) {
-                    transaction.completeFluid(output.id);
+                    transaction.complete(output.id);
                     outputHatches.next();
                     continue;
                 }
 
-                FluidStack tmp = output.id.getFluidStack(output.remainingAmount);
-                boolean stored = transaction.storePartial(output.id, tmp);
-                // Drained = Amount - Remaining
-                output.remainingAmount -= output.remainingAmount - GTUtility.getFluidAmount(tmp);
-
                 // Fill at most one slot with the remaining fluids
-                if (stored) {
+                if (output.storePartial(transaction)) {
                     break;
                 } else {
                     // If we couldn't insert anything into the hatch, go to the next one
@@ -183,12 +181,28 @@ public class FluidEjectionHelper {
         public long initialAmount, remainingAmount;
         public long perParallel;
         public PeekingIterator<IOutputHatchTransaction> outputs;
+        private final FluidStack tmpStack;
 
         private FluidParallelData(GTUtility.FluidId id, long amount, long perParallel) {
             this.id = id;
             this.remainingAmount = amount;
             this.perParallel = perParallel;
             this.initialAmount = amount;
+            this.tmpStack = id.getFluidStack();
+        }
+
+        public boolean storePartial(IOutputHatchTransaction transaction) {
+            boolean isSharedOutput = transaction instanceof IOutputHatchTransaction.IDynamicCapacityOutputAware sharedOutput
+                && sharedOutput.isDynamicCapacity();
+            long targetAmount = remainingAmount;
+            if (isSharedOutput) {
+                targetAmount = Math.min(remainingAmount, perParallel);
+            }
+            GTUtility.setFluidAmount(tmpStack, targetAmount);
+            transaction.storePartial(id, tmpStack);
+            long actuallyInsert = targetAmount - GTUtility.getFluidAmount(tmpStack);
+            remainingAmount -= actuallyInsert;
+            return actuallyInsert > 0;
         }
     }
 }

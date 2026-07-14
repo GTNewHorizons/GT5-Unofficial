@@ -1431,4 +1431,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         }
         return super.isItemValidForSlot(index, itemStack);
     }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 1;
+    }
 }

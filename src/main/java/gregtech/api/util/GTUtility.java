@@ -1471,12 +1471,12 @@ public class GTUtility {
         sBookCount++;
         rStack = new ItemStack(Items.written_book, 1);
         NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setString("title", StatCollector.canTranslate(aTitle) ? GTUtility.translate(aTitle) : aTitle);
+        tNBT.setString("title", StatCollector.canTranslate(aTitle) ? translateToLocal(aTitle) : aTitle);
         tNBT.setString("author", aAuthor);
         NBTTagList tNBTList = new NBTTagList();
         for (byte i = 0; i < aPages.length; i++) {
             String pageKeyOrText = aPages[i] == null ? "" : aPages[i];
-            String pageText = StatCollector.canTranslate(pageKeyOrText) ? GTUtility.translate(pageKeyOrText)
+            String pageText = StatCollector.canTranslate(pageKeyOrText) ? translateToLocal(pageKeyOrText)
                 : pageKeyOrText;
             aPages[i] = pageText.replace("\\n", "\n");
             if (i < 48) {
@@ -2623,7 +2623,9 @@ public class GTUtility {
      *
      * @param key the localization key to translate
      * @return the translated string
+     * @deprecated use {@link StatCollector#translateToLocal(String)} directly
      */
+    @Deprecated
     public static String translate(String key) {
         return StatCollector.translateToLocal(key);
     }
@@ -2636,7 +2638,9 @@ public class GTUtility {
      * @param key        the localization key to translate
      * @param parameters optional substitution arguments for the translated string
      * @return the translated string
+     * @deprecated use {@link StatCollector#translateToLocalFormatted(String, Object...)} directly
      */
+    @Deprecated
     public static String translate(String key, Object... parameters) {
         return parameters == null || parameters.length == 0 ? StatCollector.translateToLocal(key)
             : StatCollector.translateToLocalFormatted(key, parameters);
@@ -4105,7 +4109,7 @@ public class GTUtility {
         @Nonnull
         public FluidStack getFluidStack() {
             NBTTagCompound nbt = nbt();
-            return new FluidStack(fluid(), 1, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+            return GTUtility.createFluidStack(fluid(), 1, nbt != null ? (NBTTagCompound) nbt.copy() : null);
         }
 
         @Nonnull
