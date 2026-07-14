@@ -308,8 +308,7 @@ public final class MaterialReconstruction {
         int meltingPointK = ml.getProperty(GTMaterialProperties.MELTING_POINT);
         int boilingPointK = ml.getProperty(GTMaterialProperties.BOILING_POINT);
 
-        Integer gtppDurability = ml.getProperty(GTMaterialProperties.GTPP_DURABILITY);
-        int durability = gtppDurability != null ? gtppDurability : ml.getProperty(GTMaterialProperties.DURABILITY);
+        int durability = ml.getProperty(GTMaterialProperties.DURABILITY);
 
         Boolean gtppBlast = ml.getProperty(GTMaterialProperties.GTPP_USES_BLAST_FURNACE);
         boolean usesBlastFurnace = Boolean.TRUE

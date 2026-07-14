@@ -96,10 +96,6 @@ public class GTMaterialProperties {
     /// `gregtech.loaders.materials.MaterialsLegacyBridge`-built material, changing the legacy `Materials`
     /// facade. Reconstruction reads this, falling back to [#COMPOSITION].
     public static final Property<List<MaterialRefStack>> GTPP_COMPOSITION = Property.of("gregtech", "gtppComposition");
-    /// The legacy `Material.vDurability`, a broader "toughness" stat on a different scale than [#DURABILITY]
-    /// (gregtech's narrower tool-durability field) -- present only when it differs from [#DURABILITY] or
-    /// [#DURABILITY] is absent; reconstruction reads this, falling back to [#DURABILITY].
-    public static final Property<Integer> GTPP_DURABILITY = Property.of("gregtech", "gtppDurability");
     /// The legacy `Material` constructor's `vGenerateCells` flag, elided when `false`.
     public static final Property<Boolean> GTPP_GENERATES_CELLS = Property.of("gregtech", "gtppGeneratesCells");
     /// The legacy `Material` constructor's `generateFluid` flag, elided when `false`.
@@ -193,29 +189,11 @@ public class GTMaterialProperties {
     /// [#WERKSTOFF_IDS] is always present on a material carrying any werkstoff data -- reconstruction and
     /// other consumers use it as the "this material has werkstoff data" signal, and its first element as the
     /// declaration-order sort key (every legacy pool declares its werkstoffe in ascending id order).
-    ///
-    /// [#WERKSTOFF_DURABILITY_OVERRIDE]/[#WERKSTOFF_SPEED_OVERRIDE]/[#WERKSTOFF_QUALITY_OVERRIDE] deliberately
-    /// do *not* fall back to their [#DURABILITY]/[#TOOL_SPEED]/[#TOOL_QUALITY] counterparts the way the
-    /// analogous `GTPP_*` scalars fall back to their canonical counterparts -- see each property's javadoc for
-    /// why a canonical fallback would be wrong here (a real "compute instead" sentinel, not "value absent").
     /// The werkstoff `CONTENTS` list (chemical make-up), distinct from [#COMPOSITION] so a merge never alters
     /// the legacy `Materials` reconstruction. Each entry records which legacy registry it referenced -- see
     /// [WerkstoffRefStack]. Elided when empty.
     public static final Property<List<WerkstoffRefStack>> WERKSTOFF_CONTENTS = Property
         .of("gregtech", "werkstoffContents");
-    /// The legacy `Werkstoff.Stats.durabilityModifier`, elided when `1.0` (the value 391 of 392
-    /// werkstoff-backed materials carry).
-    public static final Property<Float> WERKSTOFF_DURABILITY_MODIFIER = Property
-        .of("gregtech", "werkstoffDurabilityModifier");
-    /// The raw `Werkstoff.Stats` tool-durability override, elided when `0`. The legacy constructor computes
-    /// durability from protons/melting point/mass/contents instead when its own field is `0`, so absence must
-    /// keep meaning "compute", not "use [#DURABILITY]": 128 of the 392 werkstoff-backed materials carry a
-    /// nonzero canonical [#DURABILITY] despite never overriding durability themselves (an unrelated
-    /// gregtech/gtpp tool-durability value), so falling back to it here would silently replace the legacy
-    /// computed value for those 128. Present only for the 7 materials whose legacy declaration overrode it,
-    /// and equals [#DURABILITY] whenever both are present; reconstruction reads this raw with a `0` default.
-    public static final Property<Integer> WERKSTOFF_DURABILITY_OVERRIDE = Property
-        .of("gregtech", "werkstoffDurabilityOverride");
     /// As [#WERKSTOFF_EBF_GAS_AMOUNT_MULTIPLIER], for `BlastFurnaceGasStat`'s recipe-time multiplier. Elided
     /// when `-1.0` (the proton-count default; the value 388 of 392 carry).
     public static final Property<Double> WERKSTOFF_EBF_GAS_TIME_MULTIPLIER = Property
@@ -268,15 +246,6 @@ public class GTMaterialProperties {
     /// unified, since [#GTPP_PROTONS] is itself pinned independently of any canonical count (see that
     /// property's javadoc).
     public static final Property<Long> WERKSTOFF_PROTONS = Property.of("gregtech", "werkstoffProtons");
-    /// As [#WERKSTOFF_DURABILITY_OVERRIDE], for `Werkstoff.Stats`'s tool-quality override and [#TOOL_QUALITY]:
-    /// 369 of 392 carry a nonzero canonical [#TOOL_QUALITY] despite never overriding quality themselves; only
-    /// 4 materials carry a real override.
-    public static final Property<Integer> WERKSTOFF_QUALITY_OVERRIDE = Property
-        .of("gregtech", "werkstoffQualityOverride");
-    /// As [#WERKSTOFF_DURABILITY_OVERRIDE], for `Werkstoff.Stats`'s tool-speed override and [#TOOL_SPEED]: 109
-    /// of 392 carry a nonzero canonical [#TOOL_SPEED] despite never overriding speed themselves; only 10
-    /// materials carry a real override.
-    public static final Property<Float> WERKSTOFF_SPEED_OVERRIDE = Property.of("gregtech", "werkstoffSpeedOverride");
     /// The explicitly-added `SubTag` names (contents-derived tags stay dynamic), elided when empty.
     public static final Property<List<String>> WERKSTOFF_SUB_TAGS = Property.of("gregtech", "werkstoffSubTags");
     /// The `Werkstoff.Types` enum constant name.

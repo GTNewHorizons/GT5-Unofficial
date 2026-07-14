@@ -812,9 +812,7 @@ public final class MaterialDataDump {
 
         Integer meltingPointK = material.getProperty(GTMaterialProperties.MELTING_POINT);
 
-        Integer gtppDurability = material.getProperty(GTMaterialProperties.GTPP_DURABILITY);
-        Integer durability = gtppDurability != null ? gtppDurability
-            : material.getProperty(GTMaterialProperties.DURABILITY);
+        Integer durability = material.getProperty(GTMaterialProperties.DURABILITY);
 
         Boolean gtppBlast = material.getProperty(GTMaterialProperties.GTPP_USES_BLAST_FURNACE);
         boolean usesBlastFurnace = Boolean.TRUE
@@ -862,7 +860,10 @@ public final class MaterialDataDump {
     /// except `neutrons`/`enchantmentLevel`/`additionalOreDict` are no longer emitted: every werkstoff-backed
     /// material carried `0`/`3`/`[]` for these (see [GTMaterialProperties#WERKSTOFF_IDS]'s class javadoc),
     /// `bartworks.system.material.WerkstoffReconstruction` now hardcodes them, and `check_parity.py`'s
-    /// `check_werkstoff` no longer checks them.
+    /// `check_werkstoff` no longer checks them. As of the U1 tool-stats collapse, `durabilityOverride`/
+    /// `speedOverride`/`qualityOverride`/`durabilityModifier` are dropped the same way: the U1 allowlist
+    /// (`scripts/mu/dumps/u1-collapse-allowlist.json`) records the closed material set
+    /// [bartworks.system.material.WerkstoffReconstruction] now hardcodes them for instead.
     private static Map<String, Object> dumpMlWerkstoff(com.ruling_0.materiallib.api.Material material) {
         List<Integer> ids = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
         if (ids == null) return null;
@@ -878,16 +879,6 @@ public final class MaterialDataDump {
         json.put(
             "meltingVoltage",
             orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_MELTING_VOLTAGE), 120));
-        json.put(
-            "durabilityOverride",
-            orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_DURABILITY_OVERRIDE), 0));
-        json.put("speedOverride", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_SPEED_OVERRIDE), 0f));
-        json.put(
-            "qualityOverride",
-            orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_QUALITY_OVERRIDE), 0));
-        json.put(
-            "durabilityModifier",
-            orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_DURABILITY_MODIFIER), 1.0f));
         json.put(
             "ebfGasTimeMultiplier",
             orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_EBF_GAS_TIME_MULTIPLIER), -1.0));
