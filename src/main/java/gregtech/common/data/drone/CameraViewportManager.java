@@ -131,8 +131,10 @@ public class CameraViewportManager {
         private static java.lang.reflect.Method removePlayerMethod;
 
         /*
-         * Reflectively resolves methods to manually assign players to chunk watchers,
-         * enabling chunk and tile entity synchronization for remote observation.
+         * Reflectively resolves PlayerManager and PlayerInstance methods to manually assign players to remote chunks.
+         * Unlike public APIs that teleport players or server-only chunk loaders , this manually registers the player to
+         * watch exactly one chunk. This sends required block and tile entity data to the client with minimal
+         * network/server overhead for remote camera.
          */
         static {
             try {
