@@ -34,7 +34,7 @@ import gregtech.common.items.ItemDroneRemoteInterface;
 
 public class CameraViewportManager {
 
-    public static final long NULL_COORD = CoordinatePacker.pack(-1, -1, -1);
+    public static final long NULL_COORD = Long.MAX_VALUE;
 
     public static final Map<UUID, ObservationSession> sessions = new ConcurrentHashMap<>();
     private static final List<Runnable> pendingServerActions = new ArrayList<>();
