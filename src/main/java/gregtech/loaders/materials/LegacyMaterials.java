@@ -253,7 +253,11 @@ public class LegacyMaterials {
 
         if (Boolean.FALSE.equals(ml.getProperty(GTMaterialProperties.UNIFIABLE))) builder.setUnifiable(false);
 
-        List<MaterialRefStack> composition = ml.getProperty(GTMaterialProperties.COMPOSITION);
+        // SaltWater's canonical COMPOSITION (from its gtPlusPlus fold) references SodiumChloride, which is
+        // never a legacy Materials constant, and the legacy Materials.SaltWater carried no material list --
+        // the composition serves the gtpp facade and gregtech.api.material.MaterialAtomics only.
+        List<MaterialRefStack> composition = "SaltWater".equals(ml.getName()) ? null
+            : ml.getProperty(GTMaterialProperties.COMPOSITION);
         if (composition != null) for (MaterialRefStack stack : composition) {
             builder.addMaterial(
                 Materials.get(
