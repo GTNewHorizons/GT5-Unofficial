@@ -19,10 +19,8 @@ import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.gem;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.rawOre;
-import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
@@ -31,11 +29,13 @@ import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.util.BWUtil;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 
+/// Raw-ore furnace smelting and byproduct maceration for rawOre-bearing werkstoffe. The raw-ore forge-hammer
+/// crushing step is covered by the canonical autogen (`ProcessingRawOre`, dispatched by
+/// `gregtech.loaders.shapeconsumers`).
 public class RawOreLoader implements IWerkstoffRunnable {
 
     @Override
@@ -47,13 +47,6 @@ public class RawOreLoader implements IWerkstoffRunnable {
                 .addSmeltingRecipe(WerkstoffLoader.getCorrespondingItemStack(rawOre, werkstoff), werkstoff.get(ingot));
 
         if (werkstoff.hasItemType(rawOre)) {
-
-            RA.stdBuilder()
-                .itemInputs(werkstoff.get(rawOre))
-                .itemOutputs(werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed))
-                .duration(10 * TICKS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
-                .addTo(hammerRecipes);
 
             RA.stdBuilder()
                 .itemInputs(werkstoff.get(rawOre))
