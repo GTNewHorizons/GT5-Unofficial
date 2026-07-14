@@ -760,6 +760,8 @@ public final class MaterialDataDump {
         json.put("toolDurability", material.getProperty(GTMaterialProperties.DURABILITY));
         json.put("toolQuality", material.getProperty(GTMaterialProperties.TOOL_QUALITY));
         json.put("subId", material.getProperty(GTMaterialProperties.OLD_SUB_ID));
+        json.put("formula", material.getProperty(GTMaterialProperties.FORMULA));
+        json.put("formulaLocalized", material.getProperty(GTMaterialProperties.FORMULA_LOCALIZED));
         json.put("moltenTint", material.getProperty(GTMaterialProperties.MOLTEN_TINT));
         json.put("element", material.getProperty(GTMaterialProperties.ELEMENT));
         json.put("composition", dumpMlMaterialRefStacks(material.getProperty(GTMaterialProperties.COMPOSITION)));
