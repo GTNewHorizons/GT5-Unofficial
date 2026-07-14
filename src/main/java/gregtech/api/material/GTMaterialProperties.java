@@ -75,7 +75,7 @@ public class GTMaterialProperties {
     public static final Property<Boolean> HAS_ELECTROLYZER_RECIPE = Property.of("gregtech", "hasElectrolyzerRecipe");
     public static final Property<Boolean> HAS_GLOWING_ORE = Property.of("gregtech", "hasGlowingOre");
     public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "heatDamage");
-    /// Whether the material is radioactive, unifying `GTWerkstoffFlag#RADIOACTIVE` and the legacy
+    /// Whether the material is radioactive, unifying the legacy `Werkstoff.Stats.isRadioactive` and
     /// `Material.isRadioactive`.
     public static final Property<Boolean> IS_RADIOACTIVE = Property.of("gregtech", "isRadioactive");
     /// The `gtPlusPlus.core.material.Material` scalar data of a material that was (or merged with) a legacy
@@ -100,8 +100,6 @@ public class GTMaterialProperties {
     public static final Property<Boolean> GTPP_GENERATES_CELLS = Property.of("gregtech", "gtppGeneratesCells");
     /// The legacy `Material` constructor's `generateFluid` flag, elided when `false`.
     public static final Property<Boolean> GTPP_GENERATES_FLUID = Property.of("gregtech", "gtppGeneratesFluid");
-    /// The legacy `Material.isRadioactive`, elided when `false`.
-    public static final Property<Boolean> GTPP_IS_RADIOACTIVE = Property.of("gregtech", "gtppIsRadioactive");
     /// The legacy `Material.vNeutrons`; several `RecipeGen*` consumers key recipe stats (duration, EU cost) off
     /// this, so it is pinned like every other gtpp scalar rather than recomputed or unified with
     /// [#WERKSTOFF_PROTONS] or any canonical proton/neutron count on the same material (werkstoff-backed
@@ -118,19 +116,9 @@ public class GTMaterialProperties {
     public static final Property<String> GTPP_PLASMA_NAME = Property.of("gregtech", "gtppPlasmaName");
     /// As [#GTPP_NEUTRONS], for `Material.vProtons`.
     public static final Property<Long> GTPP_PROTONS = Property.of("gregtech", "gtppProtons");
-    /// The legacy `Material.vRadiationLevel`, elided when `0`.
-    public static final Property<Integer> GTPP_RADIATION_LEVEL = Property.of("gregtech", "gtppRadiationLevel");
     /// The legacy `gtPlusPlus.core.material.state.MaterialState` enum constant name -- see the class javadoc
     /// for why this, not a scalar below, is the presence signal for "this material carries gtpp data".
     public static final Property<String> GTPP_STATE = Property.of("gregtech", "gtppState");
-    /// The legacy `Material.vTier`; no gregtech equivalent. Elided when `0`.
-    public static final Property<Integer> GTPP_TIER = Property.of("gregtech", "gtppTier");
-    /// The legacy `Material.usesBlastFurnace`, present only when it differs from [#BLAST_REQUIRED] (both
-    /// default to `false` when absent); reconstruction reads this, falling back to [#BLAST_REQUIRED].
-    public static final Property<Boolean> GTPP_USES_BLAST_FURNACE = Property.of("gregtech", "gtppUsesBlastFurnace");
-    /// The legacy `Material.vVoltageMultiplier`; no gregtech equivalent. Elided when `16` (the value every
-    /// [#GTPP_TIER]-elided, i.e. tier-0, material carries).
-    public static final Property<Long> GTPP_VOLTAGE_MULTIPLIER = Property.of("gregtech", "gtppVoltageMultiplier");
     public static final Property<FluidNames> LEGACY_FLUIDS = Property.of("gregtech", "legacyFluids");
     public static final Property<String> LOCAL_NAME = Property.of("gregtech", "localName");
     public static final Property<MaterialRef> MACERATE_INTO = Property.of("gregtech", "macerateInto");
@@ -174,7 +162,8 @@ public class GTMaterialProperties {
     public static final Property<Integer> TOOL_ENCHANTMENT_LEVEL = Property.of("gregtech", "toolEnchantmentLevel");
     public static final Property<Integer> TOOL_QUALITY = Property.of("gregtech", "toolQuality");
     public static final Property<Float> TOOL_SPEED = Property.of("gregtech", "toolSpeed");
-    /// Whether the material poisons the carrier of an item/block made from it, unifying `GTWerkstoffFlag#TOXIC`.
+    /// Whether the material poisons the carrier of an item/block made from it, from the legacy
+    /// `Werkstoff.Stats.isToxic`.
     public static final Property<Boolean> TOXIC = Property.of("gregtech", "toxic");
     public static final Property<Boolean> UNIFIABLE = Property.of("gregtech", "unifiable");
     /// The legacy `Material.vVoltageMultiplier`; no gregtech equivalent. Elided when `16` (the value every
@@ -194,14 +183,6 @@ public class GTMaterialProperties {
     /// [WerkstoffRefStack]. Elided when empty.
     public static final Property<List<WerkstoffRefStack>> WERKSTOFF_CONTENTS = Property
         .of("gregtech", "werkstoffContents");
-    /// As [#WERKSTOFF_EBF_GAS_AMOUNT_MULTIPLIER], for `BlastFurnaceGasStat`'s recipe-time multiplier. Elided
-    /// when `-1.0` (the proton-count default; the value 388 of 392 carry).
-    public static final Property<Double> WERKSTOFF_EBF_GAS_TIME_MULTIPLIER = Property
-        .of("gregtech", "werkstoffEbfGasTimeMultiplier");
-    /// `BlastFurnaceGasStat`'s recipe consumed-amount multiplier for a blast-furnace gas recipe. Elided when
-    /// `1.0` (the value 388 of 392 carry).
-    public static final Property<Double> WERKSTOFF_EBF_GAS_AMOUNT_MULTIPLIER = Property
-        .of("gregtech", "werkstoffEbfGasAmountMultiplier");
     /// [GTWerkstoffFlag] booleans a legacy `Werkstoff` carried, elided when empty.
     public static final Property<EnumSet<GTWerkstoffFlag>> WERKSTOFF_FLAGS = Property.of("gregtech", "werkstoffFlags");
     /// The `Werkstoff` chemical-formula tooltip string, elided when empty. [MaterialFormulas] reads this
@@ -218,12 +199,6 @@ public class GTMaterialProperties {
     /// The legacy `Werkstoff.Stats.mass`, elided when `0` (the legacy constructor computes it from contents
     /// instead when its own field is `0`, the same compute-sentinel semantics as [#WERKSTOFF_PROTONS]).
     public static final Property<Long> WERKSTOFF_MASS = Property.of("gregtech", "werkstoffMass");
-    /// The legacy `Werkstoff.Stats.meltingVoltage`, elided when `120` (the value 386 of 392 carry).
-    public static final Property<Integer> WERKSTOFF_MELTING_VOLTAGE = Property
-        .of("gregtech", "werkstoffMeltingVoltage");
-    /// The programmed-circuit number for the legacy mixer recipe, elided when `-1` (unset -- the value 377 of
-    /// 392 carry).
-    public static final Property<Integer> WERKSTOFF_MIX_CIRCUIT = Property.of("gregtech", "werkstoffMixCircuit");
     /// The werkstoff byproduct list exactly as the `Werkstoff` constructor left it (three self entries --
     /// werkstoff-kind references to this material's own name -- when the declaration passed no list, else the
     /// declared list verbatim); amounts are always 1. Elided when empty, though in practice always present
@@ -246,8 +221,6 @@ public class GTMaterialProperties {
     /// unified, since [#GTPP_PROTONS] is itself pinned independently of any canonical count (see that
     /// property's javadoc).
     public static final Property<Long> WERKSTOFF_PROTONS = Property.of("gregtech", "werkstoffProtons");
-    /// The explicitly-added `SubTag` names (contents-derived tags stay dynamic), elided when empty.
-    public static final Property<List<String>> WERKSTOFF_SUB_TAGS = Property.of("gregtech", "werkstoffSubTags");
     /// The `Werkstoff.Types` enum constant name.
     public static final Property<String> WERKSTOFF_TYPE = Property.of("gregtech", "werkstoffType");
 
