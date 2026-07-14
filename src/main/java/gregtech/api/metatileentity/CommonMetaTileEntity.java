@@ -640,6 +640,15 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return false;
     }
 
+    /**
+     * A public method to verify if this MTE has a Mui2 GUI. Returning false indicates that do not try to open a Mui2
+     * GUI
+     * of this.
+     */
+    public boolean hasMui2Gui() {
+        return useMui2() || forceUseMui2();
+    }
+
     @Override
     public final String getGuiId() {
         return mName;
