@@ -18,5 +18,6 @@ public final class LoaderMaterialRecipes {
     public static void run() {
         LoaderSifterRecipes.run();
         LoaderMixerRecipes.run();
+        LoaderChemicalRecipes.run();
     }
 }
