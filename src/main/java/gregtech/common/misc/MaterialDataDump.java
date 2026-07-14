@@ -54,7 +54,6 @@ import gregtech.api.material.FluidRef;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.GTWerkstoffFlag;
 import gregtech.api.material.MU;
 import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
@@ -802,6 +801,15 @@ public final class MaterialDataDump {
         json.put("hasCorrespondingGas", material.getProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS));
         json.put("hasElectrolyzerRecipe", material.getProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE));
         json.put("hasCentrifugeRecipe", material.getProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE));
+        json.put("hasGas", material.getProperty(GTMaterialProperties.HAS_GAS));
+        json.put("enforceOreDictUnification", material.getProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION));
+        json.put("hasChemicalRecipe", material.getProperty(GTMaterialProperties.HAS_CHEMICAL_RECIPE));
+        json.put("hasMixerRecipe", material.getProperty(GTMaterialProperties.HAS_MIXER_RECIPE));
+        json.put("hasSifterRecipe", material.getProperty(GTMaterialProperties.HAS_SIFTER_RECIPE));
+        json.put(
+            "hasMetalCraftingSolidifierRecipe",
+            material.getProperty(GTMaterialProperties.HAS_METAL_CRAFTING_SOLIDIFIER_RECIPE));
+        json.put("hasMetalSolidifierRecipe", material.getProperty(GTMaterialProperties.HAS_METAL_SOLIDIFIER_RECIPE));
         json.put("canBeCracked", material.getProperty(GTMaterialProperties.CAN_BE_CRACKED));
         json.put("hasGlowingOre", material.getProperty(GTMaterialProperties.HAS_GLOWING_ORE));
         json.put("processingMaterialTierEU", material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU));
@@ -851,11 +859,9 @@ public final class MaterialDataDump {
         json.put("ids", ids);
         json.put("type", material.getProperty(GTMaterialProperties.WERKSTOFF_TYPE));
         json.put("pool", material.getProperty(GTMaterialProperties.WERKSTOFF_POOL));
-        List<String> flags = new ArrayList<>();
-        EnumSet<GTWerkstoffFlag> flagSet = material.getProperty(GTMaterialProperties.WERKSTOFF_FLAGS);
-        if (flagSet != null) for (GTWerkstoffFlag flag : flagSet) flags.add(flag.name());
-        Collections.sort(flags);
-        json.put("flags", flags);
+        // GTWerkstoffFlag/WERKSTOFF_FLAGS no longer exist -- every member was ported onto a canonical property
+        // or dropped (see GTMaterialProperties.WERKSTOFF_IDS' javadoc), so this list is always empty now.
+        json.put("flags", List.of());
         json.put("prefixes", orEmpty(material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES)));
         return json;
     }

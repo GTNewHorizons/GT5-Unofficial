@@ -4,7 +4,6 @@ import static net.minecraft.util.EnumChatFormatting.GREEN;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -21,7 +20,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.GTWerkstoffFlag;
 import gregtech.api.material.MaterialAtomics;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.loaders.materials.LegacyMaterials;
@@ -178,7 +176,6 @@ public final class WerkstoffReconstruction {
         }
 
         List<Integer> ids = ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
-        EnumSet<GTWerkstoffFlag> flags = orEmpty(ml.getProperty(GTMaterialProperties.WERKSTOFF_FLAGS));
 
         int argb = ml.getProperty(GTMaterialProperties.ARGB);
         short[] rgba = { (short) (argb >> 16 & 0xFF), (short) (argb >> 8 & 0xFF), (short) (argb & 0xFF), 0 };
@@ -207,13 +204,14 @@ public final class WerkstoffReconstruction {
                 orDefault(ml.getProperty(GTMaterialProperties.EBF_GAS_TIME_MULTIPLIER), -1.0))
             .setEbfGasRecipeConsumedAmountMultiplier(
                 orDefault(ml.getProperty(GTMaterialProperties.EBF_GAS_AMOUNT_MULTIPLIER), 1.0))
-            .setSublimation(flags.contains(GTWerkstoffFlag.SUBLIMATION))
+            // GTWerkstoffFlag.SUBLIMATION had no reader anywhere in the codebase besides the dump tool -- dropped
+            // rather than ported onto a canonical property (see GTMaterialProperties.WERKSTOFF_IDS' javadoc).
             .setToxic(Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.TOXIC)))
             .setRadioactive(Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.IS_RADIOACTIVE)))
             .setBlastFurnace(Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.BLAST_REQUIRED)))
-            .setElektrolysis(flags.contains(GTWerkstoffFlag.ELECTROLYSIS))
-            .setCentrifuge(flags.contains(GTWerkstoffFlag.CENTRIFUGE))
-            .setGas(flags.contains(GTWerkstoffFlag.GAS));
+            .setElektrolysis(Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE)))
+            .setCentrifuge(Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE)))
+            .setGas(Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.HAS_GAS)));
         Integer tierEU = ml.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
         if (tierEU != null) stats.setProcessingMaterialTierEU(tierEU);
         if (Boolean.FALSE.equals(ml.getProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES)))
@@ -226,12 +224,16 @@ public final class WerkstoffReconstruction {
         for (String prefixName : orEmptyList(ml.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES))) {
             features.addPrefix(OrePrefixes.getPrefix(prefixName));
         }
-        if (flags.contains(GTWerkstoffFlag.ENFORCE_UNIFICATION)) features.enforceUnification();
-        if (flags.contains(GTWerkstoffFlag.CHEMICAL_SYNTHESIS)) features.addChemicalRecipes();
-        if (flags.contains(GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION)) features.addMetalCraftingSolidifierRecipes();
-        if (flags.contains(GTWerkstoffFlag.METAL_SOLIDIFICATION)) features.addMetaSolidifierRecipes();
-        if (flags.contains(GTWerkstoffFlag.SIFTING)) features.addSifterRecipes();
-        if (flags.contains(GTWerkstoffFlag.MIXING)) {
+        if (Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION)))
+            features.enforceUnification();
+        if (Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.HAS_CHEMICAL_RECIPE)))
+            features.addChemicalRecipes();
+        if (Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.HAS_METAL_CRAFTING_SOLIDIFIER_RECIPE)))
+            features.addMetalCraftingSolidifierRecipes();
+        if (Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.HAS_METAL_SOLIDIFIER_RECIPE)))
+            features.addMetaSolidifierRecipes();
+        if (Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.HAS_SIFTER_RECIPE))) features.addSifterRecipes();
+        if (Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.HAS_MIXER_RECIPE))) {
             if (mixCircuit >= 1) features.addMixerRecipes((short) mixCircuit);
             else features.addMixerRecipes();
         }
@@ -311,10 +313,6 @@ public final class WerkstoffReconstruction {
 
     private static <T> List<T> orEmptyList(List<T> value) {
         return value != null ? value : List.of();
-    }
-
-    private static EnumSet<GTWerkstoffFlag> orEmpty(EnumSet<GTWerkstoffFlag> value) {
-        return value != null ? value : EnumSet.noneOf(GTWerkstoffFlag.class);
     }
 
     private static int orDefault(Integer value, int fallback) {

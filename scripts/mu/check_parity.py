@@ -137,11 +137,17 @@ SUBTAG_FLAG_OVERRIDES = {
 WERKSTOFF_PATH = DUMPS_DIR / "werkstoff.json"
 COLLAPSE_TABLE_PATH = DUMPS_DIR / "u1-collapse-table.json"
 
-# GTWerkstoffFlag members the U1 collapse moved onto canonical properties (mirrors gen_materials.py's
-# MIGRATED_WERKSTOFF_FLAGS); LOCALIZED_FORMULA additionally landed on FORMULA_LOCALIZED.
+# GTWerkstoffFlag members the U1/U2 collapses moved onto canonical properties or dropped as dead data.
+# LOCALIZED_FORMULA additionally landed on FORMULA_LOCALIZED. The U2 pass ported ELECTROLYSIS/CENTRIFUGE/GAS/
+# ENFORCE_UNIFICATION/CHEMICAL_SYNTHESIS/MIXING/SIFTING onto HAS_ELECTROLYZER_RECIPE/HAS_CENTRIFUGE_RECIPE/
+# HAS_GAS/ENFORCE_ORE_DICT_UNIFICATION/HAS_CHEMICAL_RECIPE/HAS_MIXER_RECIPE/HAS_SIFTER_RECIPE, and dropped
+# SUBLIMATION (no reader) and METAL_CRAFTING_SOLIDIFICATION/METAL_SOLIDIFICATION (the legacy-pipeline solidifier
+# autogen they gated is unconditional on a registered molten fluid plus the target prefix existing) -- exhausting
+# GTWerkstoffFlag, which no longer exists.
 MIGRATED_WERKSTOFF_FLAGS = {
     "TOXIC", "RADIOACTIVE", "BLAST_FURNACE", "NO_AUTO_BLAST_FURNACE_RECIPES", "NO_AUTO_VACUUM_FREEZER_RECIPES",
-    "LOCALIZED_FORMULA"
+    "LOCALIZED_FORMULA", "ELECTROLYSIS", "CENTRIFUGE", "GAS", "ENFORCE_UNIFICATION", "CHEMICAL_SYNTHESIS",
+    "MIXING", "SIFTING", "SUBLIMATION", "METAL_CRAFTING_SOLIDIFICATION", "METAL_SOLIDIFICATION"
 }
 
 M = 3628800
@@ -405,6 +411,15 @@ def mlv_from_dump(ml, atomics):
         "toolQuality": ml["toolQuality"],
         "autoBlast": ml["autoBlast"],
         "autoVacuum": ml["autoVacuum"],
+        "hasElectrolyzerRecipe": ml["hasElectrolyzerRecipe"],
+        "hasCentrifugeRecipe": ml["hasCentrifugeRecipe"],
+        "hasGas": ml["hasGas"],
+        "enforceOreDictUnification": ml["enforceOreDictUnification"],
+        "hasChemicalRecipe": ml["hasChemicalRecipe"],
+        "hasMixerRecipe": ml["hasMixerRecipe"],
+        "hasSifterRecipe": ml["hasSifterRecipe"],
+        "hasMetalCraftingSolidifierRecipe": ml["hasMetalCraftingSolidifierRecipe"],
+        "hasMetalSolidifierRecipe": ml["hasMetalSolidifierRecipe"],
         "formula": ml["formula"],
         "formulaLocalized": ml["formulaLocalized"],
         "composition": [(c["material"], c["amount"]) for c in ml["composition"]],
@@ -493,6 +508,48 @@ def collect_collapsed_deviations(dev, error, key, gt, wk_entries, gtpp_entry, ml
     expected_radiation = gtpp_entry["radiationLevel"] if gtpp_entry is not None else 0
     if (mlv["radiationLevel"] or 0) != expected_radiation:
         error(f"radiationLevel expected {expected_radiation!r}, got {mlv['radiationLevel']!r}")
+
+    # U2 GTWerkstoffFlag ports. hasElectrolyzerRecipe/hasCentrifugeRecipe have two independent legacy sources
+    # (gt-materials.json's own mExtraData-derived field, from architecture predating the werkstoff port, and
+    # the werkstoff isElektrolysis/isCentrifuge stat) that never both apply to the same material in practice,
+    # so the combined value is enforced as their OR and a per-source mismatch is allowlist-eligible exactly like
+    # isRadioactive above; the rest have only the werkstoff stat as a legacy source.
+    wk_electrolyzer = bool(wk["elektrolysis"]) if wk is not None else False
+    gt_electrolyzer = bool(gt["hasElectrolyzerRecipe"]) if gt is not None else False
+    ml_electrolyzer = bool(mlv["hasElectrolyzerRecipe"])
+    if ml_electrolyzer != (wk_electrolyzer or gt_electrolyzer):
+        error(f"hasElectrolyzerRecipe expected {wk_electrolyzer or gt_electrolyzer}, got {ml_electrolyzer}")
+    if wk is not None and wk_electrolyzer != ml_electrolyzer:
+        mism("electrolyzer_merge", "hasElectrolyzerRecipe(werkstoff)", wk_electrolyzer, ml_electrolyzer)
+    if gt is not None and gt_electrolyzer != ml_electrolyzer:
+        mism("electrolyzer_merge", "hasElectrolyzerRecipe(gt)", gt_electrolyzer, ml_electrolyzer)
+
+    wk_centrifuge = bool(wk["centrifuge"]) if wk is not None else False
+    gt_centrifuge = bool(gt["hasCentrifugeRecipe"]) if gt is not None else False
+    ml_centrifuge = bool(mlv["hasCentrifugeRecipe"])
+    if ml_centrifuge != (wk_centrifuge or gt_centrifuge):
+        error(f"hasCentrifugeRecipe expected {wk_centrifuge or gt_centrifuge}, got {ml_centrifuge}")
+    if wk is not None and wk_centrifuge != ml_centrifuge:
+        mism("centrifuge_merge", "hasCentrifugeRecipe(werkstoff)", wk_centrifuge, ml_centrifuge)
+    if gt is not None and gt_centrifuge != ml_centrifuge:
+        mism("centrifuge_merge", "hasCentrifugeRecipe(gt)", gt_centrifuge, ml_centrifuge)
+
+    if wk is not None:
+        for field, wk_field in (
+                ("hasGas", "gas"), ("enforceOreDictUnification", "enforceUnification"),
+                ("hasChemicalRecipe", "chemicalRecipes"), ("hasMixerRecipe", "mixerRecipes"),
+                ("hasSifterRecipe", "sifterRecipes"),
+                ("hasMetalCraftingSolidifierRecipe", "metalCraftingSolidifierRecipes"),
+                ("hasMetalSolidifierRecipe", "metalSolidifierRecipes")):
+            expected = bool(wk[wk_field])
+            actual = bool(mlv[field])
+            if expected != actual:
+                error(f"{field} expected {expected!r}, got {actual!r}")
+    else:
+        for field in ("hasGas", "enforceOreDictUnification", "hasChemicalRecipe", "hasMixerRecipe",
+                      "hasSifterRecipe", "hasMetalCraftingSolidifierRecipe", "hasMetalSolidifierRecipe"):
+            if mlv[field]:
+                error(f"{field} true with no werkstoff source")
 
     gt_auto_blast = bool(gt["autoBlast"]) if gt is not None else True
     gt_auto_vacuum = bool(gt["autoVacuum"]) if gt is not None else True
@@ -809,7 +866,7 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
         errors.append(f"{name}: moltenTint expected {expected_molten!r}, got {actual_molten!r}")
 
     if gt["element"] != ml["element"]:
-        errors.append(f"{name}: element expected {gt['element']!r}, got {ml['element']!r}")
+        sink.dev("element_gt", ml_name(name), "element", gt["element"], ml["element"])
 
     check_ref_field(errors, name, "smeltInto", gt["smeltInto"], ml["smeltInto"])
     check_ref_field(errors, name, "macerateInto", gt["macerateInto"], ml["macerateInto"])
