@@ -1,4 +1,4 @@
-package gtPlusPlus.api.recipe;
+package gregtech.api.recipe.maps;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -26,7 +26,7 @@ public class MillingFrontend extends RecipeMapFrontend {
         for (PositionedStack pStack : recipe.mInputs) {
             if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed
                 && MTEIsaMill.isMillingBall(pStack.item)) {
-                fixed.setCustomBadge("NC*", StatCollector.translateToLocal("gtpp.nei.milling.not_consumed"));
+                fixed.setCustomBadge("NC*", StatCollector.translateToLocal("gt.nei.milling.not_consumed"));
             }
         }
     }

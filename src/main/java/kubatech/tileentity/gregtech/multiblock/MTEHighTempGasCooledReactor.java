@@ -392,7 +392,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     + EnumChatFormatting.GRAY
                     + " distilled water/tick/ball")
             .beginStructureBlock(16, 27, 15, true)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("273", "Beryllium Integrated Reactor Casing", false)
             .addCasing("272", "Pressure Containment Casing", false)
             .addCasing("164", "Tungsten Frame Box", false)

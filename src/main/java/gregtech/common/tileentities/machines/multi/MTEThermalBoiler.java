@@ -43,6 +43,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
@@ -51,7 +52,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -101,7 +101,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.thermalBoilerRecipes;
+        return RecipeMaps.thermalBoilerRecipes;
     }
 
     @Override
@@ -257,7 +257,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
             .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc3"))
             .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc4"))
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front center")
+            .addController("Front center, 3rd layer")
             .addCasing("20-25", "Thermal Containment Casing", false)
             .addCasing("10-17", "Robust Tungstensteel Machine Casing", false)
             .addCasing("10-17", "Thermal Processing Casing", false)

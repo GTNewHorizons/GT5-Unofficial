@@ -142,7 +142,7 @@ public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
             .addInfo("Use a screwdriver to adjust the fitting of the turbine")
             .addInfo("Loose fit increases flow in exchange for efficiency")
             .beginStructureBlock(6, 3, 3, false)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("14", "PBI Frame Box", false)
             .addCasing("8-14", "SC Turbine Casing", false)
             .addCasing("12", "PBI Pipe Casing", false)
