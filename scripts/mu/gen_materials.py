@@ -406,10 +406,8 @@ def werkstoff_property_lines(info, ml_names, display_to_var, canonical_melting_p
         emit("MELTING_POINT", str(first["meltingPoint"]))
     if first["boilingPoint"] != 0:
         emit("BOILING_POINT", str(first["boilingPoint"]))
-    if first["protons"] != 0:
-        emit("WERKSTOFF_PROTONS", f"{first['protons']}L")
-    if first["mass"] != 0:
-        emit("WERKSTOFF_MASS", f"{first['mass']}L")
+    # Proton/neutron/mass counts are never emitted: the facades compute them from ELEMENT/COMPOSITION
+    # via gregtech.api.material.MaterialAtomics (the legacy Materials density-weighted formula).
     if first["meltingVoltage"] != 120:
         emit("MELTING_VOLTAGE", str(first["meltingVoltage"]))
     if first["ebfGasTimeMultiplier"] != -1.0:
@@ -674,8 +672,6 @@ def gtpp_scalar_property_lines(entry, gt_entry, ml_names):
     if entry["chemicalFormula"]:
         emit("FORMULA", java_string_literal(gtpp_display_formula(entry["chemicalFormula"])))
 
-    emit("GTPP_PROTONS", f"{entry['protons']}L")
-    emit("GTPP_NEUTRONS", f"{entry['neutrons']}L")
     emit("GTPP_STATE", java_string_literal(entry["state"]))
 
     generates_fluid = gtpp_generates_fluid(entry)
