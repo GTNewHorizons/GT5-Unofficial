@@ -8,6 +8,7 @@ import java.util.Arrays;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -762,7 +763,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
         GTUtility.sendChatTrans(
             entityPlayer,
             "gtpp.chat.atmospheric_reconditioner.efficiency",
-            GTUtility.translate(
+            StatCollector.translateToLocal(
                 mSaveRotor ? "gtpp.chat.atmospheric_reconditioner.efficiency.low"
                     : "gtpp.chat.atmospheric_reconditioner.efficiency.high"));
         return true;

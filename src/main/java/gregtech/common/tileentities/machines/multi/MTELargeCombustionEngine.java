@@ -121,13 +121,21 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
         String boostedEfficiency = TooltipHelper.effText(1.5f);
         String waitPower = TooltipHelper.effText(3.0f);
 
-        tt.addMachineType(GTUtility.translate("gt.multiblock.DieselEngine.machine_type"))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc1", lubricantRate))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc2", oxygenRate))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.default_output", defaultOutput, defaultEfficiency))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.boosted_output", boostedOutput, boostedEfficiency))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.wait_power", waitPower))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.intake_warning"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.DieselEngine.machine_type"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.desc1", lubricantRate))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.desc2", oxygenRate))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.DieselEngine.default_output",
+                    defaultOutput,
+                    defaultEfficiency))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.DieselEngine.boosted_output",
+                    boostedOutput,
+                    boostedEfficiency))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.wait_power", waitPower))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.DieselEngine.intake_warning"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 8, 3, false)
             .addController("Front left, 2nd layer")

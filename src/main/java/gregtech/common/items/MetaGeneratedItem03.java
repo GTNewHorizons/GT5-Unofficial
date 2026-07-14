@@ -330,7 +330,6 @@ import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
 import gregtech.common.powergoggles.ItemPowerGoggles;
@@ -2312,7 +2311,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             NaniteTier tier = NaniteTier.fromStack(aStack);
 
             if (tier != null) {
-                aList.add(GTUtility.translate("gt.tooltip.nanite-tier", tier.tier));
+                aList.add(StatCollector.translateToLocalFormatted("gt.tooltip.nanite-tier", tier.tier));
             }
         }
     }
