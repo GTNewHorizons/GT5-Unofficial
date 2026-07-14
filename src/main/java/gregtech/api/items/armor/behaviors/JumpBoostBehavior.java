@@ -47,7 +47,7 @@ public class JumpBoostBehavior implements IArmorBehavior {
         if (context.getPlayer() instanceof EntityPlayerMP playerMP) {
             ChatComponentTranslation chatComponent = new ChatComponentTranslation(
                 "GT5U.armor.message.jump_boost_set",
-                state.jumpBoostMulti);
+                "§f" + state.jumpBoostMulti + "x§r");
             GTNHLib.proxy.sendMessageAboveHotbar(playerMP, chatComponent, 60, true, true);
         }
     }

@@ -58,7 +58,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
         if (context.getPlayer() instanceof EntityPlayerMP playerMP) {
             ChatComponentTranslation chatComponent = new ChatComponentTranslation(
                 "GT5U.armor.message.speed_set",
-                state.speedBoostMulti);
+                "§f" + state.speedBoostMulti + "x§r");
             GTNHLib.proxy.sendMessageAboveHotbar(playerMP, chatComponent, 60, true, true);
         }
     }
