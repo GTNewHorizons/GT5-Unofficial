@@ -54,7 +54,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Turning wood into charcoal",
             new String[] { "ALUMENTUM" },
             "ALCHEMY",
-            MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.gem, (int) (1L)),
+            GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1L),
             2,
             0,
             13,
@@ -68,7 +68,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.log.get(Materials.Wood),
-                    MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.gem, (int) (1L)),
+                    GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1L),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L))) });
@@ -506,7 +506,7 @@ public class ThaumcraftRecipes implements Runnable {
             new String[] { "GT_TRANSBISMUTH", "GT_IRON_TO_STEEL", "GT_TRANSSOLDERINGALLOY", "GT_TRANSBATTERYALLOY",
                 "GT_TRANSBRASS", "GT_TRANSELECTRUM", "GT_TRANSCUPRONICKEL", "GT_TRANSINVAR" },
             "ALCHEMY",
-            MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.ingot, (int) (1L)),
+            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L),
             3,
             0,
             16,
