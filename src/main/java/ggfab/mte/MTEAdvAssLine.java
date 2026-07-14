@@ -344,22 +344,13 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 1)
             .addInputBus("5-16", StatCollector.translateToLocal("ggfab.tt.advassline.structure.input_bus_location"), 2)
             .addInputHatch("1-4", StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer1_side_casing"), 1)
-            .addOutputBus(
-                "1",
-                StatCollector.translateToLocal("ggfab.tt.advassline.structure.output_bus_location"),
-                1)
+            .addOutputBus("1", StatCollector.translateToLocal("ggfab.tt.advassline.structure.output_bus_location"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
             .addCasing("10", StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.tiered_glass"), false)
             .addCasing("8", StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.grate"), false)
-            .addCasing(
-                "4-8",
-                StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.solid_steel"),
-                false)
-            .addCasing(
-                "5",
-                StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.assembly_line"),
-                false)
+            .addCasing("4-8", StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.solid_steel"), false)
+            .addCasing("5", StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.assembly_line"), false)
             .addCasing("5", StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.assembler"), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
