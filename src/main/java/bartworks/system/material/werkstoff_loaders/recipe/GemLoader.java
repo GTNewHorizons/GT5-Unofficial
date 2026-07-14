@@ -13,8 +13,6 @@
 
 package bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.OrePrefixes.block;
-import static gregtech.api.enums.OrePrefixes.crushedPurified;
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.dustSmall;
 import static gregtech.api.enums.OrePrefixes.dustTiny;
@@ -24,14 +22,11 @@ import static gregtech.api.enums.OrePrefixes.gemExquisite;
 import static gregtech.api.enums.OrePrefixes.gemFlawed;
 import static gregtech.api.enums.OrePrefixes.gemFlawless;
 import static gregtech.api.enums.OrePrefixes.lens;
-import static gregtech.api.enums.OrePrefixes.ore;
 import static gregtech.api.enums.OrePrefixes.plate;
-import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
-import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -60,32 +55,6 @@ public class GemLoader implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(gem)) {
-            if (werkstoff.getGenerationFeatures()
-                .hasSifterRecipes() || werkstoff.hasItemType(ore) && werkstoff.hasItemType(dust)) {
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(gem, 9))
-                    .itemOutputs(werkstoff.get(block))
-                    .duration(15 * SECONDS)
-                    .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
-                    .addTo(compressorRecipes);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(crushedPurified))
-                    .itemOutputs(
-                        werkstoff.get(gemExquisite),
-                        werkstoff.get(gemFlawless),
-                        werkstoff.get(gem),
-                        werkstoff.get(gemFlawed),
-                        werkstoff.get(gemChipped),
-                        werkstoff.get(dust))
-                    .outputChances(200, 1000, 2500, 2000, 4000, 5000)
-                    .duration(40 * SECONDS)
-                    .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
-                    .addTo(sifterRecipes);
-
-            }
-
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gemFlawless, 2),
                 GTModHandler.RecipeBits.BUFFERED,

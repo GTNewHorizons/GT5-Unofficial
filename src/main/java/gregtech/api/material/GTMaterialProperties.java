@@ -104,8 +104,8 @@ public class GTMaterialProperties {
     /// reads this yet.
     public static final Property<Boolean> HAS_MIXER_RECIPE = Property.of("gregtech", "hasMixerRecipe");
     /// Whether the auto-generated Sifter recipe (crushed ore -> gem grades) should be built (the werkstoff
-    /// facade's `GenerationFeatures#hasSifterRecipes` marker). No canonical `Processing*` generator reads
-    /// this yet.
+    /// facade's `GenerationFeatures#hasSifterRecipes` marker). Read by
+    /// `gregtech.loaders.materialrecipes.LoaderSifterRecipes`.
     public static final Property<Boolean> HAS_SIFTER_RECIPE = Property.of("gregtech", "hasSifterRecipe");
     public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "heatDamage");
     /// Whether the material is radioactive, unifying the legacy `Werkstoff.Stats.isRadioactive` and
