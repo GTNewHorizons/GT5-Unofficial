@@ -819,8 +819,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         NBTTagCompound tag = accessor.getNBTData();
 
-        currenttip
-            .add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-processing-speed", 20f * tag.getFloat("speed")));
+        currenttip.add(
+            StatCollector.translateToLocalFormatted("GT5U.chat.bec-processing-speed", 20f * tag.getFloat("speed")));
         currenttip.add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-slowdowns", tag.getInteger("slowdowns")));
     }
 
