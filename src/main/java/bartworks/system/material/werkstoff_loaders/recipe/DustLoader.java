@@ -24,7 +24,6 @@ import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
@@ -55,7 +54,6 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTUtility;
 
 /// Composition decomposition (electrolyzer/centrifuge/chemical-synthesis/mixer), dust-crafting, dust<->ingot
 /// smelting (including the gas-aware and primitive-blast-furnace fallback paths), vacuum freezer, and reverse
@@ -277,36 +275,6 @@ public class DustLoader implements IWerkstoffRunnable {
                                             .size())
                                         * 30))
                             .addTo(GTRecipeConstants.UniversalChemical);
-                    }
-                    if (werkstoff.getGenerationFeatures()
-                        .hasMixerRecipes()) {
-                        if (cells > 0) itemComponents.add(Materials.Empty.getCells(cells));
-                        short circuitID = werkstoff.getMixCircuit();
-                        ItemStack circuit = circuitID == -1 ? null : GTUtility.getIntegratedCircuit(circuitID);
-                        if (circuit != null) itemComponents.add(circuit);
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(itemComponents.toArray(new ItemStack[0]))
-                            .itemOutputs(werkstoffDust)
-                            .fluidInputs(
-                                fluidComponents.isEmpty() ? new FluidStack[0]
-                                    : new FluidStack[] { fluidComponents.get(0) })
-                            .duration(
-                                (int) Math.max(
-                                    1L,
-                                    Math.abs(
-                                        werkstoffStats.getMass() / werkstoff.getContents()
-                                            .getValue()
-                                            .size())))
-                            .eut(
-                                BWUtil.calculateRecipeEU(
-                                    werkstoff,
-                                    Math.min(
-                                        4,
-                                        werkstoff.getContents()
-                                            .getValue()
-                                            .size())
-                                        * 5))
-                            .addTo(mixerRecipes);
                     }
                 } else {
                     GTLog.err.println(
