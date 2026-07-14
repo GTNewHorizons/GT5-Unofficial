@@ -222,7 +222,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         if (mColor == color) return;
         mColor = color;
         if (isClientSide()) {
-            getMetaTileEntity().onColorChangeClient(mColor);
+            if (hasValidMetaTileEntity()) {
+                getMetaTileEntity().onColorChangeClient(mColor);
+            }
             issueTextureUpdate();
         } else {
             getMetaTileEntity().onColorChangeServer(mColor);
