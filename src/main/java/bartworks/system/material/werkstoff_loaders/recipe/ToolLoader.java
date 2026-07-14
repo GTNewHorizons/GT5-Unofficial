@@ -31,10 +31,6 @@ import static gregtech.api.enums.OrePrefixes.toolHeadWrench;
 import static gregtech.api.enums.OrePrefixes.turbineBlade;
 import static gregtech.api.enums.OrePrefixes.wireFine;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
-import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
-import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
@@ -54,6 +50,10 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 
+/// Tool crafting-table recipes and turbine-blade assembly for werkstoffe. Turbine-blade shape generation
+/// (extruder, fluid-solidifier mold, forming press) is covered by the canonical autogen
+/// (`ProcessingShaping`/`ProcessingToolHead`, dispatched by `gregtech.loaders.shapeconsumers`); the
+/// crafting-table recipes are not census-evaluable.
 public class ToolLoader implements IWerkstoffRunnable {
 
     // GTNH-Specific
@@ -850,34 +850,6 @@ public class ToolLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "fPd", "SPS", " P ", 'P', plateDouble.get(werkstoff.getBridgeMaterial()), 'S',
                     screw.get(werkstoff.getBridgeMaterial()) });
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot, 6), ItemList.Shape_Extruder_Turbine_Blade.get(0))
-                .itemOutputs(werkstoff.get(turbineBlade, 1))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass(),
-                        1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * voltageMultiplier))
-                .addTo(extruderRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Turbine_Blade.get(0))
-                .itemOutputs(werkstoff.get(turbineBlade, 1))
-                .fluidInputs(werkstoff.getMolten(6 * INGOTS))
-                .duration(20 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * voltageMultiplier))
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(plateDouble, 3), werkstoff.get(screw, 2))
-                .itemOutputs(werkstoff.get(turbineBlade, 1))
-                .duration(
-                    (werkstoff.getStats()
-                        .getMass() / 4) * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 32))
-                .addTo(formingPressRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(turbineBlade, 4), GTOreDictUnificator.get(stickLong, Materials.Magnalium, 1))
