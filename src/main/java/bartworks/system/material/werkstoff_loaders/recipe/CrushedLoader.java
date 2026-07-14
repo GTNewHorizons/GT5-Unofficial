@@ -20,14 +20,11 @@ import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.dustImpure;
 import static gregtech.api.enums.OrePrefixes.dustPure;
 import static gregtech.api.enums.OrePrefixes.dustSmall;
-import static gregtech.api.enums.OrePrefixes.gem;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.nugget;
 import static gregtech.api.enums.OrePrefixes.ore;
-import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -44,15 +41,23 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
-/// Furnace smelting, hand-crafted downgrade recipes, and the [SubTag]-gated ore-processing bonus recipes
-/// (crystallisable gems, mercury/sodium-persulfate ore washing, electromagnetic separation byproducts) for a
-/// werkstoff's ore/crushed/dust chain.
+/// Furnace smelting, hand-crafted downgrade recipes, and the [SubTag]-gated ore-washing and electromagnetic-
+/// separation bonus recipes for a werkstoff's ore/crushed/dust chain. No werkstoff currently carries
+/// [SubTag#WASHING_MERCURY] or [SubTag#WASHING_SODIUMPERSULFATE], so the washing branches are presently inert.
 ///
 /// The unconditional hammer, macerator, ore-washer, thermal-centrifuge and centrifuge steps of the chain are
 /// generated canonically instead: `gregtech.loaders.oreprocessing.ProcessingDirty`/`ProcessingPure`/
 /// `ProcessingCrushedOre` cover any material with a MaterialLib ore/dust shape and a legacy bridge material,
-/// reached through `gregtech.loaders.shapeconsumers.ConsumerDirty`/`ConsumerPure`/`ConsumerCrushedOre`, so this
-/// loader registers only the recipes with no canonical counterpart.
+/// reached through `gregtech.loaders.shapeconsumers.ConsumerDirty`/`ConsumerPure`/`ConsumerCrushedOre`. The
+/// crystallisable-gem autoclave recipes are likewise canonical, driven by `GTMaterialFlag.CRYSTALLISABLE` in
+/// `gregtech.loaders.oreprocessing.ProcessingDust`, so this loader no longer registers them.
+///
+/// The electromagnetic-separator byproduct branch stays: [Werkstoff#contains] resolves a [SubTag] transitively
+/// through a compound's composition, so some werkstoffe (e.g. Chromo-Alumino-Povondraite) carry
+/// `ELECTROMAGNETIC_SEPERATION_IRON` this way without their own bridge material carrying the matching
+/// `GTMaterialFlag`, and `ProcessingDust`'s flag-driven dispatch never fires for them; those materials have no
+/// canonical byproduct recipe at all. Materials that carry the `SubTag` directly keep a canonical duplicate
+/// coexisting alongside this branch's recipe.
 public class CrushedLoader implements IWerkstoffRunnable {
 
     @Override
@@ -88,45 +93,6 @@ public class CrushedLoader implements IWerkstoffRunnable {
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "h  ", "W  ", 'W', werkstoff.get(crushedCentrifuged) });
 
-        if (werkstoff.contains(SubTag.CRYSTALLISABLE)) {
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(dustPure))
-                .itemOutputs(werkstoff.get(gem))
-                .outputChances(9500)
-                .fluidInputs(Materials.Water.getFluid(200L))
-                .duration(1 * MINUTES + 40 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
-                .addTo(autoclaveRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(dustImpure))
-                .itemOutputs(werkstoff.get(gem))
-                .outputChances(9000)
-                .fluidInputs(Materials.Water.getFluid(200L))
-                .duration(1 * MINUTES + 40 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
-                .addTo(autoclaveRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(dustPure))
-                .itemOutputs(werkstoff.get(gem))
-                .outputChances(10000)
-                .fluidInputs(GTModHandler.getDistilledWater(200L))
-                .duration(1 * MINUTES + 15 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
-                .addTo(autoclaveRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(dustImpure))
-                .itemOutputs(werkstoff.get(gem))
-                .outputChances(9500)
-                .fluidInputs(GTModHandler.getDistilledWater(200L))
-                .duration(1 * MINUTES + 15 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
-                .addTo(autoclaveRecipes);
-
-        }
         if (werkstoff.contains(SubTag.WASHING_MERCURY)) {
 
             GTValues.RA.stdBuilder()
