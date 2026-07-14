@@ -859,8 +859,8 @@ public final class MaterialDataDump {
         json.put("ids", ids);
         json.put("type", material.getProperty(GTMaterialProperties.WERKSTOFF_TYPE));
         json.put("pool", material.getProperty(GTMaterialProperties.WERKSTOFF_POOL));
-        // GTWerkstoffFlag/WERKSTOFF_FLAGS no longer exist -- every member was ported onto a canonical property
-        // or dropped (see GTMaterialProperties.WERKSTOFF_IDS' javadoc), so this list is always empty now.
+        // Always empty (every recipe-gen flag is a top-level canonical property); emitted because
+        // check_parity.py compares this list against the pinned dump's unmigrated-flag remainder.
         json.put("flags", List.of());
         json.put("prefixes", orEmpty(material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES)));
         return json;

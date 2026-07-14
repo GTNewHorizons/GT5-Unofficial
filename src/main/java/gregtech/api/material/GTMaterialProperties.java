@@ -71,9 +71,9 @@ public class GTMaterialProperties {
     public static final Property<EnumSet<GTMaterialGenerationFlag>> GENERATION_FLAGS = Property
         .of("gregtech", "generationFlags");
     public static final Property<MaterialRef> HANDLE_MATERIAL = Property.of("gregtech", "handleMaterial");
-    /// Whether a chemical-reactor recipe assembles this material's dust from its [#COMPOSITION] (the legacy
-    /// bartworks `GTWerkstoffFlag.CHEMICAL_SYNTHESIS`/`GenerationFeatures#hasChemicalRecipes` marker). No
-    /// canonical `Processing*` generator reads this yet -- ported as a marker ahead of that generator.
+    /// Whether a chemical-reactor recipe assembles this material's dust from its [#COMPOSITION] (the werkstoff
+    /// facade's `GenerationFeatures#hasChemicalRecipes` marker). No canonical `Processing*` generator reads
+    /// this yet.
     public static final Property<Boolean> HAS_CHEMICAL_RECIPE = Property.of("gregtech", "hasChemicalRecipe");
     public static final Property<Boolean> HAS_CENTRIFUGE_RECIPE = Property.of("gregtech", "hasCentrifugeRecipe");
     public static final Property<Boolean> HAS_CORRESPONDING_FLUID = Property.of("gregtech", "hasCorrespondingFluid");
@@ -87,8 +87,8 @@ public class GTMaterialProperties {
     public static final Property<Boolean> HAS_GAS = Property.of("gregtech", "hasGas");
     public static final Property<Boolean> HAS_GLOWING_ORE = Property.of("gregtech", "hasGlowingOre");
     /// Whether the werkstoff facade's fluid-solidifier autogen builds the stickLong/stick/plate molds from
-    /// [MoltenCellLoader] (the legacy bartworks `GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION`/
-    /// `GenerationFeatures#hasMetalCraftingSolidifierRecipes` marker). The canonical legacy-pipeline solidifier
+    /// [MoltenCellLoader] (the `GenerationFeatures#hasMetalCraftingSolidifierRecipes` marker). The canonical
+    /// legacy-pipeline solidifier
     /// autogen (`gregtech.loaders.oreprocessing.ProcessingIngot` et al) is unconditional on a registered molten
     /// fluid and does not need this gate, but it only reaches a material once its item shapes are `ShapeConsumer`-
     /// reachable -- bartworks item generation has not cut over to MaterialLib shapes yet (see
@@ -97,17 +97,16 @@ public class GTMaterialProperties {
     public static final Property<Boolean> HAS_METAL_CRAFTING_SOLIDIFIER_RECIPE = Property
         .of("gregtech", "hasMetalCraftingSolidifierRecipe");
     /// As [#HAS_METAL_CRAFTING_SOLIDIFIER_RECIPE], for `MoltenCellLoader`'s screw/gear/gearSmall/bolt/ring/rotor
-    /// molds (the legacy `GTWerkstoffFlag.METAL_SOLIDIFICATION`/`GenerationFeatures#hasMetaSolidifierRecipes`
-    /// marker).
+    /// molds (the `GenerationFeatures#hasMetaSolidifierRecipes` marker).
     public static final Property<Boolean> HAS_METAL_SOLIDIFIER_RECIPE = Property
         .of("gregtech", "hasMetalSolidifierRecipe");
     /// Whether the auto-generated Mixer recipe (from [#COMPOSITION] plus [#MIX_CIRCUIT]) should be built (the
-    /// legacy bartworks `GTWerkstoffFlag.MIXING`/`GenerationFeatures#hasMixerRecipes` marker). No canonical
-    /// `Processing*` generator reads this yet -- ported as a marker ahead of that generator.
+    /// werkstoff facade's `GenerationFeatures#hasMixerRecipes` marker). No canonical `Processing*` generator
+    /// reads this yet.
     public static final Property<Boolean> HAS_MIXER_RECIPE = Property.of("gregtech", "hasMixerRecipe");
-    /// Whether the auto-generated Sifter recipe (crushed ore -> gem grades) should be built (the legacy
-    /// bartworks `GTWerkstoffFlag.SIFTING`/`GenerationFeatures#hasSifterRecipes` marker). No canonical
-    /// `Processing*` generator reads this yet -- ported as a marker ahead of that generator.
+    /// Whether the auto-generated Sifter recipe (crushed ore -> gem grades) should be built (the werkstoff
+    /// facade's `GenerationFeatures#hasSifterRecipes` marker). No canonical `Processing*` generator reads
+    /// this yet.
     public static final Property<Boolean> HAS_SIFTER_RECIPE = Property.of("gregtech", "hasSifterRecipe");
     public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "heatDamage");
     /// Whether the material is radioactive, unifying the legacy `Werkstoff.Stats.isRadioactive` and
@@ -187,8 +186,8 @@ public class GTMaterialProperties {
     public static final Property<Boolean> TOXIC = Property.of("gregtech", "toxic");
     public static final Property<Boolean> UNIFIABLE = Property.of("gregtech", "unifiable");
     /// Whether item resolution should skip [gregtech.api.util.GTOreDictUnificator]'s existing association and
-    /// forcibly re-`set` it to this material's own item for every prefix it carries (the legacy bartworks
-    /// `GTWerkstoffFlag.ENFORCE_UNIFICATION`/`GenerationFeatures#enforceUnification` marker, read by
+    /// forcibly re-`set` it to this material's own item for every prefix it carries (the werkstoff facade's
+    /// `GenerationFeatures#enforceUnification` marker, read by
     /// `StaticRecipeChangeLoaders#unificationRecipeEnforcer` and
     /// `WerkstoffLoader#getCorrespondingItemStackUnsafe`). Opposite in spirit to [#UNIFIABLE]`(false)` (which
     /// opts a material *out* of unification) -- this opts a material *in* to forcibly winning the ore-dict slot,
@@ -207,12 +206,6 @@ public class GTMaterialProperties {
     /// [#WERKSTOFF_IDS] is always present on a material carrying any werkstoff data -- reconstruction and
     /// other consumers use it as the "this material has werkstoff data" signal, and its first element as the
     /// declaration-order sort key (every legacy pool declares its werkstoffe in ascending id order).
-    ///
-    /// Every legacy `GTWerkstoffFlag` has since been ported onto a canonical property of its own (`HAS_
-    /// ELECTROLYZER_RECIPE`/`HAS_CENTRIFUGE_RECIPE`/`HAS_GAS`/`ENFORCE_ORE_DICT_UNIFICATION`/`HAS_CHEMICAL_
-    /// RECIPE`/`HAS_MIXER_RECIPE`/`HAS_SIFTER_RECIPE`/`HAS_METAL_CRAFTING_SOLIDIFIER_RECIPE`/`HAS_METAL_
-    /// SOLIDIFIER_RECIPE`) or dropped as dead data (`SUBLIMATION`, no reader), so `GTWerkstoffFlag`/
-    /// `WERKSTOFF_FLAGS` no longer exist.
     /// Every legacy werkstoff `mID` this material covers (more than one when two same-name werkstoffe folded
     /// into one MaterialLib declaration) -- see the class javadoc for its role as both the presence signal and
     /// reconstruction's declaration-order sort key.

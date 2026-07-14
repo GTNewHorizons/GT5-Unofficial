@@ -204,8 +204,6 @@ public final class WerkstoffReconstruction {
                 orDefault(ml.getProperty(GTMaterialProperties.EBF_GAS_TIME_MULTIPLIER), -1.0))
             .setEbfGasRecipeConsumedAmountMultiplier(
                 orDefault(ml.getProperty(GTMaterialProperties.EBF_GAS_AMOUNT_MULTIPLIER), 1.0))
-            // GTWerkstoffFlag.SUBLIMATION had no reader anywhere in the codebase besides the dump tool -- dropped
-            // rather than ported onto a canonical property (see GTMaterialProperties.WERKSTOFF_IDS' javadoc).
             .setToxic(Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.TOXIC)))
             .setRadioactive(Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.IS_RADIOACTIVE)))
             .setBlastFurnace(Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.BLAST_REQUIRED)))
