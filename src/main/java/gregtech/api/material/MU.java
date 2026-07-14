@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -20,6 +21,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
@@ -93,6 +95,29 @@ public class MU {
     /// [#isCutOver] for a MaterialLib [Material] held directly -- see [#stack]'s raw-[Material] overload.
     public static boolean isCutOver(OrePrefixes prefix, @Nullable Material material) {
         return stack(prefix, material, 1) != null;
+    }
+
+    /// The dust [ItemStack] a [GTMaterialProperties#COMPOSITION] entry contributes to a recipe, sized by the
+    /// entry's amount, or null when the referenced material carries no `dust` shape (a gas/fluid-only
+    /// component -- see [#compositionGas]) or fails to resolve. A composition entry always names a MaterialLib
+    /// material directly ([MaterialRef#resolve]), so unlike [#stack] this needs no legacy-[Materials]/
+    /// bartworks fallback.
+    public static @Nullable ItemStack compositionDust(MaterialRefStack entry) {
+        Material material = entry.material()
+            .resolve();
+        return material == null ? null : stack(OrePrefixes.dust, material, entry.amount());
+    }
+
+    /// The gas [FluidStack] a [GTMaterialProperties#COMPOSITION] entry contributes when its material has no
+    /// `dust` shape, at 1000 mB per unit of the entry's amount -- the only non-dust composition backing
+    /// [gregtech.loaders.materialrecipes.LoaderMixerRecipes] and [gregtech.loaders.materialrecipes.
+    /// LoaderChemicalRecipes]'s carriers reference. Null when the material resolves but carries neither a
+    /// `dust` nor a `fluidGas` shape.
+    public static @Nullable FluidStack compositionGas(MaterialRefStack entry) {
+        Material material = entry.material()
+            .resolve();
+        if (material == null || !material.hasShape(Materials2FluidShapes.fluidGas)) return null;
+        return MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidGas, (int) (1000 * entry.amount()));
     }
 
     /// The legacy [Materials] a MaterialLib material was ported from, or null if it has none.
