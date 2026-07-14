@@ -79,7 +79,7 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
         if (showAllInfo && !part.getIncompatibleBehaviors()
             .isEmpty() || !part.getIncompatibleAugments()
                 .isEmpty()) {
-            desc.add(EnumChatFormatting.RED + GTUtility.translate("GT5U.armor.tooltip.incompatible"));
+            desc.add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.armor.tooltip.incompatible"));
         }
 
         if (!part.getIncompatibleBehaviors()
