@@ -91,12 +91,12 @@ public abstract class MTESpecialFilterBaseGui<T extends MTESpecialFilter> extend
 
         // allow NBT button
         buttons.add(
-            new BooleanObjectImmutablePair<Supplier<IWidget>>(
+            new BooleanObjectImmutablePair<>(
                 supportsAllowNBT(),
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
                     new BooleanSyncValue(machine::isAllowNbt, machine::setAllowNbt).allowC2S(),
                     GTGuiTextures.OVERLAY_BUTTON_NBT,
-                    configureTooltip("GT5U.machines.allow_nbt.tooltip"))) {});
+                    configureTooltip("GT5U.machines.allow_nbt.tooltip"))));
 
         return buttons;
     }
