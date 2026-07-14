@@ -1990,7 +1990,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         @Override
         public String getDisplayName() {
-            return GTUtility.translate(name);
+            return StatCollector.translateToLocal(name);
         }
 
         @Override

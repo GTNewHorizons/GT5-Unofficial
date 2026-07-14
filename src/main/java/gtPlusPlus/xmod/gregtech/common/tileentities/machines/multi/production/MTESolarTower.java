@@ -40,13 +40,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -102,8 +102,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .addInfo("Bonus: 1 ring  = +1, 2 rings = +2, 3 rings = +4, 4 rings = +8, 5 rings = +16")
             .addInfo("Total number of reflectors based on how many rings are built:")
             .addInfo("1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340")
-            .beginVariableStructureBlock(28, 28, 15, 31, 15, 31, false)
-            .addController("Top center")
+            .beginVariableStructureBlock(15, 31, 15, 31, 28, 28, false)
+            .addController("Top center, 28th layer")
             .addCasing("36/88/156/240/340", "Solar Reflector", false)
             .addCasing("229-250", "Structural Solar Casing", false)
             .addCasing("66", "Salt Containment Casing", false)
@@ -408,7 +408,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     @Override
     public RecipeMap<?> getRecipeMap() {
         // Only for visual
-        return GTPPRecipeMaps.solarTowerRecipes;
+        return RecipeMaps.solarTowerRecipes;
     }
 
     private int getHeaterTier() {

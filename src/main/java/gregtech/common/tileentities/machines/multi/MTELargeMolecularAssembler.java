@@ -337,6 +337,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addMiscHatch("1+", "Input Bus or Crafting Pattern Provider", "Any casing", 1)
+            .addAir("Interior of the structure")
             .addStructureInfo("")
             .addStructureFooter("Place a data orb inside the controller and connect it to an AE2 network")
             .toolTipFinisher();

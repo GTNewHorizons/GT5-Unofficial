@@ -152,18 +152,19 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
                 formatNumber(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 5, 3, false)
-            .addController("Front bottom center")
-            .addCasingInfoRange(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24, 31, false) // ?
-            .addOtherStructurePart(getCasingMaterial() + " Firebox Casing", "Bottom layer, 3 minimum")
-            .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Block", "Inner 3 blocks")
-            .addMaintenanceHatch("Any Firebox Casing", 1)
-            .addMufflerHatch("Any Firebox Casing", 1)
-            .addInputBus("Solid fuel, any Firebox Casing", 1)
-            .addInputHatch("Liquid fuel, any Firebox Casing", 1)
-            .addStructureInfo("You can use either, or both")
-            .addInputHatch("Water, any Firebox Casing", 1)
-            .addOutputHatch("Steam, any Casing", 2)
+            .beginStructureBlock(3, 5, 6, false)
+            .addController("Front bottom center, 2nd layer")
+            .addCasing("20-28", getCasingMaterial() + " " + getCasingBlockType(), false)
+            .addCasing("5-15", getCasingMaterial() + " Firebox Casing", false)
+            .addCasing("4", getCasingMaterial() + " Pipe Casing", false)
+            .addMaintenanceHatch("1", "Any machine or firebox casing", 1)
+            .addMufflerHatch("1", "Any machine or firebox casing", 1)
+            .addInputBus("0+", "Any machine or firebox casing", 1)
+            .addInputHatch("1+", "Any machine or firebox casing", 1)
+            .addOutputHatch("1+", "Any machine or firebox casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Use solid fuel, liquid fuel, or both")
+            .addStructureFooter("Use regular or distilled water")
             .toolTipFinisher();
 
         return tt;

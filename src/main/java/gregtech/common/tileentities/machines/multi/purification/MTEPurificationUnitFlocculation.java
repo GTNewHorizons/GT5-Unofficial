@@ -264,7 +264,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit")
+        tt.addMachineType("Purification Unit, FPU")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.BOLD
@@ -327,7 +327,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.ITALIC
                     + "of aggregating dispersed suspended particles from a solution into larger clumps for further filtration.")
             .beginStructureBlock(8, 9, 5, false)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing(MIN_CASING + "-63", "Slick Sterile Flocculation Casing", false)
             .addCasing("30", "Sterile Water Plant Casing", false)
             .addCasing("16", "Reinforced Sterile Water Plant Casing", false)

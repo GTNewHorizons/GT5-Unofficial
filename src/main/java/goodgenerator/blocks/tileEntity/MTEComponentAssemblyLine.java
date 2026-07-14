@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -238,7 +239,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addCasing("30", "Assembler Machine Casing", false)
             .addCasing("2-4", "Tungstensteel Frame Box", false)
             .addEnergyHatch("1+", "Any outer iridium casing on the 2nd to top layer", 3)
-            .addMaintenanceHatch("1", "Around controller", 4)
+            .addMaintenanceHatch("1", "Any casing around controller", 4)
             .addInputBus("1-8", "Any casing or frame box at front of conveyor belt", 1)
             .addInputHatch("0+", "Any side bottom edge casing", 2)
             .addOutputBus("1+", "Any casing at end of conveyor belt", 5)
@@ -264,7 +265,8 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         System.arraycopy(origin, 0, ret, 0, origin.length);
         ret[origin.length] = IGregTechDeviceInformation.encode(
             "scanner.info.CASS.tier",
-            casingTier >= 0 ? GTValues.VN[casingTier + 1] : GTUtility.translate("scanner.info.CASS.tier.none"));
+            casingTier >= 0 ? GTValues.VN[casingTier + 1]
+                : StatCollector.translateToLocal("scanner.info.CASS.tier.none"));
         return ret;
     }
 

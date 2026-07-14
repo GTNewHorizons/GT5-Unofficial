@@ -169,7 +169,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit")
+        tt.addMachineType("Purification Unit, CPU")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.BOLD
