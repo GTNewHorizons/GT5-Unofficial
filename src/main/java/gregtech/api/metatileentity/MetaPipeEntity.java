@@ -646,11 +646,6 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         setCheckConnections();
     }
 
-    @Override
-    public void onColorChangeClient(byte aColor) {
-        // Do nothing apparently
-    }
-
     public void setCheckConnections() {
         mCheckConnections = true;
     }
