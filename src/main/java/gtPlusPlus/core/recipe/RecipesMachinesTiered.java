@@ -1094,7 +1094,9 @@ public class RecipesMachinesTiered {
                 MaterialsAlloy.TUMBAGA.getGear(2))
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_LV.get(1))
-            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Plastic, Materials2FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1117,7 +1119,9 @@ public class RecipesMachinesTiered {
                 MaterialsAlloy.EGLIN_STEEL.getGear(2))
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_MV.get(1))
-            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Plastic, Materials2FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1141,7 +1145,9 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Chrome, Materials2Shapes.gearGt, (int) (2)))
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_HV.get(1))
-            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Plastic, Materials2FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1164,7 +1170,9 @@ public class RecipesMachinesTiered {
                 MaterialsAlloy.INCOLOY_DS.getGear(2))
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_EV.get(1))
-            .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Plastic, Materials2FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
