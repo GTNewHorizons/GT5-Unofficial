@@ -30,27 +30,20 @@ import gregtech.api.util.GTLog;
 ///
 /// [gregtech.loaders.oreprocessing.ProcessingGem] separately generates a compressor recipe for every gem
 /// material through the shape-consumer path ([gregtech.loaders.shapeconsumers.ConsumerGem]) except RockSalt,
-/// Salt, and Spodumene ("handled by Werkstoff loader"). For [#CARRIERS] other than RockSalt, bartworks
-/// `GemLoader` always generated the identical compressor recipe alongside ProcessingGem's -- two independent,
-/// redundant sources for the same digest -- so this loader reproduces that same redundancy rather than treating
-/// ProcessingGem's copy as sufficient; recipe maps tolerate the duplicate, and dropping it would undercount the
-/// baseline multiset.
+/// Salt, and Spodumene ("handled by Werkstoff loader"). This loader registers the compressor recipe for every
+/// carrier uniformly, so for [#CARRIERS] other than RockSalt it is a second, redundant source of the same
+/// recipe; recipe maps tolerate the duplicate entry.
 ///
-/// The carrier set is bartworks `GemLoader`'s sifter/compressor gate (`hasItemType(gem) &&
-/// (hasSifterRecipes() || (hasItemType(ore) && hasItemType(dust)))`), evaluated against a boot's live recipe
-/// output rather than trusted from source declarations alone: [#CARRIERS] covers RockSalt (whose
-/// [GTMaterialProperties#HAS_SIFTER_RECIPE] carries the whole gate alone) and fourteen materials whose
-/// [GTMaterialProperties#WERKSTOFF_PREFIXES] -- the narrower, dump-sourced ground truth the bartworks facade's
-/// own `hasItemType` reads, rather than every shape the unified material itself carries -- separately list both
-/// `ore` and `dust`.
+/// [#CARRIERS] covers RockSalt (gated by [GTMaterialProperties#HAS_SIFTER_RECIPE] alone) and fourteen
+/// materials whose [GTMaterialProperties#WERKSTOFF_PREFIXES] -- the narrower, dump-sourced prefix list the
+/// bartworks facade honors, rather than every shape the unified material itself carries -- separately list
+/// both `ore` and `dust`.
 ///
-/// Salt and Spodumene also declare [GTMaterialProperties#HAS_SIFTER_RECIPE], and are excluded from
-/// [gregtech.loaders.oreprocessing.ProcessingGem]'s own generation for the same "handled by Werkstoff loader"
-/// reason RockSalt is, but a live boot showed bartworks `GemLoader` produces neither their sifter nor their
-/// compressor recipe: their reconstructed `Werkstoff` facade's `hasItemType(gem)` evaluates false despite `gem`
-/// appearing in their own [GTMaterialProperties#WERKSTOFF_PREFIXES], a facade-internal `GenerationFeatures`
-/// state this loader has no ML-side equivalent for. Declaring them here would add two sifter and two compressor
-/// recipes the pre-unification game never had.
+/// Salt and Spodumene also declare [GTMaterialProperties#HAS_SIFTER_RECIPE] and are likewise excluded from
+/// [gregtech.loaders.oreprocessing.ProcessingGem]'s own generation, but they are deliberately not carriers:
+/// the bartworks facade's `GenerationFeatures` state never honors their `gem` prefix, so no sifter or
+/// compressor recipe exists for them, and declaring them here would introduce recipes those materials do not
+/// otherwise have.
 public final class LoaderSifterRecipes {
 
     private static final Material[] CARRIERS = { Materials2Materials.RockSalt, Materials2Materials.Bismutite,
