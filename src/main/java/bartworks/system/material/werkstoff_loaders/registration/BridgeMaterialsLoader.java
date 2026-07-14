@@ -17,6 +17,8 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
 
+import java.util.Set;
+
 import net.minecraft.util.StatCollector;
 
 import bartworks.system.material.Werkstoff;
@@ -28,6 +30,14 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.util.GTLanguageManager;
 
 public class BridgeMaterialsLoader implements IWerkstoffRunnable {
+
+    /// Werkstoffe whose gregtech-side bridge is constructed by `gtPlusPlus.core.material.MaterialReconstruction`
+    /// (via `GtppBridgeMaterialsLoader`) before this loader runs, rather than by this loader itself: its
+    /// `Materials.get(name)` fallback claims the name first, so [#run]'s own `werkstoffBridgeMaterial ==
+    /// Materials._NULL` construction branch never fires and `mDurability` on the found instance is gtpp's
+    /// ported durability figure, not this werkstoff's own. Handle-material computation stays keyed to this
+    /// werkstoff's own durability regardless of which side constructed the shared instance.
+    private static final Set<String> GTPP_BRIDGED_DURABILITY = Set.of("Hafnium", "Zirconium", "Thorium232");
 
     @Override
     public void run(Werkstoff werkstoff) {
@@ -77,7 +87,9 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
             werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
         }
         werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
-        werkstoffBridgeMaterial.mHandleMaterial = getHandleMaterial(werkstoff, werkstoffBridgeMaterial.mDurability);
+        int handleDurability = GTPP_BRIDGED_DURABILITY.contains(werkstoff.getVarName()) ? werkstoff.getDurability()
+            : werkstoffBridgeMaterial.mDurability;
+        werkstoffBridgeMaterial.mHandleMaterial = getHandleMaterial(werkstoff, handleDurability);
         werkstoffBridgeMaterial.setProcessingMaterialTierEU(stats.getProcessingMaterialTierEU());
 
         if (stats.isRadioactive()) {
