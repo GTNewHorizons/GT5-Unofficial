@@ -58,7 +58,6 @@ import gregtech.api.material.GTWerkstoffFlag;
 import gregtech.api.material.MU;
 import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
-import gregtech.api.material.WerkstoffRefStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTLog;
@@ -843,8 +842,9 @@ public final class MaterialDataDump {
     /// Serializes the werkstoff-specific data still pinned in `WERKSTOFF_*` properties -- null when
     /// `material` carries none (see [GTMaterialProperties#WERKSTOFF_IDS]). Scalars the U1 collapse moved onto
     /// canonical properties (melting/boiling point, melting voltage, tool-stat overrides, EBF gas multipliers,
-    /// mix circuit, sub tags, contents, and the toxic/radioactive/blast-furnace/auto-recipe flag members) now
-    /// appear only at the top level of the ML material JSON; `check_parity.py` reads them there.
+    /// mix circuit, sub tags, contents, ore byproducts, and the toxic/radioactive/blast-furnace/auto-recipe
+    /// flag members) now appear only at the top level of the ML material JSON; `check_parity.py` reads them
+    /// there.
     private static Map<String, Object> dumpMlWerkstoff(com.ruling_0.materiallib.api.Material material) {
         List<Integer> ids = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
         if (ids == null) return null;
@@ -861,9 +861,6 @@ public final class MaterialDataDump {
         Collections.sort(flags);
         json.put("flags", flags);
         json.put("prefixes", orEmpty(material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES)));
-        json.put(
-            "oreByProducts",
-            dumpMlWerkstoffRefStacks(material.getProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS)));
         json.put("formula", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_FORMULA), ""));
         return json;
     }
@@ -890,22 +887,6 @@ public final class MaterialDataDump {
 
     private static String orDefault(String value, String fallback) {
         return value != null ? value : fallback;
-    }
-
-    private static List<Map<String, Object>> dumpMlWerkstoffRefStacks(List<WerkstoffRefStack> stacks) {
-        List<Map<String, Object>> out = new ArrayList<>();
-        if (stacks == null) return out;
-        for (WerkstoffRefStack stack : stacks) {
-            Map<String, Object> json = new LinkedHashMap<>();
-            json.put(
-                "material",
-                stack.material()
-                    .name());
-            json.put("amount", stack.amount());
-            json.put("werkstoff", stack.werkstoff());
-            out.add(json);
-        }
-        return out;
     }
 
     private static List<String> dumpMlGenerationFlags(EnumSet<GTMaterialGenerationFlag> flags) {
