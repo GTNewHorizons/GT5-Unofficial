@@ -15,7 +15,6 @@ package bartworks.system.material.werkstoff_loaders.recipe;
 
 import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.ingot;
-import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
@@ -25,24 +24,15 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 
+/// Alloy-smelter block molding for ingot-bearing werkstoffe, tier-independent. The canonical autogen
+/// (`ProcessingShaping`, dispatched by `gregtech.loaders.shapeconsumers`) covers the block extruder recipe
+/// unconditionally but gates its alloy-smelter block molding below IV, so this branch carries the recipe for
+/// the higher-tier werkstoffe.
 public class MetalLoader implements IWerkstoffRunnable {
 
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(ingot)) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot, 9), ItemList.Shape_Extruder_Block.get(0))
-                .itemOutputs(werkstoff.get(block))
-                .duration(
-                    (int) (werkstoff.getStats()
-                        .getMass() * 9))
-                .eut(
-                    BWUtil.calculateRecipeEU(
-                        werkstoff,
-                        werkstoff.getStats()
-                            .getMeltingPoint() >= 2800 ? 480 : 120))
-                .addTo(extruderRecipes);
-
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot, 9), ItemList.Shape_Mold_Block.get(0L))
                 .itemOutputs(werkstoff.get(block))
