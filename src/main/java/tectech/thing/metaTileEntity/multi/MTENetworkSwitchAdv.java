@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +45,6 @@ import gregtech.api.structure.StructureWrapperInstanceInfo;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTDataUtils;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import it.unimi.dsi.fastutil.Pair;
@@ -391,16 +391,20 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             .widget(new FakeSyncWidget.LongSyncer(() -> wastedComputation, value -> wastedComputation = value));
 
         screenElements.widget(
-            TextWidget.dynamicString(
-                () -> GTUtility
-                    .translate("GT5U.machines.computation_hatch.pending_computation", formatNumber(pendingComputation)))
+            TextWidget
+                .dynamicString(
+                    () -> StatCollector.translateToLocalFormatted(
+                        "GT5U.machines.computation_hatch.pending_computation",
+                        formatNumber(pendingComputation)))
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mMaxProgresstime > 0));
         screenElements.widget(
-            TextWidget.dynamicString(
-                () -> GTUtility
-                    .translate("GT5U.machines.computation_hatch.wasted_computation", formatNumber(wastedComputation)))
+            TextWidget
+                .dynamicString(
+                    () -> StatCollector.translateToLocalFormatted(
+                        "GT5U.machines.computation_hatch.wasted_computation",
+                        formatNumber(wastedComputation)))
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mMaxProgresstime > 0));

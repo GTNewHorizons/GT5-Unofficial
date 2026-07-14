@@ -1701,6 +1701,9 @@ GT5U.MBTT.Structure.DataStick.Waterline=Link to the §bWater Purification Plant�
 GT5U.MBTT.Structure.DataStick.PCB=Link to the §bPCB Factory§7 with a §aData Stick
 gt.mbtt.structure.front_center=Front center
 gt.mbtt.structure.back_center=Back center
+gt.mbtt.structure.front_center_2nd_layer=Front center, 2nd layer
+gt.mbtt.structure.any_casing=Any casing
+gt.mbtt.structure.interior=Interior of the structure
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
@@ -1814,6 +1817,9 @@ gt.multiblock.NeutralizationEngine.decay_boost.3=Insert §dmultiple §7(§f16 §
 gt.multiblock.NeutralizationEngine.decay_boost.4=Every §fminute§7, §dRobot Arm Amount§7/(§f45§7*(§f1§7+§dRobot Arm Tier§7)) chance for §fone §7used robot arm to §cvoid
 gt.multiblock.NeutralizationEngine.structure_tiers=Structure has §f3 Tiers§7, §fTier §7determines §9Base Decay §7and §3Capacity§7:
 gt.multiblock.NeutralizationEngine.tier_info=§fT%d§7 : §f%s§7 : §9%d§7 : §3%s
+
+gt.multiblock.VacuumFreezer.machine_type=Vacuum Freezer, VF
+gt.multiblock.VacuumFreezer.desc1=Cools hot ingots and cells
 
 GT5U.MBTT.masterchannel=Projector stack size determines §b%s
 GT5U.MBTT.subchannel=Subchannel §b%s§7 determines §b%s
