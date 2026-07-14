@@ -212,10 +212,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
             .addCasing("16", "Heating Coil", false)
             .addCasing("9", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
-            .addMaintenanceHatch(
-                "1",
-                StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"),
-                1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
             .addMufflerHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
             .addInputAny("1+", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
             .addOutputAny("1+", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
