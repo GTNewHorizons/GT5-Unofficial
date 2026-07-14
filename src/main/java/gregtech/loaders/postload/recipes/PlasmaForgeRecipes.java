@@ -51,19 +51,31 @@ public class PlasmaForgeRecipes implements Runnable {
             // but gives 4x the output.
             GTValues.RA.stdBuilder()
                 .fluidInputs(
-                    Materials.StableBaryonicMatter.getFluid(8_000),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.stablebaryonicmatter,
+                        Materials2FluidShapes.fluidLiquid,
+                        8_000),
                     GGMaterial.metastableOganesson.getMolten(4 * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Grade8PurifiedWater,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (12_800)),
                     new FluidStack(celestialTungstenPlasma, 1 * STACKS + 32 * INGOTS),
-                    Materials.RadoxHeavy.getFluid(32_000),
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.HeavyRadox, Materials2FluidShapes.fluidLiquid, 32_000),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.ExcitedDTSC,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (2_000)))
-                .fluidOutputs(Materials.DimensionallyShiftedSuperfluid.getFluid(360_000), Materials.DTR.getFluid(4_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.dimensionallyshiftedsuperfluid,
+                        Materials2FluidShapes.fluidLiquid,
+                        360_000),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.DimensionallyTranscendentResidue,
+                        Materials2FluidShapes.fluidLiquid,
+                        4_000))
                 .duration(7 * SECONDS + 10 * TICKS)
                 .eut((int) TierEU.RECIPE_UXV)
                 .metadata(COIL_HEAT, 13500)
@@ -75,19 +87,31 @@ public class PlasmaForgeRecipes implements Runnable {
             // Switches to Heavy Radox, which can be mass-produced with the QFT.
             GTValues.RA.stdBuilder()
                 .fluidInputs(
-                    Materials.StableBaryonicMatter.getFluid(2_000),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.stablebaryonicmatter,
+                        Materials2FluidShapes.fluidLiquid,
+                        2_000),
                     GGMaterial.metastableOganesson.getMolten(2 * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Grade8PurifiedWater,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (3_200)),
                     new FluidStack(celestialTungstenPlasma, 48 * INGOTS),
-                    Materials.RadoxHeavy.getFluid(4_000),
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.HeavyRadox, Materials2FluidShapes.fluidLiquid, 4_000),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.ExcitedDTEC,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (2_000)))
-                .fluidOutputs(Materials.DimensionallyShiftedSuperfluid.getFluid(90_000), Materials.DTR.getFluid(2_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.dimensionallyshiftedsuperfluid,
+                        Materials2FluidShapes.fluidLiquid,
+                        90_000),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.DimensionallyTranscendentResidue,
+                        Materials2FluidShapes.fluidLiquid,
+                        2_000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_UMV)
                 .metadata(COIL_HEAT, 13500)
@@ -100,19 +124,31 @@ public class PlasmaForgeRecipes implements Runnable {
             // over the original recipe. Only increases the cost of baryonic and water, making the ratio much cheaper.
             GTValues.RA.stdBuilder()
                 .fluidInputs(
-                    Materials.StableBaryonicMatter.getFluid(1_000),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.stablebaryonicmatter,
+                        Materials2FluidShapes.fluidLiquid,
+                        1_000),
                     GGMaterial.metastableOganesson.getMolten(1 * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Grade8PurifiedWater,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (1_600)),
                     new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
-                    Materials.RadoxSuperHeavy.getFluid(2_000),
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.SuperHeavyRadox, Materials2FluidShapes.fluidLiquid, 2_000),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.ExcitedDTRC,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (2_000)))
-                .fluidOutputs(Materials.DimensionallyShiftedSuperfluid.getFluid(30_000), Materials.DTR.getFluid(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.dimensionallyshiftedsuperfluid,
+                        Materials2FluidShapes.fluidLiquid,
+                        30_000),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.DimensionallyTranscendentResidue,
+                        Materials2FluidShapes.fluidLiquid,
+                        1_000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_UMV)
                 .metadata(COIL_HEAT, 12600)
@@ -122,19 +158,31 @@ public class PlasmaForgeRecipes implements Runnable {
             // First recipe using AwDr coil and super heavy radox
             GTValues.RA.stdBuilder()
                 .fluidInputs(
-                    Materials.StableBaryonicMatter.getFluid(250),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.stablebaryonicmatter,
+                        Materials2FluidShapes.fluidLiquid,
+                        250),
                     GGMaterial.metastableOganesson.getMolten(1 * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Grade8PurifiedWater,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (400)),
                     new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
-                    Materials.RadoxSuperHeavy.getFluid(2_000),
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.SuperHeavyRadox, Materials2FluidShapes.fluidLiquid, 2_000),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.ExcitedDTPC,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (1_000)))
-                .fluidOutputs(Materials.DimensionallyShiftedSuperfluid.getFluid(7_500), Materials.DTR.getFluid(250))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.dimensionallyshiftedsuperfluid,
+                        Materials2FluidShapes.fluidLiquid,
+                        7_500),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.DimensionallyTranscendentResidue,
+                        Materials2FluidShapes.fluidLiquid,
+                        250))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_UIV)
                 .metadata(COIL_HEAT, 10800)
@@ -174,7 +222,11 @@ public class PlasmaForgeRecipes implements Runnable {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Duranium, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .itemOutputs(GregtechItemList.Laser_Lens_Special.get(1))
-            .fluidOutputs(Materials.DTR.getFluid(46))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.DimensionallyTranscendentResidue,
+                    Materials2FluidShapes.fluidLiquid,
+                    46))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
             .metadata(COIL_HEAT, 10800)
@@ -211,19 +263,24 @@ public class PlasmaForgeRecipes implements Runnable {
                 // this is very gross
                 GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
                 MaterialLibAPI.getStack(Materials2Materials.Eternity, Materials2Shapes.round, (int) (64)),
-                GTOreDictUnificator.get(OrePrefixes.round, Materials.MagMatter, 64),
+                MaterialLibAPI.getStack(Materials2Materials.Magmatter, Materials2Shapes.round, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Hexanite, Materials2Shapes.round, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Ruby, Materials2Shapes.gemExquisite, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Jasper, Materials2Shapes.gemExquisite, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Sapphire, Materials2Shapes.gemExquisite, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Opal, Materials2Shapes.gemExquisite, (int) (64)))
             .fluidInputs(
-                Materials.StargateCrystalSlurry.getFluid(5_000),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.sgcrystalslurry, Materials2FluidShapes.fluidLiquid, 5_000),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (72_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.gemChipped, (int) (64)))
-            .fluidOutputs(Materials.DTR.getFluid(144_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.DimensionallyTranscendentResidue,
+                    Materials2FluidShapes.fluidLiquid,
+                    144_000))
             .duration(420 * SECONDS)
             .eut((int) TierEU.RECIPE_MAX)
             .metadata(COIL_HEAT, 13500)
