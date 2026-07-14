@@ -13,7 +13,6 @@
 
 package bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.OrePrefixes.crushed;
 import static gregtech.api.enums.OrePrefixes.crushedCentrifuged;
 import static gregtech.api.enums.OrePrefixes.crushedPurified;
@@ -26,16 +25,10 @@ import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.nugget;
 import static gregtech.api.enums.OrePrefixes.ore;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
-import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
-import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
@@ -51,6 +44,15 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
+/// Furnace smelting, hand-crafted downgrade recipes, and the [SubTag]-gated ore-processing bonus recipes
+/// (crystallisable gems, mercury/sodium-persulfate ore washing, electromagnetic separation byproducts) for a
+/// werkstoff's ore/crushed/dust chain.
+///
+/// The unconditional hammer, macerator, ore-washer, thermal-centrifuge and centrifuge steps of the chain are
+/// generated canonically instead: `gregtech.loaders.oreprocessing.ProcessingDirty`/`ProcessingPure`/
+/// `ProcessingCrushedOre` cover any material with a MaterialLib ore/dust shape and a legacy bridge material,
+/// reached through `gregtech.loaders.shapeconsumers.ConsumerDirty`/`ConsumerPure`/`ConsumerCrushedOre`, so this
+/// loader registers only the recipes with no canonical counterpart.
 public class CrushedLoader implements IWerkstoffRunnable {
 
     @Override
@@ -85,118 +87,6 @@ public class CrushedLoader implements IWerkstoffRunnable {
             werkstoff.get(dust),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "h  ", "W  ", 'W', werkstoff.get(crushedCentrifuged) });
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(werkstoff.get(crushed))
-            .itemOutputs(werkstoff.get(dustImpure))
-            .duration(10 * TICKS)
-            .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
-            .addTo(hammerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(werkstoff.get(crushed))
-            .itemOutputs(werkstoff.get(dustImpure), werkstoff.getOreByProduct(0, dust))
-            .outputChances(100_00, 10_00)
-            .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
-            .duration(20 * SECONDS)
-            .addTo(maceratorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(werkstoff.get(crushed))
-            .itemOutputs(
-                werkstoff.get(crushedPurified),
-                werkstoff.getOreByProduct(0, dust),
-                GTOreDictUnificator.get(dust, Materials.Stone, 1L))
-            .outputChances(100_00, 11_11, 100_00)
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .duration(25 * SECONDS)
-            .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
-            .addTo(oreWasherRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(werkstoff.get(crushed))
-            .itemOutputs(
-                werkstoff.get(crushedPurified),
-                werkstoff.getOreByProduct(0, dust),
-                GTOreDictUnificator.get(dust, Materials.Stone, 1L))
-            .outputChances(100_00, 11_11, 100_00)
-            .fluidInputs(GTModHandler.getDistilledWater(200))
-            .duration(15 * SECONDS)
-            .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
-            .addTo(oreWasherRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(werkstoff.get(crushed))
-            .itemOutputs(
-                werkstoff.get(crushedCentrifuged),
-                werkstoff.getOreByProduct(1, dust),
-                GTOreDictUnificator.get(dust, Materials.Stone, 1L))
-            .outputChances(100_00, 11_11, 100_00)
-            .duration(25 * SECONDS)
-            .eut(BWUtil.calculateRecipeEU(werkstoff, 48))
-            .addTo(thermalCentrifugeRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(werkstoff.get(crushedPurified))
-            .itemOutputs(werkstoff.get(dustPure))
-            .duration(10 * TICKS)
-            .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
-            .addTo(hammerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(werkstoff.get(crushedPurified))
-            .itemOutputs(werkstoff.get(dustPure), werkstoff.getOreByProduct(1, dust))
-            .outputChances(100_00, 10_00)
-            .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
-            .duration(20 * SECONDS)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(werkstoff.get(crushedPurified))
-            .itemOutputs(werkstoff.get(crushedCentrifuged), werkstoff.getOreByProduct(1, dust))
-            .outputChances(100_00, 11_11)
-            .duration(25 * SECONDS)
-            .eut(BWUtil.calculateRecipeEU(werkstoff, 48))
-            .addTo(thermalCentrifugeRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(werkstoff.get(crushedCentrifuged))
-            .itemOutputs(werkstoff.get(dust))
-            .duration(10 * TICKS)
-            .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
-            .addTo(hammerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(werkstoff.get(crushedCentrifuged))
-            .itemOutputs(werkstoff.get(dust), werkstoff.getOreByProduct(2, dust))
-            .outputChances(100_00, 10_00)
-            .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
-            .duration(20 * SECONDS)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(werkstoff.get(dustImpure))
-            .itemOutputs(werkstoff.get(dust), werkstoff.getOreByProduct(0, dust))
-            .outputChances(100_00, 11_11)
-            .duration(
-                Math.max(
-                    1L,
-                    werkstoff.getStats()
-                        .getMass() * 8L))
-            .eut(BWUtil.calculateRecipeEU(werkstoff, 5))
-            .addTo(centrifugeRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(werkstoff.get(dustPure))
-            .itemOutputs(werkstoff.get(dust), werkstoff.getOreByProduct(1, dust))
-            .outputChances(100_00, 11_11)
-            .duration(
-                Math.max(
-                    1L,
-                    werkstoff.getStats()
-                        .getMass() * 8L))
-            .eut(BWUtil.calculateRecipeEU(werkstoff, 5))
-            .addTo(centrifugeRecipes);
 
         if (werkstoff.contains(SubTag.CRYSTALLISABLE)) {
 
