@@ -18,6 +18,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.material.FluidNames;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialAtomics;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.loaders.materials.LegacyMaterials;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -314,8 +315,8 @@ public final class MaterialReconstruction {
             Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.IS_RADIOACTIVE)),
             orDefault(ml.getProperty(GTMaterialProperties.RADIATION_LEVEL), 0),
             orDefault(ml.getProperty(GTMaterialProperties.FORMULA), ""),
-            orDefault(ml.getProperty(GTMaterialProperties.GTPP_PROTONS), 0L),
-            orDefault(ml.getProperty(GTMaterialProperties.GTPP_NEUTRONS), 0L),
+            MaterialAtomics.protons(ml),
+            MaterialAtomics.neutrons(ml),
             Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.GTPP_GENERATES_FLUID)),
             Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.GTPP_GENERATES_CELLS)));
     }

@@ -22,6 +22,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTWerkstoffFlag;
+import gregtech.api.material.MaterialAtomics;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.loaders.materials.LegacyMaterials;
 
@@ -188,9 +189,9 @@ public final class WerkstoffReconstruction {
                 COLLAPSED_BOILING_POINT_WERKSTOFFE.contains(ml.getName())
                     ? ml.getProperty(GTMaterialProperties.BOILING_POINT)
                     : 0)
-            .setProtons(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_PROTONS), 0L))
+            .setProtons(MaterialAtomics.protons(ml))
             .setNeutrons(0)
-            .setMass(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_MASS), 0L))
+            .setMass(MaterialAtomics.mass(ml))
             .setMeltingVoltage(orDefault(ml.getProperty(GTMaterialProperties.MELTING_VOLTAGE), 120))
             .setDurOverride(
                 DURABILITY_OVERRIDE_WERKSTOFFE.contains(ml.getName()) ? ml.getProperty(GTMaterialProperties.DURABILITY)

@@ -813,21 +813,17 @@ public final class MaterialDataDump {
     /// Serializes the gtpp-specific data still pinned in `GTPP_*` properties -- null when `material` carries
     /// none (see [GTMaterialProperties#GTPP_STATE]). Scalars the U1 collapse moved onto canonical properties
     /// (tier, voltage multiplier, melting/boiling point, durability, blast-furnace use, radioactivity,
-    /// composition, and the chemical formula) now appear only at the top level of the ML material JSON;
+    /// composition, and the chemical formula) now appear only at the top level of the ML material JSON, and
+    /// the proton/neutron counts are computed (see [gregtech.api.material.MaterialAtomics]);
     /// `check_parity.py` reads them there.
     private static Map<String, Object> dumpMlGtpp(com.ruling_0.materiallib.api.Material material) {
         String state = material.getProperty(GTMaterialProperties.GTPP_STATE);
         if (state == null) return null;
 
-        Long protons = material.getProperty(GTMaterialProperties.GTPP_PROTONS);
-        Long neutrons = material.getProperty(GTMaterialProperties.GTPP_NEUTRONS);
-
         FluidNames legacyFluids = material.getProperty(GTMaterialProperties.LEGACY_FLUIDS);
         boolean generatesFluid = Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.GTPP_GENERATES_FLUID));
 
         Map<String, Object> json = new LinkedHashMap<>();
-        json.put("protons", protons != null ? protons : 0L);
-        json.put("neutrons", neutrons != null ? neutrons : 0L);
         json.put("state", state);
         json.put("generatesFluid", generatesFluid);
         json.put(
@@ -843,7 +839,8 @@ public final class MaterialDataDump {
     /// canonical properties (melting/boiling point, melting voltage, tool-stat overrides, EBF gas multipliers,
     /// mix circuit, sub tags, contents, ore byproducts, the chemical formula, and the
     /// toxic/radioactive/blast-furnace/auto-recipe flag members) now appear only at the top level of the ML
-    /// material JSON; `check_parity.py` reads them there.
+    /// material JSON, and the proton/mass counts are computed (see [gregtech.api.material.MaterialAtomics]);
+    /// `check_parity.py` reads them there.
     private static Map<String, Object> dumpMlWerkstoff(com.ruling_0.materiallib.api.Material material) {
         List<Integer> ids = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
         if (ids == null) return null;
@@ -852,8 +849,6 @@ public final class MaterialDataDump {
         json.put("ids", ids);
         json.put("type", material.getProperty(GTMaterialProperties.WERKSTOFF_TYPE));
         json.put("pool", material.getProperty(GTMaterialProperties.WERKSTOFF_POOL));
-        json.put("protons", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_PROTONS), 0L));
-        json.put("mass", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_MASS), 0L));
         List<String> flags = new ArrayList<>();
         EnumSet<GTWerkstoffFlag> flagSet = material.getProperty(GTMaterialProperties.WERKSTOFF_FLAGS);
         if (flagSet != null) for (GTWerkstoffFlag flag : flagSet) flags.add(flag.name());

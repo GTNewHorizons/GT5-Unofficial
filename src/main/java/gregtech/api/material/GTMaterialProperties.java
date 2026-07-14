@@ -94,11 +94,6 @@ public class GTMaterialProperties {
     public static final Property<Boolean> GTPP_GENERATES_CELLS = Property.of("gregtech", "gtppGeneratesCells");
     /// The legacy `Material` constructor's `generateFluid` flag, elided when `false`.
     public static final Property<Boolean> GTPP_GENERATES_FLUID = Property.of("gregtech", "gtppGeneratesFluid");
-    /// The legacy `Material.vNeutrons`; several `RecipeGen*` consumers key recipe stats (duration, EU cost) off
-    /// this, so it is pinned like every other gtpp scalar rather than recomputed or unified with
-    /// [#WERKSTOFF_PROTONS] or any canonical proton/neutron count on the same material (werkstoff-backed
-    /// materials carry no neutron count of their own -- every one is `0`).
-    public static final Property<Long> GTPP_NEUTRONS = Property.of("gregtech", "gtppNeutrons");
     /// The exact `FluidRegistry` name a legacy gtpp `Material#performFluidAndCellRegistration` registered
     /// this material's plasma fluid under, present only for the 37 materials where it is not
     /// [FluidNames#plasma] on [GTMaterialProperties#LEGACY_FLUIDS] -- unlike the non-plasma fluid slot (whose
@@ -108,8 +103,6 @@ public class GTMaterialProperties {
     /// none of which gtpp itself ever registered a plasma for), so it cannot be trusted as gtpp's own
     /// contribution without this pin.
     public static final Property<String> GTPP_PLASMA_NAME = Property.of("gregtech", "gtppPlasmaName");
-    /// As [#GTPP_NEUTRONS], for `Material.vProtons`.
-    public static final Property<Long> GTPP_PROTONS = Property.of("gregtech", "gtppProtons");
     /// The legacy `gtPlusPlus.core.material.state.MaterialState` enum constant name -- see the class javadoc
     /// for why this, not a scalar below, is the presence signal for "this material carries gtpp data".
     public static final Property<String> GTPP_STATE = Property.of("gregtech", "gtppState");
@@ -178,9 +171,6 @@ public class GTMaterialProperties {
     /// into one MaterialLib declaration) -- see the class javadoc for its role as both the presence signal and
     /// reconstruction's declaration-order sort key.
     public static final Property<List<Integer>> WERKSTOFF_IDS = Property.of("gregtech", "werkstoffIds");
-    /// The legacy `Werkstoff.Stats.mass`, elided when `0` (the legacy constructor computes it from contents
-    /// instead when its own field is `0`, the same compute-sentinel semantics as [#WERKSTOFF_PROTONS]).
-    public static final Property<Long> WERKSTOFF_MASS = Property.of("gregtech", "werkstoffMass");
     /// The declaring pool identifier (`WerkstoffLoader`/`GGMaterial`/`WerkstoffMaterialPool`/
     /// `BotWerkstoffMaterialPool`/...), consulted by reconstruction's `ownerOf` for the legacy
     /// `Werkstoff#getOwner` attribution.
@@ -189,12 +179,6 @@ public class GTMaterialProperties {
     /// including the prefixes that stay on legacy blocks (`sheetmetal`, `frameGt`) and so have no MaterialLib
     /// shape. Elided when empty.
     public static final Property<List<String>> WERKSTOFF_PREFIXES = Property.of("gregtech", "werkstoffPrefixes");
-    /// The legacy `Werkstoff.Stats.protons`, elided when `0` (the legacy constructor computes it from contents
-    /// instead when its own field is `0`). Diverges from [#GTPP_PROTONS] on 4 of the 15 materials that also
-    /// carry gtpp data (Alumina, Hafnium, SodiumNitrate, ThoriumTetrafluoride) -- kept independent rather than
-    /// unified, since [#GTPP_PROTONS] is itself pinned independently of any canonical count (see that
-    /// property's javadoc).
-    public static final Property<Long> WERKSTOFF_PROTONS = Property.of("gregtech", "werkstoffProtons");
     /// The `Werkstoff.Types` enum constant name.
     public static final Property<String> WERKSTOFF_TYPE = Property.of("gregtech", "werkstoffType");
 
