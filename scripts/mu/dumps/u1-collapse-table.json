@@ -2325,13 +2325,13 @@
     "material": "AbyssalAlloy",
     "field": "neutrons",
     "legacy": -1,
-    "canonical": 42
+    "canonical": 41
    },
    {
     "material": "AbyssalAlloy",
     "field": "protons",
     "legacy": 40,
-    "canonical": 33
+    "canonical": 32
    },
    {
     "material": "AceticAnhydride",
@@ -2409,13 +2409,13 @@
     "material": "Alburnite",
     "field": "neutrons",
     "legacy": 62,
-    "canonical": 80
+    "canonical": 79
    },
    {
     "material": "Alburnite",
     "field": "protons",
     "legacy": 44,
-    "canonical": 56
+    "canonical": 55
    },
    {
     "material": "Ammonia",
@@ -2529,13 +2529,13 @@
     "material": "BariteRa",
     "field": "neutrons",
     "legacy": 60,
-    "canonical": 47
+    "canonical": 48
    },
    {
     "material": "BariteRa",
     "field": "protons",
     "legacy": 42,
-    "canonical": 34
+    "canonical": 35
    },
    {
     "material": "BerylliumFluoride",
@@ -2583,49 +2583,43 @@
     "material": "Botmium",
     "field": "neutrons",
     "legacy": -1,
-    "canonical": 76
+    "canonical": 88
    },
    {
     "material": "Botmium",
     "field": "protons",
     "legacy": 56,
-    "canonical": 54
+    "canonical": 61
    },
    {
     "material": "Bromine",
     "field": "neutrons",
     "legacy": 45,
-    "canonical": 55
-   },
-   {
-    "material": "Bromine",
-    "field": "protons",
-    "legacy": 35,
-    "canonical": 43
+    "canonical": 44
    },
    {
     "material": "BurntReactorFuelI",
     "field": "neutrons",
     "legacy": 56,
-    "canonical": 21
+    "canonical": 41
    },
    {
     "material": "BurntReactorFuelI",
     "field": "protons",
     "legacy": 37,
-    "canonical": 17
+    "canonical": 29
    },
    {
     "material": "BurntReactorFuelII",
     "field": "neutrons",
     "legacy": 56,
-    "canonical": 21
+    "canonical": 41
    },
    {
     "material": "BurntReactorFuelII",
     "field": "protons",
     "legacy": 37,
-    "canonical": 17
+    "canonical": 29
    },
    {
     "material": "CelestialTungsten",
@@ -2691,13 +2685,13 @@
     "material": "Comancheite",
     "field": "neutrons",
     "legacy": 33,
-    "canonical": 53
+    "canonical": 51
    },
    {
     "material": "Comancheite",
     "field": "protons",
     "legacy": 24,
-    "canonical": 38
+    "canonical": 37
    },
    {
     "material": "CopperIISulfate",
@@ -2751,13 +2745,7 @@
     "material": "Curium",
     "field": "neutrons",
     "legacy": 151,
-    "canonical": 55
-   },
-   {
-    "material": "Curium",
-    "field": "protons",
-    "legacy": 96,
-    "canonical": 43
+    "canonical": 153
    },
    {
     "material": "CyanoaceticAcid",
@@ -2787,7 +2775,7 @@
     "material": "DemicheleiteBr",
     "field": "neutrons",
     "legacy": 62,
-    "canonical": 74
+    "canonical": 73
    },
    {
     "material": "DemicheleiteBr",
@@ -2880,18 +2868,6 @@
     "canonical": 10
    },
    {
-    "material": "Fermium",
-    "field": "neutrons",
-    "legacy": 157,
-    "canonical": 55
-   },
-   {
-    "material": "Fermium",
-    "field": "protons",
-    "legacy": 100,
-    "canonical": 43
-   },
-   {
     "material": "Florencite",
     "field": "neutrons",
     "legacy": 24,
@@ -2931,25 +2907,25 @@
     "material": "FluorineSpargedTBSalt",
     "field": "neutrons",
     "legacy": 29,
-    "canonical": 19
+    "canonical": 10
    },
    {
     "material": "FluorineSpargedTBSalt",
     "field": "protons",
     "legacy": 20,
-    "canonical": 16
+    "canonical": 9
    },
    {
     "material": "FluorineSpargedTSalt",
     "field": "neutrons",
     "legacy": 40,
-    "canonical": 25
+    "canonical": 12
    },
    {
     "material": "FluorineSpargedTSalt",
     "field": "protons",
     "legacy": 27,
-    "canonical": 20
+    "canonical": 10
    },
    {
     "material": "FluoriteF",
@@ -3015,13 +2991,7 @@
     "material": "Germanium",
     "field": "neutrons",
     "legacy": 41,
-    "canonical": 55
-   },
-   {
-    "material": "Germanium",
-    "field": "protons",
-    "legacy": 32,
-    "canonical": 43
+    "canonical": 40
    },
    {
     "material": "Grisium",
@@ -3051,13 +3021,13 @@
     "material": "HS188A",
     "field": "neutrons",
     "legacy": -1,
-    "canonical": 50
+    "canonical": 56
    },
    {
     "material": "HS188A",
     "field": "protons",
     "legacy": 40,
-    "canonical": 38
+    "canonical": 41
    },
    {
     "material": "HastelloyC276",
@@ -3117,13 +3087,13 @@
     "material": "HeliumSpargedUSalt",
     "field": "neutrons",
     "legacy": 57,
-    "canonical": 28
+    "canonical": 42
    },
    {
     "material": "HeliumSpargedUSalt",
     "field": "protons",
     "legacy": 38,
-    "canonical": 22
+    "canonical": 29
    },
    {
     "material": "Hibonite",
@@ -3141,13 +3111,7 @@
     "material": "Honeaite",
     "field": "neutrons",
     "legacy": 105,
-    "canonical": 92
-   },
-   {
-    "material": "Honeaite",
-    "field": "protons",
-    "legacy": 70,
-    "canonical": 64
+    "canonical": 104
    },
    {
     "material": "HydrogenCyanide",
@@ -3243,49 +3207,49 @@
     "material": "LFTRFuel1",
     "field": "neutrons",
     "legacy": -1,
-    "canonical": 40
+    "canonical": 26
    },
    {
     "material": "LFTRFuel1",
     "field": "protons",
     "legacy": 32,
-    "canonical": 29
+    "canonical": 18
    },
    {
     "material": "LFTRFuel2",
     "field": "neutrons",
     "legacy": -1,
-    "canonical": 23
+    "canonical": 7
    },
    {
     "material": "LFTRFuel2",
     "field": "protons",
     "legacy": 21,
-    "canonical": 19
+    "canonical": 6
    },
    {
     "material": "LFTRFuel3",
     "field": "neutrons",
     "legacy": -1,
-    "canonical": 24
+    "canonical": 6
    },
    {
     "material": "LFTRFuel3",
     "field": "protons",
     "legacy": 27,
-    "canonical": 20
+    "canonical": 6
    },
    {
     "material": "LFTRFuelBase",
     "field": "neutrons",
     "legacy": 40,
-    "canonical": 18
+    "canonical": 12
    },
    {
     "material": "LFTRFuelBase",
     "field": "protons",
     "legacy": 28,
-    "canonical": 15
+    "canonical": 10
    },
    {
     "material": "LafiumCompound",
@@ -3303,13 +3267,7 @@
     "material": "Lafossaite",
     "field": "neutrons",
     "legacy": 62,
-    "canonical": 42
-   },
-   {
-    "material": "Lafossaite",
-    "field": "protons",
-    "legacy": 44,
-    "canonical": 34
+    "canonical": 61
    },
    {
     "material": "LanthaniteNd",
@@ -3321,13 +3279,13 @@
     "material": "Laurenium",
     "field": "neutrons",
     "legacy": -1,
-    "canonical": 36
+    "canonical": 39
    },
    {
     "material": "Laurenium",
     "field": "protons",
     "legacy": 45,
-    "canonical": 28
+    "canonical": 30
    },
    {
     "material": "Lautarite",
@@ -3354,40 +3312,10 @@
     "canonical": 14
    },
    {
-    "material": "Lithium7",
-    "field": "neutrons",
-    "legacy": 4,
-    "canonical": 55
-   },
-   {
-    "material": "Lithium7",
-    "field": "protons",
-    "legacy": 3,
-    "canonical": 43
-   },
-   {
-    "material": "LithiumFluoride",
-    "field": "neutrons",
-    "legacy": 6,
-    "canonical": 32
-   },
-   {
-    "material": "LithiumFluoride",
-    "field": "protons",
-    "legacy": 6,
-    "canonical": 26
-   },
-   {
     "material": "LithiumTetrafluoroberyllateLFTB",
     "field": "neutrons",
     "legacy": -1,
-    "canonical": 23
-   },
-   {
-    "material": "LithiumTetrafluoroberyllateLFTB",
-    "field": "protons",
-    "legacy": 6,
-    "canonical": 19
+    "canonical": 6
    },
    {
     "material": "MaragingSteel250",
@@ -3427,15 +3355,9 @@
    },
    {
     "material": "Miessiite",
-    "field": "neutrons",
-    "legacy": 60,
-    "canonical": 61
-   },
-   {
-    "material": "Miessiite",
     "field": "protons",
     "legacy": 44,
-    "canonical": 46
+    "canonical": 45
    },
    {
     "material": "MutatedLivingSolder",
@@ -3444,28 +3366,16 @@
     "canonical": 96
    },
    {
-    "material": "Neptunium",
-    "field": "neutrons",
-    "legacy": 144,
-    "canonical": 55
-   },
-   {
-    "material": "Neptunium",
-    "field": "protons",
-    "legacy": 93,
-    "canonical": 43
-   },
-   {
     "material": "NeptuniumHexafluoride",
     "field": "neutrons",
     "legacy": 76,
-    "canonical": 15
+    "canonical": 28
    },
    {
     "material": "NeptuniumHexafluoride",
     "field": "protons",
     "legacy": 51,
-    "canonical": 13
+    "canonical": 21
    },
    {
     "material": "Nichromite",
@@ -3507,13 +3417,13 @@
     "material": "Perroudite",
     "field": "neutrons",
     "legacy": 55,
-    "canonical": 60
+    "canonical": 59
    },
    {
     "material": "Perroudite",
     "field": "protons",
     "legacy": 41,
-    "canonical": 44
+    "canonical": 43
    },
    {
     "material": "PhosphorousUraniumHexafluoridePUF6",
@@ -3555,13 +3465,7 @@
     "material": "Polonium",
     "field": "neutrons",
     "legacy": 125,
-    "canonical": 55
-   },
-   {
-    "material": "Polonium",
-    "field": "protons",
-    "legacy": 84,
-    "canonical": 43
+    "canonical": 124
    },
    {
     "material": "Polycrase",
@@ -3603,31 +3507,25 @@
     "material": "Protactinium",
     "field": "neutrons",
     "legacy": 140,
-    "canonical": 55
-   },
-   {
-    "material": "Protactinium",
-    "field": "protons",
-    "legacy": 91,
-    "canonical": 43
+    "canonical": 138
    },
    {
     "material": "Quantum",
     "field": "neutrons",
     "legacy": 200,
-    "canonical": 58
+    "canonical": 56
    },
    {
     "material": "Quantum",
     "field": "protons",
     "legacy": 150,
-    "canonical": 42
+    "canonical": 41
    },
    {
     "material": "RadioactiveMineralMix",
     "field": "neutrons",
     "legacy": 110,
-    "canonical": 104
+    "canonical": 106
    },
    {
     "material": "RadioactiveMineralMix",
@@ -3639,13 +3537,7 @@
     "material": "Radium",
     "field": "neutrons",
     "legacy": 138,
-    "canonical": 55
-   },
-   {
-    "material": "Radium",
-    "field": "protons",
-    "legacy": 88,
-    "canonical": 43
+    "canonical": 136
    },
    {
     "material": "RareEarthI",
@@ -3682,18 +3574,6 @@
     "field": "protons",
     "legacy": 36,
     "canonical": 28
-   },
-   {
-    "material": "Rhenium",
-    "field": "neutrons",
-    "legacy": 111,
-    "canonical": 55
-   },
-   {
-    "material": "Rhenium",
-    "field": "protons",
-    "legacy": 75,
-    "canonical": 43
    },
    {
     "material": "Rhugnor",
@@ -3768,40 +3648,28 @@
     "canonical": 4
    },
    {
-    "material": "Selenium",
-    "field": "neutrons",
-    "legacy": 45,
-    "canonical": 55
-   },
-   {
-    "material": "Selenium",
-    "field": "protons",
-    "legacy": 34,
-    "canonical": 43
-   },
-   {
     "material": "SeleniumDioxide",
     "field": "neutrons",
     "legacy": 26,
-    "canonical": 23
+    "canonical": 20
    },
    {
     "material": "SeleniumDioxide",
     "field": "protons",
     "legacy": 21,
-    "canonical": 19
+    "canonical": 16
    },
    {
     "material": "SeleniumHexafluoride",
     "field": "neutrons",
     "legacy": 27,
-    "canonical": 15
+    "canonical": 14
    },
    {
     "material": "SeleniumHexafluoride",
     "field": "protons",
     "legacy": 21,
-    "canonical": 13
+    "canonical": 12
    },
    {
     "material": "SodiumCyanide",
@@ -3856,18 +3724,6 @@
     "field": "protons",
     "legacy": 57,
     "canonical": 85
-   },
-   {
-    "material": "StableMoltenSaltBase",
-    "field": "neutrons",
-    "legacy": 6,
-    "canonical": 19
-   },
-   {
-    "material": "StableMoltenSaltBase",
-    "field": "protons",
-    "legacy": 6,
-    "canonical": 16
    },
    {
     "material": "Stellite",
@@ -3942,18 +3798,6 @@
     "canonical": 75
    },
    {
-    "material": "Thallium",
-    "field": "neutrons",
-    "legacy": 123,
-    "canonical": 55
-   },
-   {
-    "material": "Thallium",
-    "field": "protons",
-    "legacy": 81,
-    "canonical": 43
-   },
-   {
     "material": "Thorium",
     "field": "neutrons",
     "legacy": 142,
@@ -3975,25 +3819,25 @@
     "material": "ThoriumBerylliumDepletedMoltenSaltTBSalt",
     "field": "neutrons",
     "legacy": 29,
-    "canonical": 19
+    "canonical": 10
    },
    {
     "material": "ThoriumBerylliumDepletedMoltenSaltTBSalt",
     "field": "protons",
     "legacy": 20,
-    "canonical": 16
+    "canonical": 9
    },
    {
     "material": "ThoriumDepletedMoltenSaltTSalt",
     "field": "neutrons",
     "legacy": 40,
-    "canonical": 25
+    "canonical": 12
    },
    {
     "material": "ThoriumDepletedMoltenSaltTSalt",
     "field": "protons",
     "legacy": 27,
-    "canonical": 20
+    "canonical": 10
    },
    {
     "material": "ThoriumHexafluoride",
@@ -4143,13 +3987,13 @@
     "material": "UraniumDepletedMoltenSaltUSalt",
     "field": "neutrons",
     "legacy": 57,
-    "canonical": 28
+    "canonical": 42
    },
    {
     "material": "UraniumDepletedMoltenSaltUSalt",
     "field": "protons",
     "legacy": 38,
-    "canonical": 22
+    "canonical": 29
    },
    {
     "material": "UraniumHexafluoride",

@@ -507,6 +507,16 @@ GTPP_SIMPLE_PREFIXES = [
 
 GTPP_MARKER_NAMES = ("Brine", "Magic", "SaltWater", "SodiumChloride", "SoulSand", "Water")
 
+# gtpp-only materials that are pure elements: the gtpp dump carries no element reference, but the computed
+# atomic quantities (gregtech.api.material.MaterialAtomics) need canonical ELEMENT to read the Element table
+# rather than fall back to Tc. Isotope materials without an Element entry (Uranium232/Uranium233/
+# Plutonium238/Thorium232) are deliberately absent.
+GTPP_ELEMENT_BACKFILL = {
+    "Bromine": "Br", "Curium": "Cm", "Fermium": "Fm", "Germanium": "Ge", "Lithium7": "Li",
+    "Neptunium": "Np", "Polonium": "Po", "Protactinium": "Pa", "Radium": "Ra", "Rhenium": "Re",
+    "Selenium": "Se", "Technetium": "Tc", "Thallium": "Tl",
+}
+
 
 def load_gtpp_materials():
     with open(GTPP_DUMP_PATH, encoding="utf-8") as f:
@@ -669,6 +679,8 @@ def gtpp_scalar_property_lines(entry, gt_entry, ml_names):
     # did). This emit is the no-conflict base case: the committed Materials2Materials carries it only
     # where no gregtech/werkstoff-side value won the key (a Materials2Formulas entry and a werkstoff
     # formula both beat gtpp's).
+    if entry["unlocalizedName"] in GTPP_ELEMENT_BACKFILL:
+        emit("ELEMENT", java_string_literal(GTPP_ELEMENT_BACKFILL[entry["unlocalizedName"]]))
     if entry["chemicalFormula"]:
         emit("FORMULA", java_string_literal(gtpp_display_formula(entry["chemicalFormula"])))
 
