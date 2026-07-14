@@ -1,7 +1,5 @@
 package gregtech.api.material;
 
-import java.util.EnumSet;
-
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
@@ -9,29 +7,15 @@ import org.jetbrains.annotations.Nullable;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.StringUtils;
 
-/// Resolves the legacy chemical-formula display string for a MaterialLib [Material] from declaration data
-/// alone, reading whichever of [GTMaterialProperties#WERKSTOFF_IDS], [GTMaterialProperties#FORMULA], or
-/// [GTMaterialProperties#GTPP_CHEMICAL_FORMULA] carries it -- in that priority order, which reproduces what the
-/// legacy item each ML stack replaced actually rendered: a werkstoff-backed material's legacy items (both the
-/// bartworks ones and the gregtech bridge ones, whose `Materials` formula `BridgeMaterialsLoader` overwrote
-/// from the werkstoff side unconditionally -- hence no fall-through past a present
-/// [GTMaterialProperties#WERKSTOFF_IDS], even when [GTMaterialProperties#WERKSTOFF_FORMULA] is empty) showed
-/// the werkstoff formula; a gregtech-dumped
-/// material's items showed `Materials#mChemicalFormula`
-/// (baked per material into [gregtech.api.enums.materials2.Materials2Formulas] as
-/// [GTMaterialProperties#FORMULA], covering both explicit legacy overrides and constructor-derived strings, so
-/// gtpp-merged materials keep the gregtech-side formula their dominant legacy items showed); only a gtpp-only
-/// material's items showed `gtPlusPlus.core.material.Material#vChemicalFormula`.
+/// Resolves the chemical-formula display string for a MaterialLib [Material] from
+/// [GTMaterialProperties#FORMULA] (see its javadoc for which legacy system sourced each value), translating
+/// through the legacy `Materials` localization key when [GTMaterialProperties#FORMULA_LOCALIZED] is set.
 ///
-/// [#forSearch] feeds [gregtech.nei.searchprovider.ChemicalFormulaFilter] and returns the raw string its
-/// legacy resolution produced for the same material -- unsanitized, including `"?"`/`"??"` placeholders; the
-/// filter applies its own validity check and sanitization exactly as before. [#forTooltip] returns the
-/// ready-to-display line (or null for none), reproducing each legacy renderer's own quirks: `Materials
-/// #addTooltips` suppressed the exact-`"?"` placeholder, `Werkstoff#addTooltips` displayed any non-empty
-/// string, and `gtPlusPlus.core.material.Material#addTooltips` always displayed the
-/// [StringUtils#sanitizeStringKeepBrackets]-cleaned formula (keeping `?` characters when present).
+/// [#forSearch] feeds [gregtech.nei.searchprovider.ChemicalFormulaFilter] and returns the stored string --
+/// unsanitized, including `"?"`/`"??"` placeholders; the filter applies its own validity check and
+/// sanitization. [#forTooltip] returns the ready-to-display line (or null for none), suppressing the
+/// exact-`"?"` placeholder the way the legacy `Materials#addTooltips` did.
 public final class MaterialFormulas {
 
     private MaterialFormulas() {}
@@ -40,74 +24,26 @@ public final class MaterialFormulas {
     public static @Nullable String forSearch(@Nullable Material ml) {
         if (ml == null) return null;
 
-        if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
-            String formula = ml.getProperty(GTMaterialProperties.WERKSTOFF_FORMULA);
-            return GTUtility.isStringValid(formula) ? localizedWerkstoffFormula(ml, formula) : null;
-        }
-
         String formula = ml.getProperty(GTMaterialProperties.FORMULA);
-        if (formula != null) {
-            return Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.FORMULA_LOCALIZED))
-                ? StatCollector.translateToLocal(materialsFormulaKey(ml))
-                : formula;
-        }
-
-        String gtppFormula = ml.getProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA);
-        if (GTUtility.isStringValid(gtppFormula)) {
-            return gtppFormula;
-        }
-
-        return null;
+        if (formula == null) return null;
+        return Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.FORMULA_LOCALIZED))
+            ? StatCollector.translateToLocal(formulaKey(ml))
+            : formula;
     }
 
     /// The formula tooltip line to display, or null when the legacy renderer showed none.
     public static @Nullable String forTooltip(@Nullable Material ml) {
-        if (ml == null) return null;
-
-        if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
-            String werkstoffFormula = ml.getProperty(GTMaterialProperties.WERKSTOFF_FORMULA);
-            if (!GTUtility.isStringValid(werkstoffFormula)) return null;
-            String formula = localizedWerkstoffFormula(ml, werkstoffFormula);
-            return GTUtility.isStringValid(formula) ? formula : null;
-        }
-
-        String formula = ml.getProperty(GTMaterialProperties.FORMULA);
-        if (formula != null) {
-            if (Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.FORMULA_LOCALIZED))) {
-                formula = StatCollector.translateToLocal(materialsFormulaKey(ml));
-            }
-            return GTUtility.isStringValid(formula) && !"?".equals(formula) ? formula : null;
-        }
-
-        String gtppFormula = ml.getProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA);
-        if (GTUtility.isStringValid(gtppFormula)) {
-            return gtppFormula.contains("?") ? StringUtils.sanitizeStringKeepBracketsQuestion(gtppFormula)
-                : StringUtils.sanitizeStringKeepBrackets(gtppFormula);
-        }
-
-        return null;
-    }
-
-    private static String localizedWerkstoffFormula(Material ml, String formula) {
-        EnumSet<GTWerkstoffFlag> flags = ml.getProperty(GTMaterialProperties.WERKSTOFF_FLAGS);
-        return flags != null && flags.contains(GTWerkstoffFlag.LOCALIZED_FORMULA)
-            ? StatCollector.translateToLocal(werkstoffFormulaKey(ml))
-            : formula;
+        String formula = forSearch(ml);
+        return GTUtility.isStringValid(formula) && !"?".equals(formula) ? formula : null;
     }
 
     /// Mirrors `IOreMaterial#getLocalizedNameKey` (`"Material." + getInternalName().toLowerCase()`) for the
     /// reconstructed legacy `Materials` instance -- `getInternalName()` there is `mName`, i.e.
-    /// [GTMaterialProperties#LEGACY_NAME] when present, else the MaterialLib registration name.
-    private static String materialsFormulaKey(Material ml) {
+    /// [GTMaterialProperties#LEGACY_NAME] when present, else the MaterialLib registration name. The
+    /// reconstructed `Werkstoff`'s own key (`getVarName().toLowerCase()`) resolves identically for every
+    /// localized-formula werkstoff, so one scheme serves both facades.
+    private static String formulaKey(Material ml) {
         String legacyName = ml.getProperty(GTMaterialProperties.LEGACY_NAME);
         return "Material." + (legacyName != null ? legacyName : ml.getName()).toLowerCase() + ".ChemicalFormula";
-    }
-
-    /// As [#materialsFormulaKey], for the reconstructed legacy `Werkstoff` -- `Werkstoff#getInternalName` is
-    /// `getVarName()`, `defaultName` (== [GTMaterialProperties#LOCAL_NAME]) with spaces stripped.
-    private static String werkstoffFormulaKey(Material ml) {
-        String localName = ml.getProperty(GTMaterialProperties.LOCAL_NAME);
-        String varName = (localName != null ? localName : ml.getName()).replace(" ", "");
-        return "Material." + varName.toLowerCase() + ".ChemicalFormula";
     }
 }

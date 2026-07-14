@@ -278,7 +278,6 @@ WERKSTOFF_FLAG_FIELDS = [
     ("metalSolidifierRecipes", "METAL_SOLIDIFICATION"),
     ("mixerRecipes", "MIXING"),
     ("sifterRecipes", "SIFTING"),
-    ("formulaLocalized", "LOCALIZED_FORMULA"),
 ]
 
 # GTWerkstoffFlag members the U1 collapse moved onto canonical properties (see werkstoff_property_lines).
@@ -460,9 +459,13 @@ def werkstoff_property_lines(info, ml_names, display_to_var, canonical_melting_p
     if sub_tags:
         emit("SUB_TAGS", "List.of(" + ", ".join(java_string_literal(t) for t in sub_tags) + ")")
 
+    # The formula lands on canonical FORMULA (the werkstoff value beat any same-name gtpp value), with
+    # FORMULA_LOCALIZED carrying the former LOCALIZED_FORMULA flag.
     formula = next((e["formula"] for e in entries if e["formula"]), "")
     if formula:
-        emit("WERKSTOFF_FORMULA", java_string_literal(formula))
+        emit("FORMULA", java_string_literal(formula))
+        if any(e["formulaLocalized"] for e in entries):
+            emit("FORMULA_LOCALIZED", "true")
 
     return lines
 
@@ -663,8 +666,13 @@ def gtpp_scalar_property_lines(entry, gt_entry, ml_names):
         emit("IS_RADIOACTIVE", "true")
     if entry["radiationLevel"] != 0:
         emit("RADIATION_LEVEL", str(entry["radiationLevel"]))
+    # The formula lands on canonical FORMULA, stored in display form
+    # (StringUtils#sanitizeStringKeepBrackets(Question) applied the way the legacy gtpp tooltip renderer
+    # did). This emit is the no-conflict base case: the committed Materials2Materials carries it only
+    # where no gregtech/werkstoff-side value won the key (a Materials2Formulas entry and a werkstoff
+    # formula both beat gtpp's).
     if entry["chemicalFormula"]:
-        emit("GTPP_CHEMICAL_FORMULA", java_string_literal(entry["chemicalFormula"]))
+        emit("FORMULA", java_string_literal(gtpp_display_formula(entry["chemicalFormula"])))
 
     emit("GTPP_PROTONS", f"{entry['protons']}L")
     emit("GTPP_NEUTRONS", f"{entry['neutrons']}L")
@@ -821,6 +829,13 @@ def gtpp_ore_shape_lines(entry):
     if entry.get("hasOre"):
         return ["            .generateShape(Materials2OreShapes.shapeOre)"]
     return []
+
+
+def gtpp_display_formula(formula):
+    """The legacy gtpp tooltip renderer's cleanup: strip the sanitizeStringKeepBrackets set, keeping `?`
+    when the formula contains one (the KeepBracketsQuestion variant)."""
+    drop = " -_!@#" if "?" in formula else " -_?!@#"
+    return "".join(c for c in formula if c not in drop)
 
 
 def gtpp_composition_set(entry):
