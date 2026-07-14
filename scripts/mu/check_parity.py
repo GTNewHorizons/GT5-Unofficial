@@ -192,16 +192,28 @@ LEGACY_BRIDGE_SOURCES = [
 
 
 def load_legacy_constant_names():
-    """Mirrors gen_materials.py's load_legacy_constant_names (byproduct reference-kind recovery)."""
+    """Mirrors gen_materials.py's load_legacy_constant_names (byproduct reference-kind recovery).
+
+    The legacy Materials names come from MaterialsLegacyBridge's loop data (BRIDGED_FIELD_NAMES with the
+    ML-name and stub-name override maps applied, reproducing each material's legacy mName) plus
+    LegacyMarkerMaterials' setName literals.
+    """
     import re as _re
     names = set()
-    for rel in LEGACY_BRIDGE_SOURCES:
-        path = REPO_ROOT / rel
-        if not path.exists():
-            continue
-        text = path.read_text(encoding="utf-8")
-        names.update(_re.findall(r'LegacyMaterials' + chr(92) + r'.stub' + chr(92) + r'("([^"]+)"' + chr(92) + r')', text))
-        names.update(_re.findall(r'setName' + chr(92) + r'("([^"]+)"' + chr(92) + r')', text))
+    bridge = (REPO_ROOT / LEGACY_BRIDGE_SOURCES[0]).read_text(encoding="utf-8")
+    fields = _re.findall(r'"([^"]+)"', _re.search(r'BRIDGED_FIELD_NAMES\s*=\s*\{(.*?)\};', bridge, _re.S).group(1))
+    ml_to_field = dict(_re.findall(
+        r'Map\.entry\("([^"]+)",\s*"([^"]+)"\)',
+        _re.search(r'ML_NAME_TO_FIELD_OVERRIDES\s*=\s*Map\s*\.ofEntries\((.*?)\);', bridge, _re.S).group(1)))
+    field_to_ml = {field: ml for ml, field in ml_to_field.items()}
+    stub_overrides = dict(_re.findall(
+        r'"([^"]+)",\s*"([^"]+)"',
+        _re.search(r'STUB_NAME_OVERRIDES\s*=\s*Map\s*\.of\((.*?)\);', bridge, _re.S).group(1)))
+    for field in fields:
+        ml_name_ = field_to_ml.get(field, field)
+        names.add(stub_overrides.get(ml_name_, ml_name_))
+    markers = (REPO_ROOT / LEGACY_BRIDGE_SOURCES[1]).read_text(encoding="utf-8")
+    names.update(_re.findall(r'setName\("([^"]+)"\)', markers))
     return names
 
 
