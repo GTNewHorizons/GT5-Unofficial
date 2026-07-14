@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -164,10 +165,10 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
             new ItemSlot()
                 .slot(new ModularSlot(machine.inventoryHandler, machine.getManualSlot()).slotGroup("item_inv"))
                 .tooltip(t -> {
-                    t.addLine(GTUtility.translate("GT5U.machines.stocking_bus.manual_slot.tooltip.1"));
+                    t.addLine(StatCollector.translateToLocal("GT5U.machines.stocking_bus.manual_slot.tooltip.1"));
                     t.addLine(
                         EnumChatFormatting.GRAY
-                            + GTUtility.translate("GT5U.machines.stocking_bus.manual_slot.tooltip.2")
+                            + StatCollector.translateToLocal("GT5U.machines.stocking_bus.manual_slot.tooltip.2")
                             + EnumChatFormatting.RESET);
                 }));
 
@@ -203,8 +204,8 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
             .setEnabledIf(b -> machine.autoPullAvailable)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_AUTOPULL_ME)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED)
-            .addTooltipLine(GTUtility.translate("GT5U.machines.stocking_bus.auto_pull.tooltip.1"))
-            .addTooltipLine(GTUtility.translate("GT5U.machines.stocking_bus.auto_pull.tooltip.2")));
+            .addTooltipLine(StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.1"))
+            .addTooltipLine(StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.2")));
 
         return mainColumn;
     }
@@ -300,7 +301,7 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
                 return MessageFormat.format(
                     "{0} ({1})",
                     EnumChatFormatting.GREEN + state + EnumChatFormatting.RESET,
-                    GTUtility.translate(
+                    StatCollector.translateToLocal(
                         isAllowedToWorkSyncer.getBoolValue() ? "GT5U.gui.text.enabled" : "GT5U.gui.text.disabled"));
             } else {
                 return EnumChatFormatting.DARK_RED + state + EnumChatFormatting.RESET;
