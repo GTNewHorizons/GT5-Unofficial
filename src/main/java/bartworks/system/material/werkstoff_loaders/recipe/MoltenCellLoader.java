@@ -23,13 +23,11 @@ import static gregtech.api.enums.OrePrefixes.plate;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
@@ -37,15 +35,14 @@ import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeCategories;
 
-/// Molten-fluid recipes for cellMolten-bearing werkstoffe: fluid-extractor melting of the solid shapes,
-/// ingot/nugget mold solidification, and the molten-cell fluid-container registration. Solidification into
-/// the worked shapes (plate/stick/stickLong and screw/bolt/ring/gear/gearSmall/rotor molds) is covered by the
-/// canonical autogen -- `ProcessingShaping`, `ProcessingPlate`, `ProcessingGear` and `ProcessingRotor`,
-/// dispatched per MaterialLib shape by `gregtech.loaders.shapeconsumers`.
+/// Molten-fluid recipes for cellMolten-bearing werkstoffe: fluid-extractor melting of the solid shapes and
+/// the molten-cell fluid-container registration. Mold solidification (ingot/nugget plus the worked plate/
+/// stick/stickLong and screw/bolt/ring/gear/gearSmall/rotor shapes) is covered by the canonical autogen --
+/// `ProcessingIngot`, `ProcessingNugget`, `ProcessingShaping`, `ProcessingPlate`, `ProcessingGear` and
+/// `ProcessingRotor`, dispatched per MaterialLib shape by `gregtech.loaders.shapeconsumers`.
 public class MoltenCellLoader implements IWerkstoffRunnable {
 
     @Override
@@ -100,22 +97,6 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .addTo(fluidExtractionRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Ingot.get(0))
-                .itemOutputs(werkstoff.get(ingot))
-                .fluidInputs(werkstoff.getMolten(1 * INGOTS))
-                .duration(1 * SECONDS + 12 * TICKS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8))
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Nugget.get(0))
-                .itemOutputs(werkstoff.get(nugget))
-                .fluidInputs(werkstoff.getMolten(1 * NUGGETS))
-                .duration(16 * TICKS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
-                .addTo(fluidSolidifierRecipes);
 
             if (!werkstoff.hasItemType(plate)) {
                 return;
