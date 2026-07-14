@@ -4,7 +4,14 @@
 shape set, and every mapped `GTMaterialProperties` value. Per-material shape sets are verified against
 `dumps/legacy-variants.json` (construction-time ground truth), not the `generatedPrefixes` capability-bit
 dump, which can drift from it. Werkstoff-backed materials (stage 10) additionally verify the merged shape
-union (`werkstoff.json` `generatedPrefixes`) and the decomposed `WERKSTOFF_*` properties' round-trip.
+union (`werkstoff.json` `generatedPrefixes`) and the surviving decomposed `WERKSTOFF_*` properties.
+
+The U1 collapse landed the werkstoff/gtpp scalars on canonical properties, so a canonical value may now
+legitimately differ from one of the pinned legacy dumps (the other source, or the computed atomic formula,
+won the key). Every such difference must appear in `dumps/u1-collapse-table.json`'s `implemented_deltas`
+allowlist -- an unallowlisted deviation, a deviation whose recorded legacy/canonical values no longer match,
+and an allowlist entry no longer exercised are all errors, so the committed table is the exact deviation
+inventory. The verdict line reports the allowlisted-deviation count next to the verified-material count.
 
 Regenerate the dumps first (`runServer` with `-Dgt.dumpMaterialData=true`, then copy
 `run/server/material-dump/*.json` over `dumps/*.json`) before running this. EXCEPTIONS -- pinned pre-stage-10
@@ -128,6 +135,124 @@ SUBTAG_FLAG_OVERRIDES = {
 }
 
 WERKSTOFF_PATH = DUMPS_DIR / "werkstoff.json"
+COLLAPSE_TABLE_PATH = DUMPS_DIR / "u1-collapse-table.json"
+
+# GTWerkstoffFlag members the U1 collapse moved onto canonical properties (mirrors gen_materials.py's
+# MIGRATED_WERKSTOFF_FLAGS); LOCALIZED_FORMULA additionally landed on FORMULA_LOCALIZED.
+MIGRATED_WERKSTOFF_FLAGS = {
+    "TOXIC", "RADIOACTIVE", "BLAST_FURNACE", "NO_AUTO_BLAST_FURNACE_RECIPES", "NO_AUTO_VACUUM_FREEZER_RECIPES",
+    "LOCALIZED_FORMULA"
+}
+
+M = 3628800
+
+
+def _jsonable(value):
+    if isinstance(value, tuple):
+        return [_jsonable(v) for v in value]
+    if isinstance(value, (list, set)):
+        return [_jsonable(v) for v in value]
+    return value
+
+
+def _values_equal(a, b):
+    if isinstance(a, float) or isinstance(b, float):
+        return floats_equal(a, b)
+    if isinstance(a, list) and isinstance(b, list):
+        return len(a) == len(b) and all(_values_equal(x, y) for x, y in zip(a, b))
+    return a == b
+
+
+class Deviations:
+    """Validates every collapse deviation against the committed `implemented_deltas` allowlist: unknown
+    deviations, drifted values, and unexercised allowlist entries all error."""
+
+    def __init__(self, allow):
+        self.allow = allow
+        self.used = set()
+        self.errors = []
+
+    def dev(self, clazz, material, field, legacy, canonical):
+        key = (clazz, material, field)
+        entry = self.allow.get(key)
+        legacy = _jsonable(legacy)
+        canonical = _jsonable(canonical)
+        if entry is None:
+            self.errors.append(
+                f"{material}: unallowlisted {clazz} deviation on {field}: legacy {legacy!r} -> {canonical!r}")
+            return
+        if not _values_equal(entry.get("legacy"), legacy) or not _values_equal(entry.get("canonical"), canonical):
+            self.errors.append(
+                f"{material}: {clazz} deviation on {field} drifted from the allowlist: recorded "
+                f"{entry.get('legacy')!r} -> {entry.get('canonical')!r}, observed {legacy!r} -> {canonical!r}")
+            return
+        self.used.add(key)
+
+    def unused(self):
+        return sorted(set(self.allow) - self.used)
+
+
+def load_allowlist():
+    with open(COLLAPSE_TABLE_PATH, encoding="utf-8") as f:
+        table = json.load(f)
+    allow = {}
+    for clazz, entries in table["implemented_deltas"].items():
+        for e in entries:
+            allow[(clazz, e["material"], e["field"])] = e
+    return allow
+
+
+class MlAtomics:
+    """Reimplements `gregtech.api.material.MaterialAtomics` (the legacy `Materials` density-weighted
+    formula) over ml-materials.json entries, so the collapsed proton/neutron/mass values can be verified
+    against the pinned werkstoff/gtpp dumps."""
+
+    def __init__(self, ml_by_key, elements):
+        self.ml_by_key = ml_by_key
+        self.elements = elements
+        self.cache = {}
+
+    def get(self, name, kind):
+        key = (name, kind)
+        if key in self.cache:
+            return self.cache[key]
+        self.cache[key] = None
+        ml = self.ml_by_key.get(name)
+        if ml is None:
+            raise SystemExit(f"check_parity.py: composition references unknown material {name!r}")
+        element = ml.get("element")
+        if element is not None:
+            v = self.elements[element][kind]
+        elif not ml["composition"]:
+            v = self.elements["Tc"][kind]
+        else:
+            total = 0
+            weighted = 0
+            for stack in ml["composition"]:
+                total += stack["amount"]
+                sub = self.get(stack["material"], kind)
+                if sub is None:
+                    raise SystemExit(f"check_parity.py: composition cycle at {name!r}")
+                weighted += stack["amount"] * sub
+            multiplier = ml.get("densityMultiplier") or 1
+            divider = ml.get("densityDivider") or 1
+            density = (M * multiplier) // divider
+            v = (density * weighted) // (total * M)
+        self.cache[key] = v
+        return v
+
+
+def load_element_table():
+    """Parses `gregtech.api.enums.Element`'s enum table (protons, neutrons, additional mass)."""
+    import re as _re
+    table = {}
+    pat = _re.compile(
+        r'^\s{4}(\w+)\((-?\d+), (-?\d+), (-?\d+), "[^"]*", (?:true|false)\)[,;]\s*$', _re.M)
+    source = (REPO_ROOT / "src/main/java/gregtech/api/enums/Element.java").read_text(encoding="utf-8")
+    for m in pat.finditer(source):
+        p, n, add = int(m.group(2)), int(m.group(3)), int(m.group(4))
+        table[m.group(1)] = {"protons": p, "neutrons": n, "mass": p + n + add}
+    return table
 
 # Mirrors gen_materials.py's stage-10 werkstoff fold (WERKSTOFF_LEGACY_ONLY_PREFIXES,
 # werkstoff_special_shape_lines, group_werkstoffs, werkstoff_flag_names).
@@ -185,46 +310,6 @@ def load_werkstoffs():
 
 
 REPO_ROOT = SCRIPT_DIR.parent.parent
-LEGACY_BRIDGE_SOURCES = [
-    "src/main/java/gregtech/loaders/materials/MaterialsLegacyBridge.java",
-    "src/main/java/gregtech/loaders/materials/LegacyMarkerMaterials.java",
-]
-
-
-def load_legacy_constant_names():
-    """Mirrors gen_materials.py's load_legacy_constant_names (byproduct reference-kind recovery).
-
-    The legacy Materials names come from MaterialsLegacyBridge's loop data (BRIDGED_FIELD_NAMES with the
-    ML-name and stub-name override maps applied, reproducing each material's legacy mName) plus
-    LegacyMarkerMaterials' setName literals.
-    """
-    import re as _re
-    names = set()
-    bridge = (REPO_ROOT / LEGACY_BRIDGE_SOURCES[0]).read_text(encoding="utf-8")
-    fields = _re.findall(r'"([^"]+)"', _re.search(r'BRIDGED_FIELD_NAMES\s*=\s*\{(.*?)\};', bridge, _re.S).group(1))
-    ml_to_field = dict(_re.findall(
-        r'Map\.entry\("([^"]+)",\s*"([^"]+)"\)',
-        _re.search(r'ML_NAME_TO_FIELD_OVERRIDES\s*=\s*Map\s*\.ofEntries\((.*?)\);', bridge, _re.S).group(1)))
-    field_to_ml = {field: ml for ml, field in ml_to_field.items()}
-    stub_overrides = dict(_re.findall(
-        r'"([^"]+)",\s*"([^"]+)"',
-        _re.search(r'STUB_NAME_OVERRIDES\s*=\s*Map\s*\.of\((.*?)\);', bridge, _re.S).group(1)))
-    for field in fields:
-        ml_name_ = field_to_ml.get(field, field)
-        names.add(stub_overrides.get(ml_name_, ml_name_))
-    markers = (REPO_ROOT / LEGACY_BRIDGE_SOURCES[1]).read_text(encoding="utf-8")
-    names.update(_re.findall(r'setName\("([^"]+)"\)', markers))
-    return names
-
-
-def werkstoff_byproduct_kind(entry, byproduct_name, display_to_var, legacy_constants):
-    if byproduct_name == entry["name"]:
-        return "werkstoff"
-    if byproduct_name in legacy_constants:
-        return "material"
-    return "werkstoff"
-
-
 def group_werkstoffs(werkstoffs):
     by_name = {}
     display_to_var = {}
@@ -294,7 +379,217 @@ def werkstoff_flag_names(entries):
     return flags
 
 
-def check_werkstoff(errors, name, info, ml, display_to_var, legacy_constants):
+def mlv_from_dump(ml, atomics):
+    """The collapsed-scalar view of an ml-materials.json entry `collect_collapsed_deviations` consumes --
+    the offline delta generator builds the same view from the committed `Materials2Materials` source."""
+    if "boilingPoint" not in ml or "formula" not in ml:
+        raise SystemExit(
+            "check_parity.py: dumps/ml-materials.json predates the U1 collapse schema; regenerate it "
+            "(runServer with -Dgt.dumpMaterialData=true) and copy it here first")
+    return {
+        "meltingPoint": ml["meltingPoint"],
+        "boilingPoint": ml["boilingPoint"],
+        "meltingVoltage": ml["meltingVoltage"],
+        "blastRequired": ml["blastRequired"],
+        "toxic": ml["toxic"],
+        "isRadioactive": ml["isRadioactive"],
+        "radiationLevel": ml["radiationLevel"],
+        "tier": ml["tier"],
+        "voltageMultiplier": ml["voltageMultiplier"],
+        "mixCircuit": ml["mixCircuit"],
+        "ebfGasTimeMultiplier": ml["ebfGasTimeMultiplier"],
+        "ebfGasAmountMultiplier": ml["ebfGasAmountMultiplier"],
+        "subTags": ml["subTags"],
+        "toolDurability": ml["toolDurability"],
+        "toolSpeed": ml["toolSpeed"],
+        "toolQuality": ml["toolQuality"],
+        "autoBlast": ml["autoBlast"],
+        "autoVacuum": ml["autoVacuum"],
+        "formula": ml["formula"],
+        "formulaLocalized": ml["formulaLocalized"],
+        "composition": [(c["material"], c["amount"]) for c in ml["composition"]],
+        "oreByProducts": list(ml["oreByProducts"]),
+        "protons": atomics.get(ml["name"], "protons"),
+        "neutrons": atomics.get(ml["name"], "neutrons"),
+        "mass": atomics.get(ml["name"], "mass"),
+    }
+
+
+def collect_collapsed_deviations(dev, error, key, gt, wk_entries, gtpp_entry, mlv, display_to_var):
+    """Verifies every U1-collapsed canonical value in `mlv` against the pinned legacy dumps. A straight
+    promotion (single legacy source) errors on mismatch via `error(message)`; a value with competing legacy
+    sources (or a computed canonical, for the atomic counts) records each losing source through
+    `dev(clazz, key, field, legacy, canonical)` for allowlist validation. `key` is the ML registry name;
+    `gt`, `wk_entries`, `gtpp_entry` are the material's gt-materials/werkstoff/gtpp-materials dump data
+    (each possibly absent)."""
+    wk = wk_entries[0] if wk_entries else None
+    wk_flags = werkstoff_flag_names(wk_entries) if wk_entries else set()
+
+    def mism(clazz, field, legacy, canonical):
+        if isinstance(legacy, float) or isinstance(canonical, float):
+            if floats_equal(legacy, canonical):
+                return
+        elif legacy == canonical:
+            return
+        dev(clazz, key, field, legacy, canonical)
+
+    ml_melt = mlv["meltingPoint"] or 0
+    if gt is not None:
+        mism("melting_point_gt", "meltingPoint", gt["meltingPoint"], ml_melt)
+    if wk is not None:
+        mism("melting_point_werkstoff", "meltingPoint", wk["meltingPoint"], ml_melt)
+    if gtpp_entry is not None:
+        mism("melting_point_gtpp", "meltingPoint", celsius_to_kelvin(gtpp_entry["meltingPointC"]), ml_melt)
+
+    ml_boil = mlv["boilingPoint"] or 0
+    if wk is not None:
+        mism("boiling_point_werkstoff", "boilingPoint", wk["boilingPoint"], ml_boil)
+    if gtpp_entry is not None:
+        mism("boiling_point_gtpp", "boilingPoint", celsius_to_kelvin(gtpp_entry["boilingPointC"]), ml_boil)
+    if wk is None and gtpp_entry is None and ml_boil:
+        error(f"boilingPoint {ml_boil} with no legacy source")
+
+    ml_dur = mlv["toolDurability"] or 0
+    ml_quality = mlv["toolQuality"] or 0
+    ml_speed = mlv["toolSpeed"] if mlv["toolSpeed"] is not None else 1.0
+    if gt is not None:
+        mism("tool_stats_gt", "toolDurability", gt["toolDurability"], ml_dur)
+        mism("tool_stats_gt", "toolQuality", gt["toolQuality"], ml_quality)
+        mism("tool_stats_gt", "toolSpeed", gt["toolSpeed"], ml_speed)
+    if wk is not None:
+        if wk["durability"]:
+            mism("tool_stats_werkstoff", "durabilityOverride", wk["durability"], ml_dur)
+        if wk["quality"]:
+            mism("tool_stats_werkstoff", "qualityOverride", wk["quality"], ml_quality)
+        if wk["speed"]:
+            mism("tool_stats_werkstoff", "speedOverride", wk["speed"], ml_speed)
+        if wk["durabilityModifier"] != 1.0:
+            dev("werkstoff_durability_modifier", key, "durabilityModifier", wk["durabilityModifier"], ml_dur)
+    if gtpp_entry is not None:
+        mism("tool_stats_gtpp", "durability", gtpp_entry["durability"], ml_dur)
+
+    ml_blast = bool(mlv["blastRequired"])
+    if gt is not None:
+        mism("blast_gt", "blastRequired", bool(gt["blastRequired"]), ml_blast)
+    if gtpp_entry is not None:
+        mism("blast_gtpp", "usesBlastFurnace", bool(gtpp_entry["usesBlastFurnace"]), ml_blast)
+    if "BLAST_FURNACE" in wk_flags and not ml_blast:
+        error("werkstoff BLAST_FURNACE flag lost (blastRequired is false)")
+
+    ml_toxic = bool(mlv["toxic"])
+    if ml_toxic != ("TOXIC" in wk_flags):
+        error(f"toxic expected {'TOXIC' in wk_flags}, got {ml_toxic}")
+
+    wk_radioactive = "RADIOACTIVE" in wk_flags
+    gtpp_radioactive = bool(gtpp_entry["isRadioactive"]) if gtpp_entry is not None else False
+    ml_radioactive = bool(mlv["isRadioactive"])
+    if ml_radioactive != (wk_radioactive or gtpp_radioactive):
+        error(f"isRadioactive expected {wk_radioactive or gtpp_radioactive}, got {ml_radioactive}")
+    if wk is not None and wk_radioactive != ml_radioactive:
+        mism("radioactivity_merge", "isRadioactive(werkstoff)", wk_radioactive, ml_radioactive)
+    if gtpp_entry is not None and gtpp_radioactive != ml_radioactive:
+        mism("radioactivity_merge", "isRadioactive(gtpp)", gtpp_radioactive, ml_radioactive)
+
+    expected_radiation = gtpp_entry["radiationLevel"] if gtpp_entry is not None else 0
+    if (mlv["radiationLevel"] or 0) != expected_radiation:
+        error(f"radiationLevel expected {expected_radiation!r}, got {mlv['radiationLevel']!r}")
+
+    gt_auto_blast = bool(gt["autoBlast"]) if gt is not None else True
+    gt_auto_vacuum = bool(gt["autoVacuum"]) if gt is not None else True
+    expected_auto_blast = gt_auto_blast and "NO_AUTO_BLAST_FURNACE_RECIPES" not in wk_flags
+    expected_auto_vacuum = gt_auto_vacuum and "NO_AUTO_VACUUM_FREEZER_RECIPES" not in wk_flags
+    if (mlv["autoBlast"] is None or mlv["autoBlast"]) != expected_auto_blast:
+        error(f"autoBlast expected {expected_auto_blast!r}, got {mlv['autoBlast']!r}")
+    if (mlv["autoVacuum"] is None or mlv["autoVacuum"]) != expected_auto_vacuum:
+        error(f"autoVacuum expected {expected_auto_vacuum!r}, got {mlv['autoVacuum']!r}")
+
+    if wk is not None:
+        if (mlv["meltingVoltage"] if mlv["meltingVoltage"] is not None else 120) != wk["meltingVoltage"]:
+            error(f"meltingVoltage expected {wk['meltingVoltage']!r}, got {mlv['meltingVoltage']!r}")
+        if (mlv["mixCircuit"] if mlv["mixCircuit"] is not None else -1) != wk["mixCircuit"]:
+            error(f"mixCircuit expected {wk['mixCircuit']!r}, got {mlv['mixCircuit']!r}")
+        ebf_time = mlv["ebfGasTimeMultiplier"] if mlv["ebfGasTimeMultiplier"] is not None else -1.0
+        ebf_amount = mlv["ebfGasAmountMultiplier"] if mlv["ebfGasAmountMultiplier"] is not None else 1.0
+        if not floats_equal(ebf_time, wk["ebfGasTimeMultiplier"]):
+            error(f"ebfGasTimeMultiplier expected {wk['ebfGasTimeMultiplier']!r}, got {ebf_time!r}")
+        if not floats_equal(ebf_amount, wk["ebfGasAmountMultiplier"]):
+            error(f"ebfGasAmountMultiplier expected {wk['ebfGasAmountMultiplier']!r}, got {ebf_amount!r}")
+        expected_sub_tags = []
+        for entry in wk_entries:
+            for tag in entry["subTags"]:
+                if tag not in expected_sub_tags:
+                    expected_sub_tags.append(tag)
+        if (mlv["subTags"] or []) != expected_sub_tags:
+            error(f"subTags expected {expected_sub_tags!r}, got {mlv['subTags']!r}")
+    else:
+        for field in ("meltingVoltage", "mixCircuit", "ebfGasTimeMultiplier", "ebfGasAmountMultiplier",
+                      "subTags"):
+            if mlv[field] is not None:
+                error(f"{field} {mlv[field]!r} with no werkstoff source")
+
+    if gtpp_entry is not None:
+        if (mlv["tier"] or 0) != gtpp_entry["tier"]:
+            error(f"tier expected {gtpp_entry['tier']!r}, got {mlv['tier']!r}")
+        expected_voltage = gtpp_entry["voltageMultiplier"]
+        if (mlv["voltageMultiplier"] if mlv["voltageMultiplier"] is not None else 16) != expected_voltage:
+            error(f"voltageMultiplier expected {expected_voltage!r}, got {mlv['voltageMultiplier']!r}")
+    else:
+        if mlv["tier"] is not None:
+            error(f"tier {mlv['tier']!r} with no gtpp source")
+        if mlv["voltageMultiplier"] is not None:
+            error(f"voltageMultiplier {mlv['voltageMultiplier']!r} with no gtpp source")
+
+    if wk_entries:
+        wk_formula = next((e["formula"] for e in wk_entries if e["formula"]), "")
+        if (mlv["formula"] or "") != wk_formula:
+            error(f"formula expected werkstoff {wk_formula!r}, got {mlv['formula']!r}")
+        wk_localized = any(e["formulaLocalized"] for e in wk_entries)
+        if bool(mlv["formulaLocalized"]) != wk_localized:
+            error(f"formulaLocalized expected {wk_localized!r}, got {mlv['formulaLocalized']!r}")
+    if gtpp_entry is not None:
+        mism("formula_gtpp", "chemicalFormula", gtpp_entry["chemicalFormula"] or None, mlv["formula"])
+
+    if wk is not None:
+        mism("atomic_werkstoff", "protons", wk["protons"], mlv["protons"])
+        mism("atomic_werkstoff", "mass", wk["mass"], mlv["mass"])
+    if gtpp_entry is not None:
+        mism("atomic_gtpp", "protons", gtpp_entry["protons"], mlv["protons"])
+        mism("atomic_gtpp", "neutrons", gtpp_entry["neutrons"], mlv["neutrons"])
+
+    ml_comp = [list(c) for c in mlv["composition"]]
+    if gt is not None:
+        gt_comp = [[ml_name(c["material"]), c["amount"]] for c in gt["composition"] if c]
+        if gt_comp != ml_comp:
+            dev("composition_gt", key, "composition", gt_comp, ml_comp)
+    if wk_entries:
+        contents = next((e["contents"] for e in wk_entries if e["contents"]), [])
+        wk_comp = [[ml_name(werkstoff_ref_name(c["name"], c["kind"], display_to_var)), c["amount"]]
+                   for c in contents]
+        if wk_comp != ml_comp:
+            dev("composition_werkstoff", key, "composition", wk_comp, ml_comp)
+    if gtpp_entry is not None:
+        gtpp_comp = sorted([ml_name(c["name"]), c["amount"]] for c in gtpp_entry["composition"] if c.get("name"))
+        if gtpp_comp != sorted(ml_comp):
+            dev("composition_gtpp", key, "composition", gtpp_comp, sorted(ml_comp))
+
+    ml_by = list(mlv["oreByProducts"])
+    if gt is not None:
+        gt_by = sorted(ml_name(b) for b in gt["oreByProducts"])
+        if gt_by != sorted(ml_by):
+            error(f"oreByProducts expected {gt_by!r}, got {sorted(ml_by)!r}")
+    if wk_entries:
+        byproducts_entry = next((e for e in wk_entries if e["oreByProducts"]), None)
+        if byproducts_entry:
+            wk_by = [ml_name(display_to_var.get(b, b)) for b in byproducts_entry["oreByProducts"]]
+        else:
+            wk_by = []
+        if wk_by != ml_by:
+            dev("ore_byproducts_werkstoff", key, "oreByProducts", wk_by, ml_by)
+
+
+def check_werkstoff(errors, name, info, ml):
+    """Verifies the surviving werkstoff blob fields (identity/bookkeeping plus the recipe-gen flags pending
+    U2); the collapsed scalars are covered by `collect_collapsed_deviations`."""
     actual = ml.get("werkstoff")
     entries = info["entries"] if info else []
     if not entries:
@@ -313,60 +608,9 @@ def check_werkstoff(errors, name, info, ml, display_to_var, legacy_constants):
     check("ids", [e["id"] for e in entries])
     check("type", first["type"])
     check("pool", first["pool"])
-    check("meltingPoint", first["meltingPoint"])
-    check("boilingPoint", first["boilingPoint"])
-    check("protons", first["protons"])
-    # neutrons (GTMaterialProperties.WERKSTOFF's former neutrons field) was dropped -- every werkstoff-backed
-    # material carried 0, and bartworks.system.material.WerkstoffReconstruction now hardcodes it; the
-    # dumped werkstoff blob no longer carries this field.
-    check("mass", first["mass"])
-    check("meltingVoltage", first["meltingVoltage"])
-    check("durabilityOverride", first["durability"])
-    check("qualityOverride", first["quality"])
-    # enchantmentLevel was dropped the same way -- every werkstoff-backed material carried 3, now hardcoded.
-    check("mixCircuit", first["mixCircuit"])
-    if not floats_equal(actual.get("speedOverride"), first["speed"]):
-        errors.append(f"{name}: werkstoff.speedOverride expected {first['speed']!r}")
-    if not floats_equal(actual.get("durabilityModifier"), first["durabilityModifier"]):
-        errors.append(f"{name}: werkstoff.durabilityModifier expected {first['durabilityModifier']!r}")
-    if not floats_equal(actual.get("ebfGasTimeMultiplier"), first["ebfGasTimeMultiplier"]):
-        errors.append(f"{name}: werkstoff.ebfGasTimeMultiplier expected {first['ebfGasTimeMultiplier']!r}")
-    if not floats_equal(actual.get("ebfGasAmountMultiplier"), first["ebfGasAmountMultiplier"]):
-        errors.append(f"{name}: werkstoff.ebfGasAmountMultiplier expected {first['ebfGasAmountMultiplier']!r}")
-    check("flags", sorted(werkstoff_flag_names(entries)))
+    check("flags", sorted(set(werkstoff_flag_names(entries)) - MIGRATED_WERKSTOFF_FLAGS))
     check("prefixes", info["prefixes"])
-    expected_contents = next((e["contents"] for e in entries if e["contents"]), [])
-    actual_contents = actual.get("contents") or []
-    expected_triples = [
-        (ml_name(werkstoff_ref_name(c["name"], c["kind"], display_to_var)), c["amount"],
-         c["kind"] == "werkstoff")
-        for c in expected_contents]
-    actual_triples = [(c["material"], c["amount"], c["werkstoff"]) for c in actual_contents]
-    if expected_triples != actual_triples:
-        errors.append(f"{name}: werkstoff.contents expected {expected_triples!r}, got {actual_triples!r}")
-    byproducts_entry = next((e for e in entries if e["oreByProducts"]), None)
-    expected_byproducts = []
-    if byproducts_entry:
-        for b in byproducts_entry["oreByProducts"]:
-            kind = werkstoff_byproduct_kind(byproducts_entry, b, display_to_var, legacy_constants)
-            expected_byproducts.append(
-                (ml_name(werkstoff_ref_name(b, kind, display_to_var) if kind == "werkstoff" else b), 1,
-                 kind == "werkstoff"))
-    actual_byproducts = [(b["material"], b["amount"], b["werkstoff"]) for b in (actual.get("oreByProducts") or [])]
-    if expected_byproducts != actual_byproducts:
-        errors.append(
-            f"{name}: werkstoff.oreByProducts expected {expected_byproducts!r}, "
-            f"got {actual_byproducts!r}")
-    sub_tags = []
-    for entry in entries:
-        for tag in entry["subTags"]:
-            if tag not in sub_tags:
-                sub_tags.append(tag)
-    check("subTags", sub_tags)
-    # additionalOreDict was dropped -- every werkstoff-backed material carried an empty list (see
-    # GTMaterialProperties.WERKSTOFF_IDS's class javadoc), so the field was deleted outright rather than
-    # ported as a decomposed property; the dumped werkstoff blob no longer carries this field.
-    check("formula", next((e["formula"] for e in entries if e["formula"]), ""))
+
 
 BLOCK_TEXTURE_INDEX_MIN = 65
 BLOCK_TEXTURE_INDEX_MAX = 95
@@ -497,7 +741,7 @@ def check_ref_field(errors, name, field, gt_value, ml_value):
 
 
 def check_material(gt, ml, included_names, legacy_variants_by_material, used_fluid_names, fluid_textures,
-                    legacy_block_materials, werkstoff_info, display_to_var, legacy_constants, gtpp_info=None):
+                    legacy_block_materials, werkstoff_info, display_to_var, gtpp_info, sink, atomics):
     errors = []
     name = gt["name"]
 
@@ -540,13 +784,10 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
         if expected != actual:
             errors.append(f"{name}: {field} expected {expected!r}, got {actual!r}")
 
-    check_int("meltingPoint", "meltingPoint", 0)
     check_int("blastTemp", "blastTemp", 0)
     check_int("gasTemp", "gasTemp", 0)
     check_int("fuelPower", "fuelPower", 0)
     check_int("fuelType", "fuelType", 0)
-    check_int("toolDurability", "toolDurability", 0)
-    check_int("toolQuality", "toolQuality", 0)
     check_int("oreMultiplier", "oreMultiplier", 1)
     check_int("byProductMultiplier", "byProductMultiplier", 1)
     check_int("smeltingMultiplier", "smeltingMultiplier", 1)
@@ -556,21 +797,10 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
     if expected_sub_id != actual_sub_id:
         errors.append(f"{name}: subId expected {expected_sub_id!r}, got {actual_sub_id!r}")
 
-    expected_blast_required = bool(gt["blastRequired"])
-    actual_blast_required = bool(ml["blastRequired"]) if ml["blastRequired"] is not None else False
-    if expected_blast_required != actual_blast_required:
-        errors.append(
-            f"{name}: blastRequired expected {expected_blast_required!r}, got {actual_blast_required!r}")
-
     expected_heat_damage = gt["heatDamage"]
     actual_heat_damage = ml["heatDamage"] if ml["heatDamage"] is not None else 0.0
     if not floats_equal(expected_heat_damage, actual_heat_damage):
         errors.append(f"{name}: heatDamage expected {expected_heat_damage!r}, got {actual_heat_damage!r}")
-
-    expected_tool_speed = gt["toolSpeed"]
-    actual_tool_speed = ml["toolSpeed"] if ml["toolSpeed"] is not None else 1.0
-    if not floats_equal(expected_tool_speed, actual_tool_speed):
-        errors.append(f"{name}: toolSpeed expected {expected_tool_speed!r}, got {actual_tool_speed!r}")
 
     expected_molten_default = gt["moltenRgba"] == [255, 255, 255, 0]
     expected_molten = None if expected_molten_default else to_unsigned32(pack_argb(gt["moltenRgba"]))
@@ -581,21 +811,6 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
     if gt["element"] != ml["element"]:
         errors.append(f"{name}: element expected {gt['element']!r}, got {ml['element']!r}")
 
-    expected_composition = [(ml_name(c["material"]), c["amount"]) for c in gt["composition"] if c]
-    actual_composition = [(c["material"], c["amount"]) for c in ml["composition"]]
-    # A material gregtech never dumped a composition for gets one backfilled from gtpp's own pinned
-    # composition (GTMaterialProperties.COMPOSITION's javadoc) when that does not risk feeding
-    # gregtech.loaders.materials.LegacyMaterials#build's addMaterial for a bridge-built material -- accept the
-    # backfill as correct only when it exactly reproduces gtpp's own ground truth, so an unrelated composition
-    # populated some other way still fails loudly.
-    if not expected_composition and actual_composition and gtpp_info:
-        gtpp_own_composition = [
-            (ml_name(c["name"]), c["amount"]) for c in gtpp_info["composition"] if c.get("name")]
-        if gtpp_own_composition == actual_composition:
-            expected_composition = actual_composition
-    if expected_composition != actual_composition:
-        errors.append(f"{name}: composition expected {expected_composition!r}, got {actual_composition!r}")
-
     check_ref_field(errors, name, "smeltInto", gt["smeltInto"], ml["smeltInto"])
     check_ref_field(errors, name, "macerateInto", gt["macerateInto"], ml["macerateInto"])
     check_ref_field(errors, name, "arcSmeltInto", gt["arcSmeltInto"], ml["arcSmeltInto"])
@@ -603,11 +818,6 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
     check_ref_field(errors, name, "handleMaterial", gt["handleMaterial"], ml["handleMaterial"])
     # materialInto was GTMaterialProperties.MATERIAL_INTO, removed as dead (never set, only read by the dump
     # tool) -- ml-materials.json no longer carries this field.
-
-    expected_byproducts = sorted(ml_name(b) for b in gt["oreByProducts"])
-    actual_byproducts = sorted(ml["oreByProducts"])
-    if expected_byproducts != actual_byproducts:
-        errors.append(f"{name}: oreByProducts expected {expected_byproducts!r}, got {actual_byproducts!r}")
 
     expected_flags = sorted(SUBTAG_FLAG_OVERRIDES.get(tag, tag) for tag in gt["subTags"])
     actual_flags = sorted(ml["flags"])
@@ -651,9 +861,19 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
                 check_fluid_texture(
                     errors, name, f"{ml_key}[{i}]", expected_ref["name"], actual_refs[i], fluid_textures)
 
-    check_werkstoff(errors, name, werkstoff_info, ml, display_to_var, legacy_constants)
-    if gtpp_info:
+    check_werkstoff(errors, name, werkstoff_info, ml)
+    if gtpp_info is not None:
         check_gtpp_data(errors, name, gtpp_info, ml)
+
+    collect_collapsed_deviations(
+        sink.dev,
+        lambda message: errors.append(f"{name}: {message}"),
+        ml_name(name),
+        gt,
+        werkstoff_info["entries"] if werkstoff_info else [],
+        gtpp_info,
+        mlv_from_dump(ml, atomics),
+        display_to_var)
 
     return errors
 
@@ -883,9 +1103,8 @@ def fold_gtpp_materials(gtpp_ported, gt_by_name, ported_name_set):
 
 
 def check_gtpp_data(errors, name, entry, ml):
-    """Verifies the decomposed `GTMaterialProperties.GTPP_*` properties round-trip against the dumped gtpp
-    scalar fields (existence + every field `MaterialDataDump#dumpMlGtpp` reassembles from them), for both
-    merges and new declarations."""
+    """Verifies the surviving gtpp blob fields (the presence signal and fluid/cell reconstruction data); the
+    collapsed scalars are covered by `collect_collapsed_deviations`."""
     data = ml.get("gtpp")
     if data is None:
         errors.append(f"{name}: missing gtpp property")
@@ -895,33 +1114,15 @@ def check_gtpp_data(errors, name, entry, ml):
         if data.get(field) != expected:
             errors.append(f"{name}: gtpp.{field} expected {expected!r}, got {data.get(field)!r}")
 
-    check("tier", entry["tier"])
-    check("voltageMultiplier", entry["voltageMultiplier"])
-    check("meltingPointK", celsius_to_kelvin(entry["meltingPointC"]))
-    check("boilingPointK", celsius_to_kelvin(entry["boilingPointC"]))
-    check("durability", entry["durability"])
-    check("usesBlastFurnace", bool(entry["usesBlastFurnace"]))
-    check("isRadioactive", bool(entry["isRadioactive"]))
-    check("radiationLevel", entry["radiationLevel"])
-    # hasOre (GTMaterialProperties.GTPP's former hasOre field) was dropped -- never read by reconstruction,
-    # informational only; ml-materials.json's gtpp blob no longer carries it.
-    check("chemicalFormula", entry["chemicalFormula"])
-    check("protons", entry["protons"])
-    check("neutrons", entry["neutrons"])
     check("state", entry["state"])
-    check("generatesFluid", gtpp_generates_fluid(entry))
-    check("generatesCells", gtpp_generates_cells(entry))
     generates_fluid = gtpp_generates_fluid(entry)
+    check("generatesFluid", generates_fluid)
+    check("generatesCells", gtpp_generates_cells(entry))
     check("fluidName", entry["fluids"]["fluid"] if generates_fluid else None)
     check("plasmaName", entry["fluids"]["plasma"] if generates_fluid else None)
-    expected_composition = [(ml_name(c["name"]), c["amount"]) for c in entry["composition"] if c.get("name")]
-    actual_composition = [(c["material"], c["amount"]) for c in data.get("composition", [])]
-    if expected_composition != actual_composition:
-        errors.append(
-            f"{name}: gtpp.composition expected {expected_composition!r}, got {actual_composition!r}")
 
 
-def check_gtpp_new_material(errors, entry, ml_by_key, used_fluid_names):
+def check_gtpp_new_material(errors, entry, ml_by_key, used_fluid_names, display_to_var, sink, atomics):
     """Full existence/tint/textureSet/shape-set/property check for a gtpp-only material (no gregtech/werkstoff
     counterpart) -- everything about its ml-materials.json entry is gtpp-sourced, so (unlike a merge) the
     shape set is expected to match `gtpp_expected_shapes` exactly, not merely be a superset of it."""
@@ -951,6 +1152,16 @@ def check_gtpp_new_material(errors, entry, ml_by_key, used_fluid_names):
         errors.append(f"{name}: gtpp shapes mismatch, missing={sorted(missing)}, extra={sorted(extra)}")
 
     check_gtpp_data(errors, name, entry, ml)
+
+    collect_collapsed_deviations(
+        sink.dev,
+        lambda message: errors.append(f"{name}: {message}"),
+        key,
+        None,
+        [],
+        entry,
+        mlv_from_dump(ml, atomics),
+        display_to_var)
 
     if gtpp_generates_fluid(entry):
         expected_refs = gtpp_own_fluid_refs(entry)
@@ -985,7 +1196,6 @@ def main():
     included_names = set(p["name"] for p in prefixes if is_included_shape(p, legacy_variant_prefixes))
     werkstoffs = load_werkstoffs()
     werkstoff_by_name, display_to_var = group_werkstoffs(werkstoffs)
-    legacy_constants = load_legacy_constant_names()
     werkstoff_referenced = compute_werkstoff_referenced_names(werkstoff_by_name, display_to_var)
     werkstoff_names = {name for name, info in werkstoff_by_name.items() if info["entries"]}
     ported = compute_ported(gt_materials, werkstoff_referenced, werkstoff_names)
@@ -997,6 +1207,9 @@ def main():
     gtpp_ported = compute_gtpp_ported(gtpp_materials, ported_name_set)
     gtpp_merges, gtpp_new, gtpp_false_merges = fold_gtpp_materials(gtpp_ported, gt_by_name, ported_name_set)
     gtpp_merges_by_name = {e["unlocalizedName"]: e for e in gtpp_merges}
+
+    sink = Deviations(load_allowlist())
+    atomics = MlAtomics(ml_by_key, load_element_table())
 
     errors = []
     if gtpp_false_merges:
@@ -1016,15 +1229,19 @@ def main():
             check_material(
                 material, ml, included_names, legacy_variants_by_material, used_fluid_names, fluid_textures,
                 legacy_block_materials, werkstoff_by_name.get(material["name"]), display_to_var,
-                legacy_constants, gtpp_merges_by_name.get(material["name"])))
+                gtpp_merges_by_name.get(material["name"]), sink, atomics))
 
     for entry in gtpp_new:
-        check_gtpp_new_material(errors, entry, ml_by_key, used_fluid_names)
+        check_gtpp_new_material(errors, entry, ml_by_key, used_fluid_names, display_to_var, sink, atomics)
 
     expected_keys = set(ml_name(m["name"]) for m in ported) | set(ml_name(e["unlocalizedName"]) for e in gtpp_new)
     extra = set(ml_by_key) - expected_keys
     if extra:
         errors.append(f"unexpected ml-materials.json entries not in the ported set: {sorted(extra)}")
+
+    errors.extend(sink.errors)
+    for key in sink.unused():
+        errors.append(f"allowlist entry never exercised: {key!r}")
 
     total = len(ported) + len(gtpp_new)
     if errors:
@@ -1033,7 +1250,7 @@ def main():
             print(" -", error)
         sys.exit(1)
 
-    print(f"check_parity.py: OK, {total} materials verified")
+    print(f"check_parity.py: OK, {total} materials verified, {len(sink.used)} allowlisted deviations")
 
 
 if __name__ == "__main__":
