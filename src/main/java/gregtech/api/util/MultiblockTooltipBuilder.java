@@ -1187,7 +1187,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSupportMultiAmp() {
-        iLines.add(EnumChatFormatting.GREEN + GTUtility.translate("GT5U.MBTT.SupportMultiAmp"));
+        iLines.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.MBTT.SupportMultiAmp"));
         return this;
     }
 
@@ -1198,7 +1198,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSupportLaser() {
-        iLines.add(EnumChatFormatting.GREEN + GTUtility.translate("GT5U.MBTT.SupportLaser"));
+        iLines.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.MBTT.SupportLaser"));
         return this;
     }
 
@@ -1209,7 +1209,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSupportAny() {
-        iLines.add(EnumChatFormatting.GREEN + GTUtility.translate("GT5U.MBTT.SupportAny"));
+        iLines.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.MBTT.SupportAny"));
         return this;
     }
 
@@ -1222,7 +1222,7 @@ public class MultiblockTooltipBuilder {
      */
     @Deprecated
     public MultiblockTooltipBuilder addMultiAmpHatchInfo() {
-        iLines.add(EnumChatFormatting.GREEN + GTUtility.translate("GT5U.MBTT.SupportMultiAmp"));
+        iLines.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.MBTT.SupportMultiAmp"));
         return this;
     }
 
@@ -1235,7 +1235,7 @@ public class MultiblockTooltipBuilder {
      */
     @Deprecated
     public MultiblockTooltipBuilder addTecTechHatchInfo() {
-        iLines.add(EnumChatFormatting.GREEN + GTUtility.translate("GT5U.MBTT.SupportAny"));
+        iLines.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.MBTT.SupportAny"));
         return this;
     }
 

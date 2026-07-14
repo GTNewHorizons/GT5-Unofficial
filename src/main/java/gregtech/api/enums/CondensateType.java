@@ -3,13 +3,13 @@ package gregtech.api.enums;
 import java.util.function.Supplier;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.fluid.IGTFluidBuilder;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.Lazy;
 import gregtech.common.fluid.GTFluid;
 import gregtech.common.items.GTItemCell;
@@ -167,7 +167,7 @@ public enum CondensateType {
     }
 
     public String getAbbrevName() {
-        return GTUtility.translate("abbrev.entangled_" + id);
+        return StatCollector.translateToLocal("abbrev.entangled_" + id);
     }
 
     public static void registerFluids() {
