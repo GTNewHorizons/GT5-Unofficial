@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -105,7 +106,7 @@ public class MTEBufferBaseGui<T extends MTEBuffer> extends MTETieredMachineBlock
                     GTGuiTextures.OVERLAY_BUTTON_EMIT_REDSTONE,
                     configureDynamicTooltip(
                         "GT5U.machines.emit_redstone_if_full.tooltip",
-                        () -> GTUtility.translate(machine.hasEmptySlots() ? "gui.yes" : "gui.no"),
+                        () -> StatCollector.translateToLocal(machine.hasEmptySlots() ? "gui.yes" : "gui.no"),
                         machine::getRedstoneOutput))));
 
         // invert redstone button

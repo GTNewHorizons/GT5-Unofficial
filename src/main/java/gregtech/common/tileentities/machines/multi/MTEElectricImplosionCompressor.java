@@ -139,7 +139,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addMaxTierSkips(1)
             .addSupportAny()
             .beginStructureBlock(7, 15, 7, true)
-            .addController("Front bottom center, 2nd layer")
+            .addController("Front center, 2nd layer")
             .addCasing("230-247", "Naquadah Reinforced Block", false)
             .addCasing("36", "Robust Tungstensteel Machine Casing", false)
             .addCasing("24", "Containment Block", true)

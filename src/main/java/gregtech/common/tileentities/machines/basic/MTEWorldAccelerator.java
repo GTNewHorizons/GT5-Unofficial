@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -145,8 +146,9 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         List<String> tInfoDisplay = new ArrayList<>();
 
         tInfoDisplay.add(
-            IGregTechDeviceInformation
-                .encode("GT5U.infodata.world_accelerator.mode", GTUtility.translate(mUnlocalizedModeStr[mMode])));
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.world_accelerator.mode",
+                StatCollector.translateToLocal(mUnlocalizedModeStr[mMode])));
         tInfoDisplay.add(
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.world_accelerator.speed",

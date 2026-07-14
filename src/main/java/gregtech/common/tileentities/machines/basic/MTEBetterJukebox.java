@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -44,7 +45,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTMusicSystem;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEBetterJukeboxGui;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
@@ -143,34 +143,36 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
 
     private static String[] buildDescription(int aTier) {
         ArrayList<String> strings = new ArrayList<>(4);
-        strings.add(GTUtility.translate("gt.blockmachines.basicmachine.betterjukebox.tooltip.better_than_vanilla"));
+        strings.add(
+            StatCollector.translateToLocal("gt.blockmachines.basicmachine.betterjukebox.tooltip.better_than_vanilla"));
         if (BalanceMath.headphoneLimit(aTier) != HeadphoneLimit.BLOCK_RANGE) {
             strings.add(
-                EnumChatFormatting.BLUE
-                    + GTUtility.translate("gt.blockmachines.basicmachine.betterjukebox.tooltip.hatsune_miku_power"));
+                EnumChatFormatting.BLUE + StatCollector
+                    .translateToLocal("gt.blockmachines.basicmachine.betterjukebox.tooltip.hatsune_miku_power"));
         }
         strings.add(
             String.format(
-                GTUtility.translate("gt.blockmachines.basicmachine.betterjukebox.tooltip.range"),
+                StatCollector.translateToLocal("gt.blockmachines.basicmachine.betterjukebox.tooltip.range"),
                 EnumChatFormatting.WHITE,
                 BalanceMath.volumeToAttenuationDistance(BalanceMath.listeningVolume(aTier))));
         strings.add(switch (BalanceMath.headphoneLimit(aTier)) {
             case BLOCK_RANGE -> String.format(
-                GTUtility.translate("gt.blockmachines.basicmachine.betterjukebox.tooltip.headphone_range_blocks"),
+                StatCollector
+                    .translateToLocal("gt.blockmachines.basicmachine.betterjukebox.tooltip.headphone_range_blocks"),
                 EnumChatFormatting.WHITE,
                 BalanceMath.headphoneBlockRange(aTier));
             case INSIDE_DIMENSION -> String.format(
-                GTUtility
-                    .translate("gt.blockmachines.basicmachine.betterjukebox.tooltip.headphone_range_same_dimension"),
+                StatCollector.translateToLocal(
+                    "gt.blockmachines.basicmachine.betterjukebox.tooltip.headphone_range_same_dimension"),
                 EnumChatFormatting.WHITE);
             case BETWEEN_DIMENSIONS -> String.format(
-                GTUtility
-                    .translate("gt.blockmachines.basicmachine.betterjukebox.tooltip.headphone_range_any_dimension"),
+                StatCollector.translateToLocal(
+                    "gt.blockmachines.basicmachine.betterjukebox.tooltip.headphone_range_any_dimension"),
                 EnumChatFormatting.WHITE);
         });
         strings.add(
             String.format(
-                GTUtility.translate("gt.blockmachines.basicmachine.betterjukebox.tooltip.cost"),
+                StatCollector.translateToLocal("gt.blockmachines.basicmachine.betterjukebox.tooltip.cost"),
                 EnumChatFormatting.WHITE,
                 BalanceMath.eutUsage(aTier)));
         strings.add(GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorEigenRaven));
@@ -476,20 +478,22 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
     @Override
     public String[] getInfoData() {
         return new String[] {
-            GTUtility.translate(
+            StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.juke_box.uuid",
-                (jukeboxUuid == UNSET_UUID) ? GTUtility.translate("GT5U.infodata.juke_box.uuid.unset") : jukeboxUuid),
-            GTUtility.translate("GT5U.infodata.juke_box.loop_mode", loopMode),
-            GTUtility.translate("GT5U.infodata.juke_box.shuffle_mode", shuffleMode),
-            GTUtility.translate("GT5U.infodata.juke_box.played", discProgressMs),
-            GTUtility.translate("GT5U.infodata.juke_box.current", discDurationMs),
-            GTUtility.translate(
+                (jukeboxUuid == UNSET_UUID) ? StatCollector.translateToLocal("GT5U.infodata.juke_box.uuid.unset")
+                    : jukeboxUuid),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.loop_mode", loopMode),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.shuffle_mode", shuffleMode),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.played", discProgressMs),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.current", discDurationMs),
+            StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.juke_box.playback_range",
                 BalanceMath.volumeToAttenuationDistance(playbackVolume)),
-            GTUtility
-                .translate("GT5U.infodata.juke_box.p2p_range", BalanceMath.volumeToAttenuationDistance(playbackVolume)),
-            GTUtility.translate("GT5U.infodata.juke_box.raw_playback_strength", playbackVolume),
-            GTUtility.translate("GT5U.infodata.juke_box.raw_p2p_strength", p2pVolume) };
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.juke_box.p2p_range",
+                BalanceMath.volumeToAttenuationDistance(playbackVolume)),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.raw_playback_strength", playbackVolume),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.raw_p2p_strength", p2pVolume) };
     }
 
     @Override
