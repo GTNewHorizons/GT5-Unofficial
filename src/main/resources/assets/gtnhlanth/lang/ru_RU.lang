@@ -10,6 +10,12 @@ gtnhlanth.tt.pc=§6Частично расходуется: §7Получает 
 
 gtnhlanth.tt.hintNumber=Блок подсказка с точкой %s
 
+# Digester
+gtnhlanth.tt.digester.machinetype=Дигестер
+gtnhlanth.tt.digester.info1=Принимает руду и жидкость, выводит воду
+gtnhlanth.tt.digester.structure.any_casing=Любой корпус из вольфрамовой стали
+gtnhlanth.tt.digester.structure.air=Внутри и над структурой
+
 GT5U.gui.text.shutdown_reason.gtnhlanth.nocoolant=В механизме отсутствует хладагент!
 GT5U.gui.text.shutdown_reason.gtnhlanth.inscoolant=Недостаточно хладагента в механизме!
 GT5U.gui.text.shutdown_reason.gtnhlanth.noaccel=Тип частиц не может быть ускорен!

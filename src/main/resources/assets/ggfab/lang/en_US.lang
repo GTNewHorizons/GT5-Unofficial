@@ -31,3 +31,32 @@ ggfab.tooltip.linked_input_bus.private.1=Changing channel while this is the last
 
 ggfab.gui.linked_input_bus.private=Private
 ggfab.gui.linked_input_bus.channel=Channel
+
+# Advanced Assembly Line tooltip
+ggfab.tt.advassline.machine_type=Assembly Line, AAL
+ggfab.tt.advassline.desc1=Assembly Line with item pipelining
+ggfab.tt.advassline.desc2=All fluids are consumed at the start of the recipe
+ggfab.tt.advassline.desc3=Recipe tier is limited by the lowest Energy Hatch tier
+ggfab.tt.advassline.desc4=Runs imperfect overclocks until Energy Hatch tier
+ggfab.tt.advassline.desc5=Additional overclocks are increasingly more expensive
+ggfab.tt.advassline.desc6=§bMultiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)§7
+ggfab.tt.advassline.desc7=§bPower usage = Multiplier × (Active Slices) × (Recipe EU/t)§7
+ggfab.tt.advassline.desc8=Overclocking assumes all recipe slices are active
+ggfab.tt.advassline.desc9=§lDoes not overclock beyond 1 tick
+ggfab.tt.advassline.desc10=Constructed identically to the Assembly Line
+ggfab.tt.advassline.structure.controller=First slice, 3rd layer
+ggfab.tt.advassline.structure.data_access_location=Any grate machine casing NOT on first slice
+ggfab.tt.advassline.structure.energy_location=Any layer 4 casing
+ggfab.tt.advassline.structure.layer1_side_casing=Any layer 1 side casing
+ggfab.tt.advassline.structure.input_bus_location=Bottom center of each slice
+ggfab.tt.advassline.structure.output_bus_location=Any layer 1 casing on last slice
+ggfab.tt.advassline.structure.casing.tiered_glass=Any Tiered Glass
+ggfab.tt.advassline.structure.casing.grate=Grate Machine Casing
+ggfab.tt.advassline.structure.casing.solid_steel=Solid Steel Machine Casing
+ggfab.tt.advassline.structure.casing.assembly_line=Assembly Line Casing
+ggfab.tt.advassline.structure.casing.assembler=Assembler Machine Casing
+ggfab.tt.advassline.structure.layer4=§fLayer 4: §7Empty, Solid Steel Machine Casing, Empty
+ggfab.tt.advassline.structure.layer3=§fLayer 3: §7Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing
+ggfab.tt.advassline.structure.layer2=§fLayer 2: §7Any Tiered Glass, Assembly Line Casing, Any Tiered Glass
+ggfab.tt.advassline.structure.layer1=§fLayer 1: §7Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing
+ggfab.tt.advassline.structure.footer=Up to 16 total slices, each one allows for 1 more item in recipes

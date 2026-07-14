@@ -109,6 +109,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /*
  * Dev note: 1. This multi will be an assline but with greater throughput. it will take one input every 2.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -315,64 +316,59 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Assembly Line, AAL")
-            .addInfo("Assembly Line with item pipelining")
-            .addInfo("All fluids are consumed at the start of the recipe")
-            .addInfo("Recipe tier is limited by the lowest Energy Hatch tier")
+        tt.addMachineType(StatCollector.translateToLocal("ggfab.tt.advassline.machine_type"))
+            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc1"))
+            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc2"))
+            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc3"))
             .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo("Runs imperfect overclocks until Energy Hatch tier")
-            .addInfo("Additional overclocks are increasingly more expensive")
-            .addInfo(
-                EnumChatFormatting.AQUA
-                    + "Multiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)"
-                    + EnumChatFormatting.GRAY)
-            .addInfo(
-                EnumChatFormatting.AQUA + "Power usage = Multiplier × (Active Slices) × (Recipe EU/t)"
-                    + EnumChatFormatting.GRAY)
-            .addInfo("Overclocking assumes all recipe slices are active")
-            .addInfo(EnumChatFormatting.BOLD + "Does not overclock beyond 1 tick")
+            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc4"))
+            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc5"))
+            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc6"))
+            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc7"))
+            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc8"))
+            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc9"))
             .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo("Constructed identically to the Assembly Line")
+            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc10"))
             .addSupportAny()
             .beginVariableStructureBlock(3, 3, 5, 16, 4, 4, false)
-            .addController("First slice, 3rd layer")
+            .addController(StatCollector.translateToLocal("ggfab.tt.advassline.structure.controller"))
             .addMiscHatch(
                 "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
-                "Any grate machine casing NOT on first slice",
+                StatCollector.translateToLocal("ggfab.tt.advassline.structure.data_access_location"),
                 3)
-            .addEnergyHatch("1+", "Any layer 4 casing", 4)
-            .addMaintenanceHatch("1", "Any layer 1 side casing", 1)
-            .addInputBus("5-16", "Bottom center of each slice", 2)
-            .addInputHatch("1-4", "Any layer 1 side casing", 1)
-            .addOutputBus("1", "Any layer 1 casing on last slice", 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("ggfab.tt.advassline.structure.energy_location"), 4)
+            .addMaintenanceHatch(
+                "1",
+                StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer1_side_casing"),
+                1)
+            .addInputBus("5-16", StatCollector.translateToLocal("ggfab.tt.advassline.structure.input_bus_location"), 2)
+            .addInputHatch("1-4", StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer1_side_casing"), 1)
+            .addOutputBus(
+                "1",
+                StatCollector.translateToLocal("ggfab.tt.advassline.structure.output_bus_location"),
+                1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("10", "Any Tiered Glass", false)
-            .addCasing("8", "Grate Machine Casing", false)
-            .addCasing("4-8", "Solid Steel Machine Casing", false)
-            .addCasing("5", "Assembly Line Casing", false)
-            .addCasing("5", "Assembler Machine Casing", false)
+            .addCasing("10", StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.tiered_glass"), false)
+            .addCasing("8", StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.grate"), false)
+            .addCasing(
+                "4-8",
+                StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.solid_steel"),
+                false)
+            .addCasing(
+                "5",
+                StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.assembly_line"),
+                false)
+            .addCasing("5", StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.assembler"), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 4: "
-                    + EnumChatFormatting.GRAY
-                    + "Empty, Solid Steel Machine Casing, Empty")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 3: "
-                    + EnumChatFormatting.GRAY
-                    + "Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 2: "
-                    + EnumChatFormatting.GRAY
-                    + "Any Tiered Glass, Assembly Line Casing, Any Tiered Glass")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 1: "
-                    + EnumChatFormatting.GRAY
-                    + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+            .addStructureInfo(StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer4"))
+            .addStructureInfo(StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer3"))
+            .addStructureInfo(StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer2"))
+            .addStructureInfo(StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer1"))
             .addStructureInfo("")
-            .addStructureFooter("Up to 16 total slices, each one allows for 1 more item in recipes")
+            .addStructureFooter(StatCollector.translateToLocal("ggfab.tt.advassline.structure.footer"))
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
