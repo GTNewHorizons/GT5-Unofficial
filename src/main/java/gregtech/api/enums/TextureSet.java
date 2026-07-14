@@ -158,7 +158,7 @@ public class TextureSet {
      */
     private void initStoneOreTextures() {
         if (mStoneOreTextures == null) {
-            mStoneOreTextures = new IIconContainer[2][StoneType.values().length];
+            mStoneOreTextures = new IIconContainer[2][StoneType.VALUES.length];
 
             addStoneOreTextures(MaterialIconRegistry.IconType.ORE, 0);
             addStoneOreTextures(MaterialIconRegistry.IconType.ORE_SMALL, 1);
@@ -181,7 +181,7 @@ public class TextureSet {
     private void addStoneOreTextures(MaterialIconRegistry.IconType type, int slot) {
         IIconContainer fallback = mTextures[type.ordinal()];
 
-        for (StoneType stoneType : StoneType.values()) {
+        for (StoneType stoneType : StoneType.VALUES) {
             mStoneOreTextures[slot][stoneType.ordinal()] = Textures.BlockIcons.customAlphaFallback(
                 Textures.TextureMaterialIconDirectory + "CUSTOM/"
                     + mStoneOreTextureSetName
