@@ -60,7 +60,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.EnderPearl, Materials2Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.EnderEye, OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.EnderEye, Materials2Shapes.dust, 1))
             .duration(5 * SECONDS)
             .eut(48)
             .addTo(mixerRecipes);
@@ -70,7 +70,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Electrum, 2L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Electrum, Materials2Shapes.dust, 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -80,7 +80,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dust, 2),
                 MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Invar, 3L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Invar, Materials2Shapes.dust, 3))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -90,7 +90,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.dust, 1))
             .circuit(5)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.TinAlloy, 2L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.TinAlloy, Materials2Shapes.dust, 2))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -102,8 +102,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Manganese, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Chrome, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(
-                GTOreDictUnificator.getDust(Materials.StainlessSteel, 9L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.dust, 9))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -114,7 +113,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Chrome, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Kanthal, 3L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Kanthal, Materials2Shapes.dust, 3))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -124,7 +123,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Zinc, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Brass, 4L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Brass, Materials2Shapes.dust, 4))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -134,7 +133,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Bronze, 4L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.dust, 4))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -144,7 +143,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.dust, 1))
             .circuit(3)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Cupronickel, 2L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Cupronickel, Materials2Shapes.dust, 2))
             .duration(10 * SECONDS)
             .eut(24)
             .addTo(mixerRecipes);
@@ -154,8 +153,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.dust, 4))
             .circuit(4)
-            .itemOutputs(
-                GTOreDictUnificator.getDust(Materials.SterlingSilver, 5L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.SterlingSilver, Materials2Shapes.dust, 5))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -165,7 +163,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Electrum, Materials2Shapes.dust, 2))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.BlackBronze, 5L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BlackBronze, Materials2Shapes.dust, 5))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -175,8 +173,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Bismuth, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Brass, Materials2Shapes.dust, 4))
             .circuit(1)
-            .itemOutputs(
-                GTOreDictUnificator.getDust(Materials.BismuthBronze, 5L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BismuthBronze, Materials2Shapes.dust, 5))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -187,7 +184,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.dust, 3))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.BlackSteel, 5L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BlackSteel, Materials2Shapes.dust, 5))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -199,7 +196,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.BlackSteel, Materials2Shapes.dust, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.dust, 2))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.RedSteel, 8L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.RedSteel, Materials2Shapes.dust, 8))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -211,7 +208,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.BlackSteel, Materials2Shapes.dust, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.dust, 2))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.BlueSteel, 8L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BlueSteel, Materials2Shapes.dust, 8))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -224,7 +221,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.dust, 5),
                 MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.dust, 15))
             .circuit(14)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.BlackSteel, 25L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BlackSteel, Materials2Shapes.dust, 25))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -238,7 +235,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.BlackSteel, Materials2Shapes.dust, 20),
                 MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.dust, 10))
             .circuit(15)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.RedSteel, 40L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.RedSteel, Materials2Shapes.dust, 40))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -253,9 +250,9 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.dust, 40))
             .circuit(16)
             .itemOutputs(
-                GTOreDictUnificator.getDust(Materials.BlueSteel, 64L * OrePrefixes.dust.getMaterialAmount()),
-                GTOreDictUnificator.getDust(Materials.BlueSteel, 64L * OrePrefixes.dust.getMaterialAmount()),
-                GTOreDictUnificator.getDust(Materials.BlueSteel, 32L * OrePrefixes.dust.getMaterialAmount()))
+                MaterialLibAPI.getStack(Materials2Materials.BlueSteel, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials2Materials.BlueSteel, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials2Materials.BlueSteel, Materials2Shapes.dust, 32))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -267,7 +264,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Molybdenum, Materials2Shapes.dust, 1))
             .circuit(2)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Ultimet, 9L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ultimet, Materials2Shapes.dust, 9))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -278,7 +275,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.CobaltBrass, 9L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.CobaltBrass, Materials2Shapes.dust, 9))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -322,9 +319,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Gallium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Phosphorus, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(
-                GTOreDictUnificator
-                    .getDust(Materials.IndiumGalliumPhosphide, 3L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.IndiumGalliumPhosphide, Materials2Shapes.dust, 3))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -333,7 +328,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Brick, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Clay, Materials2Shapes.dust, 1))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Fireclay, 2L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Fireclay, Materials2Shapes.dust, 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -343,7 +338,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.dust, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Chrome, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Nichrome, 5L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Nichrome, Materials2Shapes.dust, 5))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -353,7 +348,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.dust, 3))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Osmiridium, 4L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.dust, 4))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerRecipes);
@@ -363,8 +358,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Niobium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(
-                GTOreDictUnificator.getDust(Materials.NiobiumTitanium, 2L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.NiobiumTitanium, Materials2Shapes.dust, 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerRecipes);
@@ -374,8 +368,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Vanadium, Materials2Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Gallium, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(
-                GTOreDictUnificator.getDust(Materials.VanadiumGallium, 4L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.VanadiumGallium, Materials2Shapes.dust, 4))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerRecipes);
@@ -385,8 +378,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(
-                GTOreDictUnificator.getDust(Materials.TungstenCarbide, 2L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.TungstenCarbide, Materials2Shapes.dust, 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -396,8 +388,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(
-                GTOreDictUnificator.getDust(Materials.TungstenSteel, 2L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.dust, 2))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerRecipes);
@@ -408,7 +399,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Vanadium, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.TPV, 7L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.TPVAlloy, Materials2Shapes.dust, 7))
             .duration(8 * SECONDS + 15 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerRecipes);
@@ -420,7 +411,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Molybdenum, Materials2Shapes.dust, 2),
                 MaterialLibAPI.getStack(Materials2Materials.Vanadium, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.HSSG, 9L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.HSSG, Materials2Shapes.dust, 9))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerRecipes);
@@ -432,7 +423,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Manganese, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.HSSE, 9L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.HSSE, Materials2Shapes.dust, 9))
             .duration(35 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(mixerRecipes);
@@ -443,7 +434,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.dust, 2),
                 MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.dust, 1))
             .circuit(2)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.HSSS, 9L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.HSSS, Materials2Shapes.dust, 9))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(mixerRecipes);
@@ -454,8 +445,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Zinc, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dust, 4))
             .circuit(3)
-            .itemOutputs(
-                GTOreDictUnificator.getDust(Materials.FerriteMixture, 6L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.FerriteMixture, Materials2Shapes.dust, 6))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -464,8 +454,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Boron, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.dust, 7))
-            .itemOutputs(
-                GTOreDictUnificator.getDust(Materials.BorosilicateGlass, 8L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BorosilicateGlass, Materials2Shapes.dust, 8))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -602,7 +591,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.LightFuel, Materials2CellShapes.cell, 5),
                 MaterialLibAPI.getStack(Materials2Materials.HeavyFuel, Materials2CellShapes.cell, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Diesel, 6))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Fuel, Materials2CellShapes.cell, 6))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -612,7 +601,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.LightFuel, Materials2CellShapes.cell, 5),
                 Materials.Empty.getCells(1))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Diesel, 6))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Fuel, Materials2CellShapes.cell, 6))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.HeavyFuel, Materials2FluidShapes.fluidLiquid, 1_000))
             .duration(16 * TICKS)
@@ -624,7 +613,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.HeavyFuel, Materials2CellShapes.cell, 1),
                 Materials.Empty.getCells(5))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Diesel, 6))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Fuel, Materials2CellShapes.cell, 6))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.LightFuel, Materials2FluidShapes.fluidLiquid, 5_000))
             .duration(16 * TICKS)
@@ -637,7 +626,8 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(Materials.Empty.getCells(5))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.HeavyFuel, Materials2FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(Materials.Diesel.getFluid(6_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(Materials2Materials.Fuel, Materials2FluidShapes.fluidLiquid, 6_000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -648,7 +638,8 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(Materials.Empty.getCells(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.LightFuel, Materials2FluidShapes.fluidLiquid, 5_000))
-            .fluidOutputs(Materials.Diesel.getFluid(6_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(Materials2Materials.Fuel, Materials2FluidShapes.fluidLiquid, 6_000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -690,7 +681,8 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, 4))
             .circuit(1)
             .itemOutputs(ItemList.SFMixture.get(4))
-            .fluidInputs(Materials.GlueAdvanced.getFluid(200))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials2Materials.AdvancedGlue, Materials2FluidShapes.fluidLiquid, 200))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
@@ -702,7 +694,8 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, 4))
             .circuit(1)
             .itemOutputs(ItemList.SFMixture.get(8))
-            .fluidInputs(Materials.GlueAdvanced.getFluid(200))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials2Materials.AdvancedGlue, Materials2FluidShapes.fluidLiquid, 200))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
@@ -714,7 +707,8 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, 4))
             .circuit(1)
             .itemOutputs(ItemList.SFMixture.get(12))
-            .fluidInputs(Materials.GlueAdvanced.getFluid(200))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials2Materials.AdvancedGlue, Materials2FluidShapes.fluidLiquid, 200))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
@@ -851,7 +845,9 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.dust, 1))
             .circuit(1)
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
-            .fluidInputs(Materials.GasolinePremium.getFluid(1_600))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HighOctaneGasoline, Materials2FluidShapes.fluidLiquid, 1_600))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -863,7 +859,9 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.dust, 1))
             .circuit(1)
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
-            .fluidInputs(Materials.GasolinePremium.getFluid(1_200))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HighOctaneGasoline, Materials2FluidShapes.fluidLiquid, 1_200))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -875,7 +873,9 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.dust, 1))
             .circuit(1)
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
-            .fluidInputs(Materials.GasolinePremium.getFluid(800))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HighOctaneGasoline, Materials2FluidShapes.fluidLiquid, 800))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -1070,7 +1070,11 @@ public class MixerRecipes implements Runnable {
                         getModItem(Thaumcraft.ID, "ItemResource", 4))
                     .circuit(1)
                     .itemOutputs(ItemList.Block_MSSFUEL.get(1))
-                    .fluidInputs(Materials.GasolinePremium.getFluid(400))
+                    .fluidInputs(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.HighOctaneGasoline,
+                            Materials2FluidShapes.fluidLiquid,
+                            400))
                     .duration(7 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
                     .addTo(mixerRecipes);
@@ -1082,7 +1086,11 @@ public class MixerRecipes implements Runnable {
                         getModItem(Thaumcraft.ID, "ItemResource", 4))
                     .circuit(1)
                     .itemOutputs(ItemList.Block_MSSFUEL.get(1))
-                    .fluidInputs(Materials.GasolinePremium.getFluid(300))
+                    .fluidInputs(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.HighOctaneGasoline,
+                            Materials2FluidShapes.fluidLiquid,
+                            300))
                     .duration(6 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
                     .addTo(mixerRecipes);
@@ -1094,7 +1102,11 @@ public class MixerRecipes implements Runnable {
                         getModItem(Thaumcraft.ID, "ItemResource", 4))
                     .circuit(1)
                     .itemOutputs(ItemList.Block_MSSFUEL.get(1))
-                    .fluidInputs(Materials.GasolinePremium.getFluid(200))
+                    .fluidInputs(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.HighOctaneGasoline,
+                            Materials2FluidShapes.fluidLiquid,
+                            200))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
                     .addTo(mixerRecipes);
@@ -1135,7 +1147,9 @@ public class MixerRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 1), ItemList.SFMixture.get(6))
             .circuit(1)
             .itemOutputs(ItemList.Block_SSFUEL.get(1))
-            .fluidInputs(Materials.GasolinePremium.getFluid(400))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HighOctaneGasoline, Materials2FluidShapes.fluidLiquid, 400))
             .duration(7 * SECONDS)
             .eut(250)
             .addTo(mixerRecipes);
@@ -1144,7 +1158,9 @@ public class MixerRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 1), ItemList.SFMixture.get(4))
             .circuit(1)
             .itemOutputs(ItemList.Block_SSFUEL.get(1))
-            .fluidInputs(Materials.GasolinePremium.getFluid(300))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HighOctaneGasoline, Materials2FluidShapes.fluidLiquid, 300))
             .duration(6 * SECONDS)
             .eut(250)
             .addTo(mixerRecipes);
@@ -1153,7 +1169,9 @@ public class MixerRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Coal, 1), ItemList.SFMixture.get(2))
             .circuit(1)
             .itemOutputs(ItemList.Block_SSFUEL.get(1))
-            .fluidInputs(Materials.GasolinePremium.getFluid(200))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HighOctaneGasoline, Materials2FluidShapes.fluidLiquid, 200))
             .duration(5 * SECONDS)
             .eut(250)
             .addTo(mixerRecipes);
@@ -1426,7 +1444,9 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.PolyvinylAcetate, Materials2FluidShapes.fluidLiquid, 2_000))
-            .fluidOutputs(Materials.GlueAdvanced.getFluid(5_000))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.AdvancedGlue, Materials2FluidShapes.fluidLiquid, 5_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -1436,7 +1456,9 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(Materials.Empty.getCells(2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Acetone, Materials2FluidShapes.fluidLiquid, 3_000))
-            .fluidOutputs(Materials.GlueAdvanced.getFluid(5_000))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.AdvancedGlue, Materials2FluidShapes.fluidLiquid, 5_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -1447,7 +1469,9 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.PolyvinylAcetate, Materials2FluidShapes.fluidLiquid, 2_000))
-            .fluidOutputs(Materials.GlueAdvanced.getFluid(5_000))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.AdvancedGlue, Materials2FluidShapes.fluidLiquid, 5_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -1458,7 +1482,9 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.MethylAcetate, Materials2FluidShapes.fluidLiquid, 3_000))
-            .fluidOutputs(Materials.GlueAdvanced.getFluid(5_000))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.AdvancedGlue, Materials2FluidShapes.fluidLiquid, 5_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -1490,7 +1516,7 @@ public class MixerRecipes implements Runnable {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Diesel.getCells(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Fuel, Materials2CellShapes.cell, 1))
             .itemOutputs(Materials.Empty.getCells(1))
             .fluidInputs(
                 MaterialLibAPI
@@ -1519,7 +1545,9 @@ public class MixerRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Methanol, Materials2CellShapes.cell, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Butene, Materials2CellShapes.cell, 1))
-            .itemOutputs(Materials.MTBEMixture.getCells(1), Materials.Empty.getCells(1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.MTBEReactionMixtureButene, Materials2CellShapes.cell, 1),
+                Materials.Empty.getCells(1))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -1528,7 +1556,9 @@ public class MixerRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Methanol, Materials2CellShapes.cell, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Butane, Materials2CellShapes.cell, 1))
-            .itemOutputs(Materials.MTBEMixtureAlt.getCells(1), Materials.Empty.getCells(1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.MTBEReactionMixtureButane, Materials2CellShapes.cell, 1),
+                Materials.Empty.getCells(1))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -1539,20 +1569,24 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Gas, Materials2CellShapes.cell, 2),
                 MaterialLibAPI.getStack(Materials2Materials.Methanol, Materials2CellShapes.cell, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Acetone, Materials2CellShapes.cell, 1))
-            .itemOutputs(Materials.GasolineRaw.getCells(20))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.RawGasoline, Materials2CellShapes.cell, 20))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                Materials.GasolineRegular.getCells(20),
+                MaterialLibAPI.getStack(Materials2Materials.Gasoline, Materials2CellShapes.cell, 20),
                 MaterialLibAPI.getStack(Materials2Materials.Octane, Materials2CellShapes.cell, 2),
                 MaterialLibAPI.getStack(Materials2Materials.NitrousOxide, Materials2CellShapes.cell, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Toluene, Materials2CellShapes.cell, 1))
             .itemOutputs(Materials.Empty.getCells(29))
-            .fluidInputs(Materials.AntiKnock.getFluid(3_000))
-            .fluidOutputs(Materials.GasolinePremium.getFluid(32_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.EthylTertButylEther, Materials2FluidShapes.fluidLiquid, 3_000))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HighOctaneGasoline, Materials2FluidShapes.fluidLiquid, 32_000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerRecipes);
@@ -1575,7 +1609,9 @@ public class MixerRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.dust, 1))
                 .circuit(2)
                 .itemOutputs(ItemList.Block_SSFUEL.get(4))
-                .fluidInputs(Materials.GasolinePremium.getFluid(480))
+                .fluidInputs(
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.HighOctaneGasoline, Materials2FluidShapes.fluidLiquid, 480))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(mixerRecipes);
@@ -1584,7 +1620,9 @@ public class MixerRecipes implements Runnable {
                 .itemInputs(EnumCube.COKE_BLOCK.getItem(), ItemList.SFMixture.get(2))
                 .circuit(1)
                 .itemOutputs(ItemList.Block_SSFUEL.get(1))
-                .fluidInputs(Materials.GasolinePremium.getFluid(120))
+                .fluidInputs(
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.HighOctaneGasoline, Materials2FluidShapes.fluidLiquid, 120))
                 .duration(5 * SECONDS)
                 .eut(250)
                 .addTo(mixerRecipes);
@@ -1611,7 +1649,9 @@ public class MixerRecipes implements Runnable {
                     getModItem(Thaumcraft.ID, "ItemResource", 4))
                 .circuit(1)
                 .itemOutputs(ItemList.Block_MSSFUEL.get(1))
-                .fluidInputs(Materials.GasolinePremium.getFluid(120))
+                .fluidInputs(
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.HighOctaneGasoline, Materials2FluidShapes.fluidLiquid, 120))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(mixerRecipes);
@@ -1787,7 +1827,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Terbium, Materials2Shapes.dust, 7),
                 MaterialsElements.getInstance().TECHNETIUM.getDust(4),
                 MaterialLibAPI.getStack(Materials2Materials.Unstable, Materials2Shapes.dust, 4),
-                Materials.Flerovium.getDust(3),
+                MaterialLibAPI.getStack(Materials2Materials.FleroviumGT5U, Materials2Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials2Materials.InfinityCatalyst, Materials2Shapes.dust, 1))
             .circuit(6)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.dust, 27))
@@ -1818,7 +1858,11 @@ public class MixerRecipes implements Runnable {
                     MaterialLibAPI.getFluidStack(Materials2Materials.Iron, Materials2FluidShapes.fluidPlasma, 1_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Calcium, Materials2FluidShapes.fluidPlasma, 1_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Niobium, Materials2FluidShapes.fluidPlasma, 1_000))
-                .fluidOutputs(Materials.DTCC.getFluid(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.DimensionallyTranscendentCrudeCatalyst,
+                        Materials2FluidShapes.fluidLiquid,
+                        1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(mixerNonCellRecipes);
@@ -1826,12 +1870,19 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .circuit(10)
                 .fluidInputs(
-                    Materials.DTCC.getFluid(1_000),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.DimensionallyTranscendentCrudeCatalyst,
+                        Materials2FluidShapes.fluidLiquid,
+                        1_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidPlasma, 1_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Nickel, Materials2FluidShapes.fluidPlasma, 1_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Boron, Materials2FluidShapes.fluidPlasma, 1_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Sulfur, Materials2FluidShapes.fluidPlasma, 1_000))
-                .fluidOutputs(Materials.DTPC.getFluid(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.DimensionallyTranscendentProsaicCatalyst,
+                        Materials2FluidShapes.fluidLiquid,
+                        1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .addTo(mixerNonCellRecipes);
@@ -1839,14 +1890,21 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .circuit(11)
                 .fluidInputs(
-                    Materials.DTPC.getFluid(1_000),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.DimensionallyTranscendentProsaicCatalyst,
+                        Materials2FluidShapes.fluidLiquid,
+                        1_000),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, 1_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Zinc, Materials2FluidShapes.fluidPlasma, 1_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Silver, Materials2FluidShapes.fluidPlasma, 1_000),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Titanium, Materials2FluidShapes.fluidPlasma, 1_000))
-                .fluidOutputs(Materials.DTRC.getFluid(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.DimensionallyTranscendentResplendentCatalyst,
+                        Materials2FluidShapes.fluidLiquid,
+                        1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(mixerNonCellRecipes);
@@ -1854,13 +1912,20 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .circuit(12)
                 .fluidInputs(
-                    Materials.DTRC.getFluid(1_000),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.DimensionallyTranscendentResplendentCatalyst,
+                        Materials2FluidShapes.fluidLiquid,
+                        1_000),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Americium, Materials2FluidShapes.fluidPlasma, 1_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Bismuth, Materials2FluidShapes.fluidPlasma, 1_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidPlasma, 1_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Tin, Materials2FluidShapes.fluidPlasma, 1_000))
-                .fluidOutputs(Materials.DTEC.getFluid(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.DimensionallyTranscendentExoticCatalyst,
+                        Materials2FluidShapes.fluidLiquid,
+                        1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UEV)
                 .addTo(mixerNonCellRecipes);
@@ -1868,13 +1933,20 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .circuit(13)
                 .fluidInputs(
-                    Materials.DTEC.getFluid(1_000),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.DimensionallyTranscendentExoticCatalyst,
+                        Materials2FluidShapes.fluidLiquid,
+                        1_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Lead, Materials2FluidShapes.fluidPlasma, 1_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Thorium, Materials2FluidShapes.fluidPlasma, 1_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidPlasma, 100),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.RawStarMatter, Materials2FluidShapes.fluidLiquid, 25))
-                .fluidOutputs(Materials.DTSC.getFluid(1_000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.DimensionallyTranscendentStellarCatalyst,
+                        Materials2FluidShapes.fluidLiquid,
+                        1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .addTo(mixerNonCellRecipes);
@@ -1904,7 +1976,11 @@ public class MixerRecipes implements Runnable {
                 GGMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 13))
             .circuit(6)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.dust, 63))
-            .fluidInputs(Materials.DTR.getFluid(5_000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.DimensionallyTranscendentResidue,
+                    Materials2FluidShapes.fluidLiquid,
+                    5_000))
             .duration(15 * SECONDS)
             .eut((int) TierEU.RECIPE_UMV)
             .addTo(mixerRecipes);
