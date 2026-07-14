@@ -190,7 +190,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
                 for (int i = 0; i < inputFluids.length; i++) {
                     if (inputFluids[i] == null) continue;
                     copy[i] = inputFluids[i].copy();
-                    copy[i].amount = (int) (copy[i].amount / getRubberCostMult());
+                    copy[i].amount = (int) Math.round(copy[i].amount / getRubberCostMult());
                 }
 
                 return copy;
