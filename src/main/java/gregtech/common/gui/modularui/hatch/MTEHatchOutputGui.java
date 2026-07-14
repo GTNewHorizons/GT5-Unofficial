@@ -1,6 +1,7 @@
 package gregtech.common.gui.modularui.hatch;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
@@ -20,7 +21,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.modularui2.common.CommonWidgets;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.modularui2.widget.FluidLockSlotWidget;
 
@@ -85,7 +85,7 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
         // fluid name
         IKey lockKey = IKey.dynamic(() -> {
             FluidStack fluid = fluidLockSlotWidget.getFluid();
-            return fluid == null ? GTUtility.translate("GT5U.machines.hatch_output.lockfluid.empty")
+            return fluid == null ? StatCollector.translateToLocal("GT5U.machines.hatch_output.lockfluid.empty")
                 : fluid.getLocalizedName();
         });
         // noinspection unchecked,rawtypes
@@ -136,14 +136,15 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
 
                     if (mode == 8 || mode == 9) {
                         if (fluid == null) {
-                            args[0] = GTUtility.translate("GT5U.gui.text.hatch.output.filter.none.0");
-                            args[1] = GTUtility.translate("GT5U.gui.text.hatch.output.filter.none.1");
+                            args[0] = StatCollector.translateToLocal("GT5U.gui.text.hatch.output.filter.none.0");
+                            args[1] = StatCollector.translateToLocal("GT5U.gui.text.hatch.output.filter.none.1");
                         } else args[0] = fluid.getLocalizedName();
                     }
 
-                    t.addLine(GTUtility.translate(MTEHatchOutput.getLangKeyForMode(mode), args[0]));
+                    t.addLine(StatCollector.translateToLocalFormatted(MTEHatchOutput.getLangKeyForMode(mode), args[0]));
                     if (args[1] != null) t.addLine(args[1]);
-                    t.addLine(EnumChatFormatting.GRAY + GTUtility.translate("GT5U.gui.text.hatch.output.cycle"));
+                    t.addLine(
+                        EnumChatFormatting.GRAY + StatCollector.translateToLocal("GT5U.gui.text.hatch.output.cycle"));
                 })
                 .tooltipAutoUpdate(true));
     }

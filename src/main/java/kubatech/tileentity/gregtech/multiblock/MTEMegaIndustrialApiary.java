@@ -366,7 +366,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addInfo("  - Uses 1 amp " + voltageTooltipFormatted(5))
             .addInfo("  - Can overclock")
             .beginStructureBlock(15, 15, 17, true)
-            .addController("Front center")
+            .addController("Front center, 9th layer")
             .addCasing("455", "Dirt or Grass", false)
             .addCasing("190-200", "Bronze Plated Bricks", false)
             .addCasing("185", "Wood Plank", false)
