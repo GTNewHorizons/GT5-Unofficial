@@ -72,8 +72,8 @@ public class GTMaterialProperties {
         .of("gregtech", "generationFlags");
     public static final Property<MaterialRef> HANDLE_MATERIAL = Property.of("gregtech", "handleMaterial");
     /// Whether a chemical-reactor recipe assembles this material's dust from its [#COMPOSITION] (the werkstoff
-    /// facade's `GenerationFeatures#hasChemicalRecipes` marker). No canonical `Processing*` generator reads
-    /// this yet.
+    /// facade's `GenerationFeatures#hasChemicalRecipes` marker). Read by
+    /// `gregtech.loaders.materialrecipes.LoaderChemicalRecipes`.
     public static final Property<Boolean> HAS_CHEMICAL_RECIPE = Property.of("gregtech", "hasChemicalRecipe");
     public static final Property<Boolean> HAS_CENTRIFUGE_RECIPE = Property.of("gregtech", "hasCentrifugeRecipe");
     public static final Property<Boolean> HAS_CORRESPONDING_FLUID = Property.of("gregtech", "hasCorrespondingFluid");
@@ -100,8 +100,8 @@ public class GTMaterialProperties {
     public static final Property<Boolean> HAS_METAL_SOLIDIFIER_RECIPE = Property
         .of("gregtech", "hasMetalSolidifierRecipe");
     /// Whether the auto-generated Mixer recipe (from [#COMPOSITION] plus [#MIX_CIRCUIT]) should be built (the
-    /// werkstoff facade's `GenerationFeatures#hasMixerRecipes` marker). No canonical `Processing*` generator
-    /// reads this yet.
+    /// werkstoff facade's `GenerationFeatures#hasMixerRecipes` marker). Read by
+    /// `gregtech.loaders.materialrecipes.LoaderMixerRecipes`.
     public static final Property<Boolean> HAS_MIXER_RECIPE = Property.of("gregtech", "hasMixerRecipe");
     /// Whether the auto-generated Sifter recipe (crushed ore -> gem grades) should be built (the werkstoff
     /// facade's `GenerationFeatures#hasSifterRecipes` marker). Read by
