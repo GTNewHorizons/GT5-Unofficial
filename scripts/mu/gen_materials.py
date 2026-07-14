@@ -281,6 +281,17 @@ WERKSTOFF_FLAG_FIELDS = [
     ("formulaLocalized", "LOCALIZED_FORMULA"),
 ]
 
+# GTWerkstoffFlag members the U1 collapse moved onto canonical properties (see werkstoff_property_lines).
+MIGRATED_WERKSTOFF_FLAGS = {
+    "TOXIC", "RADIOACTIVE", "BLAST_FURNACE", "NO_AUTO_BLAST_FURNACE_RECIPES", "NO_AUTO_VACUUM_FREEZER_RECIPES"
+}
+
+# Werkstoffe whose legacy contents never became canonical COMPOSITION: for Salt/Spodumene/RockSalt the
+# gregtech-side COMPOSITION won the conflict (the werkstoff lists were self-referencing stubs),
+# SodiumNitrate's already matched, and Calcium/Tellurium carried only the Materials-extension stub
+# WerkstoffReconstruction synthesizes itself (its GT_ELEMENT_CONTENT_NAMES).
+WERKSTOFF_CONTENTS_NOT_MIGRATED = {"Salt", "Spodumene", "RockSalt", "SodiumNitrate", "Calcium", "Tellurium"}
+
 
 def load_werkstoffs():
     with open(WERKSTOFF_DUMP_PATH, encoding="utf-8") as f:
@@ -328,47 +339,6 @@ def werkstoff_ref_name(ref_name, kind, display_to_var):
     return ref_name
 
 
-LEGACY_BRIDGE_SOURCES = [
-    "src/main/java/gregtech/loaders/materials/MaterialsLegacyBridge.java",
-    "src/main/java/gregtech/loaders/materials/LegacyMarkerMaterials.java",
-]
-
-
-def load_legacy_constant_names():
-    """The legacy declaration-time material mNames (bridge stub literals + marker setName literals) -- the
-    set of names a declaration-time `Materials.X` reference could have carried (byproducts dump mNames, which
-    differ from field names, e.g. `Materials.Aluminiumoxide` has mName "Alumina"). Needed to recover a byproduct
-    reference's kind: the werkstoff dump records byproducts as bare names, and a name like "Calcium" is both a
-    werkstoff and a `Materials` constant."""
-    names = set()
-    for rel in LEGACY_BRIDGE_SOURCES:
-        path = REPO_ROOT / rel
-        if not path.exists():
-            continue
-        text = path.read_text(encoding="utf-8")
-        names.update(re.findall(r'LegacyMaterials\.stub\("([^"]+)"\)', text))
-        names.update(re.findall(r'setName\("([^"]+)"\)', text))
-    return names
-
-
-def werkstoff_byproduct_kind(entry, byproduct_name, display_to_var, legacy_constants):
-    """Recovers a dumped byproduct reference's kind. A self reference (padding) is always the werkstoff;
-    otherwise a name that is a `Materials` constant is a `Materials` reference, and a werkstoff-only display
-    name is a werkstoff one. The sole ambiguous name in the dump (Calcium, from Hedenbergite/CalciumFluoride)
-    was verified against the declaration source to be a `Materials` reference, which the constant-set
-    precedence below resolves correctly; a new ambiguous werkstoff-kind byproduct would need the dump to
-    record kinds the way `contents` already does."""
-    if byproduct_name == entry["name"]:
-        return "werkstoff"
-    if byproduct_name in legacy_constants:
-        return "material"
-    if byproduct_name in display_to_var:
-        return "werkstoff"
-    raise SystemExit(
-        f"gen_materials.py: byproduct {byproduct_name!r} of {entry['varName']!r} is neither a legacy "
-        f"Materials constant nor a werkstoff display name")
-
-
 def compute_werkstoff_referenced_names(werkstoff_by_name, display_to_var):
     referenced = set()
     for info in werkstoff_by_name.values():
@@ -403,16 +373,21 @@ def werkstoff_flag_names(entries):
     return flags
 
 
-def werkstoff_property_lines(info, ml_names, display_to_var, legacy_constants, canonical_melting_point):
-    """The decomposed `GTMaterialProperties.WERKSTOFF_*` lines for a werkstoff fold, in the record-field order
-    `GTMaterialProperties` declares them (see each key's javadoc there for its exact elision rule) -- replaces
-    the retired composite `WERKSTOFF`/`WerkstoffData` property. `neutrons`/`enchantmentLevel`/
-    `additionalOredict` are never emitted (always `0`/constant `3`/empty across every werkstoff-backed
-    material). Scalars come from the first (lowest-id) entry; flags/prefixes/subTags union across a same-name
-    fold; contents/oreByProducts/formula come from the first entry carrying one. `canonical_melting_point` is
-    the gregtech/legacy-side `MELTING_POINT` already set on this material's declaration (`None` when absent) --
-    the only WERKSTOFF_* field with a canonical fallback; every other override field is a real "compute
-    instead" sentinel with none (see `GTMaterialProperties#WERKSTOFF_DURABILITY_OVERRIDE`'s javadoc)."""
+def werkstoff_property_lines(info, ml_names, display_to_var, canonical_melting_point):
+    """The werkstoff-side property lines for a werkstoff fold: the surviving decomposed
+    `GTMaterialProperties.WERKSTOFF_*` keys (see each key's javadoc there for its exact elision rule) plus
+    the canonical properties the U1 collapse landed the former werkstoff scalars/flags on.
+    `neutrons`/`enchantmentLevel`/`additionalOredict` are never emitted (always `0`/constant `3`/empty across
+    every werkstoff-backed material). Scalars come from the first (lowest-id) entry; flags/prefixes/subTags
+    union across a same-name fold; contents/formula come from the first entry carrying one; oreByProducts are
+    not emitted at all (the canonical `ORE_BYPRODUCTS` from the gregtech dump is the single source, matching
+    the werkstoff list everywhere but the 22 divergences the collapse table flags). The canonical emits below
+    reproduce the no-conflict base case only: where a canonical value already existed and diverged, the
+    committed `Materials2Materials` carries the per-material winner from the collapse decision table. The
+    tool-stat overrides (`durability`/`speed`/`quality`/`durabilityModifier`) emit nothing -- each equaled
+    the canonical `DURABILITY`/`TOOL_SPEED`/`TOOL_QUALITY` value, and `WerkstoffReconstruction`'s closed
+    override sets carry the which-werkstoffe-override knowledge instead. `canonical_melting_point` is the
+    gregtech/legacy-side `MELTING_POINT` already set on this material's declaration (`None` when absent)."""
     entries = info["entries"]
     if not entries:
         return []
@@ -428,54 +403,54 @@ def werkstoff_property_lines(info, ml_names, display_to_var, legacy_constants, c
     emit("WERKSTOFF_TYPE", java_string_literal(first["type"]))
     emit("WERKSTOFF_POOL", java_string_literal(first["pool"]))
 
-    if canonical_melting_point is None or canonical_melting_point != first["meltingPoint"]:
-        emit("WERKSTOFF_MELTING_POINT", str(first["meltingPoint"]))
+    if canonical_melting_point is None:
+        emit("MELTING_POINT", str(first["meltingPoint"]))
     if first["boilingPoint"] != 0:
-        emit("WERKSTOFF_BOILING_POINT", str(first["boilingPoint"]))
+        emit("BOILING_POINT", str(first["boilingPoint"]))
     if first["protons"] != 0:
         emit("WERKSTOFF_PROTONS", f"{first['protons']}L")
     if first["mass"] != 0:
         emit("WERKSTOFF_MASS", f"{first['mass']}L")
     if first["meltingVoltage"] != 120:
-        emit("WERKSTOFF_MELTING_VOLTAGE", str(first["meltingVoltage"]))
-    if first["durability"] != 0:
-        emit("WERKSTOFF_DURABILITY_OVERRIDE", str(first["durability"]))
-    if first["speed"] != 0.0:
-        emit("WERKSTOFF_SPEED_OVERRIDE", java_float_literal(first["speed"]))
-    if first["quality"] != 0:
-        emit("WERKSTOFF_QUALITY_OVERRIDE", str(first["quality"]))
-    if first["durabilityModifier"] != 1.0:
-        emit("WERKSTOFF_DURABILITY_MODIFIER", java_float_literal(first["durabilityModifier"]))
+        emit("MELTING_VOLTAGE", str(first["meltingVoltage"]))
     if first["ebfGasTimeMultiplier"] != -1.0:
-        emit("WERKSTOFF_EBF_GAS_TIME_MULTIPLIER", java_double_literal(first["ebfGasTimeMultiplier"]))
+        emit("EBF_GAS_TIME_MULTIPLIER", java_double_literal(first["ebfGasTimeMultiplier"]))
     if first["ebfGasAmountMultiplier"] != 1.0:
-        emit("WERKSTOFF_EBF_GAS_AMOUNT_MULTIPLIER", java_double_literal(first["ebfGasAmountMultiplier"]))
+        emit("EBF_GAS_AMOUNT_MULTIPLIER", java_double_literal(first["ebfGasAmountMultiplier"]))
     if first["mixCircuit"] != -1:
-        emit("WERKSTOFF_MIX_CIRCUIT", str(first["mixCircuit"]))
+        emit("MIX_CIRCUIT", str(first["mixCircuit"]))
 
+    # The hazard and auto-recipe-gating members landed on canonical booleans (BLAST_FURNACE needs no emit:
+    # every carrier's declaration already sets BLAST_REQUIRED); the rest stay GTWerkstoffFlag members
+    # pending the bartworks recipe-gen decision.
     flags = werkstoff_flag_names(entries)
-    if flags:
-        emit("WERKSTOFF_FLAGS", "EnumSet.of(" + ", ".join("GTWerkstoffFlag." + f for f in flags) + ")")
+    if "TOXIC" in flags:
+        emit("TOXIC", "true")
+    if "RADIOACTIVE" in flags:
+        emit("IS_RADIOACTIVE", "true")
+    if "NO_AUTO_BLAST_FURNACE_RECIPES" in flags:
+        emit("AUTO_BLAST_FURNACE_RECIPES", "false")
+    if "NO_AUTO_VACUUM_FREEZER_RECIPES" in flags:
+        emit("AUTO_VACUUM_FREEZER_RECIPES", "false")
+    kept_flags = [f for f in flags if f not in MIGRATED_WERKSTOFF_FLAGS]
+    if kept_flags:
+        emit("WERKSTOFF_FLAGS", "EnumSet.of(" + ", ".join("GTWerkstoffFlag." + f for f in kept_flags) + ")")
     if info["prefixes"]:
         emit("WERKSTOFF_PREFIXES", "List.of(" + ", ".join(java_string_literal(p) for p in info["prefixes"]) + ")")
 
     def ref_stack(name, kind, amount):
         mapped = ml_names[werkstoff_ref_name(name, kind, display_to_var)]
-        is_werkstoff = "true" if kind == "werkstoff" else "false"
-        return f"new WerkstoffRefStack(new MaterialRef({java_string_literal(mapped)}), {amount}L, {is_werkstoff})"
+        return f"new MaterialRefStack(new MaterialRef({java_string_literal(mapped)}), {amount}L)"
 
+    # Contents land on canonical COMPOSITION (the registry-selector bit dies -- `WerkstoffReconstruction`
+    # re-derives each reference's registry from its name). The materials in
+    # WERKSTOFF_CONTENTS_NOT_MIGRATED emit nothing: either the gregtech-side COMPOSITION won the conflict
+    # or the legacy contents were a Materials-extension stub the reconstruction synthesizes itself.
     contents_entry = next((e for e in entries if e["contents"]), None)
-    if contents_entry:
+    if contents_entry and first["varName"] not in WERKSTOFF_CONTENTS_NOT_MIGRATED:
         content_stacks = ", ".join(
             ref_stack(c["name"], c["kind"], c["amount"]) for c in contents_entry["contents"])
-        emit("WERKSTOFF_CONTENTS", f"List.of({content_stacks})")
-
-    byproducts_entry = next((e for e in entries if e["oreByProducts"]), None)
-    if byproducts_entry:
-        byproduct_refs = ", ".join(
-            ref_stack(b, werkstoff_byproduct_kind(byproducts_entry, b, display_to_var, legacy_constants), 1)
-            for b in byproducts_entry["oreByProducts"])
-        emit("WERKSTOFF_ORE_BYPRODUCTS", f"List.of({byproduct_refs})")
+        emit("COMPOSITION", f"List.of({content_stacks})")
 
     sub_tags = []
     for entry in entries:
@@ -483,7 +458,7 @@ def werkstoff_property_lines(info, ml_names, display_to_var, legacy_constants, c
             if tag not in sub_tags:
                 sub_tags.append(tag)
     if sub_tags:
-        emit("WERKSTOFF_SUB_TAGS", "List.of(" + ", ".join(java_string_literal(t) for t in sub_tags) + ")")
+        emit("SUB_TAGS", "List.of(" + ", ".join(java_string_literal(t) for t in sub_tags) + ")")
 
     formula = next((e["formula"] for e in entries if e["formula"]), "")
     if formula:
@@ -535,33 +510,6 @@ GTPP_MARKER_NAMES = ("Brine", "Magic", "SaltWater", "SodiumChloride", "SoulSand"
 def load_gtpp_materials():
     with open(GTPP_DUMP_PATH, encoding="utf-8") as f:
         return json.load(f)
-
-
-BRIDGE_NAMES_RE = re.compile(r'"(\w+)"')
-BRIDGE_OVERRIDE_RE = re.compile(r'Map\.entry\("((?:[^"\\]|\\.)*)", "((?:[^"\\]|\\.)*)"\)')
-
-
-def load_bridge_built_fields():
-    """The `Materials2Materials` field names `MaterialsLegacyBridge#load` rebuilds a legacy `Materials` field
-    from (as opposed to the `LegacyMaterials#stub`/`LegacyMarkerMaterials` fallbacks `loadStubs` uses when
-    MaterialLib never registered) -- used to gate `GTMaterialProperties#GTPP_COMPOSITION` (see its javadoc):
-    backfilling `COMPOSITION` on one of these materials would change what `LegacyMaterials#build`'s
-    `addMaterial` feeds the legacy `Materials` facade. `MaterialsLegacyBridge` is hand-maintained and loop-
-    driven (see its class javadoc) rather than listing `Materials2Materials` fields textually, so its committed
-    `BRIDGED_FIELD_NAMES`/`ML_NAME_TO_FIELD_OVERRIDES` (legacy `Materials` field name space) are read back and
-    converted to `Materials2Materials` field name space with the same `field_name` sanitizing that produced it.
-    Empty before `MaterialsLegacyBridge.java` exists at all (a fresh checkout before the first dump-driven
-    run)."""
-    if not LEGACY_BRIDGE_OUTPUT.exists():
-        return set()
-    text = LEGACY_BRIDGE_OUTPUT.read_text(encoding="utf-8")
-    overrides_section = text.split("ML_NAME_TO_FIELD_OVERRIDES = Map.ofEntries(", 1)[1].split(");", 1)[0]
-    ml_name_by_legacy_field = {
-        legacy_field: ml for ml, legacy_field in BRIDGE_OVERRIDE_RE.findall(overrides_section)
-    }
-    names_section = text.split("BRIDGED_FIELD_NAMES = {", 1)[1].split("};", 1)[0]
-    legacy_fields = BRIDGE_NAMES_RE.findall(names_section)
-    return {field_name(ml_name_by_legacy_field.get(field, field)) for field in legacy_fields}
 
 
 def gtpp_has_fluid(entry):
@@ -677,55 +625,44 @@ def gtpp_generates_cells(entry):
     return any(p["prefix"] in ("cell", "cellPlasma") for p in entry["generatedParts"])
 
 
-def gtpp_scalar_property_lines(entry, gt_entry, ml_names, bridge_built_names):
-    """The decomposed `GTMaterialProperties.GTPP_*` lines for a gtpp material, in the order
-    `GTMaterialProperties` declares them (see each key's javadoc there for its exact elision rule) -- replaces
-    the retired composite `GTPP`/`GTppData` property. `hasOre` is never emitted (shape membership -- see
-    `gtpp_ore_shape_lines` -- already carries that signal) and `fluidName` is never emitted (reconstruction
-    derives it from `GTMaterialProperties#LEGACY_FLUIDS`'s molten/fluid/gas slots, gated on
+def gtpp_scalar_property_lines(entry, gt_entry, ml_names):
+    """The gtpp-side property lines for a gtpp material: the surviving decomposed
+    `GTMaterialProperties.GTPP_*` keys (see each key's javadoc there for its exact elision rule) plus the
+    canonical properties the U1 collapse landed the former gtpp scalars on. `hasOre` is never emitted (shape
+    membership -- see `gtpp_ore_shape_lines` -- already carries that signal) and `fluidName` is never emitted
+    (reconstruction derives it from `GTMaterialProperties#LEGACY_FLUIDS`'s molten/fluid/gas slots, gated on
     `GTPP_GENERATES_FLUID`, rather than pinning a redundant name). `gt_entry` is the gregtech/werkstoff dump
     entry this gtpp material is same-name merging onto (`None` for a gtpp-owned "new" declaration, whose own
-    canonical scalars are set by nothing but this call)."""
+    canonical scalars are set by nothing but this call). The canonical emits reproduce the no-conflict base
+    case only: a merge whose gregtech-side canonical value already exists keeps it (melting point,
+    durability, blast requirement), with the per-material exceptions the collapse decision table resolved
+    (e.g. Force adopting gtpp's blast requirement) committed directly in `Materials2Materials`."""
     lines = []
 
     def emit(prop, value_text):
         lines.append(f".setProperty(GTMaterialProperties.{prop}, {value_text})")
 
     if entry["tier"] != 0:
-        emit("GTPP_TIER", str(entry["tier"]))
+        emit("TIER", str(entry["tier"]))
     if entry["voltageMultiplier"] != 16:
-        emit("GTPP_VOLTAGE_MULTIPLIER", f"{entry['voltageMultiplier']}L")
+        emit("VOLTAGE_MULTIPLIER", f"{entry['voltageMultiplier']}L")
 
     # For a "new" declaration (gt_entry is None) the caller already mirrors meltingPointC/usesBlastFurnace
-    # verbatim into the canonical MELTING_POINT/BLAST_REQUIRED (build_gtpp_new_block), so those two always
-    # equal their GTPP_* counterpart and never need the override key; a merge's own gt/werkstoff-sourced
-    # canonical value, by contrast, may differ or be absent.
-    gtpp_melting_point = celsius_to_kelvin(entry["meltingPointC"])
-    if gt_entry is not None:
-        canon_melting_point = gt_entry["meltingPoint"] if gt_entry["meltingPoint"] != 0 else None
-        if canon_melting_point is None or canon_melting_point != gtpp_melting_point:
-            emit("GTPP_MELTING_POINT_K", str(gtpp_melting_point))
+    # verbatim into the canonical MELTING_POINT/BLAST_REQUIRED (build_gtpp_new_block); a merge keeps the
+    # gregtech-side canonical melting point (the +273-double-conversion divergences collapsed to it).
 
     # GregTech's own dump never carries a boiling point (see GTMaterialProperties#BOILING_POINT), so gtpp's
-    # own value is always the sole source -- backfilled unconditionally as the canonical property, not a
-    # GTPP_* key.
+    # own value is always the sole source.
     emit("BOILING_POINT", str(celsius_to_kelvin(entry["boilingPointC"])))
 
-    gtpp_durability = entry["durability"]
     canon_durability = gt_entry["toolDurability"] if gt_entry and gt_entry["toolDurability"] != 0 else None
-    if canon_durability is None or canon_durability != gtpp_durability:
-        emit("GTPP_DURABILITY", str(gtpp_durability))
-
-    if gt_entry is not None:
-        gtpp_blast = bool(entry["usesBlastFurnace"])
-        canon_blast = bool(gt_entry["blastRequired"])
-        if gtpp_blast != canon_blast:
-            emit("GTPP_USES_BLAST_FURNACE", str(gtpp_blast).lower())
+    if canon_durability is None:
+        emit("DURABILITY", str(entry["durability"]))
 
     if entry["isRadioactive"]:
-        emit("GTPP_IS_RADIOACTIVE", "true")
+        emit("IS_RADIOACTIVE", "true")
     if entry["radiationLevel"] != 0:
-        emit("GTPP_RADIATION_LEVEL", str(entry["radiationLevel"]))
+        emit("RADIATION_LEVEL", str(entry["radiationLevel"]))
     if entry["chemicalFormula"]:
         emit("GTPP_CHEMICAL_FORMULA", java_string_literal(entry["chemicalFormula"]))
 
@@ -749,18 +686,14 @@ def gtpp_scalar_property_lines(entry, gt_entry, ml_names, bridge_built_names):
                 "material": c["name"], "amount": c["amount"]
             } for c in entry["composition"]], ml_names)
 
-    gtpp_comp = gtpp_composition_set(entry)
-    if gt_entry is None:
-        if entry["composition"]:
-            emit("COMPOSITION", composition_literal())
-    elif not gt_entry["composition"]:
-        if gtpp_comp:
-            if entry["unlocalizedName"] in bridge_built_names:
-                emit("GTPP_COMPOSITION", composition_literal())
-            else:
-                emit("COMPOSITION", composition_literal())
-    elif gtpp_comp != gt_composition_set(gt_entry):
-        emit("GTPP_COMPOSITION", composition_literal())
+    # A single canonical COMPOSITION carries the make-up: gtpp's own list lands there whenever the
+    # gregtech side carried none (a populated gregtech-side list wins the shared key --
+    # fold_gtpp_materials already rejected genuine two-sided disagreements as false merges), and a
+    # material whose components did not all port emits nothing rather than pinning an empty list.
+    if entry["composition"] and (gt_entry is None or not gt_entry["composition"]):
+        literal = composition_literal()
+        if literal != "List.of()":
+            emit("COMPOSITION", literal)
 
     return lines
 
@@ -931,7 +864,7 @@ def fold_gtpp_materials(gtpp_ported, gt_by_name, ported_name_set):
     return merges, new, false_merges
 
 
-def build_gtpp_merge_block(entry, ml_names, gt_by_name, used_fluid_names, fluid_textures, bridge_built_names):
+def build_gtpp_merge_block(entry, ml_names, gt_by_name, used_fluid_names, fluid_textures):
     name_literal = java_string_literal(ml_names[entry["unlocalizedName"]])
     shape_refs, _deferred = gtpp_shape_lines(entry)
     lines = [f"        MaterialLibAPI.editMaterial(\"gregtech\", {name_literal})"]
@@ -940,14 +873,14 @@ def build_gtpp_merge_block(entry, ml_names, gt_by_name, used_fluid_names, fluid_
     gt_entry = gt_by_name.get(entry["unlocalizedName"])
     lines.extend(gtpp_fluid_and_cell_shape_lines(entry, gt_entry, used_fluid_names, fluid_textures))
     lines.extend(gtpp_ore_shape_lines(entry))
-    scalar_lines = gtpp_scalar_property_lines(entry, gt_entry, ml_names, bridge_built_names)
+    scalar_lines = gtpp_scalar_property_lines(entry, gt_entry, ml_names)
     scalar_lines[-1] += ";"
     lines.extend(f"            {line}" for line in scalar_lines)
     return lines
 
 
 def build_gtpp_new_block(entry, field, ml_names, included_names, family_shape_members, used_fluid_names,
-                          fluid_textures, bridge_built_names):
+                          fluid_textures):
     name = entry["unlocalizedName"]
     name_literal = java_string_literal(ml_names[name])
     texture_set_literal = java_string_literal(entry["textureSet"])
@@ -996,7 +929,7 @@ def build_gtpp_new_block(entry, field, ml_names, included_names, family_shape_me
     lines.append(f"            .setProperty(GTMaterialProperties.MELTING_POINT, {celsius_to_kelvin(entry['meltingPointC'])})")
     if entry["usesBlastFurnace"]:
         lines.append("            .setProperty(GTMaterialProperties.BLAST_REQUIRED, true)")
-    for line in gtpp_scalar_property_lines(entry, None, ml_names, bridge_built_names):
+    for line in gtpp_scalar_property_lines(entry, None, ml_names):
         lines.append(f"            {line}")
     lines.append("            .build();")
 
@@ -1789,7 +1722,7 @@ GTPP_CELL_TINT_MATERIALS = {"Rhugnor"}
 
 def build_material_block(
         material, ml_names, field_names, included_names, family_shape_members,
-        legacy_variants_by_material, fluid_textures, werkstoff_info, display_to_var, legacy_constants,
+        legacy_variants_by_material, fluid_textures, werkstoff_info, display_to_var,
         shape_lines, gtpp_entry, gtpp_lines):
     field = field_names[material["name"]]
     name_literal = java_string_literal(ml_names[material["name"]])
@@ -1826,7 +1759,7 @@ def build_material_block(
     if werkstoff_info:
         canonical_melting_point = material["meltingPoint"] if material["meltingPoint"] != 0 else None
         for werkstoff_line in werkstoff_property_lines(
-                werkstoff_info, ml_names, display_to_var, legacy_constants, canonical_melting_point):
+                werkstoff_info, ml_names, display_to_var, canonical_melting_point):
             lines.append("            " + werkstoff_line)
 
     lines.append("            .build();")
@@ -1882,7 +1815,6 @@ def write_unified_materials_file(field_lines, material_blocks):
     lines.append("import gregtech.api.material.GTWerkstoffFlag;")
     lines.append("import gregtech.api.material.MaterialRef;")
     lines.append("import gregtech.api.material.MaterialRefStack;")
-    lines.append("import gregtech.api.material.WerkstoffRefStack;")
     lines.append("")
     lines.append(MATERIALS_FILE_HEADER)
     lines.append(
@@ -2046,7 +1978,6 @@ def main():
                 family_shape_members[family].append(prefix["name"])
 
     werkstoff_by_name, display_to_var = group_werkstoffs(werkstoffs)
-    legacy_constants = load_legacy_constant_names()
     validate_werkstoff_prefixes(werkstoff_by_name, included_names)
     werkstoff_referenced = compute_werkstoff_referenced_names(werkstoff_by_name, display_to_var)
     werkstoff_names = {name for name, info in werkstoff_by_name.items() if info["entries"]}
@@ -2108,21 +2039,19 @@ def main():
         gtpp_ml_names[raw] = mn
         gtpp_field_names[raw] = fn
 
-    bridge_built_field_names = load_bridge_built_fields()
-    bridge_built_names = {name for name, field in field_names.items() if field in bridge_built_field_names}
 
     gtpp_merge_entry_by_name = {e["unlocalizedName"]: e for e in gtpp_merges}
     gtpp_merge_lines_by_name = {}
     for entry in gtpp_merges:
         gtpp_merge_lines_by_name[entry["unlocalizedName"]] = build_gtpp_merge_block(
-            entry, gtpp_ml_names, gt_by_name, used_fluid_names, fluid_textures, bridge_built_names)
+            entry, gtpp_ml_names, gt_by_name, used_fluid_names, fluid_textures)
     gtpp_new_blocks = []
     for entry in gtpp_new:
         field = gtpp_field_names[entry["unlocalizedName"]]
         gtpp_new_blocks.append(
             build_gtpp_new_block(
                 entry, field, gtpp_ml_names, included_names, family_shape_members, used_fluid_names,
-                fluid_textures, bridge_built_names))
+                fluid_textures))
     write_gtpp_merge_report(gtpp_merges, gtpp_new, gtpp_false_merges, gtpp_skipped, gt_by_name)
 
     # File layout order: every gt/werkstoff material immediately followed by its own gtpp same-name fold (if
@@ -2134,7 +2063,7 @@ def main():
         name = material["name"]
         block = build_material_block(
             material, ml_names, field_names, included_names, family_shape_members, legacy_variants_by_material,
-            fluid_textures, werkstoff_by_name.get(name), display_to_var, legacy_constants,
+            fluid_textures, werkstoff_by_name.get(name), display_to_var,
             gt_shape_lines_by_name[name], gtpp_merge_entry_by_name.get(name),
             gtpp_merge_lines_by_name.get(name))
         merge_lines = gtpp_merge_lines_by_name.get(name)

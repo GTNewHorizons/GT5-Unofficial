@@ -23,7 +23,6 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTWerkstoffFlag;
 import gregtech.api.material.MaterialRefStack;
-import gregtech.api.material.WerkstoffRefStack;
 import gregtech.loaders.materials.LegacyMaterials;
 
 /// Rebuilds every legacy `Werkstoff` from MaterialLib data (the werkstoff counterpart of
@@ -35,9 +34,10 @@ import gregtech.loaders.materials.LegacyMaterials;
 /// Reconstruction inputs are the decomposed `GTMaterialProperties#WERKSTOFF_*` properties (bartworks-side
 /// data, pool scalars preserved even where the gregtech dump won the shared keys -- see each property's
 /// javadoc) plus the shared `ARGB`/`LOCAL_NAME`/`TEXTURE_SET`/`PROCESSING_MATERIAL_TIER_EU` values.
-/// Contents/byproduct references resolve against the registry the legacy declaration used (see
-/// `WerkstoffRefStack#werkstoff`); a werkstoff-kind byproduct naming this material itself resolves to the
-/// instance under construction (byproduct self-padding). `bridgeMaterial` stays null here --
+/// Contents/byproduct references come from the canonical [GTMaterialProperties#COMPOSITION]/
+/// [GTMaterialProperties#ORE_BYPRODUCTS] and resolve against the registry the legacy declaration used
+/// (see [#resolveContentRef]/[#resolveByproductRef]); a byproduct naming this material itself resolves to
+/// the instance under construction (byproduct self-padding). `bridgeMaterial` stays null here --
 /// `BridgeMaterialsLoader` assigns it at bartworks' init exactly as before.
 ///
 /// [#applyGenerationBits] must run after `Werkstoff.GenerationFeatures.initPrefixLogic()` (see
@@ -102,6 +102,11 @@ public final class WerkstoffReconstruction {
     /// contents empty rather than adopting the composition, which would alter the contents-derived legacy
     /// behaviors (tool-stat contents count, contents sub tags).
     private static final Set<String> CONTENTS_EXCLUDED_WERKSTOFFE = Set.of("Alumina", "ThoriumTetrafluoride");
+
+    /// Byproduct references (`"owner:reference"`) whose legacy declaration named the `Materials` constant
+    /// even though a same-name werkstoff exists; every other werkstoff-named byproduct reference resolved
+    /// to the werkstoff registry.
+    private static final Set<String> MATERIALS_BYPRODUCT_REFS = Set.of("Salt:RockSalt", "GreenFuchsite:Alumina");
 
     private static Map<Integer, Werkstoff> byId;
 
@@ -279,8 +284,17 @@ public final class WerkstoffReconstruction {
 
         // Byproducts may self-reference (padding), so they resolve after construction.
         List<ISubTagContainer> byProducts = werkstoff.getRawOreByProducts();
-        for (WerkstoffRefStack stack : orEmptyList(ml.getProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS))) {
-            byProducts.add(resolveRef(stack, ml.getName(), werkstoff, built, byName, pending, inProgress));
+        for (MaterialRefStack stack : orEmptyList(ml.getProperty(GTMaterialProperties.ORE_BYPRODUCTS))) {
+            byProducts.add(
+                resolveByproductRef(
+                    stack.material()
+                        .name(),
+                    ml.getName(),
+                    werkstoff,
+                    built,
+                    byName,
+                    pending,
+                    inProgress));
         }
 
         byName.put(ml.getName(), werkstoff);
@@ -322,9 +336,9 @@ public final class WerkstoffReconstruction {
         return value != null ? value : fallback;
     }
 
-    /// Resolves a [GTMaterialProperties#COMPOSITION] reference for a werkstoff's contents: a werkstoff-backed
-    /// name resolves to its `Werkstoff` (building it on demand), everything else to the legacy `Materials`
-    /// constant -- except [#GT_ELEMENT_CONTENT_NAMES], whose legacy contents registry was always `Materials`.
+    /// Resolves a canonical material reference (contents or byproducts): a werkstoff-backed name resolves to
+    /// its `Werkstoff` (building it on demand), everything else to the legacy `Materials` constant -- except
+    /// [#GT_ELEMENT_CONTENT_NAMES], whose legacy reference registry was always `Materials`.
     private static ISubTagContainer resolveContentRef(String name, String ownName, Map<Integer, Werkstoff> built,
         Map<String, Werkstoff> byName, Map<String, Material> pending, LinkedHashSet<String> inProgress) {
         if (GT_ELEMENT_CONTENT_NAMES.contains(name)) {
@@ -341,28 +355,16 @@ public final class WerkstoffReconstruction {
         return requireMaterials(ownName, name);
     }
 
-    private static ISubTagContainer resolveRef(WerkstoffRefStack stack, String ownName, Werkstoff self,
+    /// Resolves a [GTMaterialProperties#ORE_BYPRODUCTS] reference for a werkstoff's byproduct list: a
+    /// self-reference resolves to the werkstoff itself (the legacy constructors' self-padding convention),
+    /// a [#MATERIALS_BYPRODUCT_REFS] pin to the `Materials` constant, everything else per
+    /// [#resolveContentRef].
+    private static ISubTagContainer resolveByproductRef(String name, String ownName, Werkstoff self,
         Map<Integer, Werkstoff> built, Map<String, Werkstoff> byName, Map<String, Material> pending,
         LinkedHashSet<String> inProgress) {
-        String name = stack.material()
-            .name();
-        if (stack.werkstoff()) {
-            if (name.equals(ownName)) {
-                if (self == null) throw new IllegalStateException(
-                    "Werkstoff " + ownName + " has a self-referencing contents entry, which no declaration produced");
-                return self;
-            }
-            Werkstoff resolved = byName.get(name);
-            if (resolved == null) {
-                Material dependency = pending.get(name);
-                if (dependency == null)
-                    throw new IllegalStateException("Werkstoff " + ownName + " references unknown werkstoff " + name);
-                build(dependency, built, byName, pending, inProgress);
-                resolved = byName.get(name);
-            }
-            return resolved;
-        }
-        return requireMaterials(ownName, name);
+        if (name.equals(ownName)) return self;
+        if (MATERIALS_BYPRODUCT_REFS.contains(ownName + ":" + name)) return requireMaterials(ownName, name);
+        return resolveContentRef(name, ownName, built, byName, pending, inProgress);
     }
 
     private static Materials requireMaterials(String ownName, String name) {

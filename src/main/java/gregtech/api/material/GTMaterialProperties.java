@@ -186,14 +186,6 @@ public class GTMaterialProperties {
     /// The legacy `Werkstoff.Stats.mass`, elided when `0` (the legacy constructor computes it from contents
     /// instead when its own field is `0`, the same compute-sentinel semantics as [#WERKSTOFF_PROTONS]).
     public static final Property<Long> WERKSTOFF_MASS = Property.of("gregtech", "werkstoffMass");
-    /// The werkstoff byproduct list exactly as the `Werkstoff` constructor left it (three self entries --
-    /// werkstoff-kind references to this material's own name -- when the declaration passed no list, else the
-    /// declared list verbatim); amounts are always 1. Elided when empty, though in practice always present
-    /// (self-padding). Kept independent of [#ORE_BYPRODUCTS] -- structurally distinct in 22 materials
-    /// (self-padding vs a genuinely declared list) despite no genuine value conflict -- because reconstruction's
-    /// padding logic depends on the exact structure, not just the resolved set.
-    public static final Property<List<WerkstoffRefStack>> WERKSTOFF_ORE_BYPRODUCTS = Property
-        .of("gregtech", "werkstoffOreByProducts");
     /// The declaring pool identifier (`WerkstoffLoader`/`GGMaterial`/`WerkstoffMaterialPool`/
     /// `BotWerkstoffMaterialPool`/...), consulted by reconstruction's `ownerOf` for the legacy
     /// `Werkstoff#getOwner` attribution.
