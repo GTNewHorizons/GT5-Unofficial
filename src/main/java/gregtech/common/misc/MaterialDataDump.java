@@ -810,9 +810,7 @@ public final class MaterialDataDump {
         String state = material.getProperty(GTMaterialProperties.GTPP_STATE);
         if (state == null) return null;
 
-        Integer gtppMelting = material.getProperty(GTMaterialProperties.GTPP_MELTING_POINT_K);
-        Integer meltingPointK = gtppMelting != null ? gtppMelting
-            : material.getProperty(GTMaterialProperties.MELTING_POINT);
+        Integer meltingPointK = material.getProperty(GTMaterialProperties.MELTING_POINT);
 
         Integer gtppDurability = material.getProperty(GTMaterialProperties.GTPP_DURABILITY);
         Integer durability = gtppDurability != null ? gtppDurability
@@ -869,16 +867,12 @@ public final class MaterialDataDump {
         List<Integer> ids = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
         if (ids == null) return null;
 
-        Integer werkstoffMeltingPoint = material.getProperty(GTMaterialProperties.WERKSTOFF_MELTING_POINT);
-        Integer meltingPoint = werkstoffMeltingPoint != null ? werkstoffMeltingPoint
-            : material.getProperty(GTMaterialProperties.MELTING_POINT);
-
         Map<String, Object> json = new LinkedHashMap<>();
         json.put("ids", ids);
         json.put("type", material.getProperty(GTMaterialProperties.WERKSTOFF_TYPE));
         json.put("pool", material.getProperty(GTMaterialProperties.WERKSTOFF_POOL));
-        json.put("meltingPoint", meltingPoint);
-        json.put("boilingPoint", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_BOILING_POINT), 0));
+        json.put("meltingPoint", material.getProperty(GTMaterialProperties.MELTING_POINT));
+        json.put("boilingPoint", orDefault(material.getProperty(GTMaterialProperties.BOILING_POINT), 0));
         json.put("protons", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_PROTONS), 0L));
         json.put("mass", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_MASS), 0L));
         json.put(

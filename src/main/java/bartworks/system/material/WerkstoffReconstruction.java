@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -45,6 +46,13 @@ import gregtech.loaders.materials.LegacyMaterials;
 /// explicitly disabling every bitmask-covered prefix the ground truth omits, so `hasItemType` keeps returning
 /// exactly the dumped set.
 public final class WerkstoffReconstruction {
+
+    /// Werkstoffe whose legacy `Stats#boilingPoint` the U1 melting/boiling collapse repointed at
+    /// [GTMaterialProperties#BOILING_POINT] (previously a `WERKSTOFF_BOILING_POINT` override, elsewhere
+    /// unset and defaulting to `0`) -- every other werkstoff-backed material keeps that `0` default even when
+    /// it separately carries a [GTMaterialProperties#BOILING_POINT] of its own (real gregtech/gtpp fluid data
+    /// unrelated to the legacy `Werkstoff` declaration, which never read it).
+    private static final Set<String> COLLAPSED_BOILING_POINT_WERKSTOFFE = Set.of("Calcium", "Iodine", "LiquidHelium");
 
     private static Map<Integer, Werkstoff> byId;
 
@@ -120,12 +128,12 @@ public final class WerkstoffReconstruction {
         int argb = ml.getProperty(GTMaterialProperties.ARGB);
         short[] rgba = { (short) (argb >> 16 & 0xFF), (short) (argb >> 8 & 0xFF), (short) (argb & 0xFF), 0 };
 
-        Integer werkstoffMeltingPoint = ml.getProperty(GTMaterialProperties.WERKSTOFF_MELTING_POINT);
-        int meltingPoint = werkstoffMeltingPoint != null ? werkstoffMeltingPoint
-            : ml.getProperty(GTMaterialProperties.MELTING_POINT);
-
-        Werkstoff.Stats stats = new Werkstoff.Stats().setMeltingPoint(meltingPoint)
-            .setBoilingPoint(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_BOILING_POINT), 0))
+        Werkstoff.Stats stats = new Werkstoff.Stats()
+            .setMeltingPoint(ml.getProperty(GTMaterialProperties.MELTING_POINT))
+            .setBoilingPoint(
+                COLLAPSED_BOILING_POINT_WERKSTOFFE.contains(ml.getName())
+                    ? ml.getProperty(GTMaterialProperties.BOILING_POINT)
+                    : 0)
             .setProtons(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_PROTONS), 0L))
             .setNeutrons(0)
             .setMass(orDefault(ml.getProperty(GTMaterialProperties.WERKSTOFF_MASS), 0L))

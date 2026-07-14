@@ -305,8 +305,7 @@ public final class MaterialReconstruction {
     /// properties, resolving each QUIRK property's fallback to its canonical counterpart (see each property's
     /// javadoc) and each elided-default property back to the default it was elided for.
     private static Material.GtppScalars gtppScalars(com.ruling_0.materiallib.api.Material ml) {
-        Integer gtppMelting = ml.getProperty(GTMaterialProperties.GTPP_MELTING_POINT_K);
-        int meltingPointK = gtppMelting != null ? gtppMelting : ml.getProperty(GTMaterialProperties.MELTING_POINT);
+        int meltingPointK = ml.getProperty(GTMaterialProperties.MELTING_POINT);
         int boilingPointK = ml.getProperty(GTMaterialProperties.BOILING_POINT);
 
         Integer gtppDurability = ml.getProperty(GTMaterialProperties.GTPP_DURABILITY);

@@ -106,11 +106,6 @@ public class GTMaterialProperties {
     public static final Property<Boolean> GTPP_GENERATES_FLUID = Property.of("gregtech", "gtppGeneratesFluid");
     /// The legacy `Material.isRadioactive`, elided when `false`.
     public static final Property<Boolean> GTPP_IS_RADIOACTIVE = Property.of("gregtech", "gtppIsRadioactive");
-    /// The legacy `Material.meltingPointC`, converted to Kelvin with the same formula `Material`'s own
-    /// `MathUtils#celsiusToKelvin` used (`round(celsius + 273.15)`) -- present only when it differs from
-    /// [#MELTING_POINT] or [#MELTING_POINT] is absent; reconstruction reads this, falling back to
-    /// [#MELTING_POINT].
-    public static final Property<Integer> GTPP_MELTING_POINT_K = Property.of("gregtech", "gtppMeltingPointK");
     /// The legacy `Material.vNeutrons`; several `RecipeGen*` consumers key recipe stats (duration, EU cost) off
     /// this, so it is pinned like every other gtpp scalar rather than recomputed or unified with
     /// [#WERKSTOFF_PROTONS] or any canonical proton/neutron count on the same material (werkstoff-backed
@@ -203,7 +198,6 @@ public class GTMaterialProperties {
     /// do *not* fall back to their [#DURABILITY]/[#TOOL_SPEED]/[#TOOL_QUALITY] counterparts the way the
     /// analogous `GTPP_*` scalars fall back to their canonical counterparts -- see each property's javadoc for
     /// why a canonical fallback would be wrong here (a real "compute instead" sentinel, not "value absent").
-    public static final Property<Integer> WERKSTOFF_BOILING_POINT = Property.of("gregtech", "werkstoffBoilingPoint");
     /// The werkstoff `CONTENTS` list (chemical make-up), distinct from [#COMPOSITION] so a merge never alters
     /// the legacy `Materials` reconstruction. Each entry records which legacy registry it referenced -- see
     /// [WerkstoffRefStack]. Elided when empty.
@@ -246,12 +240,6 @@ public class GTMaterialProperties {
     /// The legacy `Werkstoff.Stats.mass`, elided when `0` (the legacy constructor computes it from contents
     /// instead when its own field is `0`, the same compute-sentinel semantics as [#WERKSTOFF_PROTONS]).
     public static final Property<Long> WERKSTOFF_MASS = Property.of("gregtech", "werkstoffMass");
-    /// The legacy `Werkstoff.Stats.meltingPoint`, present only when it differs from [#MELTING_POINT] or
-    /// [#MELTING_POINT] is absent (4 materials -- AquaRegia, RockSalt, Salt, Spodumene -- carry no canonical
-    /// melting point at all); reconstruction reads this, falling back to [#MELTING_POINT]. Diverges from
-    /// [#MELTING_POINT] for 2 materials (Alumina 1123K vs 2054K, Tellurium 1123K vs 722K); equal for the
-    /// remaining 386.
-    public static final Property<Integer> WERKSTOFF_MELTING_POINT = Property.of("gregtech", "werkstoffMeltingPoint");
     /// The legacy `Werkstoff.Stats.meltingVoltage`, elided when `120` (the value 386 of 392 carry).
     public static final Property<Integer> WERKSTOFF_MELTING_VOLTAGE = Property
         .of("gregtech", "werkstoffMeltingVoltage");
