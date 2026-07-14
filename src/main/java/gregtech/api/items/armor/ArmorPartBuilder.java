@@ -10,7 +10,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.ArmorType;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
-import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("unchecked")
 public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
@@ -68,7 +67,7 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
     }
 
     public String getLocalizedName() {
-        return GTUtility.translate("GT5U.armor.part.name." + id);
+        return StatCollector.translateToLocal("GT5U.armor.part.name." + id);
     }
 
     public boolean hasTooltip() {
@@ -76,7 +75,7 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
     }
 
     public String getTooltip() {
-        return GTUtility.translate("GT5U.armor.part.tooltip." + id);
+        return StatCollector.translateToLocal("GT5U.armor.part.tooltip." + id);
     }
 
     public Collection<IArmorBehavior> getProvidedBehaviors() {
