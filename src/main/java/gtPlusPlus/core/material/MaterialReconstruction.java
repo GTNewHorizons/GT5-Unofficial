@@ -15,6 +15,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.material.FluidNames;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
@@ -276,8 +277,24 @@ public final class MaterialReconstruction {
         inProgress.remove(name);
 
         Materials gtEquivalent = Material.tryFindGregtechMaterialEquivalent(material);
+        if (gtEquivalent == null || gtEquivalent == Materials._NULL) {
+            // tryFindGregtechMaterialEquivalent's third fallback (space -> "") is a no-op on a name it has
+            // already rewritten space -> "_" one line above, so it can never actually reach the bare
+            // concatenated form -- Materials#getMaterialsMap can still hold that exact key regardless (built
+            // via LegacyMaterials#build's own mName choice, independent of this display-name heuristic), e.g.
+            // "PotassiumNitrate" (this reconstruction's own name) already keys `Materials.PotassiumNitrade`.
+            gtEquivalent = Materials.get(name);
+        }
         if (gtEquivalent != null && gtEquivalent != Materials._NULL) {
             MaterialUtils.seedGeneratedMaterial(gtEquivalent, material);
+        } else if (!ml.hasShape(Materials2OreShapes.ore)) {
+            // An ore-shaped material is excluded from the bridge: gregtech.common.ores.GTPPOreAdapter only
+            // drives its own gtpp-flavored ore drops/harvest level while MU#materialOf stays null for this ml
+            // material, deferring to gregtech.common.ores.GTOreAdapter once a bridge exists -- but that
+            // adapter's harvestLevel/shapeDrops read the bridge's mMetaItemSubID/mOreByProducts directly,
+            // neither of which this bridge (or any MaterialBuilder-built id-less Materials) populates, so the
+            // handoff would read a mChangeHarvestLevels-indexed array at mMetaItemSubID's -1 default.
+            GtppBridgeMaterialsLoader.register(ml, name, localName, textureSet, rgba, scalars, material);
         }
 
         return material;
