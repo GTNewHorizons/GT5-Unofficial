@@ -813,18 +813,15 @@ public final class MaterialDataDump {
 
     /// Serializes the gtpp-specific data still pinned in `GTPP_*` properties -- null when `material` carries
     /// none (see [GTMaterialProperties#GTPP_STATE]). Scalars the U1 collapse moved onto canonical properties
-    /// (tier, voltage multiplier, melting/boiling point, durability, blast-furnace use, radioactivity) now
-    /// appear only at the top level of the ML material JSON; `check_parity.py` reads them there.
+    /// (tier, voltage multiplier, melting/boiling point, durability, blast-furnace use, radioactivity, and
+    /// composition) now appear only at the top level of the ML material JSON; `check_parity.py` reads them
+    /// there.
     private static Map<String, Object> dumpMlGtpp(com.ruling_0.materiallib.api.Material material) {
         String state = material.getProperty(GTMaterialProperties.GTPP_STATE);
         if (state == null) return null;
 
         Long protons = material.getProperty(GTMaterialProperties.GTPP_PROTONS);
         Long neutrons = material.getProperty(GTMaterialProperties.GTPP_NEUTRONS);
-
-        List<MaterialRefStack> gtppComposition = material.getProperty(GTMaterialProperties.GTPP_COMPOSITION);
-        List<MaterialRefStack> composition = gtppComposition != null ? gtppComposition
-            : material.getProperty(GTMaterialProperties.COMPOSITION);
 
         FluidNames legacyFluids = material.getProperty(GTMaterialProperties.LEGACY_FLUIDS);
         boolean generatesFluid = Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.GTPP_GENERATES_FLUID));
@@ -838,7 +835,6 @@ public final class MaterialDataDump {
         json.put(
             "generatesCells",
             Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.GTPP_GENERATES_CELLS)));
-        json.put("composition", dumpMlMaterialRefStacks(composition));
         json.put("fluidName", generatesFluid && legacyFluids != null ? legacyFluids.legacyGtppFluidName() : null);
         json.put("plasmaName", generatesFluid ? material.getProperty(GTMaterialProperties.GTPP_PLASMA_NAME) : null);
         return json;
@@ -847,8 +843,8 @@ public final class MaterialDataDump {
     /// Serializes the werkstoff-specific data still pinned in `WERKSTOFF_*` properties -- null when
     /// `material` carries none (see [GTMaterialProperties#WERKSTOFF_IDS]). Scalars the U1 collapse moved onto
     /// canonical properties (melting/boiling point, melting voltage, tool-stat overrides, EBF gas multipliers,
-    /// mix circuit, sub tags, and the toxic/radioactive/blast-furnace/auto-recipe flag members) now appear
-    /// only at the top level of the ML material JSON; `check_parity.py` reads them there.
+    /// mix circuit, sub tags, contents, and the toxic/radioactive/blast-furnace/auto-recipe flag members) now
+    /// appear only at the top level of the ML material JSON; `check_parity.py` reads them there.
     private static Map<String, Object> dumpMlWerkstoff(com.ruling_0.materiallib.api.Material material) {
         List<Integer> ids = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
         if (ids == null) return null;
@@ -865,7 +861,6 @@ public final class MaterialDataDump {
         Collections.sort(flags);
         json.put("flags", flags);
         json.put("prefixes", orEmpty(material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES)));
-        json.put("contents", dumpMlWerkstoffRefStacks(material.getProperty(GTMaterialProperties.WERKSTOFF_CONTENTS)));
         json.put(
             "oreByProducts",
             dumpMlWerkstoffRefStacks(material.getProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS)));

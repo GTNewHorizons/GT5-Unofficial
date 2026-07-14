@@ -2239,7 +2239,6 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 40L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "nugget", "plate", "foil", "stickLong", "stick", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Calcium"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Calcium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Calcium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Calcium"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("AnaerobeSmelting"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Ca")
@@ -3327,7 +3326,6 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PROTONS, 52L)
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 127L)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Tellurium"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Tellurium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Tellurium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Tellurium"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Te")
             .build();
@@ -6941,8 +6939,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 34L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 42L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.Brass = MaterialLibAPI.newMaterial("gregtech", "Brass", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFFFB400)
             .addToFamily(Materials2Families.all)
@@ -7017,8 +7014,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 26L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 30L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.Electrum = MaterialLibAPI.newMaterial("gregtech", "Electrum", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFFFFF64)
             .addToFamily(Materials2Families.all)
@@ -7096,8 +7092,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 26L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 30L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.Steel = MaterialLibAPI.newMaterial("gregtech", "Steel", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF808080)
             .addToFamily(Materials2Families.all)
@@ -7141,8 +7136,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 26L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 30L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.StainlessSteel = MaterialLibAPI.newMaterial("gregtech", "StainlessSteel", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC8C8DC)
             .addToFamily(Materials2Families.all)
@@ -7180,8 +7174,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 25L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 29L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.PigIron = MaterialLibAPI.newMaterial("gregtech", "PigIron", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFC8B4B4)
             .addToFamily(Materials2Families.all)
@@ -7341,8 +7334,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 27L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 29L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.Kanthal = MaterialLibAPI.newMaterial("gregtech", "Kanthal", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFC2D2DF)
             .addToFamily(Materials2Families.all)
@@ -7383,8 +7375,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 21L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 23L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.Magnalium = MaterialLibAPI.newMaterial("gregtech", "Magnalium", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFC8BEFF)
             .addToFamily(Materials2Families.all)
@@ -7505,8 +7496,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 50L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 69L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.Osmiridium = MaterialLibAPI.newMaterial("gregtech", "Osmiridium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF6464FF)
             .addToFamily(Materials2Families.all)
@@ -7547,8 +7537,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 76L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 114L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.Sunnarium = MaterialLibAPI.newMaterial("gregtech", "Sunnarium", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFFFFF00)
             .addToFamily(Materials2Families.all)
@@ -7993,8 +7982,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 26L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 30L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.Mithril = MaterialLibAPI.newMaterial("gregtech", "Mithril", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFFFFFD2)
             .addToFamily(Materials2Families.all)
@@ -8104,8 +8092,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 29L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 35L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.DamascusSteel = MaterialLibAPI.newMaterial("gregtech", "DamascusSteel", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF6E6E6E)
             .addToFamily(Materials2Families.all)
@@ -9301,8 +9288,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 40L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 57L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.VanadiumSteel = MaterialLibAPI.newMaterial("gregtech", "VanadiumSteel", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFC0C0C0)
             .addToFamily(Materials2Families.all)
@@ -10774,8 +10760,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 8L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 8L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.Alduorite = MaterialLibAPI.newMaterial("gregtech", "Alduorite", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF9FB4B4)
             .addToFamily(Materials2Families.all)
@@ -11531,8 +11516,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA, "PO₄")
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 26L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 32L)
-            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID");
         Materials2Materials.Force = MaterialLibAPI.newMaterial("gregtech", "Force", TextureSet.of("gregtech", "DIAMOND"))
             .setTint(0xFFFFFF00)
             .addToFamily(Materials2Families.all)
@@ -11943,8 +11927,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA, "BeK₄N₅Ma₆")
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 11L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 12L)
-            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID");
         Materials2Materials.EnderEye = MaterialLibAPI.newMaterial("gregtech", "EnderEye", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA0FAE6)
             .addToFamily(Materials2Families.all)
@@ -15145,7 +15128,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 9L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 9L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Water"), 3L), new MaterialRefStack(new MaterialRef("SodiumChloride"), 1L)));
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Water"), 3L), new MaterialRefStack(new MaterialRef("SodiumChloride"), 1L)));
         Materials2Materials.IronIIIChloride = MaterialLibAPI.newMaterial("gregtech", "IronIIIChloride", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF16150E)
             .addToFamily(Materials2Families.all)
@@ -15263,8 +15246,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA, "Al₂O₃")
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 10L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 10L)
-            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID");
         Materials2Materials.AluminiumHydroxide = MaterialLibAPI.newMaterial("gregtech", "AluminiumHydroxide", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFFEBEBFF)
             .addToFamily(Materials2Families.all)
@@ -17274,8 +17256,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA, "Na₂LiAl₂Si₂O₇H₂O₂")
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 8L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 8L)
-            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID");
         Materials2Materials.Bone = MaterialLibAPI.newMaterial("gregtech", "Bone", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFAFAFA)
             .addToFamily(Materials2Families.all)
@@ -17407,8 +17388,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 36L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 48L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.Glowstone = MaterialLibAPI.newMaterial("gregtech", "Glowstone", TextureSet.of("gregtech", "CUSTOM/glowstone"))
             .setTint(0xFFFFFF00)
             .addToFamily(Materials2Families.all)
@@ -17564,7 +17544,6 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 28L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.SIFTING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Salt"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("RockSalt"), 1L, false), new WerkstoffRefStack(new MaterialRef("Borax"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "NaCl")
@@ -17639,8 +17618,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA, "Al₂Fe₃Si₃O₁₂")
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 12L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 12L)
-            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID");
         Materials2Materials.Andradite = MaterialLibAPI.newMaterial("gregtech", "Andradite", TextureSet.of("gregtech", "ROUGH"))
             .setTint(0xFF967800)
             .addToFamily(Materials2Families.all)
@@ -17867,8 +17845,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA, "PbS")
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 49L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 70L)
-            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID");
         // spotless:on
     }
 
@@ -17900,8 +17877,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA, "Ca₃Al₂Si₃O₁₂")
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 11L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 11L)
-            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID");
         Materials2Materials.LiveRoot = MaterialLibAPI.newMaterial("gregtech", "LiveRoot", TextureSet.of("gregtech", "WOOD"))
             .setTint(0xFFDCC800)
             .addToFamily(Materials2Families.all)
@@ -17987,8 +17963,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA, "Al₂Mg₃Si₃O₁₂")
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 10L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 10L)
-            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID");
         Materials2Materials.Saltpeter = MaterialLibAPI.newMaterial("gregtech", "Saltpeter", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFFE6E6E6)
             .addToFamily(Materials2Families.all)
@@ -18031,8 +18006,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA, "SiO₂")
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 10L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 10L)
-            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID");
         Materials2Materials.Spessartine = MaterialLibAPI.newMaterial("gregtech", "Spessartine", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFF6464)
             .addToFamily(Materials2Families.all)
@@ -18059,8 +18033,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA, "Al₂Mn₃Si₃O₁₂")
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 11L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 12L)
-            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID");
         Materials2Materials.Sphalerite = MaterialLibAPI.newMaterial("gregtech", "Sphalerite", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.all)
@@ -18087,8 +18060,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA, "ZnS")
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 23L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 25L)
-            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID");
         Materials2Materials.Tetrahedrite = MaterialLibAPI.newMaterial("gregtech", "Tetrahedrite", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFC82000)
             .addToFamily(Materials2Families.all)
@@ -18397,8 +18369,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA, "CuFeS₂")
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 21L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 24L)
-            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID");
         Materials2Materials.SiliconSolarGrade = MaterialLibAPI.newMaterial("gregtech", "SiliconSolarGrade", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF505064)
             .addToFamily(Materials2Families.all)
@@ -18654,8 +18625,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 2L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 2L)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.Siltstone = MaterialLibAPI.newMaterial("gregtech", "Siltstone", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.all)
@@ -19286,8 +19256,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA, "Ni₉S₈")
             .setProperty(GTMaterialProperties.GTPP_PROTONS, 22L)
             .setProperty(GTMaterialProperties.GTPP_NEUTRONS, 23L)
-            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
-            .setProperty(GTMaterialProperties.GTPP_COMPOSITION, List.of());
+            .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID");
         Materials2Materials.Scheelite = MaterialLibAPI.newMaterial("gregtech", "Scheelite", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFC88C14)
             .addToFamily(Materials2Families.all)
@@ -19529,7 +19498,6 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 18L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.SIFTING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Spodumene"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Spodumene"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "LiAlSi₂O₆")
@@ -20006,7 +19974,6 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 37L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.SIFTING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("RockSalt"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("RockSalt"), 1L, false), new WerkstoffRefStack(new MaterialRef("Borax"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "KCl")
@@ -21752,7 +21719,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 79L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Bismuth"), 2L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 2L, false), new WerkstoffRefStack(new MaterialRef("CarbonDioxide"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Bismuth"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L), new MaterialRefStack(new MaterialRef("CarbonDioxide"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Bismuth"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Bi₂O₂(CO₂)₂")
@@ -21789,7 +21756,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 102L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Bismuth"), 2L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Bismuth"), 2L), new MaterialRefStack(new MaterialRef("Sulfur"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Bismuth"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Bi₂S₃")
             .build();
@@ -21883,7 +21850,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 10L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.ENFORCE_UNIFICATION))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Zirconium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Oxygen"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Zirconium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Zirconium"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "ZrO₂")
@@ -21922,7 +21889,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 20L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Sodium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Iron"), 3L, false), new WerkstoffRefStack(new MaterialRef("Aluminium"), 6L, false), new WerkstoffRefStack(new MaterialRef("Silicon"), 6L, false), new WerkstoffRefStack(new MaterialRef("Boron"), 3L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 30L, false), new WerkstoffRefStack(new MaterialRef("Fluorine"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Sodium"), 1L), new MaterialRefStack(new MaterialRef("Iron"), 3L), new MaterialRefStack(new MaterialRef("Aluminium"), 6L), new MaterialRefStack(new MaterialRef("Silicon"), 6L), new MaterialRefStack(new MaterialRef("Boron"), 3L), new MaterialRefStack(new MaterialRef("Oxygen"), 30L), new MaterialRefStack(new MaterialRef("Fluorine"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Sodium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Boron"), 1L, false), new WerkstoffRefStack(new MaterialRef("SiliconDioxide"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "NaFe₃Al₆(Si₆O₁₈)(BO₃)₃O₃F")
@@ -21955,7 +21922,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 45L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.ENFORCE_UNIFICATION))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Yttrium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("YttriumOxide"), 1L, true), new WerkstoffRefStack(new MaterialRef("YttriumOxide"), 1L, true), new WerkstoffRefStack(new MaterialRef("YttriumOxide"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Y₂O₃")
             .build();
@@ -21985,7 +21952,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 19L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Sodium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Chrome"), 3L, false), new WerkstoffRefStack(new MaterialRef("Magnalium"), 6L, false), new WerkstoffRefStack(new MaterialRef("Silicon"), 6L, false), new WerkstoffRefStack(new MaterialRef("Boron"), 3L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 31L, false), new WerkstoffRefStack(new MaterialRef("Hydrogen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Sodium"), 1L), new MaterialRefStack(new MaterialRef("Chrome"), 3L), new MaterialRefStack(new MaterialRef("Magnalium"), 6L), new MaterialRefStack(new MaterialRef("Silicon"), 6L), new MaterialRefStack(new MaterialRef("Boron"), 3L), new MaterialRefStack(new MaterialRef("Oxygen"), 31L), new MaterialRefStack(new MaterialRef("Hydrogen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Sodium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Boron"), 1L, false), new WerkstoffRefStack(new MaterialRef("SiliconDioxide"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "NaCr₃(Al₄Mg₂)(Si₆O₁₈)(BO₃)₃(OH)₃O")
@@ -22024,7 +21991,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 19L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Sodium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Vanadium"), 3L, false), new WerkstoffRefStack(new MaterialRef("Magnalium"), 6L, false), new WerkstoffRefStack(new MaterialRef("Silicon"), 6L, false), new WerkstoffRefStack(new MaterialRef("Boron"), 3L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 31L, false), new WerkstoffRefStack(new MaterialRef("Hydrogen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Sodium"), 1L), new MaterialRefStack(new MaterialRef("Vanadium"), 3L), new MaterialRefStack(new MaterialRef("Magnalium"), 6L), new MaterialRefStack(new MaterialRef("Silicon"), 6L), new MaterialRefStack(new MaterialRef("Boron"), 3L), new MaterialRefStack(new MaterialRef("Oxygen"), 31L), new MaterialRefStack(new MaterialRef("Hydrogen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Sodium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Boron"), 1L, false), new WerkstoffRefStack(new MaterialRef("SiliconDioxide"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "NaV₃(Al₄Mg₂)(Si₆O₁₈)(BO₃)₃(OH)₃O")
@@ -22063,7 +22030,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 18L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Sodium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Aluminium"), 9L, false), new WerkstoffRefStack(new MaterialRef("Silicon"), 6L, false), new WerkstoffRefStack(new MaterialRef("Boron"), 3L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 31L, false), new WerkstoffRefStack(new MaterialRef("Hydrogen"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Sodium"), 1L), new MaterialRefStack(new MaterialRef("Aluminium"), 9L), new MaterialRefStack(new MaterialRef("Silicon"), 6L), new MaterialRefStack(new MaterialRef("Boron"), 3L), new MaterialRefStack(new MaterialRef("Oxygen"), 31L), new MaterialRefStack(new MaterialRef("Hydrogen"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Sodium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Boron"), 1L, false), new WerkstoffRefStack(new MaterialRef("SiliconDioxide"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "NaAl₃Al₆(Si₆O₁₈)(BO₃)₃O₃OH")
@@ -22100,7 +22067,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 54L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Iron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Arsenic"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Iron"), 1L), new MaterialRefStack(new MaterialRef("Arsenic"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Sulfur"), 1L, false), new WerkstoffRefStack(new MaterialRef("Arsenic"), 1L, false), new WerkstoffRefStack(new MaterialRef("Iron"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "FeAsS")
@@ -22128,7 +22095,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PROTONS, 124L)
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 57L)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Iron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Tungsten"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Iron"), 1L), new MaterialRefStack(new MaterialRef("Tungsten"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Iron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Tungsten"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "FeWO₃")
@@ -22157,7 +22124,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 68L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Iron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Arsenic"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Iron"), 1L), new MaterialRefStack(new MaterialRef("Arsenic"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Iron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Arsenic"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "FeAs₂")
@@ -22186,7 +22153,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 60L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Copper"), 1L, false), new WerkstoffRefStack(new MaterialRef("Indium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Copper"), 1L), new MaterialRefStack(new MaterialRef("Indium"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Copper"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "CuInS₂")
             .build();
@@ -22214,7 +22181,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 49L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Copper"), 5L, false), new WerkstoffRefStack(new MaterialRef("Iron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Copper"), 5L), new MaterialRefStack(new MaterialRef("Iron"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Copper"), 1L, false), new WerkstoffRefStack(new MaterialRef("Iron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Cu₅FeS₄")
@@ -22243,7 +22210,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 65L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Copper"), 5L, false), new WerkstoffRefStack(new MaterialRef("Bismuth"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Copper"), 5L), new MaterialRefStack(new MaterialRef("Bismuth"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Copper"), 1L, false), new WerkstoffRefStack(new MaterialRef("Bismuth"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Cu₅BiS₄")
             .build();
@@ -22270,7 +22237,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 52L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Copper"), 31L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 16L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Copper"), 31L), new MaterialRefStack(new MaterialRef("Sulfur"), 16L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Copper"), 1L, false), new WerkstoffRefStack(new MaterialRef("Copper"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Cu₃₁S₁₆")
             .build();
@@ -22297,7 +22264,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PROTONS, 123L)
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 57L)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Manganese"), 1L, false), new WerkstoffRefStack(new MaterialRef("Tungsten"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Manganese"), 1L), new MaterialRefStack(new MaterialRef("Tungsten"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Manganese"), 1L, false), new WerkstoffRefStack(new MaterialRef("Tungsten"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "MnWO₃")
             .build();
@@ -22325,7 +22292,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 87L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Thorium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Thorium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Thorium"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "ThO₂")
             .build();
@@ -22355,7 +22322,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PROTONS, 86L)
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 15L)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Zirconium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Silicon"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Zirconium"), 1L), new MaterialRefStack(new MaterialRef("Silicon"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Zirconium"), 1L, true), new WerkstoffRefStack(new MaterialRef("SiliconDioxide"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "ZrSiO₄")
@@ -22394,7 +22361,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PROTONS, 98L)
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 29L)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Iron"), 2L, false), new WerkstoffRefStack(new MaterialRef("Silicon"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Iron"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Iron"), 1L, false), new WerkstoffRefStack(new MaterialRef("SiliconDioxide"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Fe₂SiO₄")
@@ -22432,7 +22399,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PROTONS, 70L)
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 20L)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Magnesium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Silicon"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Magnesium"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Magnesium"), 1L, false), new WerkstoffRefStack(new MaterialRef("SiliconDioxide"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Mg₂SiO₄")
@@ -22471,7 +22438,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PROTONS, 122L)
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 24L)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Calcium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Iron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Silicon"), 2L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 6L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Iron"), 1L), new MaterialRefStack(new MaterialRef("Silicon"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 6L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Iron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Calcium"), 1L, false), new WerkstoffRefStack(new MaterialRef("SiliconDioxide"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "CaFeSi₂O₆")
@@ -22508,7 +22475,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 55L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Lead"), 1L, false), new WerkstoffRefStack(new MaterialRef("Zinc"), 1L, false), new WerkstoffRefStack(new MaterialRef("Vanadium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Lead"), 1L), new MaterialRefStack(new MaterialRef("Zinc"), 1L), new MaterialRefStack(new MaterialRef("Vanadium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Lead"), 1L, false), new WerkstoffRefStack(new MaterialRef("Copper"), 1L, false), new WerkstoffRefStack(new MaterialRef("Vanadium"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "PbZnVO₄")
             .build();
@@ -22536,7 +22503,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 55L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Lead"), 1L, false), new WerkstoffRefStack(new MaterialRef("Copper"), 1L, false), new WerkstoffRefStack(new MaterialRef("Vanadium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Lead"), 1L), new MaterialRefStack(new MaterialRef("Copper"), 1L), new MaterialRefStack(new MaterialRef("Vanadium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Lead"), 1L, false), new WerkstoffRefStack(new MaterialRef("Zinc"), 1L, false), new WerkstoffRefStack(new MaterialRef("Vanadium"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "PbCuVO₄")
             .build();
@@ -22562,7 +22529,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 18L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Potassium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Aluminium"), 3L, false), new WerkstoffRefStack(new MaterialRef("Silicon"), 3L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 12L, false), new WerkstoffRefStack(new MaterialRef("Hydrogen"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Potassium"), 1L), new MaterialRefStack(new MaterialRef("Aluminium"), 3L), new MaterialRefStack(new MaterialRef("Silicon"), 3L), new MaterialRefStack(new MaterialRef("Oxygen"), 12L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Potassium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Alumina"), 1L, false), new WerkstoffRefStack(new MaterialRef("SiliconDioxide"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "KAl₃Si₃O₁(OH)₂")
             .build();
@@ -22588,7 +22555,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 22L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Potassium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Chrome"), 3L, false), new WerkstoffRefStack(new MaterialRef("Silicon"), 3L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 12L, false), new WerkstoffRefStack(new MaterialRef("Hydrogen"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Potassium"), 1L), new MaterialRefStack(new MaterialRef("Chrome"), 3L), new MaterialRefStack(new MaterialRef("Silicon"), 3L), new MaterialRefStack(new MaterialRef("Oxygen"), 12L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Potassium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Chrome"), 1L, false), new WerkstoffRefStack(new MaterialRef("SiliconDioxide"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "KCr₃Si₃O₁(OH)₂")
             .build();
@@ -22684,7 +22651,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 159L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.CHEMICAL_SYNTHESIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Bismuth"), 2L, false), new WerkstoffRefStack(new MaterialRef("Tellurium"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Bismuth"), 2L), new MaterialRefStack(new MaterialRef("Tellurium"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("BismuthTelluride"), 1L, true), new WerkstoffRefStack(new MaterialRef("BismuthTelluride"), 1L, true), new WerkstoffRefStack(new MaterialRef("BismuthTelluride"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Bi₂Te₃")
             .build();
@@ -22710,7 +22677,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 106L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.CHEMICAL_SYNTHESIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Bismuth"), 2L, false), new WerkstoffRefStack(new MaterialRef("Boron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Hydrogen"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Bismuth"), 2L), new MaterialRefStack(new MaterialRef("Boron"), 1L), new MaterialRefStack(new MaterialRef("Hydrogen"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Dibismuthhydroborat"), 1L, true), new WerkstoffRefStack(new MaterialRef("Dibismuthhydroborat"), 1L, true), new WerkstoffRefStack(new MaterialRef("Dibismuthhydroborat"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Bi₂BH")
             .build();
@@ -22736,7 +22703,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 117L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("IndiumGalliumPhosphide"), 1L, false), new WerkstoffRefStack(new MaterialRef("Dibismuthhydroborat"), 3L, true), new WerkstoffRefStack(new MaterialRef("BismuthTelluride"), 2L, true)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("IndiumGalliumPhosphide"), 1L), new MaterialRefStack(new MaterialRef("Dibismuthhydroborat"), 3L), new MaterialRefStack(new MaterialRef("BismuthTelluride"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("CircuitCompoundMK3"), 1L, true), new WerkstoffRefStack(new MaterialRef("CircuitCompoundMK3"), 1L, true), new WerkstoffRefStack(new MaterialRef("CircuitCompoundMK3"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "InGaP(Bi₂BH)₃(Bi₂Te₃)₂")
             .build();
@@ -22766,7 +22733,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PROTONS, 176L)
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 22L)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Silicon"), 5L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 10L, false), new WerkstoffRefStack(new MaterialRef("Iron"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Silicon"), 5L), new MaterialRefStack(new MaterialRef("Oxygen"), 10L), new MaterialRefStack(new MaterialRef("Iron"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Prasiolite"), 1L, true), new WerkstoffRefStack(new MaterialRef("Prasiolite"), 1L, true), new WerkstoffRefStack(new MaterialRef("Prasiolite"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Si₅O₁Fe")
@@ -22804,7 +22771,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 85L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Prasiolite"), 3L, true), new WerkstoffRefStack(new MaterialRef("BismuthTelluride"), 4L, true), new WerkstoffRefStack(new MaterialRef("CubicZirconia"), 1L, true), new WerkstoffRefStack(new MaterialRef("SteelMagnetic"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Prasiolite"), 3L), new MaterialRefStack(new MaterialRef("BismuthTelluride"), 4L), new MaterialRefStack(new MaterialRef("CubicZirconia"), 1L), new MaterialRefStack(new MaterialRef("SteelMagnetic"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("MagnetoResonatic"), 1L, true), new WerkstoffRefStack(new MaterialRef("MagnetoResonatic"), 1L, true), new WerkstoffRefStack(new MaterialRef("MagnetoResonatic"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "NoBlast"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "(Si₅O₁Fe)₃(Bi₂Te₃)₄ZrO₂Fe₅C")
@@ -23100,7 +23067,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1920)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "ingotHot", "ingot", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "nugget", "plate", "foil", "stickLong", "stick", "lens", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Boron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Argon"), 1L, false), new WerkstoffRefStack(new MaterialRef("Titanium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Magic"), 1L, false), new WerkstoffRefStack(new MaterialRef("Europium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 1L, false), new WerkstoffRefStack(new MaterialRef("Neon"), 1L, true), new WerkstoffRefStack(new MaterialRef("Potassium"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Boron"), 1L), new MaterialRefStack(new MaterialRef("Argon"), 1L), new MaterialRefStack(new MaterialRef("Titanium"), 1L), new MaterialRefStack(new MaterialRef("Magic"), 1L), new MaterialRefStack(new MaterialRef("Europium"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L), new MaterialRefStack(new MaterialRef("Neon"), 1L), new MaterialRefStack(new MaterialRef("Potassium"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Boron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Titanium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Europium"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Are you serious?")
@@ -23216,7 +23183,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 130L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Platinum"), 1L, false), new WerkstoffRefStack(new MaterialRef("Stone"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Platinum"), 1L), new MaterialRefStack(new MaterialRef("Stone"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("PlatinumMetallicPowder"), 1L, true), new WerkstoffRefStack(new MaterialRef("PlatinumMetallicPowder"), 1L, true), new WerkstoffRefStack(new MaterialRef("PlatinumMetallicPowder"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "PtPdIrOsRhRu??")
             .build();
@@ -23267,7 +23234,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 58L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Ammonium"), 1L, false), new WerkstoffRefStack(new MaterialRef("HydrochloricAcid_GT5U"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Ammonium"), 1L), new MaterialRefStack(new MaterialRef("HydrochloricAcid_GT5U"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("AmmoniumChloride"), 1L, true), new WerkstoffRefStack(new MaterialRef("AmmoniumChloride"), 1L, true), new WerkstoffRefStack(new MaterialRef("AmmoniumChloride"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "NH₄Cl")
             .build();
@@ -23319,7 +23286,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 102L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Ammonium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Palladium"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Ammonium"), 1L), new MaterialRefStack(new MaterialRef("Palladium"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("PalladiumEnrichedAmmonia"), 1L, true), new WerkstoffRefStack(new MaterialRef("PalladiumEnrichedAmmonia"), 1L, true), new WerkstoffRefStack(new MaterialRef("PalladiumEnrichedAmmonia"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Pd??")
             .build();
@@ -23347,7 +23314,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 100L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Palladium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Stone"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Palladium"), 1L), new MaterialRefStack(new MaterialRef("Stone"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("PalladiumMetallicPowder"), 1L, true), new WerkstoffRefStack(new MaterialRef("PalladiumMetallicPowder"), 1L, true), new WerkstoffRefStack(new MaterialRef("PalladiumMetallicPowder"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Pd??")
             .build();
@@ -23420,7 +23387,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 13L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("SodiumHydroxide_GT5U"), 1L, false), new WerkstoffRefStack(new MaterialRef("CarbonMonoxide"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("SodiumHydroxide_GT5U"), 1L), new MaterialRefStack(new MaterialRef("CarbonMonoxide"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("SodiumFormate"), 1L, true), new WerkstoffRefStack(new MaterialRef("SodiumFormate"), 1L, true), new WerkstoffRefStack(new MaterialRef("SodiumFormate"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "HCOONa")
             .build();
@@ -23444,7 +23411,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 20L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Sodium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Sodium"), 2L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("SodiumSulfate"), 1L, true), new WerkstoffRefStack(new MaterialRef("SodiumSulfate"), 1L, true), new WerkstoffRefStack(new MaterialRef("SodiumSulfate"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Na₂SO₄")
             .build();
@@ -23473,7 +23440,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 9L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Carbon"), 1L, false), new WerkstoffRefStack(new MaterialRef("Hydrogen"), 2L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 1L), new MaterialRefStack(new MaterialRef("Hydrogen"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("FormicAcid"), 1L, true), new WerkstoffRefStack(new MaterialRef("FormicAcid"), 1L, true), new WerkstoffRefStack(new MaterialRef("FormicAcid"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "CH₂O₂")
             .build();
@@ -23502,7 +23469,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 23L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.CHEMICAL_SYNTHESIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cellMolten"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Potassium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 2L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 7L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Potassium"), 2L), new MaterialRefStack(new MaterialRef("Sulfur"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 7L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("PotassiumDisulfate"), 1L, true), new WerkstoffRefStack(new MaterialRef("PotassiumDisulfate"), 1L, true), new WerkstoffRefStack(new MaterialRef("PotassiumDisulfate"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "K₂S₂O₇")
             .build();
@@ -23607,7 +23574,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 36L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cell"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Calcium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Chlorine"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Chlorine"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("CalciumChloride"), 1L, true), new WerkstoffRefStack(new MaterialRef("CalciumChloride"), 1L, true), new WerkstoffRefStack(new MaterialRef("CalciumChloride"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "CaCl₂")
             .build();
@@ -23800,7 +23767,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 129L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Osmiridium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Stone"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Osmiridium"), 1L), new MaterialRefStack(new MaterialRef("Stone"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("RarestMetalResidue"), 1L, true), new WerkstoffRefStack(new MaterialRef("RarestMetalResidue"), 1L, true), new WerkstoffRefStack(new MaterialRef("RarestMetalResidue"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "OsIr??")
             .build();
@@ -23828,7 +23795,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 129L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Iridium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Stone"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Iridium"), 1L), new MaterialRefStack(new MaterialRef("Stone"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("IridiumMetalResidue"), 1L, true), new WerkstoffRefStack(new MaterialRef("IridiumMetalResidue"), 1L, true), new WerkstoffRefStack(new MaterialRef("IridiumMetalResidue"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Ir??")
             .build();
@@ -23854,7 +23821,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 90L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("SiliconDioxide"), 3L, false), new WerkstoffRefStack(new MaterialRef("Gold"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("SiliconDioxide"), 3L), new MaterialRefStack(new MaterialRef("Gold"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("SludgeDustResidue"), 1L, true), new WerkstoffRefStack(new MaterialRef("SludgeDustResidue"), 1L, true), new WerkstoffRefStack(new MaterialRef("SludgeDustResidue"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_GOLD"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "(SiO₂)₃Au₂")
@@ -24001,7 +23968,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 60L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Nickel"), 1L, false), new WerkstoffRefStack(new MaterialRef("Copper"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Nickel"), 1L), new MaterialRefStack(new MaterialRef("Copper"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("MetallicSludgeDustResidue"), 1L, true), new WerkstoffRefStack(new MaterialRef("MetallicSludgeDustResidue"), 1L, true), new WerkstoffRefStack(new MaterialRef("MetallicSludgeDustResidue"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "NiCu")
             .build();
@@ -24094,7 +24061,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 100L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Rhodium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Stone"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Rhodium"), 1L), new MaterialRefStack(new MaterialRef("Stone"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("CrudeRhodiumMetal"), 1L, true), new WerkstoffRefStack(new MaterialRef("CrudeRhodiumMetal"), 1L, true), new WerkstoffRefStack(new MaterialRef("CrudeRhodiumMetal"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Rh??")
             .build();
@@ -24165,7 +24132,6 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 16L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Sodium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Nitrogen"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("SodiumNitrate"), 1L, true), new WerkstoffRefStack(new MaterialRef("SodiumNitrate"), 1L, true), new WerkstoffRefStack(new MaterialRef("SodiumNitrate"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "NaNO₃")
             .build();
@@ -24221,7 +24187,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 26L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Zinc"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Zinc"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("ZincSulfate"), 1L, true), new WerkstoffRefStack(new MaterialRef("ZincSulfate"), 1L, true), new WerkstoffRefStack(new MaterialRef("ZincSulfate"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "ZnSO₄")
             .build();
@@ -24333,7 +24299,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 1)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Palladium"), 3L, false), new WerkstoffRefStack(new MaterialRef("Rhodium"), 1L, true)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Palladium"), 3L), new MaterialRefStack(new MaterialRef("Rhodium"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Rhodium-PlatedPalladium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Rhodium-PlatedPalladium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Rhodium-PlatedPalladium"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("NobleGasSmelting"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Pd₃Rh")
@@ -24433,7 +24399,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 1)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Ruthenium"), 2L, true), new WerkstoffRefStack(new MaterialRef("Iridium"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Ruthenium"), 2L), new MaterialRefStack(new MaterialRef("Iridium"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Ruridit"), 1L, true), new WerkstoffRefStack(new MaterialRef("Ruridit"), 1L, true), new WerkstoffRefStack(new MaterialRef("Ruridit"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("NobleGasSmelting"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Ru₂Ir")
@@ -24475,7 +24441,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 25L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Calcium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Fluorine"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Fluorspar"), 1L, true), new WerkstoffRefStack(new MaterialRef("Fluorspar"), 1L, true), new WerkstoffRefStack(new MaterialRef("Fluorspar"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "CaF₂")
@@ -24522,7 +24488,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 7680)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("TungstenSteel"), 12L, false), new WerkstoffRefStack(new MaterialRef("HSSE"), 9L, false), new WerkstoffRefStack(new MaterialRef("HSSG"), 6L, false), new WerkstoffRefStack(new MaterialRef("Ruridit"), 3L, true), new WerkstoffRefStack(new MaterialRef("MagnetoResonatic"), 2L, true), new WerkstoffRefStack(new MaterialRef("Plutonium"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("TungstenSteel"), 12L), new MaterialRefStack(new MaterialRef("HSSE"), 9L), new MaterialRefStack(new MaterialRef("HSSG"), 6L), new MaterialRefStack(new MaterialRef("Ruridit"), 3L), new MaterialRefStack(new MaterialRef("MagnetoResonatic"), 2L), new MaterialRefStack(new MaterialRef("Plutonium"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("HighDurabilityCompoundSteel"), 1L, true), new WerkstoffRefStack(new MaterialRef("HighDurabilityCompoundSteel"), 1L, true), new WerkstoffRefStack(new MaterialRef("HighDurabilityCompoundSteel"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "((Fe₅C)W)₁₂((((Fe₅C)W)₅CrMo₂V)₆CoMnSi)₉(((Fe₅C)W)₅CrMo₂V)₆(Ru₂Ir)₃((Si₅O₁Fe)₃(Bi₂Te₃)₄ZrO₂Fe₅C)₂Pu")
             .build();
@@ -24560,7 +24526,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 139L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("PalladiumMetallicPowder"), 3L, true), new WerkstoffRefStack(new MaterialRef("Mercury"), 3L, false), new WerkstoffRefStack(new MaterialRef("Arsenic"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("PalladiumMetallicPowder"), 3L), new MaterialRefStack(new MaterialRef("Mercury"), 3L), new MaterialRefStack(new MaterialRef("Arsenic"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Atheneite"), 1L, true), new WerkstoffRefStack(new MaterialRef("Atheneite"), 1L, true), new WerkstoffRefStack(new MaterialRef("Atheneite"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "(Pd,Hg)₃As")
             .build();
@@ -24588,7 +24554,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 125L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("PalladiumMetallicPowder"), 3L, true), new WerkstoffRefStack(new MaterialRef("Mercury"), 1L, false), new WerkstoffRefStack(new MaterialRef("Tellurium"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("PalladiumMetallicPowder"), 3L), new MaterialRefStack(new MaterialRef("Mercury"), 1L), new MaterialRefStack(new MaterialRef("Tellurium"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Temagamite"), 1L, true), new WerkstoffRefStack(new MaterialRef("Temagamite"), 1L, true), new WerkstoffRefStack(new MaterialRef("Temagamite"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Pd₃HgTe")
             .build();
@@ -24616,7 +24582,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 112L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Mercury"), 2L, false), new WerkstoffRefStack(new MaterialRef("Chlorine"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Mercury"), 2L), new MaterialRefStack(new MaterialRef("Chlorine"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Terlinguaite"), 1L, true), new WerkstoffRefStack(new MaterialRef("Terlinguaite"), 1L, true), new WerkstoffRefStack(new MaterialRef("Terlinguaite"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Hg₂ClO")
             .build();
@@ -24654,7 +24620,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1920)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Steel"), 2L, false), new WerkstoffRefStack(new MaterialRef("VanadiumSteel"), 1L, false), new WerkstoffRefStack(new MaterialRef("DamascusSteel"), 1L, false), new WerkstoffRefStack(new MaterialRef("Carbon"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Steel"), 2L), new MaterialRefStack(new MaterialRef("VanadiumSteel"), 1L), new MaterialRefStack(new MaterialRef("DamascusSteel"), 1L), new MaterialRefStack(new MaterialRef("Carbon"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("AdemicSteel"), 1L, true), new WerkstoffRefStack(new MaterialRef("AdemicSteel"), 1L, true), new WerkstoffRefStack(new MaterialRef("AdemicSteel"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("NobleGasSmelting"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "The break in the line")
@@ -24691,7 +24657,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 55L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Steel"), 2L, false), new WerkstoffRefStack(new MaterialRef("VanadiumSteel"), 1L, false), new WerkstoffRefStack(new MaterialRef("DamascusSteel"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Steel"), 2L), new MaterialRefStack(new MaterialRef("VanadiumSteel"), 1L), new MaterialRefStack(new MaterialRef("DamascusSteel"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("RawAdemicSteel"), 1L, true), new WerkstoffRefStack(new MaterialRef("RawAdemicSteel"), 1L, true), new WerkstoffRefStack(new MaterialRef("RawAdemicSteel"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "(Fe₅C)₂VCr(Fe₅C)₇Fe₅C")
             .build();
@@ -24720,7 +24686,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 15L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Hydrogen"), 2L, false), new WerkstoffRefStack(new MaterialRef("Silicon"), 1L, false), new WerkstoffRefStack(new MaterialRef("Fluorine"), 6L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Hydrogen"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 6L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("HexafluorosilicicAcid"), 1L, true), new WerkstoffRefStack(new MaterialRef("HexafluorosilicicAcid"), 1L, true), new WerkstoffRefStack(new MaterialRef("HexafluorosilicicAcid"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "H₂SiF₆")
             .build();
@@ -24745,7 +24711,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 23L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Potassium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Silicon"), 1L, false), new WerkstoffRefStack(new MaterialRef("Fluorine"), 6L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Potassium"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 6L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Potassiumfluorosilicate"), 1L, true), new WerkstoffRefStack(new MaterialRef("Potassiumfluorosilicate"), 1L, true), new WerkstoffRefStack(new MaterialRef("Potassiumfluorosilicate"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "K₂SiF₆")
             .build();
@@ -24770,7 +24736,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 23L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Potassium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Carbon"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Potassium"), 2L), new MaterialRefStack(new MaterialRef("Carbon"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("PotassiumCarbonate"), 1L, true), new WerkstoffRefStack(new MaterialRef("PotassiumCarbonate"), 1L, true), new WerkstoffRefStack(new MaterialRef("PotassiumCarbonate"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "K₂CO₃")
             .build();
@@ -25005,7 +24971,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 68L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.MIXING, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Graphite"), 3L, false), new WerkstoffRefStack(new MaterialRef("Uranium"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Graphite"), 3L), new MaterialRefStack(new MaterialRef("Uranium"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Graphite-UraniumMixture"), 1L, true), new WerkstoffRefStack(new MaterialRef("Graphite-UraniumMixture"), 1L, true), new WerkstoffRefStack(new MaterialRef("Graphite-UraniumMixture"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "C₃U")
             .build();
@@ -25120,7 +25086,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 189L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Thorium"), 11L, false), new WerkstoffRefStack(new MaterialRef("Thorium232"), 1L, true), new WerkstoffRefStack(new MaterialRef("Uranium235"), 1L, false), new WerkstoffRefStack(new MaterialRef("Carbon"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Thorium"), 11L), new MaterialRefStack(new MaterialRef("Thorium232"), 1L), new MaterialRefStack(new MaterialRef("Uranium235"), 1L), new MaterialRefStack(new MaterialRef("Carbon"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("UraniumCarbide-ThoriumMixture"), 1L, true), new WerkstoffRefStack(new MaterialRef("UraniumCarbide-ThoriumMixture"), 1L, true), new WerkstoffRefStack(new MaterialRef("UraniumCarbide-ThoriumMixture"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Th₁₁ThU-235C₃")
             .build();
@@ -25235,7 +25201,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 100L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Plutonium"), 10L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 12L, false), new WerkstoffRefStack(new MaterialRef("Uranium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Carbon"), 8L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Plutonium"), 10L), new MaterialRefStack(new MaterialRef("Oxygen"), 12L), new MaterialRefStack(new MaterialRef("Uranium"), 2L), new MaterialRefStack(new MaterialRef("Carbon"), 8L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("PlutoniumOxide-UraniumMixture"), 1L, true), new WerkstoffRefStack(new MaterialRef("PlutoniumOxide-UraniumMixture"), 1L, true), new WerkstoffRefStack(new MaterialRef("PlutoniumOxide-UraniumMixture"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Pu₁O₁₂U₂C₈")
             .build();
@@ -25353,7 +25319,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 11L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Hydrogen"), 2L, false), new WerkstoffRefStack(new MaterialRef("Carbon"), 2L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Hydrogen"), 2L), new MaterialRefStack(new MaterialRef("Carbon"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("OxalicAcid"), 1L, true), new WerkstoffRefStack(new MaterialRef("OxalicAcid"), 1L, true), new WerkstoffRefStack(new MaterialRef("OxalicAcid"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "H₂C₂O₄")
             .build();
@@ -25378,7 +25344,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 26L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Vanadium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 5L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Vanadium"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 5L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("VanadiumPentoxide"), 1L, true), new WerkstoffRefStack(new MaterialRef("VanadiumPentoxide"), 1L, true), new WerkstoffRefStack(new MaterialRef("VanadiumPentoxide"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "V₂O₅")
             .build();
@@ -25563,7 +25529,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PROTONS, 126L)
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 60L)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Thorium232"), 1L, true), new WerkstoffRefStack(new MaterialRef("Fluorine"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Thorium232"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Thorium-232Tetrafluoride"), 1L, true), new WerkstoffRefStack(new MaterialRef("Thorium-232Tetrafluoride"), 1L, true), new WerkstoffRefStack(new MaterialRef("Thorium-232Tetrafluoride"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "ThF₄")
             .build();
@@ -25644,7 +25610,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Orundum"), 2L, true), new WerkstoffRefStack(new MaterialRef("Plutonium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Naquadah"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Orundum"), 2L), new MaterialRefStack(new MaterialRef("Plutonium"), 1L), new MaterialRefStack(new MaterialRef("Naquadah"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("AtomicSeparationCatalyst"), 1L, true), new WerkstoffRefStack(new MaterialRef("AtomicSeparationCatalyst"), 1L, true), new WerkstoffRefStack(new MaterialRef("AtomicSeparationCatalyst"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "The melting core...")
             .build();
@@ -25869,7 +25835,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 4L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Carbon"), 4L, false), new WerkstoffRefStack(new MaterialRef("Hydrogen"), 10L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 4L), new MaterialRefStack(new MaterialRef("Hydrogen"), 10L), new MaterialRefStack(new MaterialRef("Oxygen"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Ether"), 1L, true), new WerkstoffRefStack(new MaterialRef("Ether"), 1L, true), new WerkstoffRefStack(new MaterialRef("Ether"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "CH₃CH₂OCH₂CH₃")
             .build();
@@ -26491,7 +26457,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 45L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Zinc"), 1L, false), new WerkstoffRefStack(new MaterialRef("Chlorine"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Zinc"), 1L), new MaterialRefStack(new MaterialRef("Chlorine"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("ZincChloride"), 1L, true), new WerkstoffRefStack(new MaterialRef("ZincChloride"), 1L, true), new WerkstoffRefStack(new MaterialRef("ZincChloride"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "ZnCl₂")
             .build();
@@ -26523,7 +26489,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 147L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Zinc"), 1L, false), new WerkstoffRefStack(new MaterialRef("Thorium"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Zinc"), 1L), new MaterialRefStack(new MaterialRef("Thorium"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Zn-ThAlloy"), 1L, true), new WerkstoffRefStack(new MaterialRef("Zn-ThAlloy"), 1L, true), new WerkstoffRefStack(new MaterialRef("Zn-ThAlloy"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "ZnTh")
             .build();
@@ -26590,7 +26556,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 25L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Titanium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Fluorine"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Titanium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("TitaniumTrifluoride"), 1L, true), new WerkstoffRefStack(new MaterialRef("TitaniumTrifluoride"), 1L, true), new WerkstoffRefStack(new MaterialRef("TitaniumTrifluoride"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "TiF₃")
             .build();
@@ -26640,7 +26606,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 17L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Gallium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false), new WerkstoffRefStack(new MaterialRef("Hydrogen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Gallium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L), new MaterialRefStack(new MaterialRef("Hydrogen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("GalliumHydroxide"), 1L, true), new WerkstoffRefStack(new MaterialRef("GalliumHydroxide"), 1L, true), new WerkstoffRefStack(new MaterialRef("GalliumHydroxide"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Ga(OH)₃")
             .build();
@@ -26695,7 +26661,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 4L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Carbon"), 8L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 1L, false), new WerkstoffRefStack(new MaterialRef("Hydrogen"), 18L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 8L), new MaterialRefStack(new MaterialRef("Oxygen"), 1L), new MaterialRefStack(new MaterialRef("Hydrogen"), 18L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("2-Ethyl-1-Hexanol"), 1L, true), new WerkstoffRefStack(new MaterialRef("2-Ethyl-1-Hexanol"), 1L, true), new WerkstoffRefStack(new MaterialRef("2-Ethyl-1-Hexanol"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "C₈H₁₈O")
             .build();
@@ -26724,7 +26690,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 5L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Carbon"), 16L, false), new WerkstoffRefStack(new MaterialRef("Phosphorus"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false), new WerkstoffRefStack(new MaterialRef("Hydrogen"), 35L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 16L), new MaterialRefStack(new MaterialRef("Phosphorus"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L), new MaterialRefStack(new MaterialRef("Hydrogen"), 35L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("P-507"), 1L, true), new WerkstoffRefStack(new MaterialRef("P-507"), 1L, true), new WerkstoffRefStack(new MaterialRef("P-507"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "(C₈H₁₇)₂PO₃H")
             .build();
@@ -26802,7 +26768,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 120L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Naquadah"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Naquadah"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Naquadahine"), 1L, true), new WerkstoffRefStack(new MaterialRef("Naquadahine"), 1L, true), new WerkstoffRefStack(new MaterialRef("Naquadahine"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "NqO₂")
             .build();
@@ -26882,7 +26848,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 48L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Adamantium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Adamantium"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Adamantine"), 1L, true), new WerkstoffRefStack(new MaterialRef("Adamantine"), 1L, true), new WerkstoffRefStack(new MaterialRef("Adamantine"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Ad₂O₃")
             .build();
@@ -26935,7 +26901,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 32L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Trinium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Trinium"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("TriniumSulphate"), 1L, true), new WerkstoffRefStack(new MaterialRef("TriniumSulphate"), 1L, true), new WerkstoffRefStack(new MaterialRef("TriniumSulphate"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "KeSO₄")
             .build();
@@ -27027,7 +26993,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("NaquadahEnriched"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 2L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 8L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("NaquadahEnriched"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 8L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Enriched-NaquadahSulphate"), 1L, true), new WerkstoffRefStack(new MaterialRef("Enriched-NaquadahSulphate"), 1L, true), new WerkstoffRefStack(new MaterialRef("Enriched-NaquadahSulphate"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Nq⁺(SO₄)₂")
             .build();
@@ -27082,7 +27048,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.TOXIC, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Indium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Phosphorus"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Indium"), 1L), new MaterialRefStack(new MaterialRef("Phosphorus"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("IndiumPhosphate"), 1L, true), new WerkstoffRefStack(new MaterialRef("IndiumPhosphate"), 1L, true), new WerkstoffRefStack(new MaterialRef("IndiumPhosphate"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "InPO₄")
             .build();
@@ -27205,7 +27171,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Naquadria"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 2L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 8L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Naquadria"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 8L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("NaquadriaSulphate"), 1L, true), new WerkstoffRefStack(new MaterialRef("NaquadriaSulphate"), 1L, true), new WerkstoffRefStack(new MaterialRef("NaquadriaSulphate"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Nq*(SO₄)₂")
             .build();
@@ -27330,7 +27296,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Zirconium"), 34L, true), new WerkstoffRefStack(new MaterialRef("Tin"), 5L, false), new WerkstoffRefStack(new MaterialRef("Iron"), 2L, false), new WerkstoffRefStack(new MaterialRef("Chrome"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Zirconium"), 34L), new MaterialRefStack(new MaterialRef("Tin"), 5L), new MaterialRefStack(new MaterialRef("Iron"), 2L), new MaterialRefStack(new MaterialRef("Chrome"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Zircaloy-4"), 1L, true), new WerkstoffRefStack(new MaterialRef("Zircaloy-4"), 1L, true), new WerkstoffRefStack(new MaterialRef("Zircaloy-4"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Zr₃₄Sn₅Fe₂Cr")
@@ -27380,7 +27346,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Zirconium"), 34L, true), new WerkstoffRefStack(new MaterialRef("Tin"), 4L, false), new WerkstoffRefStack(new MaterialRef("Iron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Chrome"), 1L, false), new WerkstoffRefStack(new MaterialRef("Nickel"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Zirconium"), 34L), new MaterialRefStack(new MaterialRef("Tin"), 4L), new MaterialRefStack(new MaterialRef("Iron"), 1L), new MaterialRefStack(new MaterialRef("Chrome"), 1L), new MaterialRefStack(new MaterialRef("Nickel"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Zircaloy-2"), 1L, true), new WerkstoffRefStack(new MaterialRef("Zircaloy-2"), 1L, true), new WerkstoffRefStack(new MaterialRef("Zircaloy-2"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Zr₃₄Sn₄FeCrNi")
@@ -27430,7 +27396,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Iron"), 12L, false), new WerkstoffRefStack(new MaterialRef("Nickel"), 10L, false), new WerkstoffRefStack(new MaterialRef("Cobalt"), 8L, false), new WerkstoffRefStack(new MaterialRef("Titanium"), 4L, false), new WerkstoffRefStack(new MaterialRef("Molybdenum"), 2L, false), new WerkstoffRefStack(new MaterialRef("Aluminium"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Iron"), 12L), new MaterialRefStack(new MaterialRef("Nickel"), 10L), new MaterialRefStack(new MaterialRef("Cobalt"), 8L), new MaterialRefStack(new MaterialRef("Titanium"), 4L), new MaterialRefStack(new MaterialRef("Molybdenum"), 2L), new MaterialRefStack(new MaterialRef("Aluminium"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Incoloy-903"), 1L, true), new WerkstoffRefStack(new MaterialRef("Incoloy-903"), 1L, true), new WerkstoffRefStack(new MaterialRef("Incoloy-903"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Fe₁₂Ni₁Co₈Ti₄Mo₂Al")
@@ -27483,7 +27449,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Adamantium"), 5L, false), new WerkstoffRefStack(new MaterialRef("Naquadah"), 2L, false), new WerkstoffRefStack(new MaterialRef("Lanthanum"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Adamantium"), 5L), new MaterialRefStack(new MaterialRef("Naquadah"), 2L), new MaterialRefStack(new MaterialRef("Lanthanum"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("AdamantiumAlloy"), 1L, true), new WerkstoffRefStack(new MaterialRef("AdamantiumAlloy"), 1L, true), new WerkstoffRefStack(new MaterialRef("AdamantiumAlloy"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Ad₅Nq₂La₃")
             .build();
@@ -27781,7 +27747,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Niobium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Chrome"), 9L, false), new WerkstoffRefStack(new MaterialRef("Aluminium"), 5L, false), new WerkstoffRefStack(new MaterialRef("Titanium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Cobalt"), 10L, false), new WerkstoffRefStack(new MaterialRef("Tungsten"), 13L, false), new WerkstoffRefStack(new MaterialRef("Nickel"), 18L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Niobium"), 2L), new MaterialRefStack(new MaterialRef("Chrome"), 9L), new MaterialRefStack(new MaterialRef("Aluminium"), 5L), new MaterialRefStack(new MaterialRef("Titanium"), 2L), new MaterialRefStack(new MaterialRef("Cobalt"), 10L), new MaterialRefStack(new MaterialRef("Tungsten"), 13L), new MaterialRefStack(new MaterialRef("Nickel"), 18L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("MAR-M200Steel"), 1L, true), new WerkstoffRefStack(new MaterialRef("MAR-M200Steel"), 1L, true), new WerkstoffRefStack(new MaterialRef("MAR-M200Steel"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Nb₂Cr₉Al₅Ti₂Co₁W₁₃Ni₁₈")
             .build();
@@ -27828,7 +27794,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 392L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("MAR-M200Steel"), 18L, true), new WerkstoffRefStack(new MaterialRef("Cerium"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("MAR-M200Steel"), 18L), new MaterialRefStack(new MaterialRef("Cerium"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("MAR-Ce-M200Steel"), 1L, true), new WerkstoffRefStack(new MaterialRef("MAR-Ce-M200Steel"), 1L, true), new WerkstoffRefStack(new MaterialRef("MAR-Ce-M200Steel"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "(Nb₂Cr₉Al₅Ti₂Co₁W₁₃Ni₁₈)₁₈Ce")
             .build();
@@ -27870,7 +27836,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 21L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ENFORCE_UNIFICATION))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Lithium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Chlorine"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Lithium"), 1L), new MaterialRefStack(new MaterialRef("Chlorine"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("LithiumChloride"), 1L, true), new WerkstoffRefStack(new MaterialRef("LithiumChloride"), 1L, true), new WerkstoffRefStack(new MaterialRef("LithiumChloride"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "LiCl")
             .build();
@@ -27924,7 +27890,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("AnnealedCopper"), 4L, false), new WerkstoffRefStack(new MaterialRef("Ardite"), 2L, false), new WerkstoffRefStack(new MaterialRef("RedAlloy"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("AnnealedCopper"), 4L), new MaterialRefStack(new MaterialRef("Ardite"), 2L), new MaterialRefStack(new MaterialRef("RedAlloy"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Signalium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Signalium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Signalium"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Cu₄?₂(Cu(Si(FeS₂)₅(CrAl₂O₃)Hg₃)₄)₂")
             .build();
@@ -27993,7 +27959,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("TinAlloy"), 4L, false), new WerkstoffRefStack(new MaterialRef("SterlingSilver"), 2L, false), new WerkstoffRefStack(new MaterialRef("Lumiinessence"), 2L, true)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("TinAlloy"), 4L), new MaterialRefStack(new MaterialRef("SterlingSilver"), 2L), new MaterialRefStack(new MaterialRef("Lumiinessence"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Lumiium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Lumiium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Lumiium"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "(SnFe)₄(CuAg₄)₂(Al??)₂(PO₄)₄₂")
             .build();
@@ -28042,7 +28008,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("AdamantiumAlloy"), 12L, true), new WerkstoffRefStack(new MaterialRef("Orundum"), 9L, true), new WerkstoffRefStack(new MaterialRef("Tin"), 8L, false), new WerkstoffRefStack(new MaterialRef("Arsenic"), 7L, false), new WerkstoffRefStack(new MaterialRef("Caesium"), 4L, false), new WerkstoffRefStack(new MaterialRef("Osmiridium"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("AdamantiumAlloy"), 12L), new MaterialRefStack(new MaterialRef("Orundum"), 9L), new MaterialRefStack(new MaterialRef("Tin"), 8L), new MaterialRefStack(new MaterialRef("Arsenic"), 7L), new MaterialRefStack(new MaterialRef("Caesium"), 4L), new MaterialRefStack(new MaterialRef("Osmiridium"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Artherium-Sn"), 1L, true), new WerkstoffRefStack(new MaterialRef("Artherium-Sn"), 1L, true), new WerkstoffRefStack(new MaterialRef("Artherium-Sn"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "(Ad₅Nq₂La₃)₁₂Or₉Sn₈As₇Cs₄(Ir₃Os)₃")
             .build();
@@ -28091,7 +28057,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Titanium"), 5L, false), new WerkstoffRefStack(new MaterialRef("Molybdenum"), 5L, false), new WerkstoffRefStack(new MaterialRef("Vanadium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Chrome"), 3L, false), new WerkstoffRefStack(new MaterialRef("Aluminium"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Titanium"), 5L), new MaterialRefStack(new MaterialRef("Molybdenum"), 5L), new MaterialRefStack(new MaterialRef("Vanadium"), 2L), new MaterialRefStack(new MaterialRef("Chrome"), 3L), new MaterialRefStack(new MaterialRef("Aluminium"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("TanmolyiumBeta-C"), 1L, true), new WerkstoffRefStack(new MaterialRef("TanmolyiumBeta-C"), 1L, true), new WerkstoffRefStack(new MaterialRef("TanmolyiumBeta-C"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Ti₅Mo₅V₂Cr₃Al")
             .build();
@@ -28139,7 +28105,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("TanmolyiumBeta-C"), 14L, true), new WerkstoffRefStack(new MaterialRef("Tungsten"), 10L, false), new WerkstoffRefStack(new MaterialRef("NiobiumTitanium"), 9L, false), new WerkstoffRefStack(new MaterialRef("Rhodium-PlatedPalladium"), 8L, true), new WerkstoffRefStack(new MaterialRef("Quantium"), 7L, false), new WerkstoffRefStack(new MaterialRef("Erbium"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("TanmolyiumBeta-C"), 14L), new MaterialRefStack(new MaterialRef("Tungsten"), 10L), new MaterialRefStack(new MaterialRef("NiobiumTitanium"), 9L), new MaterialRefStack(new MaterialRef("Rhodium-PlatedPalladium"), 8L), new MaterialRefStack(new MaterialRef("Quantium"), 7L), new MaterialRefStack(new MaterialRef("Erbium"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Dalisenite"), 1L, true), new WerkstoffRefStack(new MaterialRef("Dalisenite"), 1L, true), new WerkstoffRefStack(new MaterialRef("Dalisenite"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "(Ti₅Mo₅V₂Cr₃Al)₁₄W₁(NbTi)₉(Pd₃Rh)₈?₇Er₃")
             .build();
@@ -28188,7 +28154,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Lumiium"), 18L, true), new WerkstoffRefStack(new MaterialRef("Silver"), 8L, false), new WerkstoffRefStack(new MaterialRef("Sunnarium"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Lumiium"), 18L), new MaterialRefStack(new MaterialRef("Silver"), 8L), new MaterialRefStack(new MaterialRef("Sunnarium"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Hikarium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Hikarium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Hikarium"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "((SnFe)₄(CuAg₄)₂(Al??)₂(PO₄)₄₂)₁₈Ag₈?₄")
             .build();
@@ -28240,7 +28206,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Tungsten"), 8L, false), new WerkstoffRefStack(new MaterialRef("Naquadria"), 7L, false), new WerkstoffRefStack(new MaterialRef("Bedrockium"), 4L, false), new WerkstoffRefStack(new MaterialRef("Carbon"), 4L, false), new WerkstoffRefStack(new MaterialRef("Vanadium"), 3L, false), new WerkstoffRefStack(new MaterialRef("BlackPlutonium"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Tungsten"), 8L), new MaterialRefStack(new MaterialRef("Naquadria"), 7L), new MaterialRefStack(new MaterialRef("Bedrockium"), 4L), new MaterialRefStack(new MaterialRef("Carbon"), 4L), new MaterialRefStack(new MaterialRef("Vanadium"), 3L), new MaterialRefStack(new MaterialRef("BlackPlutonium"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Tairitsu"), 1L, true), new WerkstoffRefStack(new MaterialRef("Tairitsu"), 1L, true), new WerkstoffRefStack(new MaterialRef("Tairitsu"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "W₈?₇((SiO₂)₂₆₂₄₄C₉)₄C₄V₃?")
             .build();
@@ -28301,7 +28267,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 20L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Magnesium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Sulfur"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Magnesium"), 1L), new MaterialRefStack(new MaterialRef("Sulfur"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("MagnesiumSulphate"), 1L, true), new WerkstoffRefStack(new MaterialRef("MagnesiumSulphate"), 1L, true), new WerkstoffRefStack(new MaterialRef("MagnesiumSulphate"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "MgSO₄")
             .build();
@@ -28340,7 +28306,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Ruthenium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Rhodium"), 1L, true), new WerkstoffRefStack(new MaterialRef("Palladium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Platinum"), 1L, false), new WerkstoffRefStack(new MaterialRef("Osmium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Iridium"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Ruthenium"), 1L), new MaterialRefStack(new MaterialRef("Rhodium"), 1L), new MaterialRefStack(new MaterialRef("Palladium"), 1L), new MaterialRefStack(new MaterialRef("Platinum"), 1L), new MaterialRefStack(new MaterialRef("Osmium"), 1L), new MaterialRefStack(new MaterialRef("Iridium"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("PreciousMetalsAlloy"), 1L, true), new WerkstoffRefStack(new MaterialRef("PreciousMetalsAlloy"), 1L, true), new WerkstoffRefStack(new MaterialRef("PreciousMetalsAlloy"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "RuRhPdPtOsIr")
             .build();
@@ -28389,7 +28355,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION, GTWerkstoffFlag.METAL_SOLIDIFICATION, GTWerkstoffFlag.MIXING))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("NaquadahEnriched"), 8L, false), new WerkstoffRefStack(new MaterialRef("Tritanium"), 5L, false), new WerkstoffRefStack(new MaterialRef("Californium"), 3L, true), new WerkstoffRefStack(new MaterialRef("BlackPlutonium"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("NaquadahEnriched"), 8L), new MaterialRefStack(new MaterialRef("Tritanium"), 5L), new MaterialRefStack(new MaterialRef("Californium"), 3L), new MaterialRefStack(new MaterialRef("BlackPlutonium"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("EnrichedNaquadahAlloy"), 1L, true), new WerkstoffRefStack(new MaterialRef("EnrichedNaquadahAlloy"), 1L, true), new WerkstoffRefStack(new MaterialRef("EnrichedNaquadahAlloy"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "?₈Tn₅Cf₃?₂")
             .build();
@@ -28513,7 +28479,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PROTONS, 130L)
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 330L)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Naquadah"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Naquadah"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("InertNaquadah"), 1L, true), new WerkstoffRefStack(new MaterialRef("InertNaquadah"), 1L, true), new WerkstoffRefStack(new MaterialRef("InertNaquadah"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Nq")
             .build();
@@ -28543,7 +28509,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 98L)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("NaquadahEnriched"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("NaquadahEnriched"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("InertEnrichedNaquadah"), 1L, true), new WerkstoffRefStack(new MaterialRef("InertEnrichedNaquadah"), 1L, true), new WerkstoffRefStack(new MaterialRef("InertEnrichedNaquadah"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "?")
             .build();
@@ -28573,7 +28539,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 98L)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Naquadria"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Naquadria"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("InertNaquadria"), 1L, true), new WerkstoffRefStack(new MaterialRef("InertNaquadria"), 1L, true), new WerkstoffRefStack(new MaterialRef("InertNaquadria"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "?")
             .build();
@@ -29265,7 +29231,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 65L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Cerium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Cerium"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Cerium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Ce₂O₃")
             .build();
@@ -30158,7 +30124,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 60L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Lanthanum"), 1L, false), new WerkstoffRefStack(new MaterialRef("Chlorine"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Lanthanum"), 1L), new MaterialRefStack(new MaterialRef("Chlorine"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Lanthanum"), 1L, false), new WerkstoffRefStack(new MaterialRef("Chlorine"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "LaCl₃")
             .build();
@@ -30184,7 +30150,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 67L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Neodymium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Neodymium"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Neodymium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 1L, false)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_NEODYMIUM"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Nd₂O₃")
@@ -30237,7 +30203,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 25L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cell"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Calcium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Fluorine"), 2L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 2L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Calcium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Fluorine"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "CaF₂")
             .build();
@@ -30304,7 +30270,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 44L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Terbium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Nitrogen"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Terbium"), 1L), new MaterialRefStack(new MaterialRef("Nitrogen"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Terbium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Nitrogen"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "TbNO₃")
             .build();
@@ -30751,7 +30717,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 69L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Samarium"), 2L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Samarium"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Samarium"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 1L, false)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Sm₂O₃")
             .build();
@@ -32313,7 +32279,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 3)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.ENFORCE_UNIFICATION, GTWerkstoffFlag.MIXING, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Nickel"), 4L, false), new WerkstoffRefStack(new MaterialRef("Iron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Molybdenum"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Nickel"), 4L), new MaterialRefStack(new MaterialRef("Iron"), 1L), new MaterialRefStack(new MaterialRef("Molybdenum"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Permalloy"), 1L, true), new WerkstoffRefStack(new MaterialRef("Permalloy"), 1L, true), new WerkstoffRefStack(new MaterialRef("Permalloy"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "Ni₄FeMo")
@@ -32366,7 +32332,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 180L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.CENTRIFUGE, GTWerkstoffFlag.ENFORCE_UNIFICATION))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "sheetmetal", "block", "frameGt", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Permalloy"), 9L, true), new WerkstoffRefStack(new MaterialRef("Copper"), 1L, false), new WerkstoffRefStack(new MaterialRef("Chrome"), 1L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Permalloy"), 9L), new MaterialRefStack(new MaterialRef("Copper"), 1L), new MaterialRefStack(new MaterialRef("Chrome"), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Mu-metal"), 1L, true), new WerkstoffRefStack(new MaterialRef("Mu-metal"), 1L, true), new WerkstoffRefStack(new MaterialRef("Mu-metal"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "(Ni₄FeMo)₉CuCr")
             .build();
@@ -32475,7 +32441,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 13L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Carbon"), 1L, false), new WerkstoffRefStack(new MaterialRef("Hydrogen"), 1L, false), new WerkstoffRefStack(new MaterialRef("Fluorine"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Carbon"), 1L), new MaterialRefStack(new MaterialRef("Hydrogen"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("Fluoroform"), 1L, true), new WerkstoffRefStack(new MaterialRef("Fluoroform"), 1L, true), new WerkstoffRefStack(new MaterialRef("Fluoroform"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "CHF₃")
             .build();
@@ -32525,7 +32491,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 13L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Boron"), 2L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Boron"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("BoronTrioxide"), 1L, true), new WerkstoffRefStack(new MaterialRef("BoronTrioxide"), 1L, true), new WerkstoffRefStack(new MaterialRef("BoronTrioxide"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "B₂O₃")
             .build();
@@ -32555,7 +32521,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 28L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ELECTROLYSIS, GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Boron"), 1L, false), new WerkstoffRefStack(new MaterialRef("Chlorine"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Boron"), 1L), new MaterialRefStack(new MaterialRef("Chlorine"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("BoronTrichloride"), 1L, true), new WerkstoffRefStack(new MaterialRef("BoronTrichloride"), 1L, true), new WerkstoffRefStack(new MaterialRef("BoronTrichloride"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "BCl₃")
             .build();
@@ -32583,7 +32549,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 200L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.LOCALIZED_FORMULA))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Lanthanum"), 1L, false), new WerkstoffRefStack(new MaterialRef("Boron"), 6L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Lanthanum"), 1L), new MaterialRefStack(new MaterialRef("Boron"), 6L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("LanthanumHexaboride"), 1L, true), new WerkstoffRefStack(new MaterialRef("LanthanumHexaboride"), 1L, true), new WerkstoffRefStack(new MaterialRef("LanthanumHexaboride"), 1L, true)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "LaB₆")
@@ -32688,7 +32654,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 35L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ENFORCE_UNIFICATION))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Hydrogen"), 2L, false), new WerkstoffRefStack(new MaterialRef("Tungsten"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 4L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Hydrogen"), 2L), new MaterialRefStack(new MaterialRef("Tungsten"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("TungsticAcid"), 1L, true), new WerkstoffRefStack(new MaterialRef("TungsticAcid"), 1L, true), new WerkstoffRefStack(new MaterialRef("TungsticAcid"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "H₂WO₄")
             .build();
@@ -32714,7 +32680,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 57L)
             .setProperty(GTMaterialProperties.WERKSTOFF_FLAGS, EnumSet.of(GTWerkstoffFlag.ENFORCE_UNIFICATION))
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Tungsten"), 1L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Tungsten"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("TungstenTrioxide"), 1L, true), new WerkstoffRefStack(new MaterialRef("TungstenTrioxide"), 1L, true), new WerkstoffRefStack(new MaterialRef("TungstenTrioxide"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "WO₃")
             .build();
@@ -32737,7 +32703,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PROTONS, 42L)
             .setProperty(GTMaterialProperties.WERKSTOFF_MASS, 8L)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
-            .setProperty(GTMaterialProperties.WERKSTOFF_CONTENTS, List.of(new WerkstoffRefStack(new MaterialRef("Nitrogen"), 1L, false), new WerkstoffRefStack(new MaterialRef("Hydrogen"), 4L, false), new WerkstoffRefStack(new MaterialRef("Oxygen"), 3L, false)))
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Nitrogen"), 1L), new MaterialRefStack(new MaterialRef("Hydrogen"), 4L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS, List.of(new WerkstoffRefStack(new MaterialRef("AmmoniumNitrate"), 1L, true), new WerkstoffRefStack(new MaterialRef("AmmoniumNitrate"), 1L, true), new WerkstoffRefStack(new MaterialRef("AmmoniumNitrate"), 1L, true)))
             .setProperty(GTMaterialProperties.WERKSTOFF_FORMULA, "NH₄NO₃")
             .build();

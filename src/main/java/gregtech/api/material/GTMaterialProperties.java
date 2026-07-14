@@ -88,14 +88,6 @@ public class GTMaterialProperties {
     /// consumers use it (rather than any single scalar below, several of which elide their common default) as
     /// the "this material has gtpp data" signal.
     public static final Property<String> GTPP_CHEMICAL_FORMULA = Property.of("gregtech", "gtppChemicalFormula");
-    /// The legacy `Material.vMaterialInput` composition breakdown, present only when it diverges from
-    /// [#COMPOSITION] (a same-name merge leaves the shared property whatever the gregtech/werkstoff side's own
-    /// codegen set, often nothing comparable) in a way [#COMPOSITION] cannot safely absorb: either the two
-    /// disagree outright, or [#COMPOSITION] is absent and backfilling it would feed
-    /// `gregtech.loaders.materials.LegacyMaterials#build`'s `addMaterial` for a
-    /// `gregtech.loaders.materials.MaterialsLegacyBridge`-built material, changing the legacy `Materials`
-    /// facade. Reconstruction reads this, falling back to [#COMPOSITION].
-    public static final Property<List<MaterialRefStack>> GTPP_COMPOSITION = Property.of("gregtech", "gtppComposition");
     /// The legacy `Material` constructor's `vGenerateCells` flag, elided when `false`.
     public static final Property<Boolean> GTPP_GENERATES_CELLS = Property.of("gregtech", "gtppGeneratesCells");
     /// The legacy `Material` constructor's `generateFluid` flag, elided when `false`.
@@ -178,11 +170,6 @@ public class GTMaterialProperties {
     /// [#WERKSTOFF_IDS] is always present on a material carrying any werkstoff data -- reconstruction and
     /// other consumers use it as the "this material has werkstoff data" signal, and its first element as the
     /// declaration-order sort key (every legacy pool declares its werkstoffe in ascending id order).
-    /// The werkstoff `CONTENTS` list (chemical make-up), distinct from [#COMPOSITION] so a merge never alters
-    /// the legacy `Materials` reconstruction. Each entry records which legacy registry it referenced -- see
-    /// [WerkstoffRefStack]. Elided when empty.
-    public static final Property<List<WerkstoffRefStack>> WERKSTOFF_CONTENTS = Property
-        .of("gregtech", "werkstoffContents");
     /// [GTWerkstoffFlag] booleans a legacy `Werkstoff` carried, elided when empty.
     public static final Property<EnumSet<GTWerkstoffFlag>> WERKSTOFF_FLAGS = Property.of("gregtech", "werkstoffFlags");
     /// The `Werkstoff` chemical-formula tooltip string, elided when empty. [MaterialFormulas] reads this

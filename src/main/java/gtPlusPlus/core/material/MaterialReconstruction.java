@@ -241,7 +241,7 @@ public final class MaterialReconstruction {
         TextureSet textureSet = LegacyMaterials.iconSetOf(ml);
         MaterialState state = MaterialState.valueOf(gtppState);
 
-        List<MaterialRefStack> composition = gtppComposition(ml);
+        List<MaterialRefStack> composition = ml.getProperty(GTMaterialProperties.COMPOSITION);
         MaterialStack[] composites;
         if (composition == null || composition.isEmpty()) {
             composites = new MaterialStack[0];
@@ -280,14 +280,6 @@ public final class MaterialReconstruction {
         }
 
         return material;
-    }
-
-    /// The composition [#build] pins for `ml`, preferring [GTMaterialProperties#GTPP_COMPOSITION] (the gtpp
-    /// value, when it needed pinning against [GTMaterialProperties#COMPOSITION] -- see that property's
-    /// javadoc) and falling back to [GTMaterialProperties#COMPOSITION] itself.
-    private static List<MaterialRefStack> gtppComposition(com.ruling_0.materiallib.api.Material ml) {
-        List<MaterialRefStack> pinned = ml.getProperty(GTMaterialProperties.GTPP_COMPOSITION);
-        return pinned != null ? pinned : ml.getProperty(GTMaterialProperties.COMPOSITION);
     }
 
     /// The legacy gtpp fluid name for `ml`'s non-plasma fluid, or null when `generatesFluid` is false --
