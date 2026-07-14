@@ -226,7 +226,8 @@ public class BioRecipes {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, (int) (500)),
                 new FluidStack(GTPPFluids.PropionicAcid, 500))
-            .fluidOutputs(Materials.Polyethylene.getMolten(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(Materials2Materials.Plastic, Materials2FluidShapes.fluidMolten, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 2)
@@ -414,7 +415,7 @@ public class BioRecipes {
         // NaCl·H2O = NaOH + Cl + H
         GTValues.RA.stdBuilder()
             .circuit(4)
-            .itemOutputs(Materials.SodiumHydroxide.getDust(3))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SaltWater, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
@@ -432,7 +433,7 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, (int) (5)))
             .circuit(5)
-            .itemOutputs(Materials.SodiumHydroxide.getDust(15))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 15))
             .fluidInputs(GTModHandler.getDistilledWater(5_000))
             .fluidOutputs(
                 MaterialLibAPI
