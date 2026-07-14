@@ -22,6 +22,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTWerkstoffFlag;
+import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.WerkstoffRefStack;
 import gregtech.loaders.materials.LegacyMaterials;
 
@@ -87,6 +88,20 @@ public final class WerkstoffReconstruction {
         "Mu-metal");
     private static final Set<String> QUALITY_OVERRIDE_WERKSTOFFE = Set
         .of("AdemicSteel", "TantalumHafniumCarbide", "ExtremelyUnstableNaquadah", "Shirabon");
+
+    /// The two element werkstoffe that shadow a same-name gregtech `Materials` element: their legacy contents
+    /// were the extension stub `[Materials.<name> x1]` (never a real chemical make-up, so the U1 composition
+    /// collapse did not migrate it into [GTMaterialProperties#COMPOSITION]), and every other werkstoff's
+    /// legacy contents reference to one of these names pointed at the `Materials` constant, never the
+    /// werkstoff. Reconstruction synthesizes the stub for these two and resolves contents references to them
+    /// through `Materials`.
+    private static final Set<String> GT_ELEMENT_CONTENT_NAMES = Set.of("Calcium", "Tellurium");
+
+    /// Werkstoffe carrying a canonical [GTMaterialProperties#COMPOSITION] (gregtech/gtpp-side chemical
+    /// make-up) whose legacy `Werkstoff` declaration had no contents at all -- reconstruction keeps their
+    /// contents empty rather than adopting the composition, which would alter the contents-derived legacy
+    /// behaviors (tool-stat contents count, contents sub tags).
+    private static final Set<String> CONTENTS_EXCLUDED_WERKSTOFFE = Set.of("Alumina", "ThoriumTetrafluoride");
 
     private static Map<Integer, Werkstoff> byId;
 
@@ -216,11 +231,22 @@ public final class WerkstoffReconstruction {
         }
 
         LinkedHashSet<Pair<ISubTagContainer, Integer>> contents = new LinkedHashSet<>();
-        for (WerkstoffRefStack stack : orEmptyList(ml.getProperty(GTMaterialProperties.WERKSTOFF_CONTENTS))) {
-            contents.add(
-                Pair.of(
-                    resolveRef(stack, ml.getName(), null, built, byName, pending, inProgress),
-                    (int) stack.amount()));
+        if (GT_ELEMENT_CONTENT_NAMES.contains(ml.getName())) {
+            contents.add(Pair.of(requireMaterials(ml.getName(), ml.getName()), 1));
+        } else if (!CONTENTS_EXCLUDED_WERKSTOFFE.contains(ml.getName())) {
+            for (MaterialRefStack stack : orEmptyList(ml.getProperty(GTMaterialProperties.COMPOSITION))) {
+                contents.add(
+                    Pair.of(
+                        resolveContentRef(
+                            stack.material()
+                                .name(),
+                            ml.getName(),
+                            built,
+                            byName,
+                            pending,
+                            inProgress),
+                        (int) stack.amount()));
+            }
         }
         // Mirrors the public constructors' extension rule: a single Materials content of amount 1 marks the
         // werkstoff as an extension of that material.
@@ -296,6 +322,25 @@ public final class WerkstoffReconstruction {
         return value != null ? value : fallback;
     }
 
+    /// Resolves a [GTMaterialProperties#COMPOSITION] reference for a werkstoff's contents: a werkstoff-backed
+    /// name resolves to its `Werkstoff` (building it on demand), everything else to the legacy `Materials`
+    /// constant -- except [#GT_ELEMENT_CONTENT_NAMES], whose legacy contents registry was always `Materials`.
+    private static ISubTagContainer resolveContentRef(String name, String ownName, Map<Integer, Werkstoff> built,
+        Map<String, Werkstoff> byName, Map<String, Material> pending, LinkedHashSet<String> inProgress) {
+        if (GT_ELEMENT_CONTENT_NAMES.contains(name)) {
+            return requireMaterials(ownName, name);
+        }
+        if (pending.containsKey(name)) {
+            Werkstoff resolved = byName.get(name);
+            if (resolved == null) {
+                build(pending.get(name), built, byName, pending, inProgress);
+                resolved = byName.get(name);
+            }
+            return resolved;
+        }
+        return requireMaterials(ownName, name);
+    }
+
     private static ISubTagContainer resolveRef(WerkstoffRefStack stack, String ownName, Werkstoff self,
         Map<Integer, Werkstoff> built, Map<String, Werkstoff> byName, Map<String, Material> pending,
         LinkedHashSet<String> inProgress) {
@@ -317,6 +362,10 @@ public final class WerkstoffReconstruction {
             }
             return resolved;
         }
+        return requireMaterials(ownName, name);
+    }
+
+    private static Materials requireMaterials(String ownName, String name) {
         Materials material = Materials.get(name);
         if (material == null || material == Materials._NULL) {
             throw new IllegalStateException("Werkstoff " + ownName + " references unknown legacy material " + name);
