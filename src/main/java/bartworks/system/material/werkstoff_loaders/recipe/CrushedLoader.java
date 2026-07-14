@@ -50,7 +50,7 @@ import gregtech.api.util.GTOreDictUnificator;
 /// `ProcessingCrushedOre` cover any material with a MaterialLib ore/dust shape and a legacy bridge material,
 /// reached through `gregtech.loaders.shapeconsumers.ConsumerDirty`/`ConsumerPure`/`ConsumerCrushedOre`. The
 /// crystallisable-gem autoclave recipes are likewise canonical, driven by `GTMaterialFlag.CRYSTALLISABLE` in
-/// `gregtech.loaders.oreprocessing.ProcessingDust`, so this loader no longer registers them.
+/// `gregtech.loaders.oreprocessing.ProcessingDust`.
 ///
 /// The electromagnetic-separator byproduct branch stays: [Werkstoff#contains] resolves a [SubTag] transitively
 /// through a compound's composition, so some werkstoffe (e.g. Chromo-Alumino-Povondraite) carry
