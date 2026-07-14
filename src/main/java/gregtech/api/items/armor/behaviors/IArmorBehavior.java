@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +22,6 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import gregtech.GTMod;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.items.armor.ArmorContext;
-import gregtech.api.util.GTUtility;
 
 public interface IArmorBehavior {
     /*
@@ -55,10 +55,10 @@ public interface IArmorBehavior {
         EntityPlayer player = context.getPlayer();
 
         if (hasDisplayName()) {
-            if (player instanceof EntityPlayerMP) {
+            if (player instanceof EntityPlayerMP playerMP) {
                 IChatComponent chatComponent = new ChatComponentText(
-                    GRAY + GTUtility.translate("GT5U.armor.message.enabled", getDisplayName()));
-                GTNHLib.proxy.sendMessageAboveHotbar((EntityPlayerMP) player, chatComponent, 60, true, true);
+                    GRAY + StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getDisplayName()));
+                GTNHLib.proxy.sendMessageAboveHotbar(playerMP, chatComponent, 60, true, true);
             }
         }
     }
@@ -70,10 +70,10 @@ public interface IArmorBehavior {
         EntityPlayer player = context.getPlayer();
 
         if (hasDisplayName()) {
-            if (player instanceof EntityPlayerMP) {
+            if (player instanceof EntityPlayerMP playerMP) {
                 IChatComponent chatComponent = new ChatComponentText(
-                    GRAY + GTUtility.translate("GT5U.armor.message.disabled", getDisplayName()));
-                GTNHLib.proxy.sendMessageAboveHotbar((EntityPlayerMP) player, chatComponent, 60, true, true);
+                    GRAY + StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getDisplayName()));
+                GTNHLib.proxy.sendMessageAboveHotbar(playerMP, chatComponent, 60, true, true);
             }
         }
     }

@@ -11,6 +11,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.items.armor.ArmorContext.ArmorContextImpl;
 import gregtech.api.items.armor.ArmorHelper;
 import gregtech.api.items.armor.ArmorState;
@@ -75,13 +76,24 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
         addSeparatorIfNeeded(desc);
 
         if (showAllInfo && !part.getIncompatibleBehaviors()
-            .isEmpty()) {
+            .isEmpty() || !part.getIncompatibleAugments()
+                .isEmpty()) {
             desc.add(EnumChatFormatting.RED + GTUtility.translate("GT5U.armor.tooltip.incompatible"));
+        }
 
+        if (!part.getIncompatibleBehaviors()
+            .isEmpty()) {
             for (BehaviorName behavior : part.getIncompatibleBehaviors()) {
                 if (!behavior.hasDisplayName()) continue;
 
                 desc.add(GRAY + "- " + behavior.getDisplayName());
+            }
+        }
+
+        if (!part.getIncompatibleAugments()
+            .isEmpty()) {
+            for (ItemList augment : part.getIncompatibleAugments()) {
+                desc.add(GRAY + "- " + augment.getDisplayName());
             }
         }
 
