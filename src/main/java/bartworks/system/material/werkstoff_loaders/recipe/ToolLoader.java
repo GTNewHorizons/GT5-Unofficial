@@ -52,8 +52,7 @@ import gregtech.common.items.MetaGeneratedTool01;
 
 /// Tool crafting-table recipes and turbine-blade assembly for werkstoffe. Turbine-blade shape generation
 /// (extruder, fluid-solidifier mold, forming press) is covered by the canonical autogen
-/// (`ProcessingShaping`/`ProcessingToolHead`, dispatched by `gregtech.loaders.shapeconsumers`); the
-/// crafting-table recipes are not census-evaluable.
+/// (`ProcessingShaping`/`ProcessingToolHead`, dispatched by `gregtech.loaders.shapeconsumers`).
 public class ToolLoader implements IWerkstoffRunnable {
 
     // GTNH-Specific
