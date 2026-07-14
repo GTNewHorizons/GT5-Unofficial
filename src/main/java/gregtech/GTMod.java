@@ -119,6 +119,7 @@ import gregtech.loaders.load.FissionFuelLoader;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
 import gregtech.loaders.load.MTERecipeLoader;
+import gregtech.loaders.materialrecipes.LoaderMaterialRecipes;
 import gregtech.loaders.misc.CoverLoader;
 import gregtech.loaders.misc.GTAchievements;
 import gregtech.loaders.misc.GTBees;
@@ -472,6 +473,7 @@ public class GTMod {
         new BlockResistanceLoader().run();
         new RecyclerBlacklistLoader().run();
         new MachineRecipeLoader().run();
+        LoaderMaterialRecipes.run();
         new ScrapboxDropLoader().run();
         new GTWorldgenloader().run();
         new CoverLoader().run();
