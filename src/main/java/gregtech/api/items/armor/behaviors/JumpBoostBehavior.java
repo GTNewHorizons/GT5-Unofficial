@@ -2,11 +2,9 @@ package gregtech.api.items.armor.behaviors;
 
 import java.util.Set;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ChatComponentTranslation;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +15,6 @@ import bartworks.util.MathUtils;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
 import gregtech.api.items.armor.ArmorState;
-import gregtech.api.util.GTUtility;
 
 public class JumpBoostBehavior implements IArmorBehavior {
 
@@ -47,12 +44,11 @@ public class JumpBoostBehavior implements IArmorBehavior {
 
         state.jumpBoostMulti = MathUtils.clamp(state.jumpBoostMulti, 1, jumpMaxMulti);
 
-        EntityPlayer player = context.getPlayer();
-
-        if (player instanceof EntityPlayerMP) {
-            IChatComponent chatComponent = new ChatComponentText(
-                GTUtility.translate("GT5U.armor.message.jump_boost_set", state.jumpBoostMulti));
-            GTNHLib.proxy.sendMessageAboveHotbar((EntityPlayerMP) player, chatComponent, 60, true, true);
+        if (context.getPlayer() instanceof EntityPlayerMP playerMP) {
+            ChatComponentTranslation chatComponent = new ChatComponentTranslation(
+                "GT5U.armor.message.jump_boost_set",
+                state.jumpBoostMulti);
+            GTNHLib.proxy.sendMessageAboveHotbar(playerMP, chatComponent, 60, true, true);
         }
     }
 

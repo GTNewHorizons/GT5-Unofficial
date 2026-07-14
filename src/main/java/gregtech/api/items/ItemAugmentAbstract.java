@@ -76,13 +76,14 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
 
         addSeparatorIfNeeded(desc);
 
-        if (showAllInfo && !part.getIncompatibleBehaviors()
-            .isEmpty() || !part.getIncompatibleAugments()
-                .isEmpty()) {
+        if (showAllInfo && (!part.getIncompatibleBehaviors()
+            .isEmpty()
+            || !part.getIncompatibleAugments()
+                .isEmpty())) {
             desc.add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.armor.tooltip.incompatible"));
         }
 
-        if (!part.getIncompatibleBehaviors()
+        if (showAllInfo && !part.getIncompatibleBehaviors()
             .isEmpty()) {
             for (BehaviorName behavior : part.getIncompatibleBehaviors()) {
                 if (!behavior.hasDisplayName()) continue;
@@ -91,7 +92,7 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
             }
         }
 
-        if (!part.getIncompatibleAugments()
+        if (showAllInfo && !part.getIncompatibleAugments()
             .isEmpty()) {
             for (ItemList augment : part.getIncompatibleAugments()) {
                 desc.add(GRAY + "- " + augment.getDisplayName());
