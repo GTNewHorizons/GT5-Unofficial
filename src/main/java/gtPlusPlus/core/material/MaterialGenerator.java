@@ -55,7 +55,6 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMaterialProcessing;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMetalRecipe;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenOre;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenPlasma;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenPlates;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenRecycling;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenShapedCrafting;
 
@@ -160,7 +159,6 @@ public class MaterialGenerator {
             new RecipeGenMetalRecipe(matInfo);
             new RecipeGenExtruder(matInfo);
             new RecipeGenFluids(matInfo);
-            new RecipeGenPlates(matInfo);
             new RecipeGenShapedCrafting(matInfo);
             new RecipeGenMaterialProcessing(matInfo);
 
@@ -227,7 +225,6 @@ public class MaterialGenerator {
             if (generatePlates) {
                 if (!cutOver(matInfo, OrePrefixes.plate)) new BaseItemPlate(matInfo);
                 if (!cutOver(matInfo, OrePrefixes.plateDouble)) new BaseItemPlateDouble(matInfo);
-                new RecipeGenPlates(matInfo);
                 new RecipeGenExtruder(matInfo);
                 new RecipeGenAssembler(matInfo);
             }
@@ -344,7 +341,6 @@ public class MaterialGenerator {
             new RecipeGenMetalRecipe(matInfo);
             new RecipeGenExtruder(matInfo);
             new RecipeGenFluids(matInfo);
-            new RecipeGenPlates(matInfo);
             new RecipeGenShapedCrafting(matInfo);
             new RecipeGenMaterialProcessing(matInfo);
             new RecipeGenDustGeneration(matInfo);
