@@ -776,7 +776,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     @Override
     public String generateCurrentRecipeInfoString() {
-        StringBuffer ret = new StringBuffer(GTUtility.translate("GT5U.gui.text.progress"));
+        StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
         ret.append(" ");
         ret.append(mProgresstime);
         ret.append(" / ");
@@ -819,8 +819,9 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         NBTTagCompound tag = accessor.getNBTData();
 
-        currenttip.add(GTUtility.translate("GT5U.chat.bec-processing-speed", 20f * tag.getFloat("speed")));
-        currenttip.add(GTUtility.translate("GT5U.chat.bec-slowdowns", tag.getInteger("slowdowns")));
+        currenttip
+            .add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-processing-speed", 20f * tag.getFloat("speed")));
+        currenttip.add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-slowdowns", tag.getInteger("slowdowns")));
     }
 
     @Override

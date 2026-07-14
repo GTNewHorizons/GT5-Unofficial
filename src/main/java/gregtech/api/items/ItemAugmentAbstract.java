@@ -8,6 +8,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -50,7 +51,7 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
 
         if (showAllInfo && !part.getProvidedBehaviors()
             .isEmpty()) {
-            desc.add(EnumChatFormatting.GREEN + GTUtility.translate("GT5U.armor.tooltip.effects"));
+            desc.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.armor.tooltip.effects"));
 
             for (IArmorBehavior behavior : part.getProvidedBehaviors()) {
                 if (!behavior.hasDisplayName()) continue;
@@ -63,7 +64,7 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
 
         if (showAllInfo && !part.getRequiredBehaviors()
             .isEmpty()) {
-            desc.add(EnumChatFormatting.DARK_AQUA + GTUtility.translate("GT5U.armor.tooltip.requires"));
+            desc.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("GT5U.armor.tooltip.requires"));
 
             for (BehaviorName behavior : part.getRequiredBehaviors()) {
                 if (!behavior.hasDisplayName()) continue;
@@ -76,7 +77,7 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
 
         if (showAllInfo && !part.getIncompatibleBehaviors()
             .isEmpty()) {
-            desc.add(EnumChatFormatting.RED + GTUtility.translate("GT5U.armor.tooltip.incompatible"));
+            desc.add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.armor.tooltip.incompatible"));
 
             for (BehaviorName behavior : part.getIncompatibleBehaviors()) {
                 if (!behavior.hasDisplayName()) continue;
@@ -99,7 +100,7 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
         super.addAdditionalToolTips(desc, augmentStack, player);
 
         if (!showAllInfo) {
-            desc.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.hold_shift"));
+            desc.add(GRAY + StatCollector.translateToLocal("GT5U.armor.tooltip.hold_shift"));
         }
 
         desc.replaceAll(GTUtility::processFormatStacks);

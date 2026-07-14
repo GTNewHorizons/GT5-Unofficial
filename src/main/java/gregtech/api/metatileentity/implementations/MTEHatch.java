@@ -21,7 +21,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTSplit;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.IHatchWatcher;
 
@@ -290,14 +289,15 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
             Collections.addAll(additionalTooltips, suffixTooltip);
         }
         additionalTooltips.add(
-            GTUtility.translate(
+            StatCollector.translateToLocalFormatted(
                 "gt.tileentity.throughput",
                 EnumChatFormatting.YELLOW + formatNumber(amp * GTValues.V[tier]) + EnumChatFormatting.RESET + " EU/t"));
         additionalTooltips.add(
-            GTUtility.translate(
+            StatCollector.translateToLocalFormatted(
                 isDynamo ? "gt.tileentity.eup_out" : "gt.tileentity.eup_in",
                 TooltipHelper.voltageText(GTValues.V[tier])));
-        additionalTooltips.add(GTUtility.translate("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
+        additionalTooltips
+            .add(StatCollector.translateToLocalFormatted("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
         if (author != null) {
             additionalTooltips.add(GTAuthors.buildAuthorsWithFormat(author));
         }

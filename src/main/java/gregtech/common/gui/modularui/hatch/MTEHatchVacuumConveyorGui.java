@@ -12,6 +12,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -48,7 +49,6 @@ import appeng.items.storage.ItemBasicStorageCell;
 import appeng.util.item.AEItemStack;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
@@ -206,7 +206,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
                 syncContents.setValue(new CircuitComponentPacket());
                 return true;
             })
-            .addTooltipLine(GTUtility.translate("GT5U.tooltip.nac.interface.delete_stored"));
+            .addTooltipLine(StatCollector.translateToLocal("GT5U.tooltip.nac.interface.delete_stored"));
     }
 
     protected Flow createCellDrainRow(PanelSyncManager syncManager) {

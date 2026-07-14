@@ -143,7 +143,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addCasing("230-247", "Naquadah Reinforced Block", false)
             .addCasing("36", "Robust Tungstensteel Machine Casing", false)
             .addCasing("24", "Containment Block", true)
-            .addCasing("22", "Any Tiered Glass", true)
+            .addCasing("22", "Any Tiered Glass", false)
             .addCasing("10", "PTFE Pipe Casing", false)
             .addCasing("2", "Naquadah Frame Box", false)
             .addEnergyHatch("1+", "Any reinforced block", 1)

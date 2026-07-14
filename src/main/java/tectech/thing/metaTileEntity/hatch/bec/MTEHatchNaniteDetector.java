@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -26,7 +27,6 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
@@ -133,7 +133,7 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
                         nanite -> {
                             NaniteTier tier = GTDataUtils.getIndexSafe(NaniteTier.values(), nanite);
 
-                            return IKey.str(tier == null ? GTUtility.translate("GT5U.gui.text.nil") : tier.describe());
+                            return IKey.str(tier == null ? StatCollector.translateToLocal("GT5U.gui.text.nil") : tier.describe());
                         })
                     .build(panel, syncManager, getContentHolderHeight())
                     .horizontalCenter());
