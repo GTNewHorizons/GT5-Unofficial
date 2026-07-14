@@ -249,11 +249,18 @@ public class MU {
     }
 
     /// Whether a material carries a legacy [gregtech.api.enums.SubTag], ported 1:1 to [GTMaterialFlag] of the
-    /// same name -- see [GTMaterialProperties#FLAGS]. Mirrors legacy `Materials#contains(SubTag)`/`mSubTags`.
+    /// same name -- see [GTMaterialProperties#FLAGS]. Also true when [GTMaterialProperties#SUB_TAGS] (the
+    /// werkstoff facade's raw `Werkstoff` SubTag list, captured separately from FLAGS -- see that property's
+    /// javadoc) names `flag`: a werkstoff-backed material's FLAGS reflects only what its dumped bridge
+    /// `Materials` carried, which never included its own `Werkstoff`'s SubTags, so this reads SUB_TAGS as a
+    /// second source for the same 1:1 name mapping FLAGS already uses. Mirrors legacy
+    /// `Materials#contains(SubTag)`/`mSubTags`.
     public static boolean hasFlag(@Nullable Material material, GTMaterialFlag flag) {
         if (material == null) return false;
         EnumSet<GTMaterialFlag> flags = material.getProperty(GTMaterialProperties.FLAGS);
-        return flags != null && flags.contains(flag);
+        if (flags != null && flags.contains(flag)) return true;
+        List<String> subTags = material.getProperty(GTMaterialProperties.SUB_TAGS);
+        return subTags != null && subTags.contains(flag.name());
     }
 
     /// [#hasFlag(Material, GTMaterialFlag)] for callers still holding the legacy [Materials] enum constant.
