@@ -228,7 +228,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
 
         CachedSiphonRecipe recipe = (CachedSiphonRecipe) this.arecipes.get(recipeIndex);
         GuiDraw.drawStringC(
-            formatValue(GTUtility.translate(recipe.planet)),
+            formatValue(StatCollector.translateToLocal(recipe.planet)),
             CATEGORY_VALUE_X,
             PLANET_TYPE_Y,
             TEXT_COLOR,

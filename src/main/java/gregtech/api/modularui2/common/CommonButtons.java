@@ -16,7 +16,6 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 
 /**
  * A class of commonly used widgets between all forms of MUI2.
@@ -125,7 +124,7 @@ public final class CommonButtons {
     public static ToggleButton createToggleButton(BooleanSyncValue syncValue, UITexture overlay, String key) {
         return new ToggleButton().value(syncValue)
             .overlay(overlay)
-            .addTooltipLine(GTUtility.translate(key))
+            .addTooltipLine(StatCollector.translateToLocal(key))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
