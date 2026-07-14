@@ -30,18 +30,13 @@ import static gregtech.api.enums.OrePrefixes.toolHeadSaw;
 import static gregtech.api.enums.OrePrefixes.toolHeadWrench;
 import static gregtech.api.enums.OrePrefixes.turbineBlade;
 import static gregtech.api.enums.OrePrefixes.wireFine;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import bartworks.util.BWUtil;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -50,8 +45,9 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 
-/// Tool crafting-table recipes and turbine-blade assembly for werkstoffe. Turbine-blade shape generation
-/// (extruder, fluid-solidifier mold, forming press) is covered by the canonical autogen
+/// Tool crafting-table recipes and turbine-blade crafting for werkstoffe. Turbine-blade shape generation
+/// (extruder, fluid-solidifier mold, forming press) and the turbine-blade-to-tool assembler recipes
+/// (`TURBINE_SMALL`/`TURBINE`/`TURBINE_LARGE`/`TURBINE_HUGE`) are covered by the canonical autogen
 /// (`ProcessingShaping`/`ProcessingToolHead`, dispatched by `gregtech.loaders.shapeconsumers`).
 public class ToolLoader implements IWerkstoffRunnable {
 
@@ -842,67 +838,11 @@ public class ToolLoader implements IWerkstoffRunnable {
             new Object[] { "II ", "IIh", "II ", 'P', plate.get(werkstoff.getBridgeMaterial()), 'I',
                 ingot.get(werkstoff.getBridgeMaterial()) });
         if (werkstoff.hasItemType(plateDouble) && werkstoff.hasItemType(cellMolten)) {
-            int voltageMultiplier = werkstoff.getStats()
-                .getMeltingPoint() >= 2800 ? 60 : 15;
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(turbineBlade, werkstoff.getBridgeMaterial(), 1L),
                 GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "fPd", "SPS", " P ", 'P', plateDouble.get(werkstoff.getBridgeMaterial()), 'S',
                     screw.get(werkstoff.getBridgeMaterial()) });
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(turbineBlade, 4), GTOreDictUnificator.get(stickLong, Materials.Magnalium, 1))
-                .itemOutputs(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                        IDMetaTool01.TURBINE_SMALL.ID,
-                        1,
-                        werkstoff.getBridgeMaterial(),
-                        Materials.Magnalium,
-                        null))
-                .duration(8 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 100))
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(turbineBlade, 8), GTOreDictUnificator.get(stickLong, Materials.Titanium, 1))
-                .itemOutputs(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                        IDMetaTool01.TURBINE.ID,
-                        1,
-                        werkstoff.getBridgeMaterial(),
-                        Materials.Titanium,
-                        null))
-                .duration(16 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 400))
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    werkstoff.get(turbineBlade, 12),
-                    GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 1))
-                .itemOutputs(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                        IDMetaTool01.TURBINE_LARGE.ID,
-                        1,
-                        werkstoff.getBridgeMaterial(),
-                        Materials.TungstenSteel,
-                        null))
-                .duration(32 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 1600))
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(turbineBlade, 16), GTOreDictUnificator.get(stickLong, Materials.Americium, 1))
-                .itemOutputs(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                        IDMetaTool01.TURBINE_HUGE.ID,
-                        1,
-                        werkstoff.getBridgeMaterial(),
-                        Materials.Americium,
-                        null))
-                .duration(1 * MINUTES + 4 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 6400))
-                .addTo(assemblerRecipes);
         }
 
         if (!werkstoff.hasItemType(gem)) {
