@@ -114,7 +114,7 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(9, 5, 5, false)
-            .addController("Front center")
+            .addController("Front center, 3rd layer")
             .addCasing("0-79", "Chemically Inert Machine Casing", false)
             .addCasing("64", "Any Tiered Glass", true)
             .addCasing("28", "PTFE Pipe Casing", false)

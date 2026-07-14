@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
@@ -369,7 +370,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     protected void addProfilingInformation(List<String> tList) {
         if (mTickDisabled) {
-            tList.add(GTUtility.translate("GT5U.scanner.debug.tick_disabled"));
+            tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.tick_disabled"));
         } else if (hasTimeStatisticsStarted) {
             double tAverageTime = 0;
             double tWorstTime = 0;
@@ -389,7 +390,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             int samples = mTimeStatistics.length - amountOfZero;
             if (samples > 0) {
                 tList.add(
-                    GTUtility.translate(
+                    StatCollector.translateToLocalFormatted(
                         "GT5U.scanner.debug.tick_stats",
                         formatNumber(tAverageTime / samples),
                         formatNumber(samples),
@@ -397,11 +398,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             }
         } else {
             startTimeStatistics();
-            tList.add(GTUtility.translate("GT5U.scanner.debug.tick_stats_started"));
+            tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.tick_stats_started"));
         }
         if (mLagWarningCount > 0) {
             tList.add(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     mLagWarningCount >= 10 ? "GT5U.scanner.debug.lag_warnings_many" : "GT5U.scanner.debug.lag_warnings",
                     mLagWarningCount >= 10 ? GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING : mLagWarningCount,
                     GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING));
