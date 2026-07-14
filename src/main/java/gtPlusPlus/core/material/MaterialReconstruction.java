@@ -310,19 +310,17 @@ public final class MaterialReconstruction {
 
         int durability = ml.getProperty(GTMaterialProperties.DURABILITY);
 
-        Boolean gtppBlast = ml.getProperty(GTMaterialProperties.GTPP_USES_BLAST_FURNACE);
-        boolean usesBlastFurnace = Boolean.TRUE
-            .equals(gtppBlast != null ? gtppBlast : ml.getProperty(GTMaterialProperties.BLAST_REQUIRED));
+        boolean usesBlastFurnace = Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.BLAST_REQUIRED));
 
         return new Material.GtppScalars(
-            orDefault(ml.getProperty(GTMaterialProperties.GTPP_TIER), 0),
-            orDefault(ml.getProperty(GTMaterialProperties.GTPP_VOLTAGE_MULTIPLIER), 16L),
+            orDefault(ml.getProperty(GTMaterialProperties.TIER), 0),
+            orDefault(ml.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER), 16L),
             meltingPointK,
             boilingPointK,
             durability,
             usesBlastFurnace,
-            Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.GTPP_IS_RADIOACTIVE)),
-            orDefault(ml.getProperty(GTMaterialProperties.GTPP_RADIATION_LEVEL), 0),
+            Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.IS_RADIOACTIVE)),
+            orDefault(ml.getProperty(GTMaterialProperties.RADIATION_LEVEL), 0),
             orDefault(ml.getProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA), ""),
             orDefault(ml.getProperty(GTMaterialProperties.GTPP_PROTONS), 0L),
             orDefault(ml.getProperty(GTMaterialProperties.GTPP_NEUTRONS), 0L),

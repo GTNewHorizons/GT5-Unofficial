@@ -740,8 +740,19 @@ public final class MaterialDataDump {
         json.put("families", dumpMlFamilies(material));
         json.put("localName", material.getProperty(GTMaterialProperties.LOCAL_NAME));
         json.put("meltingPoint", material.getProperty(GTMaterialProperties.MELTING_POINT));
+        json.put("boilingPoint", material.getProperty(GTMaterialProperties.BOILING_POINT));
+        json.put("meltingVoltage", material.getProperty(GTMaterialProperties.MELTING_VOLTAGE));
         json.put("blastTemp", material.getProperty(GTMaterialProperties.BLAST_TEMP));
         json.put("blastRequired", material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
+        json.put("toxic", material.getProperty(GTMaterialProperties.TOXIC));
+        json.put("isRadioactive", material.getProperty(GTMaterialProperties.IS_RADIOACTIVE));
+        json.put("radiationLevel", material.getProperty(GTMaterialProperties.RADIATION_LEVEL));
+        json.put("tier", material.getProperty(GTMaterialProperties.TIER));
+        json.put("voltageMultiplier", material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER));
+        json.put("mixCircuit", material.getProperty(GTMaterialProperties.MIX_CIRCUIT));
+        json.put("ebfGasTimeMultiplier", material.getProperty(GTMaterialProperties.EBF_GAS_TIME_MULTIPLIER));
+        json.put("ebfGasAmountMultiplier", material.getProperty(GTMaterialProperties.EBF_GAS_AMOUNT_MULTIPLIER));
+        json.put("subTags", material.getProperty(GTMaterialProperties.SUB_TAGS));
         json.put("gasTemp", material.getProperty(GTMaterialProperties.GAS_TEMP));
         json.put("fuelPower", material.getProperty(GTMaterialProperties.FUEL_POWER));
         json.put("fuelType", material.getProperty(GTMaterialProperties.FUEL_TYPE));
@@ -800,27 +811,14 @@ public final class MaterialDataDump {
         return json;
     }
 
-    /// Reassembles the gtpp scalar blob `check_parity.py` compares against `gtpp-materials.json`, from the
-    /// decomposed `GTPP_*` properties -- null when `material` carries none (see
-    /// [GTMaterialProperties#GTPP_STATE]). Field names/values mirror the pre-decomposition blob exactly (each
-    /// QUIRK property's canonical-property fallback resolved here, same as
-    /// `gtPlusPlus.core.material.MaterialReconstruction`), so the parity script's expectations need no changes
-    /// beyond dropping the removed `hasOre` field.
+    /// Serializes the gtpp-specific data still pinned in `GTPP_*` properties -- null when `material` carries
+    /// none (see [GTMaterialProperties#GTPP_STATE]). Scalars the U1 collapse moved onto canonical properties
+    /// (tier, voltage multiplier, melting/boiling point, durability, blast-furnace use, radioactivity) now
+    /// appear only at the top level of the ML material JSON; `check_parity.py` reads them there.
     private static Map<String, Object> dumpMlGtpp(com.ruling_0.materiallib.api.Material material) {
         String state = material.getProperty(GTMaterialProperties.GTPP_STATE);
         if (state == null) return null;
 
-        Integer meltingPointK = material.getProperty(GTMaterialProperties.MELTING_POINT);
-
-        Integer durability = material.getProperty(GTMaterialProperties.DURABILITY);
-
-        Boolean gtppBlast = material.getProperty(GTMaterialProperties.GTPP_USES_BLAST_FURNACE);
-        boolean usesBlastFurnace = Boolean.TRUE
-            .equals(gtppBlast != null ? gtppBlast : material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
-
-        Integer tier = material.getProperty(GTMaterialProperties.GTPP_TIER);
-        Long voltageMultiplier = material.getProperty(GTMaterialProperties.GTPP_VOLTAGE_MULTIPLIER);
-        Integer radiationLevel = material.getProperty(GTMaterialProperties.GTPP_RADIATION_LEVEL);
         Long protons = material.getProperty(GTMaterialProperties.GTPP_PROTONS);
         Long neutrons = material.getProperty(GTMaterialProperties.GTPP_NEUTRONS);
 
@@ -832,14 +830,6 @@ public final class MaterialDataDump {
         boolean generatesFluid = Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.GTPP_GENERATES_FLUID));
 
         Map<String, Object> json = new LinkedHashMap<>();
-        json.put("tier", tier != null ? tier : 0);
-        json.put("voltageMultiplier", voltageMultiplier != null ? voltageMultiplier : 16L);
-        json.put("meltingPointK", meltingPointK);
-        json.put("boilingPointK", material.getProperty(GTMaterialProperties.BOILING_POINT));
-        json.put("durability", durability != null ? durability : 0);
-        json.put("usesBlastFurnace", usesBlastFurnace);
-        json.put("isRadioactive", Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.GTPP_IS_RADIOACTIVE)));
-        json.put("radiationLevel", radiationLevel != null ? radiationLevel : 0);
         json.put("chemicalFormula", material.getProperty(GTMaterialProperties.GTPP_CHEMICAL_FORMULA));
         json.put("protons", protons != null ? protons : 0L);
         json.put("neutrons", neutrons != null ? neutrons : 0L);
@@ -854,16 +844,11 @@ public final class MaterialDataDump {
         return json;
     }
 
-    /// Reassembles the werkstoff scalar blob `check_parity.py` compares against `werkstoff.json`, from the
-    /// decomposed `WERKSTOFF_*` properties -- null when `material` carries none (see
-    /// [GTMaterialProperties#WERKSTOFF_IDS]). Field names/values mirror the pre-decomposition blob exactly,
-    /// except `neutrons`/`enchantmentLevel`/`additionalOreDict` are no longer emitted: every werkstoff-backed
-    /// material carried `0`/`3`/`[]` for these (see [GTMaterialProperties#WERKSTOFF_IDS]'s class javadoc),
-    /// `bartworks.system.material.WerkstoffReconstruction` now hardcodes them, and `check_parity.py`'s
-    /// `check_werkstoff` no longer checks them. As of the U1 tool-stats collapse, `durabilityOverride`/
-    /// `speedOverride`/`qualityOverride`/`durabilityModifier` are dropped the same way: the U1 allowlist
-    /// (`scripts/mu/dumps/u1-collapse-allowlist.json`) records the closed material set
-    /// [bartworks.system.material.WerkstoffReconstruction] now hardcodes them for instead.
+    /// Serializes the werkstoff-specific data still pinned in `WERKSTOFF_*` properties -- null when
+    /// `material` carries none (see [GTMaterialProperties#WERKSTOFF_IDS]). Scalars the U1 collapse moved onto
+    /// canonical properties (melting/boiling point, melting voltage, tool-stat overrides, EBF gas multipliers,
+    /// mix circuit, sub tags, and the toxic/radioactive/blast-furnace/auto-recipe flag members) now appear
+    /// only at the top level of the ML material JSON; `check_parity.py` reads them there.
     private static Map<String, Object> dumpMlWerkstoff(com.ruling_0.materiallib.api.Material material) {
         List<Integer> ids = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
         if (ids == null) return null;
@@ -872,20 +857,8 @@ public final class MaterialDataDump {
         json.put("ids", ids);
         json.put("type", material.getProperty(GTMaterialProperties.WERKSTOFF_TYPE));
         json.put("pool", material.getProperty(GTMaterialProperties.WERKSTOFF_POOL));
-        json.put("meltingPoint", material.getProperty(GTMaterialProperties.MELTING_POINT));
-        json.put("boilingPoint", orDefault(material.getProperty(GTMaterialProperties.BOILING_POINT), 0));
         json.put("protons", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_PROTONS), 0L));
         json.put("mass", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_MASS), 0L));
-        json.put(
-            "meltingVoltage",
-            orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_MELTING_VOLTAGE), 120));
-        json.put(
-            "ebfGasTimeMultiplier",
-            orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_EBF_GAS_TIME_MULTIPLIER), -1.0));
-        json.put(
-            "ebfGasAmountMultiplier",
-            orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_EBF_GAS_AMOUNT_MULTIPLIER), 1.0));
-        json.put("mixCircuit", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_MIX_CIRCUIT), -1));
         List<String> flags = new ArrayList<>();
         EnumSet<GTWerkstoffFlag> flagSet = material.getProperty(GTMaterialProperties.WERKSTOFF_FLAGS);
         if (flagSet != null) for (GTWerkstoffFlag flag : flagSet) flags.add(flag.name());
@@ -896,7 +869,6 @@ public final class MaterialDataDump {
         json.put(
             "oreByProducts",
             dumpMlWerkstoffRefStacks(material.getProperty(GTMaterialProperties.WERKSTOFF_ORE_BYPRODUCTS)));
-        json.put("subTags", orEmpty(material.getProperty(GTMaterialProperties.WERKSTOFF_SUB_TAGS)));
         json.put("formula", orDefault(material.getProperty(GTMaterialProperties.WERKSTOFF_FORMULA), ""));
         return json;
     }
