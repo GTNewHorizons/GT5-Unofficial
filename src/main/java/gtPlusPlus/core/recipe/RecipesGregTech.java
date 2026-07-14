@@ -225,7 +225,9 @@ public class RecipesGregTech {
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Borax, Materials2Shapes.dust, (int) (23)))
             .circuit(21)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Salt, Materials2Shapes.dust, (int) (4)))
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(2_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.BoricAcid, 4_000), Materials.Water.getFluid(5_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -301,7 +303,8 @@ public class RecipesGregTech {
             .circuit(22)
             .fluidInputs(
                 new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 2_000),
-                Materials.HydrofluoricAcid.getFluid(5_000))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 4_500))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1181,8 +1184,16 @@ public class RecipesGregTech {
                 MaterialsAlloy.TITANSTEEL.getDust(1),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.dust, (int) (1)))
             .circuit(5)
-            .fluidInputs(Materials.DTR.getFluid(1_000))
-            .fluidOutputs(Materials.MoltenProtoHalkoniteBase.getFluid(8 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.DimensionallyTranscendentResidue,
+                    Materials2FluidShapes.fluidLiquid,
+                    1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.protohalkonitebase,
+                    Materials2FluidShapes.fluidLiquid,
+                    8 * INGOTS))
             .eut(TierEU.RECIPE_UEV)
             .duration(60 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
@@ -1190,12 +1201,18 @@ public class RecipesGregTech {
         // Computation Base
         GTValues.RA.stdBuilder()
             .itemInputs(
-                Materials.SuperconductorEVBase.getDust(61),
-                Materials.SuperconductorIVBase.getDust(59),
-                Materials.SuperconductorLuVBase.getDust(53),
-                Materials.SuperconductorZPMBase.getDust(47),
-                Materials.SuperconductorUVBase.getDust(43),
-                Materials.SuperconductorUHVBase.getDust(41),
+                MaterialLibAPI.getStack(Materials2Materials.Uraniumtriplatinid, Materials2Shapes.dust, 61),
+                MaterialLibAPI.getStack(Materials2Materials.Vanadiumtriindinid, Materials2Shapes.dust, 59),
+                MaterialLibAPI.getStack(
+                    Materials2Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+                    Materials2Shapes.dust,
+                    53),
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Tetranaquadahdiindiumhexaplatiumosminid, Materials2Shapes.dust, 47),
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Longasssuperconductornameforuvwire, Materials2Shapes.dust, 43),
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Longasssuperconductornameforuhvwire, Materials2Shapes.dust, 41),
                 MaterialLibAPI.getStack(Materials2Materials.SuperconductorUEVBase, Materials2Shapes.dust, (int) (37)),
                 MaterialLibAPI.getStack(Materials2Materials.SuperconductorUIVBase, Materials2Shapes.dust, (int) (31)),
                 MaterialLibAPI.getStack(Materials2Materials.SuperconductorUMVBase, Materials2Shapes.dust, (int) (29)))
@@ -1787,7 +1804,7 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.PotassiumHydroxide.get(3))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.PotassiumNitrade, 5))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.PotassiumNitrate, Materials2Shapes.dust, 5))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
