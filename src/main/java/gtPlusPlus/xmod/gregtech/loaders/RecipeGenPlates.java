@@ -1,26 +1,23 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
-import static gregtech.api.enums.GTValues.VP;
-import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
-import static gregtech.api.recipe.RecipeMaps.benderRecipes;
-import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
-import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.TierEU;
-import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 
+/// Block-to-plate cutter recipes for gtPlusPlus-reconstructed materials. The forge hammer, bender,
+/// alloy smelter, and compressor plate/foil-shaping recipes formerly generated here (including the
+/// foil decorative cover) are covered by the canonical autogen (`ProcessingPlate`/`ProcessingFoil`,
+/// dispatched by `gregtech.loaders.oreprocessing`). The remaining `block -> plate9` cutter recipe is
+/// also produced by `ProcessingBlock` for the same materials, under a mass-scaled fluid-amount
+/// formula rather than this class's fixed amounts, so it is a replacement candidate rather than a
+/// retired duplicate.
 public class RecipeGenPlates extends RecipeGenBase {
 
     public static final Set<Runnable> mRecipeGenMap = new HashSet<>();
@@ -41,141 +38,16 @@ public class RecipeGenPlates extends RecipeGenBase {
 
     private void generateRecipes(final Material material) {
 
-        final ItemStack ingotStackOne = material.getIngot(1);
-        final ItemStack ingotStackTwo = material.getIngot(2);
-        final ItemStack ingotStackThree = material.getIngot(3);
-        final ItemStack ingotStackNine = material.getIngot(9);
-        final ItemStack shape_Mold = ItemList.Shape_Mold_Plate.get(0);
-        final ItemStack plate_Single = material.getPlate(1);
-        final ItemStack plate_SingleTwo = material.getPlate(2);
-        final ItemStack plate_SingleNine = material.getPlate(9);
-        final ItemStack plate_Stack64 = material.getPlate(64);
-        final ItemStack plate_Double = material.getPlateDouble(1);
-        final ItemStack plate_Dense = material.getPlateDense(1);
-        final ItemStack plate_Superdense = material.getPlateSuperdense(1);
-        final ItemStack foil_SingleFour = material.getFoil(4);
         final ItemStack block = material.getBlock(1);
-        // Forge Hammer
-        if (ingotStackTwo != null && plate_Single != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(ingotStackThree)
-                .itemOutputs(plate_SingleTwo)
-                .duration(Math.max(material.getMass(), 1L))
-                .eut(material.vVoltageMultiplier)
-                .addTo(hammerRecipes);
-        }
+        final ItemStack plate_SingleNine = material.getPlate(9);
 
-        // Bender
-        if (ingotStackOne != null && plate_Single != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(ingotStackOne)
-                .circuit(1)
-                .itemOutputs(plate_Single)
-                .duration(Math.max(material.getMass() * 1L, 1L))
-                .eut(material.vVoltageMultiplier)
-                .addTo(benderRecipes);
-        }
-
-        if (ingotStackOne != null && foil_SingleFour != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(ingotStackOne)
-                .circuit(10)
-                .itemOutputs(foil_SingleFour)
-                .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
-                .addTo(benderRecipes);
-        }
-
-        // Alloy Smelter
-        if (ingotStackTwo != null && plate_Single != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(ingotStackTwo, shape_Mold)
-                .itemOutputs(plate_Single)
-                .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
-                .addTo(alloySmelterRecipes);
-        }
-        // Cutting Machine
-        if (block != null && plate_Single != null) {
+        if (block != null && plate_SingleNine != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(block)
                 .itemOutputs(plate_SingleNine)
                 .duration(Math.max(material.getMass() * 10L, 1L))
                 .eut(material.vVoltageMultiplier)
                 .addTo(cutterRecipes);
-        }
-
-        // Making Double Plates
-        if (ingotStackTwo != null && plate_Double != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(ingotStackTwo)
-                .circuit(2)
-                .itemOutputs(plate_Double)
-                .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
-                .addTo(benderRecipes);
-        }
-
-        if (plate_SingleTwo != null && plate_Double != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(plate_SingleTwo)
-                .circuit(2)
-                .itemOutputs(plate_Double)
-                .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
-                .addTo(benderRecipes);
-        }
-
-        // Bender
-        if (material.getPlate(1) != null && material.getFoil(1) != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(material.getPlate(1))
-                .circuit(1)
-                .itemOutputs(material.getFoil(4))
-                .duration(Math.max(material.getMass(), 1L))
-                .eut(material.vVoltageMultiplier)
-                .addTo(benderRecipes);
-
-            CoverRegistry.registerDecorativeCover(
-                material.getFoil(1),
-                TextureFactory.of(material.getTextureSet().mTextures[70], material.getRGBA()));
-        }
-
-        // Making Dense Plates
-        if (ingotStackNine != null && plate_Dense != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(ingotStackNine)
-                .circuit(9)
-                .itemOutputs(plate_Dense)
-                .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
-                .addTo(benderRecipes);
-        }
-
-        if (plate_SingleNine != null && plate_Dense != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(plate_SingleNine)
-                .circuit(9)
-                .itemOutputs(plate_Dense)
-                .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
-                .addTo(benderRecipes);
-
-        }
-
-        int tier = Math.max(1, material.vTier);
-        long aVoltage = VP[tier];
-
-        // Making Superdense Plates
-        if (plate_Stack64 != null && plate_Superdense != null) {
-            int compressionTier = aVoltage >= TierEU.RECIPE_UEV ? 2 : 1;
-            GTValues.RA.stdBuilder()
-                .itemInputs(plate_Stack64)
-                .itemOutputs(plate_Superdense)
-                .metadata(COMPRESSION_TIER, compressionTier)
-                .duration(Math.max(material.getMass() * 4L, 1L))
-                .eut(material.vVoltageMultiplier)
-                .addTo(compressorRecipes);
         }
     }
 }
