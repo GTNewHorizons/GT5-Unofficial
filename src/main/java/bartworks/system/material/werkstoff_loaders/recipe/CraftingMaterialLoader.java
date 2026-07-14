@@ -27,8 +27,6 @@ import static gregtech.api.enums.OrePrefixes.wireFine;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
-import static gregtech.api.recipe.RecipeMaps.latheRecipes;
-import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 
 import bartworks.system.material.Werkstoff;
@@ -39,6 +37,12 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 
+/// Crafting-part recipes for screw-bearing werkstoffe that the canonical autogen does not produce: gem-input
+/// bolt extrusion, stick-to-bolt cutting, the crafting-table part recipes, fine-wire extrusion (the canonical
+/// wire extruder outputs `wireGt01`, not `wireFine`) and the circuitless rotor assembly. Ingot-input bolt/
+/// ring/gear/smallGear extrusion is covered by `ProcessingShaping`, rotor extrusion by `ProcessingRotor`,
+/// bolt lathing by `ProcessingScrew` and the fine-wire wiremill steps by `ProcessingFineWire`, all dispatched
+/// by `gregtech.loaders.shapeconsumers`.
 public class CraftingMaterialLoader implements IWerkstoffRunnable {
 
     @Override
@@ -49,18 +53,18 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
 
             // bolt
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(ingot),
-                    ItemList.Shape_Extruder_Bolt.get(0L))
-                .itemOutputs(werkstoff.get(bolt, 8))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 2L,
-                        1))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * tVoltageMultiplier))
-                .addTo(extruderRecipes);
+            if (werkstoff.hasItemType(gem)) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(werkstoff.get(gem), ItemList.Shape_Extruder_Bolt.get(0L))
+                    .itemOutputs(werkstoff.get(bolt, 8))
+                    .duration(
+                        (int) Math.max(
+                            werkstoff.getStats()
+                                .getMass() * 2L,
+                            1))
+                    .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * tVoltageMultiplier))
+                    .addTo(extruderRecipes);
+            }
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(stick))
@@ -75,17 +79,6 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
 
             // screw
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(bolt))
-                .itemOutputs(werkstoff.get(screw))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() / 8L,
-                        1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
-                .addTo(latheRecipes);
-
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(screw),
                 GTModHandler.RecipeBits.BITS_STD,
@@ -94,17 +87,6 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
             if (werkstoff.hasItemType(gem)) return;
 
             // ring
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Ring.get(0L))
-                .itemOutputs(werkstoff.get(ring, 4))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 2L,
-                        1))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 6 * tVoltageMultiplier))
-                .addTo(extruderRecipes);
 
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(ring),
@@ -117,16 +99,6 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "SPS", "PwP", "SPS", 'P', werkstoff.get(plate), 'S', werkstoff.get(stick) });
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot, 4), ItemList.Shape_Extruder_Gear.get(0L))
-                .itemOutputs(werkstoff.get(gearGt))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 5L,
-                        1))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * tVoltageMultiplier))
-                .addTo(extruderRecipes);
             // wireFine
 
             GTValues.RA.stdBuilder()
@@ -140,40 +112,7 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * tVoltageMultiplier))
                 .addTo(extruderRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot))
-                .circuit(3)
-                .itemOutputs(werkstoff.get(wireFine, 8))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass(),
-                        1))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * tVoltageMultiplier))
-                .addTo(wiremillRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(stick))
-                .circuit(3)
-                .itemOutputs(werkstoff.get(wireFine, 4))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 0.5F,
-                        1F))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * tVoltageMultiplier))
-                .addTo(wiremillRecipes);
-
             // smallGear
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Small_Gear.get(0L))
-                .itemOutputs(werkstoff.get(gearGtSmall))
-                .duration(
-                    (int) werkstoff.getStats()
-                        .getMass())
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * tVoltageMultiplier))
-                .addTo(extruderRecipes);
-
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gearGtSmall),
                 GTModHandler.RecipeBits.BITS_STD,
@@ -196,17 +135,6 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                         1L))
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                 .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot, 5), ItemList.Shape_Extruder_Rotor.get(0L))
-                .itemOutputs(werkstoff.get(rotor))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass(),
-                        1L))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
-                .addTo(extruderRecipes);
         }
     }
 }
