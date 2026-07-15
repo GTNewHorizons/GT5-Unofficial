@@ -46,7 +46,9 @@ public class BotRecipes {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.CarbonDioxide, Materials2CellShapes.cell, 1),
                 WerkstoffLoader.CalciumChloride.get(dust, 3))
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(2_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(Materials.Water.getFluid(1_000))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -107,7 +109,9 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(scheelite)
             .itemOutputs(H2WO4, Ca2Cl)
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(2_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 2_000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(UniversalChemical);
@@ -193,7 +197,9 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .circuit(2)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Phosphorus, Materials2Shapes.dust, 1))
-            .fluidInputs(Materials.PhosphoricAcid.getFluid(1_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.PhosphoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(Materials.Water.getFluid(500))
             .eut(TierEU.RECIPE_HV)
             .duration(1 * SECONDS)
@@ -206,14 +212,18 @@ public class BotRecipes {
             .itemInputs(cells)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ammonia, Materials2CellShapes.cell, 1))
             .fluidInputs(WerkstoffLoader.AmmoniumChloride.getFluidOrGas(1_000))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(1_000))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000))
             .eut(TierEU.RECIPE_MV)
             .duration(2 * SECONDS + 10 * TICKS)
             .addTo(distilleryRecipes);
 
         // N2H4O3 + NaOH = NaNO3 + NH3 + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3))
+            .itemInputs(
+                AmmoniumNitrate.get(dust, 9),
+                MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 3))
             .itemOutputs(WerkstoffLoader.SodiumNitrate.get(dust, 5))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Ammonia, Materials2FluidShapes.fluidGas, 1_000))
@@ -222,7 +232,9 @@ public class BotRecipes {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3))
+            .itemInputs(
+                AmmoniumNitrate.get(dust, 9),
+                MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 3))
             .circuit(2)
             .itemOutputs(WerkstoffLoader.SodiumNitrate.get(dust, 5))
             .fluidOutputs(
@@ -234,7 +246,9 @@ public class BotRecipes {
 
         // N2H4O3 + NaOH + H =H2SO4= NH3 + HNO3 + Na + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3))
+            .itemInputs(
+                AmmoniumNitrate.get(dust, 9),
+                MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 3))
             .circuit(24)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, 1))
             .fluidInputs(
