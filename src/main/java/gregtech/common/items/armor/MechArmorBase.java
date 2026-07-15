@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 
@@ -179,14 +180,16 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
             for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
                 for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
                     if (!initMessage) {
-                        GTUtility.sendChatToPlayer(player, GTUtility.translate("GT5U.armor.message.systems_online"));
+                        GTUtility.sendChatToPlayer(
+                            player,
+                            StatCollector.translateToLocal("GT5U.armor.message.systems_online"));
                         initMessage = true;
                     }
 
                     if (keyBind.getKeybinding() != null) {
                         GTUtility.sendChatToPlayer(
                             player,
-                            GTUtility.translate(
+                            StatCollector.translateToLocal(
                                 keyBind.getKeybinding()
                                     .getKeyDescription())
                                 + ": "
