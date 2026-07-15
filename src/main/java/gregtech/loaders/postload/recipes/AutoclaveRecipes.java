@@ -146,7 +146,7 @@ public class AutoclaveRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 8))
-            .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 16L))
+            .itemOutputs(ItemList.Carbon_Fiber_Bundle.get(16))
             .outputChances(10000)
             .fluidInputs(Materials.Polybenzimidazole.getMolten(9L))
             .duration(1 * SECONDS + 17 * TICKS)
@@ -155,7 +155,7 @@ public class AutoclaveRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
-            .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 4L))
+            .itemOutputs(ItemList.Carbon_Fiber_Bundle.get(4))
             .outputChances(10000)
             .fluidInputs(Materials.Epoxid.getMolten(9L))
             .duration(18 * TICKS)
@@ -164,7 +164,7 @@ public class AutoclaveRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
-            .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 2L))
+            .itemOutputs(ItemList.Carbon_Fiber_Bundle.get(2))
             .outputChances(10000)
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * EIGHTH_INGOTS))
             .duration(1 * SECONDS + 5 * TICKS)
@@ -173,7 +173,7 @@ public class AutoclaveRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
-            .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 1L))
+            .itemOutputs(ItemList.Carbon_Fiber_Bundle.get(1))
             .outputChances(10000)
             .fluidInputs(Materials.Polyethylene.getMolten(1 * QUARTER_INGOTS))
             .duration(1 * SECONDS + 17 * TICKS)

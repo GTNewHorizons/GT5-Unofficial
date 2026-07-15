@@ -39,6 +39,7 @@ public class PosteaTransformers implements Runnable {
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
+        registerIC2ItemsTransformer();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
@@ -54,6 +55,21 @@ public class PosteaTransformers implements Runnable {
         BlockReplacementManager
             .addSimpleReplacement("IC2:blockAlloy", ItemList.Block_ReinforcedConcrete.getBlock(), 13);
         BlockReplacementManager.addSimpleReplacement("IC2:blockFenceIron", Casings.IronFence.getBlock(), 0);
+    }
+
+    private void registerIC2ItemsTransformer() {
+        // These are used to convert ic2 items to their new counterparts.
+
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemIngot", 4, ItemList.Mixed_Alloy_Ingot.get(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemPartAlloy", 0, ItemList.Mixed_Alloy_Plate.get(1));
+        ItemStackReplacementManager
+            .addSimpleReplacement("IC2:itemPartCarbonFibre", 0, ItemList.Carbon_Fiber_Bundle.get(1));
+        ItemStackReplacementManager
+            .addSimpleReplacement("IC2:itemPartCarbonMesh", 0, ItemList.Carbon_Fiber_Mesh.get(1));
+        ItemStackReplacementManager
+            .addSimpleReplacement("IC2:itemPartCarbonPlate", 0, ItemList.Carbon_Fiber_Sheet.get(1));
+        ItemStackReplacementManager
+            .addSimpleReplacement("IC2:itemPartIridium", 0, ItemList.Reinforced_Iridium_Alloy_Plate.get(1));
     }
 
     private void registerFrameboxTransformers() {

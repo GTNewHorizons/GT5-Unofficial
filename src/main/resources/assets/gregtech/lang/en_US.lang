@@ -4479,6 +4479,18 @@ gt.item.paper.punch_card.encoded.name=Punched Card
 gt.blockpad.0.name=Bounce Pad
 gt.blockpad.1.name=Sticky Pad
 
+# IC2 items replacements
+gt.item.mixed_alloy_ingot.name=Mixed Metal Ingot
+gt.item.mixed_alloy_plate.name=Advanced Alloy Plate
+gt.item.reinforced_iridium_alloy_plate.name=Reinforced Iridium Alloy Plate
+gt.item.reinforced_iridium_alloy_plate.alias=Iridium Reinforced Plate
+gt.item.carbon_fiber_bundle.name=Carbon Fiber Bundle
+gt.item.carbon_fiber_bundle.alias=Raw Carbon Fibre
+gt.item.carbon_fiber_mesh.name=Carbon Fiber Mesh
+gt.item.carbon_fiber_mesh.alias=Raw Carbon Mesh
+gt.item.carbon_fiber_sheet.name=Carbon Fiber Sheet
+gt.item.carbon_fiber_sheet.alias=Carbon Plate
+
 ## Book
 gt.item.book.written.01.name=Book
 gt.item.book.written.02.name=Book

@@ -694,7 +694,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getIC2Item("carbonMesh", 4),
+                ItemList.Carbon_Fiber_Mesh.get(4),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Zinc, 16))
             .circuit(1)
             .itemOutputs(ItemList.Component_Filter.get(1))
@@ -1638,7 +1638,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 3),
-                GTModHandler.getIC2Item("carbonMesh", 3))
+                ItemList.Carbon_Fiber_Mesh.get(3))
             .circuit(1)
             .itemOutputs(ItemList.Duct_Tape.get(1))
             .fluidInputs(Materials.Glue.getFluid(300))
@@ -1649,7 +1649,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.StyreneButadieneRubber, 2),
-                GTModHandler.getIC2Item("carbonMesh", 2))
+                ItemList.Carbon_Fiber_Mesh.get(2))
             .circuit(2)
             .itemOutputs(ItemList.Duct_Tape.get(1))
             .fluidInputs(Materials.Glue.getFluid(200))
@@ -1660,7 +1660,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.RubberSilicone, 1),
-                GTModHandler.getIC2Item("carbonMesh", 1))
+                ItemList.Carbon_Fiber_Mesh.get(1))
             .circuit(3)
             .itemOutputs(ItemList.Duct_Tape.get(1))
             .fluidInputs(Materials.Glue.getFluid(100))
@@ -2980,9 +2980,9 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("carbonFiber", 2))
+            .itemInputs(ItemList.Carbon_Fiber_Bundle.get(2))
             .circuit(2)
-            .itemOutputs(GTModHandler.getIC2Item("carbonMesh", 1))
+            .itemOutputs(ItemList.Carbon_Fiber_Mesh.get(1))
             .duration(8 * SECONDS)
             .eut(20)
             .addTo(assemblerRecipes);

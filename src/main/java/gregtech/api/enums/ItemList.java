@@ -78,7 +78,6 @@ public enum ItemList implements IItemContainer {
     IC2_Item_Casing_Gold,
     IC2_Scrap,
     IC2_Scrapbox,
-    IC2_Mixed_Metal_Ingot,
     IC2_Resin,
     IC2_Plantball,
     IC2_PlantballCompressed,
@@ -175,6 +174,12 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_ToolHeadDrill,
 
     // IC2 Replacements
+    Mixed_Alloy_Ingot,
+    Mixed_Alloy_Plate,
+    Carbon_Fiber_Bundle,
+    Carbon_Fiber_Mesh,
+    Carbon_Fiber_Sheet,
+    Reinforced_Iridium_Alloy_Plate,
     PadBouncy,
     PadSticky,
     FenceIron,

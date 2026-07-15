@@ -1059,7 +1059,7 @@ public class RecipesMachinesCustom {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 32),
                 MaterialsAlloy.TUMBAGA.getRing(16),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Copper, 4),
-                getModItem(Mods.IndustrialCraft2.ID, "itemPartCarbonMesh", 64, 0))
+                ItemList.Carbon_Fiber_Mesh.get(64))
             .circuit(18)
             .itemOutputs(GregtechItemList.LavaFilter.get(16))
             .fluidInputs(MaterialsAlloy.TANTALUM_CARBIDE.getFluidStack(1 * INGOTS))

@@ -31,6 +31,9 @@ import static gregtech.common.items.IDMetaItem03.Armor_Chip_T2;
 import static gregtech.common.items.IDMetaItem03.Armor_Chip_T3;
 import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
+import static gregtech.common.items.IDMetaItem03.Carbon_Fiber_Bundle;
+import static gregtech.common.items.IDMetaItem03.Carbon_Fiber_Mesh;
+import static gregtech.common.items.IDMetaItem03.Carbon_Fiber_Sheet;
 import static gregtech.common.items.IDMetaItem03.Circuit_AdvancedIntegrated;
 import static gregtech.common.items.IDMetaItem03.Circuit_BasicElectronic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
@@ -258,6 +261,8 @@ import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveFocus4;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide1;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide2;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide3;
+import static gregtech.common.items.IDMetaItem03.Mixed_Alloy_Ingot;
+import static gregtech.common.items.IDMetaItem03.Mixed_Alloy_Plate;
 import static gregtech.common.items.IDMetaItem03.NandChip;
 import static gregtech.common.items.IDMetaItem03.Naquarite_Universal_Insulator_Foil;
 import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
@@ -280,6 +285,7 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Top;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unaligned;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet;
+import static gregtech.common.items.IDMetaItem03.Reinforced_Iridium_Alloy_Plate;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.StableBaryonContainmentUnit;
@@ -307,6 +313,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
@@ -1964,6 +1971,59 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.planck_manifold.name",
                     "gt.item.planck_manifold.tooltip"))
             .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Mixed_Alloy_Ingot.set(
+            addItemWithLocalizationKeys(
+                Mixed_Alloy_Ingot.ID,
+                "gt.item.mixed_alloy_ingot.name",
+                "",
+                "ingotMixedMetal",
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3L)));
+        ItemList.Mixed_Alloy_Plate.set(
+            addItemWithLocalizationKeys(
+                Mixed_Alloy_Plate.ID,
+                "gt.item.mixed_alloy_plate.name",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
+                new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
+        ItemList.Carbon_Fiber_Bundle.set(
+            addItemWithLocalizationKeys(
+                Carbon_Fiber_Bundle.ID,
+                "gt.item.carbon_fiber_bundle.name",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3L),
+                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 3L),
+                new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3L)));
+        ItemList.Carbon_Fiber_Mesh.set(
+            addItemWithLocalizationKeys(
+                Carbon_Fiber_Mesh.ID,
+                "gt.item.carbon_fiber_mesh.name",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2L)));
+        ItemList.Carbon_Fiber_Sheet.set(
+            addItemWithLocalizationKeys(
+                Carbon_Fiber_Sheet.ID,
+                "gt.item.carbon_fiber_sheet.name",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
+                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4L),
+                new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L)));
+        ItemList.Reinforced_Iridium_Alloy_Plate.set(
+            addItemWithLocalizationKeys(
+                Reinforced_Iridium_Alloy_Plate.ID,
+                "gt.item.reinforced_iridium_alloy_plate.name",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 8L),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 4L),
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
+                new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L)));
+
+        // IC2 Aliases
+        API.setAliases(ItemList.Carbon_Fiber_Bundle.get(1), "gt.item.carbon_fiber_bundle.alias");
+        API.setAliases(ItemList.Carbon_Fiber_Mesh.get(1), "gt.item.carbon_fiber_mesh.alias");
+        API.setAliases(ItemList.Carbon_Fiber_Sheet.get(1), "gt.item.carbon_fiber_sheet.alias");
+        API.setAliases(ItemList.Reinforced_Iridium_Alloy_Plate.get(1), "gt.item.reinforced_iridium_alloy_plate.alias");
 
         registerMetaMaterials();
 
@@ -2130,6 +2190,10 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         GTOreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Inductor, ItemList.Circuit_Parts_Coil.get(1L));
         GTOreDictUnificator
             .set(OrePrefixes.componentCircuit, Materials.Capacitor, ItemList.Circuit_Parts_Capacitor.get(1L));
+        GTOreDictUnificator.set(OrePrefixes.plateAlloy, Materials.HV, ItemList.Mixed_Alloy_Plate.get(1L));
+        GTOreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Carbon, ItemList.Carbon_Fiber_Sheet.get(1L));
+        GTOreDictUnificator
+            .set(OrePrefixes.plateAlloy, Materials.Iridium, ItemList.Reinforced_Iridium_Alloy_Plate.get(1L));
 
         GTOreDictUnificator.addAssociation(
             OrePrefixes.componentCircuit,

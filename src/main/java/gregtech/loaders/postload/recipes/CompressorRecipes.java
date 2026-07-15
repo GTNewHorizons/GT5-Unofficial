@@ -46,7 +46,7 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Mixed_Metal_Ingot.get(1L))
+            .itemInputs(ItemList.Mixed_Alloy_Ingot.get(1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.HV, 1L))
             .duration(15 * SECONDS)
             .eut(2)
@@ -144,8 +144,8 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("carbonMesh", 1))
-            .itemOutputs(GTModHandler.getIC2Item("carbonPlate", 1))
+            .itemInputs(ItemList.Carbon_Fiber_Mesh.get(1))
+            .itemOutputs(ItemList.Carbon_Fiber_Sheet.get(1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);

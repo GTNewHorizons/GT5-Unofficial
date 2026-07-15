@@ -764,362 +764,362 @@ public class CraftingRecipeLoader implements Runnable {
                 OrePrefixes.dust.get(Materials.Ash) });
 
         GTLog.out.println("GTMod: Adding Mixed Metal Ingot Recipes.");
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Mixed_Metal_Ingot.get(1L));
+        GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("mixedMetalIngot", 1L));
 
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(1L),
+            ItemList.Mixed_Alloy_Ingot.get(1L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.AnyIron), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(1L),
+            ItemList.Mixed_Alloy_Ingot.get(1L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.AnyIron), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(1L),
+            ItemList.Mixed_Alloy_Ingot.get(1L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.AnyIron), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(1L),
+            ItemList.Mixed_Alloy_Ingot.get(1L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.AnyIron), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(1L),
+            ItemList.Mixed_Alloy_Ingot.get(1L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.AnyIron), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(1L),
+            ItemList.Mixed_Alloy_Ingot.get(1L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.AnyIron), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(1L),
+            ItemList.Mixed_Alloy_Ingot.get(1L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Nickel), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(1L),
+            ItemList.Mixed_Alloy_Ingot.get(1L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Nickel), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(1L),
+            ItemList.Mixed_Alloy_Ingot.get(1L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Nickel), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(1L),
+            ItemList.Mixed_Alloy_Ingot.get(1L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Nickel), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(1L),
+            ItemList.Mixed_Alloy_Ingot.get(1L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Nickel), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(1L),
+            ItemList.Mixed_Alloy_Ingot.get(1L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Nickel), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(2L),
+            ItemList.Mixed_Alloy_Ingot.get(2L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Invar), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(2L),
+            ItemList.Mixed_Alloy_Ingot.get(2L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Invar), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Invar), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(2L),
+            ItemList.Mixed_Alloy_Ingot.get(2L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Invar), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(2L),
+            ItemList.Mixed_Alloy_Ingot.get(2L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Invar), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Invar), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(2L),
+            ItemList.Mixed_Alloy_Ingot.get(2L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Steel), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(2L),
+            ItemList.Mixed_Alloy_Ingot.get(2L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Steel), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Steel), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(2L),
+            ItemList.Mixed_Alloy_Ingot.get(2L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Steel), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(2L),
+            ItemList.Mixed_Alloy_Ingot.get(2L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Steel), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Steel), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.StainlessSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.StainlessSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(4L),
+            ItemList.Mixed_Alloy_Ingot.get(4L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.StainlessSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.StainlessSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.StainlessSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(4L),
+            ItemList.Mixed_Alloy_Ingot.get(4L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.StainlessSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Titanium), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Titanium), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(4L),
+            ItemList.Mixed_Alloy_Ingot.get(4L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Titanium), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Titanium), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Titanium), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(4L),
+            ItemList.Mixed_Alloy_Ingot.get(4L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Titanium), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Tungsten), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Tungsten), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(4L),
+            ItemList.Mixed_Alloy_Ingot.get(4L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Tungsten), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Tungsten), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(3L),
+            ItemList.Mixed_Alloy_Ingot.get(3L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Tungsten), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(4L),
+            ItemList.Mixed_Alloy_Ingot.get(4L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Tungsten), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(5L),
+            ItemList.Mixed_Alloy_Ingot.get(5L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.TungstenSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(5L),
+            ItemList.Mixed_Alloy_Ingot.get(5L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.TungstenSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(6L),
+            ItemList.Mixed_Alloy_Ingot.get(6L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.TungstenSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Bronze), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(5L),
+            ItemList.Mixed_Alloy_Ingot.get(5L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.TungstenSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(5L),
+            ItemList.Mixed_Alloy_Ingot.get(5L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.TungstenSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(6L),
+            ItemList.Mixed_Alloy_Ingot.get(6L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.TungstenSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Brass), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(8L),
+            ItemList.Mixed_Alloy_Ingot.get(8L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.TungstenSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Chrome), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(8L),
+            ItemList.Mixed_Alloy_Ingot.get(8L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.TungstenSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Chrome), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(8L),
+            ItemList.Mixed_Alloy_Ingot.get(8L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.TungstenSteel), 'Y',
                 OrePrefixes.plate.get(Materials.Chrome), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(10L),
+            ItemList.Mixed_Alloy_Ingot.get(10L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.TungstenSteel), 'Y',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'Z', OrePrefixes.plate.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(10L),
+            ItemList.Mixed_Alloy_Ingot.get(10L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.TungstenSteel), 'Y',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'Z', OrePrefixes.plate.get(Materials.Zinc) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(10L),
+            ItemList.Mixed_Alloy_Ingot.get(10L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.TungstenSteel), 'Y',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'Z', OrePrefixes.plate.get(Materials.Aluminium) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(12L),
+            ItemList.Mixed_Alloy_Ingot.get(12L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Iridium), 'Y',
                 OrePrefixes.plate.get(Materials.Chrome), 'Z', OrePrefixes.plate.get(Materials.AnnealedCopper) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(12L),
+            ItemList.Mixed_Alloy_Ingot.get(12L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Iridium), 'Y',
                 OrePrefixes.plate.get(Materials.Chrome), 'Z', OrePrefixes.plate.get(Materials.RoseGold) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(12L),
+            ItemList.Mixed_Alloy_Ingot.get(12L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Iridium), 'Y',
                 OrePrefixes.plate.get(Materials.Chrome), 'Z', OrePrefixes.plate.get(Materials.AstralSilver) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(14L),
+            ItemList.Mixed_Alloy_Ingot.get(14L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Iridium), 'Y',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'Z',
                 OrePrefixes.plate.get(Materials.AnnealedCopper) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(14L),
+            ItemList.Mixed_Alloy_Ingot.get(14L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Iridium), 'Y',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'Z', OrePrefixes.plate.get(Materials.RoseGold) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(14L),
+            ItemList.Mixed_Alloy_Ingot.get(14L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Iridium), 'Y',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'Z', OrePrefixes.plate.get(Materials.AstralSilver) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(16L),
+            ItemList.Mixed_Alloy_Ingot.get(16L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.HSSG), 'Y',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'Z',
                 OrePrefixes.plate.get(Materials.AnnealedCopper) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(16L),
+            ItemList.Mixed_Alloy_Ingot.get(16L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.HSSG), 'Y',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'Z', OrePrefixes.plate.get(Materials.RoseGold) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(16L),
+            ItemList.Mixed_Alloy_Ingot.get(16L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.HSSG), 'Y',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'Z', OrePrefixes.plate.get(Materials.AstralSilver) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(18L),
+            ItemList.Mixed_Alloy_Ingot.get(18L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.HSSE), 'Y',
                 OrePrefixes.plate.get(Materials.Chrome), 'Z', OrePrefixes.plate.get(Materials.AnnealedCopper) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(18L),
+            ItemList.Mixed_Alloy_Ingot.get(18L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.HSSE), 'Y',
                 OrePrefixes.plate.get(Materials.Chrome), 'Z', OrePrefixes.plate.get(Materials.RoseGold) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(18L),
+            ItemList.Mixed_Alloy_Ingot.get(18L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.HSSE), 'Y',
                 OrePrefixes.plate.get(Materials.Chrome), 'Z', OrePrefixes.plate.get(Materials.AstralSilver) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(20L),
+            ItemList.Mixed_Alloy_Ingot.get(20L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.HSSS), 'Y',
                 OrePrefixes.plate.get(Materials.TungstenSteel), 'Z', OrePrefixes.plate.get(Materials.AnnealedCopper) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(20L),
+            ItemList.Mixed_Alloy_Ingot.get(20L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.HSSS), 'Y',
                 OrePrefixes.plate.get(Materials.TungstenSteel), 'Z', OrePrefixes.plate.get(Materials.RoseGold) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(20L),
+            ItemList.Mixed_Alloy_Ingot.get(20L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.HSSS), 'Y',
                 OrePrefixes.plate.get(Materials.TungstenSteel), 'Z', OrePrefixes.plate.get(Materials.AstralSilver) });
@@ -1148,84 +1148,84 @@ public class CraftingRecipeLoader implements Runnable {
                 'I', GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Tin, 1L) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(22L),
+            ItemList.Mixed_Alloy_Ingot.get(22L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Naquadah), 'Y',
                 OrePrefixes.plate.get(Materials.Iridium), 'Z', OrePrefixes.plate.get(Materials.HSSG) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(24L),
+            ItemList.Mixed_Alloy_Ingot.get(24L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Naquadah), 'Y',
                 OrePrefixes.plate.get(Materials.Iridium), 'Z', OrePrefixes.plate.get(Materials.HSSE) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(26L),
+            ItemList.Mixed_Alloy_Ingot.get(26L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Naquadah), 'Y',
                 OrePrefixes.plate.get(Materials.Iridium), 'Z', OrePrefixes.plate.get(Materials.HSSS) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(28L),
+            ItemList.Mixed_Alloy_Ingot.get(28L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.NaquadahAlloy), 'Y',
                 OrePrefixes.plate.get(Materials.Osmiridium), 'Z', OrePrefixes.plate.get(Materials.HSSE) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(30L),
+            ItemList.Mixed_Alloy_Ingot.get(30L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.NaquadahAlloy), 'Y',
                 OrePrefixes.plate.get(Materials.Osmiridium), 'Z', OrePrefixes.plate.get(Materials.HSSG) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(32L),
+            ItemList.Mixed_Alloy_Ingot.get(32L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.NaquadahAlloy), 'Y',
                 OrePrefixes.plate.get(Materials.Osmiridium), 'Z', OrePrefixes.plate.get(Materials.HSSS) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(34L),
+            ItemList.Mixed_Alloy_Ingot.get(34L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Neutronium), 'Y',
                 OrePrefixes.plate.get(Materials.EnergeticAlloy), 'Z', OrePrefixes.plate.get(Materials.Naquadah) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(36L),
+            ItemList.Mixed_Alloy_Ingot.get(36L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Neutronium), 'Y',
                 OrePrefixes.plate.get(Materials.EnergeticAlloy), 'Z', OrePrefixes.plate.get(Materials.NaquadahAlloy) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(38L),
+            ItemList.Mixed_Alloy_Ingot.get(38L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Neutronium), 'Y',
                 OrePrefixes.plate.get(Materials.EnergeticAlloy), 'Z', OrePrefixes.plate.get(Materials.Draconium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(40L),
+            ItemList.Mixed_Alloy_Ingot.get(40L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.BlackPlutonium), 'Y',
                 OrePrefixes.plate.get(Materials.Sunnarium), 'Z', OrePrefixes.plate.get(Materials.Naquadah) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(42L),
+            ItemList.Mixed_Alloy_Ingot.get(42L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.BlackPlutonium), 'Y',
                 OrePrefixes.plate.get(Materials.Sunnarium), 'Z', OrePrefixes.plate.get(Materials.NaquadahAlloy) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(44L),
+            ItemList.Mixed_Alloy_Ingot.get(44L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.BlackPlutonium), 'Y',
                 OrePrefixes.plate.get(Materials.Sunnarium), 'Z', OrePrefixes.plate.get(Materials.Draconium) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(48L),
+            ItemList.Mixed_Alloy_Ingot.get(48L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.DraconiumAwakened), 'Y',
                 OrePrefixes.plate.get(Materials.Neutronium), 'Z', OrePrefixes.plate.get(Materials.HSSS) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(52L),
+            ItemList.Mixed_Alloy_Ingot.get(52L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.DraconiumAwakened), 'Y',
                 OrePrefixes.plate.get(Materials.Neutronium), 'Z', OrePrefixes.plate.get(Materials.Naquadah) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(56L),
+            ItemList.Mixed_Alloy_Ingot.get(56L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.DraconiumAwakened), 'Y',
                 OrePrefixes.plate.get(Materials.Neutronium), 'Z', OrePrefixes.plate.get(Materials.NaquadahAlloy) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(64L),
+            ItemList.Mixed_Alloy_Ingot.get(64L),
             bits_no_remove_buffered,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.DraconiumAwakened), 'Y',
                 OrePrefixes.plate.get(Materials.Neutronium), 'Z', OrePrefixes.plate.get(Materials.BlackPlutonium) });
