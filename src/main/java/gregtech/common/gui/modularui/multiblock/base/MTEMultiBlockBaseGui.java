@@ -498,8 +498,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         });
     }
 
-    private static final int DISPLAY_ROW_HEIGHT = 15;
-    private static final int DISPLAY_ROW_CHAR_LIMIT = 46;
+    private static final int DISPLAY_ROW_PRODUCT_HEIGHT = 8;
+    private static final int DISPLAY_ROW_RATE_HEIGHT = 6;
+    private static final int DISPLAY_ROW_HEIGHT = DISPLAY_ROW_PRODUCT_HEIGHT + DISPLAY_ROW_RATE_HEIGHT + 1;
 
     private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager, boolean showRate) {
         int size = packet.readInt();
@@ -626,7 +627,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .marginRight(2);
     }
 
-    private TextWidget<?> createHoverableTextForItem(ItemDisplayKey key, long amount, PanelSyncManager syncManager,
+    private IWidget createHoverableTextForItem(ItemDisplayKey key, long amount, PanelSyncManager syncManager,
         boolean showRate) {
         // Second argument is stacksize, don't care about it
         ItemStack itemStack = new ItemStack(key.item(), 1, key.damage());
@@ -634,9 +635,17 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
         String itemName = itemStack.getDisplayName();
 
-        return new TextWidget<>(IKey.dynamic(() -> getItemTextLine(itemName, amount, maxProgressTimeSyncer, showRate)))
-            .height(DISPLAY_ROW_HEIGHT)
-            .scale(0.75f)
+        return Flow.column()
+            .coverChildren(0)
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .child(
+                new TextWidget<>(IKey.dynamic(() -> EnumChatFormatting.AQUA + itemName))
+                    .height(DISPLAY_ROW_PRODUCT_HEIGHT)
+                    .scale(0.75f))
+            .child(
+                new TextWidget<>(IKey.dynamic(() -> getItemAmountTextLine(amount, maxProgressTimeSyncer, showRate)))
+                    .height(DISPLAY_ROW_RATE_HEIGHT)
+                    .scale(0.6f))
             .tooltip(t -> {
                 if (showRate) {
                     t.addLine(
@@ -647,16 +656,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             });
     }
 
-    private @NotNull String getItemTextLine(String itemName, long amount, IntSyncValue maxProgressTimeSyncer,
-        boolean showRate) {
+    private @NotNull String getItemAmountTextLine(long amount, IntSyncValue maxProgressTimeSyncer, boolean showRate) {
         String shortenedCount = GTUtility.formatShortenedLong(amount);
         String rateShort = showRate ? GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue()) : "";
-        int amountLen = (StatCollector
-            .translateToLocalFormatted("GT5U.gui.text.item_amount_display", "", shortenedCount) + rateShort).length();
-        return StatCollector.translateToLocalFormatted(
-            "GT5U.gui.text.item_amount_display",
-            GTUtility.truncateText(itemName, DISPLAY_ROW_CHAR_LIMIT - amountLen),
-            shortenedCount) + rateShort;
+        return StatCollector.translateToLocalFormatted("GT5U.gui.text.item_amount_display", "", shortenedCount)
+            + rateShort;
     }
 
     private FluidDisplayWidget createFluidDrawable(FluidStack fluidStack) {
@@ -669,16 +673,26 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .marginRight(2);
     }
 
-    private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount, PanelSyncManager syncManager,
+    private IWidget createHoverableTextForFluid(FluidStack fluidStack, long amount, PanelSyncManager syncManager,
         boolean showRate) {
         IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
         String fluidName = fluidStack.getLocalizedName();
 
-        return new TextWidget<>(IKey.dynamic(() -> getFluidTextLine(fluidName, amount, maxProgressSyncer, showRate)))
-            .height(DISPLAY_ROW_HEIGHT)
-            .scale(0.75f)
+        return Flow.column()
+            .coverChildren(0)
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .child(
+                new TextWidget<>(IKey.dynamic(() -> EnumChatFormatting.AQUA + fluidName))
+                    .height(DISPLAY_ROW_PRODUCT_HEIGHT)
+                    .scale(0.75f)
+                    .textAlign(Alignment.CenterLeft))
+            .child(
+                new TextWidget<>(IKey.dynamic(() -> getFluidAmountTextLine(amount, maxProgressSyncer, showRate)))
+                    .height(DISPLAY_ROW_RATE_HEIGHT)
+                    .scale(0.6f)
+                    .textAlign(Alignment.CenterLeft))
             .tooltip(t -> {
-                if (showOutputRates()) {
+                if (showRate) {
                     t.addLine(
                         EnumChatFormatting.AQUA + fluidName
                             + "\n"
@@ -687,16 +701,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             });
     }
 
-    private @NotNull String getFluidTextLine(String fluidName, long amount, IntSyncValue maxProgressTimeSyncer,
-        boolean showRate) {
+    private @NotNull String getFluidAmountTextLine(long amount, IntSyncValue maxProgressTimeSyncer, boolean showRate) {
         String shortenedCount = GTUtility.formatShortenedLong(amount);
-        String rateShort = showRate ? GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue()) : "";
-        int amountLen = (StatCollector
-            .translateToLocalFormatted("GT5U.gui.text.fluid_amount_display", "", shortenedCount) + rateShort).length();
-        return StatCollector.translateToLocalFormatted(
-            "GT5U.gui.text.fluid_amount_display",
-            GTUtility.truncateText(fluidName, DISPLAY_ROW_CHAR_LIMIT - amountLen),
-            shortenedCount) + rateShort;
+        String rateShort = showRate ? GTUtility.appendRate(true, amount, true, maxProgressTimeSyncer.getValue()) : "";
+        return StatCollector.translateToLocalFormatted("GT5U.gui.text.fluid_amount_display", "", shortenedCount)
+            + rateShort;
     }
 
     /**

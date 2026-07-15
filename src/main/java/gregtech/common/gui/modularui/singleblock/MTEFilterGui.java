@@ -19,7 +19,8 @@ import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.common.gui.modularui.singleblock.base.MTEFilterBaseGui;
 import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.automation.MTEFilter;
-import xyz.wagyourtail.jvmdg.util.Pair;
+import it.unimi.dsi.fastutil.booleans.BooleanObjectImmutablePair;
+import it.unimi.dsi.fastutil.booleans.BooleanObjectPair;
 
 public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
 
@@ -73,13 +74,13 @@ public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
     }
 
     @Override
-    protected List<Pair<Boolean, Supplier<IWidget>>> createButtonList(ModularPanel panel,
+    protected List<BooleanObjectPair<Supplier<IWidget>>> createButtonList(ModularPanel panel,
         PanelSyncManager syncManager) {
-        List<Pair<Boolean, Supplier<IWidget>>> buttons = super.createButtonList(panel, syncManager);
+        List<BooleanObjectPair<Supplier<IWidget>>> buttons = super.createButtonList(panel, syncManager);
 
         // ignore NBT button
         buttons.add(
-            new Pair<>(
+            new BooleanObjectImmutablePair<>(
                 true,
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
                     new BooleanSyncValue(machine::isIgnoreNbt, machine::setIgnoreNbt).allowC2S(),
