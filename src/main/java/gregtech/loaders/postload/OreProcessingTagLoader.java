@@ -16,14 +16,17 @@ import gregtech.api.util.GTRecipe;
 
 /**
  * Registers extra OreDict tags on ores (and raw ores) describing which special processing routes their ore chain
- * supports, so packs and automation can filter ores by how they can be processed:
+ * supports, so automation can filter ores by how they can be processed:
  * <ul>
  * <li>{@code oreSiftable} - the purified ore has a sifter recipe.</li>
  * <li>{@code oreChemicalBathable} - the crushed ore has a chemical bath recipe, with
  * {@code oreChemicalBathableMercury} and {@code oreChemicalBathableSodiumPersulfate} narrowing down the reagent.</li>
  * <li>{@code oreElectromagneticSeparable} - the purified dust has an electromagnetic separator recipe.</li>
  * </ul>
- * Raw ores get the same tags with a {@code rawOre} prefix instead of {@code ore}.
+ * Raw ores, crushed ores and purified crushed ores get the same tags with a {@code rawOre}, {@code crushed} resp.
+ * {@code crushedPurified} prefix instead of {@code ore}, but only for capabilities whose processing stage is still
+ * ahead of (or at) that form's stage. For example, purified crushed ores are past the chemical bath and don't get the
+ * {@code ChemicalBathable} tags.
  * <p>
  * The tags are derived from the registered recipes rather than from material flags, so they stay correct for every
  * material system adding ore processing recipes (GT, BartWorks Werkstoff, GT++, ...) and for manual recipe overrides.
@@ -66,11 +69,13 @@ public class OreProcessingTagLoader implements Runnable {
             collectMaterials(recipe.mInputs, OrePrefixes.dustPure, separable);
         }
 
-        tagOres(siftable, "Siftable");
-        tagOres(bathable, "ChemicalBathable");
-        tagOres(bathableMercury, "ChemicalBathableMercury");
-        tagOres(bathableSodiumPersulfate, "ChemicalBathableSodiumPersulfate");
-        tagOres(separable, "ElectromagneticSeparable");
+        // Chemical bathing happens at the crushed stage, so purified crushed ores are already past it and don't get
+        // the tag; sifting and electromagnetic separation happen at resp. after the purified stage.
+        tagOres(siftable, "Siftable", true);
+        tagOres(bathable, "ChemicalBathable", false);
+        tagOres(bathableMercury, "ChemicalBathableMercury", false);
+        tagOres(bathableSodiumPersulfate, "ChemicalBathableSodiumPersulfate", false);
+        tagOres(separable, "ElectromagneticSeparable", true);
     }
 
     /**
@@ -94,21 +99,32 @@ public class OreProcessingTagLoader implements Runnable {
     }
 
     /**
-     * Registers every ore and raw ore of the given materials under {@code ore<capability>} resp.
-     * {@code rawOre<capability>}.
+     * Registers every ore form of the given materials under {@code <formPrefix><capability>}: all {@code ore*} stone
+     * variants collapse into {@code ore<capability>}, while raw ores, crushed ores and purified crushed ores get
+     * {@code rawOre<capability>}, {@code crushed<capability>} resp. {@code crushedPurified<capability>}.
+     * <p>
+     * A form is only tagged while the capability's processing stage is still ahead of (or at) it, so purified crushed
+     * ores are skipped unless {@code applicableAtPurified}, and crushedCentrifuged is never tagged, as no special
+     * processing route applies at or after that stage.
      */
-    private static void tagOres(Set<String> materials, String capability) {
-        String oreTag = "ore" + capability;
-        String rawOreTag = "rawOre" + capability;
+    private static void tagOres(Set<String> materials, String capability, boolean applicableAtPurified) {
         for (String material : materials) {
             for (OrePrefixes prefix : OrePrefixes.VALUES) {
-                boolean isRawOre = prefix == OrePrefixes.rawOre;
-                if (!isRawOre && !prefix.getName()
-                    .startsWith("ore")) continue;
-                String oreName = prefix.getName() + material;
+                if (prefix == OrePrefixes.crushedPurified && !applicableAtPurified) continue;
+                String prefixName = prefix.getName();
+                String tagBase;
+                if (prefixName.startsWith("ore")) {
+                    tagBase = "ore";
+                } else if (prefix == OrePrefixes.rawOre || prefix == OrePrefixes.crushed
+                    || prefix == OrePrefixes.crushedPurified) {
+                        tagBase = prefixName;
+                    } else {
+                        continue;
+                    }
+                String oreName = prefixName + material;
                 if (!OreDictionary.doesOreNameExist(oreName)) continue;
                 for (ItemStack stack : GTOreDictUnificator.getOres(oreName)) {
-                    GTOreDictUnificator.registerOre(isRawOre ? rawOreTag : oreTag, stack);
+                    GTOreDictUnificator.registerOre(tagBase + capability, stack);
                 }
             }
         }
