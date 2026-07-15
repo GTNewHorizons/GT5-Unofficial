@@ -58,7 +58,7 @@ public class BlockBaseModular extends BasicBlock {
             net.minecraft.block.material.Material.iron,
             blockType,
             colour,
-            Math.min(Math.max(material.vTier, 1), 6));
+            Math.min(Math.max(material.tier, 1), 6));
         this.material = material;
         registerComponent();
         BLOCK_CACHE.put(material.getUnlocalizedName() + "." + blockType.name(), this);
@@ -183,7 +183,7 @@ public class BlockBaseModular extends BasicBlock {
         }
 
         String metType = this.material.getTextureSet() != null ? this.material.getTextureSet().mSetName : "METALLIC";
-        int tier = this.material.vTier;
+        int tier = this.material.tier;
         String aType = (this.blockType == BlockTypes.FRAME) ? "frameGt" : (tier <= 4 ? "block1" : "block5");
 
         this.blockIcon = Textures.BlockIcons.textureSetWithRegister(metType, "/" + aType, iIcon)

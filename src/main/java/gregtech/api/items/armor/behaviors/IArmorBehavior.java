@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,8 +57,8 @@ public interface IArmorBehavior {
         if (hasDisplayName()) {
             GTUtility.sendChatToPlayer(
                 context.getPlayer(),
-                GTUtility
-                    .processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.enabled", getDisplayName())));
+                GTUtility.processFormatStacks(
+                    GRAY + StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getDisplayName())));
         }
     }
 
@@ -68,8 +69,8 @@ public interface IArmorBehavior {
         if (hasDisplayName()) {
             GTUtility.sendChatToPlayer(
                 context.getPlayer(),
-                GTUtility
-                    .processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.disabled", getDisplayName())));
+                GTUtility.processFormatStacks(
+                    GRAY + StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getDisplayName())));
         }
     }
 

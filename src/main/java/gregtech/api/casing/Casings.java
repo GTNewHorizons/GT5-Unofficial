@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -386,7 +387,7 @@ public enum Casings implements ICasing {
     AlchemicalCasing(() -> GregTechAPI.sBlockCasings12, 10, gt(16, 5, 10)) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.AlchemyCasingAny");
+            return StatCollector.translateToLocal("GT5U.MBTT.AlchemyCasingAny");
         }
 
         @Override
@@ -438,7 +439,7 @@ public enum Casings implements ICasing {
     AlchemicalConstructTiered(() -> GameRegistry.findBlock(Mods.Thaumcraft.ID, "blockMetalDevice"), 9, -1) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.AlchemicalConstructAny");
+            return StatCollector.translateToLocal("GT5U.MBTT.AlchemicalConstructAny");
         }
 
         @Override
@@ -1092,7 +1093,7 @@ public enum Casings implements ICasing {
     BorosilicateGlassAny(BorosilicateGlass::getGlassBlock, 0, -1) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.BoroGlassAny");
+            return StatCollector.translateToLocal("GT5U.MBTT.BoroGlassAny");
         }
 
         @Override
@@ -1104,7 +1105,7 @@ public enum Casings implements ICasing {
     BorosilicateGlassTiered(BorosilicateGlass::getGlassBlock, 0, -1) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.BoroGlassTiered");
+            return StatCollector.translateToLocal("GT5U.MBTT.BoroGlassTiered");
         }
 
         @Override
@@ -1127,7 +1128,7 @@ public enum Casings implements ICasing {
     SuperChest(() -> GregTechAPI.sBlockMachines, 0, -1) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.SuperChest");
+            return StatCollector.translateToLocal("GT5U.MBTT.SuperChest");
         }
 
         @Override
