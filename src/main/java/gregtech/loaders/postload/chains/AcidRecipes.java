@@ -45,7 +45,7 @@ public class AcidRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (4)),
-                Materials.ChromiumTrioxide.getDust(2))
+                MaterialLibAPI.getStack(Materials2Materials.Chromiumtrioxide, Materials2Shapes.dust, (int) (2)))
             .fluidInputs(WerkstoffLoader.AmmoniumChloride.getFluidOrGas(2000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
@@ -92,8 +92,8 @@ public class AcidRecipes {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.FranciumSlurry, Materials2FluidShapes.fluidLiquid, (int) (4000)))
             .itemOutputs(
-                Materials.Francium.getDust(1),
-                Materials.Francium.getDust(1),
+                MaterialLibAPI.getStack(Materials2Materials.FranciumGT5U, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.FranciumGT5U, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.dust, (int) (1)))
             .outputChances(9000, 8000, 6500)
             .eut(TierEU.RECIPE_HV)
@@ -101,7 +101,7 @@ public class AcidRecipes {
             .addTo(sifterRecipes);
         // Fr + H2O = FrOH + H
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Francium.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.FranciumGT5U, Materials2Shapes.dust, (int) (1)))
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.FranciumHydroxide, Materials2Shapes.dust, (int) (3)))
@@ -301,8 +301,14 @@ public class AcidRecipes {
                     Materials2Materials.ChlorosulfonicAcid,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (5000)),
-                Materials.HydrochloricAcid.getFluid(10000L),
-                Materials.PhosphoricAcid.getFluid(5000L),
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.HydrochloricAcidGT5U,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (10000L)),
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.PhosphoricAcidGT5U,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (5000L)),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.AgitatingSlurry,
                     Materials2FluidShapes.fluidLiquid,
@@ -366,7 +372,10 @@ public class AcidRecipes {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Benzene, Materials2FluidShapes.fluidLiquid, (int) (7000)),
                 new FluidStack(GTPPFluids.Formaldehyde, 4000),
-                Materials.Diphenylisophthalate.getFluid(1000))
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.DiphenylIsophtalate,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.UltraContaminatedGas,
