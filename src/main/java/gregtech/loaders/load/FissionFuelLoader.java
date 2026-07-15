@@ -2,8 +2,6 @@ package gregtech.loaders.load;
 
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.dustSmall;
-import static gregtech.api.enums.OrePrefixes.stick;
-import static gregtech.api.enums.OrePrefixes.stickLong;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
@@ -24,7 +22,6 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -33,7 +30,6 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
 
 public class FissionFuelLoader implements Runnable {
@@ -855,9 +851,9 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RodNaquadah.get(32L),
-                GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
-                GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
-                GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
+                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.stickLong, (int) (64L)),
+                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.stickLong, (int) (64L)),
+                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.stickLong, (int) (64L)),
                 WerkstoffLoader.Tiberium.get(dust, 64),
                 WerkstoffLoader.Tiberium.get(dust, 64))
             .itemOutputs(ItemList.RodNaquadah32.get(1))
@@ -1005,19 +1001,25 @@ public class FissionFuelLoader implements Runnable {
             .addTo(cannerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.RodTiberium.get(2), GTOreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
+            .itemInputs(
+                ItemList.RodTiberium.get(2),
+                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.stick, (int) (4L)))
             .itemOutputs(ItemList.RodTiberium2.get(1))
             .duration(5 * SECONDS)
             .eut(400)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.RodTiberium.get(4), GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 6L))
+            .itemInputs(
+                ItemList.RodTiberium.get(4),
+                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.stickLong, (int) (6L)))
             .itemOutputs(ItemList.RodTiberium4.get(1))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(400)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.RodTiberium2.get(2), GTOreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
+            .itemInputs(
+                ItemList.RodTiberium2.get(2),
+                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.stick, (int) (4L)))
             .itemOutputs(ItemList.RodTiberium4.get(1))
             .duration(5 * SECONDS)
             .eut(400)
