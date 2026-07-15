@@ -11,9 +11,7 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.objects.OreDictItemStack;
@@ -30,7 +28,7 @@ public class CokeOvenRecipes implements Runnable {
         if (!Mods.Railcraft.isModLoaded()) return;
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1))
+            .itemInputs(GTOreDictUnificator.get("gemCoal", 1))
             .itemOutputs(RailcraftToolItems.getCoalCoke(1))
             .fluidOutputs(
                 MaterialLibAPI
@@ -40,7 +38,7 @@ public class CokeOvenRecipes implements Runnable {
             .addTo(cokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Coal, 1))
+            .itemInputs(GTOreDictUnificator.get("blockCoal", 1))
             .itemOutputs(EnumCube.COKE_BLOCK.getItem(1))
             .fluidOutputs(
                 MaterialLibAPI
@@ -91,14 +89,14 @@ public class CokeOvenRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.WoodPellet.get(2))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 3))
+            .itemOutputs(GTOreDictUnificator.get("gemCharcoal", 3))
             .duration(1 * MINUTES)
             .eut(0)
             .addTo(cokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("logWood", 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1))
+            .itemOutputs(GTOreDictUnificator.get("gemCharcoal", 1))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Creosote, Materials2FluidShapes.fluidLiquid, (int) (250)))
