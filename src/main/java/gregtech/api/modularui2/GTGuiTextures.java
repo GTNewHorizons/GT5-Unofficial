@@ -2205,6 +2205,7 @@ public final class GTGuiTextures {
         .build();
     public static final UITexture PICTURE_ARROW_6_WHITE_PRE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_6_white_pre")
+        .canApplyTheme()
         .imageSize(6, 6)
         .adaptable(3, 0, 3, 0)
         .build();
