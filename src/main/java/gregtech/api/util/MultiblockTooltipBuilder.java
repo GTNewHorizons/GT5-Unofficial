@@ -13,6 +13,8 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 import gregtech.api.util.tooltip.*;
+import gregtech.api.util.tooltip.macros.TooltipMacroHandler;
+import gregtech.api.util.tooltip.macros.TooltipMacroProcessor;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -107,13 +109,12 @@ public class MultiblockTooltipBuilder {
     private List<String> authors;
     private List<String> structureAuthors;
     private SetMultimap<Integer, String> hBlocks;
-    private Map<String, TooltipMacroProcessor> iMacros;
 
     private String[] iArray;
     private String[] sArray;
     private String[] hArray;
 
-    private String postMacroContent;
+    private final TooltipMacroHandler macroHandler;
 
     public MultiblockTooltipBuilder() {
         iLines = new LinkedList<>();
@@ -123,7 +124,7 @@ public class MultiblockTooltipBuilder {
         structureAuthors = new LinkedList<>();
         hBlocks = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
         hBlocks.put(StructureLibAPI.HINT_BLOCK_META_AIR, TT_air);
-        iMacros = new HashMap<>();
+        macroHandler = new TooltipMacroHandler();
     }
 
     /**
@@ -159,7 +160,7 @@ public class MultiblockTooltipBuilder {
      * (for example, gray + italic)
      */
     public MultiblockTooltipBuilder setPostMacroContent(Object content) {
-        this.postMacroContent = (content == null ? null : String.valueOf(content));
+        this.macroHandler.setPostfix(content);
         return this;
     }
 
@@ -175,63 +176,7 @@ public class MultiblockTooltipBuilder {
      * @apiNote Macros called without a parameter is treated as an invocation with an empty string.
      */
     public MultiblockTooltipBuilder addFormatted(String info) {
-        StringBuilder result = new StringBuilder();
-        int len = info.length();
-
-        for (int i = 0; i < len; i++) {
-            char c = info.charAt(i);
-
-            if (c == '&' && i + 1 < len) {
-                char next = info.charAt(i + 1);
-
-                if (next == '&') {
-                    result.append('&');
-                    i++;
-                    continue;
-                }
-
-                // mc color codes
-                if ("0123456789abcdefklmnor".indexOf(Character.toLowerCase(next)) >= 0) {
-                    // mc color symbol
-                    result.append('\u00A7').append(next);
-                    i++;
-                    continue;
-                }
-
-                result.append(c);
-                continue;
-            }
-
-            if (c == '{') {
-                int close = info.indexOf('}', i + 1);
-                if (close > i) {
-                    String macroContent = info.substring(i + 1, close);
-                    int colonIdx = macroContent.indexOf(':');
-
-                    String name = colonIdx >= 0 ? macroContent.substring(0, colonIdx) : macroContent;
-                    String param = colonIdx >= 0 ? macroContent.substring(colonIdx + 1) : "";
-
-                    TooltipMacroProcessor processor = iMacros.get(name);
-
-                    if (processor != null) {
-                        result.append(processor.process(param));
-
-                        if (postMacroContent != null) {
-                            result.append(postMacroContent);
-                        }
-
-                        i = close;
-                        continue;
-                    }
-                }
-                result.append(c);
-                continue;
-            }
-
-            result.append(c);
-        }
-
-        iLines.add(result.toString());
+        iLines.add(macroHandler.processString(info));
         return this;
     }
 
@@ -242,8 +187,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addMacro(String name, UnaryOperator<String> transformer) {
-        this.iMacros.put(name, TooltipMacroProcessor.of(name, transformer));
-        return this;
+        return addMacro(TooltipMacroProcessor.of(name, transformer));
     }
 
     /**
@@ -253,7 +197,7 @@ public class MultiblockTooltipBuilder {
      * @apiNote macros with duplicate names will be replaced
      */
     public MultiblockTooltipBuilder addMacro(TooltipMacroProcessor macro) {
-        this.iMacros.put(macro.getName(), macro);
+        this.macroHandler.addProcessor(macro);
         return this;
     }
 
@@ -1864,7 +1808,7 @@ public class MultiblockTooltipBuilder {
         authors = null;
         structureAuthors = null;
         hBlocks = null;
-        iMacros = null;
+        macroHandler.clear();
         return this;
     }
 

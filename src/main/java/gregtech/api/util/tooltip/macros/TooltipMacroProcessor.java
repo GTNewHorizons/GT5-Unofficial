@@ -1,4 +1,4 @@
-package gregtech.api.util.tooltip;
+package gregtech.api.util.tooltip.macros;
 
 import java.util.function.Function;
 

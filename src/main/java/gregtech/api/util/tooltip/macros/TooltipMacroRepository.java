@@ -1,5 +1,6 @@
-package gregtech.api.util.tooltip;
+package gregtech.api.util.tooltip.macros;
 
+import afishstash.IconRepository;
 import gregtech.api.util.CustomGlyphs;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -8,12 +9,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -140,6 +137,13 @@ public final class TooltipMacroRepository {
     );
 
     /**
+     * Macro that gets the icon by key
+     */
+    public static final TooltipMacroProcessor ICON = TooltipMacroProcessor.of(
+        "icon", IconRepository::getComponentKey
+    );
+
+    /**
      * A collection of color macros for readability purposes only.
      *
      * @see EnumChatFormatting
@@ -181,11 +185,11 @@ public final class TooltipMacroRepository {
     static {
         // initializer: singleton instances
         Set<TooltipMacroProcessor> singletonInstances = Set.of(
-            LITERAL, HEAT, PARALLEL, POLLUTION, FLUID, SPEED, SPECIAL, INTERVAL, POSITIVE, NEGATIVE, RAINBOW
+            LITERAL, FLUID, SPEED, SPECIAL, RAINBOW
         );
         // initializer: collections
         List<Set<TooltipMacroProcessor>> collectionInstances = List.of(
-            COLORS
+            COLORS, MODIFIER, ATTRIBUTES
         );
 
         Set<TooltipMacroProcessor> universal = new HashSet<>(singletonInstances);
