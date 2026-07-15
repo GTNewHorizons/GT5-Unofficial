@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -43,7 +42,7 @@ public class LatheRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("plankWood", 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L))
+            .itemOutputs(GTOreDictUnificator.get("stickWood", 2L))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(latheRecipes);
@@ -61,7 +60,7 @@ public class LatheRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("treeSapling", 1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1L),
+                GTOreDictUnificator.get("stickWood", 1L),
                 MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dustTiny, (int) (1L)))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_ULV)
