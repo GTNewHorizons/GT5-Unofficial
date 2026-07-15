@@ -21,8 +21,10 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -138,10 +140,17 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final IntOpenHashSet isOre = new IntOpenHashSet();
     private static boolean isInit = false;
 
+    private static final Set<Materials> VOIDABLE_STONE_DUSTS = new HashSet<>(
+        Arrays.asList(
+            Materials.Stone,
+            Materials.Netherrack,
+            Materials.Endstone,
+            Materials.Marble,
+            Materials.GraniteRed));
+
     private ItemStack[] midProduct;
     private ProcessingMode mode = ProcessingMode.MAC_WASH_THERMAL_MAC;
     private boolean doesVoidStone = false;
-    private boolean doesVoidEndstone = false;
     private int currentParallelism = 0;
     private final XSTR random = new XSTR();
 
@@ -584,8 +593,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private void doCompress(List<ItemStack> aList) {
         HashMap<Integer, Integer> merged = new HashMap<>();
         for (ItemStack stack : aList) {
-            if (doesVoidStone && GTUtility.areStacksEqual(Materials.Stone.getDust(1), stack)) continue;
-            if (doesVoidEndstone && GTUtility.areStacksEqual(Materials.Endstone.getDust(1), stack)) continue;
+            if (doesVoidStone && VOIDABLE_STONE_DUSTS.stream()
+                .anyMatch(m -> GTUtility.areStacksEqual(m.getDust(1), stack))) continue;
             int id = GTUtility.stackToInt(stack);
             if (id != 0) {
                 merged.merge(id, stack.stackSize, Integer::sum);
@@ -739,17 +748,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         info.add(
             IGregTechDeviceInformation
                 .encode("GT5U.infodata.integrated_ore_factory.parallelism", getCurrentParallelism()));
-        info.add(IGregTechDeviceInformation.encode("GT5U.machines.oreprocessor.void", getVoidStatus()));
+        info.add(IGregTechDeviceInformation.encode("GT5U.machines.oreprocessor.void", doesVoidStone));
         info.add("GT5U.multiblock.runningMode");
         info.addAll(getDisplayMode(mode));
         return info.toArray(new String[0]);
-    }
-
-    private String getVoidStatus() {
-        if (doesVoidStone && doesVoidEndstone) return "Stone + Endstone";
-        if (doesVoidStone) return "Stone";
-        if (doesVoidEndstone) return "Endstone";
-        return "Off";
     }
 
     @Override
@@ -775,20 +777,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (aPlayer.isSneaking()) {
-            if (!doesVoidStone && !doesVoidEndstone) {
-                doesVoidStone = true;
-            } else if (doesVoidStone && !doesVoidEndstone) {
-                doesVoidStone = false;
-                doesVoidEndstone = true;
-            } else if (!doesVoidStone && doesVoidEndstone) {
-                doesVoidStone = true;
-                doesVoidEndstone = true;
-            } else {
-                doesVoidStone = false;
-                doesVoidEndstone = false;
-            }
-
-            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.oreprocessor.void", getVoidStatus());
+            doesVoidStone = !doesVoidStone;
+            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.oreprocessor.void", doesVoidStone);
             return;
         }
         mode = mode.next();
@@ -822,7 +812,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     public void loadNBTData(NBTTagCompound aNBT) {
         mode = ProcessingMode.fromOrdinal(aNBT.getInteger("mode"));
         doesVoidStone = aNBT.getBoolean("doesVoidStone");
-        doesVoidEndstone = aNBT.getBoolean("doesVoidEndstone");
         currentParallelism = aNBT.getInteger("currentParallelism");
         super.loadNBTData(aNBT);
     }
@@ -831,7 +820,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mode", mode.ordinal());
         aNBT.setBoolean("doesVoidStone", doesVoidStone);
-        aNBT.setBoolean("doesVoidEndstone", doesVoidEndstone);
         aNBT.setInteger("currentParallelism", currentParallelism);
         super.saveNBTData(aNBT);
     }
@@ -848,14 +836,9 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 + EnumChatFormatting.RESET);
         currenttip.add(StatCollector.translateToLocal("GT5U.multiblock.runningMode"));
         currenttip.addAll(getDisplayMode(ProcessingMode.fromOrdinal(tag.getInteger("machineMode"))));
-        boolean voidStone = tag.getBoolean("doesVoidStone");
-        boolean voidEndstone = tag.getBoolean("doesVoidEndstone");
-        String voidStatus;
-        if (voidStone && voidEndstone) voidStatus = "Stone + Endstone";
-        else if (voidStone) voidStatus = "Stone";
-        else if (voidEndstone) voidStatus = "Endstone";
-        else voidStatus = "Off";
-        currenttip.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", voidStatus));
+        currenttip.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.machines.oreprocessor.void", tag.getBoolean("doesVoidStone")));
     }
 
     @Override
@@ -869,7 +852,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("machineMode", mode.ordinal());
         tag.setBoolean("doesVoidStone", doesVoidStone);
-        tag.setBoolean("doesVoidEndstone", doesVoidEndstone);
         tag.setInteger("currentParallelism", currentParallelism);
     }
 
