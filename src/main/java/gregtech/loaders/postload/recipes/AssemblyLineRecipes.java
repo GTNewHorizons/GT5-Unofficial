@@ -814,7 +814,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(RESEARCH_STATION_DATA, 0)
                 .itemInputs(
                     ItemList.Hull_UIV.get(1),
-                    getModItem(DraconicEvolution.ID, "draconicChest", 1, 0),
+                    getModItem(DraconicEvolution.ID, "draconiumChest", 1, 0),
                     ItemList.Electric_Piston_UIV.get(2),
                     ItemList.Quantum_Chest_IV.get(1),
                     new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
@@ -832,7 +832,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(RESEARCH_STATION_DATA, 0)
                 .itemInputs(
                     ItemList.Hull_UMV.get(1),
-                    getModItem(DraconicEvolution.ID, "draconicChest", 2, 0),
+                    getModItem(DraconicEvolution.ID, "draconiumChest", 2, 0),
                     ItemList.Electric_Piston_UMV.get(2),
                     ItemList.Quantum_Chest_IV.get(2),
                     new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
@@ -850,7 +850,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(RESEARCH_STATION_DATA, 0)
                 .itemInputs(
                     ItemList.Hull_UXV.get(1),
-                    getModItem(DraconicEvolution.ID, "draconicChest", 3, 0),
+                    getModItem(DraconicEvolution.ID, "draconiumChest", 3, 0),
                     ItemList.Electric_Piston_UXV.get(2),
                     ItemList.Quantum_Chest_IV.get(3),
                     new Object[] { OrePrefixes.circuit.get(Materials.MAX), 1 },
@@ -967,7 +967,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(RESEARCH_STATION_DATA, 0)
                 .itemInputs(
                     ItemList.Hull_UIV.get(1),
-                    getModItem(DraconicEvolution.ID, "draconicChest", 1, 0),
+                    getModItem(DraconicEvolution.ID, "draconiumChest", 1, 0),
                     ItemList.Electric_Piston_UIV.get(2),
                     ItemList.Quantum_Chest_IV.get(1),
                     new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
@@ -985,7 +985,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(RESEARCH_STATION_DATA, 0)
                 .itemInputs(
                     ItemList.Hull_UMV.get(1),
-                    getModItem(DraconicEvolution.ID, "draconicChest", 2, 0),
+                    getModItem(DraconicEvolution.ID, "draconiumChest", 2, 0),
                     ItemList.Electric_Piston_UMV.get(2),
                     ItemList.Quantum_Chest_IV.get(2),
                     new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
@@ -1003,7 +1003,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(RESEARCH_STATION_DATA, 0)
                 .itemInputs(
                     ItemList.Hull_UXV.get(1),
-                    getModItem(DraconicEvolution.ID, "draconicChest", 3, 0),
+                    getModItem(DraconicEvolution.ID, "draconiumChest", 3, 0),
                     ItemList.Electric_Piston_UXV.get(2),
                     ItemList.Quantum_Chest_IV.get(3),
                     new Object[] { OrePrefixes.circuit.get(Materials.MAX), 1 },
