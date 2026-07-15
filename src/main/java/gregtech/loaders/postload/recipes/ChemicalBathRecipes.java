@@ -71,7 +71,7 @@ public class ChemicalBathRecipes implements Runnable {
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1))
+            .itemInputs(GTOreDictUnificator.get("frameGtSteel", 1))
             .itemOutputs(ItemList.Block_ReinforcedConcrete.get(1L))
             .fluidInputs(
                 MaterialLibAPI
@@ -195,7 +195,7 @@ public class ChemicalBathRecipes implements Runnable {
         // reinforced blocks
         {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1))
+                .itemInputs(GTOreDictUnificator.get("frameGtBronze", 1))
                 .itemOutputs(ItemList.Block_BronzePlate.get(1))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -207,7 +207,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .addTo(chemicalBathRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1))
+                .itemInputs(GTOreDictUnificator.get("frameGtSteel", 1))
                 .itemOutputs(ItemList.Block_SteelPlate.get(1))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -219,7 +219,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .addTo(chemicalBathRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1))
+                .itemInputs(GTOreDictUnificator.get("frameGtTitanium", 1))
                 .itemOutputs(ItemList.Block_TitaniumPlate.get(1))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -231,7 +231,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .addTo(chemicalBathRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
+                .itemInputs(GTOreDictUnificator.get("frameGtTungstenSteel", 1))
                 .itemOutputs(ItemList.Block_TungstenSteelReinforced.get(1))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -243,7 +243,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .addTo(chemicalBathRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1))
+                .itemInputs(GTOreDictUnificator.get("frameGtIridium", 1))
                 .itemOutputs(ItemList.Block_IridiumTungstensteel.get(1))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -255,7 +255,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .addTo(chemicalBathRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadah, 1))
+                .itemInputs(GTOreDictUnificator.get("frameGtNaquadah", 1))
                 .itemOutputs(ItemList.Block_NaquadahPlate.get(1))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -267,7 +267,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .addTo(chemicalBathRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1))
+                .itemInputs(GTOreDictUnificator.get("frameGtNeutronium", 1))
                 .itemOutputs(ItemList.Block_NeutroniumPlate.get(1))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -279,7 +279,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .addTo(chemicalBathRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
+                .itemInputs(GTOreDictUnificator.get("frameGtTungstenSteel", 1))
                 .itemOutputs(ItemList.Block_TungstenSteelReinforced.get(1))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -293,7 +293,7 @@ public class ChemicalBathRecipes implements Runnable {
 
         for (Fluid dyeFluid : Dyes.dyeRed.getFluidDyes()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
+                .itemInputs(GTOreDictUnificator.get("wireGt01RedAlloy", 1))
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 0))
                 .fluidInputs(new FluidStack(dyeFluid, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
@@ -303,7 +303,7 @@ public class ChemicalBathRecipes implements Runnable {
 
         for (Fluid dyeFluid : Dyes.dyeBlue.getFluidDyes()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
+                .itemInputs(GTOreDictUnificator.get("wireGt01RedAlloy", 1))
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 1))
                 .fluidInputs(new FluidStack(dyeFluid, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
@@ -313,7 +313,7 @@ public class ChemicalBathRecipes implements Runnable {
 
         for (Fluid dyeFluid : Dyes.dyeGreen.getFluidDyes()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
+                .itemInputs(GTOreDictUnificator.get("wireGt01RedAlloy", 1))
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 2))
                 .fluidInputs(new FluidStack(dyeFluid, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
@@ -323,7 +323,7 @@ public class ChemicalBathRecipes implements Runnable {
 
         for (Fluid dyeFluid : Dyes.dyeYellow.getFluidDyes()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
+                .itemInputs(GTOreDictUnificator.get("wireGt01RedAlloy", 1))
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 3))
                 .fluidInputs(new FluidStack(dyeFluid, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
@@ -363,7 +363,7 @@ public class ChemicalBathRecipes implements Runnable {
 
         // Rn relate quantum recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.EnderEye, 1))
+            .itemInputs(GTOreDictUnificator.get("gemEnderEye", 1))
             .itemOutputs(ItemList.QuantumEye.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidGas, (int) (250)))
@@ -372,7 +372,7 @@ public class ChemicalBathRecipes implements Runnable {
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1))
+            .itemInputs(GTOreDictUnificator.get("gemNetherStar", 1))
             .itemOutputs(ItemList.QuantumStar.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidGas, (int) (1250)))
@@ -403,7 +403,7 @@ public class ChemicalBathRecipes implements Runnable {
         // Na + H2O = NaOH + H
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, (int) (1)))
-            .itemOutputs(Materials.SodiumHydroxide.getDust(3))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 3))
             .fluidInputs(Materials.Water.getFluid(1_000))
             .fluidOutputs(
                 MaterialLibAPI
@@ -549,7 +549,11 @@ public class ChemicalBathRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(prefix, Materials.Infinity, multiplier))
             .itemOutputs(GTOreDictUnificator.get(prefix, Materials.HotProtoHalkonite, multiplier))
-            .fluidInputs(Materials.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.protohalkonitebase,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) ((long) partFraction * multiplier)))
             .duration((int) (multiplier * (8 * SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UEV)
             .addTo(chemicalBathRecipes);
@@ -557,7 +561,11 @@ public class ChemicalBathRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(prefix, Materials.Creon, multiplier))
             .itemOutputs(GTOreDictUnificator.get(prefix, Materials.HotProtoHalkonite, multiplier))
-            .fluidInputs(Materials.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier / 2L))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.protohalkonitebase,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) ((long) partFraction * multiplier / 2L)))
             .duration((int) (multiplier * (2 * SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UIV)
             .addTo(chemicalBathRecipes);
@@ -565,7 +573,11 @@ public class ChemicalBathRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(prefix, Materials.Mellion, multiplier))
             .itemOutputs(GTOreDictUnificator.get(prefix, Materials.HotProtoHalkonite, multiplier))
-            .fluidInputs(Materials.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier / 2L))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.protohalkonitebase,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) ((long) partFraction * multiplier / 2L)))
             .duration((int) (multiplier * (2 * SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UIV)
             .addTo(chemicalBathRecipes);
