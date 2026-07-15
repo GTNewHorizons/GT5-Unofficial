@@ -140,13 +140,13 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final IntOpenHashSet isOre = new IntOpenHashSet();
     private static boolean isInit = false;
 
-    private static final Set<Materials> VOIDABLE_STONE_DUSTS = new HashSet<>(
+    private static final Set<ItemStack> VOIDABLE_STONE_DUSTS = new HashSet<>(
         Arrays.asList(
-            Materials.Stone,
-            Materials.Netherrack,
-            Materials.Endstone,
-            Materials.Marble,
-            Materials.GraniteRed));
+            Materials.Stone.getDust(1),
+            Materials.Netherrack.getDust(1),
+            Materials.Endstone.getDust(1),
+            Materials.Marble.getDust(1),
+            Materials.GraniteRed.getDust(1)));
 
     private ItemStack[] midProduct;
     private ProcessingMode mode = ProcessingMode.MAC_WASH_THERMAL_MAC;
@@ -594,7 +594,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         HashMap<Integer, Integer> merged = new HashMap<>();
         for (ItemStack stack : aList) {
             if (doesVoidStone && VOIDABLE_STONE_DUSTS.stream()
-                .anyMatch(m -> GTUtility.areStacksEqual(m.getDust(1), stack))) continue;
+                .anyMatch(dust -> GTUtility.areStacksEqual(dust, stack))) continue;
             int id = GTUtility.stackToInt(stack);
             if (id != 0) {
                 merged.merge(id, stack.stackSize, Integer::sum);
