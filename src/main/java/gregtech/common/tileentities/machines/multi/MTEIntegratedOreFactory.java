@@ -29,7 +29,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -771,10 +775,73 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             return;
         }
         mode = mode.next();
-        GTUtility.sendChatTrans(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"),
-            String.join("", getDisplayMode(mode)));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", getDisplayModeComponent(mode));
+    }
+
+    private static final String KEY_MACERATE = "GT5U.machines.oreprocessor.Macerate";
+    private static final String KEY_ORE_WASHER = "GT5U.machines.oreprocessor.Ore_Washer";
+    private static final String KEY_THERMAL_CENTRIFUGE = "GT5U.machines.oreprocessor.Thermal_Centrifuge";
+    private static final String KEY_CENTRIFUGE = "GT5U.machines.oreprocessor.Centrifuge";
+    private static final String KEY_SIFTER = "GT5U.machines.oreprocessor.Sifter";
+    private static final String KEY_CHEMICAL_BATHING = "GT5U.machines.oreprocessor.Chemical_Bathing";
+    private static final String KEY_FORGE_HAMMER = "GT5U.machines.oreprocessor.Forge_Hammer";
+    private static final String KEY_SIMPLE_WASHER = "GT5U.machines.oreprocessor.Simple_Washer";
+
+    /**
+     * Lazily-translated equivalent of {@link #getDisplayMode(ProcessingMode)}, for chat messages sent to a specific
+     * player. getDisplayMode itself is only used client-side (tooltips/WAILA/GUI), where eager translation is fine.
+     */
+    private static IChatComponent getDisplayModeComponent(ProcessingMode mode) {
+        ChatStyle gray = new ChatStyle().setColor(EnumChatFormatting.GRAY);
+        IChatComponent result = new ChatComponentText("");
+
+        switch (mode) {
+            case MAC_WASH_THERMAL_MAC -> appendChain(
+                result,
+                gray,
+                KEY_MACERATE,
+                KEY_ORE_WASHER,
+                KEY_THERMAL_CENTRIFUGE,
+                KEY_MACERATE);
+            case MAC_WASH_MAC_CENTRI -> appendChain(
+                result,
+                gray,
+                KEY_MACERATE,
+                KEY_ORE_WASHER,
+                KEY_MACERATE,
+                KEY_CENTRIFUGE);
+            case MAC_MAC_CENTRI -> appendChain(result, gray, KEY_MACERATE, KEY_MACERATE, KEY_CENTRIFUGE);
+            case MAC_WASH_SIFT -> appendChain(result, gray, KEY_MACERATE, KEY_ORE_WASHER, KEY_SIFTER);
+            case MAC_CHEM_MAC_CENTRI -> appendChain(
+                result,
+                gray,
+                KEY_MACERATE,
+                KEY_CHEMICAL_BATHING,
+                KEY_MACERATE,
+                KEY_CENTRIFUGE);
+            case MAC_CHEM_THERMAL_MAC -> appendChain(
+                result,
+                gray,
+                KEY_MACERATE,
+                KEY_CHEMICAL_BATHING,
+                KEY_THERMAL_CENTRIFUGE,
+                KEY_MACERATE);
+            case FORGE_FORGE_SIMPLEWASH -> appendChain(
+                result,
+                gray,
+                KEY_FORGE_HAMMER,
+                KEY_FORGE_HAMMER,
+                KEY_SIMPLE_WASHER);
+        }
+
+        return result;
+    }
+
+    private static void appendChain(IChatComponent result, ChatStyle gray, String... stepKeys) {
+        for (int i = 0; i < stepKeys.length; i++) {
+            if (i > 0) result.appendSibling(new ChatComponentText(" -> ").setChatStyle(gray));
+            result.appendSibling(new ChatComponentTranslation(stepKeys[i]).setChatStyle(gray));
+        }
     }
 
     @Override
