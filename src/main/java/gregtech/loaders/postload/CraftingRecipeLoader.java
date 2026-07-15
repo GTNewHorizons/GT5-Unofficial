@@ -1285,7 +1285,7 @@ public class CraftingRecipeLoader implements Runnable {
             bits_no_remove_buffered,
             new Object[] { "dustRedstone", "dustSilicon", "dustCoal" });
         GTModHandler.addShapelessCraftingRecipe(
-            GTOreDictUnificator.get("dustClayCompound", 2L),
+            GTOreDictUnificator.get("dustCrudeSteel", 2L),
             bits_no_remove_buffered,
             new Object[] { "dustClay", "dustFlint", "dustStone" });
         GTModHandler.addShapelessCraftingRecipe(
