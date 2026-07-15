@@ -524,7 +524,7 @@ public class Godforge implements Runnable {
             // Multi-step
             ItemStack[] solids_t2_xstep = { MaterialsElements.STANDALONE.HYPOGEN.getDust(1),
                 MaterialLibAPI.getStack(Materials2Materials.Tritanium, Materials2Shapes.dust, 1),
-                Materials.Flerovium.getDust(1),
+                MaterialLibAPI.getStack(Materials2Materials.FleroviumGT5U, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.SixPhasedCopper, Materials2Shapes.dust, 1) };
 
@@ -534,7 +534,8 @@ public class Godforge implements Runnable {
                 new FluidStack(MaterialsElements.STANDALONE.HYPOGEN.getPlasma(), 144),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Tritanium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
-                Materials.Flerovium.getPlasma(1 * INGOTS),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.FleroviumGT5U, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(
@@ -671,7 +672,9 @@ public class Godforge implements Runnable {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials2Materials.Iron, Materials2FluidShapes.fluidMolten, 1),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Bismuth, Materials2FluidShapes.fluidMolten, 1))
-                .fluidOutputs(Materials.MagMatter.getMolten(4 * INGOTS))
+                .fluidOutputs(
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Magmatter, Materials2FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MAX)
                 .metadata(FOG_EXOTIC_TIER, 1)
@@ -872,7 +875,8 @@ public class Godforge implements Runnable {
             .put(MaterialLibAPI.getStack(Materials2Materials.Ichorium, Materials2Shapes.dust, 1), 100000);
         exoticModuleMagmatterItemMap
             .put(MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.dust, 1), 100000);
-        exoticModuleMagmatterItemMap.put(Materials.Flerovium.getDust(1), 100000);
+        exoticModuleMagmatterItemMap
+            .put(MaterialLibAPI.getStack(Materials2Materials.FleroviumGT5U, Materials2Shapes.dust, 1), 100000);
         exoticModuleMagmatterItemMap
             .put(MaterialLibAPI.getStack(Materials2Materials.Bedrockium, Materials2Shapes.dust, 1), 100000);
         exoticModuleMagmatterItemMap
@@ -1049,7 +1053,8 @@ public class Godforge implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ForgeOfGodsUpgrade.EE.getExtraCostNoNulls())
             .fluidOutputs(
-                Materials.MagMatter.getMolten(4 * INGOTS),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Magmatter, Materials2FluidShapes.fluidMolten, 4 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidPlasma, 1_000))
             .duration(1)
             .eut(1)
@@ -1118,7 +1123,8 @@ public class Godforge implements Runnable {
                 ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1L))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials2Materials.Boron, Materials2FluidShapes.fluidPlasma, 2))
             .fluidOutputs(
-                Materials.ActivatedNetherite.getMolten(144L),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.activatednetherite, Materials2FluidShapes.fluidMolten, 144),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Boron, Materials2FluidShapes.fluidMolten, 2))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
