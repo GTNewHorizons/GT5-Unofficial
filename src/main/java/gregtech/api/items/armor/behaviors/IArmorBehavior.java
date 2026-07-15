@@ -6,9 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import gregtech.api.items.armor.ArmorState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -23,7 +21,6 @@ import gregtech.api.hazards.Hazard;
 import gregtech.api.items.armor.ArmorContext;
 import gregtech.api.items.armor.ArmorState;
 import gregtech.api.util.GTUtility;
-import org.jetbrains.annotations.Nullable;
 
 public interface IArmorBehavior {
     /*
