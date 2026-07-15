@@ -14,6 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -808,13 +809,14 @@ public class MTEPump extends MTEBasicMachine {
         int aLogLevel, ArrayList<String> aList) {
         aList.addAll(
             Arrays.asList(
-                EnumChatFormatting.BLUE + GTUtility.translate("GT5U.machines.pump") + EnumChatFormatting.RESET,
-                GTUtility.translate("GT5U.machines.workarea") + ": "
+                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump")
+                    + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
                     + EnumChatFormatting.GREEN
                     + (radiusConfig * 2 + 1)
                     + EnumChatFormatting.RESET
                     + " "
-                    + GTUtility.translate("GT5U.machines.blocks"),
+                    + StatCollector.translateToLocal("GT5U.machines.blocks"),
                 "Primary pumping fluid:   "
                     + (this.mPrimaryPumpedBlock != null ? this.mPrimaryPumpedBlock.getLocalizedName() : "None"),
                 "Secondary pumping fluid: "
@@ -839,13 +841,13 @@ public class MTEPump extends MTEBasicMachine {
     @Override
     public String[] getInfoData() {
         return new String[] {
-            EnumChatFormatting.BLUE + GTUtility.translate("GT5U.machines.pump") + EnumChatFormatting.RESET,
-            GTUtility.translate("GT5U.machines.workarea") + ": "
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump") + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
                 + EnumChatFormatting.GREEN
                 + (radiusConfig * 2 + 1)
                 + EnumChatFormatting.RESET
                 + " "
-                + GTUtility.translate("GT5U.machines.blocks") };
+                + StatCollector.translateToLocal("GT5U.machines.blocks") };
     }
 
     @SideOnly(Side.CLIENT)

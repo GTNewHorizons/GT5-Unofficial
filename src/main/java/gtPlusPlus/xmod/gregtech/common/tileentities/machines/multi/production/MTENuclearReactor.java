@@ -17,6 +17,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -41,6 +42,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -55,7 +57,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
@@ -89,7 +90,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes;
+        return RecipeMaps.liquidFluorineThoriumReactorRecipes;
     }
 
     @Override
@@ -108,10 +109,10 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Liquid Fluoride Thorium Reactor")
             .addInfo("Produces energy and new elements from Radioactive Beta Decay!")
-            .addInfo("Input LFTB and a molten salt as fuel, and match the 4 Buffered Dynamo Hatches:")
+            .addInfo("Input LFTB and a molten salt as fuel, and match the four 4A dynamo hatches:")
             .addInfo("LFTR Fuel 1 (4 EV Hatches), LFTR Fuel 2 (4 IV Hatches), LFTR Fuel 3 (4 LuV Hatches)")
-            .addInfo("If using better hatches for a worse fuel, only 1 hatch will output EU")
-            .addInfo("Outputs U233 every 10 seconds, on average, while the reactor is running")
+            .addInfo("If using better hatches for a worse fuel, only 1 hatch outputs EU")
+            .addInfo("Outputs U-233 every 10 seconds, on average, while the reactor is running")
             .addInfo("Check NEI to see the other 3 outputs - they differ between fuels")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 4, true)
@@ -125,6 +126,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             .addOutputHatch("4+", "Any edge casing (IV+)", 1)
             .addAir("Interior of the structure")
             .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .addStructureFooter("One ME output hatch can replace the four regular output hatches")
             .toolTipFinisher();
         return tt;

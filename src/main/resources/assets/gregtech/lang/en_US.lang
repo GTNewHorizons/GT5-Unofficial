@@ -218,8 +218,8 @@ gt.blockmachines.input_hatch_generator.desc=Fluid Input for Multiblocks\nCapacit
 gt.blockmachines.input_hatch_generator.airintake.desc=§cDO NOT OBSTRUCT THE INPUT!\nDraws in Air from the surrounding environment\nCreates %s of Air every %s ticks
 gt.blockmachines.input_hatch_generator.atmosphere.desc=§cDO NOT OBSTRUCT THE INPUT!\nDraws in Air from the surrounding environment\nCompletely fills up every %s ticks
 gt.blockmachines.input_hatch_generator.reservoir.desc=Infinite water supply hatch\nFills to max capacity every 5 seconds
-gt.blockmachines.input_hatch_me.desc=Machine Type: §eSIH§r\nAdvanced fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
-gt.blockmachines.input_hatch_me.autopull.desc=Machine Type: §eASIH§r\nNext-gen fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nAuto-Pull from ME mode will automatically stock the first\n16 fluid in the ME system, updated every 5 seconds.\nToggle by right-clicking with screwdriver, or use the GUI.\nUse the GUI to limit the minimum stack size for Auto-Pulling,\nadjust the slot refresh timer and enable fast recipe checks.\nWARNING: Fast recipe checks can be laggy. Use with caution.\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
+gt.blockmachines.input_hatch_me.desc=Machine Type: §eSIH§r\nNext-gen fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
+gt.blockmachines.input_hatch_me.autopull.desc=Machine Type: §eASIH§r\nAdvanced fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nAuto-Pull from ME mode will automatically stock the first\n16 fluid in the ME system, updated every 5 seconds.\nToggle by right-clicking with screwdriver, or use the GUI.\nUse the GUI to limit the minimum stack size for Auto-Pulling,\nadjust the slot refresh timer and enable fast recipe checks.\nWARNING: Fast recipe checks can be laggy. Use with caution.\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
 gt.blockmachines.input_hatch_solidifier.desc=Fluid Input with Mold for §eFluid Shaper§r\nCapacity: %s L
 gt.blockmachines.input_hatch_debug.desc=§7Stocks Fluids internally\n§7Configure Fluids in the UI\n§7Configured Fluids will not be consumed in processing\n§oWho knew it was this easy???
 gt.blockmachines.output_hatch.desc=Fluid Output for Multiblocks\nCapacity: %s L\nRight click with screwdriver to restrict output\nCan be restricted to put out Items and/or Steam/No Steam/1 specific Fluid\nRestricted Output Hatches are given priority for Multiblock Fluid output
@@ -1701,6 +1701,9 @@ GT5U.MBTT.Structure.DataStick.Waterline=Link to the §bWater Purification Plant�
 GT5U.MBTT.Structure.DataStick.PCB=Link to the §bPCB Factory§7 with a §aData Stick
 gt.mbtt.structure.front_center=Front center
 gt.mbtt.structure.back_center=Back center
+gt.mbtt.structure.front_center_2nd_layer=Front center, 2nd layer
+gt.mbtt.structure.any_casing=Any casing
+gt.mbtt.structure.interior=Interior of the structure
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
@@ -1814,6 +1817,9 @@ gt.multiblock.NeutralizationEngine.decay_boost.3=Insert §dmultiple §7(§f16 §
 gt.multiblock.NeutralizationEngine.decay_boost.4=Every §fminute§7, §dRobot Arm Amount§7/(§f45§7*(§f1§7+§dRobot Arm Tier§7)) chance for §fone §7used robot arm to §cvoid
 gt.multiblock.NeutralizationEngine.structure_tiers=Structure has §f3 Tiers§7, §fTier §7determines §9Base Decay §7and §3Capacity§7:
 gt.multiblock.NeutralizationEngine.tier_info=§fT%d§7 : §f%s§7 : §9%d§7 : §3%s
+
+gt.multiblock.VacuumFreezer.machine_type=Vacuum Freezer, VF
+gt.multiblock.VacuumFreezer.desc1=Cools hot ingots and cells
 
 GT5U.MBTT.masterchannel=Projector stack size determines §b%s
 GT5U.MBTT.subchannel=Subchannel §b%s§7 determines §b%s
@@ -2083,6 +2089,77 @@ gt.recipe.category.alloy_smelter_molding=Alloy Smelter Molding
 gt.recipe.category.forge_hammer_recycling=Forge Hammer Recycling
 gt.recipe.category.tic_part_extruding=TiC Part Extruding
 gt.recipe.category.tic_bolt_molding=TiC Bolt Molding
+
+gt.recipe.industrialcokeoven=Industrial Coke Oven
+gt.recipe.matterfab2=Matter Fabricator
+gt.recipe.rocketenginefuel=Rocket Engine Fuel
+gt.recipe.quantumforcesmelter=Quantum Force Transformer
+gt.recipe.chemicaldehydrator=Dehydrator
+gt.recipe.vacfurnace=Vacuum Furnace
+gt.recipe.alloyblastsmelter=Alloy Blast Smelter
+gt.recipe.lftr=Liquid Fluoride Thorium Reactor
+gt.recipe.lftr.sparging=LFTR Gas Sparging
+gt.recipe.nuclearsaltprocessingplant=Nuclear Salt Processing Plant
+gt.recipe.oremill=Milling
+gt.recipe.fissionfuel=Nuclear Fuel Processing
+gt.recipe.coldtrap=Cold Trap
+gt.recipe.reactorprocessingunit=Reactor Processing Unit
+gt.recipe.simplewasher=Simple Dust Washer
+gt.recipe.moleculartransformer=Molecular Transformer
+gt.recipe.fluidchemicaleactor=Chemical Plant
+gt.recipe.RTGgenerators=RTG
+gt.recipe.thermalboiler=Thermal Boiler
+gt.recipe.solartower=Solar Tower
+gt.recipe.cyclotron=COMET - Compact Cyclotron
+gt.recipe.fishpond=Zhuhai - Fishing Port
+gt.recipe.multicentrifuge=Multiblock Centrifuge
+gt.recipe.multielectro=Multiblock Electrolyzer
+gt.recipe.multimixer=Multiblock Mixer
+gt.recipe.multidehydrator=Multiblock Dehydrator
+gt.recipe.semifluidgeneratorfuels=Semifluid Generator Fuels
+gt.recipe.flotationcell=Flotation Cell
+gt.recipe.treefarm=Tree Growth Simulator
+gt.recipe.algae_pond=Algae Pond
+gt.recipe.multiblockrockbreaker=Boldarnator
+gt.recipe.category.abs_non_alloy_recipes=ABS Non-Alloy Recipes
+
+# NEI keys
+gt.nei.lftr.power=Power: %s EU/t per Dynamo
+gt.nei.lftr.dynamo=Dynamo: %s EU
+gt.nei.lftr.total=Total: %s EU
+gt.nei.milling.not_consumed=Does not always get consumed in the process
+gt.nei.chemical_plant.not_consumed=Does not always get consumed in the process
+gt.nei.chemical_plant.higher_tier_casing=Higher tier Pipe Casings allow this item to last longer
+gt.nei.chemplant.tier.1=Bronze
+gt.nei.chemplant.tier.2=Steel
+gt.nei.chemplant.tier.3=Aluminium
+gt.nei.chemplant.tier.4=Stainless Steel
+gt.nei.chemplant.tier.5=Titanium
+gt.nei.chemplant.tier.6=Tungstensteel
+gt.nei.chemplant.tier.7=Laurenium
+gt.nei.chemplant.tier.8=Botmium
+gt.nei.rtg.days=Fuel Value: %s Minecraft Days
+gt.nei.solar_tower.1=Solar Heater rings boost tier
+gt.nei.solar_tower.2=R1:T1, R2:T2, R3:T4, R4:T8, R5:T16
+gt.nei.solar_tower.3=Input Amount = 1000 x T
+gt.nei.tgs.1=The sapling is not consumed.
+gt.nei.tgs.2=If %s is provided,
+gt.nei.tgs.3=Saplings are made instead.
+gt.nei.tgs.sapling=Outputted if %s is provided
+gt.nei.tgs.tooltip.sapling=Place in machine controller slot
+gt.nei.tgs.tooltip.saw=Place in an input bus to harvest logs
+gt.nei.tgs.tooltip.needsSaw=Requires a Saw to harvest
+gt.nei.tgs.tooltip.cutter=Place in an input bus to harvest saplings
+gt.nei.tgs.tooltip.needsCutter=Requires a Branch Cutter to harvest
+gt.nei.tgs.tooltip.shears=Place in an input bus to harvest leaves
+gt.nei.tgs.tooltip.needsShears=Requires Shears to harvest
+gt.nei.tgs.tooltip.knife=Place in an input bus to harvest fruit
+gt.nei.tgs.tooltip.needsKnife=Requires a Knife to harvest
+gt.nei.tgs.tooltip.multiplier=Output multiplier:
+gt.nei.tgs.info-1=Output is further boosted
+gt.nei.tgs.info-2=by machine energy tier
+gt.nei.tgs.info-3=and tool type
+gt.nei.ap.tier=Algae Pond Tier: %s
 
 GT5U.recipes.recipe_by.original=Original Recipe by: %s
 GT5U.recipes.recipe_by.modified=Modified by: %s
@@ -2477,6 +2554,8 @@ GT5U.gui.button.drone_editmode=Group edit mode
 GT5U.gui.button.drone_pause.1=Auto update connection list
 GT5U.gui.button.drone_pause.2=Disable this if your machine controller cover is malfunctioning!
 GT5U.gui.button.drone_key_panel=Open connection key panel
+GT5U.gui.button.drone_observe=Connect to the drone camera
+GT5U.gui.button.drone_observe.diff_dim=§cCannot connect to the drone camera in a different dimension!
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
 GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.button.fluid_regulation_panel=Open Fluid Regulation Panel
@@ -2580,6 +2659,11 @@ GT5U.gui.text.recipe_result.stocking_hatch_fail_extraction=§4Failed to extract 
 GT5U.gui.text.recipe_result.drone_noDrone=§4Can't find any drone in Input Buses!
 GT5U.gui.text.recipe_result.drone_operating=§aDrone operating normally!
 GT5U.gui.text.drone_title=Drone Control Centre
+GT5U.gui.text.drone_group_all=All Connections
+GT5U.gui.button.drone_rename_group=Rename Group
+GT5U.gui.button.drone_toggle_select_all=Toggle Select All
+GT5U.gui.button.drone_add_group=Add Group
+GT5U.gui.button.drone_delete_group=Delete Group
 GT5U.gui.text.drone_custom_name=Custom Machine Name
 GT5U.gui.text.drone_search=Search machine name
 GT5U.gui.text.drone_no_connection=No connections
@@ -2599,6 +2683,30 @@ GT5U.gui.text.drone_fluid_total=Total fluid produced in last %s:
 GT5U.gui.text.drone_key=Set connection key
 GT5U.gui.text.drone_warning_text=§4Warning: §7This machine is under attack.
 GT5U.gui.text.drone_remote_text=Drone Centre Remote Control
+GT5U.gui.text.drone_observe_help_1=Press Tab to switch mouse focus, WASD to move,
+GT5U.gui.text.drone_observe_help_2=Space/LShift to fly. L to toggle light. +/- or PgUp/PgDn to zoom. F5 to switch perspective.
+GT5U.gui.text.drone_signal_interrupted=Signal Lost
+GT5U.gui.button.drone_rescue=Emergency Rescue
+GT5U.gui.button.drone_rescue.tooltip=Reset camera view to spawn point
+GT5U.gui.text.drone_no_outputs=No outputs
+GT5U.gui.text.drone_observe_default=Drone Camera
+GT5U.gui.text.drone_metrics_header=§3[ DRONE METRICS ]
+GT5U.gui.text.drone_cam_stream_on=§bCam Stream: §aON
+GT5U.gui.text.drone_signal_link=§bSignal Link:
+GT5U.gui.text.drone_recipe_on=§bRecipe: §aON
+GT5U.gui.text.drone_cam_pos=§bCam %c: §7%s
+GT5U.gui.text.drone_level_excellent=§8Level: EXCELLENT
+GT5U.gui.text.recipe_metrics_header=§3[ RECIPE METRICS ]
+GT5U.gui.text.recipe_none=§7No active recipe.
+GT5U.gui.text.recipe_connecting_1=§7Connecting...
+GT5U.gui.text.recipe_connecting_2=§8Synchronizing NBT
+GT5U.gui.text.recipe_connecting_3=§8recipe stream...
+GT5U.gui.text.recipe_no_conn_1=§7NO CONNECTION
+GT5U.gui.text.recipe_no_conn_2=§8Aim crosshair at
+GT5U.gui.text.recipe_no_conn_3=§8a machine to see
+GT5U.gui.text.recipe_no_conn_4=§8recipe details.
+GT5U.gui.text.drone_zoom=ZOOM: %.1fx
+GT5U.gui.text.drone_flashlight=Flashlight ON
 GT5U.gui.text.shutdown_duration=§4Shut down §e%s §4h §e%s §4min §e%s §4s ago.
 GT5U.gui.text.out_of_fluid=§4No following fluids supplied: §b%s§f x §6%s L
 GT5U.gui.text.out_of_item=§4No following items supplied: §b%s§f x §6%s
@@ -3128,6 +3236,7 @@ GT5U.gui.text.cannot_change_when_running=Can't change configuration when running
 GT5U.gui.tooltip.drone_active_production=[Warning] This function is experimental and may reduce performance.
 GT5U.gui.tooltip.drone_maxrecord=Set max record quota. Each output from every machine consumes one quota. [Warning] Large numbers may cause performance issues!
 GT5U.gui.tooltip.drone_production_clear=Clear production data
+GT5U.gui.tooltip.drone_production_search=Filter machines, items and fluids. Also support advanced search!
 GT5U.gui.tooltip.drone_key=Prioritize connecting to the drone centre with the same key
 
 GT5U.gui.tooltip.purification_plant.debug_mode=Toggle debug mode.
@@ -3581,6 +3690,12 @@ GT5U.item.pipe.gas_proof.no=No
 GT5U.item.pipe.amount=Pipe Amount
 GT5U.item.pipe.empty=Empty
 GT5U.item.pipe.swap.s=Pipe swapped: %s
+GT5U.item.pipe.swap.items=items
+GT5U.item.pipe.swap.routing=routing
+GT5U.item.pipe.swap.now_gas_proof=Now Gas-Proof
+GT5U.item.pipe.swap.no_longer_gas_proof=No Longer Gas-Proof
+GT5U.item.pipe.swap.now_restrictive=Now Restrictive
+GT5U.item.pipe.swap.no_longer_restrictive=No Longer Restrictive
 
 # Modular Armor
 
@@ -6631,10 +6746,11 @@ gregtech.effectTreetwister=Treetwister
 gregtech.effectMachineBoost=Machine Booster
 
 entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
+entity.gregtech.GTDrone.name=Drone
 
 # Fluids
 fluid.aniline=Aniline
-fluid.bioethanol=Bio Ethanol
+fluid.bioethanol=Ethanol
 fluid.biomass=Biomass
 fluid.boricacid=Boric Acid
 fluid.butanol=Butanol
@@ -6987,6 +7103,7 @@ key.gt.toggle_omnimovement=Toggle Omni Movement
 key.gt.speed_increase=Increase Speed
 key.gt.speed_decrease=Decrease Speed
 key.gt.force_field=Toggle Force Field
+key.gt.open_radial_menu=Open Radial Menu
 
 # Tooltips for GT Tools
 gt.softmallet.tooltip=Activates and Deactivates Machines
@@ -7306,11 +7423,14 @@ GT5U.scanner.debug.not_accessible=Is §cnot§r accessible for you
 GT5U.scanner.debug.sound_requests=Recorded §6%s§r sound requests in §6%s§r ticks.
 GT5U.scanner.debug.machine_active=Machine is §aactive§r
 GT5U.scanner.debug.machine_inactive=Machine is §cinactive§r
+GT5U.scanner.debug.machine_allowed_to_work=Machine is §aallowed§r to work
+GT5U.scanner.debug.machine_not_allowed_to_work=Machine is §cnot allowed§r to work
 GT5U.scanner.debug.needs_power=§cATTENTION: This Device needs more power.§r
 GT5U.scanner.debug.ic2_enet=Joined IC2 ENet
 GT5U.tooltip.drone_remote_disconnected=Shift-right-click an active Drone Centre to connect
 GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
 GT5U.tooltip.drone_remote_not_found=Drone Centre at x: %s, y: %s, z: %s in dim%s was not found!
+GT5U.tooltip.drone_remote_not_loaded=Chunk containing Drone Centre at x: %s, y: %s, z: %s in dim%s is not loaded!
 
 # info data
 GT5U.infodata.no_network=No Network
@@ -8559,6 +8679,18 @@ gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
 gt.blocktintedglass.3.name=Tinted Industrial Glass (Black)
+gt.blocktintedglass.4.name=Tinted Industrial Glass (Brown)
+gt.blocktintedglass.5.name=Tinted Industrial Glass (Red)
+gt.blocktintedglass.6.name=Tinted Industrial Glass (Orange)
+gt.blocktintedglass.7.name=Tinted Industrial Glass (Yellow)
+gt.blocktintedglass.8.name=Tinted Industrial Glass (Lime)
+gt.blocktintedglass.9.name=Tinted Industrial Glass (Green)
+gt.blocktintedglass.10.name=Tinted Industrial Glass (Cyan)
+gt.blocktintedglass.11.name=Tinted Industrial Glass (Light Blue)
+gt.blocktintedglass.12.name=Tinted Industrial Glass (Blue)
+gt.blocktintedglass.13.name=Tinted Industrial Glass (Purple)
+gt.blocktintedglass.14.name=Tinted Industrial Glass (Magenta)
+gt.blocktintedglass.15.name=Tinted Industrial Glass (Pink)
 
 # Block Granites
 gt.blockgranites.0.name=Black Granite
@@ -8931,7 +9063,7 @@ GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing aro
 GT5U.tooltip.bec-generator.bec-hatch-pos=Back center casing
 
 # BEC Storage Structure Hints
-GT5U.tooltip.bec-storage.controller-pos=Bottom front of central pillar, 3rd layer
+GT5U.tooltip.bec-storage.controller-pos=Front center of central column, 3rd layer
 GT5U.tooltip.bec-storage.hatch-pos=Any electromagnetically-isolated casing
 GT5U.tooltip.bec-storage.bec-hatch-pos=Any center side casing
 
@@ -9053,3 +9185,6 @@ gt.blockmachines.basicgenerator.lightningrod.03.name=Lightning Rod
 gt.blockmachines.basicgenerator.lightningrod.04.name=Lightning Rod II
 gt.blockmachines.basicgenerator.lightningrod.05.name=Lightning Rod III
 gt.blockmachines.basicgenerator.lightningrod.tooltip=Generates EU From Lightning Bolts
+
+# NEI Aliases
+gt.alias.mechanical_armor=Mechanical Armor

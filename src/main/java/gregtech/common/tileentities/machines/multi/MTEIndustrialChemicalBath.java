@@ -89,7 +89,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
             .addBulkMachineInfo(4, 5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, false)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("30-39", "Wash Plant Casing", false)
             .addCasing("20", "Watertight Steel Frame Box", false)
             .addCasing("14", "Water", false)

@@ -95,6 +95,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
+        heatLevel = HeatingCoilLevel.None;
         if (!checkPiece(mName, 3, 3, 0, errors)) return;
         checkCasingMin(errors, casingAmount, 40);
         checkHasEnergyHatch(errors);

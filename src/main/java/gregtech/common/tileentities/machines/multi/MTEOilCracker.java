@@ -135,7 +135,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
             .addInfo("(Values compared to cracking in the Chemical Reactor)")
             .addInfo("Place the appropriate circuit in the controller or an input bus")
             .beginStructureBlock(3, 5, 3, true)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("18-20", "Clean Stainless Steel Machine Casing", false)
             .addCasing("16", "Heating Coil", true)
             .addStructureHint("GT5U.cracker.io_side")
@@ -143,10 +143,9 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
             .addMaintenanceHatch("1", "Any casing", 1, 2, 3)
             .addInputBus("0+", "Any middle casing", 1)
             .addInputHatch("2", "Any middle casing (cracking fluid), any side casing (hydrocarbon)", 1, 2, 3)
-            .addOutputHatch("1", "Any side casing", 2, 3)
+            .addOutputHatch("1", "Any side casing opposite the hydrocarbon", 2, 3)
             .addAir("Interior of the structure")
             .addStructureInfo("")
-            .addStructureFooter("The input hatch with the hydrocarbon and the output hatch must be on opposite sides!")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
@@ -214,6 +213,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof MTEHatchInput tHatch) {
             if (mInputOnSide == 1) return false;
             mInputOnSide = 0;
@@ -236,6 +236,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof MTEHatchInput tHatch) {
             if (mInputOnSide == 0) return false;
             mInputOnSide = 1;

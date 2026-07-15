@@ -843,13 +843,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addStructureInfo(
                 StatCollector.translateToLocal("GT5U.MBTT.Structure.Base") + EnumChatFormatting.AQUA + " (T1)")
             .addCasing("3949", "Transcendentally Amplified Magnetic Confinement Casing", false)
-            .addCasing("2779-2815", "Singularity Reinforced Stellar Shielding Casing", false)
+            .addCasing("2799-2815", "Singularity Reinforced Stellar Shielding Casing", false)
             .addCasing("345", "Remote Graviton Flow Modulator", false)
             .addCasing("272", "Celestial Matter Guidance Casing", false)
             .addCasing("130", "Boundless Gravitationally Severed Structure Casing", false)
             .addCasing("36", "Stellar Energy Casing", false)
             .addCasing("9", "Spatially Transcendent Gravitational Lens Block", false)
-            .addMiscHatch("0-16", "Forge of the Gods Module", "Any side center shielding casing", 2)
+            .addMiscHatch("0-8", "Forge of the Gods Module", "Any side center shielding casing", 2)
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Second Ring" + EnumChatFormatting.AQUA + " (T2)")
             .addCasing("3336", "Transcendentally Amplified Magnetic Confinement Casing", false)
@@ -858,6 +858,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addCasing("240", "Celestial Matter Guidance Casing", false)
             .addCasing("45", "Spatially Transcendent Gravitational Lens Block", false)
             .addCasing("14", "Boundless Gravitationally Severed Structure Casing", false)
+            .addMiscHatch("0-12", "Forge of the Gods Module", "Any side center shielding casing", 2)
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Third Ring" + EnumChatFormatting.AQUA + " (T3)")
             .addCasing("3728", "Transcendentally Amplified Magnetic Confinement Casing", false)
@@ -866,6 +867,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addCasing("312", "Celestial Matter Guidance Casing", false)
             .addCasing("101", "Spatially Transcendent Gravitational Lens Block", false)
             .addCasing("14", "Boundless Gravitationally Severed Structure Casing", false)
+            .addMiscHatch("0-16", "Forge of the Gods Module", "Any side center shielding casing", 2)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.rings"))
             .toolTipFinisher();
@@ -989,18 +991,18 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         }
     }
 
-    private void increaseBattery(int amount) {
-        // Written to be careful of potential overflow
-        long newCharge = Long.sum(data.getInternalBattery(), amount);
+    private void increaseBattery(long amount) {
+        long currentCharge = data.getInternalBattery();
+        long newCharge = Long.MAX_VALUE - currentCharge < amount ? Long.MAX_VALUE : currentCharge + amount;
         if (newCharge <= data.getMaxBatteryCharge()) {
-            data.setInternalBattery((int) newCharge);
+            data.setInternalBattery(newCharge);
         } else {
             data.setInternalBattery(data.getMaxBatteryCharge());
             data.setBatteryCharging(false);
         }
     }
 
-    public void reduceBattery(int amount) {
+    public void reduceBattery(long amount) {
         if (data.getInternalBattery() - amount <= 0) {
             data.setInternalBattery(0);
             if (!moduleHatches.isEmpty()) {

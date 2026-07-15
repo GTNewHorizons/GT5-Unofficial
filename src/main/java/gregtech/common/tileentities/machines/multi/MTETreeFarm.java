@@ -40,19 +40,20 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import forestry.api.arboriculture.IToolGrafter;
 import forestry.api.arboriculture.ITree;
@@ -71,6 +72,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -85,7 +87,6 @@ import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 
@@ -218,30 +219,24 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
                     int wy = aBaseMetaTileEntity.getYCoord() + xyz[1];
                     int wz = aBaseMetaTileEntity.getZCoord() + xyz[2];
 
-                    Block block = aBaseMetaTileEntity.getWorld()
-                        .getBlock(wx, wy, wz);
+                    World world = aBaseMetaTileEntity.getWorld();
 
                     switch (marker) {
-                        case 'D':
-                            if (block == Blocks.dirt) {
-                                aBaseMetaTileEntity.getWorld()
-                                    .setBlock(wx, wy, wz, Blocks.grass, 0, 3);
+                        case 'D' -> {
+                            if (world.getBlock(wx, wy, wz) == Blocks.dirt) {
+                                world.setBlock(wx, wy, wz, Blocks.grass, 0, 3);
                             }
-                            break;
-                        case 'F':
-                            if (block == Blocks.air) {
-                                aBaseMetaTileEntity.getWorld()
-                                    .setBlock(wx, wy, wz, Blocks.leaves, 0, 3);
+                        }
+                        case 'F' -> {
+                            if (world.isAirBlock(wx, wy, wz)) {
+                                world.setBlock(wx, wy, wz, Blocks.leaves, 0, 3);
                             }
-                            break;
-                        case 'G':
-                            if (block == Blocks.air) {
-                                aBaseMetaTileEntity.getWorld()
-                                    .setBlock(wx, wy, wz, Blocks.log, 0, 3);
+                        }
+                        case 'G' -> {
+                            if (world.isAirBlock(wx, wy, wz)) {
+                                world.setBlock(wx, wy, wz, Blocks.log, 0, 3);
                             }
-                            break;
-                        default:
-                            break;
+                        }
                     }
                 }
             }
@@ -305,8 +300,8 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.SterileFarmCasing.asElement())))
                 .addElement('D', ofChain(ofBlock(Blocks.dirt, 0), ofBlock(Blocks.grass, 0)))
-                .addElement('F', ofChain(ofBlock(Blocks.air, 0), ofBlock(Blocks.leaves, 0)))
-                .addElement('G', ofChain(ofBlock(Blocks.air, 0), ofBlock(Blocks.log, 0)))
+                .addElement('F', ofChain(StructureUtility.isAir(), ofBlock(Blocks.leaves, 0)))
+                .addElement('G', ofChain(StructureUtility.isAir(), ofBlock(Blocks.log, 0)))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -348,7 +343,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
     @Override
     public RecipeMap<?> getRecipeMap() {
         // Only for NEI, not used in processing logic.
-        return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes;
+        return RecipeMaps.treeGrowthSimulatorFakeRecipes;
     }
 
     /**
@@ -846,7 +841,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
      */
     public static boolean addFakeRecipeToNEI(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,
         ItemStack fruit) {
-        int recipeCount = GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
+        int recipeCount = RecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
             .size();
 
         // Sapling goes into the "special" slot.
@@ -877,7 +872,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
             }
         }
 
-        GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
+        RecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
             false,
             new GTRecipe.GTRecipe_WithAlt(
                 false,
@@ -896,7 +891,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
                 inputStacks,
                 null));
 
-        return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
+        return RecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
             .size() > recipeCount;
     }
 }

@@ -47,6 +47,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -146,6 +147,7 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
+import gregtech.common.tileentities.machines.RecipeCheckReason;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineLegacy;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
@@ -208,7 +210,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected boolean usesTurbine = false;
     protected boolean canBeMuffled = true;
     protected boolean debugEnergyPresent = false;
+    /** A pending IMMEDIATE recipe-check push (new inputs, drained output, user/structure change); never throttled. */
     private boolean recipeCheckImmediately = false;
+    /**
+     * A pending THROTTLED recipe-check push (ME restock, power trickle); deferred while the fail cooldown is active.
+     */
+    private boolean recipeCheckThrottled = false;
+    /**
+     * While {@code mTotalRunTime < this}, THROTTLED rechecks are deferred (the push flag is kept until it expires).
+     * Set after a failed check to {@code now + MachineStats.machines.recipeCheckFailCooldown}; 0 means no cooldown.
+     * IMMEDIATE pushes ignore this entirely.
+     */
+    private long recipeCheckCooldownUntil = 0;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -247,8 +260,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected GTSoundLoop activitySoundLoop;
 
     protected long mLastWorkingTick = 0, mTotalRunTime = 0;
-    private static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
-    private final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
 
     /**
      * A list of structure errors. Private so that multis have to use the parameters (to make it easier to
@@ -528,6 +539,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mMufflerHatches.clear();
         mMaintenanceHatches.clear();
         mDualInputHatches.clear();
+        // Inputs, outputs, beamline and data-access hatches all register through addIfSmartInput, so dropping our
+        // watcher from every mSmartInputHatches entry covers all of them.
         for (var hatch : mSmartInputHatches) {
             hatch.removeWatcher(this);
         }
@@ -552,6 +565,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             mMachine = structureErrors.isEmpty();
 
             onStructureCheckFinished(aBaseMetaTileEntity);
+
+            // The structure may have just completed, or gained coils/energy/output capacity that unblocks a recipe.
+            if (mMachine) scheduleRecipeCheckImmediate();
         }
         mStructureChanged = false;
         return mMachine;
@@ -704,33 +720,42 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         this.checkRecipeResult = result;
         endRecipeProcessing();
         // Don't use `result` here because `endRecipeProcessing()` might mutate `this.checkRecipeResult`
-        return this.checkRecipeResult.wasSuccessful();
+        boolean success = this.checkRecipeResult.wasSuccessful();
+        // Arm the fail cooldown (see recipeCheckFailCooldown) that defers THROTTLED rechecks (ME restock, power
+        // trickle). IMMEDIATE pushes ignore it, so only machines with throttleable sources are affected, and the
+        // default of 0 keeps everything instant.
+        if (success) {
+            recipeCheckCooldownUntil = 0;
+        } else {
+            int cooldown = MachineStats.machines.recipeCheckFailCooldown;
+            recipeCheckCooldownUntil = cooldown > 0 ? mTotalRunTime + cooldown : 0;
+        }
+        return success;
     }
 
-    public void scheduleRecipeCheckImmediate() {
-        recipeCheckImmediately = true;
+    @Override
+    public void scheduleRecipeCheck(RecipeCheckReason reason) {
+        if (reason.throttled) {
+            recipeCheckThrottled = true;
+        } else {
+            recipeCheckImmediately = true;
+        }
     }
 
     private boolean shouldCheckRecipeThisTick(long aTick) {
-        // do a recipe check if any smart hatch just got pushed in items
+        // Recipe checks are purely event-driven: hatches and config changes push via scheduleRecipeCheck(reason)
+        // instead of being polled on a periodic timer.
         if (recipeCheckImmediately) {
+            // An immediate push (new inputs, drained output, user/structure change) always runs, and covers any
+            // pending throttled push too.
             recipeCheckImmediately = false;
+            recipeCheckThrottled = false;
             return true;
         }
-
-        // Perform more frequent recipe change after the machine just shuts down.
-        long timeElapsed = mTotalRunTime - mLastWorkingTick;
-
-        if (timeElapsed >= CHECK_INTERVAL) return (mTotalRunTime + randomTickOffset) % CHECK_INTERVAL == 0;
-        // Batch mode should be a lot less aggressive at recipe checking
-        if (!isBatchModeEnabled()) {
-            return timeElapsed == 5 || timeElapsed == 12
-                || timeElapsed == 20
-                || timeElapsed == 30
-                || timeElapsed == 40
-                || timeElapsed == 55
-                || timeElapsed == 70
-                || timeElapsed == 85;
+        if (recipeCheckThrottled && mTotalRunTime >= recipeCheckCooldownUntil) {
+            // A throttleable push (ME restock, power trickle) runs once the post-failure cooldown has expired.
+            recipeCheckThrottled = false;
+            return true;
         }
         return false;
     }
@@ -809,7 +834,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             // Check if the machine is enabled in the first place!
             if (aBaseMetaTileEntity.isAllowedToWork()) {
 
-                if (shouldCheckRecipeThisTick(aTick) || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
+                // shouldCheckRecipeThisTick() consumes pending pushes and applies the post-failure cooldown to
+                // throttled ones; hasInventoryBeenModified() covers a change to the controller's own inventory slot.
+                if (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || shouldCheckRecipeThisTick(aTick)
                     || aBaseMetaTileEntity.hasInventoryBeenModified()) {
                     if (checkRecipe()) {
                         markDirty();
@@ -2250,6 +2277,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof MTEHatchInputBeamline mteHatchInputBeamline) {
             mteHatchInputBeamline.updateTexture(aBaseCasingIndex);
             mteHatchInputBeamline.updateCraftingIcon(this.getMachineCraftingIcon());
+            addIfSmartInput(aMetaTileEntity);
             return mBeamlineInputHatches.add(mteHatchInputBeamline);
         }
         return false;
@@ -2333,6 +2361,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof MTEHatchOutputBus hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            addIfSmartInput(aMetaTileEntity);
             return mOutputBusses.add(hatch);
         }
         return false;
@@ -2368,6 +2397,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            addIfSmartInput(aMetaTileEntity);
             return mOutputHatches.add(hatch);
         }
         return false;
@@ -2425,14 +2455,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (getBaseMetaTileEntity() != null) {
             IGregTechTileEntity te = getBaseMetaTileEntity();
 
-            info.add(GTUtility.translate("GT5U.multiblock.scanner.owned_by", te.getOwnerName()));
+            info.add(StatCollector.translateToLocalFormatted("GT5U.multiblock.scanner.owned_by", te.getOwnerName()));
 
             if (te.getMetaTileEntity() != null) {
-                info.add(GTUtility.translate("GT5U.multiblock.scanner.meta_tile_entity", te.getMetaTileID())
+                info.add(StatCollector.translateToLocalFormatted("GT5U.multiblock.scanner.meta_tile_entity", te.getMetaTileID())
                     + " "
-                    + GTUtility.translate(te.canAccessData() ? "GT5U.multiblock.scanner.valid" : "GT5U.multiblock.scanner.invalid"));
+                    + StatCollector.translateToLocal(te.canAccessData() ? "GT5U.multiblock.scanner.valid" : "GT5U.multiblock.scanner.invalid"));
             } else {
-                info.add(GTUtility.translate("GT5U.multiblock.scanner.is_meta_tile_entity"));
+                info.add(StatCollector.translateToLocal("GT5U.multiblock.scanner.is_meta_tile_entity"));
             }
         }
 
@@ -2440,7 +2470,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         if (mProgresstime > 0) {
             info.add(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.multiblock.scanner.Progress",
                     formatNumber(mProgresstime / 20),
                     formatNumber(mMaxProgresstime / 20)));
@@ -2448,23 +2478,28 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         if (hatchCount > 0) {
             info.add(
-                GTUtility
-                    .translate("GT5U.multiblock.scanner.energy", formatNumber(storedEnergy), formatNumber(maxEnergy)));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.multiblock.scanner.energy",
+                    formatNumber(storedEnergy),
+                    formatNumber(maxEnergy)));
 
             info.add(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.multiblock.scanner.mei",
                     formatNumber(getMaxInputVoltage()),
                     VN[GTUtility.getTier(getMaxInputVoltage())]));
         }
 
         if (getActualEnergyUsage() > 0) {
-            info.add(GTUtility.translate("GT5U.multiblock.scanner.usage", formatNumber(getActualEnergyUsage())));
+            info.add(
+                StatCollector
+                    .translateToLocalFormatted("GT5U.multiblock.scanner.usage", formatNumber(getActualEnergyUsage())));
         }
 
         info.add(
-            GTUtility
-                .translate("GT5U.multiblock.scanner.problems", formatNumber(getIdealStatus() - getRepairStatus())));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.multiblock.scanner.problems",
+                formatNumber(getIdealStatus() - getRepairStatus())));
 
         if (mEfficiency > 0) {
             info.add(encode("GT5U.multiblock.scanner.efficiency", formatNumber(mEfficiency / 100.0F)));
@@ -2475,10 +2510,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         if (recipesDone > 0) {
-            info.add(GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)));
+            info.add(StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone", formatNumber(recipesDone)));
         }
 
-        info.add(GTUtility.translate(timeKey, timeValue));
+        info.add(StatCollector.translateToLocalFormatted(timeKey, timeValue));
 
         return info.toArray(new String[0]);
     }
@@ -2597,20 +2632,27 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     currentTip.add(translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
                 }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
+                    // Localize on the client: the NBT holds the raw stack, not the display name
+                    ItemStack outputStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("outputItemStack" + i));
+                    String itemName = outputStack != null ? outputStack.getDisplayName() : "";
                     currentTip.add(
                         "  " + tag.getString("outputItemIcon" + i)
                             + EnumChatFormatting.AQUA
-                            + tag.getString("outputItemName" + i)
+                            + itemName
                             + EnumChatFormatting.RESET
                             + " x "
                             + EnumChatFormatting.GOLD
                             + formatNumber(tag.getInteger("outputItemCount" + i)));
                 }
                 for (int i = 0; i < min(3 - outputItemLength, outputFluidLength); i++) {
+                    // Localize on the client: the NBT holds the internal fluid name, not the display name
+                    String internalName = tag.getString("outputFluidName" + i);
+                    Fluid fluid = FluidRegistry.getFluid(internalName);
+                    String fluidName = fluid != null ? new FluidStack(fluid, 1).getLocalizedName() : internalName;
                     currentTip.add(
                         "  " + tag.getString("outputFluidIcon" + i)
                             + EnumChatFormatting.AQUA
-                            + tag.getString("outputFluidName" + i)
+                            + fluidName
                             + EnumChatFormatting.RESET
                             + " x "
                             + EnumChatFormatting.GOLD
@@ -2681,7 +2723,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             for (ItemStack stack : mOutputItems) {
                 if (stack == null) continue;
                 tag.setString("outputItemIcon" + index, TTRenderStack.create(stack, true));
-                tag.setString("outputItemName" + index, stack.getDisplayName());
+                // Send the raw stack and localize on the client. getWailaNBTData runs server-side,
+                // where the client language file is not loaded, so localizing here yields English on dedicated servers.
+                NBTTagCompound outputItemStack = new NBTTagCompound();
+                stack.writeToNBT(outputItemStack);
+                tag.setTag("outputItemStack" + index, outputItemStack);
                 tag.setInteger("outputItemCount" + index, stack.stackSize);
                 index++;
             }
@@ -2694,7 +2740,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 tag.setString(
                     "outputFluidIcon" + index,
                     TTRenderStack.create(GTUtility.getFluidDisplayStack(stack, false), true));
-                tag.setString("outputFluidName" + index, stack.getLocalizedName());
+                // Store the internal fluid name and localize on the client. getWailaNBTData runs server-side,
+                // where the client language file is not loaded, so localizing here yields English on dedicated servers.
+                tag.setString(
+                    "outputFluidName" + index,
+                    stack.getFluid()
+                        .getName());
                 tag.setInteger("outputFluidCount" + index, stack.amount);
                 index++;
             }
@@ -2968,6 +3019,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public void setVoidingMode(VoidingMode mode) {
         this.voidingMode = mode;
+        // Void protection affects whether outputs fit, so a change can unblock an output-full recipe.
+        scheduleRecipeCheckImmediate();
     }
 
     @Override
@@ -3012,7 +3065,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         List<MTEHatchOutputBusME> busses = GTUtility.getMTEsOfType(mOutputBusses, MTEHatchOutputBusME.class);
         List<MTEHatchOutputBusME> filteredBusses = new ArrayList<>();
         for (MTEHatchOutputBusME bus : busses) {
-            if (!bus.hasAvailableSpace() || bus.shouldCheck()) continue;
+            if (!bus.hasPhysicalSpace() || bus.shouldCheck()) continue;
             if (!bus.isFiltered()) return true;
             filteredBusses.add(bus);
         }
@@ -3036,7 +3089,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         List<MTEHatchOutputME> hatches = GTUtility.getMTEsOfType(mOutputHatches, MTEHatchOutputME.class);
         List<MTEHatchOutputME> filteredHatches = new ArrayList<>();
         for (MTEHatchOutputME bus : hatches) {
-            if (!bus.hasAvailableSpace() || bus.shouldCheck()) continue;
+            if (!bus.hasPhysicalSpace() || bus.shouldCheck()) continue;
             if (!bus.isFiltered()) return true;
             filteredHatches.add(bus);
         }
@@ -3065,7 +3118,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             boolean handled = false;
 
             for (MTEHatchOutputME hatch : hatches) {
-                if (!hatch.hasAvailableSpace() || hatch.shouldCheck()) continue;
+                if (!hatch.hasPhysicalSpace() || hatch.shouldCheck()) continue;
                 if (!hatch.isFiltered() || hatch.isFilteredToFluid(output)) {
                     handled = true;
                     break;
@@ -3122,6 +3175,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public void setInputSeparation(boolean enabled) {
         this.inputSeparation = enabled;
+        scheduleRecipeCheckImmediate();
     }
 
     @Override
@@ -3162,6 +3216,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         // The machine is likely using a different recipemap now
         // Clear the cached recipe
         setSingleRecipeCheck(null);
+        scheduleRecipeCheckImmediate();
     }
 
     @Override
@@ -3205,6 +3260,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public void setBatchMode(boolean enabled) {
         this.batchMode = enabled;
+        scheduleRecipeCheckImmediate();
     }
 
     @Override
@@ -3228,6 +3284,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (!enabled) {
             setSingleRecipeCheck(null);
         }
+        scheduleRecipeCheckImmediate();
     }
 
     @Override

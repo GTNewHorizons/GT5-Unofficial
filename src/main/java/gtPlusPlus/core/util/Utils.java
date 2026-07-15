@@ -61,14 +61,14 @@ public class Utils {
         stack = (book == null) ? new ItemStack(ModItems.itemCustomBook, 1, ID) : book;
 
         NBTTagCompound NBT = new NBTTagCompound();
-        String localizationTitle = GTUtility.translate(titleKey);
+        String localizationTitle = StatCollector.translateToLocal(titleKey);
         NBT.setString("title", localizationTitle);
         NBT.setString("author", author);
 
         NBTTagList NBTList = new NBTTagList();
         for (byte i = 0; i < pages.length; i++) {
             String pageKeyOrText = pages[i] == null ? "" : pages[i];
-            String pageText = StatCollector.canTranslate(pageKeyOrText) ? GTUtility.translate(pageKeyOrText)
+            String pageText = StatCollector.canTranslate(pageKeyOrText) ? StatCollector.translateToLocal(pageKeyOrText)
                 : pageKeyOrText;
             pages[i] = pageText.replace("\\n", "\n");
             if (i < 48) {

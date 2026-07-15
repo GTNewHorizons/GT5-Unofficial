@@ -5,7 +5,6 @@ import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.util.GTUtility.getFluidName;
 import static gregtech.api.util.GTUtility.getTier;
-import static gregtech.api.util.GTUtility.translate;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
@@ -52,11 +52,11 @@ public class ScannerHelper {
 
     // region Translate
     private static String trans(String name) {
-        return translate("GT5U.scanner." + name);
+        return StatCollector.translateToLocal("GT5U.scanner." + name);
     }
 
     private static String trans(String name, Object... param) {
-        return translate("GT5U.scanner." + name, param);
+        return StatCollector.translateToLocalFormatted("GT5U.scanner." + name, param);
     }
 
     private static IChatComponent transComp(String name) {
@@ -194,7 +194,7 @@ public class ScannerHelper {
     // endregion
 
     // region Text
-    private static IChatComponent addTitleComp(String name) {
+    public static IChatComponent addTitleComp(String name) {
         String dashes = "-".repeat(15);
         // Set AQUA style explicitly on the translation sibling so it inherits the title color.
         // Without this, the §r reset in the root text would leave the sibling unstyled (white).

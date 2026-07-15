@@ -40,9 +40,10 @@ import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataCopyable, IOutputBus {
+public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataCopyable, IOutputBus, ISmartInputHatch {
 
     private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
     private static final String LOCKED_ITEM_NBT_KEY = "lockedItem";
@@ -249,6 +250,12 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
                 GTUtility.cleanInventory(this);
             }
         }
+        // A drained output bus frees up space, which can unblock a recipe that failed with ITEM_OUTPUT_FULL. This must
+        // run AFTER the auto-eject above: that eject marks the inventory dirty within this same tick, and the dirty
+        // flag is cleared at the end of the tick, so a self-eject that frees space would otherwise never push a check.
+        if (aBaseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
+        }
     }
 
     @Override
@@ -405,7 +412,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
         }
 
         @Override
-        public void completeItem(GTUtility.ItemId id) {
+        public void complete(GTUtility.ItemId id) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             for (int i = 0, invLength = inventory.length; i < invLength; i++) {
