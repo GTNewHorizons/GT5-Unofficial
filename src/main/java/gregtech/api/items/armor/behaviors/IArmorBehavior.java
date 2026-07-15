@@ -6,7 +6,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import gregtech.api.items.armor.ArmorState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -18,6 +20,7 @@ import gregtech.GTMod;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.items.armor.ArmorContext;
 import gregtech.api.util.GTUtility;
+import org.jetbrains.annotations.Nullable;
 
 public interface IArmorBehavior {
     /*
@@ -148,4 +151,8 @@ public interface IArmorBehavior {
     default boolean hasDisplayName() {
         return getName().hasDisplayName();
     }
+
+    default void onAugmentAdded(@NotNull ArmorState state, ItemStack armor, ItemStack augment) {}
+
+    default void onAugmentRemoved(@NotNull ArmorState state, ItemStack armor, @Nullable ItemStack augment) {}
 }

@@ -3,8 +3,10 @@ package gregtech.common.tileentities.machines.basic;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 
+import gregtech.api.items.armor.ArmorContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -187,12 +189,19 @@ public class MTEModificationTable extends MetaTileEntity {
         if (newItem != null) {
             if (newItem.getItem() instanceof ItemAugment itemAugment) {
                 state.augments.put(ObjectIntPair.of(category, column), itemAugment.augment);
+                for (var behavior : itemAugment.augment.getProvidedBehaviors()) {
+                    behavior.onAugmentAdded(state, getArmorStack(), newItem);
+                }
             }
         } else {
+            for (var behavior : state.augments.get(ObjectIntPair.of(category, column)).getProvidedBehaviors()){
+                behavior.onAugmentRemoved(state, getArmorStack(), null);
+            }
             state.augments.remove(ObjectIntPair.of(category, column));
         }
 
         installedAugments = state.augments.size();
+
 
         setArmorState(state);
     }

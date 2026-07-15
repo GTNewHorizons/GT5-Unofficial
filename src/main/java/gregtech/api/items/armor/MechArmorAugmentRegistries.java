@@ -11,6 +11,7 @@ import static gregtech.loaders.ExtraIcons.revealingAugment;
 import java.util.Collection;
 import java.util.HashMap;
 
+import gregtech.api.items.armor.behaviors.SoulboundBehavior;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -458,6 +459,13 @@ public class MechArmorAugmentRegistries {
         ),
 
         // Tier 1 - Utility
+        Soulbound(ItemList.Augment_Soulbound, new AugmentBuilder()
+            .setId("Soulbound")
+            .setItemId("augmentsoulbound")
+            .providesBehaviors(SoulboundBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
         NightVision(ItemList.Augment_NightVision, new AugmentBuilder()
             .setId("NightVision")
             .setItemId("augmentnightvision")
@@ -606,7 +614,6 @@ public class MechArmorAugmentRegistries {
         );
 
         // Tier 3 - Utility
-
 
         // spotless:on
 
