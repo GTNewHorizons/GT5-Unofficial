@@ -37,7 +37,7 @@ public class TTRenderGTProgressBar implements IWailaVariableWidthTooltipRenderer
         int progresstime = Integer.parseInt(params[0]);
         int maxProgresstime = Integer.parseInt(params[1]);
         double ratio = maxProgresstime != 0 ? (double) progresstime / maxProgresstime : 0.0;
-        ratio = Math.max(0.0, Math.min(ratio, 1.0));
+        ratio = Math.clamp(ratio, 0.0, 1.0);
         int progress = (int) ((maxStringW - 1) * ratio);
         for (int xx = 1; xx < progress; xx++) {
             int color = (xx & 1) == 0 ? GTMod.proxy.wailaProgressBarColor1 : GTMod.proxy.wailaProgressBarColor2;
