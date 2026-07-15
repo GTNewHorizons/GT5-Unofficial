@@ -147,7 +147,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         }
 
         String getTransKey() {
-            return "kubatech.arcfurnace.mode." + this.name().toLowerCase();
+            return "kubatech.arcfurnace.mode." + this.name()
+                .toLowerCase();
         }
     }
 
@@ -465,7 +466,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             return;
         }
         mode = mode.next();
-        GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mode.generic", new ChatComponentTranslation(mode.getTransKey()));
+        GTUtility
+            .sendChatTrans(aPlayer, "kubatech.chat.mode.generic", new ChatComponentTranslation(mode.getTransKey()));
     }
 
     @SideOnly(Side.CLIENT)
