@@ -81,8 +81,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final int OFFSET_Z = 1;
 
     private static final UITexture[] MODE_ICONS = { GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_MACERATOR, // mac wash
-                                                                                                            // thermal
-                                                                                                            // mac
+        // thermal
+        // mac
         GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_WASHER, // mac wash mac centri
         GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_CENTRIFUGE, // mac mac centri
         GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_SIFTER, // mac wash sift
@@ -110,7 +110,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 { " FFF       FFF ", " AHF       FIA ", " AHFJ     JFIA ", " AHFFJJGJJFFIA ", " AHFFDDDDDFFIA ", " AHF       FIA ", " FHF       FIF ", "JFHFJ     JFIFJ", "JFFFJDDDDDJFFFJ" },
                 { " FFF       FFF ", " FAF       FAF ", " FAFF     FFAF ", " FAFFFF FFFFAF ", " FAFFDDDDDFFAF ", " FAFFDDDDDFFAF ", " FFFFDDDDDFFFF ", " FFFFDDDDDFFFF ", "JFFFJDDDDDJFFFJ" },
                 { "               ", "               ", "               ", "               ", "     DDDDD     ", "    GG   GG    ", "    G     G    ", "  J G     G J  ", " JJJG     GJJJ " } })
-            //spotless:on
+        //spotless:on
         .addElement('A', chainAllGlasses())
         .addElement('B', Casings.TitaniumGearBoxCasing.asElement())
         .addElement('C', Casings.GrateMachineCasing.asElement())
@@ -141,6 +141,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private ItemStack[] midProduct;
     private ProcessingMode mode = ProcessingMode.MAC_WASH_THERMAL_MAC;
     private boolean doesVoidStone = false;
+    private boolean doesVoidEndstone = false;
     private int currentParallelism = 0;
     private final XSTR random = new XSTR();
 
@@ -584,6 +585,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         HashMap<Integer, Integer> merged = new HashMap<>();
         for (ItemStack stack : aList) {
             if (doesVoidStone && GTUtility.areStacksEqual(Materials.Stone.getDust(1), stack)) continue;
+            if (doesVoidEndstone && GTUtility.areStacksEqual(Materials.Endstone.getDust(1), stack)) continue;
             int id = GTUtility.stackToInt(stack);
             if (id != 0) {
                 merged.merge(id, stack.stackSize, Integer::sum);
@@ -737,15 +739,22 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         info.add(
             IGregTechDeviceInformation
                 .encode("GT5U.infodata.integrated_ore_factory.parallelism", getCurrentParallelism()));
-        info.add(IGregTechDeviceInformation.encode("GT5U.machines.oreprocessor.void", doesVoidStone));
+        info.add(IGregTechDeviceInformation.encode("GT5U.machines.oreprocessor.void", getVoidStatus()));
         info.add("GT5U.multiblock.runningMode");
         info.addAll(getDisplayMode(mode));
         return info.toArray(new String[0]);
     }
 
+    private String getVoidStatus() {
+        if (doesVoidStone && doesVoidEndstone) return "Stone + Endstone";
+        if (doesVoidStone) return "Stone";
+        if (doesVoidEndstone) return "Endstone";
+        return "Off";
+    }
+
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
         return Textures.BlockIcons.createTextureWithCasing(
             this,
             side,
@@ -764,10 +773,22 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+                                              ItemStack aTool) {
         if (aPlayer.isSneaking()) {
-            doesVoidStone = !doesVoidStone;
-            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.oreprocessor.void", doesVoidStone);
+            if (!doesVoidStone && !doesVoidEndstone) {
+                doesVoidStone = true;
+            } else if (doesVoidStone && !doesVoidEndstone) {
+                doesVoidStone = false;
+                doesVoidEndstone = true;
+            } else if (!doesVoidStone && doesVoidEndstone) {
+                doesVoidStone = true;
+                doesVoidEndstone = true;
+            } else {
+                doesVoidStone = false;
+                doesVoidEndstone = false;
+            }
+
+            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.oreprocessor.void", getVoidStatus());
             return;
         }
         mode = mode.next();
@@ -801,6 +822,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     public void loadNBTData(NBTTagCompound aNBT) {
         mode = ProcessingMode.fromOrdinal(aNBT.getInteger("mode"));
         doesVoidStone = aNBT.getBoolean("doesVoidStone");
+        doesVoidEndstone = aNBT.getBoolean("doesVoidEndstone");
         currentParallelism = aNBT.getInteger("currentParallelism");
         super.loadNBTData(aNBT);
     }
@@ -809,13 +831,14 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mode", mode.ordinal());
         aNBT.setBoolean("doesVoidStone", doesVoidStone);
+        aNBT.setBoolean("doesVoidEndstone", doesVoidEndstone);
         aNBT.setInteger("currentParallelism", currentParallelism);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+                             IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
@@ -825,9 +848,14 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 + EnumChatFormatting.RESET);
         currenttip.add(StatCollector.translateToLocal("GT5U.multiblock.runningMode"));
         currenttip.addAll(getDisplayMode(ProcessingMode.fromOrdinal(tag.getInteger("machineMode"))));
-        currenttip.add(
-            StatCollector
-                .translateToLocalFormatted("GT5U.machines.oreprocessor.void", tag.getBoolean("doesVoidStone")));
+        boolean voidStone = tag.getBoolean("doesVoidStone");
+        boolean voidEndstone = tag.getBoolean("doesVoidEndstone");
+        String voidStatus;
+        if (voidStone && voidEndstone) voidStatus = "Stone + Endstone";
+        else if (voidStone) voidStatus = "Stone";
+        else if (voidEndstone) voidStatus = "Endstone";
+        else voidStatus = "Off";
+        currenttip.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", voidStatus));
     }
 
     @Override
@@ -837,10 +865,11 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+                                int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("machineMode", mode.ordinal());
         tag.setBoolean("doesVoidStone", doesVoidStone);
+        tag.setBoolean("doesVoidEndstone", doesVoidEndstone);
         tag.setInteger("currentParallelism", currentParallelism);
     }
 
