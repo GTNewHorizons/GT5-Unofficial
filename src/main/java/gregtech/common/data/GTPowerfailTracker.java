@@ -206,13 +206,7 @@ public class GTPowerfailTracker {
         if (world == null) return;
         TileEntity tile = world.getTileEntity(x, y, z);
         if (!(tile instanceof IGregTechTileEntity igte)) return;
-        removePowerfailEvents(
-            igte,
-            worldId,
-            x,
-            y,
-            z
-        );
+        removePowerfailEvents(igte, worldId, x, y, z);
     }
 
     public void removePowerfailEvents(IGregTechTileEntity igte) {
@@ -221,8 +215,7 @@ public class GTPowerfailTracker {
             igte.getWorld().provider.dimensionId,
             igte.getXCoord(),
             igte.getYCoord(),
-            igte.getZCoord()
-        );
+            igte.getZCoord());
     }
 
     public void removePowerfailEvents(IGregTechTileEntity igte, int worldId, int x, int y, int z) {
