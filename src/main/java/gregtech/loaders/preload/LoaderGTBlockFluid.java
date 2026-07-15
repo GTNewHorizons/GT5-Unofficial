@@ -1831,12 +1831,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.Diesel.getFluid(100L),
+                MaterialLibAPI.getFluidStack(Materials2Materials.Fuel, Materials2FluidShapes.fluidLiquid, 100),
                 ItemList.Tool_Lighter_Invar_Full.get(1L),
                 ItemList.Tool_Lighter_Invar_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.Diesel.getFluid(1_000),
+                MaterialLibAPI.getFluidStack(Materials2Materials.Fuel, Materials2FluidShapes.fluidLiquid, 1_000),
                 ItemList.Tool_Lighter_Platinum_Full.get(1L),
                 ItemList.Tool_Lighter_Platinum_Empty.get(1L)));
 
