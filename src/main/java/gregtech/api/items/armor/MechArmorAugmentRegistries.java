@@ -11,6 +11,7 @@ import static gregtech.loaders.ExtraIcons.revealingAugment;
 import java.util.Collection;
 import java.util.HashMap;
 
+import gregtech.api.items.armor.behaviors.SoulboundBehavior;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
