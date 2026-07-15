@@ -2774,7 +2774,12 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Adamantium")
             .setDefaultLocalName("Adamantium")
             .setChemicalFormula("Ad")
-            .setIconSet(TextureSet.SET_SHINY)
+            .setIconSet(
+                TextureSet.SET_SHINY.withCustomTextures(
+                    "adamantium",
+                    MaterialIconRegistry.IconType.ORE,
+                    MaterialIconRegistry.IconType.ORE_SMALL,
+                    MaterialIconRegistry.IconType.ORE_RAW))
             .setColor(Dyes.dyeLightGray)
             .setTool(8_192, 10, 32.0f)
             .setTurbine(1.0f, 5.0f, 1.0f)
