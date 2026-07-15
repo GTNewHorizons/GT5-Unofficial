@@ -37,7 +37,7 @@ public class WiremillRecipes implements Runnable {
             .addTo(wiremillRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Steel, 1))
+            .itemInputs(GTOreDictUnificator.get("pipeTinySteel", 1))
             .itemOutputs(GTModHandler.getIC2Item("miningPipe", 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
