@@ -70,7 +70,7 @@ public class TTRenderGTProgressBar implements IWailaVariableWidthTooltipRenderer
 
     @Override
     public void setMaxLineWidth(int width) {
-        maxStringW = width + 2;
+        maxStringW = width;
     }
 
     @Override
