@@ -13,7 +13,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -240,7 +239,7 @@ public class BenderRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Mixed_Metal_Ingot.get(1L))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.HV, 1L))
+            .itemOutputs(GTOreDictUnificator.get("plateAlloyAdvanced", 1L))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);
