@@ -511,7 +511,7 @@ public class MTEExoticModule extends MTEBaseModule {
             .addInfo("requires a fully upgraded Godforge")
             .addInfo("This module is specialized towards acquisition of unique materials")
             .beginStructureBlock(13, 7, 7, false)
-            .addController("Front center")
+            .addController("Front center, 4th layer")
             .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
             .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
             .addCasing("5", "Celestial Matter Guidance Casing", false)

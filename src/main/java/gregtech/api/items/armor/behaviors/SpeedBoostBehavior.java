@@ -5,6 +5,7 @@ import java.util.Set;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -54,7 +55,8 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
         GTUtility.sendChatToPlayer(
             context.getPlayer(),
-            GTUtility.translate("GT5U.armor.message.speed_set", Math.round(state.speedBoost * 100F)));
+            StatCollector
+                .translateToLocalFormatted("GT5U.armor.message.speed_set", Math.round(state.speedBoost * 100F)));
     }
 
     @Override

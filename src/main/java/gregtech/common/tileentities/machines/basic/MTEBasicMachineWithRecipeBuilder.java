@@ -9,7 +9,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GTUtility;
 
 public final class MTEBasicMachineWithRecipeBuilder {
 
@@ -139,7 +138,7 @@ public final class MTEBasicMachineWithRecipeBuilder {
                 int descriptionIndex = description.length;
                 if (machineEUtMultiplier != 1) {
                     finalDescription[descriptionIndex++] = EnumChatFormatting.GRAY
-                        + GTUtility.translate("GT5U.MBTT.PowerUsage")
+                        + StatCollector.translateToLocal("GT5U.MBTT.PowerUsage")
                         + ": "
                         + EnumChatFormatting.RED
                         + (machineEUtMultiplier * 100)
@@ -148,7 +147,7 @@ public final class MTEBasicMachineWithRecipeBuilder {
                 }
                 if (machineAmperageOverride != 0) {
                     finalDescription[descriptionIndex] = EnumChatFormatting.GRAY
-                        + GTUtility.translate("GT5U.MBTT.BaseAmperage")
+                        + StatCollector.translateToLocal("GT5U.MBTT.BaseAmperage")
                         + ": "
                         + EnumChatFormatting.YELLOW
                         + machineAmperageOverride

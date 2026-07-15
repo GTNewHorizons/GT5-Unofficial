@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.outputme.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.api.util.GTUtility.translate;
 import static gregtech.common.covers.modes.FilterType.BLACKLIST;
 import static gregtech.common.covers.modes.FilterType.WHITELIST;
 
@@ -24,6 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -706,7 +706,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         if (ItemStackNBT.hasKey(stack, "baseCapacity")) {
             tooltip.add(
-                translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.hatch.outputme.cache_capacity_label",
                     ReadableNumberConverter.INSTANCE
                         .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity"))));
@@ -798,11 +798,11 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             int stackCount = tag.getInteger(countKey);
 
             if (stackCount == 0) {
-                ss.add(translate("GT5U.waila.hatch.outputme." + prefix + "_cache_empty"));
+                ss.add(StatCollector.translateToLocal("GT5U.waila.hatch.outputme." + prefix + "_cache_empty"));
                 return;
             }
             ss.add(
-                translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.waila.hatch.outputme." + prefix + "_cache_detail",
                     stackCount,
                     stackCount > 1 ? "s" : ""));
@@ -821,7 +821,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
 
             if (stackCount > stacks.tagCount()) {
                 ss.add(
-                    translate(
+                    StatCollector.translateToLocalFormatted(
                         "GT5U.waila.hatch.outputme." + prefix + "_cache_detail.more",
                         stackCount - stacks.tagCount()));
             }
@@ -831,7 +831,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             NBTTagCompound tag = accessor.getNBTData();
             processWailaAdvancedBody(prefix, ss, "stacks", "stackCount", tag);
             if (tag.hasKey("cacheCount")) {
-                ss.add(translate("GT5U.waila.hatch.outputme.storage_cache"));
+                ss.add(StatCollector.translateToLocal("GT5U.waila.hatch.outputme.storage_cache"));
                 processWailaAdvancedBody(prefix, ss, "cacheStacks", "cacheCount", tag);
             }
         }

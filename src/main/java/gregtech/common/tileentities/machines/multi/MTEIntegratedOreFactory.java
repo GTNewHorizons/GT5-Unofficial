@@ -12,11 +12,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_FACTORY_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_FACTORY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_FACTORY_GLOW;
 import static gregtech.api.enums.TickTime.SECOND;
+import static gregtech.api.recipe.RecipeMaps.simpleWasherRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -643,7 +643,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addSeparator()
             .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
             .beginStructureBlock(13, 15, 9, false)
-            .addController("Front center")
+            .addController("Front center, 3rd layer")
             .addCasing("462", "Advanced Iridium Plated Machine Casing", false)
             .addCasing("0-163", "Clean Stainless Steel Machine Casing", false)
             .addCasing("96", "Iridium Sheetmetal", false)
