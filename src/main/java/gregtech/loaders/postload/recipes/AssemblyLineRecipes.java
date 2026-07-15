@@ -724,6 +724,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedInputBusLuV.get(1))
                 .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(128 * INGOTS))
                 .eut((int) TierEU.RECIPE_LuV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             GTValues.RA.stdBuilder()
@@ -739,6 +740,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedInputBusLuV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
                 .eut((int) TierEU.RECIPE_LuV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // ZPM Tier
@@ -754,6 +756,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedInputBusZPM.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(32 * INGOTS))
                 .eut((int) TierEU.RECIPE_ZPM)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // UV Tier
@@ -769,6 +772,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedInputBusUV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(64 * INGOTS))
                 .eut((int) TierEU.RECIPE_UV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // UHV Tier
@@ -784,6 +788,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedInputBusUHV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(128 * INGOTS))
                 .eut((int) TierEU.RECIPE_UHV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // UEV Tier
@@ -800,6 +805,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedInputBusUEV.get(1))
                 .fluidInputs(Materials.RadoxPolymer.getMolten(32 * INGOTS))
                 .eut((int) TierEU.RECIPE_UEV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // UIV Tier
@@ -817,6 +823,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedInputBusUIV.get(1))
                 .fluidInputs(Materials.RadoxPolymer.getMolten(64 * INGOTS))
                 .eut((int) TierEU.RECIPE_UIV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // UMV Tier
@@ -834,6 +841,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedInputBusUMV.get(1))
                 .fluidInputs(Materials.RadoxPolymer.getMolten(128 * INGOTS))
                 .eut((int) TierEU.RECIPE_UMV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // UXV Tier
@@ -851,6 +859,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedInputBusUXV.get(1))
                 .fluidInputs(Materials.RadoxPolymer.getMolten(256 * INGOTS))
                 .eut((int) TierEU.RECIPE_UXV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // Outputs
@@ -868,6 +877,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedOutputBusLuV.get(1))
                 .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(128 * INGOTS))
                 .eut((int) TierEU.RECIPE_LuV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             GTValues.RA.stdBuilder()
@@ -883,6 +893,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedOutputBusLuV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
                 .eut((int) TierEU.RECIPE_LuV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // ZPM Tier
@@ -898,6 +909,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedOutputBusZPM.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(32 * INGOTS))
                 .eut((int) TierEU.RECIPE_ZPM)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // UV Tier
@@ -913,6 +925,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedOutputBusUV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(64 * INGOTS))
                 .eut((int) TierEU.RECIPE_UV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // UHV Tier
@@ -928,6 +941,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedOutputBusUHV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(128 * INGOTS))
                 .eut((int) TierEU.RECIPE_UHV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // UEV Tier
@@ -944,6 +958,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedOutputBusUEV.get(1))
                 .fluidInputs(Materials.RadoxPolymer.getMolten(32 * INGOTS))
                 .eut((int) TierEU.RECIPE_UEV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // UIV Tier
@@ -961,6 +976,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedOutputBusUIV.get(1))
                 .fluidInputs(Materials.RadoxPolymer.getMolten(64 * INGOTS))
                 .eut((int) TierEU.RECIPE_UIV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // UMV Tier
@@ -978,6 +994,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedOutputBusUMV.get(1))
                 .fluidInputs(Materials.RadoxPolymer.getMolten(128 * INGOTS))
                 .eut((int) TierEU.RECIPE_UMV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
             // UXV Tier
@@ -995,6 +1012,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedOutputBusUXV.get(1))
                 .fluidInputs(Materials.RadoxPolymer.getMolten(256 * INGOTS))
                 .eut((int) TierEU.RECIPE_UXV)
+                .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
         }
 
