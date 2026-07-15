@@ -6,7 +6,6 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -108,7 +107,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private int autoPullRefreshTime = 100;
     protected boolean processingRecipe = false;
     private boolean justHadNewFluids = false;
-    private final List<IHatchWatcher> watchers = new ArrayList<>();
     /**
      * The cached activity for this hatch. Only valid while processing a recipe. This avoids several
      * operations.
@@ -149,11 +147,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             if (aTimer % autoPullRefreshTime == 0 && autoPullFluidList) {
                 refreshFluidList();
                 if (justHadNewFluids) {
-                    // Auto-pull only exists on advanced stocking inputs and is already rate-limited by
-                    // autoPullRefreshTime, so a refresh that found new fluids warrants an immediate check.
-                    for (var multi : watchers) {
-                        multi.scheduleRecipeCheckImmediate();
-                    }
+                    // Advanced hatch auto pull always have immediate check, to not break automations
+                    scheduleRecipeCheck(RecipeCheckReason.IMMEDIATE);
                     justHadNewFluids = false;
                 }
             }
@@ -1064,6 +1059,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     watcher.add(AEFluidStack.create(slot.config));
                 }
             }
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
         }
     }
 
@@ -1078,11 +1074,13 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         StorageChannel chan) {
         if (diffStack.getStackSize() > 0) {
             justHadNewFluids = true;
-            // Push directly: a configured (non-auto-pull) hatch may have its GT ticking disabled, so the onPostTick
-            // consume above would never run. The AE watcher callback still fires regardless.
-            for (var multi : watchers) {
-                multi.scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
-            }
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
+        }
+    }
+
+    private void scheduleRecipeCheck(RecipeCheckReason reason) {
+        for (var multi : watchers) {
+            multi.scheduleRecipeCheck(reason);
         }
     }
 }

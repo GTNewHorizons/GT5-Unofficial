@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.hatch;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -14,7 +16,6 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.core.localization.GuiText;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
@@ -44,7 +45,7 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
         mainRow.child(
             new ToggleButton().value(isCaching)
                 .overlay(GuiTextures.FOLDER)
-                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_caching")));
+                .addTooltipLine(StatCollector.translateToLocal("GT5U.hatch.outputme.toggle_caching")));
 
         // priority input text field
         mainRow.child(
@@ -61,7 +62,7 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
         mainRow.child(
             new ToggleButton().value(isChecking)
                 .overlay(GuiTextures.SEARCH)
-                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_checking"))
+                .addTooltipLine(StatCollector.translateToLocal("GT5U.hatch.outputme.toggle_checking"))
                 .setEnabledIf(t -> isCaching.getBoolValue()));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
