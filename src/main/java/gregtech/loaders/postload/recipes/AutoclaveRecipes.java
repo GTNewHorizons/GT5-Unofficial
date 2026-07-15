@@ -207,14 +207,16 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (4)))
             .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 1L))
             .outputChances(10000)
-            .fluidInputs(Materials.Polyethylene.getMolten(1 * QUARTER_INGOTS))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Plastic, Materials2FluidShapes.fluidMolten, 1 * QUARTER_INGOTS))
             .duration(1 * SECONDS + 17 * TICKS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.NetherStar, Materials2Shapes.dust, (int) (1)))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1))
+            .itemOutputs(GTOreDictUnificator.get("gemNetherStar", 1))
             .outputChances(3333)
             .fluidInputs(Materials.UUMatter.getFluid(4 * INGOTS))
             .duration(60 * MINUTES)
@@ -312,14 +314,14 @@ public class AutoclaveRecipes implements Runnable {
         // Marble Block
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Calcite, Materials2Shapes.dust, (int) (1)))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Marble, 1L))
+            .itemOutputs(GTOreDictUnificator.get("blockMarble", 1L))
             .fluidInputs(Materials.Water.getFluid(1_000L))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Calcite, Materials2Shapes.dust, (int) (1)))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Marble, 1L))
+            .itemOutputs(GTOreDictUnificator.get("stoneMarble", 1L))
             .fluidInputs(GTModHandler.getDistilledWater(500L))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -327,7 +329,7 @@ public class AutoclaveRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1L),
+                GTOreDictUnificator.get("naniteTranscendentMetal", 1L),
                 MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.dust, (int) (32)))
             .itemOutputs(ItemList.Phononic_Seed_Crystal.get(8L))
             .fluidInputs(
@@ -340,7 +342,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.round, Materials.MagMatter, 1))
+            .itemInputs(GTOreDictUnificator.get("roundMagmatter", 1))
             .itemOutputs(ItemList.Phononic_Seed_Crystal.get(5))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
@@ -354,7 +356,7 @@ public class AutoclaveRecipes implements Runnable {
         // Exquisite Amalgatite
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
+                GTUtility.copyAmount(0, GTOreDictUnificator.get("naniteMagmatter", 1)),
                 MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.gemFlawless, (int) (3)),
                 WerkstoffLoader.Olenit.get(OrePrefixes.gemChipped, 64),
                 WerkstoffLoader.Salt.get(OrePrefixes.gemChipped, 64),
