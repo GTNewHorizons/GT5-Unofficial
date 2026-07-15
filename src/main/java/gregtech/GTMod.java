@@ -181,7 +181,9 @@ import ic2.api.recipe.RecipeOutput;
         + "after:UndergroundBiomes;"
         + "after:TConstruct;"
         + "after:Translocator;"
-        + "after:gendustry;")
+        + "after:gendustry;"
+        + "after:chromatictooltips;"
+        + "after:chromatictooltipscompat;")
 public class GTMod {
 
     static {
