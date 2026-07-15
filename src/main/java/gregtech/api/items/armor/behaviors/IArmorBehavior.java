@@ -22,7 +22,6 @@ import gregtech.GTMod;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.items.armor.ArmorContext;
 import gregtech.api.items.armor.ArmorState;
-import gregtech.api.util.GTUtility;
 
 public interface IArmorBehavior {
     /*
