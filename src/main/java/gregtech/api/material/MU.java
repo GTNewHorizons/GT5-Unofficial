@@ -25,6 +25,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.objects.ItemData;
 
 /// Bridges legacy [OrePrefixes]/[Materials] pairs to their cutover MaterialLib [Shape]/[Material]
 /// equivalents.
@@ -125,6 +126,19 @@ public class MU {
         if (material == null) return null;
         return Materials.getMaterialsMap()
             .get(legacyName(material));
+    }
+
+    /// The crafting-table ingredient a legacy `OrePrefixes.get(Materials)` call produced, rebuilt from a
+    /// MaterialLib [Material] rather than a legacy [Materials] constant. Returns the [ItemData] that
+    /// [gregtech.api.util.GTModHandler#addCraftingRecipe] resolves to an ore-dictionary name (through
+    /// [ItemData#toString]) so the ingredient still accepts any matching item, while also carrying the material
+    /// association that drives a reversible recipe's auto-generated recycling recipes. A bare ore-dictionary
+    /// [String] ingredient supplies only the name, not that association, so a reversible recipe built from one
+    /// silently loses its recycling; this preserves both. Null when `material` has no legacy counterpart --
+    /// markers such as `AnyIron` have no MaterialLib material and keep their legacy ingredient.
+    public static @Nullable ItemData craftIngredient(OrePrefixes prefix, @Nullable Material material) {
+        Materials legacy = materialOf(material);
+        return prefix == null || legacy == null ? null : new ItemData(prefix, legacy);
     }
 
     /// The legacy `mMetaItemSubID` a material was assigned (block-form metadata index, e.g. the frame and
