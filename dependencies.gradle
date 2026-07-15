@@ -161,6 +161,11 @@ dependencies {
 
     // For building structures faster
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MatterManipulator:0.1.46-GTNH')
+
+    // Rain: Tooltip Deps
+    implementation files('chromatictooltips-1.0.32-GTNH-master+42b174b3ec-dirty-dev.jar')
+//    implementation("com.github.slprime:ChromaticTooltips:1.0.31-GTNH:dev") { transitive = false }
+    devOnlyNonPublishable("com.github.slprime:ChromaticTooltipsCompat:1.0.33-GTNH:dev") { transitive = false }
 }
 
 afterEvaluate {
