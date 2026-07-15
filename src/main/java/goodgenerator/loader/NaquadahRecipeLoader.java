@@ -117,7 +117,8 @@ public class NaquadahReworkRecipeLoader {
                 MaterialLibAPI.getStack(Materials2Materials.Indium, Materials2Shapes.dust, 64),
                 ItemList.NaquadriaSupersolid.get(1))
             .fluidInputs(
-                Materials.PhosphoricAcid.getFluid(16_000),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.PhosphoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 16_000),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 16_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, 100))
@@ -195,7 +196,9 @@ public class NaquadahReworkRecipeLoader {
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, 3_000))
-            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(3_000))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 3_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.ingotHot, 1))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -219,7 +222,8 @@ public class NaquadahReworkRecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, 2))
             .fluidInputs(
                 GGMaterial.towEthyl1Hexanol.getFluidOrGas(2_000),
-                Materials.PhosphoricAcid.getFluid(1_000),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.PhosphoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Ethanol, Materials2FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(GGMaterial.P507.getFluidOrGas(1_000))
             .duration(1 * MINUTES)
@@ -261,7 +265,10 @@ public class NaquadahReworkRecipeLoader {
             new FluidStack[] {
                 MaterialLibAPI.getFluidStack(Materials2Materials.SaltWater, Materials2FluidShapes.fluidLiquid, 3_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Phenol, Materials2FluidShapes.fluidLiquid, 2_000),
-                Materials.HydrochloricAcid.getFluid(5_000) },
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.HydrochloricAcidGT5U,
+                    Materials2FluidShapes.fluidLiquid,
+                    5_000) },
             MaterialLibAPI.getStack(Materials2Materials.Chrome, Materials2Shapes.dust, 3),
             15 * SECONDS,
             TierEU.RECIPE_HV);
@@ -279,7 +286,7 @@ public class NaquadahReworkRecipeLoader {
             .addTo(neutronActivatorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 27))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 27))
             .fluidInputs(GGMaterial.naquadahRichSolution.getFluidOrGas(5_000))
             .itemOutputs(GGMaterial.naquadahine.get(OrePrefixes.dust, 30))
             .fluidOutputs(GGMaterial.P507.getFluidOrGas(1_000))
@@ -301,7 +308,7 @@ public class NaquadahReworkRecipeLoader {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 27))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 27))
             .circuit(1)
             .fluidInputs(GGMaterial.lowQualityNaquadahEmulsion.getFluidOrGas(10_000))
             .itemOutputs(
@@ -344,7 +351,7 @@ public class NaquadahReworkRecipeLoader {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 60))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 60))
             .fluidInputs(GGMaterial.enrichedNaquadahRichSolution.getFluidOrGas(10_000))
             .itemOutputs(GGMaterial.concentratedEnrichedNaquadahSludge.get(OrePrefixes.dust, 8))
             .fluidOutputs(GGMaterial.P507.getFluidOrGas(2_500))
@@ -395,7 +402,9 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 4))
-            .fluidInputs(Materials.PhosphoricAcid.getFluid(4_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.PhosphoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 4_000))
             .itemOutputs(
                 GGMaterial.indiumPhosphate.get(OrePrefixes.dust, 6),
                 GGMaterial.lowQualityNaquadriaPhosphate.get(OrePrefixes.dust, 4))
@@ -411,7 +420,7 @@ public class NaquadahReworkRecipeLoader {
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, 3))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Gallium, Materials2Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 9))
+                MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 9))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
