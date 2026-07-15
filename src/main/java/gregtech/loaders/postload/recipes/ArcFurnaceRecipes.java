@@ -109,7 +109,7 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_TungstenSteel.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.TPV, 8),
+                GTOreDictUnificator.get("ingotTPVAlloy", 8),
                 MaterialLibAPI.getStack(Materials2Materials.Nichrome, Materials2Shapes.ingot, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (5)))
             .duration(15 * SECONDS)
@@ -121,7 +121,7 @@ public class ArcFurnaceRecipes implements Runnable {
             .itemInputs(ItemList.Casing_Coil_HSSG.get(1L))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.HSSG, Materials2Shapes.ingot, (int) (8)),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.TPV, 1),
+                GTOreDictUnificator.get("ingotTPVAlloy", 1),
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (6)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -196,7 +196,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 0))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 2L))
+            .itemOutputs(GTOreDictUnificator.get("ingotIron", 2L))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(90)
             .metadata(RECYCLE, true)
@@ -205,7 +205,7 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L),
+                GTOreDictUnificator.get("ingotIron", 1L),
                 MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.dustTiny, (int) (3)))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(90)
