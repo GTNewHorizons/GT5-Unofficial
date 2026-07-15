@@ -16,7 +16,6 @@ package bartworks.system.material.processingLoaders;
 import static bartworks.API.recipe.BartWorksRecipeMaps.bacterialVatRecipes;
 import static bartworks.API.recipe.BartWorksRecipeMaps.bioLabRecipes;
 import static gregtech.api.enums.OrePrefixes.bolt;
-import static gregtech.api.enums.OrePrefixes.crushed;
 import static gregtech.api.enums.OrePrefixes.crushedPurified;
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.dustSmall;
@@ -339,7 +338,7 @@ public class AdditionalRecipes {
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.dust, (int) (4)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (3)),
-                Materials.Aluminiumoxide.getDust(10))
+                MaterialLibAPI.getStack(Materials2Materials.Alumina, Materials2Shapes.dust, (int) (10)))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -359,7 +358,7 @@ public class AdditionalRecipes {
         // Prasiolite
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(dust, Materials.Quartzite, 4L),
+                MaterialLibAPI.getStack(Materials2Materials.Quartzite, Materials2Shapes.dust, (int) (4)),
                 MaterialLibAPI.getStack(Materials2Materials.Amethyst, Materials2Shapes.dust, (int) (1)))
             .itemOutputs(WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed, 2))
             .duration(4 * SECONDS)
@@ -368,7 +367,7 @@ public class AdditionalRecipes {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(dust, Materials.Quartzite, 40L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Quartzite, Materials2Shapes.dust, (int) (40)))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Amethyst, Materials2Shapes.dust, (int) (10)))
             .duration(40 * SECONDS)
             .eut(0)
@@ -401,7 +400,7 @@ public class AdditionalRecipes {
 
         // Tellurium
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(crushed, Materials.Lead, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.crushed, (int) (1)))
             .circuit(17)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.ingot, (int) (1)),
