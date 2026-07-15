@@ -169,7 +169,7 @@ final class OreShowroom {
         int width = aisles.size() * PAD_WIDTH + (aisles.size() - 1) * AISLE_GAP;
         clearShowroom(world, originX - 1, floorY, originZ, maxLength + 2, width);
 
-        // ponytail: this is synchronous for a one-shot dev world; batch by server tick if watchdogs become a problem.
+        // This is synchronous for a one-shot dev world; batch by server tick if watchdogs become a problem.
         for (Aisle aisle : aisles) {
             StoneType stoneType = aisle.stoneType();
             List<IOreMaterial> materials = aisle.materials();
