@@ -19,10 +19,9 @@ public class LongFluidStack extends FluidStack {
         if (this.amount != amountLong) {
             // Fluid Stack only ever decrements if they're not synced
 
-            if (amountLong < Integer.MAX_VALUE) {
-                if (this.amount < amountLong) {
-                    amountLong = this.amount;
-                }
+            if (amountLong <= Integer.MAX_VALUE) {
+                // Also handle rare case when amount is increased just to be safe, hadn't found them yet
+                amountLong = this.amount;
             } else {
                 long diff = Integer.MAX_VALUE - this.amount;
                 amountLong -= diff;
