@@ -15,6 +15,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
 
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -28,7 +29,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -171,8 +171,19 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     public final boolean addNuclearReactorEdgeList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEHatchMaintenance || aMetaTileEntity instanceof MTEHatchDynamo
-            || aMetaTileEntity instanceof MTEHatchInput
+        // catch MTEHatchDynamo case, because addToMachineList catches the subtype MTEHatchDynamoMulti
+        // and adds them to mTecTechDynamoHatches, which is not used for the count verification,
+        // so we just do the same steps here manually until this code gets a proper cleanup
+        if (aMetaTileEntity instanceof MTEHatchDynamo mteDynamo) {
+            mteDynamo.updateTexture(aBaseCasingIndex);
+            mteDynamo.updateCraftingIcon(this.getMachineCraftingIcon());
+
+            addIfSmartInput(mteDynamo);
+
+            mAllDynamoHatches.add(mteDynamo);
+            return addToMachineListInternal(mDynamoHatches, mteDynamo, aBaseCasingIndex);
+        }
+        if (aMetaTileEntity instanceof MTEHatchMaintenance || aMetaTileEntity instanceof MTEHatchInput
             || aMetaTileEntity instanceof MTEHatchOutput) {
             return addToMachineList(aTileEntity, aBaseCasingIndex);
         }
@@ -256,8 +267,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         checkHasInputHatch(errors);
 
         if (mOutputHatches.size() < 4 && hasNoMEOutputHatch) {
-            errors
-                .add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.OutputHatch, mOutputHatches.size(), 4));
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, OutputHatch, mOutputHatches.size(), 4));
         }
 
         for (MTEHatchMuffler hatch : mMufflerHatches) {
