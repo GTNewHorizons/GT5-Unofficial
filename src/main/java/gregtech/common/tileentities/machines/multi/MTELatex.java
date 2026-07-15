@@ -25,6 +25,7 @@ import static net.minecraft.util.EnumChatFormatting.GREEN;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -151,10 +152,14 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
         .build();
 
     private int itemPipeTier = -1;
-    private double discount = 0.0625 * itemPipeTier;
     private int base_parallel = 8;
     private static final FluidStack[] valid_rubbers = { Materials.Rubber.getMolten(1L),
         Materials.RubberSilicone.getMolten(1L), Materials.StyreneButadieneRubber.getMolten(1L) };
+    private static final ItemStack SINGULARITY = getModItem(
+        UniversalSingularities.ID,
+        "universal.rubber.singularity",
+        1L,
+        5);
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
@@ -163,6 +168,32 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
             @Override
             protected @NotNull ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
                 return super.createParallelHelper(Objects.requireNonNull(recipeAfterAdjustments(recipe)));
+            }
+
+            @Nonnull
+            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                if (map == null) {
+                    return Stream.empty();
+                }
+                return map.findRecipeQuery()
+                    .caching(recipeCaching)
+                    .items(inputItems)
+                    .fluids(fluidsAfterAdjustments(inputFluids))
+                    .specialSlot(specialSlotItem)
+                    .cachedRecipe(lastRecipe)
+                    .findAll();
+            }
+
+            private FluidStack[] fluidsAfterAdjustments(FluidStack[] inputFluids) {
+                FluidStack[] copy = new FluidStack[inputFluids.length];
+
+                for (int i = 0; i < inputFluids.length; i++) {
+                    if (inputFluids[i] == null) continue;
+                    copy[i] = inputFluids[i].copy();
+                    copy[i].amount = (int) Math.round(copy[i].amount / getRubberCostMult());
+                }
+
+                return copy;
             }
         }.setSpeedBonus(1F / 2F)
             .setMaxParallelSupplier(this::getTrueParallel)
@@ -189,22 +220,25 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
         for (int i = 0; i < recipe.mFluidInputs.length; i++) {
             for (FluidStack rubber : valid_rubbers) {
                 if (tRecipe.mFluidInputs[i].isFluidEqual(rubber)) {
-                    ItemStack controllerStack = this.getControllerSlot();
-                    discount = 0.0625 * itemPipeTier;
-                    base_parallel = 8;
-                    if (controllerStack != null && controllerStack.isItemEqual(
-                        UniversalSingularities.isModLoaded()
-                            ? getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)
-                            : ItemList.Tool_DataStick.get(1))) {
-                        discount = discount + 0.25;
-                        base_parallel = 16;
-                    }
-                    tRecipe.mFluidInputs[i].amount = (int) Math.round(tRecipe.mFluidInputs[i].amount * (1 - discount));
+                    tRecipe.mFluidInputs[i].amount = (int) Math
+                        .round(tRecipe.mFluidInputs[i].amount * getRubberCostMult());
                     return tRecipe;
                 }
             }
         }
         return tRecipe;
+    }
+
+    private double getRubberCostMult() {
+        ItemStack controllerStack = this.getControllerSlot();
+        double discount = 0.0625 * itemPipeTier;
+        base_parallel = 8;
+        if (controllerStack != null && controllerStack
+            .isItemEqual(UniversalSingularities.isModLoaded() ? SINGULARITY : ItemList.Tool_DataStick.get(1))) {
+            discount += 0.25;
+            base_parallel = 16;
+        }
+        return 1 - discount;
     }
 
     public MTELatex(final int aID, final String aName, final String aNameRegional) {
@@ -306,10 +340,8 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
         clearHatches();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 7, 0, errors)) return;
         ItemStack controllerStack = this.getControllerSlot();
-        boolean singularityPresent = controllerStack != null && controllerStack.isItemEqual(
-            UniversalSingularities.isModLoaded()
-                ? getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)
-                : ItemList.Tool_DataStick.get(1));
+        boolean singularityPresent = controllerStack != null && controllerStack
+            .isItemEqual(UniversalSingularities.isModLoaded() ? SINGULARITY : ItemList.Tool_DataStick.get(1));
         checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
@@ -344,12 +376,6 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
     @Override
     public boolean supportsInputSeparation() {
         return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-
     }
 
 }
