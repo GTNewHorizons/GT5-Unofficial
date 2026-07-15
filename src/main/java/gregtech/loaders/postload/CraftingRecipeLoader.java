@@ -104,7 +104,8 @@ public class CraftingRecipeLoader implements Runnable {
             ItemList.FenceIron.get(6L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { aTextIron2, aTextIron2, " w ", 'X', OrePrefixes.stick.get(Materials.AnyIron), 'S',
-                OrePrefixes.stick.get(Materials.Wood), 'I', OrePrefixes.ingot.get(Materials.AnyIron) });
+                MU.craftIngredient(OrePrefixes.stick, Materials2Materials.Wood), 'I',
+                OrePrefixes.ingot.get(Materials.AnyIron) });
 
         tMat = new ItemStack(Items.gold_ingot);
         {
@@ -1778,7 +1779,7 @@ public class CraftingRecipeLoader implements Runnable {
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 1, 88), 'F',
-                OrePrefixes.frameGt.get(Materials.Chrome) });
+                MU.craftIngredient(OrePrefixes.frameGt, Materials2Materials.Chrome) });
 
         if (Forestry.isModLoaded()) {
 
