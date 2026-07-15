@@ -3951,7 +3951,8 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
-GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
+GT5U.nei.heat_capacity=Heat Capacity: %s K
+GT5U.nei.heat_capacity.material=(%s)
 GT5U.nei.tier=Tier: %s
 GT5U.nei.start_eu=Start: %s EU (MK %s)
 GT5U.nei.stages=Stages: %s
