@@ -173,7 +173,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         // catch MTEHatchDynamo case, because addToMachineList catches the subtype MTEHatchDynamoMulti
         // and adds them to mTecTechDynamoHatches, which is not used for the count verification,
         // so we just do the same steps here manually until this code gets a proper cleanup
-        if (aMetaTileEntity instanceof MTEHatchDynamo mteDynamo) {
+        if (aMetaTileEntity instanceof MTEHatchDynamo mteDynamo && mteDynamo.maxAmperesOut() <= 4) {
             mteDynamo.updateTexture(aBaseCasingIndex);
             mteDynamo.updateCraftingIcon(this.getMachineCraftingIcon());
 
