@@ -195,7 +195,7 @@ public class RecipeLoaderNuclear {
 
         // Ammonium Bifluoride
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.HydrofluoricAcid.getCells(2))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.HydrofluoricAcidGT5U, Materials2CellShapes.cell, 2))
             .circuit(3)
             .itemOutputs(ItemList.Cell_Empty.get(2))
             .fluidInputs(MaterialMisc.AMMONIA.getFluidStack(1_000))
@@ -223,7 +223,7 @@ public class RecipeLoaderNuclear {
         // Circuit 15 causes recipes added to UniversalChemical to be single-block only, so we manually circumvent this
         // logic here instead of changing the circuit
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.SodiumHydroxide.getDust(3))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 3))
             .circuit(15)
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 500))
@@ -233,17 +233,19 @@ public class RecipeLoaderNuclear {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.SodiumHydroxide.getDust(3))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 3))
             .circuit(15)
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
-            .fluidInputs(Materials.HydrofluoricAcid.getFluid(1_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(Materials.Water.getFluid(1_000))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.SodiumHydroxide.getDust(3))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 3))
             .circuit(15)
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 500))
@@ -253,10 +255,12 @@ public class RecipeLoaderNuclear {
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.SodiumHydroxide.getDust(3))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 3))
             .circuit(15)
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
-            .fluidInputs(Materials.HydrofluoricAcid.getFluid(1_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(Materials.Water.getFluid(1_000))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)
@@ -323,7 +327,8 @@ public class RecipeLoaderNuclear {
             .addTo(chemicalDehydratorRecipes);
 
         // Zirconium Chloride -> TetraFluoride
-        FluidStack aHydrogenChloride = Materials.HydrochloricAcid.getFluid(800);
+        FluidStack aHydrogenChloride = MaterialLibAPI
+            .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 800);
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.CookedZrCl4Dust.get(1))
             .circuit(11)
@@ -339,7 +344,9 @@ public class RecipeLoaderNuclear {
             .itemInputs(GregtechItemList.CookedZrCl4Dust.get(1))
             .circuit(10)
             .itemOutputs(MaterialsFluorides.ZIRCONIUM_TETRAFLUORIDE.getDust(1))
-            .fluidInputs(Materials.HydrofluoricAcid.getFluid(800))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 800))
             .fluidOutputs(aHydrogenChloride)
             .eut(TierEU.RECIPE_HV)
             .duration(30 * SECONDS)
