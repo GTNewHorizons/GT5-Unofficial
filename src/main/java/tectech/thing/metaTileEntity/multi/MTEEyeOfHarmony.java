@@ -38,7 +38,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
@@ -900,8 +899,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         animationsEnabled = !animationsEnabled;
-        aPlayer.addChatMessage(
-            new ChatComponentText("Animations are now " + (animationsEnabled ? "enabled" : "disabled") + "."));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.animations." + (animationsEnabled ? "enabled" : "disabled"));
     }
 
     @Override

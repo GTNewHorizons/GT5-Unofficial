@@ -115,6 +115,10 @@ kubatech.gui.text.electrode_detector.percentage=§8Durability percentage
 kubatech.chat.forbidden_while_running=Cannot change mode while running!
 kubatech.chat.mode.generic=Now running in mode: %s
 
+kubatech.arcfurnace.mode.normal=Normal
+kubatech.arcfurnace.mode.blast=Blast
+kubatech.arcfurnace.mode.ore=Ore
+
 kubatech.chat.eec.ritual_mode_enabled=Ritual mode enabled
 kubatech.chat.eec.ritual_mode_disabled=Ritual mode disabled
 kubatech.chat.eec.ritual_mode_connected=Successfully connected to ritual

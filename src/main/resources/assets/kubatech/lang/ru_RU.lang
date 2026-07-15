@@ -201,3 +201,7 @@ kubatech.tooltip.tea_storage.0=Расширяет хранилище чая на
 kubatech.tooltip.tea_ingredient.0=Это ингредиент чая
 
 kubatech.tooltip.structure.flowers=Цветы
+
+kubatech.arcfurnace.mode.normal=Обычный
+kubatech.arcfurnace.mode.blast=Доменный
+kubatech.arcfurnace.mode.ore=Руда
