@@ -51,7 +51,7 @@ public class PCBFactoryRecipes {
             .metadata(RESEARCH_ITEM, ItemList.Circuit_Board_Wetware.get(1))
             .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 32),
+                GTOreDictUnificator.get("frameGtNeutronium", 32),
                 ItemList.Machine_ZPM_CircuitAssembler.get(4),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 16 },
                 ItemList.Robot_Arm_ZPM.get(8))
@@ -68,7 +68,7 @@ public class PCBFactoryRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1),
+                GTOreDictUnificator.get("frameGtNaquadahAlloy", 1),
                 Materials.get("Artherium-Sn")
                     .getPlates(6))
             .itemOutputs(ItemList.BasicPhotolithographicFrameworkCasing.get(1))
@@ -77,7 +77,7 @@ public class PCBFactoryRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
+                GTOreDictUnificator.get("frameGtInfinity", 1),
                 MaterialLibAPI.getStack(Materials2Materials.EnrichedHolmium, Materials2Shapes.plate, (int) (6)))
             .itemOutputs(ItemList.ReinforcedPhotolithographicFrameworkCasing.get(1))
             .duration(30 * SECONDS)
@@ -687,7 +687,10 @@ public class PCBFactoryRecipes {
                         Materials2Materials.IronIIIChloride,
                         Materials2FluidShapes.fluidLiquid,
                         (int) ((long) (7500 * (Math.sqrt(tier - 5))))),
-                    Materials.BioMediumSterilized.getFluid((long) (4000 * (Math.sqrt(tier - 5)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.BiohMediumSterilized,
+                        Materials2FluidShapes.fluidLiquid,
+                        (int) (4000 * (Math.sqrt(tier - 5)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 5.5))))
                 .eut((int) GTValues.VP[tier] * 3 / 4)
@@ -721,7 +724,10 @@ public class PCBFactoryRecipes {
                         Materials2Materials.IronIIIChloride,
                         Materials2FluidShapes.fluidLiquid,
                         (int) ((long) (7500 * (Math.sqrt(tier - 5))))),
-                    Materials.BioMediumSterilized.getFluid((long) (4000 * (Math.sqrt(tier - 5)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.BiohMediumSterilized,
+                        Materials2FluidShapes.fluidLiquid,
+                        (int) (4000 * (Math.sqrt(tier - 5)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 6.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
@@ -756,7 +762,10 @@ public class PCBFactoryRecipes {
                         Materials2Materials.IronIIIChloride,
                         Materials2FluidShapes.fluidLiquid,
                         (int) ((long) (7500 * (Math.sqrt(tier - 5))))),
-                    Materials.BioMediumSterilized.getFluid((long) (4000 * (Math.sqrt(tier - 5)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.BiohMediumSterilized,
+                        Materials2FluidShapes.fluidLiquid,
+                        (int) (4000 * (Math.sqrt(tier - 5)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 6.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
