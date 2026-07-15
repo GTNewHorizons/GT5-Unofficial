@@ -4060,7 +4060,8 @@ public class GTUtility {
             return new AutoValue_GTUtility_FluidId(
                 FluidRegistry.getFluid(tag.getString("FluidName")),
                 tag.hasKey("Tag", NBT.TAG_COMPOUND) ? tag.getCompoundTag("Tag") : null,
-                tag.hasKey("Amount", NBT.TAG_LONG) ? tag.getLong("Amount") : null);
+                tag.hasKey("Amount", NBT.TAG_LONG) ? tag.getLong("Amount")
+                    : tag.hasKey("Amount", NBT.TAG_INT) ? (long) tag.getInteger("Amount") : null);
         }
 
         public NBTTagCompound writeToNBT() {
