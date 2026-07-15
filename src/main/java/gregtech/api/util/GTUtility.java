@@ -4417,9 +4417,9 @@ public class GTUtility {
     public static long getFluidAmount(FluidStack fluidStack) {
         if (fluidStack instanceof LongFluidStack stack) {
             return stack.getAmountLong();
+        } else {
+            return fluidStack.amount;
         }
-
-        return fluidStack.amount;
     }
 
     public static void setFluidAmount(FluidStack fluidStack, long amount) {

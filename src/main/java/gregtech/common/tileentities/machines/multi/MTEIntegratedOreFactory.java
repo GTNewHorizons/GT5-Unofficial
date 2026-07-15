@@ -20,6 +20,7 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -578,7 +579,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 quantity *= template.stackSize;
             }
             if (quantity > 0) {
-                outputs.addAll(List.of(GTUtility.splitItemStack(template, quantity)));
+                Collections.addAll(outputs, GTUtility.splitItemStack(template, quantity));
             }
         }
         return outputs;
@@ -597,7 +598,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         List<ItemStack> midProductList = new ObjectArrayList<>();
         for (Map.Entry<Integer, Long> entry : merged.entrySet()) {
             ItemStack template = GTUtility.intToStack(entry.getKey());
-            midProductList.addAll(List.of(GTUtility.splitItemStack(template, entry.getValue())));
+            Collections.addAll(midProductList, GTUtility.splitItemStack(template, entry.getValue()));
         }
 
         midProduct = midProductList.toArray(new ItemStack[0]);

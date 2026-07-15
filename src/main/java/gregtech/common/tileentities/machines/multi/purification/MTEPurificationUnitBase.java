@@ -320,8 +320,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             long inputAmount = GTUtility.getFluidAmount(input);
             FluidStack copyWithParallel = GTUtility.createFluidStack(input.getFluid(), inputAmount);
             if (i == 0) {
-                long waterAmount = (long) effectiveParallel * GTUtility.getFluidAmount(input);
-                GTUtility.setFluidAmount(copyWithParallel, (long) waterAmount);
+                long waterAmount = effectiveParallel * GTUtility.getFluidAmount(input);
+                GTUtility.setFluidAmount(copyWithParallel, waterAmount);
             }
             this.depleteInput(copyWithParallel);
         }

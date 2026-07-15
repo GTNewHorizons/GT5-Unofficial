@@ -698,7 +698,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     queryFluids[i] = inputFluids[i].copy();
                     for (FluidStack fuel : valid_fuels) {
                         if (queryFluids[i].isFluidEqual(fuel)) {
-                            long fuelAmount = (long) (GTUtility.getFluidAmount(queryFluids[i]) / discount);
+                            long fuelAmount = Math.round(GTUtility.getFluidAmount(queryFluids[i]) / discount);
                             GTUtility.setFluidAmount(queryFluids[i], fuelAmount);
                             break;
                         }
@@ -752,7 +752,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                         getBaseMetaTileEntity()
                             .sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
                     }
-                    long discountAmount = (long) (GTUtility.getFluidAmount(tRecipe.mFluidInputs[i]) * discount);
+                    long discountAmount = Math.round(GTUtility.getFluidAmount(tRecipe.mFluidInputs[i]) * discount);
                     GTUtility.setFluidAmount(tRecipe.mFluidInputs[i], discountAmount);
                     return tRecipe;
                 }

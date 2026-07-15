@@ -208,7 +208,7 @@ public class VoidProtectionHelper {
         if (protectExcessFluid && fluidOutputs.length > 0) {
             List<GTUtility.FluidId> outputIds = GTDataUtils.mapToList(fluidOutputs, GTUtility.FluidId::create);
             if (!machine.canDumpFluidToME(outputIds)) {
-                maxParallel = Math.min(GTUtility.longToInt(calculateMaxFluidParallels()), maxParallel);
+                maxParallel = Math.min(calculateMaxFluidParallels(), maxParallel);
                 if (maxParallel <= 0) {
                     isFluidFull = true;
                 }
@@ -219,7 +219,7 @@ public class VoidProtectionHelper {
     /**
      * Calculates the max parallel for fluids if void protection is turned on
      */
-    private long calculateMaxFluidParallels() {
+    private int calculateMaxFluidParallels() {
         List<FluidStack> maxFluidOutputs = new ArrayList<>(fluidOutputs.length);
 
         for (int i = 0, fluidOutputsLength = fluidOutputs.length; i < fluidOutputsLength; i++) {
@@ -243,6 +243,6 @@ public class VoidProtectionHelper {
             protectExcessFluid,
             true);
 
-        return ejectionHelper.ejectFluids(maxFluidOutputs, (long) maxParallel);
+        return ejectionHelper.ejectFluids(maxFluidOutputs, maxParallel);
     }
 }
