@@ -103,10 +103,8 @@ public class GTPowerfailCommand extends GTBaseCommand {
                 ChatMessage.PowerfailsClearedDim.send(player);
             }
             case "list" -> {
-                final UUID playerId = player.getGameProfile()
-                    .getId();
                 List<GTPowerfailTracker.Powerfail> powerfails = GTMod.proxy.powerfailTracker
-                    .getPowerfails(playerId, OptionalInt.empty());
+                    .getPowerfails(player, OptionalInt.empty());
 
                 sendChatToPlayer(sender, "");
 

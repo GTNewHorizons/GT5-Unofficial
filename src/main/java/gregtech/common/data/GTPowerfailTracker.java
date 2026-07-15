@@ -20,7 +20,10 @@ import java.util.zip.GZIPOutputStream;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.world.WorldEvent;
 
 import org.jetbrains.annotations.Nullable;
@@ -171,14 +174,14 @@ public class GTPowerfailTracker {
         }
     }
 
-    private static Team getMachineOwner(UUID player) {
-        return TeamManager.getTeamByPlayer(player);
+    private static Team getMachineOwner(IGregTechTileEntity igte) {
+        return TeamManager.getOrCreateTeam(igte.getOwnerName(), igte.getOwnerUuid());
     }
 
     public void createPowerfailEvent(IGregTechTileEntity igte) {
         if (!Gregtech.machines.enablePowerfailNotifications) return;
 
-        Team owner = getMachineOwner(igte.getOwnerUuid());
+        Team owner = getMachineOwner(igte);
 
         PowerfailData data = (PowerfailData) owner.getData(GTPowerfailTracker.DATA_NAME);
         if (data == null) return;
@@ -198,17 +201,32 @@ public class GTPowerfailTracker {
 
     }
 
+    public void removePowerfailEvents(int worldId, int x, int y, int z) {
+        World world = DimensionManager.getWorld(worldId);
+        if (world == null) return;
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (!(tile instanceof IGregTechTileEntity igte)) return;
+        removePowerfailEvents(
+            igte,
+            worldId,
+            x,
+            y,
+            z
+        );
+    }
+
     public void removePowerfailEvents(IGregTechTileEntity igte) {
         removePowerfailEvents(
-            igte.getOwnerUuid(),
+            igte,
             igte.getWorld().provider.dimensionId,
             igte.getXCoord(),
             igte.getYCoord(),
-            igte.getZCoord());
+            igte.getZCoord()
+        );
     }
 
-    public void removePowerfailEvents(UUID ownerId, int worldId, int x, int y, int z) {
-        Team owner = getMachineOwner(ownerId);
+    public void removePowerfailEvents(IGregTechTileEntity igte, int worldId, int x, int y, int z) {
+        Team owner = getMachineOwner(igte);
 
         PowerfailData data = (PowerfailData) owner.getData(GTPowerfailTracker.DATA_NAME);
         if (data == null) return;
@@ -226,8 +244,12 @@ public class GTPowerfailTracker {
         }
     }
 
-    public List<Powerfail> getPowerfails(UUID player, OptionalInt inDim) {
-        Team owner = getMachineOwner(player);
+    public List<Powerfail> getPowerfails(EntityPlayerMP player, OptionalInt inDim) {
+        Team owner = TeamManager.getOrCreateTeam(
+            player.getGameProfile()
+                .getName(),
+            player.getGameProfile()
+                .getId());
         PowerfailData data = (PowerfailData) owner.getData(GTPowerfailTracker.DATA_NAME);
         if (data == null) return Collections.emptyList();
 
@@ -250,7 +272,9 @@ public class GTPowerfailTracker {
     }
 
     public void clearPowerfails(EntityPlayerMP player, OptionalInt inDim) {
-        Team owner = getMachineOwner(
+        Team owner = TeamManager.getOrCreateTeam(
+            player.getGameProfile()
+                .getName(),
             player.getGameProfile()
                 .getId());
 
@@ -269,10 +293,7 @@ public class GTPowerfailTracker {
     }
 
     public void sendPlayerPowerfailStatus(EntityPlayerMP player) {
-        List<Powerfail> powerfails = getPowerfails(
-            player.getGameProfile()
-                .getId(),
-            OptionalInt.of(player.dimension));
+        List<Powerfail> powerfails = getPowerfails(player, OptionalInt.of(player.dimension));
 
         GTPacketUpdatePowerfails packet = new GTPacketUpdatePowerfails(player.dimension, powerfails);
         GTValues.NW.sendToPlayer(packet, player);
@@ -282,10 +303,7 @@ public class GTPowerfailTracker {
     public void onPlayerJoined(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.player instanceof EntityPlayerMP playerMP)) return;
 
-        List<Powerfail> powerfails = getPowerfails(
-            event.player.getGameProfile()
-                .getId(),
-            OptionalInt.empty());
+        List<Powerfail> powerfails = getPowerfails(playerMP, OptionalInt.empty());
 
         if (!powerfails.isEmpty()) {
             new GTTextBuilder(ChatMessage.PowerfailGreeting).setBase(EnumChatFormatting.GRAY)
