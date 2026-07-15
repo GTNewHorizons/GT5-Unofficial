@@ -1,5 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Mods.AvaritiaAddons;
+import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -9,6 +11,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.GTRecipeConstants.RESEARCH_STATION_DATA;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.item.ItemStack;
@@ -704,6 +707,297 @@ public class AssemblyLineRecipes implements Runnable {
                 .addTo(AssemblyLine);
         }
 
+        // Compressed Buses
+        {
+            // Inputs
+            // LuV Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hatch_Input_Bus_LuV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
+                .itemInputs(
+                    ItemList.Hatch_Input_Bus_LuV.get(1),
+                    ItemList.Electric_Piston_LuV.get(2),
+                    ItemList.Quantum_Chest_LV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
+                    GTOreDictUnificator
+                        .get(OrePrefixes.plateSuperdense, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 1))
+                .itemOutputs(ItemList.CompressedInputBusLuV.get(1))
+                .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(128 * INGOTS))
+                .eut((int) TierEU.RECIPE_LuV)
+                .addTo(AssemblyLine);
+
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hatch_Input_Bus_LuV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
+                .itemInputs(
+                    ItemList.Hatch_Input_Bus_LuV.get(1),
+                    ItemList.Electric_Piston_LuV.get(2),
+                    ItemList.Quantum_Chest_LV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
+                    GTOreDictUnificator
+                        .get(OrePrefixes.plateSuperdense, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 1))
+                .itemOutputs(ItemList.CompressedInputBusLuV.get(1))
+                .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
+                .eut((int) TierEU.RECIPE_LuV)
+                .addTo(AssemblyLine);
+
+            // ZPM Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hatch_Input_Bus_ZPM.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_ZPM))
+                .itemInputs(
+                    ItemList.Hatch_Input_Bus_ZPM.get(1),
+                    ItemList.Electric_Piston_ZPM.get(2),
+                    ItemList.Quantum_Chest_MV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Iridium, 1))
+                .itemOutputs(ItemList.CompressedInputBusZPM.get(1))
+                .fluidInputs(Materials.Polybenzimidazole.getMolten(32 * INGOTS))
+                .eut((int) TierEU.RECIPE_ZPM)
+                .addTo(AssemblyLine);
+
+            // UV Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hatch_Input_Bus_UV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_UV))
+                .itemInputs(
+                    ItemList.Hatch_Input_Bus_UV.get(1),
+                    ItemList.Electric_Piston_UV.get(2),
+                    ItemList.Quantum_Chest_MV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1 },
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Osmium, 1))
+                .itemOutputs(ItemList.CompressedInputBusUV.get(1))
+                .fluidInputs(Materials.Polybenzimidazole.getMolten(64 * INGOTS))
+                .eut((int) TierEU.RECIPE_UV)
+                .addTo(AssemblyLine);
+
+            // UHV Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hatch_Input_Bus_MAX.get(1))
+                .metadata(RESEARCH_STATION_DATA, 0)
+                .itemInputs(
+                    ItemList.Hatch_Input_Bus_MAX.get(1),
+                    ItemList.Electric_Piston_UHV.get(2),
+                    ItemList.Quantum_Chest_HV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1 },
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Neutronium, 1))
+                .itemOutputs(ItemList.CompressedInputBusUHV.get(1))
+                .fluidInputs(Materials.Polybenzimidazole.getMolten(128 * INGOTS))
+                .eut((int) TierEU.RECIPE_UHV)
+                .addTo(AssemblyLine);
+
+            // UEV Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hull_UEV.get(1))
+                .metadata(RESEARCH_STATION_DATA, 0)
+                .itemInputs(
+                    ItemList.Hull_UEV.get(1),
+                    getModItem(AvaritiaAddons.ID, "CompressedChest", 2),
+                    ItemList.Electric_Piston_UEV.get(2),
+                    ItemList.Quantum_Chest_EV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1 },
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsElements.STANDALONE.HYPOGEN, 1))
+                .itemOutputs(ItemList.CompressedInputBusUEV.get(1))
+                .fluidInputs(Materials.RadoxPolymer.getMolten(32 * INGOTS))
+                .eut((int) TierEU.RECIPE_UEV)
+                .addTo(AssemblyLine);
+
+            // UIV Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hull_UIV.get(1))
+                .metadata(RESEARCH_STATION_DATA, 0)
+                .itemInputs(
+                    ItemList.Hull_UIV.get(1),
+                    getModItem(DraconicEvolution.ID, "draconicChest", 1, 0),
+                    ItemList.Electric_Piston_UIV.get(2),
+                    ItemList.Quantum_Chest_IV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
+                    GTOreDictUnificator
+                        .get(OrePrefixes.plateSuperdense, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN, 1))
+                .itemOutputs(ItemList.CompressedInputBusUIV.get(1))
+                .fluidInputs(Materials.RadoxPolymer.getMolten(64 * INGOTS))
+                .eut((int) TierEU.RECIPE_UIV)
+                .addTo(AssemblyLine);
+
+            // UMV Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hull_UMV.get(1))
+                .metadata(RESEARCH_STATION_DATA, 0)
+                .itemInputs(
+                    ItemList.Hull_UMV.get(1),
+                    getModItem(DraconicEvolution.ID, "draconicChest", 2, 0),
+                    ItemList.Electric_Piston_UMV.get(2),
+                    ItemList.Quantum_Chest_IV.get(2),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SpaceTime, 1) // dense plate
+                )
+                .itemOutputs(ItemList.CompressedInputBusUMV.get(1))
+                .fluidInputs(Materials.RadoxPolymer.getMolten(128 * INGOTS))
+                .eut((int) TierEU.RECIPE_UMV)
+                .addTo(AssemblyLine);
+
+            // UXV Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hull_UXV.get(1))
+                .metadata(RESEARCH_STATION_DATA, 0)
+                .itemInputs(
+                    ItemList.Hull_UXV.get(1),
+                    getModItem(DraconicEvolution.ID, "draconicChest", 3, 0),
+                    ItemList.Electric_Piston_UXV.get(2),
+                    ItemList.Quantum_Chest_IV.get(3),
+                    new Object[] { OrePrefixes.circuit.get(Materials.MAX), 1 },
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MHDCSM, 1) // dense plate
+                )
+                .itemOutputs(ItemList.CompressedInputBusUXV.get(1))
+                .fluidInputs(Materials.RadoxPolymer.getMolten(256 * INGOTS))
+                .eut((int) TierEU.RECIPE_UXV)
+                .addTo(AssemblyLine);
+
+            // Outputs
+            // LuV Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hatch_Output_Bus_LuV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
+                .itemInputs(
+                    ItemList.Hatch_Output_Bus_LuV.get(1),
+                    ItemList.Electric_Piston_LuV.get(2),
+                    ItemList.Quantum_Chest_LV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
+                    GTOreDictUnificator
+                        .get(OrePrefixes.plateSuperdense, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 1))
+                .itemOutputs(ItemList.CompressedOutputBusLuV.get(1))
+                .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(128 * INGOTS))
+                .eut((int) TierEU.RECIPE_LuV)
+                .addTo(AssemblyLine);
+
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hatch_Output_Bus_LuV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
+                .itemInputs(
+                    ItemList.Hatch_Output_Bus_LuV.get(1),
+                    ItemList.Electric_Piston_LuV.get(2),
+                    ItemList.Quantum_Chest_LV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
+                    GTOreDictUnificator
+                        .get(OrePrefixes.plateSuperdense, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 1))
+                .itemOutputs(ItemList.CompressedOutputBusLuV.get(1))
+                .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
+                .eut((int) TierEU.RECIPE_LuV)
+                .addTo(AssemblyLine);
+
+            // ZPM Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hatch_Output_Bus_ZPM.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_ZPM))
+                .itemInputs(
+                    ItemList.Hatch_Output_Bus_ZPM.get(1),
+                    ItemList.Electric_Piston_ZPM.get(2),
+                    ItemList.Quantum_Chest_MV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Iridium, 1))
+                .itemOutputs(ItemList.CompressedOutputBusZPM.get(1))
+                .fluidInputs(Materials.Polybenzimidazole.getMolten(32 * INGOTS))
+                .eut((int) TierEU.RECIPE_ZPM)
+                .addTo(AssemblyLine);
+
+            // UV Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hatch_Output_Bus_UV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_UV))
+                .itemInputs(
+                    ItemList.Hatch_Output_Bus_UV.get(1),
+                    ItemList.Electric_Piston_UV.get(2),
+                    ItemList.Quantum_Chest_MV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1 },
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Osmium, 1))
+                .itemOutputs(ItemList.CompressedOutputBusUV.get(1))
+                .fluidInputs(Materials.Polybenzimidazole.getMolten(64 * INGOTS))
+                .eut((int) TierEU.RECIPE_UV)
+                .addTo(AssemblyLine);
+
+            // UHV Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hatch_Output_Bus_MAX.get(1))
+                .metadata(RESEARCH_STATION_DATA, 0)
+                .itemInputs(
+                    ItemList.Hatch_Output_Bus_MAX.get(1),
+                    ItemList.Electric_Piston_UHV.get(2),
+                    ItemList.Quantum_Chest_HV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1 },
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Neutronium, 1))
+                .itemOutputs(ItemList.CompressedOutputBusUHV.get(1))
+                .fluidInputs(Materials.Polybenzimidazole.getMolten(128 * INGOTS))
+                .eut((int) TierEU.RECIPE_UHV)
+                .addTo(AssemblyLine);
+
+            // UEV Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hull_UEV.get(1))
+                .metadata(RESEARCH_STATION_DATA, 0)
+                .itemInputs(
+                    ItemList.Hull_UEV.get(1),
+                    getModItem(AvaritiaAddons.ID, "CompressedChest", 2),
+                    ItemList.Electric_Piston_UEV.get(2),
+                    ItemList.Quantum_Chest_EV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1 },
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsElements.STANDALONE.HYPOGEN, 1))
+                .itemOutputs(ItemList.CompressedOutputBusUEV.get(1))
+                .fluidInputs(Materials.RadoxPolymer.getMolten(32 * INGOTS))
+                .eut((int) TierEU.RECIPE_UEV)
+                .addTo(AssemblyLine);
+
+            // UIV Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hull_UIV.get(1))
+                .metadata(RESEARCH_STATION_DATA, 0)
+                .itemInputs(
+                    ItemList.Hull_UIV.get(1),
+                    getModItem(DraconicEvolution.ID, "draconicChest", 1, 0),
+                    ItemList.Electric_Piston_UIV.get(2),
+                    ItemList.Quantum_Chest_IV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
+                    GTOreDictUnificator
+                        .get(OrePrefixes.plateSuperdense, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN, 1))
+                .itemOutputs(ItemList.CompressedOutputBusUIV.get(1))
+                .fluidInputs(Materials.RadoxPolymer.getMolten(64 * INGOTS))
+                .eut((int) TierEU.RECIPE_UIV)
+                .addTo(AssemblyLine);
+
+            // UMV Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hull_UMV.get(1))
+                .metadata(RESEARCH_STATION_DATA, 0)
+                .itemInputs(
+                    ItemList.Hull_UMV.get(1),
+                    getModItem(DraconicEvolution.ID, "draconicChest", 2, 0),
+                    ItemList.Electric_Piston_UMV.get(2),
+                    ItemList.Quantum_Chest_IV.get(2),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SpaceTime, 1) // dense plate
+                )
+                .itemOutputs(ItemList.CompressedOutputBusUMV.get(1))
+                .fluidInputs(Materials.RadoxPolymer.getMolten(128 * INGOTS))
+                .eut((int) TierEU.RECIPE_UMV)
+                .addTo(AssemblyLine);
+
+            // UXV Tier
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Hull_UXV.get(1))
+                .metadata(RESEARCH_STATION_DATA, 0)
+                .itemInputs(
+                    ItemList.Hull_UXV.get(1),
+                    getModItem(DraconicEvolution.ID, "draconicChest", 3, 0),
+                    ItemList.Electric_Piston_UXV.get(2),
+                    ItemList.Quantum_Chest_IV.get(3),
+                    new Object[] { OrePrefixes.circuit.get(Materials.MAX), 1 },
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MHDCSM, 1) // dense plate
+                )
+                .itemOutputs(ItemList.CompressedOutputBusUXV.get(1))
+                .fluidInputs(Materials.RadoxPolymer.getMolten(256 * INGOTS))
+                .eut((int) TierEU.RECIPE_UXV)
+                .addTo(AssemblyLine);
+        }
+
         // Fusion Controller
         {
             // mkI
@@ -773,49 +1067,53 @@ public class AssemblyLineRecipes implements Runnable {
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
         }
-        // Energy Module
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.Energy_LapotronicOrb2.get(1))
-            .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_LuV))
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 16),
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
-                ItemList.Energy_LapotronicOrb2.get(8),
-                ItemList.Field_Generator_LuV.get(2),
-                ItemList.Circuit_Wafer_SoC2.get(64),
-                ItemList.Circuit_Wafer_SoC2.get(64),
-                ItemList.Circuit_Parts_DiodeASMD.get(8),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32))
-            .itemOutputs(ItemList.Energy_Module.get(1))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
-            .duration(1 * MINUTES + 40 * SECONDS)
-            .eut((int) TierEU.RECIPE_ZPM)
-            .addTo(AssemblyLine);
 
-        // Energy Cluster
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.Energy_Module.get(1))
-            .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_ZPM))
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 32),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                ItemList.Energy_Module.get(8),
-                ItemList.Field_Generator_ZPM.get(2),
-                ItemList.Circuit_Wafer_HPIC.get(64),
-                ItemList.Circuit_Wafer_HPIC.get(64),
-                ItemList.Circuit_Parts_DiodeASMD.get(16),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32))
-            .itemOutputs(ItemList.Energy_Cluster.get(1))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
-            .duration(1 * MINUTES + 40 * SECONDS)
-            .eut(200000)
-            .addTo(AssemblyLine);
+        // Energy Storages
+        {
+            // Energy Module
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Energy_LapotronicOrb2.get(1))
+                .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_LuV))
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 16),
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
+                    ItemList.Energy_LapotronicOrb2.get(8),
+                    ItemList.Field_Generator_LuV.get(2),
+                    ItemList.Circuit_Wafer_SoC2.get(64),
+                    ItemList.Circuit_Wafer_SoC2.get(64),
+                    ItemList.Circuit_Parts_DiodeASMD.get(8),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32))
+                .itemOutputs(ItemList.Energy_Module.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
+                .duration(1 * MINUTES + 40 * SECONDS)
+                .eut((int) TierEU.RECIPE_ZPM)
+                .addTo(AssemblyLine);
+
+            // Energy Cluster
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Energy_Module.get(1))
+                .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_ZPM))
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 32),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
+                    ItemList.Energy_Module.get(8),
+                    ItemList.Field_Generator_ZPM.get(2),
+                    ItemList.Circuit_Wafer_HPIC.get(64),
+                    ItemList.Circuit_Wafer_HPIC.get(64),
+                    ItemList.Circuit_Parts_DiodeASMD.get(16),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32))
+                .itemOutputs(ItemList.Energy_Cluster.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
+                .duration(1 * MINUTES + 40 * SECONDS)
+                .eut(200000)
+                .addTo(AssemblyLine);
+        }
 
         // Integrated Ore Factory
         GTValues.RA.stdBuilder()
@@ -844,205 +1142,212 @@ public class AssemblyLineRecipes implements Runnable {
             .eut(TierEU.RECIPE_UV)
             .addTo(AssemblyLine);
 
-        // Drone T2
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.TierdDrone0.get(1))
-            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.NaquadahAlloy, 16),
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
-                NewHorizonsCoreMod.isModLoaded()
-                    ? GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier3", 4)
-                    : ItemList.Casing_Firebox_TungstenSteel.get(16),
-                ItemList.Large_Fluid_Cell_Osmium.get(1),
-                GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.MysteriousCrystal, 1),
-                ItemList.Emitter_ZPM.get(4),
-                ItemList.Energy_Module.get(1),
-                ItemList.Cover_WirelessNeedsMaintainance.get(1))
-            .itemOutputs(ItemList.TierdDrone1.get(4))
-            .fluidInputs(
-                MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS),
-                FluidRegistry.getFluidStack("fluid.rocketfuelmixc", 4_000))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(AssemblyLine);
+        // Drone Stuff
+        {
+            // Drone T2
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.TierdDrone0.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.NaquadahAlloy, 16),
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
+                    NewHorizonsCoreMod.isModLoaded()
+                        ? GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier3", 4)
+                        : ItemList.Casing_Firebox_TungstenSteel.get(16),
+                    ItemList.Large_Fluid_Cell_Osmium.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.MysteriousCrystal, 1),
+                    ItemList.Emitter_ZPM.get(4),
+                    ItemList.Energy_Module.get(1),
+                    ItemList.Cover_WirelessNeedsMaintainance.get(1))
+                .itemOutputs(ItemList.TierdDrone1.get(4))
+                .fluidInputs(
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS),
+                    FluidRegistry.getFluidStack("fluid.rocketfuelmixc", 4_000))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(AssemblyLine);
 
-        // Drone T3
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.TierdDrone1.get(1))
-            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UHV))
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16),
-                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 },
-                ItemList.Field_Generator_UV.get(16),
-                ItemList.Gravistar.get(8),
-                ItemList.Emitter_UV.get(4),
-                CustomItemList.hatch_CreativeMaintenance.get(16),
-                ItemList.Energy_Cluster.get(8),
-                ItemList.Cover_WirelessNeedsMaintainance.get(1))
-            .itemOutputs(ItemList.TierdDrone2.get(1))
-            .fluidInputs(
-                MaterialsAlloy.INDALLOY_140.getFluidStack(15 * STACKS + 40 * INGOTS),
-                MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(2_000))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_UHV)
-            .addTo(AssemblyLine);
+            // Drone T3
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.TierdDrone1.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UHV))
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 },
+                    ItemList.Field_Generator_UV.get(16),
+                    ItemList.Gravistar.get(8),
+                    ItemList.Emitter_UV.get(4),
+                    CustomItemList.hatch_CreativeMaintenance.get(16),
+                    ItemList.Energy_Cluster.get(8),
+                    ItemList.Cover_WirelessNeedsMaintainance.get(1))
+                .itemOutputs(ItemList.TierdDrone2.get(1))
+                .fluidInputs(
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(15 * STACKS + 40 * INGOTS),
+                    MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(2_000))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
+                .addTo(AssemblyLine);
 
-        // Drone remote interface
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.TierdDrone2.get(1))
-            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UHV))
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 16),
-                ItemList.Cover_Screen.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 },
-                ItemList.Field_Generator_UHV.get(4),
-                ItemList.Sensor_UHV.get(8),
-                ItemList.Emitter_UHV.get(8),
-                ItemList.TierdDrone2.get(1),
-                ItemList.Tool_DataOrb.get(4))
-            .itemOutputs(ItemList.DroneRemoteInterface.get(1))
-            .fluidInputs(
-                MaterialsAlloy.INDALLOY_140.getFluidStack(15 * STACKS + 40 * INGOTS),
-                MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(64_000))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_UHV)
-            .addTo(AssemblyLine);
+            // Drone remote interface
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.TierdDrone2.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UHV))
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 16),
+                    ItemList.Cover_Screen.get(4),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 },
+                    ItemList.Field_Generator_UHV.get(4),
+                    ItemList.Sensor_UHV.get(8),
+                    ItemList.Emitter_UHV.get(8),
+                    ItemList.TierdDrone2.get(1),
+                    ItemList.Tool_DataOrb.get(4))
+                .itemOutputs(ItemList.DroneRemoteInterface.get(1))
+                .fluidInputs(
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(15 * STACKS + 40 * INGOTS),
+                    MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(64_000))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
+                .addTo(AssemblyLine);
 
-        // Drone T4
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.DroneRemoteInterface.get(1))
-            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UEV))
-            .itemInputs(
-                MaterialsElements.STANDALONE.HYPOGEN.getIngot(1),
-                getModItem(EternalSingularity.ID, "eternal_singularity", 1L),
-                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 },
-                ItemList.Field_Generator_UHV.get(16),
-                ItemList.NuclearStar.get(8),
-                ItemList.Emitter_UHV.get(4),
-                ItemList.ZPM3.get(1),
-                ItemList.SpaceElevatorMotorT3.get(64))
-            .itemOutputs(ItemList.TierdDrone3.get(1))
-            .fluidInputs(Materials.ExcitedDTCC.getFluid(8_000), MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(8_000))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_UEV)
-            .addTo(AssemblyLine);
+            // Drone T4
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.DroneRemoteInterface.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UEV))
+                .itemInputs(
+                    MaterialsElements.STANDALONE.HYPOGEN.getIngot(1),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 1L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 },
+                    ItemList.Field_Generator_UHV.get(16),
+                    ItemList.NuclearStar.get(8),
+                    ItemList.Emitter_UHV.get(4),
+                    ItemList.ZPM3.get(1),
+                    ItemList.SpaceElevatorMotorT3.get(64))
+                .itemOutputs(ItemList.TierdDrone3.get(1))
+                .fluidInputs(
+                    Materials.ExcitedDTCC.getFluid(8_000),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(8_000))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_UEV)
+                .addTo(AssemblyLine);
+        }
 
-        // Endothermic Fridge
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_VacuumFreezer.get(1))
-            .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_ZPM))
-            .itemInputs(
-                ItemList.Machine_Multi_VacuumFreezer.get(64),
-                ItemList.CryogenicFreezer.get(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
-                ItemList.Coolant_Duct_Casing.get(4),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.CallistoIce, 32L),
-                ItemList.Electric_Pump_ZPM.get(8),
-                ItemList.FluidRegulator_ZPM.get(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 16),
-                ItemList.Naquarite_Universal_Insulator_Foil.get(16),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Ledox, 8L),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Aluminium, 8L))
-            .fluidInputs(
-                new FluidStack(TFFluids.fluidCryotheum, 256_000),
-                MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
-                Materials.Lubricant.getFluid(16_000))
-            .itemOutputs(ItemList.EndothermicFridge.get(1))
-            .eut(TierEU.RECIPE_ZPM / 2)
-            .duration(1 * MINUTES)
-            .addTo(AssemblyLine);
+        // Mega Multi Controllers
+        {
+            // Endothermic Fridge
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_VacuumFreezer.get(1))
+                .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_ZPM))
+                .itemInputs(
+                    ItemList.Machine_Multi_VacuumFreezer.get(64),
+                    ItemList.CryogenicFreezer.get(8),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
+                    ItemList.Coolant_Duct_Casing.get(4),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.CallistoIce, 32L),
+                    ItemList.Electric_Pump_ZPM.get(8),
+                    ItemList.FluidRegulator_ZPM.get(8),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 16),
+                    ItemList.Naquarite_Universal_Insulator_Foil.get(16),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Ledox, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Aluminium, 8L))
+                .fluidInputs(
+                    new FluidStack(TFFluids.fluidCryotheum, 256_000),
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
+                    Materials.Lubricant.getFluid(16_000))
+                .itemOutputs(ItemList.EndothermicFridge.get(1))
+                .eut(TierEU.RECIPE_ZPM / 2)
+                .duration(1 * MINUTES)
+                .addTo(AssemblyLine);
 
-        // Exothermic Hearth
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_BlastFurnace.get(1))
-            .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_ZPM))
-            .itemInputs(
-                ItemList.Machine_Multi_BlastFurnace.get(64),
-                GregtechItemList.Machine_Adv_BlastFurnace.get(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
-                ItemList.Heating_Duct_Casing.get(4),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Firestone, 32L),
-                ItemList.Electric_Pump_ZPM.get(8),
-                ItemList.FluidRegulator_ZPM.get(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 16),
-                ItemList.Naquarite_Universal_Insulator_Foil.get(16),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Invar, 8L),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Cupronickel, 8L))
-            .fluidInputs(
-                new FluidStack(GTPPFluids.Pyrotheum, 256_000),
-                MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
-                Materials.Lubricant.getFluid(16_000))
-            .itemOutputs(ItemList.ExothermicHearth.get(1))
-            .eut(TierEU.RECIPE_ZPM / 2)
-            .duration(1 * MINUTES)
-            .addTo(AssemblyLine);
+            // Exothermic Hearth
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_BlastFurnace.get(1))
+                .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_ZPM))
+                .itemInputs(
+                    ItemList.Machine_Multi_BlastFurnace.get(64),
+                    GregtechItemList.Machine_Adv_BlastFurnace.get(8),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
+                    ItemList.Heating_Duct_Casing.get(4),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Firestone, 32L),
+                    ItemList.Electric_Pump_ZPM.get(8),
+                    ItemList.FluidRegulator_ZPM.get(8),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 16),
+                    ItemList.Naquarite_Universal_Insulator_Foil.get(16),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Invar, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Cupronickel, 8L))
+                .fluidInputs(
+                    new FluidStack(GTPPFluids.Pyrotheum, 256_000),
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
+                    Materials.Lubricant.getFluid(16_000))
+                .itemOutputs(ItemList.ExothermicHearth.get(1))
+                .eut(TierEU.RECIPE_ZPM / 2)
+                .duration(1 * MINUTES)
+                .addTo(AssemblyLine);
 
-        // Mega Distillation Tower
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, GregtechItemList.Machine_Adv_DistillationTower.get(1))
-            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
-            .itemInputs(
-                ItemList.Distillation_Tower.get(64),
-                GregtechItemList.Machine_Adv_DistillationTower.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
-                ItemList.CasingNaquadahReinforcedDistillation.get(8),
-                ItemList.Electric_Pump_LuV.get(4),
-                ItemList.FluidRegulator_LuV.get(4),
-                ItemList.Machine_IV_Distillery.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 16))
-            .fluidInputs(
-                Materials.Lubricant.getFluid(16_000),
-                MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
-                Materials.Naquadah.getMolten(4 * INGOTS))
-            .itemOutputs(ItemList.MegaDistillationTower.get(1))
-            .eut(TierEU.RECIPE_LuV / 2)
-            .duration(1 * MINUTES)
-            .addTo(AssemblyLine);
+            // Mega Distillation Tower
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, GregtechItemList.Machine_Adv_DistillationTower.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
+                .itemInputs(
+                    ItemList.Distillation_Tower.get(64),
+                    GregtechItemList.Machine_Adv_DistillationTower.get(4),
+                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                    ItemList.CasingNaquadahReinforcedDistillation.get(8),
+                    ItemList.Electric_Pump_LuV.get(4),
+                    ItemList.FluidRegulator_LuV.get(4),
+                    ItemList.Machine_IV_Distillery.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 16))
+                .fluidInputs(
+                    Materials.Lubricant.getFluid(16_000),
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
+                    Materials.Naquadah.getMolten(4 * INGOTS))
+                .itemOutputs(ItemList.MegaDistillationTower.get(1))
+                .eut(TierEU.RECIPE_LuV / 2)
+                .duration(1 * MINUTES)
+                .addTo(AssemblyLine);
 
-        // Mega Chemical Reactor
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_LargeChemicalReactor.get(1))
-            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
-            .itemInputs(
-                ItemList.Machine_Multi_LargeChemicalReactor.get(64),
-                GregtechItemList.ChemicalPlant_Controller.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
-                ItemList.Casing_Chemically_Inert.get(8),
-                ItemList.Electric_Pump_LuV.get(4),
-                ItemList.FluidRegulator_LuV.get(4),
-                ItemList.Machine_IV_ChemicalReactor.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 16))
-            .fluidInputs(
-                Materials.Lubricant.getFluid(16_000),
-                MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
-                Materials.Naquadah.getMolten(4 * INGOTS))
-            .itemOutputs(ItemList.MegaChemicalReactor.get(1))
-            .eut(TierEU.RECIPE_LuV / 2)
-            .duration(1 * MINUTES)
-            .addTo(AssemblyLine);
+            // Mega Chemical Reactor
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_LargeChemicalReactor.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
+                .itemInputs(
+                    ItemList.Machine_Multi_LargeChemicalReactor.get(64),
+                    GregtechItemList.ChemicalPlant_Controller.get(4),
+                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                    ItemList.Casing_Chemically_Inert.get(8),
+                    ItemList.Electric_Pump_LuV.get(4),
+                    ItemList.FluidRegulator_LuV.get(4),
+                    ItemList.Machine_IV_ChemicalReactor.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 16))
+                .fluidInputs(
+                    Materials.Lubricant.getFluid(16_000),
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
+                    Materials.Naquadah.getMolten(4 * INGOTS))
+                .itemOutputs(ItemList.MegaChemicalReactor.get(1))
+                .eut(TierEU.RECIPE_LuV / 2)
+                .duration(1 * MINUTES)
+                .addTo(AssemblyLine);
 
-        // Mega Oil Cracker
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.OilCracker.get(1))
-            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
-            .itemInputs(
-                ItemList.OilCracker.get(64),
-                ItemList.Machine_Multi_LargeChemicalReactor.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
-                ItemList.CasingNaquadahReinforcedDistillation.get(8),
-                ItemList.Steam_Valve_IV.get(8),
-                ItemList.Steam_Regulator_IV.get(8),
-                ItemList.Casing_Coil_Naquadah.get(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 16))
-            .fluidInputs(
-                Materials.Lubricant.getFluid(16_000),
-                MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
-                Materials.Naquadah.getMolten(4 * INGOTS))
-            .itemOutputs(ItemList.MegaOilCracker.get(1))
-            .eut(TierEU.RECIPE_LuV / 2)
-            .duration(1 * MINUTES)
-            .addTo(AssemblyLine);
-
+            // Mega Oil Cracker
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.OilCracker.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
+                .itemInputs(
+                    ItemList.OilCracker.get(64),
+                    ItemList.Machine_Multi_LargeChemicalReactor.get(4),
+                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                    ItemList.CasingNaquadahReinforcedDistillation.get(8),
+                    ItemList.Steam_Valve_IV.get(8),
+                    ItemList.Steam_Regulator_IV.get(8),
+                    ItemList.Casing_Coil_Naquadah.get(8),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 16))
+                .fluidInputs(
+                    Materials.Lubricant.getFluid(16_000),
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
+                    Materials.Naquadah.getMolten(4 * INGOTS))
+                .itemOutputs(ItemList.MegaOilCracker.get(1))
+                .eut(TierEU.RECIPE_LuV / 2)
+                .duration(1 * MINUTES)
+                .addTo(AssemblyLine);
+        }
     }
 }
