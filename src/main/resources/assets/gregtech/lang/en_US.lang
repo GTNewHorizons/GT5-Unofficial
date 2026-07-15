@@ -3746,8 +3746,10 @@ GT5U.armor.part.name.OmniMovement=Augment: Rotational Movement Adjusters
 GT5U.armor.part.name.WaterBreathing=Augment: Rebreather
 GT5U.armor.part.name.MilkInfusion=Augment: Milk Infusion
 GT5U.armor.part.name.HoloInventory=Augment: Holographic Inventory
-GT5U.armor.part.name.Travelers=Augment: Thaumic Accelerators
 GT5U.armor.part.name.Terrasteel=Augment: Terrestrial Enhancement
+GT5U.armor.part.name.ApprenticeStriders=Augment: Apprentice Striders
+GT5U.armor.part.name.ArchmageStriders=Augment: Archmage Striders
+GT5U.armor.part.name.EldritchStriders=Augment: Eldritch Striders
 
 GT5U.armor.part.tooltip.NightVision=Allows user to see clearly at night and in the dark
 GT5U.armor.part.tooltip.CreativeFlight=Grants the user creative flight
@@ -3761,7 +3763,7 @@ GT5U.armor.part.tooltip.Hazmat=Grants the user hazmat protection. Only needs to 
 GT5U.armor.part.tooltip.Apiarist=Prevents negative bee effects, as if the user were wearing Apiarist's armor
 GT5U.armor.part.tooltip.SwimSpeed=Improves the user's speed in water
 GT5U.armor.part.tooltip.KnockbackResistance=Protects the user from knockback effects
-GT5U.armor.part.tooltip.SpeedBoost=Allows the user to move faster. Can be applied multiple times
+GT5U.armor.part.tooltip.SpeedBoost=Allows the user to move faster
 GT5U.armor.part.tooltip.JumpBoost=Allows the user to jump higher
 GT5U.armor.part.tooltip.FallProtection=Converts the user's fall damage into EU usage
 GT5U.armor.part.tooltip.SpaceSuit=Adds Spacesuit capability. Only needs to be applied to one armor piece
@@ -3770,8 +3772,10 @@ GT5U.armor.part.tooltip.OmniMovement=Allows user to move at increased speed in a
 GT5U.armor.part.tooltip.WaterBreathing=Restores the user's air if they run out underwater
 GT5U.armor.part.tooltip.MilkInfusion=Removes bad potion effects
 GT5U.armor.part.tooltip.HoloInventory=Opens a holographic view of nearby inventories
-GT5U.armor.part.tooltip.Travelers=Grants the user a more powerful version of Boots of the Traveler
 GT5U.armor.part.tooltip.Terrasteel=Grants the Will of the Ancients. Effects include:\n - 20% Mana Discount\n - Passive Mana generation for Mana Tablets\n - Passive health regeneration when not fully fed
+GT5U.armor.part.tooltip.ApprenticeStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
+GT5U.armor.part.tooltip.ArchmageStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
+GT5U.armor.part.tooltip.EldritchStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
 
 GT5U.armor.behavior.NightVision=Night Vision
 GT5U.armor.behavior.GogglesOfRevealing=Thaumic Sight
@@ -3799,11 +3803,12 @@ GT5U.armor.behavior.MilkInfusion=Milk Infusion
 GT5U.armor.behavior.HoloInventory=Holographic Inventory
 GT5U.armor.behavior.Terrasteel=Will of the Ancients
 
-GT5U.armor.message.enabled=%s Enabled
-GT5U.armor.message.disabled=%s Disabled
+GT5U.armor.message.enabled=%s §aEnabled§r
+GT5U.armor.message.disabled=%s §cDisabled§r
 GT5U.armor.message.installed=%s Installed
 GT5U.armor.message.systems_online=Armor Systems Online... Active keybindings:
-GT5U.armor.message.speed_set=New speed: %s%%
+GT5U.armor.message.speed_set=§6New speed:§r %s
+GT5U.armor.message.jump_boost_set=§6New jump boost:§r %s
 
 GT5U.armor.tooltip.hold_shift=Hold Shift for more info
 GT5U.armor.tooltip.armorframe=Armor Frame: %s
@@ -3946,7 +3951,8 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
-GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
+GT5U.nei.heat_capacity=Heat Capacity: %s K
+GT5U.nei.heat_capacity.material=(%s)
 GT5U.nei.tier=Tier: %s
 GT5U.nei.start_eu=Start: %s EU (MK %s)
 GT5U.nei.stages=Stages: %s
@@ -7102,6 +7108,8 @@ key.gt.toggle_inertiacanceling=Toggle Inertia Canceling
 key.gt.toggle_omnimovement=Toggle Omni Movement
 key.gt.speed_increase=Increase Speed
 key.gt.speed_decrease=Decrease Speed
+key.gt.jump_increase=Increase Jump Boost
+key.gt.jump_decrease=Decrease Jump Boost
 key.gt.force_field=Toggle Force Field
 key.gt.open_radial_menu=Open Radial Menu
 

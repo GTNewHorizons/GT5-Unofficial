@@ -32,7 +32,7 @@ public class ArmorActionManager {
                 "nightvision",
                 "Nightvision",
                 true,
-                SyncedKeybind.createConfigurable("key.gt.toggle_night_vision", "Gregtech Armor", Keyboard.KEY_R),
+                SyncedKeybind.createConfigurable("key.gt.toggle_night_vision", "Gregtech Armor", Keyboard.KEY_NONE),
                 BehaviorName.NightVision));
 
         register(
@@ -40,7 +40,7 @@ public class ArmorActionManager {
                 "jetpack_hover",
                 "Jetpack Hover",
                 true,
-                SyncedKeybind.createConfigurable("key.gt.toggle_jetpack_hover", "Gregtech Armor", Keyboard.KEY_G),
+                SyncedKeybind.createConfigurable("key.gt.toggle_jetpack_hover", "Gregtech Armor", Keyboard.KEY_NONE),
                 BehaviorName.JetpackHover));
 
         register(
@@ -48,7 +48,7 @@ public class ArmorActionManager {
                 "jetpack",
                 "Jetpack",
                 true,
-                SyncedKeybind.createConfigurable("key.gt.toggle_jetpack", "Gregtech Armor", Keyboard.KEY_F),
+                SyncedKeybind.createConfigurable("key.gt.toggle_jetpack", "Gregtech Armor", Keyboard.KEY_NONE),
                 BehaviorName.Jetpack
 
             ));
@@ -59,7 +59,7 @@ public class ArmorActionManager {
                 "Goggles of Revealing",
                 true,
                 SyncedKeybind
-                    .createConfigurable("key.gt.toggle_goggles_of_revealing", "Gregtech Armor", Keyboard.KEY_T),
+                    .createConfigurable("key.gt.toggle_goggles_of_revealing", "Gregtech Armor", Keyboard.KEY_NONE),
                 BehaviorName.GogglesOfRevealing));
 
         register(
@@ -67,7 +67,7 @@ public class ArmorActionManager {
                 "inertia_canceling",
                 "Inertia Canceling",
                 true,
-                SyncedKeybind.createConfigurable("key.gt.toggle_inertiacanceling", "Gregtech Armor", Keyboard.KEY_J),
+                SyncedKeybind.createConfigurable("key.gt.toggle_inertiacanceling", "Gregtech Armor", Keyboard.KEY_NONE),
                 BehaviorName.InertiaCanceling));
 
         register(
@@ -75,23 +75,23 @@ public class ArmorActionManager {
                 "omni_movement",
                 "Omni Movement",
                 true,
-                SyncedKeybind.createConfigurable("key.gt.toggle_omnimovement", "Gregtech Armor", Keyboard.KEY_V),
+                SyncedKeybind.createConfigurable("key.gt.toggle_omnimovement", "Gregtech Armor", Keyboard.KEY_NONE),
                 BehaviorName.OmniMovement));
 
         register(
             new ArmorAction(
                 "speed_increase",
-                "Speed Increase",
+                "Increase Speed",
                 false,
-                SyncedKeybind.createConfigurable("key.gt.speed_increase", "Gregtech Armor", Keyboard.KEY_EQUALS),
+                SyncedKeybind.createConfigurable("key.gt.speed_increase", "Gregtech Armor", Keyboard.KEY_NONE),
                 BehaviorName.SpeedBoost));
 
         register(
             new ArmorAction(
                 "speed_decrease",
-                "Speed Decrease",
+                "Decrease Speed",
                 false,
-                SyncedKeybind.createConfigurable("key.gt.speed_decrease", "Gregtech Armor", Keyboard.KEY_MINUS),
+                SyncedKeybind.createConfigurable("key.gt.speed_decrease", "Gregtech Armor", Keyboard.KEY_NONE),
                 BehaviorName.SpeedBoost));
 
         register(
@@ -99,7 +99,7 @@ public class ArmorActionManager {
                 "force_field",
                 "Force Field",
                 true,
-                SyncedKeybind.createConfigurable("key.gt.force_field", "Gregtech Armor", Keyboard.KEY_K),
+                SyncedKeybind.createConfigurable("key.gt.force_field", "Gregtech Armor", Keyboard.KEY_NONE),
                 BehaviorName.ForceField));
 
         register(
@@ -107,8 +107,24 @@ public class ArmorActionManager {
                 "holo_inventory",
                 "Holo Inventory",
                 true,
-                SyncedKeybind.createConfigurable("key.gt.toggle_holo_inventory", "Gregtech Armor", Keyboard.KEY_H),
+                SyncedKeybind.createConfigurable("key.gt.toggle_holo_inventory", "Gregtech Armor", Keyboard.KEY_NONE),
                 BehaviorName.HoloInventory));
+
+        register(
+            new ArmorAction(
+                "jump_increase",
+                "Increase Jump boost",
+                false,
+                SyncedKeybind.createConfigurable("key.gt.jump_increase", "Gregtech Armor", Keyboard.KEY_NONE),
+                BehaviorName.JumpBoost));
+
+        register(
+            new ArmorAction(
+                "jump_decrease",
+                "Decrease Jump Boost",
+                false,
+                SyncedKeybind.createConfigurable("key.gt.jump_decrease", "Gregtech Armor", Keyboard.KEY_NONE),
+                BehaviorName.JumpBoost));
 
         // Keybinds
 
