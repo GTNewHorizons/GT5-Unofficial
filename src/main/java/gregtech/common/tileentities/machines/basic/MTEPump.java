@@ -324,8 +324,11 @@ public class MTEPump extends MTEBasicMachine {
                 getBaseMetaTileEntity().setActive(tTileEntity.isActive());
                 this.mPumpCountBelow += 1;
                 // The more pumps we have stacked, the faster the ones below go
-                ((MTEPump) tTileEntity.getMetaTileEntity()).mPumpTimer -= 1;
-                ((MTEPump) tTileEntity.getMetaTileEntity()).mProgresstime += 1;
+                MTEPump bottomPump = (MTEPump) tTileEntity.getMetaTileEntity();
+                bottomPump.mPumpTimer -= 1;
+                if (bottomPump.mProgresstime < bottomPump.mMaxProgresstime) {
+                    bottomPump.mProgresstime += 1;
+                }
             }
             if (debugBlockPump && (this.mPumpCountBelow != 0)) {
                 GTLog.out.println("PUMP: Detected " + this.mPumpCountBelow + " pumps below this pump.");
