@@ -1,7 +1,6 @@
 package tectech.thing.metaTileEntity.single;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -72,7 +71,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         LASER = !LASER;
-        GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("tt.chat.debug.generator", LASER ? "ON" : "OFF"));
+        GTUtility.sendChatTrans(aPlayer, "tt.chat.debug.generator", LASER ? "ON" : "OFF");
     }
 
     @Override

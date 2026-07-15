@@ -3817,7 +3817,7 @@ item.BasicGenericChemItem.14.name=Solid-Acid Catalyst
 item.BasicGenericChemItem.15.name=Infinite Mutation Catalyst
 
 # Added 23/10/22
-miscutils.machines.QFTFluidMode=Quantum Force Transformer Fluid Output Mode
+miscutils.machines.QFTFluidMode=Quantum Force Transformer Fluid Output Mode: %s
 
 # Added 16/11/22
 item.BasicGenericChemItem.16.name=Platinum Group Catalyst

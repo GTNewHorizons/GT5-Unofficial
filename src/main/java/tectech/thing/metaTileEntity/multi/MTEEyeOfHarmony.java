@@ -926,11 +926,10 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                     astralArrayAmount = 0;
                 }
                 if (originalAmount - astralArrayAmount > 0) {
-                    GTUtility.sendChatToPlayer(
+                    GTUtility.sendChatTrans(
                         aPlayer,
-                        StatCollector.translateToLocalFormatted(
-                            "eoh.rightclick.wirecutter.2",
-                            formatNumber(originalAmount - astralArrayAmount)));
+                        "eoh.rightclick.wirecutter.2",
+                        formatNumber(originalAmount - astralArrayAmount));
                 }
             }
         }
