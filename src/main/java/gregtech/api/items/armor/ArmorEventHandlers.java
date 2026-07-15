@@ -141,7 +141,16 @@ public class ArmorEventHandlers {
 
             ArmorContext context = MechArmorBase.load(player, boots);
 
-            float jumpBoost = context.getArmorState().jumpBoost;
+            float displayLevel = context.getArmorState().jumpBoostMulti;
+
+            float effectiveLevel = displayLevel - 1.0f;
+            float jumpBoost = 0.0f;
+
+            if (effectiveLevel > 0) {
+                float baseBoost = 0.275f;
+                jumpBoost = baseBoost * (float) Math.pow(effectiveLevel, 1.08f);
+            }
+
             if (jumpBoost > 0 && context.drainEnergy(50)) {
                 player.motionY += jumpBoost;
                 player.fallDistance = player.fallDistance - (jumpBoost * 10);
