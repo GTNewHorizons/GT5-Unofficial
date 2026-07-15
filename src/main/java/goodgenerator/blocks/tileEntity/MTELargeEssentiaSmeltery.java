@@ -252,6 +252,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
             .addInputAny("1+", "Any magic casing", 1)
             .addMiscHatch("1+", "Essentia Output Hatch", "Any magic casing", 1)
             .addAir("Interior of the structure")
+            .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
         return tt;
