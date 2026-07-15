@@ -24,6 +24,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -313,22 +314,22 @@ public class CraftingRecipeLoader implements Runnable {
             new ItemStack(Items.chainmail_helmet, 1),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES,
-            new Object[] { "RRR", "RhR", 'R', OrePrefixes.ring.get(Materials.Steel) });
+            new Object[] { "RRR", "RhR", 'R', MU.craftIngredient(OrePrefixes.ring, Materials2Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             new ItemStack(Items.chainmail_chestplate, 1),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES,
-            new Object[] { "RhR", "RRR", "RRR", 'R', OrePrefixes.ring.get(Materials.Steel) });
+            new Object[] { "RhR", "RRR", "RRR", 'R', MU.craftIngredient(OrePrefixes.ring, Materials2Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             new ItemStack(Items.chainmail_leggings, 1),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES,
-            new Object[] { "RRR", "RhR", "R R", 'R', OrePrefixes.ring.get(Materials.Steel) });
+            new Object[] { "RRR", "RhR", "R R", 'R', MU.craftIngredient(OrePrefixes.ring, Materials2Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             new ItemStack(Items.chainmail_boots, 1),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES,
-            new Object[] { "R R", "RhR", 'R', OrePrefixes.ring.get(Materials.Steel) });
+            new Object[] { "R R", "RhR", 'R', MU.craftIngredient(OrePrefixes.ring, Materials2Materials.Steel) });
 
         GTModHandler.addCraftingRecipe(
             getModItem(IndustrialCraft2.ID, "itemArmorBronzeBoots", 1, 0),
