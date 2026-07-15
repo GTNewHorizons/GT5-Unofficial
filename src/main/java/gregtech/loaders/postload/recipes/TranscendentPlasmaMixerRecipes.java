@@ -7,7 +7,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -205,8 +204,12 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                     .getFluidStack(Materials2Materials.RawStarMatter, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, (int) (1_000)),
-                Materials.Space.getMolten(1_000),
-                Materials.DTR.getFluid(1_000))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.spatialFluid, Materials2FluidShapes.fluidMolten, (int) (1_000)),
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.DimensionallyTranscendentResidue,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.PrimordialMatter,
@@ -225,7 +228,10 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1_000),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Calcium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
-                Materials.DTR.getFluid(1_000))
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.DimensionallyTranscendentResidue,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Creon, Materials2FluidShapes.fluidPlasma, (int) (5_000)))
@@ -236,7 +242,10 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(24)
             .fluidInputs(
-                Materials.DTR.getFluid(1_000),
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.DimensionallyTranscendentResidue,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1_000)),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Tin, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Antimony, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
@@ -260,7 +269,8 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                     .getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
-                Materials.Flerovium.getPlasma(1_000),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.FleroviumGT5U, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
                 new FluidStack(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlasma(), 1_000),
                 new FluidStack(MaterialsElements.STANDALONE.HYPOGEN.getPlasma(), 1_000),
                 MaterialLibAPI
@@ -297,7 +307,11 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                     .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
-            .fluidOutputs(Materials.StargateCrystalSlurry.getFluid(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.sgcrystalslurry,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1_000)))
             .duration(100 * GTRecipeBuilder.TICKS)
             // 1 Trillion EU/t
             .metadata(GTRecipeConstants.EU_MULTIPLIER, 1000)
