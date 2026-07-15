@@ -164,9 +164,8 @@ public class BECMetaMaterialRecipes implements Runnable {
         // 3-tier UIV/UMV/UXV 300s. Nanites: T4 T1 T1 T3 T1, +2 per tier
         ItemList[] outputs = { ItemList.MetaMaterial_EnergyConduit1, ItemList.MetaMaterial_EnergyConduit2,
             ItemList.MetaMaterial_EnergyConduit3 };
-        ItemStack[] superconductors = { GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUIV, 1),
-            GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUMV, 1),
-            ItemList.Thermal_Superconductor.get(1) };
+        ItemStack[] superconductors = { GTOreDictUnificator.get("wireGt04SuperconductorUIV", 1),
+            GTOreDictUnificator.get("wireGt04SuperconductorUMV", 1), ItemList.Thermal_Superconductor.get(1) };
         int[] chromaticAmts = { 4, 8, 16 };
         int[] spacetimeAmts = { 0, 2, 4 };
         long[] euts = { TierEU.RECIPE_UIV, TierEU.RECIPE_UMV, TierEU.RECIPE_UXV };
@@ -223,7 +222,10 @@ public class BECMetaMaterialRecipes implements Runnable {
             if (t == 0) {
                 FluidStack[] aalFluids = {
                     MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromaticAmts[t] * INGOTS),
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(dimShiftedAmts[t] * 1_000) };
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.dimensionallyshiftedsuperfluid,
+                        Materials2FluidShapes.fluidLiquid,
+                        dimShiftedAmts[t] * 1_000) };
                 addBecAndAal(
                     outputs[t].get(1),
                     inputs,
