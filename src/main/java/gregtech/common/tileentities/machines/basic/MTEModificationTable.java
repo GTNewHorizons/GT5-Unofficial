@@ -187,8 +187,15 @@ public class MTEModificationTable extends MetaTileEntity {
         if (newItem != null) {
             if (newItem.getItem() instanceof ItemAugment itemAugment) {
                 state.augments.put(ObjectIntPair.of(category, column), itemAugment.augment);
+                for (var behavior : itemAugment.augment.getProvidedBehaviors()) {
+                    behavior.onAugmentAdded(state, getArmorStack(), newItem);
+                }
             }
         } else {
+            for (var behavior : state.augments.get(ObjectIntPair.of(category, column))
+                .getProvidedBehaviors()) {
+                behavior.onAugmentRemoved(state, getArmorStack(), null);
+            }
             state.augments.remove(ObjectIntPair.of(category, column));
         }
 
