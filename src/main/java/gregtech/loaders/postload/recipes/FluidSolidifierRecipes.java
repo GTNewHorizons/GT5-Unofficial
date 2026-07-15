@@ -54,7 +54,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Mercury, 1L))
+            .itemOutputs(GTOreDictUnificator.get("gemMercury", 1L))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Mercury, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
@@ -304,7 +304,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Copper, 1L))
+            .itemOutputs(GTOreDictUnificator.get("blockCopper", 1L))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.AnnealedCopper,
@@ -328,7 +328,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L))
+            .itemOutputs(GTOreDictUnificator.get("ingotIron", 1L))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.CastIron, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
@@ -338,7 +338,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L))
+            .itemOutputs(GTOreDictUnificator.get("blockIron", 1L))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.CastIron, Materials2FluidShapes.fluidMolten, (int) (9 * INGOTS)))
@@ -380,7 +380,7 @@ public class FluidSolidifierRecipes implements Runnable {
         // Red Granite Block
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteRed, 1L))
+            .itemOutputs(GTOreDictUnificator.get("stoneGraniteRed", 1L))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.GraniteRed,
@@ -392,7 +392,7 @@ public class FluidSolidifierRecipes implements Runnable {
         // Black Granite Block
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteBlack, 1L))
+            .itemOutputs(GTOreDictUnificator.get("stoneGraniteBlack", 1L))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.GraniteBlack,
