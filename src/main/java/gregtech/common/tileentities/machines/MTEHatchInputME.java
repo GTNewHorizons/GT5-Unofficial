@@ -6,7 +6,6 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -108,7 +107,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private int autoPullRefreshTime = 100;
     protected boolean processingRecipe = false;
     private boolean justHadNewFluids = false;
-    private final List<IHatchWatcher> watchers = new ArrayList<>();
     /**
      * The cached activity for this hatch. Only valid while processing a recipe. This avoids several
      * operations.
