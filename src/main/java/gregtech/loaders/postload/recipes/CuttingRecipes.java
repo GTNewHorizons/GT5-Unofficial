@@ -69,7 +69,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithClassicFluids(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer.get(16),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 4) },
+                    MaterialLibAPI.getStack(Materials2Materials.SiliconSolarGrade, Materials2Shapes.dust, (int) (4)) },
                 20 * SECONDS,
                 TierEU.RECIPE_LV,
                 false);
@@ -77,7 +77,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithClassicFluids(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot2.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer2.get(32),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 8) },
+                    MaterialLibAPI.getStack(Materials2Materials.SiliconSolarGrade, Materials2Shapes.dust, (int) (8)) },
                 40 * SECONDS,
                 TierEU.RECIPE_MV,
                 true);
@@ -85,7 +85,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithClassicFluids(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot3.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer3.get(64),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 16) },
+                    MaterialLibAPI.getStack(Materials2Materials.SiliconSolarGrade, Materials2Shapes.dust, (int) (16)) },
                 1 * MINUTES + 20 * SECONDS,
                 TierEU.RECIPE_HV,
                 true);
@@ -93,7 +93,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot3.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer3.get(128),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 16) },
+                    MaterialLibAPI.getStack(Materials2Materials.SiliconSolarGrade, Materials2Shapes.dust, (int) (16)) },
                 Materials.Grade1PurifiedWater,
                 Materials.Grade2PurifiedWater,
                 (int) ((1 * MINUTES + 20 * SECONDS) * 0.75),
@@ -103,7 +103,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot4.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer4.get(64), ItemList.Circuit_Silicon_Wafer4.get(32),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 32) },
+                    MaterialLibAPI.getStack(Materials2Materials.SiliconSolarGrade, Materials2Shapes.dust, (int) (32)) },
                 Materials.Grade3PurifiedWater,
                 Materials.Grade4PurifiedWater,
                 2 * MINUTES,
@@ -113,7 +113,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot5.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer5.get(64), ItemList.Circuit_Silicon_Wafer5.get(64),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 64) },
+                    MaterialLibAPI.getStack(Materials2Materials.SiliconSolarGrade, Materials2Shapes.dust, (int) (64)) },
                 Materials.Grade5PurifiedWater,
                 Materials.Grade6PurifiedWater,
                 2 * MINUTES + 40 * SECONDS,
@@ -368,7 +368,11 @@ public class CuttingRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneConcrete", 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Concrete, Materials2Shapes.plate, (int) (1)))
-            .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.dimensionallyshiftedsuperfluid,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1)))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -405,7 +409,11 @@ public class CuttingRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new OreDictItemStack("stoneRedrock", 1))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Redrock, 1L))
-                .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.dimensionallyshiftedsuperfluid,
+                        Materials2FluidShapes.fluidLiquid,
+                        (int) (1)))
                 .duration(4 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(cutterRecipes);
@@ -441,7 +449,11 @@ public class CuttingRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneMarble", 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Marble, Materials2Shapes.plate, (int) (1)))
-            .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.dimensionallyshiftedsuperfluid,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1)))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -480,7 +492,11 @@ public class CuttingRecipes implements Runnable {
             .itemInputs(new OreDictItemStack("stoneBasalt", 1))
             .circuit(3)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Basalt, Materials2Shapes.plate, (int) (1)))
-            .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.dimensionallyshiftedsuperfluid,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1)))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -515,7 +531,11 @@ public class CuttingRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneGraniteBlack", 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.GraniteBlack, Materials2Shapes.plate, (int) (1)))
-            .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.dimensionallyshiftedsuperfluid,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1)))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -550,7 +570,11 @@ public class CuttingRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stoneGraniteRed", 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.GraniteRed, Materials2Shapes.plate, (int) (1)))
-            .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.dimensionallyshiftedsuperfluid,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1)))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -614,7 +638,10 @@ public class CuttingRecipes implements Runnable {
             .itemInputs(inputs)
             .itemOutputs(outputs)
             .fluidInputs(
-                Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, duration * eut / 4000))))
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.dimensionallyshiftedsuperfluid,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (Math.max(1, Math.min(10, duration * eut / 4000)))))
             .duration((int) (duration / 2.5))
             .eut(eut)
             .metadata(GTRecipeConstants.CLEANROOM, cleanroomRequired)
