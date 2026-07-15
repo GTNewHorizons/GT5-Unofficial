@@ -16,8 +16,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
@@ -120,7 +118,7 @@ public class ForgeHammerRecipes implements Runnable {
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Brick, 1))
+            .itemInputs(GTOreDictUnificator.get("ingotBrick", 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Brick, Materials2Shapes.dustSmall, 1))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -143,7 +141,7 @@ public class ForgeHammerRecipes implements Runnable {
         if (HardcoreEnderExpansion.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(HardcoreEnderExpansion.ID, "endium_ore", 1))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Endium, 1))
+                .itemOutputs(GTOreDictUnificator.get("crushedHeeEndium", 1))
                 .duration(16)
                 .eut(10)
                 .addTo(hammerRecipes);
