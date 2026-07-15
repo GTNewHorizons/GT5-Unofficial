@@ -102,7 +102,8 @@ public class CraftingRecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.FenceIron.get(6L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextIron2, aTextIron2, " w ", 'X', "stickAnyIron", 'S', "stickWood", 'I', "ingotAnyIron" });
+            new Object[] { aTextIron2, aTextIron2, " w ", 'X', OrePrefixes.stick.get(Materials.AnyIron), 'S',
+                OrePrefixes.stick.get(Materials.Wood), 'I', OrePrefixes.ingot.get(Materials.AnyIron) });
 
         tMat = new ItemStack(Items.gold_ingot);
         {
@@ -312,22 +313,22 @@ public class CraftingRecipeLoader implements Runnable {
             new ItemStack(Items.chainmail_helmet, 1),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES,
-            new Object[] { "RRR", "RhR", 'R', "ringSteel" });
+            new Object[] { "RRR", "RhR", 'R', OrePrefixes.ring.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             new ItemStack(Items.chainmail_chestplate, 1),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES,
-            new Object[] { "RhR", "RRR", "RRR", 'R', "ringSteel" });
+            new Object[] { "RhR", "RRR", "RRR", 'R', OrePrefixes.ring.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             new ItemStack(Items.chainmail_leggings, 1),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES,
-            new Object[] { "RRR", "RhR", "R R", 'R', "ringSteel" });
+            new Object[] { "RRR", "RhR", "R R", 'R', OrePrefixes.ring.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             new ItemStack(Items.chainmail_boots, 1),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES,
-            new Object[] { "R R", "RhR", 'R', "ringSteel" });
+            new Object[] { "R R", "RhR", 'R', OrePrefixes.ring.get(Materials.Steel) });
 
         GTModHandler.addCraftingRecipe(
             getModItem(IndustrialCraft2.ID, "itemArmorBronzeBoots", 1, 0),
@@ -1775,7 +1776,8 @@ public class CraftingRecipeLoader implements Runnable {
             ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 1, 88), 'F', "frameGtChrome" });
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 1, 88), 'F',
+                OrePrefixes.frameGt.get(Materials.Chrome) });
 
         if (Forestry.isModLoaded()) {
 
