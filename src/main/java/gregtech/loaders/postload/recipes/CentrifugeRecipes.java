@@ -489,7 +489,7 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Resin.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 3),
+                MaterialLibAPI.getStack(Materials2Materials.RawRubber, Materials2Shapes.dust, (int) (3)),
                 ItemList.IC2_Plantball.get(1))
             .outputChances(10000, 1000)
             .fluidOutputs(
@@ -576,7 +576,8 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (80)))
-            .fluidOutputs(Materials.Helium3.getGas(5))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(Materials2Materials.Helium3, Materials2FluidShapes.fluidGas, (int) (5)))
             .duration(8 * SECONDS)
             .eut(80)
             .addTo(centrifugeRecipes);
@@ -783,7 +784,7 @@ public class CentrifugeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.DarkAsh, Materials2Shapes.dust, (int) (1)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)))
@@ -994,7 +995,15 @@ public class CentrifugeRecipes implements Runnable {
                     Materials2Materials.SpaceTime,
                     Materials2FluidShapes.fluidMolten,
                     (int) (20 * INGOTS)))
-            .fluidOutputs(Materials.Space.getMolten(10 * INGOTS), Materials.Time.getMolten(10 * INGOTS))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.spatialFluid,
+                    Materials2FluidShapes.fluidMolten,
+                    (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.temporalFluid,
+                    Materials2FluidShapes.fluidMolten,
+                    (int) (10 * INGOTS)))
             .metadata(CentrifugeRecipeKey.INSTANCE, true)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
@@ -1019,7 +1028,7 @@ public class CentrifugeRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Terbium, Materials2Shapes.dust, (int) (7)),
                 MaterialsElements.getInstance().TECHNETIUM.getDust(4),
                 MaterialLibAPI.getStack(Materials2Materials.Unstable, Materials2Shapes.dust, (int) (4)),
-                Materials.Flerovium.getDust(3),
+                MaterialLibAPI.getStack(Materials2Materials.FleroviumGT5U, Materials2Shapes.dust, (int) (3)),
                 MaterialLibAPI.getStack(Materials2Materials.InfinityCatalyst, Materials2Shapes.dust, (int) (1)))
             .duration(60 * SECONDS)
             .eut(122880)
