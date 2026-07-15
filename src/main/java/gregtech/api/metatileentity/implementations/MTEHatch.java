@@ -44,7 +44,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
      * Controllers watching this hatch for new ingredients (see {@link ISmartInputHatch}). When this hatch's contents
      * change we notify them so they can run an immediate recipe check instead of waiting for their periodic poll.
      */
-    private final List<IHatchWatcher> watchers = new ArrayList<>();
+    protected final List<IHatchWatcher> watchers = new ArrayList<>();
 
     public MTEHatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription,
         ITexture... aTextures) {
