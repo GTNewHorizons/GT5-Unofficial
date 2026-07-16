@@ -68,7 +68,7 @@ public class GTGenericItem extends Item implements IProjectileItem {
     public String getItemStackDisplayName(ItemStack aStack) {
         if (mEnglish != null) {
             String key = mName + ".name";
-            return StatCollector.canTranslate(key) ? GTUtility.translate(key) : mEnglish;
+            return StatCollector.canTranslate(key) ? StatCollector.translateToLocal(key) : mEnglish;
         }
         return super.getItemStackDisplayName(aStack);
     }

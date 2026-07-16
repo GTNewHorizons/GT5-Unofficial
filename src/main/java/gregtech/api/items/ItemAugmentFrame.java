@@ -6,10 +6,10 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.util.GTTextBuilder;
-import gregtech.api.util.GTUtility;
 
 public class ItemAugmentFrame extends ItemAugmentAbstract {
 
@@ -30,27 +30,28 @@ public class ItemAugmentFrame extends ItemAugmentAbstract {
         super.addAdditionalToolTips(desc, augmentStack, player);
 
         desc.add(
-            GTUtility.translate(
+            StatCollector.translateToLocalFormatted(
                 "GT5U.armor.tooltip.armorvalue",
                 GTTextBuilder.NUMERIC.toString() + (int) (frame.getProtection() * 100)));
 
         addSeparatorIfNeeded(desc);
 
-        desc.add(GTUtility.translate("GT5U.armor.tooltip.slots"));
+        desc.add(StatCollector.translateToLocal("GT5U.armor.tooltip.slots"));
         if (frame.getProtectionSlots() > 0) {
-            desc.add(frame.getProtectionSlots() + " " + GTUtility.translate("GT5U.armor.tooltip.protection"));
+            desc.add(
+                frame.getProtectionSlots() + " " + StatCollector.translateToLocal("GT5U.armor.tooltip.protection"));
         }
 
         if (frame.getMovementSlots() > 0) {
-            desc.add(frame.getMovementSlots() + " " + GTUtility.translate("GT5U.armor.tooltip.movement"));
+            desc.add(frame.getMovementSlots() + " " + StatCollector.translateToLocal("GT5U.armor.tooltip.movement"));
         }
 
         if (frame.getUtilitySlots() > 0) {
-            desc.add(frame.getUtilitySlots() + " " + GTUtility.translate("GT5U.armor.tooltip.utility"));
+            desc.add(frame.getUtilitySlots() + " " + StatCollector.translateToLocal("GT5U.armor.tooltip.utility"));
         }
 
         if (frame.getPrismaticSlots() > 0) {
-            desc.add(frame.getPrismaticSlots() + " " + GTUtility.translate("GT5U.armor.tooltip.prismatic"));
+            desc.add(frame.getPrismaticSlots() + " " + StatCollector.translateToLocal("GT5U.armor.tooltip.prismatic"));
         }
     }
 }

@@ -363,7 +363,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     formatNumber(2500000)))
             .addSupportAny()
             .beginStructureBlock(3, 11, 7, true)
-            .addController("Top center")
+            .addController("Top center, 6th layer")
             .addCasing("30-43", "Machine Casing", true)
             .addCasing("34", "PTFE Frame Box", false)
             .addCasing("15", "PTFE Pipe Casing", false)

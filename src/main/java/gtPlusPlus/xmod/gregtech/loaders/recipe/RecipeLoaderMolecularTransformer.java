@@ -4,10 +4,10 @@ import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
+import static gregtech.api.recipe.RecipeMaps.molecularTransformerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.molecularTransformerRecipes;
 
 import advsolar.utils.MTRecipeManager;
 import gregtech.api.enums.GTValues;

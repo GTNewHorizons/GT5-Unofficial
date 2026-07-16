@@ -377,7 +377,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
             .addInfo("Wireless mode requires Superconductor Base UMV to work")
             .addInfo("Wireless mode is still limited by hatch capacity")
             .beginStructureBlock(35, 35, 43, true)
-            .addController("Front bottom center, 2nd layer")
+            .addController("Front center, 2nd layer")
             .addCasing("4127-4128", "Magnetic Flux Casing", false)
             .addCasing("2481-2544", "Gravity Stabilization Casing", false)
             .addCasing("1008", "Transcendentally Reinforced Borosilicate Glass Block", false)
@@ -390,7 +390,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
                 StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
                 "Any bottom leg casing",
                 2)
-            .addInputHatch("1-2", "Center side casings", 1)
+            .addInputHatch("1-2", "Either center side casing", 1)
             .toolTipFinisher();
         return tt;
     }

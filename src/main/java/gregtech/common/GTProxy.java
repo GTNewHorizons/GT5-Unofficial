@@ -110,6 +110,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -161,7 +162,9 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.config.OPStuff;
 import gregtech.common.data.GTPowerfailTracker;
+import gregtech.common.data.drone.CameraViewportManager;
 import gregtech.common.data.maglev.TetherManager;
+import gregtech.common.entity.EntityDrone;
 import gregtech.common.handlers.OffhandToolFunctionalityHandler;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.MetaGeneratedItem98;
@@ -731,6 +734,7 @@ public class GTProxy implements IFuelHandler {
     public WirelessChargerManager wirelessChargerManager;
     public GTSpawnEventHandler spawnEventHandler;
     public GTPowerfailTracker powerfailTracker;
+    public CameraViewportManager cameraViewportManager;
     public TetherManager tetherManager;
 
     public SyncedKeybind TOOL_MODE_SWITCH_KEYBIND;
@@ -1201,6 +1205,7 @@ public class GTProxy implements IFuelHandler {
         // MUI2, but for the time being it stays here. -- miozune
         CoverRegistry.reloadCoverColorOverrides();
         CALImprintRecipe.register();
+        EntityRegistry.registerModEntity(EntityDrone.class, "GTDrone", 1, GTMod.GT, 64, 3, true);
         MacerationStackConversionRecipe.register();
     }
 
@@ -1217,6 +1222,7 @@ public class GTProxy implements IFuelHandler {
         wirelessChargerManager = new WirelessChargerManager();
         spawnEventHandler = new GTSpawnEventHandler();
         powerfailTracker = new GTPowerfailTracker();
+        if (cameraViewportManager == null) cameraViewportManager = new CameraViewportManager();
         tetherManager = new TetherManager();
         FMLCommonHandler.instance().bus().register(wirelessChargerManager);
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
@@ -1225,6 +1231,8 @@ public class GTProxy implements IFuelHandler {
         TeamDataRegistry.register(GTPowerfailTracker.DATA_NAME, GTPowerfailTracker.PowerfailData::new);
         FMLCommonHandler.instance().bus().register(tetherManager);
         MinecraftForge.EVENT_BUS.register(tetherManager);
+        FMLCommonHandler.instance().bus().register(cameraViewportManager);
+        MinecraftForge.EVENT_BUS.register(cameraViewportManager);
         // spotless:off
     }
 
@@ -1290,6 +1298,11 @@ public class GTProxy implements IFuelHandler {
         if (powerfailTracker != null) {
             FMLCommonHandler.instance().bus().unregister(powerfailTracker);
             MinecraftForge.EVENT_BUS.unregister(powerfailTracker);
+        }
+        if (cameraViewportManager != null) {
+            FMLCommonHandler.instance().bus().unregister(cameraViewportManager);
+            MinecraftForge.EVENT_BUS.unregister(cameraViewportManager);
+            cameraViewportManager.resetStatus();
         }
         if (tetherManager != null) {
             FMLCommonHandler.instance().bus().unregister(tetherManager);
