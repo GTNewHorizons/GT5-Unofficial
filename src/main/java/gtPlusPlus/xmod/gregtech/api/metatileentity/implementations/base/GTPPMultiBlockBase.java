@@ -312,6 +312,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         // and be caught past the lower comment currently in line 340.
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti multiDynamoHatch && multiDynamoHatch.getAmperes() > 4) {
             boolean added = addToMachineListInternal(mTecTechDynamoHatches, multiDynamoHatch, aBaseCasingIndex);
+            mExoticDynamoHatches.add(multiDynamoHatch);
             updateMasterDynamoHatchList(aMetaTileEntity);
             return added;
         }
@@ -474,12 +475,18 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     /**
      * This is the array Used to Store the Tectech Multi-Amp Dynamo hatches.
+     *
+     * @deprecated use {@link #mExoticDynamoHatches}
      */
+    @Deprecated
     public ArrayList<MTEHatch> mTecTechDynamoHatches = new ArrayList<>();
 
     /**
      * This is the array Used to Store the Tectech Multi-Amp Energy hatches.
+     *
+     * @deprecated use {@link #mExoticEnergyHatches}
      */
+    @Deprecated
     public ArrayList<MTEHatch> mTecTechEnergyHatches = new ArrayList<>();
 
     /**
