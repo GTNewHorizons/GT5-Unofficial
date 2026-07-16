@@ -64,6 +64,7 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -77,7 +78,6 @@ import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -262,7 +262,7 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
     @Override
     public RecipeMap<?> getRecipeMap() {
         // Only for NEI, not used in processing logic.
-        return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes;
+        return RecipeMaps.treeGrowthSimulatorFakeRecipes;
     }
 
     /**
@@ -746,7 +746,7 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
      */
     public static boolean addFakeRecipeToNEI(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,
         ItemStack fruit) {
-        int recipeCount = GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
+        int recipeCount = RecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
             .size();
 
         // Sapling goes into the "special" slot.
@@ -777,7 +777,7 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
             }
         }
 
-        GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
+        RecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
             false,
             new GTRecipe.GTRecipe_WithAlt(
                 false,
@@ -796,7 +796,7 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
                 inputStacks,
                 null));
 
-        return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
+        return RecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
             .size() > recipeCount;
     }
 }

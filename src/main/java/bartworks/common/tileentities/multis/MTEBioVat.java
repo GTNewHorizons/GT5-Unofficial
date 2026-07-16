@@ -585,8 +585,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                     // TODO check if BioVat still renders correctly, because of the missing ID in culture tag
                     if (this.mCulture == null || aStack == null
                         || aStack.getTagCompound() == null
-                        || this.mCulture.getID() != aStack.getTagCompound()
-                            .getInteger("ID")) {
+                        || this.mCulture != BioCulture.getBioCultureFromNBTTag(aStack.getTagCompound())) {
                         lCulture = (aStack == null) ? null
                             : BioCulture.getBioCultureFromNBTTag(aStack.getTagCompound());
                     }

@@ -88,15 +88,24 @@ public class JetpackBehavior implements IArmorBehavior {
                     ? speedSideways * jetpackStats.getSprintSpeedModifier()
                     : speedSideways);
 
+                float speedMulti = Math.max(context.getArmorState().speedBoostMulti, 1.0F);
+
+                float forceMultiplier = 1.0F + (6.0F * (speedMulti - 1.0F) / speedMulti);
+
+                float finalMulti = (float) Math.sqrt(forceMultiplier);
+
+                float currentForward = speedForward * finalMulti;
+                float currentSideways = speedSideways * finalMulti;
+
                 if (!isGuiOpen) {
                     if (ArmorActionManager.getKeybind("VANILLA_FORWARD")
-                        .isKeyDown(player)) player.moveFlying(0, speedForward, speedForward);
+                        .isKeyDown(player)) player.moveFlying(0, currentForward, currentForward);
                     if (ArmorActionManager.getKeybind("VANILLA_BACKWARD")
-                        .isKeyDown(player)) player.moveFlying(0, -speedSideways, speedSideways * 0.8f);
+                        .isKeyDown(player)) player.moveFlying(0, -currentSideways, currentSideways * 0.8f);
                     if (ArmorActionManager.getKeybind("VANILLA_LEFT")
-                        .isKeyDown(player)) player.moveFlying(speedSideways, 0, speedSideways);
+                        .isKeyDown(player)) player.moveFlying(currentSideways, 0, currentSideways);
                     if (ArmorActionManager.getKeybind("VANILLA_RIGHT")
-                        .isKeyDown(player)) player.moveFlying(-speedSideways, 0, speedSideways);
+                        .isKeyDown(player)) player.moveFlying(-currentSideways, 0, currentSideways);
                 }
 
                 if (!player.getEntityWorld().isRemote) {
