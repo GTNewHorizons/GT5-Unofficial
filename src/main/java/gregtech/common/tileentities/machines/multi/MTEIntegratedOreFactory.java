@@ -21,8 +21,10 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -85,8 +87,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final int OFFSET_Z = 1;
 
     private static final UITexture[] MODE_ICONS = { GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_MACERATOR, // mac wash
-                                                                                                            // thermal
-                                                                                                            // mac
+        // thermal
+        // mac
         GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_WASHER, // mac wash mac centri
         GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_CENTRIFUGE, // mac mac centri
         GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_SIFTER, // mac wash sift
@@ -114,7 +116,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 { " FFF       FFF ", " AHF       FIA ", " AHFJ     JFIA ", " AHFFJJGJJFFIA ", " AHFFDDDDDFFIA ", " AHF       FIA ", " FHF       FIF ", "JFHFJ     JFIFJ", "JFFFJDDDDDJFFFJ" },
                 { " FFF       FFF ", " FAF       FAF ", " FAFF     FFAF ", " FAFFFF FFFFAF ", " FAFFDDDDDFFAF ", " FAFFDDDDDFFAF ", " FFFFDDDDDFFFF ", " FFFFDDDDDFFFF ", "JFFFJDDDDDJFFFJ" },
                 { "               ", "               ", "               ", "               ", "     DDDDD     ", "    GG   GG    ", "    G     G    ", "  J G     G J  ", " JJJG     GJJJ " } })
-            //spotless:on
+        //spotless:on
         .addElement('A', chainAllGlasses())
         .addElement('B', Casings.TitaniumGearBoxCasing.asElement())
         .addElement('C', Casings.GrateMachineCasing.asElement())
@@ -141,6 +143,14 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final IntOpenHashSet isThermal = new IntOpenHashSet();
     private static final IntOpenHashSet isOre = new IntOpenHashSet();
     private static boolean isInit = false;
+
+    private static final Set<ItemStack> VOIDABLE_STONE_DUSTS = new HashSet<>(
+        Arrays.asList(
+            Materials.Stone.getDust(1),
+            Materials.Netherrack.getDust(1),
+            Materials.Endstone.getDust(1),
+            Materials.Marble.getDust(1),
+            Materials.GraniteRed.getDust(1)));
 
     private ItemStack[] midProduct;
     private ProcessingMode mode = ProcessingMode.MAC_WASH_THERMAL_MAC;
@@ -587,7 +597,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private void doCompress(List<ItemStack> aList) {
         HashMap<Integer, Integer> merged = new HashMap<>();
         for (ItemStack stack : aList) {
-            if (doesVoidStone && GTUtility.areStacksEqual(Materials.Stone.getDust(1), stack)) continue;
+            if (doesVoidStone && VOIDABLE_STONE_DUSTS.stream()
+                .anyMatch(dust -> GTUtility.areStacksEqual(dust, stack))) continue;
             int id = GTUtility.stackToInt(stack);
             if (id != 0) {
                 merged.merge(id, stack.stackSize, Integer::sum);
