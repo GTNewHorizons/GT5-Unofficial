@@ -6,7 +6,6 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -99,7 +98,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     protected int autoPullRefreshTime = 100;
     protected boolean additionalConnection = false;
     protected boolean justHadNewItems = false;
-    private final List<IHatchWatcher> watchers = new ArrayList<>();
     /**
      * The cached activity for this bus. Only valid while processing a recipe. This avoids several expensive operations.
      */
