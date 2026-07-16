@@ -856,9 +856,9 @@ public class RecipeLoader {
                                 new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
                                 GTUtility.copyAmount(0, lens))
                             .fluidInputs(
-                                // damage * 4 (chips per recipe) * 50 (L per chip normally) * 3 / 4 (75% of the
+                                // max uses * 4 (chips per recipe) * 50 (L per chip normally) * 3 / 4 (75% of the
                                 // cost)
-                                Materials.BioMediumSterilized.getFluid((mask.getDamage() + 1) * 4L * 50 * 3 / 4))
+                                Materials.BioMediumSterilized.getFluid(mask.getMaxUses() * 4 * 1L * 50 * 3 / 4))
                             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
                             .requiresCleanRoom()
                             .duration(120 * SECONDS)
