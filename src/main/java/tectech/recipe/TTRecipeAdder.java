@@ -28,6 +28,23 @@ public class TTRecipeAdder extends RecipeAdder {
     public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int totalComputationRequired,
         int computationRequiredPerSec, int researchEUt, int researchAmperage, ItemStack[] aInputs,
         FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
+        return addResearchableAssemblylineRecipeLong(
+            aResearchItem,
+            totalComputationRequired,
+            computationRequiredPerSec,
+            researchEUt,
+            researchAmperage,
+            aInputs,
+            aFluidInputs,
+            aOutput,
+            assDuration,
+            assEUt);
+    }
+
+    @Deprecated
+    public static boolean addResearchableAssemblylineRecipeLong(ItemStack aResearchItem, long totalComputationRequired,
+        long computationRequiredPerSec, int researchEUt, int researchAmperage, ItemStack[] aInputs,
+        FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
         if (aInputs == null) {
             aInputs = GTValues.emptyItemStackArray;
         }
@@ -47,11 +64,11 @@ public class TTRecipeAdder extends RecipeAdder {
             }
         }
         researchAmperage = GTUtility.clamp(researchAmperage, 1, Short.MAX_VALUE);
-        computationRequiredPerSec = GTUtility.clamp(computationRequiredPerSec, 1, Short.MAX_VALUE);
+        computationRequiredPerSec = GTUtility.clamp(computationRequiredPerSec, 1, Long.MAX_VALUE >>> 16);
 
         GTRecipe.RecipeAssemblyLine recipeGT = new GTRecipe.RecipeAssemblyLine(
             CustomItemList.UnusedStuff.get(1),
-            totalComputationRequired / computationRequiredPerSec,
+            GTUtility.safeInt(totalComputationRequired / computationRequiredPerSec),
             0,
             aInputs,
             aFluidInputs,
@@ -60,7 +77,7 @@ public class TTRecipeAdder extends RecipeAdder {
             assEUt);
         TecTechRecipeMaps.TTResearchStationALRecipe recipeTT = new TecTechRecipeMaps.TTResearchStationALRecipe(
             aResearchItem,
-            totalComputationRequired / computationRequiredPerSec,
+            GTUtility.safeInt(totalComputationRequired / computationRequiredPerSec),
             0,
             aInputs,
             aFluidInputs,
@@ -100,6 +117,23 @@ public class TTRecipeAdder extends RecipeAdder {
     @Deprecated
     public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int totalComputationRequired,
         int computationRequiredPerSec, int researchEUt, int researchAmperage, Object[] aInputs,
+        FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
+        return addResearchableAssemblylineRecipeLong(
+            aResearchItem,
+            totalComputationRequired,
+            computationRequiredPerSec,
+            researchEUt,
+            researchAmperage,
+            aInputs,
+            aFluidInputs,
+            aOutput,
+            assDuration,
+            assEUt);
+    }
+
+    @Deprecated
+    public static boolean addResearchableAssemblylineRecipeLong(ItemStack aResearchItem, long totalComputationRequired,
+        long computationRequiredPerSec, int researchEUt, int researchAmperage, Object[] aInputs,
         FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
         if (aInputs == null) {
             aInputs = GTValues.emptyItemStackArray;
@@ -181,9 +215,9 @@ public class TTRecipeAdder extends RecipeAdder {
             tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(tFluidInput, true, false);
         }
         researchAmperage = GTUtility.clamp(researchAmperage, 1, Short.MAX_VALUE);
-        computationRequiredPerSec = GTUtility.clamp(computationRequiredPerSec, 1, Short.MAX_VALUE);
-        tPersistentHash = tPersistentHash * 31 + totalComputationRequired;
-        tPersistentHash = tPersistentHash * 31 + computationRequiredPerSec;
+        computationRequiredPerSec = GTUtility.clamp(computationRequiredPerSec, 1, Long.MAX_VALUE >>> 16);
+        tPersistentHash = GTUtility.safeInt(tPersistentHash * 31L + totalComputationRequired);
+        tPersistentHash = GTUtility.safeInt(tPersistentHash * 31L + computationRequiredPerSec);
         tPersistentHash = tPersistentHash * 31 + researchAmperage;
         tPersistentHash = tPersistentHash * 31 + researchEUt;
         tPersistentHash = tPersistentHash * 31 + assDuration;
@@ -191,7 +225,7 @@ public class TTRecipeAdder extends RecipeAdder {
 
         GTRecipe.RecipeAssemblyLine recipeGT = new GTRecipe.RecipeAssemblyLine(
             CustomItemList.UnusedStuff.get(1),
-            totalComputationRequired / computationRequiredPerSec,
+            GTUtility.safeInt(totalComputationRequired / computationRequiredPerSec),
             0,
             tInputs,
             aFluidInputs,
@@ -203,7 +237,7 @@ public class TTRecipeAdder extends RecipeAdder {
         GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(recipeGT);
         TecTechRecipeMaps.TTResearchStationALRecipe recipeTT = new TecTechRecipeMaps.TTResearchStationALRecipe(
             aResearchItem,
-            totalComputationRequired / computationRequiredPerSec,
+            GTUtility.safeInt(totalComputationRequired / computationRequiredPerSec),
             0,
             tInputs,
             aFluidInputs,

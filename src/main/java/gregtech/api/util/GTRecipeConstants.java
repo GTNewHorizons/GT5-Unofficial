@@ -248,8 +248,8 @@ public class GTRecipeConstants {
     /**
      * Research Station data.
      */
-    public static final RecipeMetadataKey<Integer> RESEARCH_STATION_DATA = SimpleRecipeMetadataKey
-        .create(Integer.class, "research_station_data");
+    public static final RecipeMetadataKey<Long> RESEARCH_STATION_DATA = SimpleRecipeMetadataKey
+        .create(Long.class, "research_station_data");
 
     /**
      * sievert data required for the biovat recipes.
