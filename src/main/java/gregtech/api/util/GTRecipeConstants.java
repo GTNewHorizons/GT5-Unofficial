@@ -246,7 +246,7 @@ public class GTRecipeConstants {
         .create(Integer.class, "sparge_max_byproduct");
 
     /**
-     * Research Station data.
+     * Research Station data, upper 48 bits are for minimum computation, lower 16 bit for research amps
      */
     public static final RecipeMetadataKey<Long> RESEARCH_STATION_DATA = SimpleRecipeMetadataKey
         .create(Long.class, "research_station_data");
