@@ -213,9 +213,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
         if (mat != null) {
             fgBuilder = TextureFactory.builder()
-                .addIcon(
-                    mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.getTextureIndex()
-                        : OrePrefixes.ore.getTextureIndex()])
+                .addIcon(mat.mIconSet.getOreTexture(stoneType == null ? StoneType.Stone : stoneType, small))
                 .setRGBA(mat.mRGBa)
                 .glow(mat.hasGlowingOre());
         } else {
