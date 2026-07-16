@@ -170,19 +170,8 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     public final boolean addNuclearReactorEdgeList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        // catch MTEHatchDynamo case, because addToMachineList catches the subtype MTEHatchDynamoMulti
-        // and adds them to mTecTechDynamoHatches, which is not used for the count verification,
-        // so we just do the same steps here manually until this code gets a proper cleanup
-        if (aMetaTileEntity instanceof MTEHatchDynamo mteDynamo && mteDynamo.maxAmperesOut() <= 4) {
-            mteDynamo.updateTexture(aBaseCasingIndex);
-            mteDynamo.updateCraftingIcon(this.getMachineCraftingIcon());
-
-            addIfSmartInput(mteDynamo);
-
-            mAllDynamoHatches.add(mteDynamo);
-            return addToMachineListInternal(mDynamoHatches, mteDynamo, aBaseCasingIndex);
-        }
-        if (aMetaTileEntity instanceof MTEHatchMaintenance || aMetaTileEntity instanceof MTEHatchInput
+        if (aMetaTileEntity instanceof MTEHatchMaintenance || aMetaTileEntity instanceof MTEHatchDynamo
+            || aMetaTileEntity instanceof MTEHatchInput
             || aMetaTileEntity instanceof MTEHatchOutput) {
             return addToMachineList(aTileEntity, aBaseCasingIndex);
         }
