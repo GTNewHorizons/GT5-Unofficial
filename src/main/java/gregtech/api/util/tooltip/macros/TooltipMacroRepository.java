@@ -10,7 +10,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -185,7 +184,7 @@ public final class TooltipMacroRepository {
     static {
         // initializer: singleton instances
         Set<TooltipMacroProcessor> singletonInstances = Set.of(
-            LITERAL, FLUID, SPEED, SPECIAL, RAINBOW
+            LITERAL, FLUID, SPEED, SPECIAL, RAINBOW, ICON
         );
         // initializer: collections
         List<Set<TooltipMacroProcessor>> collectionInstances = List.of(

@@ -3,7 +3,6 @@ package afishstash;
 import com.slprime.chromatictooltips.TooltipHandler;
 import com.slprime.chromatictooltips.api.ITooltipComponent;
 import com.slprime.chromatictooltips.component.InlineComponent;
-import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 import java.util.Map;
