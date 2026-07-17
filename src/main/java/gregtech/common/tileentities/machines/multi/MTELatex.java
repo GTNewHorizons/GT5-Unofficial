@@ -155,11 +155,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
     private int base_parallel = 8;
     private static final FluidStack[] valid_rubbers = { Materials.Rubber.getMolten(1L),
         Materials.RubberSilicone.getMolten(1L), Materials.StyreneButadieneRubber.getMolten(1L) };
-    private static final ItemStack SINGULARITY = getModItem(
-        UniversalSingularities.ID,
-        "universal.rubber.singularity",
-        1L,
-        5);
+    private static ItemStack SINGULARITY;
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
@@ -230,15 +226,29 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
     }
 
     private double getRubberCostMult() {
-        ItemStack controllerStack = this.getControllerSlot();
         double discount = 0.0625 * itemPipeTier;
         base_parallel = 8;
-        if (controllerStack != null && controllerStack
-            .isItemEqual(UniversalSingularities.isModLoaded() ? SINGULARITY : ItemList.Tool_DataStick.get(1))) {
+        if (hasSingularity()) {
             discount += 0.25;
             base_parallel = 16;
         }
         return 1 - discount;
+    }
+
+    private boolean hasSingularity() {
+        ItemStack controllerStack = this.getControllerSlot();
+        if (controllerStack == null) return false;
+        ItemStack result;
+        if (!UniversalSingularities.isModLoaded()) {
+            result = ItemList.Tool_DataStick.get(1);
+        } else {
+            if (SINGULARITY == null) {
+                SINGULARITY = getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5);
+            }
+            result = SINGULARITY;
+        }
+        assert result != null;
+        return controllerStack.isItemEqual(result);
     }
 
     public MTELatex(final int aID, final String aName, final String aNameRegional) {
@@ -339,15 +349,12 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
         mCasingAmount = 0;
         clearHatches();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 7, 0, errors)) return;
-        ItemStack controllerStack = this.getControllerSlot();
-        boolean singularityPresent = controllerStack != null && controllerStack
-            .isItemEqual(UniversalSingularities.isModLoaded() ? SINGULARITY : ItemList.Tool_DataStick.get(1));
         checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
-        if (!mExoticEnergyHatches.isEmpty() && !singularityPresent) {
+        if (!mExoticEnergyHatches.isEmpty() && !hasSingularity()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.latex_singularity"));
         }
         checkCasingMin(errors, mCasingAmount, 14);
