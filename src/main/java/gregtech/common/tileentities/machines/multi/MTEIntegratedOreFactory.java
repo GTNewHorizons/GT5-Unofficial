@@ -836,7 +836,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
         private static final ProcessingMode[] VALUES = values();
 
-        /** Translation keys for each processing step, shared by {@link #getDisplayMode} and {@link #getDisplayModeComponent}. */
+        /**
+         * Translation keys for each processing step, shared by {@link #getDisplayMode} and
+         * {@link #getDisplayModeComponent}.
+         */
         final String[] stepKeys;
 
         ProcessingMode(String... stepKeys) {
