@@ -16,7 +16,6 @@ import static tectech.loader.recipe.Godforge.exoticModulePlasmaItemMap;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -342,18 +341,20 @@ public class MTEExoticModule extends MTEBaseModule {
 
         for (ItemStack itemStack : items) {
             int[] oreIDs = OreDictionary.getOreIDs(itemStack);
-            List<String> dicts = Arrays.stream(oreIDs)
-                .mapToObj(OreDictionary::getOreName)
-                .sorted(Comparator.comparingInt(String::length))
-                .toList();
-            String dict = dicts.getFirst();
+            FluidStack plasma = null;
 
-            // substring 4 because dust is 4 characters long and there is no other possible oreDict
-            String strippedOreDict = dict.substring(4);
-            plasmas.add(
-                FluidRegistry.getFluidStack(
+            // Retry until it finds a falid vluid
+            for (int oreID : oreIDs) {
+                String oreDict = OreDictionary.getOreName(oreID);
+                // substring 4 because dust is 4 characters long and there is no other possible oreDict
+                String strippedOreDict = oreDict.substring(4);
+                plasma = FluidRegistry.getFluidStack(
                     "plasma." + strippedOreDict.toLowerCase(),
-                    (int) (INGOTS * multiplier * itemStack.stackSize)));
+                    (int) (INGOTS * multiplier * itemStack.stackSize));
+                if (plasma != null) break;
+            }
+
+            if (plasma != null) plasmas.add(plasma);
         }
 
         return plasmas.toArray(new FluidStack[0]);
