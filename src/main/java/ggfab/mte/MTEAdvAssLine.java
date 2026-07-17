@@ -69,6 +69,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import ggfab.ConfigurationHandler;
 import ggfab.mui.ClickableTextWidget;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
@@ -347,11 +348,16 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addOutputBus("1", StatCollector.translateToLocal("ggfab.tt.advassline.structure.output_bus_location"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("10", StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.tiered_glass"), false)
-            .addCasing("8", StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.grate"), false)
-            .addCasing("4-8", StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.solid_steel"), false)
-            .addCasing("5", StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.assembly_line"), false)
-            .addCasing("5", StatCollector.translateToLocal("ggfab.tt.advassline.structure.casing.assembler"), false)
+            .addCasing(
+                "10",
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.MBTT.HatchInfo",
+                    StatCollector.translateToLocal("GT5U.structure.tiered_glass")),
+                false)
+            .addCasing("8", Casings.GrateMachineCasing.getLocalizedName(), false)
+            .addCasing("4-8", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.AssemblyLineCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.AssemblerMachineCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
             .addStructureInfo(StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer4"))
