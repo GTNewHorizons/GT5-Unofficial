@@ -18,12 +18,14 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -91,6 +93,27 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         syncManager.syncValue("itemAutoOutput", itemSync);
         syncManager.syncValue("fluidAutoOutput", fluidSync);
 
+        syncManager.syncValue(
+            "itemAllowInputFromOutput",
+            new BooleanSyncValue(
+                () -> machine.mAllowInputFromOutputSideItems,
+                value -> machine.mAllowInputFromOutputSideItems = value).allowC2S());
+        syncManager.syncValue(
+            "fluidAllowInputFromOutput",
+            new BooleanSyncValue(
+                () -> machine.mAllowInputFromOutputSideFluids,
+                value -> machine.mAllowInputFromOutputSideFluids = value).allowC2S());
+        syncManager.syncValue(
+            "itemOutputFacing",
+            new IntSyncValue(
+                () -> machine.getItemOutputFacing()
+                    .ordinal()));
+        syncManager.syncValue(
+            "fluidOutputFacing",
+            new IntSyncValue(
+                () -> machine.getFluidOutputFacing()
+                    .ordinal()));
+
         syncManager.registerSlotGroup("item_inv", 1 + ((properties.maxItemInputs - 1) / 3));
 
         initErrors(syncManager);
@@ -147,8 +170,14 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
                     GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM,
                     BaseTileEntity.ITEM_TRANSFER_TOOLTIP,
                     "GT5U.gui.button.forbidden.reason.item"))
-
             .childIf(properties.maxFluidInputs > 0, () -> createFluidInputSlot().marginLeft(SLOT_SIZE / 2));
+    }
+
+    private Widget<?> createAllowInputButton(PanelSyncManager syncManager, String syncKey, String tooltipKey) {
+        return new ToggleButton().value(syncManager.findSyncHandler(syncKey, BooleanSyncValue.class))
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
+            .overlay(GTGuiTextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
+            .addTooltipLine(StatCollector.translateToLocal(tooltipKey));
     }
 
     private Widget<?> createAutoOutputButton(boolean isEnabled, PanelSyncManager syncManager, String syncKey,
@@ -157,7 +186,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         ToggleButton[] button = new ToggleButton[1];
 
         IPanelHandler autoOutputPanel = syncManager
-            .syncedPanel("sideSelection_" + syncKey, true, (_, _) -> openSideSelector(button, syncKey));
+            .syncedPanel("sideSelection_" + syncKey, true, (_, _) -> openSideSelector(button, syncKey, syncManager));
 
         button[0] = new ToggleButton() {
 
@@ -174,26 +203,37 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .tooltipShowUpTimer(TOOLTIP_DELAY)
             .overlay(overlay);
 
-        if (isEnabled) button[0].addTooltipLine(StatCollector.translateToLocal(tooltipKey));
-        if (!isEnabled) button[0].tooltip(
-            t -> t.addLine(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP))
-                .addLine(
-                    GTUtility.getColoredSecondaryTooltip(
-                        StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.button.forbidden.reason",
-                            StatCollector.translateToLocal(disabledTooltipKey)))))
-            .widgetTheme(GTWidgetThemes.TOGGLE_BUTTON_DISABLED);
+        if (isEnabled) {
+            button[0].tooltip(
+                t -> t.addLine(StatCollector.translateToLocal(tooltipKey))
+                    .addLine(StatCollector.translateToLocal("GT5U.machines.side_selection.tooltip")));
+        } else {
+            button[0].tooltip(
+                t -> t.addLine(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP))
+                    .addLine(
+                        GTUtility.getColoredSecondaryTooltip(
+                            StatCollector.translateToLocalFormatted(
+                                "GT5U.gui.button.forbidden.reason",
+                                StatCollector.translateToLocal(disabledTooltipKey)))))
+                .widgetTheme(GTWidgetThemes.TOGGLE_BUTTON_DISABLED);
+        }
 
         return button[0];
     }
 
-    private ModularPanel openSideSelector(ToggleButton[] parent, String syncKey) {
+    private ModularPanel openSideSelector(ToggleButton[] parent, String syncKey, PanelSyncManager syncManager) {
+        final boolean isFluid = "fluidAutoOutput".equals(syncKey);
 
         ModularPanel panel = new ModularPanel("sideSelector_" + syncKey) {
 
             @Override
             public boolean isDraggable() {
                 return false;
+            }
+
+            @Override
+            public boolean closeOnOutOfBoundsClick() {
+                return true;
             }
         }.relative(parent[0])
             .background(IDrawable.EMPTY)
@@ -202,47 +242,73 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
 
         // Top
         buttons.add(null);
-        buttons
-            .add(createSideSelectionButton(panel, ForgeDirection.UP, GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_UP));
+        buttons.add(
+            createSideSelectionButton(
+                panel,
+                ForgeDirection.UP,
+                GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_UP,
+                syncKey,
+                syncManager));
         buttons.add(null);
 
-        // Middle
+        // Middle: left / allow-input / right
         buttons.add(
             createSideSelectionButton(
                 panel,
                 this.machine.mMainFacing.getRotation(ForgeDirection.UP),
-                GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_LEFT));
-        buttons.add(null);
+                GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_LEFT,
+                syncKey,
+                syncManager));
+        buttons.add(
+            createAllowInputButton(
+                syncManager,
+                isFluid ? "fluidAllowInputFromOutput" : "itemAllowInputFromOutput",
+                isFluid ? "GT5U.machines.input_from_output_fluid.tooltip"
+                    : "GT5U.machines.input_from_output_item.tooltip"));
         buttons.add(
             createSideSelectionButton(
                 panel,
                 this.machine.mMainFacing.getRotation(ForgeDirection.DOWN),
-                GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_RIGHT));
+                GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_RIGHT,
+                syncKey,
+                syncManager));
 
         // Bottom
         buttons.add(null);
         buttons.add(
-            createSideSelectionButton(panel, ForgeDirection.DOWN, GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_DOWN));
+            createSideSelectionButton(
+                panel,
+                ForgeDirection.DOWN,
+                GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_DOWN,
+                syncKey,
+                syncManager));
         buttons.add(
             createSideSelectionButton(
                 panel,
                 this.machine.mMainFacing.getOpposite(),
-                GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_BACK));
+                GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_BACK,
+                syncKey,
+                syncManager));
 
         return panel.child(
             new Grid().coverChildren()
                 .gridOf(3, buttons));
     }
 
-    private IWidget createSideSelectionButton(ModularPanel panel, ForgeDirection direction, IDrawable texture) {
-        InteractionSyncHandler sideSelectionHandler = new InteractionSyncHandler().setOnMousePressed(mouseButton -> {
-            // This is copied 1:1 from MetaTileEntity code because i didn't want to hook into onWrenchRightClick
-            final IGregTechTileEntity meta = this.machine.getBaseMetaTileEntity();
-            if (!meta.isValidFacing(direction)) {
-                return;
-            }
-            meta.setFrontFacing(direction);
+    private IWidget createSideSelectionButton(ModularPanel panel, ForgeDirection direction, IDrawable texture,
+        String syncKey, PanelSyncManager syncManager) {
+        final boolean isFluid = "fluidAutoOutput".equals(syncKey);
+        final String facingSyncKey = isFluid ? "fluidOutputFacing" : "itemOutputFacing";
+        final IntSyncValue facingSync = syncManager.findSyncHandler(facingSyncKey, IntSyncValue.class);
 
+        InteractionSyncHandler sideSelectionHandler = new InteractionSyncHandler().setOnMousePressed(mouseButton -> {
+            if (direction == machine.mMainFacing) return;
+
+            final boolean ok = isFluid ? machine.setFluidOutputFacing(direction)
+                : machine.setItemOutputFacing(direction);
+            if (!ok) return;
+
+            final IGregTechTileEntity meta = this.machine.getBaseMetaTileEntity();
             for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
                 final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(s);
                 if (iGregTechTileEntity != null) {
@@ -253,7 +319,11 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             panel.closeIfOpen();
         });
         return new ButtonWidget<>().syncHandler(sideSelectionHandler)
-            .overlay(texture);
+            .overlay(texture)
+            .background(
+                new DynamicDrawable(
+                    () -> facingSync.getIntValue() == direction.ordinal() ? GTGuiTextures.BUTTON_STANDARD_PRESSED
+                        : GTGuiTextures.BUTTON_STANDARD));
     }
 
     @Override

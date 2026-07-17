@@ -30,6 +30,7 @@ import appeng.parts.PartPlacement;
 import appeng.util.Platform;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.ToolModes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
@@ -154,7 +155,7 @@ public class ToolWrench extends GTTool {
     @Override
     public float getBlockStrength(ItemStack tool, Block block, EntityPlayer player, World world, int x, int y, int z,
         float defaultBlockStrength) {
-        if (getToolMode(tool) == 2) { // Precise Mode
+        if (getToolMode(tool) == ToolModes.WRENCH_PRECISE.get()) {
             return Math.min(INSTANT_BREAK_THRESHOLD, defaultBlockStrength);
         }
         return super.getBlockStrength(tool, block, player, world, x, y, z, defaultBlockStrength);
@@ -236,7 +237,7 @@ public class ToolWrench extends GTTool {
 
     @Override
     public byte getMaxMode() {
-        return 3;
+        return 6;
     }
 
     @Override
