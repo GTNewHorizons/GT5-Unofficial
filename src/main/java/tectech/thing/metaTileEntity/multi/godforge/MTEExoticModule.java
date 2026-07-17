@@ -343,6 +343,10 @@ public class MTEExoticModule extends MTEBaseModule {
             String dict = OreDictionary.getOreName(OreDictionary.getOreIDs(itemStack)[0]);
             // substring 4 because dust is 4 characters long and there is no other possible oreDict
             String strippedOreDict = dict.substring(4);
+            // cursed dustAnyCarbon
+            if (strippedOreDict.startsWith("Any")) {
+                strippedOreDict = strippedOreDict.substring(3);
+            }
             plasmas.add(
                 FluidRegistry.getFluidStack(
                     "plasma." + strippedOreDict.toLowerCase(),
