@@ -618,7 +618,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                         continue;
                     }
 
-                    final int charged = Math.max(0, (int)manager.charge(stack, chargeableEU, Integer.MAX_VALUE, true, false));
+                    final int charged = Math.max(0, (int)manager.charge(stack, chargeableEU, this.mTier, true, false));
                     chargedEU += charged;
                 }
             }
