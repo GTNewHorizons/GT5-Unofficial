@@ -1,10 +1,10 @@
 package gregtech.api.util.tooltip.macros;
 
-import net.minecraft.util.EnumChatFormatting;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
+
+import net.minecraft.util.EnumChatFormatting;
 
 /**
  * Class to handle text transformation from {@link TooltipMacroProcessor} instances.
@@ -28,7 +28,7 @@ public class TooltipMacroHandler {
      * default {@link HashMap} instance.
      *
      * @apiNote If an instance with a custom Map implementation is desired,
-     * use {@link TooltipMacroHandler#TooltipMacroHandler(Supplier)}
+     *          use {@link TooltipMacroHandler#TooltipMacroHandler(Supplier)}
      */
     public TooltipMacroHandler() {
         this.processors = new HashMap<>();
@@ -37,6 +37,7 @@ public class TooltipMacroHandler {
     /**
      * Creates a new {@link TooltipMacroHandler} instance, backed by the supplier's
      * provided Map implementation
+     * 
      * @param supplier the supplier that provides the {@link Map} implementation
      *                 for the underlying Map this handler uses.
      */
@@ -46,22 +47,23 @@ public class TooltipMacroHandler {
 
     /**
      * Registers this macro processor for the instance
+     * 
      * @param processor the macro processor
      * @apiNote macros with duplicate names will be replaced
      */
     public void addProcessor(TooltipMacroProcessor processor) {
-        this.processors.put(
-            processor.getName(),
-            processor
-        );
+        this.processors.put(processor.getName(), processor);
     }
 
     /**
      * Registers multiple macro processors for the builder
+     * 
      * @param macros the macro processors
-     * @apiNote this method is a convenience method, identical to: <pre>
-     *     for (TooltipMacroProcessor mp : macros) this.addProcessor(mp);
-     * </pre>
+     * @apiNote this method is a convenience method, identical to:
+     * 
+     *          <pre>
+     *          for (TooltipMacroProcessor mp : macros) this.addProcessor(mp);
+     *          </pre>
      */
     public void addMacros(TooltipMacroProcessor... macros) {
         for (TooltipMacroProcessor mp : macros) this.addProcessor(mp);
@@ -69,10 +71,13 @@ public class TooltipMacroHandler {
 
     /**
      * Registers multiple macro processors for the builder
+     * 
      * @param macros the macro processor collection
-     * @apiNote this method is a convenience method, identical to: <pre>
-     *     for (TooltipMacroProcessor mp : macros) this.addProcessor(mp);
-     * </pre>
+     * @apiNote this method is a convenience method, identical to:
+     * 
+     *          <pre>
+     *          for (TooltipMacroProcessor mp : macros) this.addProcessor(mp);
+     *          </pre>
      */
     public void addMacros(Iterable<TooltipMacroProcessor> macros) {
         for (TooltipMacroProcessor mp : macros) this.addProcessor(mp);
@@ -80,11 +85,12 @@ public class TooltipMacroHandler {
 
     /**
      * Sets the content to append after each macro invocation
+     * 
      * @param postfix the content, or {@code null} to disable this behavior.
      * @apiNote This method is deliberately designed to accept a String
-     * instance rather than {@link EnumChatFormatting} to account for
-     * the possibility of needing to chain multiple formatting styles
-     * (for example, gray + italic)
+     *          instance rather than {@link EnumChatFormatting} to account for
+     *          the possibility of needing to chain multiple formatting styles
+     *          (for example, gray + italic)
      */
     public void setPostfix(Object postfix) {
         this.postfix = (postfix == null) ? null : String.valueOf(postfix);
@@ -92,6 +98,7 @@ public class TooltipMacroHandler {
 
     /**
      * Gets the string appended after each macro invocation
+     * 
      * @return the string, or {@code null} if none set.
      */
     public String postfix() {
@@ -102,7 +109,7 @@ public class TooltipMacroHandler {
      * Clears all stored macro processors.
      *
      * @apiNote One should consider creating a new instance
-     * rather than clearing and reusing the same instance elsewhere.
+     *          rather than clearing and reusing the same instance elsewhere.
      */
     public void clear() {
         this.processors.clear();
@@ -138,7 +145,8 @@ public class TooltipMacroHandler {
                 // mc color codes
                 if ("0123456789abcdefklmnor".indexOf(Character.toLowerCase(next)) >= 0) {
                     // mc color symbol
-                    result.append('\u00A7').append(next);
+                    result.append('\u00A7')
+                        .append(next);
                     i++;
                     continue;
                 }

@@ -4,7 +4,8 @@ import java.util.function.Function;
 
 /**
  * Interface for processing macros of the form {@code {macro_name:param}}.
- * Implementations are registered via {@link gregtech.api.util.MultiblockTooltipBuilder#addMacro(TooltipMacroProcessor)} and
+ * Implementations are registered via {@link gregtech.api.util.MultiblockTooltipBuilder#addMacro(TooltipMacroProcessor)}
+ * and
  * are looked up by name when a matching macro is encountered in a formatted string.
  *
  * @see TooltipMacroRepository Repository of commonly used macros

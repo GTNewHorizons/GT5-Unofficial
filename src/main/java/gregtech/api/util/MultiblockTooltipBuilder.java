@@ -12,9 +12,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.util.tooltip.*;
-import gregtech.api.util.tooltip.macros.TooltipMacroHandler;
-import gregtech.api.util.tooltip.macros.TooltipMacroProcessor;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -27,6 +24,9 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.structure.IStructureChannels;
+import gregtech.api.util.tooltip.*;
+import gregtech.api.util.tooltip.macros.TooltipMacroHandler;
+import gregtech.api.util.tooltip.macros.TooltipMacroProcessor;
 
 /**
  * This makes it easier to build multiblock tooltips, with a standardized format. <br>
@@ -152,12 +152,13 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Sets the content to append after each macro invocation
+     * 
      * @param content the content, or {@code null} to disable this behavior.
      * @return Instance this method was called on.
      * @apiNote This method is deliberately designed to accept a String
-     * instance rather than {@link EnumChatFormatting} to account for
-     * the possibility of needing to chain multiple formatting styles
-     * (for example, gray + italic)
+     *          instance rather than {@link EnumChatFormatting} to account for
+     *          the possibility of needing to chain multiple formatting styles
+     *          (for example, gray + italic)
      */
     public MultiblockTooltipBuilder setPostMacroContent(Object content) {
         this.macroHandler.setPostfix(content);
@@ -182,7 +183,8 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Registers this macro processor for the builder
-     * @param name the name of the macro
+     * 
+     * @param name        the name of the macro
      * @param transformer the string transformation
      * @return Instance this method was called on.
      */
@@ -192,6 +194,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Registers this macro processor for the builder
+     * 
      * @param macro the macro processor
      * @return Instance this method was called on.
      * @apiNote macros with duplicate names will be replaced
@@ -203,11 +206,14 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Registers multiple macro processors for the builder
+     * 
      * @param macros the macro processors
      * @return Instance this method was called on.
-     * @apiNote this method is a convenience method, identical to: <pre>
-     *     for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
-     * </pre>
+     * @apiNote this method is a convenience method, identical to:
+     * 
+     *          <pre>
+     *          for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
+     *          </pre>
      */
     public MultiblockTooltipBuilder addMacros(TooltipMacroProcessor... macros) {
         for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
@@ -216,11 +222,14 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Registers multiple macro processors for the builder
+     * 
      * @param macros the macro processor collection
      * @return Instance this method was called on.
-     * @apiNote this method is a convenience method, identical to: <pre>
-     *     for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
-     * </pre>
+     * @apiNote this method is a convenience method, identical to:
+     * 
+     *          <pre>
+     *          for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
+     *          </pre>
      */
     public MultiblockTooltipBuilder addMacros(Iterable<TooltipMacroProcessor> macros) {
         for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
