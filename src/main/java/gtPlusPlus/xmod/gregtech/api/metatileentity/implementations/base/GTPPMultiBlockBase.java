@@ -1225,6 +1225,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 return t.mAirIntakes.size();
             }
         },
+        /**
+         * @deprecated use {@link gregtech.api.enums.HatchElement#ExoticDynamo}
+         */
+        @Deprecated
         TTDynamo(GTPPMultiBlockBase::addMultiAmpDynamoToMachineList, MTEHatchDynamoMulti.class) {
 
             @Override
@@ -1232,6 +1236,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 return t.mTecTechDynamoHatches.size();
             }
         },
+        /**
+         * @deprecated use {@link gregtech.api.enums.HatchElement#ExoticEnergy} or
+         *             {@link gregtech.api.enums.HatchElement#MultiAmpEnergy}
+         */
+        @Deprecated
         TTEnergy(GTPPMultiBlockBase::addMultiAmpEnergyToMachineList, MTEHatchEnergyMulti.class) {
 
             @Override
