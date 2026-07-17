@@ -14,6 +14,17 @@ import com.slprime.chromatictooltips.api.TooltipStyle;
 import com.slprime.chromatictooltips.util.TooltipAlign;
 import com.slprime.chromatictooltips.util.TooltipTexture;
 
+/**
+ * Class representing an icon component to be used with
+ * ChromaticTooltip
+ *
+ * @apiNote This is a simple implementation of {@link ITooltipComponent},
+ *          assuming a square size ({@link ITooltipComponent#getHeight()} and
+ *          {@link ITooltipComponent#getWidth()} returns {@code size}), and
+ *          the constructor will do a path check to ensure the path exists.
+ *
+ * @author <a href="https://github.com/masaru9002">SillyCat</a>
+ */
 public class IconComponent implements ITooltipComponent {
 
     protected final TooltipTexture texture;

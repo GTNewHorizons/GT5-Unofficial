@@ -9,6 +9,17 @@ import com.slprime.chromatictooltips.api.ITooltipComponent;
 import com.slprime.chromatictooltips.api.TooltipContext;
 import com.slprime.chromatictooltips.component.InlineComponent;
 
+/**
+ * Utility class holding recognized icons by a keyword.
+ * This repository searches for {@code resources/assets/gregtech/textures/tooltip/} for
+ * image icons for tooltips. If the relevant texture is found but not yet cached, it will
+ * be cached then returned, otherwise the cached texture will be returned.
+ * <br />
+ * If the relevant texture does not exist, an {@link java.io.UncheckedIOException} will be
+ * raised.
+ *
+ * @author <a href="https://github.com/RainVaporeon">Rain</a>
+ */
 public class IconRepository {
 
     private static final Map<String, String> cache = new ConcurrentHashMap<>();
