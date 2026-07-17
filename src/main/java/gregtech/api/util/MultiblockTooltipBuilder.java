@@ -4,7 +4,13 @@ import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
@@ -24,7 +30,9 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.structure.IStructureChannels;
-import gregtech.api.util.tooltip.*;
+import gregtech.api.util.tooltip.MarkdownTooltipLoader;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.api.util.tooltip.macros.TooltipMacroHandler;
 import gregtech.api.util.tooltip.macros.TooltipMacroProcessor;
 
@@ -152,7 +160,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Sets the content to append after each macro invocation
-     * 
+     *
      * @param content the content, or {@code null} to disable this behavior.
      * @return Instance this method was called on.
      * @apiNote This method is deliberately designed to accept a String
@@ -183,7 +191,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Registers this macro processor for the builder
-     * 
+     *
      * @param name        the name of the macro
      * @param transformer the string transformation
      * @return Instance this method was called on.
@@ -194,7 +202,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Registers this macro processor for the builder
-     * 
+     *
      * @param macro the macro processor
      * @return Instance this method was called on.
      * @apiNote macros with duplicate names will be replaced
@@ -206,11 +214,11 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Registers multiple macro processors for the builder
-     * 
+     *
      * @param macros the macro processors
      * @return Instance this method was called on.
      * @apiNote this method is a convenience method, identical to:
-     * 
+     *
      *          <pre>
      *          for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
      *          </pre>
@@ -222,11 +230,11 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Registers multiple macro processors for the builder
-     * 
+     *
      * @param macros the macro processor collection
      * @return Instance this method was called on.
      * @apiNote this method is a convenience method, identical to:
-     * 
+     *
      *          <pre>
      *          for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
      *          </pre>
