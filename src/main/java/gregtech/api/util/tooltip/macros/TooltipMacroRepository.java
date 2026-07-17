@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import afishstash.IconRepository;
+import gregtech.api.util.tooltip.icon.IconRepository;
 import gregtech.api.util.CustomGlyphs;
 
 /**

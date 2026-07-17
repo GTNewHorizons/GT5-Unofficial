@@ -1,4 +1,4 @@
-package afishstash;
+package gregtech.api.util.tooltip.icon;
 
 import java.util.List;
 import java.util.Map;

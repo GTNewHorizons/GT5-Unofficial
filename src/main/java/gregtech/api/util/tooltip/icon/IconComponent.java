@@ -1,4 +1,4 @@
-package afishstash;
+package gregtech.api.util.tooltip.icon;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
