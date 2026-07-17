@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.BloodArsenal;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
 
 import java.util.ArrayList;
@@ -171,6 +172,10 @@ public class GlassTier {
             addCustomGlass(ItemRegistry.bw_realglas, 1, 4, 0);
             addCustomGlass(GregTechAPI.sBlockGlass1, 0, 4, 1);
             addCustomGlass(GregTechAPI.sBlockGlass1, 10, 4, 2);
+            if (AppliedEnergistics2.isModLoaded()) {
+                addCustomGlass(AppliedEnergistics2.ID, "tile.BlockQuartzGlass", 0, 4, 9);
+                addCustomGlass(AppliedEnergistics2.ID, "tile.BlockQuartzLamp", 0, 4, 10);
+            }
             if (BloodArsenal.isModLoaded()) {
                 addCustomGlass(BloodArsenal.ID, "blood_stained_glass", 0, 4, 3);
             }
