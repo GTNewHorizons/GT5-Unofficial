@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import gregtech.api.util.tooltip.icon.IconRepository;
 import gregtech.api.util.CustomGlyphs;
+import gregtech.api.util.tooltip.icon.IconRepository;
 
 /**
  * Repository holding frequently-used macros for {@link gregtech.api.util.MultiblockTooltipBuilder}.
