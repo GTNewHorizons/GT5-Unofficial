@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.tooltip.icon.IconRepository;
 
 /**
@@ -45,23 +44,28 @@ public final class TooltipMacroRepository {
      */
     @Transform(contract = "%s -> §c\uE100%sK")
     public static final TooltipMacroProcessor HEAT = TooltipMacroProcessor
-        .of("heat", s -> EnumChatFormatting.RED + CustomGlyphs.HEAT + s + "K");
+        .of("heat", s -> EnumChatFormatting.RED + s + "K");
+
+    /**
+     * A macro that formats "EU"
+     */
+    @Transform(contract = "%s -> §b\uE100%sEU")
+    public static final TooltipMacroProcessor EU = TooltipMacroProcessor
+        .of("eu", s -> EnumChatFormatting.AQUA + s + "EU");
 
     /**
      * A macro that formats "Parallel", supports singular and plural terms
      */
     @Transform(contract = "%s -> §6\uE101%s Parallel", supportPlural = true)
-    public static final TooltipMacroProcessor PARALLEL = TooltipMacroProcessor.of(
-        "parallel",
-        s -> EnumChatFormatting.GOLD + CustomGlyphs.PARALLEL + s + " Parallel" + ("1".equals(s) ? "" : "s"));
+    public static final TooltipMacroProcessor PARALLEL = TooltipMacroProcessor
+        .of("parallel", s -> EnumChatFormatting.GOLD + s + " Parallel" + ("1".equals(s) ? "" : "s"));
 
     /**
      * A macro that formats "Pollution"
      */
-    @Transform(contract = "%s -> §5\uE103§r%s Pollution/s")
-    public static final TooltipMacroProcessor POLLUTION = TooltipMacroProcessor.of(
-        "pollution",
-        s -> EnumChatFormatting.DARK_PURPLE + CustomGlyphs.POISON + EnumChatFormatting.RESET + s + " Pollution/s");
+    @Transform(contract = "%s -> §5\uE103§r%s Pollution")
+    public static final TooltipMacroProcessor POLLUTION = TooltipMacroProcessor
+        .of("pollution", s -> EnumChatFormatting.DARK_PURPLE + s + " Pollution");
 
     /**
      * A macro that formats fluid input rate
@@ -70,16 +74,16 @@ public final class TooltipMacroRepository {
      */
     @Transform(contract = "%s -> §9\uE104%s")
     public static final TooltipMacroProcessor FLUID = TooltipMacroProcessor
-        .of("fluid", s -> EnumChatFormatting.BLUE + CustomGlyphs.POTION + s);
+        .of("fluid", s -> EnumChatFormatting.BLUE + s);
 
     /**
      * A macro that returns the speed text
      *
      * @apiNote This processor does not take an argument.
      */
-    @Transform(contract = "_ -> §b\uE105Speed")
+    @Transform(contract = "_ -> §3\uE105Speed")
     public static final TooltipMacroProcessor SPEED = TooltipMacroProcessor
-        .of("speed", _ -> EnumChatFormatting.AQUA + CustomGlyphs.SPEED + "Speed");
+        .of("speed", _ -> EnumChatFormatting.DARK_AQUA + "Speed");
 
     /**
      * A macro that formats special attributes
@@ -93,7 +97,7 @@ public final class TooltipMacroRepository {
      */
     @Transform(contract = "%s -> §e\uE108%s")
     public static final TooltipMacroProcessor INTERVAL = TooltipMacroProcessor
-        .of("interval", s -> EnumChatFormatting.YELLOW + CustomGlyphs.TIME + s);
+        .of("interval", s -> EnumChatFormatting.DARK_GREEN + s);
 
     /**
      * A macro that formats positive attributes.
@@ -107,7 +111,7 @@ public final class TooltipMacroRepository {
      */
     @Transform(contract = "%s -> §c%s")
     public static final TooltipMacroProcessor NEGATIVE = TooltipMacroProcessor
-        .of("negative", s -> EnumChatFormatting.RED + s);
+        .of("negative", s -> EnumChatFormatting.DARK_RED + s);
 
     private static final EnumChatFormatting[] RAINBOW_SEQ = { EnumChatFormatting.RED, EnumChatFormatting.GOLD,
         EnumChatFormatting.YELLOW, EnumChatFormatting.GREEN, EnumChatFormatting.DARK_AQUA, EnumChatFormatting.BLUE,
