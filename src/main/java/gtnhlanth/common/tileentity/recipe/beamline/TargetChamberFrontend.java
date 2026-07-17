@@ -4,13 +4,11 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 
 import net.minecraft.util.StatCollector;
 
-import codechicken.nei.PositionedStack;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 
 public class TargetChamberFrontend extends RecipeMapFrontend {
@@ -27,19 +25,6 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
         drawSpecialInfo(recipeInfo);
         drawMetadataInfo(recipeInfo);
         drawRecipeOwnerInfo(recipeInfo);
-    }
-
-    @Override
-    public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe recipe) {
-
-        for (PositionedStack pStack : recipe.mInputs) {
-            if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed && fixed.item.stackSize == 0) {
-                // The stack actually takes damage, but is technically still not considered to be consumed by the code
-                // Partially consumed: Takes damage in the process
-                fixed.setCustomBadge("PC", StatCollector.translateToLocal("gtnhlanth.tt.pc"));
-            }
-        }
-
     }
 
     @Override
