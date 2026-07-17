@@ -631,10 +631,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (supportsVoidProtection() && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             Set<VoidingMode> allowed = getAllowedVoidingModes();
             setVoidingMode(getVoidingMode().nextInCollection(allowed));
-            GTUtility.sendChatComp(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                new ChatComponentTranslation("GT5U.gui.button.voiding_mode").appendText(" ")
-                    .appendSibling(new ChatComponentTranslation(getVoidingMode().getTransKey())));
+                "GT5U.chat.voiding_mode_set",
+                new ChatComponentTranslation(getVoidingMode().getTransKey()));
             return true;
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }

@@ -49,6 +49,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -927,7 +928,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                     GTUtility.sendChatTrans(
                         aPlayer,
                         "eoh.rightclick.wirecutter.2",
-                        formatNumber(originalAmount - astralArrayAmount));
+                        new ChatComponentNumber(originalAmount - astralArrayAmount));
                 }
             }
         }

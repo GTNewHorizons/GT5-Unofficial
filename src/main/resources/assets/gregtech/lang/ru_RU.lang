@@ -2465,6 +2465,7 @@ GT5U.gui.button.voiding_mode_none=§7Ничего не удалять
 GT5U.gui.button.voiding_mode_item=§7Уничтожение излишек §6предметов
 GT5U.gui.button.voiding_mode_fluid=§7Уничтожение излишек §9жидкостей
 GT5U.gui.button.voiding_mode_all=§7Уничтожение излишек §6предметов §7и §9жидкостей
+GT5U.chat.voiding_mode_set=Режим уничтожения излишков: %s
 GT5U.gui.button.input_separation=Разделение входов
 GT5U.gui.button.mode_switch=Переключить режим
 GT5U.gui.button.batch_mode=Пакетный режим
