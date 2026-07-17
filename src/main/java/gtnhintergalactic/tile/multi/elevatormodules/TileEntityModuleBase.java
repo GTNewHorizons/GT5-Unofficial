@@ -64,8 +64,8 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
     Parameters.Group.ParameterOut energyDisplay;
 
     /** Name of the stored energy display */
-    private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> GTUtility
-        .translate("gt.blockmachines.multimachine.project.ig.cfgo.0"); // Stored Energy
+    private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> StatCollector
+        .translateToLocal("gt.blockmachines.multimachine.project.ig.cfgo.0"); // Stored Energy
     /** Status of the stored energy display */
     private static final IStatusFunction<TileEntityModuleBase> ENERGY_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(

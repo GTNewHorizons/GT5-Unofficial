@@ -2554,6 +2554,8 @@ GT5U.gui.button.drone_editmode=Group edit mode
 GT5U.gui.button.drone_pause.1=Auto update connection list
 GT5U.gui.button.drone_pause.2=Disable this if your machine controller cover is malfunctioning!
 GT5U.gui.button.drone_key_panel=Open connection key panel
+GT5U.gui.button.drone_observe=Connect to the drone camera
+GT5U.gui.button.drone_observe.diff_dim=§cCannot connect to the drone camera in a different dimension!
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
 GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.button.fluid_regulation_panel=Open Fluid Regulation Panel
@@ -2657,6 +2659,11 @@ GT5U.gui.text.recipe_result.stocking_hatch_fail_extraction=§4Failed to extract 
 GT5U.gui.text.recipe_result.drone_noDrone=§4Can't find any drone in Input Buses!
 GT5U.gui.text.recipe_result.drone_operating=§aDrone operating normally!
 GT5U.gui.text.drone_title=Drone Control Centre
+GT5U.gui.text.drone_group_all=All Connections
+GT5U.gui.button.drone_rename_group=Rename Group
+GT5U.gui.button.drone_toggle_select_all=Toggle Select All
+GT5U.gui.button.drone_add_group=Add Group
+GT5U.gui.button.drone_delete_group=Delete Group
 GT5U.gui.text.drone_custom_name=Custom Machine Name
 GT5U.gui.text.drone_search=Search machine name
 GT5U.gui.text.drone_no_connection=No connections
@@ -2676,6 +2683,30 @@ GT5U.gui.text.drone_fluid_total=Total fluid produced in last %s:
 GT5U.gui.text.drone_key=Set connection key
 GT5U.gui.text.drone_warning_text=§4Warning: §7This machine is under attack.
 GT5U.gui.text.drone_remote_text=Drone Centre Remote Control
+GT5U.gui.text.drone_observe_help_1=Press Tab to switch mouse focus, WASD to move,
+GT5U.gui.text.drone_observe_help_2=Space/LShift to fly. L to toggle light. +/- or PgUp/PgDn to zoom. F5 to switch perspective.
+GT5U.gui.text.drone_signal_interrupted=Signal Lost
+GT5U.gui.button.drone_rescue=Emergency Rescue
+GT5U.gui.button.drone_rescue.tooltip=Reset camera view to spawn point
+GT5U.gui.text.drone_no_outputs=No outputs
+GT5U.gui.text.drone_observe_default=Drone Camera
+GT5U.gui.text.drone_metrics_header=§3[ DRONE METRICS ]
+GT5U.gui.text.drone_cam_stream_on=§bCam Stream: §aON
+GT5U.gui.text.drone_signal_link=§bSignal Link:
+GT5U.gui.text.drone_recipe_on=§bRecipe: §aON
+GT5U.gui.text.drone_cam_pos=§bCam %c: §7%s
+GT5U.gui.text.drone_level_excellent=§8Level: EXCELLENT
+GT5U.gui.text.recipe_metrics_header=§3[ RECIPE METRICS ]
+GT5U.gui.text.recipe_none=§7No active recipe.
+GT5U.gui.text.recipe_connecting_1=§7Connecting...
+GT5U.gui.text.recipe_connecting_2=§8Synchronizing NBT
+GT5U.gui.text.recipe_connecting_3=§8recipe stream...
+GT5U.gui.text.recipe_no_conn_1=§7NO CONNECTION
+GT5U.gui.text.recipe_no_conn_2=§8Aim crosshair at
+GT5U.gui.text.recipe_no_conn_3=§8a machine to see
+GT5U.gui.text.recipe_no_conn_4=§8recipe details.
+GT5U.gui.text.drone_zoom=ZOOM: %.1fx
+GT5U.gui.text.drone_flashlight=Flashlight ON
 GT5U.gui.text.shutdown_duration=§4Shut down §e%s §4h §e%s §4min §e%s §4s ago.
 GT5U.gui.text.out_of_fluid=§4No following fluids supplied: §b%s§f x §6%s L
 GT5U.gui.text.out_of_item=§4No following items supplied: §b%s§f x §6%s
@@ -3205,6 +3236,7 @@ GT5U.gui.text.cannot_change_when_running=Can't change configuration when running
 GT5U.gui.tooltip.drone_active_production=[Warning] This function is experimental and may reduce performance.
 GT5U.gui.tooltip.drone_maxrecord=Set max record quota. Each output from every machine consumes one quota. [Warning] Large numbers may cause performance issues!
 GT5U.gui.tooltip.drone_production_clear=Clear production data
+GT5U.gui.tooltip.drone_production_search=Filter machines, items and fluids. Also support advanced search!
 GT5U.gui.tooltip.drone_key=Prioritize connecting to the drone centre with the same key
 
 GT5U.gui.tooltip.purification_plant.debug_mode=Toggle debug mode.
@@ -3714,8 +3746,10 @@ GT5U.armor.part.name.OmniMovement=Augment: Rotational Movement Adjusters
 GT5U.armor.part.name.WaterBreathing=Augment: Rebreather
 GT5U.armor.part.name.MilkInfusion=Augment: Milk Infusion
 GT5U.armor.part.name.HoloInventory=Augment: Holographic Inventory
-GT5U.armor.part.name.Travelers=Augment: Thaumic Accelerators
 GT5U.armor.part.name.Terrasteel=Augment: Terrestrial Enhancement
+GT5U.armor.part.name.ApprenticeStriders=Augment: Apprentice Striders
+GT5U.armor.part.name.ArchmageStriders=Augment: Archmage Striders
+GT5U.armor.part.name.EldritchStriders=Augment: Eldritch Striders
 
 GT5U.armor.part.tooltip.NightVision=Allows user to see clearly at night and in the dark
 GT5U.armor.part.tooltip.CreativeFlight=Grants the user creative flight
@@ -3729,7 +3763,7 @@ GT5U.armor.part.tooltip.Hazmat=Grants the user hazmat protection. Only needs to 
 GT5U.armor.part.tooltip.Apiarist=Prevents negative bee effects, as if the user were wearing Apiarist's armor
 GT5U.armor.part.tooltip.SwimSpeed=Improves the user's speed in water
 GT5U.armor.part.tooltip.KnockbackResistance=Protects the user from knockback effects
-GT5U.armor.part.tooltip.SpeedBoost=Allows the user to move faster. Can be applied multiple times
+GT5U.armor.part.tooltip.SpeedBoost=Allows the user to move faster
 GT5U.armor.part.tooltip.JumpBoost=Allows the user to jump higher
 GT5U.armor.part.tooltip.FallProtection=Converts the user's fall damage into EU usage
 GT5U.armor.part.tooltip.SpaceSuit=Adds Spacesuit capability. Only needs to be applied to one armor piece
@@ -3738,8 +3772,10 @@ GT5U.armor.part.tooltip.OmniMovement=Allows user to move at increased speed in a
 GT5U.armor.part.tooltip.WaterBreathing=Restores the user's air if they run out underwater
 GT5U.armor.part.tooltip.MilkInfusion=Removes bad potion effects
 GT5U.armor.part.tooltip.HoloInventory=Opens a holographic view of nearby inventories
-GT5U.armor.part.tooltip.Travelers=Grants the user a more powerful version of Boots of the Traveler
 GT5U.armor.part.tooltip.Terrasteel=Grants the Will of the Ancients. Effects include:\n - 20% Mana Discount\n - Passive Mana generation for Mana Tablets\n - Passive health regeneration when not fully fed
+GT5U.armor.part.tooltip.ApprenticeStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
+GT5U.armor.part.tooltip.ArchmageStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
+GT5U.armor.part.tooltip.EldritchStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
 
 GT5U.armor.behavior.NightVision=Night Vision
 GT5U.armor.behavior.GogglesOfRevealing=Thaumic Sight
@@ -3767,11 +3803,12 @@ GT5U.armor.behavior.MilkInfusion=Milk Infusion
 GT5U.armor.behavior.HoloInventory=Holographic Inventory
 GT5U.armor.behavior.Terrasteel=Will of the Ancients
 
-GT5U.armor.message.enabled=%s Enabled
-GT5U.armor.message.disabled=%s Disabled
+GT5U.armor.message.enabled=%s §aEnabled§r
+GT5U.armor.message.disabled=%s §cDisabled§r
 GT5U.armor.message.installed=%s Installed
 GT5U.armor.message.systems_online=Armor Systems Online... Active keybindings:
-GT5U.armor.message.speed_set=New speed: %s%%
+GT5U.armor.message.speed_set=§6New speed:§r %s
+GT5U.armor.message.jump_boost_set=§6New jump boost:§r %s
 
 GT5U.armor.tooltip.hold_shift=Hold Shift for more info
 GT5U.armor.tooltip.armorframe=Armor Frame: %s
@@ -3914,7 +3951,8 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
-GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
+GT5U.nei.heat_capacity=Heat: %s K
+GT5U.nei.heat_capacity.material=Coil: %s
 GT5U.nei.tier=Tier: %s
 GT5U.nei.start_eu=Start: %s EU (MK %s)
 GT5U.nei.stages=Stages: %s
@@ -6714,6 +6752,7 @@ gregtech.effectTreetwister=Treetwister
 gregtech.effectMachineBoost=Machine Booster
 
 entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
+entity.gregtech.GTDrone.name=Drone
 
 # Fluids
 fluid.aniline=Aniline
@@ -7069,6 +7108,8 @@ key.gt.toggle_inertiacanceling=Toggle Inertia Canceling
 key.gt.toggle_omnimovement=Toggle Omni Movement
 key.gt.speed_increase=Increase Speed
 key.gt.speed_decrease=Decrease Speed
+key.gt.jump_increase=Increase Jump Boost
+key.gt.jump_decrease=Decrease Jump Boost
 key.gt.force_field=Toggle Force Field
 key.gt.open_radial_menu=Open Radial Menu
 
@@ -7397,6 +7438,7 @@ GT5U.scanner.debug.ic2_enet=Joined IC2 ENet
 GT5U.tooltip.drone_remote_disconnected=Shift-right-click an active Drone Centre to connect
 GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
 GT5U.tooltip.drone_remote_not_found=Drone Centre at x: %s, y: %s, z: %s in dim%s was not found!
+GT5U.tooltip.drone_remote_not_loaded=Chunk containing Drone Centre at x: %s, y: %s, z: %s in dim%s is not loaded!
 
 # info data
 GT5U.infodata.no_network=No Network

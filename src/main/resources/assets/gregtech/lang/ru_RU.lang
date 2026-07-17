@@ -3861,7 +3861,8 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
-GT5U.nei.heat_capacity=Теплоёмкость: %s K (%s)
+GT5U.nei.heat_capacity=Нагрев: %s K
+GT5U.nei.heat_capacity.material=Катушка: %s
 GT5U.nei.tier=Тир: %s
 GT5U.nei.start_eu=Запуск: %s EU (MK %s)
 GT5U.nei.stages=Этапы: %s
