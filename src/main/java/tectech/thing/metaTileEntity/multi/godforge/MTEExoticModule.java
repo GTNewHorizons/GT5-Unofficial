@@ -341,20 +341,21 @@ public class MTEExoticModule extends MTEBaseModule {
 
         for (ItemStack itemStack : items) {
             int[] oreIDs = OreDictionary.getOreIDs(itemStack);
-            FluidStack plasma = null;
 
             // Retry until it finds a falid vluid
             for (int oreID : oreIDs) {
                 String oreDict = OreDictionary.getOreName(oreID);
                 // substring 4 because dust is 4 characters long and there is no other possible oreDict
                 String strippedOreDict = oreDict.substring(4);
-                plasma = FluidRegistry.getFluidStack(
+                FluidStack plasma = FluidRegistry.getFluidStack(
                     "plasma." + strippedOreDict.toLowerCase(),
                     (int) (INGOTS * multiplier * itemStack.stackSize));
-                if (plasma != null) break;
-            }
 
-            if (plasma != null) plasmas.add(plasma);
+                if (plasma != null) {
+                    plasmas.add(plasma);
+                    break;
+                }
+            }
         }
 
         return plasmas.toArray(new FluidStack[0]);
