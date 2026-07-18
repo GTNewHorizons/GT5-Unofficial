@@ -97,35 +97,33 @@ public class MTEBlackHoleUtility extends MTEHatch {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         mode = aNBT.getInteger("mode");
-        pulseTimer = aNBT.getInteger("pulseTimer");
+        isOn = aNBT.getBoolean("isOn");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mode", mode);
-        aNBT.setInteger("pulseTimer", pulseTimer);
+        aNBT.setBoolean("isOn", isOn);
         super.saveNBTData(aNBT);
     }
 
-    /**
-     * Updates redstone update based on black hole status
-     */
-    public void updateRedstoneOutput(boolean machineOn) {
-        isOn = machineOn;
-        if (mode == 2) pulseTimer = 5;
+    public void cycleStart() {
+        isOn = true;
     }
 
-    // Redstone pulse will be 5 ticks (0.25s)
-    int pulseTimer = 5;
+    public void cycleMiddle() {
+        if (mode == 2) {
+            isOn = false;
+        }
+    }
+
+    public void blackHoleClosed() {
+        isOn = false;
+    }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (mode == 2) {
-            if (pulseTimer > 0) {
-                pulseTimer--;
-            } else isOn = false;
-        }
         if (isOn) {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) 15);
