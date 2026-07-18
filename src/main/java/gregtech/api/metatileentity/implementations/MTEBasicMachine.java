@@ -315,8 +315,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     /** Append GregTech-Modern-style orange/blue output frames. */
-    private ITexture[] appendAutoOutputOverlays(ITexture[] base, ForgeDirection side,
-        ForgeDirection itemFacingFromTe) {
+    private ITexture[] appendAutoOutputOverlays(ITexture[] base, ForgeDirection side, ForgeDirection itemFacingFromTe) {
         final boolean itemOut = side == itemFacingFromTe;
         final boolean fluidOut = side == getFluidOutputFacing();
         final int extra = (itemOut ? 1 : 0) + (fluidOut ? 1 : 0);
@@ -360,33 +359,37 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        final byte color = (byte) colorIndex;
+        // Inventory/NEI uses the prototype MTE with no world; skip I/O overlays there.
+        final boolean inWorld = baseMetaTileEntity != null && baseMetaTileEntity.getWorld() != null;
+        final boolean pipeOut = inWorld && showPipeFacing() && isPipeOutputSide(sideDirection, facingDirection);
+        final int textureIndex;
         if ((mMainFacing.flag & (UP.flag | DOWN.flag)) != 0) { // UP or DOWN
             if (sideDirection == facingDirection) {
-                return active ? getFrontFacingActive(color) : getFrontFacingInactive(color);
+                textureIndex = active ? 2 : 3;
+            } else {
+                textureIndex = switch (sideDirection) {
+                    case DOWN -> active ? 6 : 7;
+                    case UP -> active ? 4 : 5;
+                    default -> active ? 0 : 1;
+                };
             }
-            return switch (sideDirection) {
-                case DOWN -> active ? getBottomFacingActive(color) : getBottomFacingInactive(color);
-                case UP -> active ? getTopFacingActive(color) : getTopFacingInactive(color);
-                default -> active ? getSideFacingActive(color) : getSideFacingInactive(color);
+        } else if (sideDirection == mMainFacing) {
+            textureIndex = active ? 2 : 3;
+        } else if (pipeOut) {
+            textureIndex = switch (sideDirection) {
+                case DOWN -> active ? 8 : 9;
+                case UP -> active ? 10 : 11;
+                default -> active ? 12 : 13;
+            };
+        } else {
+            textureIndex = switch (sideDirection) {
+                case DOWN -> active ? 6 : 7;
+                case UP -> active ? 4 : 5;
+                default -> active ? 0 : 1;
             };
         }
-        if (sideDirection == mMainFacing) {
-            return active ? getFrontFacingActive(color) : getFrontFacingInactive(color);
-        }
-        if (showPipeFacing() && isPipeOutputSide(sideDirection, facingDirection)) {
-            final ITexture[] pipeBase = switch (sideDirection) {
-                case DOWN -> active ? getBottomFacingPipeActive(color) : getBottomFacingPipeInactive(color);
-                case UP -> active ? getTopFacingPipeActive(color) : getTopFacingPipeInactive(color);
-                default -> active ? getSideFacingPipeActive(color) : getSideFacingPipeInactive(color);
-            };
-            return appendAutoOutputOverlays(pipeBase, sideDirection, facingDirection);
-        }
-        return switch (sideDirection) {
-            case DOWN -> active ? getBottomFacingActive(color) : getBottomFacingInactive(color);
-            case UP -> active ? getTopFacingActive(color) : getTopFacingInactive(color);
-            default -> active ? getSideFacingActive(color) : getSideFacingInactive(color);
-        };
+        final ITexture[] base = mTextures[textureIndex][colorIndex + 1];
+        return pipeOut ? appendAutoOutputOverlays(base, sideDirection, facingDirection) : base;
     }
 
     @Override
