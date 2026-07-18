@@ -131,6 +131,8 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     public void clearHatches() {
         super.clearHatches();
 
+        structureInstanceInfo.clearHatches();
+
         mPreviousBECHatches = new ArrayList<>(mBECHatches);
 
         mBECHatches.forEach(h -> h.removeController(this));
