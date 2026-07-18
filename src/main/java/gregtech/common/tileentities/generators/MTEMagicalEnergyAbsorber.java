@@ -38,6 +38,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -192,8 +193,8 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
     @Override
     public String[] getDescription() {
         final String KEY = "gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip";
-        String dragonEgg = GTUtility
-            .translate(sAllowMultipleEggs ? KEY + ".dragon_egg.shared" : KEY + ".dragon_egg.exclusive");
+        String dragonEgg = StatCollector
+            .translateToLocal(sAllowMultipleEggs ? KEY + ".dragon_egg.shared" : KEY + ".dragon_egg.exclusive");
         List<String> description = new ArrayList<>(
             Arrays.asList(
                 GTUtility.translateMultiline(

@@ -28,7 +28,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -42,6 +41,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -56,7 +56,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
@@ -90,7 +89,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes;
+        return RecipeMaps.liquidFluorineThoriumReactorRecipes;
     }
 
     @Override
@@ -256,8 +255,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         checkHasInputHatch(errors);
 
         if (mOutputHatches.size() < 4 && hasNoMEOutputHatch) {
-            errors
-                .add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.OutputHatch, mOutputHatches.size(), 4));
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, OutputHatch, mOutputHatches.size(), 4));
         }
 
         for (MTEHatchMuffler hatch : mMufflerHatches) {

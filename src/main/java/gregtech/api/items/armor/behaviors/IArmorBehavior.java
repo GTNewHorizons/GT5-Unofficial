@@ -7,17 +7,19 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import gregtech.GTMod;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.items.armor.ArmorContext;
-import gregtech.api.util.GTUtility;
 
 public interface IArmorBehavior {
     /*
@@ -49,10 +51,14 @@ public interface IArmorBehavior {
      */
     default void onBehaviorActivated(@NotNull ArmorContext context) {
         if (hasDisplayName()) {
-            GTUtility.sendChatToPlayer(
-                context.getPlayer(),
-                GTUtility
-                    .processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.enabled", getDisplayName())));
+            if (context.getPlayer() instanceof EntityPlayerMP playerMP) {
+                ChatComponentTranslation chatComponent = new ChatComponentTranslation(
+                    "GT5U.armor.message.enabled",
+                    getDisplayName());
+                chatComponent.getChatStyle()
+                    .setColor(GRAY);
+                GTNHLib.proxy.sendMessageAboveHotbar(playerMP, chatComponent, 60, true, true);
+            }
         }
     }
 
@@ -61,10 +67,14 @@ public interface IArmorBehavior {
      */
     default void onBehaviorDeactivated(@NotNull ArmorContext context) {
         if (hasDisplayName()) {
-            GTUtility.sendChatToPlayer(
-                context.getPlayer(),
-                GTUtility
-                    .processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.disabled", getDisplayName())));
+            if (context.getPlayer() instanceof EntityPlayerMP playerMP) {
+                ChatComponentTranslation chatComponent = new ChatComponentTranslation(
+                    "GT5U.armor.message.disabled",
+                    getDisplayName());
+                chatComponent.getChatStyle()
+                    .setColor(GRAY);
+                GTNHLib.proxy.sendMessageAboveHotbar(playerMP, chatComponent, 60, true, true);
+            }
         }
     }
 

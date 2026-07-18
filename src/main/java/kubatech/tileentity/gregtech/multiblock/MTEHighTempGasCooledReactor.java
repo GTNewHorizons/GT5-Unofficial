@@ -39,6 +39,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -392,7 +393,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     + EnumChatFormatting.GRAY
                     + " distilled water/tick/ball")
             .beginStructureBlock(16, 27, 15, true)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("273", "Beryllium Integrated Reactor Casing", false)
             .addCasing("272", "Pressure Containment Casing", false)
             .addCasing("164", "Tungsten Frame Box", false)
@@ -1007,7 +1008,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         @Override
         public String getDisplayName() {
-            return GTUtility.translate(displayName);
+            return StatCollector.translateToLocal(displayName);
         }
 
         @Override
