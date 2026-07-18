@@ -1461,14 +1461,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                         return true;
                     }
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)) {
-                        // Sneak+wrench: main facing only - never fall through to output-config onWrenchRightClick.
-                        if (aPlayer.isSneaking()) {
-                            if (mMetaTileEntity instanceof MTEBasicMachine
-                                && ((MTEBasicMachine) mMetaTileEntity).setMainFacing(wrenchingSide)) {
-                                GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-                                sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
-                                cableUpdateDelay = 10;
-                            }
+                        if (aPlayer.isSneaking() && mMetaTileEntity instanceof MTEBasicMachine
+                            && ((MTEBasicMachine) mMetaTileEntity).setMainFacing(wrenchingSide)) {
+                            GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
+                            cableUpdateDelay = 10;
                         } else if (mMetaTileEntity
                             .onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                                 GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);

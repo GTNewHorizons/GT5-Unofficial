@@ -287,11 +287,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     /**
      * Keep TE front facing = item output so existing client texture sync carries item pipe side.
-     * <p>
-     * getUpdateData is one byte (main + fluid only). Item output rides TE front facing.
-     * Upgrade: extend the client sync packet to carry both output facings explicitly.
      */
-    protected void syncTeFrontFromItemOutput() {
+    private void syncTeFrontFromItemOutput() {
         final IGregTechTileEntity te = getBaseMetaTileEntity();
         if (te == null || mItemOutputFacing == UNKNOWN) return;
         if (te.getFrontFacing() != mItemOutputFacing) {
@@ -311,7 +308,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     protected boolean isPipeOutputSide(ForgeDirection side, ForgeDirection itemFacingFromTe) {
-        // Item output is mirrored to TE front facing for client texture sync; fluid is in getUpdateData.
         return side == itemFacingFromTe || side == getFluidOutputFacing();
     }
 
@@ -657,6 +653,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         } else {
             mFluidOutputFacing = mItemOutputFacing;
         }
+
+        syncTeFrontFromItemOutput();
 
         for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = GTUtility.loadItem(aNBT, "mOutputItem" + i);
     }
@@ -1134,7 +1132,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
         // Prefer fluid when both share the side and player is not sneaking; if only one matches, toggle that.
         // When both match, toggle both together so shared output side stays consistent.
-        // Upgrade, depending on what's needed: Allow input of items and not fluids or vice-versa.
         if (onItemOut && onFluidOut) {
             final boolean newVal = !mAllowInputFromOutputSideItems;
             mAllowInputFromOutputSideItems = newVal;
