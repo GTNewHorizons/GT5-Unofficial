@@ -4,6 +4,8 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOOUTPUT_FLUID;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOOUTPUT_ITEM;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.metatileentity.BaseTileEntity.FLUID_TRANSFER_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.ITEM_TRANSFER_TOOLTIP;
@@ -131,9 +133,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public boolean mDisableMultiStack = true;
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
     public ForgeDirection mMainFacing = ForgeDirection.WEST;
-    /** Item auto-output side. Mirrored to TE front facing for client sync. */
     public ForgeDirection mItemOutputFacing = UNKNOWN;
-    /** Fluid auto-output side. Synced via {@link #getUpdateData()}. */
     public ForgeDirection mFluidOutputFacing = UNKNOWN;
     public FluidStack mOutputFluid;
     protected OverclockDescriber overclockDescriber;
@@ -314,6 +314,20 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         return side == itemFacingFromTe || side == getFluidOutputFacing();
     }
 
+    /** Append GregTech-Modern-style orange/blue output frames. */
+    private ITexture[] appendAutoOutputOverlays(ITexture[] base, ForgeDirection side,
+        ForgeDirection itemFacingFromTe) {
+        final boolean itemOut = side == itemFacingFromTe;
+        final boolean fluidOut = side == getFluidOutputFacing();
+        final int extra = (itemOut ? 1 : 0) + (fluidOut ? 1 : 0);
+        if (extra == 0) return base;
+        final ITexture[] out = Arrays.copyOf(base, base.length + extra);
+        int i = base.length;
+        if (itemOut) out[i++] = TextureFactory.of(OVERLAY_AUTOOUTPUT_ITEM);
+        if (fluidOut) out[i] = TextureFactory.of(OVERLAY_AUTOOUTPUT_FLUID);
+        return out;
+    }
+
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[14][17][];
@@ -346,37 +360,33 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        final int textureIndex;
+        final byte color = (byte) colorIndex;
         if ((mMainFacing.flag & (UP.flag | DOWN.flag)) != 0) { // UP or DOWN
             if (sideDirection == facingDirection) {
-                textureIndex = active ? 2 : 3;
-            } else {
-                textureIndex = switch (sideDirection) {
-                    case DOWN -> active ? 6 : 7;
-                    case UP -> active ? 4 : 5;
-                    default -> active ? 0 : 1;
-                };
+                return active ? getFrontFacingActive(color) : getFrontFacingInactive(color);
             }
-        } else {
-            if (sideDirection == mMainFacing) {
-                textureIndex = active ? 2 : 3;
-            } else {
-                if (showPipeFacing() && isPipeOutputSide(sideDirection, facingDirection)) {
-                    textureIndex = switch (sideDirection) {
-                        case DOWN -> active ? 8 : 9;
-                        case UP -> active ? 10 : 11;
-                        default -> active ? 12 : 13;
-                    };
-                } else {
-                    textureIndex = switch (sideDirection) {
-                        case DOWN -> active ? 6 : 7;
-                        case UP -> active ? 4 : 5;
-                        default -> active ? 0 : 1;
-                    };
-                }
-            }
+            return switch (sideDirection) {
+                case DOWN -> active ? getBottomFacingActive(color) : getBottomFacingInactive(color);
+                case UP -> active ? getTopFacingActive(color) : getTopFacingInactive(color);
+                default -> active ? getSideFacingActive(color) : getSideFacingInactive(color);
+            };
         }
-        return mTextures[textureIndex][colorIndex + 1];
+        if (sideDirection == mMainFacing) {
+            return active ? getFrontFacingActive(color) : getFrontFacingInactive(color);
+        }
+        if (showPipeFacing() && isPipeOutputSide(sideDirection, facingDirection)) {
+            final ITexture[] pipeBase = switch (sideDirection) {
+                case DOWN -> active ? getBottomFacingPipeActive(color) : getBottomFacingPipeInactive(color);
+                case UP -> active ? getTopFacingPipeActive(color) : getTopFacingPipeInactive(color);
+                default -> active ? getSideFacingPipeActive(color) : getSideFacingPipeInactive(color);
+            };
+            return appendAutoOutputOverlays(pipeBase, sideDirection, facingDirection);
+        }
+        return switch (sideDirection) {
+            case DOWN -> active ? getBottomFacingActive(color) : getBottomFacingInactive(color);
+            case UP -> active ? getTopFacingActive(color) : getTopFacingInactive(color);
+            default -> active ? getSideFacingActive(color) : getSideFacingInactive(color);
+        };
     }
 
     @Override
@@ -883,9 +893,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     @Override
     public void onValueUpdate(byte aValue) {
-        mMainFacing = ForgeDirection.getOrientation(aValue & 7);
-        mFluidOutputFacing = ForgeDirection.getOrientation((aValue >> 3) & 7);
-        // Item output facing is mirrored to TE front facing (texture packet)
+        // bits 0-1: main facing, 2-4: fluid out, item via TE front
+        mMainFacing = unpackMainFacingBits(aValue);
+        mFluidOutputFacing = ForgeDirection.getOrientation((aValue >> 2) & 7);
         final IGregTechTileEntity te = getBaseMetaTileEntity();
         if (te != null) {
             mItemOutputFacing = te.getFrontFacing();
@@ -894,8 +904,27 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     @Override
     public byte getUpdateData() {
-        // bits 0-2: main facing, bits 3-5: fluid output facing (item uses TE front)
-        return (byte) ((mMainFacing.ordinal() & 7) | ((getFluidOutputFacing().ordinal() & 7) << 3));
+        // bits 0-1: main facing, 2-4: fluid out, item via TE front
+        return (byte) ((packMainFacingBits(mMainFacing) & 3) | ((getFluidOutputFacing().ordinal() & 7) << 2));
+    }
+
+    private static int packMainFacingBits(ForgeDirection main) {
+        return switch (main) {
+            case NORTH -> 0;
+            case SOUTH -> 1;
+            case WEST -> 2;
+            case EAST -> 3;
+            default -> 0;
+        };
+    }
+
+    private static ForgeDirection unpackMainFacingBits(int bits) {
+        return switch (bits & 3) {
+            case 0 -> ForgeDirection.NORTH;
+            case 1 -> ForgeDirection.SOUTH;
+            case 2 -> ForgeDirection.WEST;
+            default -> ForgeDirection.EAST;
+        };
     }
 
     @Override
