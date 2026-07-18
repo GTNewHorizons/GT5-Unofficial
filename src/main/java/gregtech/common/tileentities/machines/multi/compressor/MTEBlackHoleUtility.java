@@ -98,6 +98,10 @@ public class MTEBlackHoleUtility extends MTEHatch {
     public void loadNBTData(NBTTagCompound aNBT) {
         mode = aNBT.getInteger("mode");
         isOn = aNBT.getBoolean("isOn");
+        if (mode == 2) {
+            // pulse off to avoid skipped pulses during restart
+            isOn = false;
+        }
         super.loadNBTData(aNBT);
     }
 
