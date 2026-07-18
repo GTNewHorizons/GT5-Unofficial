@@ -314,6 +314,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         return side == itemFacingFromTe || side == getFluidOutputFacing();
     }
 
+    private boolean isAnyOutputFacing(ForgeDirection side) {
+        return side == getItemOutputFacing() || side == getFluidOutputFacing();
+    }
+
     /** Append GregTech-Modern-style orange/blue output frames. */
     private ITexture[] appendAutoOutputOverlays(ITexture[] base, ForgeDirection side, ForgeDirection itemFacingFromTe) {
         final boolean itemOut = side == itemFacingFromTe;
@@ -429,7 +433,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     @Override
     public boolean isLiquidInput(ForgeDirection side) {
-        return side != mMainFacing && (mAllowInputFromOutputSideFluids || side != getFluidOutputFacing());
+        return side != mMainFacing && (mAllowInputFromOutputSideFluids || !isAnyOutputFacing(side));
     }
 
     @Override
@@ -1177,7 +1181,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         if (side == mMainFacing) return false;
         if (aIndex < getInputSlot()) return false;
         if (aIndex >= getInputSlot() + mInputSlotCount) return false;
-        if (!mAllowInputFromOutputSideItems && side == getItemOutputFacing()) return false;
+        if (!mAllowInputFromOutputSideItems && isAnyOutputFacing(side)) return false;
 
         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++) {
             if (GTUtility.areStacksEqual(GTOreDictUnificator.get(aStack), mInventory[i]) && mDisableMultiStack) {
