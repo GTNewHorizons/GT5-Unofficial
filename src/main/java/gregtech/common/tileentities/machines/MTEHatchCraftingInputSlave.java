@@ -50,7 +50,6 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
     }
 
     public static final String COPIED_DATA_IDENTIFIER = "craftingInputProxy";
-    private final List<IHatchWatcher> watchers = new ArrayList<>();
     private MTEHatchCraftingInputME master; // use getMaster() to access
     private int masterX, masterY, masterZ;
     private boolean masterSet = false; // indicate if values of masterX, masterY, masterZ are valid
