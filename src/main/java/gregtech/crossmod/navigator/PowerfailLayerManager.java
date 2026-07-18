@@ -1,10 +1,12 @@
 package gregtech.crossmod.navigator;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Locale;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,20 +17,19 @@ import com.gtnewhorizons.navigator.api.model.layers.InteractableLayerManager;
 import com.gtnewhorizons.navigator.api.model.layers.LayerRenderer;
 import com.gtnewhorizons.navigator.api.model.layers.UniversalInteractableRenderer;
 import com.gtnewhorizons.navigator.api.model.locations.ILocationProvider;
+import com.gtnewhorizons.navigator.api.model.locations.IWaypointAndLocationProvider;
+import com.gtnewhorizons.navigator.api.model.markers.MapMarker;
 import com.gtnewhorizons.navigator.api.model.waypoints.WaypointManager;
 import com.gtnewhorizons.navigator.api.xaero.waypoints.XaeroWaypointManager;
 
 import gregtech.GTMod;
 import gregtech.common.data.GTPowerfailTracker;
-import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectCollection;
 
 public class PowerfailLayerManager extends InteractableLayerManager {
 
     public static final PowerfailLayerManager INSTANCE = new PowerfailLayerManager();
 
-    private final Long2ObjectLinkedOpenHashMap<PowerfailLocationWrapper> wrappers = new Long2ObjectLinkedOpenHashMap<>();
+    private String[] searchTokens = {};
 
     private PowerfailLayerManager() {
         super(new PowerfailButtonManager());
@@ -38,7 +39,8 @@ public class PowerfailLayerManager extends InteractableLayerManager {
     @Override
     protected @Nullable LayerRenderer addLayerRenderer(InteractableLayerManager manager, SupportedMods mod) {
         return new UniversalInteractableRenderer(manager)
-            .withRenderStep(location -> new PowerfailRenderStep((PowerfailLocationWrapper) location));
+            .withRenderStep(location -> new PowerfailRenderStep((PowerfailLocationWrapper) location))
+            .withMapMarker(location -> createMapMarker((PowerfailLocationWrapper) location));
     }
 
     @Nullable
@@ -52,69 +54,62 @@ public class PowerfailLayerManager extends InteractableLayerManager {
     }
 
     @Override
-    public void onUpdatePost(int chunkMinX, int chunkMaxX, int chunkMinZ, int chunkMaxZ) {
-        super.onUpdatePost(chunkMinX, chunkMaxX, chunkMinZ, chunkMaxZ);
+    protected Collection<? extends IWaypointAndLocationProvider> generateVisibleLocations(int minBlockX, int minBlockZ,
+        int maxBlockX, int maxBlockZ, int dimension) {
+        var powerfails = GTMod.clientProxy().powerfailRenderer.powerfails.get(dimension);
+        if (powerfails == null || powerfails.isEmpty()) return Collections.emptyList();
 
-        WorldClient world = Minecraft.getMinecraft().theWorld;
-
-        ObjectCollection<GTPowerfailTracker.Powerfail> pfs = GTMod.clientProxy().powerfailRenderer.powerfails
-            .getOrDefault(world.provider.dimensionId, new Long2ObjectOpenHashMap<>())
-            .values();
-
-        for (GTPowerfailTracker.Powerfail p : pfs) {
-            long coord = p.getCoord();
-
-            PowerfailLocationWrapper w = wrappers.get(coord);
-
-            if (w == null) {
-                w = new PowerfailLocationWrapper(p);
-                wrappers.put(coord, w);
+        ArrayList<PowerfailLocationWrapper> visible = new ArrayList<>();
+        for (GTPowerfailTracker.Powerfail powerfail : powerfails.values()) {
+            if (powerfail.x >= minBlockX && powerfail.x <= maxBlockX
+                && powerfail.z >= minBlockZ
+                && powerfail.z <= maxBlockZ) {
+                visible.add(new PowerfailLocationWrapper(powerfail));
             }
-
-            updateElement(w);
-            getVisibleLocations().add(w);
         }
+        return visible;
+    }
 
-        // Copy the set because java is stupid and doesn't like to allow generic upcasting.
-        // We also use a linked collection to prevent what looks like z fighting in the HUD minimap.
-        // It isn't actually z fighting, hashed collections just have pseudorandom/arbitrary iteration order.
-        Set<ILocationProvider> locs = new LinkedHashSet<>(getVisibleLocations());
-
-        layerRenderer.values()
-            .forEach(layer -> layer.refreshVisibleElements(locs));
+    @Override
+    public void updateElement(IWaypointAndLocationProvider location) {
+        if (!(location instanceof PowerfailLocationWrapper wrapper)) return;
+        var powerfails = GTMod.clientProxy().powerfailRenderer.powerfails.get(wrapper.getDimensionId());
+        if (powerfails != null) {
+            GTPowerfailTracker.Powerfail latest = powerfails.get(wrapper.toLong());
+            if (latest != null) wrapper.update(latest);
+        }
+        wrapper.highlighted = matchesSearch(wrapper);
     }
 
     @Override
     public void onSearch(@NotNull String searchString) {
-        super.onSearch(searchString);
-
-        if (searchString.isEmpty()) {
-            for (PowerfailLocationWrapper wrapper : wrappers.values()) {
-                wrapper.highlighted = true;
-            }
-        } else {
-            String[] tokens = searchString.toLowerCase()
+        searchTokens = searchString.isEmpty() ? new String[0]
+            : searchString.toLowerCase(Locale.ROOT)
                 .split("\\s+");
-
-            for (PowerfailLocationWrapper wrapper : wrappers.values()) {
-                wrapper.highlighted = true;
-
-                for (String token : tokens) {
-                    if (!wrapper.mteName.contains(token)) {
-                        wrapper.highlighted = false;
-                        break;
-                    }
-                }
-            }
+        for (ILocationProvider location : getCachedLocations()) {
+            if (location instanceof PowerfailLocationWrapper wrapper) wrapper.highlighted = matchesSearch(wrapper);
         }
     }
 
     public void removePowerfail(long coord) {
-        if (getCurrentDimCache().getOrDefault(coord, null) != null) {
-            removeLocation(coord);
+        removeLocation(coord);
+    }
+
+    private boolean matchesSearch(PowerfailLocationWrapper wrapper) {
+        for (String token : searchTokens) {
+            if (!wrapper.mteName.contains(token)) return false;
         }
-        if (wrappers.containsKey(coord)) {
-            wrappers.remove(coord);
-        }
+        return true;
+    }
+
+    private static @Nullable MapMarker createMapMarker(PowerfailLocationWrapper location) {
+        if (!location.highlighted) return null;
+        if (!(GTMod.clientProxy().powerfailRenderer.powerfailIcon instanceof TextureAtlasSprite icon)) return null;
+        return new MapMarker(TextureMap.locationBlocksTexture, icon).setDisplaySize(32, 32)
+            .setLabel(
+                location.powerfail.toSummary()
+                    .toString())
+            .setLabelOffsetY(24)
+            .setLabelOnMinimap(false);
     }
 }
