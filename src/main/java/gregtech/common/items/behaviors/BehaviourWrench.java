@@ -6,10 +6,13 @@ import java.util.function.BooleanSupplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
@@ -19,6 +22,7 @@ import appeng.api.util.IOrientable;
 import appeng.tile.misc.TileInterface;
 import gregtech.GTMod;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.WrenchOutputConfig;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTUtility;
@@ -31,6 +35,27 @@ public class BehaviourWrench extends BehaviourNone {
 
     public BehaviourWrench(int aCosts) {
         this.mCosts = aCosts;
+    }
+
+    @Override
+    public ItemStack onItemRightClick(MetaBaseItem aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+        // GT-Modern style: sneak+RMB in air cycles item/fluid/both output config.
+        // Sneak+wrench on a machine still sets main facing via BaseMetaTileEntity (consumes the click).
+        if (aPlayer.isSneaking() && !aWorld.isRemote && !isLookingAtBlock(aPlayer)) {
+            WrenchOutputConfig next = WrenchOutputConfig.cycle(aStack);
+            GTUtility.sendChatTrans(aPlayer, next.getLangKey());
+        }
+        return aStack;
+    }
+
+    public static boolean isLookingAtBlock(EntityPlayer player) {
+        final double reach = player instanceof EntityPlayerMP mp ? mp.theItemInWorldManager.getBlockReachDistance()
+            : GTUtility.getClientReachDistance();
+        final Vec3 eye = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+        final Vec3 look = player.getLook(1.0F);
+        final Vec3 end = eye.addVector(look.xCoord * reach, look.yCoord * reach, look.zCoord * reach);
+        final MovingObjectPosition hit = player.worldObj.rayTraceBlocks(eye, end);
+        return hit != null && hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK;
     }
 
     @Override
@@ -277,6 +302,11 @@ public class BehaviourWrench extends BehaviourNone {
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         aList.add(StatCollector.translateToLocal("gt.behaviour.wrench"));
+        aList.add(StatCollector.translateToLocal("gt.behaviour.wrench.output_config"));
+        aList.add(
+            StatCollector.translateToLocal(
+                WrenchOutputConfig.get(aStack)
+                    .getLangKey()));
         return aList;
     }
 }

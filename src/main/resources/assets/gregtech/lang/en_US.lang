@@ -874,6 +874,7 @@ gt.blockmachines.basicmachine.wiremill.tier.12.name=Epic Wire Transfigurator IV
 
 #Behavious
 gt.behaviour.wrench=Rotates Blocks on right-click
+gt.behaviour.wrench.output_config=§bSneak + right-click air§7 to cycle Item / Fluid / Both output config
 gt.behaviour.paintspray.uses=Remaining Uses: %s
 gt.behaviour.unstackable=Not usable when stacked!
 gt.behaviour.paintspray.chain=If used while sneaking it will spray a chain of blocks
@@ -2255,6 +2256,9 @@ GT5U.machines.side_selection.tooltip=§bShift click§7 to configure output side 
 GT5U.machines.output_facing.item=Item Output Facing: %s
 GT5U.machines.output_facing.fluid=Fluid Output Facing: %s
 GT5U.machines.output_facing.both=Item & Fluid Output Facing: %s
+GT5U.machines.wrench_output_config.item=Wrench Output Config: Items
+GT5U.machines.wrench_output_config.fluid=Wrench Output Config: Fluids
+GT5U.machines.wrench_output_config.both=Wrench Output Config: Items & Fluids
 GT5U.machines.input_from_output_item.tooltip=Allow Item Input from any Output Side
 GT5U.machines.input_from_output_fluid.tooltip=Allow Fluid Input from any Output Side
 GT5U.machines.battery_slot.tooltip=Power Slot
@@ -7132,9 +7136,6 @@ gt.softmallet.tooltip.mode=Mode Cycles Between Toggle/Activate/Deactivate
 key.gt.tool_mode_switch=Tool Mode Switch
 gt.wrench.mode.1=Line Mode
 gt.wrench.mode.2=Precise Mode
-gt.wrench.mode.3=Item Output
-gt.wrench.mode.4=Fluid Output
-gt.wrench.mode.5=Both Outputs
 gt.softmallet.mode.1=Activation Mode
 gt.softmallet.mode.2=Deactivation Mode
 

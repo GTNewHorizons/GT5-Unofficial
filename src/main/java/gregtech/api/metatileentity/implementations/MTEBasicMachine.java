@@ -70,7 +70,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TieredVariant;
-import gregtech.api.enums.ToolModes;
+import gregtech.api.enums.WrenchOutputConfig;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
@@ -83,7 +83,6 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
@@ -101,6 +100,8 @@ import gregtech.api.util.GTWaila;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
@@ -1067,9 +1068,13 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         float aX, float aY, float aZ, ItemStack aTool) {
         if (wrenchingSide == mMainFacing || !isFacingValid(wrenchingSide)) return false;
 
-        final int mode = MetaGeneratedTool.getToolMode(aTool);
+        final ItemStack toolStack = aTool != null && aTool.getItem() instanceof ItemGTToolbox
+            ? ToolboxUtil.getSelectedTool(aTool)
+                .orElse(aTool)
+            : aTool;
+        final WrenchOutputConfig config = WrenchOutputConfig.get(toolStack);
         final boolean ok;
-        if (mode == ToolModes.WRENCH_OUTPUT_ITEM.get()) {
+        if (config == WrenchOutputConfig.ITEM) {
             ok = setItemOutputFacing(wrenchingSide);
             if (ok) {
                 GTUtility.sendChatTrans(
@@ -1077,7 +1082,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     "GT5U.machines.output_facing.item",
                     getFacingNameLocalized(wrenchingSide.ordinal()));
             }
-        } else if (mode == ToolModes.WRENCH_OUTPUT_FLUID.get()) {
+        } else if (config == WrenchOutputConfig.FLUID) {
             ok = setFluidOutputFacing(wrenchingSide);
             if (ok) {
                 GTUtility.sendChatTrans(

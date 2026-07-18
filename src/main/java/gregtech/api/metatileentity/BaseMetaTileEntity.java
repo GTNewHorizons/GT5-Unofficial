@@ -1436,7 +1436,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         if (isClientSide()) {
             // Place/configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
-                return (effectiveSideCover.hasCoverGUI());
+                final ItemStack held = aPlayer.inventory.getCurrentItem();
+                // Consume sneak+wrench on client so vanilla does not fall through to item onItemRightClick
+                if (held != null && GTUtility.isStackInList(held, GregTechAPI.sWrenchList)) {
+                    return true;
+                }
+                return effectiveSideCover.hasCoverGUI();
             }
 
             if (!getCoverAtSide(side).isGUIClickable()) return false;
@@ -1456,11 +1461,14 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                         return true;
                     }
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)) {
-                        if (aPlayer.isSneaking() && mMetaTileEntity instanceof MTEBasicMachine
-                            && ((MTEBasicMachine) mMetaTileEntity).setMainFacing(wrenchingSide)) {
-                            GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-                            sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
-                            cableUpdateDelay = 10;
+                        // Sneak+wrench: main facing only - never fall through to output-config onWrenchRightClick.
+                        if (aPlayer.isSneaking()) {
+                            if (mMetaTileEntity instanceof MTEBasicMachine
+                                && ((MTEBasicMachine) mMetaTileEntity).setMainFacing(wrenchingSide)) {
+                                GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
+                                sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
+                                cableUpdateDelay = 10;
+                            }
                         } else if (mMetaTileEntity
                             .onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                                 GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);

@@ -53,6 +53,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
+import gregtech.api.enums.WrenchOutputConfig;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.item.IPickBlockHandler;
@@ -65,6 +66,7 @@ import gregtech.api.net.GTPacketToolboxEvent;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.item.ToolboxInventoryGui;
+import gregtech.common.items.behaviors.BehaviourWrench;
 import gregtech.common.items.toolbox.ToolboxElectricManager;
 import gregtech.common.items.toolbox.ToolboxItemStackHandler;
 import gregtech.common.items.toolbox.ToolboxPickBlockDecider;
@@ -207,6 +209,18 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
 
     @Override
     public ItemStack onItemRightClick(final ItemStack toolbox, final World world, final EntityPlayer player) {
+        if (player.isSneaking() && ToolboxUtil.isToolOfType(toolbox, ToolboxSlot.WRENCH)
+            && !BehaviourWrench.isLookingAtBlock(player)) {
+            if (!world.isRemote) {
+                final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
+                handler.mutateCurrentTool(tool -> {
+                    WrenchOutputConfig next = WrenchOutputConfig.cycle(tool);
+                    GTUtility.sendChatTrans(player, next.getLangKey());
+                });
+            }
+            return toolbox;
+        }
+
         if (canOpenInventoryGui(toolbox, world)) {
             if (toolbox == Backhand.getOffhandItem(player)) {
                 GuiFactories.playerInventory()
