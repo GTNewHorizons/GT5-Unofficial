@@ -4,8 +4,10 @@ import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.network.NetworkUtils;
+import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -15,8 +17,11 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
@@ -64,18 +69,40 @@ public final class CommonWidgets {
             int heightPerRow = TextRenderer.getFontRenderer().FONT_HEIGHT;
             int height = heightPerRow * rows;
 
-            return new SingleChildWidget<>().coverChildren()
-                .bottomRel(1)
-                .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
+            Flow row = Flow.row()
+                .coverChildren()
+                .marginLeft(5)
+                .marginRight(5)
+                .marginTop(5)
+                .marginBottom(1)
                 .child(
                     IKey.str(title)
                         .asWidget()
                         .size(widgetWidth, height)
-                        .widgetTheme(GTWidgetThemes.TEXT_TITLE)
-                        .marginLeft(5)
-                        .marginRight(5)
-                        .marginTop(5)
-                        .marginBottom(1));
+                        .widgetTheme(GTWidgetThemes.TEXT_TITLE));
+
+            byte colorization = mte.getBaseMetaTileEntity()
+                .getColorization();
+            if (GregTechAPI.sColoredGUI && colorization != IColoredTileEntity.UNCOLOURED) {
+                int swatchSize = heightPerRow;
+                row.child(
+                    new ParentWidget<>().size(swatchSize + 2, swatchSize + 2)
+                        .marginLeft(4)
+                        .background(GTGuiTextures.SLOT_ITEM_STANDARD)
+                        .tooltip(
+                            tooltip -> tooltip.add(
+                                Dyes.get(colorization)
+                                    .getLocalizedDyeName()))
+                        .child(
+                            new Widget<>().size(swatchSize, swatchSize)
+                                .pos(1, 1)
+                                .background(new Rectangle().color(Color.withAlpha(mte.getGUIColorization(), 255)))));
+            }
+
+            return new SingleChildWidget<>().coverChildren()
+                .bottomRel(1)
+                .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
+                .child(row);
         }
         return null;
     }
