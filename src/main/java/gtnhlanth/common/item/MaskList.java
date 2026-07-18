@@ -117,7 +117,7 @@ public enum MaskList {
     String englishName;
     String spectrum;
 
-    int maxDamage;
+    int maxUses;
 
     MaskList precursor;
     Dyes lensColour;
@@ -141,8 +141,7 @@ public enum MaskList {
         this.name = name;
         this.englishName = englishName;
         this.spectrum = spectrum;
-        this.maxDamage = maxUses - 1; // 0-durability masks still function, so e.g. maxUses = 100 corresponds to
-                                      // durability levels 0-99
+        this.maxUses = maxUses;
         this.precursor = precursor;
         this.lensColour = lensColour;
         this.engraverEUt = engraverEUt;
@@ -167,8 +166,8 @@ public enum MaskList {
         return this.spectrum;
     }
 
-    public int getDamage() {
-        return this.maxDamage;
+    public int getMaxUses() {
+        return this.maxUses;
     }
 
     public MaskList getPrecursor() {
