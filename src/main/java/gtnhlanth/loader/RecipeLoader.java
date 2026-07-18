@@ -4084,20 +4084,21 @@ public class RecipeLoader {
         removeCeriumDehydrator();
         removeCeriumChemicalBath();
 
-        // For Cauldron Wash
-        GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes to replace cerium sources");
-        registerCauldronCleaningFor(Materials.Cerium, WerkstoffMaterialPool.CeriumRichMixture.getBridgeMaterial());
-        registerCauldronCleaningFor(
-            Materials.Samarium,
-            WerkstoffMaterialPool.SamariumOreConcentrate.getBridgeMaterial());
-        GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes done!");
-
         // For Crafting Table
         GTLog.out.println(Tags.MODID + ": processing crafting recipes to replace cerium sources");
         CraftingManager.getInstance()
             .getRecipeList()
             .forEach(RecipeLoader::replaceInCraftTable);
         GTLog.out.println(Tags.MODID + ": processing crafting recipes done!");
+    }
+
+    public static void registerCauldronRemaps() {
+        GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes to replace cerium sources");
+        registerCauldronCleaningFor(Materials.Cerium, WerkstoffMaterialPool.CeriumRichMixture.getBridgeMaterial());
+        registerCauldronCleaningFor(
+            Materials.Samarium,
+            WerkstoffMaterialPool.SamariumOreConcentrate.getBridgeMaterial());
+        GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes done!");
     }
 
     public static void replaceInCraftTable(Object obj) {
