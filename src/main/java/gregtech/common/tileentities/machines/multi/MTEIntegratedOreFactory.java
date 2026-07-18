@@ -663,7 +663,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addController("Front center, 3rd layer")
             .addCasing("462", "Advanced Iridium Plated Machine Casing", false)
             .addCasing("0-163", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("96", "Iridium Sheetmetal", false)
+            .addCasing("98", "Iridium Sheetmetal", false)
             .addCasing("90", "Any Tiered Glass", false)
             .addCasing("23", "Stainless Steel Frame Box", false)
             .addCasing("7", "Awakened Draconium Coil Block", false)
