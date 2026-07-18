@@ -60,7 +60,7 @@ public class Material implements IOreMaterial {
     private TextureSet textureSet;
 
     private Fluid mFluid;
-    private Fluid mPlasma;
+    public Fluid mPlasma;
 
     private boolean generateCells;
     private boolean shouldGenerateFluid;

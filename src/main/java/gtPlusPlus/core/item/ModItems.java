@@ -450,7 +450,8 @@ public final class ModItems {
         MaterialGenerator.generate(MaterialsElements.getInstance().TECHNETIUM);
 
         // Special (Only Plasma)
-        MaterialsElements.getInstance().IODINE.generatePlasma();
+        Material materialIodine=MaterialsElements.getInstance().IODINE;
+        materialIodine.mPlasma=materialIodine.generatePlasma();
 
         // RADIOACTIVE ELEMENTS
         MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().POLONIUM, false);
