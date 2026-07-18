@@ -542,7 +542,7 @@ public class Gregtech {
         public boolean machineThunderExplosions;
 
         @Config.Comment("If true, enable the guis of the machines to get a tint and it will be of the color of the dye applied to the machine.")
-        @Config.DefaultBoolean(true)
+        @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
         public boolean coloredGUI;
 
