@@ -162,7 +162,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 StatCollector.translateToLocal("GT5U.tooltip.bec-storage.bec-hatch-pos"),
                 2)
             .addMiscHatch(
-                "0-19",
+                "0+",
                 "Bose-Einstein Condensate Detector Hatch",
                 StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"),
                 1)
