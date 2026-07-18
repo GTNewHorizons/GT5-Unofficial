@@ -111,6 +111,7 @@ public class Godforge implements Runnable {
                     MaterialsElements.getInstance().RUTHENIUM.getDust(1),
                     MaterialsElements.getInstance().RHENIUM.getDust(1),
                     MaterialsElements.getInstance().RHODIUM.getDust(1),
+                    WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 1),
                     MaterialsElements.getInstance().HAFNIUM.getDust(1),
                     MaterialsElements.getInstance().CURIUM.getDust(1) };
 
@@ -154,6 +155,7 @@ public class Godforge implements Runnable {
                     new FluidStack(MaterialsElements.getInstance().RUTHENIUM.getPlasma(), 1 * INGOTS),
                     new FluidStack(MaterialsElements.getInstance().RHENIUM.getPlasma(), 1 * INGOTS),
                     new FluidStack(MaterialsElements.getInstance().RHODIUM.getPlasma(), 1 * INGOTS),
+                    new FluidStack(MaterialsElements.getInstance().IODINE.getPlasma(), 1 * INGOTS),
                     new FluidStack(MaterialsElements.getInstance().HAFNIUM.getPlasma(), 1 * INGOTS),
                     new FluidStack(MaterialsElements.getInstance().CURIUM.getPlasma(), 1 * INGOTS) };
 

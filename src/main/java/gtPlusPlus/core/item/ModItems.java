@@ -449,6 +449,9 @@ public final class ModItems {
         MaterialGenerator.generate(MaterialsElements.getInstance().GERMANIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().TECHNETIUM);
 
+        // Special (Only Plasma)
+        MaterialsElements.getInstance().IODINE.generatePlasma();
+
         // RADIOACTIVE ELEMENTS
         MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().POLONIUM, false);
         MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().RADIUM, false);
