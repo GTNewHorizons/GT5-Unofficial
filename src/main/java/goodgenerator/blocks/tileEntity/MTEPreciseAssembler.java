@@ -126,7 +126,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                             .atLeast(
                                 InputBus,
                                 InputHatch,
-                                OutputHatch,
                                 OutputBus,
                                 Maintenance,
                                 Muffler,
