@@ -441,9 +441,9 @@ public class Client {
         @Config.Name("Show GT++ Radioactive Text")
         public boolean showRadioactiveText;
 
-        @Config.Comment("Enabled show GT++ Hot Ingot Text")
+        @Config.Comment("Enabled show Hot Ingot Text")
         @Config.DefaultBoolean(true)
-        @Config.Name("Show GT++ Hot Ingot Text")
+        @Config.Name("Show Hot Ingot Text")
         public boolean showHotIngotText;
 
         @Config.Comment("Enabled show GT++ Ctrl Text")
