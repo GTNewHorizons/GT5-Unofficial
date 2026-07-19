@@ -35,6 +35,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Superconductors;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -2602,8 +2603,8 @@ public class MTERecipeLoader implements Runnable {
         GTOreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_MAX.get(1L),
             ItemList.Casing_MAX.get(1),
-            OrePrefixes.cableGt04.get(Materials.SuperconductorUV),
-            OrePrefixes.cableGt04.get(Materials.SuperconductorUV));
+            Superconductors.UV.getCableGt04Ingredient(),
+            Superconductors.UV.getCableGt04Ingredient());
 
         GTModHandler.addCraftingRecipe(
             ItemList.Transformer_LV_ULV.get(1L),
@@ -2956,7 +2957,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_1by1_UHV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
-                OrePrefixes.wireGt01.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest });
+                Superconductors.UHV.getWireGt01Ingredient(), 'T', OreDictNames.craftingChest });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_2by2_ULV.get(1L),
@@ -3012,7 +3013,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_2by2_UHV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
-                OrePrefixes.wireGt04.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest });
+                Superconductors.UHV.getWireGt04Ingredient(), 'T', OreDictNames.craftingChest });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_3by3_ULV.get(1L),
@@ -3068,7 +3069,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_3by3_UHV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
-                OrePrefixes.wireGt08.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest });
+                Superconductors.UHV.getWireGt08Ingredient(), 'T', OreDictNames.craftingChest });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_4by4_ULV.get(1L),
@@ -3124,7 +3125,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_4by4_UHV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
-                OrePrefixes.wireGt16.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest });
+                Superconductors.UHV.getWireGt16Ingredient(), 'T', OreDictNames.craftingChest });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_ULV.get(1L),
@@ -3186,8 +3187,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Charger_4by4_UHV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_MAX, 'W',
-                OrePrefixes.wireGt16.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest, 'B',
-                ItemList.ZPM2, 'C', Circuits.UHV.getIngredient() });
+                Superconductors.UHV.getWireGt16Ingredient(), 'T', OreDictNames.craftingChest, 'B', ItemList.ZPM2, 'C',
+                Circuits.UHV.getIngredient() });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Locker_ULV.get(1L),

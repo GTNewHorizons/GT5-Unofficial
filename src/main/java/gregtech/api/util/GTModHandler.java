@@ -70,6 +70,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Superconductors;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -741,7 +742,7 @@ public class GTModHandler {
                     case  6 -> MU.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.NiobiumTitanium);
                     case  7 -> MU.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.Naquadah);
                     case  8 -> MU.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.NaquadahAlloy);
-                    default -> OrePrefixes.wireGt01.get(Materials.SuperconductorUHV);
+                    default -> Superconductors.UHV.getWireGt01Ingredient();
                 };
 
                 case WIRE4 -> switch (machineTier) {
@@ -753,8 +754,8 @@ public class GTModHandler {
                     case  5 -> MU.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Platinum);
                     case  6 -> MU.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.NiobiumTitanium);
                     case  7 -> MU.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Naquadah);
-                    case  8 -> OrePrefixes.wireGt01.get(Materials.SuperconductorUHV);
-                    default -> OrePrefixes.wireGt04.get(Materials.SuperconductorUHV);
+                    case  8 -> Superconductors.UHV.getWireGt01Ingredient();
+                    default -> Superconductors.UHV.getWireGt04Ingredient();
                 };
 
                 case STICK_DISTILLATION -> MU.craftIngredient(OrePrefixes.stick, Materials2Materials.Blaze);
