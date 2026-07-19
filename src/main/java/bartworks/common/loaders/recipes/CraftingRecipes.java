@@ -555,7 +555,7 @@ public class CraftingRecipes implements Runnable {
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "RMR", "hCd", "EBE", 'R', OrePrefixes.lens.get(Materials.Amethyst), 'M',
                 ItemList.Magnetron.get(1), 'C', ItemList.Vajra_Core.get(1), 'E',
-                OrePrefixes.plateDense.get(Materials.Silver), 'B', OrePrefixes.battery.get(Materials.IV) });
+                OrePrefixes.plateDense.get(Materials.Silver), 'B', TieredItems.IV.getBatteryIngredient() });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Magnetron.get(1),

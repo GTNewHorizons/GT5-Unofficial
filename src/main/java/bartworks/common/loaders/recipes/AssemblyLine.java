@@ -11,6 +11,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -73,7 +74,7 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 ItemList.ReinforcedPhotolithographicFrameworkCasing.get(4L),
                 ItemList.Casing_Coil_Superconductor.get(16L),
-                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 2L },
+                new Object[] { Circuits.UHV.getIngredient(), 2L },
                 MaterialLibAPI.getStack(Materials2Materials.DamascusSteel, Materials2Shapes.foil, (int) (16)),
                 ItemList.Electric_Pump_UV.get(1L),
                 ItemList.Sensor_UV.get(4L),
@@ -93,7 +94,7 @@ public class AssemblyLine implements Runnable {
             .metadata(SCANNING, new Scanning(3 * MINUTES + 20 * SECONDS, TierEU.ZPM))
             .itemInputs(
                 ItemList.Casing_CleanStainlessSteel.get(4L),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 2L },
+                new Object[] { Circuits.UV.getIngredient(), 2L },
                 ItemList.Circuit_Chip_Stemcell.get(64L),
                 ItemList.FluidRegulator_ZPM.get(1L),
                 ItemList.Electric_Pump_ZPM.get(1L),
