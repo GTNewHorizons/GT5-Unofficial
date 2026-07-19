@@ -112,7 +112,7 @@ public class GTCLSCompat {
         MinecraftDisplayer.isReplacingVanillaMaterials = false;
         try {
             ProgressDisplayer.displayProgress(
-                StatCollector.translateToLocal("gt.loading.progress.post-init.loading-gt"),
+                StatCollector.translateToLocal("gt.loading.progress.post_init.loading_gt"),
                 MinecraftDisplayer.getLastPercent());
         } catch (IOException e) {
             GTMod.GT_FML_LOGGER.error("Exception caught when updating loading screen", e);
