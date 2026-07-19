@@ -12,6 +12,8 @@ gtnhlanth.tt.hintNumber=Hint block with number %s
 # Digester
 gtnhlanth.tt.digester.machinetype=Digester
 gtnhlanth.tt.digester.info1=Input ores and fluid, output water
+gtnhlanth.tt.digester.structure.any_casing=Any tungstensteel casing
+gtnhlanth.tt.digester.structure.air=Interior and top of the structure
 
 # Dissolution Tank
 gtnhlanth.tt.disstank.machinetype=Dissolution Tank
