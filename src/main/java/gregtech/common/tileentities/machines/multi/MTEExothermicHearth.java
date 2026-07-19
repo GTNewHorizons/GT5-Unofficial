@@ -166,6 +166,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                 // this casing references the same texture as the alloy blast smelter,
                 // and it has the perk of actually being registered in the atlas!
                 // if this ever gets split out for texture pack reasons, it should be updated here as well.
+                .exclusive()
                 .build())
         .build();
 
