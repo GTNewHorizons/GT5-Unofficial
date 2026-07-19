@@ -33,14 +33,10 @@ public class OverclockCalculator {
     protected double eutIncreasePerOC = 4;
     /** How much the duration would be divided by per overclock made that isn't an overclock from HEAT */
     protected double durationDecreasePerOC = 2;
-    /** Whether the multi should use laser overclocks. */
-    protected boolean laserOC;
     /** Whether the multi should use amperage to overclock normally. */
     protected boolean amperageOC;
     /** Maximum number of overclocks to perform. Defaults to no limit. */
     protected int maxOverclocks = Integer.MAX_VALUE;
-    /** Maximum number of regular overclocks to perform before exotic (e.g. laser) overclocks. Defaults to no limit. */
-    protected int maxRegularOverclocks = Integer.MAX_VALUE;
     /** How many overclocks have been performed */
     protected int overclocks = 0;
     /** Should we actually try to calculate overclocking */
@@ -232,22 +228,6 @@ public class OverclockCalculator {
         return this;
     }
 
-    /**
-     * Sets the maximum number of regular overclocks that can be performed before exotic (e.g. laser) overclocks,
-     * regardless of how much power is available. Negative values are rounded up to 0.
-     */
-    @Nonnull
-    public OverclockCalculator setMaxRegularOverclocks(int maxRegularOverclocks) {
-        this.maxRegularOverclocks = Math.max(maxRegularOverclocks, 0);
-        return this;
-    }
-
-    @Nonnull
-    public OverclockCalculator setLaserOC(boolean laserOC) {
-        this.laserOC = laserOC;
-        return this;
-    }
-
     @Nonnull
     public OverclockCalculator setAmperageOC(boolean amperageOC) {
         this.amperageOC = amperageOC;
@@ -354,42 +334,6 @@ public class OverclockCalculator {
             return;
         }
 
-        // Special handling for laser overclocking.
-        if (laserOC) {
-            double eutOverclock = recipePower;
-
-            // Keep increasing power until normal overclocks are used.
-            int regularOverclocks = 0;
-            while (eutOverclock * 4.0 < machinePower && regularOverclocks < maxRegularOverclocks) {
-                eutOverclock *= 4.0;
-                regularOverclocks++;
-            }
-
-            // Calculate per-slice duration
-            double durationPerSlice = durationUnderOneTickSupplier != null ? durationUnderOneTickSupplier.get()
-                : duration;
-
-            // Increase laser overclocks until 1 tick per slice or power limit
-            int laserOverclocks = 0;
-            while (true) {
-                double multiplier = 4.0 + 0.3 * (laserOverclocks + 1);
-                double potentialEU = eutOverclock * multiplier;
-                double estimatedDuration = duration
-                    / Math.pow(durationDecreasePerOC, regularOverclocks + laserOverclocks + 1);
-
-                if (potentialEU >= machinePower) break;
-                if (estimatedDuration <= duration / durationPerSlice) break;
-
-                eutOverclock = potentialEU;
-                laserOverclocks++;
-            }
-
-            overclocks = regularOverclocks + laserOverclocks;
-            calculatedConsumption = (long) Math.ceil(eutOverclock);
-            calculatedDuration = (int) Math.max(duration / GTUtility.powInt(durationDecreasePerOC, overclocks), 1);
-            return;
-        }
-
         // Limit overclocks allowed by power tier.
         overclocks = Math.min(maxOverclocks, tiersAbove);
 
@@ -437,34 +381,6 @@ public class OverclockCalculator {
 
         final int powerTiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) recipePower, 32));
         final int voltageTiersAbove = voltageTierMachine - voltageTierRecipe;
-
-        // Special handling for laser overclocking.
-        if (laserOC) {
-            double eutOverclock = recipePower;
-
-            // Keep increasing power until normal overclocks are used.
-            int regularOverclocks = 0;
-            while (eutOverclock * 4.0 < machinePower && regularOverclocks < maxRegularOverclocks) {
-                eutOverclock *= 4.0;
-                regularOverclocks++;
-                if (duration / GTUtility.powInt(durationDecreasePerOC, overclocks) < 2 && neededOverclocks == 0) {
-                    neededOverclocks = regularOverclocks;
-                }
-            }
-
-            // Keep increasing power until it hits the machine's limit.
-            int laserOverclocks = 0;
-            while (eutOverclock * (4.0 + 0.3 * (laserOverclocks + 1)) < machinePower) {
-                eutOverclock *= (4.0 + 0.3 * (laserOverclocks + 1));
-                laserOverclocks++;
-                if (duration / GTUtility.powInt(durationDecreasePerOC, overclocks) < 2 && neededOverclocks == 0) {
-                    neededOverclocks = overclocks + laserOverclocks;
-                }
-            }
-
-            final int overclocks = regularOverclocks + laserOverclocks;
-            return GTUtility.powInt(durationDecreasePerOC, Math.max(neededOverclocks - overclocks, 0));
-        }
 
         // Limit overclocks allowed by power tier or voltage tier depending on whether amperage overclocks are used.
         // Also limit overclocks to be non-negative. This is required for recipes that use >1A on a single hatch.

@@ -21,7 +21,6 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTUtility.getTier;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -66,7 +65,6 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import ggfab.ConfigurationHandler;
 import ggfab.mui.ClickableTextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -112,7 +110,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
-    public static final double LASER_OVERCLOCK_PENALTY_FACTOR = ConfigurationHandler.laserOCPenaltyFactor;
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
@@ -319,20 +316,14 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         tt.addMachineType("Assembly Line, AAL")
             .addInfo("Assembly Line with item pipelining")
             .addInfo("All fluids are consumed at the start of the recipe")
+            .addSeparator(EnumChatFormatting.GOLD)
             .addInfo("Recipe tier is limited by the lowest Energy Hatch tier")
-            .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo("Runs imperfect overclocks until Energy Hatch tier")
-            .addInfo("Additional overclocks are increasingly more expensive")
             .addInfo(
-                EnumChatFormatting.AQUA
-                    + "Multiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)"
-                    + EnumChatFormatting.GRAY)
-            .addInfo(
-                EnumChatFormatting.AQUA + "Power usage = Multiplier × (Active Slices) × (Recipe EU/t)"
+                EnumChatFormatting.AQUA + "Power usage = (active slices) × (overclocked EU/t)"
                     + EnumChatFormatting.GRAY)
             .addInfo("Overclocking assumes all recipe slices are active")
-            .addInfo(EnumChatFormatting.BOLD + "Does not overclock beyond 1 tick")
-            .addSeparator(EnumChatFormatting.GOLD, 67)
+            .addInfo(EnumChatFormatting.BOLD + "Slices will not overclock beyond 1 tick")
+            .addSeparator(EnumChatFormatting.GOLD)
             .addInfo("Constructed identically to the Assembly Line")
             .addSupportAny()
             .beginVariableStructureBlock(3, 3, 5, 16, 4, 4, false)
@@ -775,8 +766,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             int originalMaxParallel = 1;
             int maxParallel = originalMaxParallel;
 
-            int maxRegularOverclock = getTier(inputVoltage) - getTier(recipe.mEUt);
-
             // Delete this one before enable overclocking under one tick.
             int maxOverclockTo1Tick = GTUtility.log2(recipe.mDuration / recipe.mInputs.length);
 
@@ -784,8 +773,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
                 .setParallel(originalMaxParallel)
                 .setEUt(inputEUt / recipe.mInputs.length)
-                .setLaserOC(true)
-                .setMaxRegularOverclocks(Math.min(maxRegularOverclock, maxOverclockTo1Tick));
+                .setMaxOverclocks(maxOverclockTo1Tick);
 
             // Disabled to disable overclocking under one tick.
             /*
