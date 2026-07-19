@@ -14,6 +14,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -39,7 +40,7 @@ public class ArcFurnaceLoader {
                 ItemList.Hatch_Input_Bus_IV.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (4)),
                 MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.plate, (int) (4)),
-                new Object[] { OrePrefixes.circuit.get(Materials.IV), 1L })
+                new Object[] { Circuits.IV.getIngredient(), 1L })
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, (int) (1152)))
@@ -54,7 +55,7 @@ public class ArcFurnaceLoader {
                 ItemList.Hull_IV.get(1),
                 ItemList.Casing_SolidSteel.get(1),
                 ItemList.Sensor_IV.get(2),
-                new Object[] { OrePrefixes.circuit.get(Materials.IV), 4L })
+                new Object[] { Circuits.IV.getIngredient(), 4L })
             .itemOutputs(kubatech.api.enums.ItemList.ElectrodeDetectorHatch.get(1))
             .circuit(4)
             .eut(TierEU.RECIPE_IV)
