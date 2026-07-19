@@ -37,6 +37,7 @@ import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.material.MarkerMaterial;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
@@ -345,11 +346,11 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     // endregion
 
     // region Circuitry
-    public static Materials Resistor;
-    public static Materials Diode;
-    public static Materials Transistor;
-    public static Materials Capacitor;
-    public static Materials Inductor;
+    public static MarkerMaterial Resistor;
+    public static MarkerMaterial Diode;
+    public static MarkerMaterial Transistor;
+    public static MarkerMaterial Capacitor;
+    public static MarkerMaterial Inductor;
     public static Materials Nano;
     public static Materials Piko;
     // endregion
