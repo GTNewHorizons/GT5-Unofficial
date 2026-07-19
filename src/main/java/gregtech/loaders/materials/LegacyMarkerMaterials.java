@@ -1,7 +1,5 @@
 package gregtech.loaders.materials;
 
-import net.minecraft.enchantment.Enchantment;
-
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
@@ -10,14 +8,16 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 
-/// The legacy `Materials` fields built directly rather than through the MaterialLib port:
-/// materials with no generated items, fluids, or composition of their own, and never referenced by a ported
-/// material's composition/ore-byproduct/smelt-macerate-arc-smelt-direct-smelt links (`gen_materials.py`'s
-/// marker-skip rule -- see `scripts/mu/gen_materials.py`'s `compute_ported`). MaterialLib carries no data for
-/// these, so their original `MaterialBuilder` declarations are reproduced verbatim rather than derived; they
-/// still need to exist because unchanged legacy code references some of them directly (e.g.
-/// `Materials#setReRegistration`'s `AnyIron`/`AnyCopper`/`AnyBronze`/`AnyRubber`/`AnySyntheticRubber`/
-/// `AnyCarbon`).
+/// Legacy `Materials` fields that MaterialLib carries no data for and that unchanged code still references
+/// directly: the voltage-tier markers (`ULV`..`MAX`), circuit-component markers (`Resistor`, `Diode`,
+/// `Transistor`, `Capacitor`, `Inductor`), superconductor markers (`SuperconductorMV`..`SuperconductorUMV`),
+/// wildcard markers (`AnyBronze`/`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`, used by
+/// `Materials#setReRegistration`), and a handful of composition markers (`Sand`, `Leather`, `Fluix`,
+/// `Limestone`, `Quartz`, `Prismarine`, `BrickNether`, `Red`). Each field's original `MaterialBuilder`
+/// declaration is reproduced here.
+///
+/// [RecognitionMaterials] separately builds the markers that exist only so `Materials.get(name)` resolves
+/// other mods' ore-dictionary entries and legacy names.
 public class LegacyMarkerMaterials {
 
     private LegacyMarkerMaterials() {}
@@ -41,12 +41,7 @@ public class LegacyMarkerMaterials {
         Materials.AnyRubber = loadAnyRubber();
         Materials.AnySyntheticRubber = loadAnySyntheticRubber();
         Materials.BrickNether = loadBrickNether();
-        Materials.Cobblestone = loadCobblestone();
-        Materials.Crystal = loadCrystal();
-        Materials.Metal = loadMetal();
-        Materials.Organic = loadOrganic();
         Materials.Quartz = loadQuartz();
-        Materials.Unknown = loadUnknown();
     }
 
     private static Materials loadAnyBronze() {
@@ -118,42 +113,6 @@ public class LegacyMarkerMaterials {
             .constructMaterial();
     }
 
-    private static Materials loadCobblestone() {
-        return new MaterialBuilder().setName("Cobblestone")
-            .setDefaultLocalName("Cobblestone")
-            .setUnifiable(false)
-            .setIconSet(TextureSet.SET_DULL)
-            .constructMaterial();
-    }
-
-    private static Materials loadCrystal() {
-        return new MaterialBuilder().setName("Crystal")
-            .setDefaultLocalName("Crystal")
-            .setUnifiable(false)
-            .setIconSet(TextureSet.SET_SHINY)
-            .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadMetal() {
-        return new MaterialBuilder().setName("Metal")
-            .setDefaultLocalName("Metal")
-            .setUnifiable(false)
-            .setIconSet(TextureSet.SET_METALLIC)
-            .addSubTag(SubTag.METAL)
-            .constructMaterial();
-    }
-
-    private static Materials loadOrganic() {
-        return new MaterialBuilder().setName("Organic")
-            .setDefaultLocalName("Organic")
-            .setUnifiable(false)
-            .setIconSet(TextureSet.SET_LEAF)
-            .constructMaterial();
-    }
-
     private static Materials loadQuartz() {
         return new MaterialBuilder().setName("Quartz")
             .setDefaultLocalName("Quartz")
@@ -167,49 +126,8 @@ public class LegacyMarkerMaterials {
             .constructMaterial();
     }
 
-    private static Materials loadUnknown() {
-        return new MaterialBuilder().setName("Unknown")
-            .setDefaultLocalName("Unknown")
-            .setUnifiable(false)
-            .setIconSet(TextureSet.SET_DULL)
-            .constructMaterial();
-    }
-
     private static void loadDontCareMarkers() {
-        Materials.Alfium = loadAlfium();
-        Materials.Aquamarine = loadAquamarine();
-        Materials.Ender = loadEnder();
         Materials.Fluix = loadFluix();
-        Materials.Flux = loadFlux();
-        Materials.InfusedTeslatite = loadInfusedTeslatite();
-        Materials.IridiumSodiumOxide = loadIridiumSodiumOxide();
-        Materials.Mutation = loadMutation();
-        Materials.OsmiumTetroxide = loadOsmiumTetroxide();
-        Materials.PurpleAlloy = loadPurpleAlloy();
-        Materials.RubberTreeSap = loadRubberTreeSap();
-        Materials.SodiumPeroxide = loadSodiumPeroxide();
-    }
-
-    private static Materials loadAlfium() {
-        return new MaterialBuilder().setName("Alfium")
-            .setDefaultLocalName("Alfium")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadAquamarine() {
-        return new MaterialBuilder().setName("Aquamarine")
-            .setDefaultLocalName("Aquamarine")
-            .addDustItems()
-            .addGemItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadEnder() {
-        return new MaterialBuilder().setName("Ender")
-            .setDefaultLocalName("Ender")
-            .addDustItems()
-            .constructMaterial();
     }
 
     private static Materials loadFluix() {
@@ -225,333 +143,9 @@ public class LegacyMarkerMaterials {
             .constructMaterial();
     }
 
-    private static Materials loadFlux() {
-        return new MaterialBuilder().setName("Flux")
-            .setDefaultLocalName("Flux")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadInfusedTeslatite() {
-        return new MaterialBuilder().setName("InfusedTeslatite")
-            .setDefaultLocalName("Infused Teslatite")
-            .setARGB(0x0064b4ff)
-            .constructMaterial();
-    }
-
-    private static Materials loadIridiumSodiumOxide() {
-        return new MaterialBuilder().setName("IridiumSodiumOxide")
-            .setDefaultLocalName("Iridium Sodium Oxide")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadMutation() {
-        return new MaterialBuilder().setName("Mutation")
-            .setDefaultLocalName("Mutation")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadOsmiumTetroxide() {
-        return new MaterialBuilder().setName("OsmiumTetroxide")
-            .setDefaultLocalName("Osmium Tetroxide")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadPurpleAlloy() {
-        return new MaterialBuilder().setName("PurpleAlloy")
-            .setDefaultLocalName("Purple Alloy")
-            .setARGB(0x0064b4ff)
-            .constructMaterial();
-    }
-
-    private static Materials loadRubberTreeSap() {
-        return new MaterialBuilder().setName("RubberTreeSap")
-            .setDefaultLocalName("Rubber Tree Sap")
-            .constructMaterial();
-    }
-
-    private static Materials loadSodiumPeroxide() {
-        return new MaterialBuilder().setName("SodiumPeroxide")
-            .setDefaultLocalName("Sodium Peroxide")
-            .addDustItems()
-            .constructMaterial();
-    }
-
     private static void loadUnknownComponentsMarkers() {
-        Materials.Adamite = loadAdamite();
-        Materials.Agate = loadAgate();
-        Materials.Ammonium = loadAmmonium();
-        Materials.AncientDebris = loadAncientDebris();
-        Materials.Andesite = loadAndesite();
-        Materials.Bitumen = loadBitumen();
-        Materials.Black = loadBlack();
-        Materials.Bloodstone = loadBloodstone();
-        Materials.Chimerite = loadChimerite();
-        Materials.Chrysocolla = loadChrysocolla();
-        Materials.Citrine = loadCitrine();
-        Materials.Coral = loadCoral();
-        Materials.CrystalFlux = loadCrystalFlux();
-        Materials.Cyanite = loadCyanite();
-        Materials.DarkStone = loadDarkStone();
-        Materials.Demonite = loadDemonite();
-        Materials.Draconic = loadDraconic();
-        Materials.Drulloy = loadDrulloy();
-        Materials.Energized = loadEnergized();
-        Materials.Fluorite = loadFluorite();
-        Materials.Infernal = loadInfernal();
-        Materials.InfusedDull = loadInfusedDull();
-        Materials.InfusedVis = loadInfusedVis();
-        Materials.Invisium = loadInvisium();
         Materials.Limestone = loadLimestone();
-        Materials.Magma = loadMagma();
-        Materials.Mawsitsit = loadMawsitsit();
-        Materials.Meteorite = loadMeteorite();
-        Materials.Mimichite = loadMimichite();
-        Materials.Moonstone = loadMoonstone();
-        Materials.Nether = loadNether();
-        Materials.Onyx = loadOnyx();
-        Materials.Painite = loadPainite();
-        Materials.Peanutwood = loadPeanutwood();
-        Materials.Petroleum = loadPetroleum();
-        Materials.Pewter = loadPewter();
-        Materials.Randomite = loadRandomite();
         Materials.Sand = loadSand();
-        Materials.Sunstone = loadSunstone();
-        Materials.Tar = loadTar();
-        Materials.Voidstone = loadVoidstone();
-    }
-
-    private static Materials loadAdamite() {
-        return new MaterialBuilder().setName("Adamite")
-            .setDefaultLocalName("Adamite")
-            .setMiningLevel(3)
-            .setColor(Dyes.dyeLightGray)
-            .addDustItems()
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadAgate() {
-        return new MaterialBuilder().setName("Agate")
-            .setDefaultLocalName("Agate")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadAmmonium() {
-        return new MaterialBuilder().setName("Ammonium")
-            .setDefaultLocalName("Ammonium")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadAncientDebris() {
-        return new MaterialBuilder().setName("Debris")
-            .setDefaultLocalName("Ancient Debris")
-            .setARGB(0x351a0b)
-            .constructMaterial();
-    }
-
-    private static Materials loadAndesite() {
-        return new MaterialBuilder().setName("Andesite")
-            .setDefaultLocalName("Andesite")
-            .setMiningLevel(2)
-            .addDustItems()
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadBitumen() {
-        return new MaterialBuilder().setName("Bitumen")
-            .setDefaultLocalName("Bitumen")
-            .setMiningLevel(2)
-            .addDustItems()
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadBlack() {
-        return new MaterialBuilder().setName("Black")
-            .setDefaultLocalName("Black")
-            .setColor(Dyes.dyeBlack)
-            .setARGB(0x00000000)
-            .constructMaterial();
-    }
-
-    private static Materials loadBloodstone() {
-        return new MaterialBuilder().setName("Bloodstone")
-            .setDefaultLocalName("Bloodstone")
-            .setColor(Dyes.dyeRed)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadChimerite() {
-        return new MaterialBuilder().setName("Chimerite")
-            .setDefaultLocalName("Chimerite")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadChrysocolla() {
-        return new MaterialBuilder().setName("Chrysocolla")
-            .setDefaultLocalName("Chrysocolla")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadCitrine() {
-        return new MaterialBuilder().setName("Citrine")
-            .setDefaultLocalName("Citrine")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadCoral() {
-        return new MaterialBuilder().setName("Coral")
-            .setDefaultLocalName("Coral")
-            .setARGB(0x00ff80ff)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadCrystalFlux() {
-        return new MaterialBuilder().setName("CrystalFlux")
-            .setDefaultLocalName("Flux Crystal")
-            .setIconSet(TextureSet.SET_QUARTZ)
-            .setARGB(0x00643264)
-            .addDustItems()
-            .addGemItems()
-            .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadCyanite() {
-        return new MaterialBuilder().setName("Cyanite")
-            .setDefaultLocalName("Cyanite")
-            .setColor(Dyes.dyeCyan)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadDarkStone() {
-        return new MaterialBuilder().setName("DarkStone")
-            .setDefaultLocalName("Dark Stone")
-            .setColor(Dyes.dyeBlack)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadDemonite() {
-        return new MaterialBuilder().setName("Demonite")
-            .setDefaultLocalName("Demonite")
-            .setColor(Dyes.dyeRed)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadDraconic() {
-        return new MaterialBuilder().setName("Draconic")
-            .setDefaultLocalName("Draconic")
-            .setColor(Dyes.dyeRed)
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadDrulloy() {
-        return new MaterialBuilder().setName("Drulloy")
-            .setDefaultLocalName("Drulloy")
-            .setColor(Dyes.dyeRed)
-            .addDustItems()
-            .addCell()
-            .constructMaterial();
-    }
-
-    private static Materials loadEnergized() {
-        return new MaterialBuilder().setName("Energized")
-            .setDefaultLocalName("Energized")
-            .constructMaterial();
-    }
-
-    private static Materials loadFluorite() {
-        return new MaterialBuilder().setName("Fluorite")
-            .setDefaultLocalName("Fluorite")
-            .setColor(Dyes.dyeGreen)
-            .setMiningLevel(2)
-            .addDustItems()
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadInfernal() {
-        return new MaterialBuilder().setName("Infernal")
-            .setDefaultLocalName("Infernal")
-            .constructMaterial();
-    }
-
-    private static Materials loadInfusedDull() {
-        return new MaterialBuilder().setName("InfusedDull")
-            .setDefaultLocalName("Vacuus")
-            .setIconSet(TextureSet.SET_SHARDS)
-            .setColor(Dyes.dyeLightGray)
-            .setARGB(0x00646464)
-            .setTool(64, 3, 32.0f)
-            .setArmorEnchantment(() -> Enchantment.blastProtection, 4)
-            .setFuel(MaterialBuilder.FuelType.Magic, 160)
-            .addDustItems()
-            .addGemItems()
-            .addOreItems()
-            .setOreMultiplier(2)
-            .addToolHeadItems()
-            .addGearItems()
-            .addAspect(TCAspects.PRAECANTATIO, 1)
-            .addAspect(TCAspects.VACUOS, 2)
-            .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.MAGICAL)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .addSubTag(SubTag.TRANSPARENT)
-            .addSubTag(SubTag.UNBURNABLE)
-            .constructMaterial();
-    }
-
-    private static Materials loadInfusedVis() {
-        return new MaterialBuilder().setName("InfusedVis")
-            .setDefaultLocalName("Auram")
-            .setIconSet(TextureSet.SET_SHARDS)
-            .setColor(Dyes.dyePurple)
-            .setARGB(0x00ff00ff)
-            .setTool(64, 3, 8.0f)
-            .setToolEnchantment(() -> Enchantment.smite, 5)
-            .setArmorEnchantment(() -> Enchantment.protection, 4)
-            .setFuel(MaterialBuilder.FuelType.Magic, 240)
-            .addDustItems()
-            .addGemItems()
-            .addOreItems()
-            .setOreMultiplier(2)
-            .addToolHeadItems()
-            .addGearItems()
-            .addAspect(TCAspects.PRAECANTATIO, 1)
-            .addAspect(TCAspects.AURAM, 2)
-            .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.MAGICAL)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .addSubTag(SubTag.TRANSPARENT)
-            .addSubTag(SubTag.UNBURNABLE)
-            .constructMaterial();
-    }
-
-    private static Materials loadInvisium() {
-        return new MaterialBuilder().setName("Invisium")
-            .setDefaultLocalName("Invisium")
-            .addDustItems()
-            .constructMaterial();
     }
 
     private static Materials loadLimestone() {
@@ -561,148 +155,12 @@ public class LegacyMarkerMaterials {
             .constructMaterial();
     }
 
-    private static Materials loadMagma() {
-        return new MaterialBuilder().setName("Magma")
-            .setDefaultLocalName("Magma")
-            .setColor(Dyes.dyeOrange)
-            .setARGB(0x00ff4000)
-            .constructMaterial();
-    }
-
-    private static Materials loadMawsitsit() {
-        return new MaterialBuilder().setName("Mawsitsit")
-            .setDefaultLocalName("Mawsitsit")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadMeteorite() {
-        return new MaterialBuilder().setName("Meteorite")
-            .setDefaultLocalName("Meteorite")
-            .setColor(Dyes.dyePurple)
-            .setARGB(0x0050233c)
-            .setMiningLevel(1)
-            .addDustItems()
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadMimichite() {
-        return new MaterialBuilder().setName("Mimichite")
-            .setDefaultLocalName("Mimichite")
-            .setIconSet(TextureSet.SET_GEM_VERTICAL)
-            .setMiningLevel(1)
-            .addDustItems()
-            .addGemItems()
-            .addOreItems()
-            .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadMoonstone() {
-        return new MaterialBuilder().setName("Moonstone")
-            .setDefaultLocalName("Moonstone")
-            .setColor(Dyes.dyeWhite)
-            .setMiningLevel(1)
-            .addDustItems()
-            .addOreItems()
-            .addAspect(TCAspects.VITREUS, 1)
-            .addAspect(TCAspects.ALIENIS, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadNether() {
-        return new MaterialBuilder().setName("Nether")
-            .setDefaultLocalName("Nether")
-            .constructMaterial();
-    }
-
-    private static Materials loadOnyx() {
-        return new MaterialBuilder().setName("Onyx")
-            .setDefaultLocalName("Onyx")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadPainite() {
-        return new MaterialBuilder().setName("Painite")
-            .setDefaultLocalName("Painite")
-            .constructMaterial();
-    }
-
-    private static Materials loadPeanutwood() {
-        return new MaterialBuilder().setName("Peanutwood")
-            .setDefaultLocalName("Peanut Wood")
-            .setMaceratingInto(() -> Materials.Wood)
-            .addSubTag(SubTag.FLAMMABLE)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .addSubTag(SubTag.WOOD)
-            .constructMaterial();
-    }
-
-    private static Materials loadPetroleum() {
-        return new MaterialBuilder().setName("Petroleum")
-            .setDefaultLocalName("Petroleum")
-            .setMiningLevel(1)
-            .addDustItems()
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadPewter() {
-        return new MaterialBuilder().setName("Pewter")
-            .setDefaultLocalName("Pewter")
-            .constructMaterial();
-    }
-
-    private static Materials loadRandomite() {
-        return new MaterialBuilder().setName("Randomite")
-            .setDefaultLocalName("Randomite")
-            .setMiningLevel(1)
-            .addDustItems()
-            .addOreItems()
-            .constructMaterial();
-    }
-
     private static Materials loadSand() {
         return new MaterialBuilder().setName("Sand")
             .setDefaultLocalName("Sand")
             .setColor(Dyes.dyeYellow)
             .setSmeltingInto(() -> Materials.Glass)
             .addSubTag(SubTag.NO_RECYCLING)
-            .constructMaterial();
-    }
-
-    private static Materials loadSunstone() {
-        return new MaterialBuilder().setName("Sunstone")
-            .setDefaultLocalName("Sunstone")
-            .setMiningLevel(1)
-            .setColor(Dyes.dyeYellow)
-            .addDustItems()
-            .addOreItems()
-            .addAspect(TCAspects.VITREUS, 1)
-            .addAspect(TCAspects.ALIENIS, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadTar() {
-        return new MaterialBuilder().setName("Tar")
-            .setDefaultLocalName("Tar")
-            .setColor(Dyes.dyeBlack)
-            .setARGB(0x000a0a0a)
-            .constructMaterial();
-    }
-
-    private static Materials loadVoidstone() {
-        return new MaterialBuilder().setName("Voidstone")
-            .setDefaultLocalName("Voidstone")
-            .setARGB(0xc8ffffff)
-            .addAspect(TCAspects.VITREUS, 1)
-            .addAspect(TCAspects.VACUOS, 1)
-            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -870,8 +328,6 @@ public class LegacyMarkerMaterials {
         Materials.Transistor = loadTransistor();
         Materials.Capacitor = loadCapacitor();
         Materials.Inductor = loadInductor();
-        Materials.Nano = loadNano();
-        Materials.Piko = loadPiko();
     }
 
     private static Materials loadResistor() {
@@ -914,39 +370,9 @@ public class LegacyMarkerMaterials {
             .constructMaterial();
     }
 
-    private static Materials loadNano() {
-        return new MaterialBuilder().setName("Nano")
-            .setDefaultLocalName("Bio")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.ELECTRUM, 11)
-            .constructMaterial();
-    }
-
-    private static Materials loadPiko() {
-        return new MaterialBuilder().setName("Piko")
-            .setDefaultLocalName("Bio")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.ELECTRUM, 12)
-            .constructMaterial();
-    }
-
     private static void loadNotExactMarkers() {
-        Materials.Cluster = loadCluster();
         Materials.Leather = loadLeather();
-        Materials.Mud = loadMud();
-        Materials.Peat = loadPeat();
         Materials.Red = loadRed();
-        Materials.TNT = loadTNT();
-        Materials.UnstableIngot = loadUnstableIngot();
-    }
-
-    private static Materials loadCluster() {
-        return new MaterialBuilder().setName("Cluster")
-            .setDefaultLocalName("Cluster")
-            .setColor(Dyes.dyeWhite)
-            .setARGB(0x7fffffff)
-            .addSubTag(SubTag.TRANSPARENT)
-            .constructMaterial();
     }
 
     private static Materials loadLeather() {
@@ -960,50 +386,11 @@ public class LegacyMarkerMaterials {
             .constructMaterial();
     }
 
-    private static Materials loadMud() {
-        return new MaterialBuilder().setName("Mud")
-            .setDefaultLocalName("Mud")
-            .setColor(Dyes.dyeBrown)
-            .constructMaterial();
-    }
-
-    private static Materials loadPeat() {
-        return new MaterialBuilder().setName("Peat")
-            .setDefaultLocalName("Peat")
-            .setColor(Dyes.dyeBrown)
-            .addAspect(TCAspects.POTENTIA, 2)
-            .addAspect(TCAspects.IGNIS, 2)
-            .constructMaterial();
-    }
-
     private static Materials loadRed() {
         return new MaterialBuilder().setName("Red")
             .setDefaultLocalName("Red")
             .setColor(Dyes.dyeRed)
             .setARGB(0x00ff0000)
-            .constructMaterial();
-    }
-
-    private static Materials loadTNT() {
-        return new MaterialBuilder().setName("TNT")
-            .setDefaultLocalName("TNT")
-            .setColor(Dyes.dyeRed)
-            .addAspect(TCAspects.PERDITIO, 7)
-            .addAspect(TCAspects.IGNIS, 4)
-            .addSubTag(SubTag.FLAMMABLE)
-            .addSubTag(SubTag.EXPLOSIVE)
-            .addSubTag(SubTag.NO_SMELTING)
-            .addSubTag(SubTag.NO_SMASHING)
-            .constructMaterial();
-    }
-
-    private static Materials loadUnstableIngot() {
-        return new MaterialBuilder().setName("Unstableingot")
-            .setDefaultLocalName("Unstable")
-            .setColor(Dyes.dyeWhite)
-            .setARGB(0x7fffffff)
-            .addAspect(TCAspects.PERDITIO, 4)
-            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
@@ -1149,48 +536,12 @@ public class LegacyMarkerMaterials {
 
     private static void loadGTNHMaterialsMarkers() {
         Materials.Prismarine = loadPrismarine();
-        Materials.SolutionBlueVitriol = loadSolutionBlueVitriol();
-        Materials.SolutionNickelSulfate = loadSolutionNickelSulfate();
-        Materials.Lodestone = loadLodestone();
-        Materials.Luminite = loadLuminite();
     }
 
     private static Materials loadPrismarine() {
         return new MaterialBuilder().setName("Prismarine")
             .setDefaultLocalName("Prismarine")
             .addSubTag(SubTag.NO_ORE_PROCESSING)
-            .constructMaterial();
-    }
-
-    private static Materials loadSolutionBlueVitriol() {
-        return new MaterialBuilder().setName("SolutionBlueVitriol")
-            .setDefaultLocalName("Blue Vitriol Solution")
-            .constructMaterial();
-    }
-
-    private static Materials loadSolutionNickelSulfate() {
-        return new MaterialBuilder().setName("SolutionNickelSulfate")
-            .setDefaultLocalName("Nickel Sulfate Solution")
-            .constructMaterial();
-    }
-
-    private static Materials loadLodestone() {
-        return new MaterialBuilder().setName("Lodestone")
-            .setDefaultLocalName("Lodestone")
-            .setMiningLevel(0)
-            .addDustItems()
-            .addOreItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadLuminite() {
-        return new MaterialBuilder().setName("Luminite")
-            .setDefaultLocalName("Luminite")
-            .setColor(Dyes.dyeWhite)
-            .setARGB(0x00fafafa)
-            .setMiningLevel(0)
-            .addDustItems()
-            .addOreItems()
             .constructMaterial();
     }
 }

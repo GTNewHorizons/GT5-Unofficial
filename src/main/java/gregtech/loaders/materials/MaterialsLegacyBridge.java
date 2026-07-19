@@ -12,8 +12,10 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2Materials;
 
 /// Rebuilds every MaterialLib-backed legacy `Materials` field from the resolved MaterialLib registry, via
-/// [LegacyMaterials#build]. [LegacyMarkerMaterials#loadMarkers] separately rebuilds the legacy fields that carry
-/// no MaterialLib data (never generated an item/fluid/composition and are unreferenced by a ported material).
+/// [LegacyMaterials#build]. The legacy fields that carry no MaterialLib data are built separately:
+/// [LegacyMarkerMaterials#loadMarkers] handles the tier, circuit, superconductor, wildcard, and composition
+/// markers, and [RecognitionMaterials#load] handles the fields that exist only so `Materials.get(name)`
+/// resolves other mods' ore-dictionary entries and legacy names.
 ///
 /// [#load] walks the fixed [#BRIDGED_FIELD_NAMES] list, looking up each field's ML material individually via
 /// [MaterialLibAPI#getMaterial], rather than walking [MaterialLibAPI#getMaterials] in registry order: MaterialLib's
@@ -315,6 +317,7 @@ public class MaterialsLegacyBridge {
 
     public static void load() {
         LegacyMarkerMaterials.loadMarkers();
+        RecognitionMaterials.load();
         // A bare JUnit run never fires MaterialLib's MaterialRegistrationEvent, so
         // Materials2Materials fields stay null outside a real FML mod-loading lifecycle.
         if (Materials2Materials.Iron == null) {
