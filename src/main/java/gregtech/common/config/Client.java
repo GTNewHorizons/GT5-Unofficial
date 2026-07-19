@@ -446,6 +446,11 @@ public class Client {
         @Config.Name("Show Hot Ingot Text")
         public boolean showHotIngotText;
 
+        @Config.Comment("Enabled show Toxic Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Toxic Text")
+        public boolean showToxicText;
+
         @Config.Comment("Enabled show GT++ Ctrl Text")
         @Config.DefaultBoolean(true)
         @Config.Name("Show GT++ Ctrl Text")

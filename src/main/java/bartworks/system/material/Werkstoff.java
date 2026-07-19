@@ -549,6 +549,9 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
                     "GTPP.core.GT_Tooltip_Radioactive",
                     String.valueOf((int) getStats().getProtons())));
         }
+        if (Client.tooltip.showToxicText && getStats().isToxic()) {
+            list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Toxic"));
+        }
         if (!Client.tooltip.showFormula) {
             return;
         }

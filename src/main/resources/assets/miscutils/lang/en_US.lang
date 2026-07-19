@@ -61,6 +61,7 @@ GTPP.machines.chisel_slot.tooltip.1=§7Put chiseled item to specify output
 GTPP.core.GT_Tooltip=Added by: %s §7- §c[GT++]
 GTPP.core.GT_Tooltip_Builder=%s §7- §c[GT++]
 GTPP.core.GT_Tooltip_Radioactive=§7Warning: §aRadioactive! §6 Avoid direct handling without hazmat protection. | Level: %s
+GTPP.core.GT_Tooltip_Toxic=§7Warning: §2Toxic! §6 Avoid direct handling without hazmat protection.
 
 # Thermal Foundation Stuff
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
