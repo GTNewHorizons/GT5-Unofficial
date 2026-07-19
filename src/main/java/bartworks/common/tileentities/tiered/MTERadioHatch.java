@@ -196,7 +196,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
                         this.material = this.lastUsedItem.getDisplayName();
                         ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
                         if (itemData != null) {
-                            Materials mat = itemData.mMaterial.mMaterial;
+                            Materials mat = (Materials) itemData.mMaterial.mMaterial;
                             this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
                         } else {
                             this.colorForGUI = getEmptyColor();
@@ -229,7 +229,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
                     this.material = lStack.getDisplayName();
                     ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
                     if (itemData != null) {
-                        Materials mat = itemData.mMaterial.mMaterial;
+                        Materials mat = (Materials) itemData.mMaterial.mMaterial;
                         this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
                     } else {
                         this.colorForGUI = getEmptyColor();

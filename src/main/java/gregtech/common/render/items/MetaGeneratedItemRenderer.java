@@ -10,6 +10,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
@@ -75,8 +76,8 @@ public final class MetaGeneratedItemRenderer implements IItemRenderer {
             if (aMaterialRenderer == null) {
                 ItemData itemData = GTOreDictUnificator.getAssociation(aStack);
                 if (itemData != null) {
-                    if (itemData.mMaterial != null && itemData.mMaterial.mMaterial.renderer != null) {
-                        aMaterialRenderer = itemData.mMaterial.mMaterial.renderer;
+                    if (itemData.mMaterial != null && ((Materials) itemData.mMaterial.mMaterial).renderer != null) {
+                        aMaterialRenderer = ((Materials) itemData.mMaterial.mMaterial).renderer;
                     }
                 }
             }

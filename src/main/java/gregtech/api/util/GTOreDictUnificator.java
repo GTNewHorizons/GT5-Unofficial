@@ -23,6 +23,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.objects.GTItemStack;
@@ -65,15 +66,15 @@ public class GTOreDictUnificator {
         return GTUtility.isStackInStackSet(aStack, sNoUnificationList);
     }
 
-    public static void add(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack) {
+    public static void add(OrePrefixes aPrefix, IOreMaterial aMaterial, ItemStack aStack) {
         set(aPrefix, aMaterial, aStack, false, false);
     }
 
-    public static void set(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack) {
+    public static void set(OrePrefixes aPrefix, IOreMaterial aMaterial, ItemStack aStack) {
         set(aPrefix, aMaterial, aStack, true, false);
     }
 
-    public static void set(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack, boolean aOverwrite,
+    public static void set(OrePrefixes aPrefix, IOreMaterial aMaterial, ItemStack aStack, boolean aOverwrite,
         boolean aAlreadyRegistered) {
         if (aMaterial == null || aPrefix == null
             || GTUtility.isStackInvalid(aStack)
@@ -371,10 +372,11 @@ public class GTOreDictUnificator {
             }
             sItemStack2DataMap.put(aStack, aData);
             if (aData.hasValidMaterialData()) {
-                long tValidMaterialAmount = MU.hasFlag(aData.mMaterial.mMaterial, GTMaterialFlag.NO_RECYCLING) ? 0
-                    : aData.mMaterial.mAmount >= 0 ? aData.mMaterial.mAmount : M;
+                long tValidMaterialAmount = MU
+                    .hasFlag((Materials) aData.mMaterial.mMaterial, GTMaterialFlag.NO_RECYCLING) ? 0
+                        : aData.mMaterial.mAmount >= 0 ? aData.mMaterial.mAmount : M;
                 for (MaterialStack tMaterial : aData.mByProducts)
-                    tValidMaterialAmount += MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.NO_RECYCLING) ? 0
+                    tValidMaterialAmount += MU.hasFlag((Materials) tMaterial.mMaterial, GTMaterialFlag.NO_RECYCLING) ? 0
                         : tMaterial.mAmount >= 0 ? tMaterial.mAmount : M;
                 if (tValidMaterialAmount < M) GTModHandler.addToRecyclerBlackList(aStack);
             }
@@ -404,7 +406,7 @@ public class GTOreDictUnificator {
         sItemStack2DataMap.remove(aStack);
     }
 
-    public static void addAssociation(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack,
+    public static void addAssociation(OrePrefixes aPrefix, IOreMaterial aMaterial, ItemStack aStack,
         boolean aBlackListed) {
         if (aPrefix == null || aMaterial == null || GTUtility.isStackInvalid(aStack)) return;
         if (Items.feather.getDamage(aStack) == WILDCARD) for (byte i = 0; i < 16; i++)
@@ -479,11 +481,11 @@ public class GTOreDictUnificator {
         return aMaterial == null ? null : getGem(aMaterial.mMaterial, aMaterial.mAmount);
     }
 
-    public static ItemStack getGem(Materials aMaterial, OrePrefixes aPrefix) {
+    public static ItemStack getGem(IOreMaterial aMaterial, OrePrefixes aPrefix) {
         return aMaterial == null ? null : getGem(aMaterial, aPrefix.getMaterialAmount());
     }
 
-    public static ItemStack getGem(Materials aMaterial, long aMaterialAmount) {
+    public static ItemStack getGem(IOreMaterial aMaterial, long aMaterialAmount) {
         ItemStack rStack = null;
         if (((aMaterialAmount >= M))) rStack = get(OrePrefixes.gem, aMaterial, aMaterialAmount / M);
         if (rStack == null) {
@@ -499,11 +501,11 @@ public class GTOreDictUnificator {
         return aMaterial == null ? null : getDust(aMaterial.mMaterial, aMaterial.mAmount);
     }
 
-    public static ItemStack getDust(Materials aMaterial, OrePrefixes aPrefix) {
+    public static ItemStack getDust(IOreMaterial aMaterial, OrePrefixes aPrefix) {
         return aMaterial == null ? null : getDust(aMaterial, aPrefix.getMaterialAmount());
     }
 
-    public static ItemStack getDust(Materials aMaterial, long aMaterialAmount) {
+    public static ItemStack getDust(IOreMaterial aMaterial, long aMaterialAmount) {
         if (aMaterialAmount <= 0) return null;
         ItemStack rStack = null;
         if (((aMaterialAmount % M == 0) || aMaterialAmount >= M * 16))
@@ -519,11 +521,11 @@ public class GTOreDictUnificator {
         return aMaterial == null ? null : getIngot(aMaterial.mMaterial, aMaterial.mAmount);
     }
 
-    public static ItemStack getIngot(Materials aMaterial, OrePrefixes aPrefix) {
+    public static ItemStack getIngot(IOreMaterial aMaterial, OrePrefixes aPrefix) {
         return aMaterial == null ? null : getIngot(aMaterial, aPrefix.getMaterialAmount());
     }
 
-    public static ItemStack getIngot(Materials aMaterial, long aMaterialAmount) {
+    public static ItemStack getIngot(IOreMaterial aMaterial, long aMaterialAmount) {
         if (aMaterialAmount <= 0) return null;
         ItemStack rStack = null;
         if (((aMaterialAmount % (M * 9) == 0 && aMaterialAmount / (M * 9) > 1) || aMaterialAmount >= M * 72))
@@ -535,7 +537,7 @@ public class GTOreDictUnificator {
         return rStack;
     }
 
-    public static ItemStack getIngotOrDust(Materials aMaterial, long aMaterialAmount) {
+    public static ItemStack getIngotOrDust(IOreMaterial aMaterial, long aMaterialAmount) {
         if (aMaterialAmount <= 0) return null;
         ItemStack rStack = getIngot(aMaterial, aMaterialAmount);
         if (rStack == null) rStack = getDust(aMaterial, aMaterialAmount);
@@ -548,7 +550,7 @@ public class GTOreDictUnificator {
         return rStack;
     }
 
-    public static ItemStack getDustOrIngot(Materials aMaterial, long aMaterialAmount) {
+    public static ItemStack getDustOrIngot(IOreMaterial aMaterial, long aMaterialAmount) {
         if (aMaterialAmount <= 0) return null;
         ItemStack rStack = getDust(aMaterial, aMaterialAmount);
         if (rStack == null) rStack = getIngot(aMaterial, aMaterialAmount);

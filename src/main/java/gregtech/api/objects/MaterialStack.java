@@ -1,14 +1,15 @@
 package gregtech.api.objects;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.util.GTUtility;
 
 public class MaterialStack implements Cloneable {
 
     public long mAmount;
-    public Materials mMaterial;
+    public IOreMaterial mMaterial;
 
-    public MaterialStack(Materials aMaterial, long aAmount) {
+    public MaterialStack(IOreMaterial aMaterial, long aAmount) {
         mMaterial = aMaterial == null ? Materials._NULL : aMaterial;
         mAmount = aAmount;
     }
@@ -42,7 +43,7 @@ public class MaterialStack implements Cloneable {
     }
 
     public String toString(boolean single) {
-        String temp1 = "", temp2 = mMaterial.getChemicalTooltip(true), temp3 = "", temp4 = "";
+        String temp1 = "", temp2 = ((Materials) mMaterial).getChemicalTooltip(true), temp3 = "", temp4 = "";
         if (mAmount > 1) {
             temp4 = GTUtility.toSubscript(mAmount);
         }
@@ -54,13 +55,13 @@ public class MaterialStack implements Cloneable {
     }
 
     private boolean isMaterialListComplex(MaterialStack materialStack) {
-        if (materialStack.mMaterial.mMaterialList.size() > 1) {
+        if (((Materials) materialStack.mMaterial).mMaterialList.size() > 1) {
             return true;
         }
-        if (materialStack.mMaterial.mMaterialList.isEmpty()) {
+        if (((Materials) materialStack.mMaterial).mMaterialList.isEmpty()) {
             return false;
         }
-        return isMaterialListComplex(materialStack.mMaterial.mMaterialList.get(0));
+        return isMaterialListComplex(((Materials) materialStack.mMaterial).mMaterialList.get(0));
     }
 
     @Override
