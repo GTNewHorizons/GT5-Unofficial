@@ -15,6 +15,7 @@ import com.ruling_0.materiallib.api.ShapeItem;
 
 import codechicken.nei.ItemStackMap;
 import codechicken.nei.api.ItemFilter;
+import gregtech.api.enums.Materials;
 import gregtech.api.material.MaterialFormulas;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
@@ -129,7 +130,7 @@ public class ChemicalFormulaFilter implements ItemFilter {
 
         ItemData data = GTOreDictUnificator.getAssociation(itemstack);
         if (data != null) {
-            return data.mMaterial.mMaterial.getChemicalFormula();
+            return ((Materials) data.mMaterial.mMaterial).getChemicalFormula();
         }
 
         return "";

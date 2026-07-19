@@ -189,19 +189,19 @@ public class GTRecipeRegistrator {
             || GTUtility.areStacksEqual(new ItemStack(Blocks.obsidian), aStack)
             || aData == null
             || !aData.hasValidMaterialData()
-            || !aData.mMaterial.mMaterial.mAutoGenerateRecycleRecipes
+            || !((Materials) aData.mMaterial.mMaterial).mAutoGenerateRecycleRecipes
             || aData.mMaterial.mAmount <= 0
             || GTUtility.getFluidForFilledItem(aStack, false) != null) return;
         registerReverseMacerating(GTUtility.copyAmount(1, aStack), aData, aData.mPrefix == null, true);
         if (!GTUtility.areStacksEqual(GTModHandler.getIC2Item("iridiumOre", 1L), aStack)) {
             registerReverseSmelting(
                 GTUtility.copyAmount(1, aStack),
-                aData.mMaterial.mMaterial,
+                (Materials) aData.mMaterial.mMaterial,
                 aData.mMaterial.mAmount,
                 true);
             registerReverseFluidSmelting(
                 GTUtility.copyAmount(1, aStack),
-                aData.mMaterial.mMaterial,
+                (Materials) aData.mMaterial.mMaterial,
                 aData.mMaterial.mAmount,
                 aData.getByProduct(0),
                 true);
@@ -223,14 +223,16 @@ public class GTRecipeRegistrator {
             || (aMaterialAmount * INGOTS) / (M * aStack.stackSize) <= 0) return;
 
         ItemStack recipeOutput = aByproduct == null ? null
-            : MU.hasFlag(aByproduct.mMaterial, GTMaterialFlag.NO_SMELTING)
-                || !MU.hasFlag(aByproduct.mMaterial, GTMaterialFlag.METAL)
-                    ? MU.hasFlag(aByproduct.mMaterial, GTMaterialFlag.FLAMMABLE)
+            : MU.hasFlag((Materials) aByproduct.mMaterial, GTMaterialFlag.NO_SMELTING)
+                || !MU.hasFlag((Materials) aByproduct.mMaterial, GTMaterialFlag.METAL)
+                    ? MU.hasFlag((Materials) aByproduct.mMaterial, GTMaterialFlag.FLAMMABLE)
                         ? GTOreDictUnificator.getDust(Materials.Ash, aByproduct.mAmount / 2)
-                        : MU.hasFlag(aByproduct.mMaterial, GTMaterialFlag.UNBURNABLE)
-                            ? GTOreDictUnificator.getDustOrIngot(MU.smeltInto(aByproduct.mMaterial), aByproduct.mAmount)
+                        : MU.hasFlag((Materials) aByproduct.mMaterial, GTMaterialFlag.UNBURNABLE)
+                            ? GTOreDictUnificator
+                                .getDustOrIngot(MU.smeltInto((Materials) aByproduct.mMaterial), aByproduct.mAmount)
                             : null
-                    : GTOreDictUnificator.getIngotOrDust(MU.smeltInto(aByproduct.mMaterial), aByproduct.mAmount);
+                    : GTOreDictUnificator
+                        .getIngotOrDust(MU.smeltInto((Materials) aByproduct.mMaterial), aByproduct.mAmount);
 
         GTRecipeBuilder builder = RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, aStack));
@@ -320,7 +322,7 @@ public class GTRecipeRegistrator {
 
         if (!aData.hasValidMaterialData()) return;
 
-        if (MU.hasFlag(aData.mMaterial.mMaterial, GTMaterialFlag.NO_RECYCLING_RECIPES)) return;
+        if (MU.hasFlag((Materials) aData.mMaterial.mMaterial, GTMaterialFlag.NO_RECYCLING_RECIPES)) return;
 
         boolean isRecycle = true;
 
@@ -336,27 +338,27 @@ public class GTRecipeRegistrator {
                 }
             }
 
-            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.UNBURNABLE)) {
-                tMaterial.mMaterial = MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial));
+            if (MU.hasFlag((Materials) tMaterial.mMaterial, GTMaterialFlag.UNBURNABLE)) {
+                tMaterial.mMaterial = MU.arcSmeltInto(MU.smeltInto((Materials) tMaterial.mMaterial));
                 continue;
             }
-            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.EXPLOSIVE)) {
+            if (MU.hasFlag((Materials) tMaterial.mMaterial, GTMaterialFlag.EXPLOSIVE)) {
                 tMaterial.mMaterial = Materials.Ash;
                 tMaterial.mAmount /= 16;
                 continue;
             }
-            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.FLAMMABLE)) {
+            if (MU.hasFlag((Materials) tMaterial.mMaterial, GTMaterialFlag.FLAMMABLE)) {
                 tMaterial.mMaterial = Materials.Ash;
                 tMaterial.mAmount /= 8;
                 continue;
             }
-            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.NO_SMELTING)) {
+            if (MU.hasFlag((Materials) tMaterial.mMaterial, GTMaterialFlag.NO_SMELTING)) {
                 tMaterial.mAmount = 0;
                 continue;
             }
-            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.METAL)) {
+            if (MU.hasFlag((Materials) tMaterial.mMaterial, GTMaterialFlag.METAL)) {
 
-                tMaterial.mMaterial = MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial));
+                tMaterial.mMaterial = MU.arcSmeltInto(MU.smeltInto((Materials) tMaterial.mMaterial));
                 continue;
             }
             tMaterial.mAmount = 0;
@@ -373,7 +375,7 @@ public class GTRecipeRegistrator {
 
         long tAmount = 0;
         for (MaterialStack tMaterial : aData.getAllMaterialStacks())
-            tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
+            tAmount += tMaterial.mAmount * ((Materials) tMaterial.mMaterial).getMass();
 
         ArrayList<ItemStack> outputs = new ArrayList<>();
         if (GTOreDictUnificator.getIngotOrDust(aData.mMaterial) != null) {
@@ -423,7 +425,8 @@ public class GTRecipeRegistrator {
         Set<Materials> gases = new LinkedHashSet<>();
         for (ItemStack output : outputs) {
             ItemData outputData = GTOreDictUnificator.getAssociation(output);
-            if (outputData != null) gases.addAll(outputData.mMaterial.mMaterial.mArcSmeltIntoWithGas.keySet());
+            if (outputData != null)
+                gases.addAll(((Materials) outputData.mMaterial.mMaterial).mArcSmeltIntoWithGas.keySet());
         }
         return gases;
     }
@@ -434,8 +437,10 @@ public class GTRecipeRegistrator {
         for (int i = 0; i < outputs.size(); i++) {
             ItemStack output = outputs.get(i);
             ItemData outputData = GTOreDictUnificator.getAssociation(output);
-            if (outputData != null && outputData.mMaterial.mMaterial.mArcSmeltIntoWithGas.containsKey(gas)) {
-                Materials gasSmeltingMaterial = outputData.mMaterial.mMaterial.mArcSmeltIntoWithGas.get(gas);
+            if (outputData != null
+                && ((Materials) outputData.mMaterial.mMaterial).mArcSmeltIntoWithGas.containsKey(gas)) {
+                Materials gasSmeltingMaterial = ((Materials) outputData.mMaterial.mMaterial).mArcSmeltIntoWithGas
+                    .get(gas);
                 long materialAmount = outputData.mMaterial.mAmount * output.stackSize;
                 gasOutputs[i] = GTOreDictUnificator.getIngotOrDust(gasSmeltingMaterial, materialAmount);
                 if (gasOutputs[i] == null) return null;
@@ -469,7 +474,7 @@ public class GTRecipeRegistrator {
         if (!aData.hasValidMaterialData()) return;
 
         for (MaterialStack tMaterial : aData.getAllMaterialStacks())
-            tMaterial.mMaterial = MU.macerateInto(tMaterial.mMaterial);
+            tMaterial.mMaterial = MU.macerateInto((Materials) tMaterial.mMaterial);
 
         aData = new ItemData(aData);
 
@@ -477,7 +482,7 @@ public class GTRecipeRegistrator {
 
         long tAmount = 0;
         for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
-            tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
+            tAmount += tMaterial.mAmount * ((Materials) tMaterial.mMaterial).getMass();
         }
 
         {
@@ -508,8 +513,8 @@ public class GTRecipeRegistrator {
         }
 
         for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
-            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.CRYSTAL)
-                && !MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.METAL)
+            if (MU.hasFlag((Materials) tMaterial.mMaterial, GTMaterialFlag.CRYSTAL)
+                && !MU.hasFlag((Materials) tMaterial.mMaterial, GTMaterialFlag.METAL)
                 && tMaterial.mMaterial != Materials.Glass
                 && GTOreDictUnificator.getDust(aData.mMaterial) != null) {
                 GTValues.RA.stdBuilder()

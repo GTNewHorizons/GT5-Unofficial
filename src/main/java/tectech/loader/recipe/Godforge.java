@@ -81,7 +81,7 @@ public class Godforge implements Runnable {
                 GTLog.err.println("Godforge.convertToFluid: no unification data for " + itemStack + ", skipping");
                 continue;
             }
-            molten.add(association.mMaterial.mMaterial.getMolten(1 * INGOTS));
+            molten.add(((Materials) association.mMaterial.mMaterial).getMolten(1 * INGOTS));
         }
 
         return molten.toArray(new FluidStack[0]);
@@ -1135,7 +1135,7 @@ public class Godforge implements Runnable {
     private static FluidStack convertToMolten(ItemStack stack) {
         // if this is null it has to be a gt++ material
         ItemData data = GTOreDictUnificator.getAssociation(stack);
-        Materials mat = data == null ? null : data.mMaterial.mMaterial;
+        Materials mat = data == null ? null : (Materials) data.mMaterial.mMaterial;
         if (mat != null) {
             if (mat.mStandardMoltenFluid != null) {
                 return mat.getMolten(INGOTS * data.mMaterial.mAmount / GTValues.M);

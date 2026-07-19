@@ -722,7 +722,7 @@ public class GTAchievements {
                         issueAchievement(
                             player,
                             data.getAllMaterialStacks()
-                                .get(i).mMaterial.mName);
+                                .get(i).mMaterial.getInternalName());
                         if (data.getAllMaterialStacks()
                             .get(i).mMaterial == Materials.AnyIron) {
                             issueAchievement(player, "iron");

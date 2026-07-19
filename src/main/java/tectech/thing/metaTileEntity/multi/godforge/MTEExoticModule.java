@@ -355,7 +355,9 @@ public class MTEExoticModule extends MTEBaseModule {
                 GTLog.err.println("MTEExoticModule.convertItemToPlasma: no unification data for " + itemStack);
                 continue;
             }
-            plasmas.add(association.mMaterial.mMaterial.getPlasma((int) (INGOTS * multiplier * itemStack.stackSize)));
+            plasmas.add(
+                ((Materials) association.mMaterial.mMaterial)
+                    .getPlasma((int) (INGOTS * multiplier * itemStack.stackSize)));
         }
 
         return plasmas.toArray(new FluidStack[0]);
