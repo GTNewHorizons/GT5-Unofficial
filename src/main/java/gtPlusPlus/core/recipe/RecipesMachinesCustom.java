@@ -22,6 +22,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -86,7 +87,7 @@ public class RecipesMachinesCustom {
                 ItemList.Casing_Turbine.get(1),
                 MaterialsAlloy.INCOLOY_DS.getPlate(4),
                 MaterialsAlloy.INCOLOY_DS.getScrew(8),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4),
+                Circuits.EV.get(4),
                 MaterialsAlloy.TANTALUM_CARBIDE.getGear(8))
             .circuit(18)
             .itemOutputs(GregtechItemList.Hatch_Turbine_Rotor.get(1))
@@ -123,7 +124,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.INCOLOY_DS.getPlate(8),
                 MaterialsAlloy.INCOLOY_DS.getScrew(16),
                 MaterialsAlloy.INCOLOY_DS.getGear(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 8))
+                Circuits.EV.get(8))
             .circuit(18)
             .itemOutputs(ItemList.SteamTurbineXL.get(1))
             .fluidInputs(
@@ -155,7 +156,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.ZERON_100.getPlate(8),
                 MaterialsAlloy.ZERON_100.getScrew(16),
                 MaterialsAlloy.ZERON_100.getGear(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8))
+                Circuits.LuV.get(8))
             .circuit(18)
             .itemOutputs(ItemList.GasTurbineXL.get(1))
             .fluidInputs(
@@ -189,7 +190,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.INCONEL_625.getPlate(8),
                 MaterialsAlloy.INCONEL_625.getScrew(16),
                 MaterialsAlloy.INCONEL_625.getGear(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
+                Circuits.IV.get(8))
             .circuit(18)
             .itemOutputs(ItemList.HPSteamTurbineXL.get(1))
             .fluidInputs(
@@ -225,7 +226,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.PIKYONIUM.getPlate(8),
                 MaterialsAlloy.PIKYONIUM.getScrew(16),
                 MaterialsAlloy.PIKYONIUM.getGear(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8))
+                Circuits.ZPM.get(8))
             .circuit(18)
             .itemOutputs(ItemList.PlasmaTurbineXL.get(1))
             .fluidInputs(
@@ -255,7 +256,7 @@ public class RecipesMachinesCustom {
                 GGMaterial.dalisenite.get(OrePrefixes.plate, 8),
                 GGMaterial.dalisenite.get(OrePrefixes.screw, 16),
                 GGMaterial.dalisenite.get(OrePrefixes.gearGt, 4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8))
+                Circuits.ZPM.get(8))
             .circuit(18)
             .itemOutputs(ItemList.SCSteamTurbineXL.get(1))
             .fluidInputs(GGMaterial.hikarium.getMolten(8 * INGOTS))
@@ -272,7 +273,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.MARAGING250.getPlate(8),
                 MaterialsAlloy.MARAGING250.getBolt(8),
                 MaterialsAlloy.MARAGING250.getScrew(8),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
+                Circuits.IV.get(8))
             .circuit(17)
             .itemOutputs(GregtechItemList.Industrial_Solar_Tower.get(1))
             .fluidInputs(MaterialsAlloy.TANTALUM_CARBIDE.getFluidStack(16 * INGOTS))
@@ -327,7 +328,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.INCONEL_625.getPlate(2),
                 MaterialsAlloy.INCONEL_625.getGear(4),
                 ItemList.Electric_Motor_HV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4))
+                Circuits.HV.get(4))
             .circuit(17)
             .itemOutputs(GregtechItemList.Solar_Tower_Reflector.get(1))
             .fluidInputs(
@@ -488,7 +489,7 @@ public class RecipesMachinesCustom {
             16,
             new Object[] { ItemList.MolecularTransformer.get(1),
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1),
-                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8 }, ItemList.Electric_Pump_UEV.get(4),
+                new Object[] { Circuits.UEV.getIngredient(), 8 }, ItemList.Electric_Pump_UEV.get(4),
                 ItemList.Field_Generator_UEV.get(4), GregtechItemList.Laser_Lens_Special.get(1) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS),
                 MaterialsAlloy.PIKYONIUM.getFluidStack(32 * INGOTS) },
@@ -560,9 +561,7 @@ public class RecipesMachinesCustom {
 
         // LFTR Control Circuit
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1),
-                ItemList.Field_Generator_HV.get(1))
+            .itemInputs(Circuits.LuV.get(1), ItemList.Field_Generator_HV.get(1))
             .itemOutputs(GregtechItemList.LFTRControlCircuit.get(1))
             .duration(4 * MINUTES)
             .eut(TierEU.RECIPE_HV)
@@ -704,7 +703,7 @@ public class RecipesMachinesCustom {
             .itemInputs(
                 GregtechItemList.HalfCompleteCasing_II.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.plateDense, (int) (4)),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
+                Circuits.HV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox.get(1))
             .fluidInputs(
@@ -719,7 +718,7 @@ public class RecipesMachinesCustom {
             .itemInputs(
                 GregtechItemList.Casing_Vanadium_Redox.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.plateDense, (int) (4)),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4),
+                Circuits.EV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_IV.get(1))
             .fluidInputs(
@@ -734,7 +733,7 @@ public class RecipesMachinesCustom {
             .itemInputs(
                 GregtechItemList.Casing_Vanadium_Redox_IV.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plateDense, (int) (4)),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4),
+                Circuits.IV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_LuV.get(1))
             .fluidInputs(
@@ -748,7 +747,7 @@ public class RecipesMachinesCustom {
             .itemInputs(
                 GregtechItemList.Casing_Vanadium_Redox_LuV.get(1),
                 ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4),
+                Circuits.LuV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_ZPM.get(1))
             .fluidInputs(
@@ -762,7 +761,7 @@ public class RecipesMachinesCustom {
             .itemInputs(
                 GregtechItemList.Casing_Vanadium_Redox_ZPM.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.plateDense, (int) (4)),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4),
+                Circuits.ZPM.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_UV.get(1))
             .fluidInputs(
@@ -776,7 +775,7 @@ public class RecipesMachinesCustom {
             .itemInputs(
                 GregtechItemList.Casing_Vanadium_Redox_UV.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.plateDense, (int) (4)),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4),
+                Circuits.UV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_MAX.get(1))
             .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(500))
@@ -1022,7 +1021,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.ENERGYCRYSTAL.getBolt(32),
                 MaterialsAlloy.HG1223.getFineWire(64),
                 ItemList.Emitter_EV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 10))
+                Circuits.LuV.get(10))
             .itemOutputs(
                 ItemDummyResearch
                     .getResearchStack(ItemDummyResearch.ASSEMBLY_LINE_RESEARCH.RESEARCH_11_MOLECULAR_TRANSFORMER, 1))
@@ -1069,7 +1068,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.ZERON_100.getScrew(8),
                 MaterialLibAPI.getStack(Materials2Materials.Palladium, Materials2Shapes.wireFine, (int) (16)),
                 ItemList.Sensor_IV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4))
+                Circuits.IV.get(4))
             .circuit(16)
             .itemOutputs(GregtechItemList.Casing_Molecular_Transformer_1.get(1))
             .fluidInputs(MaterialsAlloy.INCONEL_625.getFluidStack(4 * INGOTS))
@@ -1084,7 +1083,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.INCONEL_625.getScrew(8),
                 ItemList.Casing_Coil_Nichrome.get(2),
                 ItemList.Field_Generator_HV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 8))
+                Circuits.EV.get(8))
             .circuit(16)
             .itemOutputs(GregtechItemList.Casing_Molecular_Transformer_2.get(1))
             .fluidInputs(MaterialsAlloy.INCONEL_625.getFluidStack(4 * INGOTS))
@@ -1099,7 +1098,7 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.INCONEL_625.getGear(8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Titanium, 4),
                 ItemList.Field_Generator_EV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 8))
+                Circuits.EV.get(8))
             .circuit(16)
             .itemOutputs(GregtechItemList.Casing_Molecular_Transformer_3.get(1))
             .fluidInputs(MaterialsAlloy.INCONEL_625.getFluidStack(4 * INGOTS))

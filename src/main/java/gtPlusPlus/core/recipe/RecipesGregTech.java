@@ -61,6 +61,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -378,7 +379,7 @@ public class RecipesGregTech {
                 MaterialsAlloy.TITANSTEEL.getScrew(48),
                 MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getBolt(32),
                 MaterialsAlloy.ZERON_100.getRod(12),
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 20 },
+                new Object[] { Circuits.ZPM.getIngredient(), 20 },
                 MaterialsAlloy.LAFIUM.getRotor(16))
             .fluidInputs(
                 MaterialsElements.STANDALONE.ADVANCED_NITINOL.getFluidStack(32 * INGOTS),
@@ -474,7 +475,7 @@ public class RecipesGregTech {
                 GregtechItemList.Battery_Casing_Gem_1.get(1),
                 ItemList.StableBaryonContainmentUnit.get(16),
                 MaterialsAlloy.ZERON_100.getPlate(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8),
+                Circuits.LuV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.YttriumBariumCuprate, 32),
                 MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getBolt(8),
                 MaterialsAlloy.INCONEL_625.getScrew(8))
@@ -496,7 +497,7 @@ public class RecipesGregTech {
                 GregtechItemList.Battery_Casing_Gem_2.get(1),
                 ItemList.StableLeptonContainmentUnit.get(16),
                 MaterialsAlloy.PIKYONIUM.getPlate(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8),
+                Circuits.ZPM.get(8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 32),
                 MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getBolt(8),
                 MaterialsAlloy.ZERON_100.getScrew(8))
@@ -518,7 +519,7 @@ public class RecipesGregTech {
                 GregtechItemList.Battery_Casing_Gem_3.get(1),
                 ItemList.StableMesonContainmentUnit.get(16),
                 MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 8),
+                Circuits.UV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Duranium, 32),
                 MaterialsAlloy.TITANSTEEL.getBolt(8),
                 MaterialsAlloy.PIKYONIUM.getScrew(8))
@@ -540,7 +541,7 @@ public class RecipesGregTech {
                 GregtechItemList.Battery_Casing_Gem_4.get(1),
                 ItemList.StableBosonContainmentUnit.get(2),
                 MaterialsAlloy.ABYSSAL.getPlate(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 8),
+                Circuits.UHV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 32),
                 MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getBolt(8),
                 MaterialsAlloy.TITANSTEEL.getScrew(8))
@@ -565,8 +566,8 @@ public class RecipesGregTech {
                 GregtechItemList.Industrial_AlloyBlastSmelter.get(64),
                 ItemList.UV_Coil.get(16),
                 ItemList.Conveyor_Module_UV.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 16 },
+                new Object[] { Circuits.UV.getIngredient(), 8 },
+                new Object[] { Circuits.ZPM.getIngredient(), 16 },
                 ItemList.Circuit_Chip_PPIC.get(16),
                 MaterialsAlloy.PIKYONIUM.getPlate(16),
                 MaterialsAlloy.CINOBITE.getScrew(32))
@@ -611,7 +612,7 @@ public class RecipesGregTech {
             .itemInputs(
                 GregtechItemList.Battery_Casing_Gem_3.get(4),
                 MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(32),
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 16 },
+                new Object[] { Circuits.ZPM.getIngredient(), 16 },
                 GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.YttriumBariumCuprate, 16),
                 MaterialsAlloy.ZERON_100.getGear(6),
                 MaterialsAlloy.PIKYONIUM.getScrew(16),
@@ -638,8 +639,8 @@ public class RecipesGregTech {
                 GregtechItemList.Battery_Gem_1.get(2),
                 GregtechItemList.DehydratorCoilWireEV.get(64),
                 MaterialsAlloy.ZERON_100.getPlate(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
-                new Object[] { OrePrefixes.circuit.get(Materials.IV), 8 },
+                new Object[] { Circuits.LuV.getIngredient(), 4 },
+                new Object[] { Circuits.IV.getIngredient(), 8 },
                 GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.Nichrome, 16),
                 MaterialsAlloy.ZERON_100.getScrew(16),
                 MaterialsAlloy.HASTELLOY_N.getBolt(32),
@@ -662,8 +663,8 @@ public class RecipesGregTech {
                 GregtechItemList.Battery_Gem_2.get(2),
                 GregtechItemList.DehydratorCoilWireIV.get(64),
                 MaterialsAlloy.PIKYONIUM.getPlate(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 8 },
+                new Object[] { Circuits.ZPM.getIngredient(), 4 },
+                new Object[] { Circuits.LuV.getIngredient(), 8 },
                 GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.Platinum, 16),
                 MaterialsAlloy.PIKYONIUM.getScrew(16),
                 MaterialsAlloy.ENERGYCRYSTAL.getBolt(32),
@@ -686,8 +687,8 @@ public class RecipesGregTech {
                 GregtechItemList.Battery_Gem_3.get(2),
                 GregtechItemList.DehydratorCoilWireLuV.get(64),
                 MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 8 },
+                new Object[] { Circuits.UV.getIngredient(), 4 },
+                new Object[] { Circuits.ZPM.getIngredient(), 8 },
                 GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.YttriumBariumCuprate, 16),
                 MaterialsAlloy.TITANSTEEL.getScrew(16),
                 MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getBolt(32),
@@ -709,8 +710,8 @@ public class RecipesGregTech {
                 GregtechItemList.Battery_Gem_4.get(2),
                 GregtechItemList.DehydratorCoilWireZPM.get(64),
                 MaterialsAlloy.ABYSSAL.getPlate(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
+                new Object[] { Circuits.UHV.getIngredient(), 4 },
+                new Object[] { Circuits.UV.getIngredient(), 8 },
                 GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.Naquadah, 16),
                 MaterialsAlloy.ABYSSAL.getScrew(16),
                 MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getBolt(32),
@@ -730,7 +731,7 @@ public class RecipesGregTech {
                 GregtechItemList.LFTRControlCircuit.get(4),
                 ItemList.Field_Generator_LuV.get(16),
                 MaterialLibAPI.getStack(Materials2Materials.Palladium, Materials2Shapes.wireFine, (int) (32)),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 12))
+                Circuits.LuV.get(12))
             .circuit(17)
             .itemOutputs(ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_9_CLOAKING, 1))
             .fluidInputs(MaterialsAlloy.CINOBITE.getFluidStack(32 * INGOTS))
@@ -745,7 +746,7 @@ public class RecipesGregTech {
             .itemInputs(
                 GregtechItemList.Battery_Casing_Gem_4.get(4),
                 MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(32),
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 16 },
+                new Object[] { Circuits.ZPM.getIngredient(), 16 },
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Naquadah, 16),
                 MaterialsAlloy.PIKYONIUM.getGear(6),
                 MaterialsAlloy.TITANSTEEL.getScrew(16),
@@ -1460,7 +1461,7 @@ public class RecipesGregTech {
                 MaterialsAlloy.TUMBAGA.getPlate(8),
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.ring, (int) (12)),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Cobalt, 6),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 4),
+                Circuits.LV.get(4),
                 ItemList.Battery_RE_LV_Lithium.get(4),
                 ItemList.Sensor_LV.get(4))
             .itemOutputs(GregtechItemList.ChargePack_LV.get(1))
@@ -1475,7 +1476,7 @@ public class RecipesGregTech {
                 MaterialsAlloy.EGLIN_STEEL.getPlate(8),
                 MaterialsElements.STANDALONE.BLACK_METAL.getRing(12),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.AnnealedCopper, 6),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 4),
+                Circuits.MV.get(4),
                 ItemList.Battery_RE_MV_Lithium.get(4),
                 ItemList.Sensor_MV.get(4))
             .itemOutputs(GregtechItemList.ChargePack_MV.get(1))
@@ -1490,7 +1491,7 @@ public class RecipesGregTech {
                 MaterialsAlloy.TANTALUM_CARBIDE.getPlate(8),
                 MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.ring, (int) (12)),
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Gold, 6),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
+                Circuits.HV.get(4),
                 ItemList.Battery_RE_HV_Lithium.get(4),
                 ItemList.Sensor_HV.get(4))
             .itemOutputs(GregtechItemList.ChargePack_HV.get(1))
@@ -1505,7 +1506,7 @@ public class RecipesGregTech {
                 MaterialsAlloy.INCOLOY_DS.getPlate(8),
                 MaterialsAlloy.HASTELLOY_N.getRing(12),
                 GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Titanium, 6),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4),
+                Circuits.EV.get(4),
                 GregtechItemList.Battery_RE_EV_Lithium.get(4),
                 ItemList.Sensor_EV.get(4))
             .itemOutputs(GregtechItemList.ChargePack_EV.get(1))
@@ -1520,7 +1521,7 @@ public class RecipesGregTech {
                 MaterialsAlloy.INCONEL_625.getPlate(8),
                 MaterialsAlloy.ENERGYCRYSTAL.getRing(12),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Nichrome, 6),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4),
+                Circuits.IV.get(4),
                 ItemList.Energy_LapotronicOrb.get(4),
                 ItemList.Sensor_IV.get(4))
             .itemOutputs(GregtechItemList.ChargePack_IV.get(1))
@@ -1536,7 +1537,7 @@ public class RecipesGregTech {
                 ItemList.Sensor_LuV.get(6),
                 MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getBolt(64),
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.wireFine, (int) (64)),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 12))
+                Circuits.ZPM.get(12))
             .circuit(17)
             .itemOutputs(ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_8_TURBINE_AUTOMATION, 1))
             .fluidInputs(MaterialsAlloy.CINOBITE.getFluidStack(32 * INGOTS))

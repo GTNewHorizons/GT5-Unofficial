@@ -22,6 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -91,7 +92,7 @@ public class RecipesMachinesMulti {
                 ItemList.Machine_Multi_HeatExchanger.get(1),
                 MaterialsAlloy.ZERON_100.getPlateDouble(8),
                 MaterialsAlloy.ZERON_100.getScrew(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
+                Circuits.IV.get(8))
             .circuit(18)
             .itemOutputs(GregtechItemList.XL_HeatExchanger.get(1))
             .fluidInputs(
@@ -128,7 +129,7 @@ public class RecipesMachinesMulti {
                 MaterialsAlloy.INCOLOY_DS.getPlate(8),
                 MaterialsAlloy.ENERGYCRYSTAL.getBolt(32),
                 MaterialsElements.getInstance().ZIRCONIUM.getFineWire(32),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4L))
+                Circuits.IV.get(4))
             .itemOutputs(ItemList.IndustrialForgeHammer.get(1))
             .fluidInputs(MaterialsAlloy.INCOLOY_DS.getFluidStack(12 * INGOTS))
             .duration(30 * SECONDS)
@@ -241,7 +242,7 @@ public class RecipesMachinesMulti {
             .itemInputs(
                 ItemList.Distillation_Tower.get(2),
                 GregtechItemList.GTPP_Casing_IV.get(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8))
+                Circuits.LuV.get(8))
             .itemOutputs(GregtechItemList.Machine_Adv_DistillationTower.get(1))
             .fluidInputs(
                 MaterialsAlloy.AQUATIC_STEEL.getFluidStack(32 * INGOTS),
@@ -875,7 +876,7 @@ public class RecipesMachinesMulti {
                 GregtechItemList.Casing_Adv_BlastFurnace.get(1),
                 MaterialsAlloy.MARAGING250.getPlate(4),
                 MaterialsAlloy.MARAGING300.getGear(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 2))
+                Circuits.IV.get(2))
             .circuit(1)
             .itemOutputs(GregtechItemList.Hatch_Input_Pyrotheum.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -975,7 +976,7 @@ public class RecipesMachinesMulti {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.YttriumBariumCuprate, 4),
                 ItemList.Robot_Arm_EV.get(4),
                 MaterialsAlloy.ZERON_100.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8))
+                Circuits.LuV.get(8))
             .itemOutputs(GregtechItemList.Controller_Vacuum_Furnace.get(1))
             .fluidInputs(MaterialsAlloy.ZERON_100.getFluidStack(20 * INGOTS))
             .duration(12 * MINUTES)
@@ -1042,7 +1043,7 @@ public class RecipesMachinesMulti {
             .itemInputs(
                 GregtechItemList.Casing_Multi_Use.get(1),
                 ItemList.Block_IridiumTungstensteel.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 16),
+                Circuits.MV.get(16),
                 MaterialsAlloy.INCONEL_625.getScrew(32),
                 MaterialsAlloy.ENERGYCRYSTAL.getBolt(12),
                 MaterialsAlloy.ZERON_100.getPlate(8))
