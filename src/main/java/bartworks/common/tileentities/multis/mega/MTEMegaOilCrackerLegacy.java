@@ -358,6 +358,7 @@ public class MTEMegaOilCrackerLegacy extends MegaMultiBlockBase<MTEMegaOilCracke
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchInput tHatch) {
+            addIfSmartInput(aMetaTileEntity);
             tHatch.updateTexture(aBaseCasingIndex);
             tHatch.mRecipeMap = this.getRecipeMap();
             return this.mMiddleInputHatches.add(tHatch);

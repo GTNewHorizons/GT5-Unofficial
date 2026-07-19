@@ -202,6 +202,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput tHatch) {
+            addIfSmartInput(aMetaTileEntity);
             tHatch.updateTexture(aBaseCasingIndex);
             tHatch.mRecipeMap = getRecipeMap();
             return mMiddleInputHatches.add(tHatch);

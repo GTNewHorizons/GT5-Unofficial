@@ -6,6 +6,7 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_ACTI
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
