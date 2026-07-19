@@ -39,6 +39,7 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
         if (mte == null) return false;
 
         if (mte instanceof MTEHatchInputBeamline) {
+            this.addIfSmartInput(mte);
             return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
         }
 
