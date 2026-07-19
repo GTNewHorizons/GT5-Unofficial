@@ -1802,7 +1802,7 @@ gt.multiblock.ExtremeHeatExchanger.hotsolarsalt=§cHot Solar Salt§7 | SC Thresh
 gt.multiblock.ExtremeHeatExchanger.plasma1=§cPlasma§7 always outputs §rDense SC Steam§7 regardless of input rate
 gt.multiblock.ExtremeHeatExchanger.plasma2=The max input and output rates depend on the plasma's density (EU/L)
 gt.multiblock.ExtremeHeatExchanger.throttle1=A circuit in the controller lowers the SC threshold at the cost of steam
-gt.multiblock.ExtremeHeatExchanger.throttle2=§d-1.5%§7 SC Threshold and §r-1.5%§7 steam output per circuit over 1
+gt.multiblock.ExtremeHeatExchanger.throttle2=§d-150 %s/s§7 SC Threshold and §r-1.5%§7 steam output per circuit over 1
 
 gt.multiblock.NeutralizationEngine.efficiency=Can §fuse §7a §bbase §7to boost §defficiency §7(consumes one by one):
 gt.multiblock.NeutralizationEngine.alkali_text=§b%s§7 : §d%d%%§7 : §f%d§7/§fminute
