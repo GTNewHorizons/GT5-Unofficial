@@ -25,6 +25,7 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Superconductors;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -534,7 +535,7 @@ public class MachineRecipes implements Runnable {
             8,
             new Object[] { ItemList.OreDrill4.get(1), ItemList.Robot_Arm_UV.get(8), ItemList.Field_Generator_UV.get(4),
                 new Object[] { Circuits.UV.getIngredient(), 16 }, ItemList.Sensor_UV.get(16),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 32),
+                Superconductors.UV.getWireGt04(32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 16) },
             new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), MaterialLibAPI
                 .getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, (int) (10 * INGOTS)),
@@ -552,8 +553,7 @@ public class MachineRecipes implements Runnable {
             12,
             new Object[] { ItemList.SpaceElevatorModuleMinerT1.get(1), ItemList.Robot_Arm_UHV.get(8),
                 ItemList.Field_Generator_UHV.get(4), new Object[] { Circuits.UHV.getIngredient(), 16 },
-                ItemList.Sensor_UHV.get(16),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 32),
+                ItemList.Sensor_UHV.get(16), Superconductors.UHV.getWireGt04(32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 16) },
             new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), MaterialLibAPI
                 .getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, (int) (20 * INGOTS)),
@@ -571,8 +571,7 @@ public class MachineRecipes implements Runnable {
             16,
             new Object[] { ItemList.SpaceElevatorModuleMinerT2.get(1), ItemList.Robot_Arm_UEV.get(8),
                 ItemList.Field_Generator_UEV.get(4), new Object[] { Circuits.UEV.getIngredient(), 16 },
-                ItemList.Sensor_UEV.get(16),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 32),
+                ItemList.Sensor_UEV.get(16), Superconductors.UEV.getWireGt04(32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 16) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
                 MaterialLibAPI.getFluidStack(
