@@ -3,34 +3,28 @@ package gregtech.loaders.materials;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 
-/// Legacy `Materials` fields that MaterialLib carries no data for and that unchanged code still references
+/// `Materials` fields that MaterialLib carries no data for and that unchanged code still references
 /// directly: the voltage-tier markers (`ULV`..`MAX`), circuit-component markers (`Resistor`, `Diode`,
 /// `Transistor`, `Capacitor`, `Inductor`), superconductor markers (`SuperconductorMV`..`SuperconductorUMV`),
-/// wildcard markers (`AnyBronze`/`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`, used by
-/// `Materials#setReRegistration`), and a handful of composition markers (`Sand`, `Leather`, `Fluix`,
-/// `Limestone`, `Quartz`, `Prismarine`, `BrickNether`, `Red`). Each field's original `MaterialBuilder`
-/// declaration is reproduced here.
+/// and wildcard markers (`AnyBronze`/`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`, used
+/// by `Materials#setReRegistration`). Each field's `MaterialBuilder` declaration is reproduced here.
 ///
-/// [RecognitionMaterials] separately builds the markers that exist only so `Materials.get(name)` resolves
-/// other mods' ore-dictionary entries and legacy names.
+/// [RecognitionMaterials] separately builds the markers that exist so `Materials.get(name)` resolves other
+/// mods' ore-dictionary entries and legacy names, and that carry ore-unification identity or composition
+/// association for the rest of the code.
 public class LegacyMarkerMaterials {
 
     private LegacyMarkerMaterials() {}
 
     public static void loadMarkers() {
         loadRandomMarkers();
-        loadDontCareMarkers();
-        loadUnknownComponentsMarkers();
         loadTiersMarkers();
         loadCircuitryMarkers();
-        loadNotExactMarkers();
         loadSuperconductorsMarkers();
-        loadGTNHMaterialsMarkers();
     }
 
     private static void loadRandomMarkers() {
@@ -40,8 +34,6 @@ public class LegacyMarkerMaterials {
         Materials.AnyIron = loadAnyIron();
         Materials.AnyRubber = loadAnyRubber();
         Materials.AnySyntheticRubber = loadAnySyntheticRubber();
-        Materials.BrickNether = loadBrickNether();
-        Materials.Quartz = loadQuartz();
     }
 
     private static Materials loadAnyBronze() {
@@ -101,66 +93,6 @@ public class LegacyMarkerMaterials {
             .setDefaultLocalName("AnySyntheticRubber")
             .setUnifiable(false)
             .setIconSet(TextureSet.SET_SHINY)
-            .constructMaterial();
-    }
-
-    private static Materials loadBrickNether() {
-        return new MaterialBuilder().setName("BrickNether")
-            .setDefaultLocalName("BrickNether")
-            .setUnifiable(false)
-            .setIconSet(TextureSet.SET_DULL)
-            .removeOrePrefix(OrePrefixes.ingot) // minecraft:netherbrick
-            .constructMaterial();
-    }
-
-    private static Materials loadQuartz() {
-        return new MaterialBuilder().setName("Quartz")
-            .setDefaultLocalName("Quartz")
-            .setUnifiable(false)
-            .setIconSet(TextureSet.SET_QUARTZ)
-            .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .addSubTag(SubTag.QUARTZ)
-            .constructMaterial();
-    }
-
-    private static void loadDontCareMarkers() {
-        Materials.Fluix = loadFluix();
-    }
-
-    private static Materials loadFluix() {
-        return new MaterialBuilder().setName("Fluix")
-            .setDefaultLocalName("Fluix")
-            .addDustItems()
-            .addGemItems()
-            .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .addSubTag(SubTag.QUARTZ)
-            .constructMaterial();
-    }
-
-    private static void loadUnknownComponentsMarkers() {
-        Materials.Limestone = loadLimestone();
-        Materials.Sand = loadSand();
-    }
-
-    private static Materials loadLimestone() {
-        return new MaterialBuilder().setName("Limestone")
-            .setDefaultLocalName("Limestone")
-            .addDustItems()
-            .constructMaterial();
-    }
-
-    private static Materials loadSand() {
-        return new MaterialBuilder().setName("Sand")
-            .setDefaultLocalName("Sand")
-            .setColor(Dyes.dyeYellow)
-            .setSmeltingInto(() -> Materials.Glass)
-            .addSubTag(SubTag.NO_RECYCLING)
             .constructMaterial();
     }
 
@@ -370,30 +302,6 @@ public class LegacyMarkerMaterials {
             .constructMaterial();
     }
 
-    private static void loadNotExactMarkers() {
-        Materials.Leather = loadLeather();
-        Materials.Red = loadRed();
-    }
-
-    private static Materials loadLeather() {
-        return new MaterialBuilder().setName("Leather")
-            .setDefaultLocalName("Leather")
-            .setIconSet(TextureSet.SET_ROUGH)
-            .setColor(Dyes.dyeOrange)
-            .setARGB(0x7f969650)
-            .addDustItems()
-            .addSubTag(SubTag.TRANSPARENT)
-            .constructMaterial();
-    }
-
-    private static Materials loadRed() {
-        return new MaterialBuilder().setName("Red")
-            .setDefaultLocalName("Red")
-            .setColor(Dyes.dyeRed)
-            .setARGB(0x00ff0000)
-            .constructMaterial();
-    }
-
     private static void loadSuperconductorsMarkers() {
         Materials.SuperconductorMV = loadSuperconductorMV();
         Materials.SuperconductorHV = loadSuperconductorHV();
@@ -531,17 +439,6 @@ public class LegacyMarkerMaterials {
             .setColor(Dyes.dyeWhite)
             .setARGB(0x00b526cd)
             .addAspect(TCAspects.ELECTRUM, 66)
-            .constructMaterial();
-    }
-
-    private static void loadGTNHMaterialsMarkers() {
-        Materials.Prismarine = loadPrismarine();
-    }
-
-    private static Materials loadPrismarine() {
-        return new MaterialBuilder().setName("Prismarine")
-            .setDefaultLocalName("Prismarine")
-            .addSubTag(SubTag.NO_ORE_PROCESSING)
             .constructMaterial();
     }
 }
