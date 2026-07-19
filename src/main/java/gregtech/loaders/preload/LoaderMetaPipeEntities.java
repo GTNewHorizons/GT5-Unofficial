@@ -12,6 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
@@ -655,7 +656,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .build();
 
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeSmall.get(Materials.ZPM),
+            TieredItems.ZPM.getPipeSmallIngredient(),
             new MTEFluidPipe(
                 5165,
                 "GT_Pipe_HighPressure_Small",
@@ -668,7 +669,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     .setShouldSkipMaterialTooltip(true)
                     .getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeMedium.get(Materials.ZPM),
+            TieredItems.ZPM.getPipeMediumIngredient(),
             new MTEFluidPipe(
                 5166,
                 "GT_Pipe_HighPressure",
@@ -681,7 +682,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     .setShouldSkipMaterialTooltip(true)
                     .getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeLarge.get(Materials.ZPM),
+            TieredItems.ZPM.getPipeLargeIngredient(),
             new MTEFluidPipe(
                 5167,
                 "GT_Pipe_HighPressure_Large",

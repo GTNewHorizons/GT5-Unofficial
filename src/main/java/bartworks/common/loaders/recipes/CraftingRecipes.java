@@ -35,9 +35,11 @@ import bartworks.common.tileentities.tiered.MTERadioHatch;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.CircuitComponents;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.ISubTagContainer;
@@ -95,7 +97,7 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.dust, (int) (1L)), 'S',
                 MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.stick, (int) (1L)), 'P',
                 MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plate, (int) (1L)), 'C',
-                "circuitGood", 'B', GTOreDictUnificator.get(OrePrefixes.battery, Materials.MV, 1L) });
+                "circuitGood", 'B', TieredItems.MV.getBattery(1) });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.ROCKCUTTER_LV),
@@ -113,7 +115,7 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.dust, (int) (1L)), 'S',
                 MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.stick, (int) (1L)), 'P',
                 MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.plate, (int) (1L)), 'C',
-                "circuitAdvanced", 'B', GTOreDictUnificator.get(OrePrefixes.battery, Materials.HV, 1L) });
+                "circuitAdvanced", 'B', TieredItems.HV.getBattery(1) });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.TESLASTAFF),
@@ -181,28 +183,28 @@ public class CraftingRecipes implements Runnable {
                 GTModHandler.addCraftingRecipe(
                     ItemRegistry.diode12A[i],
                     RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "WDW", "DCD", "PDP", 'D', OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
+                    new Object[] { "WDW", "DCD", "PDP", 'D', CircuitComponents.DIODE.getIngredient(), 'W',
                         GTOreDictUnificator.get(OrePrefixes.cableGt12, cable, 1L), 'P', hull, 'C', machinehull });
                 GTModHandler.addCraftingRecipe(
                     ItemRegistry.diode8A[i],
                     RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "WDW", "DCD", "PDP", 'D', OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
+                    new Object[] { "WDW", "DCD", "PDP", 'D', CircuitComponents.DIODE.getIngredient(), 'W',
                         GTOreDictUnificator.get(OrePrefixes.cableGt08, cable, 1L), 'P', hull, 'C', machinehull });
                 GTModHandler.addCraftingRecipe(
                     ItemRegistry.diode4A[i],
                     RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "WDW", "DCD", "PDP", 'D', OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
+                    new Object[] { "WDW", "DCD", "PDP", 'D', CircuitComponents.DIODE.getIngredient(), 'W',
                         GTOreDictUnificator.get(OrePrefixes.cableGt04, cable, 1L), 'P', hull, 'C', machinehull });
                 GTModHandler.addCraftingRecipe(
                     ItemRegistry.diode2A[i],
                     RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "WDW", "DCD", "PDP", 'D', OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
+                    new Object[] { "WDW", "DCD", "PDP", 'D', CircuitComponents.DIODE.getIngredient(), 'W',
                         GTOreDictUnificator.get(OrePrefixes.cableGt02, cable, 1L), 'P', hull, 'C', machinehull });
                 GTModHandler.addCraftingRecipe(
                     ItemRegistry.diode16A[i],
                     RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "WHW", "DCD", "PDP", 'H', OrePrefixes.componentCircuit.get(Materials.Inductor), 'D',
-                        OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
+                    new Object[] { "WHW", "DCD", "PDP", 'H', CircuitComponents.INDUCTOR.getIngredient(), 'D',
+                        CircuitComponents.DIODE.getIngredient(), 'W',
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, cable, 1L), 'P', hull, 'C', machinehull });
 
             } catch (ArrayIndexOutOfBoundsException ignored) {

@@ -38,6 +38,7 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.Werkstoff;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -180,7 +181,7 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_LV, 96),
                 get(Electric_Piston_LV, 48),
                 MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.stickLong, 48),
-                get(OrePrefixes.wrapCircuit, Materials.LV, 3),
+                Circuits.LV.getWrap(3),
                 get(OrePrefixes.cableGt16, Materials.Tin, 9))
             .duration(48 * SECONDS)
             .eut(RECIPE_ULV)
@@ -224,7 +225,7 @@ public class ComponentAssemblyLineLoader {
                 MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.gem, 48),
                 MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.plateDense, 21),
                 MaterialLibAPI.getStack(Materials2Materials.Brass, Materials2Shapes.stickLong, 24),
-                get(OrePrefixes.wrapCircuit, Materials.LV, 3))
+                Circuits.LV.getWrap(3))
             .duration(48 * SECONDS)
             .eut(RECIPE_ULV)
             .metadata(COAL_CASING_TIER, COAL_LV)
@@ -235,7 +236,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Emitter_LV.get(64))
             .itemInputsUnsafe(
                 MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.gem, 48),
-                get(OrePrefixes.wrapCircuit, Materials.LV, 6),
+                Circuits.LV.getWrap(6),
                 get(OrePrefixes.cableGt16, Materials.Tin, 6))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Brass, Materials2FluidShapes.fluidMolten, 1 * STACKS + 32 * INGOTS))
@@ -249,7 +250,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Field_Generator_LV.get(64))
             .itemInputsUnsafe(
                 MaterialLibAPI.getStack(Materials2Materials.EnderPearl, Materials2Shapes.plate, 48),
-                get(OrePrefixes.wrapCircuit, Materials.HV, 12))
+                Circuits.HV.getWrap(12))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.RedSteel, Materials2FluidShapes.fluidMolten, 1 * STACKS + 32 * INGOTS))
             .duration(24 * MINUTES)

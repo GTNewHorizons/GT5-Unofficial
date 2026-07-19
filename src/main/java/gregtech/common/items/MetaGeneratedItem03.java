@@ -310,6 +310,7 @@ import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.CircuitComponents;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -390,7 +391,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Parts_ResistorSMD.ID,
                 "gt.item.circuit_part.resistor_smd.name",
                 "gt.item.circuit_part.resistor_smd.tooltip",
-                OrePrefixes.componentCircuit.get(Materials.Resistor),
+                CircuitComponents.RESISTOR.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_Glass_Tube.set(
             addItemWithLocalizationKeys(Circuit_Parts_Glass_Tube.ID, "gt.item.circuit_part.glass_tube.name", "", o));
@@ -405,21 +406,21 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Parts_DiodeSMD.ID,
                 "gt.item.circuit_part.diode_smd.name",
                 "gt.item.circuit_part.diode_smd.tooltip",
-                OrePrefixes.componentCircuit.get(Materials.Diode),
+                CircuitComponents.DIODE.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_TransistorSMD.set(
             addItemWithLocalizationKeys(
                 Circuit_Parts_TransistorSMD.ID,
                 "gt.item.circuit_part.transistor_smd.name",
                 "gt.item.circuit_part.transistor_smd.tooltip",
-                OrePrefixes.componentCircuit.get(Materials.Transistor),
+                CircuitComponents.TRANSISTOR.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_CapacitorSMD.set(
             addItemWithLocalizationKeys(
                 Circuit_Parts_CapacitorSMD.ID,
                 "gt.item.circuit_part.capacitor_smd.name",
                 "gt.item.circuit_part.capacitor_smd.tooltip",
-                OrePrefixes.componentCircuit.get(Materials.Capacitor),
+                CircuitComponents.CAPACITOR.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_GlassFiber.set(
             addItemWithLocalizationKeys(
@@ -495,7 +496,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Parts_InductorSMD.ID,
                 "gt.item.circuit_part.inductor_smd.name",
                 "gt.item.circuit_part.inductor_smd.tooltip",
-                OrePrefixes.componentCircuit.get(Materials.Inductor),
+                CircuitComponents.INDUCTOR.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_InductorASMD.set(
             addItemWithLocalizationKeys(
