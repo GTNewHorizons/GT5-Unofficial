@@ -28,6 +28,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Superconductors;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -704,7 +705,7 @@ public class RecipesMachinesCustom {
                 GregtechItemList.HalfCompleteCasing_II.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.plateDense, (int) (4)),
                 Circuits.HV.get(4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 2))
+                Superconductors.HV.getWireGt01(2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox.get(1))
             .fluidInputs(
                 MaterialLibAPI
@@ -719,7 +720,7 @@ public class RecipesMachinesCustom {
                 GregtechItemList.Casing_Vanadium_Redox.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.plateDense, (int) (4)),
                 Circuits.EV.get(4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 2))
+                Superconductors.EV.getWireGt01(2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_IV.get(1))
             .fluidInputs(
                 MaterialLibAPI
@@ -734,7 +735,7 @@ public class RecipesMachinesCustom {
                 GregtechItemList.Casing_Vanadium_Redox_IV.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plateDense, (int) (4)),
                 Circuits.IV.get(4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 2))
+                Superconductors.IV.getWireGt01(2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_LuV.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (8_000)))
@@ -748,7 +749,7 @@ public class RecipesMachinesCustom {
                 GregtechItemList.Casing_Vanadium_Redox_LuV.get(1),
                 ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 16),
                 Circuits.LuV.get(4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 2))
+                Superconductors.LuV.getWireGt01(2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_ZPM.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Argon, Materials2FluidShapes.fluidGas, (int) (4_000)))
@@ -762,7 +763,7 @@ public class RecipesMachinesCustom {
                 GregtechItemList.Casing_Vanadium_Redox_ZPM.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.plateDense, (int) (4)),
                 Circuits.ZPM.get(4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 2))
+                Superconductors.ZPM.getWireGt01(2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_UV.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidGas, (int) (4_000)))
@@ -776,7 +777,7 @@ public class RecipesMachinesCustom {
                 GregtechItemList.Casing_Vanadium_Redox_UV.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.plateDense, (int) (4)),
                 Circuits.UV.get(4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 2))
+                Superconductors.UV.getWireGt01(2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_MAX.get(1))
             .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(500))
             .duration(1 * MINUTES + 40 * SECONDS)

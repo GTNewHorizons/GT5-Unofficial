@@ -67,6 +67,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Superconductors;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -451,7 +452,7 @@ public class RecipesGregTech {
             .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
                 MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(16),
-                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.SuperconductorUHV, 32),
+                Superconductors.UHV.getWireGt12(32),
                 MaterialsAlloy.TITANSTEEL.getGear(4),
                 GregtechItemList.DehydratorCoilWireZPM.get(64))
             .fluidInputs(
@@ -542,7 +543,7 @@ public class RecipesGregTech {
                 ItemList.StableBosonContainmentUnit.get(2),
                 MaterialsAlloy.ABYSSAL.getPlate(16),
                 Circuits.UHV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 32),
+                Superconductors.UHV.getWireGt16(32),
                 MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getBolt(8),
                 MaterialsAlloy.TITANSTEEL.getScrew(8))
             .fluidInputs(
