@@ -296,7 +296,7 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_MV, 96),
                 get(Electric_Piston_MV, 48),
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.stickLong, 48),
-                get(OrePrefixes.wrapCircuit, Materials.MV, 3),
+                get(Circuits.MV.getWrap(1), 3),
                 get(OrePrefixes.cableGt16, Materials.Copper, 9))
             .duration(48 * SECONDS)
             .eut(RECIPE_LV)
@@ -340,7 +340,7 @@ public class ComponentAssemblyLineLoader {
                 MaterialLibAPI.getStack(Materials2Materials.Emerald, Materials2Shapes.gemFlawless, 48),
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.plateDense, 21),
                 MaterialLibAPI.getStack(Materials2Materials.Electrum, Materials2Shapes.stickLong, 24),
-                get(OrePrefixes.wrapCircuit, Materials.MV, 3))
+                get(Circuits.MV.getWrap(1), 3))
             .duration(48 * SECONDS)
             .eut(RECIPE_LV)
             .metadata(COAL_CASING_TIER, COAL_MV)
@@ -351,7 +351,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Emitter_MV.get(64))
             .itemInputsUnsafe(
                 get(OrePrefixes.gem, Materials.EnderPearl, 48),
-                get(OrePrefixes.wrapCircuit, Materials.MV, 6),
+                get(Circuits.MV.getWrap(1), 6),
                 get(OrePrefixes.cableGt16, Materials.Copper, 6))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Electrum, Materials2FluidShapes.fluidMolten, 1 * STACKS + 32 * INGOTS))
@@ -365,7 +365,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Field_Generator_MV.get(64))
             .itemInputsUnsafe(
                 MaterialLibAPI.getStack(Materials2Materials.EnderEye, Materials2Shapes.plate, 48),
-                get(OrePrefixes.wrapCircuit, Materials.EV, 12))
+                get(Circuits.EV.getWrap(1), 12))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Titanium, Materials2FluidShapes.fluidMolten, 1 * STACKS + 32 * INGOTS))
             .duration(24 * MINUTES)
@@ -409,7 +409,7 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_HV, 96),
                 get(Electric_Piston_HV, 48),
                 MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.stickLong, 48),
-                get(OrePrefixes.wrapCircuit, Materials.HV, 3),
+                get(Circuits.HV.getWrap(1), 3),
                 get(OrePrefixes.cableGt16, Materials.Gold, 9))
             .duration(48 * SECONDS)
             .eut(RECIPE_MV)
@@ -453,7 +453,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.gem, Materials.EnderEye, 48),
                 MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.plateDense, 21),
                 MaterialLibAPI.getStack(Materials2Materials.Chrome, Materials2Shapes.stickLong, 24),
-                get(OrePrefixes.wrapCircuit, Materials.HV, 3))
+                get(Circuits.HV.getWrap(1), 3))
             .duration(48 * SECONDS)
             .eut(RECIPE_MV)
             .metadata(COAL_CASING_TIER, COAL_HV)
@@ -464,7 +464,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Emitter_HV.get(64))
             .itemInputsUnsafe(
                 get(OrePrefixes.gem, Materials.EnderEye, 48),
-                get(OrePrefixes.wrapCircuit, Materials.HV, 6),
+                get(Circuits.HV.getWrap(1), 6),
                 get(OrePrefixes.cableGt16, Materials.Gold, 6))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chrome, Materials2FluidShapes.fluidMolten, 1 * STACKS + 32 * INGOTS))
@@ -478,7 +478,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Field_Generator_HV.get(64))
             .itemInputsUnsafe(
                 get(QuantumEye, 48),
-                get(OrePrefixes.wrapCircuit, Materials.IV, 12))
+                get(Circuits.IV.getWrap(1), 12))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.NiobiumTitanium, Materials2FluidShapes.fluidMolten, 3 * STACKS))
             .duration(24 * MINUTES)
@@ -522,7 +522,7 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_EV, 96),
                 get(Electric_Piston_EV, 48),
                 MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.stickLong, 48),
-                get(OrePrefixes.wrapCircuit, Materials.EV, 3),
+                get(Circuits.EV.getWrap(1), 3),
                 get(OrePrefixes.cableGt16, Materials.Aluminium, 9))
             .duration(48 * SECONDS)
             .eut(RECIPE_HV)
@@ -566,7 +566,7 @@ public class ComponentAssemblyLineLoader {
                 get(QuantumEye, 48),
                 MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.plateDense, 21),
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.stickLong, 24),
-                get(OrePrefixes.wrapCircuit, Materials.EV, 3))
+                get(Circuits.EV.getWrap(1), 3))
             .duration(48 * SECONDS)
             .eut(RECIPE_HV)
             .metadata(COAL_CASING_TIER, COAL_EV)
@@ -577,7 +577,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Emitter_EV.get(64))
             .itemInputsUnsafe(
                 get(QuantumEye, 48),
-                get(OrePrefixes.wrapCircuit, Materials.EV, 6),
+                get(Circuits.EV.getWrap(1), 6),
                 get(OrePrefixes.cableGt16, Materials.Aluminium, 6))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Platinum, Materials2FluidShapes.fluidMolten, 1 * STACKS + 32 * INGOTS))
@@ -591,7 +591,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Field_Generator_EV.get(64))
             .itemInputsUnsafe(
                 get(OrePrefixes.gem, Materials.NetherStar, 48),
-                get(OrePrefixes.wrapCircuit, Materials.LuV, 12))
+                get(Circuits.LuV.getWrap(1), 12))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.HSSG, Materials2FluidShapes.fluidMolten, 3 * STACKS))
             .duration(24 * MINUTES)
@@ -637,7 +637,7 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_IV, 96),
                 get(Electric_Piston_IV, 48),
                 MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.stickLong, 48),
-                get(OrePrefixes.wrapCircuit, Materials.IV, 3),
+                get(Circuits.IV.getWrap(1), 3),
                 get(OrePrefixes.cableGt16, Materials.Tungsten, 9))
             .circuit(ROBOT_ARM_CIRCUIT)
             .duration(48 * SECONDS)
@@ -684,7 +684,7 @@ public class ComponentAssemblyLineLoader {
                 get(QuantumStar, 48),
                 MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plateDense, 21),
                 MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.stickLong, 24),
-                get(OrePrefixes.wrapCircuit, Materials.IV, 3))
+                get(Circuits.IV.getWrap(1), 3))
             .circuit(SENSOR_CIRCUIT)
             .duration(48 * SECONDS)
             .eut(RECIPE_EV)
@@ -696,7 +696,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Emitter_IV.get(64))
             .itemInputsUnsafe(
                 get(QuantumStar, 48),
-                get(OrePrefixes.wrapCircuit, Materials.IV, 6),
+                get(Circuits.IV.getWrap(1), 6),
                 get(OrePrefixes.cableGt16, Materials.Tungsten, 6))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
@@ -711,7 +711,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Field_Generator_IV.get(64))
             .itemInputsUnsafe(
                 get(QuantumStar, 48),
-                get(OrePrefixes.wrapCircuit, Materials.ZPM, 12))
+                get(Circuits.ZPM.getWrap(1), 12))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.HSSS, Materials2FluidShapes.fluidMolten, 3 * STACKS))
@@ -801,9 +801,9 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_LuV, 96),
                 get(Electric_Piston_LuV, 48),
-                get(OrePrefixes.wrapCircuit, Materials.LuV, 6),
-                get(OrePrefixes.wrapCircuit, Materials.IV, 12),
-                get(OrePrefixes.wrapCircuit, Materials.EV, 24),
+                get(Circuits.LuV.getWrap(1), 6),
+                get(Circuits.IV.getWrap(1), 12),
+                get(Circuits.EV.getWrap(1), 24),
                 get(OrePrefixes.cableGt16, Materials.YttriumBariumCuprate, 18))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
@@ -823,7 +823,7 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_LuV, 48),
                 MaterialLibAPI.getStack(Materials2Materials.Ruridit, Materials2Shapes.plateDense, 42),
                 get(QuantumStar, 48),
-                get(OrePrefixes.wrapCircuit, Materials.LuV, 12),
+                get(Circuits.LuV.getWrap(1), 12),
                 get(OrePrefixes.cableGt16, Materials.YttriumBariumCuprate, 21))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
@@ -841,7 +841,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.frameGt, Materials.HSSS, 48),
                 get(Electric_Motor_LuV, 48),
                 get(QuantumStar, 48),
-                get(OrePrefixes.wrapCircuit, Materials.LuV, 12),
+                get(Circuits.LuV.getWrap(1), 12),
                 get(OrePrefixes.cableGt16, Materials.YttriumBariumCuprate, 21))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
@@ -861,7 +861,7 @@ public class ComponentAssemblyLineLoader {
                 MaterialLibAPI.getStack(Materials2Materials.HSSS, Materials2Shapes.plateDense, 32),
                 get(QuantumStar, 96),
                 get(Emitter_LuV, 192),
-                get(OrePrefixes.wrapCircuit, Materials.ZPM, 12),
+                get(Circuits.ZPM.getWrap(1), 12),
                 get(OrePrefixes.cableGt16, Materials.YttriumBariumCuprate, 24))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
@@ -914,9 +914,9 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_ZPM, 96),
                 get(Electric_Piston_ZPM, 48),
-                get(OrePrefixes.wrapCircuit, Materials.ZPM, 6),
-                get(OrePrefixes.wrapCircuit, Materials.LuV, 12),
-                get(OrePrefixes.wrapCircuit, Materials.IV, 24))
+                get(Circuits.ZPM.getWrap(1), 6),
+                get(Circuits.LuV.getWrap(1), 12),
+                get(Circuits.IV.getWrap(1), 24))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(6 * STACKS),
@@ -975,7 +975,7 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_ZPM, 48),
                 MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.plateDense, 42),
                 get(QuantumStar, 96),
-                get(OrePrefixes.wrapCircuit, Materials.ZPM, 12))
+                get(Circuits.ZPM.getWrap(1), 12))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(6 * STACKS),
@@ -993,7 +993,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 48),
                 get(Electric_Motor_ZPM, 48),
                 get(QuantumStar, 96),
-                get(OrePrefixes.wrapCircuit, Materials.ZPM, 12))
+                get(Circuits.ZPM.getWrap(1), 12))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(6 * STACKS),
@@ -1013,7 +1013,7 @@ public class ComponentAssemblyLineLoader {
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.plateDense, 32),
                 get(QuantumStar, 96),
                 get(Emitter_ZPM, 192),
-                get(OrePrefixes.wrapCircuit, Materials.UV, 12))
+                get(Circuits.UV.getWrap(1), 12))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(6 * STACKS),
@@ -1068,9 +1068,9 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_UV, 96),
                 get(Electric_Piston_UV, 48),
-                get(OrePrefixes.wrapCircuit, Materials.UV, 6),
-                get(OrePrefixes.wrapCircuit, Materials.ZPM, 12),
-                get(OrePrefixes.wrapCircuit, Materials.LuV, 24))
+                get(Circuits.UV.getWrap(1), 6),
+                get(Circuits.ZPM.getWrap(1), 12),
+                get(Circuits.LuV.getWrap(1), 24))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(12 * STACKS),
@@ -1132,7 +1132,7 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_UV, 48),
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.plateDense, 42),
                 get(Gravistar, 192),
-                get(OrePrefixes.wrapCircuit, Materials.UV, 12))
+                get(Circuits.UV.getWrap(1), 12))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(12 * STACKS),
@@ -1150,7 +1150,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.frameGt, Materials.Neutronium, 48),
                 get(Electric_Motor_UV, 48),
                 get(Gravistar, 192),
-                get(OrePrefixes.wrapCircuit, Materials.UV, 12))
+                get(Circuits.UV.getWrap(1), 12))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(12 * STACKS),
@@ -1170,7 +1170,7 @@ public class ComponentAssemblyLineLoader {
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.plateDense, 32),
                 get(Gravistar, 96),
                 get(Emitter_UV, 192),
-                get(OrePrefixes.wrapCircuit, Materials.UHV, 12))
+                get(Circuits.UHV.getWrap(1), 12))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(12 * STACKS),
@@ -1226,9 +1226,9 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_UHV, 96),
                 get(Electric_Piston_UHV, 48),
-                get(OrePrefixes.wrapCircuit, Materials.UHV, 6),
-                get(OrePrefixes.wrapCircuit, Materials.UV, 12),
-                get(OrePrefixes.wrapCircuit, Materials.ZPM, 24))
+                get(Circuits.UHV.getWrap(1), 6),
+                get(Circuits.UV.getWrap(1), 12),
+                get(Circuits.ZPM.getWrap(1), 24))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
@@ -1290,7 +1290,7 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_UHV, 48),
                 MaterialLibAPI.getStack(Materials2Materials.CosmicNeutronium, Materials2Shapes.plateDense, 42),
                 get(Gravistar, 384),
-                get(OrePrefixes.wrapCircuit, Materials.UHV, 12))
+                get(Circuits.UHV.getWrap(1), 12))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
@@ -1309,7 +1309,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 48),
                 get(Electric_Motor_UHV, 48),
                 get(Gravistar, 384),
-                get(OrePrefixes.wrapCircuit, Materials.UHV, 12))
+                get(Circuits.UHV.getWrap(1), 12))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
@@ -1330,7 +1330,7 @@ public class ComponentAssemblyLineLoader {
                 MaterialLibAPI.getStack(Materials2Materials.CosmicNeutronium, Materials2Shapes.plateDense, 32),
                 get(Gravistar, 192),
                 get(Emitter_UHV, 192),
-                get(OrePrefixes.wrapCircuit, Materials.UEV, 12))
+                get(Circuits.UEV.getWrap(1), 12))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
@@ -1386,9 +1386,9 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_UEV, 96),
                 get(Electric_Piston_UEV, 48),
-                get(OrePrefixes.wrapCircuit, Materials.UEV, 6),
-                get(OrePrefixes.wrapCircuit, Materials.UHV, 12),
-                get(OrePrefixes.wrapCircuit, Materials.UV, 24))
+                get(Circuits.UEV.getWrap(1), 6),
+                get(Circuits.UHV.getWrap(1), 12),
+                get(Circuits.UV.getWrap(1), 24))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
@@ -1450,7 +1450,7 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_UEV, 48),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.plateDense, 42),
                 get(Gravistar, 768),
-                get(OrePrefixes.wrapCircuit, Materials.UEV, 12))
+                get(Circuits.UEV.getWrap(1), 12))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
@@ -1469,7 +1469,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.frameGt, Materials.Infinity, 48),
                 get(Electric_Motor_UEV, 48),
                 get(Gravistar, 768),
-                get(OrePrefixes.wrapCircuit, Materials.UEV, 12))
+                get(Circuits.UEV.getWrap(1), 12))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
@@ -1490,7 +1490,7 @@ public class ComponentAssemblyLineLoader {
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.plateDense, 32),
                 get(Gravistar, 384),
                 get(Emitter_UEV, 192),
-                get(OrePrefixes.wrapCircuit, Materials.UIV, 12))
+                get(Circuits.UIV.getWrap(1), 12))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
@@ -1573,9 +1573,9 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_UIV, 96),
                 get(Electric_Piston_UIV, 48),
-                get(OrePrefixes.wrapCircuit, Materials.UIV, 6),
-                get(OrePrefixes.wrapCircuit, Materials.UEV, 12),
-                get(OrePrefixes.wrapCircuit, Materials.UHV, 24),
+                get(Circuits.UIV.getWrap(1), 6),
+                get(Circuits.UEV.getWrap(1), 12),
+                get(Circuits.UHV.getWrap(1), 24),
                 get(OrePrefixes.cableGt16, Materials.NetherStar, 72))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
@@ -1637,7 +1637,7 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_UIV, 48),
                 MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.plateDense, 42),
                 get(NuclearStar, 96),
-                get(OrePrefixes.wrapCircuit, Materials.UIV, 12),
+                get(Circuits.UIV.getWrap(1), 12),
                 get(OrePrefixes.cableGt16, Materials.NetherStar, 84))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
@@ -1659,7 +1659,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.frameGt, Materials.TranscendentMetal, 48),
                 get(Electric_Motor_UIV, 48),
                 get(NuclearStar, 96),
-                get(OrePrefixes.wrapCircuit, Materials.UIV, 12),
+                get(Circuits.UIV.getWrap(1), 12),
                 get(OrePrefixes.cableGt16, Materials.NetherStar, 84))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
@@ -1683,7 +1683,7 @@ public class ComponentAssemblyLineLoader {
                 MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.plateDense, 32),
                 get(NuclearStar, 48),
                 get(Emitter_UIV, 192),
-                get(OrePrefixes.wrapCircuit, Materials.UMV, 12),
+                get(Circuits.UMV.getWrap(1), 12),
                 get(OrePrefixes.cableGt16, Materials.NetherStar, 96))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
@@ -1704,7 +1704,7 @@ public class ComponentAssemblyLineLoader {
                 MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.plateDense, 32),
                 get(NuclearStar, 48),
                 get(Emitter_UIV, 192),
-                get(OrePrefixes.wrapCircuit, Materials.UMV, 12),
+                get(Circuits.UMV.getWrap(1), 12),
                 get(OrePrefixes.cableGt16, Materials.NetherStar, 96))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
@@ -1764,9 +1764,9 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_UMV, 96),
                 get(Electric_Piston_UMV, 48),
-                get(OrePrefixes.wrapCircuit, Materials.UMV, 6),
-                get(OrePrefixes.wrapCircuit, Materials.UIV, 12),
-                get(OrePrefixes.wrapCircuit, Materials.UEV, 24))
+                get(Circuits.UMV.getWrap(1), 6),
+                get(Circuits.UIV.getWrap(1), 12),
+                get(Circuits.UEV.getWrap(1), 24))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
@@ -1831,7 +1831,7 @@ public class ComponentAssemblyLineLoader {
                 get(Electric_Motor_UMV, 48),
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plateDense, 42),
                 get(NuclearStar, 192),
-                get(OrePrefixes.wrapCircuit, Materials.UMV, 12))
+                get(Circuits.UMV.getWrap(1), 12))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
@@ -1853,7 +1853,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.frameGt, Materials.SpaceTime, 48),
                 get(Electric_Motor_UMV, 48),
                 get(NuclearStar, 192),
-                get(OrePrefixes.wrapCircuit, Materials.UMV, 12))
+                get(Circuits.UMV.getWrap(1), 12))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
@@ -1877,7 +1877,7 @@ public class ComponentAssemblyLineLoader {
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plateDense, 32),
                 get(NuclearStar, 96),
                 get(Emitter_UMV, 192),
-                get(OrePrefixes.wrapCircuit, Materials.UXV, 12))
+                get(Circuits.UXV.getWrap(1), 12))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
@@ -1904,7 +1904,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Electric_Motor_UXV.get(64))
             .itemInputsUnsafe(
                 get(EnergisedTesseract, 48),
-                get(OrePrefixes.wrapCircuit, Materials.UHV, 114),
+                get(Circuits.UHV.getWrap(1), 114),
                 get(OrePrefixes.wireGt16, Materials.SpaceTime, 48),
                 get(OrePrefixes.nanite, Materials.Gold, 12))
             .circuit(MOTOR_CIRCUIT)
@@ -1926,7 +1926,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Electric_Piston_UXV.get(64))
             .itemInputsUnsafe(
                 get(Electric_Motor_UXV, 48),
-                get(OrePrefixes.wrapCircuit, Materials.UHV, 84),
+                get(Circuits.UHV.getWrap(1), 84),
                 get(OrePrefixes.nanite, Materials.Gold, 12))
             .circuit(PISTON_CIRCUIT)
             .fluidInputs(
@@ -1947,10 +1947,10 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(Electric_Motor_UXV, 96),
                 get(Electric_Piston_UXV, 48),
-                get(OrePrefixes.wrapCircuit, Materials.UXV, 6),
-                get(OrePrefixes.wrapCircuit, Materials.UMV, 12),
-                get(OrePrefixes.wrapCircuit, Materials.UIV, 24),
-                get(OrePrefixes.wrapCircuit, Materials.UHV, 54),
+                get(Circuits.UXV.getWrap(1), 6),
+                get(Circuits.UMV.getWrap(1), 12),
+                get(Circuits.UIV.getWrap(1), 24),
+                get(Circuits.UHV.getWrap(1), 54),
                 get(OrePrefixes.nanite, Materials.Gold, 24))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
@@ -1970,7 +1970,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Electric_Pump_UXV.get(64))
             .itemInputsUnsafe(
                 get(Electric_Motor_UXV, 48),
-                get(OrePrefixes.wrapCircuit, Materials.UHV, 42),
+                get(Circuits.UHV.getWrap(1), 42),
                 get(OrePrefixes.wireGt16, Materials.SpaceTime, 48),
                 get(OrePrefixes.nanite, Materials.Gold, 12))
             .circuit(PUMP_CIRCUIT)
@@ -1993,7 +1993,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Conveyor_Module_UXV.get(64))
             .itemInputsUnsafe(
                 get(Electric_Motor_UXV, 96),
-                get(OrePrefixes.wrapCircuit, Materials.UHV, 36),
+                get(Circuits.UHV.getWrap(1), 36),
                 get(OrePrefixes.wireGt16, Materials.SpaceTime, 48),
                 get(OrePrefixes.nanite, Materials.Gold, 12))
             .circuit(CONVEYOR_CIRCUIT)
@@ -2017,8 +2017,8 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.frameGt, Materials.MHDCSM, 48),
                 get(Electric_Motor_UXV, 48),
                 get(NuclearStar, 768),
-                get(OrePrefixes.wrapCircuit, Materials.UXV, 12),
-                get(OrePrefixes.wrapCircuit, Materials.UHV, 48),
+                get(Circuits.UXV.getWrap(1), 12),
+                get(Circuits.UHV.getWrap(1), 48),
                 get(OrePrefixes.nanite, Materials.Gold, 24))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
@@ -2040,8 +2040,8 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.frameGt, Materials.MHDCSM, 48),
                 get(Electric_Motor_UXV, 48),
                 get(NuclearStar, 768),
-                get(OrePrefixes.wrapCircuit, Materials.UXV, 12),
-                get(OrePrefixes.wrapCircuit, Materials.UHV, 48),
+                get(Circuits.UXV.getWrap(1), 12),
+                get(Circuits.UHV.getWrap(1), 48),
                 get(OrePrefixes.nanite, Materials.Gold, 24))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
@@ -2063,8 +2063,8 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.frameGt, Materials.MHDCSM, 48),
                 get(NuclearStar, 3072),
                 get(Emitter_UXV, 192),
-                get(OrePrefixes.wrapCircuit, Materials.MAX, 12),
-                get(OrePrefixes.wrapCircuit, Materials.UHV, 66),
+                get(Circuits.MAX.getWrap(1), 12),
+                get(Circuits.UHV.getWrap(1), 66),
                 get(OrePrefixes.nanite, Materials.Gold, 36))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
@@ -2093,5 +2093,9 @@ public class ComponentAssemblyLineLoader {
 
     private static ItemStack get(ItemList item, int amount) {
         return GTUtility.copyAmountUnsafe(amount, item.get(1));
+    }
+
+    private static ItemStack get(ItemStack stack, int amount) {
+        return GTUtility.copyAmountUnsafe(amount, stack);
     }
 }
