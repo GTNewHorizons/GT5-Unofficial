@@ -456,8 +456,8 @@ public class MultiblockTooltipBuilder {
      * @param hollow Flag for the (Hollow) tag
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder beginVariableStructureBlock(int wmin, int wmax, int hmin, int hmax, int lmin, int lmax,
-                                                                boolean hollow) {
+    public MultiblockTooltipBuilder beginVariableStructureBlock(int wmin, int wmax, int hmin, int hmax, int lmin,
+        int lmax, boolean hollow) {
         sLines.add(
             EnumChatFormatting.WHITE + TT_dimensions
                 + COLON
