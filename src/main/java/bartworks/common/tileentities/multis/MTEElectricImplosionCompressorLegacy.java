@@ -234,7 +234,7 @@ public class MTEElectricImplosionCompressorLegacy
             .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
             .addMaxTierSkips(1)
             .addSupportAny()
-            .beginStructureBlock(9, 3, 3, false)
+            .beginStructureBlock(3, 9, 3, false)
             .addController("Front center, 3rd layer")
             .addCasingInfoMin("Solid Steel Machine Casing", 8, false)
             .addStructureInfo("Casings can be replaced with Explosion Hazard Signs")

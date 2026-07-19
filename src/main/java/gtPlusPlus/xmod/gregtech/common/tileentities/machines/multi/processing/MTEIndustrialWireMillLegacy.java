@@ -71,7 +71,7 @@ public class MTEIndustrialWireMillLegacy extends GTPPMultiBlockBase<MTEIndustria
             .addStructureDeprecatedLine()
             .addBulkMachineInfo(4, 3f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 5, 3, true)
+            .beginStructureBlock(3, 3, 5, true)
             .addController("Front center")
             .addCasingInfoMin("Wire Factory Casing", 14, false)
             .addInputBus("Any Casing", 1)

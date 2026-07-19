@@ -62,7 +62,7 @@ public class MTELargeTurbinePlasmaLegacy extends MTELargeTurbineLegacy {
             .addStructureDeprecatedLine()
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Use your Fusion Reactor to produce the Plasma")
-            .beginStructureBlock(3, 4, 3, true)
+            .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfoRange("Tungstensteel Turbine Casing", 8, 31, false)
             .addDynamoHatch("Back center", 1)

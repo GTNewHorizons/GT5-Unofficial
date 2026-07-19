@@ -84,7 +84,7 @@ public class MTEFrothFlotationCellLegacy extends GTPPMultiBlockBase<MTEFrothFlot
             .addInfo("You can only ever process one type of material per controller")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 7, 7, true)
+            .beginStructureBlock(7, 9, 7, true)
             .addController("Top center")
             .addCasingInfoMin("Inconel Reinforced Casing", 68, false)
             .addCasingInfoMin("Flotation Casing", 52, false)

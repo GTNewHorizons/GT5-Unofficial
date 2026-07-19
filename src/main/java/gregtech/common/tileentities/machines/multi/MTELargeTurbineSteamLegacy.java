@@ -64,7 +64,7 @@ public class MTELargeTurbineSteamLegacy extends MTELargeTurbineLegacy {
             .addInfo("Outputs Distilled Water as well as producing power")
             .addInfo("Power output depends on turbine and fitting")
             .addInfo("Use screwdriver to adjust fitting of turbine")
-            .beginStructureBlock(3, 4, 3, true)
+            .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfoRange("Turbine Casing", 8, 31, false)
             .addDynamoHatch("Back center", 1)

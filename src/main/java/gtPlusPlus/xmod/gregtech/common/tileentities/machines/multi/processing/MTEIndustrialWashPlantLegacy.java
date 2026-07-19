@@ -113,7 +113,7 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
             .addInfo("Need to be filled with water")
             .addInfo("Will automatically fill water from input hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 7, 5, true)
+            .beginStructureBlock(5, 3, 7, true)
             .addController("Front center")
             .addCasingInfoMin("Wash Plant Casing", 40, false)
             .addInputBus("Any Casing", 1)

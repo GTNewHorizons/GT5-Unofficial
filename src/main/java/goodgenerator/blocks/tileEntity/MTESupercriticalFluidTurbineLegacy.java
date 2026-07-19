@@ -147,7 +147,7 @@ public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegac
             .addInfo("Outputs 1L of SH Steam per 1L of SC Steam as well as producing power")
             .addInfo("Power output depends on turbine and fitting")
             .addInfo("Use screwdriver to adjust fitting of turbine")
-            .beginStructureBlock(3, 4, 3, true)
+            .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfoMin("SC Turbine Casing", 24, false)
             .addDynamoHatch("Back center", 1)
