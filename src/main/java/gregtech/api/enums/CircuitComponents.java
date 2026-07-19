@@ -4,12 +4,13 @@ import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.material.MarkerMaterial;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
 /// The [OrePrefixes#componentCircuit] ore-dictionary entries, keyed by the discrete component they stand for.
 ///
-/// Each component is backed by a `Materials` marker that carries no composition and generates no items; it exists
+/// Each component is backed by a [MarkerMaterial] that carries no composition and generates no items; it exists
 /// only to name the ore-dictionary entry. Routing every call site through this enum keeps that mapping in one place.
 ///
 /// Ingredients come in two shapes: [#get(int)] returns a unified [ItemStack] for recipe inputs and outputs that need
@@ -26,9 +27,9 @@ public enum CircuitComponents {
     CAPACITOR(() -> Materials.Capacitor),
     INDUCTOR(() -> Materials.Inductor);
 
-    private final Supplier<Materials> marker;
+    private final Supplier<MarkerMaterial> marker;
 
-    CircuitComponents(Supplier<Materials> marker) {
+    CircuitComponents(Supplier<MarkerMaterial> marker) {
         this.marker = marker;
     }
 

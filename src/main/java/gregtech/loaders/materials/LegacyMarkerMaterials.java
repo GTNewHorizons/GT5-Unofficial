@@ -6,17 +6,22 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.material.MarkerMaterial;
 
 /// `Materials` fields that MaterialLib carries no data for and that unchanged code still references
-/// directly: the voltage-tier markers (`ULV`..`MAX`), circuit-component markers (`Resistor`, `Diode`,
-/// `Transistor`, `Capacitor`, `Inductor`), superconductor markers (`SuperconductorMV`..`SuperconductorUMV`),
-/// and wildcard markers (`AnyBronze`/`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`, used
-/// by `Materials#setReRegistration`). Each field's `MaterialBuilder` declaration is reproduced here.
+/// directly: the voltage-tier markers (`ULV`..`MAX`), superconductor markers
+/// (`SuperconductorMV`..`SuperconductorUMV`), and wildcard markers
+/// (`AnyBronze`/`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`, used by
+/// `Materials#setReRegistration`) are reproduced here through `MaterialBuilder`. The circuit-component markers
+/// (`Resistor`, `Diode`, `Transistor`, `Capacitor`, `Inductor`) name their `componentCircuit` ore-dictionary
+/// entry and nothing more, so they are plain [MarkerMaterial]s.
 ///
 /// [RecognitionMaterials] separately builds the markers that exist so `Materials.get(name)` resolves other
 /// mods' ore-dictionary entries and legacy names, and that carry ore-unification identity or composition
 /// association for the rest of the code.
 public class LegacyMarkerMaterials {
+
+    private static final int DEFAULT_ARGB = 0x00ffffff;
 
     private LegacyMarkerMaterials() {}
 
@@ -255,51 +260,11 @@ public class LegacyMarkerMaterials {
     }
 
     private static void loadCircuitryMarkers() {
-        Materials.Resistor = loadResistor();
-        Materials.Diode = loadDiode();
-        Materials.Transistor = loadTransistor();
-        Materials.Capacitor = loadCapacitor();
-        Materials.Inductor = loadInductor();
-    }
-
-    private static Materials loadResistor() {
-        return new MaterialBuilder().setName("Resistor")
-            .setDefaultLocalName("Resistor")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.ELECTRUM, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadDiode() {
-        return new MaterialBuilder().setName("Diode")
-            .setDefaultLocalName("Diode")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.ELECTRUM, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadTransistor() {
-        return new MaterialBuilder().setName("Transistor")
-            .setDefaultLocalName("Transistor")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.ELECTRUM, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadCapacitor() {
-        return new MaterialBuilder().setName("Capacitor")
-            .setDefaultLocalName("Capacitor")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.ELECTRUM, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadInductor() {
-        return new MaterialBuilder().setName("Inductor")
-            .setDefaultLocalName("Inductor")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.ELECTRUM, 1)
-            .constructMaterial();
+        Materials.Resistor = new MarkerMaterial("Resistor", "Resistor", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.Diode = new MarkerMaterial("Diode", "Diode", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.Transistor = new MarkerMaterial("Transistor", "Transistor", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.Capacitor = new MarkerMaterial("Capacitor", "Capacitor", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.Inductor = new MarkerMaterial("Inductor", "Inductor", TextureSet.SET_NONE, DEFAULT_ARGB);
     }
 
     private static void loadSuperconductorsMarkers() {
