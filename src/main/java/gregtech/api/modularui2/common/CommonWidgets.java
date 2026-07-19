@@ -7,6 +7,7 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.network.NetworkUtils;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -71,10 +72,8 @@ public final class CommonWidgets {
 
             Flow row = Flow.row()
                 .coverChildren()
-                .marginLeft(5)
-                .marginRight(5)
-                .marginTop(5)
-                .marginBottom(1)
+                .crossAxisAlignment(Alignment.CrossAxis.START)
+                .margin(5, 5, 5, 1)
                 .childPadding(4);
 
             byte colorization = mte.getBaseMetaTileEntity()
