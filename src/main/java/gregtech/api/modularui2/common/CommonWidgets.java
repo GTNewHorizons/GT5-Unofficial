@@ -94,8 +94,6 @@ public final class CommonWidgets {
             if (showSwatch) {
                 int swatchSize = 7;
                 int swatchMarginTop = (rowContentHeight - swatchOuterSize) / 2;
-                // Added before the title text so its position is always the same, regardless of the machine name's
-                // length.
                 row.child(
                     new ParentWidget<>().size(swatchOuterSize, swatchOuterSize)
                         .marginTop(swatchMarginTop)
