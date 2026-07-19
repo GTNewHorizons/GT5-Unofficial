@@ -52,6 +52,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -205,17 +206,17 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 4, 7, true)
-            .addController("Front bottom center")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("40-54", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
             .addCasing("16", Casings.HeatProofMachineCasing.getLocalizedName(), false)
             .addCasing("16", "Heating Coil", false)
             .addCasing("9", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
-            .addEnergyHatch("1+", "Any tungstensteel casing", 1)
-            .addMaintenanceHatch("1", "Any tungstensteel casing", 1)
-            .addMufflerHatch("1", "Any tungstensteel casing", 1)
-            .addInputAny("1+", "Any tungstensteel casing", 1)
-            .addOutputAny("1+", "Any tungstensteel casing", 1)
-            .addAir("Interior and top of the structure")
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.air"))
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
