@@ -72,13 +72,12 @@ public class EIGNormalMode extends EIGMode {
         String fertilizerBonus = String.format("%.0f%%", fertilizerBonusMultiplier);
 
         return builder.addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("kubatech.multiblock.EIGNormalMode.header"))
             .addInfo(
-                StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGNormalMode.desc1", minVoltageTier))
+                EnumChatFormatting.GOLD + StatCollector.translateToLocal("kubatech.multiblock.EIGNormalMode.header"))
+            .addInfo(StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGNormalMode.desc1", minVoltageTier))
             .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.multiblock.EIGNormalMode.desc2",
-                    this.getStartingSlotCount()))
+                StatCollector
+                    .translateToLocalFormatted("kubatech.multiblock.EIGNormalMode.desc2", this.getStartingSlotCount()))
             .addInfo(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.multiblock.EIGNormalMode.desc3",
@@ -90,16 +89,16 @@ public class EIGNormalMode extends EIGMode {
                     this.getSeedCapacityPerSlot()))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.EIGNormalMode.desc5"))
             .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.multiblock.EIGNormalMode.desc6",
-                    minVoltageTierMinus1))
+                StatCollector
+                    .translateToLocalFormatted("kubatech.multiblock.EIGNormalMode.desc6", minVoltageTierMinus1))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.EIGNormalMode.desc7"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.EIGNormalMode.desc8"))
             .addInfo(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.multiblock.EIGNormalMode.desc9",
                     this.getMaxFertilizerUsagePerSeed()))
-            .addInfo(StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGNormalMode.desc10", fertilizerBonus));
+            .addInfo(
+                StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGNormalMode.desc10", fertilizerBonus));
     }
 
     @Override

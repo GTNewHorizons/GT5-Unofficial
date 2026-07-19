@@ -350,9 +350,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc7"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc8"))
             .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.multiblock.ExtremeEntityCrusher.desc9",
-                    MAX_LOOTING_LEVEL))
+                StatCollector
+                    .translateToLocalFormatted("kubatech.multiblock.ExtremeEntityCrusher.desc9", MAX_LOOTING_LEVEL))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc10"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc11"))
             .addInfo(
@@ -375,8 +374,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("60", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
             .addCasing("35-46", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
-            .addCasing("20", StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.steel_frame_box"), false)
-            .addCasing("9", StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.diamond_spike"), false)
+            .addCasing(
+                "20",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.steel_frame_box"),
+                false)
+            .addCasing(
+                "9",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.diamond_spike"),
+                false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)

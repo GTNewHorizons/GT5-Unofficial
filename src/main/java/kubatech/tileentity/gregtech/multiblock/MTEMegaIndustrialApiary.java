@@ -339,15 +339,21 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc3"))
             .addGlassEnergyLimitInfo()
             .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.input_mode"))
+            .addInfo(
+                EnumChatFormatting.GOLD
+                    + StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.input_mode"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc4"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc5"))
             .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.output_mode"))
+            .addInfo(
+                EnumChatFormatting.GOLD
+                    + StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.output_mode"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc4"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc6"))
             .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.operating_mode"))
+            .addInfo(
+                EnumChatFormatting.GOLD
+                    + StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.operating_mode"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.normal_header"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc7"))
             .addInfo(
@@ -375,20 +381,41 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc23"))
             .beginStructureBlock(15, 15, 17, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_9th_layer"))
-            .addCasing("455", StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.dirt_or_grass"), false)
+            .addCasing(
+                "455",
+                StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.dirt_or_grass"),
+                false)
             .addCasing("190-200", Casings.BronzePlatedBricks.getLocalizedName(), false)
-            .addCasing("185", StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.wood_plank"), false)
+            .addCasing(
+                "185",
+                StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.wood_plank"),
+                false)
             .addCasing("121", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
             .addCasing("34", StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.water"), false)
-            .addCasing("24", StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.alveary_fan"), false)
-            .addCasing("20", StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.alveary_heater"), false)
-            .addCasing("20", StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.alveary_hygroregulator"), false)
+            .addCasing(
+                "24",
+                StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.alveary_fan"),
+                false)
+            .addCasing(
+                "20",
+                StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.alveary_heater"),
+                false)
+            .addCasing(
+                "20",
+                StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.alveary_hygroregulator"),
+                false)
             .addCasing("18", StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.alveary"), false)
-            .addCasing("12", StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.alveary_stabiliser"), false)
+            .addCasing(
+                "12",
+                StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.alveary_stabiliser"),
+                false)
             .addCasing("9", StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.apiary"), false)
             .addCasing("9", StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.wood_slab"), false)
             .addCasing("0+", StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.flower"), false)
-            .addEnergyHatch("1+", StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.any_casing_luv"), 1)
+            .addEnergyHatch(
+                "1+",
+                StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.any_casing_luv"),
+                1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)

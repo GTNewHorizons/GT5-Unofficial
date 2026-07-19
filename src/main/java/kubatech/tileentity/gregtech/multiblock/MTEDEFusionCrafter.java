@@ -167,8 +167,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(
-                EnumChatFormatting.RED
-                    + StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.footer"))
+                EnumChatFormatting.RED + StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.footer"))
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
             .toolTipFinisher(GTAuthors.AuthorKuba, "Prometheus0000");
         return tt;

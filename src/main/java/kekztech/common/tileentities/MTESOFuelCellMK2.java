@@ -111,16 +111,13 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.machine_type"))
             .addInfo(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.desc1"))
             .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kekztech.multiblock.SOFuelCell.desc2",
-                    formatNumber(EU_PER_TICK * 20)))
+                StatCollector
+                    .translateToLocalFormatted("kekztech.multiblock.SOFuelCell.desc2", formatNumber(EU_PER_TICK * 20)))
             .addInfo(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK2.desc3"))
             .addInfo(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK2.desc3b"))
             .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kekztech.multiblock.SOFuelCellMK2.desc4",
-                    EU_PER_TICK,
-                    STEAM_PER_SEC))
+                StatCollector
+                    .translateToLocalFormatted("kekztech.multiblock.SOFuelCellMK2.desc4", EU_PER_TICK, STEAM_PER_SEC))
             .addInfo(StatCollector.translateToLocalFormatted("kekztech.multiblock.SOFuelCell.desc5", OXYGEN_PER_SEC))
             .beginStructureBlock(5, 3, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
