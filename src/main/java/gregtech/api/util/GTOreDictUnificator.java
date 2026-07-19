@@ -373,12 +373,13 @@ public class GTOreDictUnificator {
             }
             sItemStack2DataMap.put(aStack, aData);
             if (aData.hasValidMaterialData()) {
-                long tValidMaterialAmount = MU
-                    .hasFlag((Materials) aData.mMaterial.mMaterial, GTMaterialFlag.NO_RECYCLING) ? 0
+                long tValidMaterialAmount = aData.mMaterial.mMaterial instanceof Materials primary
+                    && MU.hasFlag(primary, GTMaterialFlag.NO_RECYCLING) ? 0
                         : aData.mMaterial.mAmount >= 0 ? aData.mMaterial.mAmount : M;
                 for (MaterialStack tMaterial : aData.mByProducts)
-                    tValidMaterialAmount += MU.hasFlag((Materials) tMaterial.mMaterial, GTMaterialFlag.NO_RECYCLING) ? 0
-                        : tMaterial.mAmount >= 0 ? tMaterial.mAmount : M;
+                    tValidMaterialAmount += tMaterial.mMaterial instanceof Materials byproduct
+                        && MU.hasFlag(byproduct, GTMaterialFlag.NO_RECYCLING) ? 0
+                            : tMaterial.mAmount >= 0 ? tMaterial.mAmount : M;
                 if (tValidMaterialAmount < M) GTModHandler.addToRecyclerBlackList(aStack);
             }
             if (mRunThroughTheList) {
