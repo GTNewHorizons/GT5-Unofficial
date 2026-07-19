@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.WerkstoffLoader;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -50,7 +51,7 @@ public class NaniteChain {
                 ItemList.Field_Generator_ZPM.get(16),
                 ItemList.Conveyor_Module_UV.get(16),
                 ItemList.Electric_Motor_UV.get(32),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 16 },
+                new Object[] { Circuits.LuV.getIngredient(), 16 },
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 32),
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.plateSuperdense, (int) (4)))
             .fluidInputs(
@@ -71,7 +72,7 @@ public class NaniteChain {
             .metadata(RESEARCH_ITEM, ItemList.Circuit_Crystalmainframe.get(1))
             .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_ZPM))
             .itemInputs(
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 16 },
+                new Object[] { Circuits.UV.getIngredient(), 16 },
                 ItemList.Robot_Arm_UV.get(16),
                 ItemList.Circuit_Chip_Stemcell.get(32),
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.ring, (int) (32)),
@@ -289,7 +290,7 @@ public class NaniteChain {
                 Materials.Universium.getNanite(1),
                 Materials.MagMatter.getBlocks(8),
                 ItemList.Circuit_Chip_YPIC.get(64),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MAX, 1))
+                Circuits.MAX.get(1))
             .itemOutputs(Materials.MagMatter.getNanite(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(

@@ -30,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import goodgenerator.items.GGMaterial;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
@@ -470,8 +471,8 @@ public class PurifiedWaterRecipes {
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.wireFine, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Tritanium, Materials2Shapes.wireFine, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.CosmicNeutronium, Materials2Shapes.wireFine, (int) (64)),
-                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 16 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8 },
+                new Object[] { Circuits.UHV.getIngredient(), 16 },
+                new Object[] { Circuits.UEV.getIngredient(), 8 },
                 ItemList.Field_Generator_UEV.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
