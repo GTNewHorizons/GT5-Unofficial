@@ -101,6 +101,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -133,6 +134,7 @@ import kubatech.network.CustomTileEntityPacket;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtremeEntityCrusher>
     implements CustomTileEntityPacketHandler, ISurvivalConstructable, ICasingTextureProvider {
 
@@ -337,62 +339,49 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Powered Spawner, EEC")
-            .addInfo("Spawns and kills monsters for you!")
-            .addInfo(
-                "Produces " + EnumChatFormatting.GREEN + "120 Liquid XP" + EnumChatFormatting.GRAY + " per operation")
-            .addInfo("Powered Spawner goes in Controller Slot")
-            .addInfo("Base energy usage: " + EnumChatFormatting.AQUA + "1920" + EnumChatFormatting.GRAY + " EU/t")
-            .addInfo("Supports " + EnumChatFormatting.LIGHT_PURPLE + "perfect OC!")
+        tt.addMachineType(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.machine_type"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc1"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc2"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc3"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc4"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc5"))
             .addSeparator()
-            .addInfo("Has a minimum recipe time of 20 ticks, further overclocks multiply outputs by 4x")
-            .addInfo("Recipe time is based on mob health")
-            .addInfo("You can additionally put a weapon inside the GUI")
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc6"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc7"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc8"))
             .addInfo(
-                "It will speed up the process and apply the looting level from the weapon (maximum " + MAX_LOOTING_LEVEL
-                    + " levels)")
-            .addInfo("Enable Weapon Preservation to prevent the weapon from breaking on it's last hit")
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.multiblock.ExtremeEntityCrusher.desc9",
+                    MAX_LOOTING_LEVEL))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc10"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc11"))
             .addInfo(
-                "Enable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output")
-            .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")
+                EnumChatFormatting.RED
+                    + StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc12"))
             .addSeparator()
-            .addInfo(
-                "If the mob spawns " + EnumChatFormatting.RED
-                    + "infernal"
-                    + EnumChatFormatting.GRAY
-                    + ", it will drain 8 times more power!")
-            .addInfo(
-                "You can prevent " + EnumChatFormatting.RED
-                    + "infernal"
-                    + EnumChatFormatting.GRAY
-                    + " spawns by shift clicking with a screwdriver")
-            .addInfo(
-                "Mobs who are always " + EnumChatFormatting.RED
-                    + "infernal"
-                    + EnumChatFormatting.GRAY
-                    + " will ignore this factor")
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc13"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc14"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc15"))
             .addSeparator()
-            .addInfo("You can enable ritual mode with a screwdriver")
-            .addInfo("When in ritual mode, can link to above Well of Suffering rituals")
-            .addInfo("The Ritual must be built directly centered above the machine")
-            .addInfo("When linked, mobs will start to buffer and die very slowly, providing blood to the linked altar")
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc16"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc17"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc18"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc19"))
             .addSeparator()
-            .addInfo("You can disable mob animation with a soldering iron")
-            .addInfo(
-                "You can enable batch mode with wire cutters. Providing " + EnumChatFormatting.BLUE
-                    + " 16x Time, Output, Weapon Damage")
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc20"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc21"))
             .addGlassEnergyLimitInfo()
             .beginStructureBlock(5, 5, 7, true)
-            .addController("Front bottom center")
-            .addCasing("60", "Any Tiered Glass", true)
-            .addCasing("35-46", "Solid Steel Machine Casing", false)
-            .addCasing("20", "Steel Frame Box", false)
-            .addCasing("9", "Diamond Spike", false)
-            .addEnergyHatch("1+", "Any bottom casing", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("0+", "Any bottom casing", 1)
-            .addOutputAny("1+", "Any bottom casing", 1)
-            .addAir("Interior of the structure")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("60", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("35-46", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("20", StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.steel_frame_box"), false)
+            .addCasing("9", StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.diamond_spike"), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorKuba);
