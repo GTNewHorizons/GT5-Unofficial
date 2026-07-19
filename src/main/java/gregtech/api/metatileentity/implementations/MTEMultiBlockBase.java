@@ -2510,7 +2510,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         if (recipesDone > 0) {
-            info.add(StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)));
+            info.add(
+                StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)));
         }
 
         info.add(StatCollector.translateToLocalFormatted(timeKey, timeValue));
