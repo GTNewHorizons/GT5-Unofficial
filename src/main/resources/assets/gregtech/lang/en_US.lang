@@ -3802,6 +3802,7 @@ GT5U.armor.behavior.Teleporter=Personal Teleporter
 GT5U.armor.behavior.MilkInfusion=Milk Infusion
 GT5U.armor.behavior.HoloInventory=Holographic Inventory
 GT5U.armor.behavior.Terrasteel=Will of the Ancients
+GT5U.armor.behavior.Levitation=Levitation Mode
 
 GT5U.armor.message.enabled=%s §aEnabled§r
 GT5U.armor.message.disabled=%s §cDisabled§r
@@ -7111,6 +7112,7 @@ key.gt.speed_decrease=Decrease Speed
 key.gt.jump_increase=Increase Jump Boost
 key.gt.jump_decrease=Decrease Jump Boost
 key.gt.force_field=Toggle Force Field
+key.gt.toggle_levitation_mode=Toggle Levitation Mode
 key.gt.open_radial_menu=Open Radial Menu
 
 # Tooltips for GT Tools

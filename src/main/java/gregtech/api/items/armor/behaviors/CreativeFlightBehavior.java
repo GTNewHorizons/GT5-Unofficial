@@ -1,5 +1,7 @@
 package gregtech.api.items.armor.behaviors;
 
+import static gregtech.api.items.armor.behaviors.BehaviorName.Levitation;
+
 import net.minecraft.entity.player.EntityPlayer;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +31,10 @@ public class CreativeFlightBehavior implements IArmorBehavior {
             if (!player.capabilities.allowFlying) {
                 player.capabilities.allowFlying = true;
                 player.sendPlayerAbilities();
+            }
+
+            if (context.isBehaviorActive(Levitation)) {
+                player.capabilities.isFlying = true;
             }
         } else if (!player.capabilities.isCreativeMode) {
             player.capabilities.isFlying = false;
