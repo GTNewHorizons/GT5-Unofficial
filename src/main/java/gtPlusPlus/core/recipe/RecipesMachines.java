@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -43,7 +44,7 @@ public class RecipesMachines {
                 ItemList.Tool_DataOrb.get(4),
                 ItemList.Cover_Screen.get(4),
                 ItemList.Hull_IV.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 2))
+                Circuits.ZPM.get(2))
             .itemOutputs(GregtechItemList.Gregtech_Computer_Cube.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
@@ -60,8 +61,8 @@ public class RecipesMachines {
                 ItemList.Robot_Arm_LV.get(4),
                 ItemList.Cover_Controller.get(1),
                 ItemList.Hull_MV.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 2))
+                Circuits.LV.get(2),
+                Circuits.MV.get(2))
             .itemOutputs(new ItemStack(ModBlocks.blockCircuitProgrammer))
             .fluidInputs(
                 MaterialLibAPI
@@ -93,7 +94,7 @@ public class RecipesMachines {
                 MaterialsAlloy.MARAGING350.getGear(4),
                 ItemList.Field_Generator_EV.get(8),
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.wireFine, (int) (32)),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4))
+                Circuits.LuV.get(4))
             .itemOutputs(GregtechItemList.RTG.get(1))
             .fluidInputs(MaterialsAlloy.NIOBIUM_CARBIDE.getFluidStack(16 * INGOTS))
             .duration(10 * MINUTES)
@@ -158,7 +159,7 @@ public class RecipesMachines {
             GregtechItemList.Controller_LargeSemifluidGenerator.get(1L),
             BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
-                ItemList.Electric_Pump_EV, 'C', OrePrefixes.circuit.get(Materials.EV), 'W',
+                ItemList.Electric_Pump_EV, 'C', Circuits.EV.getIngredient(), 'W',
                 OrePrefixes.cableGt08.get(Materials.Electrum), 'G', MaterialsAlloy.INCONEL_792.getGear(1) });
 
         // Reservoir Hatch
