@@ -3218,8 +3218,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     /**
      * Util method for DT-like structure to collect list of output hatches.
      */
-    protected <T extends MTEHatchOutput> List<IOutputHatch> getOutputHatchesByLayers(List<FluidStack> toOutput,
-        List<List<T>> hatchesByLayer) {
+    protected <T extends MTEHatchOutput> List<IOutputHatch> getOutputHatchesByLayers(@NotNull List<FluidStack> toOutput,
+                                                                                     @NotNull List<List<T>> hatchesByLayer) {
         List<IOutputHatch> ret = new ArrayList<>();
         for (int i = 0; i < toOutput.size(); i++) {
             if (i >= hatchesByLayer.size()) {

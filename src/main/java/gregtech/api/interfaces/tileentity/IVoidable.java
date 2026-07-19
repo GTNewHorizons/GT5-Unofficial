@@ -10,6 +10,7 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.util.GTUtility;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Machines implementing this interface can have logic to configure whether to void excess output or not.
@@ -55,7 +56,7 @@ public interface IVoidable {
      * @param toOutput List of fluids this machine is going to output.
      * @return List of slots available for fluid outputs.
      */
-    default List<IOutputHatch> getOutputHatches(List<FluidStack> toOutput) {
+    default List<IOutputHatch> getOutputHatches(@NotNull List<FluidStack> toOutput) {
         return getOutputHatches();
     }
 

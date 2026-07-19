@@ -431,7 +431,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public List<IOutputHatch> getOutputHatches(List<FluidStack> toOutput) {
+    public List<IOutputHatch> getOutputHatches(@NotNull List<FluidStack> toOutput) {
         return this.getOutputHatchesByLayers(toOutput, this.outputHatchesPerLayer);
     }
 

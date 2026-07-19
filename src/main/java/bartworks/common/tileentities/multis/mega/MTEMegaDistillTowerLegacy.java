@@ -411,7 +411,7 @@ public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistill
     }
 
     @Override
-    public List<IOutputHatch> getOutputHatches(List<FluidStack> toOutput) {
+    public List<IOutputHatch> getOutputHatches(@NotNull List<FluidStack> toOutput) {
         return this.getOutputHatchesByLayers(toOutput, this.mOutputHatchesByLayer);
     }
 

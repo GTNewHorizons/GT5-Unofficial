@@ -242,7 +242,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     }
 
     @Override
-    public List<IOutputHatch> getOutputHatches(List<FluidStack> toOutput) {
+    public List<IOutputHatch> getOutputHatches(@NotNull List<FluidStack> toOutput) {
         return getOutputHatchesByLayers(toOutput, mOutputHatchesByLayer);
     }
 
