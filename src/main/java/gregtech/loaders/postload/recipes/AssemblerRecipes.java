@@ -42,6 +42,7 @@ import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.util.ItemRefer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -3489,7 +3490,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Casing_CleanStainlessSteel.get(4),
                 MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.stick, 4),
                 MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.itemCasing, 4),
-                new Object[] { OrePrefixes.circuit.get(Materials.IV), 1 })
+                new Object[] { Circuits.IV.getIngredient(), 1 })
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 16 * INGOTS))

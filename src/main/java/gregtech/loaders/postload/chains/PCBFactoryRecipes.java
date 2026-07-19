@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.WerkstoffLoader;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -53,7 +54,7 @@ public class PCBFactoryRecipes {
             .itemInputs(
                 GTOreDictUnificator.get("frameGtNeutronium", 32),
                 ItemList.Machine_ZPM_CircuitAssembler.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 16 },
+                new Object[] { Circuits.LuV.getIngredient(), 16 },
                 ItemList.Robot_Arm_ZPM.get(8))
             .fluidInputs(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(36 * INGOTS),
