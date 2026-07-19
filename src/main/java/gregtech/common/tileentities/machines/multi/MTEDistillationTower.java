@@ -55,6 +55,7 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
+import org.jetbrains.annotations.NotNull;
 
 public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillationTower>
     implements ISurvivalConstructable, ICasingTextureProvider {
@@ -226,7 +227,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     }
 
     @Override
-    public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+    public List<IOutputHatch> getOutputHatches(List<FluidStack> toOutput) {
         return getOutputHatchesByLayers(toOutput, mOutputHatchesByLayer);
     }
 
@@ -294,7 +295,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     }
 
     @Override
-    public boolean addFluidOutputs(FluidStack[] outputFluids, @Nullable List<FluidStack> remaining) {
+    public boolean addFluidOutputs(@NotNull List<FluidStack> outputFluids, @Nullable List<FluidStack> remaining) {
         return addFluidOutputsByLayer(outputFluids, mOutputHatchesByLayer, remaining);
     }
 

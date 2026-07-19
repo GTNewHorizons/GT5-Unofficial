@@ -404,7 +404,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public boolean addItemOutputs(ItemStack[] stacks, @Nullable List<ItemStack> remaining) {
+    public boolean addItemOutputs(@NotNull List<ItemStack> stacks, @Nullable List<ItemStack> remaining) {
         for (ItemStack stack : stacks) {
             if (GTUtility.isStackInvalid(stack)) continue;
 

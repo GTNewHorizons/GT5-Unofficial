@@ -59,6 +59,7 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
+import org.jetbrains.annotations.NotNull;
 
 public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistillTowerLegacy>
     implements ISurvivalConstructable, ICasingTextureProvider {
@@ -405,12 +406,12 @@ public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistill
     }
 
     @Override
-    public boolean addFluidOutputs(FluidStack[] outputFluids, @Nullable List<FluidStack> remaining) {
+    public boolean addFluidOutputs(@NotNull List<FluidStack> outputFluids, @Nullable List<FluidStack> remaining) {
         return addFluidOutputsByLayer(outputFluids, mOutputHatchesByLayer, remaining);
     }
 
     @Override
-    public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+    public List<IOutputHatch> getOutputHatches(List<FluidStack> toOutput) {
         return this.getOutputHatchesByLayers(toOutput, this.mOutputHatchesByLayer);
     }
 

@@ -161,7 +161,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     }
 
     @Override
-    public boolean addItemOutputs(ItemStack[] outputItems, @Nullable List<ItemStack> remaining) {
+    public boolean addItemOutputs(@NotNull List<ItemStack> outputItems, @Nullable List<ItemStack> remaining) {
         for (ItemStack stack : outputItems) {
             CircuitComponent circuitComponent = CircuitComponent.tryGetFromFakeStack(stack);
             if (circuitComponent != null && baseMulti != null) {

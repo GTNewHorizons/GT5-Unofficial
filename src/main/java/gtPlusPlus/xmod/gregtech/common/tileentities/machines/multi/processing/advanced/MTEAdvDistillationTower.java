@@ -344,7 +344,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    public boolean addFluidOutputs(FluidStack[] outputFluids, @Nullable List<FluidStack> remaining) {
+    public boolean addFluidOutputs(@NotNull List<FluidStack> outputFluids, @Nullable List<FluidStack> remaining) {
         if (machineMode == MACHINEMODE_TOWER) {
             // dt mode
             return addFluidOutputsByLayer(outputFluids, mOutputHatchesByLayer, remaining);
@@ -361,7 +361,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+    public List<IOutputHatch> getOutputHatches(List<FluidStack> toOutput) {
         return getOutputHatchesByLayers(toOutput, mOutputHatchesByLayer);
     }
 

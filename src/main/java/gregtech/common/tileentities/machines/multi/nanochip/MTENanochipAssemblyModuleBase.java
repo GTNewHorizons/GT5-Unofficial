@@ -703,7 +703,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     // Modules may Override this depending on a specific mechanic
     @Override
-    public boolean addItemOutputs(ItemStack[] outputItems, @Nullable List<ItemStack> remaining) {
+    public boolean addItemOutputs(@NotNull List<ItemStack> outputItems, @Nullable List<ItemStack> remaining) {
         boolean succeed = true;
         for (var stack : outputItems) {
             if (!addOutputAtomic(stack)) {

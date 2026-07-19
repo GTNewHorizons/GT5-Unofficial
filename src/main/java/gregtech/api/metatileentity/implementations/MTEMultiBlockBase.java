@@ -811,17 +811,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected boolean tryFlushPendingOutputs() {
         boolean hasChanged = false;
         if (!mPendingItems.isEmpty()) {
-            var outputs = mPendingItems.toArray(new ItemStack[0]);
-            mPendingItems.clear();
-            addItemOutputs(outputs, mPendingItems);
+            List<ItemStack> pending = new ArrayList<>();
+            addItemOutputs(mPendingItems, pending);
+            mPendingItems = pending;
             hasChanged = true;
         }
         if (!mPendingFluids.isEmpty()) {
             GTUtility.removeTailingNulls(mPendingFluids);
             if (!mPendingFluids.isEmpty()) {
-                var outputs = mPendingFluids.toArray(new FluidStack[0]);
-                mPendingFluids.clear();
-                addFluidOutputs(outputs, mPendingFluids);
+                List<FluidStack> pending = new ArrayList<>();
+                addFluidOutputs(mPendingFluids, pending);
+                mPendingFluids = pending;
                 hasChanged = true;
             }
         }
@@ -1755,7 +1755,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * @param stack The stack to eject. Ejected fluids are subtracted from this stack.
      */
     public void addOutputPartial(FluidStack stack) {
-        addOutputPartial(stack, getOutputHatches(new FluidStack[] { stack }));
+        addOutputPartial(stack, getOutputHatches(Collections.singletonList(stack)));
     }
 
     protected void addOutputPartial(FluidStack stack, List<? extends IOutputHatch> hatches) {
@@ -1824,6 +1824,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return addFluidOutputs(outputFluids, protectsExcessFluid() ? mPendingFluids : null);
     }
 
+    public boolean addFluidOutputs(@NotNull FluidStack[] outputFluids, @Nullable List<FluidStack> remaining) {
+        return addFluidOutputs(Arrays.asList(outputFluids), getOutputHatches(outputFluids), protectsExcessFluid(), remaining);
+    }
+
     /**
      * Adds fluids to this multi's output hatches.
      *
@@ -1837,32 +1841,31 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      *                     distillation tower)
      * @return True when all fluids were ejected, false otherwise.
      */
-    public boolean addFluidOutputs(@NotNull FluidStack[] outputFluids, @Nullable List<FluidStack> remaining) {
+    public boolean addFluidOutputs(@NotNull List<FluidStack> outputFluids, @Nullable List<FluidStack> remaining) {
         return addFluidOutputs(outputFluids, getOutputHatches(outputFluids), protectsExcessFluid(), remaining);
     }
 
-    protected boolean addFluidOutputs(@NotNull FluidStack[] outputFluids, List<? extends IOutputHatch> hatches,
+    protected boolean addFluidOutputs(@NotNull List<FluidStack> outputFluids, List<? extends IOutputHatch> hatches,
         boolean protectFluids, @Nullable List<FluidStack> remaining) {
-        if (outputFluids.length == 0) return true;
-        List<FluidStack> outputs = Arrays.asList(outputFluids);
+        if (outputFluids.isEmpty()) return true;
         FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(hatches, protectFluids);
-        int ejected = ejectionHelper.ejectFluids(outputs, 1, remaining);
+        int ejected = ejectionHelper.ejectFluids(outputFluids, 1, remaining);
         ejectionHelper.commit();
 
         return ejected == 1;
     }
 
-    protected boolean addFluidOutputsByLayer(@NotNull FluidStack[] outputFluids,
+    protected boolean addFluidOutputsByLayer(@NotNull List<FluidStack> outputFluids,
         List<? extends List<? extends IOutputHatch>> hatchesByLayer, @Nullable List<FluidStack> remaining) {
         return addFluidOutputsByLayer(outputFluids, hatchesByLayer, protectsExcessFluid(), remaining);
     }
 
-    protected boolean addFluidOutputsByLayer(@NotNull FluidStack[] outputFluids,
+    protected boolean addFluidOutputsByLayer(@NotNull List<FluidStack> outputFluids,
         List<? extends List<? extends IOutputHatch>> hatchesByLayer, boolean protectFluids,
         @Nullable List<FluidStack> remaining) {
         boolean succeed = true;
-        for (int i = 0; i < outputFluids.length; i++) {
-            FluidStack fluidStack = outputFluids[i];
+        for (int i = 0; i < outputFluids.size(); i++) {
+            FluidStack fluidStack = outputFluids.get(i);
             if (!GTUtility.isStackValid(fluidStack)) {
                 if (remaining != null) remaining.add(null);
                 continue;
@@ -1985,6 +1988,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return addItemOutput(stack, protectsExcessItem() ? mPendingItems : null);
     }
 
+    public boolean addItemOutputs(ItemStack[] outputItems, @Nullable List<ItemStack> remaining) {
+        return addItemOutputs(Arrays.asList(outputItems), remaining);
+    }
+
     /**
      * Adds items to this multi's output busses.
      *
@@ -1993,11 +2000,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      *                    need.
      * @return True when all items were ejected, false otherwise.
      */
-    public boolean addItemOutputs(@NotNull ItemStack[] outputItems, @Nullable List<ItemStack> remaining) {
-        if (outputItems.length == 0) return true;
-        List<ItemStack> outputs = Arrays.asList(outputItems);
+    public boolean addItemOutputs(@NotNull List<ItemStack> outputItems, @Nullable List<ItemStack> remaining) {
+        if (outputItems.isEmpty()) return true;
         ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
-        int ejected = ejectionHelper.ejectItems(outputs, 1, remaining);
+        int ejected = ejectionHelper.ejectItems(outputItems, 1, remaining);
         ejectionHelper.commit();
 
         return ejected == 1;
@@ -3212,14 +3218,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     /**
      * Util method for DT-like structure to collect list of output hatches.
      */
-    protected <T extends MTEHatchOutput> List<IOutputHatch> getOutputHatchesByLayers(FluidStack[] toOutput,
+    protected <T extends MTEHatchOutput> List<IOutputHatch> getOutputHatchesByLayers(List<FluidStack> toOutput,
         List<List<T>> hatchesByLayer) {
         List<IOutputHatch> ret = new ArrayList<>();
-        for (int i = 0; i < toOutput.length; i++) {
+        for (int i = 0; i < toOutput.size(); i++) {
             if (i >= hatchesByLayer.size()) {
                 break;
             }
-            FluidStack fluidOutputForLayer = toOutput[i];
+            FluidStack fluidOutputForLayer = toOutput.get(i);
             for (MTEHatchOutput hatch : hatchesByLayer.get(i)) {
                 if (!hatch.isValid()) continue;
                 if (fluidOutputForLayer != null) {
@@ -3682,7 +3688,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return translateToLocalFormatted("GT5U.gui.text.progress_recipe", current, max, percent);
     }
 
-    protected Widget generateCurrentRecipeInfoWidget(ItemStack[] itemStacks, FluidStack[] fluidStacks,
+    protected Widget generateCurrentRecipeInfoWidget(List<ItemStack> itemStacks, List<FluidStack> fluidStacks,
         boolean showRate) {
         final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
 
@@ -3959,8 +3965,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     .setEnabled(widget -> !mPendingItems.isEmpty() || !mPendingFluids.isEmpty()));
             final ChangeableWidget pendingOutputItemsWidget = new ChangeableWidget(
                 () -> generateCurrentRecipeInfoWidget(
-                    mPendingItems.toArray(new ItemStack[0]),
-                    mPendingFluids.toArray(new FluidStack[0]),
+                    mPendingItems,
+                    mPendingFluids,
                     false));
             // Display current recipe
             screenElements.widget(
@@ -4050,7 +4056,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             || (mOutputItems != null && mOutputItems.length > 0)
                             || (mMaxProgresstime > 0)));
             final ChangeableWidget recipeOutputItemsWidget = new ChangeableWidget(
-                () -> generateCurrentRecipeInfoWidget(mOutputItems, mOutputFluids, true));
+                () -> generateCurrentRecipeInfoWidget(Arrays.asList(mOutputItems), Arrays.asList(mOutputFluids), true));
             // Display current recipe
             screenElements.widget(
                 new FakeSyncWidget.ListSyncer<>(
