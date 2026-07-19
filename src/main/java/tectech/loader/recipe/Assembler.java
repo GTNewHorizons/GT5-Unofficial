@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -81,7 +82,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.plateDouble, 6),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1),
+                Circuits.LuV.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.wireFine, 16),
                 MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.wireFine, 16),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2))
@@ -97,7 +98,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Power.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.plate, 8),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 1),
+                Circuits.ZPM.get(1),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2))
             .itemOutputs(CustomItemList.eM_Computer_Casing.get(1))
             .fluidInputs(
@@ -1310,7 +1311,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Transformer_LuV_IV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 2),
+                Circuits.IV.get(2),
                 MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plate, 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 4),
                 new ItemStack(bw_realglas, 2, 2))
@@ -1326,7 +1327,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Transformer_ZPM_LuV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
+                Circuits.LuV.get(2),
                 GTOreDictUnificator.get(
                     OrePrefixes.plate,
                     BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
@@ -1343,7 +1344,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Transformer_UV_ZPM.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 2),
+                Circuits.ZPM.get(2),
                 MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.plate, 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 4),
                 new ItemStack(bw_realglas, 2, 4))
@@ -1359,7 +1360,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Transformer_MAX_UV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2),
+                Circuits.UV.get(2),
                 MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.plate, 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 4),
                 new ItemStack(bw_realglas, 2, 5))
@@ -1374,7 +1375,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Transformer_UEV_UHV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 2),
+                Circuits.UHV.get(2),
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.plate, 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.ElectrumFlux, 4),
                 new ItemStack(bw_realglas, 2, 6))
@@ -1390,7 +1391,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Transformer_UIV_UEV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 2),
+                Circuits.UEV.get(2),
                 GTOreDictUnificator
                     .get(OrePrefixes.plate, BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium), 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 4),
@@ -1407,7 +1408,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Transformer_UMV_UIV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UIV, 2),
+                Circuits.UIV.get(2),
                 GTOreDictUnificator
                     .get(OrePrefixes.plate, BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium), 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 4),
@@ -2611,7 +2612,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.teslaComponent.getWithDamage(4, 0),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2),
+                Circuits.HV.get(2),
                 MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.wireFine, 16),
                 MaterialLibAPI.getStack(Materials2Materials.NickelZincFerrite, Materials2Shapes.plate, 2),
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.foil, 8))
@@ -2624,7 +2625,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.teslaComponent.getWithDamage(4, 1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
+                Circuits.LuV.get(2),
                 MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.wireFine, 16),
                 MaterialLibAPI.getStack(Materials2Materials.NickelZincFerrite, Materials2Shapes.plate, 2),
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.foil, 8))
@@ -2843,7 +2844,7 @@ public class Assembler implements Runnable {
                 GTModHandler.getIC2Item("teslaCoil", 1),
                 CustomItemList.tM_TeslaSecondary.get(4),
                 MaterialLibAPI.getStack(Materials2Materials.NickelZincFerrite, Materials2Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
+                Circuits.HV.get(4),
                 ItemList.Upgrade_Overclocker.get(4))
             .itemOutputs(CustomItemList.Machine_Multi_TeslaCoil.get(1))
             .fluidInputs(
@@ -2856,7 +2857,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Machine_HV_Microwave.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
+                Circuits.HV.get(4),
                 MaterialLibAPI.getStack(Materials2Materials.AnnealedCopper, Materials2Shapes.wireFine, 16),
                 ItemList.Upgrade_Overclocker.get(4))
             .itemOutputs(CustomItemList.Machine_Multi_Microwave.get(1))
@@ -2932,7 +2933,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 1),
+                Circuits.ZPM.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.wireFine, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Electrum, Materials2Shapes.wireFine, 64),
                 GTOreDictUnificator.get(
@@ -2952,7 +2953,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
                 ItemList.Hatch_Input_Bus_LuV.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1),
+                Circuits.LuV.get(1),
                 CustomItemList.DATApipe.get(2))
             .itemOutputs(CustomItemList.dataIn_Hatch.get(1))
             .fluidInputs(
@@ -2967,7 +2968,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
                 ItemList.Hatch_Output_Bus_LuV.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1),
+                Circuits.LuV.get(1),
                 CustomItemList.DATApipe.get(2))
             .itemOutputs(CustomItemList.dataOut_Hatch.get(1))
             .fluidInputs(
@@ -2982,7 +2983,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Computer_Bus.get(1),
                 ItemList.Hatch_Input_Bus_ZPM.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
+                Circuits.LuV.get(2),
                 CustomItemList.DATApipe.get(4))
             .itemOutputs(CustomItemList.rack_Hatch.get(1))
             .fluidInputs(
@@ -2996,7 +2997,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 1),
+                Circuits.ZPM.get(1),
                 CustomItemList.DATApipe.get(16),
                 ItemList.Cover_Screen.get(1),
                 new ItemStack(Blocks.stone_button, 16))

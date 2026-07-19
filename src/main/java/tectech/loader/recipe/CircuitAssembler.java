@@ -6,13 +6,12 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.util.GTOreDictUnificator;
 import tectech.thing.CustomItemList;
 
 public class CircuitAssembler implements Runnable {
@@ -21,9 +20,7 @@ public class CircuitAssembler implements Runnable {
     public void run() {
         // Parametrizer Memory Card
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
-                MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.foil, 4))
+            .itemInputs(Circuits.LV.get(2), MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.foil, 4))
             .itemOutputs(CustomItemList.parametrizerMemory.get(1))
             .fluidInputs(Materials.Polyethylene.getMolten(1 * HALF_INGOTS))
             .requiresCleanRoom()
