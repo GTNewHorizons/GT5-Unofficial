@@ -7,15 +7,23 @@ import net.minecraft.enchantment.Enchantment;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 
-/// Legacy `Materials` fields that exist for one reason: so `Materials.get(name)` resolves a foreign
-/// ore-dictionary entry or legacy name to a known `Materials` instance. `gregtech.common.GTProxy#registerOre`
-/// calls `Materials.get(...)` on every ore-dictionary registration another mod fires, so an entry such as
-/// `gemCitrine`, `oreFluorite`, or `dustAgate` unifies and ore-processes against one of these instead of
-/// falling through unrecognized.
+/// `Materials` fields that generate no items themselves but must exist as `Materials` instances so the rest of
+/// the code can name, identity-match, or associate composition against them:
+///
+/// - Name resolution: `gregtech.common.GTProxy#registerOre` calls `Materials.get(...)` on every ore-dictionary
+/// registration another mod fires, so a foreign entry such as `gemCitrine`, `oreFluorite`, or `dustAgate`
+/// unifies and ore-processes against one of these instead of falling through unrecognized.
+/// - Ore-unification identity: the same handler compares the resolved material by identity (`aMaterial ==
+/// Materials.Fluix`, `== Materials.Quartz`) to steer specific ore-dictionary families, so those instances
+/// must be present and distinct.
+/// - Composition association: `gregtech.loaders.preload.LoaderGTItemData` references a few of these as the
+/// material of an `ItemData` (for example `Materials.Sand` for sand and sandstone recycling), so the field
+/// must resolve to a real instance for that association to bind.
 ///
 /// These fields carry no MaterialLib data and generate nothing themselves: `MaterialBuilder` never assigns
 /// them a meta-item sub-id, so their `addDustItems`/`addGemItems`/`addOreItems`/`addCell` flags produce no
@@ -95,6 +103,13 @@ public class RecognitionMaterials {
             "Bloodstone",
             b -> b.setColor(Dyes.dyeRed)
                 .addDustItems()),
+        marker(
+            m -> Materials.BrickNether = m,
+            "BrickNether",
+            "BrickNether",
+            b -> b.setUnifiable(false)
+                .setIconSet(TextureSet.SET_DULL)
+                .removeOrePrefix(OrePrefixes.ingot)),
         marker(m -> Materials.Chimerite = m, "Chimerite", "Chimerite", b -> b.addDustItems()),
         marker(m -> Materials.Chrysocolla = m, "Chrysocolla", "Chrysocolla", b -> b.addDustItems()),
         marker(m -> Materials.Citrine = m, "Citrine", "Citrine", b -> b.addDustItems()),
@@ -171,6 +186,17 @@ public class RecognitionMaterials {
         marker(m -> Materials.Ender = m, "Ender", "Ender", b -> b.addDustItems()),
         marker(m -> Materials.Energized = m, "Energized", "Energized", b -> {}),
         marker(
+            m -> Materials.Fluix = m,
+            "Fluix",
+            "Fluix",
+            b -> b.addDustItems()
+                .addGemItems()
+                .addSubTag(SubTag.CRYSTAL)
+                .addSubTag(SubTag.CRYSTALLISABLE)
+                .addSubTag(SubTag.NO_SMASHING)
+                .addSubTag(SubTag.NO_SMELTING)
+                .addSubTag(SubTag.QUARTZ)),
+        marker(
             m -> Materials.Fluorite = m,
             "Fluorite",
             "Fluorite",
@@ -240,6 +266,16 @@ public class RecognitionMaterials {
             "IridiumSodiumOxide",
             "Iridium Sodium Oxide",
             b -> b.addDustItems()),
+        marker(
+            m -> Materials.Leather = m,
+            "Leather",
+            "Leather",
+            b -> b.setIconSet(TextureSet.SET_ROUGH)
+                .setColor(Dyes.dyeOrange)
+                .setARGB(0x7f969650)
+                .addDustItems()
+                .addSubTag(SubTag.TRANSPARENT)),
+        marker(m -> Materials.Limestone = m, "Limestone", "Limestone", b -> b.addDustItems()),
         marker(
             m -> Materials.Lodestone = m,
             "Lodestone",
@@ -349,7 +385,19 @@ public class RecognitionMaterials {
             "Bio",
             b -> b.setColor(Dyes.dyeLightGray)
                 .addAspect(TCAspects.ELECTRUM, 12)),
+        marker(m -> Materials.Prismarine = m, "Prismarine", "Prismarine", b -> b.addSubTag(SubTag.NO_ORE_PROCESSING)),
         marker(m -> Materials.PurpleAlloy = m, "PurpleAlloy", "Purple Alloy", b -> b.setARGB(0x0064b4ff)),
+        marker(
+            m -> Materials.Quartz = m,
+            "Quartz",
+            "Quartz",
+            b -> b.setUnifiable(false)
+                .setIconSet(TextureSet.SET_QUARTZ)
+                .addSubTag(SubTag.CRYSTAL)
+                .addSubTag(SubTag.CRYSTALLISABLE)
+                .addSubTag(SubTag.NO_SMASHING)
+                .addSubTag(SubTag.NO_SMELTING)
+                .addSubTag(SubTag.QUARTZ)),
         marker(
             m -> Materials.Randomite = m,
             "Randomite",
@@ -357,7 +405,20 @@ public class RecognitionMaterials {
             b -> b.setMiningLevel(1)
                 .addDustItems()
                 .addOreItems()),
+        marker(
+            m -> Materials.Red = m,
+            "Red",
+            "Red",
+            b -> b.setColor(Dyes.dyeRed)
+                .setARGB(0x00ff0000)),
         marker(m -> Materials.RubberTreeSap = m, "RubberTreeSap", "Rubber Tree Sap", b -> {}),
+        marker(
+            m -> Materials.Sand = m,
+            "Sand",
+            "Sand",
+            b -> b.setColor(Dyes.dyeYellow)
+                .setSmeltingInto(() -> Materials.Glass)
+                .addSubTag(SubTag.NO_RECYCLING)),
         marker(m -> Materials.SodiumPeroxide = m, "SodiumPeroxide", "Sodium Peroxide", b -> b.addDustItems()),
         marker(m -> Materials.SolutionBlueVitriol = m, "SolutionBlueVitriol", "Blue Vitriol Solution", b -> {}),
         marker(m -> Materials.SolutionNickelSulfate = m, "SolutionNickelSulfate", "Nickel Sulfate Solution", b -> {}),
