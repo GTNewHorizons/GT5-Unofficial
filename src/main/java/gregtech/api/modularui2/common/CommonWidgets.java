@@ -60,31 +60,45 @@ public final class CommonWidgets {
             String title = mte.getLocalName();
 
             int borderRadius = 5;
-            int maxWidth = panelWidth - borderRadius * 2;
+            int heightPerRow = TextRenderer.getFontRenderer().FONT_HEIGHT;
+
+            byte colorization = mte.getBaseMetaTileEntity()
+                .getColorization();
+            boolean showSwatch = GregTechAPI.sColoredGUI && !GregTechAPI.sMachineMetalGUI
+                && colorization != IColoredTileEntity.UNCOLOURED;
+            int swatchOuterSize = showSwatch ? heightPerRow + 2 : 0;
+            int childPadding = 4;
+            // Reserve the swatch's width (plus the padding to the text) so the title still wraps to fit within the
+            // panel instead of overflowing when the swatch is shown.
+            int swatchReservedWidth = showSwatch ? swatchOuterSize + childPadding : 0;
+
+            int maxWidth = panelWidth - borderRadius * 2 - swatchReservedWidth;
 
             int titleWidth = TextRenderer.getFontRenderer()
                 .getStringWidth(title);
             int widgetWidth = Math.min(maxWidth, titleWidth);
 
             int rows = (int) Math.ceil((double) titleWidth / maxWidth);
-            int heightPerRow = TextRenderer.getFontRenderer().FONT_HEIGHT;
             int height = heightPerRow * rows;
 
             Flow row = Flow.row()
                 .coverChildren()
                 .crossAxisAlignment(Alignment.CrossAxis.START)
                 .margin(5, 5, 5, 1)
-                .childPadding(4);
+                .childPadding(childPadding);
 
-            byte colorization = mte.getBaseMetaTileEntity()
-                .getColorization();
-            if (GregTechAPI.sColoredGUI && !GregTechAPI.sMachineMetalGUI
-                && colorization != IColoredTileEntity.UNCOLOURED) {
+            // Whichever of the swatch or the (possibly multi-row) text is taller defines the row's content height;
+            // the shorter one gets centered against it.
+            int rowContentHeight = Math.max(height, swatchOuterSize);
+
+            if (showSwatch) {
                 int swatchSize = heightPerRow;
+                int swatchMarginTop = (rowContentHeight - swatchOuterSize) / 2;
                 // Added before the title text so its position is always the same, regardless of the machine name's
                 // length.
                 row.child(
-                    new ParentWidget<>().size(swatchSize + 2, swatchSize + 2)
+                    new ParentWidget<>().size(swatchOuterSize, swatchOuterSize)
+                        .marginTop(swatchMarginTop)
                         .widgetTheme(GTWidgetThemes.BACKGROUND_COLOR_SWATCH)
                         .tooltip(
                             tooltip -> tooltip.add(
@@ -96,10 +110,12 @@ public final class CommonWidgets {
                                 .background(new Rectangle().color(Color.withAlpha(mte.getGUIColorization(), 255)))));
             }
 
+            int textMarginTop = (rowContentHeight - height) / 2;
             row.child(
                 IKey.str(title)
                     .asWidget()
                     .size(widgetWidth, height)
+                    .marginTop(textMarginTop)
                     .widgetTheme(GTWidgetThemes.TEXT_TITLE));
 
             return new SingleChildWidget<>().coverChildren()
