@@ -137,6 +137,7 @@ import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.items.GGMaterial;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -178,7 +179,7 @@ public class RecipeLoader {
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4),
+                Circuits.ZPM.get(4),
                 ItemList.Conveyor_Module_LuV.get(4),
                 GTUtility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 2))
@@ -197,7 +198,7 @@ public class RecipeLoader {
                 ItemList.Hull_LuV.get(1),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
                 ItemList.Casing_Coil_Superconductor.get(2),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8),
+                Circuits.ZPM.get(8),
                 ItemList.Electric_Pump_LuV.get(2),
                 GTUtility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
                 GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.VanadiumGallium, 2))
@@ -216,8 +217,8 @@ public class RecipeLoader {
                 ItemList.Hull_LuV.get(1),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
                 MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.plateDense, 4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2),
+                Circuits.ZPM.get(4),
+                Circuits.UV.get(2),
                 GTUtility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
                 GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.VanadiumGallium, 1))
             .circuit(15)
@@ -235,8 +236,8 @@ public class RecipeLoader {
                 ItemList.Hull_LuV.get(1),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
                 ItemList.Casing_Coil_Superconductor.get(12),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 8),
+                Circuits.ZPM.get(8),
+                Circuits.UV.get(8),
                 GTUtility.copyAmount(8, LanthItemList.BEAMLINE_PIPE),
                 GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.NiobiumTitanium, 8))
             .circuit(15)
@@ -353,7 +354,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.plate, 4),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 5),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 4),
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
+                new Object[] { Circuits.ZPM.getIngredient(), 4 },
                 ItemList.Emitter_LuV.get(6),
                 MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.wireFine, 32),
                 MaterialLibAPI.getStack(Materials2Materials.Electrum, Materials2Shapes.plateDense, 6))
@@ -376,7 +377,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.plate, 4),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 5),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 4),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
+                new Object[] { Circuits.UV.getIngredient(), 4 },
                 ItemList.Emitter_ZPM.get(6),
                 MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.wireFine, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Electrum, Materials2Shapes.plateDense, 6))
@@ -409,7 +410,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
 
-                new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
+                new Object[] { Circuits.IV.getIngredient(), 4 },
                 ItemList.Robot_Arm_LuV.get(4),
                 ItemList.Conveyor_Module_LuV.get(2),
                 MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.wireFine, 32),
@@ -473,7 +474,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getFluidStack(Materials2Materials.Argon, Materials2FluidShapes.fluidGas, 1_000))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
-                new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
+                new Object[] { Circuits.IV.getIngredient(), 4 },
                 ItemList.Robot_Arm_LuV.get(4),
                 MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.wireFine, 16),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tungsten, 2))
@@ -568,7 +569,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, 2_000))
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
+                new Object[] { Circuits.LuV.getIngredient(), 2 },
                 new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 2),
                 ItemList.Electric_Pump_LuV.get(1),
                 LanthItemList.BEAMLINE_PIPE,
@@ -589,7 +590,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, 6_000))
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 6 },
+                new Object[] { Circuits.LuV.getIngredient(), 6 },
                 new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 4),
                 ItemList.Electric_Pump_LuV.get(2),
                 ItemList.Electric_Motor_LuV.get(4),
@@ -3506,7 +3507,7 @@ public class RecipeLoader {
                 ItemList.Electric_Motor_IV.get(4L),
                 ItemList.Electric_Pump_IV.get(4L),
                 MaterialLibAPI.getStack(Materials2Materials.Desh, Materials2Shapes.rotor, 4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4L))
+                Circuits.LuV.get(4))
             .circuit(1)
             .itemOutputs(LanthItemList.DIGESTER)
             .fluidInputs(
@@ -3525,7 +3526,7 @@ public class RecipeLoader {
                 ItemList.Electric_Motor_EV.get(4L),
                 ItemList.Electric_Pump_EV.get(2L),
                 MaterialLibAPI.getStack(Materials2Materials.VibrantAlloy, Materials2Shapes.rotor, 4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4L))
+                Circuits.EV.get(4))
             .circuit(2)
             .itemOutputs(LanthItemList.DISSOLUTION_TANK)
             .fluidInputs(
