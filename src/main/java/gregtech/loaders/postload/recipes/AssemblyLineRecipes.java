@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.WerkstoffLoader;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -356,9 +357,9 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.HSSS, Materials2Shapes.gearGtSmall, (int) (3)),
                     ItemList.Electric_Motor_LuV.get(2),
                     ItemList.Electric_Piston_LuV.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.EV), 8 },
+                    new Object[] { Circuits.LuV.getIngredient(), 2 },
+                    new Object[] { Circuits.IV.getIngredient(), 4 },
+                    new Object[] { Circuits.EV.getIngredient(), 8 },
                     GTOreDictUnificator.get("cableGt01YttriumBariumCuprate", 6))
                 .itemOutputs(ItemList.Robot_Arm_LuV.get(1))
                 .fluidInputs(
@@ -379,9 +380,9 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.gearGtSmall, (int) (3)),
                     ItemList.Electric_Motor_ZPM.get(2),
                     ItemList.Electric_Piston_ZPM.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 2 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.IV), 8 },
+                    new Object[] { Circuits.ZPM.getIngredient(), 2 },
+                    new Object[] { Circuits.LuV.getIngredient(), 4 },
+                    new Object[] { Circuits.IV.getIngredient(), 8 },
                     GTOreDictUnificator.get("cableGt04VanadiumGallium", 6))
                 .itemOutputs(ItemList.Robot_Arm_ZPM.get(1))
                 .fluidInputs(
@@ -402,9 +403,9 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.gearGtSmall, (int) (3)),
                     ItemList.Electric_Motor_UV.get(2),
                     ItemList.Electric_Piston_UV.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 2 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 8 },
+                    new Object[] { Circuits.UV.getIngredient(), 2 },
+                    new Object[] { Circuits.ZPM.getIngredient(), 4 },
+                    new Object[] { Circuits.LuV.getIngredient(), 8 },
                     GTOreDictUnificator.get("cableGt04NaquadahAlloy", 6))
                 .itemOutputs(ItemList.Robot_Arm_UV.get(1))
                 .fluidInputs(
@@ -431,7 +432,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.Electric_Motor_LuV.get(1),
                     GTOreDictUnificator.get(OrePrefixes.stick, LuVMat, 8),
                     ItemList.QuantumStar.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                    new Object[] { Circuits.LuV.getIngredient(), 4 },
                     MaterialLibAPI.getStack(Materials2Materials.Gallium, Materials2Shapes.foil, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Gallium, Materials2Shapes.foil, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Gallium, Materials2Shapes.foil, (int) (64)),
@@ -451,7 +452,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.Electric_Motor_ZPM.get(1),
                     MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.stick, (int) (8)),
                     ItemList.QuantumStar.get(2),
-                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
+                    new Object[] { Circuits.ZPM.getIngredient(), 4 },
                     MaterialLibAPI.getStack(Materials2Materials.Trinium, Materials2Shapes.foil, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Trinium, Materials2Shapes.foil, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Trinium, Materials2Shapes.foil, (int) (64)),
@@ -471,7 +472,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.Electric_Motor_UV.get(1),
                     MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.stick, (int) (8)),
                     ItemList.Gravistar.get(4),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
+                    new Object[] { Circuits.UV.getIngredient(), 4 },
                     MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.foil, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.foil, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.foil, (int) (64)),
@@ -499,7 +500,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.Electric_Motor_LuV.get(1),
                     GTOreDictUnificator.get(OrePrefixes.plate, LuVMat, 8),
                     ItemList.QuantumStar.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                    new Object[] { Circuits.LuV.getIngredient(), 4 },
                     MaterialLibAPI.getStack(Materials2Materials.Gallium, Materials2Shapes.foil, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Gallium, Materials2Shapes.foil, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Gallium, Materials2Shapes.foil, (int) (64)),
@@ -519,7 +520,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.Electric_Motor_ZPM.get(1),
                     MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.plate, (int) (8)),
                     ItemList.QuantumStar.get(2),
-                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
+                    new Object[] { Circuits.ZPM.getIngredient(), 4 },
                     MaterialLibAPI.getStack(Materials2Materials.Trinium, Materials2Shapes.foil, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Trinium, Materials2Shapes.foil, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Trinium, Materials2Shapes.foil, (int) (64)),
@@ -539,7 +540,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.Electric_Motor_UV.get(1),
                     MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.plate, (int) (8)),
                     ItemList.Gravistar.get(4),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
+                    new Object[] { Circuits.UV.getIngredient(), 4 },
                     MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.foil, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.foil, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.foil, (int) (64)),
@@ -567,7 +568,7 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.HSSS, Materials2Shapes.plate, (int) (6)),
                     ItemList.QuantumStar.get(2),
                     ItemList.Emitter_LuV.get(4),
-                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
+                    new Object[] { Circuits.ZPM.getIngredient(), 4 },
                     GTOreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64),
                     GTOreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64),
                     GTOreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64),
@@ -588,7 +589,7 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.plate, (int) (6)),
                     ItemList.QuantumStar.get(2),
                     ItemList.Emitter_ZPM.get(4),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
+                    new Object[] { Circuits.UV.getIngredient(), 4 },
                     MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.wireFine, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.wireFine, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.wireFine, (int) (64)),
@@ -609,7 +610,7 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.plate, (int) (6)),
                     ItemList.Gravistar.get(2),
                     ItemList.Emitter_UV.get(4),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 },
+                    new Object[] { Circuits.UHV.getIngredient(), 4 },
                     MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.wireFine, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.wireFine, (int) (64)),
                     MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.wireFine, (int) (64)),
@@ -639,7 +640,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.Hull_LuV.get(1),
                     GTOreDictUnificator.get("wireGt01SuperconductorLuV", 2),
                     ItemList.Circuit_Chip_UHPIC.get(2),
-                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
+                    new Object[] { Circuits.LuV.getIngredient(), 2 },
                     ItemList.LuV_Coil.get(2),
                     new ItemStack[] { ItemList.Reactor_Coolant_He_3.get(1), ItemList.Reactor_Coolant_NaK_3.get(1),
                         ItemList.Reactor_Coolant_Sp_1.get(1) },
@@ -660,7 +661,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.Hull_ZPM.get(1),
                     GTOreDictUnificator.get("wireGt02SuperconductorZPM", 2),
                     ItemList.Circuit_Chip_NPIC.get(2),
-                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 2 },
+                    new Object[] { Circuits.ZPM.getIngredient(), 2 },
                     ItemList.ZPM_Coil.get(2),
                     new ItemStack[] { ItemList.Reactor_Coolant_He_6.get(1), ItemList.Reactor_Coolant_NaK_6.get(1),
                         ItemList.Reactor_Coolant_Sp_2.get(1) },
@@ -681,7 +682,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.Hull_UV.get(1),
                     GTOreDictUnificator.get("wireGt02SuperconductorUV", 2),
                     ItemList.Circuit_Chip_PPIC.get(2),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 2 },
+                    new Object[] { Circuits.UV.getIngredient(), 2 },
                     ItemList.UV_Coil.get(2),
                     new ItemStack[] { ItemList.Reactor_Coolant_He_6.get(1), ItemList.Reactor_Coolant_NaK_6.get(1),
                         ItemList.Reactor_Coolant_Sp_2.get(1) },
@@ -709,7 +710,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.Hull_LuV.get(1),
                     GTOreDictUnificator.get("springTetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid", 2),
                     ItemList.Circuit_Chip_UHPIC.get(2),
-                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
+                    new Object[] { Circuits.LuV.getIngredient(), 2 },
                     ItemList.LuV_Coil.get(2),
                     new ItemStack[] { ItemList.Reactor_Coolant_He_3.get(1), ItemList.Reactor_Coolant_NaK_3.get(1),
                         ItemList.Reactor_Coolant_Sp_1.get(1) },
@@ -730,7 +731,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.Hull_ZPM.get(1),
                     GTOreDictUnificator.get("springTetranaquadahdiindiumhexaplatiumosminid", 4),
                     ItemList.Circuit_Chip_NPIC.get(2),
-                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 2 },
+                    new Object[] { Circuits.ZPM.getIngredient(), 2 },
                     ItemList.ZPM_Coil.get(2),
                     new ItemStack[] { ItemList.Reactor_Coolant_He_6.get(1), ItemList.Reactor_Coolant_NaK_6.get(1),
                         ItemList.Reactor_Coolant_Sp_2.get(1) },
@@ -751,7 +752,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.Hull_UV.get(1),
                     GTOreDictUnificator.get("springLongasssuperconductornameforuvwire", 4),
                     ItemList.Circuit_Chip_PPIC.get(2),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 2 },
+                    new Object[] { Circuits.UV.getIngredient(), 2 },
                     ItemList.UV_Coil.get(2),
                     new ItemStack[] { ItemList.Reactor_Coolant_He_6.get(1), ItemList.Reactor_Coolant_NaK_6.get(1),
                         ItemList.Reactor_Coolant_Sp_2.get(1) },
@@ -777,10 +778,10 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
                     ItemList.Casing_Fusion_Coil.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
+                    new Object[] { Circuits.ZPM.getIngredient(), 1 },
+                    new Object[] { Circuits.ZPM.getIngredient(), 1 },
+                    new Object[] { Circuits.ZPM.getIngredient(), 1 },
+                    new Object[] { Circuits.ZPM.getIngredient(), 1 },
                     MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.plateDense, (int) (4)),
                     MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.plateDense, (int) (1)),
                     ItemList.Field_Generator_LuV.get(2),
@@ -803,10 +804,10 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     ItemList.Casing_Fusion_Coil.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
+                    new Object[] { Circuits.UV.getIngredient(), 1 },
+                    new Object[] { Circuits.UV.getIngredient(), 1 },
+                    new Object[] { Circuits.UV.getIngredient(), 1 },
+                    new Object[] { Circuits.UV.getIngredient(), 1 },
                     MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.plateSuperdense, (int) (1)),
                     ItemList.Field_Generator_ZPM.get(2),
                     ItemList.Circuit_Wafer_PPIC.get(48),
@@ -828,10 +829,10 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_ZPM))
                 .itemInputs(
                     ItemList.Casing_Fusion_Coil.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1 },
+                    new Object[] { Circuits.UHV.getIngredient(), 1 },
+                    new Object[] { Circuits.UHV.getIngredient(), 1 },
+                    new Object[] { Circuits.UHV.getIngredient(), 1 },
+                    new Object[] { Circuits.UHV.getIngredient(), 1 },
                     MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.plateSuperdense, (int) (1)),
                     ItemList.Field_Generator_UV.get(2),
                     ItemList.Circuit_Wafer_QPIC.get(64),
@@ -853,10 +854,10 @@ public class AssemblyLineRecipes implements Runnable {
             .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.plate, (int) (16)),
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
+                new Object[] { Circuits.ZPM.getIngredient(), 1 },
+                new Object[] { Circuits.ZPM.getIngredient(), 1 },
+                new Object[] { Circuits.ZPM.getIngredient(), 1 },
+                new Object[] { Circuits.ZPM.getIngredient(), 1 },
                 ItemList.Energy_LapotronicOrb2.get(8),
                 ItemList.Field_Generator_LuV.get(2),
                 ItemList.Circuit_Wafer_SoC2.get(64),
@@ -875,10 +876,10 @@ public class AssemblyLineRecipes implements Runnable {
             .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.plate, (int) (32)),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
+                new Object[] { Circuits.UV.getIngredient(), 1 },
+                new Object[] { Circuits.UV.getIngredient(), 1 },
+                new Object[] { Circuits.UV.getIngredient(), 1 },
+                new Object[] { Circuits.UV.getIngredient(), 1 },
                 ItemList.Energy_Module.get(8),
                 ItemList.Field_Generator_ZPM.get(2),
                 ItemList.Circuit_Wafer_HPIC.get(64),
@@ -902,7 +903,7 @@ public class AssemblyLineRecipes implements Runnable {
                 ItemList.Electric_Pump_UHV.get(16),
                 ItemList.Conveyor_Module_UHV.get(8),
                 ItemList.Robot_Arm_UHV.get(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 },
+                new Object[] { Circuits.UEV.getIngredient(), 4 },
                 new ItemStack[] { GTOreDictUnificator.get("wireGt04Duranium", 32),
                     GTOreDictUnificator.get("wireGt04NaquadahAlloy", 32) },
                 GTOreDictUnificator.get("pipeMediumPolybenzimidazole", 64),
@@ -927,7 +928,7 @@ public class AssemblyLineRecipes implements Runnable {
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.plateDense, (int) (16)),
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
+                new Object[] { Circuits.ZPM.getIngredient(), 4 },
                 NewHorizonsCoreMod.isModLoaded()
                     ? GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier3", 4)
                     : ItemList.Casing_Firebox_TungstenSteel.get(16),
@@ -950,7 +951,7 @@ public class AssemblyLineRecipes implements Runnable {
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UHV))
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.plateDense, (int) (16)),
-                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 },
+                new Object[] { Circuits.UHV.getIngredient(), 4 },
                 ItemList.Field_Generator_UV.get(16),
                 ItemList.Gravistar.get(8),
                 ItemList.Emitter_UV.get(4),
@@ -972,7 +973,7 @@ public class AssemblyLineRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.plateSuperdense, (int) (16)),
                 ItemList.Cover_Screen.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 },
+                new Object[] { Circuits.UHV.getIngredient(), 4 },
                 ItemList.Field_Generator_UHV.get(4),
                 ItemList.Sensor_UHV.get(8),
                 ItemList.Emitter_UHV.get(8),
@@ -993,7 +994,7 @@ public class AssemblyLineRecipes implements Runnable {
             .itemInputs(
                 MaterialsElements.STANDALONE.HYPOGEN.getIngot(1),
                 getModItem(EternalSingularity.ID, "eternal_singularity", 1L),
-                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 },
+                new Object[] { Circuits.UEV.getIngredient(), 4 },
                 ItemList.Field_Generator_UHV.get(16),
                 ItemList.NuclearStar.get(8),
                 ItemList.Emitter_UHV.get(4),
@@ -1015,7 +1016,7 @@ public class AssemblyLineRecipes implements Runnable {
             .itemInputs(
                 ItemList.Machine_Multi_VacuumFreezer.get(64),
                 ItemList.CryogenicFreezer.get(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
+                new Object[] { Circuits.UV.getIngredient(), 8 },
                 ItemList.Coolant_Duct_Casing.get(4),
                 MaterialLibAPI.getStack(Materials2Materials.CallistoIce, Materials2Shapes.stick, (int) (32)),
                 ItemList.Electric_Pump_ZPM.get(8),
@@ -1041,7 +1042,7 @@ public class AssemblyLineRecipes implements Runnable {
             .itemInputs(
                 ItemList.Machine_Multi_BlastFurnace.get(64),
                 GregtechItemList.Machine_Adv_BlastFurnace.get(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
+                new Object[] { Circuits.UV.getIngredient(), 8 },
                 ItemList.Heating_Duct_Casing.get(4),
                 MaterialLibAPI.getStack(Materials2Materials.Firestone, Materials2Shapes.stick, (int) (32)),
                 ItemList.Electric_Pump_ZPM.get(8),
@@ -1067,7 +1068,7 @@ public class AssemblyLineRecipes implements Runnable {
             .itemInputs(
                 ItemList.Distillation_Tower.get(64),
                 GregtechItemList.Machine_Adv_DistillationTower.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                new Object[] { Circuits.LuV.getIngredient(), 4 },
                 ItemList.CasingNaquadahReinforcedDistillation.get(8),
                 ItemList.Electric_Pump_LuV.get(4),
                 ItemList.FluidRegulator_LuV.get(4),
@@ -1091,7 +1092,7 @@ public class AssemblyLineRecipes implements Runnable {
             .itemInputs(
                 ItemList.Machine_Multi_LargeChemicalReactor.get(64),
                 GregtechItemList.ChemicalPlant_Controller.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                new Object[] { Circuits.LuV.getIngredient(), 4 },
                 ItemList.Casing_Chemically_Inert.get(8),
                 ItemList.Electric_Pump_LuV.get(4),
                 ItemList.FluidRegulator_LuV.get(4),
@@ -1115,7 +1116,7 @@ public class AssemblyLineRecipes implements Runnable {
             .itemInputs(
                 ItemList.OilCracker.get(64),
                 ItemList.Machine_Multi_LargeChemicalReactor.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                new Object[] { Circuits.LuV.getIngredient(), 4 },
                 ItemList.CasingNaquadahReinforcedDistillation.get(8),
                 ItemList.Steam_Valve_IV.get(8),
                 ItemList.Steam_Regulator_IV.get(8),
