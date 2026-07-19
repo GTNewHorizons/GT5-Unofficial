@@ -17,6 +17,7 @@ import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -81,10 +82,7 @@ public class Research {
                             new ItemStack(ConfigBlocks.blockCrystal, 1, 1),
                             new ItemStack(ConfigBlocks.blockMetalDevice, 1, 3), ItemList.Electric_Piston_IV.get(1),
                             MaterialLibAPI.getStack(Materials2Materials.FierySteel, Materials2Shapes.gearGt, 1),
-                            GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L) },
+                            Circuits.IV.get(1), Circuits.IV.get(1), Circuits.IV.get(1), Circuits.IV.get(1) },
                         ItemRefer.Large_Essentia_Smeltery.get(1),
                         16,
                         Arrays.asList(
