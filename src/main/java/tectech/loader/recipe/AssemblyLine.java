@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -34,7 +35,7 @@ public class AssemblyLine implements Runnable {
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch_Adv.get(1),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
+                new Object[] { Circuits.LuV.getIngredient(), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1))
             .fluidInputs(
@@ -99,7 +100,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Emitter_ZPM.get(8),
                 ItemList.Robot_Arm_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
+                new Object[] { Circuits.UV.getIngredient(), 1 },
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 2) },
                 new ItemStack[] {
                     MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.wireFine, 16) },
@@ -120,7 +121,7 @@ public class AssemblyLine implements Runnable {
             .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch_Adv.get(1),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 2 },
+                new Object[] { Circuits.UV.getIngredient(), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8) },
@@ -145,7 +146,7 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch_Adv.get(1),
                 ItemList.Sensor_ZPM.get(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
+                new Object[] { Circuits.UV.getIngredient(), 4 },
                 ItemList.Field_Generator_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4) },
