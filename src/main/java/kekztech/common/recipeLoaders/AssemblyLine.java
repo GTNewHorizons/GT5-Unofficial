@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -181,7 +182,7 @@ public class AssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.screw, (int) (24)),
                 ItemList.Circuit_Board_Elite.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.foil, (int) (64)),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                new Object[] { Circuits.LuV.getIngredient(), 4 },
                 ItemList.Circuit_Parts_Crystal_Chip_Master.get(36),
                 ItemList.Circuit_Parts_Crystal_Chip_Master.get(36),
                 ItemList.Circuit_Chip_HPIC.get(64),
@@ -204,10 +205,10 @@ public class AssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 4),
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.screw, (int) (24)),
                 MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.plate, (int) (16)),
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
+                new Object[] { Circuits.ZPM.getIngredient(), 1 },
+                new Object[] { Circuits.ZPM.getIngredient(), 1 },
+                new Object[] { Circuits.ZPM.getIngredient(), 1 },
+                new Object[] { Circuits.ZPM.getIngredient(), 1 },
                 ItemList.Energy_LapotronicOrb2.get(8L),
                 ItemList.Field_Generator_LuV.get(2),
                 ItemList.Circuit_Wafer_SoC2.get(64),
@@ -228,10 +229,10 @@ public class AssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.screw, (int) (24)),
                 MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.plate, (int) (32)),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
+                new Object[] { Circuits.UV.getIngredient(), 1 },
+                new Object[] { Circuits.UV.getIngredient(), 1 },
+                new Object[] { Circuits.UV.getIngredient(), 1 },
+                new Object[] { Circuits.UV.getIngredient(), 1 },
                 ItemList.Energy_Module.get(8L),
                 ItemList.Field_Generator_ZPM.get(2),
                 ItemList.Circuit_Wafer_HPIC.get(64),

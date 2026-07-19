@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -39,7 +40,7 @@ public class ResearchableAssemblyLine implements Runnable {
             new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 4),
                 MaterialLibAPI.getStack(Materials2Materials.CosmicNeutronium, Materials2Shapes.screw, (int) (24)),
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.plateDouble, (int) (64)),
-                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 }, ItemList.ZPM2.get(8L),
+                new Object[] { Circuits.UEV.getIngredient(), 4 }, ItemList.ZPM2.get(8L),
                 ItemList.Field_Generator_UHV.get(4), ItemList.Circuit_Wafer_UHPIC.get(64),
                 ItemList.Circuit_Wafer_UHPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(32),
                 ItemList.Circuit_Parts_DiodeASMD.get(64),
@@ -61,7 +62,7 @@ public class ResearchableAssemblyLine implements Runnable {
             new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.screw, (int) (24)),
                 MaterialLibAPI.getStack(Materials2Materials.InfinityCatalyst, Materials2Shapes.plateDouble, (int) (64)),
-                new Object[] { OrePrefixes.circuit.get(Materials.UIV), 4 }, ItemList.ZPM3.get(8L),
+                new Object[] { Circuits.UIV.getIngredient(), 4 }, ItemList.ZPM3.get(8L),
                 ItemList.Field_Generator_UEV.get(4), ItemList.Circuit_Wafer_PPIC.get(64),
                 ItemList.Circuit_Wafer_PPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64),
@@ -90,8 +91,8 @@ public class ResearchableAssemblyLine implements Runnable {
             32,
             new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 4),
                 MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.screw, (int) (24)),
-                HYPOGEN.getPlateDouble(64), new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4 },
-                ItemList.ZPM4.get(8L), ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+                HYPOGEN.getPlateDouble(64), new Object[] { Circuits.UMV.getIngredient(), 4 }, ItemList.ZPM4.get(8L),
+                ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
                 ItemList.Circuit_Wafer_QPIC.get(64), ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUIV, 64) },
@@ -116,7 +117,7 @@ public class ResearchableAssemblyLine implements Runnable {
             64,
             new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.screw, (int) (24)),
-                DRAGON_METAL.getPlateDouble(64), new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4 },
+                DRAGON_METAL.getPlateDouble(64), new Object[] { Circuits.UXV.getIngredient(), 4 },
                 ItemList.ZPM5.get(8L), ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_FPIC.get(64),
                 ItemList.Circuit_Wafer_FPIC.get(64), ItemList.Circuit_Parts_Chip_Bioware.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
