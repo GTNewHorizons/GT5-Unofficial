@@ -82,14 +82,14 @@ public class MTEFusionComputer2 extends MTEFusionComputer {
             .addInfo("gt.fusion.tips.a")
             .addInfo("gt.fusion.tips", "8,192", "20M")
             .beginStructureBlock(15, 15, 3, false)
-            .addController("Middle center, 2nd layer")
+            .addController("gt.fusion.info.1")
             .addCasing("79-123", "Fusion Machine Casing", false)
             .addCasing("32", "Fusion Coil Block", false)
             .addStructureInfo("gt.fusion.info.2")
             .addStructureInfo("gt.fusion.info.3")
-            .addEnergyHatch("1-16", "Specific middle casings on each curve (ZPM+)", 2)
-            .addInputHatch("1+", "Specific top or bottom casings on each side", 1)
-            .addOutputHatch("1+", "Specific middle casings on each side", 3)
+            .addEnergyHatch("1-16", gregtech.api.util.GTUtility.nestParams("gt.fusion.info.energy", "ZPM"), 2)
+            .addInputHatch("1+", "gt.fusion.info.input", 1)
+            .addOutputHatch("1+", "gt.fusion.info.output", 3)
             .addStructureInfo("gt.fusion.info.6", TooltipHelper.voltageText(VoltageIndex.ZPM))
             .toolTipFinisher();
         return tt;

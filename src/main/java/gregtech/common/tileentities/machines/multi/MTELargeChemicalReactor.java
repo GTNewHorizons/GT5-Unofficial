@@ -110,7 +110,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             .addInfo("gt.lcr.tips.1")
             .addPerfectOCInfo()
             .beginStructureBlock(3, 3, 3, false)
-            .addController("Front center, 2nd layer")
+            .addController("gt.lcr.info.1")
             .addCasing("8-22", gregtech.api.util.GTUtility.nestParams("gt.blockcasings8.0.name"), false)
             .addCasing("1", gregtech.api.util.GTUtility.nestParams("gt.blockcasings8.1.name"), false)
             .addCasing("1", "Heating Coil", false)
@@ -119,7 +119,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             .addInputAny("1+", "Any casing", 1)
             .addOutputAny("1+", "Any casing", 1)
             .addStructureInfo("")
-            .addStructureFooter("Heating Coil can be any tier and on any side")
+            .addStructureFooter("gt.lcr.structure.coil")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

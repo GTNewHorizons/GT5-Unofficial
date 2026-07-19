@@ -148,7 +148,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                 "Any computer casing",
                 2)
             .addStructureInfo("")
-            .addStructureFooter("Use an assembly line reception connector to daisy-chain machines")
+            .addStructureFooter("gt.blockmachines.multimachine.em.databank.footer")
             .toolTipFinisher();
         return tt;
     }

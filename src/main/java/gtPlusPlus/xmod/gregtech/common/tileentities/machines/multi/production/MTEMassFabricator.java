@@ -26,7 +26,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -90,16 +89,15 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.massfab", "ic.recipe.recycler")
-            .addInfo("gt.massfab.tips.1")
+            .addInfo(
+                "gt.massfab.tips.1",
+                TooltipHelper.parallelText(64),
+                TooltipHelper.parallelText(8),
+                TooltipHelper.tierText("Voltage"))
             .addStaticSpeedInfo(1f)
             .addStaticEuEffInfo(0.8f)
             .addInfo("gt.massfab.tips.2")
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + "+10%"
-                    + EnumChatFormatting.GRAY
-                    + " scrap chance per "
-                    + TooltipHelper.tierText("Voltage")
-                    + " Tier in recycler mode")
+            .addInfo("gt.massfab.tips.3", TooltipHelper.tierText("Voltage"))
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 4, true)

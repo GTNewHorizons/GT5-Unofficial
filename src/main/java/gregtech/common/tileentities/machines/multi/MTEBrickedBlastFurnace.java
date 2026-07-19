@@ -40,6 +40,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ParticleFX;
@@ -141,17 +142,16 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     protected MultiblockTooltipBuilder getTooltip() {
         if (tooltipBuilder == null) {
             tooltipBuilder = new MultiblockTooltipBuilder();
-            tooltipBuilder.addMachineType("Blast Furnace, BBF")
-                .addInfo("Usable for Steel and general Pyrometallurgy")
-                .addInfo("All input/output is done manually through the controller")
+            tooltipBuilder.addMachineType("machtype.bbf")
+                .addInfo("gt.bbf.tips.1")
                 .addPollutionAmount(GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond)
                 .beginStructureBlock(3, 3, 4, true)
-                .addController("Front center")
-                .addCasing("32", "Firebricks", false)
-                .addAir("Interior and top center of the structure")
+                .addController("gt.mbtt.structure.front_center")
+                .addCasing("32", Casings.Firebricks.getLocalizedName(), false)
+                .addAir("gt.bbf.structure.air")
                 .addStructureInfo("")
-                .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
-                .addStructureFooter("to save on blocks, casings, glass, buses/hatches, etc.")
+                .addStructureFooter("gt.bbf.structure.wallshare.1")
+                .addStructureFooter("gt.bbf.structure.wallshare.2")
                 .toolTipFinisher();
         }
         return tooltipBuilder;

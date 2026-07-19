@@ -383,6 +383,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         tt.addMachineType("machtype.ei_greenhouse")
             .addInfo(
                 "gt.ei_greenhouse.tips.1",
+                EIG_BALANCE_WATER_USAGE_PER_SEED,
                 new FluidStack(WEEDEX_FLUID, 1).getLocalizedName(),
                 EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT,
                 fertilizerBoostMax)
@@ -405,7 +406,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addInputAny("1+", "Any casing", 1)
             .addOutputBus("1+", "Any casing", 1)
             .addStructureInfo("")
-            .addStructureFooter("The dirt is tilled and the water is spawned for free once formed")
+            .addStructureFooter("gt.ei_greenhouse.info.footer")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addAuthors(GTAuthors.AuthorKuba)
             .addStructureAuthors("HydroCN")

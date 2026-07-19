@@ -27,7 +27,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -159,24 +158,12 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addCasing("5", "Assembler Machine Casing", false)
             .addStructureInfo("")
             .addStructureInfo(gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.Structure.Slice"))
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 4: "
-                    + EnumChatFormatting.GRAY
-                    + "Empty, Solid Steel Machine Casing, Empty")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 3: "
-                    + EnumChatFormatting.GRAY
-                    + "Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 2: "
-                    + EnumChatFormatting.GRAY
-                    + "Any Tiered Glass, Assembly Line Casing, Any Tiered Glass")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 1: "
-                    + EnumChatFormatting.GRAY
-                    + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+            .addStructureInfo("gt.assline.structure.layer.4")
+            .addStructureInfo("gt.assline.structure.layer.3")
+            .addStructureInfo("gt.assline.structure.layer.2")
+            .addStructureInfo("gt.assline.structure.layer.1")
             .addStructureInfo("")
-            .addStructureFooter("Up to 16 total slices, each one allows for 1 more item in recipes")
+            .addStructureFooter("gt.assline.structure.footer")
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();

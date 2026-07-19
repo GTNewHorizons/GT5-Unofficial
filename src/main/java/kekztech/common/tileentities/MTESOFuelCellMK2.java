@@ -111,14 +111,14 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
             .addInfo("gt.so_fuel_cell.tips.1", formatNumber(EU_PER_TICK * 20))
             .addInfo("gt.so_fuel_cell_ii.tips")
             .addInfo(
-                "gt.so_fuel_cell.tips.2",
+                "gt.so_fuel_cell_ii.tips.2",
                 EU_PER_TICK,
                 STEAM_PER_SEC,
                 FluidRegistry.getFluidStack("ic2superheatedsteam", 1)
                     .getLocalizedName(),
                 OXYGEN_PER_SEC)
             .beginStructureBlock(5, 3, 3, false)
-            .addController("Front center, 2nd layer")
+            .addController("gt.so_fuel_cell.info.controller")
             .addCasing("12-31", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
             .addCasing("6", StatCollector.translateToLocal("Material.reinforcedglass"), false)
             .addCasing("3", StatCollector.translateToLocal("tile.kekztech_gdcceramicelectrolyteunit_block.name"), false)

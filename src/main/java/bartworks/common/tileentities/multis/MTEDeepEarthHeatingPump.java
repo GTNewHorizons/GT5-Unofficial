@@ -85,7 +85,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.dehp")
-            .addInfo("gt.dehp.tips", (long) (25600 * 20), (long) (192 * 20), TierEU.RECIPE_HV)
+            .addInfo("gt.dehp.tips", TierEU.RECIPE_HV, (long) (25600 * 20), (long) (192 * 20))
             .beginStructureBlock(3, 3, 7, false)
             .addController("front_bottom_center")
             .addCasing("15", GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, this.getFrameMaterial()), false)
@@ -95,15 +95,12 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     .get(0)
                     .getDisplayName(),
                 false)
-            .addStructureInfo("gt.driller_shaped_mb.info.frame")
-            .addStructureInfo("gt.driller_shaped_mb.info.casing.1")
-            .addStructureInfo("gt.driller_shaped_mb.info.casing.2")
             .addEnergyHatch("1+", GTUtility.nestParams("gt.dehp.info.energy", VN[this.getMinTier()]), 1)
-            .addMaintenanceHatch("1", "gt.driller_shaped_mb.info.replace", 1)
+            .addMaintenanceHatch("1", "gt.dehp.info.bottom_casing", 1)
             .addInputBus("0+", "gt.dehp.info.i_bus", 1)
-            .addInputHatch("1+", "gt.driller_shaped_mb.info.replace", 1)
-            .addOutputBus("0+", "gt.driller_shaped_mb.info.replace", 1)
-            .addOutputHatch("1+", "gt.driller_shaped_mb.info.replace", 1)
+            .addInputHatch("1+", "gt.dehp.info.bottom_casing", 1)
+            .addOutputBus("0+", "gt.dehp.info.bottom_casing", 1)
+            .addOutputHatch("1+", "gt.dehp.info.bottom_casing", 1)
             .toolTipFinisher("tooltip.bw.author_bart_via_bw.name");
         return tt;
     }

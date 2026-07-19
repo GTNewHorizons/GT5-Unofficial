@@ -509,7 +509,10 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             .addController("Front bottom center")
             .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
             .addCasing("5-7", casings, false)
-            .addEnergyHatch("1-2", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
+            .addEnergyHatch(
+                "1-2",
+                gregtech.api.util.GTUtility.nestParams("gt.driller_shaped_mb.info.energy", VN[getMinTier()]),
+                1)
             .addMaintenanceHatch("1", "gt.driller_shaped_mb.info.replace", 1)
             .addInputBus("0-1", "gt.ore_drill.info.i_bus", 1)
             .addInputHatch("1", "gt.ore_drill.info.i_hatch", 1)

@@ -57,6 +57,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -175,7 +176,17 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.centrifuge")
-            .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
+            .addInfo(
+                "gt.multi_centrifuge.momentum.parallels",
+                TooltipHelper.parallelText(BASE_PARALLEL_PER_TIER),
+                TooltipHelper.parallelText(BASE_PARALLEL_PER_TIER * 2))
+            .addInfo(
+                "gt.multi_centrifuge.momentum.speed",
+                TooltipHelper.speedText(SPEED),
+                TooltipHelper.speedText(MAX_SPEED))
+            .addInfo("gt.multi_centrifuge.momentum.scaling")
+            .addInfo("gt.multi_centrifuge.momentum.loss")
+            .addStaticEuEffInfo(EU_EFFICIENCY)
             .addInfo("gt.multi_centrifuge.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, true)

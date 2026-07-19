@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -118,7 +119,18 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.lhe")
-            .addInfo("gt.lhe.tips")
+            .addInfo("gt.multiblock.HeatExchanger.desc1")
+            .addInfo("gt.multiblock.HeatExchanger.desc2")
+            .addInfo("gt.multiblock.HeatExchanger.desc3")
+            .addInfo("gt.multiblock.HeatExchanger.desc4")
+            .addInfo("gt.multiblock.HeatExchanger.desc5")
+            .addSeparator()
+            .addInfo("gt.multiblock.HeatExchanger.lava", getFluidUnit(), getFluidUnit(), getFluidUnit())
+            .addInfo("gt.multiblock.HeatExchanger.hotcoolant", getFluidUnit(), getFluidUnit(), getFluidUnit())
+            .addInfo("gt.multiblock.HeatExchanger.hotsolarsalt", getFluidUnit(), getFluidUnit(), getFluidUnit())
+            .addSeparator()
+            .addInfo("gt.multiblock.HeatExchanger.throttle1")
+            .addInfo("gt.multiblock.HeatExchanger.throttle2")
             .beginStructureBlock(3, 3, 4, false)
             .addController("Front bottom center")
             .addCasing("20-28", "Stable Titanium Machine Casing", false)

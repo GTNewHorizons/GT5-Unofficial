@@ -1,6 +1,7 @@
 package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.BeamlineInput;
@@ -169,39 +170,43 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("machtype.linac")
-            .addInfo("gt.linac.tips.1")
+        tt.addMachineType("gtnhlanth.tt.linac.machinetype")
+            .addInfo("gtnhlanth.tt.linac.info1")
+            .addInfo("gtnhlanth.tt.linac.info2")
             .addInfo("gtnhlanth.tt.beaminfo")
-            .addInfo("gt.linac.tips.2")
-            .addInfo(coolantLine("fluid.liquidnitrogen", 90))
-            .addInfo(coolantLine("fluid.liquidoxygen", 90))
-            .addInfo(coolantLine("fluidCoolant", 60))
-            .addInfo(coolantLine("fluid.supercoolant", 1))
-            .addInfo("gt.linac.tips.3")
+            .addSeparator()
+            .addInfo("gtnhlanth.tt.linac.info3", getFluidUnit())
+            .addInfo("gtnhlanth.tt.coolant.oxygen")
+            .addInfo("gtnhlanth.tt.coolant.nitrogen")
+            .addInfo("gtnhlanth.tt.coolant.coolant")
+            .addInfo("gtnhlanth.tt.coolant.Scoolant")
+            .addSeparator()
+            .addInfo("gtnhlanth.tt.linac.info4")
+            .addInfo("gtnhlanth.tt.linac.info5")
+            .addSeparator()
+            .addInfo("gtnhlanth.tt.linac.info6")
+            .addInfo("gtnhlanth.tt.linac.info7")
+            .addInfo("gtnhlanth.tt.linac.info8")
+            .addSeparator()
+            .addInfo("gtnhlanth.tt.linac.info9")
+            .addInfo("gtnhlanth.tt.linac.info10")
+            .addInfo("gtnhlanth.tt.linac.info11")
             .beginVariableStructureBlock(19, 83, 7, 7, 7, 7, false)
             .addController("front_bottom_center")
             .addCasing("325-1285", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
             .addCasing("148-852", LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), false)
             .addCasing("156-732", LanthItemList.ELECTRODE_CASING.getLocalizedName(), false)
             .addCasing("127-703", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)
-            .addCasing("56-312", "Superconducting Coil Block", false)
-            .addCasing("48", "LuV+ Tiered Glass", false)
+            .addCasing("56-312", "gt.linac.casing.coil", false)
+            .addCasing("48", "gt.linac.casing.glass", false)
             .addCasing("47", Casings.GrateMachineCasing.getLocalizedName(), false)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
-                "Front center casing",
-                1)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch"),
-                "Back center casing",
-                4)
-            .addEnergyHatch("1-2", "Any bottom edge casing 3-8 blocks from front", 3)
-            .addMaintenanceHatch("1", "Any bottom edge casing 3-8 blocks from front", 3)
-            .addInputHatch("1", "Top center casing 8th block from front", 2)
-            .addOutputHatch("1", "Top center casing 8th block from back", 2)
-            .addAir("Interior of the structure")
+            .addMiscHatch("1", "gtnhlanth.tt.hatch.beaminput", "gt.linac.pos.beam_input", 1)
+            .addMiscHatch("1", "gtnhlanth.tt.hatch.beamoutput", "gt.linac.pos.beam_output", 4)
+            .addEnergyHatch("1-2", "gt.linac.pos.bottom_edge", 3)
+            .addMaintenanceHatch("1", "gt.linac.pos.bottom_edge", 3)
+            .addInputHatch("1", "gt.linac.pos.coolant_input", 2)
+            .addOutputHatch("1", "gt.linac.pos.coolant_output", 2)
+            .addAir("gt.linac.structure.air")
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
@@ -490,7 +495,4 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
         return String.format("%s%s%s", EnumChatFormatting.BLUE, text, EnumChatFormatting.GRAY);
     }
 
-    private String coolantLine(String coolant, int kelvin) {
-        return GTUtility.translate("gt.linac.coolantlinetext", GTUtility.translate(coolant), kelvin);
-    }
 }

@@ -378,6 +378,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         tt.addMachineType("gt.recipe.centrifuge")
             .addInfo("gt.spinmatron.tips.1")
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo("gt.spinmatron.tips.2")
             .addDynamicParallelInfo(4, TooltipTier.TURBINE)

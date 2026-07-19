@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -16,7 +17,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -123,8 +123,19 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("gt.wwxl.tips")
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.desc6"))
+            .addInfo("gt.multiblock.AdvHeatExchanger.desc1")
+            .addInfo("gt.multiblock.AdvHeatExchanger.desc2")
+            .addInfo("gt.multiblock.AdvHeatExchanger.desc3")
+            .addInfo("gt.multiblock.AdvHeatExchanger.desc4")
+            .addInfo("gt.multiblock.AdvHeatExchanger.desc5")
+            .addInfo("gt.multiblock.AdvHeatExchanger.desc6")
+            .addSeparator()
+            .addInfo("gt.multiblock.AdvHeatExchanger.lava", getFluidUnit(), getFluidUnit(), getFluidUnit())
+            .addInfo("gt.multiblock.AdvHeatExchanger.hotcoolant", getFluidUnit(), getFluidUnit(), getFluidUnit())
+            .addInfo("gt.multiblock.AdvHeatExchanger.hotsolarsalt", getFluidUnit(), getFluidUnit(), getFluidUnit())
+            .addSeparator()
+            .addInfo("gt.multiblock.AdvHeatExchanger.throttle1")
+            .addInfo("gt.multiblock.AdvHeatExchanger.throttle2")
             .beginStructureBlock(5, 5, 9, false)
             .addController("gt.wwxl.info.controller")
             .addCasing("90-96", "Reinforced Heat Exchanger Casing", false)

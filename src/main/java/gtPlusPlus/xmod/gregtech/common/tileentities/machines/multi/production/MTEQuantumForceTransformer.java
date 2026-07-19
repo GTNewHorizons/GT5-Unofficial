@@ -185,7 +185,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         // spotless:off
         tt.addMachineType("machtype.qft")
             .addInfo("gt.qft.tips", TooltipHelper.parallelText("1"))
-            .addInfo("Sneak + screwdriver to disable animations")
             .addUnlimitedTierSkips()
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))

@@ -170,7 +170,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             .addPerfectOCInfo()
             .addInfo("gt.cal.tips.2", "chat.cal.mode.0", "chat.cal.mode.1", MINIMUM_CIRCUIT_ASSEMBLER_LENGTH)
             .beginVariableStructureBlock(3, 3, 2, 7, 3, 3, false)
-            .addStructureInfo("gt.cal.info")
             .addController("gt.cal.controller")
             .addEnergyHatch("1", "gt.cal.info.e_hatch", 3)
             .addMaintenanceHatch("1", "gt.asslike.info.i_hatch", 1)
@@ -178,28 +177,18 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             .addInputHatch("1", "gt.asslike.info.i_hatch", 1)
             .addOutputBus("1", "gt.cal.info.o_bus", 2)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("4", "Grate Machine Casing", false)
-            .addCasing("4", "EV+ Tiered Glass", false)
-            .addStructureInfo("gt.cal.info.glass")
-            .addCasing("2", "Solid Steel Machine Casing", false)
-            .addCasing("2", "Assembly Line Casing", false)
+            .addStructureInfo("GT5U.MBTT.Structure.Base")
+            .addCasing("4", "gt.cal.casing.grate", false)
+            .addCasing("4", "gt.cal.casing.glass", false)
+            .addCasing("2", "gt.cal.casing.steel", false)
+            .addCasing("2", "gt.cal.casing.assembly_line", false)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 3: "
-                    + EnumChatFormatting.GRAY
-                    + "Grate Machine Casing, Grate Machine Casing, Grate Machine Casing")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 2: "
-                    + EnumChatFormatting.GRAY
-                    + "EV+ Tiered Glass, Assembly Line Casing, EV+ Tiered Glass")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 1: "
-                    + EnumChatFormatting.GRAY
-                    + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+            .addStructureInfo("GT5U.MBTT.Structure.Slice")
+            .addStructureInfo("gt.cal.structure.layer3")
+            .addStructureInfo("gt.cal.structure.layer2")
+            .addStructureInfo("gt.cal.structure.layer1")
             .addStructureInfo("")
-            .addStructureFooter("Up to 7 total slices, each one allows for 1 more item in recipes")
+            .addStructureFooter("gt.cal.structure.footer")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();

@@ -287,28 +287,28 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("gt.recipe.assembler", "machtype.prass")
+        tt.addMachineType("machtype.prass")
             .addInfo(
                 "gt.prass.tips.1",
-                tieredTextLine(GTUtility.translate("gt.prass.text.imprecise"), "Mk-I", "MK-II", "MK-III", "MK-IV"),
+                tieredTextLine(GTUtility.nestParams("gt.prass.text.imprecise"), "Mk-I", "MK-II", "MK-III", "MK-IV"),
                 tieredTextLine("16", "32", "64", "128", "256"))
             .addStaticSpeedInfo(2f)
             .addInfo("gt.prass.tips.2", voltageTierText(9))
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 9, 5, true)
             .addController("front_bottom_center")
-            .addCasing("42-81", "Precise Electronic Unit Casing", true)
-            .addCasing("42", "EV+ Tiered Glass", false)
+            .addCasing("42-81", "gt.prass.casing.unit", true)
+            .addCasing("42", "gt.prass.casing.glass", false)
             .addCasing("21", StatCollector.translateToLocal("gt.blockcasings.name"), true)
-            .addCasing("12", "Tungstensteel Frame Box", false)
-            .addEnergyHatch("1+", "Any unit casing", 1)
-            .addMaintenanceHatch("1", "Any unit casing", 1)
-            .addMufflerHatch("1", "Any unit casing", 1)
-            .addInputBus("1+", "Any unit casing", 1)
-            .addInputHatch("0+", "Any unit casing", 1)
-            .addOutputBus("1+", "Any unit casing", 1)
+            .addCasing("12", "gt.prass.casing.frame", false)
+            .addEnergyHatch("1+", "gt.prass.pos.unit", 1)
+            .addMaintenanceHatch("1", "gt.prass.pos.unit", 1)
+            .addMufflerHatch("1", "gt.prass.pos.unit", 1)
+            .addInputBus("1+", "gt.prass.pos.unit", 1)
+            .addInputHatch("0+", "gt.prass.pos.unit", 1)
+            .addOutputBus("1+", "gt.prass.pos.unit", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.PRASS_UNIT_CASING)
             .addSubChannel(GTStructureChannels.BOROGLASS)

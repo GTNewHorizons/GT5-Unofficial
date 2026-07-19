@@ -274,8 +274,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo(
                 "gt.mega_abs.tips.2",
                 TooltipHelper.tierText(TooltipTier.COIL),
-                TooltipHelper.tierText(TooltipTier.GLASS),
-                TooltipHelper.voltageTierText(VoltageIndex.UMV))
+                TooltipHelper.tierText(TooltipTier.GLASS))
             .addSeparator()
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)

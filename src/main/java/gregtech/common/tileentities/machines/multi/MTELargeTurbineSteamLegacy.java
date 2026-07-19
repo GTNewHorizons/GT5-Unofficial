@@ -59,12 +59,9 @@ public class MTELargeTurbineSteamLegacy extends MTELargeTurbineLegacy {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Steam Turbine, LST")
+        tt.addMachineType("machtype.lst")
             .addStructureDeprecatedLine()
-            .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Outputs Distilled Water as well as producing power")
-            .addInfo("Power output depends on turbine and fitting")
-            .addInfo("Use screwdriver to adjust fitting of turbine")
+            .addInfo("gt.lst.tips")
             .beginStructureBlock(3, 3, 4, true)
             .addController("front_center")
             .addCasingInfoRange(Casings.TurbineCasing.getLocalizedName(), 8, 31, false)

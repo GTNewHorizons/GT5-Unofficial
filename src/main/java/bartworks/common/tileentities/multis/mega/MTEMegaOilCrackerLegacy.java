@@ -144,10 +144,11 @@ public class MTEMegaOilCrackerLegacy extends MegaMultiBlockBase<MTEMegaOilCracke
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.moc")
+            .addStructureDeprecatedLine()
             .addInfo("gt.moc.tips.1")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo("gt.moc.tips.2", TooltipHelper.tierText(TooltipTier.COIL))
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()

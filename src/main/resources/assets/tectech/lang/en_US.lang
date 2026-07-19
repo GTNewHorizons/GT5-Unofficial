@@ -690,6 +690,7 @@ gt.blockmachines.multimachine.em.databank.desc.0=Controller block of the Data Ba
 gt.blockmachines.multimachine.em.databank.desc.1=Used to supply Assembly Lines with more Data Sticks
 gt.blockmachines.multimachine.em.databank.desc.2=and give multiple Assembly Lines access to the same Data Stick
 gt.blockmachines.multimachine.em.databank.desc.3=Use screwdriver to toggle wireless mode
+gt.blockmachines.multimachine.em.databank.footer=Use an assembly line reception connector to daisy-chain machines
 
 gt.blockmachines.multimachine.em.junction.name=Matter Junction
 gt.blockmachines.multimachine.em.junction.hint.0=1 - Classic Hatches or High Power Casing

@@ -151,7 +151,6 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             .beginStructureBlock(11, 11, 12, true)
             .addController("front_bottom_center")
             .addCasing("500-531", "gt.blockcasings.8.name", false)
-            .addStructureInfo("gt.thtr.info")
             .addEnergyHatch("1+", "<bottom casing>", 1)
             .addMaintenanceHatch("1", "<bottom casing>", 1)
             .addInputBus("1+", "<top casing>", 2)

@@ -142,18 +142,28 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         tt.addInfo("gt.mb_boiler.tips.2", formatNumber(500.0 / getEfficiencyIncrease())) // ? check semifluid again
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 6, false)
-            .addController("Front bottom center, 2nd layer")
-            .addCasing("20-28", getCasingMaterial() + " " + getCasingBlockType(), false)
-            .addCasing("5-15", getCasingMaterial() + " Firebox Casing", false)
-            .addCasing("4", getCasingMaterial() + " Pipe Casing", false)
+            .addController("gt.mb_boiler.info.controller")
+            .addCasing(
+                "20-28",
+                gregtech.api.util.GTUtility
+                    .nestParams("gt.mb_boiler.casing.machine", getCasingMaterial(), getCasingBlockType()),
+                false)
+            .addCasing(
+                "5-15",
+                gregtech.api.util.GTUtility.nestParams("gt.mb_boiler.casing.firebox", getCasingMaterial()),
+                false)
+            .addCasing(
+                "4",
+                gregtech.api.util.GTUtility.nestParams("gt.mb_boiler.casing.pipe", getCasingMaterial()),
+                false)
             .addMaintenanceHatch("1", "gt.mb_boiler.info.maintenance", 1)
             .addMufflerHatch("1", "gt.mb_boiler.info.maintenance", 1)
             .addInputBus("0+", "gt.mb_boiler.info.i_bus", 1)
             .addInputHatch("1+", "gt.mb_boiler.info.i_hatch.1", 1)
             .addOutputHatch("1+", "gt.mb_boiler.info.o_hatch", 1)
             .addStructureInfo("")
-            .addStructureFooter("Use solid fuel, liquid fuel, or both")
-            .addStructureFooter("Use regular or distilled water")
+            .addStructureFooter("gt.mb_boiler.info.fuel")
+            .addStructureFooter("gt.mb_boiler.info.water")
             .toolTipFinisher();
 
         return tt;

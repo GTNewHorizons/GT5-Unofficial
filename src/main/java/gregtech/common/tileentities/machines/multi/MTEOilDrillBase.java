@@ -303,7 +303,10 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .addController("Front bottom center")
             .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
             .addCasing("7-8", casings, false)
-            .addEnergyHatch("1", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
+            .addEnergyHatch(
+                "1",
+                gregtech.api.util.GTUtility.nestParams("gt.driller_shaped_mb.info.energy", VN[getMinTier()]),
+                1)
             .addMaintenanceHatch("1", "gt.driller_shaped_mb.info.replace", 1)
             .addInputBus("0-1", "gt.oil_drill.info.i_bus", 1)
             .addOutputHatch("1", "gt.driller_shaped_mb.info.replace", 1)

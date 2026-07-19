@@ -272,20 +272,16 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
                 GTUtility.scientificFormat(Long.MAX_VALUE),
                 GTUtility.scientificFormat(ANTIMATTER_FUEL_VALUE))
             .beginStructureBlock(35, 35, 43, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("4127-4128", "Magnetic Flux Casing", false)
-            .addCasing("2481-2544", "Gravity Stabilization Casing", false)
-            .addCasing("1008", "Transcendentally Reinforced Borosilicate Glass Block", false)
-            .addCasing("600", "Antimatter Annihilation Matrix", false)
-            .addCasing("292", "Naquadria Frame Box", false)
-            .addCasing("209", "Advanced Filter Casing", false)
-            .addCasing("32", "Protomatter Activation Coil", false)
-            .addMiscHatch(
-                "1-64",
-                StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
-                "Any bottom leg casing",
-                2)
-            .addInputHatch("1-2", "Either center side casing", 1)
+            .addController("gt.slam.structure.controller")
+            .addCasing("4127-4128", "gt.slam.casing.magnetic_flux", false)
+            .addCasing("2481-2544", "gt.slam.casing.gravity", false)
+            .addCasing("1008", "gt.slam.casing.glass", false)
+            .addCasing("600", "gt.slam.casing.matrix", false)
+            .addCasing("292", "gt.slam.casing.frame", false)
+            .addCasing("209", "gt.slam.casing.filter", false)
+            .addCasing("32", "gt.slam.casing.coil", false)
+            .addMiscHatch("1-64", "GT5U.tooltip.structure.laser_source_hatch", "gt.slam.structure.laser", 2)
+            .addInputHatch("1-2", "gt.slam.structure.input", 1)
             .toolTipFinisher();
         return tt;
     }

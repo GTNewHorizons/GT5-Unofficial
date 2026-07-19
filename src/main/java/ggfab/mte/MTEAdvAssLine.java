@@ -43,7 +43,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -318,9 +317,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.adv_assline")
             .addInfo("gt.adv_assline.tips")
-            .addTecTechHatchInfo()
             .beginVariableStructureBlock(3, 3, 5, 16, 4, 4, false)
-            .addStructureInfo("gt.asslike.info")
             .addController("gt.adv_assline.info.controller")
             .addMiscHatch("1", "gt.blockmachines.hatch.dataaccess.name", "gt.asslike.info.dataaccess", 3)
             .addEnergyHatch("1+", "gt.asslike.info.energy", 4)
@@ -329,32 +326,20 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addInputHatch("1-4", "gt.asslike.info.i_hatch", 1)
             .addOutputBus("1", "gt.asslike.info.o_bus", 1)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("10", "Any Tiered Glass", false)
-            .addCasing("8", "Grate Machine Casing", false)
-            .addCasing("4-8", "Solid Steel Machine Casing", false)
-            .addCasing("5", "Assembly Line Casing", false)
-            .addCasing("5", "Assembler Machine Casing", false)
+            .addStructureInfo("GT5U.MBTT.Structure.Base")
+            .addCasing("10", "gt.aal.casing.glass", false)
+            .addCasing("8", "gt.aal.casing.grate", false)
+            .addCasing("4-8", "gt.aal.casing.steel", false)
+            .addCasing("5", "gt.aal.casing.assembly_line", false)
+            .addCasing("5", "gt.aal.casing.assembler", false)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 4: "
-                    + EnumChatFormatting.GRAY
-                    + "Empty, Solid Steel Machine Casing, Empty")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 3: "
-                    + EnumChatFormatting.GRAY
-                    + "Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 2: "
-                    + EnumChatFormatting.GRAY
-                    + "Any Tiered Glass, Assembly Line Casing, Any Tiered Glass")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 1: "
-                    + EnumChatFormatting.GRAY
-                    + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+            .addStructureInfo("GT5U.MBTT.Structure.Slice")
+            .addStructureInfo("gt.aal.structure.layer4")
+            .addStructureInfo("gt.aal.structure.layer3")
+            .addStructureInfo("gt.aal.structure.layer2")
+            .addStructureInfo("gt.aal.structure.layer1")
             .addStructureInfo("")
-            .addStructureFooter("Up to 16 total slices, each one allows for 1 more item in recipes")
+            .addStructureFooter("gt.aal.structure.footer")
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(EnumChatFormatting.GOLD);

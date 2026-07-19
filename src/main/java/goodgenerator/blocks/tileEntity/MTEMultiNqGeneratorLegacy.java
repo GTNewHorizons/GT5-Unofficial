@@ -352,6 +352,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.multi_nq_gen")
+            .addStructureDeprecatedLine()
             .addInfo("gt.multi_nq_gen.tips.1", LiquidAirConsumptionPerSecond)
             .addInfo(getCoolantTextFormatted("fluidCoolant", "1000", CoolantEfficiency[3]))
             .addInfo(getCoolantTextFormatted("fluid.supercoolant", "1000", CoolantEfficiency[2]))
@@ -363,7 +364,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
             .addInfo(getExcitedTextFormatted("fluid.molten.naquadah", "20", ExcitedLiquidCoe[2]))
             .addInfo(getExcitedTextFormatted("fluid.molten.atomic separation catalyst", "20", ExcitedLiquidCoe[1]))
             .addInfo(getExcitedTextFormatted("fluid.spatialfluid", "20", ExcitedLiquidCoe[0]))
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .beginStructureBlock(7, 8, 7, true)
             .addController("front_bottom_center")
             .addCasingInfoExactly("Field Restriction Casing", 48, false)
@@ -416,30 +417,11 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
     }
 
     public String getCoolantTextFormatted(String fluidType, String litersConsumed, int effBoost) {
-        return String.format(
-            "%s%s L/s%s : %s%d%% %s: %s%s",
-            EnumChatFormatting.WHITE,
-            litersConsumed,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.LIGHT_PURPLE,
-            effBoost,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.BLUE,
-            fluidType);
+        return GTUtility.nestParams("gt.multi_nq_gen.coolanttext", litersConsumed, effBoost, fluidType);
     }
 
     public String getExcitedTextFormatted(String fluidType, String litersConsumed, int multiplier) {
-        return String.format(
-            "%s%s L/s %s: %s%dx power %s: %s%s",
-            EnumChatFormatting.WHITE,
-            litersConsumed,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.LIGHT_PURPLE,
-            multiplier,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.RED,
-            fluidType);
-
+        return GTUtility.nestParams("gt.multi_nq_gen.excitedtext", litersConsumed, multiplier, fluidType);
     }
 
 }

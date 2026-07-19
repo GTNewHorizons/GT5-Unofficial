@@ -154,8 +154,9 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.ucfe")
+            .addStructureDeprecatedLine()
             .addInfo("gt.ucfe.tips")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .beginStructureBlock(5, 4, 9, false)
             .addController("front_center_layer2")
             .addCasingInfoExactly("Stable Titanium Machine Casing", 93, false)

@@ -115,7 +115,6 @@ public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEIm
             .addInputBus("1+", "Any casing", 1)
             .addOutputBus("1+", "Any casing", 1)
             .addAir("Interior of the structure")
-            .addStructureFooter("gt.implosion_compressor.info")
             .toolTipFinisher();
         return tt;
     }

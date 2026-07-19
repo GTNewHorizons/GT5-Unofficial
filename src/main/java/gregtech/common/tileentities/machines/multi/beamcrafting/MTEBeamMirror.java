@@ -6,7 +6,6 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -196,7 +195,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
                 "Opposite controller",
                 2)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "90 Degree Bend " + EnumChatFormatting.AQUA + "(T1)")
+            .addStructureInfo("gt.beam_mirror.structure.tier.1")
             .addCasing(
                 "31",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
@@ -207,7 +206,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
                 false)
             .addCasing("5", "Any Tiered Glass", false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "180 Degree Bend " + EnumChatFormatting.AQUA + "(T2)")
+            .addStructureInfo("gt.beam_mirror.structure.tier.2")
             .addCasing(
                 "52",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),

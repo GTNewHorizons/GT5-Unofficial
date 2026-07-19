@@ -26,7 +26,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -164,7 +163,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             .addInputAny("1+", "Any bottom casing", 1)
             .addOutputAny("1+", "Any bottom casing", 1)
             .addStructureInfo("")
-            .addStructureFooter(EnumChatFormatting.RED + "The primordial pearl is consumed in the controller recipe!")
+            .addStructureFooter("gt.defc.info.pearl")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
             .toolTipFinisher(GTAuthors.AuthorKuba, "Prometheus0000");
         return tt;

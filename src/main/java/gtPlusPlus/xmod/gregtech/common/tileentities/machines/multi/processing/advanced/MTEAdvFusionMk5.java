@@ -21,6 +21,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AdvancedFusionOverclockDescriber;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer;
@@ -55,9 +56,9 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
             .addStructureInfo("gt.fusion.info.2")
             .addCasing("32", "Advanced Fusion Coil II", false)
             .addStructureInfo("gt.fusion.info.3")
-            .addEnergyHatch("1-16", "gt.fusion.info.4", 2)
-            .addInputHatch("1+", "gt.fusion.info.5", 1)
-            .addOutputHatch("1+", "gt.fusion.info.4", 3)
+            .addEnergyHatch("1-16", GTUtility.nestParams("gt.fusion.info.energy", "UEV"), 2)
+            .addInputHatch("1+", "gt.fusion.info.input", 1)
+            .addOutputHatch("1+", "gt.fusion.info.output", 3)
             .addStructureInfo("gt.fusion.info.6", TooltipHelper.voltageText(VoltageIndex.UEV))
             .toolTipFinisher();
         return tt;

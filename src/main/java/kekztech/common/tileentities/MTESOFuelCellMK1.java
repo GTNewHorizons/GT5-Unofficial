@@ -108,9 +108,14 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.gas_turbine")
             .addInfo("gt.so_fuel_cell.tips.1", formatNumber(EU_PER_TICK * 20))
-            .addInfo("gt.so_fuel_cell.tips.2", EU_PER_TICK, STEAM_PER_SEC, "fluid.steam", OXYGEN_PER_SEC)
+            .addInfo(
+                "gt.so_fuel_cell.tips.2",
+                EU_PER_TICK,
+                STEAM_PER_SEC,
+                GTUtility.nestParams("fluid.steam"),
+                OXYGEN_PER_SEC)
             .beginStructureBlock(5, 3, 3, false)
-            .addController("Front center, 2nd layer")
+            .addController("gt.so_fuel_cell.info.controller")
             .addCasing("12-31", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
             .addCasing("6", StatCollector.translateToLocal("Material.reinforcedglass"), false)
             .addCasing("3", StatCollector.translateToLocal("tile.kekztech_yszceramicelectrolyteunit_block.name"), false)

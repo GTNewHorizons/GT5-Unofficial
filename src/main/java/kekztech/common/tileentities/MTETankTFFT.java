@@ -365,7 +365,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
             .addCasing("4-16", TooltipHelper.tieredGlassText(4), false)
             .addCasing("9", StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.generic.name"), true)
             .addStructureInfo("")
-            .addStructureFooter("No air gaps allowed, but the field storage blocks can be different tiers")
+            .addStructureFooter("gt.tfft.info.no_air")
             .addStructureFooter(StatCollector.translateToLocal("gt.tfft.info.fluid_tip"))
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)

@@ -333,8 +333,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.mapiary")
             .addInfo("gt.mapiary.tips", voltageTooltipFormatted(6), voltageTooltipFormatted(5))
+            .addGlassEnergyLimitInfo()
             .beginStructureBlock(15, 15, 17, true)
-            .addController("Front center, 9th layer")
+            .addController("gt.mapiary.info.controller")
             .addCasing("455", "Dirt or Grass", false)
             .addCasing("190-200", StatCollector.translateToLocal("gt.blockcasings.10.name"), false)
             .addCasing("185", "Wood Plank", false)
@@ -354,7 +355,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addOutputBus("1+", "Any casing", 1)
             .addStructureInfo("gt.mapiary.info")
             .addStructureInfo("")
-            .addStructureFooter("Use regular or distilled water, place manually")
+            .addStructureFooter("gt.mapiary.info.water")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorKuba, "Runakai");
         return tt;

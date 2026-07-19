@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -180,18 +179,14 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 coefficientBaseExp,
                 baseSkew)
             .beginStructureBlock(47, 53, 53, false)
-            .addController("Front center, 27th layer")
-            .addCasing("2274", "Magnetic Flux Casing", false)
-            .addCasing("624-637", "Gravity Stabilization Casing", false)
-            .addCasing("514", "Antimatter Containment Casing", false)
-            .addCasing("126", "Protomatter Activation Coil", false)
-            .addEnergyHatch("1+", "Back, left, or right side of the structure", 2)
-            .addInputHatch("1+", "Top or bottom side of the structure", 1)
-            .addMiscHatch(
-                "16",
-                StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
-                "Around the inner ring",
-                3)
+            .addController("gt.ssass.structure.controller")
+            .addCasing("2274", "gt.ssass.casing.magnetic_flux", false)
+            .addCasing("624-637", "gt.ssass.casing.gravity", false)
+            .addCasing("514", "gt.ssass.casing.containment", false)
+            .addCasing("126", "gt.ssass.casing.coil", false)
+            .addEnergyHatch("1+", "gt.ssass.structure.energy", 2)
+            .addInputHatch("1+", "gt.ssass.structure.input", 1)
+            .addMiscHatch("16", "gg.structure.tooltip.antimatter_hatch", "gt.ssass.structure.antimatter_hatch", 3)
             .toolTipFinisher();
         return tt;
     }

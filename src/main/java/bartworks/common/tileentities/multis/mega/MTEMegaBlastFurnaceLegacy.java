@@ -166,9 +166,10 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.mebf")
+            .addStructureDeprecatedLine()
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo("gt.mebf.tips")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addUnlimitedTierSkips()
@@ -176,7 +177,7 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
             .beginStructureBlock(15, 20, 15, true)
             .addController("front_center_layer3")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 447, false)
-            .addCasingInfoExactly("Heating Coil", 864, true)
+            .addCasingInfoExactly("gt.mebf.casing.coil", 864, true)
             .addCasingInfoExactly("Any Tiered Glass", 1007, true)
             .addStructureInfo("gt.mebf.info")
             .addEnergyHatch("Any bottom layer Casing")

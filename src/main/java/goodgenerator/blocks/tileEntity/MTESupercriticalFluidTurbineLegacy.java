@@ -141,6 +141,7 @@ public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegac
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.sc_turbine")
+            .addStructureDeprecatedLine()
             .addInfo("gt.sc_turbine.tips")
             .beginStructureBlock(3, 3, 4, true)
             .addController("front_center")

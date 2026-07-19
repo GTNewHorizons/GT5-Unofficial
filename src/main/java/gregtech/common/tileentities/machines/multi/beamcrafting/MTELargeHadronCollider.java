@@ -341,7 +341,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 2)
             .addEnergyHatch("1+", "Any casing", 1)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.AQUA + "CMS Module " + EnumChatFormatting.BLUE + "(E)")
+            .addStructureInfo("gt.lhc.structure.module.cms")
             .addCasing(
                 "523",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
@@ -361,7 +361,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 "Inner side of module",
                 3)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.AQUA + "ATLAS Module " + EnumChatFormatting.BLUE + "(W)")
+            .addStructureInfo("gt.lhc.structure.module.atlas")
             .addCasing(
                 "515",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
@@ -381,7 +381,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 "Inner side of module",
                 4)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.AQUA + "ALICE Module " + EnumChatFormatting.BLUE + "(S)")
+            .addStructureInfo("gt.lhc.structure.module.alice")
             .addCasing(
                 "517",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
@@ -401,7 +401,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 "Inner side of module",
                 5)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.AQUA + "LHCb Module " + EnumChatFormatting.BLUE + "(G)")
+            .addStructureInfo("gt.lhc.structure.module.lhcb")
             .addCasing(
                 "511",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
