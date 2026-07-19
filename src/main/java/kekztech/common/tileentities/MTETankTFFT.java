@@ -360,12 +360,23 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
                 StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.any_casing_glass_adjacent"),
                 2,
                 3)
-            .addInputHatch("1+", StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.any_casing_glass_adjacent"), 2, 3)
-            .addOutputHatch("1+", StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.any_casing_glass_adjacent"), 2, 3)
+            .addInputHatch(
+                "1+",
+                StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.any_casing_glass_adjacent"),
+                2,
+                3)
+            .addOutputHatch(
+                "1+",
+                StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.any_casing_glass_adjacent"),
+                2,
+                3)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
             .addCasing("12-48", StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.tiered_glass"), false)
-            .addCasing(MIN_CASING_AMOUNT + "-46", StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.0.name"), false)
+            .addCasing(
+                MIN_CASING_AMOUNT + "-46",
+                StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.0.name"),
+                false)
             .addCasing("27", StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.field_storage_block"), true)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))

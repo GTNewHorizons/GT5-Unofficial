@@ -82,18 +82,16 @@ public class EIGIC2Mode extends EIGMode {
             .addInfo(StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGIC2Mode.desc1", minVoltageTier))
             .addInfo(StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGIC2Mode.desc2", minGlassTier))
             .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.multiblock.EIGIC2Mode.desc3",
-                    this.getStartingSlotCount()))
+                StatCollector
+                    .translateToLocalFormatted("kubatech.multiblock.EIGIC2Mode.desc3", this.getStartingSlotCount()))
             .addInfo(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.multiblock.EIGIC2Mode.desc4",
                     minVoltageTier,
                     this.getSlotPerTierMultiplier()))
             .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.multiblock.EIGIC2Mode.desc5",
-                    this.getSeedCapacityPerSlot()))
+                StatCollector
+                    .translateToLocalFormatted("kubatech.multiblock.EIGIC2Mode.desc5", this.getSeedCapacityPerSlot()))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.EIGIC2Mode.desc6"))
             .addInfo(StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGIC2Mode.desc7", acceleration))
             .addInfo(
@@ -102,9 +100,8 @@ public class EIGIC2Mode extends EIGMode {
                     this.getMaxFertilizerUsagePerSeed()))
             .addInfo(StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGIC2Mode.desc9", fertilizerBonus))
             .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.multiblock.EIGIC2Mode.desc10",
-                    this.getWeedEXMultiplier()));
+                StatCollector
+                    .translateToLocalFormatted("kubatech.multiblock.EIGIC2Mode.desc10", this.getWeedEXMultiplier()));
     }
 
     @Override

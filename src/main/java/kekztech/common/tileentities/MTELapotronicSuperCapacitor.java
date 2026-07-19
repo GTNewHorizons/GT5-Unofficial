@@ -437,13 +437,20 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.casing"),
                 false)
             .addCasing("41", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
-            .addCasing("9", StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.capacitor"), true)
+            .addCasing(
+                "9",
+                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.capacitor"),
+                true)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
             .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
-            .addCasing("9", StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.capacitor"), true)
+            .addCasing(
+                "9",
+                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.capacitor"),
+                true)
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.structure_footer"))
+            .addStructureFooter(
+                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.structure_footer"))
             .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.LSC_CAPACITOR)
