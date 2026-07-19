@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,6 +32,8 @@ import org.jetbrains.annotations.Nullable;
 import com.github.bsideup.jabel.Desugar;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+import com.sinthoras.visualprospecting.VisualProspecting_API;
+import com.sinthoras.visualprospecting.database.OreVeinPosition;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -322,11 +325,46 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             fillChunkMineList(yHead, yDrill);
             if (oreBlockPositions.isEmpty()) {
                 GTChunkManager.releaseChunk((TileEntity) getBaseMetaTileEntity(), mCurrentChunk);
+
+                IGregTechTileEntity base = getBaseMetaTileEntity();
+
+                if (base != null) {
+                    UUID owner = base.getOwnerUuid();
+                    boolean depleted = VisualProspecting_API.LogicalServer.isVeinDepleted(
+                        base.getWorld(),
+                        base.getWorld().provider.dimensionId,
+                        mCurrentChunk.chunkXPos,
+                        mCurrentChunk.chunkZPos,
+                        1);
+
+                    if (owner != null) {
+                        OreVeinPosition vein = VisualProspecting_API.LogicalServer.getOreVein(
+                            base.getWorld().provider.dimensionId,
+                            mCurrentChunk.chunkXPos,
+                            mCurrentChunk.chunkZPos);
+
+                        if (depleted && !vein.isDepleted()) vein.toggleDepleted();
+
+                        VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
+                            owner,
+                            Collections.singletonList(vein),
+                            Collections.emptyList());
+                    }
+
+                    if (depleted) {
+                        VisualProspecting_API.LogicalClient.setOreVeinDepleted(
+                            base.getWorld().provider.dimensionId,
+                            mCurrentChunk.chunkXPos << 4,
+                            mCurrentChunk.chunkZPos << 4);
+                    }
+                }
+
                 if (!moveToNextChunk(xDrill >> 4, zDrill >> 4)) {
                     workState = WorkState.UPWARD;
                     updateVeinNameFromVP(mCurrentChunk);
                     syncWorkAreaData();
                 }
+
                 return true;
             }
         }
