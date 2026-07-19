@@ -25,6 +25,7 @@ import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Superconductors;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -82,8 +83,7 @@ public class TecTechResearchLoader {
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.plateSuperdense, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.stickLong, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.ring, (int) (64)),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 64),
-                ItemList.Electric_Piston_UV.get(64), },
+                Superconductors.UHV.getWireGt01(64), ItemList.Electric_Piston_UV.get(64), },
             new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Osmium, Materials2FluidShapes.fluidMolten, (int) (10 * INGOTS)),
