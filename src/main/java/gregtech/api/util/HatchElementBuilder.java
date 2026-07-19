@@ -314,6 +314,13 @@ public class HatchElementBuilder<T> {
         mCacheHint = true;
         return this;
     }
+
+    private String getHint() {
+        if (mHatchItemType != null) {
+            return mHatchItemType.get();
+        }
+        return "unspecified GT hatch";
+    }
     // endregion
 
     public HatchElementBuilder<T> continueIfSuccess() {
@@ -536,13 +543,15 @@ public class HatchElementBuilder<T> {
         }
         return new IStructureElement<>() {
 
-            private String mHint = mHatchItemType == null ? "unspecified GT hatch" : mHatchItemType.get();
-
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 return tileEntity instanceof IGregTechTileEntity
                     && mAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) mCasingIndex);
+            }
+
+            private String getHint() {
+                return HatchElementBuilder.this.getHint();
             }
 
             @Override
