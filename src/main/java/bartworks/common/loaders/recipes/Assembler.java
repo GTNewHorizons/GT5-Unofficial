@@ -11,11 +11,13 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.items.GGMaterial;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -32,7 +34,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 0),
                 MaterialLibAPI.getStack(Materials2Materials.Lapis, Materials2Shapes.plate, (int) (9)),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2L))
+                Circuits.HV.get(2))
             .circuit(17)
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1))
             .fluidInputs(GTModHandler.getIC2Coolant(1_000))
@@ -51,7 +53,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder() // DEHP
             .itemInputs(
                 ItemList.OilDrill4.get(1),
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.ZPM, 8),
+                TieredItems.ZPM.getPipeLarge(8),
                 GGMaterial.incoloy903.get(OrePrefixes.gearGt, 32),
                 MaterialLibAPI
                     .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.plateDense, (int) (16)),
@@ -76,7 +78,7 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
+                Circuits.MV.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.plate, (int) (1)),
                 ItemList.Circuit_Board_Plastic.get(1L),
                 ItemList.Battery_RE_LV_Lithium.get(1L))
@@ -94,7 +96,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.MACHINE_HULLS[3].get(1),
                 ItemList.Electric_Pump_HV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4),
+                Circuits.EV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 2))
             .itemOutputs(ItemList.Distillation_Tower.get(1))
             .duration(10 * SECONDS)

@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.WerkstoffLoader;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -198,7 +199,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new Object[] { OrePrefixes.circuit.get(Materials.UHV), circuitMultiplier },
+                new Object[] { Circuits.UHV.getIngredient(), circuitMultiplier },
                 getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
                 getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
                 GTOreDictUnificator.get(part, Materials.Eternity, multiplier))
