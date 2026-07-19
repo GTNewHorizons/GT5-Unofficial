@@ -55,12 +55,12 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
     public StructureWrapperTooltipBuilder<MTE> beginStructureBlock(boolean hollow) {
         if (!structure.minSize.equals(structure.maxSize)) {
             super.beginVariableStructureBlock(
-                structure.maxSize.get0(),
                 structure.minSize.get0(),
-                structure.maxSize.get1(),
+                structure.maxSize.get0(),
                 structure.minSize.get1(),
-                structure.maxSize.get2(),
+                structure.maxSize.get1(),
                 structure.minSize.get2(),
+                structure.maxSize.get2(),
                 hollow);
         } else {
             super.beginStructureBlock(
@@ -79,12 +79,12 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
     public StructureWrapperTooltipBuilder<MTE> beginStructureBlock() {
         if (!structure.minSize.equals(structure.maxSize)) {
             super.beginVariableStructureBlock(
-                structure.maxSize.get0(),
                 structure.minSize.get0(),
-                structure.maxSize.get1(),
+                structure.maxSize.get0(),
                 structure.minSize.get1(),
-                structure.maxSize.get2(),
+                structure.maxSize.get1(),
                 structure.minSize.get2(),
+                structure.maxSize.get2(),
                 false);
         } else {
             super.beginStructureBlock(
