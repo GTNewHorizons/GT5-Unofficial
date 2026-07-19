@@ -106,7 +106,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
             .addInfo("All Machine Casings must be the same tier, this dictates machine speed")
             .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 9, 9, true)
+            .beginStructureBlock(9, 3, 9, true)
             .addController("Front bottom center")
             .addCasingInfoMin("Machine Casing", MINIMUM_CASINGS, true)
             .addCasingInfoExactly("Sterile Farm Casing", 64, false)

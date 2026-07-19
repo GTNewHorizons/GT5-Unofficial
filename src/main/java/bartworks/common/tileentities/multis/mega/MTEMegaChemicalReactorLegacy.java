@@ -90,7 +90,7 @@ public class MTEMegaChemicalReactorLegacy extends MegaMultiBlockBase<MTEMegaChem
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(5, 9, 5, false)
+            .beginStructureBlock(5, 5, 9, false)
             .addController("Front center")
             .addCasingInfoMin("Chemically Inert Machine Casing", 46, false)
             .addCasingInfoExactly("Fusion Coil Block", 7, false)

@@ -127,7 +127,7 @@ public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEn
             .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.wait_power", waitPower))
             .addInfo(StatCollector.translateToLocal("gt.multiblock.DieselEngine.intake_warning"))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 4, 3, false)
+            .beginStructureBlock(3, 3, 4, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
             .addCasingInfoRange(StatCollector.translateToLocal("gt.blockcasings4.Casing_StableTitanium"), 16, 22, false)
             .addOtherStructurePart(
