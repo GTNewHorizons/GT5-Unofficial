@@ -221,7 +221,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.AQUA + "... without the other!")
-            .beginStructureBlock(23, 23, 16, true)
+            .beginStructureBlock(23, 16, 23, true)
             .addController("Front center, 4th layer")
             .addCasing("750-773", "Fridge Casing", false)
             .addCasing("148", "Tungstensteel Reinforced Block", false)

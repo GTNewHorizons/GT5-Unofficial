@@ -197,7 +197,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addInfo("Insert an electromagnet into the electromagnet housing to use")
             .addInfo("Better electromagnets give further bonuses")
             .addInfo("With Tengam electromagnet, multi-amp (NOT laser) hatches are allowed")
-            .beginStructureBlock(7, 7, 6, true)
+            .beginStructureBlock(7, 6, 7, true)
             .addController("Front bottom center")
             .addCasing(MIN_CASING + "-73", "MagTech Casing", false)
             .addCasing("37", "Magnetic Neodymium Frame Box", false)

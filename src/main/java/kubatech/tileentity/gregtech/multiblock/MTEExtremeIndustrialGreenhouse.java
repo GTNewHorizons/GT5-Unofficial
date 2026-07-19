@@ -402,7 +402,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addInfo("[IC2] You need to also input block that is required under the crop")
             .addInfo("Output mode: machine will take planted seeds and output them");
         EIGModes.addTooltipInfo(tt);
-        tt.beginStructureBlock(9, 7, 7, true)
+        tt.beginStructureBlock(7, 7, 9, true)
             .addController("Front bottom center")
             .addCasing("102", "Any Tiered Glass", true)
             .addCasing("70-86", "Sterile Farm Casing", false)

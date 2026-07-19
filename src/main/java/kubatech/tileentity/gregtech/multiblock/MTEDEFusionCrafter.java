@@ -154,7 +154,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
                     + EnumChatFormatting.GRAY
                     + " per casing tier above recipe")
             .addInfo("Normal EU OC still applies !")
-            .beginStructureBlock(5, 5, 10, false)
+            .beginStructureBlock(5, 10, 5, false)
             .addController("Front bottom center")
             .addCasing("19-45", "Naquadah Alloy Fusion Casing", false)
             .addCasing("32", "Fusion Casing", true)

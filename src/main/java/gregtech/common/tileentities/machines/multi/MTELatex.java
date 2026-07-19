@@ -308,7 +308,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
                     + TooltipHelper.coloredText("Multi-Amp & Laser Energy Hatches", GREEN))
             .addSeparator()
             .addInfo(DARK_AQUA + "Make sure to cover up!")
-            .beginStructureBlock(5, 5, 8, false)
+            .beginStructureBlock(5, 8, 5, false)
             .addController("Front bottom center")
             .addCasing("14-36", "Chemically Inert Casing", false)
             .addCasing("32", "Any Tiered Glass", false)

@@ -154,7 +154,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info10"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info11"))
-            .beginStructureBlock(6, 5, 5, true)
+            .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom center")
             .addCasing("56", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
             .addCasing("52", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)

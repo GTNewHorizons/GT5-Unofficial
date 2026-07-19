@@ -284,7 +284,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
                     Machine_Multi_Switch.get(1)
                         .getDisplayName()))
             .addSeparator()
-            .beginVariableStructureBlock(3, 18, 3, 3, 3, 3, false)
+            .beginVariableStructureBlock(3, 3, 3, 3, 3, 18, false)
             .addController("Front center, 2nd layer")
             .addMiscHatch("1+", "Optical Reception Connector", "Any advanced casing", 1)
             .addMiscHatch("1+", "Optical Transmission Connector", "Any casing", 1, 2)

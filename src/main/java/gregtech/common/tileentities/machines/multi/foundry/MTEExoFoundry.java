@@ -491,7 +491,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addSupportAny()
             .addSeparator()
             .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
-            .beginStructureBlock(15, 15, 55, true)
+            .beginStructureBlock(15, 55, 15, true)
             .addController("Front center, 2nd layer")
             .addCasing("548", "Exo-Foundry Containment Glass", false)
             .addCasing(MIN_CASINGS + "-485", "Primary Exo-Foundry Casing", false)

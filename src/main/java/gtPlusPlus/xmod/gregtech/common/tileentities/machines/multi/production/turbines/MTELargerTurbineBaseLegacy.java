@@ -159,7 +159,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
         }
         tt.addSupportAny();
         tt.addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 9, 7, false)
+            .beginStructureBlock(9, 7, 7, false)
             .addController("Top center")
             .addCasingInfoMin(getCasingName(), 360, false)
             .addCasingInfoMin("Turbine Shaft", 30, false)

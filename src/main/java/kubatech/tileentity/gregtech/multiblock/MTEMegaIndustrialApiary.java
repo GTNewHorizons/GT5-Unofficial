@@ -365,7 +365,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addInfo("  - Base processing time: 1 minute")
             .addInfo("  - Uses 1 amp " + voltageTooltipFormatted(5))
             .addInfo("  - Can overclock")
-            .beginStructureBlock(15, 15, 17, true)
+            .beginStructureBlock(15, 17, 15, true)
             .addController("Front center, 9th layer")
             .addCasing("455", "Dirt or Grass", false)
             .addCasing("190-200", "Bronze Plated Bricks", false)

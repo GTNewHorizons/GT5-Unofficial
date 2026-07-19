@@ -92,7 +92,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addInfo("The programmed circuit selects which Data Orb to use (1-16)")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 9, 6, true)
+            .beginStructureBlock(9, 6, 9, true)
             .addController("Top center, 6th layer")
             .addCasing("120-139", "Elemental Confinement Shell", false)
             .addCasing("24", "Particle Containment Casing", false)

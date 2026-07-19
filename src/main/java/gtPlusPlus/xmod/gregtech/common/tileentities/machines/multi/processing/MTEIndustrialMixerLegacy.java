@@ -91,7 +91,7 @@ public class MTEIndustrialMixerLegacy extends GTPPMultiBlockBase<MTEIndustrialMi
             .addStructureDeprecatedLine()
             .addBulkMachineInfo(8, 3.5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 4, 3, false)
+            .beginStructureBlock(4, 3, 3, false)
             .addController("Front center, 2nd layer")
             .addCasingInfoMin(mCasingName, 5, false)
             .addCasingInfoMin(mCasingName2, 2, false)

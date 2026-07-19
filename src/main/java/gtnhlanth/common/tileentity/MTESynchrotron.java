@@ -525,7 +525,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info14"))
             .addSupportAny()
-            .beginStructureBlock(34, 36, 7, true)
+            .beginStructureBlock(36, 7, 34, true)
             .addController("Front center, 4th layer")
             .addCasing("1690", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
             .addCasing("90", "Superconducting Coil Block", false)

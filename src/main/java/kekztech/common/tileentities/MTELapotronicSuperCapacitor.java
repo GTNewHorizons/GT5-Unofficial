@@ -451,7 +451,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + EnumChatFormatting.GRAY
                     + "-fold"
                     + " for every capacitor tier above")
-            .beginVariableStructureBlock(5, 5, 5, 5, 4, 50, false)
+            .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addController("Front bottom center")
             .addEnergyHatch("0+", "Any casing", 1)
             .addDynamoHatch("0+", "Any casing", 1)

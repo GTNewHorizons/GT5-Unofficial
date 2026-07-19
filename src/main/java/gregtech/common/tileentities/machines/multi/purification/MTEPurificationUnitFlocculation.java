@@ -326,7 +326,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "of aggregating dispersed suspended particles from a solution into larger clumps for further filtration.")
-            .beginStructureBlock(8, 9, 5, false)
+            .beginStructureBlock(9, 5, 8, false)
             .addController("Front center, 2nd layer")
             .addCasing(MIN_CASING + "-63", "Slick Sterile Flocculation Casing", false)
             .addCasing("30", "Sterile Water Plant Casing", false)

@@ -152,7 +152,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.throttle1"))
             .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.throttle2"))
-            .beginStructureBlock(5, 5, 9, false)
+            .beginStructureBlock(5, 9, 5, false)
             .addController("Front center, 4th layer")
             .addCasing("90-96", "Reinforced Heat Exchanger Casing", false)
             .addCasing("45", "Tungstensteel Pipe Casing", false)

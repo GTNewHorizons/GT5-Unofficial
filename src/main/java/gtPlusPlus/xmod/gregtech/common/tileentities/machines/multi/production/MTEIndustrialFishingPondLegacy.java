@@ -106,7 +106,7 @@ public class MTEIndustrialFishingPondLegacy extends GTPPMultiBlockBase<MTEIndust
             .addInfo("Needs to be filled with water")
             .addInfo("Will automatically fill water from input hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 3, 9, true)
+            .beginStructureBlock(3, 9, 9, true)
             .addController("Front center")
             .addCasingInfoMin("Aquatic Casing", 64, false)
             .addInputBus("Any Casing", 1)

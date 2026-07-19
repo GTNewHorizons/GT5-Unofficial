@@ -370,7 +370,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                                                                                            // toggle
                                                                                            // wireless mode
             .addSupportAny()
-            .beginVariableStructureBlock(5, 16, 2, 2, 4, 4, false)
+            .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
             .addController("Front left, 2nd layer")
             .addMiscHatch(
                 "1",

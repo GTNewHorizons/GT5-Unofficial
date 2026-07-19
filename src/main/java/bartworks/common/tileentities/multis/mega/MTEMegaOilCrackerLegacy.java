@@ -170,7 +170,7 @@ public class MTEMegaOilCrackerLegacy extends MegaMultiBlockBase<MTEMegaOilCracke
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(13, 7, 9, true)
+            .beginStructureBlock(7, 9, 13, true)
             .addController("Front bottom center")
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 197, false)
             .addCasingInfoExactly("Coil", 92, true)

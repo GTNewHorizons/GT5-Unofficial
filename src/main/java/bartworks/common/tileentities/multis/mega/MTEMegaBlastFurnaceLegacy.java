@@ -197,7 +197,7 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(15, 20, 15, true)
+            .beginStructureBlock(20, 15, 15, true)
             .addController("Front center, 3rd layer")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 447, false)
             .addCasingInfoExactly("Heating Coil", 864, true)

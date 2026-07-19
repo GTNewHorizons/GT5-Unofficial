@@ -404,13 +404,13 @@ public class MultiblockTooltipBuilder {
      * Begin adding structural information by adding a line about the structure's dimensions and then inserting a
      * "Structure:" line.
      *
-     * @param l      Structure length/depth
      * @param w      Structure width
      * @param h      Structure height
+     * @param l      Structure length/depth
      * @param hollow Flag for the (Hollow) tag
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder beginStructureBlock(int l, int w, int h, boolean hollow) {
+    public MultiblockTooltipBuilder beginStructureBlock(int w, int h, int l, boolean hollow) {
         sLines.add(
             EnumChatFormatting.WHITE + TT_dimensions
                 + COLON
@@ -447,17 +447,17 @@ public class MultiblockTooltipBuilder {
      * Begin adding structural information by adding a line about the structure's dimensions<br>
      * and then inserting a "Structure:" line. Variable version displays min and max.
      *
-     * @param lmin   Structure min length/depth
-     * @param lmax   Structure max length/depth
      * @param wmin   Structure min width
      * @param wmax   Structure max width
      * @param hmin   Structure min height
      * @param hmax   Structure max height
+     * @param lmin   Structure min length/depth
+     * @param lmax   Structure max length/depth
      * @param hollow Flag for the (Hollow) tag
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder beginVariableStructureBlock(int lmin, int lmax, int wmin, int wmax, int hmin,
-        int hmax, boolean hollow) {
+    public MultiblockTooltipBuilder beginVariableStructureBlock(int wmin, int wmax, int hmin, int hmax, int lmin, int lmax,
+                                                                boolean hollow) {
         sLines.add(
             EnumChatFormatting.WHITE + TT_dimensions
                 + COLON
@@ -894,7 +894,7 @@ public class MultiblockTooltipBuilder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)count Maintenance Hatch: info
-     * 
+     *
      * @param count Number of hatches (ie. 1)
      * @param info  Location description
      * @param dots  Hint block(s)
@@ -940,7 +940,7 @@ public class MultiblockTooltipBuilder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)count Steam Input Bus: info
-     * 
+     *
      * @param count Number of buses (ie. 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
@@ -963,7 +963,7 @@ public class MultiblockTooltipBuilder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)count Input Bus: info
-     * 
+     *
      * @param count Number of buses (ie. 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
@@ -986,7 +986,7 @@ public class MultiblockTooltipBuilder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)count Input Hatch: info
-     * 
+     *
      * @param count Number of hatches (ie. 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
@@ -1009,7 +1009,7 @@ public class MultiblockTooltipBuilder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)count Input Bus/Hatch: info
-     * 
+     *
      * @param count Number of buses/hatches (ie. 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
@@ -1055,7 +1055,7 @@ public class MultiblockTooltipBuilder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)count Steam Output Bus: info
-     * 
+     *
      * @param count Number of buses (ie. 1+)
      * @param info  Location description
      * @param dots  Hint block(s)

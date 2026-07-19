@@ -199,7 +199,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "decreases so continual replacements must be supplied to maintain full function of the Clarifier.")
-            .beginStructureBlock(11, 11, 4, false)
+            .beginStructureBlock(11, 4, 11, false)
             .addController("Front center, 2nd layer")
             .addCasing("123-128", "Reinforced Sterile Water Plant Casing", false)
             .addCasing("21", "Filter Machine Casing", false)

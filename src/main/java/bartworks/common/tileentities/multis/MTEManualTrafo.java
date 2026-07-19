@@ -149,7 +149,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
             .addInfo("Mode 2: Circuit 1 in controller: Direct-Downstep")
             .addInfo("Mode 3: Circuit 2 in controller: Tapped-Upstep (currently disabled)")
             .addInfo("Mode 4: Circuit 2 in controller: Tapped-Downstep (currently disabled)")
-            .beginVariableStructureBlock(3, 3, 3, 10, 3, 3, false)
+            .beginVariableStructureBlock(3, 10, 3, 3, 3, 3, false)
             .addController("Front bottom center")
             .addCasingInfoMin("MV Machine Casing", 0, false)
             .addOtherStructurePart("Transformer-Winding Block", "1 Layer for each tier transformed")

@@ -72,7 +72,7 @@ public class MTEIndustrialSifterLegacy extends GTPPMultiBlockBase<MTEIndustrialS
             .addStructureDeprecatedLine()
             .addBulkMachineInfo(4, 5f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 3, 5, false)
+            .beginStructureBlock(3, 5, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Sieve Grate", 18, false)
             .addCasingInfoMin("Sieve Casing", 35, false)

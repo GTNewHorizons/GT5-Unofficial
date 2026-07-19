@@ -214,7 +214,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
             .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
-            .beginStructureBlock(6, 12, 11, false)
+            .beginStructureBlock(12, 11, 6, false)
             .addController("Front center, 3rd layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 128, false)
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 105, false)

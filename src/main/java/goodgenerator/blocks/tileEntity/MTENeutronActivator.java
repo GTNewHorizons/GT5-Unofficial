@@ -198,7 +198,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             .addInfo("Otherwise it will output trash")
             .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running")
             .addInfo("Inputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.")
-            .beginVariableStructureBlock(5, 5, 5, 5, 6, 256, false)
+            .beginVariableStructureBlock(5, 5, 6, 256, 5, 5, false)
             .addController("Front bottom center")
             .addMiscHatch("1+", "Neutron Accelerator", "Any bottom edge casing", 2)
             .addMiscHatch("0+", "Neutron Sensor", "Any bottom edge casing", 2)

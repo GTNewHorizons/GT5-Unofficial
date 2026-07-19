@@ -179,7 +179,7 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
                     + "without outputting energy")
             .addInfo("The efficiency is up to 150%")
             .addSupportAny()
-            .beginStructureBlock(5, 4, 9, false)
+            .beginStructureBlock(4, 9, 5, false)
             .addController("Front center, 2nd layer")
             .addCasingInfoExactly("Stable Titanium Machine Casing", 93, false)
             .addCasingInfoExactly("Titanium Gear Box Casing", 14, false)

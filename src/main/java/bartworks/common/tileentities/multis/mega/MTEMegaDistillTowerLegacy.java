@@ -265,7 +265,7 @@ public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistill
             .addSeparator()
             .addSupportAny()
             .addUnlimitedTierSkips()
-            .beginVariableStructureBlock(15, 15, 16, 56, 15, 15, true)
+            .beginVariableStructureBlock(16, 56, 15, 15, 15, 15, true)
             .addController("Front bottom center")
             .addOtherStructurePart("Clean Stainless Steel Machine Casing", "15 x h - 5 (minimum)")
             .addEnergyHatch("Any Casing")

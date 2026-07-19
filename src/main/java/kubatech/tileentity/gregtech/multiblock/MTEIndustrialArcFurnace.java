@@ -409,7 +409,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             .addInfo("Outputs molten metals")
             .addInfo("Right-click with Screwdriver to change mode")
             .addSupportMultiAmp()
-            .beginStructureBlock(19, 17, 11, true)
+            .beginStructureBlock(17, 11, 19, true)
             .addController("Front center, 4th layer")
             .addCasing("175", "Steel Frame Box", false)
             .addCasing("10-172", "Solid Steel Machine Casing", false)

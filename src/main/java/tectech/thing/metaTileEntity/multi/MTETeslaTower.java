@@ -566,7 +566,7 @@ public class MTETeslaTower extends TTMultiblockBase
             // be at least the same tier as
             // the Tesla Capacitor
             .addSupportAny()
-            .beginStructureBlock(7, 7, 17, false)
+            .beginStructureBlock(7, 17, 7, false)
             .addController("Front bottom center")
             .addCasing("128", "Tesla Toroid Casing", false)
             .addCasing("17-33", "Tesla Base Casing", false)

@@ -172,7 +172,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
                     + " of coolant multiplied by efficiency")
             .addInfo("Uses " + formatNumber(powerUsage) + " EU/t")
             .addInfo("One Operation takes 9 hours")
-            .beginStructureBlock(11, 11, 12, true)
+            .beginStructureBlock(11, 12, 11, true)
             .addController("Front bottom center")
             .addCasing("500-531", "Radiation Proof Machine Casing", false)
             .addEnergyHatch("1+", "Any bottom casing", 1)

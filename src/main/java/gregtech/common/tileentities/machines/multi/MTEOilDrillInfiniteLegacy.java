@@ -87,7 +87,7 @@ public class MTEOilDrillInfiniteLegacy extends MTEOilDrillBase {
                 "Base cycle time: "
                     + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + (baseCycleTime == 1 ? " tick" : " ticks")
                         : formatNumber(baseCycleTime / 20.0) + " seconds"))
-            .beginStructureBlock(3, 7, 3, false)
+            .beginStructureBlock(7, 3, 3, false)
             .addController("Front bottom center")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base")

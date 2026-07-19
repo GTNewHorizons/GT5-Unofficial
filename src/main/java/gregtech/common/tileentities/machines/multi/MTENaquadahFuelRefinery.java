@@ -212,7 +212,7 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase
             .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks")
             .addSupportAny()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(5, 27, 27, false)
+            .beginStructureBlock(27, 27, 5, false)
             .addController("Front center, 14th layer")
             .addCasing("470-483", "Naquadah Fuel Refinery Casing", false)
             .addCasing("192", "Field Restriction Glass", false)

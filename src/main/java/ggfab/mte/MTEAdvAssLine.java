@@ -335,7 +335,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addSeparator(EnumChatFormatting.GOLD, 67)
             .addInfo("Constructed identically to the Assembly Line")
             .addSupportAny()
-            .beginVariableStructureBlock(3, 3, 5, 16, 4, 4, false)
+            .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addController("First slice, 3rd layer")
             .addMiscHatch(
                 "1",

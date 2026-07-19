@@ -237,7 +237,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc3"))
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc4"))
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc5"))
-            .beginStructureBlock(13, 13, 23, false)
+            .beginStructureBlock(13, 23, 13, false)
             .addController(StatCollector.translateToLocal("ig.siphon.structure.ControllerPos"))
             .addCasing("184", StatCollector.translateToLocal("ig.siphon.structure.SiphonCasing"), false)
             .addCasing("93", StatCollector.translateToLocal("ig.siphon.structure.FrameTungstensteel"), false)

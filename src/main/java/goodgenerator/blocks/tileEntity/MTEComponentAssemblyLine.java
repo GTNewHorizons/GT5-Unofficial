@@ -228,7 +228,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo(EnumChatFormatting.ITALIC + "Much more efficient than other competing brands!")
             .addSupportAny()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(33, 9, 10, true)
+            .beginStructureBlock(9, 10, 33, true)
             .addController("Front center, 8th layer")
             .addCasing("516-646", "Advanced Iridium Plated Machine Casing", false)
             .addCasing("280", "UV+ Tiered Glass", false)

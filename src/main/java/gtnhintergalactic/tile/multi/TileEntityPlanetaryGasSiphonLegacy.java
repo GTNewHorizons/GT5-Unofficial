@@ -177,7 +177,7 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc3"))
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc4"))
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc5"))
-            .beginStructureBlock(3, 7, 3, false)
+            .beginStructureBlock(7, 3, 3, false)
             .addController(StatCollector.translateToLocal("ig.siphon.structure.ControllerPos2"))
             .addOtherStructurePart(
                 StatCollector.translateToLocal("ig.siphon.structure.SiphonCasing"),

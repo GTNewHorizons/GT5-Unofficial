@@ -147,7 +147,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
             .addMarkdown(new ResourceLocation("gregtech", "bec-diode"))
             .addSupportAny();
 
-        tt.beginStructureBlock(11, 17, 11, true)
+        tt.beginStructureBlock(17, 11, 11, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-diode.controller-pos"))
             .addCasing("148", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
             .addCasing("92", ConflictInducementCasing.getLocalizedName(), false)

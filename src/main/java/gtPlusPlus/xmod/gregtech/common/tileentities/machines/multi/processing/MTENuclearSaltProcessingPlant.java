@@ -86,7 +86,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
             .addInfo("Maintenance Hatch goes on the back, opposite of the controller block")
             .addInfo("Inputs go on the left side of the multi, outputs on the right side")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 9, 5, true)
+            .beginStructureBlock(9, 5, 3, true)
             .addController("Front center, 3rd layer")
             .addCasing("58", "IV Machine Casing", false)
             .addCasing("0-32", "Thermally Insulated Casing", false)

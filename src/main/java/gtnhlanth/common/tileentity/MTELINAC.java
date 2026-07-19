@@ -192,7 +192,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info9"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info10"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info11"))
-            .beginVariableStructureBlock(19, 83, 7, 7, 7, 7, false)
+            .beginVariableStructureBlock(7, 7, 7, 7, 19, 83, false)
             .addController("Front bottom center")
             .addCasing("325-1285", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
             .addCasing("148-852", LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), false)

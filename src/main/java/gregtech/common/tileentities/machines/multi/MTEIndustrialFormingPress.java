@@ -86,7 +86,7 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
         tt.addMachineType("Forming Press, IFP")
             .addBulkMachineInfo(6, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 5, 5, false)
+            .beginStructureBlock(5, 5, 3, false)
             .addController("Front bottom center")
             .addCasing("5-20", "Metalworking Machine Casing", false)
             .addCasing("6", "Titanium Frame Box", false)

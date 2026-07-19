@@ -89,7 +89,7 @@ public class MTEIndustrialRockBreakerLegacy extends GTPPMultiBlockBase<MTEIndust
             .addInfo("Needs Soul Sand and Blue Ice in input bus for basalt")
             .addInfo("Needs Soul Sand and Magma in input bus for deepslate")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 4, 3, true)
+            .beginStructureBlock(4, 3, 3, true)
             .addController("Front bottom center")
             .addCasingInfoMin(casingBaseName, 9, false)
             .addCasingInfoExactly(casingMiddleName, 16, false)

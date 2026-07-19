@@ -214,7 +214,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         tt.addMachineType("BEC I/O Node, Input Bus, Output Bus")
             .addMarkdown(new ResourceLocation("gregtech", "bec-ionode"));
 
-        tt.beginStructureBlock(13, 7, 23, false)
+        tt.beginStructureBlock(7, 23, 13, false)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.controller-pos"))
             .addCasing("94", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
             .addCasing("88", ConflictInducementCasing.getLocalizedName(), false)

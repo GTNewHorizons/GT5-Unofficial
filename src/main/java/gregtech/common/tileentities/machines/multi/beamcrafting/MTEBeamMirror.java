@@ -191,7 +191,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
             .addInfo(
                 StatCollector
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip2"))
-            .beginStructureBlock(5, 3, 6, false)
+            .beginStructureBlock(3, 6, 5, false)
             .addController("Front bottom center")
             .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Above controller", 1)
             .addMiscHatch(

@@ -112,7 +112,7 @@ public class MTEIndustrialMaceratorLegacy extends GTPPMultiBlockBase<MTEIndustri
             .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip")
             .addStaticSpeedInfo(1.6f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 6, 3, true)
+            .beginStructureBlock(6, 3, 3, true)
             .addController("Front bottom center")
             .addCasingInfoMin("Maceration Stack Casing (After upgrade)", 26, false)
             .addCasingInfoMin("Stable Titanium Casing (Before upgrade)", 26, false)

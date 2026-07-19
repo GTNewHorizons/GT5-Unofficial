@@ -456,7 +456,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc6"))
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc7"))
             .addSupportAny()
-            .beginStructureBlock(16, 16, 20, false)
+            .beginStructureBlock(16, 20, 16, false)
             .addController("Front bottom center of receiver, 2nd layer")
             .addCasing("256", StatCollector.translateToLocal("ig.dyson.structure.base.floor"), false)
             .addCasing("115-138", StatCollector.translateToLocal("ig.dyson.structure.control.base"), false)

@@ -382,7 +382,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 "You can enable batch mode with wire cutters. Providing " + EnumChatFormatting.BLUE
                     + " 16x Time, Output, Weapon Damage")
             .addGlassEnergyLimitInfo()
-            .beginStructureBlock(5, 5, 7, true)
+            .beginStructureBlock(5, 7, 5, true)
             .addController("Front bottom center")
             .addCasing("60", "Any Tiered Glass", true)
             .addCasing("35-46", "Solid Steel Machine Casing", false)

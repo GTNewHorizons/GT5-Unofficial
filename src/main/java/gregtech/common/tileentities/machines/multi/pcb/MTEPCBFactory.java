@@ -769,7 +769,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo("Trace size can be changed to modify the material usage and machine speed")
             .addInfo("Configure Trace Size in UI")
             .addSupportAny()
-            .beginStructureBlock(7, 7, 6, true)
+            .beginStructureBlock(7, 6, 7, true)
             .addController("Front bottom center")
             .addEnergyHatch("1-2", "Any lower back casing", 1)
             .addMaintenanceHatch("1", "Any lower back casing", 1)

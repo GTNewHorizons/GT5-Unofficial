@@ -1014,7 +1014,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t1.desc5"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT1"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc6"))
-                .beginStructureBlock(2, 1, 5, false)
+                .beginStructureBlock(1, 5, 2, false)
                 .addController("Front center, 4th layer")
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
                 .addMiscHatch(
@@ -1118,7 +1118,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t2.desc5"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT2"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc6"))
-                .beginStructureBlock(2, 1, 5, false)
+                .beginStructureBlock(1, 5, 2, false)
                 .addController("Front center, 4th layer")
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
                 .addMiscHatch(
@@ -1222,7 +1222,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t3.desc5"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT3"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc6"))
-                .beginStructureBlock(2, 1, 5, false)
+                .beginStructureBlock(1, 5, 2, false)
                 .addController("Front center, 4th layer")
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
                 .addMiscHatch(

@@ -349,7 +349,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
             .addInfo("Note on hatch locking:")
             .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output")
             .addInfo("The index of a stored fluid can be obtained through the Tricorder")
-            .beginVariableStructureBlock(5, 15, 5, 5, 5, 5, false)
+            .beginVariableStructureBlock(5, 5, 5, 5, 5, 15, false)
             .addController("Front center")
             .addEnergyHatch("0+", "Any casing", 1, 2)
             .addMaintenanceHatch("1", "Any casing", 1, 2)

@@ -204,7 +204,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.digester.info1"))
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 7, 4, true)
+            .beginStructureBlock(7, 4, 7, true)
             .addController("Front bottom center")
             .addCasing("40-54", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
             .addCasing("16", Casings.HeatProofMachineCasing.getLocalizedName(), false)

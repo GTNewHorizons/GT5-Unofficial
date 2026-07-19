@@ -251,7 +251,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Never one...")
-            .beginStructureBlock(23, 23, 43, true)
+            .beginStructureBlock(23, 43, 23, true)
             .addController("Front center, 4th layer")
             .addCasing("1800-1918", "Hearth Casing", false)
             .addCasing("925", "Heat Proof Machine Casing", false)

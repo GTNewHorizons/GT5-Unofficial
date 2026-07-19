@@ -141,7 +141,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
             .addMarkdown(new ResourceLocation("gregtech", "bec-assembler"))
             .addSupportAny();
 
-        tt.beginStructureBlock(31, 61, 31, true)
+        tt.beginStructureBlock(61, 31, 31, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.controller-pos"))
             .addCasing("1700", FineStructureConstantManipulator.getLocalizedName(), false)
             .addCasing("1515", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)

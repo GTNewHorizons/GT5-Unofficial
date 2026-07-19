@@ -55,18 +55,12 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
     public StructureWrapperTooltipBuilder<MTE> beginStructureBlock(boolean hollow) {
         if (!structure.minSize.equals(structure.maxSize)) {
             super.beginVariableStructureBlock(
-                structure.minSize.get0(),
+                    structure.minSize.get2(), structure.maxSize.get0(), structure.maxSize.get1(), structure.maxSize.get2(), structure.minSize.get0(),
                 structure.minSize.get1(),
-                structure.minSize.get2(),
-                structure.maxSize.get0(),
-                structure.maxSize.get1(),
-                structure.maxSize.get2(),
-                hollow);
+                    hollow);
         } else {
             super.beginStructureBlock(
-                structure.minSize.get0(),
-                structure.minSize.get1(),
-                structure.minSize.get2(),
+                structure.minSize.get1(), structure.minSize.get2(), structure.minSize.get0(),
                 hollow);
         }
 
@@ -79,18 +73,12 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
     public StructureWrapperTooltipBuilder<MTE> beginStructureBlock() {
         if (!structure.minSize.equals(structure.maxSize)) {
             super.beginVariableStructureBlock(
-                structure.minSize.get0(),
+                    structure.minSize.get2(), structure.maxSize.get0(), structure.maxSize.get1(), structure.maxSize.get2(), structure.minSize.get0(),
                 structure.minSize.get1(),
-                structure.minSize.get2(),
-                structure.maxSize.get0(),
-                structure.maxSize.get1(),
-                structure.maxSize.get2(),
-                false);
+                    false);
         } else {
             super.beginStructureBlock(
-                structure.minSize.get0(),
-                structure.minSize.get1(),
-                structure.minSize.get2(),
+                structure.minSize.get1(), structure.minSize.get2(), structure.minSize.get0(),
                 false);
         }
 

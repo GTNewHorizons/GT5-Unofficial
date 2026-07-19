@@ -376,7 +376,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
             .addInfo("Switch the power destination to your wireless network with a screwdriver")
             .addInfo("Wireless mode requires Superconductor Base UMV to work")
             .addInfo("Wireless mode is still limited by hatch capacity")
-            .beginStructureBlock(35, 35, 43, true)
+            .beginStructureBlock(35, 43, 35, true)
             .addController("Front center, 2nd layer")
             .addCasing("4127-4128", "Magnetic Flux Casing", false)
             .addCasing("2481-2544", "Gravity Stabilization Casing", false)

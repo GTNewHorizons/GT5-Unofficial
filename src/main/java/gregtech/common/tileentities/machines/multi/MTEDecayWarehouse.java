@@ -223,7 +223,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
             .addInfo("Right click the controller with a plunger to empty it")
             .addInfo(
                 "The warehouse's contents are " + RED + UNDERLINE + "voided" + GRAY + " when the controller is broken")
-            .beginStructureBlock(5, 5, 3, true)
+            .beginStructureBlock(5, 3, 5, true)
             .addController("Front center, 2nd layer")
             .addCasing("48-52", "Radiation Proof Machine Casing", false)
             .addCasing("17", "Water", false)

@@ -190,7 +190,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
                                                                                                  // tier sc
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.flavor.1")))
-            .beginStructureBlock(7, 7, 10, false)
+            .beginStructureBlock(7, 10, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
             .addCasing("40", translateToLocal("gt.blockcasings12.2.name"), false)

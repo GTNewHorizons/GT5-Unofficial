@@ -156,7 +156,7 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addDynamicSpeedBonusInfo(SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
             .addStaticEuEffInfo(EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 5, 3, true)
+            .beginStructureBlock(5, 3, 3, true)
             .addController("Front right, 2nd layer")
             .addCasing("4-15", "Supply Depot Casing", false)
             .addCasing("3", "Item Pipe Casing", true)

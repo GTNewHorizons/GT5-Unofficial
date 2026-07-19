@@ -71,7 +71,7 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
                     + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.research.desc1"))
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.desc2"))
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT2"))
-            .beginStructureBlock(2, 1, 5, false)
+            .beginStructureBlock(1, 5, 2, false)
             .addController("Front center, 4th layer")
             .addCasing("0-9", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
             .addInputAny("0+", "Any casing", 1)

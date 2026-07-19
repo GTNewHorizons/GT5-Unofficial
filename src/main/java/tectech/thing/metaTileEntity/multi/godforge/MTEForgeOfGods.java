@@ -834,7 +834,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                     + EnumChatFormatting.GRAY
                     + ",")
             .addInfo("explaining everything there is to know about this multiblock")
-            .beginStructureBlock(186, 127, 29, true)
+            .beginStructureBlock(127, 29, 186, true)
             .addController("Front center, 15th layer")
             .addInputHatch("1", "Around controller", 1)
             .addInputBus("1", "Around controller", 1)
