@@ -1670,6 +1670,7 @@ GT5U.MBTT.Tiers.Glass=Стекло
 GT5U.MBTT.Tiers.ComponentAssemblyLineCasing=Корпус компонентной сборочной линии
 GT5U.MBTT.Steam.Speed=На %s быстрее, чем при использовании одноблочных паровых машин того же давления
 GT5U.MBTT.Steam.Eff=Расход пара составляет %s от обычно требуемого расхода
+GT5U.MBTT.Structure.Projector=§fЧтобы увидеть/построить структуру, используйте §9голограммный §1проектор§f мультиблочных структур!
 GT5U.MBTT.Structure.SeeStructure1=Чтобы увидеть структуру, используйте
 GT5U.MBTT.Structure.SeeStructure2=голограммный проект на контроллере!
 GT5U.MBTT.Structure.MinGlassForLaser=-тировое §fстекло§7 требуется для §9Tec§1Tech§7 лазеров
@@ -1680,6 +1681,9 @@ GT5U.MBTT.Structure.MaxTierSkips=Этот механизм может выпол
 GT5U.MBTT.Structure.UnlimitedTierSkips=Этот механизм может выполнять рецепты независимо от тира, если ей дать достаточно энергии
 gt.mbtt.structure.front_center=Спереди в центре
 gt.mbtt.structure.back_center=Сзади посередине
+gt.mbtt.structure.front_center_2nd_layer=Спереди в центре, 2-й слой
+gt.mbtt.structure.any_casing=Любой блок корпуса
+gt.mbtt.structure.interior=Внутри структуры
 GT5U.MBTT.HatchInfo=Любой %s
 GT5U.MBTT.HatchHint= (Подсказка: %s)
 GT5U.MBTT.BoroGlassAny=Боросиликатное стекло (любое, смешанное)
@@ -1793,6 +1797,9 @@ gt.multiblock.NeutralizationEngine.decay_boost.3=Insert §dmultiple §7(§f16 §
 gt.multiblock.NeutralizationEngine.decay_boost.4=Every §fminute§7, §dRobot Arm Amount§7/(§f45§7*(§f1§7+§dRobot Arm Tier§7)) chance for §fone §7used robot arm to §cvoid
 gt.multiblock.NeutralizationEngine.structure_tiers=Structure has §f3 Tiers§7, §fTier §7determines §9Base Decay §7and §3Capacity§7:
 gt.multiblock.NeutralizationEngine.tier_info=§fT%d§7 : §f%s§7 : §9%d§7 : §3%s
+
+gt.multiblock.VacuumFreezer.machine_type=Вакуумный морозильник, VF
+gt.multiblock.VacuumFreezer.desc1=Охлаждает раскалённые слитки и капсулы
 
 GT5U.MBTT.subchannel=Использует подканал §6%s§r§7 для §6%s
 
@@ -3854,7 +3861,8 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
-GT5U.nei.heat_capacity=Теплоёмкость: %s K (%s)
+GT5U.nei.heat_capacity=Нагрев: %s K
+GT5U.nei.heat_capacity.material=Катушка: %s
 GT5U.nei.tier=Тир: %s
 GT5U.nei.start_eu=Запуск: %s EU (MK %s)
 GT5U.nei.stages=Этапы: %s

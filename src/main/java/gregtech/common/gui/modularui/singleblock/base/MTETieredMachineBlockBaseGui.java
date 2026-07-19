@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import net.minecraft.util.StatCollector;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
@@ -273,9 +275,9 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     protected void createTooltipForChargerSlot(RichTooltip tooltip) {
         final byte machineTier = machine.mTier;
         String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
-        tooltip.addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip"))
-            .addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.1", tierName))
-            .addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.2", tierName));
+        tooltip.addLine(StatCollector.translateToLocal("GT5U.machines.battery_slot.tooltip"))
+            .addLine(StatCollector.translateToLocalFormatted("GT5U.machines.battery_slot.tooltip.1", tierName))
+            .addLine(StatCollector.translateToLocalFormatted("GT5U.machines.battery_slot.tooltip.2", tierName));
     }
 
     /// Sets a static tooltip using the machine's tooltip cache. This means the tooltip **can not** change while the Gui
