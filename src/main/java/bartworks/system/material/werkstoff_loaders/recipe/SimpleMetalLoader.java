@@ -60,7 +60,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     .addTo(latheRecipes);
 
                 if (werkstoff.getStats()
-                    .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+                    .getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         werkstoff.get(stick, 2),
                         GTModHandler.RecipeBits.BITS_STD,
@@ -95,7 +95,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
             }
 
             if (werkstoff.getStats()
-                .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+                .getProcessingMaterialTierEU() < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(stick, 2),
                     GTModHandler.RecipeBits.BITS_STD,

@@ -86,7 +86,7 @@ public class GemLoader implements IWerkstoffRunnable {
 
             }
             if (werkstoff.getStats()
-                .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+                .getProcessingMaterialTierEU() < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(gemFlawless, 2),
                     GTModHandler.RecipeBits.BUFFERED,

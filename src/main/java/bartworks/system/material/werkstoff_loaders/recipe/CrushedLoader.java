@@ -70,7 +70,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
         }
 
         if (werkstoff.getStats()
-            .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+            .getProcessingMaterialTierEU() < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(dustImpure),
                 GTModHandler.RecipeBits.BUFFERED,

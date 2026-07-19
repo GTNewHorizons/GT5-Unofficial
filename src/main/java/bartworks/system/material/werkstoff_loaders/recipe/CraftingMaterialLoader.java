@@ -88,7 +88,7 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .addTo(latheRecipes);
 
             if (werkstoff.getStats()
-                .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+                .getProcessingMaterialTierEU() < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(screw),
                     GTModHandler.RecipeBits.BITS_STD,
@@ -111,7 +111,7 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .addTo(extruderRecipes);
 
             if (werkstoff.getStats()
-                .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+                .getProcessingMaterialTierEU() < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(ring),
                     GTModHandler.RecipeBits.BITS_STD,
@@ -182,7 +182,7 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .addTo(extruderRecipes);
 
             if (werkstoff.getStats()
-                .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+                .getProcessingMaterialTierEU() < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(gearGtSmall),
                     GTModHandler.RecipeBits.BITS_STD,

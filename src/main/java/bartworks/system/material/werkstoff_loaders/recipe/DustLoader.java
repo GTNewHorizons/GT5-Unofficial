@@ -310,7 +310,7 @@ public class DustLoader implements IWerkstoffRunnable {
                 }
             }
             if (werkstoff.getStats()
-                .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+                .getProcessingMaterialTierEU() < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(dust),
                     GTModHandler.RecipeBits.BUFFERED,
