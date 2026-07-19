@@ -28,7 +28,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -256,8 +255,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         checkHasInputHatch(errors);
 
         if (mOutputHatches.size() < 4 && hasNoMEOutputHatch) {
-            errors
-                .add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.OutputHatch, mOutputHatches.size(), 4));
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, OutputHatch, mOutputHatches.size(), 4));
         }
 
         for (MTEHatchMuffler hatch : mMufflerHatches) {

@@ -1702,6 +1702,7 @@ GT5U.MBTT.Structure.DataStick.PCB=Link to the §bPCB Factory§7 with a §aData S
 gt.mbtt.structure.front_center=Front center
 gt.mbtt.structure.back_center=Back center
 gt.mbtt.structure.front_center_2nd_layer=Front center, 2nd layer
+gt.mbtt.structure.front_bottom_center=Front bottom center
 gt.mbtt.structure.any_casing=Any casing
 gt.mbtt.structure.interior=Interior of the structure
 GT5U.MBTT.HatchInfo=Any %s
@@ -3951,8 +3952,8 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
-GT5U.nei.heat_capacity=Heat Capacity: %s K
-GT5U.nei.heat_capacity.material=(%s)
+GT5U.nei.heat_capacity=Heat: %s K
+GT5U.nei.heat_capacity.material=Coil: %s
 GT5U.nei.tier=Tier: %s
 GT5U.nei.start_eu=Start: %s EU (MK %s)
 GT5U.nei.stages=Stages: %s

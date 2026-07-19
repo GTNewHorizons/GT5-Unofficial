@@ -6,9 +6,14 @@ gtnhlanth.recipe.sc=Источник элементарных частиц
 
 gtnhlanth.tt.beaminfo=Используйте §bпортативный сканер §7для получения информации о входе/выходе этого мультиблока.
 gtnhlanth.tt.blueprint=Чтобы увидеть структуру, используйте §9 Structure§1Lib §r§fголограммный проектор на контроллере!
-gtnhlanth.tt.pc=§6Частично расходуется: §7Получает урон в процессе работы
 
 gtnhlanth.tt.hintNumber=Блок подсказка с точкой %s
+
+# Digester
+gtnhlanth.tt.digester.machinetype=Дигестер
+gtnhlanth.tt.digester.info1=Принимает руду и жидкость, выводит воду
+gtnhlanth.tt.digester.structure.any_casing=Любой корпус из вольфрамовой стали
+gtnhlanth.tt.digester.structure.air=Внутри и над структурой
 
 GT5U.gui.text.shutdown_reason.gtnhlanth.nocoolant=В механизме отсутствует хладагент!
 GT5U.gui.text.shutdown_reason.gtnhlanth.inscoolant=Недостаточно хладагента в механизме!
