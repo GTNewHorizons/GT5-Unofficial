@@ -19,17 +19,14 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.interfaces.RunnableWithInfo;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenDustGeneration extends RecipeGenBase {
 
-    public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
+    public static final Set<Runnable> mRecipeGenMap = new HashSet<>();
 
     static {
         MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
@@ -47,13 +44,25 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         final ItemStack smallDust = M.getSmallDust(1);
         final ItemStack tinyDust = M.getTinyDust(1);
         if (tinyDust != null && normalDust != null) {
-            GTModHandler.addCraftingRecipe(normalDust, new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
-            GTModHandler.addCraftingRecipe(M.getTinyDust(9), new Object[] { "D  ", "   ", "   ", 'D', normalDust });
+            GTModHandler.addCraftingRecipe(
+                normalDust,
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
+            GTModHandler.addCraftingRecipe(
+                M.getTinyDust(9),
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "D  ", "   ", "   ", 'D', normalDust });
         }
 
         if (smallDust != null && normalDust != null) {
-            GTModHandler.addCraftingRecipe(normalDust, new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
-            GTModHandler.addCraftingRecipe(M.getSmallDust(4), new Object[] { " D ", "   ", "   ", 'D', normalDust });
+            GTModHandler.addCraftingRecipe(
+                normalDust,
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
+            GTModHandler.addCraftingRecipe(
+                M.getSmallDust(4),
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { " D ", "   ", "   ", 'D', normalDust });
         }
     }
 
@@ -63,9 +72,6 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
     }
 
     private void generateRecipes(final Material material, final boolean disableOptional) {
-
-        Logger.INFO("Generating Shaped Crafting recipes for " + material.getDefaultLocalName());
-
         final ItemStack normalDust = material.getDust(1);
         final ItemStack smallDust = material.getSmallDust(1);
         final ItemStack tinyDust = material.getTinyDust(1);
@@ -73,7 +79,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         final ItemStack[] inputStacks = material.getMaterialComposites();
         final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
 
-        if (smallDust != null && tinyDust != null) {
+        if (smallDust != null) {
             generatePackagerRecipes(material);
         }
 
@@ -88,14 +94,10 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         }
 
         // Is this a composite?
-        Logger.WARNING("mixer length: " + inputStacks.length);
         if (!((inputStacks.length != 0) && (inputStacks.length <= 4))) {
             return;
         }
-        // Log Input items
-        Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
-        final long[] inputStackSize = material.vSmallestRatio;
-        Logger.WARNING("mixer is stacksizeVar null? " + (inputStackSize != null));
+        final long[] inputStackSize = material.smallestRatio;
         // Is smallest ratio invalid?
         if (inputStackSize == null) {
             return;
@@ -106,8 +108,6 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
                 inputStacks[x].stackSize = (int) inputStackSize[x];
             }
         }
-        // Relog input values, with stack sizes
-        Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
 
         ItemStack[] cleanedInputs = Arrays.stream(inputStacks)
             .filter(Objects::nonNull)
@@ -168,10 +168,8 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             builder.circuit(circuitNumber);
         }
         builder.duration((int) Math.max(material.getMass() * 2L, 1))
-            .eut(material.vVoltageMultiplier)
+            .eut(material.voltageMultiplier)
             .addTo(mixerRecipes);
-
-        Logger.WARNING("Dust Mixer Recipe: " + material.getDefaultLocalName() + " - Success");
     }
 
     public static void addMixerRecipe_Standalone(final Material material) {
@@ -179,24 +177,17 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
         // Is this a composite?
         if (inputStacks == null) {
-            Logger.WARNING("InputStacks == NUll - " + material.getDefaultLocalName());
             return;
         }
 
         // Is this a composite?
-        Logger.WARNING("mixer length: " + inputStacks.length);
         if (!((inputStacks.length >= 1) && (inputStacks.length <= 4))) {
-            Logger.WARNING("InputStacks is out range 1-4 - " + material.getDefaultLocalName());
             return;
         }
-        // Log Input items
-        Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
-        final long[] inputStackSize = material.vSmallestRatio;
-        Logger.WARNING("mixer is stacksizeVar not null? " + (inputStackSize != null));
+        final long[] inputStackSize = material.smallestRatio;
 
         // Is smallest ratio invalid?
         if (inputStackSize == null) {
-            Logger.WARNING("inputStackSize == NUll - " + material.getDefaultLocalName());
             return;
         }
 
@@ -206,9 +197,6 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
                 inputStacks[x].stackSize = (int) inputStackSize[x];
             }
         }
-
-        // Relog input values, with stack sizes
-        Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
 
         ItemStack[] cleanedInputs = Arrays.stream(inputStacks)
             .filter(Objects::nonNull)
@@ -249,7 +237,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
                     || f == MaterialState.PURE_LIQUID
                     || f == MaterialState.PURE_GAS) {
                     oxygen = x.getStackMaterial()
-                        .getFluidStack((int) (material.vSmallestRatio[compSlot] * 1000));
+                        .getFluidStack((int) (material.smallestRatio[compSlot] * 1000));
                 }
                 compSlot++;
             }
@@ -266,15 +254,12 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             builder.circuit(20);
         }
         builder.duration((int) Math.max(material.getMass() * 2L, 1))
-            .eut(material.vVoltageMultiplier)
+            .eut(material.voltageMultiplier)
             .addTo(mixerRecipes);
-
-        Logger.WARNING("Dust Mixer Recipe: " + material.getDefaultLocalName() + " - Success");
-
     }
 
     public static boolean generatePackagerRecipes(Material aMatInfo) {
-        // Small Dust
+        // Small Dust → Normal Dust
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(4, aMatInfo.getSmallDust(4)), ItemList.Schematic_Dust.get(0))
             .itemOutputs(aMatInfo.getDust(1))
@@ -282,21 +267,34 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             .eut(4)
             .addTo(packagerRecipes);
 
-        // Tiny Dust
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(9, aMatInfo.getTinyDust(9)), ItemList.Schematic_Dust.get(0))
-            .itemOutputs(aMatInfo.getDust(1))
-            .duration(5 * SECONDS)
-            .eut(4)
-            .addTo(packagerRecipes);
+        // Tiny Dust → Normal Dust
+        if (aMatInfo.getTinyDust(1) != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(9, aMatInfo.getTinyDust(9)), ItemList.Schematic_Dust.get(0))
+                .itemOutputs(aMatInfo.getDust(1))
+                .duration(5 * SECONDS)
+                .eut(4)
+                .addTo(packagerRecipes);
+        }
 
-        // Normal Dust
+        // Normal Dust → Small Dust
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, aMatInfo.getDust(1)), ItemList.Schematic_Dust_Small.get(0))
             .itemOutputs(aMatInfo.getSmallDust(4))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(packagerRecipes);
+
+        // Normal Dust → Tiny Dust
+        if (aMatInfo.getTinyDust(1) != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, aMatInfo.getDust(1)), ItemList.Schematic_Dust.get(0))
+                .itemOutputs(aMatInfo.getTinyDust(9))
+                .duration(5 * SECONDS)
+                .eut(4)
+                .addTo(packagerRecipes);
+        }
+
         return true;
     }
 
@@ -306,22 +304,12 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         if (aMatInfo.requiresBlastFurnace()) {
             ItemStack aOutput = aMatInfo.getHotIngot(1);
             if (aOutput != null) {
-                if (addBlastFurnaceRecipe(aMatInfo, aDust, aOutput, aMatInfo.getMeltingPointK())) {
-                    Logger.MATERIALS("Successfully added a blast furnace recipe for " + aMatInfo.getDefaultLocalName());
-                } else {
-                    Logger.MATERIALS("Failed to add a blast furnace recipe for " + aMatInfo.getDefaultLocalName());
-                }
-            } else {
-                Logger.MATERIALS("Failed to add a blast furnace recipe for " + aMatInfo.getDefaultLocalName());
+                addBlastFurnaceRecipe(aMatInfo, aDust, aOutput, aMatInfo.getMeltingPointK());
             }
         } else {
             ItemStack aOutput = aMatInfo.getIngot(1);
             if (aOutput != null) {
-                if (GTModHandler.addSmeltingAndAlloySmeltingRecipe(aDust, aOutput, false)) {
-                    Logger.MATERIALS("Successfully added a furnace recipe for " + aMatInfo.getDefaultLocalName());
-                } else {
-                    Logger.MATERIALS("Failed to add a furnace recipe for " + aMatInfo.getDefaultLocalName());
-                }
+                GTModHandler.addSmeltingAndAlloySmeltingRecipe(aDust, aOutput, false);
             }
         }
     }
@@ -330,13 +318,13 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         final int tempRequired) {
 
         int timeTaken;
-        if (aMatInfo.vTier <= 4) {
-            timeTaken = 25 * aMatInfo.vTier * 10;
+        if (aMatInfo.tier <= 4) {
+            timeTaken = 25 * aMatInfo.tier * 10;
         } else {
-            timeTaken = 125 * aMatInfo.vTier * 10;
+            timeTaken = 125 * aMatInfo.tier * 10;
         }
 
-        long aVoltage = aMatInfo.vVoltageMultiplier;
+        long aVoltage = aMatInfo.voltageMultiplier;
 
         GTValues.RA.stdBuilder()
             .itemInputs(input1)

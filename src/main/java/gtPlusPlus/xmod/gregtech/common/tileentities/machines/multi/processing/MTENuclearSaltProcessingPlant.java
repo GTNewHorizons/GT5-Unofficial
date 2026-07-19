@@ -35,11 +35,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GTRecipe;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -48,7 +48,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclearSaltProcessingPlant>
     implements ISurvivalConstructable {
 
-    protected GTRecipe lastRecipeToBuffer;
     private int casing;
     private static IStructureDefinition<MTENuclearSaltProcessingPlant> STRUCTURE_DEFINITION = null;
 
@@ -62,7 +61,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
 
     @Override
     public String getMachineType() {
-        return "Reactor Processing Unit, Cold Trap";
+        return "Reactor Processing Unit, Cold Trap, NSPP";
     }
 
     @Override
@@ -82,17 +81,17 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
             .addBulkMachineInfo(2, 2.5f, 1f)
             .addInfo("gt.nuclear_salt_processing_plant.tips.1")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
+            .beginStructureBlock(3, 9, 5, true)
             .addController("front_center")
-            .addCasingInfoMin("gt.blockcasings.5.name", 58)
-            .addCasingInfoMin("gtplusplus.blockspecialcasings.1.8.name", 1)
-            .addInputBus("gt.nuclear_salt_processing_plant.info.1", 2)
-            .addInputHatch("gt.nuclear_salt_processing_plant.info.1", 2)
-            .addOutputBus("gt.nuclear_salt_processing_plant.info.2", 3)
-            .addOutputHatch("gt.nuclear_salt_processing_plant.info.2", 3)
-            .addMufflerHatch("gt.nuclear_salt_processing_plant.info.3", 4)
-            .addEnergyHatch("gt.nuclear_salt_processing_plant.info.4", 5)
-            .addMaintenanceHatch("gt.nuclear_salt_processing_plant.info.5", 6)
+            .addCasing("58", StatCollector.translateToLocal("gt.blockcasings.5.name"), false)
+            .addCasing("0-32", "Thermally Insulated Casing", false)
+            .addEnergyHatch("2", "gt.nuclear_salt_processing_plant.info.4", 5)
+            .addMaintenanceHatch("1", "gt.nuclear_salt_processing_plant.info.5", 1)
+            .addMufflerHatch("2", "gt.nuclear_salt_processing_plant.info.3", 4)
+            .addInputBus("0+", "gt.nuclear_salt_processing_plant.info.1", 2)
+            .addInputHatch("0+", "gt.nuclear_salt_processing_plant.info.1", 2)
+            .addOutputBus("0+", "gt.nuclear_salt_processing_plant.info.2", 3)
+            .addOutputHatch("0+", "gt.nuclear_salt_processing_plant.info.2", 3)
             .toolTipFinisher();
         return tt;
     }
@@ -158,11 +157,11 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
                         .hint(5)
                         .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
                 .addElement(
-                    'F',
+                    'F', // This is the only position maintenance is allowed, and we force a maintenance hatch here
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(Maintenance)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .hint(6)
-                        .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
+                        .hint(1)
+                        .build())
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -180,19 +179,19 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack, List<StructureError> errors) {
         casing = 0;
-        return checkPiece(mName, 4, 2, 0) && checkHatch();
-    }
-
-    @Override
-    public boolean checkHatch() {
-        return mEnergyHatches.size() == 2 && mMufflerHatches.size() == 2 && super.checkHatch();
+        if (!checkPiece(mName, 4, 2, 0, errors)) return;
+        checkCasingMin(errors, casing, 1);
+        checkHatchExact(errors, Energy, 2);
+        checkHatchExact(errors, Muffler, 2);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes;
+        return RecipeMaps.nuclearSaltProcessingPlantRecipes;
     }
 
     @Override
@@ -204,22 +203,6 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     @Override
     public int getMaxParallelRecipes() {
         return 2 * (Math.max(1, GTUtility.getTier(getMaxInputVoltage())));
-    }
-
-    @Override
-    public String[] getExtraInfoData() {
-        final String running = (this.mMaxProgresstime > 0 ? "Salt Plant running" : "Salt Plant stopped");
-        final String maintenance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintenance issues"
-            : "Needs Maintenance");
-        String tSpecialText;
-
-        if (lastRecipeToBuffer != null && lastRecipeToBuffer.mOutputs[0].getDisplayName() != null) {
-            tSpecialText = "Currently processing: " + lastRecipeToBuffer.mOutputs[0].getDisplayName();
-        } else {
-            tSpecialText = "Currently processing: Nothing";
-        }
-
-        return new String[] { "Nuclear Salt Processing Plant", running, maintenance, tSpecialText };
     }
 
     @Override

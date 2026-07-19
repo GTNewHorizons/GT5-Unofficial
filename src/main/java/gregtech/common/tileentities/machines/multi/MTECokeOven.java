@@ -4,7 +4,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTAuthors.AuthorJulia;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraftforge.fluids.FluidContainerRegistry.fillFluidContainer;
@@ -34,15 +37,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.HarvestTool;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchCokeOven;
@@ -50,17 +52,17 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.MTECokeOvenGui;
 import gregtech.common.pollution.Pollution;
 
-public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implements ISurvivalConstructable {
+public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public final static int INPUT_SLOT = 0;
     public final static int OUTPUT_SLOT = 1;
@@ -82,13 +84,17 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         return new MultiblockTooltipBuilder().addMachineType("gt.recipe.cokeoven")
             .addInfo("gt.mb_coke_oven.tips")
             .beginStructureBlock(3, 3, 3, true)
-            .addController("front_center")
-            .addCasingInfoRange(Casings.CokeOvenBricks.getLocalizedName(), 0, 26, false)
-            .addStructurePart(
-                ItemList.CokeOvenHatch.get(1)
-                    .getDisplayName(),
-                TooltipHelper.anyCasingText(Casings.CokeOvenBricks))
-            .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
+            .addController("Front center")
+            .addCasing("0-26", "Coke Oven Bricks", false)
+            .addMiscHatch(
+                "0+",
+                gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.CokeOvenHatch"),
+                "Any coke oven brick",
+                1)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
+            .addStructureFooter("to save on blocks, casings, glass, buses/hatches, etc.")
             .toolTipFinisher(AuthorJulia);
     }
 
@@ -158,8 +164,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
     }
 
     @Override
@@ -195,32 +201,23 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         return new MTECokeOven(mName);
     }
 
-    private static final ITexture[] TEXTURE_CASING = {
-        Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0)) };
-
-    private static final ITexture[] TEXTURE_CONTROLLER_INACTIVE = {
-        Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0)),
-        TextureFactory.builder()
-            .addIcon(COKE_OVEN_OVERLAY_INACTIVE)
-            .extFacing()
-            .build() };
-
-    private static final ITexture[] TEXTURE_CONTROLLER_ACTIVE = {
-        Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0)),
-        TextureFactory.builder()
-            .addIcon(COKE_OVEN_OVERLAY_ACTIVE)
-            .extFacing()
-            .build() };
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            COKE_OVEN_OVERLAY_INACTIVE,
+            COKE_OVEN_OVERLAY_INACTIVE_GLOW,
+            COKE_OVEN_OVERLAY_ACTIVE,
+            COKE_OVEN_OVERLAY_ACTIVE_GLOW);
+    }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-
-        if (side == facing) {
-            return active ? TEXTURE_CONTROLLER_ACTIVE : TEXTURE_CONTROLLER_INACTIVE;
-        } else {
-            return TEXTURE_CASING;
-        }
+    public ITexture getCasingTexture() {
+        return getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0));
     }
 
     @Override
@@ -320,7 +317,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
 
         // Polling updates.
         if (tick % 20 == 0) {
-            mMachine = checkMachine(baseMetaTileEntity, null);
+            mMachine = checkStructure(true, baseMetaTileEntity);
 
             // Sets "Incomplete Structure" text in WAILA
             setErrorDisplayID(mMachine ? 0 : 64);
@@ -448,6 +445,47 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         }
     }
 
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        ItemStack heldItem = aPlayer.getHeldItem();
+        if (heldItem != null && FluidContainerRegistry.isContainer(heldItem)) {
+            if (aBaseMetaTileEntity.isServerSide()) {
+                if (fluid != null && fluid.amount >= 1000 && !aPlayer.capabilities.isCreativeMode) {
+                    ItemStack singleHeldItem = heldItem.copy();
+                    singleHeldItem.stackSize = 1;
+                    FluidStack fluidBucket = fluid.copy();
+                    fluidBucket.amount = 1000;
+                    ItemStack filledFluidContainer = fillFluidContainer(fluidBucket, singleHeldItem);
+
+                    if (filledFluidContainer != null) {
+                        if (heldItem.stackSize == 1) {
+                            aPlayer.inventory
+                                .setInventorySlotContents(aPlayer.inventory.currentItem, filledFluidContainer);
+                        } else {
+                            aPlayer.inventory.decrStackSize(aPlayer.inventory.currentItem, 1);
+                            if (!aPlayer.inventory.addItemStackToInventory(filledFluidContainer)) {
+                                aPlayer.worldObj.spawnEntityInWorld(
+                                    new EntityItem(
+                                        aPlayer.worldObj,
+                                        aPlayer.posX,
+                                        aPlayer.posY,
+                                        aPlayer.posZ,
+                                        filledFluidContainer));
+                            }
+                        }
+                        fluid.amount -= 1000;
+                        aPlayer.inventory.markDirty();
+                        aPlayer.inventoryContainer.detectAndSendChanges();
+                        return true;
+                    }
+                }
+                return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+            }
+            return true;
+        }
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+    }
+
     private boolean addHatch(IGregTechTileEntity tileEntity, Short baseCasingIndex) {
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
@@ -457,48 +495,5 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
             return hatches.add(hatch);
         }
         return false;
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (FluidContainerRegistry.isContainer(aPlayer.getHeldItem())) {
-            if (fluid == null) {
-                return false;
-            }
-            if (aPlayer.capabilities.isCreativeMode) {
-                return false;
-            }
-            ItemStack heldItem = aPlayer.getHeldItem();
-            ItemStack singleHeldItem = heldItem.copy();
-            singleHeldItem.stackSize = 1;
-            if (fluid.amount < 1000) {
-                return false;
-            }
-            FluidStack fluidBucket = fluid.copy();
-            fluidBucket.amount = 1000;
-            ItemStack filledFluidContainer = fillFluidContainer(fluidBucket, singleHeldItem);
-            if (filledFluidContainer == null) {
-                return false;
-            }
-            if (heldItem.stackSize == 1) {
-                aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, filledFluidContainer);
-            } else {
-                aPlayer.inventory.decrStackSize(aPlayer.inventory.currentItem, 1);
-                if (!aPlayer.inventory.addItemStackToInventory(filledFluidContainer)) {
-                    aPlayer.worldObj.spawnEntityInWorld(
-                        new EntityItem(
-                            aPlayer.worldObj,
-                            aPlayer.posX,
-                            aPlayer.posY,
-                            aPlayer.posZ,
-                            filledFluidContainer));
-                }
-            }
-            fluid.amount -= 1000;
-            aPlayer.inventory.markDirty();
-            aPlayer.inventoryContainer.detectAndSendChanges();
-            return true;
-        }
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer);
     }
 }

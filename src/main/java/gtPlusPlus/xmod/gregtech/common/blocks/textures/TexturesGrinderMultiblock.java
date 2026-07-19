@@ -67,7 +67,7 @@ public class TexturesGrinderMultiblock {
     }
 
     public IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-        final int ordinalSide, final GregtechMetaCasingBlocks5 ii) {
+        final int ordinalSide) {
         final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         if (tMeta != 1) {

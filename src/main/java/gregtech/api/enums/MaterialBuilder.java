@@ -1,8 +1,10 @@
 package gregtech.api.enums;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import net.minecraft.enchantment.Enchantment;
@@ -68,7 +70,7 @@ public class MaterialBuilder {
     private int extraData = 0;
     private boolean canBeCracked = false;
     private float heatDamage = 0.0f;
-    private int meltingPoint = 0;
+    private int meltingPoint = -1;
     private int blastFurnaceTemp = 0;
     private boolean blastFurnaceRequired = false;
     private boolean autoGenerateBlastFurnaceRecipes = true;
@@ -83,10 +85,12 @@ public class MaterialBuilder {
     private Supplier<Materials> pendingSmeltingInto;
     private Supplier<Materials> pendingMaceratingInto;
     private Supplier<Materials> pendingArcSmeltingInto;
+    private final Map<Supplier<Materials>, Supplier<Materials>> pendingArcSmeltingIntoWithGas = new LinkedHashMap<>();
     private Supplier<Materials> pendingDirectSmelting;
     private final LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
     private final List<OrePrefixes> orePrefixBlacklist = new ArrayList<>();
     private final List<OrePrefixes> orePrefixWhitelist = new ArrayList<>();
+    private boolean hasGlowingOre;
 
     public MaterialBuilder() {}
 
@@ -134,8 +138,10 @@ public class MaterialBuilder {
             pendingSmeltingInto,
             pendingMaceratingInto,
             pendingArcSmeltingInto,
+            pendingArcSmeltingIntoWithGas.isEmpty() ? null : pendingArcSmeltingIntoWithGas,
             pendingDirectSmelting,
-            subTags
+            subTags,
+            hasGlowingOre
             // spotless:on
         );
 
@@ -217,6 +223,11 @@ public class MaterialBuilder {
         this.toolDurability = durability;
         this.toolQuality = quality;
         this.toolSpeed = speed;
+        return this;
+    }
+
+    public MaterialBuilder setMiningLevel(int level) {
+        this.toolQuality = level;
         return this;
     }
 
@@ -522,6 +533,12 @@ public class MaterialBuilder {
         return this;
     }
 
+    /** Sets what this material arc smelts into when a specific gas is used. */
+    public MaterialBuilder setArcSmeltingIntoWithGas(Supplier<Materials> gas, Supplier<Materials> material) {
+        pendingArcSmeltingIntoWithGas.put(gas, material);
+        return this;
+    }
+
     /** Sets what the ore of this material smelts into. */
     public MaterialBuilder setDirectSmelting(Supplier<Materials> material) {
         pendingDirectSmelting = material;
@@ -543,6 +560,11 @@ public class MaterialBuilder {
     /** Adds an {@link OrePrefixes} that will be generated. */
     public MaterialBuilder addOrePrefix(OrePrefixes prefix) {
         this.orePrefixWhitelist.add(prefix);
+        return this;
+    }
+
+    public MaterialBuilder hasGlowingOre() {
+        this.hasGlowingOre = true;
         return this;
     }
 }

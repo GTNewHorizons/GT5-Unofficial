@@ -130,6 +130,8 @@ public interface IToolStats {
 
     boolean isChainsaw();
 
+    boolean isSaw();
+
     /**
      * @return If this Tool can be used as an BC Wrench.
      */

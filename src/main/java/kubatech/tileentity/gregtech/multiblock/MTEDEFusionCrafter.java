@@ -26,6 +26,8 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -46,6 +48,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -125,14 +129,19 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mTierCasing = -1;
         mFusionTierCasing = -1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 9, 0)) return false;
-        if (mCasing < 19) return false;
-        if (mTierCasing > 3 && mFusionTierCasing < 2) return false;
-        return mMaintenanceHatches.size() == 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 9, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 19);
+        if (mTierCasing > 3 && mFusionTierCasing < 2) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.defc_fusion_machine_casing"));
+        }
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -140,19 +149,23 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.defc")
             .addInfo("gt.defc.tips")
-            .beginStructureBlock(5, 10, 5, false)
+            .beginStructureBlock(5, 5, 10, false)
             .addController("front_bottom_center")
-            .addCasingInfoMin("defc.casing.7.name", 19)
-            .addStructurePart("gt.blockcasings4.7.name", "gt.defc.info.coil")
-            .addStructurePart("gt.blockcasings4.6.name", "gt.defc.info.casing")
-            .addStructurePart("GT5U.tooltip.structure.tiered_fusion_casing", "gt.defc.info.tiered_casing")
+            .addCasing("19-45", StatCollector.translateToLocal("defc.casing.7.name"), false)
+            .addCasing("32", StatCollector.translateToLocal("GT5U.tooltip.structure.tiered_fusion_casing"), true)
+            .addStructureInfo("gt.defc.info.tiered_casing")
+            .addCasing("32", StatCollector.translateToLocal("gt.blockcasings4.6.name"), true)
+            .addStructureInfo("gt.defc.info.casing")
+            .addCasing("8", StatCollector.translateToLocal("gt.blockcasings4.7.name"), false)
+            .addStructureInfo("gt.defc.info.coil")
             .addStructureInfo("gt.defc.info.tiers")
-            .addInputBus("<bottom casing>", 1)
-            .addInputHatch("<bottom casing>", 1)
-            .addOutputBus("<bottom casing>", 1)
-            .addOutputHatch("<bottom casing>", 1)
-            .addEnergyHatch("<bottom casing>", 1)
-            .addMaintenanceHatch("<bottom casing>", 1)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addInputAny("1+", "Any bottom casing", 1)
+            .addOutputAny("1+", "Any bottom casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(EnumChatFormatting.RED + "The primordial pearl is consumed in the controller recipe!")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
             .toolTipFinisher(GTAuthors.AuthorKuba, "Prometheus0000");
         return tt;
     }

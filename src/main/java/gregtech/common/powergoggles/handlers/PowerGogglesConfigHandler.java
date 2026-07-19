@@ -28,6 +28,7 @@ public class PowerGogglesConfigHandler {
     public static String manualGraphMax;
     public static boolean showPowerChart;
     public static boolean showPowerBar;
+    public static boolean showMeasurements;
     public static boolean hideWhenChatOpen;
 
     public static int gradientBadColor;
@@ -112,6 +113,8 @@ public class PowerGogglesConfigHandler {
                 .getBoolean(false);
             showPowerBar = config.get(Configuration.CATEGORY_GENERAL, "Show Power Bar", true, "")
                 .getBoolean(true);
+            showMeasurements = config.get(Configuration.CATEGORY_GENERAL, "Show Measurements Section", true, "")
+                .getBoolean(true);
             hudScale = config.get(Configuration.CATEGORY_GENERAL, "HUD Scale", 1.0, "")
                 .getDouble(1.0);
             hideWhenChatOpen = config
@@ -161,6 +164,7 @@ public class PowerGogglesConfigHandler {
         manualGraphMax = "1000";
         showPowerChart = false;
         showPowerBar = true;
+        showMeasurements = true;
         hudScale = 1.0;
         hideWhenChatOpen = true;
 
@@ -212,6 +216,8 @@ public class PowerGogglesConfigHandler {
             .set(showPowerChart);
         config.get(Configuration.CATEGORY_GENERAL, "Show Power Bar", true, "")
             .set(showPowerBar);
+        config.get(Configuration.CATEGORY_GENERAL, "Show Measurements Section", true, "")
+            .set(showMeasurements);
         config.get(Configuration.CATEGORY_GENERAL, "HUD Scale", 1.0, "")
             .set(hudScale);
         config.get(Configuration.CATEGORY_GENERAL, "Hide HUD", true, "Hide the HUD when the in-game chat is open")

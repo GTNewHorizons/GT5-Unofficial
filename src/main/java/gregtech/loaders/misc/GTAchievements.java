@@ -274,8 +274,8 @@ public class GTAchievements {
         registerAchievement("magic", 14, 3, ItemList.MagicEnergyConverter_LV.get(1), "titan", false);
         registerAchievement("highmage", 10, 3, ItemList.MagicEnergyAbsorber_HV.get(1), "magic", false);
         registerAchievement("artificaldia", 12, 2, ItemList.IC2_Industrial_Diamond.get(1), "titan", false);
-        registerAchievement("muchsteam", 13, 1, ItemList.LargeSteamTurbine.get(1), "titan", false);
-        registerAchievement("efficientsteam", 11, 1, ItemList.LargeSteamTurbine.get(1), "muchsteam", false);
+        registerAchievement("muchsteam", 13, 1, ItemList.SteamTurbine.get(1), "titan", false);
+        registerAchievement("efficientsteam", 11, 1, ItemList.HPSteamTurbine.get(1), "muchsteam", false);
 
         registerAchievement("upgrade2", 16, 0, ItemList.Casing_Coil_Nichrome.get(1), "titan", false);
         registerAchievement(
@@ -386,7 +386,7 @@ public class GTAchievements {
         }
 
         if (!StatCollector.canTranslate(name)) {
-            GTLog.out.println(desc + "=Pickup this item to see the recipe in NEI");
+            GTLog.out.println(desc + "=Pick up this item to see the recipe in NEI");
         }
         this.achievementList.put(textId, achievement);
         return achievement;

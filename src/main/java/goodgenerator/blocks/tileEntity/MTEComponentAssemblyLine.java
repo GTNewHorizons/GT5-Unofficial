@@ -5,6 +5,7 @@ import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -34,13 +35,16 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
@@ -49,7 +53,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEComponentAssemblyLine>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int casingTier = -1;
     private int glassTier = -1;
@@ -162,7 +166,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             'K',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(OutputBus)
-                .hint(2)
+                .hint(5)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
@@ -183,7 +187,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             'M',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(InputHatch)
-                .hint(5)
+                .hint(2)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement('n', GTStructureUtility.ofFrame(Materials.TungstenSteel))
@@ -222,25 +226,26 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo("Using casings above the required recipe tier provides a speed bonus:")
             .addInfo(EnumChatFormatting.YELLOW + "Halves recipe time per tier above recipe")
             .addInfo(EnumChatFormatting.ITALIC + "Much more efficient than other competing brands!")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(9, 10, 33, false)
+            .beginStructureBlock(33, 9, 10, true)
             .addController("Front center, 8th layer")
-            .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 644, false)
-            .addCasingInfoExactly("Advanced Filter Casing", 124, false)
-            .addCasingInfoExactly("Any Tiered Glass (UV+)", 280, false)
-            .addCasingInfoExactly("Assembler Machine Casing", 30, false)
-            .addCasingInfoExactly("Component Assembly Line Casing", 43, true)
-            .addCasingInfoExactly("PBI Pipe Casing", 126, false)
-            .addCasingInfoExactly("Tungstensteel Frame Box", 4, false)
-            .addCasingInfoExactly("Assembly Line Casing", 55, false)
-            .addInputBus("Start of conveyor belt", 1)
-            .addOutputBus("End of conveyor belt", 2)
-            .addEnergyHatch("Second-top layer", 3)
-            .addMaintenanceHatch("Around the controller", 4)
-            .addInputHatch("Bottom left and right corners", 5)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING)
+            .addCasing("516-646", "Advanced Iridium Plated Machine Casing", false)
+            .addCasing("280", "UV+ Tiered Glass", false)
+            .addCasing("126", "PBI Pipe Casing", false)
+            .addCasing("124", "Advanced Filter Casing", false)
+            .addCasing("55", "Assembly Line Casing", false)
+            .addCasing("43", "Component Assembly Line Casing", true)
+            .addCasing("30", "Assembler Machine Casing", false)
+            .addCasing("2-4", "Tungstensteel Frame Box", false)
+            .addEnergyHatch("1+", "Any outer iridium casing on the 2nd to top layer", 3)
+            .addMaintenanceHatch("1", "Any casing around controller", 4)
+            .addInputBus("1-8", "Any casing or frame box at front of conveyor belt", 1)
+            .addInputHatch("0+", "Any side bottom edge casing", 2)
+            .addOutputBus("1+", "Any casing at end of conveyor belt", 5)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING)
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }
@@ -258,7 +263,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         String[] origin = super.getInfoData();
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
-        ret[origin.length] = StatCollector.translateToLocalFormatted(
+        ret[origin.length] = IGregTechDeviceInformation.encode(
             "scanner.info.CASS.tier",
             casingTier >= 0 ? GTValues.VN[casingTier + 1]
                 : StatCollector.translateToLocal("scanner.info.CASS.tier.none"));
@@ -266,30 +271,22 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE,
+            OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_GLOW,
+            OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE,
+            OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(183);
     }
 
     @Override
@@ -337,14 +334,17 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.casingTier = -1;
         this.glassTier = -1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0)) {
-            return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0, errors)) return;
+        if (this.glassTier < VoltageIndex.UV) {
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
         }
-
-        return this.glassTier >= VoltageIndex.UV;
+        checkHasAnyEnergy(errors);
+        checkOneMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

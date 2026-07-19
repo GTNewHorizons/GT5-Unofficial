@@ -11,10 +11,11 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +34,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GTUtility;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import ic2.api.item.ElectricItem;
@@ -53,12 +54,6 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
     private static final int maxRepairedDamagePerOperation = 1000;
     private static final long usedEuPerDurability = 1000;
     private static final int usedUumPerDurability = 1;
-
-    // region structure
-    private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        // 1 - Classic Hatches or High Power Casing
-        translateToLocal("gt.blockmachines.multimachine.em.infuser.hint"), };
 
     private static final IStructureDefinition<MTEEnergyInfuser> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEEnergyInfuser>builder()
@@ -98,8 +93,9 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
             if (item instanceof IElectricItem) {
                 return ElectricItem.manager.getCharge(stack) >= ((IElectricItem) item).getMaxCharge(stack);
             } else if (Mods.COFHCore.isModLoaded() && item instanceof IEnergyContainerItem) {
-                return ((IEnergyContainerItem) item).getEnergyStored(stack)
-                    >= ((IEnergyContainerItem) item).getMaxEnergyStored(stack);
+                IEnergyContainerItem rfItem = (IEnergyContainerItem) item;
+                return rfItem.getEnergyStored(stack) >= rfItem.getMaxEnergyStored(stack)
+                    || rfItem.receiveEnergy(stack, 1, true) == 0;
             }
         }
         return true;
@@ -159,10 +155,13 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM("main", 1, 2, 0) && mInputBusses.size() > 0
-            && mOutputBusses.size() > 0
-            && mMaintenanceHatches.size() == 1;
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
+        if (!checkPiece("main", 1, 2, 0, errors)) return;
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -244,21 +243,16 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         tt.addMachineType("machtype.energy_infuser")
             .addInfo("gt.energy_infuser.tips")
             .addTecTechHatchInfo()
-            .beginStructureBlock(3, 5, 3, false)
+            .beginStructureBlock(3, 3, 5, false)
             .addController("front_center_layer3")
-            .addStructurePart(
-                Casings.HighPowerCasing.getLocalizedName(),
-                "gt.blockmachines.multimachine.em.infuser.Structure.HighPowerCasing")
-            .addStructurePart(
-                Casings.MolecularCoil.getLocalizedName(),
-                "gt.blockmachines.multimachine.em.infuser.Structure.MolecularCoil")
-            .addStructurePart(
-                Casings.MolecularCasing.getLocalizedName(),
-                "gt.blockmachines.multimachine.em.infuser.Structure.MolecularCasing")
-            .addEnergyHatch(hpCasingText, 1)
-            .addMaintenanceHatch(hpCasingText, 1)
-            .addInputBus(hpCasingText, 1)
-            .addOutputBus(hpCasingText, 1)
+            .addCasing("16", translateToLocal("gt.blockcasingsTT.7.name"), false)
+            .addCasing("0-14", translateToLocal("gt.blockcasingsTT.0.name"), false)
+            .addCasing("10", translateToLocal("gt.blockcasingsTT.4.name"), false)
+            .addEnergyHatch("1+", "Any high power casing", 1)
+            .addMaintenanceHatch("1", "Any high power casing", 1)
+            .addInputBus("1+", "Any high power casing", 1)
+            .addInputHatch("0+", "Any high power casing", 1)
+            .addOutputBus("1+", "Any high power casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -346,7 +340,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 2, 0, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 1, 2, 0);
     }
 
     @Override
@@ -361,13 +355,12 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
     }
 
     @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
-    }
-
-    @Override
     public boolean isSafeVoidButtonEnabled() {
         return false;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

@@ -4,8 +4,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Industrial_Solar_Tower;
 import static gregtech.api.enums.MetaTileEntityIDs.Solar_Tower_Reflector;
 
 import gregtech.api.enums.GTValues;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
+import gregtech.api.recipe.RecipeMaps;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTESolarTower;
@@ -14,7 +13,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.misc.MTESolarHeater;
 public class GregtechSolarTower {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Solar Tower.");
         run1();
     }
 
@@ -38,6 +36,6 @@ public class GregtechSolarTower {
             .fluidOutputs(MaterialMisc.SOLAR_SALT_HOT.getFluidStack(1000))
             .duration(0)
             .eut(0)
-            .addTo(GTPPRecipeMaps.solarTowerRecipes);
+            .addTo(RecipeMaps.solarTowerRecipes);
     }
 }

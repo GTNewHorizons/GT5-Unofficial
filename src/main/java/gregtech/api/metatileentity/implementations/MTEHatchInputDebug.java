@@ -76,7 +76,7 @@ public class MTEHatchInputDebug extends MTEHatchInput {
     }
 
     @Override
-    public boolean canTankBeEmptied() {
+    public boolean isFluidChangingAllowed() {
         return false;
     }
 
@@ -142,19 +142,32 @@ public class MTEHatchInputDebug extends MTEHatchInput {
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack aFluid, boolean doDrain) {
+        return drain(from, aFluid, aFluid == null ? 0 : aFluid.amount, doDrain);
+    }
 
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack aFluid, int amount, boolean doDrain) {
         if (aFluid == null) return null;
         for (FluidStack stack : fluidList) {
             if (stack != null && stack.getFluid() == aFluid.getFluid()) {
-                return aFluid.copy();
+                FluidStack ret = aFluid.copy();
+                ret.amount = amount;
+                return ret;
             }
         }
         return null;
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+        for (FluidStack stack : fluidList) {
+            if (stack != null) {
+                FluidStack drain = stack.copy();
+                drain.amount = maxDrain;
+                return drain;
+            }
+        }
+        return null;
     }
 
     @Override

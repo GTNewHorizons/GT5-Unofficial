@@ -13,9 +13,8 @@
 
 package bartworks.common.tileentities.multis;
 
-import static gregtech.api.enums.GTValues.VN;
-
 import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,6 +23,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -38,10 +38,12 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTEDrillerBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 
@@ -82,23 +84,26 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        String casings = this.getCasingBlockItem()
-            .get(0)
-            .getDisplayName();
         tt.addMachineType("machtype.dehp")
             .addInfo("gt.dehp.tips", (long) (25600 * 20), (long) (192 * 20), TierEU.RECIPE_HV)
-            .beginStructureBlock(3, 7, 3, false)
+            .beginStructureBlock(3, 3, 7, false)
             .addController("front_bottom_center")
-            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.1")
-            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.2")
-            .addStructurePart(
-                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, this.getFrameMaterial()),
-                "gt.driller_shaped_mb.info.frame")
-            .addEnergyHatch(GTUtility.nestParams("gt.dehp.info.energy", VN[this.getMinTier()]))
-            .addMaintenanceHatch("gt.driller_shaped_mb.info.replace")
-            .addInputBus("gt.dehp.info.i_bus")
-            .addInputHatch("gt.driller_shaped_mb.info.replace")
-            .addOutputHatch("gt.driller_shaped_mb.info.replace")
+            .addCasing("15", GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, this.getFrameMaterial()), false)
+            .addCasing(
+                "3-7",
+                this.getCasingBlockItem()
+                    .get(0)
+                    .getDisplayName(),
+                false)
+            .addStructureInfo("gt.driller_shaped_mb.info.frame")
+            .addStructureInfo("gt.driller_shaped_mb.info.casing.1")
+            .addStructureInfo("gt.driller_shaped_mb.info.casing.2")
+            .addEnergyHatch("1+", GTUtility.nestParams("gt.dehp.info.energy", VN[this.getMinTier()]), 1)
+            .addMaintenanceHatch("1", "gt.driller_shaped_mb.info.replace", 1)
+            .addInputBus("0+", "gt.dehp.info.i_bus", 1)
+            .addInputHatch("1+", "gt.driller_shaped_mb.info.replace", 1)
+            .addOutputBus("0+", "gt.driller_shaped_mb.info.replace", 1)
+            .addOutputHatch("1+", "gt.driller_shaped_mb.info.replace", 1)
             .toolTipFinisher("tooltip.bw.author_bart_via_bw.name");
         return tt;
     }
@@ -145,15 +150,18 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    protected boolean checkHatches() {
-        return !this.mMaintenanceHatches.isEmpty() && !this.mOutputHatches.isEmpty() && !this.mInputHatches.isEmpty();
+    protected void checkHatches(List<StructureError> errors) {
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     private long getFluidFromHatches(Fluid f) {
         long ret = 0;
         for (MTEHatchInput ih : this.mInputHatches) {
-            if (ih.getFluid()
-                .getFluid()
+            FluidStack fluidStack = ih.getFluid();
+            if (fluidStack != null && fluidStack.getFluid()
                 .equals(f)) ret += ih.getFluidAmount();
         }
         return ret;
@@ -166,12 +174,11 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         if (onlyDistilled) toConsume1 = toConsume2;
         long ret = 0;
         for (MTEHatchInput ih : this.mInputHatches) {
-            if (ih.getFluid()
-                .getFluid()
+            FluidStack fluidStack = ih.getFluid();
+            if (fluidStack != null && (fluidStack.getFluid()
                 .equals(toConsume1)
-                || ih.getFluid()
-                    .getFluid()
-                    .equals(toConsume2))
+                || fluidStack.getFluid()
+                    .equals(toConsume2)))
                 ret += ih.getFluidAmount();
         }
         return ret;
@@ -214,7 +221,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     GTModHandler.getDistilledWater(1)
                         .getFluid(),
                     waterConsume);
-                this.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", (int) steamProduced));
+                this.addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", (int) steamProduced));
             } else {
                 this.explodeMultiblock();
                 return false;
@@ -229,7 +236,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     GTModHandler.getIC2Coolant(0)
                         .getFluid(),
                     coolantConverted);
-                this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
+                this.addOutputPartial(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
             } else {
                 this.explodeMultiblock();
                 return false;
@@ -239,22 +246,20 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     private boolean consumeFluid(Fluid fluid, long ammount) {
+        Fluid distilledWater = GTModHandler.getDistilledWater(1)
+            .getFluid();
         if (ammount > Integer.MAX_VALUE) {
             int[] tmp = new int[(int) (ammount / Integer.MAX_VALUE)];
             Arrays.fill(tmp, (int) (ammount / Integer.MAX_VALUE));
             for (int i = 0; i < tmp.length; i++) {
                 for (MTEHatchInput ih : this.mInputHatches) {
-                    if (fluid.equals(FluidRegistry.WATER) ? ih.getFluid()
-                        .getFluid()
+                    FluidStack fluidStack = ih.getFluid();
+                    if (fluidStack != null && (fluid.equals(FluidRegistry.WATER) ? fluidStack.getFluid()
                         .equals(fluid)
-                        || ih.getFluid()
-                            .getFluid()
-                            .equals(
-                                GTModHandler.getDistilledWater(1)
-                                    .getFluid())
-                        : ih.getFluid()
-                            .getFluid()
-                            .equals(fluid))
+                        || fluidStack.getFluid()
+                            .equals(distilledWater)
+                        : fluidStack.getFluid()
+                            .equals(fluid)))
                         tmp[i] -= ih.drain((int) ammount, true).amount;
                     if (tmp[i] <= 0) break;
                 }
@@ -265,17 +270,13 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
         long tmp = ammount;
         for (MTEHatchInput ih : this.mInputHatches) {
-            if (fluid.equals(FluidRegistry.WATER) ? ih.getFluid()
-                .getFluid()
+            FluidStack fluidStack = ih.getFluid();
+            if (fluidStack != null && (fluid.equals(FluidRegistry.WATER) ? fluidStack.getFluid()
                 .equals(fluid)
-                || ih.getFluid()
-                    .getFluid()
-                    .equals(
-                        GTModHandler.getDistilledWater(1)
-                            .getFluid())
-                : ih.getFluid()
-                    .getFluid()
-                    .equals(fluid))
+                || fluidStack.getFluid()
+                    .equals(distilledWater)
+                : fluidStack.getFluid()
+                    .equals(fluid)))
                 tmp -= ih.drain((int) ammount, true).amount;
             if (tmp <= 0) return true;
         }
@@ -302,8 +303,8 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEDrillerBaseGui<>(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_STEAM,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }

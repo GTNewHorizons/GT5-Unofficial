@@ -404,7 +404,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public String getInventoryName() {
         if (GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null) {
-            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
+            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getLocalNameKey();
         }
         return "";
     }
@@ -487,8 +487,16 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluidStack, boolean doDrain) {
+        return drain(side, fluidStack, fluidStack == null ? 0 : fluidStack.amount, doDrain);
+    }
+
+    /**
+     * Type-aware drain with an overridden amount. Avoids allocating a new {@link FluidStack} per call when the caller
+     * needs to drain a different amount than {@code fluidStack.amount}.
+     */
+    public FluidStack drain(ForgeDirection side, FluidStack fluidStack, int amount, boolean doDrain) {
         if (getFluid() != null && fluidStack != null && getFluid().isFluidEqual(fluidStack)) {
-            return drain(fluidStack.amount, doDrain);
+            return drain(amount, doDrain);
         }
         return null;
     }
@@ -632,6 +640,15 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return false;
     }
 
+    /**
+     * A public method to verify if this MTE has a Mui2 GUI. Returning false indicates that do not try to open a Mui2
+     * GUI
+     * of this.
+     */
+    public boolean hasMui2Gui() {
+        return useMui2() || forceUseMui2();
+    }
+
     @Override
     public final String getGuiId() {
         return mName;
@@ -664,7 +681,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return new GTModularScreen(mainPanel, getColoredTheme());
     }
 
-    private GTGuiTheme getColoredTheme() {
+    public final GTGuiTheme getColoredTheme() {
         GTGuiTheme baseTheme = getGuiTheme();
         if (baseTheme != GTGuiThemes.STANDARD) return baseTheme;
         byte color = this.getBaseMetaTileEntity()

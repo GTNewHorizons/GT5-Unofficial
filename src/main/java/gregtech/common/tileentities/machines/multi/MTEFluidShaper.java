@@ -32,19 +32,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -55,7 +52,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -71,7 +69,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * DEPRECATED! Will be removed after 2.9 is released. see
  * {@link gregtech.common.tileentities.machines.multi.MTEMassSolidifier} instead
  */
-public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShaper> implements ISurvivalConstructable {
+public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShaper>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String MS_LEFT_MID = "leftmid";
     private static final String MS_RIGHT_MID = "rightmid";
@@ -140,42 +139,23 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MULTI_CANNER,
+            OVERLAY_FRONT_MULTI_CANNER_GLOW,
+            OVERLAY_FRONT_MULTI_CANNER_ACTIVE,
+            OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13));
     }
 
     @Override
@@ -193,18 +173,18 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addInfo("gt.fluid_shaper.flavor")
             .beginVariableStructureBlock(9, 33, 5, 5, 5, 5, true)
-            .addController("front_bottom_center")
-            .addCasingInfoRange(Casings.SolidifierCasing.getLocalizedName(), 91, 211, false)
-            .addCasingInfoRange(Casings.SolidifierRadiator.getLocalizedName(), 13, 73, false)
-            .addCasingInfoRange(Casings.HeatProofMachineCasing.getLocalizedName(), 4, 16, false)
-            .addCasingInfoRange(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 4, 16, false)
-            .addCasingInfoRange("GT5U.MBTT.AnyGlass", 14, 117, true)
-            .addInputBus("<casing>", 1)
-            .addOutputBus("<casing>", 1)
-            .addInputHatch("<casing>", 1)
-            .addEnergyHatch("<casing>", 1)
-            .addMaintenanceHatch("<casing>", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addController("Front bottom center")
+            .addCasingInfoRange("Solidifier Casing", 91, 211, false)
+            .addCasingInfoRange("Solidifier Radiator", 13, 73, false)
+            .addCasingInfoRange("Heat Proof Machine Casing", 4, 16, false)
+            .addCasingInfoRange("Clean Stainless Steel Machine Casing", 4, 16, false)
+            .addCasingInfoRange("Any Tiered Glass", 14, 117, true)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorOmdaCZ);
         return tt;
     }
@@ -250,29 +230,35 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         width = 0;
         casingAmount = 0;
         glassTier = -1;
 
-        if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
-            while (width < (6)) {
-                if (checkPiece(MS_LEFT_MID, 5 + 2 * width, 4, 0) && checkPiece(MS_RIGHT_MID, -4 - 2 * width, 4, 0)) {
-                    width++;
-                } else break;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, errors)) return;
+        while (width < 6) {
+            if (checkPiece(MS_LEFT_MID, 5 + 2 * width, 4, 0, errors)
+                && checkPiece(MS_RIGHT_MID, -4 - 2 * width, 4, 0, errors)) {
+                width++;
+            } else {
+                errors.clear();
+                break;
             }
-        } else return false;
-        if (!checkPiece(MS_END, -4 - 2 * width, 4, 0) || !checkPiece(MS_END, 4 + 2 * width, 4, 0)) {
-            return false;
+        }
+        if (!checkPiece(MS_END, -4 - 2 * width, 4, 0, errors) || !checkPiece(MS_END, 4 + 2 * width, 4, 0, errors)) {
+            return;
         }
 
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (glassTier < VoltageIndex.UMV & mEnergyHatch.mTier > glassTier) {
-                return false;
+            if (mEnergyHatch.mTier > glassTier) {
+                errors.add(StructureErrors.glassTierNotEnough(mEnergyHatch.mTier));
             }
         }
 
-        return casingAmount >= (91 + width * 20);
+        checkCasingMin(errors, casingAmount, 91 + width * 20);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override
@@ -302,15 +288,13 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
                 }
                 return false;
             }
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                setSpeedBonus(1F / speedup);
-                return super.validateRecipe(recipe);
-            }
         }.setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(0.8F);
+            .setEuModifier(0.8F)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
+    }
+
+    public double getSpeedBonus() {
+        return (1F / speedup);
     }
 
     @Override
@@ -418,11 +402,6 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
 
     @Override
     public boolean isInputSeparationEnabled() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 }

@@ -265,6 +265,12 @@ public class Client {
         @Config.Name("Powerfail Notification Timeout")
         public int powerfailNotificationTimeout;
 
+        @Config.Comment("Detrav scanner ore markers (right-click an ore in the scan) disappear after this many seconds. 0 = never.")
+        @Config.DefaultInt(120)
+        @Config.Name("Detrav Ore Marker Timeout")
+        @Config.RangeInt(min = 0, max = 3600)
+        public int detravOreMarkerTimeout;
+
         @Config.Comment("Enables or disables Trans Metal rendering, also impacts motors, pistons etc with same rendering. Accessibility option.")
         @Config.DefaultBoolean(true)
         public boolean renderTransMetalFancy;
@@ -280,6 +286,10 @@ public class Client {
         @Config.Comment("Enables or disables Six-Phased Copper glitch rendering, also impacts all items using the same effect. Accessibility option.")
         @Config.DefaultBoolean(true)
         public boolean renderGlitchFancy;
+
+        @Config.Comment("Enables or disables Universium rendering, also impacts all items using the same effect. Accessibility option.")
+        @Config.DefaultBoolean(true)
+        public boolean renderUniversiumFancy;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")
@@ -378,7 +388,7 @@ public class Client {
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting ticBoltMolding = ENABLE;
 
-            @Config.LangKey("gtpp.recipe.category.abs_non_alloy_recipes")
+            @Config.LangKey("gt.recipe.category.abs_non_alloy_recipes")
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting absNonAlloyRecipes = ENABLE;
         }

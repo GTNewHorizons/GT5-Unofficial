@@ -5,7 +5,6 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.GTMod;
@@ -15,7 +14,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     private final static int BASE_PYLON_RANGE = 16;
@@ -27,23 +28,16 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     private int range = -1;
 
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { "Grants creative flight to everyone wearing a MagLev Harness in range.",
-                "Range is a cube centered on the pylon.",
-                String.format("Unpowered Range: %s%d blocks", EnumChatFormatting.WHITE, getPylonRange(aTier, false)),
-                String.format(
-                    "Powered Range: %s%d blocks (%s%d EU/t%s)",
-                    EnumChatFormatting.WHITE,
-                    getPylonRange(aTier, true),
-                    EnumChatFormatting.GREEN,
-                    getPylonPowerCost(aTier),
-                    EnumChatFormatting.WHITE),
-                "Only consumes power while any players are tethered." });
+        super(aID, aName, aNameRegional, aTier, 0, new String[] { "gt.blockmachines.basicmachine.maglev.tooltip" });
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTUtility.translateMultiline(
+            "gt.blockmachines.basicmachine.maglev.tooltip",
+            getPylonRange(mTier, false),
+            getPylonRange(mTier, true),
+            getPylonPowerCost(mTier));
     }
 
     public MTEMagLevPylon(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {

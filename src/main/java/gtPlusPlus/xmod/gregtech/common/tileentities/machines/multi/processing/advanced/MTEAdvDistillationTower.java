@@ -34,13 +34,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableStack;
-import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.drawable.UITexture;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -48,11 +41,10 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.fluid.IFluidStore;
+import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -60,12 +52,14 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillationTower>
@@ -81,8 +75,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     private static final int MACHINEMODE_DISTILLERY = 1;
 
     protected final List<List<MTEHatchOutput>> mOutputHatchesByLayer = new ArrayList<>();
-    protected int mHeight;
     protected int mCasing;
+    protected int mHeight;
     protected boolean mTopLayerFound;
 
     private static IStructureDefinition<MTEAdvDistillationTower> STRUCTURE_DEFINITION = null;
@@ -120,7 +114,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
                             .casingIndex(getCasingTextureId())
                             .hint(1)
                             .build(),
-                        ofBlock(GregTechAPI.sBlockCasings4, 1)))
+                        onElementPass(MTEAdvDistillationTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
                 .addElement(
                     'l',
                     ofChain(
@@ -130,31 +124,33 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
                             .hint(2)
                             .build(),
                         ofHatchAdder(MTEAdvDistillationTower::addMufflerToMachineList, getCasingTextureId(), 3),
-                        ofBlock(GregTechAPI.sBlockCasings4, 1)))
+                        onElementPass(MTEAdvDistillationTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
                 .addElement(
                     'c',
                     ofChain(
                         onElementPass(
-                            MTEAdvDistillationTower::onTopLayerFound,
+                            t -> t.onTopLayerFound(false),
                             ofHatchAdder(MTEAdvDistillationTower::addMufflerToMachineList, getCasingTextureId(), 3)),
                         onElementPass(
-                            MTEAdvDistillationTower::onTopLayerFound,
+                            t -> t.onTopLayerFound(false),
                             ofHatchAdder(MTEAdvDistillationTower::addOutputToMachineList, getCasingTextureId(), 3)),
                         onElementPass(
-                            MTEAdvDistillationTower::onTopLayerFound,
+                            t -> t.onTopLayerFound(false),
                             ofHatchAdder(
                                 MTEAdvDistillationTower::addMaintenanceToMachineList,
                                 getCasingTextureId(),
                                 3)),
-                        onElementPass(MTEAdvDistillationTower::onTopLayerFound, ofBlock(GregTechAPI.sBlockCasings4, 1)),
+                        onElementPass(t -> t.onTopLayerFound(true), ofBlock(GregTechAPI.sBlockCasings4, 1)),
                         isAir()))
                 .addElement(
                     't',
-                    buildHatchAdder(MTEAdvDistillationTower.class).atLeast(layeredOutputHatch, Muffler)
-                        .disallowOnly(ForgeDirection.DOWN)
-                        .casingIndex(getCasingTextureId())
-                        .hint(2)
-                        .buildAndChain(GregTechAPI.sBlockCasings4, 1))
+                    ofChain(
+                        buildHatchAdder(MTEAdvDistillationTower.class).atLeast(layeredOutputHatch, Muffler)
+                            .disallowOnly(ForgeDirection.DOWN)
+                            .casingIndex(getCasingTextureId())
+                            .hint(2)
+                            .build(),
+                        onElementPass(MTEAdvDistillationTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -171,12 +167,18 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput tHatch)) return false;
         while (mOutputHatchesByLayer.size() < mHeight) mOutputHatchesByLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return mOutputHatchesByLayer.get(mHeight - 1)
             .add(tHatch) && mOutputHatches.add(tHatch);
     }
 
-    protected void onTopLayerFound() {
+    protected void onCasingFound() {
+        mCasing++;
+    }
+
+    protected void onTopLayerFound(boolean aIsCasing) {
         mTopLayerFound = true;
+        if (aIsCasing) onCasingFound();
     }
 
     @Override
@@ -184,23 +186,29 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.distillery", "gt.recipe.distillationtower")
             .addInfo("gt.advdistill.tips.1")
+            .addInfo("Outputs only one fluid")
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(0.15f)
             .addInfo("gt.advdistill.tips.2")
+            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
+            .addInfo("Increase the height to output more fluid types")
             .addStaticParallelInfo(DT_MODE_MAX_PARALLELS)
             .addStaticSpeedInfo(3.5f)
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
+            .beginVariableStructureBlock(3, 3, 3, 3, 3, 12, true)
             .addController("front_bottom_center")
-            .addCasingInfoMin(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 7)
-            .addInputBus("<bottom casing>", 1)
-            .addOutputBus("<bottom casing>", 1)
-            .addInputHatch("<bottom casing>", 1)
-            .addMaintenanceHatch("<casing>", 1)
-            .addEnergyHatch("<casing>", 1)
-            .addOutputHatch("gt.advdistill.info.o_hatch", 2)
-            .addMufflerHatch("<top casing>", 3)
+            .addCasing("7-82", "Clean Stainless Steel Machine Casing", false)
+            .addEnergyHatch("1+", "Any casing", 1, 2)
+            .addMaintenanceHatch("1", "Any casing", 1, 2)
+            .addMufflerHatch("1", "Any top casing", 2)
+            .addInputBus("0+", "Any bottom casing", 1)
+            .addInputHatch("1+", "Any bottom casing", 1)
+            .addOutputBus("0+", "Any bottom casing", 1)
+            .addOutputHatch("2-11", "gt.advdistill.info.o_hatch", 2)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
         return tt;
     }
@@ -242,37 +250,49 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // reset
         mOutputHatchesByLayer.forEach(List::clear);
         mHeight = 1;
+        mCasing = 0;
         mTopLayerFound = false;
 
         // check base
-        if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0, errors)) return;
+
+        List<Integer> missingLayers = new ArrayList<>();
 
         // check each layer
         while (mHeight < 12) {
-            if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0)) {
-                return false;
-            }
+            if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors)) return;
             if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1)
-                .isEmpty())
-                // layer without output hatch
-                return false;
+                .isEmpty()) {
+                missingLayers.add(mHeight + 1);
+            }
             if (mTopLayerFound || !mMufflerHatches.isEmpty()) {
                 break;
             }
             // not top
             mHeight++;
         }
-        boolean check = mTopLayerFound && mHeight >= 2 && checkHatch();
-        if (check && mHeight < 11) {
-            // force the mode to DT if not in full height
-            machineMode = MACHINEMODE_TOWER;
-            mLastRecipe = null;
+
+        if (!missingLayers.isEmpty()) {
+            errors.add(StructureErrors.missingOutputHatchDT(missingLayers));
         }
-        return check;
+
+        if (!mTopLayerFound) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.dangote_missing_top"));
+        }
+        if (mHeight == 1) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
+        }
+        checkCasingMin(errors, mCasing, 7);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputHatch(errors);
+        if (!errors.isEmpty()) return;
+        // check success
     }
 
     @Override
@@ -310,10 +330,6 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (mHeight < 11) {
-            GTUtility.sendChatToPlayer(aPlayer, "Cannot switch mode if not in full height.");
-            return;
-        }
         setMachineMode(nextMachineMode());
         GTUtility
             .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
@@ -322,41 +338,45 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public boolean addOutput(FluidStack aLiquid) {
         if (aLiquid == null) return false;
-        FluidStack copiedFluidStack = aLiquid.copy();
+        FluidStack stack = aLiquid.copy();
         for (List<MTEHatchOutput> hatches : mOutputHatchesByLayer) {
-            if (dumpFluid(hatches, copiedFluidStack, true)) return true;
-        }
-        for (List<MTEHatchOutput> hatches : mOutputHatchesByLayer) {
-            if (dumpFluid(hatches, copiedFluidStack, false)) return true;
+            addOutputPartial(stack, hatches);
+            if (stack.amount == 0) return true;
         }
         return false;
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] outputFluids) {
+    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+        boolean succeed = true;
         if (machineMode == MACHINEMODE_TOWER) {
             // dt mode
             for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
                 FluidStack tStack = outputFluids[i].copy();
-                if (!dumpFluid(mOutputHatchesByLayer.get(i), tStack, true))
-                    dumpFluid(mOutputHatchesByLayer.get(i), tStack, false);
+                addOutputPartial(tStack, mOutputHatchesByLayer.get(i));
+                if (tStack.amount > 0) {
+                    succeed = false;
+                }
             }
         } else {
             // distillery mode
             for (FluidStack outputFluidStack : outputFluids) {
-                addOutput(outputFluidStack);
+                if (!addOutput(outputFluidStack)) {
+                    succeed = false;
+                }
             }
         }
+        return succeed;
     }
 
     @Override
-    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        return getFluidOutputSlotsByLayer(toOutput, mOutputHatchesByLayer);
+    public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+        return getOutputHatchesByLayers(toOutput, mOutputHatchesByLayer);
     }
 
     @Override
     public String getMachineType() {
-        return "";
+        return "Distillery, DT";
     }
 
     @Override
@@ -374,7 +394,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public int getMaxParallelRecipes() {
         return machineMode == MACHINEMODE_TOWER ? DT_MODE_MAX_PARALLELS
-            : 8 * GTUtility.getTier(this.getMaxInputVoltage());
+            : (int) (2 * Math.floor((mHeight + 1) / 3f)) * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     @Override
@@ -403,12 +423,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    public boolean canDumpFluidToME() {
-        // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
-        return this.mOutputHatchesByLayer.stream()
-            .allMatch(
-                tLayerOutputHatches -> tLayerOutputHatches.stream()
-                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canAcceptFluid())));
+    public boolean canDumpFluidToME(List<GTUtility.FluidId> outputs) {
+        return canDumpFluidToMEByLayer(outputs, mOutputHatchesByLayer);
     }
 
     @Override
@@ -430,33 +446,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTEMultiBlockBaseGui<>(this) {
-
-            @Override
-            protected IWidget createModeSwitchButton(PanelSyncManager syncManager) {
-                IntSyncValue machineModeSyncer = syncManager.findSyncHandler("machineMode", IntSyncValue.class);
-                IntSyncValue heightSyncer = new IntSyncValue(() -> mHeight);
-                syncManager.syncValue("dangoteHeight", heightSyncer);
-                return new CycleButtonWidget() {
-
-                    @NotNull
-                    @Override
-                    public Result onMousePressed(int mouseButton) {
-                        if (heightSyncer.getIntValue() < 11) return Result.IGNORE;
-                        return super.onMousePressed(mouseButton);
-                    }
-                }.size(18, 18)
-                    .syncHandler("machineMode")
-                    .length(machineModeIcons.size())
-                    .overlay(new DynamicDrawable(() -> {
-                        UITexture mode = getMachineModeIcon(machineModeSyncer.getValue());
-                        return heightSyncer.getIntValue() < 11
-                            ? new DrawableStack(mode, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN)
-                            : mode;
-                    }))
-                    .tooltipBuilder(this::createModeSwitchTooltip);
-            }
-        }.withMachineModeIcons(
+        return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLATION_TOWER,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLING);
     }

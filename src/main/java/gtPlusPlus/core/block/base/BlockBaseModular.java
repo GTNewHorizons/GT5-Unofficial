@@ -1,7 +1,6 @@
 package gtPlusPlus.core.block.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,19 +8,21 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.Textures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.material.Material;
 
@@ -33,14 +34,21 @@ public class BlockBaseModular extends BasicBlock {
     public BlockTypes blockType;
     protected String materialName;
 
+    @SideOnly(Side.CLIENT)
+    private IIcon blockIcon;
+
     private static final HashMap<String, Block> BLOCK_CACHE = new HashMap<>();
 
     public static Block getMaterialBlock(Material aMaterial, BlockTypes aType) {
         return BLOCK_CACHE.get(aMaterial.getUnlocalizedName() + "." + aType.name());
     }
 
+    private static int getMaterialColour(Material material) {
+        return material.getTextureSet().is_custom ? 0xFFFFFF : material.getRgbAsHex();
+    }
+
     public BlockBaseModular(final Material material, final BlockTypes blockType) {
-        this(material, blockType, material.getTextureSet().is_custom ? 0xFFFFFF : material.getRgbAsHex());
+        this(material, blockType, getMaterialColour(material));
     }
 
     public BlockBaseModular(final Material material, final BlockTypes blockType, final int colour) {
@@ -50,7 +58,7 @@ public class BlockBaseModular extends BasicBlock {
             net.minecraft.block.material.Material.iron,
             blockType,
             colour,
-            Math.min(Math.max(material.vTier, 1), 6));
+            Math.min(Math.max(material.tier, 1), 6));
         this.material = material;
         registerComponent();
         BLOCK_CACHE.put(material.getUnlocalizedName() + "." + blockType.name(), this);
@@ -75,8 +83,20 @@ public class BlockBaseModular extends BasicBlock {
                 .registerOre("block" + unifyMaterialName(materialName), new ItemStack(this));
             case FRAME, ORE -> GTOreDictUnificator
                 .registerOre("frameGt" + unifyMaterialName(materialName), new ItemStack(this));
-
         }
+        if (blockType == BlockTypes.FRAME) GregTechAPI.registerMachineBlock(this, -1);
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        if (blockType == BlockTypes.FRAME) GregTechAPI.causeMachineUpdate(world, x, y, z);
+        super.breakBlock(world, x, y, z, block, meta);
+    }
+
+    @Override
+    public void onBlockAdded(World world, int x, int y, int z) {
+        if (blockType == BlockTypes.FRAME) GregTechAPI.causeMachineUpdate(world, x, y, z);
+        super.onBlockAdded(world, x, y, z);
     }
 
     public static String unifyMaterialName(String rawMaterName) {
@@ -86,10 +106,8 @@ public class BlockBaseModular extends BasicBlock {
     }
 
     public void registerComponent() {
-        Logger.MATERIALS("Attempting to register " + this.getUnlocalizedName() + ".");
 
         if (this.material == null) {
-            Logger.MATERIALS("Tried to register " + this.getUnlocalizedName() + " but the material was null.");
             return;
         }
 
@@ -101,11 +119,9 @@ public class BlockBaseModular extends BasicBlock {
         final String key = getKey(this.blockType);
 
         if (map.containsKey(key)) {
-            Logger.MATERIALS("Tried to double register a material component.");
             return;
         }
 
-        Logger.MATERIALS("Registering a material component. Item: [" + name + "] Map: [" + key + "]");
         map.put(key, new ItemStack(this));
     }
 
@@ -138,7 +154,7 @@ public class BlockBaseModular extends BasicBlock {
 
     @Override
     public String getLocalizedName() {
-        return OrePrefixes.getLocalizedNameForItem(blockType.getProperName(), "%s", material.getLocalizedName());
+        return OrePrefixes.getLocalizedNameForItem(blockType.getProperName(), "%s", material);
     }
 
     @Override
@@ -163,17 +179,21 @@ public class BlockBaseModular extends BasicBlock {
     public void registerBlockIcons(final IIconRegister iIcon) {
         if (this.material == null || this.blockType == BlockTypes.ORE) {
             this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + this.blockType.getTexture());
-        }
-        String metType = null;
-        TextureSet u = this.material.getTextureSet();
-        if (u != null) {
-            metType = u.mSetName;
+            return;
         }
 
-        metType = (metType == null ? "METALLIC" : metType);
-        int tier = this.material.vTier;
+        String metType = this.material.getTextureSet() != null ? this.material.getTextureSet().mSetName : "METALLIC";
+        int tier = this.material.tier;
         String aType = (this.blockType == BlockTypes.FRAME) ? "frameGt" : (tier <= 4 ? "block1" : "block5");
-        this.blockIcon = iIcon.registerIcon(GregTech.ID + ":" + "materialicons/" + metType + "/" + aType);
+
+        this.blockIcon = Textures.BlockIcons.textureSetWithRegister(metType, "/" + aType, iIcon)
+            .getIcon();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return blockIcon;
     }
 
     @Override

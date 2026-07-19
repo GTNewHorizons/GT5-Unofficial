@@ -191,10 +191,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
@@ -2345,10 +2345,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             Enchantment tEnchant = aMaterial.mToolEnchantment == Enchantment.fortune ? Enchantment.looting
                 : aMaterial.mToolEnchantment;
             if (tEnchant.type == EnumEnchantmentType.weapon) {
-                NBTTagCompound tNBT = GTUtility.ItemNBT.getNBT(aStack);
-                if (!tNBT.getBoolean("GT.HasBeenUpdated")) {
-                    tNBT.setBoolean("GT.HasBeenUpdated", true);
-                    GTUtility.ItemNBT.setNBT(aStack, tNBT);
+                if (!ItemStackNBT.getBoolean(aStack, "GT.HasBeenUpdated")) {
+                    ItemStackNBT.setBoolean(aStack, "GT.HasBeenUpdated", true);
                     GTUtility.ItemNBT.addEnchantment(aStack, tEnchant, aMaterial.mToolEnchantmentLevel);
                 }
             }
@@ -2456,6 +2454,13 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .itemInputs(ItemList.Cover_Controller.get(1L), ItemList.Sensor_EV.get(1L))
             .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessController.get(1L))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Cover_WirelessController.get(1L), ItemList.Cover_AdvancedRedstoneReceiver.get(1L))
+            .circuit(1)
+            .itemOutputs(ItemList.Cover_AdvancedWirelessController.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);

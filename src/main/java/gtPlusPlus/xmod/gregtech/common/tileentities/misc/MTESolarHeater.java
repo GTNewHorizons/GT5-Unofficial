@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.misc;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -23,7 +22,6 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     public boolean mHasTower = false;
     private MTESolarTower mTower = null;
 
-    private int mTX, mTY, mTZ;
     private Byte mRequiredFacing;
 
     public MTESolarHeater(final int aID, final String aName, final String aNameRegional, final int aTier,
@@ -132,17 +130,12 @@ public class MTESolarHeater extends MTETieredMachineBlock {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { this.getLocalName(),
-            StatCollector.translateToLocal("gtpp.infodata.solar_heater.testificate") };
+        return new String[] { this.getLocalName(), "gtpp.infodata.solar_heater.testificate" };
     }
 
     @Override
     public boolean isGivingInformation() {
         return true;
-    }
-
-    public boolean allowCoverOnSide(final byte aSide, final int aCoverID) {
-        return false;
     }
 
     @Override
@@ -224,13 +217,6 @@ public class MTESolarHeater extends MTETieredMachineBlock {
         return mHasTower;
     }
 
-    public MTESolarTower getSolarTower() {
-        if (this.mHasTower) {
-            return mTower;
-        }
-        return null;
-    }
-
     public boolean canSeeSky() {
         return this.getBaseMetaTileEntity()
             .getWorld()
@@ -245,12 +231,6 @@ public class MTESolarHeater extends MTETieredMachineBlock {
 
     public boolean setSolarTower(MTESolarTower aTowerTile) {
         if (!hasSolarTower()) {
-            this.mTX = aTowerTile.getBaseMetaTileEntity()
-                .getXCoord();
-            this.mTY = aTowerTile.getBaseMetaTileEntity()
-                .getYCoord();
-            this.mTZ = aTowerTile.getBaseMetaTileEntity()
-                .getZCoord();
             this.mHasTower = true;
             this.mTower = aTowerTile;
             return true;
@@ -260,9 +240,6 @@ public class MTESolarHeater extends MTETieredMachineBlock {
 
     public boolean clearSolarTower() {
         if (mHasTower || mRequiredFacing != null || this.mTower != null) {
-            this.mTX = 0;
-            this.mTY = 0;
-            this.mTZ = 0;
             this.mRequiredFacing = null;
             this.mTower = null;
             this.mHasTower = false;

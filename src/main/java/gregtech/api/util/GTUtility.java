@@ -13,6 +13,7 @@ import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 import static net.minecraftforge.common.util.ForgeDirection.NORTH;
@@ -78,7 +79,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTBase.NBTPrimitive;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -87,7 +87,6 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
@@ -106,7 +105,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
-import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -138,6 +137,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -146,6 +146,8 @@ import com.mojang.authlib.GameProfile;
 import buildcraft.api.transport.IPipeTile;
 import codechicken.translocator.TileItemTranslocator;
 import cofh.api.transport.IItemDuct;
+import cofh.asmhooks.block.BlockTickingWater;
+import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ModAPIManager;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -183,18 +185,19 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
-import gregtech.common.fluid.GTFluid;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.ores.OreManager;
-import gtPlusPlus.api.objects.minecraft.FluidGT6;
+import gregtech.nei.FluidDisplayStackMode;
 import ic2.api.recipe.ICannerBottleRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.IC2Potion;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
@@ -216,15 +219,14 @@ public class GTUtility {
      * The capacity is calculated as {@code Integer.highestOneBit(1.5 * size)}, so 1024 actually means 2048
      */
     private static final Map<Fluid, List<ItemStack>> fluidToContainersMap = new IdentityHashMap<>(1024);
-
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
     public static Map<GTPlayedSound, Integer> sPlayedSoundMap = new /* Concurrent */ HashMap<>();
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
-    private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n")
-        .omitEmptyStrings();
+    private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n");
+    private static Block DISTILLED_WATER_BLOCK;
 
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
@@ -237,6 +239,21 @@ public class GTUtility {
 
     public static int longToInt(long number) {
         return (int) Math.min(Integer.MAX_VALUE, number);
+    }
+
+    /// Performs a fast X / Y * Z operation, without causing long overflows in the intermediate operations.
+    /// If the result is too large for a long, overflows will still occur.
+    /// Note that this method does not truncate like standard integer math - it tries to get as close to the exact
+    /// mathematical answer as it can. `7 / 3 * 3` equals 7, not 6.
+    public static long fastDivMul(long value, long div, long mult) {
+        if (div == mult) {
+            return mult == 0 ? 0 : value;
+        }
+
+        long integral = value / div * mult;
+        long decimal = value % div * mult / div;
+
+        return integral + decimal;
     }
 
     public static Field getField(Object aObject, String aField) {
@@ -471,6 +488,16 @@ public class GTUtility {
     }
 
     /**
+     * Applies secondary formatting to tooltip text
+     *
+     * @param tooltip the tooltip text
+     * @return formatted tooltip string
+     */
+    public static String getColoredSecondaryTooltip(String tooltip) {
+        return EnumChatFormatting.GRAY + tooltip + EnumChatFormatting.RESET;
+    }
+
+    /**
      * @return e.g. {@code " (LV)"}
      */
     @Nonnull
@@ -529,20 +556,14 @@ public class GTUtility {
         player.addChatComponentMessage(component);
     }
 
-    /**
-     * Send a message to all players on the server
-     */
-    public static void sendServerMessage(String message) {
-        sendServerMessage(new ChatComponentText(message));
-    }
-
-    /**
-     * Send a message to all players on the server
-     */
-    public static void sendServerMessage(IChatComponent chatComponent) {
-        MinecraftServer.getServer()
-            .getConfigurationManager()
-            .sendChatMsg(chatComponent);
+    public static void sendMessageInRadius(World world, double x, double y, double z, double range,
+        IChatComponent component) {
+        double distSq = range * range;
+        for (var player : world.playerEntities) {
+            if (player.getDistanceSq(x, y, z) <= distSq) {
+                player.addChatMessage(component);
+            }
+        }
     }
 
     /** Uses thread analysis, works on dedicated servers. */
@@ -623,10 +644,10 @@ public class GTUtility {
                         .append(code);
                 } else if (code == 's') {
                     // Push, save the current format and don't emit to the output buffer
-                    stack.push(currentFormat);
+                    stack.push(currentFormat.isEmpty() ? "§r" : currentFormat);
                 } else if (code == 't') {
                     // Pop, restore the top format and don't emit to the output buffer
-                    currentFormat = stack.isEmpty() ? "" : stack.pop();
+                    currentFormat = stack.isEmpty() ? "§r" : stack.pop();
                     out.append(currentFormat);
                 }
 
@@ -636,6 +657,14 @@ public class GTUtility {
         }
 
         return out.toString();
+    }
+
+    public static void addSeparatorIfNeeded(List<String> tooltip) {
+        if (!tooltip.isEmpty() && !tooltip.get(tooltip.size() - 1)
+            .trim()
+            .isEmpty()) {
+            tooltip.add("");
+        }
     }
 
     public static String wrapStack(String message) {
@@ -715,9 +744,15 @@ public class GTUtility {
         }
     }
 
+    /**
+     * Only use if you are certain you can ignore {@link IInventory#getInventoryStackLimit}
+     */
     public static boolean compactInventory(List<ItemStack> inv, int start, int end) {
         return compactInventory(inv.subList(start, end), (slot, stack) -> stack.getMaxStackSize());
     }
+
+    private static final ThreadLocal<Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>>> slotsSupplier = ThreadLocal
+        .withInitial(() -> new Object2ObjectOpenCustomHashMap<>(GTItemStack.ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE));
 
     /**
      * Compacts an inventory like this:
@@ -729,8 +764,8 @@ public class GTUtility {
         int len = inv.size();
 
         // Filter each ItemStack into their own lists (grouped by Item, meta, and NBT).
-        Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>> slots = new Object2ObjectOpenCustomHashMap<>(
-            GTItemStack.ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE);
+        Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>> slots = slotsSupplier.get();
+        slots.clear();
 
         for (int i = 0; i < len; i++) {
             ItemStack stack = inv.get(i);
@@ -810,6 +845,8 @@ public class GTUtility {
             insert++;
         }
 
+        slots.clear();
+
         return didSomething.booleanValue();
     }
 
@@ -826,6 +863,15 @@ public class GTUtility {
     public static boolean cleanInventory(IInventory inv) {
         if (cleanInventory(wrapInventory(inv))) {
             inv.markDirty();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean cleanInventory(IMetaTileEntity imte, int start, int end) {
+        if (cleanInventory(wrapInventory(imte).subList(start, end))) {
+            imte.markDirty();
             return true;
         } else {
             return false;
@@ -1092,8 +1138,6 @@ public class GTUtility {
     public static String getFluidName(Fluid aFluid, boolean aLocalized) {
         if (aFluid == null) return E;
         if (!aLocalized) return aFluid.getUnlocalizedName();
-        if (aFluid instanceof GTFluid gtFluid) return gtFluid.getLocalizedName();
-        if (aFluid instanceof FluidGT6 fluidGT6) return fluidGT6.getLocalizedName();
         return aFluid.getLocalizedName();
     }
 
@@ -1150,6 +1194,13 @@ public class GTUtility {
     public static int calculateRecipeEU(Materials aMaterial, int defaultRecipeEUPerTick) {
         return aMaterial.getProcessingMaterialTierEU() == 0 ? defaultRecipeEUPerTick
             : aMaterial.getProcessingMaterialTierEU();
+    }
+
+    public static ItemStack getFluidDisplayStack(FluidStack fluid, FluidDisplayStackMode stackMode) {
+        return getFluidDisplayStack(
+            fluid,
+            stackMode == FluidDisplayStackMode.SHOWN,
+            stackMode == FluidDisplayStackMode.HIDDEN);
     }
 
     public static ItemStack getFluidDisplayStack(Fluid aFluid) {
@@ -1287,10 +1338,21 @@ public class GTUtility {
         return histogram;
     }
 
-    public static Iterable<NBTTagCompound> getCompoundTagList(NBTTagCompound tag, String name) {
-        NBTTagList list = tag.getTagList(name, Constants.NBT.TAG_COMPOUND);
+    public static Object2LongOpenHashMap<FluidId> getFluidStackHistogram(Iterable<FluidStack> stacks) {
+        Object2LongOpenHashMap<FluidId> histogram = new Object2LongOpenHashMap<>();
 
-        return list.tagList;
+        if (stacks == null) return histogram;
+
+        for (FluidStack stack : stacks) {
+            if (stack == null || stack.getFluid() == null) continue;
+            histogram.addTo(FluidId.create(stack), stack.amount);
+        }
+
+        return histogram;
+    }
+
+    public static Iterable<NBTTagCompound> getCompoundTagList(NBTTagCompound tag, String name) {
+        return tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
     }
 
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
@@ -1412,12 +1474,12 @@ public class GTUtility {
         sBookCount++;
         rStack = new ItemStack(Items.written_book, 1);
         NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setString("title", StatCollector.canTranslate(aTitle) ? GTUtility.translate(aTitle) : aTitle);
+        tNBT.setString("title", StatCollector.canTranslate(aTitle) ? translateToLocal(aTitle) : aTitle);
         tNBT.setString("author", aAuthor);
         NBTTagList tNBTList = new NBTTagList();
         for (byte i = 0; i < aPages.length; i++) {
             String pageKeyOrText = aPages[i] == null ? "" : aPages[i];
-            String pageText = StatCollector.canTranslate(pageKeyOrText) ? GTUtility.translate(pageKeyOrText)
+            String pageText = StatCollector.canTranslate(pageKeyOrText) ? translateToLocal(pageKeyOrText)
                 : pageKeyOrText;
             aPages[i] = pageText.replace("\\n", "\n");
             if (i < 48) {
@@ -1669,6 +1731,10 @@ public class GTUtility {
 
     public static boolean isStackValid(ItemStack aStack) {
         return (aStack != null) && aStack.getItem() != null && aStack.stackSize >= 0;
+    }
+
+    public static boolean isStackValid(FluidStack aStack) {
+        return (aStack != null) && aStack.getFluid() != null && aStack.amount >= 0;
     }
 
     @Deprecated
@@ -2036,6 +2102,12 @@ public class GTUtility {
         return null;
     }
 
+    @Contract("null -> null")
+    public static FluidStack copyOrNull(FluidStack stack) {
+        if (isStackValid(stack)) return stack.copy();
+        return null;
+    }
+
     public static FluidStack copyAmount(int aAmount, FluidStack aStack) {
         if (aStack == null) return null;
         FluidStack rStack = aStack.copy();
@@ -2143,7 +2215,7 @@ public class GTUtility {
         if (aNBT == null) return null;
         ItemStack tRawStack = ItemStack.loadItemStackFromNBT(aNBT);
         int tRealStackSize = 0;
-        if (tRawStack != null && aNBT.hasKey("Count", Constants.NBT.TAG_INT)) {
+        if (tRawStack != null && aNBT.hasKey("Count", NBT.TAG_INT)) {
             tRealStackSize = aNBT.getInteger("Count");
             tRawStack.stackSize = tRealStackSize;
         } else if (tRawStack != null) {
@@ -2433,17 +2505,20 @@ public class GTUtility {
      * @return an Array containing the X and the Y Coordinate of the clicked Point, with the top left Corner as Origin,
      *         like on the Texture Sheet. return values should always be between [0.0F and 0.99F].
      */
-    // TODO: use clamp()
     public static float[] getClickedFacingCoords(ForgeDirection side, float aX, float aY, float aZ) {
         return switch (side) {
-            case DOWN -> new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, aZ)) };
-            case UP -> new float[] { Math.min(0.99F, Math.max(0, aX)), Math.min(0.99F, Math.max(0, aZ)) };
-            case NORTH -> new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case SOUTH -> new float[] { Math.min(0.99F, Math.max(0, aX)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case WEST -> new float[] { Math.min(0.99F, Math.max(0, aZ)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case EAST -> new float[] { Math.min(0.99F, Math.max(0, 1 - aZ)), Math.min(0.99F, Math.max(0, 1 - aY)) };
+            case DOWN -> new float[] { clampClickedFacingCoord(1 - aX), clampClickedFacingCoord(aZ) };
+            case UP -> new float[] { clampClickedFacingCoord(aX), clampClickedFacingCoord(aZ) };
+            case NORTH -> new float[] { clampClickedFacingCoord(1 - aX), clampClickedFacingCoord(1 - aY) };
+            case SOUTH -> new float[] { clampClickedFacingCoord(aX), clampClickedFacingCoord(1 - aY) };
+            case WEST -> new float[] { clampClickedFacingCoord(aZ), clampClickedFacingCoord(1 - aY) };
+            case EAST -> new float[] { clampClickedFacingCoord(1 - aZ), clampClickedFacingCoord(1 - aY) };
             default -> new float[] { 0.5F, 0.5F };
         };
+    }
+
+    private static float clampClickedFacingCoord(float coord) {
+        return MathHelper.clamp_float(coord, 0.0F, 0.99F);
     }
 
     /**
@@ -2540,7 +2615,9 @@ public class GTUtility {
      *
      * @param key the localization key to translate
      * @return the translated string
+     * @deprecated use {@link StatCollector#translateToLocal(String)} directly
      */
+    @Deprecated
     public static String translate(String key) {
         return StatCollector.translateToLocal(key);
     }
@@ -2553,7 +2630,9 @@ public class GTUtility {
      * @param key        the localization key to translate
      * @param parameters optional substitution arguments for the translated string
      * @return the translated string
+     * @deprecated use {@link StatCollector#translateToLocalFormatted(String, Object...)} directly
      */
+    @Deprecated
     public static String translate(String key, Object... parameters) {
         return parameters == null || parameters.length == 0 ? StatCollector.translateToLocal(key)
             : StatCollector.translateToLocalFormatted(key, parameters);
@@ -2831,87 +2910,70 @@ public class GTUtility {
 
     public static class ItemNBT {
 
-        public static void setNBT(ItemStack aStack, NBTTagCompound aNBT) {
-            if (aNBT == null) {
-                aStack.setTagCompound(null);
+        public static void setNBT(ItemStack stack, NBTTagCompound nbt) {
+            if (nbt == null) {
+                stack.setTagCompound(null);
                 return;
             }
-            ArrayList<String> tTagsToRemove = new ArrayList<>();
-            for (String tKey : aNBT.func_150296_c()) {
-                NBTBase tValue = aNBT.getTag(tKey);
-                if (tValue == null || (tValue instanceof NBTPrimitive && ((NBTPrimitive) tValue).func_150291_c() == 0)
-                    || (tValue instanceof NBTTagString && isStringInvalid(((NBTTagString) tValue).func_150285_a_())))
-                    tTagsToRemove.add(tKey);
-            }
-            for (String tKey : tTagsToRemove) aNBT.removeTag(tKey);
-            aStack.setTagCompound(aNBT.hasNoTags() ? null : aNBT);
+            stack.setTagCompound(nbt.hasNoTags() ? null : nbt);
         }
 
+        /**
+         * Deprecated, use methods from {@link ItemStackNBT}
+         */
+        @Deprecated
         public static NBTTagCompound getNBT(ItemStack aStack) {
             NBTTagCompound rNBT = aStack.getTagCompound();
             return rNBT == null ? new NBTTagCompound() : rNBT;
         }
 
         public static void setPunchCardData(ItemStack aStack, String aPunchCardData) {
-            NBTTagCompound tNBT = getNBT(aStack);
-            tNBT.setString("GT.PunchCardData", aPunchCardData);
-            setNBT(aStack, tNBT);
+            ItemStackNBT.setString(aStack, "GT.PunchCardData", aPunchCardData);
         }
 
         public static String getPunchCardData(ItemStack aStack) {
-            NBTTagCompound tNBT = getNBT(aStack);
-            return tNBT.getString("GT.PunchCardData");
+            return ItemStackNBT.getString(aStack, "GT.PunchCardData");
         }
 
         public static void setLighterFuel(ItemStack aStack, long aFuel) {
-            NBTTagCompound tNBT = getNBT(aStack);
-            tNBT.setLong("GT.LighterFuel", aFuel);
-            setNBT(aStack, tNBT);
+            ItemStackNBT.setLong(aStack, "GT.LighterFuel", aFuel);
         }
 
         public static long getLighterFuel(ItemStack aStack) {
-            NBTTagCompound tNBT = getNBT(aStack);
-            return tNBT.getLong("GT.LighterFuel");
+            return ItemStackNBT.getLong(aStack, "GT.LighterFuel");
         }
 
         public static void setMapID(ItemStack aStack, short aMapID) {
-            NBTTagCompound tNBT = getNBT(aStack);
-            tNBT.setShort("map_id", aMapID);
-            setNBT(aStack, tNBT);
+            ItemStackNBT.setShort(aStack, "map_id", aMapID);
         }
 
         public static short getMapID(ItemStack aStack) {
-            NBTTagCompound tNBT = getNBT(aStack);
-            if (!tNBT.hasKey("map_id")) return -1;
-            return tNBT.getShort("map_id");
+            if (ItemStackNBT.hasKey(aStack, "map_id")) {
+                return ItemStackNBT.getShort(aStack, "map_id");
+            }
+            return -1;
         }
 
         public static void setBookTitle(ItemStack aStack, String aTitle) {
-            NBTTagCompound tNBT = getNBT(aStack);
-            tNBT.setString("title", aTitle);
-            setNBT(aStack, tNBT);
+            ItemStackNBT.setString(aStack, "title", aTitle);
         }
 
         public static String getBookTitle(ItemStack aStack) {
-            NBTTagCompound tNBT = getNBT(aStack);
-            return tNBT.getString("title");
+            return ItemStackNBT.getString(aStack, "title");
         }
 
         public static void setBookAuthor(ItemStack aStack, String aAuthor) {
-            NBTTagCompound tNBT = getNBT(aStack);
-            tNBT.setString("author", aAuthor);
-            setNBT(aStack, tNBT);
+            ItemStackNBT.setString(aStack, "author", aAuthor);
         }
 
         public static String getBookAuthor(ItemStack aStack) {
-            NBTTagCompound tNBT = getNBT(aStack);
-            return tNBT.getString("author");
+            return ItemStackNBT.getString(aStack, "author");
         }
 
         @Deprecated
         public static void setProspectionData(ItemStack aStack, int aX, int aY, int aZ, int aDim, FluidStack aFluid,
             String... aOres) {
-            NBTTagCompound tNBT = getNBT(aStack);
+            NBTTagCompound tNBT = ItemStackNBT.get(aStack);
             StringBuilder tData = new StringBuilder(aX + "," + aY + "," + aZ + "," + aDim + ",");
             if (aFluid != null) tData.append(aFluid.amount)
                 .append(",")
@@ -2922,7 +2984,6 @@ public class GTUtility {
                     .append(",");
             }
             tNBT.setString("prospection", tData.toString());
-            setNBT(aStack, tNBT);
         }
 
         public static void setAdvancedProspectionData(byte aTier, ItemStack aStack, int aX, short aY, int aZ, int aDim,
@@ -2930,7 +2991,7 @@ public class GTUtility {
 
             setBookTitle(aStack, getRawProspectionDataName());
 
-            NBTTagCompound tNBT = getNBT(aStack);
+            NBTTagCompound tNBT = ItemStackNBT.get(aStack);
 
             tNBT.setByte("prospection_tier", aTier);
             tNBT.setString("prospection_pos", getProspectionBookTitle(aDim, aX, aY, aZ));
@@ -2953,8 +3014,6 @@ public class GTUtility {
             tNBT.setString("prospection_oils_pos", tOilsPosStr);
 
             tNBT.setString("prospection_radius", String.valueOf(aRadius));
-
-            setNBT(aStack, tNBT);
         }
 
         public static @NotNull String getProspectionOilPosStr(int aX, int aZ) {
@@ -2994,7 +3053,7 @@ public class GTUtility {
         }
 
         public static void convertProspectionData(ItemStack aStack) {
-            NBTTagCompound tNBT = getNBT(aStack);
+            NBTTagCompound tNBT = ItemStackNBT.get(aStack);
             byte tTier = tNBT.getByte("prospection_tier");
 
             if (tTier == 0) { // basic prospection data
@@ -3056,7 +3115,6 @@ public class GTUtility {
                 tNBT.setString("author", tPos);
                 tNBT.setTag("pages", tNBTList);
             }
-            setNBT(aStack, tNBT);
         }
 
         public static String getProspectionFrontPage(String aPos, String aFieldCount, String aRadius) {
@@ -3126,30 +3184,32 @@ public class GTUtility {
             } while (tPageText.length() != 0);
         }
 
+        /**
+         * Adds an enchantment to the item stack or replaces the level of an existing enchantment
+         */
         public static void addEnchantment(ItemStack aStack, Enchantment aEnchantment, int aLevel) {
-            NBTTagCompound tNBT = getNBT(aStack), tEnchantmentTag;
-            if (!tNBT.hasKey("ench", 9)) tNBT.setTag("ench", new NBTTagList());
-            NBTTagList tList = tNBT.getTagList("ench", 10);
+            if (!aStack.hasTagCompound()) {
+                aStack.setTagCompound(new NBTTagCompound());
+            }
+            NBTTagCompound tNBT = aStack.getTagCompound();
+            NBTTagCompound tEnchantmentTag;
+            if (!tNBT.hasKey("ench", NBT.TAG_LIST)) {
+                tNBT.setTag("ench", new NBTTagList());
+            }
+            NBTTagList nbttaglist = tNBT.getTagList("ench", NBT.TAG_COMPOUND);
 
-            boolean temp = true;
-
-            for (int i = 0; i < tList.tagCount(); i++) {
-                tEnchantmentTag = tList.getCompoundTagAt(i);
+            for (int i = 0; i < nbttaglist.tagCount(); i++) {
+                tEnchantmentTag = nbttaglist.getCompoundTagAt(i);
                 if (tEnchantmentTag.getShort("id") == aEnchantment.effectId) {
-                    tEnchantmentTag.setShort("id", (short) aEnchantment.effectId);
                     tEnchantmentTag.setShort("lvl", (byte) aLevel);
-                    temp = false;
-                    break;
+                    return;
                 }
             }
 
-            if (temp) {
-                tEnchantmentTag = new NBTTagCompound();
-                tEnchantmentTag.setShort("id", (short) aEnchantment.effectId);
-                tEnchantmentTag.setShort("lvl", (byte) aLevel);
-                tList.appendTag(tEnchantmentTag);
-            }
-            aStack.setTagCompound(tNBT);
+            tEnchantmentTag = new NBTTagCompound();
+            tEnchantmentTag.setShort("id", (short) aEnchantment.effectId);
+            tEnchantmentTag.setShort("lvl", (byte) aLevel);
+            nbttaglist.appendTag(tEnchantmentTag);
         }
     }
 
@@ -3428,27 +3488,41 @@ public class GTUtility {
         return first;
     }
 
-    public static int ceilDiv(int lhs, int rhs) {
-        return (lhs + rhs - 1) / rhs;
+    public static long ceil(double k) {
+        long l = (long) k;
+        return k > (double) l ? l + 1 : l;
     }
 
-    /** Handles negatives properly, but it's slower than {@link #ceilDiv(int, int)}. */
-    public static int ceilDiv2(int lhs, int rhs) {
-        int sign = Integer.signum(lhs) * Integer.signum(rhs);
-
-        if (lhs == 0) return 0;
+    /// Ceiling division.
+    /// Rounds to positive infinity for positive signs, and rounds to zero for negative signs.
+    /// Sign = signum(lhs) * signum(rhs), so 7 / -2 = -3.5 = -3
+    public static int ceilDiv(int lhs, int rhs) {
         if (rhs == 0) throw new ArithmeticException("/ by zero");
 
-        lhs = Math.abs(lhs);
-        rhs = Math.abs(rhs);
-
-        int unsigned = 1 + ((lhs - 1) / rhs);
-
-        return unsigned * sign;
+        return lhs / rhs + ((lhs ^ rhs) > 0 && lhs % rhs != 0 ? 1 : 0);
     }
 
+    /// Ceiling division.
+    /// Rounds to positive infinity for positive signs, and rounds to zero for negative signs.
+    /// Sign = signum(lhs) * signum(rhs), so 7 / -2 = -3.5 = -3
     public static long ceilDiv(long lhs, long rhs) {
-        return (lhs + rhs - 1) / rhs;
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        return lhs / rhs + ((lhs ^ rhs) > 0 && lhs % rhs != 0 ? 1 : 0);
+    }
+
+    /// Ceiling division. Negative signs round to negative infinity. Same as [#ceilDiv(int, int)] otherwise.
+    public static int ceilDiv2(int lhs, int rhs) {
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        return lhs / rhs + (lhs % rhs != 0 ? ((lhs ^ rhs) > 0 ? 1 : -1) : 0);
+    }
+
+    /// Ceiling division. Negative signs round to negative infinity. Same as [#ceilDiv(long, long)] otherwise.
+    public static long ceilDiv2(long lhs, long rhs) {
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        return lhs / rhs + (lhs % rhs != 0 ? ((lhs ^ rhs) > 0 ? 1 : -1) : 0);
     }
 
     /** @deprecated Use {@link Integer#signum(int)} instead.} */
@@ -3473,6 +3547,15 @@ public class GTUtility {
 
     public static int mod(int value, int divisor) {
         return ((value % divisor) + divisor) % divisor;
+    }
+
+    public static NBTTagCompound getOrCreateNbtCompound(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null) {
+            compound = new NBTTagCompound();
+            stack.setTagCompound(compound);
+        }
+        return compound;
     }
 
     /**
@@ -3842,8 +3925,8 @@ public class GTUtility {
             return new AutoValue_GTUtility_ItemId(
                 Item.getItemById(tag.getShort("item")),
                 tag.getShort("meta"),
-                tag.hasKey("tag", Constants.NBT.TAG_COMPOUND) ? tag.getCompoundTag("tag") : null,
-                tag.hasKey("stackSize", Constants.NBT.TAG_INT) ? tag.getInteger("stackSize") : null);
+                tag.hasKey("tag", NBT.TAG_COMPOUND) ? tag.getCompoundTag("tag") : null,
+                tag.hasKey("stackSize", NBT.TAG_INT) ? tag.getInteger("stackSize") : null);
         }
 
         /**
@@ -3995,8 +4078,8 @@ public class GTUtility {
         public static FluidId create(NBTTagCompound tag) {
             return new AutoValue_GTUtility_FluidId(
                 FluidRegistry.getFluid(tag.getString("FluidName")),
-                tag.hasKey("Tag", Constants.NBT.TAG_COMPOUND) ? tag.getCompoundTag("Tag") : null,
-                tag.hasKey("Amount", Constants.NBT.TAG_INT) ? tag.getInteger("Amount") : null);
+                tag.hasKey("Tag", NBT.TAG_COMPOUND) ? tag.getCompoundTag("Tag") : null,
+                tag.hasKey("Amount", NBT.TAG_INT) ? tag.getInteger("Amount") : null);
         }
 
         public NBTTagCompound writeToNBT() {
@@ -4052,6 +4135,16 @@ public class GTUtility {
         public FluidStack getFluidStack(int amount) {
             NBTTagCompound nbt = nbt();
             return new FluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+        }
+
+        public boolean matches(FluidStack stack) {
+            if (fluid() != stack.getFluid()) return false;
+
+            return Objects.equals(nbt(), stack.tag);
+        }
+
+        public boolean matches(Fluid fluid) {
+            return fluid() == fluid;
         }
     }
 
@@ -4140,11 +4233,14 @@ public class GTUtility {
         };
 
         if (isFormatShortened) {
-            ret.append(
-                String.format(
-                    " (§7%s§f)",
-                    perSecond <= 1 ? translate("GT5U.gui.text.second_each", df.format(progressTime / amount))
-                        : translate("GT5U.gui.text.each_per_second", formatShortenedLong((long) perSecond))));
+            ret.append(" ");
+            if (perSecond <= 1) {
+                ret.append(
+                    translateToLocalFormatted("GT5U.gui.text.rate_short_slow", df.format(progressTime / amount)));
+            } else {
+                ret.append(
+                    translateToLocalFormatted("GT5U.gui.text.rate_short", formatShortenedLong((long) perSecond)));
+            }
         } else {
             ret.append(EnumChatFormatting.RESET);
             ret.append(
@@ -4157,65 +4253,45 @@ public class GTUtility {
                 perTickText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perTick))
                     + (isLiquid ? "L" : "")
-                    + (perSecond > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perTick)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perSecond > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perTick)) : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perSecondText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perSecond))
                     + (isLiquid ? "L" : "")
-                    + (perSecond > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perSecond)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perSecond > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perSecond)) : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perMinuteText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perMinute))
                     + (isLiquid ? "L" : "")
-                    + (perMinute > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perMinute)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perMinute > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perMinute)) : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perHourText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perHour))
                     + (isLiquid ? "L" : "")
-                    + (perHour > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perHour)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perHour > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perHour)) : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perDayText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perDay))
                     + (isLiquid ? "L" : "")
-                    + (perDay > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perDay)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perDay > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perDay)) : "")
                     + EnumChatFormatting.RESET);
         }
         return ret.toString();
@@ -4324,5 +4400,55 @@ public class GTUtility {
         // Convert to degrees for consistency
         axisAngle.angle = (float) Math.toDegrees(axisAngle.angle);
         return axisAngle;
+    }
+
+    public static boolean canReplaceBlockWithWater(World world, int x, int y, int z) {
+        Block block = world.getBlock(x, y, z);
+        boolean isFlowing = isFlowingWater(block, world, x, y, z);
+        boolean isAir = block == Blocks.air;
+        return (isFlowing || isAir);
+    }
+
+    public static boolean isCOFHWater(Block block) {
+        return Mods.COFHCore.isModLoaded() && (block instanceof BlockWater || block instanceof BlockTickingWater);
+    }
+
+    private static boolean isDistilledWater(Block block) {
+        if (DISTILLED_WATER_BLOCK == null) {
+            Block b = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
+            if (b != null) {
+                DISTILLED_WATER_BLOCK = b;
+            }
+        }
+        return DISTILLED_WATER_BLOCK != null
+            && Block.getIdFromBlock(block) == Block.getIdFromBlock(DISTILLED_WATER_BLOCK);
+    }
+
+    public static boolean isWater(Block block) {
+        return block == Blocks.flowing_water || block == Blocks.water || isDistilledWater(block) || isCOFHWater(block);
+    }
+
+    public static boolean isFlowingWater(Block block, World world, int x, int y, int z) {
+        if (isCOFHWater(block)) {
+            return world.getBlockMetadata(x, y, z) > 0;
+        }
+        return block == Blocks.flowing_water || (isWater(block) && world.getBlockMetadata(x, y, z) > 0);
+    }
+
+    public static boolean isSourceWater(Block block, World world, int x, int y, int z) {
+        return isWater(block) && !isFlowingWater(block, world, x, y, z);
+    }
+
+    public static FluidStack[] splitFluidStack(FluidStack fluid, long amount) {
+        int size = (int) ((amount + Integer.MAX_VALUE - 1) / Integer.MAX_VALUE);
+        FluidStack[] result = new FluidStack[size];
+        for (int i = 0; i < size; i++) {
+            int a = (int) Math.min(amount, Integer.MAX_VALUE);
+            FluidStack tmp = fluid.copy();
+            tmp.amount = a;
+            result[i] = tmp;
+            amount -= a;
+        }
+        return result;
     }
 }

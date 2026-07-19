@@ -3,28 +3,24 @@ package gregtech.common.gui.modularui.hatch;
 import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 import static gregtech.common.tileentities.machines.MTEHatchCraftingInputME.SLOT_MANUAL_START;
 
-import java.util.Arrays;
-
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import appeng.api.implementations.ICraftingPatternItem;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.StringUtils;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.gui.modularui.util.PatternSlot;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 
 public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCraftingInputME> {
@@ -42,12 +38,7 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
 
     @Override
     protected int getBasePanelHeight() {
-        return super.getBasePanelHeight() + 16;
-    }
-
-    @Override
-    protected boolean supportsLeftCornerFlow() {
-        return true;
+        return super.getBasePanelHeight() + SLOT_SIZE;
     }
 
     @Override
@@ -55,35 +46,25 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
         return super.createContentSection(panel, syncManager).child(createSlots(syncManager));
     }
 
-    private SlotGroupWidget createSlots(PanelSyncManager syncManager) {
+    private Grid createSlots(PanelSyncManager syncManager) {
         syncManager.registerSlotGroup(PATTERN_INV_NAME, PATTERN_SLOT_ROW);
 
-        String[] matrix = new String[PATTERN_SLOT_ROW];
-        String repeat = StringUtils.getRepetitionOf('s', PATTERN_SLOT_PER_ROW);
-        Arrays.fill(matrix, repeat);
-
-        return SlotGroupWidget.builder()
-            .matrix(matrix)
-            .key(
-                's',
-                index -> new PatternSlot().slot(
-                    new ModularSlot(hatch.inventoryHandler, index)
-                        .filter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
-                        .changeListener((itemStack, onlyAmount, client, init) -> {
-                            if (!client) {
-                                hatch.onPatternChange(index, itemStack);
-                            }
-                        })
-                        .slotGroup(PATTERN_INV_NAME)))
-            .build()
-            .coverChildren()
-            .alignX(Alignment.CENTER);
+        return new Grid().coverChildren()
+            .gridOfWidthHeight(
+                PATTERN_SLOT_PER_ROW,
+                PATTERN_SLOT_ROW,
+                ($x, $y, index) -> new PatternSlot()
+                    .slot(new ModularSlot(machine.inventoryHandler, index).changeListener((itemStack, _, client, _) -> {
+                        if (!client) {
+                            machine.onPatternChange(index, itemStack);
+                        }
+                    })
+                        .slotGroup(PATTERN_INV_NAME)));
     }
 
     @Override
-    protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-
-        return super.createLeftCornerFlow(panel, syncManager).child(createOptimizerButton())
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createBottomLeftCornerFlow(panel, syncManager).child(createOptimizerButton())
             .child(createShowPatternButton())
             .child(createExportButton())
             .child(createDoublePatternButton())
@@ -92,8 +73,8 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
 
     private ToggleButton createOptimizerButton() {
         BooleanSyncValue optimizerSync = new BooleanSyncValue(
-            () -> !hatch.disablePatternOptimization,
-            val -> hatch.disablePatternOptimization = !val);
+            () -> !machine.disablePatternOptimization,
+            val -> machine.disablePatternOptimization = !val).allowC2S();
 
         return new ToggleButton().value(optimizerSync)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_PATTERN_OPTIMIZE)
@@ -108,8 +89,8 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
 
     private ToggleButton createShowPatternButton() {
         BooleanSyncValue showPatternSync = new BooleanSyncValue(
-            () -> hatch.showPattern,
-            val -> hatch.showPattern = val);
+            () -> machine.showPattern,
+            val -> machine.showPattern = val).allowC2S();
 
         return new ToggleButton().value(showPatternSync)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_WHITELIST)
@@ -125,7 +106,7 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
     private ButtonWidget<?> createExportButton() {
         InteractionSyncHandler exportSyncHandler = new InteractionSyncHandler().setOnMousePressed(mouseDelta -> {
             if (!mouseDelta.isClient() && mouseDelta.mouseButton == 0) {
-                hatch.refundAll(false);
+                machine.refundAll(false);
             }
         });
 
@@ -139,7 +120,7 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
             if (!mouseDelta.isClient()) {
                 int val = mouseDelta.shift ? 1 : 0;
                 if (mouseDelta.mouseButton == 1) val |= 0b10;
-                hatch.doublePatterns(val);
+                machine.doublePatterns(val);
             }
         });
 
@@ -162,33 +143,15 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
     }
 
     private ModularPanel createManualSlotUI(PanelSyncManager syncManager) {
-        syncManager.registerSlotGroup(MANUAL_ITEM_INV_NAME, MANUAL_SLOT_ROW);
-
-        String[] matrix = new String[MANUAL_SLOT_ROW];
-        String repeat = StringUtils.getRepetitionOf('s', MANUAL_SLOT_PER_ROW);
-        Arrays.fill(matrix, repeat);
-
         return createPopUpPanel("manual_slots_panel").size(68, 76)
             .bottomRelOffset(0.5f, 52)
             .child(
-                SlotGroupWidget.builder()
-                    .matrix(matrix)
-                    .key(
-                        's',
-                        index -> new ItemSlot().slot(
-                            new ModularSlot(hatch.inventoryHandler, SLOT_MANUAL_START + index)
-                                .changeListener((itemStack, onlyAmount, client, init) -> {
-                                    if (!client) {
-                                        hatch.resetCraftingInputRecipeMap();
-                                    }
-                                })
-                                .slotGroup(MANUAL_ITEM_INV_NAME)
-
-                        ))
+                new ItemSlotGridBuilder(machine.inventoryHandler, syncManager)
+                    .size(MANUAL_SLOT_PER_ROW, MANUAL_SLOT_ROW)
+                    .slotGroupKey(MANUAL_ITEM_INV_NAME)
+                    .indexOffset(SLOT_MANUAL_START)
                     .build()
-                    .coverChildren()
-                    .top(16)
-                    .alignX(Alignment.CENTER));
+                    .marginTop(16)
+                    .horizontalCenter());
     }
-
 }

@@ -79,7 +79,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
         byteBuf.writeBoolean(invert);
     }
 
-    private void unregisterSignal() {
+    public void unregisterSignal() {
         unregisterSignal(uuid, frequency);
     }
 
@@ -109,7 +109,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
 
     @Override
     protected @NotNull CoverBaseGui<?> getCoverGui() {
-        return new CoverAdvancedRedstoneTransmitterBaseGui(this);
+        return new CoverAdvancedRedstoneTransmitterBaseGui<>(this);
     }
 
 }

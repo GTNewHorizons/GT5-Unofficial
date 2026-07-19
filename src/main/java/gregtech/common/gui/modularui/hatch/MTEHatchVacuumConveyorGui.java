@@ -12,6 +12,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +21,6 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
@@ -64,10 +64,8 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        ParentWidget<?> parent = super.createContentSection(panel, syncManager);
-        parent.child(createCCSlotGroup(panel, syncManager));
-        parent.child(createButtonHoldingColumn(panel, syncManager));
-        return parent;
+        return super.createContentSection(panel, syncManager).child(createCCSlotGroup(panel, syncManager))
+            .child(createButtonHoldingColumn(panel, syncManager));
     }
 
     // todo: add more functionality from the ticket
@@ -75,33 +73,35 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
         Flow column = Flow.column()
             .width(40)
             .coverChildrenHeight()
+            .verticalCenter()
+            .rightRel(0)
             .crossAxisAlignment(Alignment.CrossAxis.END);
         column.child(createCellDrainRow(syncManager));
         column.child(createVoidButton(syncManager));
-        return column.align(Alignment.CenterRight)
-            .marginRight(3);
+        return column;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        GenericSyncValue<CircuitComponentPacket> contentsSyncHandler = new GenericSyncValue<>(
-            () -> hatch.contents != null ? hatch.contents : new CircuitComponentPacket(),
-            val -> hatch.contents = val,
-            buf -> { return new CircuitComponentPacket((NBTTagCompound) NetworkUtils.readNBTBase(buf)); },
-            (buf, item) -> { NetworkUtils.writeNBTBase(buf, item.writeToNBT()); },
-            (a, b) -> {
-                return a.getComponents()
-                    .equals(b.getComponents());
-            },
-            null);
+        GenericSyncValue<CircuitComponentPacket, ?> contentsSyncHandler = GenericSyncValue
+            .<CircuitComponentPacket>notNullBuilder()
+            .getter(() -> machine.contents != null ? machine.contents : new CircuitComponentPacket())
+            .setter(val -> machine.contents = val)
+            .deserializer(buf -> new CircuitComponentPacket((NBTTagCompound) NetworkUtils.readNBTBase(buf)))
+            .serializer((buf, item) -> NetworkUtils.writeNBTBase(buf, item.writeToNBT()))
+            .equals(
+                (a, b) -> a.getComponents()
+                    .equals(b.getComponents()))
+            .build()
+            .allowC2S();
         syncManager.syncValue("contents", contentsSyncHandler);
         syncManager.registerSyncedAction("dumpCCs", Side.SERVER, p -> {
-            GenericSyncValue<CircuitComponentPacket> syncContents = syncManager
+            GenericSyncValue<CircuitComponentPacket, ?> syncContents = syncManager
                 .findSyncHandler("contents", GenericSyncValue.class);
 
-            ItemStack stack = hatch.inventoryHandler.getStackInSlot(0);
+            ItemStack stack = machine.inventoryHandler.getStackInSlot(0);
             if (stack == null) return;
             if (!(stack.getItem() instanceof ItemBasicStorageCell)) return;
 
@@ -126,23 +126,17 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
                     }
                 }
             }
-            hatch.contents = new CircuitComponentPacket(leftovers);
+            machine.contents = new CircuitComponentPacket(leftovers);
         });
     }
 
-    @Override
-    protected UITexture getLogoTexture() {
-        return GTGuiTextures.PICTURE_NANOCHIP_LOGO;
-    }
-
-    @SuppressWarnings("unchecked")
     private IWidget createCCSlotGroup(ModularPanel panel, PanelSyncManager syncManager) {
-
-        final String[] matrix = new String[hatch.getRowCount()];
-        Arrays.fill(matrix, StringUtils.getRepetitionOf('c', hatch.getColumnCount()));
-
-        GenericSyncValue<CircuitComponentPacket> componentSyncer = syncManager
+        @SuppressWarnings("unchecked")
+        GenericSyncValue<CircuitComponentPacket, ?> componentSyncer = syncManager
             .findSyncHandler("contents", GenericSyncValue.class);
+
+        final String[] matrix = new String[machine.getRowCount()];
+        Arrays.fill(matrix, StringUtils.getRepetitionOf('c', machine.getColumnCount()));
 
         DynamicSyncHandler componentHandler = new DynamicSyncHandler().widgetProvider((syncManager1, buffer) -> {
             if (buffer == null) return new EmptyWidget();
@@ -167,7 +161,8 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        });
+        })
+            .allowC2S();
         componentSyncer.setChangeListener(
             () -> componentHandler.notifyUpdate(
                 (packet -> packet.writeNBTTagCompoundToBuffer(
@@ -175,8 +170,8 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
                         .writeToNBT()))));
 
         return new DynamicSyncedWidget<>().coverChildren()
-            .align(Alignment.CenterLeft)
-            .marginLeft(3)
+            .verticalCenter()
+            .leftRel(0)
             .syncHandler(componentHandler);
     }
 
@@ -201,33 +196,30 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             });
     }
 
-    @SuppressWarnings("unchecked")
-    protected IWidget createVoidButton(PanelSyncManager syncManager) {
-
-        GenericSyncValue<CircuitComponentPacket> syncContents = syncManager
+    protected ButtonWidget<?> createVoidButton(PanelSyncManager syncManager) {
+        @SuppressWarnings("unchecked")
+        GenericSyncValue<CircuitComponentPacket, ?> syncContents = syncManager
             .findSyncHandler("contents", GenericSyncValue.class);
 
         return new ButtonWidget<>().overlay(GuiTextures.CODE)
-            .size(18, 18)
             .onMousePressed(mouseButton -> {
                 syncContents.setValue(new CircuitComponentPacket());
                 return true;
             })
-            .tooltip(t -> { t.addLine(translateToLocal("GT5U.tooltip.nac.interface.delete_stored")); });
+            .addTooltipLine(StatCollector.translateToLocal("GT5U.tooltip.nac.interface.delete_stored"));
     }
 
-    protected IWidget createCellDrainRow(PanelSyncManager syncManager) {
+    protected Flow createCellDrainRow(PanelSyncManager syncManager) {
         return Flow.row()
             .coverChildren()
             .child(
-                new ButtonWidget<>().size(18)
-                    .overlay(GuiTextures.DOWNLOAD)
+                new ButtonWidget<>().overlay(GuiTextures.DOWNLOAD)
                     .onMousePressed(d -> {
                         syncManager.callSyncedAction("dumpCCs", $ -> {});
                         return true;
                     })
                     .tooltip(t -> t.addLine(translateToLocal("GT5U.tooltip.nac.interface.empty_stored"))))
-            .child(new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, 0) {
+            .child(new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, 0) {
 
                 @Override
                 public boolean isItemValid(@Nullable ItemStack stack) {
@@ -238,12 +230,11 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
                         .isCellHandled(stack);
                 }
             }.singletonSlotGroup(50))
-                .size(18)
-                .background(GTGuiTextures.SLOT_ITEM_NANOCHIP, GTGuiTextures.OVERLAY_SLOT_PATTERN_ME));
+                .backgroundOverlay(GTGuiTextures.SLOT_ITEM_NANOCHIP, GTGuiTextures.OVERLAY_SLOT_PATTERN_ME));
     }
 
-    @SuppressWarnings("unchecked")
     private long outputCircuitComponent(CircuitComponent cc, long amount, ItemStack storageCell, BaseActionSource src) {
+        @SuppressWarnings("unchecked")
         IMEInventory<IAEItemStack> cellInventory = AEApi.instance()
             .registries()
             .cell()
@@ -266,5 +257,10 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
         cellInventory.injectItems(aeStack, Actionable.MODULATE, src);
 
         return amount - maxDrain;
+    }
+
+    @Override
+    protected boolean supportsBottomRowOverlap() {
+        return true;
     }
 }

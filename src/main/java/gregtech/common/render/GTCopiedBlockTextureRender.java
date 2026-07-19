@@ -2,6 +2,8 @@ package gregtech.common.render;
 
 import static gregtech.api.enums.Mods.Angelica;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
@@ -13,7 +15,7 @@ import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.render.ISBRContext;
 import gregtech.api.render.ISBRWorldContext;
 
-public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockContainer {
+public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockContainer, IIconTexture {
 
     private final Block mBlock;
     private final byte mSide;
@@ -27,7 +29,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
         mMeta = aMeta;
     }
 
-    private IIcon getIcon(int ordinalSide, ISBRContext ctx) {
+    @Override
+    public IIcon getIcon(int ordinalSide, @Nullable ISBRContext ctx) {
         final IIcon icon;
         if (mSide == 6) icon = mBlock.getIcon(ordinalSide, mMeta);
         else icon = mBlock.getIcon(mSide, mMeta);
@@ -35,7 +38,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
         else return ctx instanceof ISBRWorldContext ctxW
             ? CTMUtils
                 .getBlockIcon(icon, mBlock, ctxW.getBlockAccess(), ctxW.getX(), ctxW.getY(), ctxW.getZ(), ordinalSide)
-            : CTMUtils.getBlockIcon(icon, mBlock, ordinalSide);
+            : icon;
     }
 
     @Override

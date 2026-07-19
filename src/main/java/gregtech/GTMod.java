@@ -27,6 +27,7 @@ import net.minecraftforge.common.ChestGenHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.falsepattern.chunk.api.DataRegistry;
 import com.google.common.base.Stopwatch;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
@@ -46,11 +47,15 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import galacticgreg.SpaceDimRegisterer;
+import goodgenerator.loader.NaquadahReworkRecipeLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentHazmat;
 import gregtech.api.enchants.EnchantmentRadioactivity;
+import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -58,16 +63,16 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.gui.modularui.GTUIInfos;
-import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.RecipeLookupValidator;
+import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.registries.RemovedMetaRegistry;
-import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.AssemblyLineServer;
 import gregtech.api.util.GTForestryCompat;
 import gregtech.api.util.GTLanguageManager;
@@ -98,6 +103,7 @@ import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
 import gregtech.common.ores.UnificationOreAdapter;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
+import gregtech.crossmod.chunkapi.ClientMetaManager;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
 import gregtech.loaders.load.FissionFuelLoader;
@@ -120,6 +126,7 @@ import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
 import gregtech.loaders.postload.ScannerHandlerLoader;
 import gregtech.loaders.postload.ScrapboxDropLoader;
+import gregtech.loaders.postload.recipes.BECRecipes;
 import gregtech.loaders.preload.GTPreLoad;
 import gregtech.loaders.preload.LoaderCircuitBehaviors;
 import gregtech.loaders.preload.LoaderGTBlockFluid;
@@ -128,13 +135,14 @@ import gregtech.loaders.preload.LoaderGTOreDictionary;
 import gregtech.loaders.preload.LoaderMetaPipeEntities;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
 import gregtech.loaders.preload.LoaderOreProcessing;
+import gtnhlanth.loader.RecipeLoader;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
 @Mod(
     modid = "gregtech",
     name = "GregTech",
-    version = "MC1710",
+    version = GT_Version.VERSION,
     guiFactory = "gregtech.client.GTGuiFactory",
     dependencies = "required-after:IC2;" + "required-after:structurelib;"
         + "required-after:gtnhlib@[0.6.35,);"
@@ -330,7 +338,7 @@ public class GTMod {
 
         GTUIInfos.init();
 
-        IBlockWithClientMeta.register();
+        CondensateType.registerFluids();
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTPreload) {
             tRunnable.run();
@@ -343,6 +351,8 @@ public class GTMod {
 
     @Mod.EventHandler
     public void onInitialization(FMLInitializationEvent event) {
+        DataRegistry.registerDataManager(new ClientMetaManager(), 1000);
+
         if (GregTechAPI.sLoadStarted) {
             return;
         }
@@ -383,6 +393,8 @@ public class GTMod {
 
         GT_FML_LOGGER.debug("Registering SpaceDimensions");
         SpaceDimRegisterer.register();
+
+        CondensateType.registerRecipes();
 
         GregTechAPI.sLoadFinished = true;
         GTLog.out.println("GTMod: Load-Phase finished!");
@@ -555,6 +567,8 @@ public class GTMod {
         }
 
         GTPostLoad.addSolidFakeLargeBoilerFuels();
+        NaquadahReworkRecipeLoader.Remover();
+        RecipeLoader.registerCauldronRemaps();
         GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
         GTPostLoad.processToolboxBans();
@@ -576,6 +590,7 @@ public class GTMod {
     @Mod.EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent event) {
         proxy.onLoadComplete(event);
+        new BECRecipes().runLateRecipes();
         for (Runnable tRunnable : GregTechAPI.sGTCompleteLoad) {
             tRunnable.run();
         }
@@ -736,6 +751,29 @@ public class GTMod {
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
         proxy.onServerStarted(event);
+        if (RecipeMapBackend.shouldValidateLookup()) {
+            GT_FML_LOGGER.info("GTRecipeLookupValidator: enabled; waiting for first server tick after server start.");
+            FMLCommonHandler.instance()
+                .bus()
+                .register(new RecipeLookupValidationServerTickHandler());
+        }
+    }
+
+    public static final class RecipeLookupValidationServerTickHandler {
+
+        @SubscribeEvent
+        public void onServerTick(TickEvent.ServerTickEvent event) {
+            if (event.phase != TickEvent.Phase.END) {
+                return;
+            }
+            FMLCommonHandler.instance()
+                .bus()
+                .unregister(this);
+            GT_FML_LOGGER.info("GTRecipeLookupValidator: first server tick reached; starting validation.");
+            RecipeLookupValidator.validateLookup();
+            GT_FML_LOGGER.info("GTRecipeLookupValidator: validation completed without mismatches.");
+            throw new IllegalStateException("GT recipe lookup validation found 0 issue(s); run completed.");
+        }
     }
 
     @Mod.EventHandler
@@ -747,8 +785,6 @@ public class GTMod {
         for (Runnable tRunnable : GregTechAPI.sAfterGTServerstop) {
             tRunnable.run();
         }
-        // Interrupt IDLE Threads to close down cleanly
-        RunnableMachineUpdate.shutdownExecutorService();
     }
 
     @Mod.EventHandler

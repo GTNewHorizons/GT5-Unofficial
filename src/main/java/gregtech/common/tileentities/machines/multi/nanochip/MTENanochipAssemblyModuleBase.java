@@ -3,12 +3,9 @@ package gregtech.common.tileentities.machines.multi.nanochip;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
+import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.math.BigInteger;
@@ -23,7 +20,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -38,8 +34,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -50,6 +48,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.NACRecipeMapBackend;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -61,6 +60,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyModuleBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.RecipeCheckReason;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
@@ -74,8 +74,8 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorH
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMultiBlockBase<T>>
-    extends MTEExtendedPowerMultiBlockBase<T> implements ISurvivalConstructable, NanochipTooltipValues {
+public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMultiBlockBase<T>> extends
+    MTEExtendedPowerMultiBlockBase<T> implements ISurvivalConstructable, NanochipTooltipValues, ICasingTextureProvider {
 
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String[][] base_structure = new String[][] { { " VV~VV ", "       ", " VVVVV " },
@@ -138,7 +138,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                 HatchElementBuilder.<B>builder()
                     .atLeast(ModuleHatchElement.VacuumConveyorHatch, InputBus, InputHatch, OutputHatch)
                     .casingIndex(CASING_INDEX_WHITE)
-                    .hint(2)
+                    .hint(3)
                     .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
             .addElement('P', Casings.NanochipMeshInterfaceCasing.asElement())
             .addElement('Z', Casings.NanochipReinforcementCasing.asElement());
@@ -202,7 +202,12 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     // Only checks the base structure piece
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs.allHatches()) {
+            for (MTEHatchVacuumConveyorInput conveyor : conveyorList) {
+                conveyor.removeWatcher(this);
+            }
+        }
         this.vacuumConveyorInputs.clear();
         this.vacuumConveyorOutputs.clear();
         fixAllIssues();
@@ -211,9 +216,10 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             STRUCTURE_PIECE_BASE,
             BASE_STRUCTURE_OFFSET_X,
             BASE_STRUCTURE_OFFSET_Y,
-            BASE_STRUCTURE_OFFSET_Z)) return false;
+            BASE_STRUCTURE_OFFSET_Z,
+            errors)) return;
         // Module structure
-        return checkPiece(STRUCTURE_PIECE_MAIN, structureOffsetX(), structureOffsetY(), structureOffsetZ());
+        checkPiece(STRUCTURE_PIECE_MAIN, structureOffsetX(), structureOffsetY(), structureOffsetZ(), errors);
     }
 
     @Override
@@ -272,6 +278,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (aMetaTileEntity instanceof MTEHatchVacuumConveyorInput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.setMainController(this.getBaseMulti());
+            // Components arrive as fake items in the hatch's own storage (not mInventory), so register for the
+            // hatch's push instead of relying on the inventory-dirty flag.
+            hatch.addWatcher(this);
             return vacuumConveyorInputs.addHatch(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchVacuumConveyorOutput hatch) {
@@ -299,7 +308,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTENanochipAssemblyModuleBaseGui(this);
+        return new MTENanochipAssemblyModuleBaseGui<>(this);
     }
 
     protected static class ItemInputInformation {
@@ -482,6 +491,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                 .multiply(BigInteger.valueOf(properRecipe.mEUt));
 
             if (euToConsume.compareTo(this.currentEU) > 0) {
+                // Remember how much this recipe needs so increaseStoredEU() re-checks exactly once the buffer reaches
+                // it, instead of every tick while power trickles in.
+                pendingPowerRequirement = euToConsume;
                 return CheckRecipeResultRegistry.NAC_WAITING_FOR_POWER;
             }
 
@@ -500,6 +512,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             mMaxProgresstime = properRecipe.mDuration;
             // Needs to be negative obviously to display correctly
             this.lEUt = -(long) properRecipe.mEUt * (long) this.currentParallel;
+            // Recipe started, so drop any pending power-wait target.
+            pendingPowerRequirement = null;
         }
 
         return result;
@@ -549,6 +563,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     protected BigInteger euBufferSize = BigInteger.ZERO;
     protected BigInteger currentEU = BigInteger.ZERO;
+    /** EU the last power-starved recipe needed; gates the increaseStoredEU() recheck so it fires once, not per tick. */
+    private BigInteger pendingPowerRequirement = null;
 
     public void setBufferSize(BigInteger buffer) {
         this.euBufferSize = buffer;
@@ -569,6 +585,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         aNBT.setByteArray("currentEU", this.currentEU.toByteArray());
 
         aNBT.setBoolean("connected", this.isConnected);
+        aNBT.setByte("outputColor", this.outputColor);
     }
 
     @Override
@@ -577,6 +594,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         this.euBufferSize = new BigInteger(aNBT.getByteArray("bufferSize"));
         this.currentEU = new BigInteger(aNBT.getByteArray("currentEU"));
         this.isConnected = aNBT.getBoolean("connected");
+        // Default to -1 (unset) if missing from old saves
+        this.outputColor = aNBT.hasKey("outputColor") ? aNBT.getByte("outputColor") : -1;
     }
 
     @Override
@@ -647,6 +666,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         BigInteger euToFull = euBufferSize.subtract(currentEU);
         BigInteger increasedEU = euToFull.min(maximumIncrease);
         currentEU = currentEU.add(increasedEU);
+        // When a recipe was blocked on NAC_WAITING_FOR_POWER, re-check only once the buffer has actually reached the
+        // amount that recipe needed - re-checking every tick as power trickles in would just fail until then.
+        // Throttled so a heavily loaded base can defer it further.
+        if (pendingPowerRequirement != null && mMaxProgresstime <= 0
+            && currentEU.compareTo(pendingPowerRequirement) >= 0) {
+            pendingPowerRequirement = null;
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
+        }
         return increasedEU;
     }
 
@@ -686,7 +713,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     public void addVCOutput(ItemStack aStack, MTEHatchVacuumConveyorOutput hatch) {
         if (GTUtility.isStackInvalid(aStack)) return;
         if (hatch == null) {
-            stopMachine(SimpleShutDownReason.ofCritical("Colored output hatch disappeared mid-recipe."));
+            stopMachine(SimpleShutDownReason.ofCritical("nac_output_hatch_missing"));
             return;
         }
         // Look up component from this output fake stack and unify it with the packet inside the output hatch
@@ -733,31 +760,41 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE);
+    }
+
+    /**
+     * This includes the normal overlay icon even when the module is active
+     */
+    protected ITexture[] createNanochipModuleTextures(ForgeDirection side, ForgeDirection aFacing, boolean aActive,
+        IIconContainer overlay, IIconContainer overlayGlow, IIconContainer overlayActive,
+        IIconContainer overlayActiveGlow) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
+            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(overlay)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
+                    .addIcon(overlayActive)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
+                    .addIcon(overlayActiveGlow)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
+            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(overlay)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
+                    .addIcon(overlayGlow)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE) };
+        return new ITexture[] { getCasingTexture() };
     }
 
     @Override
@@ -776,9 +813,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("connected")) {
             if (tag.getBoolean("connected")) {
-                currentTip.add(EnumChatFormatting.GREEN + "Connected To NAC");
+                currentTip.add(translateToLocal("GT5U.tooltip.nac.interface.connected"));
             } else {
-                currentTip.add(EnumChatFormatting.RED + "Disconnected from NAC");
+                currentTip.add(translateToLocal("GT5U.tooltip.nac.interface.disconnected"));
             }
 
         }

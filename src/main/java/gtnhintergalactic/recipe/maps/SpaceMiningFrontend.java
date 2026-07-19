@@ -7,12 +7,13 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.RecipeDisplayInfo;
@@ -56,18 +57,24 @@ public class SpaceMiningFrontend extends RecipeMapFrontend {
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             List<String> result = new ArrayList<>();
             int recipeTier = recipeInfo.recipe.getMetadataOrDefault(IGRecipeMaps.MODULE_TIER, 1);
-            result.add(GTUtility.translate("ig.nei.module", recipeTier));
+            result.add(StatCollector.translateToLocalFormatted("ig.nei.module", recipeTier));
 
             SpaceMiningData data = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
             if (data != null) {
                 result.add(
-                    GTUtility.translate("ig.nei.spacemining.distance") + " "
+                    StatCollector.translateToLocal("ig.nei.spacemining.distance") + " "
                         + data.minDistance
                         + "-"
                         + data.maxDistance);
-                result.add(GTUtility.translate("ig.nei.spacemining.size") + " " + data.minSize + "-" + data.maxSize);
-                result.add(GTUtility.translate("tt.nei.research.min_computation", formatNumber(data.computation)));
-                result.add(GTUtility.translate("ig.nei.spacemining.weight") + " " + data.recipeWeight);
+                result.add(
+                    StatCollector.translateToLocal("ig.nei.spacemining.size") + " "
+                        + data.minSize
+                        + "-"
+                        + data.maxSize);
+                result.add(
+                    StatCollector
+                        .translateToLocalFormatted("tt.nei.research.min_computation", formatNumber(data.computation)));
+                result.add(StatCollector.translateToLocal("ig.nei.spacemining.weight") + " " + data.recipeWeight);
             }
             return result;
         }

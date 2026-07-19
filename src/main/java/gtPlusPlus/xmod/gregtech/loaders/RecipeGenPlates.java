@@ -1,9 +1,12 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.enums.GTValues.VP;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,15 +16,14 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.TierEU;
 import gregtech.api.render.TextureFactory;
-import gtPlusPlus.api.interfaces.RunnableWithInfo;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 
 public class RecipeGenPlates extends RecipeGenBase {
 
-    public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
+    public static final Set<Runnable> mRecipeGenMap = new HashSet<>();
 
     static {
         MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
@@ -47,23 +49,20 @@ public class RecipeGenPlates extends RecipeGenBase {
         final ItemStack plate_Single = material.getPlate(1);
         final ItemStack plate_SingleTwo = material.getPlate(2);
         final ItemStack plate_SingleNine = material.getPlate(9);
+        final ItemStack plate_Stack64 = material.getPlate(64);
         final ItemStack plate_Double = material.getPlateDouble(1);
         final ItemStack plate_Dense = material.getPlateDense(1);
+        final ItemStack plate_Superdense = material.getPlateSuperdense(1);
         final ItemStack foil_SingleFour = material.getFoil(4);
         final ItemStack block = material.getBlock(1);
-
-        Logger.WARNING("Generating Plate recipes for " + material.getDefaultLocalName());
-
         // Forge Hammer
         if (ingotStackTwo != null && plate_Single != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ingotStackThree)
                 .itemOutputs(plate_SingleTwo)
                 .duration(Math.max(material.getMass(), 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(hammerRecipes);
-
-            Logger.WARNING("Forge Hammer Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         // Bender
@@ -73,10 +72,8 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(1)
                 .itemOutputs(plate_Single)
                 .duration(Math.max(material.getMass() * 1L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(benderRecipes);
-
-            Logger.WARNING("Bender Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         if (ingotStackOne != null && foil_SingleFour != null) {
@@ -85,10 +82,8 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(10)
                 .itemOutputs(foil_SingleFour)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(benderRecipes);
-
-            Logger.WARNING("Bender Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         // Alloy Smelter
@@ -97,10 +92,8 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .itemInputs(ingotStackTwo, shape_Mold)
                 .itemOutputs(plate_Single)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(alloySmelterRecipes);
-
-            Logger.WARNING("Alloy Smelter Recipe: " + material.getDefaultLocalName() + " - Success");
         }
         // Cutting Machine
         if (block != null && plate_Single != null) {
@@ -108,10 +101,8 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .itemInputs(block)
                 .itemOutputs(plate_SingleNine)
                 .duration(Math.max(material.getMass() * 10L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(cutterRecipes);
-
-            Logger.WARNING("Cutting Machine Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         // Making Double Plates
@@ -121,10 +112,8 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(2)
                 .itemOutputs(plate_Double)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(benderRecipes);
-
-            Logger.WARNING("Bender Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         if (plate_SingleTwo != null && plate_Double != null) {
@@ -133,9 +122,8 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(2)
                 .itemOutputs(plate_Double)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(benderRecipes);
-            Logger.WARNING("Bender Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         // Bender
@@ -145,13 +133,12 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(1)
                 .itemOutputs(material.getFoil(4))
                 .duration(Math.max(material.getMass(), 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(benderRecipes);
 
             CoverRegistry.registerDecorativeCover(
                 material.getFoil(1),
                 TextureFactory.of(material.getTextureSet().mTextures[70], material.getRGBA()));
-            Logger.WARNING("Bender Foil Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         // Making Dense Plates
@@ -161,10 +148,8 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(9)
                 .itemOutputs(plate_Dense)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(benderRecipes);
-
-            Logger.WARNING("Bender Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         if (plate_SingleNine != null && plate_Dense != null) {
@@ -173,11 +158,24 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(9)
                 .itemOutputs(plate_Dense)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(benderRecipes);
 
-            Logger.WARNING("Bender Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
+        int tier = Math.max(1, material.tier);
+        long aVoltage = VP[tier];
+
+        // Making Superdense Plates
+        if (plate_Stack64 != null && plate_Superdense != null) {
+            int compressionTier = aVoltage >= TierEU.RECIPE_UEV ? 2 : 1;
+            GTValues.RA.stdBuilder()
+                .itemInputs(plate_Stack64)
+                .itemOutputs(plate_Superdense)
+                .metadata(COMPRESSION_TIER, compressionTier)
+                .duration(Math.max(material.getMass() * 4L, 1L))
+                .eut(material.voltageMultiplier)
+                .addTo(compressorRecipes);
+        }
     }
 }

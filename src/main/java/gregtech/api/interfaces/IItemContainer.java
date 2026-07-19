@@ -1,5 +1,7 @@
 package gregtech.api.interfaces;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,4 +48,12 @@ public interface IItemContainer {
     default IItemContainer setRender(IItemRenderer aRender) {
         return this;
     };
+
+    default @Nonnull String getDisplayName() {
+        ItemStack stack = get(1);
+
+        if (stack == null) return "null";
+
+        return stack.getDisplayName();
+    }
 }

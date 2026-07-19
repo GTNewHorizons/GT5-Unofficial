@@ -13,6 +13,8 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -28,11 +30,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISurvivalConstructable {
@@ -59,33 +61,17 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
         tt.addMachineType(getMachineType())
             .addInfo("gt.rfpp.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 9, 3, false)
+            .beginStructureBlock(3, 3, 9, false)
             .addController("front_bottom_center")
-            .addCasingInfoMin(
-                GregtechItemList.Casing_Refinery_Structural.get(1)
-                    .getDisplayName(),
-                7,
-                false)
-            .addCasingInfoMin(
-                GregtechItemList.Casing_Refinery_Internal.get(1)
-                    .getDisplayName(),
-                5,
-                false)
-            .addCasingInfoMin(
-                GregtechItemList.Casing_Reactor_II.get(1)
-                    .getDisplayName(),
-                4,
-                false)
-            .addCasingInfoMin(
-                GregtechItemList.Casing_Refinery_External.get(1)
-                    .getDisplayName(),
-                17,
-                false)
-            .addInputHatch("gt.rfpp.info.hatches", 1)
-            .addOutputHatch("gt.rfpp.info.hatches", 1)
-            .addMufflerHatch("gt.rfpp.info.hatches", 1)
-            .addMaintenanceHatch("gt.rfpp.info.hatches", 1)
-            .addEnergyHatch("gt.rfpp.info.hatches", 1)
+            .addCasing("17", "Hastelloy-N Sealant Block", false)
+            .addCasing("7-11", "Hastelloy-X Sealant Block", false)
+            .addCasing("5", "Incoloy-DS Fluid Containment Block", false)
+            .addCasing("4", "Reactor Shield Casing", false)
+            .addEnergyHatch("1", "gt.rfpp.info.hatches", 1)
+            .addMaintenanceHatch("1", "gt.rfpp.info.hatches", 1)
+            .addMufflerHatch("1", "gt.rfpp.info.hatches", 1)
+            .addInputHatch("2+", "gt.rfpp.info.hatches", 1)
+            .addOutputHatch("1+", "gt.rfpp.info.hatches", 1)
             .addStructureInfo("gt.rfpp.info")
             .toolTipFinisher();
         return tt;
@@ -118,7 +104,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.fissionFuelProcessingRecipes;
+        return RecipeMaps.fissionFuelProcessingRecipes;
     }
 
     @Override
@@ -184,20 +170,21 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        if (checkPiece(mName, 1, 7, 0) && mCasing >= 7) {
-            if (this.mInputHatches.size() >= 2 && this.mInputHatches.size() <= 4
-                && !this.mOutputHatches.isEmpty()
-                && this.mOutputHatches.size() <= 2
-                && this.mMufflerHatches.size() == 1
-                && this.mMaintenanceHatches.size() == 1
-                && this.mEnergyHatches.size() == 1) {
-                this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
-                return true;
-            }
+        if (!checkPiece(mName, 1, 7, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 7);
+        checkOneEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
+        checkOneMufflerHatch(errors);
+        checkHatchMin(errors, InputHatch, 2);
+        checkHatchMax(errors, InputHatch, 4);
+        checkHasOutputHatch(errors);
+        checkHatchMax(errors, OutputHatch, 2);
+
+        if (errors.isEmpty()) {
+            this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
         }
-        return false;
     }
 
     @Override

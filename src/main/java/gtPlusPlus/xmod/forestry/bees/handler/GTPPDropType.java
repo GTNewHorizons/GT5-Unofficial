@@ -15,7 +15,6 @@ public enum GTPPDropType {
 
     public boolean mShowInList;
     public final Material mMaterial;
-    public int mChance;
     public final int mID;
 
     private final String mName;
@@ -42,10 +41,6 @@ public enum GTPPDropType {
             aName.toLowerCase()
                 .replaceAll(" ", ""));
         GTLanguageManager.addStringLocalization("gtplusplus.drop." + this.mNameUnlocal, this.mName + " Drop");
-    }
-
-    public void setHidden() {
-        this.mShowInList = false;
     }
 
     public String getLocalizedName() {

@@ -1,6 +1,7 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -31,11 +32,11 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.api.recipe.ExtremeHeatExchangerRecipe;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -44,10 +45,12 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -160,6 +163,11 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     }
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         transformed = aNBT.getBoolean("transformed");
         if (aNBT.hasKey("hotName", Constants.NBT.TAG_STRING)) {
@@ -191,48 +199,67 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     }
 
     @Override
-    protected void clearHatches_EM() {
-        super.clearHatches_EM();
+    public void clearHatches() {
+        super.clearHatches();
         mCooledFluidHatch = null;
         mHotFluidHatch = null;
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.casingAmount = 0;
-        return structureCheck_EM(mName, 2, 5, 0) && mMaintenanceHatches.size() == 1 && casingAmount >= 25;
+        if (!checkPiece(mName, 2, 5, 0, errors)) return;
+        checkCasingMin(errors, casingAmount, 25);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger, EHE")
-            .addInfo("Outputs SH steam by cooling hot fluids with distilled water")
-            .addInfo("Supplying more hot fluid than the threshold causes overheating,")
-            .addInfo("producing SC steam instead")
-            .addInfo(EnumChatFormatting.YELLOW + "Plasma always produces SC steam")
-            .addInfo("Maximum input and output values per second are shown in NEI")
-            .addInfo("Actual output is proportional to the amount of hot fluid inserted")
-            .addInfo(EnumChatFormatting.RED + "Explodes if it runs out of water")
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc2"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc3"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc4"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc5"))
+            .addSeparator()
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.ExtremeHeatExchanger.lava",
+                    getFluidUnit(),
+                    getFluidUnit(),
+                    getFluidUnit()))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.ExtremeHeatExchanger.hotcoolant",
+                    getFluidUnit(),
+                    getFluidUnit(),
+                    getFluidUnit()))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.ExtremeHeatExchanger.hotsolarsalt",
+                    getFluidUnit(),
+                    getFluidUnit(),
+                    getFluidUnit()))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.plasma1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.plasma2"))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.throttle1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.throttle2"))
+            .beginStructureBlock(11, 5, 6, false)
             .addController("Front bottom center")
-            .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
-            .addCasingInfoExactly("Any Tiered Glass", 72, false)
-            .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
-                "Distilled water",
-                1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
-                "SC Steam/SH Steam",
-                2)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
-                "Hot fluid or plasma",
-                3)
-            .addOtherStructurePart(StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"), "Cold fluid", 4)
-            .addMaintenanceHatch("Any Casing", 1, 2, 5)
+            .addCasing("25-120", "Robust Tungstensteel Machine Casing", false)
+            .addCasing("72", "EV+ Tiered Glass", false)
+            .addCasing("60", "Tungstensteel Pipe Casing", false)
+            .addCasing("48", "Pressure Resistant Wall", false)
+            .addMaintenanceHatch("1", "Any casing", 1, 2, 5)
+            .addInputHatch("2+", "Front center casing (hot fluid), any bottom casing (distilled water)", 1, 3)
+            .addOutputHatch("2+", "Back center casing (cool fluid), any top casing (steam)", 2, 4)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -326,12 +353,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(mName, 2, 5, 0, stackSize, hintsOnly);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("ExtremeHeatExchanger.hint", 6);
+        buildPiece(mName, stackSize, hintsOnly, 2, 5, 0);
     }
 
     @Override
@@ -343,40 +365,20 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     public String[] getInfoData() {
         int tThreshold = tRunningRecipe != null ? tRunningRecipe.mSpecialValue : 0;
         return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("scanner.info.XHE.0") + " "
-                + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + formatNumber(this.mEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("scanner.info.XHE.1") + " "
-                + EnumChatFormatting.GREEN
-                + formatNumber(tThreshold)
-                + EnumChatFormatting.RESET
-                + " L/s",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.Progress.fmt.s",
+                formatNumber(mProgresstime / 20),
+                formatNumber(mMaxProgresstime / 20)),
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.problems.efficiency.fmt",
+                getIdealStatus() - getRepairStatus(),
+                mEfficiency / 100.0F + " %"),
+            IGregTechDeviceInformation.encode(
+                "gg.infodata.xhe.steam_output",
+                (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW) + formatNumber(this.mEUt)
+                    + EnumChatFormatting.RESET),
+            IGregTechDeviceInformation.encode("gg.infodata.xhe.threshold", formatNumber(tThreshold)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     @Override

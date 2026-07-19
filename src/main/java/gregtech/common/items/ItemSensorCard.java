@@ -1,7 +1,5 @@
 package gregtech.common.items;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.Optional;
@@ -22,7 +21,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.items.GTGenericItem;
-import gregtech.api.util.GTLanguageManager;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
@@ -55,9 +53,9 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
         if (aStack != null) {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT == null) {
-                aList.add(translateToLocal("gt.item.desc.miss_coord"));
+                aList.add(StatCollector.translateToLocal("gt.item.desc.miss_coord"));
             } else {
-                aList.add(translateToLocal("gt.item.desc.device_at"));
+                aList.add(StatCollector.translateToLocal("gt.item.desc.device_at"));
                 aList.add(
                     String.format(
                         "x: %d, y: %d, z: %d",
@@ -96,7 +94,7 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
         for (int i = 0; i < (strCount = aCard.getInt("mString")); i++) {
             if ((aSettings & 1 << i) != 0) {
                 PanelString line = new PanelString();
-                line.textLeft = GTLanguageManager.getTranslation(aCard.getString("mString" + i), "\\\\");
+                line.textLeft = IGregTechDeviceInformation.decode(aCard.getString("mString" + i));
                 rList.add(line);
             }
         }

@@ -17,6 +17,8 @@ GT5U.providesfullhazmatprotection=防化效果与单件防化服一致
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.GT_Multiblock_Tooltip_Builder
 GT5U.MBTT.MachineType=机器类型
+GT5U.MBTT.PowerUsage=功率消耗
+GT5U.MBTT.BaseAmperage=基础电流
 GT5U.MBTT.Dimensions=大小
 GT5U.MBTT.Hollow=(中空)
 GT5U.MBTT.Structure=结构
@@ -69,7 +71,7 @@ GT5U.LHE.threshold=阈值
 GT5U.fusion.req=需要EU
 GT5U.fusion.plasma=等离子体输出
 
-GT5U.EBF.heat=热容
+GT5U.EBF.heat.s=热容: §a%s §rK
 GT5U.coil.None=无
 GT5U.coil.ULV=无
 GT5U.coil.LV=白铜
@@ -108,15 +110,6 @@ GT5U.machines.digitaltank.tooltip=存储 %sL 流体
 GT5U.machines.digitaltank.tooltip1=拆卸后可保留其中流体
 GT5U.machines.digitaltank.tooltip2=潜行拆卸可销毁内部流体
 GT5U.machines.digitaltank.autooutput.tooltip=流体自动输出
-GT5U.machines.digitaltank.autooutput.enabled=流体自动输出已启用
-GT5U.machines.digitaltank.autooutput.disabled=流体自动输出已禁用
-GT5U.machines.digitaltank.lockfluid.enabled=锁定单一流体（%s）
-GT5U.machines.digitaltank.lockfluid.disabled=流体锁定模式已禁用
-GT5U.machines.digitaltank.lockfluid.none=当前未指定，将锁定为下一种输入流体
-GT5U.machines.digitaltank.voidoverflow.enabled=溢出销毁模式已启用
-GT5U.machines.digitaltank.voidoverflow.disabled=溢出销毁模式已禁用
-GT5U.machines.digitaltank.voidfull.enabled=完全销毁模式已启用
-GT5U.machines.digitaltank.voidfull.disabled=完全销毁模式已禁用
 GT5U.machines.digitaltank.lockfluid.tooltip=流体锁定模式
 GT5U.machines.digitaltank.lockfluid.tooltip.1=§7锁定本容器，只接受一种流体
 GT5U.machines.digitaltank.lockfluid.tooltip.2=§7将锁定为进入容器的第一种流体
@@ -1030,8 +1023,6 @@ fluid.Formaldehyde=甲醛
 fluid.tcetieisfucusserratusfluid=鲸鱼座T星藻类培养液
 fluid.MeatExtract=肉汁
 //No recipe
-fluid.CompressedOxygen=压缩氧气
-fluid.CompressedNitrogen=压缩氮气
 fluid.redplasma=红等离子体
 fluid.tile.fluidBlockSludge=污泥
 //No Textrue

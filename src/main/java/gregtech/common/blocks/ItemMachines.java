@@ -26,8 +26,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -38,11 +40,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
+import appeng.me.helpers.AENetworkProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
@@ -50,16 +55,21 @@ import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
+import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.metatileentity.implementations.MTETooltipMultiBlockBase;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipMarkupProcessor;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
+import gregtech.crossmod.backhand.Backhand;
 
 public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
@@ -140,25 +150,31 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 }
                 addDescription(aList, metaTileEntity, tDamage);
                 metaTileEntity.addAdditionalTooltipInformation(aStack, aList);
-                if (gtTileEntity.getEUCapacity() > 0L && !(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
-                    if (gtTileEntity.getInputVoltage() > 0L) {
-                        aList.add(
-                            translate(
-                                "gt.tileentity.eup_in",
-                                TooltipHelper.voltageText(gtTileEntity.getInputVoltage())));
+                if (gtTileEntity.getEUCapacity() > 0L) {
+                    if (!(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
+                        if (gtTileEntity.getInputVoltage() > 0L) {
+                            aList.add(
+                                StatCollector.translateToLocalFormatted(
+                                    "gt.tileentity.eup_in",
+                                    TooltipHelper.voltageText(gtTileEntity.getInputVoltage())));
+                        }
+                        if (gtTileEntity.getOutputVoltage() > 0L) {
+                            aList.add(
+                                StatCollector.translateToLocalFormatted(
+                                    "gt.tileentity.eup_out",
+                                    TooltipHelper.voltageText(gtTileEntity.getOutputVoltage())));
+                        }
+                        if (gtTileEntity.getOutputAmperage() > 1L) {
+                            aList.add(
+                                StatCollector.translateToLocalFormatted(
+                                    "gt.tileentity.amperage",
+                                    TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
+                        }
                     }
-                    if (gtTileEntity.getOutputVoltage() > 0L) {
-                        aList.add(
-                            translate(
-                                "gt.tileentity.eup_out",
-                                TooltipHelper.voltageText(gtTileEntity.getOutputVoltage())));
-                    }
-                    if (gtTileEntity.getOutputAmperage() > 1L) {
-                        aList.add(
-                            translate(
-                                "gt.tileentity.amperage",
-                                TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
-                    }
+                    aList.add(
+                        translateToLocalFormatted(
+                            "gt.tileentity.eup_store",
+                            TooltipHelper.euCapacityText(gtTileEntity.getEUCapacity())));
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
@@ -183,6 +199,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                             Dyes.get(aNBT.getByte("mColor") - 1).mName));
                 }
             }
+            // Resolve line-break and separator markup after every tooltip contributor has run, so adaptive
+            // separators measure the final tooltip shown to the player.
+            TooltipMarkupProcessor.processTooltips(aList);
         } catch (Exception e) {
             aList.add("§cAn exception was thrown while getting this item's info.§r");
             aList.add(e.getLocalizedMessage());
@@ -228,7 +247,6 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             final String formatted = TooltipMarkupProcessor.formatTranslatedLine(tDescLine, translated);
             if (aList != null) aList.add(formatted.isEmpty() ? tDescLine : formatted);
         }
-        TooltipMarkupProcessor.processTooltips(aList);
     }
 
     @SideOnly(Side.CLIENT)
@@ -255,7 +273,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (tDescription.contains("%%%")) {
             tDescription = tDescription.replaceAll("%%%.*?%%%", "%s");
         }
-        if (StatCollector.canTranslate(key)) {
+        if (GTLanguageManager.hasGTLocalizationKey(key)) {
             GTLanguageManager.addStringLocalization(key + "." + damage, tDescription);
             return;
         }
@@ -374,12 +392,21 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     tTileEntity.setOwnerName(aPlayer.getDisplayName());
                     tTileEntity.setOwnerUuid(aPlayer.getUniqueID());
                 }
-                tTileEntity.getMetaTileEntity()
-                    .initDefaultModes(aStack.getTagCompound());
+                if (tTileEntity.getMetaTileEntity() instanceof MetaTileEntity mte) {
+                    AENetworkProxy proxy = mte.getProxy();
+                    if (proxy != null) {
+                        proxy.setOwner(aPlayer);
+                    }
+                }
+                tTileEntity.setFrontFacing(
+                    BaseTileEntity.getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, tTileEntity.getValidFacings()));
                 final ForgeDirection oppositeSide = side.getOpposite();
                 if (tTileEntity.getMetaTileEntity() instanceof IConnectable connectable) {
                     // If we're connectable, try connecting to whatever we're up against
                     connectable.connect(oppositeSide);
+                    if (aPlayer != null && Mods.Backhand.isModLoaded() && connectable instanceof MTEFluidPipe pipe) {
+                        pipeDirectionOffhand(aPlayer, pipe, side);
+                    }
                 } else if (aPlayer != null && aPlayer.isSneaking()) {
                     // If we're being placed against something that is connectable, try telling it to connect to us
                     final IGregTechTileEntity aTileEntity = tTileEntity.getIGregTechTileEntityAtSide(oppositeSide);
@@ -387,6 +414,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                         connectable.connect(side);
                     }
                 }
+                tTileEntity.getMetaTileEntity()
+                    .initDefaultModes(aStack.getTagCompound());
             }
         } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, tDamage, 3)) {
             return false;
@@ -396,6 +425,24 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             this.field_150939_a.onPostBlockPlaced(aWorld, aX, aY, aZ, tDamage);
         }
         return true;
+    }
+
+    private void pipeDirectionOffhand(EntityPlayer player, MTEFluidPipe pipe, ForgeDirection side) {
+        ItemStack offHand = Backhand.getOffhandItem(player);
+        if ((GTUtility.isStackInList(offHand, GregTechAPI.sWrenchList))) {
+            ForgeDirection oppositeSide = side.getOpposite();
+            if (player.isSneaking()) {
+                TileEntity adjTile = pipe.getBaseMetaTileEntity()
+                    .getTileEntityAtSide(oppositeSide);
+                if (adjTile instanceof IGregTechTileEntity adjGTile
+                    && adjGTile.getMetaTileEntity() instanceof MTEFluidPipe adjPipe) {
+                    adjPipe.mDisableInput |= (byte) side.flag;
+                }
+            } else {
+                (pipe).mDisableInput |= (byte) oppositeSide.flag;
+            }
+            GTModHandler.damageOrDechargeItem(offHand, 1, 1000, player);
+        }
     }
 
     @Override
@@ -449,9 +496,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 return null;
             }
             final String fluidKey = fluidMeta.getFluidNbtKey();
-            final NBTTagCompound tNBT = container.stackTagCompound;
-            if (tNBT != null && tNBT.hasKey(fluidKey, 10)) {
-                return FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag(fluidKey));
+            if (ItemStackNBT.hasKey(container, fluidKey, Constants.NBT.TAG_COMPOUND)) {
+                return FluidStack.loadFluidStackFromNBT(ItemStackNBT.getCompoundTag(container, fluidKey));
             }
         }
         return null;
@@ -469,9 +515,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
     @Nullable
     private Fluid getLockedFluid(@Nonnull ItemStack container) {
-        final NBTTagCompound tag = container.stackTagCompound;
-        if (tag == null) return null;
-        String lockedName = tag.getString("lockedFluidName");
+        final String lockedName = ItemStackNBT.getString(container, "lockedFluidName");
         if (GTUtility.isStringInvalid(lockedName)) return null;
         return FluidRegistry.getFluid(lockedName);
     }
@@ -530,10 +574,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 final FluidStack tOutputFluid = new FluidStack(tStoredFluid, tAmount);
                 if (doDrain) {
                     if (tNewFluid.amount <= 0) {
-                        container.stackTagCompound.removeTag(fluidKey);
-                        if (container.stackTagCompound.hasNoTags()) container.setTagCompound(null);
+                        ItemStackNBT.removeTag(container, fluidKey);
                     } else {
-                        container.stackTagCompound.setTag(fluidKey, tNewFluid.writeToNBT(new NBTTagCompound()));
+                        ItemStackNBT.setTag(container, fluidKey, tNewFluid.writeToNBT(new NBTTagCompound()));
                     }
                 }
                 return tOutputFluid;

@@ -2,8 +2,8 @@ package gtPlusPlus.xmod.forestry.bees.items.output;
 
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class GTPPComb extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List list) {
+    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (GTPPCombType type : GTPPCombType.values()) {
             if (type.mShowInList) {
                 list.add(this.getStackForType(type));
@@ -100,7 +100,6 @@ public class GTPPComb extends Item {
     }
 
     public static void initCombsRecipes() {
-
         addChemicalRecipe(
             GTPPCombType.DRAGONBLOOD,
             new ItemStack[] { GTModHandler.getModItem(Forestry.ID, "refractoryWax", 1L, 0),
@@ -117,8 +116,8 @@ public class GTPPComb extends Item {
 
     public static void addChemicalRecipe(GTPPCombType aInputStack, ItemStack[] aOutputs, int[] aChances) {
         Material aMat = aInputStack.mMaterial;
-        long aEU = aMat.vVoltageMultiplier;
-        int aTier = Math.max(aMat.vTier / 2, 1);
+        long aEU = aMat.voltageMultiplier;
+        int aTier = Math.max(aMat.tier / 2, 1);
         GTValues.RA.stdBuilder()
             .itemInputs(aInputStack.getStackForType(aTier))
             .itemOutputs(aOutputs)
@@ -126,6 +125,5 @@ public class GTPPComb extends Item {
             .eut(aEU)
             .metadata(CHEMPLANT_CASING_TIER, aTier)
             .addTo(chemicalPlantRecipes);
-
     }
 }

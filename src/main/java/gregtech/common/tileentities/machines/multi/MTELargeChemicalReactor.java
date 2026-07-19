@@ -17,9 +17,8 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -41,19 +40,24 @@ import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasings5;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeChemicalReactor>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int CASING_INDEX = 176;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -78,12 +82,13 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
                 .casingIndex(CASING_INDEX)
                 .hint(1)
                 .buildAndChain(
-                    activeCoils(CoilStructureElement.INSTANCE),
+                    GTStructureChannels.HEATING_COIL.use(activeCoils(CoilStructureElement.INSTANCE)),
                     onElementPass(MTELargeChemicalReactor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 0))))
         .build();
 
     private int mCasingAmount;
     private int mCoilAmount;
+    private HeatingCoilLevel mHeatingCoilLevel;
 
     public MTELargeChemicalReactor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -105,17 +110,17 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             .addInfo("gt.lcr.tips.1")
             .addPerfectOCInfo()
             .beginStructureBlock(3, 3, 3, false)
-            .addController("front_center")
-            .addCasingInfoRange("gt.blockcasings8.0.name", 8, 22, false)
-            .addStructurePart("gt.blockcasings8.1.name", "gt.lcr.info.1")
-            .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.lcr.info.2", 1)
-            .addEnergyHatch("<casing>", 1, 2)
-            .addMaintenanceHatch("<casing>", 1, 2)
-            .addInputBus("<casing>", 1, 2)
-            .addInputHatch("<casing>", 1, 2)
-            .addOutputBus("<casing>", 1, 2)
-            .addOutputHatch("<casing>", 1, 2)
-            .addStructureInfo("gt.lcr.info.3")
+            .addController("Front center, 2nd layer")
+            .addCasing("8-22", gregtech.api.util.GTUtility.nestParams("gt.blockcasings8.0.name"), false)
+            .addCasing("1", gregtech.api.util.GTUtility.nestParams("gt.blockcasings8.1.name"), false)
+            .addCasing("1", "Heating Coil", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputAny("1+", "Any casing", 1)
+            .addOutputAny("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Heating Coil can be any tier and on any side")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -123,32 +128,20 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[1][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[1][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { casingTexturePages[1][48] };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW);
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
+    public ITexture getCasingTexture() {
+        return casingTexturePages[1][48];
     }
 
     @Override
@@ -171,13 +164,19 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
         mCoilAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) && mCasingAmount >= 8
-            && mCoilAmount == 1
-            && !mEnergyHatches.isEmpty()
-            && mMaintenanceHatches.size() == 1;
+        mHeatingCoilLevel = HeatingCoilLevel.None;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 8);
+        if (mCoilAmount != 1) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.need_exactly_one_coil"));
+        }
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -205,31 +204,47 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         @Override
         public boolean check(MTELargeChemicalReactor t, World world, int x, int y, int z) {
             Block block = world.getBlock(x, y, z);
-            if (block instanceof IHeatingCoil
-                && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) != HeatingCoilLevel.None) {
-                return t.mCoilAmount++ == 0;
-            } else {
-                return false;
-            }
+            if (!(block instanceof IHeatingCoil iHeatingCoil)) return false;
+            HeatingCoilLevel newLevel = iHeatingCoil.getCoilHeat(world.getBlockMetadata(x, y, z));
+            if (t.mHeatingCoilLevel == null || t.mHeatingCoilLevel == HeatingCoilLevel.None) {
+                t.mHeatingCoilLevel = newLevel;
+            } else if (t.mHeatingCoilLevel != newLevel) return false;
+            return t.mCoilAmount++ == 0;
         }
 
         @Override
         public boolean couldBeValid(MTELargeChemicalReactor t, World world, int x, int y, int z, ItemStack trigger) {
             Block block = world.getBlock(x, y, z);
-            return block instanceof IHeatingCoil
-                && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) != HeatingCoilLevel.None;
+            if (!(block instanceof IHeatingCoil)) return false;
+            return doesBlockMatchTrigger(block, world.getBlockMetadata(x, y, z), trigger);
+        }
+
+        private boolean doesBlockMatchTrigger(Block block, int meta, ItemStack trigger) {
+            if (!(block instanceof IHeatingCoil iHeatingCoil)) return false;
+            HeatingCoilLevel blockLevel = iHeatingCoil.getCoilHeat(meta);
+            HeatingCoilLevel expectedLevel = getHeatFromHint(trigger);
+            return blockLevel == expectedLevel;
         }
 
         @Override
         public boolean spawnHint(MTELargeChemicalReactor t, World world, int x, int y, int z, ItemStack trigger) {
-            StructureLibAPI.hintParticle(world, x, y, z, GregTechAPI.sBlockCasings5, 0);
+            StructureLibAPI.hintParticle(world, x, y, z, GregTechAPI.sBlockCasings5, getMetaFromHint(trigger));
             return true;
+        }
+
+        private int getMetaFromHint(ItemStack trigger) {
+            return BlockCasings5.getMetaFromCoilHeat(getHeatFromHint(trigger));
+        }
+
+        private HeatingCoilLevel getHeatFromHint(ItemStack trigger) {
+            return HeatingCoilLevel
+                .getFromTier((byte) Math.min(HeatingCoilLevel.getMaxTier(), Math.max(0, trigger.stackSize - 1)));
         }
 
         @Override
         public boolean placeBlock(MTELargeChemicalReactor t, World world, int x, int y, int z, ItemStack trigger) {
             if (t.mCoilAmount > 0) return false;
-            boolean b = world.setBlock(x, y, z, GregTechAPI.sBlockCasings5, 0, 3);
+            boolean b = world.setBlock(x, y, z, GregTechAPI.sBlockCasings5, getMetaFromHint(trigger), 3);
             if (b) t.mCoilAmount++;
             return b;
         }
@@ -243,20 +258,22 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         @Override
         public BlocksToPlace getBlocksToPlace(MTELargeChemicalReactor largeChemicalReactor, World world, int x, int y,
             int z, ItemStack trigger, AutoPlaceEnvironment env) {
-            return BlocksToPlace.create(
-                IntStream.range(0, 8)
-                    .mapToObj(i -> new ItemStack(GregTechAPI.sBlockCasings5, 1, i))
-                    .collect(Collectors.toList()));
+            return BlocksToPlace.create(GregTechAPI.sBlockCasings5, getMetaFromHint(trigger));
         }
 
         @Override
         public PlaceResult survivalPlaceBlock(MTELargeChemicalReactor t, World world, int x, int y, int z,
             ItemStack trigger, AutoPlaceEnvironment env) {
-            if (t.mCoilAmount > 0) return PlaceResult.SKIP;
+            if (t.mCoilAmount > 0) return PlaceResult.REJECT;
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
+            if (doesBlockMatchTrigger(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z), trigger))
+                return PlaceResult.SKIP;
             if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return PlaceResult.REJECT;
             ItemStack result = env.getSource()
-                .takeOne(ItemStackPredicate.from(GregTechAPI.sBlockCasings5), true);
+                .takeOne(
+                    ItemStackPredicate.from(GregTechAPI.sBlockCasings5)
+                        .setMeta(getMetaFromHint(trigger)),
+                    true);
             if (result == null) return PlaceResult.REJECT;
             PlaceResult ret = StructureUtility.survivalPlaceBlock(
                 result,

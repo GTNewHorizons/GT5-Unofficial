@@ -1,6 +1,7 @@
 package gregtech.api.recipe;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.IntFunction;
@@ -38,9 +39,8 @@ public final class BasicUIPropertiesBuilder {
 
     private int maxItemInputs, maxItemOutputs, maxFluidInputs, maxFluidOutputs;
 
-    private BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlays = (index, isFluid, isOutput, isSpecial) -> null;
-    private BasicUIProperties.SlotOverlayGetter<SteamTexture> slotOverlaysSteam = (index, isFluid, isOutput,
-        isSpecial) -> null;
+    private BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlays = (_, _, _, _) -> null;
+    private BasicUIProperties.SlotOverlayGetter<SteamTexture> slotOverlaysSteam = (_, _, _, _) -> null;
 
     @Nullable
     private FallbackableUITexture progressBarTexture;
@@ -54,7 +54,7 @@ public final class BasicUIPropertiesBuilder {
 
     private boolean useSpecialSlot;
 
-    private final ImmutableList.Builder<Rectangle> neiTransferRect = ImmutableList.builder();
+    private final List<Rectangle> neiTransferRect = new ArrayList<>();
     @Nullable
     private String neiTransferRectId;
 
@@ -74,10 +74,13 @@ public final class BasicUIPropertiesBuilder {
 
     private int amperage = 1;
 
-    private BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2 = (
-        index, isFluid, isOutput, isSpecial) -> com.cleanroommc.modularui.api.drawable.IDrawable.NONE;
+    private BasicUIProperties.SlotOverlayGetter<com.cleanroommc.modularui.api.drawable.IDrawable> slotOverlaysMUI2 = (_,
+        _, _, _) -> com.cleanroommc.modularui.api.drawable.IDrawable.NONE;
+    private BasicUIProperties.SlotOverlayGetter<gregtech.common.modularui2.util.SteamTexture> slotOverlaysSteamMUI2 = (
+        _, _, _, _) -> null;
 
     private UITexture progressBarTextureMUI2 = GTGuiTextures.PROGRESSBAR_ARROW_STANDARD;
+    private gregtech.common.modularui2.util.SteamTexture progressBarTextureSteamMUI2;
     private ProgressWidget.Direction progressBarDirectionMUI2 = ProgressWidget.Direction.RIGHT;
     private int progressBarWidthMUI2 = 20;
     private int progressBarHeightMUI2 = 36;
@@ -88,7 +91,7 @@ public final class BasicUIPropertiesBuilder {
         if (maxItemInputs == 0 && maxItemOutputs == 0 && maxFluidInputs == 0 && maxFluidOutputs == 0) {
             throw new IllegalArgumentException("Set either of max I/O count");
         }
-        List<Rectangle> builtNEITransferRect = neiTransferRect.build();
+        List<Rectangle> builtNEITransferRect = ImmutableList.copyOf(neiTransferRect);
         if (builtNEITransferRect.isEmpty()) {
             builtNEITransferRect = Collections.singletonList(
                 new Rectangle(
@@ -125,7 +128,9 @@ public final class BasicUIPropertiesBuilder {
             fluidOutputPositionsGetter,
             amperage,
             slotOverlaysMUI2,
+            slotOverlaysSteamMUI2,
             progressBarTextureMUI2,
+            progressBarTextureSteamMUI2,
             progressBarDirectionMUI2,
             progressBarWidthMUI2,
             progressBarHeightMUI2);
@@ -195,6 +200,11 @@ public final class BasicUIPropertiesBuilder {
 
     public BasicUIPropertiesBuilder useSpecialSlot(boolean useSpecialSlot) {
         this.useSpecialSlot = useSpecialSlot;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder clearNEITransferRects() {
+        this.neiTransferRect.clear();
         return this;
     }
 
@@ -284,8 +294,20 @@ public final class BasicUIPropertiesBuilder {
         return this;
     }
 
+    public BasicUIPropertiesBuilder slotOverlaysSteamMUI2(
+        BasicUIProperties.SlotOverlayGetter<gregtech.common.modularui2.util.SteamTexture> slotOverlaysSteamMUI2) {
+        this.slotOverlaysSteamMUI2 = slotOverlaysSteamMUI2;
+        return this;
+    }
+
     public BasicUIPropertiesBuilder progressBarTextureMUI2(UITexture progressBarTextureMUI2) {
         this.progressBarTextureMUI2 = progressBarTextureMUI2;
+        return this;
+    }
+
+    public BasicUIPropertiesBuilder progressBarTextureSteamMUI2(
+        gregtech.common.modularui2.util.SteamTexture progressBarTextureSteamMUI2) {
+        this.progressBarTextureSteamMUI2 = progressBarTextureSteamMUI2;
         return this;
     }
 

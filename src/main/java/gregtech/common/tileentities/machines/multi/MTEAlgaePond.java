@@ -1,0 +1,369 @@
+package gregtech.common.tileentities.machines.multi;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.ofAnyWater;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
+
+import java.util.List;
+import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HatchElement;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTStreamUtil;
+import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+
+public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
+    implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final int OFFSET_X = 1;
+    private static final int OFFSET_Y = 3;
+    private static final int OFFSET_Z = 0;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private int tier = -1;
+    private int glassTier = -1;
+    private int casingAmount;
+    private boolean needsWaterFill = false;
+    private static final String[][] structure = { { "BBB", "BCB", "BCB", "B~B", "BBB", "B B" },
+        { " A ", "AEA", "AEA", "AEA", " A ", "   " }, { " A ", "AEA", "ADA", "AEA", " A ", "   " },
+        { " A ", "AEA", "ADA", "AEA", " A ", "   " }, { " A ", "AEA", "ADA", "AEA", " A ", "   " },
+        { " A ", "AEA", "ADA", "AEA", " A ", "   " }, { " A ", "AEA", "ADA", "AEA", " A ", "   " },
+        { " A ", "AEA", "ADA", "AEA", " A ", "   " }, { " A ", "AEA", "AEA", "AEA", " A ", "   " },
+        { "BBB", "BCB", "BCB", "BCB", "BBB", "B B" } };
+
+    private static IStructureDefinition<MTEAlgaePond> STRUCTURE_DEFINITION = null;
+
+    public MTEAlgaePond(final int aID, final String aName, final String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    public MTEAlgaePond(final String aName) {
+        super(aName);
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+        return new MTEAlgaePond(this.mName);
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType("Algae Pond")
+            .addInfo("Grows Algae!")
+            .addInfo("Provide compost to boost production by one tier")
+            .addGlassEnergyLimitInfo()
+            .addInfo("Accepts exactly 1 Energy Hatch")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(10, 3, 6, false)
+            .addController("Front center, 3rd layer")
+            .addCasing("64", "Any Tiered Glass", true)
+            .addCasing("20-25", "Algae Casing", false)
+            .addCasing("6", "Stainless Steel Frame Box", false)
+            .addCasing("5", "Filter Machine Casing", false)
+            .addEnergyHatch("1", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("0+", "Any casing", 1)
+            .addInputHatch("0+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "IX")
+            .toolTipFinisher();
+        return tt;
+    }
+
+    @Override
+    public IStructureDefinition<MTEAlgaePond> getStructureDefinition() {
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEAlgaePond>builder()
+                .addShape(STRUCTURE_PIECE_MAIN, structure)
+                .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+                .addElement(
+                    'B',
+                    buildHatchAdder(MTEAlgaePond.class).atLeast(InputBus, OutputBus, Energy, InputHatch, Maintenance)
+                        .casingIndex(Casings.AlgaeCasing.textureId)
+                        .hint(1)
+                        .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.AlgaeCasing.asElement())))
+                .addElement('C', Casings.FilterMachineCasing.asElement())
+                .addElement('D', ofFrame(Materials.StainlessSteel))
+                .addElement('E', ofChain(ofAnyWater(false), isAir()))
+                .build();
+        }
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            OFFSET_X,
+            OFFSET_Y,
+            OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        needsWaterFill = false;
+        casingAmount = 0;
+        glassTier = -1;
+        tier = -1;
+
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) {
+            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'E');
+            return;
+        }
+        checkCasingMin(errors, casingAmount, 20);
+        checkHatchExact(errors, HatchElement.Energy, 1);
+        checkHasMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
+
+        if (!mEnergyHatches.isEmpty()) {
+            int inputTier = (int) getInputVoltageTier();
+            if (glassTier < inputTier) {
+                errors.add(StructureErrors.glassTierNotEnough(inputTier));
+                return;
+            }
+            tier = inputTier;
+        }
+        if (!errors.isEmpty()) return;
+        needsWaterFill = true;
+    }
+
+    @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.GTCEU_LOOP_BATH;
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCDAlgaePondBase,
+            TexturesGtBlock.oMCDAlgaePondBaseGlow,
+            TexturesGtBlock.oMCDAlgaePondBaseActive,
+            TexturesGtBlock.oMCDAlgaePondBaseActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.AlgaeCasing.getCasingTexture();
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && aTick % 20 == 0) {
+            if (GTStructureUtility.fillStructureWithWater(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'E')) {
+                needsWaterFill = false;
+            }
+        }
+    }
+
+    @Override
+    public int getPollutionPerSecond(final ItemStack aStack) {
+        return PollutionConfig.pollutionPerSecondMultiAlgaePond;
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPreTick(aBaseMetaTileEntity, aTick);
+        // Silly Client Syncing
+        if (aBaseMetaTileEntity.isClientSide()) {
+            this.tier = (int) getInputVoltageTier();
+        }
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @Nonnull
+            @Override
+            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                return GTStreamUtil.ofNullable(getRecipe(tier, inputItems));
+            }
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                long recipeEUt = getRecipeEUt();
+                if (recipeEUt > availableVoltage * availableAmperage) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipeEUt);
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+
+            @Nonnull
+            @Override
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+                return OverclockCalculator.ofNoOverclock(getRecipeEUt(), recipe.mDuration);
+            }
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.algaePondRecipes;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_ALGAE_LOOP;
+    }
+
+    private long getRecipeEUt() {
+        if (tier < 0 || tier >= GTValues.V.length) {
+            return 0;
+        }
+        return GTValues.V[tier] * 9L / 10L;
+    }
+
+    private static GTRecipe getRecipe(int tier, ItemStack[] itemInputs) {
+        if (tier == -1) return null;
+
+        GTRecipe matchingRecipe = null;
+
+        final ItemStack[] inputs;
+
+        if (isUsingCompost(tier, itemInputs)) {
+            inputs = new ItemStack[] { GregtechItemList.Compost.get(compostForTier(tier)) };
+            tier++;
+        } else {
+            inputs = GTValues.emptyItemStackArray;
+        }
+
+        for (GTRecipe recipe : RecipeMaps.algaePondRecipes.getAllRecipes()) {
+            // We assume the unicity of tiered recipes
+            if (recipe.mSpecialValue == tier) {
+                matchingRecipe = recipe.copyShallow();
+                matchingRecipe.mInputs = inputs;
+                break;
+            }
+        }
+
+        return matchingRecipe;
+    }
+
+    private static boolean isUsingCompost(int tier, ItemStack[] itemInputs) {
+        ItemStack aCompost = GregtechItemList.Compost.get(1);
+        final int compostForTier = compostForTier(tier);
+        int compostFound = 0;
+        for (ItemStack i : itemInputs) {
+            if (GTUtility.areStacksEqual(aCompost, i)) {
+                compostFound += i.stackSize;
+                if (compostFound >= compostForTier) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static int compostForTier(int aTier) {
+        return aTier > 1 ? (int) Math.min(64, GTUtility.powInt(2, aTier - 1)) : 1;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+}

@@ -1,10 +1,8 @@
 package gtPlusPlus.core.item.base.cell;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
@@ -15,11 +13,7 @@ import gtPlusPlus.core.util.Utils;
 
 public class BaseItemPlasmaCell extends BaseItemComponent {
 
-    private IIcon base;
-    private IIcon overlay;
-    ComponentTypes PlasmaCell = ComponentTypes.PLASMACELL;
     private int tickCounter = 0;
-    private final int tickCounterMax = 200;
 
     public BaseItemPlasmaCell(final Material material) {
         super(material, ComponentTypes.PLASMACELL);
@@ -32,25 +26,22 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
     }
 
     @Override
-    public void registerIcons(final IIconRegister i) {
-        this.base = i.registerIcon(getCorrectTextures());
-        this.overlay = i.registerIcon(getCorrectTextures() + "_OVERLAY");
-    }
-
-    @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
         if (renderPass == 1) {
             return Utils.rgbtoHexValue(255, 255, 255);
         }
-        return this.componentColour;
-    }
-
-    @Override
-    public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-        if (pass == 0) {
-            return this.base;
+        if (this.componentMaterial == null) {
+            if (extraData != null) {
+                return Utils.rgbtoHexValue(extraData[0], extraData[1], extraData[2]);
+            }
+            return this.componentColour;
         }
-        return this.overlay;
+
+        if (this.componentMaterial.getRGBA()[3] <= 1) {
+            return this.componentColour;
+        }
+        // See BaseItemComponent.getColorFromItemStack: animated materials ship baked textures, rendered untinted.
+        return Utils.rgbtoHexValue(255, 255, 255);
     }
 
     @Override
@@ -58,7 +49,8 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
         final boolean p_77663_5_) {
         if (this.componentMaterial != null) {
             if (!world.isRemote) {
-                if (this.tickCounter < this.tickCounterMax) {
+                final int tickCounterMax = 200;
+                if (this.tickCounter < tickCounterMax) {
                     this.tickCounter++;
                 } else {
                     entityHolding.attackEntityFrom(DamageSource.onFire, 2);

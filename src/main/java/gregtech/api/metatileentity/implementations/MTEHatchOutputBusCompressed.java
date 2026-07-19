@@ -6,15 +6,17 @@ import static net.minecraft.util.EnumChatFormatting.GRAY;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.input.Keyboard;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -24,6 +26,7 @@ import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import appeng.api.AEApi;
@@ -243,19 +246,15 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         super.addAdditionalTooltipInformation(stack, tooltip);
-
-        NBTTagCompound tag = stack.getTagCompound();
-
-        if (tag != null && tag.hasKey("inv")) {
+        if (ItemStackNBT.hasKey(stack, "inv", NBT.TAG_COMPOUND)) {
             BusInventory inv = new BusInventory(this.slotCount);
-            inv.readFromNBT(tag.getCompoundTag("inv"));
-
-            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            inv.readFromNBT(ItemStackNBT.getCompoundTag(stack, "inv"));
+            if (GuiScreen.isShiftKeyDown()) {
                 for (IAEItemStack stored : inv.getStorageList()) {
                     tooltip.add(stored.getDisplayName() + " x " + NumberFormatUtil.formatNumber(stored.getStackSize()));
                 }
             } else {
-                tooltip.add(GTUtility.translate("GT5U.gui.text.compressed_bus_stored_items"));
+                tooltip.add(StatCollector.translateToLocal("GT5U.gui.text.compressed_bus_stored_items"));
             }
         }
     }
@@ -299,11 +298,6 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
         } else {
             return false;
         }
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     @Override
@@ -379,7 +373,7 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
         }
 
         @Override
-        public void completeItem(GTUtility.ItemId id) {
+        public void complete(GTUtility.ItemId id) {
             // Do nothing
         }
 

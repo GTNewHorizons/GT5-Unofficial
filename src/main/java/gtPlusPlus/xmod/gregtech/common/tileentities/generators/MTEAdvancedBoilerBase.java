@@ -13,12 +13,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.pollution.PollutionConfig;
@@ -56,10 +53,6 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
             "Fuel with burn time greater than 500 is more efficient.",
             "Doesn't explode if there's no water",
             GTPPCore.GT_Tooltip.get());
-    }
-
-    public ITexture getOverlayIcon() {
-        return TextureFactory.of(Textures.BlockIcons.BOILER_FRONT);
     }
 
     @Override
@@ -282,16 +275,6 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
             return true;
         }
         return super.allowCoverOnSide(side, coverItem);
-    }
-
-    @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.STANDARD;
-    }
-
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.DEFAULT;
     }
 
     @Override

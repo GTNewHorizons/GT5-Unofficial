@@ -29,7 +29,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -508,7 +512,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
             for (int i = 0; i < mPipeAmount; i++) {
                 if (this.mFluids[i] != null) {
                     newPipe.mFluids[i] = this.mFluids[i].copy();
-                    newPipe.mFluids[i].amount = Math.min(this.mFluids[i].amount, newPipe.mCapacity);
+                    newPipe.mFluids[i].amount = Math.min(this.mFluids[i].amount, newPipe.getCapacity());
                 }
             }
         }
@@ -518,53 +522,59 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         newPipe.setBaseMetaTileEntity(aBaseMetaTileEntity);
 
         // Construct a change message if needed
-        StringBuilder message = new StringBuilder();
+        IChatComponent message = new ChatComponentText("");
+        boolean hasContent = false;
 
         // Compare capacity changes
         if (oldCapacity != newPipe.mCapacity) {
-            message.append(oldCapacity * 20)
-                .append("L/seconds → ");
-            message.append(newPipe.mCapacity > oldCapacity ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                .append(newPipe.mCapacity * 20)
-                .append("L/secs")
-                .append(EnumChatFormatting.RESET);
+            EnumChatFormatting capacityColor = newPipe.mCapacity > oldCapacity ? EnumChatFormatting.GREEN
+                : EnumChatFormatting.RED;
+            message.appendText(formatNumber(oldCapacity * 20));
+            message.appendSibling(new ChatComponentTranslation("gt.unit.liter_per_second"));
+            message.appendText(" → ");
+            message.appendSibling(
+                new ChatComponentText(formatNumber(newPipe.mCapacity * 20L))
+                    .setChatStyle(new ChatStyle().setColor(capacityColor)));
+            message.appendSibling(
+                new ChatComponentTranslation("gt.unit.liter_per_second")
+                    .setChatStyle(new ChatStyle().setColor(capacityColor)));
+            hasContent = true;
         }
 
         // Compare heat resistance
         if (oldHeatResistance != newPipe.mHeatResistance) {
-            if (message.length() > 0) message.append(" | ");
-            message.append(oldHeatResistance)
-                .append("K → ");
-            message
-                .append(newPipe.mHeatResistance > oldHeatResistance ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                .append(newPipe.mHeatResistance)
-                .append("K")
-                .append(EnumChatFormatting.RESET);
+            if (hasContent) message.appendText(" | ");
+            EnumChatFormatting heatColor = newPipe.mHeatResistance > oldHeatResistance ? EnumChatFormatting.GREEN
+                : EnumChatFormatting.RED;
+            message.appendText(formatNumber(oldHeatResistance) + "K → ");
+            message.appendSibling(
+                new ChatComponentText(formatNumber(newPipe.mHeatResistance) + "K")
+                    .setChatStyle(new ChatStyle().setColor(heatColor)));
+            hasContent = true;
         }
 
         // Compare gas handling
         if (oldGasProof != newPipe.mGasProof) {
-            if (message.length() > 0) message.append(" | ");
-            if (newPipe.mGasProof) {
-                message.append(EnumChatFormatting.GREEN)
-                    .append("Now Gas-Proof");
-            } else {
-                message.append(EnumChatFormatting.RED)
-                    .append("No Longer Gas-Proof");
-            }
-            message.append(EnumChatFormatting.RESET);
+            if (hasContent) message.appendText(" | ");
+            EnumChatFormatting gasProofColor = newPipe.mGasProof ? EnumChatFormatting.GREEN : EnumChatFormatting.RED;
+            message.appendSibling(
+                new ChatComponentTranslation(
+                    newPipe.mGasProof ? "GT5U.item.pipe.swap.now_gas_proof" : "GT5U.item.pipe.swap.no_longer_gas_proof")
+                        .setChatStyle(new ChatStyle().setColor(gasProofColor)));
+            hasContent = true;
         }
 
-        // Send a chat message if anything changed
-        if (message.length() > 0) {
-            GTUtility.sendChatTrans(aPlayer, "GT5U.item.pipe.swap.s", message.toString());
+        // Send a chat message if anything changed. Only send server-side, since this method also runs
+        // client-side for responsive placement and would otherwise send the message twice.
+        if (hasContent && aBaseMetaTileEntity.isServerSide()) {
+            GTUtility.sendChatTrans(aPlayer, "GT5U.item.pipe.swap.s", message);
         }
 
         // Force updates to sync changes
         aBaseMetaTileEntity.markDirty();
         aBaseMetaTileEntity.issueTextureUpdate();
         aBaseMetaTileEntity.issueBlockUpdate();
-        aBaseMetaTileEntity.issueClientUpdate();
+        aBaseMetaTileEntity.issueTileUpdate();
 
         // Handle inventory operations unless in creative mode
         if (!aPlayer.capabilities.isCreativeMode) {
@@ -661,6 +671,9 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
                             if (!mFluids[i].isFluidEqual(nextPipe.mFluids[i])) {
                                 return wasActionPerformed;
                             }
+                        } else if (mFluids[i] == null || nextPipe.mFluids[i] == null) {
+                            // one pipe is empty, so it doesn't matter if the other has fluid.
+                            continue;
                         } else if (mFluids[i] != nextPipe.mFluids[i]) {
                             return wasActionPerformed;
                         }

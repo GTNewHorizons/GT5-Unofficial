@@ -55,6 +55,16 @@ public class ShutDownReasonRegistry {
     @Nonnull
     public static final ShutDownReason POLLUTION_FAIL = SimpleShutDownReason.ofCritical("pollution_fail");
     /**
+     * Failed to output the fluids.
+     */
+    @Nonnull
+    public static final ShutDownReason FLUID_OUTPUT_FAILED = SimpleShutDownReason.ofCritical("fluid_output_failed");
+    /**
+     * Failed to output the items.
+     */
+    @Nonnull
+    public static final ShutDownReason ITEM_OUTPUT_FAILED = SimpleShutDownReason.ofCritical("item_output_failed");
+    /**
      * Shut down due to incomplete structure.
      */
     @Nonnull
@@ -92,6 +102,12 @@ public class ShutDownReasonRegistry {
     public static final ShutDownReason INSUFFICIENT_DYNAMO = SimpleShutDownReason.ofCritical("insufficient_dynamo");
 
     /**
+     * Critical shut down due to overheat.
+     */
+    @Nonnull
+    public static final ShutDownReason OVERHEAT_FAIL = SimpleShutDownReason.ofCritical("overheat_fail");
+
+    /**
      * Fluid that needs to be constantly supplied are out. E.g. PCB coolant with cooling upgrades enabled.
      */
     @Nonnull
@@ -120,5 +136,6 @@ public class ShutDownReasonRegistry {
         register(new ReasonOutOfFluid(Materials.Water.getFluid(0)));
         register(new ReasonOutOfItem(new ItemStack(Items.feather, 1)));
         register(new ReasonOutOfStuff("stuff", 1));
+        register(new ReasonMissingCondensate(null));
     }
 }

@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity;
 
+import static gregtech.api.interfaces.tileentity.IColoredTileEntity.UNCOLOURED;
+
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -33,7 +35,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ICleanroomReceiver;
@@ -46,6 +48,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.capability.CleanroomReference;
+import gregtech.common.gui.modularui.util.MTEItemStackHandler;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -72,7 +75,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     public final ItemStackHandler inventoryHandler;
 
     protected GUIColorOverride colorOverride;
-    protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
+    public final GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
 
     private static final String[] FACING_DIRECTION_NAMES = new String[] { "GT5U.waila.facing.down",
         "GT5U.waila.facing.up", "GT5U.waila.facing.north", "GT5U.waila.facing.south", "GT5U.waila.facing.west",
@@ -116,13 +119,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
         GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
 
-        inventoryHandler = new ItemStackHandler(mInventory) {
-
-            @Override
-            protected void onContentsChanged(int slot) {
-                MetaTileEntity.this.onContentsChanged(slot);
-            }
-        };
+        inventoryHandler = new MTEItemStackHandler(mInventory, this);
     }
 
     /**
@@ -130,13 +127,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      */
     public MetaTileEntity(String aName, int aInvSlotCount) {
         super(aName, aInvSlotCount);
-        inventoryHandler = new ItemStackHandler(mInventory) {
-
-            @Override
-            protected void onContentsChanged(int slot) {
-                MetaTileEntity.this.onContentsChanged(slot);
-            }
-        };
+        inventoryHandler = new MTEItemStackHandler(mInventory, this);
         colorOverride = GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
@@ -190,8 +181,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     @Override
-    public String getLocalName() {
-        return StatCollector.translateToLocal("gt.blockmachines." + mName + ".name");
+    public String getLocalNameKey() {
+        return "gt.blockmachines." + mName + ".name";
     }
 
     @Override
@@ -321,8 +312,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     /**
      * @return what type of texture does this machine use for GUI, i.e. Bronze, Steel, or Primitive
      */
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.NONE;
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.STANDARD;
     }
 
     /**
@@ -551,10 +542,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     /**
      * Called when a slot is changed. Note: {@link #setInventorySlotContents} is not called when the player interacts
-     * with a {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
+     * with a {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot, nor when items are inserted/extracted
+     * through {@link #getInventoryHandler()} (the path used by the GUI and AE). Marking the tile dirty here makes
+     * {@link IGregTechTileEntity#hasInventoryBeenModified()} reliable across all of those paths, which input hatches
+     * rely on to trigger instant recipe checks.
      */
-    protected void onContentsChanged(int slot) {
-
+    public void onContentsChanged(int slot) {
+        markDirty();
     }
 
     /**
@@ -650,11 +644,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
                 if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData pipe) pipe.updateNetwork(true);
             }
         }
-    }
-
-    @Override
-    public void onColorChangeClient(byte aColor) {
-        // Do nothing apparently
     }
 
     @Override
@@ -803,7 +792,9 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     final public byte getColor() {
-        return getBaseMetaTileEntity().getColorization();
+        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        if (baseMetaTileEntity == null) return UNCOLOURED;
+        return baseMetaTileEntity.getColorization();
     }
 
     protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x404040);
@@ -811,4 +802,29 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     protected Supplier<Integer> COLOR_TEXT_WHITE = () -> getTextColorOrDefault("text_white", 0xfafaff);
     protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x404040);
     protected Supplier<Integer> COLOR_TEXT_RED = () -> getTextColorOrDefault("text_red", 0xff0000);
+
+    // For MUI2 guis (which are usually built in a different class).
+    public int getTitleColor() {
+        return COLOR_TITLE.get();
+    }
+
+    public int getColorTitleWhite() {
+        return COLOR_TITLE_WHITE.get();
+    }
+
+    public int getColorTextWhite() {
+        return COLOR_TEXT_WHITE.get();
+    }
+
+    public int getColorTextGray() {
+        return COLOR_TEXT_GRAY.get();
+    }
+
+    public int getColorTextRed() {
+        return COLOR_TEXT_RED.get();
+    }
+
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return false;
+    }
 }

@@ -89,12 +89,21 @@ public enum MaskList {
     QPIC("qpic", "QPIC", 50, "", BLANK3, Dyes.dyeBlue, TierEU.RECIPE_UV, 3.2f, 9, 50, 6,
         ItemList.Circuit_Wafer_QPIC.get(1), null, ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2,
         ItemList.Circuit_Silicon_Wafer3, ItemList.Circuit_Silicon_Wafer4), // Different base mask to PIC
-
+    PrQPIC("prqpic", "Prepared Quantum Power IC", 0, "", QPIC, null, TierEU.RECIPE_UHV, 0, 0, 0, 0, null, null), // Made
+                                                                                                                 // in
+                                                                                                                 // CR
+                                                                                                                 // from
+                                                                                                                 // QPIC
+    FPIC("fpic", "FPIC", 50, "", PrQPIC, Dyes.dyePurple, TierEU.RECIPE_UHV, 6f, 14, 50, 6,
+        ItemList.Circuit_Wafer_FPIC.get(1), null, ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2,
+        ItemList.Circuit_Silicon_Wafer3, ItemList.Circuit_Silicon_Wafer4), // Different base mask to PIC
     CCPU("ccpu", "Crystal Central Processing Unit", 100, "", CBLANK, Dyes.dyeGreen, 10_000, 1, 3, 50, 6,
         ItemList.Circuit_Chip_CrystalCPU.get(1), ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1)), // For producing
                                                                                                     // Crystal CPUs
                                                                                                     // from
                                                                                                     // Engraved CCs
+    ELC("elc", "Engraved Lapotron Chip", 120, "", CBLANK, Dyes.dyeCyan, 10_000, 1, 3, 50, 3,
+        ItemList.Circuit_Parts_Crystal_Chip_Master.get(4), ItemList.IC2_LapotronCrystal.getWildcard(1)),
     CSOC("csoc", "Crystal SoC", 100, "", CBLANK, Dyes.dyeBlue, 40_000, 2, 7, 50, 8,
         ItemList.Circuit_Chip_CrystalSoC.get(1), ItemList.Circuit_Chip_CrystalCPU.get(1)),
     ACC("acc", "Advanced Crystal Chip", 100, "", CBLANK, Dyes.dyeLime, 80_000, 3, 9, 55, 12,
@@ -108,7 +117,7 @@ public enum MaskList {
     String englishName;
     String spectrum;
 
-    int maxDamage;
+    int maxUses;
 
     MaskList precursor;
     Dyes lensColour;
@@ -132,8 +141,7 @@ public enum MaskList {
         this.name = name;
         this.englishName = englishName;
         this.spectrum = spectrum;
-        this.maxDamage = maxUses - 1; // 0-durability masks still function, so e.g. maxUses = 100 corresponds to
-                                      // durability levels 0-99
+        this.maxUses = maxUses;
         this.precursor = precursor;
         this.lensColour = lensColour;
         this.engraverEUt = engraverEUt;
@@ -158,8 +166,8 @@ public enum MaskList {
         return this.spectrum;
     }
 
-    public int getDamage() {
-        return this.maxDamage;
+    public int getMaxUses() {
+        return this.maxUses;
     }
 
     public MaskList getPrecursor() {

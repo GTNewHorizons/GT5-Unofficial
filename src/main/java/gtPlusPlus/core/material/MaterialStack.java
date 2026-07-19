@@ -6,19 +6,17 @@ import java.math.RoundingMode;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.OrePrefixes;
-import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.xmod.bartworks.BWUtils;
 
 public class MaterialStack {
 
-    private final transient int[] vAmount;
+    private final transient int[] amount;
     private final Material stackMaterial;
-    private final double vPercentageToUse;
 
     public MaterialStack(final Material inputs, final double partOutOf100) {
         this.stackMaterial = inputs;
-        this.vPercentageToUse = partOutOf100;
-        this.vAmount = this.math(partOutOf100);
+        this.amount = this.math(partOutOf100);
     }
 
     private int[] math(final double val) {
@@ -39,11 +37,11 @@ public class MaterialStack {
         if (this.stackMaterial.getDust(1) == null) {
             return null;
         }
-        return this.stackMaterial.getDust(this.vAmount[0]);
+        return this.stackMaterial.getDust(this.amount[0]);
     }
 
     public ItemStack getDustStack() {
-        return this.stackMaterial.getDust(this.vAmount[0]);
+        return this.stackMaterial.getDust(this.amount[0]);
     }
 
     public ItemStack getDustStack(final int amount) {
@@ -63,16 +61,16 @@ public class MaterialStack {
 
     public Material getStackMaterial() {
         if (this.stackMaterial == null) {
-            Logger.modLogger.error("Tried getStackMaterial, got an invalid material.", new Exception());
+            GTplusplus.logger.error("Tried getStackMaterial, got an invalid material.", new Exception());
             return null;
         }
         return this.stackMaterial;
     }
 
     public int getPartsPerOneHundred() {
-        if (this.vAmount != null) {
-            if ((this.vAmount[0] >= 1) && (this.vAmount[0] <= 100)) {
-                return this.vAmount[0];
+        if (this.amount != null) {
+            if ((this.amount[0] >= 1) && (this.amount[0] <= 100)) {
+                return this.amount[0];
             }
         }
         return 100;

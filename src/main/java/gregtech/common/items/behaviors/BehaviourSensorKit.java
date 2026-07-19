@@ -6,11 +6,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -30,14 +31,10 @@ public class BehaviourSensorKit extends BehaviourNone {
             if (((tTileEntity instanceof IGregTechDeviceInformation))
                 && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
                 GTUtility.setStack(aStack, ItemList.NC_SensorCard.get(aStack.stackSize));
-                NBTTagCompound tNBT = aStack.getTagCompound();
-                if (tNBT == null) {
-                    tNBT = new NBTTagCompound();
-                }
-                tNBT.setInteger("x", aX);
-                tNBT.setInteger("y", aY);
-                tNBT.setInteger("z", aZ);
-                aStack.setTagCompound(tNBT);
+                ItemStackNBT.of(aStack)
+                    .setInteger("x", aX)
+                    .setInteger("y", aY)
+                    .setInteger("z", aZ);
             }
             return true;
         }

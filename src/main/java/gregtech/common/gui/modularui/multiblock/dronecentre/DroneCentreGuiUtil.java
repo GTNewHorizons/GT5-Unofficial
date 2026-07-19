@@ -17,7 +17,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.api.MCHelper;
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -54,7 +53,7 @@ public class DroneCentreGuiUtil {
         DroneCentreGuiUtil.TIME_OPTIONS.put(-1, "All");
     }
 
-    public static IWidget createHighLightButton(DroneConnection conn, PanelSyncManager dynamicSyncManager) {
+    public static ButtonWidget<?> createHighLightButton(DroneConnection conn, PanelSyncManager dynamicSyncManager) {
         return new ButtonWidget<>().syncHandler(
             dynamicSyncManager.getOrCreateSyncHandler(
                 "teleportPlayer" + conn.uuid.toString(),
@@ -71,18 +70,22 @@ public class DroneCentreGuiUtil {
                         }
                         DroneCentreGuiUtil.teleportPlayerToMachine(conn, player);
                         player.closeScreen();
-                    } else if (NetworkUtils.isClient() && var.mouseButton == 0) {
-                        ChunkCoordinates machineCoord = conn.getMachineCoord();
-                        DimensionalCoord blockPos = new DimensionalCoord(
-                            machineCoord.posX,
-                            machineCoord.posY,
-                            machineCoord.posZ,
-                            player.dimension);
-                        BlockPosHighlighter.highlightBlocks(player, Collections.singletonList(blockPos), null, null);
+                    } else if (var.mouseButton == 0) {
+                        if (NetworkUtils.isClient()) {
+                            ChunkCoordinates machineCoord = conn.getMachineCoord();
+                            DimensionalCoord blockPos = new DimensionalCoord(
+                                machineCoord.posX,
+                                machineCoord.posY,
+                                machineCoord.posZ,
+                                player.dimension);
+                            BlockPosHighlighter
+                                .highlightBlocks(player, Collections.singletonList(blockPos), null, null);
+                        } else {
+                            player.closeScreen();
+                        }
                     }
                 })))
             .size(16)
-            .background(GTGuiTextures.BUTTON_STANDARD)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
             .tooltipBuilder(
                 t -> t.addLine("x:" + conn.getMachineCoord().posX)
@@ -128,7 +131,7 @@ public class DroneCentreGuiUtil {
                 lines.set(i, EnumChatFormatting.GRAY + lines.get(i));
             }
         }
-        tooltipBuilder.add(lines.get(0))
+        tooltipBuilder.add(lines.getFirst())
             .newLine();
         if (lines.size() > 1) {
             tooltipBuilder.spaceLine();
@@ -211,19 +214,28 @@ public class DroneCentreGuiUtil {
 
         DroneConnectionListSyncHandler droneConnectionListSyncHandler = new DroneConnectionListSyncHandler(
             multiblock::getConnectionList);
-        EnumSyncValue<SortMode> sortModeSyncHandler = new EnumSyncValue<>(
+        EnumSyncValue<SortMode, ?> sortModeSyncHandler = new EnumSyncValue<>(
             DroneCentreGuiUtil.SortMode.class,
             multiblock::getSortMode,
-            multiblock::setSortMode);
+            multiblock::setSortMode).allowC2S();
         StringSyncValue searchFilterSyncHandler = new StringSyncValue(
             multiblock::getSearchBarText,
-            multiblock::setSearchBarText);
-        IntSyncValue activeGroupSyncHandler = new IntSyncValue(multiblock::getActiveGroup, multiblock::setActiveGroup);
+            multiblock::setSearchBarText).allowC2S();
+        StringSyncValue productionSearchFilterSyncHandler = new StringSyncValue(
+            multiblock::getProductionSearchFilter,
+            multiblock::setProductionSearchFilter).allowC2S();
+        IntSyncValue activeGroupSyncHandler = new IntSyncValue(multiblock::getActiveGroup, multiblock::setActiveGroup)
+            .allowC2S();
         BooleanSyncValue searchOriSyncHandler = new BooleanSyncValue(
             multiblock::getSearchOriginalName,
-            multiblock::setSearchOriginalName);
-        BooleanSyncValue editModeSyncHandler = new BooleanSyncValue(multiblock::getEditMode, multiblock::setEditMode);
-        BooleanSyncValue updateSyncHandler = new BooleanSyncValue(multiblock::shouldUpdate, multiblock::setUpdate);
+            multiblock::setSearchOriginalName).allowC2S();
+        BooleanSyncValue editModeSyncHandler = new BooleanSyncValue(multiblock::getEditMode, multiblock::setEditMode)
+            .allowC2S();
+        BooleanSyncValue updateSyncHandler = new BooleanSyncValue(multiblock::shouldUpdate, multiblock::setUpdate)
+            .allowC2S();
+        BooleanSyncValue renamingActiveGroupSyncHandler = new BooleanSyncValue(
+            multiblock::getRenamingActiveGroup,
+            multiblock::setRenamingActiveGroup).allowC2S();
 
         GenericListSyncHandler<String> groupSyncHandler = new GenericListSyncHandler<>(
             () -> multiblock.group,
@@ -236,17 +248,83 @@ public class DroneCentreGuiUtil {
         syncManager.syncValue("droneList", droneConnectionListSyncHandler);
         syncManager.syncValue("sortMode", sortModeSyncHandler);
         syncManager.syncValue("searchFilter", searchFilterSyncHandler);
+        syncManager.syncValue("productionSearchFilter", productionSearchFilterSyncHandler);
         syncManager.syncValue("groupNameList", groupSyncHandler);
         syncManager.syncValue("activeGroup", activeGroupSyncHandler);
         syncManager.syncValue("searchOri", searchOriSyncHandler);
         syncManager.syncValue("editMode", editModeSyncHandler);
         syncManager.syncValue("update", updateSyncHandler);
+        syncManager.syncValue("renamingActiveGroup", renamingActiveGroupSyncHandler);
+        syncManager.syncValue("addNewGroup", new InteractionSyncHandler().setOnMousePressed(var -> {
+            if (!NetworkUtils.isClient()) {
+                multiblock.addNewGroup();
+                syncManager.findSyncHandler("groupNameList", GenericListSyncHandler.class)
+                    .notifyUpdate();
+            }
+        }));
+        syncManager.syncValue("deleteGroup", new InteractionSyncHandler().setOnMousePressed(var -> {
+            if (!NetworkUtils.isClient()) {
+                multiblock.deleteGroup(multiblock.getActiveGroup());
+                multiblock.setActiveGroup(0);
+                syncManager.findSyncHandler("activeGroup", IntSyncValue.class)
+                    .notifyUpdate();
+                syncManager.findSyncHandler("groupNameList", GenericListSyncHandler.class)
+                    .notifyUpdate();
+                syncManager.findSyncHandler("droneList", DroneConnectionListSyncHandler.class)
+                    .notifyUpdate();
+            }
+        }));
+        syncManager.syncValue("toggleSelectAll", new InteractionSyncHandler().setOnMousePressed(var -> {
+            if (!NetworkUtils.isClient()) {
+                int activeGroup = multiblock.getActiveGroup();
+                if (activeGroup == 0) return;
+                List<DroneConnection> allConnections = multiblock.getConnectionList();
+                if (allConnections == null || allConnections.isEmpty()) return;
+                List<DroneConnection> filtered = allConnections.stream()
+                    .filter(conn -> matchesSearchFilter(conn, multiblock))
+                    .toList();
+                if (filtered.isEmpty()) return;
+                long groupBit = 1L << activeGroup;
+                boolean allInGroup = filtered.stream()
+                    .allMatch(conn -> (conn.getGroupMask() & groupBit) != 0);
+                for (DroneConnection conn : filtered) {
+                    long mask = conn.getGroupMask();
+                    if (allInGroup) {
+                        conn.setGroupMask(mask & ~groupBit);
+                    } else {
+                        conn.setGroupMask(mask | groupBit);
+                    }
+                }
+                syncManager.findSyncHandler("droneList", DroneConnectionListSyncHandler.class)
+                    .notifyUpdate();
+            }
+        }));
 
-        IntSyncValue selectTimeSyncHandler = new IntSyncValue(multiblock::getSelectedTime, multiblock::setSelectedTime);
+        IntSyncValue selectTimeSyncHandler = new IntSyncValue(multiblock::getSelectedTime, multiblock::setSelectedTime)
+            .allowC2S();
         ProductionStatsSyncHandler productionStatsSyncHandler = new ProductionStatsSyncHandler(
-            () -> multiblock.productionDataRecorder.getStatsInDuration(multiblock.getSelectedTime() * 1000L));
+            () -> multiblock.productionDataRecorder.getStatsInDuration(multiblock.getSelectedTime() * 1000L))
+                .allowC2S();
         syncManager.syncValue("selectTime", selectTimeSyncHandler);
         syncManager.syncValue("productionStats", productionStatsSyncHandler);
+    }
+
+    public static boolean matchesSearchFilter(DroneConnection conn, MTEDroneCentre centre) {
+        String searchText = centre.getSearchBarText();
+        if (searchText == null || searchText.isEmpty()) return true;
+        String searchTextLower = searchText.toLowerCase();
+
+        String customName = conn.getCustomName();
+        String customNameLower = customName == null ? "" : customName.toLowerCase();
+        if (customNameLower.contains(searchTextLower)) {
+            return true;
+        }
+        if (centre.getSearchOriginalName()) {
+            String locName = conn.getLocalizedName();
+            String locNameLower = locName == null ? "" : locName.toLowerCase();
+            return locNameLower.contains(searchTextLower);
+        }
+        return false;
     }
 
     public enum SortMode {

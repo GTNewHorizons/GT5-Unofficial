@@ -28,11 +28,10 @@ import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
@@ -183,7 +182,7 @@ public class MTEBoilerBronze extends MTEBoiler {
         int burnTime = TileEntityFurnace.getItemBurnTime(fuel);
         getCombustionPotential(fuel, burnTime).ifPresent(ashMaterial -> {
             aBaseMetaTileEntity.decrStackSize(2, 1);
-            this.mProcessingEnergy += burnTime / 10;
+            addProcessingEnergy(burnTime / 10);
             boolean isABlock = !Block.getBlockFromItem(fuel.getItem())
                 .equals(Blocks.air);
             combustFuel(burnTime, isABlock).map(dustSize -> GTOreDictUnificator.get(dustSize, ashMaterial, 1L))
@@ -254,7 +253,7 @@ public class MTEBoilerBronze extends MTEBoiler {
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.BRONZE;
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.BRONZE;
     }
 }

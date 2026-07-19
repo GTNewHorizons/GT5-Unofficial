@@ -30,6 +30,8 @@ public class TooltipHelper {
     public static final EnumChatFormatting ITALIC = EnumChatFormatting.ITALIC;
     public static final EnumChatFormatting EU_VOLT_COLOR = EnumChatFormatting.YELLOW;
     public static final EnumChatFormatting AMP_COLOR = EnumChatFormatting.AQUA;
+    public static final EnumChatFormatting CAPACITY_COLOR = EnumChatFormatting.BLUE;
+    public static final EnumChatFormatting EU_AMOUNT_COLOR = EnumChatFormatting.GRAY;
     public static final EnumChatFormatting CABLE_LOSS_COLOR = EnumChatFormatting.RED;
     public static final EnumChatFormatting L_COLOR = EnumChatFormatting.WHITE;
     public static final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
@@ -170,6 +172,20 @@ public class TooltipHelper {
     }
 
     /**
+     * @return The given EU/t, formatted in the form "[Number] EU/t".
+     */
+    public static String euRateText(long eu) {
+        return EU_VOLT_COLOR + NumberFormatUtil.formatNumber(eu) + TIER_COLOR + " EU/t" + EnumChatFormatting.GRAY;
+    }
+
+    /**
+     * @return The given number of EU, formatted.
+     */
+    public static String euCapacityText(long capacity) {
+        return CAPACITY_COLOR + NumberFormatUtil.formatNumber(capacity) + EU_AMOUNT_COLOR + " EU";
+    }
+
+    /**
      * @return A string of the form "[voltage] ([voltage tier])"
      */
     public static String voltageText(long voltage) {
@@ -189,7 +205,7 @@ public class TooltipHelper {
      * @return A string of the form "[lossPerMeter] EU-Volt"
      */
     public static String cableLossText(long lossPerMeter) {
-        return GTUtility.translate(
+        return StatCollector.translateToLocalFormatted(
             "GT5U.item.cable.loss.eu_volt",
             CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter) + EnumChatFormatting.GRAY);
     }
@@ -198,7 +214,7 @@ public class TooltipHelper {
      * @return The given number of L, formatted.
      */
     public static String fluidText(long liters) {
-        String text = NumberFormatUtil.formatNumber(liters) + GTUtility.translate("gt.unit.liter");
+        String text = NumberFormatUtil.formatNumber(liters) + StatCollector.translateToLocal("gt.unit.liter");
         return coloredText(text, L_COLOR);
     }
 
@@ -206,7 +222,8 @@ public class TooltipHelper {
      * @return The given number of L per sec, formatted.
      */
     public static String fluidRateText(long litersPerSecond) {
-        String text = NumberFormatUtil.formatNumber(litersPerSecond) + GTUtility.translate("gt.unit.liter_per_second");
+        String text = NumberFormatUtil.formatNumber(litersPerSecond)
+            + StatCollector.translateToLocal("gt.unit.liter_per_second");
         return coloredText(text, L_COLOR);
     }
 

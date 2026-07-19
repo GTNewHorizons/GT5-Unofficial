@@ -76,6 +76,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.objects.ItemData;
@@ -83,6 +84,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -238,12 +241,14 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.windmill")
             .addInfo("gt.windmill.tips.1")
-            .beginStructureBlock(7, 12, 7, false)
+            .beginStructureBlock(7, 7, 12, true)
             .addController("front_bottom_center")
-            .addCasingInfoMin("tile.clayHardened.name", 40)
-            .addStructurePart("tile.dispenser.name", "gt.windmill.info.1")
-            .addStructurePart("tile.doorWood.name", "gt.windmill.info.2")
-            .addStructureHint("tile.BWRotorBlock.0.name", 1)
+            .addCasing("100", "Wood Planks (any type)", false)
+            .addCasing("40-47", StatCollector.translateToLocal("tile.clayHardened.name"), false)
+            .addCasing("44", "Bricks", false)
+            .addMiscHatch("1", "tile.BWRotorBlock.0.name", "front_center", 1)
+            .addMiscHatch("1+", "tile.dispenser.name", "gt.windmill.info.1", 2)
+            .addMiscHatch("0-1", "tile.doorWood.name", "gt.windmill.info.2", 2)
             .toolTipFinisher();
         return tt;
     }
@@ -426,15 +431,19 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         this.tileEntityDispensers.clear();
         this.mDoor = 0;
         this.mHardenedClay = 0;
-
-        return this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0) && !this.tileEntityDispensers.isEmpty()
-            && this.mDoor <= 2
-            && this.mHardenedClay >= 40;
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0, errors)) return;
+        if (this.tileEntityDispensers.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_dispenser"));
+        }
+        if (this.mDoor > 2) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
+        }
+        checkCasingMin(errors, this.mHardenedClay, 40);
     }
 
     @Override
@@ -457,10 +466,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector
-                .translateToLocalFormatted("BW.infoData.wind_mill.progress", this.mProgresstime, this.mMaxProgresstime),
-            StatCollector
-                .translateToLocalFormatted("BW.infoData.wind_mill.grind_power", this.rotorBlock.getGrindPower()) };
+            IGregTechDeviceInformation
+                .encode("BW.infoData.wind_mill.progress", this.mProgresstime, this.mMaxProgresstime),
+            IGregTechDeviceInformation.encode("BW.infoData.wind_mill.grind_power", this.rotorBlock.getGrindPower()) };
     }
 
     @SideOnly(Side.CLIENT)
@@ -589,8 +597,8 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(BWUITextures.PICTURE_BW_LOGO_47X21)
-                .setSize(47, 21)
+            new DrawableWidget().setDrawable(BWUITextures.PICTURE_BW_LOGO_47X20)
+                .setSize(47, 20)
                 .setPos(123, 59));
     }
 
@@ -660,6 +668,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

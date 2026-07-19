@@ -1,5 +1,8 @@
 package gtnhlanth.common.register;
 
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_BEAMLINE_INPUT;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_BEAMLINE_OUTPUT;
+
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
@@ -95,14 +98,14 @@ public final class LanthItemList {
 
         BEAMLINE_PIPE = new MTEBeamlinePipe(10502, "Beamline Pipe", "Beamline Pipe").getStackForm(1L);
         LUV_BEAMLINE_INPUT_HATCH = new MTEHatchInputBeamline(
-            10503,
-            "LuV Beamline Input Hatch",
-            "LuV Beamline Input Hatch",
+            HATCH_BEAMLINE_INPUT.ID,
+            "hatch.beamlineinput",
+            "Beam Input Hatch",
             6).getStackForm(1L);
         LUV_BEAMLINE_OUTPUT_HATCH = new MTEHatchOutputBeamline(
-            10504,
-            "LuV Beamline Output Hatch",
-            "LuV Beamline Output Hatch",
+            HATCH_BEAMLINE_OUTPUT.ID,
+            "hatch.beamlineoutput",
+            "Beam Output Hatch",
             6).getStackForm(1L);
 
         BEAMLINE_FOCUS_INPUT_BUS = new MTEBusInputFocus(10509, "Focus Input Bus", "Focus Input Bus").getStackForm(1L);
@@ -164,10 +167,7 @@ public final class LanthItemList {
 
             String descSpectrum = mask.getSpectrum();
 
-            ItemPhotolithographicMask maskItem = new ItemPhotolithographicMask(
-                mask.getName(),
-                mask.getDamage(),
-                descSpectrum);
+            ItemPhotolithographicMask maskItem = new ItemPhotolithographicMask(mask.getName(), descSpectrum);
             GameRegistry.registerItem(maskItem, maskItem.getUnlocalizedName());
 
             if (!mask.getName()

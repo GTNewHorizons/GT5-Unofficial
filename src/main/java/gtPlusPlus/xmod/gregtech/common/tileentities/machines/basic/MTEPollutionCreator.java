@@ -3,8 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -14,6 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
@@ -207,21 +206,19 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        this.showPollution(aPlayer.getEntityWorld(), aPlayer);
+        this.showPollution(aPlayer);
         return true;
     }
 
     public int pollutionMultiplier = 1;
 
-    private void showPollution(final World worldIn, final EntityPlayer playerIn) {
+    private void showPollution(final EntityPlayer playerIn) {
         if (!GTMod.proxy.mPollution) {
             GTUtility.sendChatToPlayer(playerIn, "This block is useless, Pollution is disabled.");
         } else {
             addPollution();
             GTUtility
                 .sendChatToPlayer(playerIn, "This chunk now contains " + getCurrentChunkPollution() + " pollution.");
-            // GTUtility.sendChatToPlayer(playerIn, "Average over last ten minutes: "+getAveragePollutionOverLastTen()+"
-            // pollution.");
         }
     }
 
@@ -253,11 +250,9 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     @Override
     public String[] getInfoData() {
         return new String[] { this.getLocalName(),
-            StatCollector
-                .translateToLocalFormatted("gtpp.infodata.pollution_creator.pollution", this.mCurrentPollution),
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.pollution_creator.pollution.avg",
-                getAveragePollutionOverLastTen()) };
+            IGregTechDeviceInformation.encode("gtpp.infodata.pollution_creator.pollution", this.mCurrentPollution),
+            IGregTechDeviceInformation
+                .encode("gtpp.infodata.pollution_creator.pollution.avg", getAveragePollutionOverLastTen()) };
     }
 
     @Override
@@ -297,11 +292,6 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
 
     @Override
     public void setInventorySlotContents(final int p_70299_1_, final ItemStack p_70299_2_) {}
-
-    @Override
-    public String getInventoryName() {
-        return null;
-    }
 
     @Override
     public int getInventoryStackLimit() {
@@ -369,8 +359,6 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
         } else {
             returnValue = getCurrentChunkPollution();
         }
-        // Logger.INFO("| DEBUG: "+returnValue +" | ArrayPos:"+this.mArrayPos+" | Counter:"+counter+" | Total:"+total+"
-        // |");
         return returnValue;
     }
 }

@@ -46,8 +46,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -65,6 +63,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import bartworks.API.SideReference;
+import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.configs.Configuration;
 import bartworks.common.items.ItemLabParts;
@@ -77,12 +76,13 @@ import bartworks.util.Coords;
 import bartworks.util.MathUtils;
 import bartworks.util.ResultWrongSievert;
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -91,7 +91,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.IGTHatchAdder;
@@ -100,7 +101,8 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.common.misc.GTStructureChannels;
 
-public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements ISurvivalConstructable {
+public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public static final HashMap<Coords, Integer> staticColorMap = new HashMap<>();
 
@@ -155,7 +157,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                     .casingIndex(CASING_INDEX)
                     .build(),
                 onElementPass(e -> e.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))
-        .addElement('a', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
+        .addElement('a', ofChain(ofBlockAnyMeta(FluidLoader.bioFluidBlock), isAir()))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .build();
 
@@ -169,20 +171,21 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.bacvat")
             .addInfo("gt.bacvat.tips")
-            .beginStructureBlock(5, 4, 5, false)
+            .beginStructureBlock(5, 5, 4, false)
             .addController("front_bottom_center")
-            .addCasingInfoMin(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 19)
-            .addStructurePart("tooltip.bw.structure.glass", "gt.bacvat.info.glass", 2)
-            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 32, true)
+            .addCasing("19-45", "gt.blockcasings.4.name", false)
+            .addCasing("32", "GT5U.MBTT.AnyGlass", true)
+            .addStructureInfo("gt.bacvat.info.glass")
             .addStructureInfo("gt.bacvat.info.glass_req")
-            .addMaintenanceHatch("<casing>", 1)
-            .addStructurePart("tooltip.bw.structure.radio_hatch", "<casing>", 1)
-            .addInputBus("<casing>", 1)
-            .addOutputBus("<casing>", 1)
-            .addInputHatch("<casing>", 1)
-            .addOutputHatch("<casing>", 1)
-            .addEnergyHatch("<casing>", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addMiscHatch("0-1", "tooltip.bw.structure.radio_hatch", "<casing>", 1)
+            .addEnergyHatch("1+", "<casing>", 1)
+            .addMaintenanceHatch("1", "<casing>", 1)
+            .addInputBus("0+", "<casing>", 1)
+            .addInputHatch("1+", "<casing>", 1)
+            .addOutputBus("0+", "<casing>", 1)
+            .addOutputHatch("1", "<casing>", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -319,17 +322,24 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         this.mRadHatches.clear();
         this.glassTier = -1;
         this.mCasing = 0;
 
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0, errors)) return;
 
-        return this.mCasing >= 19 && this.mRadHatches.size() <= 1
-            && !this.mEnergyHatches.isEmpty()
-            && this.mMaintenanceHatches.size() == 1
-            && this.mOutputHatches.size() == 1;
+        checkCasingMin(errors, mCasing, 19);
+
+        if (mRadHatches.size() > 1) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_radiation_hatch"));
+        }
+
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        checkOneOutputHatch(errors);
     }
 
     private void sendAllRequiredRendererPackets(int offsetX_L, int offsetY_L, int offsetZ_L, int offsetX_U,
@@ -363,7 +373,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                 y + aBaseMetaTileEntity.getYCoord(),
                 zDir + z + aBaseMetaTileEntity.getZCoord(),
                 aBaseMetaTileEntity.getWorld().provider.dimensionId),
-            lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB());
+            lCulture == null ? BioCultureEnum.NullBioCulture.bioCulture.getColorRGB() : lCulture.getColorRGB());
 
         if (SideReference.Side.Server) {
             GTValues.NW.sendPacketToAllPlayersInRange(
@@ -374,7 +384,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                         y + aBaseMetaTileEntity.getYCoord(),
                         zDir + z + aBaseMetaTileEntity.getZCoord(),
                         aBaseMetaTileEntity.getWorld().provider.dimensionId),
-                    lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB(),
+                    lCulture == null ? BioCultureEnum.NullBioCulture.bioCulture.getColorRGB() : lCulture.getColorRGB(),
                     true),
                 aBaseMetaTileEntity.getXCoord(),
                 aBaseMetaTileEntity.getZCoord());
@@ -386,7 +396,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                         y + aBaseMetaTileEntity.getYCoord(),
                         zDir + z + aBaseMetaTileEntity.getZCoord(),
                         aBaseMetaTileEntity.getWorld().provider.dimensionId),
-                    lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB(),
+                    lCulture == null ? BioCultureEnum.NullBioCulture.bioCulture.getColorRGB() : lCulture.getColorRGB(),
                     false),
                 aBaseMetaTileEntity.getXCoord(),
                 aBaseMetaTileEntity.getZCoord());
@@ -535,36 +545,36 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                 }
 
                 this.height = this.reCalculateHeight();
-                if (this.mFluid != null && this.height > 1 && this.reCalculateFluidAmmount() > 0) {
-                    if (!BWUtil.areStacksEqualOrNull(aStack, this.mStack)
-                        || this.needsVisualUpdate && aBaseMetaTileEntity.getTimer() % MTEBioVat.TIMERDIVIDER == 1) {
-                        for (int x = offsetX_L; x <= offsetX_U; x++) {
-                            for (int y = offsetY_L; y <= offsetY_U; y++) {
-                                for (int z = offsetZ_L; z <= offsetZ_U; z++) {
-                                    if (aStack == null
-                                        || aStack.getItem() instanceof ItemLabParts && aStack.getItemDamage() == 0) {
-                                        if (this.mCulture == null || aStack == null
-                                            || aStack.getTagCompound() == null
-                                            || this.mCulture.getID() != aStack.getTagCompound()
-                                                .getInteger("ID")) {
-                                            lCulture = aStack == null || aStack.getTagCompound() == null ? null
-                                                : BioCulture.getBioCulture(
-                                                    aStack.getTagCompound()
-                                                        .getString("Name"));
-                                            this.sendPackagesOrRenewRenderer(x, y, z, lCulture);
-                                        }
-                                    }
-                                }
-                            }
+                if (this.mFluid == null || this.height <= 1 || this.reCalculateFluidAmmount() <= 0) {
+                    return;
+                }
+                if (BWUtil.areStacksEqualOrNull(aStack, this.mStack)
+                    && (!this.needsVisualUpdate || aBaseMetaTileEntity.getTimer() % MTEBioVat.TIMERDIVIDER != 1)) {
+                    return;
+                }
+                if (aStack == null
+                    || aStack.getItem() instanceof ItemLabParts && aStack.getItemDamage() == ItemLabParts.PETRI_DISH) {
+                    // TODO check if BioVat still renders correctly, because of the missing ID in culture tag
+                    if (this.mCulture == null || aStack == null
+                        || aStack.getTagCompound() == null
+                        || this.mCulture != BioCulture.getBioCultureFromNBTTag(aStack.getTagCompound())) {
+                        lCulture = (aStack == null) ? null
+                            : BioCulture.getBioCultureFromNBTTag(aStack.getTagCompound());
+                    }
+                }
+                for (int x = offsetX_L; x <= offsetX_U; x++) {
+                    for (int y = offsetY_L; y <= offsetY_U; y++) {
+                        for (int z = offsetZ_L; z <= offsetZ_U; z++) {
+                            this.sendPackagesOrRenewRenderer(x, y, z, lCulture);
                         }
-                        this.mStack = aStack;
-                        this.mCulture = lCulture;
                     }
-                    if (this.needsVisualUpdate && aBaseMetaTileEntity.getTimer() % MTEBioVat.TIMERDIVIDER == 1) {
-                        if (aBaseMetaTileEntity.isClientSide()) new Throwable().printStackTrace();
-                        this.placeFluid(xDir, zDir, offsetX_L, offsetY_L, offsetZ_L, offsetX_U, offsetY_U, offsetZ_U);
-                        this.needsVisualUpdate = false;
-                    }
+                }
+                this.mStack = aStack;
+                this.mCulture = lCulture;
+                if (this.needsVisualUpdate && aBaseMetaTileEntity.getTimer() % MTEBioVat.TIMERDIVIDER == 1) {
+                    if (aBaseMetaTileEntity.isClientSide()) new Throwable().printStackTrace();
+                    this.placeFluid(xDir, zDir, offsetX_L, offsetY_L, offsetZ_L, offsetX_U, offsetY_U, offsetZ_U);
+                    this.needsVisualUpdate = false;
                 }
             } else {
                 this.onRemoval();
@@ -661,7 +671,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                                     y + aBaseMetaTileEntity.getYCoord(),
                                     zDir + z + aBaseMetaTileEntity.getZCoord(),
                                     aBaseMetaTileEntity.getWorld().provider.dimensionId),
-                                this.mCulture == null ? BioCulture.NULLCULTURE.getColorRGB()
+                                this.mCulture == null ? BioCultureEnum.NullBioCulture.bioCulture.getColorRGB()
                                     : this.mCulture.getColorRGB(),
                                 true),
                             aBaseMetaTileEntity.getXCoord(),
@@ -690,30 +700,22 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_DISTILLATION_TOWER,
+            OVERLAY_FRONT_DISTILLATION_TOWER_GLOW,
+            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE,
+            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
     @Override
@@ -728,26 +730,20 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     }
 
     @Override
-    public String[] getInfoData() {
-        final String[] baseInfoData = super.getInfoData();
-        final String[] infoData = new String[baseInfoData.length + 2];
-        System.arraycopy(baseInfoData, 0, infoData, 0, baseInfoData.length);
+    public void getExtraInfoData(List<String> info) {
         // See https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/11923
         // here we must check the machine is well-formed as otherwise getExpectedMultiplier might error out!
-        infoData[infoData.length - 2] = StatCollector.translateToLocal("BW.infoData.BioVat.expectedProduction") + ": "
-            + EnumChatFormatting.GREEN
-            + (this.mMachine
-                ? (this.mMaxProgresstime <= 0 ? this.getExpectedMultiplier(null, false) : this.mExpectedMultiplier)
-                    * 100
-                : -1)
-            + EnumChatFormatting.RESET
-            + " %";
-        infoData[infoData.length - 1] = StatCollector.translateToLocal("BW.infoData.BioVat.production") + ": "
-            + EnumChatFormatting.GREEN
-            + (this.mMaxProgresstime <= 0 ? 0 : this.mTimes) * 100
-            + EnumChatFormatting.RESET
-            + " %";
-        return infoData;
+        info.add(
+            IGregTechDeviceInformation.encode(
+                "BW.infoData.BioVat.expectedProduction.fmt",
+                (this.mMachine
+                    ? (this.mMaxProgresstime <= 0 ? this.getExpectedMultiplier(null, false) : this.mExpectedMultiplier)
+                        * 100
+                    : -1)));
+
+        info.add(
+            IGregTechDeviceInformation
+                .encode("BW.infoData.BioVat.production.fmt", (this.mMaxProgresstime <= 0 ? 0 : this.mTimes) * 100));
     }
 
     @Override

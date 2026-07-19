@@ -42,14 +42,13 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -60,8 +59,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -85,7 +83,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltip
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
 
 public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<MTENanochipAssemblyComplex>
-    implements ISurvivalConstructable, NanochipTooltipValues {
+    implements ISurvivalConstructable, NanochipTooltipValues, ICasingTextureProvider {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
 
@@ -200,30 +198,26 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         modules.clear();
         vacuumConveyors.clear();
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, MAIN_OFFSET_X, MAIN_OFFSET_Y, MAIN_OFFSET_Z)) return false;
-        // At least most one energy hatch is accepted
-        boolean validEnergy = false;
-        if (this.mEnergyHatches.isEmpty()) {
-            validEnergy = this.mExoticEnergyHatches.size() == 1;
-        } else {
-            validEnergy = this.mEnergyHatches.size() == 1;
-        }
-        if (!validEnergy) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, MAIN_OFFSET_X, MAIN_OFFSET_Y, MAIN_OFFSET_Z, errors)) return;
+        // Exactly one energy hatch is accepted
+        checkOneEnergyHatchMaybeExotic(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        if (!errors.isEmpty()) return;
 
         modules.sort((module1, module2) -> module2.getPriority() - module1.getPriority());
 
         for (MTENanochipAssemblyModuleBase<?> module : modules) {
             final int maxDurationOfModuleRecipe = module.getMaxRecipeDuration();
-            // multiplty by 1.5 so there is no stuttering in between fully saturated recipes
+            // multiply by 2 so there is no stuttering in between fully saturated recipes
             BigInteger bufferSize = BigInteger.valueOf(this.getMaxInputEu());
             bufferSize = bufferSize.multiply(BigInteger.valueOf(maxDurationOfModuleRecipe * 2L));
             module.setBufferSize(bufferSize);
             module.setAvailableEUt(this.getMaxInputEu());
         }
-        return true;
     }
 
     @Override
@@ -244,27 +238,30 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 TOOLTIP_VCI)
             .addTecTechHatchInfo()
             .addInfo("gt.nac.tips.2")
-            .beginStructureBlock(63, 49, 63, false)
-            .addStructurePart(
-                "GT5U.tooltip.nac.interface.nac_module",
-                "GT5U.tooltip.nac.interface.structure_outer_ring_base_casing")
-            .addCasingInfoExactly(Casings.NanochipReinforcementCasing.getLocalizedName(), 3956)
-            .addCasingInfoExactly(Casings.NanochipComplexGlass.getLocalizedName(), 2226)
-            .addCasingInfoExactly(Casings.NanochipMeshInterfaceCasing.getLocalizedName(), 1720)
-            .addCasingInfoExactly(Casings.NanochipComputationalMatrixCasing.getLocalizedName(), 721)
-            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Naquadah), 53)
-            .addCasingInfoExactly(Casings.NanochipFirewallProjectionCasing.getLocalizedName(), 32)
-            .addStructurePart(
-                ItemList.Hatch_VacuumConveyor_Input.get(1)
-                    .getDisplayName(),
-                TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-            .addStructurePart(
-                ItemList.Hatch_VacuumConveyor_Output.get(1)
-                    .getDisplayName(),
-                TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-            .addInputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-            .addOutputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-            .addEnergyHatch(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+            .beginStructureBlock(63, 63, 49, false)
+            .addController("Middle of structure, 9th layer")
+            // Nanochip Reinforcement Casing
+            .addCasing("3956", translateToLocal("gt.blockcasings12.2.name"), false)
+            // Nanochip Complex Glass
+            .addCasing("2226", translateToLocal("gt.blockglass1.8.name"), false)
+            // Nanochip Mesh Interface Casing
+            .addCasing("1124-1719", translateToLocal("gt.blockcasings12.1.name"), false)
+            // Nanochip Computational Matrix Casing
+            .addCasing("721", translateToLocal("gt.blockcasings12.3.name"), false)
+            // Naquadah Frame Box
+            .addCasing("53", "Naquadah Frame Box", false)
+            // Nanochip Firewall Projection Casing
+            .addCasing("32", translateToLocal("gt.blockcasings12.4.name"), false)
+            .addMiscHatch(
+                "0-12",
+                translateToLocal("GT5U.tooltip.nac.interface.nac_module"),
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"),
+                1)
+            .addEnergyHatch("1", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)
+            .addInputBus("1+", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)
+            .addOutputBus("1+", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)
+            .addMiscHatch("0+", TOOLTIP_VCI_LONG, TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2, 3)
+            .addMiscHatch("0+", TOOLTIP_VCO_LONG, TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2, 3)
             .toolTipFinisher();
     }
 
@@ -276,29 +273,20 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE) };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX,
+            OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_GLOW,
+            OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_ACTIVE,
+            OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE);
     }
 
     public boolean addModuleToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

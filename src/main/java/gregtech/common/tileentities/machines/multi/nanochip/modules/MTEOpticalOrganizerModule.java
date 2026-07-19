@@ -5,7 +5,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGAN
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGANIZER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGANIZER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -24,8 +23,8 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -34,7 +33,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -74,33 +73,14 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OPTICAL_ORGANIZER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OPTICAL_ORGANIZER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OPTICAL_ORGANIZER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OPTICAL_ORGANIZER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OPTICAL_ORGANIZER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE) };
+        return createNanochipModuleTextures(
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_OPTICAL_ORGANIZER,
+            OVERLAY_FRONT_OPTICAL_ORGANIZER_GLOW,
+            OVERLAY_FRONT_OPTICAL_ORGANIZER_ACTIVE,
+            OVERLAY_FRONT_OPTICAL_ORGANIZER_ACTIVE_GLOW);
     }
 
     public MTEOpticalOrganizerModule(int aID, String aName, String aNameRegional) {
@@ -137,9 +117,11 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
-        return this.mInputHatches.size() <= 2 && !this.mInputHatches.isEmpty();
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        if (!errors.isEmpty()) return;
+        checkHasInputHatch(errors);
+        checkHatchMax(errors, HatchElement.InputHatch, 2);
     }
 
     @Override
@@ -162,24 +144,22 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             .addInfo(getWaterTooltipLine("8", WATER_LIST.get(5).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.7x"), TooltipHelper.EFF_COLOR))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.flavor.1")))
-            .beginStructureBlock(7, 10, 7, false)
+            .beginStructureBlock(7, 7, 10, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 56, false)
+            .addCasing("56", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 49, false)
+            .addCasing("49", translateToLocal("gt.blockcasings12.1.name"), false)
             // Awakened Draconium Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.DraconiumAwakened.getLocalizedName()),
-                48,
-                false)
+            .addCasing("48", "Awakened Draconium Frame Box", false)
             // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 40, false)
-            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
-            .addStructureInfoSeparator()
-            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
+            .addCasing("40", translateToLocal("gt.blockglass1.8.name"), false)
+            .addInputHatch("1-2", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addMiscHatch("0+", TOOLTIP_VCI_LONG, translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addMiscHatch("0+", TOOLTIP_VCO_LONG, translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
             .toolTipFinisher();
         // spotless:on
     }

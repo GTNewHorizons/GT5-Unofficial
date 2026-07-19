@@ -38,7 +38,6 @@ import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.hazards.HazardProtection;
@@ -235,12 +234,8 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
 
     @Override
     public int getCapacity(ItemStack aStack) {
-        return this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.cell
-            || this.orePrefixes == OrePrefixes.cellPlasma
-                ? 1_000
-                : this.orePrefixes == OrePrefixes.cellMolten || this.orePrefixes == OrePrefixes.capsuleMolten
-                    ? 1 * INGOTS
-                    : 0;
+        return this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma ? 1_000
+            : this.orePrefixes == OrePrefixes.cellMolten ? 1 * INGOTS : 0;
     }
 
     @Override
@@ -249,9 +244,6 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
             || this.orePrefixes == OrePrefixes.cellMolten) {
             return Materials.Empty.getCells(1);
         }
-
-        if (this.orePrefixes == OrePrefixes.capsule) return ItemList.FR_WaxCapsule.get(1);
-        if (this.orePrefixes == OrePrefixes.capsuleMolten) return ItemList.FR_RefractoryCapsule.get(1);
         return null;
     }
 }

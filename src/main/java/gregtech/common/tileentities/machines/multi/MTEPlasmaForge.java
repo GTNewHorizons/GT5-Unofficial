@@ -1,19 +1,18 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GTAuthors.AuthorColen;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_OFF;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_OFF_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_ON;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_RAINBOWSCREEN_GLOW;
@@ -21,7 +20,6 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,25 +50,29 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -82,7 +84,8 @@ import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForge> implements ISurvivalConstructable {
+public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForge>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     // 3600 seconds in an hour, 8 hours, 20 ticks in a second.
     private static final double max_efficiency_time_in_ticks = 3600d * 8d * 20d;
@@ -123,18 +126,10 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         }
     };
 
-    private static final int min_input_hatch = 0;
-    private static final int max_input_hatch = 7;
-    private static final int min_output_hatch = 0;
-    private static final int max_output_hatch = 2;
-    private static final int min_input_bus = 0;
-    private static final int max_input_bus = 6;
-    private static final int min_output_bus = 0;
-    private static final int max_output_bus = 1;
-
     // Current discount rate. 1 = 0%, 0 = 100%.
     private double discount = 1;
     private int mHeatingCapacity = 0;
+    private int mCasing = 0;
     private long running_time = 0;
     private boolean convergence = false;
     private HeatingCoilLevel mCoilLevel;
@@ -550,11 +545,15 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 .use(activeCoils(ofCoil(MTEPlasmaForge::setCoilLevel, MTEPlasmaForge::getCoilLevel))))
         .addElement(
             'b',
-            buildHatchAdder(MTEPlasmaForge.class)
-                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy, Maintenance)
-                .casingIndex(DIM_INJECTION_CASING)
-                .hint(3)
-                .buildAndChain(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))
+            ofChain(
+                buildHatchAdder(MTEPlasmaForge.class)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy)
+                    .casingIndex(DIM_INJECTION_CASING)
+                    .hint(1)
+                    .build(),
+                onElementPass(
+                    MTEPlasmaForge::onCasingFound,
+                    ofBlock(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))))
         .addElement('N', ofBlock(GregTechAPI.sBlockCasings1, DIM_TRANS_CASING))
         .addElement('s', ofBlock(GregTechAPI.sBlockCasings1, DIM_BRIDGE_CASING))
         .build();
@@ -582,21 +581,17 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 formatNumber(100 * maximum_discount),
                 formatNumber(efficiency_decay_rate))
             .addUnlimitedTierSkips()
-            .beginStructureBlock(33, 24, 33, false)
+            .beginStructureBlock(33, 33, 24, false)
             .addController("gt.dtpf.info.controller")
-            .addCasingInfoExactly("GT5U.tooltip.structure.heating_coil", 2112)
-            .addCasingInfoExactly(Casings.DimensionalBridge.getLocalizedName(), 120)
-            .addCasingInfoExactly(Casings.DimensionalInjectionCasing.getLocalizedName(), 1270)
-            .addCasingInfoExactly(Casings.DimensionallyTranscendentCasing.getLocalizedName(), 2121)
+            .addCasing("2121", "Dimensionally Transcendent Casing", false)
+            .addCasing("2112", "Heating Coil", true)
+            .addCasing("1250-1270", "Dimensional Injection Casing", false)
+            .addCasing("120", "Dimensional Bridge", false)
+            .addEnergyHatch("1-2", "Any injection casing", 1)
+            .addInputAny("1+", "Any injection casing", 1)
+            .addOutputAny("1+", "Any injection casing", 1)
             .addStructureInfo("")
-            .addEnergyHatch("gt.dtpf.info.e_hatch")
-            .addInputHatch(GOLD + min_input_hatch + GRAY + "-" + GOLD + max_input_hatch)
-            .addOutputHatch(GOLD + min_output_hatch + GRAY + "-" + GOLD + max_output_hatch)
-            .addInputBus(GOLD + min_input_bus + GRAY + "-" + GOLD + max_input_bus)
-            .addOutputBus(GOLD + min_output_bus + GRAY + "-" + GOLD + min_output_bus)
-            .addStructureInfo("")
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
-            .addTecTechHatchInfo()
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher(AuthorColen);
         return tt;
     }
@@ -614,22 +609,20 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         if (convergence && discount == maximum_discount) {
             glow = OVERLAY_RAINBOWSCREEN_GLOW;
         }
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING], TextureFactory.builder()
-                .addIcon(OVERLAY_DTPF_ON)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(glow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING], TextureFactory.builder()
-                .addIcon(OVERLAY_DTPF_OFF)
-                .extFacing()
-                .build() };
-        }
-        return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING] };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_DTPF_OFF,
+            OVERLAY_DTPF_OFF_GLOW,
+            OVERLAY_DTPF_ON,
+            glow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return casingTexturePages[0][DIM_BRIDGE_CASING];
     }
 
     @Override
@@ -758,64 +751,45 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         return tRecipe;
     }
 
+    private void onCasingFound() {
+        mCasing++;
+    }
+
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-
-        // Reset heating capacity.
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mHeatingCapacity = 0;
-
-        // Get heating capacity from coils in structure.
+        mCasing = 0;
         setCoilLevel(HeatingCoilLevel.None);
-
-        // Check the main structure
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 21, 16)) return false;
-
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-
-        // Item input bus check.
-        if (mInputBusses.size() > max_input_bus) return false;
-
-        // Item output bus check.
-        if (mOutputBusses.size() > max_output_bus) return false;
-
-        // Fluid input hatch check.
-        if (mInputHatches.size() > max_input_hatch) return false;
-
-        // Fluid output hatch check.
-        if (mOutputHatches.size() > max_output_hatch) return false;
-
-        // If there is more than 1 TT energy hatch, the structure check will fail.
-        // If there is a TT hatch and a normal hatch, the structure check will fail.
-        if (!mExoticEnergyHatches.isEmpty()) {
-            if (!mEnergyHatches.isEmpty()) return false;
-            if (mExoticEnergyHatches.size() > 1) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 21, 16, errors)) return;
+        if (getCoilLevel() == HeatingCoilLevel.None) {
+            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
-
-        // If there is 0 or more than 2 energy hatches structure check will fail.
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty() || mExoticEnergyHatches.size() > 1) {
+                errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            }
+        }
         if (!mEnergyHatches.isEmpty()) {
-            if (mEnergyHatches.size() > 2) return false;
-
-            // Check will also fail if energy hatches are not of the same tier.
-            byte tier_of_hatch = mEnergyHatches.get(0).mTier;
-            for (MTEHatchEnergy energyHatch : mEnergyHatches) {
-                if (energyHatch.mTier != tier_of_hatch) {
-                    return false;
+            if (mEnergyHatches.size() > 2) {
+                errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, Energy, mEnergyHatches.size(), 2));
+            } else {
+                byte tier_of_hatch = mEnergyHatches.get(0).mTier;
+                for (MTEHatchEnergy energyHatch : mEnergyHatches) {
+                    if (energyHatch.mTier != tier_of_hatch) {
+                        errors.add(StructureErrors.of("GT5U.gui.text.structure_error.energy_hatch_tier_mismatch"));
+                        break;
+                    }
                 }
             }
         }
-
-        // If there are no energy hatches or TT energy hatches, structure will fail to form.
-        if ((mEnergyHatches.isEmpty()) && (mExoticEnergyHatches.isEmpty())) return false;
-
-        // Maintenance hatch not required but left for compatibility.
-        // Don't allow more than 1, no free casing spam!
-        if (mMaintenanceHatches.size() > 1) return false;
-
-        // Heat capacity of coils used on multi. No free heat from extra EU!
-        mHeatingCapacity = (int) getCoilLevel().getHeat();
-
-        // All structure checks passed, return true.
-        return true;
+        // max 1273 - 2 - 7 - 6 - 1 - 1 = 1256
+        checkCasingMin(errors, mCasing, 1250);
+        checkHasAnyEnergy(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
+        if (errors.isEmpty()) {
+            mHeatingCapacity = (int) getCoilLevel().getHeat();
+        }
     }
 
     @Override
@@ -828,102 +802,44 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     public boolean addOutput(FluidStack aLiquid) {
         if (aLiquid == null) return false;
         FluidStack tLiquid = aLiquid.copy();
-
-        return dumpFluid(mOutputHatches, tLiquid, true) || dumpFluid(mOutputHatches, tLiquid, false);
+        addOutputPartial(tLiquid);
+        return tLiquid.amount == 0;
     }
 
     @Override
-    public String[] getInfoData() {
-
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-
-        for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
-        long voltage = getAverageInputVoltage();
-        long amps = getMaxInputAmps();
+    public void getExtraInfoData(List<String> info) {
+        info.add(IGregTechDeviceInformation.encode("GT5U.EBF.heat.s", formatNumber(this.mHeatingCapacity)));
 
         // Calculate discount to make sure it is shown properly even when machine is off but decaying
         recalculateDiscount();
 
-        return new String[] {
-            EnumChatFormatting.STRIKETHROUGH + "------------"
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.infodata.critical_info")
-                + " "
-                + EnumChatFormatting.STRIKETHROUGH
-                + "------------",
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime)
-                + EnumChatFormatting.RESET
-                + "t / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime)
-                + EnumChatFormatting.RESET
-                + "t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(voltage)
-                + EnumChatFormatting.RESET
-                + " EU/t(*"
-                + EnumChatFormatting.YELLOW
-                + amps
-                + EnumChatFormatting.RESET
-                + "A) "
-                + StatCollector.translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(voltage)]
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mHeatingCapacity)
-                + EnumChatFormatting.RESET
-                + " K",
-            StatCollector.translateToLocalFormatted(
+        info.add(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.plasma_forge.ticks_run_fuel_discount",
                 EnumChatFormatting.GREEN + formatNumber(running_time) + EnumChatFormatting.RESET,
                 EnumChatFormatting.RED + formatNumber(100 * (1 - discount)) + EnumChatFormatting.RESET + "%",
-                extraCatalystNeeded),
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.plasma_forge.convergence",
-                (convergence
-                    ? EnumChatFormatting.GREEN
-                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.active")
-                        + EnumChatFormatting.RESET
-                        + (discount == maximum_discount
-                            ? StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.achieved")
-                            : StatCollector.translateToLocalFormatted(
-                                "GT5U.infodata.plasma_forge.convergence.progress",
-                                formatNumber((max_efficiency_time_in_ticks - running_time) / (20 * 60))))
+                extraCatalystNeeded));
 
-                    : EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.inactive"))),
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET,
-            EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
+        String convergenceStatus;
+        if (convergence) {
+            String progressStr;
+            if (discount == maximum_discount) {
+                progressStr = IGregTechDeviceInformation.decode("GT5U.infodata.plasma_forge.convergence.achieved");
+            } else {
+                progressStr = IGregTechDeviceInformation.decode(
+                    IGregTechDeviceInformation.encode(
+                        "GT5U.infodata.plasma_forge.convergence.progress",
+                        formatNumber((max_efficiency_time_in_ticks - running_time) / (20 * 60))));
+            }
+            convergenceStatus = EnumChatFormatting.GREEN
+                + IGregTechDeviceInformation.decode("GT5U.infodata.plasma_forge.convergence.active")
+                + EnumChatFormatting.RESET
+                + progressStr;
+        } else {
+            convergenceStatus = EnumChatFormatting.RED
+                + IGregTechDeviceInformation.decode("GT5U.infodata.plasma_forge.convergence.inactive");
+        }
+        info.add(IGregTechDeviceInformation.encode("GT5U.infodata.plasma_forge.convergence", convergenceStatus));
     }
 
     private void recalculateDiscount() {
@@ -1097,6 +1013,11 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     @Override

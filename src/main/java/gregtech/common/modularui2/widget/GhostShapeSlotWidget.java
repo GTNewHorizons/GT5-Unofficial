@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.ITheme;
 import com.cleanroommc.modularui.api.UpOrDown;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -46,8 +45,8 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
     }
 
     @Override
-    public IDrawable getCurrentBackground(ITheme theme, WidgetThemeEntry<?> widgetTheme) {
-        IDrawable background = super.getCurrentBackground(theme, widgetTheme);
+    public IDrawable getCurrentBackground(WidgetThemeEntry<?> widgetTheme) {
+        IDrawable background = super.getCurrentBackground(widgetTheme);
         return new DrawableStack(background, GTGuiTextures.OVERLAY_SLOT_EXTRUDER_SHAPE);
     }
 
@@ -76,6 +75,7 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
     public PhantomItemSlot slot(ModularSlot slot) {
         shapeSyncHandler = new GhostShapeSyncHandler(slot, hatch);
         setSyncOrValue(shapeSyncHandler);
+        shapeSyncHandler.registerIndexSync(syncManager, "ghostShapeIndex");
         return this;
     }
 
@@ -113,8 +113,8 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
                         panel.closeIfOpen();
                     }
                 })
-                .setAllowDeselected(false)
                 .setCurrentItemSlotOverlay(GTGuiTextures.OVERLAY_SLOT_EXTRUDER_SHAPE)
+                .setAllowDeselected(true)
                 .build();
         });
     }

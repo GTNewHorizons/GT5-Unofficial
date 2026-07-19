@@ -3,18 +3,19 @@ package gtPlusPlus.core.item.chemistry;
 import static bartworks.system.material.WerkstoffLoader.PTMetallicPowder;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
+import static gregtech.api.recipe.RecipeMaps.flotationCellRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFurnaceRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.flotationCellRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import biomesoplenty.api.content.BOPCBlocks;
 import biomesoplenty.api.content.BOPCItems;
@@ -418,11 +419,7 @@ public class RecipeLoaderMilling {
 
             ItemStack forestryLeaves = GTModHandler.getModItem(Forestry.ID, "leaves", 1);
             if (forestryLeaves != null) {
-                NBTTagCompound tag = forestryLeaves.getTagCompound();
-                if (tag == null) {
-                    forestryLeaves.setTagCompound(tag = new NBTTagCompound());
-                }
-                tag.setString("species", "forestry.treePine"); // Set to Pine
+                ItemStackNBT.setString(forestryLeaves, "species", "forestry.treePine"); // Set to Pine
                 addPineLeafRecipe(forestryLeaves);
             }
         }

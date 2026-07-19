@@ -10,6 +10,7 @@ import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElem
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.OutputData;
 
 import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -34,6 +35,7 @@ import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.thing.casing.BlockGTCasingsTT;
@@ -107,7 +109,7 @@ public class MTENetworkSwitch extends TTMultiblockBase
     }
 
     @Override
-    public IStructureInstance getStructureInstance() {
+    public IStructureInstance<MTENetworkSwitch> getStructureInstance() {
         return structureInstanceInfo;
     }
 
@@ -117,8 +119,13 @@ public class MTENetworkSwitch extends TTMultiblockBase
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structure.checkStructure(this);
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
+        structure.checkStructure(this, errors);
+        checkHasDataInput(errors);
+        checkHasDataOutput(errors);
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override
@@ -136,32 +143,24 @@ public class MTENetworkSwitch extends TTMultiblockBase
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTENetworkSwitch> tt = new StructureWrapperTooltipBuilder<>(structure);
-
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.switch.type"));
-
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.0"));
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1"));
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.2"));
-        tt.addSeparator();
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.3"));
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.4"));
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.5"));
-
-        tt.addTecTechHatchInfo();
-
-        tt.beginStructureBlock();
-        tt.addController(translateToLocal("tt.keyword.Structure.FrontCenter"));
-
-        tt.addCasingInfoAuto(Casings.ComputerCasing);
-        tt.addCasingInfoAuto(Casings.AdvancedComputerCasing);
-
-        tt.addHatch(Casings.AdvancedComputerCasing, InputData, 1);
-        tt.addHatch(Casings.ComputerCasing, OutputData, 1, 2);
-        tt.addHatch(Casings.ComputerCasing, Energy, 1, 2);
-        tt.addHatch(Casings.ComputerCasing, Maintenance, 1, 2);
-
-        tt.toolTipFinisher();
-
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.switch.type"))
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.0"))
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1"))
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.2"))
+            .addSeparator()
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.3"))
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.4"))
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.5"))
+            .addSupportAny()
+            .beginStructureBlock(3, 3, 3, false)
+            .addController("Front center, 2nd layer")
+            .addCasing("0-17", "Computer Casing", false)
+            .addCasing("0-5", "Advanced Computer Casing", false)
+            .addMiscHatch("1+", "Optical Reception Connector", "Any advanced casing", 1)
+            .addMiscHatch("1+", "Optical Transmission Connector", "Any casing", 1, 2)
+            .addEnergyHatch("1+", "Any casing", 1, 2)
+            .addMaintenanceHatch("1", "Any casing", 1, 2)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -305,5 +304,10 @@ public class MTENetworkSwitch extends TTMultiblockBase
                 }
             }
         }
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

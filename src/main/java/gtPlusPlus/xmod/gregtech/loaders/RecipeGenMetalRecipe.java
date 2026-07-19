@@ -11,14 +11,12 @@ import java.util.Set;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gtPlusPlus.api.interfaces.RunnableWithInfo;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 
 public class RecipeGenMetalRecipe extends RecipeGenBase {
 
-    public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
+    public static final Set<Runnable> mRecipeGenMap = new HashSet<>();
 
     static {
         MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
@@ -36,17 +34,13 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
 
     private void generateRecipes(final Material material) {
 
-        Logger.WARNING("Generating Metal recipes for " + material.getDefaultLocalName());
         if (material.getIngot(1) != null && material.getBlock(1) != null) {
-
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getIngot(9))
                 .itemOutputs(material.getBlock(1))
                 .duration(15 * SECONDS)
-                .eut(2)
+                .eut(material.voltageMultiplier)
                 .addTo(compressorRecipes);
-            Logger.WARNING("Compress Block Recipe: " + material.getDefaultLocalName() + " - Success");
-
         }
 
         if (material.getIngot(1) != null && material.getRod(1) != null) {
@@ -54,10 +48,8 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
                 .itemInputs(material.getIngot(1))
                 .itemOutputs(material.getRod(1), material.getSmallDust(2))
                 .duration(Math.max(material.getMass() / 8L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(latheRecipes);
-
-            Logger.WARNING("Lathe Rod Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         if (material.getRod(1) != null && material.getBolt(1) != null) {
@@ -65,10 +57,8 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
                 .itemInputs(material.getRod(1))
                 .itemOutputs(material.getBolt(4))
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(cutterRecipes);
-
-            Logger.WARNING("Cut Bolt Recipe: " + material.getDefaultLocalName() + " - Success");
         }
 
         if (material.getRod(1) != null && material.getLongRod(1) != null) {
@@ -78,8 +68,6 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
                 .duration((int) Math.max(material.getMass(), 1L))
                 .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
-
-            Logger.WARNING("Hammer Long Rod Recipe: " + material.getDefaultLocalName() + " - Success");
 
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getLongRod(1))
@@ -97,8 +85,6 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
                 .duration(Math.max(material.getMass() / 8L, 1L))
                 .eut(4)
                 .addTo(latheRecipes);
-
-            Logger.WARNING("Lathe Screw Recipe: " + material.getDefaultLocalName() + " - Success");
         }
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,10 +18,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import org.jetbrains.annotations.NotNull;
+
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.glodblock.github.common.item.ItemFluidVoidStorageCell;
 
 import appeng.api.AEApi;
+import appeng.api.config.Actionable;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkChannelsChanged;
@@ -36,6 +43,8 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
 import appeng.helpers.IPriorityHost;
+import appeng.items.storage.ItemBasicStorageCell;
+import appeng.items.storage.ItemVoidStorageCell;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -48,21 +57,21 @@ import gregtech.api.enums.OutputBusType;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
+import gregtech.api.interfaces.IOutputTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusMEGui;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
-import gregtech.common.tileentities.machines.outputme.filter.MEFilterItem;
 import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchOutputBusME extends MTEHatchOutputBus
-    implements IPowerChannelState, IMEConnectable, ICellContainer, IGridProxyable, IPriorityHost,
-    MTEHatchOutputMEBase.Environment<IAEItemStack, MEFilterItem, ItemStack> {
+public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChannelState, IMEConnectable,
+    ICellContainer, IGridProxyable, IPriorityHost, MTEHatchOutputMEBase.Environment<IAEItemStack> {
 
     public MTEHatchOutputBusME(int aID, String aName, String aNameRegional) {
         super(
@@ -100,10 +109,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
 
     EntityPlayer lastClickedPlayer = null;
 
-    private final MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack> provider = new MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack>(
-        this,
-        new MEFilterItem(),
-        1_600) {};
+    private final MTEHatchOutputMEBase<IAEItemStack> provider = new MTEHatchOutputMEBase<IAEItemStack>(this, 1_600) {};
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -119,7 +125,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
 
     @Override
     public boolean storePartial(ItemStack stack, boolean simulate) {
-        return provider.storePartial(stack, simulate);
+        IAEItemStack input = AEItemStack.create(stack);
+        provider.storePartial(input, simulate);
+        stack.stackSize = (int) input.getStackSize();
+        return stack.stackSize == 0;
     }
 
     @Override
@@ -129,8 +138,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
 
     @Override
     public boolean isFilteredToItem(GTUtility.ItemId id) {
-        return provider.getFilter()
-            .isFilteredToItem(id);
+        return provider.canStore(AEItemStack.create(id.getItemStack()));
     }
 
     @Override
@@ -184,17 +192,47 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
             .getItemInventory();
     }
 
-    class MEOutputBusTransaction implements IOutputBusTransaction {
+    class MEOutputBusTransaction implements IOutputBusTransaction, IOutputTransaction.IRecipeCheckAware,
+        IOutputTransaction.IProtectOutputAware, IOutputTransaction.IDynamicCapacityOutputAware {
 
         private final AECacheCounter<GTUtility.ItemId> cache = new AECacheCounter<>();
-        private final long tick, availableSpace;
+        private final long availableSpace;
         private boolean active = true;
+        private boolean allowAnyInput = false;
+        private boolean isRecipeCheck = false;
+        private boolean isProtectOutput = true;
+        private boolean isDynamicCapacity = false;
+        private IMEInventoryHandler<IAEItemStack> cell = null;
 
         public MEOutputBusTransaction() {
-            long initialStored = provider.getCachedAmount();
-            long capacity = provider.getCacheCapacity();
-            tick = initialStored >= capacity ? provider.getLastInputTick() : provider.getTickCounter();
-            availableSpace = capacity - initialStored;
+            availableSpace = provider.getPhysicalSpace();
+        }
+
+        public void setRecipeCheck(boolean isRecipeCheck) {
+            this.isRecipeCheck = isRecipeCheck;
+            if (isRecipeCheck && provider.shouldCheck()) {
+                provider.flushCachedStack();
+                cell = AEApi.instance()
+                    .registries()
+                    .cell()
+                    .getCellInventory(getCellStack().copy(), getISaveProvider(), getChannel());
+            }
+            updateFlags();
+        }
+
+        public void setProtectOutput(boolean isProtectOutput) {
+            this.isProtectOutput = isProtectOutput;
+            updateFlags();
+        }
+
+        private void updateFlags() {
+            isDynamicCapacity = isRecipeCheck && isProtectOutput && shouldCheck() && !provider.isDistribution();
+            allowAnyInput = isRecipeCheck ? availableSpace > 0
+                : provider.getLastInputTick() == provider.getTickCounter();
+        }
+
+        public boolean isDynamicCapacity() {
+            return isDynamicCapacity;
         }
 
         @Override
@@ -204,49 +242,46 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
 
         @Override
         public boolean hasAvailableSpace() {
-            // There's really no reason for the tick counter, it's just more accurate to the real bus's behaviour.
-            // Transactions should never be kept around long enough for it to matter, but in case someone does something
-            // stupid it's here to make sure nothing breaks.
-            // This condition should always return true unless this transaction is kept around for more than one tick.
-            return cache.getTotal() < availableSpace || provider.getTickCounter() == tick;
-        }
-
-        public boolean canStore(GTUtility.ItemId id, ItemStack stack) {
-            if (provider.shouldCheck()) {
-                return provider.canStore(stack, stack.stackSize + cache.get(id));
-            }
-            return hasAvailableSpace() && provider.getFilter()
-                .isFilteredToItem(id);
+            return allowAnyInput || cache.getTotal() < availableSpace;
         }
 
         @Override
-        public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
+        public boolean storePartial(GTUtility.ItemId id, @NotNull ItemStack stack) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
-            if (!canStore(id, stack)) return false;
-
+            if (isRecipeCheck && provider.shouldCheck()) {
+                IAEItemStack input = AEItemStack.create(stack);
+                IAEItemStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
+                int inserted = (int) (stack.stackSize - (rejected == null ? 0 : rejected.getStackSize()));
+                cache.insert(id, inserted);
+                stack.stackSize -= inserted;
+                return stack.stackSize == 0;
+            }
+            if (!hasAvailableSpace() || !isFilteredTo(id)) {
+                return false;
+            }
             cache.insert(id, stack.stackSize);
             stack.stackSize = 0;
-
             return true;
         }
 
         @Override
-        public void completeItem(GTUtility.ItemId id) {
+        public void complete(GTUtility.ItemId id) {
             // Do nothing
         }
 
         @Override
         public void commit() {
-            cache.iterateAll(
-                (id, amount) -> {
-                    provider.addToCache(
-                        provider.getFilter()
-                            .fromNative(id.getItemStack())
-                            .setStackSize(amount));
-                });
-
-            MTEHatchOutputBusME.this.markDirty();
+            if (cache.getTotal() > 0) {
+                cache.iterateAll(
+                    (id, amount) -> {
+                        provider.addToCache(
+                            AEItemStack.create(id.getItemStack())
+                                .setStackSize(amount));
+                    });
+                provider.updateLastInputTick();
+                MTEHatchOutputBusME.this.markDirty();
+            }
             active = false;
         }
     }
@@ -316,14 +351,28 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         return false;
     }
 
-    public boolean canAcceptAnyItem() {
-        return provider.canAcceptAnyInput();
+    public boolean shouldCheck() {
+        return provider.shouldCheck();
+    }
+
+    public boolean hasPhysicalSpace() {
+        return provider.hasPhysicalSpace();
+    }
+
+    public boolean hasAvailableSpace() {
+        return provider.hasAvailableSpace();
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         provider.onPostTick(aBaseMetaTileEntity, aTick);
         super.onPostTick(aBaseMetaTileEntity, aTick);
+    }
+
+    @Override
+    public void notifyOutputSpaceChanged() {
+        // The provider detected its free space grew or its cell was swapped/repartitioned; re-check a blocked recipe.
+        notifyWatchers();
     }
 
     @Override
@@ -493,11 +542,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        provider.addUIWidgets(builder, buildContext);
-    }
-
-    @Override
     public boolean acceptsItemLock() {
         return false;
     }
@@ -557,7 +601,33 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     }
 
     @Override
-    public MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack> getProvider() {
+    public MTEHatchOutputMEBase<IAEItemStack> getProvider() {
         return provider;
+    }
+
+    @Override
+    public String getEnableKey() {
+        return "GT5U.hatch.item.filter.enable";
+    }
+
+    @Override
+    public String getDisableKey() {
+        return "GT5U.hatch.item.filter.disable";
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchOutputBusMEGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return itemStack != null && isItemCell(itemStack) && super.isItemValidForSlot(index, itemStack);
+    }
+
+    private boolean isItemCell(@NotNull ItemStack itemStack) {
+        Item item = itemStack.getItem();
+        return item instanceof ItemBasicStorageCell
+            || item instanceof ItemVoidStorageCell && !(item instanceof ItemFluidVoidStorageCell);
     }
 }

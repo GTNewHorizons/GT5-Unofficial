@@ -9,6 +9,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,17 +25,18 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.net.GTPacketNodeInfo;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -51,7 +53,7 @@ import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.tiles.TileNode;
 
 public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchCompleter>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int CASING_INDEX = 184;
     private static final int MAX_LENGTH = 13;
@@ -280,22 +282,36 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         mLength = 1;
         mCasing = 0;
         endFound = false;
 
         // check front
-        if (!checkPiece(STRUCTURE_PIECE_FIRST, 1, 1, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, 1, 1, 0, errors)) return;
 
         // check middle pieces
         while (!endFound && mLength++ < MAX_LENGTH) {
-            if (!checkPiece(STRUCTURE_PIECE_LATER, 1, 1, -(mLength - 1))) return false;
+            if (!checkPiece(STRUCTURE_PIECE_LATER, 1, 1, -(mLength - 1), errors)) return;
         }
 
-        return endFound && mLength >= 3
-            && checkPiece(STRUCTURE_PIECE_LAST, 0, 1, -(mLength - 1))
-            && mCasing >= mLength * 3;
+        if (!endFound) {
+            errors.add(StructureErrorRegistry.TOO_LONG);
+            return;
+        }
+
+        if (mLength < 3) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_LENGTH);
+        }
+
+        if (!checkPiece(STRUCTURE_PIECE_LAST, 0, 1, -(mLength - 1), errors)) return;
+
+        checkCasingMin(errors, mCasing, mLength * 3);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -312,30 +328,22 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int ColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_RESEARCH_COMPLETER,
+            OVERLAY_FRONT_RESEARCH_COMPLETER_GLOW,
+            OVERLAY_FRONT_RESEARCH_COMPLETER_ACTIVE,
+            OVERLAY_FRONT_RESEARCH_COMPLETER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
     @Override
@@ -348,14 +356,18 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.completer")
             .addInfo("gt.completer.tips")
-            .beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
-            .addController("front_center")
-            .addStructurePart(Casings.MagicalMachineCasing.getLocalizedName(), "gt.completer.info.casing")
-            .addStructurePart("tile.blockCosmeticOpaque.2.name", "gt.completer.info.glass")
-            .addEnergyHatch("<casing>")
-            .addMaintenanceHatch("<casing>")
-            .addInputBus("<casing>")
-            .addOutputBus("<casing>")
+            .beginVariableStructureBlock(3, MAX_LENGTH, 3, 3, 3, 3, true)
+            .addController("Front center, 2nd layer")
+            .addCasing("9-52", "Magical Machine Casing", false)
+            .addCasing("7-27", "Warded Glass", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("gt.completer.info.casing")
+            .addStructureFooter("gt.completer.info.glass")
+            .addMasterChannel(gregtech.api.util.GTUtility.nestParams("channels.gregtech.master.length"))
             .toolTipFinisher();
         return tt;
     }
@@ -402,5 +414,10 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
             env,
             false,
             true);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

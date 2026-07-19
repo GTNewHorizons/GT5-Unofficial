@@ -37,7 +37,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -47,12 +46,13 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRenderer;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
-import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -72,6 +72,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -82,7 +83,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -98,7 +100,7 @@ import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
-    implements ISurvivalConstructable, IMTERenderer, I3DGeometryRenderer {
+    implements ISurvivalConstructable, IMTERenderer, I3DGeometryRenderer, ICasingTextureProvider {
 
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
         new CoolingFluid(Materials.SuperCoolant, 1, 100),
@@ -187,7 +189,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     {"               ","               ","               ","     HAAAH     ","    F     F    ","   H  EFE  H   ","   A E C E A   ","   A FC CF A   ","   A E C E A   ","   H  EFE  H   ","    F     F    ","     HAAAH     ","               ","               ","               "},
                     {"               ","               ","               ","     HAAAH     ","    H     H    ","   H   D   H   ","   A   C   A   ","   A DC CD A   ","   A   C   A   ","   H   D   H   ","    H     H    ","     HAAAH     ","               ","               ","               "},
                     {"               ","               ","     H   H     ","     HDDDH     ","               ","  HH  EBE  HH  ","   D E C E D   ","   D BC CB D   ","   D E C E D   ","  HH  EBE  HH  ","               ","     HDDDH     ","     H   H     ","               ","               "},
-                    {"     HHHHH     ","   DDHBBBHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHEHH  HHH","HBHHHHEEEHHHHBH","HBHHHEEEEEHHHBH","HBHHHHHEEHHHHBH","HHH  HHEHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHBBBHDD   ","     HHHHH     "},
+                    {"     HHHHH     ","   DDHBBBHDD   ","  D  HHHHH  D  "," D    HHH    D "," D    HHH    D ","HHH  HHEHH  HHH","HBHHHHEEEHHHHBH","HBHHHEEEEEHHHBH","HBHHHHEEEHHHHBH","HHH  HHEHH  HHH"," D    HHH    D "," D    HHH    D ","  D  HHHHH  D  ","   DDHBBBHDD   ","     HHHHH     "},
                     {"      H~H      ","       D       ","       D       ","       D       ","       D       ","               ","H             H","BDDDD     DDDDB","H             H","               ","       D       ","       D       ","       D       ","       D       ","      HBH      "},
                     {"     HHHHH     ","   DDHHBHHDD   ","  D  HHBHH  D  "," D  HHHBHHH  D "," D HHHBHBHHH D ","HHHHHHBHBHHHHHH","HHHHBBHHHBBHHHH","HBBBHHHBHHHBBBH","HHHHBBHHHBBHHHH","HHHHHHBHBHHHHHH"," D HHHBHBHHH D "," D  HHHBHHH  D ","  D  HHBHH  D  ","   DDHHBHHDD   ","     HHHHH     "}
                 }))
@@ -241,9 +243,9 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 new String[][] {
                     {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
                     {"      eee      ","      beb      ","               ","               ","               ","               ","eb           be","ee           ee","eb           be","               ","               ","               ","               ","      beb      ","      eee      "},
-                    {"     ebabe     ","   ccbHHHbcc   ","  fb       bf  "," cb         bc "," c           c ","eb           be","bH           Hb","aH           Ha","bH           Hb","eb           be"," c           c "," cb         bc ","  db       bf  ","   ccbHHHbcc   ","     ebabe     "},
+                    {"     ebabe     ","   ccbHHHbcc   ","  fb       bf  "," cb         bc "," c           c ","eb           be","bH           Hb","aH           Ha","bH           Hb","eb           be"," c           c "," cb         bc ","  fb       bf  ","   ccbHHHbcc   ","     ebabe     "},
                     {"     ehghe     ","   ddeHHHedd   ","  dd       dd  "," dd         dd "," d           d ","ee           ee","hH           Hh","gH           Hg","hH           Hh","ee           ee"," d           d "," dd         dd ","  dd       dd  ","   ddeHHHedd   ","     ehghe     "},
-                    {"     ebabe     ","   ccbHHHbcc   ","  fb       bf  "," cb         bc "," c           c ","eb           be","bH           Hb","aH           Ha","bH           Hb","eb           be"," c           c "," cb         bc ","  db       bf  ","   ccbHHHbcc   ","     ebabe     "},
+                    {"     ebabe     ","   ccbHHHbcc   ","  fb       bf  "," cb         bc "," c           c ","eb           be","bH           Hb","aH           Ha","bH           Hb","eb           be"," c           c "," cb         bc ","  fb       bf  ","   ccbHHHbcc   ","     ebabe     "},
                     {"      eee      ","      beb      ","               ","               ","               ","               ","eb           be","ee           ee","eb           be","               ","               ","               ","               ","      beb      ","      eee      "},
                     {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
                 }
@@ -275,7 +277,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('m', ofSheetMetal(Materials.Samarium))
         .addElement('n', ofSheetMetal(Materials.TengamAttuned))
         .addElement('o', ofSheetMetal(Materials.Quantium))
-        .addElement('p', lazy(() -> ofBlock(ModBlocks.blockCustomMachineCasings, 3))) // TODO: replace with MEBF casing after rework)
+        .addElement('p', lazy(() -> ofBlock(ModBlocks.blockCustomMachineCasings, 3)))
         .addShape(
             FoundryModule.HYPERCOOLER.structureID,
             transpose(
@@ -285,7 +287,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     {"     utwtu     ","   tuu v uut   ","               "," t           t "," u           u ","uu           uu","t             t","wv           vw","t             t","uu           uu"," u           u "," t           t ","               ","   tuu v uut   ","     utwtu     "},
                     {"     qwwwq     ","   sssvtvsss   ","  q         q  "," s           s "," s           s ","qs           sq","wv           vw","wt           tw","wv           vw","qs           sq"," s           s "," s           s ","  q         q  ","   sssvtvsss   ","     qwwwq     "},
                     {"     utwtu     ","   tuu v uut   ","               "," t           t "," u           u ","uu           uu","t             t","wv           vw","t             t","uu           uu"," u           u "," t           t ","               ","   tuu v uut   ","     utwtu     "},
-                    {"      rqr      ","    rrusurr    ","               ","               "," r           r "," r           r ","ru           ur","qs           sq","ru           ur","rr           r ","             r ","               ","               ","    rrusurr    ","      rqr      "},
+                    {"      rqr      ","    rrusurr    ","               ","               "," r           r "," r           r ","ru           ur","qs           sq","ru           ur"," r           r "," r           r ","               ","               ","    rrusurr    ","      rqr      "},
                     {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
                 }))
         .addElement('q', ofBlock(GregTechAPI.sBlockCasings8,14))
@@ -294,12 +296,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry, 9))
         .addElement('u', ofSheetMetal(Materials.CallistoIce))
         .addElement('v', ofSheetMetal(Materials.SuperconductorUHVBase))
-        // TODO: replace with MVF casing after rework
-        .addElement('w', buildHatchAdder(MTEExoFoundry.class).hatchClass(MTEHatchInput.class)
-                .adder(MTEExoFoundry::addCoolantInputToMachineList)
-                .casingIndex(TAE.getIndexFromPage(2, 10))
-                .hint(2)
-                .buildAndChain(lazy(() -> ofBlock(ModBlocks.blockCasings3Misc, 10))))
+        .addElement(
+            'w',
+            lazy(
+                () -> InputHatch.withAdder(MTEExoFoundry::addCoolantInputToMachineList)
+                    .newAnyOrCasing(TAE.getIndexFromPage(2, 10), 2, ModBlocks.blockCasings3Misc, 10)))
         .addShape(
             FoundryModule.HELIOCAST_REINFORCEMENT.structureID,
             transpose(
@@ -422,48 +423,29 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_EXOFOUNDRY,
+            OVERLAY_FRONT_EXOFOUNDRY_GLOW,
+            OVERLAY_FRONT_EXOFOUNDRY_ACTIVE,
+            OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0));
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier, Foundry")
+        tt.addMachineType("Fluid Solidifier")
             .addBulkMachineInfo(foundryData.parallelScaleBase, foundryData.speedModifierBase, foundryData.euEffBase)
             .addInfo(
                 "Will " + EnumChatFormatting.BOLD
@@ -506,61 +488,26 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     + EnumChatFormatting.GRAY
                     + " stats are shown in NEI and the Controller")
             .addInfo("Toggle Render with Screwdriver")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addSeparator()
             .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
-            .beginStructureBlock(15, 55, 15, true)
+            .beginStructureBlock(15, 15, 55, true)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMinColored(
-                "Primary Exo-Foundry Casing",
-                EnumChatFormatting.GRAY,
-                MIN_CASINGS,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Exo-Foundry Containment Glass",
-                EnumChatFormatting.GRAY,
-                548,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Inner Foundry Siphon Casing",
-                EnumChatFormatting.GRAY,
-                281,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Central Magnetic Chassis",
-                EnumChatFormatting.GRAY,
-                260,
-                EnumChatFormatting.GOLD,
-                true)
-            .addCasingInfoExactlyColored(
-                "Netherite Frame Box",
-                EnumChatFormatting.GRAY,
-                224,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Central Exo-Foundry Regulation Casing",
-                EnumChatFormatting.GRAY,
-                196,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Black Plutonium Item Pipe Casing",
-                EnumChatFormatting.GRAY,
-                173,
-                EnumChatFormatting.GOLD,
-                false)
-            .addInputBus("Any Foundry Casing", 1)
-            .addOutputBus("Any Foundry Casing", 1)
-            .addInputHatch("Any Foundry Casing", 1)
-            .addEnergyHatch("Any Foundry Casing", 1)
-            .addStructureInfoSeparator()
-            .addStructureInfo("Check NEI for Module structure costs");
-
-        tt.toolTipFinisher();
+            .addCasing("548", "Exo-Foundry Containment Glass", false)
+            .addCasing(MIN_CASINGS + "-485", "Primary Exo-Foundry Casing", false)
+            .addCasing("282", "Inner Exo-Foundry Siphon Casing", false)
+            .addCasing("260", "Magnetic Chassis", true)
+            .addCasing("224", "Netherite Frame Box", false)
+            .addCasing("196", "Central Exo-Foundry Regulation Casing", false)
+            .addCasing("173", "Black Plutonium Item Pipe Casing", false)
+            .addEnergyHatch("1+", "Any primary casing", 1)
+            .addInputBus("0+", "Any primary casing", 1)
+            .addInputHatch("1+", "Any primary casing", 1)
+            .addOutputBus("1+", "Any primary casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Check NEI for module costs")
+            .addSubChannel(GTStructureChannels.MAGNETIC_CHASSIS)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -637,18 +584,24 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         foundryData.tier = -1;
         coolantHatches.clear();
-        // limit hatch space to about 25 hatches without modules. T.D.S removes 20 for balance, and casters adds 36 by
+        // limit hatch space to about 25 hatches without modules. U.C removes 15 for balance, and casters adds 36 by
         // proxy.
-        if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset)) {
+        if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset, errors)) {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
-            return checkModules() && casingAmount >= MIN_CASINGS + (foundryData.tdsPresent ? 20 : 0);
+            foundryData.checkSolidifierModules(); // recalculate module flags with current tier
+            checkModules(errors);
+            int requiredCasings = MIN_CASINGS + (foundryData.universalCollapserPresent ? 15 : 0);
+            checkCasingMin(errors, casingAmount, requiredCasings);
+            checkHasAnyEnergy(errors);
+            checkHasInputHatch(errors);
+            checkHasOutputBus(errors);
+        } else {
+            getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
         }
-        getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
-        return false;
     }
 
     @Override
@@ -663,17 +616,21 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         }
     }
 
-    private boolean checkModules() {
+    private boolean checkModules(List<StructureError> errors) {
         for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
             FoundryModule m = foundryData.modules[i];
             if (!checkPiece(
                 m.structureID,
                 moduleHorizontalOffsets[i],
                 moduleVerticalOffsets[i],
-                moduleDepthOffsets[i])) {
+                moduleDepthOffsets[i],
+                errors)) {
                 return false;
             }
-            if (m == FoundryModule.HYPERCOOLER && coolantHatches.size() != 1) return false;
+            if (m == FoundryModule.HYPERCOOLER && coolantHatches.size() != 1) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.exo_foundry_hypercooler_hatch"));
+                return false;
+            }
         }
         return true;
 
@@ -837,7 +794,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     // GUI code
     @Override
     public int getMaxParallelRecipes() {
-        checkModules();
+        checkModules(new ArrayList<>());
         return (int) (Math.floor(foundryData.parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
@@ -880,13 +837,13 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     // Render code
     private boolean shouldRender = true;
     private boolean renderInitialized;
-    private static IModelCustomExt ring;
+    private static IVertexArrayObject ring;
     private static ShaderProgram ringProgram;
     private int uRingColor;
 
     private void initializeRender() {
         // spotless:off
-        ring = (IModelCustomExt) AdvancedModelLoader.loadModel(
+        ring = WavefrontVBOBuilder.compileToVBO(
             new ResourceLocation(
                 GregTech.resourceDomain,
                 "textures/model/foundry_ring.obj"
@@ -1003,7 +960,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         GL11.glPushMatrix();
         GL11.glTranslatef(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
         GL11.glScalef(0.8f, 1.2f, 0.8f);
-        ring.renderAllVAO();
+        ring.render();
         GL11.glPopMatrix();
     }
 

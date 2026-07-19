@@ -12,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,6 +27,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
@@ -36,6 +36,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.singleblock.MTEMicrowaveEnergyTransmitterGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
@@ -61,8 +62,12 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
             aNameRegional,
             aTier,
             3,
-            new String[] { "Transmits Energy Wirelessly", "Use Nitrogen Plasma", "for Inter-dimensional transmission",
-                "0.004EU Loss per 100 Blocks" });
+            new String[] { "gt.blockmachines.basicmachine.microtransmitter.tooltip" });
+    }
+
+    public String[] getDescription() {
+        return GTUtility.translateMultiline("gt.blockmachines.basicmachine.microtransmitter.tooltip");
+
     }
 
     public MTEMicrowaveEnergyTransmitter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -84,33 +89,23 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { StatCollector.translateToLocal("GT5U.infodata.coordinates"),
-            StatCollector.translateToLocalFormatted(
+        return new String[] { "GT5U.infodata.coordinates",
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.coordinates.x",
                 EnumChatFormatting.GREEN + formatNumber(this.mTargetX) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.coordinates.y",
                 EnumChatFormatting.GREEN + formatNumber(this.mTargetY) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.coordinates.z",
                 EnumChatFormatting.GREEN + formatNumber(this.mTargetZ) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.dimension",
-                "" + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.dimension.valid",
-                (GTUtility.isRealDimension(this.mTargetD)
-                    ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.infodata.yes")
-                        + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.no")
-                        + EnumChatFormatting.RESET)),
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.dimension.registered",
-                (DimensionManager.isDimensionRegistered(this.mTargetD)
-                    ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.infodata.yes")
-                        + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.no")
-                        + EnumChatFormatting.RESET)) };
+                EnumChatFormatting.GREEN + "" + this.mTargetD + EnumChatFormatting.RESET),
+            GTUtility.isRealDimension(this.mTargetD) ? "GT5U.infodata.dimension.valid.yes"
+                : "GT5U.infodata.dimension.valid.no",
+            DimensionManager.isDimensionRegistered(this.mTargetD) ? "GT5U.infodata.dimension.registered.yes"
+                : "GT5U.infodata.dimension.registered.no" };
     }
 
     @Override

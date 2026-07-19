@@ -15,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -50,21 +51,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -75,7 +74,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAutoclave>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public MTEMultiAutoclave(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -213,29 +212,23 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
             .addDynamicSpeedBonusInfo(0.25f, TooltipTier.COIL)
             .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
-            .beginStructureBlock(7, 7, 9, true)
-            .addController("front_bottom_center")
-            .addCasingInfoMin(
-                ItemList.Casing_Autoclave.get(1)
-                    .getDisplayName(),
-                128)
-            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 42, true)
-            .addCasingInfoExactly("GT5U.MBTT.Tiers.ItemPipe", 7, true)
-            .addCasingInfoExactly("GT5U.MBTT.Tiers.FluidPipe", 14, true)
-            .addCasingInfoExactly("GT5U.MBTT.Tiers.Coil", 7, true)
-            .addCasingInfoExactly(
-                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Polytetrafluoroethylene),
-                42)
-            .addInputBus(anyCasing, 1)
-            .addOutputBus(anyCasing, 1)
-            .addInputHatch(anyCasing, 1)
-            .addOutputHatch(anyCasing, 1)
-            .addEnergyHatch(anyCasing, 1)
-            .addMaintenanceHatch(anyCasing, 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
-            .addSubChannelUsage(GTStructureChannels.PIPE_CASING)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .beginStructureBlock(9, 7, 7, true)
+            .addController("Front bottom center")
+            .addCasing("128-148", "Pressure Containment Casing", false)
+            .addCasing("42", "PTFE Frame Box", false)
+            .addCasing("42", "Any Tiered Glass", false)
+            .addCasing("14", "Pipe Casing", true)
+            .addCasing("7", "Item Pipe Casing", true)
+            .addCasing("7", "Heating Coil", true)
+            .addEnergyHatch("1+", "Any containment casing", 1)
+            .addMaintenanceHatch("1", "Any containment casing", 1)
+            .addInputAny("1+", "Any containment casing", 1)
+            .addOutputAny("1+", "Any containment casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.PIPE_CASING)
+            .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher(AuthorVolence);
         return tt;
     }
@@ -247,53 +240,37 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         fluidPipeTier = -1;
         itemPipeTier = -1;
         mCasingAmount = 0;
         mEnergyHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
-        return mCasingAmount >= 128;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 128);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE_GLOW,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3));
     }
 
     @Override
@@ -403,11 +380,6 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 }

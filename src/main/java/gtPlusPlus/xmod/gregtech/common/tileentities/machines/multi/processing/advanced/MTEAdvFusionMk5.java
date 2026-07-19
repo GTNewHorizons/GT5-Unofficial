@@ -3,8 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.a
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -13,6 +11,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -26,7 +25,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEAdvFusionMk5 extends MTEFusionComputer {
@@ -51,20 +49,15 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
             .addInfo("gt.fusion.tips.d")
             .addInfo("gt.fusion.tips", "524,288", "1.28B")
             .addInfo("gt.fusion.tips.overclock")
-            .beginStructureBlock(15, 3, 15, false)
+            .beginStructureBlock(15, 15, 3, false)
             .addController("gt.fusion.info.1")
-            .addCasingInfoMin(
-                GregtechItemList.Casing_Fusion_External2.get(1)
-                    .getDisplayName(),
-                79)
+            .addCasing("79-123", "Fusion Machine Casing Mk-IV", false)
             .addStructureInfo("gt.fusion.info.2")
-            .addStructurePart(
-                GregtechItemList.Casing_Fusion_Internal2.get(1)
-                    .getDisplayName(),
-                "gt.fusion.info.3")
-            .addEnergyHatch("gt.fusion.info.4", 2)
-            .addInputHatch("gt.fusion.info.5", 1)
-            .addOutputHatch("gt.fusion.info.4", 3)
+            .addCasing("32", "Advanced Fusion Coil II", false)
+            .addStructureInfo("gt.fusion.info.3")
+            .addEnergyHatch("1-16", "gt.fusion.info.4", 2)
+            .addInputHatch("1+", "gt.fusion.info.5", 1)
+            .addOutputHatch("1+", "gt.fusion.info.4", 3)
             .addStructureInfo("gt.fusion.info.6", TooltipHelper.voltageText(VoltageIndex.UEV))
             .toolTipFinisher();
         return tt;
@@ -135,7 +128,7 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
                 TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)) };
         } else {
             return new ITexture[] {
-                TextureFactory.of(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER, Dyes.getModulation(-1)) };
+                TextureFactory.of(TexturesGtBlock.TEXTURE_CASING_FUSION_OVERLAY, Dyes.getModulation(-1)) };
         }
     }
 
@@ -183,14 +176,11 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
             }
         }
 
-        return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.name", tier),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.eu_required", powerRequired),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.stored_eu", mEUStore, maxEUStore()),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.plasma_output", plasmaOut),
-            StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+        return new String[] { IGregTechDeviceInformation.encode("gtpp.infodata.adv_fusion.name", tier),
+            IGregTechDeviceInformation.encode("gtpp.infodata.adv_fusion.eu_required", powerRequired),
+            IGregTechDeviceInformation.encode("gtpp.infodata.adv_fusion.stored_eu", mEUStore, maxEUStore()),
+            IGregTechDeviceInformation.encode("gtpp.infodata.adv_fusion.plasma_output", plasmaOut),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
 }

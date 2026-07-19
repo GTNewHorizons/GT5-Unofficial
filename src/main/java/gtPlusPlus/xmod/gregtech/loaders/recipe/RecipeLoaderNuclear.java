@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
@@ -20,7 +21,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import net.minecraftforge.fluids.FluidStack;
 
@@ -578,7 +578,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Ilmenite, 1))
             .itemOutputs(
                 Materials.Iron.getDust(1),
-                Materials.WroughtIron.getDust(1),
+                Materials.CastIron.getDust(1),
                 WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
                 WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
                 MaterialsElements.getInstance().HAFNIUM.getDust(1),

@@ -39,6 +39,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -48,6 +49,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -62,7 +66,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
 public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<MTEIndustrialLaserEngraver>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEIndustrialLaserEngraver> STRUCTURE_DEFINITION = StructureDefinition
@@ -85,10 +89,10 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         .addElement('r', ofBlock(GregTechAPI.sLaserRender, 0))
         .addElement(
             's',
-            buildHatchAdder(MTEIndustrialLaserEngraver.class).adder(MTEIndustrialLaserEngraver::addLaserSource)
-                .hatchClass(MTEHatchDynamoTunnel.class)
+            buildHatchAdder(MTEIndustrialLaserEngraver.class).anyOf(LaserSource)
+                .adder(MTEIndustrialLaserEngraver::addLaserSource)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(1))
-                .hint(3)
+                .hint(2)
                 .build())
         .build();
 
@@ -151,26 +155,20 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 1)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ENGRAVER_ACTIVE)
-                        .extFacing()
-                        .build(),
+                rTexture = new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ENGRAVER_ACTIVE)
+                    .extFacing()
+                    .build(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 1)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ENGRAVER)
-                        .extFacing()
-                        .build(),
+                rTexture = new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ENGRAVER)
+                    .extFacing()
+                    .build(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ENGRAVER_GLOW)
                         .extFacing()
@@ -178,10 +176,15 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 1)) };
+            rTexture = new ITexture[] { getCasingTexture() };
         }
         return rTexture;
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 1));
     }
 
     private boolean stopAllRendering = false;
@@ -223,19 +226,22 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addStaticEuEffInfo(0.8F)
             .addInfo("gt.hi_engraver.tips.1", TooltipHelper.voltageText(VoltageIndex.UMV))
             .beginStructureBlock(5, 5, 5, false)
-            .addController("front_bottom_center")
-            .addCasingInfoMin("gt.blockcasings10.1.name", 35)
-            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.TungstenSteel), 9)
-            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 3, true)
-            .addStructurePart("gt.laserplate.name", "x1")
-            .addStructurePart("GT5U.tooltip.structure.laser_source_hatch", "x1", 3)
-            .addInputBus("<casing>", 1)
-            .addInputHatch("<casing>", 1)
-            .addOutputBus("<casing>", 1)
-            .addOutputHatch("<casing>", 1)
-            .addEnergyHatch("<casing>", 1)
-            .addMaintenanceHatch("<casing>", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addController("Front bottom center")
+            .addCasing("35-58", gregtech.api.util.GTUtility.nestParams("gt.blockcasings10.1.name"), false)
+            .addCasing("9", "Tungstensteel Frame Box", false)
+            .addCasing("3", "Any Tiered Glass", true)
+            .addCasing("1", gregtech.api.util.GTUtility.nestParams("gt.laserplate.name"), false)
+            .addMiscHatch(
+                "1",
+                gregtech.api.util.GTUtility.nestParams("GT5U.tooltip.structure.laser_source_hatch"),
+                "Casing above glass",
+                2)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputAny("1+", "Any casing", 1)
+            .addOutputAny("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -271,24 +277,34 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
         glassTier = -1;
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
-        if (mCasingAmount < 35) return false;
-        if (laserSource == null) return false;
-        if (!findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord())) return false;
-
-        // If there are exotic hatches, ensure there is only 1 and that the laser source requirement is met
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 35);
         if (!mExoticEnergyHatches.isEmpty()) {
-            if (laserSource.mTier < VoltageIndex.UEV) return false;
-            if (!mEnergyHatches.isEmpty()) return false;
-            return (mExoticEnergyHatches.size() == 1);
+            if (laserSource.mTier < VoltageIndex.UEV) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.laser_need_uev"));
+            } else {
+                int count = mEnergyHatches.size() + mExoticEnergyHatches.size();
+                if (count != 1) {
+                    errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, Energy, count, 1));
+                }
+            }
+        } else {
+            checkHasEnergyHatch(errors);
         }
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
 
-        return glassTier >= VoltageIndex.UMV || laserSource.mTier <= glassTier;
+        if (glassTier < laserSource.mTier) {
+            errors.add(StructureErrors.glassTierNotEnough(laserSource.mTier));
+        }
+        if (!errors.isEmpty()) return;
+        findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord());
     }
 
     private static String getUniqueIdentifier(ItemStack is) {
@@ -377,11 +393,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

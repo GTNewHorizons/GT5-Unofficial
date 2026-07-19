@@ -4,13 +4,16 @@ import static gregtech.api.enums.GTValues.V;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -24,6 +27,7 @@ import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicGeneratorBaseGui;
 import gregtech.common.pollution.Pollution;
 
 public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMapWorkable {
@@ -68,12 +72,18 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
                 : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][colorIndex + 1];
     }
 
+    protected String[] getTooltipLines() {
+        return mDescriptionArray;
+    }
+
     @Override
     public String[] getDescription() {
-        String[] desc = new String[mDescriptionArray.length + 1];
-        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-        desc[mDescriptionArray.length] = "Fuel Efficiency: " + addFormattedString(String.valueOf(getEfficiency()))
-            + "%%";
+        String[] base = getTooltipLines();
+        String[] desc = new String[base.length + 1];
+        System.arraycopy(base, 0, desc, 0, base.length);
+        desc[base.length] = StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.basicgenerator.fuel_efficiency",
+            String.valueOf(getEfficiency()));
         return desc;
     }
 
@@ -252,12 +262,6 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
         }
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(createMuffleButton());
-    }
-
     public abstract int getPollution();
 
     public abstract int getEfficiency();
@@ -318,7 +322,7 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicGeneratorBaseGui<>(this).build(guiData, syncManager, uiSettings);
     }
 }

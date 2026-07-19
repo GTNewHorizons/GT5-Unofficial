@@ -6,15 +6,17 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -73,6 +75,7 @@ public class GTLanguageManager {
     private static final Map<String, String> stringTranslateLanguageList;
     private static final Map<String, String> stringTranslateLanguageListFallBack;
     public static String LanguageCode = "en_US";
+    public static Locale LOCALE;
 
     static {
         try {
@@ -132,13 +135,14 @@ public class GTLanguageManager {
 
     private static synchronized String writeToLangFile(String trimmedKey, String aEnglish) {
         addToMCLangListFallBack(trimmedKey, aEnglish);
+        // If the key is already provided by the standard lang system, don't touch GregTech.lang.
+        if (StatCollector.canTranslate(trimmedKey)) {
+            return StatCollector.translateToLocal(trimmedKey);
+        }
         Property tProperty = sEnglishFile.get("LanguageFile", trimmedKey, aEnglish);
         if (hasUnsavedEntry && GregTechAPI.sPostloadFinished) {
             sEnglishFile.save();
             hasUnsavedEntry = false;
-        }
-        if (StatCollector.canTranslate(trimmedKey)) {
-            return StatCollector.translateToLocal(trimmedKey);
         }
         String translation = tProperty.getString();
         if (tProperty.wasRead()) {
@@ -181,27 +185,12 @@ public class GTLanguageManager {
         return tTrimmedKey;
     }
 
-    public static String getTranslation(String aKey, String aSeperator) {
-        if (aKey == null) return E;
-        String rTranslation = E;
-        StringBuilder rTranslationSB = new StringBuilder(rTranslation);
-        for (String tString : aKey.split(aSeperator)) {
-            rTranslationSB.append(getTranslation(tString));
-        }
-        rTranslation = String.valueOf(rTranslationSB);
-        return rTranslation;
-    }
-
     @SuppressWarnings("unused")
     public static String getTranslateableItemStackName(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack)) return "null";
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT != null && tNBT.hasKey("display")) {
-            String tName = tNBT.getCompoundTag("display")
-                .getString("Name");
-            if (GTUtility.isStringValid(tName)) {
-                return tName;
-            }
+        final String tName = ItemStackNBT.getDisplayName(aStack);
+        if (GTUtility.isStringValid(tName)) {
+            return tName;
         }
         return aStack.getUnlocalizedName() + ".name";
     }
@@ -461,5 +450,9 @@ public class GTLanguageManager {
             languageMap.put(key, english);
             LANGMAP.put(key, english);
         }
+    }
+
+    public static boolean hasGTLocalizationKey(final String key) {
+        return LANGMAP.containsKey(key);
     }
 }

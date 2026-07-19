@@ -8,6 +8,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -21,18 +23,20 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings2;
 
-public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanner> implements ISurvivalConstructable {
+public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanner>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEMultiCanner> STRUCTURE_DEFINITION = StructureDefinition
@@ -74,42 +78,23 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MULTI_CANNER,
+            OVERLAY_FRONT_MULTI_CANNER_GLOW,
+            OVERLAY_FRONT_MULTI_CANNER_ACTIVE,
+            OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0));
     }
 
     @Override
@@ -119,16 +104,14 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
         tt.addMachineType("gt.recipe.canner")
             .addBulkMachineInfo(8, 2f, 1)
             .addInfo("gt.turbocan.tips")
-            .beginStructureBlock(7, 5, 7, true)
-            .addController("front_center")
-            .addCasingInfoMin(Casings.SolidSteelMachineCasing.getLocalizedName(), 85, false)
-            .addCasingInfoExactly(Casings.SteelPipeCasing.getLocalizedName(), 24, false)
-            .addInputBus(anyCasing, 1)
-            .addOutputBus(anyCasing, 1)
-            .addInputHatch(anyCasing, 1)
-            .addOutputHatch(anyCasing, 1)
-            .addEnergyHatch(anyCasing, 1)
-            .addMaintenanceHatch(anyCasing, 1)
+            .beginStructureBlock(7, 7, 5, true)
+            .addController("Front center, 3rd layer")
+            .addCasing("85-93", "Solid Steel Machine Casing", false)
+            .addCasing("24", "Steel Pipe Casing", false)
+            .addEnergyHatch("1+", "Any machine casing", 1)
+            .addMaintenanceHatch("1", "Any machine casing", 1)
+            .addInputAny("1+", "Any machine casing", 1)
+            .addOutputAny("1+", "Any machine casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -151,12 +134,15 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
         mEnergyHatches.clear();
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 2, 2)) return false;
-        return mCasingAmount >= 85;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 2, 2, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 85);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -192,11 +178,6 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 }

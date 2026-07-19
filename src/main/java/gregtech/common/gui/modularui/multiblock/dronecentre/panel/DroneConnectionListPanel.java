@@ -4,17 +4,14 @@ import java.text.Collator;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IPacketWriter;
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
@@ -24,10 +21,12 @@ import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
@@ -37,8 +36,10 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import gregtech.GTMod;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.gui.modularui.multiblock.dronecentre.DroneCentreGuiUtil;
 import gregtech.common.gui.modularui.multiblock.dronecentre.sync.DroneConnectionListSyncHandler;
 import gregtech.common.gui.modularui.multiblock.dronecentre.widget.DroneListWidget;
@@ -53,24 +54,29 @@ public class DroneConnectionListPanel extends ModularPanel {
     private final MTEDroneCentre centre;
     private final DynamicSyncHandler droneListHandler;
     private final DynamicSyncHandler groupHandler;
+    private final DynamicSyncHandler titleBarHandler;
     IPanelHandler productionPanel;
+    IPanelHandler cameraObservePanel;
+    private final IPanelHandler machineListPanel;
     private int lastScroll;
 
-    public DroneConnectionListPanel(PanelSyncManager syncManager, MTEDroneCentre centre,
-        IPanelHandler productionPanel) {
+    public DroneConnectionListPanel(PanelSyncManager syncManager, MTEDroneCentre centre, IPanelHandler productionPanel,
+        IPanelHandler cameraObservePanel, IPanelHandler machineListPanel) {
         super("machineListPanel");
         this.centre = centre;
         this.productionPanel = productionPanel;
+        this.cameraObservePanel = cameraObservePanel;
+        this.machineListPanel = machineListPanel;
         DynamicSyncedWidget<?> dynamicWidget = new DynamicSyncedWidget<>().widthRel(0.95f)
             .expanded();
         droneListHandler = new DynamicSyncHandler() {
 
-            // save scroll data before executing update
+            // save scroll data before executing update (runs while old widget is still on-screen and fully resized)
             @Override
             public void notifyUpdate(IPacketWriter packetWriter) {
                 if (dynamicWidget.hasChildren()) {
                     IWidget child = dynamicWidget.getChildren()
-                        .get(0);
+                        .getFirst();
                     if (child instanceof DroneListWidget<?, ?>list && list.getScrollData()
                         .getScrollSize() != 0) {
                         lastScroll = list.getScrollY();
@@ -82,27 +88,57 @@ public class DroneConnectionListPanel extends ModularPanel {
             if (packet == null) {
                 return new EmptyWidget();
             }
+            if (dynamicWidget.hasChildren()) {
+                IWidget child = dynamicWidget.getChildren()
+                    .getFirst();
+                if (child instanceof DroneListWidget<?, ?>list && list.getScrollData()
+                    .getScrollSize() != 0) {
+                    lastScroll = list.getScrollY();
+                }
+            }
             return createListArea(syncManager, pSyncManager);
-        });
+        })
+            .allowC2S();
         dynamicWidget.syncHandler(droneListHandler);
+
+        DynamicSyncedWidget<?> titleBarWidget = new DynamicSyncedWidget<>().widthRel(0.95f)
+            .coverChildrenHeight();
+        titleBarHandler = new DynamicSyncHandler().widgetProvider((pSyncManager, packet) -> {
+            if (packet == null) {
+                return new EmptyWidget();
+            }
+            return createTitleBar(syncManager, pSyncManager);
+        })
+            .allowC2S();
+        titleBarWidget.syncHandler(titleBarHandler);
+
         groupHandler = new DynamicSyncHandler().widgetProvider((pSyncManager, packet) -> {
             if (packet == null) {
                 return new EmptyWidget();
             }
             return createGroupTab(syncManager, pSyncManager);
-        });
+        })
+            .allowC2S();
 
         syncManager.findSyncHandler("sortMode", EnumSyncValue.class)
             .setChangeListener(() -> droneListHandler.notifyUpdate(packet -> {}));
         syncManager.findSyncHandler("activeGroup", IntSyncValue.class)
-            .setChangeListener(() -> droneListHandler.notifyUpdate(packet -> {}));
+            .setChangeListener(() -> {
+                centre.setRenamingActiveGroup(false);
+                titleBarHandler.notifyUpdate(packet -> {});
+                droneListHandler.notifyUpdate(packet -> {});
+            });
         syncManager.findSyncHandler("droneList", DroneConnectionListSyncHandler.class)
             .setChangeListener(() -> {
                 if (!this.centre.shouldUpdate()) return;
                 droneListHandler.notifyUpdate(packet -> {});
             });
         syncManager.findSyncHandler("groupNameList", GenericListSyncHandler.class)
-            .setChangeListener(() -> groupHandler.notifyUpdate(packet -> {}));
+            .setChangeListener(() -> {
+                groupHandler.notifyUpdate(packet -> {});
+                titleBarHandler.notifyUpdate(packet -> {});
+                droneListHandler.notifyUpdate(packet -> {});
+            });
 
         int heightCoff = syncManager.isClient() ? Minecraft.getMinecraft().currentScreen.height - 40 : 0;
         this.width(270)
@@ -110,14 +146,14 @@ public class DroneConnectionListPanel extends ModularPanel {
             .background(GTGuiTextures.BACKGROUND_STANDARD)
             .child(ButtonWidget.panelCloseButton())
             .child(
-                new DynamicSyncedWidget<>().width(16)
-                    .coverChildrenHeight()
+                new DynamicSyncedWidget<>().width(54)
+                    .heightRel(0.8f)
                     .topRel(0.5f)
                     .leftRel(0f, 0, 1f)
                     .syncHandler(groupHandler))
             .child(
                 Flow.column()
-                    .widthRel(1)
+                    .fullWidth()
                     .center()
                     .padding(8, 4)
                     .heightRel(0.95f)
@@ -126,6 +162,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                             .asWidget()
                             .scale(2))
                     .child(createFunctionArea(syncManager))
+                    .child(titleBarWidget)
                     .child(dynamicWidget));
 
     }
@@ -134,6 +171,7 @@ public class DroneConnectionListPanel extends ModularPanel {
     public void onOpen(ModularScreen screen) {
         super.onOpen(screen);
         droneListHandler.notifyUpdate(packet -> {});
+        titleBarHandler.notifyUpdate(packet -> {});
         groupHandler.notifyUpdate(packet -> {});
     }
 
@@ -151,7 +189,6 @@ public class DroneConnectionListPanel extends ModularPanel {
             .child(
                 new CycleButtonWidget().size(16)
                     .value(syncManager.findSyncHandler("sortMode", EnumSyncValue.class))
-                    .background(GTGuiTextures.BUTTON_STANDARD)
                     .stateOverlay(DroneCentreGuiUtil.SortMode.NAME, GTGuiTextures.OVERLAY_BUTTON_TRANSPOSE)
                     .stateOverlay(DroneCentreGuiUtil.SortMode.DISTANCE, GTGuiTextures.OVERLAY_BUTTON_SORTING_MODE)
                     .stateOverlay(DroneCentreGuiUtil.SortMode.STATUS, GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF)
@@ -165,33 +202,28 @@ public class DroneConnectionListPanel extends ModularPanel {
             .child(
                 new UpdatableToggleButton(droneListHandler).size(16)
                     .value(syncManager.findSyncHandler("searchOri", BooleanSyncValue.class))
-                    .background(GTGuiTextures.BUTTON_STANDARD)
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_WHITELIST)
                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_BLACKLIST)
                     .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_searchoriname"))))
             .child(
                 new ButtonWidget<>().size(16)
                     .overlay(
-                        new DrawableStack(
-                            GTGuiTextures.BUTTON_STANDARD,
-                            GTGuiTextures.OVERLAY_BUTTON_REDSTONESNIFFERLOCATE.asIcon()
-                                .size(15, 15)))
+                        GTGuiTextures.OVERLAY_BUTTON_REDSTONESNIFFERLOCATE.asIcon()
+                            .size(12))
                     .onMousePressed(mouseButton -> {
                         productionPanel.openPanel();
                         return true;
                     })
                     .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_production"))))
             .child(
-                new UpdatableToggleButton(droneListHandler, groupHandler).size(16)
+                new UpdatableToggleButton(droneListHandler, groupHandler, titleBarHandler).size(16)
                     .value(syncManager.findSyncHandler("editMode", BooleanSyncValue.class))
-                    .background(GTGuiTextures.BUTTON_STANDARD)
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)
                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF)
                     .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_editmode"))))
             .child(
                 new ToggleButton().size(16)
                     .value(syncManager.findSyncHandler("update", BooleanSyncValue.class))
-                    .background(GTGuiTextures.BUTTON_STANDARD)
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_CYCLIC)
                     .tooltipBuilder(
                         t -> t.addLine(IKey.lang("GT5U.gui.button.drone_pause.1"))
@@ -214,28 +246,32 @@ public class DroneConnectionListPanel extends ModularPanel {
         IntSyncValue activeGroupSyncHandler = syncManager.findSyncHandler("activeGroup", IntSyncValue.class);
 
         Flow column = Flow.column()
-            .width(16)
-            .coverChildrenHeight()
+            .full()
             .childPadding(4);
-        for (int i = 0; i < 8; i++) {
+
+        ListWidget<IWidget, ?> groupListWidget = new ListWidget<>().fullWidth()
+            .expanded()
+            .scrollDirection(new VerticalScrollData(true));
+
+        int size = groupSyncValue.getValue()
+            .size();
+        for (int i = 0; i < size; i++) {
             final int finalI = i;
-            if (centre.getEditMode() && centre.getActiveGroup() == i && i != 0) {
-                column.child(
-                    new TextFieldWidget().size(16)
-                        .value(
-                            dynamicSyncManager.getOrCreateSyncHandler(
-                                "groupName" + i,
-                                StringSyncValue.class,
-                                () -> new StringSyncValue(
-                                    () -> groupSyncValue.getValue()
-                                        .get(finalI),
-                                    var -> centre.group.set(finalI, var)))));
-                continue;
+            String name = finalI == 0 ? "All"
+                : groupSyncValue.getValue()
+                    .get(finalI);
+            if (name == null) {
+                name = String.valueOf(finalI);
             }
-            column.child(
-                new SelectButton().size(16, 16)
+            String displayName = name;
+            if (name.length() > 5) {
+                displayName = name.substring(0, 4) + "..";
+            }
+            groupListWidget.child(
+                new SelectButton().size(54, 16)
                     .right(0)
-                    .overlay(IKey.str(i == 0 ? "All" : String.valueOf(i)))
+                    .marginBottom(4)
+                    .overlay(IKey.str(displayName))
                     .tooltipBuilder(
                         var -> var.add(
                             finalI == 0 ? "All"
@@ -243,7 +279,111 @@ public class DroneConnectionListPanel extends ModularPanel {
                                     .get(finalI)))
                     .value(LinkedBoolValue.of(activeGroupSyncHandler, i)));
         }
+
+        column.child(groupListWidget);
+
+        column.child(
+            new ButtonWidget<>().size(54, 16)
+                .overlay(
+                    IKey.str("+")
+                        .alignment(Alignment.CENTER))
+                .syncHandler(syncManager.findSyncHandler("addNewGroup", InteractionSyncHandler.class))
+                .tooltipBuilder(t -> t.add(IKey.lang("GT5U.gui.button.drone_add_group"))));
+
         return column;
+    }
+
+    private IWidget createTitleBar(PanelSyncManager syncManager, PanelSyncManager dynamicSyncManager) {
+        int activeGroup = centre.getActiveGroup();
+        if (activeGroup == 0) {
+            return Flow.row()
+                .fullWidth()
+                .height(18)
+                .childPadding(4)
+                .child(
+                    IKey.lang("GT5U.gui.text.drone_group_all")
+                        .asWidget()
+                        .scale(1.2f)
+                        .textAlign(Alignment.CENTER)
+                        .expanded());
+        }
+
+        if (centre.getRenamingActiveGroup()) {
+            StringSyncValue nameSyncValue = dynamicSyncManager.getOrCreateSyncHandler(
+                "groupName" + activeGroup,
+                StringSyncValue.class,
+                () -> new StringSyncValue(
+                    () -> (String) syncManager.findSyncHandler("groupNameList", GenericListSyncHandler.class)
+                        .getValue()
+                        .get(activeGroup),
+                    var -> {
+                        if (!syncManager.isClient()) {
+                            if (var != null && !var.trim()
+                                .isEmpty()) {
+                                centre.group.set(activeGroup, var);
+                            }
+                            syncManager.findSyncHandler("groupNameList", GenericListSyncHandler.class)
+                                .notifyUpdate();
+                        }
+                    }).allowC2S());
+            return Flow.row()
+                .fullWidth()
+                .height(18)
+                .childPadding(4)
+                .child(new TextFieldWidget() {
+
+                    @Override
+                    public void onRemoveFocus(ModularGuiContext context) {
+                        super.onRemoveFocus(context);
+                        centre.setRenamingActiveGroup(false);
+                        syncManager.findSyncHandler("renamingActiveGroup", BooleanSyncValue.class)
+                            .notifyUpdate();
+                        titleBarHandler.notifyUpdate(packet -> {});
+                    }
+                }.height(16)
+                    .expanded()
+                    .value(nameSyncValue));
+        }
+
+        String groupName = (String) syncManager.findSyncHandler("groupNameList", GenericListSyncHandler.class)
+            .getValue()
+            .get(activeGroup);
+        Flow row = Flow.row()
+            .fullWidth()
+            .height(18)
+            .childPadding(4);
+        if (centre.getEditMode()) {
+            row.child(
+                new ButtonWidget<>().size(16)
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                    .syncHandler(syncManager.findSyncHandler("toggleSelectAll", InteractionSyncHandler.class))
+                    .tooltipBuilder(t -> t.add(IKey.lang("GT5U.gui.button.drone_toggle_select_all"))));
+        }
+        row.child(
+            new ButtonWidget<>().size(16)
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_PRINT)
+                .onMousePressed(mouseButton -> {
+                    if (mouseButton == 0) {
+                        centre.setRenamingActiveGroup(true);
+                        syncManager.findSyncHandler("renamingActiveGroup", BooleanSyncValue.class)
+                            .notifyUpdate();
+                        titleBarHandler.notifyUpdate(packet -> {});
+                    }
+                    return true;
+                })
+                .tooltipBuilder(t -> t.add(IKey.lang("GT5U.gui.button.drone_rename_group"))))
+            .child(
+                IKey.str(groupName)
+                    .asWidget()
+                    .scale(1.2f)
+                    .textAlign(Alignment.CENTER)
+                    .expanded())
+            .child(
+                new ButtonWidget<>().size(16)
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                    .syncHandler(syncManager.findSyncHandler("deleteGroup", InteractionSyncHandler.class))
+                    .tooltipBuilder(t -> t.add(IKey.lang("GT5U.gui.button.drone_delete_group"))));
+        return row;
     }
 
     private IWidget createListArea(PanelSyncManager syncManager, PanelSyncManager dynamicSyncManager) {
@@ -254,55 +394,55 @@ public class DroneConnectionListPanel extends ModularPanel {
             return IKey.lang("GT5U.gui.text.drone_no_connection")
                 .asWidget()
                 .textAlign(Alignment.CENTER)
-                .align(Alignment.CENTER)
+                .center()
                 .widthRel(0.95f)
                 .scale(2);
-        } else {
-            ListWidget<IWidget, ?> droneListWidget = new DroneListWidget<>(lastScroll).sizeRel(1);
-
-            final Comparator<DroneConnection> sorter = switch (centre.getSortMode()) {
-                case NAME -> (o1, o2) -> Collator.getInstance(Locale.UK)
-                    .compare(o1.getCustomName(), o2.getCustomName());
-                case DISTANCE -> Comparator.comparing(DroneConnection::getDistanceSquared);
-                case STATUS -> Comparator.comparing(DroneConnection::isMachineShutdown)
-                    .reversed();
-            };
-
-            List<Flow> rows = clientConnections.stream()
-                .filter(conn -> matchesSearchFilter(conn) && isInActiveGroup(conn))
-                .sorted(sorter)
-                .map(connection -> {
-                    Flow row = Flow.row()
-                        .widthRel(1)
-                        .coverChildrenHeight()
-                        .childPadding(4)
-                        .paddingRight(4)
-                        .marginBottom(2);
-                    if (centre.getEditMode())
-                        row.child(createGroupButton(connection, droneConnectionListSyncHandler, dynamicSyncManager));
-                    row.child(
-                        new ItemDisplayWidget().background(IDrawable.EMPTY)
-                            .displayAmount(false)
-                            .item(connection.getMachineItem())
-                            .size(16)
-                            .tooltipBuilder(
-                                var -> DroneCentreGuiUtil.getTooltipFromItemSafely(var, connection.getMachineItem())))
-                        .child(DroneCentreGuiUtil.createHighLightButton(connection, dynamicSyncManager))
-                        .child(createTextButton(connection, droneConnectionListSyncHandler, dynamicSyncManager))
-                        .child(
-                            createPowerControlButton(connection, droneConnectionListSyncHandler, dynamicSyncManager));
-                    if (connection.isMachineShutdown()) row.child(
-                        new Widget<>().background(GTGuiTextures.OVERLAY_POWER_LOSS)
-                            .tooltipBuilder(var -> var.add(connection.getShutdownReason())));
-                    row.child(
-                        createCustomNameTextField(connection, dynamicSyncManager, droneConnectionListSyncHandler));
-                    return row;
-                })
-                .collect(Collectors.toList());
-
-            rows.forEach(droneListWidget::child);
-            return droneListWidget;
         }
+
+        ListWidget<IWidget, ?> droneListWidget = new DroneListWidget<>(lastScroll).full();
+        final Comparator<DroneConnection> sorter = switch (centre.getSortMode()) {
+            case NAME -> (o1, o2) -> Collator.getInstance(Locale.UK)
+                .compare(o1.getCustomName(), o2.getCustomName());
+            case DISTANCE -> Comparator.comparing(DroneConnection::getDistanceSquared);
+            case STATUS -> Comparator.comparing(DroneConnection::isMachineShutdown)
+                .reversed();
+        };
+
+        List<Flow> rows = clientConnections.stream()
+            .filter(conn -> DroneCentreGuiUtil.matchesSearchFilter(conn, centre) && isInActiveGroup(conn))
+            .sorted(sorter)
+            .map(connection -> {
+                Flow row = Flow.row()
+                    .fullWidth()
+                    .coverChildrenHeight()
+                    .childPadding(4)
+                    .paddingRight(4)
+                    .marginBottom(2);
+                if (centre.getEditMode())
+                    row.child(createGroupButton(connection, droneConnectionListSyncHandler, dynamicSyncManager));
+                row.child(
+                    new ItemDisplayWidget().disableThemeBackground(true)
+                        .disableHoverThemeBackground(true)
+                        .displayAmount(false)
+                        .item(connection.getMachineItem())
+                        .size(16)
+                        .tooltipBuilder(
+                            var -> DroneCentreGuiUtil.getTooltipFromItemSafely(var, connection.getMachineItem())))
+                    .child(DroneCentreGuiUtil.createHighLightButton(connection, dynamicSyncManager))
+                    .child(createObserveButton(connection, dynamicSyncManager))
+                    .child(createTextButton(connection, droneConnectionListSyncHandler, dynamicSyncManager))
+                    .child(createPowerControlButton(connection, droneConnectionListSyncHandler, dynamicSyncManager));
+                if (connection.isMachineShutdown()) row.child(
+                    new Widget<>().background(GTGuiTextures.OVERLAY_POWER_LOSS)
+                        .tooltipBuilder(var -> var.add(connection.getShutdownReason())));
+                row.child(createCustomNameTextField(connection, dynamicSyncManager, droneConnectionListSyncHandler));
+                return row;
+            })
+            .toList();
+
+        rows.forEach(droneListWidget::child);
+
+        return droneListWidget;
     }
 
     private IWidget createGroupButton(DroneConnection conn,
@@ -314,17 +454,31 @@ public class DroneConnectionListPanel extends ModularPanel {
                 () -> droneConnectionListSyncHandler.getValue()
                     .stream()
                     .filter(c -> c.uuid.equals(conn.uuid))
-                    .map(con -> con.getGroup() == centre.getActiveGroup())
+                    .map(con -> (con.getGroupMask() & (1L << centre.getActiveGroup())) != 0)
                     .findFirst()
                     .orElse(false),
-                bool -> centre.getConnectionList()
-                    .stream()
-                    .filter(c -> c.uuid.equals(conn.uuid))
-                    .findFirst()
-                    .ifPresent(con -> con.setGroup(bool ? centre.getActiveGroup() : 0))));
+                bool -> {
+                    if (!dynamicSyncManager.isClient()) {
+                        centre.getConnectionList()
+                            .stream()
+                            .filter(c -> c.uuid.equals(conn.uuid))
+                            .findFirst()
+                            .ifPresent(con -> {
+                                int active = centre.getActiveGroup();
+                                long mask = con.getGroupMask();
+                                if (bool) {
+                                    con.setGroupMask(mask | (1L << active));
+                                } else {
+                                    con.setGroupMask(mask & ~(1L << active));
+                                }
+                                droneConnectionListSyncHandler.notifyUpdate();
+                            });
+                    }
+                }).allowC2S());
         return new ToggleButton().value(groupSyncHandler)
             .size(16)
-            .background(IDrawable.EMPTY)
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true)
             .tooltipBuilder(var -> var.add(IKey.lang("GT5U.gui.button.drone_select_group")))
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS);
@@ -349,10 +503,9 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .ifPresent(con -> {
                         con.setSelect(bool);
                         droneConnectionListSyncHandler.notifyUpdate();
-                    })));
+                    })).allowC2S());
         return new UpdatableToggleButton(droneListHandler).size(16)
             .value(selectSyncValue)
-            .background(GTGuiTextures.BUTTON_STANDARD)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_PRINT)
             .tooltipBuilder(t -> t.add(IKey.lang("GT5U.gui.button.drone_setname")));
     }
@@ -385,7 +538,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                                     .setShutDownReason(ShutDownReasonRegistry.NONE);
                             } else mte.stopMachine(ShutDownReasonRegistry.NONE);
                         }
-                    })));
+                    })).allowC2S());
         return new UpdatableToggleButton(droneListHandler).value(powerSwitchSyncer)
             .size(16)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
@@ -407,27 +560,52 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .findFirst()
                     .map(DroneConnection::getCustomName)
                     .orElse(""),
-                var -> centre.getConnectionList()
-                    .stream()
-                    .filter(connection -> connection.uuid.equals(conn.uuid))
-                    .findFirst()
-                    .ifPresent(c -> c.setCustomName(var))));
+                var -> {
+                    if (!dynamicSyncManager.isClient()) {
+                        if (var != null && !var.trim()
+                            .isEmpty()) {
+                            centre.getConnectionList()
+                                .stream()
+                                .filter(connection -> connection.uuid.equals(conn.uuid))
+                                .findFirst()
+                                .ifPresent(c -> {
+                                    c.setCustomName(var);
+                                    droneConnectionListSyncHandler.notifyUpdate();
+                                });
+                        } else {
+                            droneConnectionListSyncHandler.notifyUpdate();
+                        }
+                    }
+                }).allowC2S());
         return new TextFieldWidget().expanded()
             .value(nameSyncValue);
     }
 
-    private boolean matchesSearchFilter(DroneConnection conn) {
-        String searchText = centre.getSearchBarText()
-            .toLowerCase();
-        return conn.getCustomName()
-            .toLowerCase()
-            .contains(searchText)
-            || (centre.getSearchOriginalName() && conn.getLocalizedName()
-                .toLowerCase()
-                .contains(searchText));
+    private IWidget createObserveButton(DroneConnection conn, PanelSyncManager dynamicSyncManager) {
+        boolean sameDim = conn.getMachineWorld() == dynamicSyncManager.getPlayer().dimension;
+        ButtonWidget<?> button = new ButtonWidget<>().size(16)
+            .overlay(GTGuiTextures.OVERLAY_BUTTON_HIGHLIGHT_BLOCK);
+
+        if (!sameDim) {
+            button.tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_observe.diff_dim")));
+        } else {
+            button.tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_observe")))
+                .onMousePressed(mouseButton -> {
+                    if (mouseButton == 0) {
+                        ((CameraViewportClientManager) GTMod.proxy.cameraViewportManager).startObserving(conn);
+                        cameraObservePanel.openPanel();
+                        if (machineListPanel != null) {
+                            machineListPanel.closePanel();
+                        }
+                    }
+                    return true;
+                });
+        }
+        return button;
     }
 
     private boolean isInActiveGroup(DroneConnection conn) {
-        return centre.getActiveGroup() == 0 || conn.getGroup() == centre.getActiveGroup() || centre.getEditMode();
+        return centre.getActiveGroup() == 0 || (conn.getGroupMask() & (1L << centre.getActiveGroup())) != 0
+            || centre.getEditMode();
     }
 }

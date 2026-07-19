@@ -1,0 +1,98 @@
+package gregtech.api.items;
+
+import static gregtech.api.util.GTUtility.addSeparatorIfNeeded;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
+
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+
+import codechicken.nei.api.API;
+import gregtech.api.items.armor.AugmentBuilder.AugmentCategory;
+import gregtech.api.items.armor.MechArmorAugmentRegistries.ArmorType;
+import gregtech.api.items.armor.MechArmorAugmentRegistries.Augments;
+import gregtech.api.util.GTTextBuilder;
+
+public class ItemAugment extends ItemAugmentAbstract {
+
+    public final Augments augment;
+
+    public ItemAugment(Augments augment) {
+        super(augment);
+        this.augment = augment;
+        API.setAliases(new ItemStack(this), "gt.alias.mechanical_armor");
+    }
+
+    @Override
+    protected void addAdditionalToolTips(List<String> desc, ItemStack augmentStack, EntityPlayer player) {
+        boolean showAllInfo = showAllInfo();
+
+        desc.add(getCategoryText(augment.getCategory()));
+
+        addSeparatorIfNeeded(desc);
+
+        if (showAllInfo) {
+            desc.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.armor.tooltip.energycoreminimum",
+                    augment.getMinimumCore()
+                        .getLocalizedName()));
+
+            addSeparatorIfNeeded(desc);
+
+            if (augment.getMaxStack() > 1) {
+                desc.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.armor.tooltip.maxstack",
+                        GTTextBuilder.VALUE.toString() + augment.getMaxStack()));
+            }
+
+            addSeparatorIfNeeded(desc);
+
+            desc.add(GRAY + StatCollector.translateToLocal("GT5U.armor.tooltip.applicable"));
+            for (ArmorType armor : augment.getAllowedArmorTypes()) {
+                desc.add(
+                    GRAY + "- "
+                        + armor.getItem()
+                            .get(1)
+                            .getDisplayName());
+            }
+
+            addSeparatorIfNeeded(desc);
+        }
+
+        addSeparatorIfNeeded(desc);
+
+        super.addAdditionalToolTips(desc, augmentStack, player);
+    }
+
+    private static String getCategoryText(AugmentCategory c) {
+        switch (c) {
+            case Protection -> {
+                return StatCollector.translateToLocalFormatted(
+                    "GT5U.armor.tooltip.category",
+                    StatCollector.translateToLocal("GT5U.armor.tooltip.protection"));
+            }
+            case Movement -> {
+                return StatCollector.translateToLocalFormatted(
+                    "GT5U.armor.tooltip.category",
+                    StatCollector.translateToLocal("GT5U.armor.tooltip.movement"));
+            }
+            case Utility -> {
+                return StatCollector.translateToLocalFormatted(
+                    "GT5U.armor.tooltip.category",
+                    StatCollector.translateToLocal("GT5U.armor.tooltip.utility"));
+            }
+            case Prismatic -> {
+                return StatCollector.translateToLocalFormatted(
+                    "GT5U.armor.tooltip.category",
+                    StatCollector.translateToLocal("GT5U.armor.tooltip.prismatic"));
+            }
+            default -> {
+                return "";
+            }
+        }
+    }
+}

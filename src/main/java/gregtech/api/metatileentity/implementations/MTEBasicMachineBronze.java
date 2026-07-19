@@ -18,28 +18,32 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.TierEU;
-import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import gregtech.common.gui.modularui.singleblock.MTEBasicMachineBronzeGui;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -50,8 +54,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
 
     private static final String TT_machineType = "GT5U.MBTT.MachineType";
-    private static final int NEEDS_STEAM_VENTING = 64;
-    public boolean mNeedsSteamVenting = false;
+    protected boolean mNeedsSteamVenting = false;
 
     public MTEBasicMachineBronze(int aID, String aName, String aNameRegional, String aDescription, int aInputSlotCount,
         int aOutputSlotCount, boolean aHighPressure) {
@@ -63,13 +66,17 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
         super(aName, aHighPressure ? 2 : 1, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount);
     }
 
+    public boolean needsSteamVenting() {
+        return mNeedsSteamVenting;
+    }
+
     protected boolean isBricked() {
         return false;
     }
 
     @Override
     public OverclockDescriber createOverclockDescriber() {
-        return new SteamOverclockDescriber(SteamVariant.BRONZE, 1, 2);
+        return new SteamOverclockDescriber(TieredVariant.BRONZE, 1, 2);
     }
 
     @Override
@@ -125,11 +132,6 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return super.isFacingValid(facing) && facing != mMainFacing;
-    }
-
-    @Override
     public long getMinimumStoredEU() {
         return 1000;
     }
@@ -147,6 +149,14 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     @Override
     public boolean doesAutoOutput() {
         return false;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
+        int steamAmount = (int) getBaseMetaTileEntity().getStoredSteam() * 2;
+        int steamCapacity = (int) getBaseMetaTileEntity().getSteamCapacity() * 2;
+        FluidStack steam = Materials.Steam.getGas(steamAmount);
+        return new FluidTankInfo[] { new FluidTankInfo(steam, steamCapacity) };
     }
 
     @Override
@@ -183,7 +193,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
             .find();
         if ((tRecipe != null) && (canOutput(tRecipe.mOutputs))
             && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
-            this.mOutputItems[0] = tRecipe.getOutput(0);
+            this.mOutputItems[0] = tRecipe.rollOutput(getBaseMetaTileEntity(), 0);
             calculateCustomOverclock(tRecipe);
             return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }
@@ -214,7 +224,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
                     getBaseMetaTileEntity().getFrontFacing().offsetX / 5.0,
                     getBaseMetaTileEntity().getFrontFacing().offsetY / 5.0,
                     getBaseMetaTileEntity().getFrontFacing().offsetZ / 5.0)
-                .<ParticleEventBuilder>times(
+                .times(
                     8,
                     x -> x
                         .setPosition(
@@ -335,31 +345,23 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     }
 
     @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.BRONZE;
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.BRONZE;
     }
 
     @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.STEAM.apply(getSteamVariant());
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TIERED_VARIANTS.get(getTieredVariant());
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(152, 63));
+    protected boolean useMui2() {
+        return true;
     }
 
     @Override
-    protected FluidSlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
-        return null;
-    }
-
-    @Override
-    protected FluidSlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
-        return null;
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicMachineBronzeGui(this, this.getUIProperties()).build(guiData, syncManager, uiSettings);
     }
 
     @Override

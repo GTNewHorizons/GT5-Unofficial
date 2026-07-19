@@ -2,7 +2,6 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -11,7 +10,7 @@ import static gregtech.api.util.tooltip.TooltipHelper.voltageTierText;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -39,9 +38,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -50,16 +46,13 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
-import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -76,11 +69,12 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
@@ -193,11 +187,10 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        if (getBaseMetaTileEntity().isServerSide()) {
-            this.machineMode = (this.machineMode + 1) % 2;
-            GTUtility.sendChatTrans(aPlayer, "preciseassembler.chat." + this.machineMode);
-        }
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
+        setMachineMode(nextMachineMode());
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + machineMode));
     }
 
     @Override
@@ -207,7 +200,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             @Nonnull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (machineMode == 0) {
+                if (machineMode == MACHINEMODE_PRECISE) {
                     if (recipe.mSpecialValue > (casingTier + 1)) {
                         return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                     }
@@ -218,14 +211,15 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setDurationModifier(machineMode == 0 ? 1 : 0.5);
+                return super.createOverclockCalculator(recipe)
+                    .setDurationModifier(machineMode == MACHINEMODE_PRECISE ? 1 : 0.5);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return machineMode == 0 ? 1 : (int) GTUtility.powInt(2, 4 + (casingTier + 1));
+        return machineMode == MACHINEMODE_PRECISE ? 1 : (int) GTUtility.powInt(2, 4 + (casingTier + 1));
     }
 
     @Override
@@ -245,8 +239,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        if (this.machineMode == 0) return GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
-        else return RecipeMaps.assemblerRecipes;
+        return machineMode == MACHINEMODE_PRECISE ? GoodGeneratorRecipeMaps.preciseAssemblerRecipes
+            : RecipeMaps.assemblerRecipes;
     }
 
     @Nonnull
@@ -267,23 +261,27 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.machineTier = -1;
         this.casingAmount = 0;
         this.casingTier = -3;
         this.glassTier = -1;
         this.energyHatchTier = 0;
-        if (checkPiece(mName, 4, 4, 0)) {
-            energyHatchTier = checkEnergyHatchTier();
-            if (casingTier >= -1) {
-                reUpdate(CASING_INDEX + casingTier);
-            }
-            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-            return casingAmount >= 42 && mMaintenanceHatches.size() == 1
-                && glassTier >= VoltageIndex.EV
-                && !mMufflerHatches.isEmpty();
+        if (!checkPiece(mName, 4, 4, 0, errors)) return;
+        energyHatchTier = checkEnergyHatchTier();
+        if (casingTier >= -1) {
+            reUpdate(CASING_INDEX + casingTier);
         }
-        return false;
+        getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
+        checkCasingMin(errors, casingAmount, 42);
+        checkHasAnyEnergy(errors);
+        checkOneMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        if (glassTier < VoltageIndex.EV) {
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.EV));
+        }
     }
 
     @Override
@@ -299,21 +297,22 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addTecTechHatchInfo()
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 5, 5, true)
+            .beginStructureBlock(5, 9, 5, true)
             .addController("front_bottom_center")
-            .addCasingInfoExactly("gt.blockcasings.name", 21, true)
-            .addCasingInfoExactly(TooltipHelper.tieredGlassText(4), 42, true)
-            .addCasingInfoRange("preciseUnitCasing.name", 42, 86, true)
-            .addInputHatch("<casing>")
-            .addInputBus("<casing>")
-            .addOutputHatch("<casing>")
-            .addOutputBus("<casing>")
-            .addEnergyHatch("<casing>")
-            .addMufflerHatch("<casing>")
-            .addMaintenanceHatch("<casing>")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
-            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
+            .addCasing("42-81", "Precise Electronic Unit Casing", true)
+            .addCasing("42", "EV+ Tiered Glass", false)
+            .addCasing("21", StatCollector.translateToLocal("gt.blockcasings.name"), true)
+            .addCasing("12", "Tungstensteel Frame Box", false)
+            .addEnergyHatch("1+", "Any unit casing", 1)
+            .addMaintenanceHatch("1", "Any unit casing", 1)
+            .addMufflerHatch("1", "Any unit casing", 1)
+            .addInputBus("1+", "Any unit casing", 1)
+            .addInputHatch("0+", "Any unit casing", 1)
+            .addOutputBus("1+", "Any unit casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.PRASS_UNIT_CASING)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.TIER_MACHINE_CASING)
             .toolTipFinisher();
         return tt;
     }
@@ -321,11 +320,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return 780;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("PreciseAssembler.hint", 7);
     }
 
     @Override
@@ -401,14 +395,17 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public byte getUpdateData() {
-        return (byte) casingTier;
+        // Offset casingTier by +4 so all valid values (-3..3) map to (1..7),
+        // which fits within the 7-bit range preserved by the initial client sync.
+        return (byte) (casingTier + 4);
     }
 
     @Override
     public void receiveClientEvent(byte aEventID, byte aValue) {
         super.receiveClientEvent(aEventID, aValue);
-        if (aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA && ((aValue & 0x80) == 0 || aValue == -1)) {
-            casingTier = aValue;
+        // Valid encoded range is 1–7 (casingTier -3..3 shifted by +4).
+        if (aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA && aValue >= 1 && aValue <= 7) {
+            casingTier = aValue - 4;
         }
     }
 
@@ -442,7 +439,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+        return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_PRECISE_MODE,
             GTGuiTextures.OVERLAY_BUTTON_ASSEMBLER_MODE);
     }
@@ -451,24 +448,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     public int nextMachineMode() {
         if (machineMode == MACHINEMODE_ASSEMBLER) return MACHINEMODE_PRECISE;
         return MACHINEMODE_ASSEMBLER;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(
-            new CycleButtonWidget().setToggle(() -> machineMode == 1, val -> machineMode = val ? 1 : 0)
-                .setTextureGetter(
-                    state -> state == 1 ? GGUITextures.OVERLAY_BUTTON_ASSEMBLER_MODE
-                        : GGUITextures.OVERLAY_BUTTON_PRECISE_MODE)
-                .setBackground(GTUITextures.BUTTON_STANDARD)
-                .setPos(80, 91)
-                .setSize(16, 16)
-                .dynamicTooltip(
-                    () -> Collections
-                        .singletonList(StatCollector.translateToLocal("preciseassembler.chat." + machineMode)))
-                .setUpdateTooltipEveryTick(true)
-                .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
     @Override

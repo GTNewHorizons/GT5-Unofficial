@@ -6,11 +6,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTO
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,15 +20,17 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -75,33 +77,14 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE) };
+        return createNanochipModuleTextures(
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER,
+            OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER_GLOW,
+            OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER_ACTIVE,
+            OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER_ACTIVE_GLOW);
     }
 
     public MTESuperconductorSplitterModule(int aID, String aName, String aNameRegional) {
@@ -138,21 +121,24 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
         // Check base structure
-        if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
+        if (!errors.isEmpty()) return;
         // Add coolant hatch
-        if (!findCoolantHatch()) return false;
-        return true;
+        findCoolantHatch(errors);
     }
 
-    private boolean findCoolantHatch() {
+    private void findCoolantHatch(List<StructureError> errors) {
         if (!mInputHatches.isEmpty()) {
             coolantInputHatch = mInputHatches.get(0);
-            return true;
+            if (mInputHatches.size() > 1) {
+                errors.add(
+                    StructureErrors.hatchCount(ErrorType.TOO_MANY, HatchElement.InputHatch, mInputHatches.size(), 1));
+            }
+        } else {
+            errors.add(StructureErrors.missingHatch(HatchElement.InputHatch));
         }
-        return false;
-
     }
 
     private int ticker = 0;
@@ -204,28 +190,34 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
                                                                                                  // tier sc
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.flavor.1")))
-            .beginStructureBlock(7, 10, 7, false)
+            .beginStructureBlock(7, 7, 10, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 40, false)
+            .addCasing("40", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 29, false)
+            .addCasing("29", translateToLocal("gt.blockcasings12.1.name"), false)
             // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 24, false)
+            .addCasing("24", translateToLocal("gt.blockglass1.8.name"), false)
             // Naquadria Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Naquadria.getLocalizedName()),
-                24,
-                false)
+            .addCasing("24", "Naquadria Frame Box", false)
             // UEV Solenoid Superconductor Coil
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings.cyclotron_coils.8.name"), 16, false)
+            .addCasing("16", translateToLocal("gt.blockcasings.cyclotron_coils.8.name"), false)
             // UHV Solenoid Superconductor Coil
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings.cyclotron_coils.7.name"), 6, false)
-            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
-            .addStructureInfoSeparator()
-            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
+            .addCasing("6", translateToLocal("gt.blockcasings.cyclotron_coils.7.name"), false)
+            .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCI_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCO_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
             .toolTipFinisher();
     }
 

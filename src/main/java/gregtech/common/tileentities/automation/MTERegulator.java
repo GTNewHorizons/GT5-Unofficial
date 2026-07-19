@@ -4,20 +4,17 @@ import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR_GLOW;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.item.ItemStackPredicate;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -25,10 +22,14 @@ import gregtech.api.metatileentity.implementations.MTEBuffer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.MTERegulatorGui;
 
 public class MTERegulator extends MTEBuffer {
 
-    public int[] mTargetSlots = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    public static final int FILTER_SLOT_INDEX = 9;
+    private static final int NUM_FILTER_SLOTS = 9;
+
+    private final int[] mTargetSlots = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     private boolean charge = false, decharge = false;
 
     public MTERegulator(int aID, String aName, String aNameRegional, int aTier) {
@@ -44,6 +45,14 @@ public class MTERegulator extends MTEBuffer {
 
     public MTERegulator(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
+    public int getTargetSlot(int index) {
+        return mTargetSlots[index];
+    }
+
+    public void setTargetSlots(int targetSlot, int index) {
+        mTargetSlots[index] = targetSlot;
     }
 
     @Override
@@ -103,27 +112,48 @@ public class MTERegulator extends MTEBuffer {
     @Override
     public void moveItems(IGregTechTileEntity igte, long aTimer) {
         GTItemTransfer transfer = new GTItemTransfer();
-
         transfer.push(igte, igte.getBackFacing());
+        transfer.setSourceSlots(0, 1, 2, 3, 4, 5, 6, 7, 8);
+
+        var targetTE = igte.getTileEntityAtSide(igte.getBackFacing());
 
         for (int i = 0; i < 9; i++) {
-            if (this.mInventory[i + 9] != null) {
-                transfer.setSourceSlots(i);
-                transfer.setSinkSlots(this.mTargetSlots[i]);
+            ItemStack filterStack = this.mInventory[i + 9];
+            if (filterStack == null) continue;
 
-                int size = this.mInventory[i + 9].stackSize;
+            int targetSlot = this.mTargetSlots[i];
+            int targetSize = filterStack.stackSize;
+            int remaining = getRemainingTargetCapacity(targetTE, targetSlot, targetSize, filterStack);
+            if (remaining <= 0) continue;
 
-                transfer.setMaxItemsPerTransfer(size);
-                transfer.setFilter(
-                    ItemStackPredicate.matches(this.mInventory[i + 9])
-                        .and(stack -> stack.getStackSize() >= size));
+            transfer.setSinkSlots(targetSlot);
+            transfer.setMaxSinkSlotStackSize(targetSize);
+            transfer.setMaxItemsPerTransfer(remaining);
+            transfer.setMaxTotalTransferred(remaining);
 
-                if (transfer.transfer() > 0) {
-                    this.mSuccess = 50;
-                    break;
-                }
+            final int needed = remaining;
+            transfer.setFilter(
+                ItemStackPredicate.matches(filterStack)
+                    .and(stack -> stack.getStackSize() >= needed));
+
+            if (transfer.transfer() > 0) {
+                igte.markInventoryBeenModified();
+                this.mSuccess = 50;
+                break;
             }
         }
+    }
+
+    private static int getRemainingTargetCapacity(Object targetTE, int targetSlot, int targetSize,
+        ItemStack filterStack) {
+        if (!(targetTE instanceof IInventory targetInv)) return targetSize;
+        if (targetSlot < 0 || targetSlot >= targetInv.getSizeInventory()) return targetSize;
+
+        ItemStack existing = targetInv.getStackInSlot(targetSlot);
+        int maxStackSize = existing != null ? existing.getMaxStackSize() : filterStack.getMaxStackSize();
+        int maxTargetSize = Math.min(targetSize, Math.min(maxStackSize, targetInv.getInventoryStackLimit()));
+        int currentInTarget = existing != null ? existing.stackSize : 0;
+        return maxTargetSize - currentInTarget;
     }
 
     @Override
@@ -164,58 +194,12 @@ public class MTERegulator extends MTEBuffer {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(createChargerSlot(43, 62));
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_22_RED.apply(84, true))
-                .setPos(65, 60)
-                .setSize(84, 22))
-            .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 3)
-                    .startFromSlot(0)
-                    .endAtSlot(8)
-                    .build()
-                    .setPos(7, 5))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SLOTS_HOLO_3BY3)
-                    .setPos(62, 5)
-                    .setSize(54, 54))
-            .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 3)
-                    .phantom(true)
-                    .startFromSlot(9)
-                    .endAtSlot(17)
-                    .applyForWidget(
-                        widget -> widget.setControlsAmount(true)
-                            .setBackground(GTUITextures.TRANSPARENT))
-                    .build()
-                    .setPos(62, 5))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SLOTS_HOLO_3BY3)
-                    .setPos(117, 5)
-                    .setSize(54, 54));
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTERegulatorGui(this).build(guiData, syncManager, uiSettings);
+    }
 
-        int xBase = 117, yBase = 5;
-        for (int i = 0; i < mTargetSlots.length; i++) {
-            final int index = i;
-            int xPos = xBase + (i % 3) * 18, yPos = yBase + (i / 3) * 18;
-            builder.widget(new SlotWidget(BaseSlot.empty()) {
-
-                @Override
-                protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                    mTargetSlots[index] = Math.min(
-                        99,
-                        Math.max(
-                            0,
-                            mTargetSlots[index] + (clickData.mouseButton == 0 ? -1 : 1) * (clickData.shift ? 16 : 1)));
-                }
-            }.setBackground(GTUITextures.TRANSPARENT)
-                .setPos(xPos, yPos))
-                .widget(
-                    TextWidget.dynamicString(() -> String.valueOf(mTargetSlots[index]))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(xPos + 2 + (i % 3 == 0 ? 1 : 0), yPos + 3 + (i / 3 == 0 ? 1 : 0)));
-        }
+    @Override
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return FILTER_SLOT_INDEX <= index && index < FILTER_SLOT_INDEX + NUM_FILTER_SLOTS;
     }
 }

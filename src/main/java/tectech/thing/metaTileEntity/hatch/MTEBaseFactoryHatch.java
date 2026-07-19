@@ -3,6 +3,7 @@ package tectech.thing.metaTileEntity.hatch;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -25,8 +26,9 @@ public abstract class MTEBaseFactoryHatch extends MTEHatch {
         super(prototype.mName, prototype.mTier, 0, prototype.mDescriptionArray, prototype.mTextures);
     }
 
-    public MTEBaseFactoryHatch(int id, String name, String nameRegional, int tier, String[] description) {
-        super(id, name, nameRegional, tier, 0, description);
+    public MTEBaseFactoryHatch(int id, String name, int tier, String[] description) {
+        // Temporarily translate here until hatches are properly localized
+        super(id, name, StatCollector.translateToLocal("gt.blockmachines." + name + ".name"), tier, 0, description);
     }
 
     @Override

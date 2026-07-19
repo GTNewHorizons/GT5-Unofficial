@@ -4,21 +4,16 @@ import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER_GLOW;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -29,10 +24,10 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.MTETypeFilterGui;
 
 public class MTETypeFilter extends MTESpecialFilter {
 
-    private static final String REPRESENTATION_SLOT_TOOLTIP = "GT5U.type_filter.representation_slot.tooltip";
     public int mRotationIndex = 0;
     public OrePrefixes mPrefix = OrePrefixes.ore;
 
@@ -62,6 +57,22 @@ public class MTETypeFilter extends MTESpecialFilter {
 
     public MTETypeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
+    public int getRotationIndex() {
+        return mRotationIndex;
+    }
+
+    public void setRotationIndex(int rotationIndex) {
+        this.mRotationIndex = rotationIndex;
+    }
+
+    public String getPrefix() {
+        return mPrefix.toString();
+    }
+
+    public void setPrefix(String prefix) {
+        this.mPrefix = OrePrefixes.getPrefix(prefix, this.mPrefix);
     }
 
     @Override
@@ -150,6 +161,11 @@ public class MTETypeFilter extends MTESpecialFilter {
     }
 
     @Override
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return index == FILTER_SLOT_INDEX;
+    }
+
+    @Override
     protected boolean isStackAllowed(ItemStack aStack) {
         if (this.mPrefix == OrePrefixes.ore) {
             ItemData data = GTOreDictUnificator.getItemData(aStack);
@@ -161,46 +177,7 @@ public class MTETypeFilter extends MTESpecialFilter {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(
-            new FakeSyncWidget.StringSyncer(
-                () -> this.mPrefix.toString(),
-                (prefix) -> this.mPrefix = OrePrefixes.getPrefix(prefix, this.mPrefix)));
-    }
-
-    @Override
-    protected Function<List<String>, List<String>> getItemStackReplacementTooltip() {
-        return (itemTooltip) -> {
-            List<String> replacementTooltip = new ArrayList<>();
-            replacementTooltip.add(
-                StatCollector
-                    .translateToLocalFormatted("GT5U.tooltip.typefilter.set_to", mPrefix.getDefaultLocalName()));
-            replacementTooltip.add(
-                StatCollector.translateToLocalFormatted("GT5U.tooltip.typefilter.ore_prefix", "§e" + mPrefix + "§r"));
-            replacementTooltip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.tooltip.typefilter.size",
-                    "§e" + mPrefix.mPrefixedItems.size() + "§r"));
-            replacementTooltip.addAll(mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP).text);
-            return replacementTooltip;
-        };
-    }
-
-    @Override
-    protected SlotWidget createFilterIconSlot(BaseSlot slot) {
-        return new TypeFilterIconSlotWidget(slot);
-    }
-
-    private class TypeFilterIconSlotWidget extends FilterIconSlotWidget {
-
-        public TypeFilterIconSlotWidget(BaseSlot slot) {
-            super(slot);
-        }
-
-        @Override
-        protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-            clickTypeIcon(clickData.mouseButton != 0, cursorStack);
-        }
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTETypeFilterGui(this).build(guiData, syncManager, uiSettings);
     }
 }

@@ -16,6 +16,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -23,7 +24,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -35,19 +35,21 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -178,7 +180,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             buildHatchAdder(TileEntityDysonSwarm.class)
                 .atLeast(InputData)
                 .casingIndex(IGTextures.CASING_INDEX_COMMAND)
-                .hint(4)
+                .hint(3)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 5))) // Command Center Base Casing
         .addElement('p', ofBlock(GregTechAPI.sBlockCasingsDyson, 6)) // Command Center Primary Windings
         .addElement('s', ofBlock(GregTechAPI.sBlockCasingsDyson, 7)) // Command Center Secondary Windings
@@ -217,7 +219,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
      *************/
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 10, 18, 3, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 10, 18, 3);
     }
 
     @Override
@@ -232,11 +234,16 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(STRUCTURE_PIECE_MAIN, 10, 18, 3) && mInputBusses.size() > 0
-            && mInputHatches.size() > 0
-            && eInputData.size() > 0
-            && (mDynamoHatches.size() > 0 || eDynamoMulti.size() > 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 10, 18, 3, errors)) return;
+        if (eInputData.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_DATA_HATCH);
+        }
+        if (mDynamoHatches.isEmpty() && eDynamoMulti.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
+        }
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override
@@ -438,50 +445,53 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             IGConfig.dysonSwarm.getCoolantStack()
                 .getLocalizedName())
             .addTecTechHatchInfo()
-            .beginStructureBlock(16, 20, 16, false)
+            .beginStructureBlock(16, 16, 20, false)
             .addController("gt.blockmachines.multimachine.ig.dyson.desc.controller")
-            .addDynamoHatch("ig.dyson.structure.dynamo", 1)
-            .addInputBus("1 - 11", 2)
-            .addInputHatch("1 - 11", 2)
-            .addStructurePart("gt.blockmachines.hatch.datain.tier.07.name", "1 - 24", 4)
-            .addStructureInfo("")
-            .addStructureInfo("ig.dyson.structure.additionally")
-            .addCasingInfoRange("tile.DysonSwarmReceiverCasing.name", 53, 64, false)
-            .addCasingInfoExactly("tile.DysonSwarmReceiverDish.name", 81)
-            .addCasingInfoRange("tile.DysonSwarmDeploymentUnitCasing.name", 62, 72, false)
-            .addCasingInfoExactly("tile.DysonSwarmDeploymentUnitCore.name", 1)
-            .addCasingInfoExactly("tile.DysonSwarmDeploymentUnitMagnet.name", 32)
-            .addCasingInfoRange("tile.DysonSwarmControlCasing.name", 115, 138, false)
-            .addCasingInfoExactly("tile.DysonSwarmControlPrimary.name", 20)
-            .addCasingInfoExactly("tile.DysonSwarmControlSecondary.name", 12)
-            .addCasingInfoExactly("tile.DysonSwarmControlToroid.name", 128)
-            .addCasingInfoExactly("tile.DysonSwarmFloor.name", 256)
-            .addCasingInfoExactly(Casings.AwakenedDraconiumCoilBlock.getLocalizedName(), 9)
-            .addCasingInfoExactly(Casings.HermeticCasing10.getLocalizedName(), 1)
-            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.Titanium), 16)
-            .addCasingInfoExactly(GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.HSSS), 23)
-            .addCasingInfoExactly(
-                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.SuperconductorUHVBase),
-                64)
+            .addCasing("256", StatCollector.translateToLocal("tile.DysonSwarmFloor.name"), false)
+            .addCasing("115-138", StatCollector.translateToLocal("tile.DysonSwarmControlCasing.name"), false)
+            .addCasing("128", StatCollector.translateToLocal("tile.DysonSwarmControlToroid.name"), false)
+            .addCasing("81", StatCollector.translateToLocal("tile.DysonSwarmReceiverDish.name"), false)
+            .addCasing("62-72", StatCollector.translateToLocal("tile.DysonSwarmDeploymentUnitCasing.name"), false)
+            .addCasing("64", StatCollector.translateToLocal("ig.dyson.structure.base.frameUHVBase"), false)
+            .addCasing("53-64", StatCollector.translateToLocal("tile.DysonSwarmReceiverCasing.name"), false)
+            .addCasing("32", StatCollector.translateToLocal("tile.DysonSwarmDeploymentUnitMagnet.name"), false)
+            .addCasing("23", StatCollector.translateToLocal("ig.dyson.structure.base.frameHSSS"), false)
+            .addCasing("20", StatCollector.translateToLocal("tile.DysonSwarmControlPrimary.name"), false)
+            .addCasing("16", StatCollector.translateToLocal("ig.dyson.structure.base.frameTitanium"), false)
+            .addCasing("12", StatCollector.translateToLocal("tile.DysonSwarmControlSecondary.name"), false)
+            .addCasing("9", StatCollector.translateToLocal("ig.dyson.structure.base.coil"), false)
+            .addCasing("1", StatCollector.translateToLocal("tile.DysonSwarmDeploymentUnitCore.name"), false)
+            .addCasing("1", StatCollector.translateToLocal("ig.dyson.structure.base.hermetic"), false)
+            .addMiscHatch(
+                "1+",
+                StatCollector.translateToLocal("gt.blockmachines.hatch.datain.tier.07.name"),
+                "Any center side casing on control center",
+                3)
+            .addMiscHatch(
+                "1+",
+                StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
+                "Any center side casing on receiver",
+                1)
+            .addInputBus("1+", "Any center side casing on deployment unit", 2)
+            .addInputHatch("1+", "Any center side casing on deployment unit", 2)
+            .addAir("All eight layers above the receiver dish")
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET,
-            "Modules: " + YELLOW + formatNumber(moduleCount) + RESET,
-            "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN) + formatNumber(powerFactor * 100.0) + "%" + RESET,
-            "Theoretical Output: " + YELLOW
-                + formatNumber((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
-                + RESET
-                + " EU/t",
-            "Current Output: " + YELLOW + formatNumber(euPerTick) + RESET + " EU/t",
-            "Computation required: " + YELLOW + formatNumber(eRequiredData) + RESET + "/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET,
+        return new String[] { "ig.infodata.hdr.operational_data",
+            IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.modules.fmt", formatNumber(moduleCount)),
+            IGregTechDeviceInformation.encode(
+                "ig.infodata.dyson_swarm.power_factor.fmt",
+                (powerFactor < 1.0f ? RED : GREEN) + formatNumber(powerFactor * 100.0) + "%" + RESET),
+            IGregTechDeviceInformation.encode(
+                "ig.infodata.dyson_swarm.theoretical_output.fmt",
+                formatNumber((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)),
+            IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.current_output.fmt", formatNumber(euPerTick)),
+            IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.computation.fmt", formatNumber(eRequiredData)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)),
             "---------------------------------------------" };
     }
 
@@ -542,6 +552,11 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

@@ -14,6 +14,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -25,20 +27,22 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFreezer>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static IStructureDefinition<MTEVacuumFreezer> STRUCTURE_DEFINITION = null;
     private int mCasing;
@@ -57,9 +61,14 @@ public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFr
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 16 && mMaintenanceHatches.size() == 1;
+        if (!checkPiece(mName, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 16);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -99,19 +108,13 @@ public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFr
         tt.addMachineType("machtype.vf")
             .addInfo("gt.vf.tips")
             .beginStructureBlock(3, 3, 3, true)
-            .addController("front_center")
-            .addCasingInfoRange(
-                ItemList.Casing_FrostProof.get(1)
-                    .getDisplayName(),
-                16,
-                24,
-                false)
-            .addEnergyHatch("<casing>", 1)
-            .addMaintenanceHatch("<casing>", 1)
-            .addInputHatch("<casing>", 1)
-            .addOutputHatch("<casing>", 1)
-            .addInputBus("<casing>", 1)
-            .addOutputBus("<casing>", 1)
+            .addController(gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("16-21", Casings.FrostProofMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("1+", gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.any_casing"), 1)
+            .addOutputAny("1+", gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.any_casing"), 1)
+            .addAir(gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.interior"))
             .toolTipFinisher();
         return tt;
     }
@@ -119,33 +122,20 @@ public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFr
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] { Casings.FrostProofMachineCasing.getCasingTexture(), TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] { Casings.FrostProofMachineCasing.getCasingTexture(), TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_VACUUM_FREEZER)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Casings.FrostProofMachineCasing.getCasingTexture() };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_VACUUM_FREEZER,
+            OVERLAY_FRONT_VACUUM_FREEZER_GLOW,
+            OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE,
+            OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.FrostProofMachineCasing.getCasingTexture();
     }
 
     @Override

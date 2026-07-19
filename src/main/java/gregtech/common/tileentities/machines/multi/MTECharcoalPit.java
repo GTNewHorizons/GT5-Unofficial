@@ -3,10 +3,12 @@ package gregtech.common.tileentities.machines.multi;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -25,18 +27,20 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETooltipMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.pollution.Pollution;
 
-public class MTECharcoalPit extends MTETooltipMultiBlockBase {
+public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingTextureProvider {
 
     private boolean running = false;
 
@@ -207,9 +211,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase {
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return true;
-    }
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {}
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
@@ -227,14 +229,16 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase {
         tt.addMachineType("machtype.cpi")
             .addInfo("gt.charcoal_pit.tips.1")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(3, 13, 3, 7, 3, 13, false)
+            .beginVariableStructureBlock(3, 13, 3, 13, 3, 7, false)
             .addController("gt.charcoal_pit.info.controller")
-            .addStructureInfo("gt.charcoal_pit.info.1")
-            .addController("gt.charcoal_pit.info.2")
-            .addStructurePart("gt.charcoal_pit.info.3", "gt.charcoal_pit.info.4")
-            .addStructurePart("tile.brick.name", "gt.charcoal_pit.info.5")
-            .addStructurePart("gt.charcoal_pit.info.6", "gt.charcoal_pit.info.7")
-            .addStructureInfo("gt.charcoal_pit.info.8")
+            .addCasing("1-605", gregtech.api.util.GTUtility.nestParams("gt.charcoal_pit.info.6"), false)
+            .addStructureInfo("gt.charcoal_pit.info.7")
+            .addCasing("4-431", gregtech.api.util.GTUtility.nestParams("gt.charcoal_pit.info.3"), false)
+            .addStructureInfo("gt.charcoal_pit.info.4")
+            .addCasing("1-121", gregtech.api.util.GTUtility.nestParams("tile.brick.name"), false)
+            .addStructureInfo("gt.charcoal_pit.info.5")
+            .addStructureInfo("")
+            .addStructureFooter("gt.charcoal_pit.info.8")
             .toolTipFinisher();
         return tt;
     }
@@ -242,15 +246,20 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase {
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == ForgeDirection.UP) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][10],
-                TextureFactory.of(OVERLAY_CHARCOAL_PIT_ACTIVE), TextureFactory.builder()
-                    .addIcon(OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW)
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][10], TextureFactory.of(OVERLAY_CHARCOAL_PIT) };
-        }
-        return new ITexture[] { casingTexturePages[0][10] };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            ForgeDirection.UP,
+            aActive,
+            OVERLAY_CHARCOAL_PIT,
+            OVERLAY_CHARCOAL_PIT_GLOW,
+            OVERLAY_CHARCOAL_PIT_ACTIVE,
+            OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return casingTexturePages[0][10];
     }
 
     @Override
@@ -278,6 +287,11 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase {
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

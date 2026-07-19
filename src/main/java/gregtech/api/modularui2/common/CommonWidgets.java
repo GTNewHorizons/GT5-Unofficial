@@ -1,0 +1,122 @@
+package gregtech.api.modularui2.common;
+
+import net.minecraft.util.StatCollector;
+
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.text.TextRenderer;
+import com.cleanroommc.modularui.network.NetworkUtils;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.SingleChildWidget;
+import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.util.item.GhostCircuitItemStackHandler;
+import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
+
+public final class CommonWidgets {
+
+    /**
+     * Returns a ghost circuit slot widget. baseMachine should be an instance of IConfigurationCircuitSupport
+     * Otherwise, returns an empty widget
+     *
+     * @param syncManager - manager
+     * @param baseMachine - meta tile entity
+     * @return ghost circuit slot widget
+     */
+    public static Widget<? extends Widget<?>> createCircuitSlot(PanelSyncManager syncManager,
+        IMetaTileEntity baseMachine) {
+        if (baseMachine instanceof IConfigurationCircuitSupport circuitEnabled && circuitEnabled.allowSelectCircuit()) {
+            return new GhostCircuitSlotWidget(baseMachine, syncManager)
+                .slot(new ModularSlot(new GhostCircuitItemStackHandler(baseMachine), 0));
+        }
+        return IDrawable.EMPTY.asWidget()
+            .size(18);
+    }
+
+    /**
+     * Returns a title widget positioned on the top left above the panel. Client only!
+     *
+     * @param mte        - The machine to make the title for
+     * @param panelWidth - The width of the machine's main panel
+     * @return machine title widget on the client, null otherwise
+     */
+    public static Widget<?> createMachineTitle(IMetaTileEntity mte, int panelWidth) {
+        if (NetworkUtils.isClient()) {
+            String title = mte.getLocalName();
+
+            int borderRadius = 5;
+            int maxWidth = panelWidth - borderRadius * 2;
+
+            int titleWidth = TextRenderer.getFontRenderer()
+                .getStringWidth(title);
+            int widgetWidth = Math.min(maxWidth, titleWidth);
+
+            int rows = (int) Math.ceil((double) titleWidth / maxWidth);
+            int heightPerRow = TextRenderer.getFontRenderer().FONT_HEIGHT;
+            int height = heightPerRow * rows;
+
+            return new SingleChildWidget<>().coverChildren()
+                .bottomRel(1)
+                .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
+                .child(
+                    IKey.str(title)
+                        .asWidget()
+                        .size(widgetWidth, height)
+                        .widgetTheme(GTWidgetThemes.TEXT_TITLE)
+                        .marginLeft(5)
+                        .marginRight(5)
+                        .marginTop(5)
+                        .marginBottom(1));
+        }
+        return null;
+    }
+
+    /**
+     * Creates a styled parent widget intended to act as a monitor or display area,
+     * commonly used for rendering fluid tanks.
+     * <p>
+     * This widget comes pre-configured with a black screen background texture and
+     * standardized internal padding to ensure its contents are framed correctly.
+     *
+     * @param width  The width of the screen widget.
+     * @param height The height of the screen widget.
+     * @return A configured {@link ParentWidget}
+     */
+    public static ParentWidget<?> createFluidScreen(int width, int height) {
+        return new ParentWidget<>().size(width, height)
+            .padding(3, 2, 3, 2)
+            .background(GTGuiTextures.PICTURE_SCREEN_BLACK);
+    }
+
+    /**
+     * Creates a horizontal row widget containing a toggle button and a dynamic text label,
+     * typically used for toggling redstone behavior between "Normal" and "Inverted" modes.
+     *
+     * @param invertedSyncer The synced boolean value that handles the toggle state and updates the label.
+     * @return A configured {@link Flow} row containing the toggle button and its label.
+     */
+    public static Flow createInvertButtonRow(BooleanSyncValue invertedSyncer) {
+        return Flow.row()
+            .child(
+                new ToggleButton().value(invertedSyncer)
+                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
+                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                    .size(16))
+            .child(
+                IKey.dynamic(
+                    () -> invertedSyncer.getValue() ? StatCollector.translateToLocal("gt.interact.desc.inverted")
+                        : StatCollector.translateToLocal("gt.interact.desc.normal"))
+                    .asWidget())
+            .coverChildren()
+            .childPadding(2);
+    }
+}

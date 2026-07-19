@@ -106,6 +106,15 @@ public class MachineStats {
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
         public boolean forceFreeFace;
+
+        @Config.Comment({
+            "Minimum ticks an idle multiblock waits after a failed recipe check before a throttleable push may run another one.",
+            "Only throttleable sources are affected (ME stocking inputs restocking, power trickling into a buffer); new inputs,",
+            "drained outputs and user actions are immediate and ignore this entirely.",
+            "0 (default) keeps every check instant. Raise this only if a heavily loaded ME network makes recipe checks expensive",
+            "(for reference, the legacy behaviour was roughly equivalent to 100 ticks)." })
+        @Config.DefaultInt(0)
+        public int recipeCheckFailCooldown;
     }
 
     @Config.LangKey("GT5U.gui.config.machine_stats.mass_fabricator")
@@ -186,7 +195,7 @@ public class MachineStats {
         public int maxReplacementPercentage;
 
         @Config.Comment("List of other blocks allowed as a part of the cleanroom. Format: <block name> or <block name>:<meta>.")
-        @Config.DefaultStringList({ "BW_GlasBlocks", // All Bart glass (including HV tier)
+        @Config.DefaultStringList({ "BW_TieredGlass", "BW_ExtraGlass", // All Bart glass (including HV tier)
             "tile.openblocks.elevator", "tile.openblocks.elevator_rotating", // OpenBlocks elevators
             "tile.blockTravelAnchor", // EnderIO travel anchors
             "tile.blockCosmeticOpaque:2", // TC Warded glass (usually HV tier)

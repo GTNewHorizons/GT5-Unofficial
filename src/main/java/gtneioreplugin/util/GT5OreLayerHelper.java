@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -15,11 +16,13 @@ import com.google.common.collect.ImmutableMap;
 
 import gregtech.GTMod;
 import gregtech.api.enums.OreMixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.common.OreMixBuilder;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
+import it.unimi.dsi.fastutil.shorts.ShortShortPair;
 
 public class GT5OreLayerHelper {
 
@@ -33,7 +36,7 @@ public class GT5OreLayerHelper {
         HashMap<String, OreLayerWrapper> byName = new HashMap<>();
         HashMap<String, NormalOreDimensionWrapper> byDim = new HashMap<>();
 
-        for (OreMixes mix : OreMixes.values()) {
+        for (OreMixes mix : OreMixes.VALUES) {
             OreLayerWrapper wrapper = new OreLayerWrapper(mix.oreMixBuilder);
             byName.put(mix.oreMixBuilder.oreMixName, wrapper);
 
@@ -71,6 +74,7 @@ public class GT5OreLayerHelper {
     public static class OreLayerWrapper {
 
         public final String veinName, worldGenHeightRange;
+        public final Map<String, String> dimWorldGenHeightRange;
         public final IOreMaterial[] ores = new IOreMaterial[4];
         public final short randomWeight, size, density;
         /** {full dim name} */
@@ -99,21 +103,33 @@ public class GT5OreLayerHelper {
 
             this.size = (short) mix.size;
             this.density = (short) mix.density;
-            this.worldGenHeightRange = mix.minY + "-" + mix.maxY;
+            this.worldGenHeightRange = mix.minY + "-" + mix.maxY + (!mix.dimVeinHeights.isEmpty() ? '*' : "");
             this.randomWeight = (short) mix.weight;
 
             this.allowedDimWithOrigNames = mix.dimsEnabled;
             this.abbrDimNames = mix.dimsEnabled.stream()
                 .map(DimensionHelper::getDimAbbreviatedName)
                 .collect(Collectors.toSet());
+
+            this.dimWorldGenHeightRange = new HashMap<>();
+            for (Entry<String, ShortShortPair> entry : mix.dimVeinHeights.entrySet()) {
+                String dimName = DimensionHelper.getDimAbbreviatedName(entry.getKey());
+                ShortShortPair heightPair = entry.getValue();
+                dimWorldGenHeightRange.put(dimName, heightPair.leftShort() + "-" + heightPair.rightShort());
+            }
         }
 
-        public List<ItemStack> getVeinLayerOre(int veinLayer) {
+        public List<ItemStack> getVeinLayerOre(int veinLayer, Set<StoneType> stoneTypes) {
             List<ItemStack> stackList = new ArrayList<>();
-            for (IStoneType stoneType : ores[veinLayer].getValidStones()) {
-                if (!stoneType.isExtraneous()) {
+            List<IStoneType> validStones = ores[veinLayer].getValidStones();
+            for (IStoneType stoneType : validStones) {
+                if (stoneType instanceof StoneType && stoneTypes.contains(stoneType)) {
                     stackList.add(getLayerOre(veinLayer, stoneType));
                 }
+            }
+            // Fallback just in case so we at least show *some* ore
+            if (stackList.isEmpty() && !validStones.isEmpty()) {
+                stackList.add(getLayerOre(veinLayer, validStones.get(0)));
             }
             return stackList;
         }

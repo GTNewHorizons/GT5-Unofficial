@@ -15,6 +15,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -47,6 +48,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     private int itemCount = 0;
     private boolean isOutputSlotLocked = true;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
+    private boolean changed = false;
 
     public MTEHatchNonConsumableBase(int ID, String name, String nameRegional, int tier, String description) {
         super(ID, name, nameRegional, tier, 3, new String[] { description, "Will keep its contents when broken" });
@@ -68,6 +70,10 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
 
     @Override
     public void setItemStack(ItemStack stack) {
+        if (itemStack != stack) {
+            changed = true;
+        }
+
         itemStack = stack;
     }
 
@@ -78,8 +84,22 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
 
     @Override
     public void setItemCount(int amount) {
+        if (itemCount != amount) {
+            changed = true;
+        }
+
         itemCount = amount;
     }
+
+    public boolean hasChanged() {
+        return changed;
+    }
+
+    public void unmarkChanged() {
+        changed = false;
+    }
+
+    public abstract int getItemCapacity();
 
     @Override
     public abstract boolean isValidItem(ItemStack item);
@@ -144,7 +164,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         tooltip.add("Capacity: " + EnumChatFormatting.GOLD + getItemCapacity() + EnumChatFormatting.GRAY + " Items");
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("itemStack")) {
+        if (ItemStackNBT.hasKey(stack, "itemStack")) {
             final ItemStack tContents = ItemStack
                 .loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("itemStack"));
             final int tSize = stack.stackTagCompound.getInteger("itemCount");

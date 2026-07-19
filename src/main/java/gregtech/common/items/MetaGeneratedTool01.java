@@ -68,6 +68,7 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.tools.ItemNetworkAnalyzer;
 import gregtech.common.tools.ToolBranchCutter;
 import gregtech.common.tools.ToolButcheryKnife;
 import gregtech.common.tools.ToolBuzzSawHV;
@@ -634,6 +635,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4),
             new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2));
         ItemList.Tool_Vajra.set(new ToolVajra("Tool_Vajra", "Vajra", "", 0, 20, true));
+        ItemList.NetworkAnalyzer.set(new ItemNetworkAnalyzer("Network Analyzer", "", 0, 0, true));
 
         initCraftingShapedRecipes();
         initCraftingShapelessRecipes();
@@ -680,9 +682,9 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Steel), 'S', OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.WroughtIron, Materials.Stone, null),
+            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.CastIron, Materials.Stone, null),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.WroughtIron), 'S',
+            new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.CastIron), 'S',
                 OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
             INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.RedSteel, Materials.Stone, null),

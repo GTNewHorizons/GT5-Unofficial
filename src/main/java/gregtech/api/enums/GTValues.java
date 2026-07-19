@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.AQUA;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
@@ -247,10 +246,10 @@ public class GTValues {
      * Sides
      */
     public static final byte SIDE_BOTTOM = 0, SIDE_DOWN = 0, SIDE_TOP = 1, SIDE_UP = 1, SIDE_NORTH = 2, // Also a Side
-                                                                                                        // with a
-                                                                                                        // stupidly
-                                                                                                        // mirrored
-                                                                                                        // Texture
+        // with a
+        // stupidly
+        // mirrored
+        // Texture
         SIDE_SOUTH = 3, SIDE_WEST = 4, SIDE_EAST = 5, // Also a Side with a stupidly mirrored Texture
         SIDE_ANY = 6, SIDE_UNKNOWN = 6, SIDE_INVALID = 6, SIDE_INSIDE = 6, SIDE_UNDEFINED = 6;
 
@@ -655,7 +654,7 @@ public class GTValues {
         EnumChatFormatting.GOLD            + CustomGlyphs.SPARKLES ;
         // spotless:on
 
-    public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
+    public static final String TecTechHatches = "Supports multi-amp and laser hatches";
 
     public static final String StandalonePureBluez = EnumChatFormatting.WHITE + "Pure"
         + EnumChatFormatting.AQUA

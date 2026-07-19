@@ -1,13 +1,11 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
 import java.util.List;
@@ -19,40 +17,39 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.IFluidBlock;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.MTEConcreteBackfillerBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
     private int mLastXOff = 0, mLastZOff = 0;
-
-    /** Used to drive the readout in the GUI for the backfiller's current y-level. */
     private int clientYHead;
+    private boolean mLiquidEnabled = true;
 
-    protected boolean mLiquidEnabled = true;
+    public boolean isLiquidEnabled() {
+        return mLiquidEnabled;
+    }
+
+    public void setLiquidEnabled(boolean val) {
+        mLiquidEnabled = val;
+    }
+
+    public void setClientYHead(int val) {
+        clientYHead = val;
+    }
 
     private static boolean isWater(Block aBlock) {
         return aBlock == Blocks.water || aBlock == Blocks.flowing_water;
@@ -105,18 +102,15 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
                 GTUtility.getColoredTierNameFromTier((byte) getMinTier()),
                 baseCycleTime < 20 ? formatNumber(baseCycleTime) : formatNumber(baseCycleTime / 20.0),
                 baseCycleTime < 20 ? "gt.time.tick.plural" : "gt.time.second.plural")
-            .beginStructureBlock(3, 7, 3, false)
-            .addController("front_bottom_center")
-            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.1")
-            .addStructurePart(casings, "gt.driller_shaped_mb.info.casing.2")
-            .addStructurePart(
-                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, getFrameMaterial()),
-                "gt.driller_shaped_mb.info.frame")
-            .addEnergyHatch(GTUtility.nestParams("gt.backfiller.info.energy", VN[getMinTier()]), 1)
-            .addMaintenanceHatch("gt.driller_shaped_mb.info.replace", 1)
-            .addInputBus("gt.backfiller.info.i_bus", 1)
-            .addInputHatch("gt.backfiller.info.i_hatch", 1)
-            .addOutputBus("gt.backfiller.info.o_bus", 1)
+            .beginStructureBlock(3, 3, 7, false)
+            .addController("Front bottom center")
+            .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
+            .addCasing("3-8", casings, false)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "gt.driller_shaped_mb.info.replace", 1)
+            .addInputBus("0+", "gt.backfiller.info.i_bus", 1)
+            .addInputHatch("1+", "gt.backfiller.info.i_hatch", 1)
+            .addOutputBus("0+", "gt.backfiller.info.o_bus", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -124,8 +118,10 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     protected abstract int getRadius();
 
     @Override
-    protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty() && mEnergyHatches.size() == 1;
+    protected void checkHatches(List<StructureError> errors) {
+        checkOneEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override
@@ -220,59 +216,8 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
         return true;
     }
 
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-        screenElements
-            .widget(
-                TextWidget
-                    .dynamicString(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.backfiller_current_area",
-                            numberFormat.format(clientYHead)))
-                    .setSynced(false)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == WorkState.UPWARD))
-            .widget(new FakeSyncWidget.IntegerSyncer(this::getYHead, newInt -> clientYHead = newInt))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> workState.ordinal(), this::setWorkState));
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        final int BUTTON_Y_LEVEL = 91;
-
-        builder.widget(
-            new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
-                .setOnClick((clickData, widget) -> mLiquidEnabled = !mLiquidEnabled)
-                .setPlayClickSound(true)
-                .setBackground(() -> {
-                    if (mLiquidEnabled) {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                            GTUITextures.OVERLAY_BUTTON_LIQUIDMODE };
-                    }
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_LIQUIDMODE_OFF };
-                })
-                .attachSyncer(
-                    new FakeSyncWidget.BooleanSyncer(() -> mLiquidEnabled, newBoolean -> mLiquidEnabled = newBoolean),
-                    builder,
-                    (widget, val) -> widget.notifyTooltipChange())
-                .dynamicTooltip(
-                    () -> ImmutableList.of(
-                        StatCollector.translateToLocal(
-                            mLiquidEnabled ? "GT5U.gui.button.liquid_filling_ON"
-                                : "GT5U.gui.button.liquid_filling_OFF")))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(new Pos2d(100, BUTTON_Y_LEVEL))
-                .setSize(16, 16));
-        int left = 98;
-        for (ButtonWidget button : getAdditionalButtons(builder, buildContext)) {
-            button.setPos(new Pos2d(left, BUTTON_Y_LEVEL))
-                .setSize(16, 16);
-            builder.widget(button);
-            left += 18;
-        }
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEConcreteBackfillerBaseGui(this);
     }
 }

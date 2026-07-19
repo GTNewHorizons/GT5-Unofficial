@@ -40,6 +40,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -126,17 +128,21 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addDynamicSpeedBonusInfo(0.05f, TooltipTier.COIL)
             .addInfo("gt.zyngen.tips.2")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 5, 3, true)
+            .beginStructureBlock(3, 3, 5, true)
             .addController("front_bottom_center")
-            .addCasingInfoMin(Casings.InconelReinforcedCasing.getLocalizedName(), 8, false)
-            .addStructurePart(Casings.IntegralEncasementEV.getLocalizedName(), "gt.zyngen.info.1")
-            .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.zyngen.info.2")
-            .addInputBus(anyCasing, 1)
-            .addOutputBus(anyCasing, 1)
-            .addEnergyHatch(anyCasing, 1)
-            .addMaintenanceHatch(anyCasing, 1)
-            .addMufflerHatch(anyCasing, 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addCasing("16", "Heating Coil", true)
+            .addStructureInfo("gt.zyngen.info.2")
+            .addCasing("5-12", "Inconel Reinforced Casing", false)
+            .addCasing("8", "Integral Encasement V", false)
+            .addStructureInfo("gt.zyngen.info.1")
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -180,14 +186,21 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mLevel = 0;
         setCoilLevel(HeatingCoilLevel.None);
-        return checkPiece(mName, 1, 4, 0) && mCasing >= 8
-            && getCoilLevel() != HeatingCoilLevel.None
-            && (mLevel = getCoilLevel().getTier() + 1) > 0
-            && checkHatch();
+        if (!checkPiece(mName, 1, 4, 0, errors)) return;
+        if (getCoilLevel() == HeatingCoilLevel.None) {
+            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+        }
+        checkCasingMin(errors, mCasing, 5);
+        mLevel = getCoilLevel().getTier() + 1;
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

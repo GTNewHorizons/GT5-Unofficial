@@ -26,10 +26,12 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEPlasmaModuleGui;
+import tectech.loader.ConfigHandler;
 import tectech.recipe.TecTechRecipeMaps;
 
 public class MTEPlasmaModule extends MTEBaseModule {
@@ -112,8 +114,20 @@ public class MTEPlasmaModule extends MTEBaseModule {
         return inputMaxParallel;
     }
 
-    public void setInputMaxParallel(int val) {
-        inputMaxParallel = val;
+    public void setInputMaxParallelDebug(int val) {
+        // need to check server side if we have permission
+        if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE) inputMaxParallel = val;
+    }
+
+    public void setPlasmaTierDebug(int tier) {
+        // need to check server side if we have permission
+        if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE) setPlasmaTier(tier);
+    }
+
+    public void setMultiStepPlasmaDebug(boolean isCapable) {
+        // need to check server side if we have permission
+        if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE)
+            setMultiStepPlasma(isCapable);
     }
 
     @Override
@@ -173,22 +187,17 @@ public class MTEPlasmaModule extends MTEBaseModule {
             .addInfo("of heat, ionizing and turning them into plasma directly. Not all plasmas can be produced")
             .addInfo("right away, some of them require certain upgrades to be unlocked")
             .addInfo("This module is specialized towards energy and overclock efficiency")
-            .beginStructureBlock(7, 7, 13, false)
+            .beginStructureBlock(13, 7, 7, false)
             .addController("Front center")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Harmonic Phonon Transmission Conduit")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(EnumChatFormatting.AQUA);
+            .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
+            .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
+            .addCasing("5", "Celestial Matter Guidance Casing", false)
+            .addCasing("5", "Harmonic Phonon Transmission Conduit", false)
+            .addCasing("1", "Stellar Energy Siphon Casing", false)
+            .addInputBus("0+", "Any front shielding casing", 1)
+            .addInputHatch("0+", "Any front shielding casing", 1)
+            .addOutputHatch("0+", "Any front shielding casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 

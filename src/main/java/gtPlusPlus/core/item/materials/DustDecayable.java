@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
@@ -28,7 +27,7 @@ public class DustDecayable extends BaseItemTickable {
 
     public DustDecayable(String unlocal, int colour, int maxTicks, String[] desc1, ItemStack turnsInto, int radLevel,
         GTRecipeConstants.DecayType decayType) {
-        super(true, true, unlocal, colour, maxTicks, desc1);
+        super(true, unlocal, colour, maxTicks, desc1);
         this.turnsIntoItem = turnsInto;
         this.radLevel = radLevel;
         this.maxStackSize = 64;
@@ -44,17 +43,16 @@ public class DustDecayable extends BaseItemTickable {
         this.mIcon[1] = reg.registerIcon(gt2);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-        super.addInformation(stack, player, list, bool);
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
+        super.addInformation(stack, player, list, adv);
         if (Client.tooltip.showRadioactiveText) {
             if (this.radLevel > 0) {
                 list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.radLevel));
             }
         }
         list.add(
-            GTUtility.translate(
+            StatCollector.translateToLocalFormatted(
                 "GTPP.tooltip.dust-decay-hint",
                 ModBlocks.blockDecayablesChest.getLocalizedName(),
                 ItemList.DecayWarehouse.get(1)

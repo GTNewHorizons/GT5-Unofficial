@@ -3,8 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -14,6 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
@@ -208,11 +207,11 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        this.showPollution(aPlayer.getEntityWorld(), aPlayer);
+        this.showPollution(aPlayer);
         return true;
     }
 
-    private void showPollution(final World worldIn, final EntityPlayer playerIn) {
+    private void showPollution(final EntityPlayer playerIn) {
         if (!GTMod.proxy.mPollution) {
             GTUtility.sendChatToPlayer(playerIn, "This block is useless, Pollution is disabled.");
         } else {
@@ -244,12 +243,9 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
     @Override
     public String[] getInfoData() {
         return new String[] { this.getLocalName(),
-            StatCollector
-                .translateToLocalFormatted("gtpp.infodata.pollution_creator.pollution", this.mCurrentPollution),
-            StatCollector
-                .translateToLocalFormatted("gtpp.infodata.pollution_detector.pollution.avg", this.mAveragePollution),
-            StatCollector
-                .translateToLocalFormatted("gtpp.infodata.pollution_detector.redstone_level", this.mRedstoneLevel) };
+            IGregTechDeviceInformation.encode("gtpp.infodata.pollution_creator.pollution", this.mCurrentPollution),
+            IGregTechDeviceInformation.encode("gtpp.infodata.pollution_detector.pollution.avg", this.mAveragePollution),
+            IGregTechDeviceInformation.encode("gtpp.infodata.pollution_detector.redstone_level", this.mRedstoneLevel) };
     }
 
     @Override
@@ -291,11 +287,6 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
     public void setInventorySlotContents(final int p_70299_1_, final ItemStack p_70299_2_) {}
 
     @Override
-    public String getInventoryName() {
-        return null;
-    }
-
-    @Override
     public int getInventoryStackLimit() {
         return 0;
     }
@@ -317,11 +308,6 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
         this.mCurrentPollution = aNBT.getInteger("mCurrentPollution");
         this.mAveragePollution = aNBT.getInteger("mAveragePollution");
         this.mRedstoneLevel = aNBT.getLong("mRedstoneLevel");
-    }
-
-    public boolean allowCoverOnSide(final ForgeDirection side, final int aCoverID) {
-        return side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
     }
 
     @Override

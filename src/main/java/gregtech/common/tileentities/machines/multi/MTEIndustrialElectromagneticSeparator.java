@@ -12,6 +12,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -22,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -35,11 +37,12 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -50,8 +53,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -61,7 +64,8 @@ import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEIndustrialElectromagneticSeparator
-    extends MTEExtendedPowerMultiBlockBase<MTEIndustrialElectromagneticSeparator> implements ISurvivalConstructable {
+    extends MTEExtendedPowerMultiBlockBase<MTEIndustrialElectromagneticSeparator>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public enum MagnetTiers {
 
@@ -83,7 +87,7 @@ public class MTEIndustrialElectromagneticSeparator
         }
 
         public static String buildMagnetTooltip(MagnetTiers m) {
-            String tooltip = GTUtility.translate(
+            String tooltip = StatCollector.translateToLocalFormatted(
                 "gt.magnet.tooltip.base",
                 EnumChatFormatting.LIGHT_PURPLE,
                 Math.round((1F / m.speedBoost * 100) - 100),
@@ -94,7 +98,7 @@ public class MTEIndustrialElectromagneticSeparator
 
             if (m.supportsExotic) {
                 tooltip = tooltip + "\\n"
-                    + GTUtility.translate(
+                    + StatCollector.translateToLocalFormatted(
                         "gt.magnet.tooltip.exotic",
                         EnumChatFormatting.BOLD,
                         EnumChatFormatting.GREEN,
@@ -141,7 +145,7 @@ public class MTEIndustrialElectromagneticSeparator
             'E',
             buildHatchAdder(MTEIndustrialElectromagneticSeparator.class)
                 .adder(MTEIndustrialElectromagneticSeparator::addMagHatch)
-                .hatchClass(MTEHatchMagnet.class)
+                .hatchId(MetaTileEntityIDs.MAG_HATCH.ID)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
                 .hint(2)
                 .build())
@@ -166,42 +170,23 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EMS_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EMS_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EMS)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EMS_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 0)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_EMS,
+            OVERLAY_FRONT_EMS_GLOW,
+            OVERLAY_FRONT_EMS_ACTIVE,
+            OVERLAY_FRONT_EMS_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 0));
     }
 
     @Override
@@ -209,19 +194,22 @@ public class MTEIndustrialElectromagneticSeparator
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.polarizer", "gt.recipe.electromagneticseparator")
             .addInfo("gt.mfe.tips.1")
-            .beginStructureBlock(7, 6, 7, false)
-            .addController("front_bottom_center")
-            .addCasingInfoMin("gt.blockcasings10.0.name", MIN_CASING)
-            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 12, true)
-            .addCasingInfoExactly(
-                GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, Materials.NeodymiumMagnetic),
-                37)
-            .addStructurePart("gt.blockmachines.hatch.mag_hatch.name", "gt.mfe.info.1", 2)
-            .addInputBus("<casing>", 1)
-            .addOutputBus("<casing>", 1)
-            .addEnergyHatch("<casing>", 1)
-            .addMaintenanceHatch("<casing>", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .beginStructureBlock(7, 7, 6, true)
+            .addController("Front bottom center")
+            .addCasing(MIN_CASING + "-73", gregtech.api.util.GTUtility.nestParams("gt.blockcasings10.0.name"), false)
+            .addCasing("37", "Magnetic Neodymium Frame Box", false)
+            .addCasing("12", "Any Tiered Glass", false)
+            .addMiscHatch(
+                "1",
+                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.hatch.mag_hatch.name"),
+                "gt.mfe.info.1",
+                2)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.authorBaps);
         return tt;
     }
@@ -244,24 +232,23 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
         mMagHatch = null;
         mExoticEnergyHatches.clear();
         mEnergyHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 5, 0)) return false;
-        if (mCasingAmount < MIN_CASING) return false;
-        if (mMagHatch == null) return false;
-
-        // If there are exotic hatches, ensure there is only 1.
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 5, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, MIN_CASING);
         if (!mExoticEnergyHatches.isEmpty()) {
-            if (!mEnergyHatches.isEmpty()) return false;
-            return (mExoticEnergyHatches.size() == 1);
+            if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+        } else {
+            checkHasEnergyHatch(errors);
         }
-
-        // All checks passed!
-        return true;
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -370,11 +357,6 @@ public class MTEIndustrialElectromagneticSeparator
         return true;
     }
 
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
     private void findMagnet() {
         magnetTier = null;
         if (mMagHatch != null) {
@@ -414,8 +396,8 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SEPARATOR,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_POLARIZER);
     }

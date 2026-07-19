@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
+import static gregtech.api.recipe.RecipeMaps.quantumForceTransformerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -15,7 +16,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
 import static gregtech.api.util.GTRecipeConstants.QFT_FOCUS_TIER;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -86,7 +86,7 @@ public class RecipeLoaderChemicalSkips {
             .itemOutputs(
                 Materials.Palladium.getDust(64),
                 Materials.Platinum.getDust(64),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.dust, 64))
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.dust, 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
@@ -117,7 +117,7 @@ public class RecipeLoaderChemicalSkips {
                 WerkstoffLoader.Rhodium.get(OrePrefixes.dust, 64),
                 Materials.Palladium.getDust(64),
                 Materials.Platinum.getDust(64),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.dust, 64))
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.dust, 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))

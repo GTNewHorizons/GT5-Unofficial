@@ -27,9 +27,9 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import bartworks.system.material.BWGTMaterialReference;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 
 public class CasingLoader implements IWerkstoffRunnable {
@@ -52,6 +52,7 @@ public class CasingLoader implements IWerkstoffRunnable {
     private static void addCasingRecipes(Werkstoff werkstoff, OrePrefixes reboltedCasingsOuterStuff) {
         GTModHandler.addCraftingRecipe(
             werkstoff.get(blockCasing),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PSP", "PGP", "PSP", 'P', werkstoff.get(plate), 'S', werkstoff.get(screw), 'G',
                 werkstoff.get(gearGtSmall) });
 
@@ -59,11 +60,12 @@ public class CasingLoader implements IWerkstoffRunnable {
             .itemInputs(werkstoff.get(plate, 6), werkstoff.get(screw, 2), werkstoff.get(gearGtSmall))
             .itemOutputs(werkstoff.get(blockCasing))
             .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
             .addTo(assemblerRecipes);
 
         GTModHandler.addCraftingRecipe(
             werkstoff.get(blockCasingAdvanced),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PSP", "PGP", "PSP", 'P', werkstoff.get(reboltedCasingsOuterStuff), 'S',
                 werkstoff.get(screw), 'G', werkstoff.get(gearGt) });
 
@@ -71,7 +73,7 @@ public class CasingLoader implements IWerkstoffRunnable {
             .itemInputs(werkstoff.get(reboltedCasingsOuterStuff, 6), werkstoff.get(screw, 2), werkstoff.get(gearGt))
             .itemOutputs(werkstoff.get(blockCasingAdvanced))
             .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
             .addTo(assemblerRecipes);
     }
 }

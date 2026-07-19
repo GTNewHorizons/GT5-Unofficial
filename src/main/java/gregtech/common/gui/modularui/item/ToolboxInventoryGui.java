@@ -7,11 +7,9 @@ import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.api.ITheme;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.ISynced;
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.factory.inventory.InventoryTypes;
@@ -87,12 +85,13 @@ public class ToolboxInventoryGui {
         }
 
         Flow column = Flow.column()
-            .sizeRel(1);
+            .full()
+            .childPadding(5);
         column.child(
             IKey.lang("GT5U.gui.text.toolbox.title")
                 .alignment(Alignment.Center)
                 .asWidget()
-                .widthRel(1)
+                .fullWidth()
                 .height(SLOT_DRAW_SIZE));
 
         final SlotGroupWidget slotGroupWidget = new SlotGroupWidget();
@@ -110,27 +109,22 @@ public class ToolboxInventoryGui {
 
         for (final ToolboxSlot slot : ToolboxSlot.values()) {
 
-            final IWidget widget = new CustomItemSlot(() -> itemHandler, slot).slot(
+            final ItemSlot itemSlot = new CustomItemSlot(() -> itemHandler, slot).slot(
                 new ModularSlot(itemHandler, slot.getSlotID()).slotGroup(slot.isGeneric() ? genericGroup : toolGroup))
                 .addTooltipLine(getTooltip(slot));
 
             final int leftShift = slot.getColumn() * SLOT_DRAW_SIZE + (slot.getColumn() >= GAP_COLUMN ? GAP_SIZE : 0);
-            widget.flex()
-                .left(leftShift)
+            itemSlot.left(leftShift)
                 .top(slot.getRow() * SLOT_DRAW_SIZE);
-            slotGroupWidget.child(widget);
+            slotGroupWidget.child(itemSlot);
 
-            ((ISynced<?>) widget).syncHandler(SLOT_GROUP_SYNC_NAME, slot.getSlotID());
+            ((ISynced<?>) itemSlot).syncHandler(SLOT_GROUP_SYNC_NAME, slot.getSlotID());
         }
 
-        slotGroupWidget.flex()
-            .size(
-                ToolboxSlot.ROW_WIDTH * SLOT_DRAW_SIZE + GAP_SIZE,
-                (int) (Math.ceil((double) ToolboxSlot.values().length / (double) ToolboxSlot.ROW_WIDTH))
-                    * SLOT_DRAW_SIZE);
-        column.child(
-            slotGroupWidget.alignX(Alignment.Center)
-                .alignY(0.2f));
+        slotGroupWidget.size(
+            ToolboxSlot.ROW_WIDTH * SLOT_DRAW_SIZE + GAP_SIZE,
+            (int) (Math.ceil((double) ToolboxSlot.values().length / (double) ToolboxSlot.ROW_WIDTH)) * SLOT_DRAW_SIZE);
+        column.child(slotGroupWidget);
 
         panel.child(column);
         return panel;
@@ -167,7 +161,7 @@ public class ToolboxInventoryGui {
          * Allows the background to dynamically remove the tool outline if there's a tool in the slot.
          */
         @Override
-        public @Nullable IDrawable getCurrentBackground(final ITheme theme, final WidgetThemeEntry<?> widgetTheme) {
+        public @Nullable IDrawable getCurrentBackground(final WidgetThemeEntry<?> widgetTheme) {
             final IItemHandler itemHandler = this.itemHandlerSupplier.get();
 
             if (itemHandler != null && slot.isTool()) {

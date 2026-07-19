@@ -17,6 +17,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -45,13 +46,12 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.GTMod;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.objects.XSTR;
@@ -59,6 +59,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -115,27 +118,28 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_FIRST, 2, 2, 0, itemStack, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_FIRST, itemStack, hintsOnly, 2, 2, 0);
         // default
-        structureBuild_EM(STRUCTURE_PIECE_LATER, 2, 2, -1, itemStack, hintsOnly);
-        structureBuild_EM(STRUCTURE_PIECE_LATER, 2, 2, -2, itemStack, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_LATER, itemStack, hintsOnly, 2, 2, -1);
+        buildPiece(STRUCTURE_PIECE_LATER, itemStack, hintsOnly, 2, 2, -2);
         int len = itemStack.stackSize;
         if (len > MAX_CONFIGURABLE_LENGTH) len = MAX_CONFIGURABLE_LENGTH;
-        structureBuild_EM(STRUCTURE_PIECE_LAST, 2, 2, -len - 3, itemStack, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_LAST, itemStack, hintsOnly, 2, 2, -len - 3);
         while (len > 0) {
-            structureBuild_EM(STRUCTURE_PIECE_LATER, 2, 2, -len - 2, itemStack, hintsOnly);
+            buildPiece(STRUCTURE_PIECE_LATER, itemStack, hintsOnly, 2, 2, -len - 2);
             len--;
         }
     }
 
     @Override
-    protected void clearHatches_EM() {
-        super.clearHatches_EM();
+    public void clearHatches() {
+        super.clearHatches();
         mEssentiaOutputHatches.clear();
     }
 
     @Override
-    protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         this.mCasing = 0;
         this.mParallel = 0;
         this.pTier = -1;
@@ -143,20 +147,30 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
         this.nodePurificationEfficiency = 0;
         this.nodeIncrease = 0;
 
-        if (!structureCheck_EM(STRUCTURE_PIECE_FIRST, 2, 2, 0)) return false;
-        if (!structureCheck_EM(STRUCTURE_PIECE_LATER, 2, 2, -1)) return false;
-        if (!structureCheck_EM(STRUCTURE_PIECE_LATER, 2, 2, -2)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, 2, 2, 0, errors)) return;
+        if (!checkPiece(STRUCTURE_PIECE_LATER, 2, 2, -1, errors)) return;
+        if (!checkPiece(STRUCTURE_PIECE_LATER, 2, 2, -2, errors)) return;
         int len = 2;
-        while (structureCheck_EM(STRUCTURE_PIECE_LATER, 2, 2, -len - 1)) len++;
-        if (len > MAX_STRUCTURE_LENGTH - 1 || len < DEFAULT_STRUCTURE_LENGTH) return false;
-        if (!structureCheck_EM(STRUCTURE_PIECE_LAST, 2, 2, -len - 1)) return false;
-        if (this.mCasing >= 24 && this.mMaintenanceHatches.size() == 1
-            && !this.mInputBusses.isEmpty()
-            && !this.mEssentiaOutputHatches.isEmpty()) {
-            this.mParallel = (len + 1) * GTUtility.powInt(2, this.pTier);
-            return true;
+        while (checkPiece(STRUCTURE_PIECE_LATER, 2, 2, -len - 1, errors)) len++;
+        errors.clear();
+        if (len > MAX_STRUCTURE_LENGTH - 1) {
+            errors.add(StructureErrorRegistry.TOO_LONG);
+            return;
         }
-        return false;
+        if (len < DEFAULT_STRUCTURE_LENGTH) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_LENGTH);
+            return;
+        }
+        if (!checkPiece(STRUCTURE_PIECE_LAST, 2, 2, -len - 1, errors)) return;
+        checkCasingMin(errors, mCasing, 24);
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        if (mEssentiaOutputHatches.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_essentia_output_hatch"));
+        }
+        if (!errors.isEmpty()) return;
+        this.mParallel = (len + 1) * GTUtility.powInt(2, this.pTier);
     }
 
     @Override
@@ -220,52 +234,35 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
             .addInfo("gt.les.tips")
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(5, 5, 5, 5, 5, 8, true)
-            .addController("front_center")
-            .addCasingInfoMin(Casings.MagicCasing.getLocalizedName(), 24)
-            .addMaintenanceHatch("<hint>", 1)
-            .addInputBus("<hint>", 1)
-            .addInputHatch("<hint>", 1)
-            .addEnergyHatch("<hint>", 1)
-            .addStructurePart(Loaders.essentiaOutputHatch.getLocalizedName(), "<hint>", 1)
-            .addMufflerHatch("<hint>", 2)
+            .beginVariableStructureBlock(5, 9, 5, 5, 5, 5, true)
+            .addController("Front center, 3rd layer")
+            .addCasing("24-84", "Magic Casing", false)
+            .addCasing("12-28", "Essentia Diffusion Cell", true)
+            .addCasing("6-14", "Warded Glass", false)
+            .addCasing("3-7", "Thaumium Alchemical Furnace", false)
+            .addCasing("3-7", "Essentia Filter Casing", false)
+            .addEnergyHatch("1+", "Any magic casing", 1)
+            .addMaintenanceHatch("1", "Any magic casing", 1)
+            .addMufflerHatch("3-7", "Top center casings", 2)
+            .addInputAny("1+", "Any magic casing", 1)
+            .addMiscHatch("1+", "Essentia Output Hatch", "Any magic casing", 1)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("LargeEssentiaSmeltery.hint", 8);
     }
 
     @Override
     public String[] getInfoData() {
         String[] origData = super.getInfoData();
         String[] info = Arrays.copyOf(origData, origData.length + 1);
-        info[origData.length] = StatCollector.translateToLocal("gg.scanner.info.les.parallel") + " "
-            + EnumChatFormatting.YELLOW
-            + Math.round(this.mParallel)
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.les.node_power")
-            + " "
-            + EnumChatFormatting.RED
-            + this.nodePower
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.les.purification_efficiency")
-            + " "
-            + EnumChatFormatting.AQUA
-            + this.nodePurificationEfficiency
-            + "%"
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.les.speed_up")
-            + " "
-            + EnumChatFormatting.GRAY
-            + this.nodeIncrease
-            + "%"
-            + EnumChatFormatting.RESET;
+        info[origData.length] = IGregTechDeviceInformation.encode(
+            "gg.infodata.les.stats",
+            Math.round(this.mParallel),
+            this.nodePower,
+            this.nodePurificationEfficiency,
+            this.nodeIncrease);
         return info;
     }
 
@@ -620,5 +617,10 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
             if (built >= 0) return built;
         }
         return survivalBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 2, 2, -length - 1, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

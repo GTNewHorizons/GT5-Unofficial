@@ -27,6 +27,7 @@ import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
 import com.gtnewhorizon.gtnhlib.item.AbstractInventoryIterator;
 import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
 import com.gtnewhorizon.gtnhlib.item.InventoryIterator;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.item.SimpleItemIO;
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -100,7 +101,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("mItemStack")) {
+        if (ItemStackNBT.hasKey(stack, "mItemStack")) {
             final ItemStack tContents = ItemStack
                 .loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("mItemStack"));
             final int tSize = stack.stackTagCompound.getInteger("mItemCount");
@@ -323,10 +324,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
         if (getItemStack() == null) {
             return new String[] { EnumChatFormatting.BLUE + localizedChestName() + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
-                EnumChatFormatting.GOLD
-                    + StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items.empty")
-                    + EnumChatFormatting.RESET,
+                "GT5U.infodata.digital_chest.stored_items", "GT5U.infodata.digital_chest.stored_items.empty",
                 EnumChatFormatting.GREEN + "0"
                     + EnumChatFormatting.RESET
                     + " "
@@ -335,7 +333,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     + EnumChatFormatting.RESET };
         }
         return new String[] { EnumChatFormatting.BLUE + localizedChestName() + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
+            "GT5U.infodata.digital_chest.stored_items",
             EnumChatFormatting.GOLD + getItemStack().getDisplayName() + EnumChatFormatting.RESET,
             EnumChatFormatting.GREEN + formatNumber(getItemCount())
                 + EnumChatFormatting.RESET
@@ -525,6 +523,11 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 }
             }
 
+            private boolean hasStack() {
+                ItemStack stack = getItemStack();
+                return stack != null && stack.getItem() != null && getItemCount() > 0;
+            }
+
             @Override
             public ItemStack extract(int amount, boolean forced) {
                 switch (getCurrentSlot()) {
@@ -586,6 +589,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
                     ItemStack stored = mInventory[1];
 
+                    if (!ItemUtil.isStackEmpty(stored) && !stack.matches(stored)) {
+                        return remaining;
+                    }
+
                     int storedAmount = stored == null ? 0 : stored.stackSize;
 
                     int toInsert = Math.min(stack.getStackSize(), max - storedAmount);
@@ -598,7 +605,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     remaining -= toInsert;
                 }
 
-                if (!ItemUtil.isStackEmpty(getItemStack()) && !stack.matches(getItemStack())) {
+                if (hasStack() && !stack.matches(getItemStack())) {
                     return remaining;
                 }
 

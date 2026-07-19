@@ -11,14 +11,12 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.OutputBusType;
-import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
@@ -28,6 +26,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchVoidBusGui;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchVoidBus extends MTEHatchOutputBus {
@@ -35,11 +34,8 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
     private static final String DATA_STICK_DATA_TYPE = "voidBusFilter";
     private static final String LOCKED_ITEMS_NBT_KEY = "lockedItems";
 
-    private final ItemStack[] lockedItems = new ItemStack[4];
-    private final IItemHandlerModifiable lockedInventoryHandler = new ItemStackHandler(lockedItems);
-
     public MTEHatchVoidBus(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 1, null, 0);
+        super(aID, aName, aNameRegional, 1, null, 4);
     }
 
     @Override
@@ -53,12 +49,17 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
     }
 
     public MTEHatchVoidBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
+        super(aName, aTier, 4, aDescription, aTextures);
     }
 
     @Override
     public boolean isValidSlot(int aIndex) {
         return false;
+    }
+
+    @Override
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return true;
     }
 
     @Override
@@ -77,11 +78,11 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
         final NBTTagList lockedItemList = new NBTTagList();
 
         nbt.setString("type", DATA_STICK_DATA_TYPE);
-        for (int i = 0; i < lockedItems.length; i++) {
-            if (lockedItems[i] == null) continue;
+        for (int i = 0; i < mInventory.length; i++) {
+            if (mInventory[i] == null) continue;
             NBTTagCompound itemTag = new NBTTagCompound();
             itemTag.setByte("Slot", (byte) i);
-            lockedItems[i].writeToNBT(itemTag);
+            mInventory[i].writeToNBT(itemTag);
             lockedItemList.appendTag(itemTag);
         }
 
@@ -95,14 +96,14 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
         if (!nbt.hasKey(LOCKED_ITEMS_NBT_KEY)) return false;
 
         // Clear current configuration
-        Arrays.fill(lockedItems, null);
+        Arrays.fill(mInventory, null);
 
         NBTTagList lockedItemList = nbt.getTagList(LOCKED_ITEMS_NBT_KEY, Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < lockedItemList.tagCount(); i++) {
             NBTTagCompound itemTag = lockedItemList.getCompoundTagAt(i);
             int slot = itemTag.getByte("Slot");
-            if (slot < lockedItems.length) {
-                lockedItems[slot] = ItemStack.loadItemStackFromNBT(itemTag);
+            if (slot < mInventory.length) {
+                mInventory[slot] = ItemStack.loadItemStackFromNBT(itemTag);
             }
         }
         return true;
@@ -124,20 +125,7 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
         return false;
     }
 
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        NBTTagList lockedItemList = new NBTTagList();
-        for (int i = 0; i < lockedItems.length; i++) {
-            if (lockedItems[i] == null) continue;
-            NBTTagCompound itemTag = new NBTTagCompound();
-            itemTag.setByte("Slot", (byte) i);
-            lockedItems[i].writeToNBT(itemTag);
-            lockedItemList.appendTag(itemTag);
-        }
-        aNBT.setTag(LOCKED_ITEMS_NBT_KEY, lockedItemList);
-    }
-
+    // TODO remove this in 2.10
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
@@ -145,29 +133,15 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
         for (int i = 0; i < lockedItemList.tagCount(); i++) {
             NBTTagCompound itemTag = lockedItemList.getCompoundTagAt(i);
             int slot = itemTag.getByte("Slot");
-            if (slot < lockedItems.length) {
-                lockedItems[slot] = ItemStack.loadItemStackFromNBT(itemTag);
+            if (slot < mInventory.length) {
+                mInventory[slot] = ItemStack.loadItemStackFromNBT(itemTag);
             }
         }
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (lockedInventoryHandler == null) return;
-
-        builder.widget(
-            SlotGroup.ofItemHandler(lockedInventoryHandler, 2)
-                .startFromSlot(0)
-                .endAtSlot(3)
-                .background(PhantomItemButton.FILTER_BACKGROUND)
-                .phantom(true)
-                .build()
-                .setPos(70, 25));
-    }
-
-    @Override
     public boolean isLocked() {
-        for (ItemStack lockedItem : lockedItems) {
+        for (ItemStack lockedItem : mInventory) {
             if (lockedItem != null) {
                 return true;
             }
@@ -182,7 +156,7 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
 
     @Override
     public boolean isFilteredToItem(GTUtility.ItemId id) {
-        for (ItemStack lockedItem : lockedItems) {
+        for (ItemStack lockedItem : mInventory) {
             if (lockedItem != null && id.matches(lockedItem)) return true;
         }
 
@@ -196,7 +170,7 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
 
     @Override
     public boolean storePartial(ItemStack stack, boolean simulate) {
-        for (ItemStack lockedItem : lockedItems) {
+        for (ItemStack lockedItem : mInventory) {
             if (lockedItem != null && lockedItem.isItemEqual(stack)) {
                 stack.stackSize = 0;
                 return true;
@@ -224,7 +198,7 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
 
         @Override
         public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
-            for (ItemStack lockedItem : lockedItems) {
+            for (ItemStack lockedItem : mInventory) {
                 if (lockedItem != null && lockedItem.isItemEqual(stack)) {
                     stack.stackSize = 0;
                     return true;
@@ -234,7 +208,7 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
         }
 
         @Override
-        public void completeItem(GTUtility.ItemId id) {
+        public void complete(GTUtility.ItemId id) {
             // do nothing
         }
 
@@ -247,5 +221,15 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
     @Override
     public String[] getDescription() {
         return GTSplit.splitLocalized("gt.blockmachines.output_bus_void.desc");
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return 1;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchVoidBusGui(this).build(guiData, syncManager, uiSettings);
     }
 }

@@ -14,6 +14,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
@@ -123,8 +125,7 @@ public class ItemAgrichemBase extends Item {
     @Override
     public double getDurabilityForDisplay(ItemStack aStack) {
         if (MTEChemicalPlant.isCatalyst(aStack)) {
-            if (aStack.getTagCompound() == null || aStack.getTagCompound()
-                .hasNoTags()) {
+            if (ItemStackNBT.hasNoTags(aStack)) {
                 createCatalystNBT(aStack);
             }
             double currentDamage = getCatalystDamage(aStack);
@@ -134,9 +135,8 @@ public class ItemAgrichemBase extends Item {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer player, List list, boolean bool) {
+    public void addInformation(ItemStack aStack, EntityPlayer player, List<String> list, boolean adv) {
         boolean aHasSpecialTooltips = false;
         int aMaxDamage = 0;
         int aDamageSegment = 0;
@@ -163,7 +163,7 @@ public class ItemAgrichemBase extends Item {
             }
             list.add(durability + "" + (aDam) + EnumChatFormatting.GRAY + " / " + aMaxDamage);
         }
-        super.addInformation(aStack, player, list, bool);
+        super.addInformation(aStack, player, list, adv);
     }
 
     @Override
@@ -175,8 +175,8 @@ public class ItemAgrichemBase extends Item {
         return false;
     }
 
-    public static boolean createCatalystNBT(ItemStack rStack) {
-        return ItemGenericChemBase.createCatalystNBT(rStack);
+    public static void createCatalystNBT(ItemStack rStack) {
+        ItemGenericChemBase.createCatalystNBT(rStack);
     }
 
     public static int getCatalystDamage(ItemStack aStack) {
@@ -185,13 +185,5 @@ public class ItemAgrichemBase extends Item {
 
     public static int getCatalystMaxDamage(ItemStack aStack) {
         return ItemGenericChemBase.getCatalystMaxDamage(aStack);
-    }
-
-    public static void setCatalystDamage(ItemStack aStack, int aAmount) {
-        ItemGenericChemBase.setCatalystDamage(aStack, aAmount);
-    }
-
-    public static int getMaxCatalystDurability(ItemStack aStack) {
-        return ItemGenericChemBase.getMaxCatalystDurability(aStack);
     }
 }

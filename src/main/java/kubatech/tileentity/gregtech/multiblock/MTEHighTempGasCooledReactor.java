@@ -44,6 +44,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -51,16 +52,12 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 
 import bartworks.common.items.SimpleSubItemClass;
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
@@ -70,6 +67,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -78,7 +76,10 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -87,16 +88,18 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
+import kubatech.gui.modularui2.MTEHighTempGasCooledReactorGui;
 import kubatech.loaders.HTGRLoader;
+import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHighTempGasCooledReactor>
     implements ISurvivalConstructable {
 
-    private static final int BASECASINGINDEX = 181;
+    private static final int BASECASINGINDEX = Casings.IVMachineCasing.textureId;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEHighTempGasCooledReactor> STRUCTURE_DEFINITION = StructureDefinition
@@ -119,8 +122,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     {"                             ","                             ","                             ","                             ","                             ","                             ","  PP     PP                  "," P         P             F   "," P   GDG   P                 ","    GGEGG      PCCCP   PCCCP ","   GGE EGG     CMM C   C LLC ","   GE   EF     cM NNFFFNN Ls ","   GGE EGG     C NNC   CNN C ","    GGEGG      PCCCP   PCCCP "," P   GGG   P                 "," P         P                 ","  PP     PP                  ","                             "},
                     {"                             ","               AAA           ","               AAA           ","               AAA           ","                             ","                             ","  P       P                  "," P         P   eee       F   ","      D                      ","      G        PCCCP   PCCCP ","     GGG       CCCCC   CCCCC ","    GGvGGF     CCCCC   CCCCC ","     GGG       CCCCC   CCCCC ","      G        PCCCP   PCCCP ","                             "," P         P                 ","  P       P                  ","                             "},
                     {"                             ","               A~A           ","               AIA           ","               AAA           ","                             ","                             ","  P       P                  "," P         P FFJJJFFFFFFFF   ","      D      F               ","             F PPPPP   PPPPP ","             F P   P   P   P ","         FFFFF P   P   P   P ","               P   P   P   P ","               PPPPP   PPPPP ","                             "," P         P                 ","  P       P                  ","                             "},
-                    {"                             ","               AAA           ","      DDDDDDDDDDAA           ","      D        ADA           ","      D         D            ","      D         D            ","  PP  D  PP     D            "," P    D    P C KDK C  C  C   "," P    D    P                 ","             C P   P   P   P ","                             ","         C C C               ","                             ","               P   P   P   P "," P         P                 "," P         P                 ","  PP     PP                  ","                             "},
-                    {"OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO","OOOOOOOOOOOOOOOOOOOOOOOOOOOOO"}
+                    {"                             ","               AAA           ","      DDDDDDDDDDAA           ","      D        ADA           ","      D         D            ","      D         D            ","  PP  D  PP     D            "," P    D    P C KDK C  C  C   "," P    D    P                 ","             C P   P   P   P ","                             ","         C C C               ","                             ","               P   P   P   P "," P         P                 "," P         P                 ","  PP     PP                  ","                             "}
                 })) // spotless:on
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, 5)) // IV Machine Casing
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 3)) // Pressure Containment Casing
@@ -135,7 +137,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         .addElement('L', ofBlock(GregTechAPI.sBlockCasings2, 13)) // Steel Pipe Casing
         .addElement('M', ofBlock(GregTechAPI.sBlockCasings2, 14)) // Titanium Pipe Casing
         .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15)) // Tungstensteel Pipe Casing
-        .addElement('O', ofBlock(GregTechAPI.sBlockConcretes, 8)) // Light Concrete
         .addElement('P', ofBlock(GregTechAPI.sBlockFrames, 81)) // Tungsten Frame Box
         .addElement(
             'e',
@@ -151,11 +152,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             'v',
             HatchElement.OutputBus.newAny(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(3), 3))
         .addElement(
-            'c',
-            HTGRHatches.CoolantInputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 4))
-        .addElement(
             'h',
-            HTGRHatches.CoolantOutputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 5))
+            HTGRHatches.CoolantOutputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 4))
+        .addElement(
+            'c',
+            HTGRHatches.CoolantInputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 5))
         .addElement(
             'w',
             HTGRHatches.WaterInputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 6))
@@ -176,10 +177,10 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                                                                          // will be multiplied by this number+1
 
     private static final double BASE_PROCESSING_TIME = 2000d; // Minimum operation time
-    private static final double SCALING_PROCESSING_TIME = 18000; // Scaling operation time with amount of pellets in
+    private static final double SCALING_PROCESSING_TIME = 18000; // Scaling operation time with amount of balls in
                                                                  // the reactor
 
-    private static final int MAX_CAPACITY = 10000; // Max pellets in reactor
+    private static final int MAX_CAPACITY = 10000; // Max balls in reactor
     private static final int MIN_CAPACITY = MAX_CAPACITY / 100; // min 1% reactor fill to start
 
     private static final double COOLANT_SPEEDUP = 0.07d / 20d; // 7% recipe time per second if supplied with 100% of all
@@ -187,8 +188,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     private static final double WATER_SPEEDUP = 0.03d / 20d; // 3% recipe time per second if supplied with 100% of all
                                                              // needed water
 
-    private static final double COOLANT_PER_PELLET = 0.5d; // coolant needed per tick to cool one pellet
-    private static final double WATER_PER_PELLET = 0.1d; // water needed per tick to cool one pellet
+    private static final double COOLANT_PER_BALL = 0.5d; // coolant needed per tick to cool one ball
+    private static final double WATER_PER_BALL = 0.1d; // water needed per tick to cool one ball
 
     private static final double HELIUM_LOST_PER_CYCLE = 0.0005d; // Helium lost per one operation
 
@@ -200,6 +201,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     private int emptyticksnodiff = 0;
     private int coolanttaking = 0;
     private int watertaking = 0;
+    private double energyMultiplier = 0;
+    private double timeMultiplier = 0;
+    private double fuelMultiplier = 0;
+    private double fuelExponent = 0;
+    private double fuelBase = 0;
 
     private MTEHatchInput heliumInputHatch;
     private MTEHatchInput coolantInputHatch;
@@ -327,18 +333,31 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 formatNumber(((COOLANT_SPEEDUP + WATER_SPEEDUP) * 20 * 100)),
                 formatNumber(COOLANT_PER_PELLET),
                 formatNumber(WATER_PER_PELLET))
-            .beginStructureBlock(29, 16, 18, true)
-            .addController("front_center")
-            .addInputHatch("gt.htgr.info.i_hatch.a", 1)
-            .addEnergyHatch("gt.htgr.info.i_hatch.a", 1)
-            .addMaintenanceHatch("gt.htgr.info.i_hatch.a", 1)
-            .addInputBus("gt.htgr.info.i_bus", 2)
-            .addOutputBus("gt.htgr.info.o_bus", 3)
-            .addInputHatch("gt.htgr.info.i_hatch.b", 4)
-            .addOutputHatch("gt.htgr.info.o_hatch.a", 5)
-            .addInputHatch("gt.htgr.info.i_hatch.c", 6)
-            .addOutputHatch("gt.htgr.info.o_hatch.b", 7)
-
+            .beginStructureBlock(16, 27, 15, true)
+            .addController("Front center, 2nd layer")
+            .addCasing("273", "Beryllium Integrated Reactor Casing", false)
+            .addCasing("272", "Pressure Containment Casing", false)
+            .addCasing("164", "Tungsten Frame Box", false)
+            .addCasing("162", "Graphite Moderator Casing", false)
+            .addCasing("45", "Tungstensteel Pipe Casing", false)
+            .addCasing("41", "Insulated Fluid Pipe Casing", false)
+            .addCasing("30", "Titanium Pipe Casing", false)
+            .addCasing("24", "Cable Casing", false)
+            .addCasing("23", "IV Machine Casing", false)
+            .addCasing("20", "Refined Graphite Block", false)
+            .addCasing("17", "Steel Pipe Casing", false)
+            .addCasing("3", "Pump Machine Casing", false)
+            .addCasing("2", "Motor Machine Casing", false)
+            .addCasing("1", "Processor Machine Casing", false)
+            .addEnergyHatch("1", "gt.htgr.info.i_hatch.a", 1)
+            .addMaintenanceHatch("1", "gt.htgr.info.i_hatch.a", 1)
+            .addInputBus("1+", "gt.htgr.info.i_bus", 2)
+            .addInputHatch("1+", "gt.htgr.info.i_hatch.a", 1)
+            .addInputHatch("1+", "gt.htgr.info.i_hatch.b", 5)
+            .addInputHatch("1+", "gt.htgr.info.i_hatch.c", 6)
+            .addOutputBus("1+", "gt.htgr.info.o_bus", 3)
+            .addOutputHatch("1+", "gt.htgr.info.o_hatch.a", 4)
+            .addOutputHatch("1+", "gt.htgr.info.o_hatch.b", 7)
             .toolTipFinisher(AuthorKuba, AuthorPxx500);
         return tt;
     }
@@ -360,16 +379,16 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        return this.checkPiece("main", 16, 13, 1) && this.mMaintenanceHatches.size() == 1
-            && !this.mInputBusses.isEmpty()
-            && !this.mOutputBusses.isEmpty()
-            && !this.mEnergyHatches.isEmpty()
-            && this.heliumInputHatch != null
-            && this.coolantInputHatch != null
-            && this.coolantOutputHatch != null
-            && this.waterInputHatch != null
-            && this.steamOutputHatch != null;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
+        if (!checkPiece("main", 16, 13, 1, errors)) return;
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        if (heliumInputHatch == null) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.htgr_missing_helium_hatch"));
+        }
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -428,10 +447,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     private boolean addOutputToHatch(MTEHatchOutput hatch, FluidStack fluidStack) {
         if (hatch == null || !hatch.isValid()) return false;
         if (!hatch.canStoreFluid(fluidStack)) return false;
-
-        if (hatch instanceof MTEHatchOutputME tMEHatch) {
-            if (!tMEHatch.canFillFluid()) return false;
-        }
 
         int tAmount = hatch.fill(fluidStack, false);
         if (tAmount >= fluidStack.amount) {
@@ -514,10 +529,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             if (MAX_CAPACITY - this.fuelsupply >= 1) {
                 this.startRecipeProcessing();
                 for (ItemStack itemStack : this.getStoredInputs()) {
-                    if (itemStack == null || itemStack.getItem() != HTGRLoader.HTGR_ITEM) continue;
-                    int damage = HTGRLoader.HTGR_ITEM.getDamage(itemStack);
-                    if (damage != 3) continue;
-                    Materials m = HTGRLoader.HTGR_ITEM.getItemMaterial(itemStack);
+                    if (itemStack == null || itemStack.getItem() != HTGRItem.TRISO) continue;
+                    Materials m = HTGRItem.getItemMaterial(itemStack);
                     int toget = (int) Math.min(MAX_CAPACITY - this.fuelsupply, itemStack.stackSize);
                     this.fuelsupply += toget;
                     itemStack.stackSize -= toget;
@@ -550,8 +563,9 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             }
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        if (this.heliumSupply < MIN_HELIUM_NEEDED || this.fuelsupply < MIN_CAPACITY)
-            return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+
+        if (this.heliumSupply < MIN_HELIUM_NEEDED) return SimpleCheckRecipeResult.ofFailure("no_helium");
+        if (this.fuelsupply < MIN_CAPACITY) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
 
         // 1 - Math.pow(1 - x, 3)
 
@@ -559,18 +573,34 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         if (eff <= 0) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        double toReduce = this.fuelsupply * CONVERSION_FACTOR * eff;
+        double totalFuel = this.fuelsupply;
+        double toReduce = totalFuel * CONVERSION_FACTOR * eff;
+
+        double sum = 0;
+        fuelBase = 0;
+        fuelMultiplier = 1d;
+        fuelExponent = 1d;
 
         for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
             Materials m = entry.getKey();
             double amount = entry.getValue();
             if (amount > 0) {
-                double toUse = (amount / fuelsupply) * toReduce;
+                sum += amount;
+                Triple<Double, Double, Double> prop = HTGRItem.getFuelProperties(m);
+                fuelBase += prop.getLeft() * amount;
+                fuelMultiplier += ((prop.getMiddle() - 1d) / MAX_CAPACITY) * amount;
+                fuelExponent += ((prop.getRight() - 1d) / MAX_CAPACITY) * amount;
+
+                double toUse = (amount / totalFuel) * toReduce;
                 mStoredBurnedFuels.merge(m, toUse, Double::sum);
                 entry.setValue(amount - toUse);
-                this.fuelsupply -= toUse;
             }
         }
+
+        if (sum > 0) {
+            fuelBase /= sum;
+        }
+        this.fuelsupply = Math.max(0d, this.fuelsupply - toReduce);
 
         ArrayList<ItemStack> toOutput = new ArrayList<>();
 
@@ -578,7 +608,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             if (entry.getValue() >= 1.d) {
                 Materials m = entry.getKey();
                 double output = Math.floor(entry.getValue());
-                ItemStack stack = HTGRLoader.HTGR_ITEM.createBurnedTRISOFuel(m);
+                ItemStack stack = HTGRItem.createBurnedTRISOFuel(m);
                 stack.stackSize = (int) output;
                 toOutput.add(stack);
             }
@@ -586,7 +616,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         if (this.canOutputAll(toOutput.toArray(new ItemStack[0]))) {
             for (ItemStack itemStack : toOutput) {
-                Materials m = HTGRLoader.HTGR_ITEM.getItemMaterial(itemStack);
+                Materials m = HTGRItem.getItemMaterial(itemStack);
                 if (m != null) {
                     mStoredBurnedFuels.merge(m, (double) -itemStack.stackSize, Double::sum);
                 }
@@ -594,11 +624,27 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             this.mOutputItems = toOutput.toArray(new ItemStack[0]);
         }
 
-        this.coolanttaking = (int) ((COOLANT_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
-            * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d));
+        /*
+         * each fuel ball has 3 values:
+         * fuelbase responsible for base generation, averaged from all balls in the reactor
+         * fuelmultiplier and fuelexponent are defined as "full reactor" values (at MAX_CAPACITY Balls)
+         * per-ball contribution is (value - 1) / MAX_CAPACITY because multiplier/exponent start from 1
+         * example: uranium (1,1,1) plutonium (2,1.2,1.1) tungsten (0.5,0.9,0.5)
+         * exponent affects the strength of multiplier at the cost of reactor recipe time (overclocking basically, but
+         * depending on multiplier can be a hindrance or a boost)
+         * exponent cannot be < 0 otherwise math happens
+         */
 
-        this.watertaking = (int) ((WATER_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
-            * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d));
+        this.energyMultiplier = fuelBase * Math.pow(fuelMultiplier, fuelExponent);
+        this.timeMultiplier = 1 / Math.pow(fuelExponent, 2);
+
+        this.coolanttaking = (int) (energyMultiplier
+            * ((COOLANT_PER_BALL * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
+                * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d)));
+
+        this.watertaking = (int) (energyMultiplier
+            * ((WATER_PER_BALL * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
+                * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d)));
 
         this.mEfficiency = (int) (eff * 10000D);
         this.mEfficiencyIncrease = 0;
@@ -610,7 +656,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         this.updateSlots();
 
-        this.mMaxProgresstime = (int) BASE_PROCESSING_TIME + (int) (SCALING_PROCESSING_TIME * eff);
+        this.mMaxProgresstime = (int) (timeMultiplier * (BASE_PROCESSING_TIME + (SCALING_PROCESSING_TIME * eff)));
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -631,7 +677,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             if (this.fuelsupply >= 1d) {
                 for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
                     if (entry.getValue() >= 1d) {
-                        ItemStack fuelStack = HTGRLoader.HTGR_ITEM.createTRISOFuel(entry.getKey());
+                        ItemStack fuelStack = HTGRItem.createTRISOFuel(entry.getKey());
                         int toOutput = (int) Math.floor(entry.getValue());
                         int didOutput = 0;
                         int outputNow = fuelStack.stackSize = Math.min(toOutput, 64);
@@ -706,48 +752,56 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         return new MTEHighTempGasCooledReactor(this.mName);
     }
 
-    private String getReactorInfoText() {
+    public String getReactorInfoText() {
         StringBuilder sb = new StringBuilder();
-        sb.append(EnumChatFormatting.WHITE)
-            .append(StatCollector.translateToLocal("kubatech.infodata.htgr.stored_fuel"))
+        sb.append("kubatech.infodata.htgr.stored_fuel")
             .append("\n");
         for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
+            Triple<Double, Double, Double> prop = HTGRItem.getFuelProperties(entry.getKey());
             sb.append(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "kubatech.infodata.htgr.stored_fuel_entry",
                     entry.getKey()
                         .getLocalizedNameForItem("%material"),
-                    formatNumber(entry.getValue())))
+                    formatNumber(entry.getValue()),
+                    formatNumber(prop.getLeft()),
+                    formatNumber(prop.getMiddle()),
+                    formatNumber(prop.getRight())))
                 .append("\n");
         }
-        sb.append(EnumChatFormatting.WHITE)
-            .append(StatCollector.translateToLocal("kubatech.infodata.htgr.burned_fuel"))
+        sb.append(
+            IGregTechDeviceInformation.encode(
+                "kubatech.infodata.htgr.fuel_supply",
+                formatNumber(this.fuelsupply),
+                formatNumber(MAX_CAPACITY)))
+            .append("\n");
+        sb.append(
+            IGregTechDeviceInformation.encode(
+                "kubatech.infodata.htgr.fuel_properties",
+                formatNumber(this.fuelBase),
+                formatNumber(this.fuelMultiplier),
+                formatNumber(this.fuelExponent)))
+            .append("\n");
+        sb.append("kubatech.infodata.htgr.burned_fuel")
             .append("\n");
         for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
             sb.append(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "kubatech.infodata.htgr.burned_fuel_entry",
                     entry.getKey()
                         .getLocalizedNameForItem("%material"),
                     formatNumber(entry.getValue() * 100d)))
                 .append("\n");
         }
-        sb.append(EnumChatFormatting.WHITE)
-            .append(
-                StatCollector
-                    .translateToLocalFormatted("kubatech.infodata.htgr.helium_supply", formatNumber(this.heliumSupply)))
+        sb.append(
+            IGregTechDeviceInformation.encode("kubatech.infodata.htgr.helium_supply", formatNumber(this.heliumSupply)))
             .append("\n");
-        sb.append(EnumChatFormatting.WHITE)
-            .append(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.infodata.htgr.coolant_per_tick",
-                    formatNumber(this.heliumSupply)))
+        sb.append(
+            IGregTechDeviceInformation
+                .encode("kubatech.infodata.htgr.coolant_per_tick", formatNumber(this.coolanttaking)))
             .append("\n");
-        sb.append(EnumChatFormatting.WHITE)
-            .append(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.infodata.htgr.water_per_tick",
-                    formatNumber(this.heliumSupply)))
+        sb.append(
+            IGregTechDeviceInformation.encode("kubatech.infodata.htgr.water_per_tick", formatNumber(this.watertaking)))
             .append("\n");
         return sb.toString();
     }
@@ -756,23 +810,15 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     public String[] getInfoData() {
         ArrayList<String> ll = new ArrayList<>(Arrays.asList(super.getInfoData()));
         ll.add(
-            StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
-                + EnumChatFormatting.GOLD
-                + (empty ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.output")
-                    : StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.operating.normal")));
+            empty ? "kubatech.infodata.mia.running_mode.output"
+                : "kubatech.infodata.mia.running_mode.operating.normal");
         ll.addAll(Arrays.asList(getReactorInfoText().split("\n")));
         return ll.toArray(new String[0]);
     }
 
     @Override
-    protected Widget generateCurrentRecipeInfoWidget() {
-        DynamicPositionedColumn w = (DynamicPositionedColumn) super.generateCurrentRecipeInfoWidget();
-
-        w.widget(new DynamicTextWidget(() -> {
-            String sb = getReactorInfoText();
-            return new Text(sb);
-        }).setTextAlignment(Alignment.CenterLeft));
-        return w;
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEHighTempGasCooledReactorGui(this);
     }
 
     @Override
@@ -824,9 +870,15 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         return true;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     private enum HTGRHatches implements IHatchElement<MTEHighTempGasCooledReactor> {
 
-        CoolantInputHatch(MTEHighTempGasCooledReactor::addCoolantInputToMachineList, MTEHatchInput.class) {
+        CoolantInputHatch("kubatech.MBTT.CoolantInputHatch", MTEHighTempGasCooledReactor::addCoolantInputToMachineList,
+            MTEHatchInput.class) {
 
             @Override
             public long count(MTEHighTempGasCooledReactor t) {
@@ -834,7 +886,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 return 1;
             }
         },
-        HeliumInputHatch(MTEHighTempGasCooledReactor::addHeliumInputToMachineList, MTEHatchInput.class) {
+        HeliumInputHatch("kubatech.MBTT.HeliumInputHatch", MTEHighTempGasCooledReactor::addHeliumInputToMachineList,
+            MTEHatchInput.class) {
 
             @Override
             public long count(MTEHighTempGasCooledReactor t) {
@@ -842,7 +895,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 return 1;
             }
         },
-        WaterInputHatch(MTEHighTempGasCooledReactor::addWaterInputToMachineList, MTEHatchInput.class) {
+        WaterInputHatch("kubatech.MBTT.WaterInputHatch", MTEHighTempGasCooledReactor::addWaterInputToMachineList,
+            MTEHatchInput.class) {
 
             @Override
             public long count(MTEHighTempGasCooledReactor t) {
@@ -850,7 +904,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 return 1;
             }
         },
-        CoolantOutputHatch(MTEHighTempGasCooledReactor::addCoolantOutputToMachineList, MTEHatchOutput.class) {
+        CoolantOutputHatch("kubatech.MBTT.CoolantOutputHatch",
+            MTEHighTempGasCooledReactor::addCoolantOutputToMachineList, MTEHatchOutput.class) {
 
             @Override
             public long count(MTEHighTempGasCooledReactor t) {
@@ -858,7 +913,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 return 1;
             }
         },
-        SteamOutputHatch(MTEHighTempGasCooledReactor::addSteamOutputToMachineList, MTEHatchOutput.class) {
+        SteamOutputHatch("kubatech.MBTT.SteamOutputHatch", MTEHighTempGasCooledReactor::addSteamOutputToMachineList,
+            MTEHatchOutput.class) {
 
             @Override
             public long count(MTEHighTempGasCooledReactor t) {
@@ -867,11 +923,14 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             }
         },;
 
+        private final String displayName;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEHighTempGasCooledReactor> adder;
 
         @SafeVarargs
-        HTGRHatches(IGTHatchAdder<MTEHighTempGasCooledReactor> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        HTGRHatches(String displayName, IGTHatchAdder<MTEHighTempGasCooledReactor> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.displayName = displayName;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -884,6 +943,16 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         @Override
         public IGTHatchAdder<? super MTEHighTempGasCooledReactor> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(displayName);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return displayName;
         }
 
     }
@@ -902,13 +971,12 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             }
 
             @Override
-            @SuppressWarnings({ "unchecked", "rawtypes" })
-            public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
-                if (this.tooltip.containsKey(this.getDamage(p_77624_1_)))
-                    aList.add(this.tooltip.get(this.getDamage(p_77624_1_)));
-                // aList.add(StatCollector.translateToLocal("tooltip.bw.high_temp_gas_cooled_reactor.material"));
-                aList.add(EnumChatFormatting.DARK_RED + "Deprecated, will be removed in next major update");
-                super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
+            public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean adv) {
+                if (this.tooltip.containsKey(this.getDamage(stack)))
+                    tooltip.add(this.tooltip.get(this.getDamage(stack)));
+                // tooltip.add(StatCollector.translateToLocal("tooltip.bw.high_temp_gas_cooled_reactor.material"));
+                tooltip.add(EnumChatFormatting.DARK_RED + "Deprecated, will be removed in next major update");
+                super.addInformation(stack, player, tooltip, adv);
             }
         }
 

@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,7 +18,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextureHandler;
 
 public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbstract {
 
@@ -28,14 +28,15 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
         }
 
         @Override
-        public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-            super.addInformation(aStack, aPlayer, aList, aF3_H);
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
+            super.addInformation(stack, player, tooltip, aF3_H);
         }
     }
 
     public GregtechMetaSpecialMultiCasings() {
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.1", MaterialCasings.INSTANCE);
         TAE.registerTexture(1, 12, TextureFactory.of(this, 14));
+        TAE.registerTexture(3, 1, TextureFactory.of(this, 11));
 
         GregtechItemList.Casing_Turbine_Shaft.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Turbine_LP.set(new ItemStack(this, 1, 1));
@@ -58,8 +59,11 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
         final int ordinalSide) {
-        return LargeTurbineTextureHandler
-            .handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ForgeDirection.getOrientation(ordinalSide), this);
+        final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
+        return getStaticIcon(
+            ForgeDirection.getOrientation(ordinalSide)
+                .ordinal(),
+            tMeta);
     }
 
     @Override
@@ -69,7 +73,7 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 
     public static IIcon getStaticIcon(final int ordinalSide, final int aMeta) {
         return switch (aMeta) {
-            case 0 -> TexturesGtBlock.Casing_Redox_1.getIcon();
+            case 0 -> Textures.BlockIcons.CASING_REDOX_EV.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STEEL.getIcon();
             case 2 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TITANIUM.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STAINLESSSTEEL.getIcon();
@@ -80,11 +84,30 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
             case 8 -> TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
             case 9 -> TexturesGtBlock.TEXTURE_CASING_FLOTATION.getIcon();
             case 10, 14 -> TexturesGtBlock.Casing_Material_Talonite.getIcon();
-            case 11 -> Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
-            case 12 -> TexturesGtBlock.Casing_Redox_5.getIcon();
-            case 13 -> TexturesGtBlock.TEXTURE_MAGIC_PANEL_B.getIcon();
+            case 11 -> Textures.BlockIcons.MOLECULAR_CONTAINMENT_CASING.getIcon();
+            case 12 -> Textures.BlockIcons.CASING_REDOX_UV.getIcon();
+            case 13 -> Textures.BlockIcons.PARTICLE_CONTAINMENT_CASING.getIcon();
             case 15 -> TexturesGtBlock.Turbine_SC_Material_Casing.getIcon();
             default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
+        Block block = worldIn.getBlock(x, y, z);
+
+        if (worldIn.getBlockMetadata(x, y, z) != worldIn.getBlockMetadata(
+            x - Facing.offsetsXForSide[side],
+            y - Facing.offsetsYForSide[side],
+            z - Facing.offsetsZForSide[side])) {
+            return true;
+        }
+
+        if (block == this) {
+            return false;
+        }
+
+        return super.shouldSideBeRendered(worldIn, x, y, z, side);
     }
 }

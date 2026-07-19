@@ -6,7 +6,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION3_GLOW;
 import net.minecraft.block.Block;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -82,22 +81,15 @@ public class MTEFusionComputer3 extends MTEFusionComputer {
         tt.addMachineType("gt.recipe.fusionreactor")
             .addInfo("gt.fusion.tips.b")
             .addInfo("gt.fusion.tips", "32,768", "40M")
-            .beginStructureBlock(15, 3, 15, false)
-            .addController("gt.fusion.info.1")
-            .addCasingInfoRange(
-                ItemList.Casing_Fusion2.get(1)
-                    .getDisplayName(),
-                79,
-                123,
-                false)
+            .beginStructureBlock(15, 15, 3, false)
+            .addController("Middle center, 2nd layer")
+            .addCasing("79-123", "Fusion Machine Casing Mk-II", false)
+            .addCasing("32", "Fusion Coil Block", false)
             .addStructureInfo("gt.fusion.info.2")
-            .addStructurePart(
-                ItemList.Casing_Coil_Superconductor.get(1)
-                    .getDisplayName(),
-                "gt.fusion.info.3")
-            .addEnergyHatch("gt.fusion.info.4", 2)
-            .addInputHatch("gt.fusion.info.5", 1)
-            .addOutputHatch("gt.fusion.info.4", 3)
+            .addStructureInfo("gt.fusion.info.3")
+            .addEnergyHatch("1-16", "Specific middle casings on each curve (UV+)", 2)
+            .addInputHatch("1+", "Specific top or bottom casings on each side", 1)
+            .addOutputHatch("1+", "Specific middle casings on each side", 3)
             .addStructureInfo("gt.fusion.info.6", TooltipHelper.voltageText(VoltageIndex.UV))
             .toolTipFinisher();
         return tt;

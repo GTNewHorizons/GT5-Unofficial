@@ -8,7 +8,7 @@ itemGroup.MiscUtilOtherTab=[GT++] Items II
 itemGroup.MiscUtilBOP=[GT++] Biomes O'Plenty Additions
 
 # Debug
-item.AAA_Broken.name=[Non-existent Item] Report This Recipe On Github, Please.
+item.AAA_Broken.name=[Non-existent Item] Report This Recipe On GitHub, Please.
 item.itemBedLocator_Base.name=Bed Locator [NBT Test]
 item.itemBaseItemWithCharge.name=Base Chargeable Item
 item.miscutils_itemDebugShapeSpawner.name=[Debug] Shapes
@@ -47,6 +47,7 @@ tile.blockVolumetricFlaskSetter.name=Volumetric Flask Configurator
 tile.blockSuperLight.name=Shining Star
 tile.blockSuperJukebox.name=Sir Mixalot [Jukebox]
 tile.blockSuperJukebox.deprecated=§cDEPRECATED, Use the Electric Jukeboxes instead
+container.tileentity.name=Base Tile Entity
 
 # Tools
 item.itemBufferCore.name=Energy Core
@@ -60,81 +61,6 @@ GTPP.machines.chisel_slot.tooltip.1=§7Put chiseled item to specify output
 GTPP.core.GT_Tooltip=Added by: %s §7- §c[GT++]
 GTPP.core.GT_Tooltip_Builder=%s §7- §c[GT++]
 GTPP.core.GT_Tooltip_Radioactive=§7Warning: §aRadioactive! §6 Avoid direct handling without hazmat protection. | Level: %s
-
-# RecipeMaps
-gtpp.recipe.cokeoven=Coke Oven
-gtpp.recipe.matterfab2=Matter Fabricator
-gtpp.recipe.rocketenginefuel=Rocket Engine Fuel
-gtpp.recipe.quantumforcesmelter=Quantum Force Transformer
-gtpp.recipe.chemicaldehydrator=Dehydrator
-gtpp.recipe.vacfurnace=Vacuum Furnace
-gtpp.recipe.alloyblastsmelter=Alloy Blast Smelter
-gtpp.recipe.lftr=Liquid Fluoride Thorium Reactor
-gtpp.recipe.lftr.sparging=LFTR Gas Sparging
-gtpp.recipe.nuclearsaltprocessingplant=Nuclear Salt Processing Plant
-gtpp.recipe.oremill=Milling
-gtpp.recipe.fissionfuel=Nuclear Fuel Processing
-gtpp.recipe.coldtrap=Cold Trap
-gtpp.recipe.reactorprocessingunit=Reactor Processing Unit
-gtpp.recipe.simplewasher=Simple Dust Washer
-gtpp.recipe.moleculartransformer=Molecular Transformer
-gtpp.recipe.fluidchemicaleactor=Chemical Plant
-gtpp.recipe.RTGgenerators=RTG
-gtpp.recipe.thermalgeneratorfuel=Thermal Boiler
-gtpp.recipe.solartower=Solar Tower
-gtpp.recipe.cyclotron=COMET - Compact Cyclotron
-gtpp.recipe.fishpond=Zhuhai - Fishing Port
-gtpp.recipe.cryogenicfreezer=Cryogenic Freezer
-gtpp.recipe.multicentrifuge=Multiblock Centrifuge
-gtpp.recipe.multielectro=Multiblock Electrolyzer
-gtpp.recipe.multimixer=Multiblock Mixer
-gtpp.recipe.multidehydrator=Multiblock Dehydrator
-gtpp.recipe.semifluidgeneratorfuels=Semifluid Generator Fuels
-gtpp.recipe.flotationcell=Flotation Cell
-gtpp.recipe.treefarm=Tree Growth Simulator
-gtpp.recipe.algae_pond=Algae Pond
-gtpp.recipe.multiblockrockbreaker=Boldarnator
-
-# Recipe categories
-gtpp.recipe.category.abs_non_alloy_recipes=ABS Non-Alloy Recipes
-
-# NEI
-gtpp.nei.lftr.power=Power: %s EU/t per Dynamo
-gtpp.nei.lftr.dynamo=Dynamo: %s EU
-gtpp.nei.lftr.total=Total: %s EU
-gtpp.nei.milling.not_consumed=Does not always get consumed in the process
-gtpp.nei.chemplant.tier.1=Bronze
-gtpp.nei.chemplant.tier.2=Steel
-gtpp.nei.chemplant.tier.3=Aluminium
-gtpp.nei.chemplant.tier.4=Stainless Steel
-gtpp.nei.chemplant.tier.5=Titanium
-gtpp.nei.chemplant.tier.6=Tungsten Steel
-gtpp.nei.chemplant.tier.7=Laurenium
-gtpp.nei.chemplant.tier.8=Botmium
-gtpp.nei.rtg.days=Fuel Value: %s Minecraft Days
-gtpp.nei.solar_tower.1=Solar Heater rings boost tier
-gtpp.nei.solar_tower.2=R1:T1, R2:T2, R3:T4, R4:T8, R5:T16
-gtpp.nei.solar_tower.3=Input Amount = 1000 x T
-gtpp.nei.tgs.1=The sapling is not consumed.
-gtpp.nei.tgs.2=If %s is provided,
-gtpp.nei.tgs.3=Saplings are made instead.
-gtpp.nei.tgs.sapling=Outputted if %s is provided
-
-gtpp.nei.tgs.tooltip.sapling=Place in machine controller slot
-gtpp.nei.tgs.tooltip.saw=Place in an input bus to harvest logs
-gtpp.nei.tgs.tooltip.needsSaw=Requires a Saw to harvest
-gtpp.nei.tgs.tooltip.cutter=Place in an input bus to harvest saplings
-gtpp.nei.tgs.tooltip.needsCutter=Requires a Branch Cutter to harvest
-gtpp.nei.tgs.tooltip.shears=Place in an input bus to harvest leaves
-gtpp.nei.tgs.tooltip.needsShears=Requires Shears to harvest
-gtpp.nei.tgs.tooltip.knife=Place in an input bus to harvest fruit
-gtpp.nei.tgs.tooltip.needsKnife=Requires a Knife to harvest
-gtpp.nei.tgs.tooltip.multiplier=Output multiplier:
-gtpp.nei.tgs.info-1=Output is further boosted
-gtpp.nei.tgs.info-2=by machine energy tier
-gtpp.nei.tgs.info-3=and tool type
-
-gtpp.nei.ap.tier=Algae Pond Tier: %s
 
 # Thermal Foundation Stuff
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
@@ -232,34 +158,34 @@ miscutils.blockcasings.name=Machine Casing
 MU-metatool.01.name=Hand Pump
 
 # Fuel Blocks
-tile.blockCactusCharcoal.name=Cactus Charcoal
-tile.blockCactusCharcoal.0.name=Cactus Charcoal
-tile.blockCactusCharcoal.1.name=Compressed Cactus Charcoal
-tile.blockCactusCharcoal.2.name=Double Compressed Cactus Charcoal
-tile.blockCactusCharcoal.3.name=Triple Compressed Cactus Charcoal
-tile.blockCactusCharcoal.4.name=Quadruple Compressed Cactus Charcoal
-tile.blockCactusCharcoal.5.name=Quintuple Compressed Cactus Charcoal
-tile.blockCactusCoke.name=Cactus Coke
-tile.blockCactusCoke.0.name=Cactus Coke
-tile.blockCactusCoke.1.name=Compressed Cactus Coke
-tile.blockCactusCoke.2.name=Double Compressed Cactus Coke
-tile.blockCactusCoke.3.name=Triple Compressed Cactus Coke
-tile.blockCactusCoke.4.name=Quadruple Compressed Cactus Coke
-tile.blockCactusCoke.5.name=Quintuple Compressed Cactus Coke
-tile.blockSugarCharcoal.name=Sugar Charcoal
-tile.blockSugarCharcoal.0.name=Sugar Charcoal
-tile.blockSugarCharcoal.1.name=Compressed Sugar Charcoal
-tile.blockSugarCharcoal.2.name=Double Compressed Sugar Charcoal
-tile.blockSugarCharcoal.3.name=Triple Compressed Sugar Charcoal
-tile.blockSugarCharcoal.4.name=Quadruple Compressed Sugar Charcoal
-tile.blockSugarCharcoal.5.name=Quintuple Compressed Sugar Charcoal
-tile.blockSugarCoke.name=Sugar Coke
-tile.blockSugarCoke.0.name=Sugar Coke
-tile.blockSugarCoke.1.name=Compressed Sugar Coke
-tile.blockSugarCoke.2.name=Double Compressed Sugar Coke
-tile.blockSugarCoke.3.name=Triple Compressed Sugar Coke
-tile.blockSugarCoke.4.name=Quadruple Compressed Sugar Coke
-tile.blockSugarCoke.5.name=Quintuple Compressed Sugar Coke
+tile.blockCactusCharcoal.name=Block of Cactus Charcoal
+tile.blockCactusCharcoal.0.name=Block of Cactus Charcoal
+tile.blockCactusCharcoal.1.name=Block of Compressed Cactus Charcoal
+tile.blockCactusCharcoal.2.name=Block of Double Compressed Cactus Charcoal
+tile.blockCactusCharcoal.3.name=Block of Triple Compressed Cactus Charcoal
+tile.blockCactusCharcoal.4.name=Block of Quadruple Compressed Cactus Charcoal
+tile.blockCactusCharcoal.5.name=Block of Quintuple Compressed Cactus Charcoal
+tile.blockCactusCoke.name=Block of Cactus Coke
+tile.blockCactusCoke.0.name=Block of Cactus Coke
+tile.blockCactusCoke.1.name=Block of Compressed Cactus Coke
+tile.blockCactusCoke.2.name=Block of Double Compressed Cactus Coke
+tile.blockCactusCoke.3.name=Block of Triple Compressed Cactus Coke
+tile.blockCactusCoke.4.name=Block of Quadruple Compressed Cactus Coke
+tile.blockCactusCoke.5.name=Block of Quintuple Compressed Cactus Coke
+tile.blockSugarCharcoal.name=Block of Sugar Charcoal
+tile.blockSugarCharcoal.0.name=Block of Sugar Charcoal
+tile.blockSugarCharcoal.1.name=Block of Compressed Sugar Charcoal
+tile.blockSugarCharcoal.2.name=Block of Double Compressed Sugar Charcoal
+tile.blockSugarCharcoal.3.name=Block of Triple Compressed Sugar Charcoal
+tile.blockSugarCharcoal.4.name=Block of Quadruple Compressed Sugar Charcoal
+tile.blockSugarCharcoal.5.name=Block of Quintuple Compressed Sugar Charcoal
+tile.blockSugarCoke.name=Block of Sugar Coke
+tile.blockSugarCoke.0.name=Block of Sugar Coke
+tile.blockSugarCoke.1.name=Block of Compressed Sugar Coke
+tile.blockSugarCoke.2.name=Block of Double Compressed Sugar Coke
+tile.blockSugarCoke.3.name=Block of Triple Compressed Sugar Coke
+tile.blockSugarCoke.4.name=Block of Quadruple Compressed Sugar Coke
+tile.blockSugarCoke.5.name=Block of Quintuple Compressed Sugar Coke
 
 
 # GT++ Items
@@ -313,8 +239,8 @@ item.itemGemShards.tooltip=Diamond Shards
 item.itemHalfCompleteCasings.name=Half Complete Casing
 item.itemSulfuricPotion.name=Throwable Vial of Sulfuric Acid
 item.itemHydrofluoricPotion.name=Throwable Vial of Hydrofluoric Acid
-item.itemBaseItemHotFood.tooltip.0=§7Warning: §cVery hot!§7 Avoid direct handling..
-item.itemBaseItemHotFood.tooltip.1=This food has %d seconds left, until it is cool.
+item.itemBaseItemHotFood.tooltip.0=§7Warning: §cVery hot!§7 Avoid direct handling.
+item.itemBaseItemHotFood.tooltip.1=This food has %d seconds left until it is cool.
 item.itemBoilerChassis.name=Advanced Boiler Chassis [Tier %d]
 item.itemDehydratorCoilWire.name=Coil Wire [%s]
 item.itemDehydratorCoil.name=Dehydrator Coil [%s]
@@ -327,7 +253,7 @@ item.itemDragonJar.0.tooltip=Does not contain anything.
 item.itemDragonJar.1.name=Captured Dragon Jar
 item.itemDragonJar.1.tooltip=Contains a %s.
 item.itemControlCore.name=Control Core [%s]
-item.itemControlCore.tooltip.0=Allows a Multiblock to function upto %s
+item.itemControlCore.tooltip.0=Allows a Multiblock to function up to %s
 item.itemControlCore.tooltip.1=Required Tier is determined by the sum of the eu/t of all Energy Inputs
 item.itemControlCore.tooltip.2=Lower tiers may be used to underclock, which is useful in some situations
 item.thekeytothecity.tooltip.0=You feel like you're on top of the world.
@@ -1764,8 +1690,8 @@ item.SteelMultispade.name=Steel Multispade
 item.TinAlloyMultispade.name=Tin Alloy Multispade
 item.UltimetMultipick.name=Ultimet Multipick
 item.UltimetMultispade.name=Ultimet Multispade
-item.WroughtIronMultipick.name=Wrought Iron Multipick
-item.WroughtIronMultispade.name=Wrought Iron Multispade
+item.CastIronMultipick.name=Cast Iron Multipick
+item.CastIronMultispade.name=Cast Iron Multispade
 item.SterlingSilverMultipick.name=Sterling Silver Multipick
 item.SterlingSilverMultispade.name=Sterling Silver Multispade
 item.RoseGoldMultipick.name=Rose Gold Multipick
@@ -1846,7 +1772,7 @@ item.itemPlateLithium.name=Lithium Plate
 item.itemPlateDoubleEuropium.name=Double Europium Plate
 
 # Gears
-item.itemSmallGearWroughtIron.name=Small Wrought Iron Gear
+item.itemSmallGearCastIron.name=Small Cast Iron Gear
 
 # Misc
 item.itemFoilUranium235.name=Uranium 235 Foil
@@ -1917,9 +1843,9 @@ item.itemPlateLudicrite.name=Ludicrite plate
 item.itemPlateVoid.name=Void plate
 item.itemPlateDimensionShard.name=Dimensional Shard plate
 item.rfEUBattery.name=Universally Chargeable Battery
-item.rfEUBattery.tooltip.0=§eIC2/EU Information§7);
+item.rfEUBattery.tooltip.0=§eIC2/EU Information§7
 item.rfEUBattery.tooltip.1=§7Tier: [§e%d§7] Current Power: [§e%d§7/EU]
-item.rfEUBattery.tooltip.2=§7Transfer Limit: [§e%d§7Eu/t] Burn Time: [§e%d§7s]
+item.rfEUBattery.tooltip.2=§7Transfer Limit: [§e%d§7EU/t] Burn Time: [§e%d§7s]
 item.rfEUBattery.tooltip.3=§cRF Information§7
 item.rfEUBattery.tooltip.4=§7Extraction Rate: [§%d§7Rf/t] Insert Rate: [§c%d§7Rf/t]
 item.rfEUBattery.tooltip.5=§7Current Charge: [§c%d§7Rf / %dRf] §c%.2f%%§7
@@ -2217,8 +2143,6 @@ block.Uranium232.standard.name=Block of Uranium 232
 block.Uranium233.standard.name=Block of Uranium 233
 block.WatertightSteel.frame.name=Watertight Steel Frame Box
 block.WatertightSteel.standard.name=Block of Watertight Steel
-block.WhiteMetal.frame.name=White Metal Frame Box
-block.WhiteMetal.standard.name=Block of White Metal
 block.Zeron100.frame.name=Zeron-100 Frame Box
 block.Zeron100.standard.name=Block of Zeron-100
 block.ZirconiumCarbide.frame.name=Zirconium Carbide Frame Box
@@ -3174,24 +3098,6 @@ item.itemCellBlackMetal.name=Black Metal Cell
 tile.Block of Black Metal.name=Block of Black Metal
 tile.Black Metal Frame Box.name=Black Metal Frame Box
 
-item.itemIngotWhiteMetal.name=White Metal Ingot
-item.itemHotIngotWhiteMetal.name=Hot White Metal Ingot
-item.itemDustWhiteMetal.name=White Metal Dust
-item.itemDustTinyWhiteMetal.name=Tiny Pile of White Metal Dust
-item.itemDustSmallWhiteMetal.name=Small Pile of White Metal Dust
-item.itemNuggetWhiteMetal.name=White Metal Nugget
-item.itemPlateWhiteMetal.name=White Metal Plate
-item.itemPlateDoubleWhiteMetal.name=Double White Metal Plate
-item.itemBoltWhiteMetal.name=White Metal Bolt
-item.itemRodWhiteMetal.name=White Metal Rod
-item.itemRodLongWhiteMetal.name=Long White Metal Rod
-item.itemRingWhiteMetal.name=White Metal Ring
-item.itemScrewWhiteMetal.name=White Metal Screw
-item.itemRotorWhiteMetal.name=White Metal Rotor
-item.itemGearWhiteMetal.name=White Metal Gear
-item.itemCellWhiteMetal.name=White Metal Cell
-tile.Block of White Metal.name=Block of White Metal
-tile.White Metal Frame Box.name=White Metal Frame Box
 
 # Added 29/04/2019
 tile.OreRunite.name=Runite Ore
@@ -3363,7 +3269,6 @@ item.itemFoilPikyonium64B.name=Pikyonium 64B Foil
 item.itemFoilQuantum.name=Quantum Foil
 item.itemFoilRhugnor.name=Rhugnor Foil
 item.itemFoilTitansteel.name=Titansteel Foil
-item.itemFoilWhiteMetal.name=White Metal Foil
 
 item.itemGearDragonblood.name=Dragonblood Gear
 item.itemGearRhugnor.name=Rhugnor Gear
@@ -3428,7 +3333,6 @@ item.itemPlateDenseTriniumTitaniumAlloy.name=Dense Trinium Titanium Alloy Plate
 item.itemPlateDenseTumbaga.name=Dense Tumbaga Plate
 item.itemPlateDenseTungstenTitaniumCarbide.name=Dense Tungsten Titanium Carbide Plate
 item.itemPlateDenseWatertightSteel.name=Dense Watertight Steel Plate
-item.itemPlateDenseWhiteMetal.name=Dense White Metal Plate
 item.itemPlateDenseZeron100.name=Dense Zeron-100 Plate
 item.itemPlateDenseZirconiumCarbide.name=Dense Zirconium Carbide Plate
 
@@ -3457,7 +3361,6 @@ item.GTPP.BattPack.05.name.name=Charge Pack [IV]
 item.IndustrialDiamondExquisite.name=Exquisite Industrial Diamond
 
 item.itemSpringCelestialTungsten.name=Celestial Tungsten Spring
-item.itemSpringWhiteMetal.name=White Metal Spring
 item.itemSpringNitinol60.name=Nitinol 60 Spring
 item.itemSpringWatertightSteel.name=Watertight Steel Spring
 item.itemSpringEglinSteel.name=Eglin Steel Spring
@@ -3468,7 +3371,6 @@ item.itemSmallSpringStaballoy.name=Small Staballoy Spring
 item.itemSmallSpringBlackSteel.name=Small Black Steel Spring
 item.itemSmallSpringBlackTitanium.name=Small Black Titanium Spring
 
-item.itemFineWireWhiteMetal.name=Fine White Metal Wire
 item.itemFineWirePalladium.name=Fine Palladium Wire
 item.itemFineWireZirconium.name=Fine Zirconium Wire
 item.itemFineWireGrisium.name=Fine Grisium Wire
@@ -3492,7 +3394,6 @@ item.itemHeavyPlateRhugnor.name=Heavy Rhugnor Plate
 item.itemHeavyPlateAdvancedNitinol.name=Heavy Advanced Nitinol Plate
 item.itemHeavyPlateAstralTitanium.name=Heavy Astral Titanium Plate
 item.itemHeavyPlateCelestialTungsten.name=Heavy Celestial Tungsten Plate
-item.itemHeavyPlateWhiteMetal.name=Heavy White Metal Plate
 item.itemHeavyPlateBlackMetal.name=Heavy Black Metal Plate
 item.itemHeavyPlateAncientGranite.name=Heavy Ancient Granite Plate
 
@@ -3505,7 +3406,6 @@ item.itemCellSeleniumDioxide.name=Selenium Dioxide Cell
 item.itemCellSeleniousAcid.name=Selenious Acid Cell
 
 # Added 15/8/19
-gtpp.nei.decayables=Decayables Chest
 entity.batKing.name=Bat King
 item.itemCellCarbyne.name=Carbyne Cell
 item.itemCellHydrogenCyanide.name=Cell of Hydrogen Cyanide
@@ -3947,6 +3847,9 @@ item.BasicGenericChemItem.33.name=Algagenic Growth Promoter Catalyst
 item.BasicGenericChemItem.34.name=Hellish Force Catalyst
 item.BasicGenericChemItem.35.name=Crystal Colorization Catalyst
 
+# Added 13/03/26
+item.BasicGenericChemItem.36.name=Chlorination Catalyst
+
 # config gui
 gtpp.gui.config.general=General
 gtpp.gui.config.general.debug=Debug
@@ -3998,8 +3901,8 @@ gtpp.tooltip.alkalus_disk.1=This item produces such a temperature, that you'd ha
 gtpp.tooltip.tool.durability=Durability:
 gtpp.tooltip.tool.turbine_efficiency=Turbine Efficiency:
 gtpp.tooltip.tool.optimal_steam_flow=Optimal Steam Flow: §d%f§7L/sec
-gtpp.tooltip.tool.optimal_gas_flow=Optimal Gas flow(EU burnvalue per tick):
-gtpp.tooltip.tool.optimal_plasma_flow=Optimal Plasma flow(Plasma energyvalue per tick):
+gtpp.tooltip.tool.optimal_gas_flow=Optimal Gas flow (EU burn value per tick):
+gtpp.tooltip.tool.optimal_plasma_flow=Optimal Plasma flow (Plasma energy value per tick):
 gtpp.tooltip.tool.attack_damage=Attack Damage:
 gtpp.tooltip.tool.mining_speed=Mining Speed:
 
@@ -4007,7 +3910,7 @@ gtpp.tooltip.wireless_charger.0=Can be locked to the owner by sneaking with a sc
 gtpp.tooltip.wireless_charger.1=Use screwdriver to change mode.
 gtpp.tooltip.wireless_charger.2=§aLong-Range Mode§7: Can supply 1A of power to each player up to %s m away.
 gtpp.tooltip.wireless_charger.3=§aLocal Mode§7: Can supply 2A to each player within %s m.
-gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %s m away and more 1A within %s m.
+gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %s m away and another 1A within %s m.
 
 #gtpp info data
 gtpp.infodata.tesseract_generator.name=Tesseract Generator
@@ -4067,7 +3970,7 @@ gtpp.gui.text.time.seconds=%s Seconds
 gtpp.gui.text.power_sub_station.stored=Stored:
 gtpp.gui.text.power_sub_station.avg_in=Avg In: %s EU
 gtpp.gui.text.power_sub_station.avg_out=Avg Out: %s EU
-gtpp.gui.text.power_sub_station.power_loss=Powerloss: %s EU per tick
+gtpp.gui.text.power_sub_station.power_loss=Power Loss: %s EU per tick
 gtpp.gui.text.power_sub_station.running_perfectly=Running perfectly
 gtpp.gui.text.power_sub_station.turn_on_with_mallet=Turn on with Mallet
 gtpp.gui.atmospheric_reconditioner.tooltip.reduction=Reduction: %s/s
@@ -4077,6 +3980,8 @@ gtpp.gui.multiblock.eu_t_p.text=%s EU/t/parallel
 gtpp.gui.multiblock.duration.text=Duration: %s ticks
 gtpp.gui.multiblock.max_voltage.txt=%s EU/t(*2A) Tier: %s
 gtpp.gui.multiblock.pollution.txt=Pollution: %s/sec
+gtpp.gui.atmospheric_reconditioner.slot.conveyor=Conveyor Slot
+gtpp.gui.atmospheric_reconditioner.slot.conveyor.1=§7Insert an equal tier Conveyor Module to enable automation
 
 gtpp.chat.wireless_charger.mode_change=Now in %s %s.
 gtpp.chat.wireless_charger.mode_info=Current: %s %s
@@ -4090,10 +3995,13 @@ gtpp.chat.wireless_charger.lock=Locked to owner
 gtpp.chat.wireless_charger.unlock=Unlocked
 gtpp.chat.wireless_charger.enter=You have entered charging range. [%s m - %s]
 gtpp.chat.wireless_charger.leave=You have left charging range. [%s m - %s]
+gtpp.chat.atmospheric_reconditioner.efficiency=Set machine mode to %s
+gtpp.chat.atmospheric_reconditioner.efficiency.low=Low Efficiency
+gtpp.chat.atmospheric_reconditioner.efficiency.high=High Efficiency
 
 gtpp.book.modular_baubles.name=How to: Modular Baubles
-gtpp.book.modular_baubles.page00=Concept: This idea came from wanting flexibility.\nFirst step, Build a Modularity table to begin customisation of your Bauble.\n After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level/100.
-gtpp.book.modular_baubles.page01=Defence:\nCan be upgraded by combining metal plates with the bauble.\n | +1 | Aluminium\n | +2 | Stainless Steel\n | +3 | Tungsten\n | +4 | Tungsten Steel\n | +5 | Naquadah
+gtpp.book.modular_baubles.page00=Concept: This idea came from wanting flexibility.\nFirst step, Build a Modularity table to begin customization of your Bauble.\n After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level/100.
+gtpp.book.modular_baubles.page01=Defence:\nCan be upgraded by combining metal plates with the bauble.\n | +1 | Aluminium\n | +2 | Stainless Steel\n | +3 | Tungsten\n | +4 | Tungstensteel\n | +5 | Naquadah
 gtpp.book.nuclear_chemistry_ffpp.name=Nuclear Chemistry [FFPP]
 gtpp.book.nuclear_chemistry_ffpp.page00=Fission Fuel Processing Plant\nSize: 3x9x3 [LxHxW]\nController: Center, Bottom\n4x Input Hatch\n2x Output Hatch\n1x Output Bus\n1x ZPM+ Muffler\n1x Maintenance Hatch\n1x Energy Hatch
 gtpp.book.nuclear_chemistry_ffpp.page01=[1] 7x Hastelloy-X or I/O\n[2] 5x Incoloy-DS Fluid Containment\n[3] 4x Reactor Shield Casing\n[4] 17x Hastelloy-N Sealant Case\nMultiblock Construction\nConvention is [LxHxW]\n
@@ -4102,10 +4010,10 @@ gtpp.book.nuclear_chemistry_ffpp.page03=Layer 4\n[ ][3][ ]\n[3][2][3]\n[ ][3][ ]
 gtpp.book.nuclear_chemistry_ffpp.page04=Fission Fuel\nProcessing Plant----------------------\nThis structure is used to produce the Molten Salts required to run a Liquid Fluorine Thorium Reactor [LFTR].
 gtpp.book.power_storage_v064.name=Power Storage & You [Version 0.64]
 gtpp.book.power_storage_v064.page00=So, when it comes to power storage you really have three separate options:\nBattery Buffers,\nEnergy Buffers,\nThe Power Sub-Station
-gtpp.book.power_storage_v064.page01=Battery Buffer\nIs rather portable. Allowing you to throw set one up and insert batteries where ever you may need.\nThey output 1A for each battery stored inside, up to a maximum of 16A.
-gtpp.book.power_storage_v064.page02=Energy Buffer\nIs a more optimal choice for storage in your base. Once placed down, they cannot be moved without losing all stored power.\nEnergy Buffers can output 4A from the output side, however accept 16A as input.
-gtpp.book.power_storage_v064.page03=The Power Sub-Station \nIs used for storing Insane amounts of power later game.\nConsumes 2% of the average voltage of all energy type hatches every tick.
-gtpp.book.power_storage_v064.page04=Allows Insertion/Removal of power from the rear face of the controller, swap with a screwdriver.\nVariable Height Structure, between 4-16Y. Inserted Redox Cells dictate max energy tier of structure.
+gtpp.book.power_storage_v064.page01=Battery Buffer\nIs rather portable, allowing you to set one up and insert batteries wherever you may need.\nThey output 1A for each battery stored inside, up to a maximum of 16A.
+gtpp.book.power_storage_v064.page02=Energy Buffer\nIs a more optimal choice for storage in your base. Once placed down, they cannot be moved without losing all stored power.\nEnergy Buffers can output 4A from the output side, however, accept 16A as input.
+gtpp.book.power_storage_v064.page03=The Power Sub-Station \nIs used for storing insane amounts of power later in the game.\nConsumes 2% of the average voltage of all energy type hatches every tick.
+gtpp.book.power_storage_v064.page04=Allows Insertion/Removal of power from the rear face of the controller, swap it with a screwdriver.\nVariable Height Structure, between 4-16Y. Inserted Redox Cells dictate max energy tier of structure.
 gtpp.book.power_storage_v064.page05=Redox Cells cannot be placed into the Top or Bottom layer and only take up 3xhx3 internally.\nDifferent Tier cells CANNOT be mixed together.
 gtpp.book.power_storage_v064.page06=All Hatches Must be HV at a Minimum, this minimum tier is in place to stop people abusing ULV/LV hatches to lower the avg/t.\nCurrently the GUI will NOT display anything at all until the structure forms, this is a known bug.
 gtpp.book.power_storage_v064.page07=Valid Hatches:\nEnergy Hatch,\nDynamo Hatch,\nCharging Bus,\nDischarging Bus,\nDynamo Buffer,\nMulti-Amp Dynamo Hatch.\nStructure MUST contain at least one energy input and one energy output hatch.
@@ -4115,23 +4023,23 @@ gtpp.book.thermal_boiler.page01=First you need to craft the following things for
 gtpp.book.thermal_boiler.page02=To begin the building, lay out the first 3x3 layer of Machine Casings on the ground (with a Hatch in the Middle), then place the Boiler Block facing outward in the middle of one of the 3m wide Sides.
 gtpp.book.thermal_boiler.page03=Now grab 3 other Hatches and place them on the remaining three 3m wide Sides also facing outwards. And now the four corners of the Machine need also a Machine Casing. There should only be a Hole left in the middle of the Cube.
 gtpp.book.thermal_boiler.page04=So, now place a 3x3 of Machine Casings on top, at the 3rd Layer with the last Hatch in the middle facing outwards as well.
-gtpp.book.thermal_boiler.page05=When accessing the Boiler Block, it should now stop telling you, that the structure is incomplete (bottom Line of that Screen). Now go with a bunch of different Tools (Metal Hammer, Rubber Hammer, Screwdriver, Wrench, Soldering Iron and Crowbar)
+gtpp.book.thermal_boiler.page05=When accessing the Boiler Block, it should now stop telling you, that the structure is incomplete (bottom line of that Screen). Now go with a bunch of different Tools (Metal Hammer, Rubber Hammer, Screwdriver, Wrench, Soldering Iron and Crowbar)
 gtpp.book.thermal_boiler.page06=to the Maintenance Hatch and access it. After that you grab the 6 Tools and rightclick the Slot with each of them in your Hand in the Maintenance GUI. Note that you need Soldering Tin/Lead in your Inventory to use the Soldering Iron.
 gtpp.book.thermal_boiler.page07=The Main Block should now tell you that you need to use the Rubber Hammer on it to (re)activate the Machine. The Rubber Hammer can enable and disable Machines. The Machine disables itself after something important broke.
-gtpp.book.thermal_boiler.page08=If you want to use Lava with this Device, then you should add a Lava Filter to extract additional Resources from the Lava. If the Filter breaks, the Machine won't explode like a Turbine would. If you use molten Salt, then you won't need a Filter.
+gtpp.book.thermal_boiler.page08=If you want to use Lava with this Device, then you should add a Lava Filter to extract additional Resources from the Lava. If the Filter breaks, the Machine won't explode like a Turbine would. If you use molten salt, then you won't need a Filter.
 gtpp.book.thermal_boiler.page09=You will get Obsidian when processing Lava, however if a Filter is used, you will get sometimes an Ingot instead of a Block of Obsidian. When using molten Salt, you will get the Salt back.
 gtpp.book.thermal_boiler.page10=So, now for the Maintenance. After a few Hours of running nonstop, your Boiler will get small Problems, which don't prevent it from running, these Problems just decrease Efficiency. Every Problem listed on the Screen does -10% Efficiency.
 gtpp.book.thermal_boiler.page11=To fix these Problems, just go to the Maintenance Hatch and click with the problem corresponding Tool on the Slot to repair. If all six possible runtime Problems happen, the Machine will auto-shutdown no matter what. No Explosion, it's just stopping.
 gtpp.book.thermal_boiler.page12=The Thermal Boiler will produce 800 Liters of Steam per tick for about 5 or 6 Liters of Water per tick at reaching 100% Efficiency. In case of Lava it consumes 1666 Liters every Second.
-gtpp.book.thermal_boiler.page13=A Thermal Boiler is worth about 33 small Thermal Generators, and as the Boilers get much less Efficient, when not having enough Fuel, you should consider making a large Nether Pump for Lava, or a good Nuclear Reactor for molten Salt.
-gtpp.book.thermal_boiler.page14=Input and Output Slots are fully optional, you can place multiple ones of them or even none on the Machine. A Machine without Input couldn't process any Recipes, while a Machine without Output just voids all outputted Items and Liquids.
+gtpp.book.thermal_boiler.page13=A Thermal Boiler is worth about 33 small Thermal Generators, and as the Boilers get much less efficient, when not having enough Fuel, you should consider making a large Nether Pump for Lava, or a good Nuclear Reactor for molten Salt.
+gtpp.book.thermal_boiler.page14=Input and output slots are fully optional, you can place multiple ones of them or even none on the Machine. A Machine without input couldn't process any recipes, while a Machine without output just voids all outputted items and liquids.
 gtpp.book.thermal_boiler.page15=It might be useful to use the Screwdriver on the Output Hatches to determine what is outputted where.
 
 miscutils.blockcasings.0.name=Centrifuge Casing
 miscutils.blockcasings.1.name=Structural Coke Oven Casing
 miscutils.blockcasings.2.name=Heat Resistant Coke Oven Casing
 miscutils.blockcasings.3.name=Heat Proof Coke Oven Casing
-miscutils.blockcasings.4.name=Material Press Machine Casing
+miscutils.blockcasings.4.name=Metalworking Machine Casing
 miscutils.blockcasings.5.name=Electrolyzer Casing
 miscutils.blockcasings.6.name=Wire Factory Casing
 miscutils.blockcasings.7.name=Maceration Stack Casing
@@ -4201,7 +4109,6 @@ gtplusplus.blockcasings.5.15.name=Force Field Glass
 
 gtplusplus.blockcasings.6.0.name=Fusion Machine Casing MK IV
 gtplusplus.blockcasings.6.1.name=Advanced Fusion Coil II
-gtplusplus.blockcasings.6.2.name=Unnamed
 
 gtplusplus.blockcasings.pipesgears.0.name=Eglin Steel Gear Box Casing
 gtplusplus.blockcasings.pipesgears.1.name=Inconel-792 Gear Box Casing
@@ -4242,10 +4149,10 @@ gtplusplus.blockspecialcasings.2.1.name=Sturdy Aluminium Machine Casing
 gtplusplus.blockspecialcasings.2.2.name=Vigorous Laurenium Machine Casing
 gtplusplus.blockspecialcasings.2.3.name=Rugged Botmium Machine Casing
 
-gtplusplus.blockspecialcasings.3.0.name=Resonance Chamber I
-gtplusplus.blockspecialcasings.3.1.name=Resonance Chamber II
-gtplusplus.blockspecialcasings.3.2.name=Resonance Chamber III
-gtplusplus.blockspecialcasings.3.3.name=Resonance Chamber IV
+gtplusplus.blockspecialcasings.3.0.name=Resonance Casing I
+gtplusplus.blockspecialcasings.3.1.name=Resonance Casing II
+gtplusplus.blockspecialcasings.3.2.name=Resonance Casing III
+gtplusplus.blockspecialcasings.3.3.name=Resonance Casing IV
 gtplusplus.blockspecialcasings.3.4.name=Modulator I
 gtplusplus.blockspecialcasings.3.5.name=Modulator II
 gtplusplus.blockspecialcasings.3.6.name=Modulator III
@@ -4256,6 +4163,15 @@ gtplusplus.blocktieredcasings.1.1.name=Integral Encasement II
 gtplusplus.blocktieredcasings.1.2.name=Integral Encasement III
 gtplusplus.blocktieredcasings.1.3.name=Integral Encasement IV
 gtplusplus.blocktieredcasings.1.4.name=Integral Encasement V
+gtpp.tooltip.frame.void=No more cheaty frames for GTNH players.
+gtpp.tooltip.frame.accelerated=Longevity for bees isn't very common, especially if they're working harder.
+gtpp.tooltip.frame.mutagenic=Evolution of the fittest, finest and fastest.
+gtpp.tooltip.frame.busy=Your bee will work harder and longer than you expected.
+gtpp.tooltip.frame.decaying=Who really needs stable genetics?
+gtpp.tooltip.frame.slowing=The journey is its own reward.
+gtpp.tooltip.frame.stabilizing=If you wish your bees to keep their form.
+gtpp.tooltip.frame.arborists=Who need Bees when you can have Trees?
+
 gtplusplus.blocktieredcasings.1.5.name=Integral Framework I
 gtplusplus.blocktieredcasings.1.6.name=Integral Framework II
 gtplusplus.blocktieredcasings.1.7.name=Integral Framework III
