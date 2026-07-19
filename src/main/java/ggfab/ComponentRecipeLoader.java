@@ -10,10 +10,9 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -31,9 +30,9 @@ class ComponentRecipeLoader implements Runnable {
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemList.Machine_Multi_Assemblyline.get(1L),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
-                new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
-                new Object[] { OrePrefixes.circuit.get(Materials.EV), 8 },
+                new Object[] { Circuits.LuV.getIngredient(), 2 },
+                new Object[] { Circuits.IV.getIngredient(), 4 },
+                new Object[] { Circuits.EV.getIngredient(), 8 },
                 ItemList.Automation_ChestBuffer_LuV.get(1L))
             .fluidInputs(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS),
