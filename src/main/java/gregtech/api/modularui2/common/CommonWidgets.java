@@ -60,7 +60,6 @@ public final class CommonWidgets {
             String title = mte.getLocalName();
 
             int borderRadius = 5;
-            int heightPerRow = TextRenderer.getFontRenderer().FONT_HEIGHT;
 
             byte colorization = mte.getBaseMetaTileEntity()
                 .getColorization();
@@ -79,6 +78,7 @@ public final class CommonWidgets {
             int widgetWidth = Math.min(maxWidth, titleWidth);
 
             int rows = (int) Math.ceil((double) titleWidth / maxWidth);
+            int heightPerRow = TextRenderer.getFontRenderer().FONT_HEIGHT;
             int height = heightPerRow * rows;
 
             Flow row = Flow.row()
