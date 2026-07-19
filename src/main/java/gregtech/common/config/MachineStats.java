@@ -115,6 +115,11 @@ public class MachineStats {
             "(for reference, the legacy behaviour was roughly equivalent to 100 ticks)." })
         @Config.DefaultInt(0)
         public int recipeCheckFailCooldown;
+
+        @Config.Comment({ "Use StackWatcher for Stocking Inputs (ME).",
+            "If this option is off, periodic recipe check will be enabled if stocking input is attached." })
+        @Config.DefaultBoolean(true)
+        public boolean useStackWatcher;
     }
 
     @Config.LangKey("GT5U.gui.config.machine_stats.mass_fabricator")
