@@ -97,7 +97,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     .build())
             .addElement(
                 'o',
-                buildHatchAdder(MTESourceChamber.class).atLeast(OutputBus, OutputHatch)
+                buildHatchAdder(MTESourceChamber.class).atLeast(OutputBus)
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(2)
                     .build())
