@@ -2680,12 +2680,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         final int localMaxParallels = tag.getInteger("maxParallelRecipes");
         if (localMaxParallels > 1) {
-            String tooltip = translateToLocal("GT5U.multiblock.parallelism") + ": " + EnumChatFormatting.WHITE;
+            String tooltip;
             if (tag.hasKey("powerPanelMaxParallel")) {
-                tooltip += tag.getInteger(
-                    "powerPanelMaxParallel") + " " + EnumChatFormatting.GRAY + "(" + localMaxParallels + ")";
+                tooltip = translateToLocalFormatted(
+                    "GT5U.multiblock.parallelism_override",
+                    tag.getInteger("powerPanelMaxParallel"),
+                    localMaxParallels);
             } else {
-                tooltip += localMaxParallels;
+                tooltip = translateToLocal("GT5U.multiblock.parallelism") + ": "
+                    + EnumChatFormatting.WHITE
+                    + localMaxParallels;
             }
 
             currentTip.add(tooltip);
@@ -2713,7 +2717,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
         final int localMaxParallel = getMaxParallelRecipes();
-        final int localPowerPanelParallel = getPowerPanelMaxParallel();
+        final int localPowerPanelParallel = getTrueParallel();
 
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", mEfficiency / 100.0F);
