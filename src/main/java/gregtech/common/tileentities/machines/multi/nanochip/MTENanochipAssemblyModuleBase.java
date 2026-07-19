@@ -302,7 +302,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.NANOCHIP;
     }
 

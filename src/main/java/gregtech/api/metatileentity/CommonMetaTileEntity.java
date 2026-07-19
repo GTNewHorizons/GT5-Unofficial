@@ -656,7 +656,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     /**
      * Specifies theme of this GUI. {@link GTGuiThemes} lists all the themes you can use.
      */
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.STANDARD;
     }
 
@@ -677,13 +677,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @SideOnly(Side.CLIENT)
     @Override
     public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return new GTModularScreen(mainPanel, getColoredTheme());
-    }
-
-    public final GTGuiTheme getColoredTheme() {
-        // No longer swaps in a per-machine dyed theme: that used to tint the entire GUI (background, slots,
-        // buttons) to match the machine's color. The color is now shown only via the swatch next to the title
-        // (see CommonWidgets#createMachineTitle).
-        return getGuiTheme();
+        return new GTModularScreen(mainPanel, getGuiTheme());
     }
 }

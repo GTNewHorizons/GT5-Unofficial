@@ -468,7 +468,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TIERED_VARIANTS.get(getTieredVariant());
     }
 

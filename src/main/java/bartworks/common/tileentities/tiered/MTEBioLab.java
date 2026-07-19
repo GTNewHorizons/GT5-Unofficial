@@ -288,7 +288,7 @@ public class MTEBioLab extends MTEBasicMachine {
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.BARTWORKS;
     }
 
