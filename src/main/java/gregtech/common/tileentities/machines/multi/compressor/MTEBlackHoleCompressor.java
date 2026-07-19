@@ -666,6 +666,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
+        // Do not run black hole logic during startup where recipe do not progress
+        if (mStartUpCheck >= 0) return;
+
         if (collapseTimer != -1) {
             if (collapseTimer == 0) {
                 destroyRenderBlock();
@@ -680,11 +683,19 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         }
 
         // Run stability checks once per second if a black hole is open
-        if (blackHoleStatus == 1 || aTick % 20 != 0) return;
+        if (blackHoleStatus == 1) return;
 
         // Update all the utility hatches
+        // Redstone pulse will be 5 ticks (0.25s)
+        if (aTick % 20 == 5) {
+            for (MTEBlackHoleUtility hatch : utilityHatches) {
+                hatch.cycleMiddle();
+            }
+        }
+
+        if (aTick % 20 != 0) return;
         for (MTEBlackHoleUtility hatch : utilityHatches) {
-            hatch.updateRedstoneOutput(true);
+            hatch.cycleStart();
         }
 
         // Black hole is superstable, just do rendering, no need for decay or drain logic
@@ -748,7 +759,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
         collapseTimer = 40;
         for (MTEBlackHoleUtility hatch : utilityHatches) {
-            hatch.updateRedstoneOutput(false);
+            hatch.blackHoleClosed();
         }
     }
 
