@@ -32,6 +32,7 @@ public final class GTGuiThemes {
         .simpleToggleButton(GTTextureIds.BUTTON_STANDARD, GTTextureIds.BUTTON_STANDARD_PRESSED, Dyes.GUI_METAL.toInt())
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_STANDARD)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE.getFullName(), GTTextureIds.BACKGROUND_TITLE_STANDARD)
+        .themedTexture(GTWidgetThemes.BACKGROUND_COLOR_SWATCH.getFullName(), GTTextureIds.SLOT_ITEM_STANDARD)
         .themedOverlayItemSlot(
             GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL.getFullName(),
             GTTextureIds.OVERLAY_SLOT_COAL_STANDARD)
@@ -130,6 +131,9 @@ public final class GTGuiThemes {
                 .themedTexture(
                     GTWidgetThemes.BACKGROUND_TITLE.getFullName(),
                     String.format(GTTextureIds.BACKGROUND_TITLE_STEAM, variant))
+                .themedTexture(
+                    GTWidgetThemes.BACKGROUND_COLOR_SWATCH.getFullName(),
+                    String.format(GTTextureIds.SLOT_ITEM_STEAM, variant))
                 .themedOverlayItemSlot(
                     GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST.getFullName(),
                     String.format(GTTextureIds.OVERLAY_SLOT_DUST_STEAM, variant))
@@ -182,6 +186,7 @@ public final class GTGuiThemes {
         .itemSlot(GTTextureIds.SLOT_ITEM_FOUNDRY)
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_FOUNDRY)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE.getFullName(), GTTextureIds.BACKGROUND_TITLE_FOUNDRY)
+        .themedTexture(GTWidgetThemes.BACKGROUND_COLOR_SWATCH.getFullName(), GTTextureIds.SLOT_ITEM_FOUNDRY)
         .button(GTTextureIds.BUTTON_FOUNDRY)
         .simpleToggleButton(
             GTTextureIds.BUTTON_FOUNDRY,
@@ -208,6 +213,7 @@ public final class GTGuiThemes {
         .itemSlot(GTTextureIds.SLOT_ITEM_NANOCHIP)
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_NANOCHIP)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE.getFullName(), GTTextureIds.BACKGROUND_TITLE_NANOCHIP)
+        .themedTexture(GTWidgetThemes.BACKGROUND_COLOR_SWATCH.getFullName(), GTTextureIds.SLOT_ITEM_NANOCHIP)
         .button(GTTextureIds.BUTTON_NANOCHIP)
         .simpleToggleButton(
             GTTextureIds.BUTTON_NANOCHIP,

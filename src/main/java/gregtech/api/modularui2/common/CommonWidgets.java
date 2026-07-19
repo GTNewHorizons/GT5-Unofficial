@@ -85,7 +85,7 @@ public final class CommonWidgets {
                 // length.
                 row.child(
                     new ParentWidget<>().size(swatchSize + 2, swatchSize + 2)
-                        .background(GTGuiTextures.SLOT_ITEM_STANDARD)
+                        .widgetTheme(GTWidgetThemes.BACKGROUND_COLOR_SWATCH)
                         .tooltip(
                             tooltip -> tooltip.add(
                                 Dyes.get(colorization)
