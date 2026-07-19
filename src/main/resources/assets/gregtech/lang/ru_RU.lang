@@ -1682,6 +1682,7 @@ GT5U.MBTT.Structure.UnlimitedTierSkips=Этот механизм может вы
 gt.mbtt.structure.front_center=Спереди в центре
 gt.mbtt.structure.back_center=Сзади посередине
 gt.mbtt.structure.front_center_2nd_layer=Спереди в центре, 2-й слой
+gt.mbtt.structure.front_bottom_center=Спереди внизу
 gt.mbtt.structure.any_casing=Любой блок корпуса
 gt.mbtt.structure.interior=Внутри структуры
 GT5U.MBTT.HatchInfo=Любой %s
