@@ -8,6 +8,7 @@ import static gregtech.api.util.GTModHandler.RecipeBits.BITS;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -35,9 +36,8 @@ public class GregtechRocketFuelGenerator {
             GregtechItemList.Controller_RocketEngine.get(1L),
             BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.LargeCombustionEngine.get(1), 'P',
-                ItemList.Electric_Piston_IV, 'E', ItemList.Field_Generator_EV, 'C',
-                OrePrefixes.circuit.get(Materials.LuV), 'W', OrePrefixes.cableGt08.get(Materials.Platinum), 'G',
-                MaterialsAlloy.MARAGING350.getGear(1) });
+                ItemList.Electric_Piston_IV, 'E', ItemList.Field_Generator_EV, 'C', Circuits.LuV.getIngredient(), 'W',
+                OrePrefixes.cableGt08.get(Materials.Platinum), 'G', MaterialsAlloy.MARAGING350.getGear(1) });
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_RocketEngine.get(1L),
@@ -70,7 +70,7 @@ public class GregtechRocketFuelGenerator {
                 | GTModHandler.RecipeBits.BUFFERED
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
-                ItemList.Electric_Motor_EV, 'C', OrePrefixes.circuit.get(Materials.IV), 'W',
+                ItemList.Electric_Motor_EV, 'C', Circuits.IV.getIngredient(), 'W',
                 OrePrefixes.cableGt02.get(Materials.Aluminium), 'G', MaterialsAlloy.TANTALLOY_61.getGear(1) });
 
         GTModHandler.addCraftingRecipe(
@@ -79,7 +79,7 @@ public class GregtechRocketFuelGenerator {
                 | GTModHandler.RecipeBits.BUFFERED
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
-                ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.LuV), 'W',
+                ItemList.Electric_Motor_IV, 'C', Circuits.LuV.getIngredient(), 'W',
                 OrePrefixes.cableGt02.get(Materials.Platinum), 'G', MaterialsAlloy.STELLITE.getGear(1) });
         final ItemStack INGREDIENT_1 = ItemList.Electric_Piston_LuV.get(1);
         final ItemStack INGREDIENT_2 = ItemList.Electric_Motor_LuV.get(1);
@@ -89,7 +89,7 @@ public class GregtechRocketFuelGenerator {
                 | GTModHandler.RecipeBits.BUFFERED
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_LuV, 'P', INGREDIENT_1, 'E', INGREDIENT_2, 'C',
-                OrePrefixes.circuit.get(Materials.ZPM), 'W', OrePrefixes.cableGt02.get(Materials.Tungsten), 'G',
+                Circuits.ZPM.getIngredient(), 'W', OrePrefixes.cableGt02.get(Materials.Tungsten), 'G',
                 MaterialsAlloy.ZERON_100.getGear(1) });
     }
 }
