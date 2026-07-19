@@ -116,19 +116,18 @@ public class MTEExoticModule extends MTEBaseModule {
                     }
 
                     if (numberOfFluids != 0) {
-                        addFluidOutputs(
+                        addPendingOutputs(
                             Arrays.stream(randomizedFluidInput)
                                 .map(fluid -> {
                                     FluidStack copy = fluid.copy();
                                     copy.amount = copy.amount / 1000;
                                     return copy;
                                 })
-                                .toArray(FluidStack[]::new),
-                            protectsExcessFluid() ? mPendingFluids : null);
+                                .toArray(FluidStack[]::new));
                     }
 
                     if (numberOfItems != 0) {
-                        addItemOutputs(randomizedItemInput);
+                        addPendingOutputs(randomizedItemInput);
                     }
 
                     recipeInProgress = true;

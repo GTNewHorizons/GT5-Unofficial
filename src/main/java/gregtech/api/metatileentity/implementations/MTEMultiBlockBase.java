@@ -850,8 +850,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                                     pdr.addRecord(((long) mMaxProgresstime) * mEUt, mOutputItems, mOutputFluids);
                             }
                         }
-                        if (mOutputItems != null) addItemOutputs(mOutputItems);
-                        if (mOutputFluids != null) addFluidOutputs(mOutputFluids);
+                        if (mOutputItems != null) addPendingOutputs(mOutputItems);
+                        if (mOutputFluids != null) addPendingOutputs(mOutputFluids);
                         mOutputItems = null;
                         mOutputFluids = null;
                         outputAfterRecipe();
@@ -1820,12 +1820,24 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return isConsumed;
     }
 
-    public boolean addFluidOutputs(@NotNull FluidStack[] outputFluids) {
+    public boolean addPendingOutputs(@NotNull FluidStack[] outputFluids) {
         return addFluidOutputs(outputFluids, protectsExcessFluid() ? mPendingFluids : null);
     }
 
+    public boolean addFluidOutputs(@NotNull FluidStack[] outputFluids) {
+        return addFluidOutputs(
+            Arrays.asList(outputFluids),
+            getOutputHatches(outputFluids),
+            protectsExcessFluid(),
+            null);
+    }
+
     public boolean addFluidOutputs(@NotNull FluidStack[] outputFluids, @Nullable List<FluidStack> remaining) {
-        return addFluidOutputs(Arrays.asList(outputFluids), getOutputHatches(outputFluids), protectsExcessFluid(), remaining);
+        return addFluidOutputs(
+            Arrays.asList(outputFluids),
+            getOutputHatches(outputFluids),
+            protectsExcessFluid(),
+            remaining);
     }
 
     /**
@@ -1988,6 +2000,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return addItemOutput(stack, protectsExcessItem() ? mPendingItems : null);
     }
 
+    public boolean addItemOutputs(ItemStack[] outputItems) {
+        return addItemOutputs(Arrays.asList(outputItems), null);
+    }
+
     public boolean addItemOutputs(ItemStack[] outputItems, @Nullable List<ItemStack> remaining) {
         return addItemOutputs(Arrays.asList(outputItems), remaining);
     }
@@ -2009,7 +2025,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return ejected == 1;
     }
 
-    public boolean addItemOutputs(@NotNull ItemStack[] outputItems) {
+    public boolean addPendingOutputs(@NotNull ItemStack[] outputItems) {
         return addItemOutputs(outputItems, protectsExcessItem() ? mPendingItems : null);
     }
 
@@ -3219,7 +3235,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * Util method for DT-like structure to collect list of output hatches.
      */
     protected <T extends MTEHatchOutput> List<IOutputHatch> getOutputHatchesByLayers(@NotNull List<FluidStack> toOutput,
-                                                                                     @NotNull List<List<T>> hatchesByLayer) {
+        @NotNull List<List<T>> hatchesByLayer) {
         List<IOutputHatch> ret = new ArrayList<>();
         for (int i = 0; i < toOutput.size(); i++) {
             if (i >= hatchesByLayer.size()) {
@@ -3964,10 +3980,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 new TextWidget(translateToLocal("gt.interact.desc.mb.pending")).setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mPendingItems.isEmpty() || !mPendingFluids.isEmpty()));
             final ChangeableWidget pendingOutputItemsWidget = new ChangeableWidget(
-                () -> generateCurrentRecipeInfoWidget(
-                    mPendingItems,
-                    mPendingFluids,
-                    false));
+                () -> generateCurrentRecipeInfoWidget(mPendingItems, mPendingFluids, false));
             // Display current recipe
             screenElements.widget(
                 new FakeSyncWidget.ListSyncer<>(

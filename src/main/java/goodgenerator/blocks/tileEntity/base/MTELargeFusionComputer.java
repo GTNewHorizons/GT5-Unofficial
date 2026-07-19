@@ -301,8 +301,8 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                         this.getBaseMetaTileEntity()
                             .decreaseStoredEnergyUnits(-lEUt, true);
                         if (tryFlushPendingOutputs() && mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-                            if (mOutputItems != null) addItemOutputs(mOutputItems);
-                            if (mOutputFluids != null) addFluidOutputs(mOutputFluids);
+                            if (mOutputItems != null) addPendingOutputs(mOutputItems);
+                            if (mOutputFluids != null) addPendingOutputs(mOutputFluids);
                             mEfficiency = Math
                                 .max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
                             mOutputItems = null;

@@ -386,7 +386,7 @@ public class MTEPurificationUnitBaryonicPerfection
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
             if (correctStartIndex != -1 && (i == correctStartIndex || i == correctStartIndex + 1)) continue;
 
-            addPendingOutput(insertedCatalysts.get(i));
+            addOutputPartial(insertedCatalysts.get(i));
         }
     }
 
@@ -474,7 +474,7 @@ public class MTEPurificationUnitBaryonicPerfection
             correctStartIndex = checkSequence();
             // If we found something, immediately output stable baryonic matter
             if (correctStartIndex != -1)
-                addPendingOutput(Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT));
+                addOutputPartial(Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT));
         }
     }
 

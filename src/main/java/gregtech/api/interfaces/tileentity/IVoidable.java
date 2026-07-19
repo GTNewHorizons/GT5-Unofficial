@@ -6,11 +6,12 @@ import java.util.Set;
 
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.util.GTUtility;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Machines implementing this interface can have logic to configure whether to void excess output or not.

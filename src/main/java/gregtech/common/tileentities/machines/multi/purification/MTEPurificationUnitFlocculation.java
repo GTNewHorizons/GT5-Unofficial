@@ -359,7 +359,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         // NOTE: If this process ever PRODUCES excess chlorine, there is a recipe bug.
         int levels = calculateBoostLevels();
         long amount = levels * WASTE_WATER_PER_LEVEL;
-        this.addFluidOutputs(new FluidStack[] { OUTPUT_WASTE.getFluid(amount) });
+        addOutputPartial(OUTPUT_WASTE.getFluid(amount));
         // Make sure to reset consumed fluid (again)
         this.inputFluidConsumed = 0;
     }

@@ -277,8 +277,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
         if (Objects.isNull(fluidOutput)) return CheckRecipeResultRegistry.NO_RECIPE;
 
         fluidCoolant.amount -= fluidConsumed;
-        FluidStack fluidOutputStack = new FluidStack(fluidOutput, fluidConsumed);
-        this.addFluidOutputs(new FluidStack[] { fluidOutputStack });
+        this.addPendingOutput(new FluidStack(fluidOutput, fluidConsumed));
 
         outputPacketAfterRecipe();
         return CheckRecipeResultRegistry.SUCCESSFUL;
