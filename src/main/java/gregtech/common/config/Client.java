@@ -436,9 +436,9 @@ public class Client {
         @Config.Name("Show Fluid State")
         public boolean showFluidState;
 
-        @Config.Comment("Enabled show GT++ Radioactive Text")
+        @Config.Comment("Enabled show Radioactive Text")
         @Config.DefaultBoolean(true)
-        @Config.Name("Show GT++ Radioactive Text")
+        @Config.Name("Show Radioactive Text")
         public boolean showRadioactiveText;
 
         @Config.Comment("Enabled show Hot Ingot Text")

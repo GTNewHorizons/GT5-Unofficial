@@ -543,6 +543,12 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
 
     @Override
     public void addTooltips(List<String> list) {
+        if (Client.tooltip.showRadioactiveText && getStats().isRadioactive()) {
+            list.add(
+                StatCollector.translateToLocalFormatted(
+                    "GTPP.core.GT_Tooltip_Radioactive",
+                    String.valueOf((int) getStats().getProtons())));
+        }
         if (!Client.tooltip.showFormula) {
             return;
         }

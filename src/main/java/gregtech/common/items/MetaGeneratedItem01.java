@@ -4082,6 +4082,15 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 }
             }
         }
+        if (Client.tooltip.showRadioactiveText) {
+            int aRadioactivityLevel = GTUtility.getRadioactivityLevel(aStack);
+            if (aRadioactivityLevel > 0) {
+                aList.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GTPP.core.GT_Tooltip_Radioactive",
+                        String.valueOf(aRadioactivityLevel)));
+            }
+        }
     }
 
     public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Materials aMaterial) {
