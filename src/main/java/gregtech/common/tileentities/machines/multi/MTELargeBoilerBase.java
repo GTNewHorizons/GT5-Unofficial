@@ -407,7 +407,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                         int superheatedSteam = getSuperheatedSteam(tGeneratedEU);
                         if (superheatedSteam > 0) {
                             tickBurnTime();
-                            addFluidOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", superheatedSteam));
+                            addPendingOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", superheatedSteam));
                         }
                     } else {
                         GTLog.writeExplosionLog(this, "Boiler had no water");
@@ -416,7 +416,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 } else {
                     if (consumeWater(waterToConsume)) {
                         tickBurnTime();
-                        addFluidOutput(Materials.Steam.getGas(tGeneratedEU));
+                        addPendingOutput(Materials.Steam.getGas(tGeneratedEU));
                     } else {
                         GTLog.writeExplosionLog(this, "Boiler had no water");
                         explodeMultiblock();

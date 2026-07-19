@@ -242,7 +242,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     GTModHandler.getDistilledWater(1)
                         .getFluid(),
                     waterConsume);
-                this.addFluidOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", (int) steamProduced));
+                this.addPendingOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", (int) steamProduced));
             } else {
                 this.explodeMultiblock();
                 return false;
@@ -257,7 +257,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     GTModHandler.getIC2Coolant(0)
                         .getFluid(),
                     coolantConverted);
-                this.addFluidOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
+                this.addPendingOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
             } else {
                 this.explodeMultiblock();
                 return false;

@@ -1775,7 +1775,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * the
      * machine's work loop.
      */
-    public boolean addFluidOutput(FluidStack stack) {
+    public boolean addPendingOutput(FluidStack stack) {
         return addFluidOutput(stack, protectsExcessFluid() ? mPendingFluids : null);
     }
 
@@ -1984,7 +1984,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * Note: Unlike the old addOutputPartial, this method adds un-ejected outputs to mPendingItems, which will block the
      * machine's work loop.
      */
-    public boolean addItemOutput(ItemStack stack) {
+    public boolean addPendingOutput(ItemStack stack) {
         return addItemOutput(stack, protectsExcessItem() ? mPendingItems : null);
     }
 

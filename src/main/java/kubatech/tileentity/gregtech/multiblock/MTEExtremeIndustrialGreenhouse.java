@@ -465,7 +465,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     if (bucket == null) {
                         // if we somehow can't grow the seed, try ejecting it at least.
                         holder.seed.stackSize = holder.count;
-                        this.addItemOutput(holder.seed);
+                        this.addPendingOutput(holder.seed);
                         continue;
                     }
                     this.buckets.add(bucket);
