@@ -199,6 +199,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -2436,18 +2437,14 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
     public void initAssemblerRecipes() {
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_RedstoneTransmitter.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L))
+            .itemInputs(ItemList.Cover_RedstoneTransmitter.get(1L), Circuits.EV.get(1))
             .circuit(1)
             .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitter.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_RedstoneReceiver.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L))
+            .itemInputs(ItemList.Cover_RedstoneReceiver.get(1L), Circuits.EV.get(1))
             .circuit(1)
             .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiver.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
