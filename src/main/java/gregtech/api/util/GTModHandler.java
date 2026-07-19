@@ -69,6 +69,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -780,10 +781,10 @@ public class GTModHandler {
                     case 3    -> MU.craftIngredient(OrePrefixes.pipeMedium, Materials2Materials.StainlessSteel);
                     case 4    -> MU.craftIngredient(OrePrefixes.pipeMedium, Materials2Materials.Titanium);
                     case 5    -> MU.craftIngredient(OrePrefixes.pipeMedium, Materials2Materials.TungstenSteel);
-                    case 6    -> OrePrefixes.pipeSmall.get(Materials.ZPM);
-                    case 7    -> OrePrefixes.pipeMedium.get(Materials.ZPM);
-                    case 8    -> OrePrefixes.pipeLarge.get(Materials.ZPM);
-                    default   -> OrePrefixes.pipeHuge.get(Materials.ZPM);
+                    case 6    -> TieredItems.ZPM.getPipeSmallIngredient();
+                    case 7    -> TieredItems.ZPM.getPipeMediumIngredient();
+                    case 8    -> TieredItems.ZPM.getPipeLargeIngredient();
+                    default   -> TieredItems.ZPM.getPipeHugeIngredient();
                 };
 
                 case COIL_HEATING -> switch (machineTier) {

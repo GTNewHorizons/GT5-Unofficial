@@ -27,6 +27,7 @@ import codechicken.nei.api.API;
 import goodgenerator.util.ItemRefer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -34,6 +35,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
@@ -3149,39 +3151,39 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_HV, 'W',
                 MU.craftIngredient(OrePrefixes.wireGt16, Materials2Materials.Gold), 'T', OreDictNames.craftingChest,
-                'B', ItemList.Battery_RE_HV_Lithium, 'C', OrePrefixes.circuit.get(Materials.HV) });
+                'B', ItemList.Battery_RE_HV_Lithium, 'C', Circuits.HV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_EV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_EV, 'W',
                 MU.craftIngredient(OrePrefixes.wireGt16, Materials2Materials.Aluminium), 'T',
-                OreDictNames.craftingChest, 'B', OrePrefixes.battery.get(Materials.EV), 'C',
-                OrePrefixes.circuit.get(Materials.EV) });
+                OreDictNames.craftingChest, 'B', TieredItems.EV.getBatteryIngredient(), 'C',
+                Circuits.EV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_IV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_IV, 'W',
                 MU.craftIngredient(OrePrefixes.wireGt16, Materials2Materials.Tungsten), 'T', OreDictNames.craftingChest,
-                'B', OrePrefixes.battery.get(Materials.IV), 'C', OrePrefixes.circuit.get(Materials.IV) });
+                'B', TieredItems.IV.getBatteryIngredient(), 'C', Circuits.IV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_LuV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_LuV, 'W',
                 MU.craftIngredient(OrePrefixes.wireGt16, Materials2Materials.VanadiumGallium), 'T',
-                OreDictNames.craftingChest, 'B', OrePrefixes.battery.get(Materials.LuV), 'C',
-                OrePrefixes.circuit.get(Materials.LuV) });
+                OreDictNames.craftingChest, 'B', TieredItems.LuV.getBatteryIngredient(), 'C',
+                Circuits.LuV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_ZPM.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_ZPM, 'W',
                 MU.craftIngredient(OrePrefixes.wireGt16, Materials2Materials.Naquadah), 'T', OreDictNames.craftingChest,
-                'B', OrePrefixes.battery.get(Materials.ZPM), 'C', OrePrefixes.circuit.get(Materials.ZPM) });
+                'B', TieredItems.ZPM.getBatteryIngredient(), 'C', Circuits.ZPM.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_UV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_UV, 'W',
                 MU.craftIngredient(OrePrefixes.wireGt16, Materials2Materials.NaquadahAlloy), 'T',
-                OreDictNames.craftingChest, 'B', ItemList.ZPM2, 'C', OrePrefixes.circuit.get(Materials.UV) });
+                OreDictNames.craftingChest, 'B', ItemList.ZPM2, 'C', Circuits.UV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_UHV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -3909,7 +3911,7 @@ public class MTERecipeLoader implements Runnable {
                 GTModHandler.RecipeBits.BITS,
                 new Object[] { "FFF", "RHR", "MCM", 'H', ItemList.Hull_HV, 'F', ItemList.Component_Filter, 'R',
                     MU.craftIngredient(OrePrefixes.rotor, Materials2Materials.StainlessSteel), 'M',
-                    ItemList.Electric_Motor_HV, 'C', OrePrefixes.circuit.get(Materials.HV) });
+                    ItemList.Electric_Motor_HV, 'C', Circuits.HV.getIngredient() });
         } else {
             if (NotEnoughItems.isModLoaded()) {
                 API.hideItem(ItemList.Machine_Multi_Cleanroom.get(1L));
@@ -4098,21 +4100,21 @@ public class MTERecipeLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get("pipeSmallTungstenSteel", 1L), ItemList.Electric_Pump_EV.get(1L))
             .circuit(5)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.ZPM, 1L))
+            .itemOutputs(TieredItems.ZPM.getPipeSmall(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get("pipeMediumTungstenSteel", 1L), ItemList.Electric_Pump_IV.get(1L))
             .circuit(5)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.ZPM, 1L))
+            .itemOutputs(TieredItems.ZPM.getPipeMedium(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV / 2)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get("pipeLargeTungstenSteel", 1L), ItemList.Electric_Pump_IV.get(2L))
             .circuit(5)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.ZPM, 1L))
+            .itemOutputs(TieredItems.ZPM.getPipeLarge(1))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
