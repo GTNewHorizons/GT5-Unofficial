@@ -450,6 +450,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         if (!(aMetaTileEntity instanceof MTEHatchInput)) {
             return false;
         } else {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((MTEHatchInput) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
             return this.mInputHatches.add((MTEHatchInput) aMetaTileEntity);

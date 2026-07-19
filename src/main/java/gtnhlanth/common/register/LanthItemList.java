@@ -167,10 +167,7 @@ public final class LanthItemList {
 
             String descSpectrum = mask.getSpectrum();
 
-            ItemPhotolithographicMask maskItem = new ItemPhotolithographicMask(
-                mask.getName(),
-                mask.getDamage(),
-                descSpectrum);
+            ItemPhotolithographicMask maskItem = new ItemPhotolithographicMask(mask.getName(), descSpectrum);
             GameRegistry.registerItem(maskItem, maskItem.getUnlocalizedName());
 
             if (!mask.getName()
