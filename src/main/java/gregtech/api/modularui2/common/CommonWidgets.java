@@ -66,7 +66,7 @@ public final class CommonWidgets {
                 .getColorization();
             boolean showSwatch = GregTechAPI.sColoredGUI && !GregTechAPI.sMachineMetalGUI
                 && colorization != IColoredTileEntity.UNCOLOURED;
-            int swatchOuterSize = showSwatch ? heightPerRow + 2 : 0;
+            int swatchOuterSize = showSwatch ? 9 : 0;
             int childPadding = 4;
             // Reserve the swatch's width (plus the padding to the text) so the title still wraps to fit within the
             // panel instead of overflowing when the swatch is shown.
@@ -92,7 +92,7 @@ public final class CommonWidgets {
             int rowContentHeight = Math.max(height, swatchOuterSize);
 
             if (showSwatch) {
-                int swatchSize = heightPerRow;
+                int swatchSize = 7;
                 int swatchMarginTop = (rowContentHeight - swatchOuterSize) / 2;
                 // Added before the title text so its position is always the same, regardless of the machine name's
                 // length.
