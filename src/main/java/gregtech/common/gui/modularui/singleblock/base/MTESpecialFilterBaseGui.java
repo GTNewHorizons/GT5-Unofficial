@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -39,7 +38,7 @@ public abstract class MTESpecialFilterBaseGui<T extends MTESpecialFilter> extend
 
         // white arrow shaft
         mainRow.child(
-            new Rectangle().asWidget()
+            GTGuiTextures.PICTURE_ARROW_6_WHITE_PRE.asWidget()
                 .size(26, 6));
 
         // filter slot
