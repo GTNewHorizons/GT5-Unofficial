@@ -362,6 +362,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         // this is an ME input hatch. allowing draining via logistics would be very wrong (and against
         // canTankBeEmptied()) but we do need to support draining from controller, which uses the UNKNOWN direction.
         if (side != ForgeDirection.UNKNOWN) return null;
+        if (amount == 0) return new FluidStack(fluid, 0);
 
         if (processingRecipe) {
             // When processing a recipe, we just extract from the slot fake stacks
