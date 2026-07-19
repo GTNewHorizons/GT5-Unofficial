@@ -6,9 +6,11 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
@@ -31,7 +33,7 @@ public class Crafting implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.VibrantAlloy, Materials2Shapes.rotor, (int) (1)), });
 
         // SOFC Controller mk1
-        final Object[] mk1_recipe = { "CCC", "PHP", "FBL", 'C', OrePrefixes.circuit.get(Materials.HV), 'P',
+        final Object[] mk1_recipe = { "CCC", "PHP", "FBL", 'C', Circuits.HV.getIngredient(), 'P',
             ItemList.Electric_Pump_HV.get(1L), 'H', ItemList.Hull_HV.get(1L), 'F',
             GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.StainlessSteel, 1), 'B',
             GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Gold, 1), 'L',
@@ -39,16 +41,14 @@ public class Crafting implements Runnable {
         GTModHandler.addCraftingRecipe(TileEntities.sofc1.getStackForm(1), mk1_recipe);
 
         // SOFC Controller mk2
-        final Object[] mk2_recipe = { "CCC", "PHP", "FBL", 'C', OrePrefixes.circuit.get(Materials.LuV), 'P',
-            ItemList.Electric_Pump_IV.get(1L), 'H', ItemList.Hull_IV.get(1L), 'F',
-            GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.ZPM, 1), 'B',
-            Util.getStackofAmountFromOreDict("wireGt04SuperconductorEV", 1), 'L',
-            GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.ZPM, 1) };
+        final Object[] mk2_recipe = { "CCC", "PHP", "FBL", 'C', Circuits.LuV.getIngredient(), 'P',
+            ItemList.Electric_Pump_IV.get(1L), 'H', ItemList.Hull_IV.get(1L), 'F', TieredItems.ZPM.getPipeSmall(1), 'B',
+            Util.getStackofAmountFromOreDict("wireGt04SuperconductorEV", 1), 'L', TieredItems.ZPM.getPipeMedium(1) };
         GTModHandler.addCraftingRecipe(TileEntities.sofc2.getStackForm(1), mk2_recipe);
 
         // LSC Controller
         final Object[] lsc_recipe = { "LPL", "CBC", "LPL", 'L', ItemList.IC2_LapotronCrystal.getWildcard(1L), 'P',
-            ItemList.Circuit_Chip_PIC.get(1L), 'C', OrePrefixes.circuit.get(Materials.LuV), 'B',
+            ItemList.Circuit_Chip_PIC.get(1L), 'C', Circuits.LuV.getIngredient(), 'B',
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0), };
         GTModHandler.addCraftingRecipe(TileEntities.lsc.getStackForm(1), lsc_recipe);
 
