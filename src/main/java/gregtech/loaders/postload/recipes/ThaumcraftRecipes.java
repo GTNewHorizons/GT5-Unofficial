@@ -14,6 +14,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentHazmat;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -712,10 +713,9 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                     tKey,
                     ItemList.Hull_LV.get(1L),
-                    new ItemStack[] { new ItemStack(Blocks.beacon),
-                        GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
+                    new ItemStack[] { new ItemStack(Blocks.beacon), Circuits.MV.get(1),
                         MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.plate, (int) (1L)),
-                        ItemList.Sensor_MV.get(1L), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
+                        ItemList.Sensor_MV.get(1L), Circuits.MV.get(1),
                         MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.plate, (int) (1L)),
                         ItemList.Sensor_MV.get(1L) },
                     ItemList.MagicEnergyConverter_LV.get(1L),
@@ -750,10 +750,9 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                     tKey,
                     ItemList.Hull_MV.get(1L),
-                    new ItemStack[] { new ItemStack(Blocks.beacon),
-                        GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
+                    new ItemStack[] { new ItemStack(Blocks.beacon), Circuits.HV.get(1),
                         MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.plateDouble, (int) (1L)),
-                        ItemList.Sensor_HV.get(1L), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
+                        ItemList.Sensor_HV.get(1L), Circuits.HV.get(1),
                         MaterialLibAPI
                             .getStack(Materials2Materials.StainlessSteel, Materials2Shapes.plateDouble, (int) (1L)),
                         ItemList.Sensor_HV.get(1L) },
@@ -785,21 +784,21 @@ public class ThaumcraftRecipes implements Runnable {
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 40L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 20L)),
             null,
-            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey, GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
-                tKey,
-                ItemList.Hull_HV.get(1L),
-                new ItemStack[] { new ItemStack(Blocks.beacon),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
-                    MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.plateDense, (int) (1L)),
-                    ItemList.Field_Generator_MV.get(1L), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
-                    MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.plateDense, (int) (1L)),
-                    ItemList.Field_Generator_MV.get(1L) },
-                ItemList.MagicEnergyConverter_HV.get(1L),
-                8,
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 128L),
-                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
-                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L))) });
+            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey,
+                GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
+                    tKey,
+                    ItemList.Hull_HV.get(1L),
+                    new ItemStack[] { new ItemStack(Blocks.beacon), Circuits.EV.get(1),
+                        MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.plateDense, (int) (1L)),
+                        ItemList.Field_Generator_MV.get(1L), Circuits.EV.get(1),
+                        MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.plateDense, (int) (1L)),
+                        ItemList.Field_Generator_MV.get(1L) },
+                    ItemList.MagicEnergyConverter_HV.get(1L),
+                    8,
+                    Arrays.asList(
+                        new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 128L),
+                        new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
+                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L))) });
 
         tKey = "GT_MAGICABSORB";
         GTLanguageManager.addStringLocalization(
@@ -826,8 +825,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                     tKey,
                     ItemList.Hull_LV.get(1L),
-                    new ItemStack[] { ItemList.MagicEnergyConverter_LV.get(1L),
-                        GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
+                    new ItemStack[] { ItemList.MagicEnergyConverter_LV.get(1L), Circuits.MV.get(1),
                         MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.plate, (int) (1L)),
                         ItemList.Sensor_MV.get(1L) },
                     ItemList.MagicEnergyAbsorber_LV.get(1L),
@@ -864,10 +862,9 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                     tKey,
                     ItemList.Hull_MV.get(1L),
-                    new ItemStack[] { ItemList.MagicEnergyConverter_MV.get(1L),
-                        GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
+                    new ItemStack[] { ItemList.MagicEnergyConverter_MV.get(1L), Circuits.HV.get(1),
                         MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.plate, (int) (1L)),
-                        ItemList.Sensor_HV.get(1L), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
+                        ItemList.Sensor_HV.get(1L), Circuits.HV.get(1),
                         MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.plate, (int) (1L)) },
                     ItemList.MagicEnergyAbsorber_MV.get(1L),
                     6,
@@ -881,11 +878,9 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                     tKey,
                     ItemList.Hull_HV.get(1L),
-                    new ItemStack[] { ItemList.MagicEnergyConverter_MV.get(1L),
-                        GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
+                    new ItemStack[] { ItemList.MagicEnergyConverter_MV.get(1L), Circuits.EV.get(1),
                         MaterialLibAPI.getStack(Materials2Materials.Void, Materials2Shapes.plate, (int) (1)),
-                        ItemList.Field_Generator_MV.get(1L),
-                        GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
+                        ItemList.Field_Generator_MV.get(1L), Circuits.EV.get(1),
                         MaterialLibAPI.getStack(Materials2Materials.Void, Materials2Shapes.plate, (int) (1)), },
                     ItemList.MagicEnergyAbsorber_HV.get(1L),
                     8,
@@ -899,12 +894,10 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                     tKey,
                     ItemList.Hull_EV.get(1L),
-                    new ItemStack[] { ItemList.MagicEnergyConverter_HV.get(1L),
-                        GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
+                    new ItemStack[] { ItemList.MagicEnergyConverter_HV.get(1L), Circuits.IV.get(1),
                         MaterialLibAPI.getStack(Materials2Materials.Void, Materials2Shapes.plate, (int) (1)),
                         MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plate, (int) (1)),
-                        ItemList.Field_Generator_HV.get(1L),
-                        GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
+                        ItemList.Field_Generator_HV.get(1L), Circuits.IV.get(1),
                         MaterialLibAPI.getStack(Materials2Materials.Void, Materials2Shapes.plate, (int) (1)),
                         MaterialLibAPI
                             .getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plate, (int) (1)), },
