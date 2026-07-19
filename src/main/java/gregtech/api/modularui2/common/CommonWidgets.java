@@ -75,19 +75,17 @@ public final class CommonWidgets {
                 .marginRight(5)
                 .marginTop(5)
                 .marginBottom(1)
-                .child(
-                    IKey.str(title)
-                        .asWidget()
-                        .size(widgetWidth, height)
-                        .widgetTheme(GTWidgetThemes.TEXT_TITLE));
+                .childPadding(4);
 
             byte colorization = mte.getBaseMetaTileEntity()
                 .getColorization();
-            if (GregTechAPI.sColoredGUI && colorization != IColoredTileEntity.UNCOLOURED) {
+            if (GregTechAPI.sColoredGUI && !GregTechAPI.sMachineMetalGUI
+                && colorization != IColoredTileEntity.UNCOLOURED) {
                 int swatchSize = heightPerRow;
+                // Added before the title text so its position is always the same, regardless of the machine name's
+                // length.
                 row.child(
                     new ParentWidget<>().size(swatchSize + 2, swatchSize + 2)
-                        .marginLeft(4)
                         .background(GTGuiTextures.SLOT_ITEM_STANDARD)
                         .tooltip(
                             tooltip -> tooltip.add(
@@ -98,6 +96,12 @@ public final class CommonWidgets {
                                 .pos(1, 1)
                                 .background(new Rectangle().color(Color.withAlpha(mte.getGUIColorization(), 255)))));
             }
+
+            row.child(
+                IKey.str(title)
+                    .asWidget()
+                    .size(widgetWidth, height)
+                    .widgetTheme(GTWidgetThemes.TEXT_TITLE));
 
             return new SingleChildWidget<>().coverChildren()
                 .bottomRel(1)
