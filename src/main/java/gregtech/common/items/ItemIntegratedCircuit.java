@@ -38,9 +38,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.items.GTGenericItem;
@@ -85,7 +84,7 @@ public class ItemIntegratedCircuit extends GTGenericItem
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Circuit_Integrated.getWithDamage(1L, 0L),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { OrePrefixes.circuit.get(Materials.LV) });
+            new Object[] { Circuits.LV.getIngredient() });
         long bits = GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE;
         GTModHandler.addCraftingRecipe(
             ItemList.Circuit_Integrated.getWithDamage(1L, 1L),

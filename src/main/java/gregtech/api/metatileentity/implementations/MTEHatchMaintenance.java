@@ -38,9 +38,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.enums.materials2.Materials2CellShapes;
@@ -94,8 +93,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
     public static ItemStack[] getAutoMaintenanceInputs() {
         if (sAutoMaintenanceInputs == null) sAutoMaintenanceInputs = new ItemStack[] { ItemList.Duct_Tape.get(4),
             MaterialLibAPI.getStack(Materials2Materials.Lubricant, Materials2CellShapes.cell, (int) (2)),
-            MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.screw, (int) (4)),
-            GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2) };
+            MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.screw, (int) (4)), Circuits.HV.get(2) };
         return sAutoMaintenanceInputs;
     }
 
