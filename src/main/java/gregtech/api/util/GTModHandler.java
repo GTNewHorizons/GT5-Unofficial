@@ -64,6 +64,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import ganymedes01.etfuturum.recipes.BlastFurnaceRecipes;
 import ganymedes01.etfuturum.recipes.SmokerRecipes;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -693,28 +694,28 @@ public class GTModHandler {
             // spotless:off
             aRecipe[i] = switch ((MTEBasicMachineWithRecipe.X) aRecipe[i]) {
                 case CIRCUIT -> switch (machineTier) {
-                    case  0 -> OrePrefixes.circuit.get(Materials.ULV);
-                    case  1 -> OrePrefixes.circuit.get(Materials.LV);
-                    case  2 -> OrePrefixes.circuit.get(Materials.MV);
-                    case  3 -> OrePrefixes.circuit.get(Materials.HV);
-                    case  4 -> OrePrefixes.circuit.get(Materials.EV);
-                    case  5 -> OrePrefixes.circuit.get(Materials.IV);
-                    case  6 -> OrePrefixes.circuit.get(Materials.LuV);
-                    case  7 -> OrePrefixes.circuit.get(Materials.ZPM);
-                    case  8 -> OrePrefixes.circuit.get(Materials.UV);
-                    default -> OrePrefixes.circuit.get(Materials.UHV);
+                    case  0 -> Circuits.ULV.getIngredient();
+                    case  1 -> Circuits.LV.getIngredient();
+                    case  2 -> Circuits.MV.getIngredient();
+                    case  3 -> Circuits.HV.getIngredient();
+                    case  4 -> Circuits.EV.getIngredient();
+                    case  5 -> Circuits.IV.getIngredient();
+                    case  6 -> Circuits.LuV.getIngredient();
+                    case  7 -> Circuits.ZPM.getIngredient();
+                    case  8 -> Circuits.UV.getIngredient();
+                    default -> Circuits.UHV.getIngredient();
                 };
 
                 case BETTER_CIRCUIT -> switch (machineTier) {
-                    case  0 -> OrePrefixes.circuit.get(Materials.LV);
-                    case  1 -> OrePrefixes.circuit.get(Materials.MV);
-                    case  2 -> OrePrefixes.circuit.get(Materials.HV);
-                    case  3 -> OrePrefixes.circuit.get(Materials.EV);
-                    case  4 -> OrePrefixes.circuit.get(Materials.IV);
-                    case  5 -> OrePrefixes.circuit.get(Materials.LuV);
-                    case  6 -> OrePrefixes.circuit.get(Materials.ZPM);
-                    case  7 -> OrePrefixes.circuit.get(Materials.UV);
-                    default -> OrePrefixes.circuit.get(Materials.UHV);
+                    case  0 -> Circuits.LV.getIngredient();
+                    case  1 -> Circuits.MV.getIngredient();
+                    case  2 -> Circuits.HV.getIngredient();
+                    case  3 -> Circuits.EV.getIngredient();
+                    case  4 -> Circuits.IV.getIngredient();
+                    case  5 -> Circuits.LuV.getIngredient();
+                    case  6 -> Circuits.ZPM.getIngredient();
+                    case  7 -> Circuits.UV.getIngredient();
+                    default -> Circuits.UHV.getIngredient();
                 };
 
                 case HULL -> switch (machineTier) {
