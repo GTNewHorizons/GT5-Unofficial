@@ -242,7 +242,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
                                                                                             // with a Parametrizer
             .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.5")) // (Do not insert a
                                                                                             // Wither)
-            .beginStructureBlock(5, 5, 4, true)
+            .beginStructureBlock(5, 4, 5, true)
             .addController("Front center, 2nd layer")
             .addCasing("60-69", "Clean Stainless Steel Machine Casing", false)
             .addEnergyHatch("1+", "Any bottom edge casing", 1)
