@@ -7,10 +7,13 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import java.util.stream.IntStream;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Superconductors;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -570,6 +573,34 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .disableElectricDamage()
             .build();
+
+        registerSuperconductorWireAssemblies();
+    }
+
+    /// Emits the wireGt01 -> wireGt02..16 assembler recipes that
+    /// [gregtech.loaders.oreprocessing.ProcessingWire] generates for every wire material. The ore-registration
+    /// dispatch resolves that registrator's material from the ore name through the legacy registry, which a
+    /// [gregtech.api.material.MarkerMaterial] is absent from, so the superconductor wires are reproduced here
+    /// through the [Superconductors] enum. Superconductors carry no processing tier, so the recipe EU is
+    /// ProcessingWire's default of 8.
+    private static void registerSuperconductorWireAssemblies() {
+        for (Superconductors superconductor : Superconductors.values()) {
+            addWireAssembly(superconductor.getWireGt01(2), 2, superconductor.getWireGt02(1), 7 * SECONDS + 10 * TICKS);
+            addWireAssembly(superconductor.getWireGt01(4), 4, superconductor.getWireGt04(1), 10 * SECONDS);
+            addWireAssembly(superconductor.getWireGt01(8), 8, superconductor.getWireGt08(1), 15 * SECONDS);
+            addWireAssembly(superconductor.getWireGt01(12), 12, superconductor.getWireGt12(1), 20 * SECONDS);
+            addWireAssembly(superconductor.getWireGt01(16), 16, superconductor.getWireGt16(1), 25 * SECONDS);
+        }
+    }
+
+    private static void addWireAssembly(ItemStack wires, int circuit, ItemStack output, int duration) {
+        GTValues.RA.stdBuilder()
+            .itemInputs(wires)
+            .circuit(circuit)
+            .itemOutputs(output)
+            .duration(duration)
+            .eut(8)
+            .addTo(assemblerRecipes);
     }
 
     private static void registerFluidPipes() {
