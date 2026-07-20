@@ -23,8 +23,6 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import java.util.HashMap;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -32,6 +30,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.util.StackUtils;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -427,15 +426,10 @@ public class ComponentAssemblyLineMiscRecipes {
     }
 
     private static ItemStack getCircuit(int tier, long amount) {
-        return GTOreDictUnificator.get(OrePrefixes.circuit, getCircuitMaterial(tier), amount);
+        return Circuits.values()[tier].get((int) amount);
     }
 
     private static Object[] getALCircuit(int tier, int amount) {
-        return new Object[] { OrePrefixes.circuit.get(getCircuitMaterial(tier)), amount };
-    }
-
-    @Nullable
-    public static Materials getCircuitMaterial(int tier) {
-        return Materials.getRealMaterial(circuitTierMaterials[tier]);
+        return new Object[] { Circuits.values()[tier].getIngredient(), amount };
     }
 }
