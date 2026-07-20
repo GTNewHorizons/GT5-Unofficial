@@ -28,13 +28,17 @@ import gregtech.api.material.MarkerMaterial;
 /// `Materials#get` misses. The RGBA and texture set reproduce the values a marker's consumers observe (for
 /// example a bee comb reads its tint through `CombType`).
 ///
-/// `Fluix` and `Quartz` are instead full `Materials`: a foreign `gem`/`crystal` entry named for either flows
-/// through `OrePrefixes#processOre` and the `Materials`-typed ore-processing pipeline to generate its
-/// crystal and dust recipes, which requires a real `Materials` in `MATERIALS_MAP`. They are built here with
-/// their recognized attributes and steered by the identity checks in `GTProxy#registerOre`.
+/// `Quartz` is a marker like the rest, but carries [SubTag]s (`CRYSTAL`, `CRYSTALLISABLE`, `NO_SMASHING`,
+/// `NO_SMELTING`, `QUARTZ`) and is steered by name in `GTProxy#registerRecognitionOre`, which reproduces its
+/// `crystal`/`craftingQuartz` cross-registrations.
+///
+/// `Fluix` is still a full `Materials`: a foreign `gem`/`crystal` entry named for it flows through
+/// `OrePrefixes#processOre` and the `Materials`-typed ore-processing pipeline to generate its crystal and
+/// dust recipes, which requires a real `Materials` in `MATERIALS_MAP`.
 public class RecognitionMaterials {
 
     private static final int DEFAULT_ARGB = 0x00ffffff;
+    private static final SubTag[] NO_SUBTAGS = {};
 
     private static final Map<String, MarkerMaterial> MARKERS_BY_NAME = new LinkedHashMap<>();
 
@@ -56,16 +60,6 @@ public class RecognitionMaterials {
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
             .constructMaterial();
-        Materials.Quartz = new MaterialBuilder().setName("Quartz")
-            .setDefaultLocalName("Quartz")
-            .setUnifiable(false)
-            .setIconSet(TextureSet.SET_QUARTZ)
-            .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .addSubTag(SubTag.QUARTZ)
-            .constructMaterial();
 
         for (Marker marker : MARKERS) {
             MarkerMaterial material = new MarkerMaterial(
@@ -74,6 +68,7 @@ public class RecognitionMaterials {
                 marker.textureSet(),
                 marker.argb(),
                 marker.unifiable());
+            material.add(marker.subTags());
             MARKERS_BY_NAME.put(marker.name(), material);
             marker.field()
                 .accept(material);
@@ -81,15 +76,20 @@ public class RecognitionMaterials {
     }
 
     private record Marker(Consumer<MarkerMaterial> field, String name, String localName, TextureSet textureSet,
-        int argb, boolean unifiable) {}
+        int argb, boolean unifiable, SubTag[] subTags) {}
 
     private static Marker marker(Consumer<MarkerMaterial> field, String name, String localName) {
-        return new Marker(field, name, localName, TextureSet.SET_NONE, DEFAULT_ARGB, true);
+        return new Marker(field, name, localName, TextureSet.SET_NONE, DEFAULT_ARGB, true, NO_SUBTAGS);
     }
 
     private static Marker marker(Consumer<MarkerMaterial> field, String name, String localName, TextureSet textureSet,
         int argb, boolean unifiable) {
-        return new Marker(field, name, localName, textureSet, argb, unifiable);
+        return new Marker(field, name, localName, textureSet, argb, unifiable, NO_SUBTAGS);
+    }
+
+    private static Marker marker(Consumer<MarkerMaterial> field, String name, String localName, TextureSet textureSet,
+        int argb, boolean unifiable, SubTag... subTags) {
+        return new Marker(field, name, localName, textureSet, argb, unifiable, subTags);
     }
 
     // spotless:off
@@ -153,6 +153,7 @@ public class RecognitionMaterials {
         marker(m -> Materials.Piko = m, "Piko", "Bio"),
         marker(m -> Materials.Prismarine = m, "Prismarine", "Prismarine"),
         marker(m -> Materials.PurpleAlloy = m, "PurpleAlloy", "Purple Alloy", TextureSet.SET_NONE, 0x0064b4ff, true),
+        marker(m -> Materials.Quartz = m, "Quartz", "Quartz", TextureSet.SET_QUARTZ, DEFAULT_ARGB, false, SubTag.CRYSTAL, SubTag.CRYSTALLISABLE, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ),
         marker(m -> Materials.Randomite = m, "Randomite", "Randomite"),
         marker(m -> Materials.Red = m, "Red", "Red", TextureSet.SET_NONE, 0x00ff0000, true),
         marker(m -> Materials.RubberTreeSap = m, "RubberTreeSap", "Rubber Tree Sap"),

@@ -182,7 +182,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static MarkerMaterial Crystal;
     public static MarkerMaterial Metal;
     public static MarkerMaterial Organic;
-    public static Materials Quartz;
+    public static MarkerMaterial Quartz;
     public static MarkerMaterial Unknown;
     // endregion
 

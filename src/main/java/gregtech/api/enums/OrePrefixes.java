@@ -2631,7 +2631,6 @@ public class OrePrefixes {
             Materials.Glowstone,
             Materials.DarkIron,
             Materials.Marble,
-            Materials.Quartz,
             Materials.CertusQuartz);
         ingot.ignoreMaterials(Materials.Brick, Materials.NetherBrick);
 

@@ -1666,6 +1666,7 @@ public class GTProxy implements IFuelHandler {
                 }
             OrePrefixes aPrefix = OrePrefixes.getOrePrefix(aEvent.Name);
             Materials aMaterial = Materials._NULL;
+            MarkerMaterial recognitionMarker = null;
             if ((aPrefix == OrePrefixes.nugget) && (aMod.equals(Thaumcraft.ID))
                 && (aEvent.Ore.getItem()
                     .getUnlocalizedName()
@@ -1705,8 +1706,7 @@ public class GTProxy implements IFuelHandler {
                         || Character.isDigit(firstChar)) {
                         if (aPrefix.isMaterialBased()) {
                             aMaterial = Materials.get(tName);
-                            MarkerMaterial recognitionMarker = aMaterial == Materials._NULL
-                                ? RecognitionMaterials.getMarker(tName)
+                            recognitionMarker = aMaterial == Materials._NULL ? RecognitionMaterials.getMarker(tName)
                                 : null;
                             if (recognitionMarker != null) {
                                 registerRecognitionOre(aPrefix, recognitionMarker, aEvent);
@@ -1778,8 +1778,7 @@ public class GTProxy implements IFuelHandler {
                                                             .registerOre(OrePrefixes.crystal, aMaterial, aEvent.Ore);
                                                         GTOreDictUnificator
                                                             .registerOre(OreDictNames.craftingQuartz, aEvent.Ore);
-                                                    } else
-                                                    if (aMaterial == Materials.Fluix || aMaterial == Materials.Quartz
+                                                    } else if (aMaterial == Materials.Fluix
                                                         || aMaterial == Materials.Quartzite) {
                                                             GTOreDictUnificator.registerOre(
                                                                 OrePrefixes.crystal,
@@ -2012,7 +2011,9 @@ public class GTProxy implements IFuelHandler {
     /// Unifies a foreign ore-dictionary entry whose name resolves to a recognition [MarkerMaterial] instead of a
     /// `Materials` (see [RecognitionMaterials#getMarker]). A marker holds no composition and re-registers into
     /// itself, so this reproduces only what a `Materials`-backed marker contributed: adding the stack to its
-    /// prefix when unifiable, and the unconditional gear cross-registration for a `gearGt` entry.
+    /// prefix when unifiable, the unconditional gear cross-registration for a `gearGt` entry, and -- for `Quartz`
+    /// specifically -- the `crystal`/`craftingQuartz` cross-registrations its name steered in the
+    /// `Materials`-typed branch.
     private void registerRecognitionOre(OrePrefixes aPrefix, MarkerMaterial aMaterial,
         OreDictionary.OreRegisterEvent aEvent) {
         if (aMaterial.isUnifiable()) {
@@ -2021,6 +2022,11 @@ public class GTProxy implements IFuelHandler {
         if (aPrefix.getName()
             .equals("gearGt")) {
             GTOreDictUnificator.registerOre(OrePrefixes.gear, aMaterial, aEvent.Ore);
+        }
+        if (aMaterial.getInternalName()
+            .equals("Quartz") && aPrefix == OrePrefixes.gem) {
+            GTOreDictUnificator.registerOre(OrePrefixes.crystal, aMaterial, aEvent.Ore);
+            GTOreDictUnificator.registerOre(OreDictNames.craftingQuartz, aEvent.Ore);
         }
     }
 
