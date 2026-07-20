@@ -1890,6 +1890,56 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return mDensity;
     }
 
+    @Override
+    public int getMeltingPoint() {
+        return mMeltingPoint;
+    }
+
+    @Override
+    public List<MaterialStack> getMaterialList() {
+        return mMaterialList;
+    }
+
+    @Override
+    public Map<Materials, Materials> getArcSmeltIntoWithGas() {
+        return mArcSmeltIntoWithGas;
+    }
+
+    @Override
+    public GeneratedMaterialRenderer getRenderer() {
+        return renderer;
+    }
+
+    @Override
+    public float getHeatDamage() {
+        return mHeatDamage;
+    }
+
+    @Override
+    public List<TC_AspectStack> getAspects() {
+        return mAspects;
+    }
+
+    @Override
+    public Enchantment getToolEnchantment() {
+        return mToolEnchantment;
+    }
+
+    @Override
+    public byte getToolEnchantmentLevel() {
+        return mToolEnchantmentLevel;
+    }
+
+    @Override
+    public Enchantment getArmorEnchantment() {
+        return mArmorEnchantment;
+    }
+
+    @Override
+    public byte getArmorEnchantmentLevel() {
+        return mArmorEnchantmentLevel;
+    }
+
     /**
      * Set material's chemical formula.
      *
