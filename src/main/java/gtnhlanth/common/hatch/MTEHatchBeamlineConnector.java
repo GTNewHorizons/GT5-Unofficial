@@ -104,7 +104,7 @@ public abstract class MTEHatchBeamlineConnector extends MTEHatch implements ICon
             lines.add(IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", " "));
             lines.add(
                 IGregTechDeviceInformation
-                    .encode("beamline.energy.keV.fmt", Math.floor(content.getEnergy() * 1000000) / 1000));
+                    .encode("beamline.energy.keV.fmt", Math.floor(content.getEnergy() * 1000) / 1000));
             lines.add(
                 content.getParticle()
                     .encodeInfoData());
