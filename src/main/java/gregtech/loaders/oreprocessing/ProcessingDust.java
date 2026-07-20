@@ -33,6 +33,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.objects.MaterialStack;
@@ -611,6 +612,56 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             default -> {}
+        }
+    }
+
+    /// Runs only the `dust` prefix's CRYSTALLISABLE autoclave recipes (see the `"dust"` case above) for a
+    /// [gregtech.api.material.MarkerMaterial] -- the rest of that switch depends on legacy-only state
+    /// (`mBlastFurnaceRequired`, `mMaterialList`, `mName`, ...) that a marker never carries, and no recognition
+    /// marker other than `Fluix` reaches this registrator to begin with.
+    @Override
+    public void registerOre(OrePrefixes aPrefix, IOreMaterial aMaterial, String aOreDictName, String aModName,
+        ItemStack aStack) {
+        if (aMaterial instanceof Materials legacyMaterial) {
+            registerOre(aPrefix, legacyMaterial, aOreDictName, aModName, aStack);
+            return;
+        }
+        if (aPrefix != OrePrefixes.dust) {
+            return;
+        }
+        if (MU.hasFlag(aMaterial, GTMaterialFlag.CRYSTALLISABLE)
+            && GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L) != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, aStack))
+                .circuit(1)
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))
+                .outputChances(7000)
+                .fluidInputs(Materials.Water.getFluid(200L))
+                .duration(1 * MINUTES + 40 * SECONDS)
+                .eut(24)
+                .addTo(autoclaveRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, aStack))
+                .circuit(2)
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))
+                .outputChances(9000)
+                .fluidInputs(GTModHandler.getDistilledWater(100L))
+                .duration(1 * MINUTES + 15 * SECONDS)
+                .eut(24)
+                .addTo(autoclaveRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, aStack))
+                .circuit(3)
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))
+                .outputChances(10000)
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Void,
+                        Materials2FluidShapes.fluidMolten,
+                        (int) (1 * QUARTER_INGOTS)))
+                .duration(1 * MINUTES)
+                .eut(24)
+                .addTo(autoclaveRecipes);
         }
     }
 }

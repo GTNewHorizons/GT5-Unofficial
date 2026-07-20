@@ -198,7 +198,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials DraconiumAwakened;
     public static MarkerMaterial Ender;
     public static Materials Endium;
-    public static Materials Fluix;
+    public static MarkerMaterial Fluix;
     public static MarkerMaterial Flux;
     public static MarkerMaterial InfusedTeslatite;
     public static MarkerMaterial IridiumSodiumOxide;
