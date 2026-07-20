@@ -1706,6 +1706,7 @@ gt.mbtt.structure.front_bottom_center=Front bottom center
 gt.mbtt.structure.any_casing=Any casing
 gt.mbtt.structure.interior=Interior of the structure
 gt.mbtt.structure.any_tiered_glass=Any Tiered Glass
+gt.mbtt.structure.min_tiered_glass=%s+ Tiered Glass
 gt.mbtt.structure.any_bottom_casing=Any bottom casing
 gt.mbtt.structure.back_center_casing=Back center casing
 gt.mbtt.structure.front_center_9th_layer=Front center, 9th layer

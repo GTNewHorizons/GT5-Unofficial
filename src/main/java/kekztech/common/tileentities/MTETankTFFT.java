@@ -44,6 +44,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.fluid.GTFluidTank;
@@ -372,7 +373,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
                 3)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("12-48", StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.tiered_glass"), false)
+            .addCasing("12-48", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]), false)
             .addCasing(
                 MIN_CASING_AMOUNT + "-46",
                 StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.0.name"),
@@ -380,7 +381,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
             .addCasing("27", StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.field_storage_block"), true)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addCasing("4-16", StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.tiered_glass"), false)
+            .addCasing("4-16", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]), false)
             .addCasing("9", StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.field_storage_block"), true)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.footer1"))
