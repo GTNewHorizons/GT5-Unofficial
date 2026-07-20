@@ -3086,14 +3086,14 @@ public class OrePrefixes {
         return name + aMaterial;
     }
 
-    public String getDefaultLocalNameForItem(Materials aMaterial) {
-        return aMaterial.getDefaultLocalizedNameForItem(getDefaultLocalNameFormatForItem(aMaterial));
+    public String getDefaultLocalNameForItem(Materials material) {
+        return material.getDefaultLocalizedNameForItem(getDefaultLocalNameFormatForItem(material.getInternalName()));
     }
 
     @SuppressWarnings("incomplete-switch")
-    public String getDefaultLocalNameFormatForItem(IOreMaterial aMaterial) {
+    public String getDefaultLocalNameFormatForItem(String materialName) {
         // Certain Materials have slightly different Localizations.
-        switch (aMaterial.getInternalName()) {
+        switch (materialName) {
             case "Glass", "BorosilicateGlass" -> {
                 if (name.startsWith("gem")) return materialPrefix + "%material" + " Crystal";
                 if (name.startsWith("plate")) return materialPrefix + "%material" + " Pane";
@@ -3178,9 +3178,12 @@ public class OrePrefixes {
                     }
                 }
             }
+            case "Hydrogen", "Nitrogen", "Oxygen", "CarbonDioxide", "SulfurDioxide", "Ammonia", "Methane" -> {
+                if (this == rawOre || this == ore) return materialPrefix + "%material" + " Ice";
+            }
         }
         if (ProcessingModSupport.aEnableThaumcraftMats) {
-            switch (aMaterial.getInternalName()) {
+            switch (materialName) {
                 case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> {
                     if (name.startsWith("gem")) return materialPrefix + "Shard of " + "%material";
                     if (name.startsWith("crystal")) return materialPrefix + "Shard of " + "%material";
@@ -3195,12 +3198,8 @@ public class OrePrefixes {
             }
         }
 
-        if (aMaterial.contains(SubTag.ICE_ORE) && (this == rawOre || this == ore)) {
-            return materialPrefix + "%material" + " Ice";
-        }
-
         if (this == ore) {
-            return switch (aMaterial.getInternalName()) {
+            return switch (materialName) {
                 case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
                 case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
                 default -> materialPrefix + "%material" + materialPostfix;
@@ -3225,58 +3224,62 @@ public class OrePrefixes {
         return getOreprefixKey(prefix, "%material");
     }
 
-    public String getOreprefixKey(IOreMaterial materials) {
-        return "gt.oreprefix." + this.getDefaultLocalNameFormatForItem(materials)
+    public String getOreprefixKeyForMaterial(String materialName) {
+        return "gt.oreprefix." + this.getDefaultLocalNameFormatForItem(materialName)
             .toLowerCase()
             .replace(" ", "_")
             .replace("%material", "material");
     }
 
     public String getOreprefixKey() {
-        return getOreprefixKey(Materials._NULL);
+        return getOreprefixKeyForMaterial(Materials._NULL.getInternalName());
     }
 
-    public String getLocalizedNameForItem(IOreMaterial materials) {
-        return getLocalizedNameForItemWithInflection(getOreprefixKey(materials), materials);
+    public String getLocalizedNameForItem(String materialName) {
+        return getLocalizedNameForItemWithInflection(getOreprefixKeyForMaterial(materialName), materialName);
     }
 
-    public static String getLocalizedNameForItem(String prefix, IOreMaterial material) {
-        return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix), material);
-    }
-
-    public static String getLocalizedNameForItem(String prefix, String formatString, IOreMaterial material) {
-        return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix, formatString), material);
+    public static String getLocalizedNameForItem(String prefix, String materialName) {
+        return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix), materialName);
     }
 
     public static String getLocalizedNameForItem(String prefix, String formatString, String materialName) {
         return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix, formatString), materialName);
     }
 
+    /// Like [#getLocalizedNameForItem(String, String, String)], but `materialKey` is already a full localization
+    /// key rather than a material's internal name, and is used as-is instead of being resolved through
+    /// `Material.<name>`.
+    public static String getLocalizedNameForItemForKey(String prefix, String formatString, String materialKey) {
+        return getLocalizedNameForItemWithInflectionForKey(getOreprefixKey(prefix, formatString), materialKey);
+    }
+
     /**
      * Gets the localized item name with inflection. Prioritizes the special key {@code prefixKey.materialName} if
      * available; otherwise attempts inflection formatting.
      */
-    public static String getLocalizedNameForItemWithInflection(String prefixKey, IOreMaterial material) {
-        final String key = prefixKey + "."
-            + material.getInternalName()
-                .toLowerCase();
+    public static String getLocalizedNameForItemWithInflection(String prefixKey, String materialName) {
+        final String key = prefixKey + "." + materialName.toLowerCase();
         if (StatCollector.canTranslate(key)) {
             return StatCollector.translateToLocal(key);
         }
         final String phraseKey = prefixKey + ".phrase";
-        if (StatCollector.canTranslate(phraseKey) && material.getLocalizedName()
+        final String materialNameKey = "Material." + materialName.toLowerCase();
+        if (StatCollector.canTranslate(phraseKey) && StatCollector.translateToLocal(materialNameKey)
             .trim()
             .indexOf(' ') != -1) {
-            return GTInflectionManager.formatInflection(phraseKey, material.getLocalizedNameKey());
+            return GTInflectionManager.formatInflection(phraseKey, materialNameKey);
         }
-        return GTInflectionManager.formatInflection(prefixKey, material.getLocalizedNameKey());
+        return GTInflectionManager.formatInflection(prefixKey, materialNameKey);
     }
 
     /**
      * Gets the localized item name with inflection. Prioritizes the special key {@code prefixKey.materialKey} if
-     * available; otherwise attempts inflection formatting.
+     * available; otherwise attempts inflection formatting. Unlike
+     * {@link #getLocalizedNameForItemWithInflection(String, String)}, {@code materialKey} is used as-is instead of
+     * being resolved through {@code Material.<name>}.
      */
-    public static String getLocalizedNameForItemWithInflection(String prefixKey, String materialKey) {
+    public static String getLocalizedNameForItemWithInflectionForKey(String prefixKey, String materialKey) {
         final String key = prefixKey + "." + materialKey.toLowerCase();
         if (StatCollector.canTranslate(key)) {
             return StatCollector.translateToLocal(key);

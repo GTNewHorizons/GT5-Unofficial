@@ -231,7 +231,7 @@ public final class MaterialDataDump {
         List<Map<String, Object>> out = new ArrayList<>();
         for (OrePrefixes prefix : OrePrefixes.VALUES) {
             if (MU.shape(prefix) == null || !prefix.doGenerateItem(material)) continue;
-            String legacyName = prefix.getLocalizedNameForItem(material);
+            String legacyName = prefix.getLocalizedNameForItem(material.getInternalName());
             if (legacyName.startsWith("gt.oreprefix.")) {
                 legacyName = prefix.getDefaultLocalNameForItem(material);
             }

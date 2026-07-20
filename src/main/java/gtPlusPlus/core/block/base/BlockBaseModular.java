@@ -184,7 +184,7 @@ public class BlockBaseModular extends BasicBlock {
 
     @Override
     public String getLocalizedName() {
-        return OrePrefixes.getLocalizedNameForItem(blockType.getProperName(), "%s", material);
+        return OrePrefixes.getLocalizedNameForItem(blockType.getProperName(), "%s", material.getInternalName());
     }
 
     @Override

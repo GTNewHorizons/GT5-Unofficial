@@ -162,7 +162,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         final int damage = aStack.getItemDamage();
         final OrePrefixes prefix = getOrePrefix(damage);
         final Materials material = getMaterial(damage);
-        if (prefix != null && material != null) return prefix.getLocalizedNameForItem(material);
+        if (prefix != null && material != null) return prefix.getLocalizedNameForItem(material.getInternalName());
         return super.getItemStackDisplayName(aStack);
     }
 

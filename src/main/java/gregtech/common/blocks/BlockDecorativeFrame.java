@@ -75,7 +75,7 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
 
         if (material == null) material = Materials._NULL;
 
-        return OrePrefixes.frameGt.getLocalizedNameForItem(material);
+        return OrePrefixes.frameGt.getLocalizedNameForItem(material.getInternalName());
     }
 
     @Override

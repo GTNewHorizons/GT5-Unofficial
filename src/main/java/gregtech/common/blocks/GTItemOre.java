@@ -56,7 +56,7 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
 
         boolean small = blockOre.isSmallOre(stack.getItemDamage());
 
-        return (small ? OrePrefixes.oreSmall : OrePrefixes.ore).getLocalizedNameForItem(mat);
+        return (small ? OrePrefixes.oreSmall : OrePrefixes.ore).getLocalizedNameForItem(mat.getInternalName());
     }
 
     @Override
