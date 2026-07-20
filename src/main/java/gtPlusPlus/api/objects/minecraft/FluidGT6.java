@@ -68,7 +68,7 @@ public class FluidGT6 extends Fluid implements Runnable {
     public String getLocalizedName() {
         if (material != null) {
             return oreprefixKey == null ? material.getLocalizedName()
-                : OrePrefixes.getLocalizedNameForItem(oreprefixKey, "%s", material);
+                : OrePrefixes.getLocalizedNameForItem(oreprefixKey, "%s", material.getInternalName());
         }
         return super.getLocalizedName();
     }

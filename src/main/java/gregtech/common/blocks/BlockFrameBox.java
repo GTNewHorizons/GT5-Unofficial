@@ -89,10 +89,10 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
     public static String getLocalizedName(Materials materials) {
         return switch (materials.mName) {
             case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> OrePrefixes
-                .getLocalizedNameForItem("%material Infused Stone", materials);
+                .getLocalizedNameForItem("%material Infused Stone", materials.getInternalName());
             case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> OrePrefixes
-                .getLocalizedNameForItem("%material", materials);
-            default -> OrePrefixes.frameGt.getLocalizedNameForItem(materials);
+                .getLocalizedNameForItem("%material", materials.getInternalName());
+            default -> OrePrefixes.frameGt.getLocalizedNameForItem(materials.getInternalName());
         };
     }
 

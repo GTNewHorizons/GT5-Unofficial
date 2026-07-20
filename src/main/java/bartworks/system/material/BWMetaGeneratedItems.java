@@ -140,7 +140,9 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         int aMetaData = aStack.getItemDamage();
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aMetaData);
         if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
-        return this.orePrefixes.getLocalizedNameForItem(werkstoff.getBridgeMaterial());
+        return this.orePrefixes.getLocalizedNameForItem(
+            werkstoff.getBridgeMaterial()
+                .getInternalName());
     }
 
     @Override

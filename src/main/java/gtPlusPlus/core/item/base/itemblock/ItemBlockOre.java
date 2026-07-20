@@ -61,7 +61,7 @@ public class ItemBlockOre extends ItemBlock {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return OrePrefixes.ore.getLocalizedNameForItem(mThisMaterial);
+        return OrePrefixes.ore.getLocalizedNameForItem(mThisMaterial.getInternalName());
     }
 
     @Override

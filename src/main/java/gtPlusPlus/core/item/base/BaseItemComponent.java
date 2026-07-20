@@ -138,9 +138,9 @@ public class BaseItemComponent extends Item {
     public String getItemStackDisplayName(ItemStack stack) {
         if (componentMaterial != null) {
             return componentType.getGtOrePrefix()
-                .getLocalizedNameForItem(componentMaterial);
+                .getLocalizedNameForItem(componentMaterial.getInternalName());
         }
-        return OrePrefixes.getLocalizedNameForItem(componentType.getName(), "@", materialKey);
+        return OrePrefixes.getLocalizedNameForItemForKey(componentType.getName(), "@", materialKey);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

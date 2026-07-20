@@ -43,9 +43,9 @@ public interface ILocalizedMetaPipeEntity {
         if (prefixKey != null && material != null) {
             final String materialKeyOverride = getMaterialKeyOverride();
             if (materialKeyOverride == null) {
-                return OrePrefixes.getLocalizedNameForItemWithInflection(prefixKey, material);
+                return OrePrefixes.getLocalizedNameForItemWithInflection(prefixKey, material.getInternalName());
             }
-            return OrePrefixes.getLocalizedNameForItemWithInflection(prefixKey, materialKeyOverride);
+            return OrePrefixes.getLocalizedNameForItemWithInflectionForKey(prefixKey, materialKeyOverride);
         }
         return "Unnamed with ILocalizedMetaPipeEntity";
     }

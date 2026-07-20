@@ -66,7 +66,7 @@ public class BlockMetal extends BlockStorage {
 
         if (material == null) material = Materials._NULL;
 
-        return OrePrefixes.block.getLocalizedNameForItem(material);
+        return OrePrefixes.block.getLocalizedNameForItem(material.getInternalName());
     }
 
     @Override

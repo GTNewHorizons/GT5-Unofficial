@@ -96,7 +96,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
      * @return the Localized Name Format when default LangFiles are used.
      */
     public String getDefaultLocalizationFormat(OrePrefixes aPrefix, Materials aMaterial, int aMetaData) {
-        return aPrefix.getDefaultLocalNameFormatForItem(aMaterial);
+        return aPrefix.getDefaultLocalNameFormatForItem(aMaterial.getInternalName());
     }
 
     /**
