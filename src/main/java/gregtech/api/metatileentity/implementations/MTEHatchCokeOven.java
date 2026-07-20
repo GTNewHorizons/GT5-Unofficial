@@ -220,8 +220,9 @@ public class MTEHatchCokeOven extends MTEHatch {
 
         activeController = controllers.get(controllerIndex);
 
-        IGregTechTileEntity base = activeController.getBaseMetaTileEntity();
-        if (base == null || base.isDead()) {
+        if (activeController == null || activeController.getBaseMetaTileEntity() == null
+            || activeController.getBaseMetaTileEntity()
+                .isDead()) {
             controllers.remove(controllerIndex);
             activeController = null;
             return true;
