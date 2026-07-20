@@ -103,7 +103,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
             .addBulkMachineInfo(8, 2f, 1)
             .addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
             .beginStructureBlock(7, 7, 5, true)
-            .addController("Front center")
+            .addController("Front center, 3rd layer")
             .addCasing("85-93", "Solid Steel Machine Casing", false)
             .addCasing("24", "Steel Pipe Casing", false)
             .addEnergyHatch("1+", "Any machine casing", 1)

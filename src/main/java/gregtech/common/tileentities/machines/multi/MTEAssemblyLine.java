@@ -462,6 +462,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchDataAccess) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            addIfSmartInput(aMetaTileEntity);
             return mDataAccessHatches.add((MTEHatchDataAccess) aMetaTileEntity);
         }
         return false;

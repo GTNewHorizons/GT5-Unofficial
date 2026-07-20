@@ -29,6 +29,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -781,11 +782,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         final ArrayList<String> tList = new ArrayList<>();
         if (aLogLevel > 2) {
             tList.add(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.scanner.debug.meta_id",
                     mID,
-                    canAccessData() ? GTUtility.translate("GT5U.multiblock.scanner.valid")
-                        : GTUtility.translate("GT5U.multiblock.scanner.invalid"))
+                    canAccessData() ? StatCollector.translateToLocal("GT5U.multiblock.scanner.valid")
+                        : StatCollector.translateToLocal("GT5U.multiblock.scanner.invalid"))
                     + (mMetaTileEntity == null
                         ? EnumChatFormatting.RED + " MetaTileEntity == null!" + EnumChatFormatting.RESET
                         : ""));
@@ -793,11 +794,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         if (aLogLevel > 1 && mMetaTileEntity != null) {
             addProfilingInformation(tList);
             tList.add(
-                GTUtility.translate(
+                StatCollector.translateToLocal(
                     mMetaTileEntity.isAccessAllowed(aPlayer) ? "GT5U.scanner.debug.accessible"
                         : "GT5U.scanner.debug.not_accessible"));
             tList.add(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.scanner.debug.sound_requests",
                     formatNumber(mMetaTileEntity.mSoundRequests),
                     formatNumber(mTickTimer - mLastCheckTick)));
@@ -806,11 +807,15 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         }
         if (aLogLevel > 0) {
             tList.add(
-                GTUtility
-                    .translate(mActive ? "GT5U.scanner.debug.machine_active" : "GT5U.scanner.debug.machine_inactive"));
-            if (!mHasEnoughEnergy) tList.add(GTUtility.translate("GT5U.scanner.debug.needs_power"));
+                StatCollector.translateToLocal(
+                    mActive ? "GT5U.scanner.debug.machine_active" : "GT5U.scanner.debug.machine_inactive"));
+            tList.add(
+                StatCollector.translateToLocal(
+                    isAllowedToWork() ? "GT5U.scanner.debug.machine_allowed_to_work"
+                        : "GT5U.scanner.debug.machine_not_allowed_to_work"));
+            if (!mHasEnoughEnergy) tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.needs_power"));
         }
-        if (joinedIc2Enet) tList.add(GTUtility.translate("GT5U.scanner.debug.ic2_enet"));
+        if (joinedIc2Enet) tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.ic2_enet"));
         return mMetaTileEntity.getSpecialDebugInfo(this, aPlayer, aLogLevel, tList);
     }
 

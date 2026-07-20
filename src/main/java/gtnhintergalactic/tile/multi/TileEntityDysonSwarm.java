@@ -60,6 +60,7 @@ import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalConstructable {
 
     private static final Map<Locale, DecimalFormat> DECIMAL_FORMATTERS = new HashMap<>();
@@ -457,7 +458,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc7"))
             .addSupportAny()
             .beginStructureBlock(16, 16, 20, false)
-            .addController("Front bottom center of the receiver")
+            .addController(StatCollector.translateToLocal("ig.dyson.structure.controller"))
             .addCasing("256", StatCollector.translateToLocal("ig.dyson.structure.base.floor"), false)
             .addCasing("115-138", StatCollector.translateToLocal("ig.dyson.structure.control.base"), false)
             .addCasing("128", StatCollector.translateToLocal("ig.dyson.structure.control.toroid"), false)
@@ -476,15 +477,16 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             .addMiscHatch(
                 "1+",
                 StatCollector.translateToLocal("gt.blockmachines.hatch.datain.tier.07.name"),
-                "Any center side control center casing",
+                StatCollector.translateToLocal("ig.dyson.structure.control.any_casing"),
                 3)
             .addMiscHatch(
                 "1+",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
-                "Any center side receiver casing",
+                StatCollector.translateToLocal("ig.dyson.structure.receiver.any_casing"),
                 1)
-            .addInputBus("1+", "Any center side deployment unit casing", 2)
-            .addInputHatch("1+", "Any center side deployment unit casing", 2)
+            .addInputBus("1+", StatCollector.translateToLocal("ig.dyson.structure.deployment.any_casing"), 2)
+            .addInputHatch("1+", StatCollector.translateToLocal("ig.dyson.structure.deployment.any_casing"), 2)
+            .addAir(StatCollector.translateToLocal("ig.dyson.structure.air"))
             .toolTipFinisher();
         return tt;
     }

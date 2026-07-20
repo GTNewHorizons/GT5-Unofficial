@@ -244,8 +244,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             .addMaintenanceHatch("1", "Any machine or firebox casing", 1)
             .addMufflerHatch("1", "Any machine or firebox casing", 1)
             .addInputBus("0+", "Any machine or firebox casing", 1)
-            .addInputHatch("0+", "Any machine or firebox casing", 1)
-            .addOutputHatch("0+", "Any machine or firebox casing", 1)
+            .addInputHatch("1+", "Any machine or firebox casing", 1)
+            .addOutputHatch("1+", "Any machine or firebox casing", 1)
             .addStructureInfo("")
             .addStructureFooter("Use solid fuel, liquid fuel, or both")
             .addStructureFooter("Use regular or distilled water")
@@ -531,6 +531,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         checkCasingMin(errors, fireboxAmount, 5);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     private int adjustEUtForConfig(int rawEUt) {

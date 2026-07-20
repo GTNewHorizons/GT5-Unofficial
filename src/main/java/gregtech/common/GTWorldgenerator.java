@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.hash.Fnv1a64;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -74,20 +75,30 @@ public class GTWorldgenerator implements IWorldGenerator {
     public static Long2ObjectOpenHashMap<CachedOreVein> validOreveins = new Long2ObjectOpenHashMap<>(1024);
     public boolean mIsGenerating = false;
     private static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
-    private static OregenPattern clientOregenPattern = OregenPattern.AXISSYMMETRICAL;
 
-    // Used in VisualProspecting
-    public static OregenPattern getClientOregenPattern() {
-        return clientOregenPattern;
-    }
-
-    // Used in VisualProspecting
-    public static OregenPattern getServerOregenPattern() {
+    /** Returns the oregen pattern used by the current world. */
+    public static OregenPattern getOregenPattern() {
         return oregenPattern;
     }
 
+    /** @deprecated Use {@link #getOregenPattern()}. */
+    @Deprecated
+    public static OregenPattern getClientOregenPattern() {
+        return getOregenPattern();
+    }
+
+    /** @deprecated Use {@link #getOregenPattern()}. */
+    @Deprecated
+    public static OregenPattern getServerOregenPattern() {
+        return getOregenPattern();
+    }
+
+    /** Called when the server syncs its pattern to the client; no-op when a local server is authoritative. */
     public static void setClientOregenPattern(OregenPattern pattern) {
-        clientOregenPattern = pattern;
+        if (FMLCommonHandler.instance()
+            .getMinecraftServerInstance() == null) {
+            oregenPattern = pattern;
+        }
     }
 
     public GTWorldgenerator() {
@@ -162,7 +173,7 @@ public class GTWorldgenerator implements IWorldGenerator {
     }
 
     public static boolean isOreChunk(int chunkX, int chunkZ) {
-        if (getServerOregenPattern() == OregenPattern.EQUAL_SPACING) {
+        if (getOregenPattern() == OregenPattern.EQUAL_SPACING) {
             return Math.floorMod(chunkX, 3) == 1 && Math.floorMod(chunkZ, 3) == 1;
         }
         // add next if statement here or convert to switch when expanding OregenPattern enum

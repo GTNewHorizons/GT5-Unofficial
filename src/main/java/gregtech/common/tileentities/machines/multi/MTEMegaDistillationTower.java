@@ -386,6 +386,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int hatchLayer = (height * 2) - 2;
         while (outputHatchesPerLayer.size() <= hatchLayer) outputHatchesPerLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return outputHatchesPerLayer.get(hatchLayer)
             .add(tHatch);
     }
@@ -396,6 +397,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int hatchLayer = (height * 2) - 1;
         while (outputHatchesPerLayer.size() <= hatchLayer) outputHatchesPerLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return outputHatchesPerLayer.get(hatchLayer)
             .add(tHatch);
     }
@@ -406,6 +408,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int hatchLayer = height * 2;
         while (outputHatchesPerLayer.size() <= hatchLayer) outputHatchesPerLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return outputHatchesPerLayer.get(hatchLayer)
             .add(tHatch);
     }
@@ -592,8 +595,8 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addCasing("48", "Clean Stainless Steel Machine Casing", false)
             .addCasing("57", "Strong Bronze Machine Casing", false)
             .addCasing("32", "Naquadah Sheetmetal", false)
-            .addCasing("16", "Naquadah Reinforced Distillation Casing", false)
             .addCasing("27", "Stainless Steel Frame Box", false)
+            .addCasing("16", "Naquadah Reinforced Distillation Casing", false)
             .addCasing("14", "Bronze Pipe Casing", false)
             .addCasing("6", "Steel Pipe Casing", false)
             .addStructureInfo("")

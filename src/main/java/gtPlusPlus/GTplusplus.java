@@ -27,7 +27,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FishPondRecipes;
 import gregtech.api.util.SemiFluidFuelHandler;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.handler.BookHandler;
@@ -148,20 +147,19 @@ public class GTplusplus {
         SemiFluidFuelHandler.generateFuels();
 
         RecipeGenMultisUsingFluidInsteadOfCells
-            .generateRecipesNotUsingCells(RecipeMaps.centrifugeRecipes, GTPPRecipeMaps.centrifugeNonCellRecipes);
+            .generateRecipesNotUsingCells(RecipeMaps.centrifugeRecipes, RecipeMaps.centrifugeNonCellRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells
-            .generateRecipesNotUsingCells(RecipeMaps.electrolyzerRecipes, GTPPRecipeMaps.electrolyzerNonCellRecipes);
+            .generateRecipesNotUsingCells(RecipeMaps.electrolyzerRecipes, RecipeMaps.electrolyzerNonCellRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells
-            .generateRecipesNotUsingCells(RecipeMaps.mixerRecipes, GTPPRecipeMaps.mixerNonCellRecipes);
+            .generateRecipesNotUsingCells(RecipeMaps.mixerRecipes, RecipeMaps.mixerNonCellRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-            GTPPRecipeMaps.chemicalDehydratorRecipes,
-            GTPPRecipeMaps.chemicalDehydratorNonCellRecipes);
+            RecipeMaps.chemicalDehydratorRecipes,
+            RecipeMaps.chemicalDehydratorNonCellRecipes);
+        RecipeGenMultisUsingFluidInsteadOfCells
+            .generateRecipesNotUsingCells(RecipeMaps.coldTrapRecipes, RecipeMaps.nuclearSaltProcessingPlantRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-            GTPPRecipeMaps.coldTrapRecipes,
-            GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
-        RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-            GTPPRecipeMaps.reactorProcessingUnitRecipes,
-            GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
+            RecipeMaps.reactorProcessingUnitRecipes,
+            RecipeMaps.nuclearSaltProcessingPlantRecipes);
     }
 
     private static void setupMaterialBlacklist() {

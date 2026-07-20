@@ -70,7 +70,7 @@ public class MaterialBuilder {
     private int extraData = 0;
     private boolean canBeCracked = false;
     private float heatDamage = 0.0f;
-    private int meltingPoint = 0;
+    private int meltingPoint = -1;
     private int blastFurnaceTemp = 0;
     private boolean blastFurnaceRequired = false;
     private boolean autoGenerateBlastFurnaceRecipes = true;

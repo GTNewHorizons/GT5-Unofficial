@@ -15,7 +15,6 @@ package bartworks.common.tileentities.tiered;
 
 import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMaterialFromInput;
 import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMaterialList;
-import static gregtech.api.enums.GTValues.ticksBetweenSounds;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -167,11 +166,6 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
                 }
                 this.timer = 1;
             }
-        }
-
-        if (myMetaTileEntity.mTickTimer > myMetaTileEntity.mLastSoundTick + ticksBetweenSounds && this.sievert > 0) {
-            this.sendLoopStart((byte) 1);
-            myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
         }
 
         if (this.mass == 0) {

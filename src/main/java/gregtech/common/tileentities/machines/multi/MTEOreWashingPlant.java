@@ -58,7 +58,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -115,7 +114,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             .addInfo("Can be configured with a screwdriver to also be used as Simple Washer")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 4, false)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("70-85", "Wash Plant Casing", false)
             .addCasing("15", "Steel Frame Box", false)
             .addCasing("7", "Steel Gear Box Casing", false)
@@ -214,7 +213,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
                 return RecipeMaps.oreWasherRecipes;
             }
             default -> {
-                return GTPPRecipeMaps.simpleWasherRecipes;
+                return RecipeMaps.simpleWasherRecipes;
             }
         }
     }
@@ -222,7 +221,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.oreWasherRecipes, GTPPRecipeMaps.simpleWasherRecipes);
+        return Arrays.asList(RecipeMaps.oreWasherRecipes, RecipeMaps.simpleWasherRecipes);
     }
 
     @Override

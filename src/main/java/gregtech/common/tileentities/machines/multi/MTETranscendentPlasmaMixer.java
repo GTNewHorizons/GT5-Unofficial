@@ -112,7 +112,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             .addInfo("All inputs scale, except time...")
             .addInfo("Power is only pulled from wireless networks")
             .beginStructureBlock(5, 5, 7, true)
-            .addController("Front center")
+            .addController("Front center, 4th layer")
             .addCasing("48", "Dimensionally Transcendent Casing", false)
             .addCasing("0-35", "Dimensional Injection Casing", false)
             .addCasing("16", "Dimensional Bridge", false)

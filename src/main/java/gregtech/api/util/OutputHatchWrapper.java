@@ -55,7 +55,8 @@ public class OutputHatchWrapper implements IOutputHatch {
     }
 
     public class FilteredTransactionWrapper
-        implements IOutputHatchTransaction, IOutputHatchTransaction.IRecipeCheckAware {
+        implements IOutputHatchTransaction, IOutputHatchTransaction.IRecipeCheckAware,
+        IOutputHatchTransaction.IProtectOutputAware, IOutputHatchTransaction.IDynamicCapacityOutputAware {
 
         private final OutputHatchWrapper hatch = OutputHatchWrapper.this;
         private final IOutputHatchTransaction transaction = OutputHatchWrapper.this.outputHatch.createTransaction();
@@ -73,6 +74,21 @@ public class OutputHatchWrapper implements IOutputHatch {
         }
 
         @Override
+        public void setProtectOutput(boolean isProtectOutput) {
+            if (transaction instanceof IOutputHatchTransaction.IProtectOutputAware rt) {
+                rt.setProtectOutput(isProtectOutput);
+            }
+        }
+
+        @Override
+        public boolean isDynamicCapacity() {
+            if (transaction instanceof IOutputHatchTransaction.IDynamicCapacityOutputAware rt) {
+                return rt.isDynamicCapacity();
+            }
+            return false;
+        }
+
+        @Override
         public boolean hasAvailableSpace() {
             return transaction.hasAvailableSpace();
         }
@@ -84,8 +100,8 @@ public class OutputHatchWrapper implements IOutputHatch {
         }
 
         @Override
-        public void completeFluid(GTUtility.FluidId id) {
-            transaction.completeFluid(id);
+        public void complete(GTUtility.FluidId id) {
+            transaction.complete(id);
         }
 
         @Override

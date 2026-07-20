@@ -84,13 +84,13 @@ public class SyncValues {
         "fog.sync.battery_charging",
         data -> new BooleanSyncValue(data::isBatteryCharging, data::setBatteryCharging).allowC2S());
 
-    public static final ForgeOfGodsSyncValue<IntSyncValue> INTERNAL_BATTERY = new ForgeOfGodsSyncValue<>(
+    public static final ForgeOfGodsSyncValue<LongSyncValue> INTERNAL_BATTERY = new ForgeOfGodsSyncValue<>(
         "fog.sync.internal_battery",
-        data -> new IntSyncValue(data::getInternalBattery, data::setInternalBattery));
+        data -> new LongSyncValue(data::getInternalBattery, data::setInternalBattery));
 
-    public static final ForgeOfGodsSyncValue<IntSyncValue> MAX_BATTERY_CHARGE = new ForgeOfGodsSyncValue<>(
+    public static final ForgeOfGodsSyncValue<LongSyncValue> MAX_BATTERY_CHARGE = new ForgeOfGodsSyncValue<>(
         "fog.sync.max_battery_charge",
-        data -> new IntSyncValue(data::getMaxBatteryCharge, data::setMaxBatteryCharge).allowC2S());
+        data -> new LongSyncValue(data::getMaxBatteryCharge, data::setMaxBatteryCharge).allowC2S());
 
     // --------------- //
     // Graviton Shards //

@@ -1029,11 +1029,18 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_battery")
         .build();
 
+    public static final UITexture OVERLAY_SLOT_TURBINE = UITexture.builder()
+        .location(GTPlusPlus.ID, "gui/overlay_slot/turbine")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
     public static final UITexture OVERLAY_SLOT_MODULE = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/overlay_slot/module")
         .fullImage()
         .canApplyTheme()
         .build();
+
     public static final UITexture OVERLAY_SLOT_DISH = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/overlay_slot/dish")
         .fullImage()
@@ -2195,6 +2202,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .imageSize(69, 24)
         .adaptable(0, 0, 12, 0)
+        .build();
+    public static final UITexture PICTURE_ARROW_6_WHITE_PRE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/arrow_6_white_pre")
+        .canApplyTheme()
+        .imageSize(6, 6)
+        .adaptable(3, 0, 3, 0)
         .build();
     public static final UITexture PICTURE_ARROW_24_WHITE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/arrow_24_white")

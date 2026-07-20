@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.function.ToIntFunction;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -19,7 +20,6 @@ import gregtech.api.enums.HatchElement;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.util.GTDataUtils;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.chars.CharArrayList;
@@ -185,11 +185,12 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
         String info = hatchInfoOverrides.get(hatch);
 
         // if we were given a hatch info override, use it
-        if (info == null) info = GTUtility.translate("GT5U.MBTT.HatchInfo", casing.getLocalizedName());
+        if (info == null)
+            info = StatCollector.translateToLocalFormatted("GT5U.MBTT.HatchInfo", casing.getLocalizedName());
 
         // add hintNumbers to the info if possible
         if (hintNumbers.length > 0) {
-            info += GTUtility.translate(
+            info += StatCollector.translateToLocalFormatted(
                 "GT5U.MBTT.HatchHint",
                 String.join(", ", GTDataUtils.mapToList(new IntArrayList(hintNumbers), Object::toString)));
         }
@@ -207,12 +208,21 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
                         addEnergyHatch(info, hintNumbers);
                         break;
                     case ExoticEnergy:
-                        addOtherStructurePart(GTUtility.translate("GT5U.MBTT.MultiampEnergyHatch"), info, hintNumbers);
-                        addOtherStructurePart(GTUtility.translate("GT5U.MBTT.LaserTargetHatch"), info, hintNumbers);
+                        addOtherStructurePart(
+                            StatCollector.translateToLocal("GT5U.MBTT.MultiampEnergyHatch"),
+                            info,
+                            hintNumbers);
+                        addOtherStructurePart(
+                            StatCollector.translateToLocal("GT5U.MBTT.LaserTargetHatch"),
+                            info,
+                            hintNumbers);
                         hasExoticHatches = true;
                         break;
                     case MultiAmpEnergy:
-                        addOtherStructurePart(GTUtility.translate("GT5U.MBTT.MultiampEnergyHatch"), info, hintNumbers);
+                        addOtherStructurePart(
+                            StatCollector.translateToLocal("GT5U.MBTT.MultiampEnergyHatch"),
+                            info,
+                            hintNumbers);
                         hasMultiAmpHatches = true;
                         break;
                     case InputBus:
@@ -239,13 +249,25 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
             } else if (hatch instanceof TTMultiblockBase.HatchElement ttHatch) {
                 switch (ttHatch) {
                     case EnergyMulti -> {
-                        addOtherStructurePart(GTUtility.translate("GT5U.MBTT.MultiampEnergyHatch"), info, hintNumbers);
-                        addOtherStructurePart(GTUtility.translate("GT5U.MBTT.LaserTargetHatch"), info, hintNumbers);
+                        addOtherStructurePart(
+                            StatCollector.translateToLocal("GT5U.MBTT.MultiampEnergyHatch"),
+                            info,
+                            hintNumbers);
+                        addOtherStructurePart(
+                            StatCollector.translateToLocal("GT5U.MBTT.LaserTargetHatch"),
+                            info,
+                            hintNumbers);
                         hasExoticHatches = true;
                     }
                     case DynamoMulti -> {
-                        addOtherStructurePart(GTUtility.translate("GT5U.MBTT.MultiampEnergyDynamo"), info, hintNumbers);
-                        addOtherStructurePart(GTUtility.translate("GT5U.MBTT.LaserSourceHatch"), info, hintNumbers);
+                        addOtherStructurePart(
+                            StatCollector.translateToLocal("GT5U.MBTT.MultiampEnergyDynamo"),
+                            info,
+                            hintNumbers);
+                        addOtherStructurePart(
+                            StatCollector.translateToLocal("GT5U.MBTT.LaserSourceHatch"),
+                            info,
+                            hintNumbers);
                         hasExoticHatches = true;
                     }
                     default -> {

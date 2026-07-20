@@ -135,6 +135,11 @@ public class MTERecipeFilter extends MTESpecialFilter {
     }
 
     @Override
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return index == FILTER_SLOT_INDEX;
+    }
+
+    @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTERecipeFilterGui(this).build(guiData, syncManager, uiSettings);
     }

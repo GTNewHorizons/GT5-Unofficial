@@ -47,6 +47,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -55,7 +56,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -66,6 +66,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     private static final int OFFSET_X = 5;
     private static final int OFFSET_Y = 3;
     private static final int OFFSET_Z = 0;
+    private static final int TOP_CASING_AMOUNT = 28;
 
     private int casingAmount;
     private boolean needsWaterFill = false;
@@ -122,7 +123,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 11, 5, false)
             .addController("Front center, 2nd layer")
-            .addCasing("90-120", "Inconel Reinforced Casing", false)
+            .addCasing("110-120", "Inconel Reinforced Casing", false)
             .addCasing("31", "Flotation Cell Casing", false)
             .addCasing("20", "Staballoy Frame Box", false)
             .addCasing("8", "Inconel-690 Frame Box", false)
@@ -144,7 +145,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.flotationCellRecipes;
+        return RecipeMaps.flotationCellRecipes;
     }
 
     @Override
@@ -206,7 +207,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                 'W');
             return;
         }
-        checkCasingMin(errors, casingAmount, 90);
+        checkCasingMin(errors, casingAmount + TOP_CASING_AMOUNT, 110);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);

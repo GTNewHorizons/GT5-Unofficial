@@ -23,6 +23,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
@@ -583,7 +584,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         screenElements.widget(
             TextWidget
                 .dynamicString(
-                    () -> GTUtility.translate(
+                    () -> StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.content-entry",
                         isotope == null ? "" : isotope.getDisplayName(),
                         formatNumber(storedIsotope)))
@@ -593,7 +594,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         screenElements.widget(
             TextWidget
                 .dynamicString(
-                    () -> GTUtility.translate(
+                    () -> StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.content-entry",
                         product == null ? "" : product.getDisplayName(),
                         formatNumber(storedProduct)))
@@ -603,7 +604,8 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         screenElements.widget(
             TextWidget
                 .dynamicString(
-                    () -> GTUtility.translate("GT5U.gui.text.decay-rate", formatNumber(decayRate), getDecayRate()))
+                    () -> StatCollector
+                        .translateToLocalFormatted("GT5U.gui.text.decay-rate", formatNumber(decayRate), getDecayRate()))
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> decayRate > 0)
                 .setSize(179, 10));

@@ -574,7 +574,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
                     MessageFormat.format(
                         "{0} - {1}: {2}L ({3}%)",
                         i,
-                        GTUtility.translate("kekztech.infodata.tank.tfft.stored_fluids.null"),
+                        StatCollector.translateToLocal("kekztech.infodata.tank.tfft.stored_fluids.null"),
                         0,
                         0));
             } else {

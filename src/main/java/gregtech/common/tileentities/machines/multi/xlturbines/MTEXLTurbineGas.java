@@ -191,7 +191,7 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(26, 9, 9, true)
-            .addController("Front center")
+            .addController("Front center, 5th layer")
             .addCasing(minCasingAmount() + "-346", "Reinforced Gas Turbine Casing", false)
             .addCasing("104", "Any Tiered Glass", false)
             .addCasing("80", "Stainless Steel Frame Box", false)

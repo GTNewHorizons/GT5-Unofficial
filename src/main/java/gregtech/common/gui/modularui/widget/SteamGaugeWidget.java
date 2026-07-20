@@ -1,11 +1,12 @@
 package gregtech.common.gui.modularui.widget;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.value.sync.IIntSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 
 import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.api.util.GTUtility;
 
 public class SteamGaugeWidget extends ParentWidget<SteamGaugeWidget> {
 
@@ -20,7 +21,7 @@ public class SteamGaugeWidget extends ParentWidget<SteamGaugeWidget> {
             new Widget<>().widgetTheme(GTWidgetThemes.STEAM_GAUGE)
                 .tooltipDynamic(
                     t -> t.addLine(
-                        GTUtility.translate(
+                        StatCollector.translateToLocalFormatted(
                             "GT5U.machines.steam.amount",
                             steamStoredSyncer.getValue(),
                             maxSteamSyncer.getValue())))

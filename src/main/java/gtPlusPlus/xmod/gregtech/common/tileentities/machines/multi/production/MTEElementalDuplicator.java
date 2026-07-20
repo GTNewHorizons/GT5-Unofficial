@@ -93,7 +93,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 9, 6, true)
-            .addController("Top center")
+            .addController("Top center, 6th layer")
             .addCasing("120-139", "Elemental Confinement Shell", false)
             .addCasing("24", "Particle Containment Casing", false)
             .addCasing("24", "Matter Fabricator Casing", false)

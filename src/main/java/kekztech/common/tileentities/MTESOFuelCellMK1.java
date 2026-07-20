@@ -115,7 +115,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
             .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
             .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
             .beginStructureBlock(5, 3, 3, false)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("12-31", "Clean Stainless Steel Machine Casing", false)
             .addCasing("6", "Reinforced Glass", false)
             .addCasing("3", "YSZ Ceramic Electrolyte Unit", false)

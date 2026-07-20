@@ -88,7 +88,7 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
             .addInfo("Loose fit increases flow in exchange for efficiency")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(6, 3, 3, false)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("14", "Stainless Steel Frame Box", false)
             .addCasing("8-13", "Stainless Steel Turbine Casing", false)
             .addCasing("12", "Tin Item Pipe Casing", false)

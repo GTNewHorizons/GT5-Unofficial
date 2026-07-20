@@ -173,7 +173,7 @@ public class MTEMoltenModule extends MTEBaseModule {
             .addInfo("as a regular solid instead")
             .addInfo("This module is specialized towards parallel processing")
             .beginStructureBlock(13, 7, 7, false)
-            .addController("Front center")
+            .addController("Front center, 4th layer")
             .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
             .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
             .addCasing("5", "Celestial Matter Guidance Casing", false)

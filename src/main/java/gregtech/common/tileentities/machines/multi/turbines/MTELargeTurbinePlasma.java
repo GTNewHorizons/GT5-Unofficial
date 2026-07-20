@@ -86,7 +86,7 @@ public class MTELargeTurbinePlasma extends MTELargeTurbineBase {
             .addInfo("Use a screwdriver to adjust the fitting of the turbine")
             .addInfo("Loose fit increases flow in exchange for efficiency")
             .beginStructureBlock(6, 3, 3, false)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("14", "Tungstensteel Frame Box", false)
             .addCasing("8-14", "Tungstensteel Turbine Casing", false)
             .addCasing("12", "Tungstensteel Pipe Casing", false)

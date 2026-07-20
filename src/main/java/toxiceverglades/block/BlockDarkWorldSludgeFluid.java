@@ -1,11 +1,15 @@
 package toxiceverglades.block;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraftforge.fluids.Fluid;
 
-public class BlockDarkWorldSludgeFluid extends Fluid {
+import gregtech.api.GregTechAPI;
+
+public class BlockDarkWorldSludgeFluid extends Fluid implements Runnable {
 
     public static final Material SLUDGE = new MaterialLiquid(MapColor.dirtColor);
 
@@ -25,6 +29,16 @@ public class BlockDarkWorldSludgeFluid extends Fluid {
         } else {
             setAlpha(0);
         }
+        if (GregTechAPI.sGTBlockIconload != null) {
+            GregTechAPI.sGTBlockIconload.add(this);
+        }
+    }
+
+    @Override
+    public void run() {
+        this.setIcons(
+            GregTechAPI.sBlockIcons.registerIcon(GTPlusPlus.ID + ":fluid/Fluid_Sludge_Still"),
+            GregTechAPI.sBlockIcons.registerIcon(GTPlusPlus.ID + ":fluid/Fluid_Sludge_Flow"));
     }
 
     @Override

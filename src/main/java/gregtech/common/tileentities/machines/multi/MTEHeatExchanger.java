@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -52,7 +53,6 @@ import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
@@ -120,29 +120,33 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger, LHE")
-            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc1"))
-            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc2"))
-            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc3"))
-            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc4"))
-            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc5"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.desc1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.desc2"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.desc3"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.desc4"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.desc5"))
             .addSeparator()
             .addInfo(
-                GTUtility.translate("gt.multiblock.HeatExchanger.lava", getFluidUnit(), getFluidUnit(), getFluidUnit()))
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.HeatExchanger.lava",
+                    getFluidUnit(),
+                    getFluidUnit(),
+                    getFluidUnit()))
             .addInfo(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     "gt.multiblock.HeatExchanger.hotcoolant",
                     getFluidUnit(),
                     getFluidUnit(),
                     getFluidUnit()))
             .addInfo(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     "gt.multiblock.HeatExchanger.hotsolarsalt",
                     getFluidUnit(),
                     getFluidUnit(),
                     getFluidUnit()))
             .addSeparator()
-            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.throttle1"))
-            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.throttle2"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.throttle1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.throttle2"))
             .beginStructureBlock(3, 3, 4, false)
             .addController("Front bottom center")
             .addCasing("20-28", "Stable Titanium Machine Casing", false)
