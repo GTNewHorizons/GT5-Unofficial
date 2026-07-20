@@ -904,17 +904,17 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     // endregion
 
     // region Superconductors
-    public static Materials SuperconductorMV;
-    public static Materials SuperconductorHV;
-    public static Materials SuperconductorEV;
-    public static Materials SuperconductorIV;
-    public static Materials SuperconductorLuV;
-    public static Materials SuperconductorZPM;
-    public static Materials SuperconductorUV;
-    public static Materials SuperconductorUHV;
-    public static Materials SuperconductorUEV;
-    public static Materials SuperconductorUIV;
-    public static Materials SuperconductorUMV;
+    public static MarkerMaterial SuperconductorMV;
+    public static MarkerMaterial SuperconductorHV;
+    public static MarkerMaterial SuperconductorEV;
+    public static MarkerMaterial SuperconductorIV;
+    public static MarkerMaterial SuperconductorLuV;
+    public static MarkerMaterial SuperconductorZPM;
+    public static MarkerMaterial SuperconductorUV;
+    public static MarkerMaterial SuperconductorUHV;
+    public static MarkerMaterial SuperconductorUEV;
+    public static MarkerMaterial SuperconductorUIV;
+    public static MarkerMaterial SuperconductorUMV;
     // endregion
 
     // region Waterline Chemicals

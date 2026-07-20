@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.material.MarkerMaterial;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -38,9 +39,9 @@ public enum Superconductors {
     UIV(() -> Materials.SuperconductorUIV),
     UMV(() -> Materials.SuperconductorUMV);
 
-    private final Supplier<Materials> marker;
+    private final Supplier<MarkerMaterial> marker;
 
-    Superconductors(Supplier<Materials> marker) {
+    Superconductors(Supplier<MarkerMaterial> marker) {
         this.marker = marker;
     }
 

@@ -1,10 +1,8 @@
 package gregtech.loaders.materials;
 
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.material.MarkerMaterial;
 
@@ -127,142 +125,60 @@ public class LegacyMarkerMaterials {
     }
 
     private static void loadSuperconductorsMarkers() {
-        Materials.SuperconductorMV = loadSuperconductorMV();
-        Materials.SuperconductorHV = loadSuperconductorHV();
-        Materials.SuperconductorEV = loadSuperconductorEV();
-        Materials.SuperconductorIV = loadSuperconductorIV();
-        Materials.SuperconductorLuV = loadSuperconductorLuV();
-        Materials.SuperconductorZPM = loadSuperconductorZPM();
-        Materials.SuperconductorUV = loadSuperconductorUV();
-        Materials.SuperconductorUHV = loadSuperconductorUHV();
-        Materials.SuperconductorUEV = loadSuperconductorUEV();
-        Materials.SuperconductorUIV = loadSuperconductorUIV();
-        Materials.SuperconductorUMV = loadSuperconductorUMV();
-    }
-
-    private static Materials loadSuperconductorMV() {
-        return new MaterialBuilder().setName("SuperconductorMV")
-            .setDefaultLocalName("Superconductor MV")
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeGray)
-            .setARGB(0x00555555)
-            .addAspect(TCAspects.ELECTRUM, 6)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadSuperconductorHV() {
-        return new MaterialBuilder().setName("SuperconductorHV")
-            .setDefaultLocalName("Superconductor HV")
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeBrown)
-            .setARGB(0x00331900)
-            .addAspect(TCAspects.ELECTRUM, 12)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadSuperconductorEV() {
-        return new MaterialBuilder().setName("SuperconductorEV")
-            .setDefaultLocalName("Superconductor EV")
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeLime)
-            .setARGB(0x00008700)
-            .addAspect(TCAspects.ELECTRUM, 18)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadSuperconductorIV() {
-        return new MaterialBuilder().setName("SuperconductorIV")
-            .setDefaultLocalName("Superconductor IV")
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeMagenta)
-            .setARGB(0x00330033)
-            .addAspect(TCAspects.ELECTRUM, 24)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadSuperconductorLuV() {
-        return new MaterialBuilder().setName("SuperconductorLuV")
-            .setDefaultLocalName("Superconductor LuV")
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeBrown)
-            .setARGB(0x00994c00)
-            .addAspect(TCAspects.ELECTRUM, 30)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadSuperconductorZPM() {
-        return new MaterialBuilder().setName("SuperconductorZPM")
-            .setDefaultLocalName("Superconductor ZPM")
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeBlack)
-            .setARGB(0x000a0a0a)
-            .addAspect(TCAspects.ELECTRUM, 36)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadSuperconductorUV() {
-        return new MaterialBuilder().setName("SuperconductorUV")
-            .setDefaultLocalName("Superconductor UV")
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeYellow)
-            .setARGB(0x00e0d207)
-            .addAspect(TCAspects.ELECTRUM, 42)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadSuperconductorUHV() {
-        return new MaterialBuilder().setName("Superconductor")
-            .setDefaultLocalName("Superconductor UHV")
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeWhite)
-            .setARGB(0x002681bd)
-            .addAspect(TCAspects.ELECTRUM, 48)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadSuperconductorUEV() {
-        return new MaterialBuilder().setName("SuperconductorUEV")
-            .setDefaultLocalName("Superconductor UEV")
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeWhite)
-            .setARGB(0x00ae0808)
-            .addAspect(TCAspects.ELECTRUM, 54)
-            .constructMaterial();
-    }
-
-    private static Materials loadSuperconductorUIV() {
-        return new MaterialBuilder().setName("SuperconductorUIV")
-            .setDefaultLocalName("Superconductor UIV")
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeWhite)
-            .setARGB(0x00e558b1)
-            .addAspect(TCAspects.ELECTRUM, 60)
-            .constructMaterial();
-    }
-
-    private static Materials loadSuperconductorUMV() {
-        return new MaterialBuilder().setName("SuperconductorUMV")
-            .setDefaultLocalName("Superconductor UMV")
-            .setIconSet(TextureSet.SET_SHINY)
-            .setColor(Dyes.dyeWhite)
-            .setARGB(0x00b526cd)
-            .addAspect(TCAspects.ELECTRUM, 66)
-            .constructMaterial();
+        Materials.SuperconductorMV = new MarkerMaterial(
+            "SuperconductorMV",
+            "Superconductor MV",
+            TextureSet.SET_SHINY,
+            0x00555555);
+        Materials.SuperconductorHV = new MarkerMaterial(
+            "SuperconductorHV",
+            "Superconductor HV",
+            TextureSet.SET_SHINY,
+            0x00331900);
+        Materials.SuperconductorEV = new MarkerMaterial(
+            "SuperconductorEV",
+            "Superconductor EV",
+            TextureSet.SET_SHINY,
+            0x00008700);
+        Materials.SuperconductorIV = new MarkerMaterial(
+            "SuperconductorIV",
+            "Superconductor IV",
+            TextureSet.SET_SHINY,
+            0x00330033);
+        Materials.SuperconductorLuV = new MarkerMaterial(
+            "SuperconductorLuV",
+            "Superconductor LuV",
+            TextureSet.SET_SHINY,
+            0x00994c00);
+        Materials.SuperconductorZPM = new MarkerMaterial(
+            "SuperconductorZPM",
+            "Superconductor ZPM",
+            TextureSet.SET_SHINY,
+            0x000a0a0a);
+        Materials.SuperconductorUV = new MarkerMaterial(
+            "SuperconductorUV",
+            "Superconductor UV",
+            TextureSet.SET_SHINY,
+            0x00e0d207);
+        Materials.SuperconductorUHV = new MarkerMaterial(
+            "Superconductor",
+            "Superconductor UHV",
+            TextureSet.SET_SHINY,
+            0x002681bd);
+        Materials.SuperconductorUEV = new MarkerMaterial(
+            "SuperconductorUEV",
+            "Superconductor UEV",
+            TextureSet.SET_SHINY,
+            0x00ae0808);
+        Materials.SuperconductorUIV = new MarkerMaterial(
+            "SuperconductorUIV",
+            "Superconductor UIV",
+            TextureSet.SET_SHINY,
+            0x00e558b1);
+        Materials.SuperconductorUMV = new MarkerMaterial(
+            "SuperconductorUMV",
+            "Superconductor UMV",
+            TextureSet.SET_SHINY,
+            0x00b526cd);
     }
 }
