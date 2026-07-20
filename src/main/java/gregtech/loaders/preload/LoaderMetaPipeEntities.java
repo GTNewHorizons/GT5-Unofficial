@@ -14,6 +14,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTECable;
@@ -859,7 +860,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
     private static class WireCableBuilder {
 
-        private Materials material;
+        private IOreMaterial material;
         private Integer startId;
         private Integer lossCable;
         private Integer lossWire;
@@ -877,7 +878,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
         /**
          * Sets material used for this wire/cable.
          */
-        private WireCableBuilder material(Materials material) {
+        private WireCableBuilder material(IOreMaterial material) {
             this.material = material;
             return this;
         }
@@ -957,8 +958,10 @@ public final class LoaderMetaPipeEntities implements Runnable {
             if (amperage == null) throw new IllegalStateException("amperage must be set!");
             if (voltage == null) throw new IllegalStateException("voltage must be set!");
 
-            final String internalNameWire = "wire." + material.mName.toLowerCase();
-            final String internalNameCable = "cable." + material.mName.toLowerCase();
+            final String internalNameWire = "wire." + material.getInternalName()
+                .toLowerCase();
+            final String internalNameCable = "cable." + material.getInternalName()
+                .toLowerCase();
 
             GTOreDictUnificator.registerOre(
                 OrePrefixes.wireGt01,
