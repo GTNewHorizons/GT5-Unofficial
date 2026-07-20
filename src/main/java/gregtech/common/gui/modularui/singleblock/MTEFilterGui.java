@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -19,7 +18,8 @@ import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.common.gui.modularui.singleblock.base.MTEFilterBaseGui;
 import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.automation.MTEFilter;
-import xyz.wagyourtail.jvmdg.util.Pair;
+import it.unimi.dsi.fastutil.booleans.BooleanObjectImmutablePair;
+import it.unimi.dsi.fastutil.booleans.BooleanObjectPair;
 
 public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
 
@@ -35,7 +35,7 @@ public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
 
         // white arrow shaft
         mainRow.child(
-            new Rectangle().asWidget()
+            GTGuiTextures.PICTURE_ARROW_6_WHITE_PRE.asWidget()
                 .size(8, 6));
 
         // filter grid
@@ -73,13 +73,13 @@ public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
     }
 
     @Override
-    protected List<Pair<Boolean, Supplier<IWidget>>> createButtonList(ModularPanel panel,
+    protected List<BooleanObjectPair<Supplier<IWidget>>> createButtonList(ModularPanel panel,
         PanelSyncManager syncManager) {
-        List<Pair<Boolean, Supplier<IWidget>>> buttons = super.createButtonList(panel, syncManager);
+        List<BooleanObjectPair<Supplier<IWidget>>> buttons = super.createButtonList(panel, syncManager);
 
         // ignore NBT button
         buttons.add(
-            new Pair<>(
+            new BooleanObjectImmutablePair<>(
                 true,
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
                     new BooleanSyncValue(machine::isIgnoreNbt, machine::setIgnoreNbt).allowC2S(),

@@ -412,7 +412,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
         }
 
         @Override
-        public void completeItem(GTUtility.ItemId id) {
+        public void complete(GTUtility.ItemId id) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             for (int i = 0, invLength = inventory.length; i < invLength; i++) {

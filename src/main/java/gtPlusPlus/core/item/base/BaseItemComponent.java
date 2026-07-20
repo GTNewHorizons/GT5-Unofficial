@@ -180,7 +180,7 @@ public class BaseItemComponent extends Item {
                         list.add(
                             EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                                 "GTPP.tooltip.material.radioactivity",
-                                this.componentMaterial.vRadiationLevel));
+                                this.componentMaterial.radiationLevel));
                     } else {
                         list.add(
                             EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
@@ -198,7 +198,7 @@ public class BaseItemComponent extends Item {
         if (this.componentMaterial != null) {
             EntityUtils.applyRadiationDamageToEntity(
                 iStack.stackSize,
-                this.componentMaterial.vRadiationLevel,
+                this.componentMaterial.radiationLevel,
                 world,
                 entityHolding);
         }

@@ -32,7 +32,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.gui.modularui.multiblock.TileEntityModulePumpGui;
@@ -97,8 +96,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
     private static final IStatusFunction<TileEntityModulePump> PARALLEL_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getParallels());
     /** Name of the batch setting */
-    private static final INameFunction<TileEntityModulePump> BATCH_SETTING_NAME = (base, p) -> GTUtility
-        .translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.3"); // Batch size
+    private static final INameFunction<TileEntityModulePump> BATCH_SETTING_NAME = (base, p) -> StatCollector
+        .translateToLocal("gt.blockmachines.multimachine.project.ig.pump.cfgi.3"); // Batch size
     /** Status of the batch setting */
     private static final IStatusFunction<TileEntityModulePump> BATCH_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);

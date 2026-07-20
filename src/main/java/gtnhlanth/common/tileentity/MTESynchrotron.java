@@ -526,7 +526,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info14"))
             .addSupportAny()
             .beginStructureBlock(34, 36, 7, true)
-            .addController("Front center")
+            .addController("Front center, 4th layer")
             .addCasing("1690", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
             .addCasing("90", "Superconducting Coil Block", false)
             .addCasing("64", LanthItemList.NIOBIUM_CAVITY_CASING.getLocalizedName(), false)
@@ -539,7 +539,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"),
                 "Right and back of controller",
                 6)
-            .addEnergyHatch("4", "Above each antenna casings", 4)
+            .addEnergyHatch("4", "Above each antenna casing", 4)
             .addMaintenanceHatch("1", "Around controller", 5)
             .addInputHatch("2", "Between the energy hatches", 2)
             .addOutputHatch("2", "Opposite the input hatches", 3)

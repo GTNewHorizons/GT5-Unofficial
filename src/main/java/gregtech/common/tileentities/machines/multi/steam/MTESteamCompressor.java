@@ -357,7 +357,7 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .beginStructureBlock(7, 3, 3, true)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addSteamHatch("1", "Any normal casing", 1)
             .addSteamInputBus("1+", "Any normal casing", 1)
             .addSteamOutputBus("1+", "Any normal casing", 1)

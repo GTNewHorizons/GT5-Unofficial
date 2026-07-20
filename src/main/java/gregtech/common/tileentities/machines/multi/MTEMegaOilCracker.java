@@ -219,9 +219,8 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
             .addMaintenanceHatch("1", "Any reinforced distillation casing", 1)
             .addInputBus("0+", "Any reinforced distillation casing", 1)
             .addInputHatch("2", "Any middle casing (cracking fluid), any side casing (hydrocarbon)", 2, 3, 4)
-            .addOutputHatch("1", "Any side casing", 2, 4)
+            .addOutputHatch("1", "Any side casing opposite the hydrocarbon", 2, 4)
             .addStructureInfo("")
-            .addStructureFooter("The input hatch with the hydrocarbon and the output hatch must be on opposite sides!")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
@@ -365,6 +364,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchInput tHatch) {
+            addIfSmartInput(aMetaTileEntity);
             tHatch.updateTexture(aBaseCasingIndex);
             tHatch.mRecipeMap = this.getRecipeMap();
             return this.mMiddleInputHatches.add(tHatch);

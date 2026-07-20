@@ -1404,7 +1404,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         mOreMultiplier = oreMultiplier;
         mUnifiable = unifiable;
 
-        // No clue what is going on here...
         int numberOfComponents = 0;
         int tMeltingPoint = 0;
         for (MaterialStack tMaterial : mMaterialList) {
@@ -1419,7 +1418,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
             }
         }
 
-        if (mMeltingPoint < 0) mMeltingPoint = 0;
+        if (mMeltingPoint < 0 && numberOfComponents > 1) mMeltingPoint = tMeltingPoint / numberOfComponents;
 
         numberOfComponents *= densityMultiplier;
         numberOfComponents /= densityDivider;
@@ -2206,7 +2205,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     }
 
     public int getLiquidTemperature() {
-        return mMeltingPoint == 0 ? 295 : mMeltingPoint;
+        return mMeltingPoint == -1 ? 295 : mMeltingPoint;
     }
 
     public Materials setLiquidTemperature(int liquidTemperature) {

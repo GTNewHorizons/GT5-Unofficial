@@ -307,7 +307,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             .addSeparator()
             .addSupportAny()
             .beginStructureBlock(11, 17, 5, true)
-            .addController("Front center")
+            .addController("Front center, 3rd layer")
             .addCasing(
                 "224-227",
                 StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),

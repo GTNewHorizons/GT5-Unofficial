@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -122,7 +123,9 @@ public class Localized {
         if (key instanceof ChatMessage message) {
             return "§s" + colour + message.localize(args) + "§t";
         } else {
-            return "§s" + colour + GTUtility.translate((String) key, argProcessor.process(args)) + "§t";
+            return "§s" + colour
+                + StatCollector.translateToLocalFormatted((String) key, argProcessor.process(args))
+                + "§t";
         }
     }
 

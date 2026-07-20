@@ -477,7 +477,7 @@ public class MTEHatchOutput extends MTEHatch
         }
 
         @Override
-        public void completeFluid(GTUtility.FluidId id) {
+        public void complete(GTUtility.FluidId id) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
         }
 

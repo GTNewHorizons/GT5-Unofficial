@@ -49,13 +49,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -124,7 +124,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addMultiAmpHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(5, 5, 6, 36, 7, 7, false)
-            .addController("Front left center")
+            .addController("Front left center, 2nd layer")
             .addEnergyHatch("1+", "Any structural casing on base structure", 1)
             .addMaintenanceHatch("1", "Any structural casing on base structure", 1)
             .addMufflerHatch("1", "Any structural casing on base structure", 1)
@@ -349,7 +349,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.cokeOvenRecipes;
+        return RecipeMaps.industrialCokeOvenRecipes;
     }
 
     @Override

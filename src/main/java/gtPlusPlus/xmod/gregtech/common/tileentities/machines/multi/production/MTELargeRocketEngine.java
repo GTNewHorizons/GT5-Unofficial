@@ -38,6 +38,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -46,7 +47,6 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
@@ -117,7 +117,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addInfo("formula: x = input of energy (30000^(1/3)/ x^(1/3)) * (80000^(1/3)/ x^(1/3))")
             .addSupportAny()
             .beginStructureBlock(10, 3, 3, false)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("62-76", "Turbodyne Casing", false)
             .addCasing("8", "Inconel Reinforced Casing", false)
             .addMiscHatch("1+", "Air Intake Hatch", "Any center casing", 1, 2)
@@ -249,7 +249,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.rocketFuels;
+        return RecipeMaps.rocketFuels;
     }
 
     @Override

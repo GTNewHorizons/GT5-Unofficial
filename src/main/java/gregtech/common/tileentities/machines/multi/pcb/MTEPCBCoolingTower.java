@@ -150,13 +150,26 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("PCB Factory Upgrade")
             .addInfo("The Cooling Tower enables overclocking of the PCB Factory")
-            .addInfo("Tier 1 gives a normal overclock")
-            .addInfo("Tier 2 gives a " + EnumChatFormatting.GOLD + "perfect" + EnumChatFormatting.GRAY + " overclock")
             .addInfo(
-                "It requires " + COOLANT_CONSUMPTION_PER_SEC
-                    + "L/s of cooling fluid per active and connected PCB Factory")
-            .addInfo("Tier 1 Cooling Fluid is: " + EnumChatFormatting.GOLD + "Distilled Water")
-            .addInfo("Tier 2 Cooling Fluid is: " + EnumChatFormatting.GOLD + "Super Coolant")
+                "Tier 1 unlocks " + EnumChatFormatting.GOLD
+                    + "imperfect "
+                    + EnumChatFormatting.GRAY
+                    + "overclocks at the cost of "
+                    + EnumChatFormatting.BLUE
+                    + COOLANT_CONSUMPTION_PER_SEC
+                    + " L/s Distilled Water "
+                    + EnumChatFormatting.GRAY
+                    + "while running")
+            .addInfo(
+                "Tier 2 unlocks " + EnumChatFormatting.GOLD
+                    + "perfect "
+                    + EnumChatFormatting.GRAY
+                    + "overclocks at the cost of "
+                    + EnumChatFormatting.BLUE
+                    + COOLANT_CONSUMPTION_PER_SEC
+                    + " L/s Super Coolant "
+                    + EnumChatFormatting.GRAY
+                    + "while running")
             .addInfo(
                 EnumChatFormatting.GRAY + "Place the controller block within "
                     + EnumChatFormatting.RED

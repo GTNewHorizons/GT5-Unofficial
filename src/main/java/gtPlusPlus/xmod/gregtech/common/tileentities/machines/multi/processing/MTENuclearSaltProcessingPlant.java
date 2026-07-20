@@ -35,11 +35,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -93,10 +93,10 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
             .addEnergyHatch("2", "Bottom insulated casings", 5)
             .addMaintenanceHatch("1", "Casing behind controller", 1)
             .addMufflerHatch("2", "Top insulated casings", 4)
-            .addInputBus("0+", "Left side insulated casings", 2)
-            .addInputHatch("0+", "Left side insulated casings", 2)
-            .addOutputBus("0+", "Right side insulated casings", 3)
-            .addOutputHatch("0+", "Right side insulated casings", 3)
+            .addInputBus("0+", "Any left side insulated casing", 2)
+            .addInputHatch("0+", "Any left side insulated casing", 2)
+            .addOutputBus("0+", "Any right side insulated casing", 3)
+            .addOutputHatch("0+", "Any right side insulated casing", 3)
             .toolTipFinisher();
         return tt;
     }
@@ -196,7 +196,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes;
+        return RecipeMaps.nuclearSaltProcessingPlantRecipes;
     }
 
     @Override

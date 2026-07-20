@@ -58,6 +58,11 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
     }
 
     @Override
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return true;
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchVoidBus(mName, mTier, mDescriptionArray, mTextures);
     }
@@ -203,7 +208,7 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
         }
 
         @Override
-        public void completeItem(GTUtility.ItemId id) {
+        public void complete(GTUtility.ItemId id) {
             // do nothing
         }
 

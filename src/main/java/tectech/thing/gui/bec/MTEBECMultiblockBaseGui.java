@@ -6,6 +6,8 @@ import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.util.function.Supplier;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
@@ -14,7 +16,6 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.api.enums.CondensateType;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.adapter.CondensateListAdapter;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryNetwork;
@@ -40,13 +41,13 @@ public class MTEBECMultiblockBaseGui<T extends MTEBECMultiblockBase<?>> extends 
             StringBuilder ret = new StringBuilder();
 
             ret.append(GRAY)
-                .append(GTUtility.translate("GT5U.gui.text.available-condensate"))
+                .append(StatCollector.translateToLocal("GT5U.gui.text.available-condensate"))
                 .append('\n');
 
             if (condensate.getValue()
                 .isEmpty()) {
                 ret.append(GRAY)
-                    .append(GTUtility.translate("GT5U.gui.text.nil"));
+                    .append(StatCollector.translateToLocal("GT5U.gui.text.nil"));
             }
 
             for (var e : condensate.getValue()

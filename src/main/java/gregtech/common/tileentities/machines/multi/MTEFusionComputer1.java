@@ -82,12 +82,12 @@ public class MTEFusionComputer1 extends MTEFusionComputer {
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")
             .beginStructureBlock(15, 15, 3, false)
-            .addController("See diagram when placed")
+            .addController("Middle center, 2nd layer")
             .addCasing("79-123", "LuV Machine Casing", false)
             .addCasing("32", "Superconducting Coil Block", false)
-            .addEnergyHatch("1-16", "Specified casings (LuV+)", 2)
-            .addInputHatch("1+", "Specified casings", 1)
-            .addOutputHatch("1+", "Specified casings", 3)
+            .addEnergyHatch("1-16", "Specific middle casings on each curve (LuV+)", 2)
+            .addInputHatch("1+", "Specific top or bottom casings on each side", 1)
+            .addOutputHatch("1+", "Specific middle casings on each side", 3)
             .toolTipFinisher();
         return tt;
     }

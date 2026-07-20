@@ -277,7 +277,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit")
+        tt.addMachineType("Purification Unit, DPU")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.BOLD

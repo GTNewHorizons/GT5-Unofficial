@@ -2,6 +2,7 @@ package gtPlusPlus.core.recipe;
 
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.util.GTModHandler.RecipeBits.BITS;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -14,7 +15,6 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;

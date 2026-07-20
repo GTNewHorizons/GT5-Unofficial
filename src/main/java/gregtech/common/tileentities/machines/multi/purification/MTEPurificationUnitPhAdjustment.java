@@ -310,7 +310,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit")
+        tt.addMachineType("Purification Unit, NPU")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.BOLD
@@ -397,7 +397,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.ITALIC
                     + "materials. This necessitates the use of the corresponding neutralizing agents to pH balance the water.")
             .beginStructureBlock(5, 15, 6, true)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("134", "Inert Neutralization Water Plant Casing", false)
             .addCasing("48", "Naquadah Alloy Frame Box", false)
             .addCasing("18", "Chemical Grade Glass", false)

@@ -1,10 +1,10 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static gregtech.api.enums.MetaTileEntityIDs.Industrial_MassFab;
+import static gregtech.api.recipe.RecipeMaps.multiblockMassFabricatorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.multiblockMassFabricatorRecipes;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;

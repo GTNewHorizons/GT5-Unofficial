@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -369,15 +370,15 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
             String.format(
                 "%s%s%s",
                 EnumChatFormatting.BLUE,
-                GTUtility.translate("GT5U.machines.miner"),
+                StatCollector.translateToLocal("GT5U.machines.miner"),
                 EnumChatFormatting.RESET),
             String.format(
                 "%s: %s%d%s %s",
-                GTUtility.translate("GT5U.machines.workarea"),
+                StatCollector.translateToLocal("GT5U.machines.workarea"),
                 EnumChatFormatting.GREEN,
                 (radiusConfig * 2 + 1),
                 EnumChatFormatting.RESET,
-                GTUtility.translate("GT5U.machines.blocks")) };
+                StatCollector.translateToLocal("GT5U.machines.blocks")) };
     }
 
     @Override

@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -381,7 +382,7 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
                     tooltip.add(stored.getDisplayName() + " x " + GOLD + formatNumber(stored.getStackSize()));
                 }
             } else {
-                tooltip.add(GTUtility.translate("GT5U.gui.text.compressed_bus_stored_items"));
+                tooltip.add(StatCollector.translateToLocal("GT5U.gui.text.compressed_bus_stored_items"));
             }
             tooltip.add("");
         }

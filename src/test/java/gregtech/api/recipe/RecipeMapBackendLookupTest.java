@@ -378,7 +378,7 @@ class RecipeMapBackendLookupTest {
     @Test
     void lookupVerifierTreatsQftCatalystAsConflictSelector() {
         ensureMinecraftStackComparisonItem();
-        String mapName = "gtpp.recipe.quantumforcesmelter";
+        String mapName = "gt.recipe.quantumforcesmelter";
         Item input = item("lookup.validation.qft_selector.input");
         Item catalyst = item("lookup.validation.qft_selector.catalyst");
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
@@ -396,7 +396,7 @@ class RecipeMapBackendLookupTest {
     @Test
     void lookupVerifierReportsQftConflictWhenCatalystMatches() {
         ensureMinecraftStackComparisonItem();
-        String mapName = "gtpp.recipe.quantumforcesmelter";
+        String mapName = "gt.recipe.quantumforcesmelter";
         Item input = item("lookup.validation.qft_conflict.input");
         Item catalyst = item("lookup.validation.qft_conflict.catalyst");
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);

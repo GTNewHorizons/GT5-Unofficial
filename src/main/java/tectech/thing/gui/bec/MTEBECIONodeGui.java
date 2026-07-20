@@ -2,7 +2,6 @@ package tectech.thing.gui.bec;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.WHITE;
-import static gregtech.api.util.GTUtility.translate;
 import static tectech.thing.metaTileEntity.multi.bec.MTEBECIONode.MAX_PARALLEL_PARAMETER;
 import static tectech.thing.metaTileEntity.multi.bec.MTEBECIONode.MIN_PARALLEL_PARAMETER;
 import static tectech.thing.metaTileEntity.multi.bec.MTEBECIONode.SPEED_DIVISOR_PARAMETER;
@@ -11,6 +10,7 @@ import java.util.Collections;
 import java.util.function.Function;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -55,18 +55,18 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
             StringBuilder ret = new StringBuilder();
 
             ret.append(
-                translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.ionode_status",
-                    translate(
+                    StatCollector.translateToLocal(
                         "GT5U.gui.text.ionode_status." + stateSyncer.getValue()
                             .name())));
             ret.append("\n");
 
             ret.append(
-                translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.provided_nanite",
-                    providedTierSyncer.getEnumValue() == null ? translate("GT5U.gui.text.nil")
-                        : translate(
+                    providedTierSyncer.getEnumValue() == null ? StatCollector.translateToLocal("GT5U.gui.text.nil")
+                        : StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.nanite_desc",
                             availableNanitesSyncer.getIntValue(),
                             providedTierSyncer.getEnumValue()
@@ -74,16 +74,16 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
             ret.append("\n");
 
             ret.append(
-                translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.required_nanite",
-                    requiredTierSyncer.getEnumValue() == null ? translate("GT5U.gui.text.nil")
+                    requiredTierSyncer.getEnumValue() == null ? StatCollector.translateToLocal("GT5U.gui.text.nil")
                         : GOLD + requiredTierSyncer.getEnumValue()
                             .describe() + WHITE));
             ret.append("\n");
 
             boolean hasAny = false;
 
-            ret.append(translate("GT5U.gui.text.required_condensate"));
+            ret.append(StatCollector.translateToLocal("GT5U.gui.text.required_condensate"));
             ret.append("\n");
 
             if (requiredCondensateSyncer.getValue() != null && consumedCondensateSyncer.getValue() != null
@@ -96,7 +96,7 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
                         .getLong(e.getKey());
 
                     ret.append(
-                        translate(
+                        StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.remaining_condensate",
                             CondensateType.getCondensateName(e.getKey()),
                             consumed,
@@ -105,7 +105,7 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
             }
 
             if (!hasAny) {
-                ret.append(translate("GT5U.gui.text.nil"));
+                ret.append(StatCollector.translateToLocal("GT5U.gui.text.nil"));
             }
 
             return ret.toString();
