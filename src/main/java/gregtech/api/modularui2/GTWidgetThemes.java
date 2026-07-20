@@ -65,6 +65,7 @@ public final class GTWidgetThemes {
 
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_POPUP = registerThemedTexture("backgroundPopup");
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_TITLE = registerThemedTexture("backgroundTitle");
+    public static WidgetThemeKey<WidgetTheme> BACKGROUND_COLOR_SWATCH = registerThemedTexture("backgroundColorSwatch");
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_TERMINAL = themeApi
         .widgetThemeKeyBuilder("backgroundTerminal", WidgetTheme.class)
         .defaultTheme(new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_TERMINAL, Color.WHITE.main, 0xFAFAFA, false, 0))
