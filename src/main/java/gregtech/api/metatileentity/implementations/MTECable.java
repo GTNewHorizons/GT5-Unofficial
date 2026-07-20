@@ -29,7 +29,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.MaterialIconRegistry;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.NodeList;
@@ -72,14 +71,14 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, ILocalizedMetaPipeEntity {
 
     public final float mThickNess;
-    public final Materials mMaterial;
+    public final IOreMaterial mMaterial;
     public final long mCableLossPerMeter, mAmperage, mVoltage;
     public final boolean mInsulated, mCanShock;
     private String prefixKey;
 
     public int mTransferredAmperage = 0;
 
-    public MTECable(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial,
+    public MTECable(int aID, String aName, String aPrefixKey, float aThickNess, IOreMaterial aMaterial,
         long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
         super(aID, aName, 0);
         prefixKey = aPrefixKey;
@@ -109,7 +108,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
             aCanShock);
     }
 
-    public MTECable(String aName, float aThickNess, Materials aMaterial, long aCableLossPerMeter, long aAmperage,
+    public MTECable(String aName, float aThickNess, IOreMaterial aMaterial, long aCableLossPerMeter, long aAmperage,
         long aVoltage, boolean aInsulated, boolean aCanShock) {
         super(aName, 0);
         mThickNess = aThickNess;
@@ -144,46 +143,57 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         int facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (!mInsulated) return new ITexture[] { TextureFactory.of(
-            mMaterial.mIconSet.mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()],
-            Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
+            mMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()],
+            Dyes.getModulation(colorIndex, mMaterial.getRGBA())) };
         if (active) {
             float tThickNess = getThickness();
             if (tThickNess < 0.124F) return new ITexture[] { TextureFactory.of(
                 Textures.BlockIcons.INSULATION_FULL,
                 Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.374F) // 0.375 x1
-                return new ITexture[] { TextureFactory
-                    .of(mMaterial.mIconSet.mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()], mMaterial.mRGBa),
+                return new ITexture[] {
+                    TextureFactory.of(
+                        mMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()],
+                        mMaterial.getRGBA()),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_TINY,
                         Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.499F) // 0.500 x2
-                return new ITexture[] { TextureFactory
-                    .of(mMaterial.mIconSet.mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()], mMaterial.mRGBa),
+                return new ITexture[] {
+                    TextureFactory.of(
+                        mMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()],
+                        mMaterial.getRGBA()),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_SMALL,
                         Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.624F) // 0.625 x4
-                return new ITexture[] { TextureFactory
-                    .of(mMaterial.mIconSet.mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()], mMaterial.mRGBa),
+                return new ITexture[] {
+                    TextureFactory.of(
+                        mMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()],
+                        mMaterial.getRGBA()),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_MEDIUM,
                         Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.749F) // 0.750 x8
-                return new ITexture[] { TextureFactory
-                    .of(mMaterial.mIconSet.mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()], mMaterial.mRGBa),
+                return new ITexture[] {
+                    TextureFactory.of(
+                        mMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()],
+                        mMaterial.getRGBA()),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_MEDIUM_PLUS,
                         Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.874F) // 0.825 x12
-                return new ITexture[] { TextureFactory
-                    .of(mMaterial.mIconSet.mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()], mMaterial.mRGBa),
+                return new ITexture[] {
+                    TextureFactory.of(
+                        mMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()],
+                        mMaterial.getRGBA()),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_LARGE,
                         Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             return new ITexture[] {
-                TextureFactory
-                    .of(mMaterial.mIconSet.mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()], mMaterial.mRGBa),
+                TextureFactory.of(
+                    mMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()],
+                    mMaterial.getRGBA()),
                 TextureFactory.of(
                     Textures.BlockIcons.INSULATION_HUGE,
                     Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
