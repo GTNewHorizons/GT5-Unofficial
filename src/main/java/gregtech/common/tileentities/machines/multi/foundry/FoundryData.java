@@ -1,6 +1,10 @@
 package gregtech.common.tileentities.machines.multi.foundry;
 
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+
 import java.util.Arrays;
+
+import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -41,6 +45,8 @@ public class FoundryData {
     public boolean isProductionPairPresent = false;
     public boolean isEndPairPresent = false;
 
+    public String entropySuffix = "";
+
     public void resetParameters() {
         ocFactorAdditive = 0.0F;
 
@@ -64,6 +70,7 @@ public class FoundryData {
         isHRPairPresent = false;
         isProductionPairPresent = false;
         isEndPairPresent = false;
+        entropySuffix = "";
     }
 
     // base stats per module
@@ -109,16 +116,18 @@ public class FoundryData {
         int numHelio = (int) Arrays.stream(modules)
             .filter(m -> m == FoundryModule.HELIOCAST_REINFORCEMENT)
             .count();
-        if (numHelio > 1) {
+        // at 3 or above, make the buffs semi-random (but always >= base)
+        // average values of the next int call are 1.5 for 3 HR, 2 for 4 HR
+        if (numHelio >= 3) {
             isHRPairPresent = true;
-            speedAdditive += (0.75F * numHelio);
-            euEffAdditive -= (0.1F * numHelio);
-            if (numHelio >= 3) {
-                ocFactorAdditive += 0.08F;
-                parallelScaleAdditive += (6 * numHelio);
-            }
+            entropySuffix = "?";
+            speedAdditive += 1f * XSTR_INSTANCE.nextInt(0, numHelio + 1);
+            euEffAdditive -= 0.15f * XSTR_INSTANCE.nextInt(0, numHelio + 1);
+            ocFactorAdditive += 0.05f * XSTR_INSTANCE.nextInt(0, numHelio + 1);
+            parallelScaleAdditive += (8 * XSTR_INSTANCE.nextInt(0, numHelio + 1));
             if (numHelio == 4) {
-                extraOverclocks += 2;
+                entropySuffix = EnumChatFormatting.OBFUSCATED + "?" + EnumChatFormatting.RESET;
+                extraOverclocks += XSTR_INSTANCE.nextInt(0, numHelio);
             }
         }
     }
@@ -170,18 +179,18 @@ public class FoundryData {
     }
 
     public String getSpeedStr() {
-        return (speedModifierAdj) * 100 + "%";
+        return (speedModifierAdj) * 100 + entropySuffix + "%";
     }
 
     public String getParallelsString() {
-        return (int) parallelScaleAdj + "";
+        return (int) parallelScaleAdj + entropySuffix;
     }
 
     public String getEuEFFString() {
-        return ((int) (euEffAdj * 100)) + "%";
+        return ((int) (euEffAdj * 100)) + entropySuffix + "%";
     }
 
     public String getOCFactorString() {
-        return 2 + ocFactorAdditive + " : 4";
+        return 2 + ocFactorAdditive + entropySuffix + " : 4";
     }
 }
