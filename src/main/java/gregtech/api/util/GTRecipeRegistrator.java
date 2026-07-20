@@ -260,7 +260,7 @@ public class GTRecipeRegistrator {
             || aMaterialAmount <= 0
             || aMaterial.contains(SubTag.NO_SMELTING)
             || (aMaterialAmount > M && aMaterial.contains(SubTag.METAL))
-            || (aMaterial.getProcessingMaterialTierEU() > TierEU.IV)) return;
+            || (aMaterial.getProcessingMaterialTierEU() >= TierEU.IV)) return;
         if (aMaterial == Materials.Naquadah || aMaterial == Materials.NaquadahEnriched) return;
 
         aMaterialAmount /= aStack.stackSize;

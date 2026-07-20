@@ -162,6 +162,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.config.OPStuff;
 import gregtech.common.data.GTPowerfailTracker;
+import gregtech.common.data.WirelessEnergyHatchManager;
 import gregtech.common.data.drone.CameraViewportManager;
 import gregtech.common.data.maglev.TetherManager;
 import gregtech.common.entity.EntityDrone;
@@ -735,6 +736,7 @@ public class GTProxy implements IFuelHandler {
     public GTPowerfailTracker powerfailTracker;
     public CameraViewportManager cameraViewportManager;
     public TetherManager tetherManager;
+    public WirelessEnergyHatchManager wirelessEnergyHatchManager;
 
     public SyncedKeybind TOOL_MODE_SWITCH_KEYBIND;
     public SyncedKeybind CTRL_KEYBIND;
@@ -1222,6 +1224,7 @@ public class GTProxy implements IFuelHandler {
         powerfailTracker = new GTPowerfailTracker();
         if (cameraViewportManager == null) cameraViewportManager = new CameraViewportManager();
         tetherManager = new TetherManager();
+        wirelessEnergyHatchManager = new WirelessEnergyHatchManager();
         FMLCommonHandler.instance().bus().register(wirelessChargerManager);
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
         FMLCommonHandler.instance().bus().register(powerfailTracker);
@@ -1231,6 +1234,7 @@ public class GTProxy implements IFuelHandler {
         MinecraftForge.EVENT_BUS.register(tetherManager);
         FMLCommonHandler.instance().bus().register(cameraViewportManager);
         MinecraftForge.EVENT_BUS.register(cameraViewportManager);
+        FMLCommonHandler.instance().bus().register(wirelessEnergyHatchManager);
         // spotless:off
     }
 
@@ -1306,10 +1310,14 @@ public class GTProxy implements IFuelHandler {
             FMLCommonHandler.instance().bus().unregister(tetherManager);
             MinecraftForge.EVENT_BUS.unregister(tetherManager);
         }
+        if (wirelessEnergyHatchManager != null) {
+            FMLCommonHandler.instance().bus().unregister(wirelessEnergyHatchManager);
+        }
         wirelessChargerManager = null;
         spawnEventHandler = null;
         powerfailTracker = null;
         tetherManager = null;
+        wirelessEnergyHatchManager = null;
         PLAYERS_BY_UUID = null;
         UUID_BY_NAME = null;
         // spotless:on
