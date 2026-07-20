@@ -639,7 +639,7 @@ public class GregtechConduits {
 
         int eut = (int) (8 * voltageMultiplier);
 
-        if (material != null && material.voltageMultiplier <= TierEU.RECIPE_IV) {
+        if (material != null && material.voltageMultiplier < TierEU.IV) {
             // Add the Four Shaped Recipes First
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8),
