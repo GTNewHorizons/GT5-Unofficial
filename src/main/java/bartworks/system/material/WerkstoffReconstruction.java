@@ -20,9 +20,11 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MarkerMaterial;
 import gregtech.api.material.MaterialAtomics;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.loaders.materials.LegacyMaterials;
+import gregtech.loaders.materials.RecognitionMaterials;
 
 /// Rebuilds every legacy `Werkstoff` from MaterialLib data (the werkstoff counterpart of
 /// `MaterialsLegacyBridge`): the pool declaration lists (`WerkstoffLoader`, `GGMaterial`,
@@ -364,12 +366,16 @@ public final class WerkstoffReconstruction {
         return resolveContentRef(name, ownName, built, byName, pending, inProgress);
     }
 
-    private static Materials requireMaterials(String ownName, String name) {
+    private static ISubTagContainer requireMaterials(String ownName, String name) {
         Materials material = Materials.get(name);
-        if (material == null || material == Materials._NULL) {
-            throw new IllegalStateException("Werkstoff " + ownName + " references unknown legacy material " + name);
+        if (material != null && material != Materials._NULL) {
+            return material;
         }
-        return material;
+        MarkerMaterial marker = RecognitionMaterials.getMarker(name);
+        if (marker != null) {
+            return marker;
+        }
+        throw new IllegalStateException("Werkstoff " + ownName + " references unknown legacy material " + name);
     }
 
     /// The legacy `Werkstoff#getOwner` value ("added by" attribution): the declaring mod's display name, or

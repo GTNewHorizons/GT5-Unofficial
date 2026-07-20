@@ -2632,8 +2632,7 @@ public class OrePrefixes {
             Materials.DarkIron,
             Materials.Marble,
             Materials.Quartz,
-            Materials.CertusQuartz,
-            Materials.Limestone);
+            Materials.CertusQuartz);
         ingot.ignoreMaterials(Materials.Brick, Materials.NetherBrick);
 
         dust.addFamiliarPrefix(dustTiny);
