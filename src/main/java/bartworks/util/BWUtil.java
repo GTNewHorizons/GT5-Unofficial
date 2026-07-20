@@ -76,7 +76,7 @@ public class BWUtil {
         if (!ret.contains("%material")) return ret;
         String matname = "";
         if (BWUtil.checkStackAndPrefix(itemStack))
-            matname = ((Materials) GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial).mDefaultLocalName;
+            matname = GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.getDefaultLocalName();
         return ret.replace("%material", matname);
     }
 
