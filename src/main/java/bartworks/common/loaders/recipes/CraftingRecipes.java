@@ -542,34 +542,34 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI
                     .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.plate, (int) (1L)),
                 'L', MaterialLibAPI.getStack(Materials2Materials.GarnetYellow, Materials2Shapes.lens, (int) (1L)), 'S',
-                ItemList.Sensor_IV.get(1), 'R', OrePrefixes.foil.get(Materials.AnySyntheticRubber) });
+                ItemList.Sensor_IV.get(1), 'R', OrePrefixes.foil.ingredient(Materials.AnySyntheticRubber) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Item_Redstone_Sniffer.get(1L),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { " M ", "STS", "dPw", 'M', ItemList.Cover_Screen.get(1L), 'S',
-                OrePrefixes.screw.get(Materials.Titanium), 'T', GregtechItemList.TransmissionComponent_EV.get(1), 'P',
-                OrePrefixes.plate.get(Materials.Titanium) });
+                OrePrefixes.screw.ingredient(Materials.Titanium), 'T', GregtechItemList.TransmissionComponent_EV.get(1),
+                'P', OrePrefixes.plate.ingredient(Materials.Titanium) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Tool_Vajra.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "RMR", "hCd", "EBE", 'R', OrePrefixes.lens.get(Materials.Amethyst), 'M',
+            new Object[] { "RMR", "hCd", "EBE", 'R', OrePrefixes.lens.ingredient(Materials.Amethyst), 'M',
                 ItemList.Magnetron.get(1), 'C', ItemList.Vajra_Core.get(1), 'E',
-                OrePrefixes.plateDense.get(Materials.Silver), 'B', TieredItems.IV.getBatteryIngredient() });
+                OrePrefixes.plateDense.ingredient(Materials.Silver), 'B', TieredItems.IV.getBatteryIngredient() });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Magnetron.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "DCD", "PWP", "DCD", 'D', OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic), 'C',
-                ItemList.HV_Coil, 'P', OrePrefixes.plate.get(Materials.Silver), 'W',
+            new Object[] { "DCD", "PWP", "DCD", 'D', OrePrefixes.plateDense.ingredient(Materials.NeodymiumMagnetic),
+                'C', ItemList.HV_Coil, 'P', OrePrefixes.plate.ingredient(Materials.Silver), 'W',
                 Superconductors.IV.getWireGt12Ingredient() });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Vajra_Core.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "wEh", "ITI", "SRS", 'E', OrePrefixes.plate.get(Materials.Silver), 'I',
-                OrePrefixes.plateDense.get(Materials.Iridium), 'T', ItemList.Transformer_EV_HV.get(1), 'S',
+            new Object[] { "wEh", "ITI", "SRS", 'E', OrePrefixes.plate.ingredient(Materials.Silver), 'I',
+                OrePrefixes.plateDense.ingredient(Materials.Iridium), 'T', ItemList.Transformer_EV_HV.get(1), 'S',
                 Superconductors.IV.getWireGt12Ingredient(), 'R', ItemList.Transformer_IV_EV.get(1) });
     }
 }
