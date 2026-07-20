@@ -151,7 +151,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         tt.addMachineType(StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.machine_type"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.desc1"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.desc2"))
-            .beginStructureBlock(5, 5, 10, false)
+            .beginStructureBlock(5, 10, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("19-45", StatCollector.translateToLocal("defc.casing.7.name"), false)
             .addCasing("32", StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.fusion_casing"), true)

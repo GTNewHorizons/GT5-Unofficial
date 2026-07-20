@@ -202,7 +202,7 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
             .addInfo("Catalyst is consumed by the recipe, then returned upon completion")
             .addSeparator()
             .addInfo("Performs one perfect overclock per casing tier (Thaumium = 1 perfect OC)")
-            .beginStructureBlock(7, 7, 5, true)
+            .beginStructureBlock(7, 5, 7, true)
             .addController("Front center")
             .addSubChannel(GTStructureChannels.ALCHEMICAL_CASING)
             .addSubChannel(GTStructureChannels.ALCHEMICAL_CONSTRUCT)

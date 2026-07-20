@@ -207,7 +207,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(9, 13, 8, true)
+            .beginStructureBlock(13, 8, 9, true)
             .addController("Front bottom center")
             .addCasing("162", "Any Tiered Glass", true)
             .addCasing("145-151", "Naquadah Reinforced Distillation Casing", false)

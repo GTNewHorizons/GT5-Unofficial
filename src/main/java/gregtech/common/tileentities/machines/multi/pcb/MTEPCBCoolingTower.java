@@ -179,7 +179,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
             .addInfo(EnumChatFormatting.GRAY + "Left click the PCB Factory controller with a data stick,")
             .addInfo(EnumChatFormatting.GRAY + "then right click this controller to link.")
             .addInfo(EnumChatFormatting.GRAY + "Can connect to many PCB Factories!")
-            .beginStructureBlock(5, 5, 10, false)
+            .beginStructureBlock(5, 10, 5, false)
             .addController("Front bottom center")
             .addInputHatch("1", "Bottom center casing", 1)
             .addStructureInfo("")
