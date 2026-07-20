@@ -1135,7 +1135,7 @@ public class Godforge implements Runnable {
     private static FluidStack convertToMolten(ItemStack stack) {
         // if this is null it has to be a gt++ material
         ItemData data = GTOreDictUnificator.getAssociation(stack);
-        Materials mat = data == null ? null : (Materials) data.mMaterial.mMaterial;
+        Materials mat = data != null && data.mMaterial.mMaterial instanceof Materials m ? m : null;
         if (mat != null) {
             if (mat.mStandardMoltenFluid != null) {
                 return mat.getMolten(INGOTS * data.mMaterial.mAmount / GTValues.M);

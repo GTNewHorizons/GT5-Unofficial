@@ -150,7 +150,7 @@ public class ScannerHandlerLoader {
         // must be a dust or a cell
         if (tData.mPrefix != OrePrefixes.dust && tData.mPrefix != OrePrefixes.cell) return null;
         // must be a scannable element
-        return getElementScanResult((Materials) tData.mMaterial.mMaterial);
+        return tData.mMaterial.mMaterial instanceof Materials material ? getElementScanResult(material) : null;
     }
 
     public static @Nullable GTScannerResult getElementScanResult(Materials aMaterial) {
