@@ -97,6 +97,7 @@ GT5U.gui.text.shutdown_reason.gtnhlanth.inputinterrupt=Input Beam must not be in
 GT5U.gui.text.recipe_result.dissolution_ratio=§7Wrong fluid input ratio!
 GT5U.gui.text.recipe_result.gtnhlanth.wrongparticle=Incorrect Particle!
 GT5U.gui.text.recipe_result.gtnhlanth.toolowenergy=Below Required Energy!
+GT5U.gui.text.recipe_result.gtnhlanth.toolowenergy=Above Required Energy!
 GT5U.gui.text.shutdown_reason.gtnhlanth.noparticle=Particle absent (rate is 0)!
 
 # NEI
