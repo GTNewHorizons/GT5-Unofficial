@@ -211,12 +211,7 @@ public class MTEHatchCokeOven extends MTEHatch {
         controllers.add(controller);
     }
 
-    /** Removes a controller from this hatch's controller list. */
-    public void removeController(MTECokeOven controller) {
-        controllers.remove(controller);
-    }
-
-    /** Sets the next active controller. */
+    /** Sets the next active controller and removes dead controllers. */
     private boolean nextActiveController() {
         if (controllerIndex >= controllers.size()) {
             controllerIndex = 0;
@@ -225,8 +220,10 @@ public class MTEHatchCokeOven extends MTEHatch {
 
         activeController = controllers.get(controllerIndex);
 
-        if (activeController == null) {
+        IGregTechTileEntity base = activeController.getBaseMetaTileEntity();
+        if (base == null || base.isDead()) {
             controllers.remove(controllerIndex);
+            activeController = null;
             return true;
         }
 

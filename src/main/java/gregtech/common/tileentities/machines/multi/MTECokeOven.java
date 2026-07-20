@@ -164,9 +164,6 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     @Override
     public void clearHatches() {
         super.clearHatches();
-        for (MTEHatchCokeOven hatch : hatches) {
-            hatch.removeController(this);
-        }
         hatches.clear();
     }
 
