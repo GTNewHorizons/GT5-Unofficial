@@ -251,7 +251,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.EV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.TPV)
+            .material(Materials2Materials.TPVAlloy)
             .startId(1840)
             .lossCable(1)
             .lossWire(2)
@@ -366,7 +366,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
         // Superconductor base
         WireCableBuilder.builder()
-            .material(Materials.SuperconductorMVBase)
+            .material(Materials2Materials.Pentacadmiummagnesiumhexaoxid)
             .startId(2200)
             .lossWire(2)
             .amperage(1)
@@ -374,7 +374,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.SuperconductorHVBase)
+            .material(Materials2Materials.Titaniumonabariumdecacoppereikosaoxid)
             .startId(2220)
             .lossWire(8)
             .amperage(2)
@@ -382,7 +382,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.SuperconductorEVBase)
+            .material(Materials2Materials.Uraniumtriplatinid)
             .startId(2240)
             .lossWire(16)
             .amperage(3)
@@ -390,7 +390,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.SuperconductorIVBase)
+            .material(Materials2Materials.Vanadiumtriindinid)
             .startId(2260)
             .lossWire(64)
             .amperage(4)
@@ -398,7 +398,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.SuperconductorLuVBase)
+            .material(Materials2Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid)
             .startId(2280)
             .lossWire(256)
             .amperage(6)
@@ -406,7 +406,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.SuperconductorZPMBase)
+            .material(Materials2Materials.Tetranaquadahdiindiumhexaplatiumosminid)
             .startId(2300)
             .lossWire(1024)
             .amperage(8)
@@ -414,7 +414,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.SuperconductorUVBase)
+            .material(Materials2Materials.Longasssuperconductornameforuvwire)
             .startId(2500)
             .lossWire(4096)
             .amperage(12)
@@ -422,7 +422,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.SuperconductorUHVBase)
+            .material(Materials2Materials.Longasssuperconductornameforuhvwire)
             .startId(2520)
             .lossWire(16384)
             .amperage(16)
@@ -606,7 +606,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
     private static void registerFluidPipes() {
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeSmall.get(Materials.Wood),
+            OrePrefixes.pipeSmall.get(MU.materialOf(Materials2Materials.Wood)),
             new MTEFluidPipe(
                 5101,
                 "GT_Pipe_Wood_Small",
@@ -618,7 +618,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 false).renameMaterial("Wooden")
                     .getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeMedium.get(Materials.Wood),
+            OrePrefixes.pipeMedium.get(MU.materialOf(Materials2Materials.Wood)),
             new MTEFluidPipe(
                 5102,
                 "GT_Pipe_Wood",
@@ -630,7 +630,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 false).renameMaterial("Wooden")
                     .getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeLarge.get(Materials.Wood),
+            OrePrefixes.pipeLarge.get(MU.materialOf(Materials2Materials.Wood)),
             new MTEFluidPipe(
                 5103,
                 "GT_Pipe_Wood_Large",
@@ -729,7 +729,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     .getStackForm(1L));
 
         FluidPipeBuilder.builder()
-            .material(Materials.Polyethylene)
+            .material(Materials2Materials.Plastic)
             .displayName("Plastic")
             .startId(5170)
             .baseCapacity(360)
@@ -809,7 +809,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .heatCapacity(Integer.MAX_VALUE)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.RadoxPolymer)
+            .material(Materials2Materials.RadoxPoly)
             .startId(5760)
             .baseCapacity(5000)
             .heatCapacity(1500)
