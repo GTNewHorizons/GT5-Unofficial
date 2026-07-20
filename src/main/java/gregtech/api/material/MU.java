@@ -288,6 +288,23 @@ public class MU {
         return ref == null ? material : Materials.get(ref.name()).mDirectSmelting;
     }
 
+    /// [#smeltInto(Materials)] for callers holding an [IOreMaterial] whose concrete type is not statically known.
+    /// A legacy [Materials] delegates to that overload; a [MarkerMaterial] resolves to its declared smelting
+    /// target when it has one, otherwise `null`.
+    public static @Nullable Materials smeltInto(@Nullable IOreMaterial material) {
+        return material instanceof Materials legacy ? smeltInto(legacy) : null;
+    }
+
+    /// [#smeltInto(IOreMaterial)], for `Materials#mMacerateInto`/[GTMaterialProperties#MACERATE_INTO].
+    public static @Nullable Materials macerateInto(@Nullable IOreMaterial material) {
+        return material instanceof Materials legacy ? macerateInto(legacy) : null;
+    }
+
+    /// [#smeltInto(IOreMaterial)], for `Materials#mArcSmeltInto`/[GTMaterialProperties#ARC_SMELT_INTO].
+    public static @Nullable Materials arcSmeltInto(@Nullable IOreMaterial material) {
+        return material instanceof Materials legacy ? arcSmeltInto(legacy) : null;
+    }
+
     /// Whether a material carries a legacy [gregtech.api.enums.SubTag], ported 1:1 to [GTMaterialFlag] of the
     /// same name -- see [GTMaterialProperties#FLAGS]. Also true when [GTMaterialProperties#SUB_TAGS] (the
     /// werkstoff facade's raw `Werkstoff` SubTag list, captured separately from FLAGS -- see that property's
@@ -319,10 +336,12 @@ public class MU {
     }
 
     /// [#hasFlag(Materials, GTMaterialFlag)] for callers holding an [IOreMaterial] whose concrete type is not
-    /// statically known. A material that is not a legacy [Materials] carries no flag, so this returns `false`
-    /// for it.
+    /// statically known. A legacy [Materials] delegates to that overload; any other material is consulted through
+    /// its own [gregtech.api.interfaces.ISubTagContainer#contains] for the [SubTag] whose name matches `flag`
+    /// 1:1.
     public static boolean hasFlag(@Nullable IOreMaterial material, GTMaterialFlag flag) {
-        return material instanceof Materials legacy && hasFlag(legacy, flag);
+        if (material instanceof Materials legacy) return hasFlag(legacy, flag);
+        return material != null && material.contains(SubTag.getNewSubTag(flag.name()));
     }
 
     private static String legacyName(Material material) {

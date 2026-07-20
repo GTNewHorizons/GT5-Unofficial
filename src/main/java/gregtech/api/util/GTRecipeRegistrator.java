@@ -63,6 +63,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
@@ -194,15 +195,17 @@ public class GTRecipeRegistrator {
             || GTUtility.getFluidForFilledItem(aStack, false) != null) return;
         registerReverseMacerating(GTUtility.copyAmount(1, aStack), aData, aData.mPrefix == null, true);
         if (!GTUtility.areStacksEqual(GTModHandler.getIC2Item("iridiumOre", 1L), aStack)) {
-            if (aData.mMaterial.mMaterial instanceof Materials primary) {
-                registerReverseSmelting(GTUtility.copyAmount(1, aStack), primary, aData.mMaterial.mAmount, true);
-                registerReverseFluidSmelting(
-                    GTUtility.copyAmount(1, aStack),
-                    primary,
-                    aData.mMaterial.mAmount,
-                    aData.getByProduct(0),
-                    true);
-            }
+            registerReverseSmelting(
+                GTUtility.copyAmount(1, aStack),
+                aData.mMaterial.mMaterial,
+                aData.mMaterial.mAmount,
+                true);
+            registerReverseFluidSmelting(
+                GTUtility.copyAmount(1, aStack),
+                aData.mMaterial.mMaterial,
+                aData.mMaterial.mAmount,
+                aData.getByProduct(0),
+                true);
             registerReverseArcSmelting(GTUtility.copyAmount(1, aStack), aData);
         }
     }
@@ -213,6 +216,15 @@ public class GTRecipeRegistrator {
      * @param aMaterialAmount the amount of it in Material Units.
      * @param isRecycling     whether to put in recycling tab.
      */
+    /// [#registerReverseFluidSmelting(ItemStack, Materials, long, MaterialStack, boolean)] for callers holding an
+    /// [IOreMaterial] whose concrete type is not statically known. Only a legacy [Materials] carries a
+    /// reverse-fluid-smelting recipe.
+    public static void registerReverseFluidSmelting(ItemStack aStack, IOreMaterial aMaterial, long aMaterialAmount,
+        MaterialStack aByproduct, boolean isRecycling) {
+        if (aMaterial instanceof Materials aLegacyMaterial)
+            registerReverseFluidSmelting(aStack, aLegacyMaterial, aMaterialAmount, aByproduct, isRecycling);
+    }
+
     public static void registerReverseFluidSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
         MaterialStack aByproduct, boolean isRecycling) {
         if (aStack == null || aMaterial == null
@@ -258,6 +270,14 @@ public class GTRecipeRegistrator {
      * @param aMaterialAmount    the amount of it in Material Units.
      * @param aAllowAlloySmelter if it is allowed to be recycled inside the Alloy Smelter.
      */
+    /// [#registerReverseSmelting(ItemStack, Materials, long, boolean)] for callers holding an [IOreMaterial]
+    /// whose concrete type is not statically known. Only a legacy [Materials] carries a reverse-smelting recipe.
+    public static void registerReverseSmelting(ItemStack aStack, IOreMaterial aMaterial, long aMaterialAmount,
+        boolean aAllowAlloySmelter) {
+        if (aMaterial instanceof Materials aLegacyMaterial)
+            registerReverseSmelting(aStack, aLegacyMaterial, aMaterialAmount, aAllowAlloySmelter);
+    }
+
     public static void registerReverseSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
         boolean aAllowAlloySmelter) {
         if (aStack == null || aMaterial == null
@@ -326,7 +346,12 @@ public class GTRecipeRegistrator {
 
         for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
             if (!(tMaterial.mMaterial instanceof Materials material)) {
-                tMaterial.mAmount = 0;
+                Materials arcTarget = MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial));
+                if (arcTarget == null) {
+                    tMaterial.mAmount = 0;
+                } else {
+                    tMaterial.mMaterial = arcTarget;
+                }
                 continue;
             }
 
