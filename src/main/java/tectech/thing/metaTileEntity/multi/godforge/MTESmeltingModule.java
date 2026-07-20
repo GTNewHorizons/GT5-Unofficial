@@ -15,9 +15,11 @@ import java.util.Collection;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -32,6 +34,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTESmeltingModuleGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESmeltingModule extends MTEBaseModule {
 
     private long EUt = 0;
@@ -206,26 +209,28 @@ public class MTESmeltingModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace, Furnace")
-            .addInfo("This is a module of the Godforge")
-            .addInfo("Must be part of a Godforge to function")
-            .addInfo("Used for basic smelting operations at various temperatures")
+        final String anyFrontShieldingCasing = StatCollector
+            .translateToLocal("tt.mbtt.ExoticModule.any_front_shielding_casing");
+        tt.addMachineType(StatCollector.translateToLocal("tt.mbtt.SmeltingModule.machine_type"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.SmeltingModule.desc1"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.SmeltingModule.desc2"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.SmeltingModule.desc3"))
             .addSeparator(EnumChatFormatting.AQUA, 74)
-            .addInfo("As the first of the Godforge modules, this module performs the most basic")
-            .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace")
-            .addInfo("The desired method of processing can be selected in the gui")
-            .addInfo("This module is specialized towards speed and high heat levels")
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.SmeltingModule.desc4"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.SmeltingModule.desc5"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.SmeltingModule.desc6"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.SmeltingModule.desc7"))
             .beginStructureBlock(13, 7, 7, false)
-            .addController("Front center, 4th layer")
-            .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
-            .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
-            .addCasing("5", "Celestial Matter Guidance Casing", false)
-            .addCasing("5", "Hypogen Coil Block", false)
-            .addCasing("1", "Stellar Energy Siphon Casing", false)
-            .addInputBus("0+", "Any front shielding casing", 1)
-            .addInputHatch("0+", "Any front shielding casing", 1)
-            .addOutputBus("0+", "Any front shielding casing", 1)
-            .addOutputHatch("0+", "Any front shielding casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-20", Casings.SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
+            .addCasing("20", Casings.BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.CelestialMatterGuidanceCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.HypogenCoilBlock.getLocalizedName(), false)
+            .addCasing("1", Casings.StellarEnergySiphonCasing.getLocalizedName(), false)
+            .addInputBus("0+", anyFrontShieldingCasing, 1)
+            .addInputHatch("0+", anyFrontShieldingCasing, 1)
+            .addOutputBus("0+", anyFrontShieldingCasing, 1)
+            .addOutputHatch("0+", anyFrontShieldingCasing, 1)
             .toolTipFinisher();
         return tt;
     }

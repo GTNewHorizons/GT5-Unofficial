@@ -20,6 +20,7 @@ tile.reactorSim.desc.1=Взрывается, но не так сильно...
 
 gt.spacetime_compression_field_generator.name=Генератор поля пространственно-временного сжатия
 gt.time_acceleration_field_generator.name=Генератор поля замедления времени
+gt.stabilisation_field_generator.name=Генератор поля стабилизации
 
 tile.Forge of the Gods Renderer.name=Forge of the Gods Renderer
 
@@ -820,6 +821,92 @@ gt.blockcasingsBA0.10.desc.0=Устойчив к временным сдвига
 gt.blockcasingsBA0.10.desc.1=Этот блок может просуществовать вечность без какого-либо распада.
 eoh.rightclick.wirecutter.1=Невозможно извлечь Астральные массивы, когда механизм работает!
 eoh.rightclick.wirecutter.2=Получено %s Астральных массивов
+
+tt.mbtt.EyeOfHarmony.machine_type=Пространственно-временной манипулятор, EOH
+tt.mbtt.EyeOfHarmony.desc1=Создает пространственно-временной карман, который становится больше внутри используя трансмерную
+tt.mbtt.EyeOfHarmony.desc2=инженерию. Сертифицировано в соответствии с правилами Повелителя времени. Этот мульти использует слишком много EU
+tt.mbtt.EyeOfHarmony.desc3=чтобы с ним можно было справиться обычными средствами. Все требования к EU выполняются непосредственно с помощью
+tt.mbtt.EyeOfHarmony.desc4=вашей беспроводной EU сети
+tt.mbtt.EyeOfHarmony.desc5=Этот мультиблок будет постоянно потреблять водород и гелий, когда он не запускает
+tt.mbtt.EyeOfHarmony.desc6=рецепт, раз в секунду. Он будет хранить их внутри, и вы сможете увидеть общее количество
+tt.mbtt.EyeOfHarmony.desc7=используя сканер. У этого мульти также есть три многотировых блока с §c9-ю§7 тирами
+tt.mbtt.EyeOfHarmony.desc8=каждый. Они перечислены ниже и оказывают соответствующее влияние на мульти:
+tt.mbtt.EyeOfHarmony.header_compression=§9Генератор поля пространственно-временного сжатия:
+tt.mbtt.EyeOfHarmony.desc9=- Тир этого блока определяет, какие рецепты могут быть запущены. Если мультиблочный
+tt.mbtt.EyeOfHarmony.desc10=  блок поля пространственно-временного сжатия превышает требования рецепта
+tt.mbtt.EyeOfHarmony.compression_discount=  он уменьшит время работы на §c%s%%§7 за каждый тир сверх требуемого (мультипликативно)
+tt.mbtt.EyeOfHarmony.header_dilation=§9Генератор поля замедления времени:
+tt.mbtt.EyeOfHarmony.dilation_time=- Уменьшает время, необходимое для рецепта, на §c50%%§7 за каждый тир блока (мультипликативно)
+tt.mbtt.EyeOfHarmony.dilation_chance=  Уменьшает вероятность успешного выполнения рецепта на §c%s%%§7 за тир (аддитивный)
+tt.mbtt.EyeOfHarmony.header_stabilisation=§9Генератор поля стабилизации:
+tt.mbtt.EyeOfHarmony.stabilisation_chance=- Увеличивает вероятность успешного выполнения рецепта на §c%s%%§7 за тир (аддитивный)
+tt.mbtt.EyeOfHarmony.stabilisation_yield=  Уменьшает выход рецепта на §c%s%%§7 за тир (аддитивный).
+tt.mbtt.EyeOfHarmony.desc11=  > Генератор поля стабилизации низкого тира имеют штраф за выходную мощность
+tt.mbtt.EyeOfHarmony.crude_penalty=     Штраф за использование Грубых генераторов поля стабилизации составляет §c%s%%
+tt.mbtt.EyeOfHarmony.crude_penalty_decrease=     Этот штраф уменьшается на §c%s%%§7 за каждый тир (аддитивный)
+tt.mbtt.EyeOfHarmony.desc12=Превышение потребности рецепта по водороду или гелию влечет за собой штраф на доходность и шанс рецепта
+tt.mbtt.EyeOfHarmony.desc13=При запуске расходуется весь запасенный водород и гелий. При этом используются следующие формулы:
+tt.mbtt.EyeOfHarmony.formula_overflow=§aКоэффициент переполнения = (Запасенная жидкость / Потребность в рецепте) - 1
+tt.mbtt.EyeOfHarmony.formula_adjustment=§aКорректирующее значение = 1 - exp(-(30 * Коэффициент переполнения)^2)
+tt.mbtt.EyeOfHarmony.desc14=Корректирующее значение затем вычитается из общего дохода и шанса рецепта
+tt.mbtt.EyeOfHarmony.desc15=Следует отметить, что базовый шанс рецепта определяется для каждого рецепта и доходность всегда начинается
+tt.mbtt.EyeOfHarmony.desc16=с 1 и вычитается в зависимости от штрафов. Все выходы жидкостей/предметов умножаются на
+tt.mbtt.EyeOfHarmony.desc17=доходность. Жидкость при неудачах не учитывается
+tt.mbtt.EyeOfHarmony.desc18=Этот мультиблок может выводить только в МЭ выходной люк/шлюз
+tt.mbtt.EyeOfHarmony.desc19=Этот мультиблок можно разогнать, поместив запрограммированную схему во входной люк
+tt.mbtt.EyeOfHarmony.desc20=Например: Схема 2 обеспечит 2 разгона, 16x EU на ввод и 0,25x на время. Вывод EU не затрагивается
+tt.mbtt.EyeOfHarmony.desc21=Все выводы равны. Все предметы и жидкости выходят с одинаковыми шансами и их количество в рецепте не изменяется
+tt.mbtt.EyeOfHarmony.molten_output=Если рецепт не удался, EOH будет выдавать §aШанс успеха * %s * (%s)^(Тир рецепта)§7Л расплавленное
+tt.mbtt.EyeOfHarmony.molten_output_material=%s вместо выхода жидкости/предметов и выдаст столько же EU, сколько и при удачном рецепте
+tt.mbtt.EyeOfHarmony.desc22=Этот мультиблок может выполнять параллельную работу, помещая в входной люк Астральный массив
+tt.mbtt.EyeOfHarmony.desc23=Он хранится во внутреннем хранилище и может быть извлечен, щелкнув ПКМ по контроллеру с кусачками
+tt.mbtt.EyeOfHarmony.astral_limit=Максимальное количество хранимых Астральных массивов - %s. Количество параллелей рассчитывается по следующим формулам:
+tt.mbtt.EyeOfHarmony.formula_parallel_exponent=§aПараллельная экспонента = округление(log(%s*колич.АстральныхМассивов) / log(%s))
+tt.mbtt.EyeOfHarmony.formula_parallel=§aПараллель = 2^(Параллельная экспонента)
+tt.mbtt.EyeOfHarmony.desc24=Если EOH выполняет параллельные рецепты, расчёт мощности меняется
+tt.mbtt.EyeOfHarmony.desc25=Мощность, необходимая для параллельной работы, рассчитывается следующим образом:
+tt.mbtt.EyeOfHarmony.formula_parallel_power=§aобщее EU = ((EU вывод - EU ввод*%s) / %s)*%s^(Параллельный экспонент)
+tt.mbtt.EyeOfHarmony.consume_rawstarmatter=Кроме того, при параллельном выполнении рецептов, в рецептах будет расходоваться %s
+tt.mbtt.EyeOfHarmony.desc26=вместо гелия и водорода. Штрафы за переполнение по-прежнему применяются
+tt.mbtt.EyeOfHarmony.fluid_required=Необходимое количество жидкости для начала рецепта составляет §a12.4 / 10^6 *количества гелия*Параллель
+tt.mbtt.EyeOfHarmony.desc27=Успех или неудача каждой параллели определяется независимо
+tt.mbtt.EyeOfHarmony.desc28=Анимацию можно отключить используя отвёртку на мультиблоке
+tt.mbtt.EyeOfHarmony.desc29=Блок планеты можно вставить напрямую, щелкнув ПКМ по контроллеру с блоком планеты
+tt.mbtt.EyeOfHarmony.any_boundary_no_stocking_bus=Любой граничный корпус (без складирующей шины)
+tt.mbtt.EyeOfHarmony.any_boundary_no_stocking_hatch=Любой граничный корпус (без складирующего люка)
+tt.mbtt.EyeOfHarmony.any_boundary_casing=Любой граничный корпус
+
+tt.mbtt.ResearchStation.any_back_center_casing=Любой корпус компьютера сзади по центру
+tt.mbtt.ResearchStation.footer=§aФлешки §rвставляются в контроллер
+
+tt.mbtt.ExoticModule.machine_type=Производитель экзотической материи
+tt.mbtt.ExoticModule.desc1=Это модуль Godforge
+tt.mbtt.ExoticModule.desc2=Для работы должен быть частью Godforge
+tt.mbtt.ExoticModule.desc3=Используется для распада материи при сверхвысоких температурах
+tt.mbtt.ExoticModule.desc4=Четвёртый и последний модуль Godforge, он разрушает сами
+tt.mbtt.ExoticModule.desc5=строительные блоки материи, производя в процессе экзотические смеси. Кварк-глюонная плазма
+tt.mbtt.ExoticModule.desc6=может производиться сразу, но производство Магнитной Монопольной Материи (Магматерии)
+tt.mbtt.ExoticModule.desc7=требует полностью улучшенного Godforge
+tt.mbtt.ExoticModule.desc8=Этот модуль специализируется на добыче уникальных материалов
+tt.mbtt.ExoticModule.any_front_shielding_casing=Любой передний защитный корпус
+
+tt.mbtt.MoltenModule.machine_type=Плавильная печь
+tt.mbtt.MoltenModule.desc1=Это модуль Godforge
+tt.mbtt.MoltenModule.desc2=Для работы должен быть частью Godforge
+tt.mbtt.MoltenModule.desc3=Используется для сжижения материалов при высокой температуре
+tt.mbtt.MoltenModule.desc4=Второй модуль Godforge, он плавит материалы напрямую в
+tt.mbtt.MoltenModule.desc5=их жидкую форму. Если у выходного материала нет жидкой формы, он будет выведен
+tt.mbtt.MoltenModule.desc6=как обычное твёрдое вещество
+tt.mbtt.MoltenModule.desc7=Этот модуль специализируется на параллельной обработке
+
+tt.mbtt.SmeltingModule.machine_type=Доменная печь, Печь
+tt.mbtt.SmeltingModule.desc1=Это модуль Godforge
+tt.mbtt.SmeltingModule.desc2=Для работы должен быть частью Godforge
+tt.mbtt.SmeltingModule.desc3=Используется для базовой плавки при различных температурах
+tt.mbtt.SmeltingModule.desc4=Как первый из модулей Godforge, этот модуль выполняет самую базовую
+tt.mbtt.SmeltingModule.desc5=термическую обработку, а именно плавку материалов аналогично печи или доменной печи
+tt.mbtt.SmeltingModule.desc6=Нужный способ обработки можно выбрать в интерфейсе
+tt.mbtt.SmeltingModule.desc7=Этот модуль специализируется на скорости и высоких уровнях нагрева
 
 # Antimatter
 gt.blockmachines.antimatterForge.name=Секвенсор стабилизации полустабильной антиматерии

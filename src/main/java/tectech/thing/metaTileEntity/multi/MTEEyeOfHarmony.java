@@ -16,8 +16,6 @@ import static java.lang.Math.exp;
 import static kekztech.util.Util.toStandardForm;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
-import static net.minecraft.util.EnumChatFormatting.GRAY;
-import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
@@ -97,6 +95,7 @@ import tectech.util.FluidStackLong;
 import tectech.util.ItemStackLong;
 
 @SuppressWarnings("SpellCheckingInspection")
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstructable {
 
     public static final boolean EOH_DEBUG_MODE = false;
@@ -954,139 +953,116 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Spacetime Manipulator, EOH")
-            .addInfo("Creates a pocket of spacetime that is bigger on the inside using transdimensional")
-            .addInfo("engineering. Certified Time Lord regulation compliant. This multi uses too much EU")
-            .addInfo("to be handled with conventional means. All EU requirements are handled directly by")
-            .addInfo("your wireless EU network")
+        final String K = "tt.mbtt.EyeOfHarmony.";
+        tt.addMachineType(StatCollector.translateToLocal(K + "machine_type"))
+            .addInfo(StatCollector.translateToLocal(K + "desc1"))
+            .addInfo(StatCollector.translateToLocal(K + "desc2"))
+            .addInfo(StatCollector.translateToLocal(K + "desc3"))
+            .addInfo(StatCollector.translateToLocal(K + "desc4"))
             .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("This multiblock will constantly consume hydrogen and helium when it is not running a")
-            .addInfo("recipe once per second. It will store this internally, you can see the totals by")
-            .addInfo("using a scanner. This multi also has three tiered blocks with " + RED + 9 + GRAY + " tiers")
-            .addInfo("each. They are as follows and have the associated effects on the multi:")
-            .addInfo(BLUE + "Spacetime Compression Field Generator:")
-            .addInfo("- The tier of this block determines what recipes can be run. If the multiblocks")
-            .addInfo("  spacetime compression field block exceeds the requirements of the recipe it")
+            .addInfo(StatCollector.translateToLocal(K + "desc5"))
+            .addInfo(StatCollector.translateToLocal(K + "desc6"))
+            .addInfo(StatCollector.translateToLocal(K + "desc7"))
+            .addInfo(StatCollector.translateToLocal(K + "desc8"))
+            .addInfo(StatCollector.translateToLocal(K + "header_compression"))
+            .addInfo(StatCollector.translateToLocal(K + "desc9"))
+            .addInfo(StatCollector.translateToLocal(K + "desc10"))
             .addInfo(
-                "  will decrease the processing time by " + RED
-                    + formatNumber(SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier over the requirement (multiplicative)")
-            .addInfo(BLUE + "Time Dilation Field Generator:")
+                StatCollector.translateToLocalFormatted(
+                    K + "compression_discount",
+                    formatNumber(SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE * 100)))
+            .addInfo(StatCollector.translateToLocal(K + "header_dilation"))
+            .addInfo(StatCollector.translateToLocal(K + "dilation_time"))
             .addInfo(
-                "- Decreases the time required for a recipe by " + RED
-                    + "50%"
-                    + GRAY
-                    + " per tier of block (multiplicative)")
+                StatCollector.translateToLocalFormatted(
+                    K + "dilation_chance",
+                    formatNumber(TIME_ACCEL_DECREASE_CHANCE_PER_TIER * 100)))
+            .addInfo(StatCollector.translateToLocal(K + "header_stabilisation"))
             .addInfo(
-                "  Decreases the probability of a recipe succeeding by " + RED
-                    + formatNumber(TIME_ACCEL_DECREASE_CHANCE_PER_TIER * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier (additive)")
-            .addInfo(BLUE + "Stabilisation Field Generator:")
+                StatCollector.translateToLocalFormatted(
+                    K + "stabilisation_chance",
+                    formatNumber(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)))
             .addInfo(
-                "- Increases the probability of a recipe succeeding by " + RED
-                    + formatNumber(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier (additive)")
+                StatCollector.translateToLocalFormatted(
+                    K + "stabilisation_yield",
+                    formatNumber(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)))
+            .addInfo(StatCollector.translateToLocal(K + "desc11"))
             .addInfo(
-                "  Decreases the yield of a recipe by " + RED
-                    + formatNumber(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier (additive). ")
-            .addInfo("  > Low tier stabilisation field generators have a power output penalty")
-            .addInfo(
-                "     The power output penalty for using Crude Stabilisation Field Generators is " + RED
-                    + formatNumber(
+                StatCollector.translateToLocalFormatted(
+                    K + "crude_penalty",
+                    formatNumber(
                         STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * TOTAL_CASING_TIERS_WITH_POWER_PENALTY
-                            * 100)
-                    + "%")
+                            * 100)))
             .addInfo(
-                "     This penalty decreases by " + RED
-                    + formatNumber(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier (additive)")
+                StatCollector.translateToLocalFormatted(
+                    K + "crude_penalty_decrease",
+                    formatNumber(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)))
             .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance")
-            .addInfo("All stored hydrogen and helium is consumed during a craft. The associated formulas are:")
-            .addInfo(GREEN + "Overflow ratio = (Stored fluid / Recipe requirement) - 1")
-            .addInfo(GREEN + "Adjustment value = 1 - exp(-(30 * Overflow ratio)^2)")
-            .addInfo("The Adjustment value is then subtracted from the total yield and recipe chance")
+            .addInfo(StatCollector.translateToLocal(K + "desc12"))
+            .addInfo(StatCollector.translateToLocal(K + "desc13"))
+            .addInfo(StatCollector.translateToLocal(K + "formula_overflow"))
+            .addInfo(StatCollector.translateToLocal(K + "formula_adjustment"))
+            .addInfo(StatCollector.translateToLocal(K + "desc14"))
             .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("It should be noted that base recipe chance is determined per recipe and yield always starts")
-            .addInfo("at 1 and subtracts depending on penalties. All fluid/item outputs are multiplied by the")
-            .addInfo("yield. Failure fluid is exempt")
+            .addInfo(StatCollector.translateToLocal(K + "desc15"))
+            .addInfo(StatCollector.translateToLocal(K + "desc16"))
+            .addInfo(StatCollector.translateToLocal(K + "desc17"))
             .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("This multiblock can only output to ME output buses/hatches")
+            .addInfo(StatCollector.translateToLocal(K + "desc18"))
             .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("This multiblock can be overclocked by placing a programmed circuit into the input bus")
-            .addInfo("E.g. A circuit of 2 will provide 2 OCs, 16x EU input and 0.25x the time. EU output is unaffected")
-            .addInfo("All outputs are equal. All item and fluid output chances & amounts per recipe are unaffected")
+            .addInfo(StatCollector.translateToLocal(K + "desc19"))
+            .addInfo(StatCollector.translateToLocal(K + "desc20"))
+            .addInfo(StatCollector.translateToLocal(K + "desc21"))
             .addSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo(
-                "If a recipe fails the EOH will output " + GREEN
-                    + "Success chance * "
-                    + formatNumber(MOLTEN_SPACETIME_PER_FAILURE_TIER)
-                    + " * ("
-                    + SPACETIME_FAILURE_BASE
-                    + ")^(Recipe tier)"
-                    + GRAY
-                    + "L of molten")
+                StatCollector.translateToLocalFormatted(
+                    K + "molten_output",
+                    formatNumber(MOLTEN_SPACETIME_PER_FAILURE_TIER),
+                    SPACETIME_FAILURE_BASE))
             .addInfo(
-                Materials.SpaceTime.getLocalizedNameForItem("%material")
-                    + " instead of fluid/item outputs and output as much EU as a successful recipe")
+                StatCollector.translateToLocalFormatted(
+                    K + "molten_output_material",
+                    Materials.SpaceTime.getLocalizedNameForItem("%material")))
             .addSeparator(EnumChatFormatting.GOLD, 87)
+            .addInfo(StatCollector.translateToLocal(K + "desc22"))
+            .addInfo(StatCollector.translateToLocal(K + "desc23"))
+            .addInfo(StatCollector.translateToLocalFormatted(K + "astral_limit", formatNumber(ASTRAL_ARRAY_LIMIT)))
             .addInfo(
-                "This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus")
+                StatCollector.translateToLocalFormatted(
+                    K + "formula_parallel_exponent",
+                    formatNumber(PARALLEL_FOR_FIRST_ASTRAL_ARRAY),
+                    formatNumber(CONSTANT_FOR_LOG)))
+            .addInfo(StatCollector.translateToLocal(K + "formula_parallel"))
+            .addInfo(StatCollector.translateToLocal(K + "desc24"))
+            .addInfo(StatCollector.translateToLocal(K + "desc25"))
             .addInfo(
-                "They are stored internally and can be retrieved via right-clicking the controller with a wire cutter")
+                StatCollector.translateToLocalFormatted(
+                    K + "formula_parallel_power",
+                    formatNumber(PARALLEL_MULTIPLIER_CONSTANT),
+                    formatNumber(POWER_DIVISION_CONSTANT),
+                    formatNumber(POWER_INCREASE_CONSTANT)))
             .addInfo(
-                "The maximum amount of stored Astral Arrays is " + formatNumber(ASTRAL_ARRAY_LIMIT)
-                    + ". Parallel amount is calculated via these formulas:")
-            .addInfo(
-                GREEN + "Parallel exponent = floor(log("
-                    + formatNumber(PARALLEL_FOR_FIRST_ASTRAL_ARRAY)
-                    + " * Astral Array amount) / log("
-                    + formatNumber(CONSTANT_FOR_LOG)
-                    + "))")
-            .addInfo(GREEN + "Parallel = 2^(Parallel exponent)")
-            .addInfo("If the EOH is running parallel recipes, the power calculation changes")
-            .addInfo("The power needed for parallel processing is calculated as follows:")
-            .addInfo(
-                GREEN + "total EU = ((EU output - EU input * "
-                    + formatNumber(PARALLEL_MULTIPLIER_CONSTANT)
-                    + ") / "
-                    + formatNumber(POWER_DIVISION_CONSTANT)
-                    + ") * "
-                    + formatNumber(POWER_INCREASE_CONSTANT)
-                    + "^(Parallel exponent)")
-            .addInfo(
-                "Furthermore, if parallel recipes are run, the recipes consume "
-                    + Materials.RawStarMatter.getLocalizedNameForItem("%material"))
-            .addInfo("instead of helium and hydrogen. Overflow penalties still apply")
-            .addInfo(
-                "The required amount of fluid to start a recipe is " + GREEN + "12.4 / 10^6 * Helium amount * Parallel")
-            .addInfo("The success or failure of each parallel is determined independently")
+                StatCollector.translateToLocalFormatted(
+                    K + "consume_rawstarmatter",
+                    Materials.RawStarMatter.getLocalizedNameForItem("%material")))
+            .addInfo(StatCollector.translateToLocal(K + "desc26"))
+            .addInfo(StatCollector.translateToLocal(K + "fluid_required"))
+            .addInfo(StatCollector.translateToLocal(K + "desc27"))
             .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("Animations can be disabled by using a screwdriver on the multiblock")
-            .addInfo("Planet block can be inserted directly by right-clicking the controller with planet block")
+            .addInfo(StatCollector.translateToLocal(K + "desc28"))
+            .addInfo(StatCollector.translateToLocal(K + "desc29"))
             .beginStructureBlock(33, 33, 33, false)
-            .addController("Front center, 17th layer")
-            .addCasing("896", "Reinforced Spatial Structure Casing", false)
-            .addCasing("534", "Reinforced Temporal Structure Casing", false)
-            .addCasing("168", "Time Dilation Field Generator", true)
-            .addCasing("138", "Spacetime Compression Field Generator", true)
-            .addCasing("48", "Stabilisation Field Generator", true)
-            .addCasing("31", "Infinite Spacetime Energy Boundary Casing", false)
-            .addInputBus("1", "Any boundary casing (no stocking bus)", 1)
-            .addInputHatch("2", "Any boundary casing (no stocking hatch)", 1)
-            .addOutputBus("1", "Any boundary casing", 1)
-            .addOutputHatch("1", "Any boundary casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_17th_layer"))
+            .addCasing("896", Casings.ReinforcedSpatialStructureCasing.getLocalizedName(), false)
+            .addCasing("534", Casings.ReinforcedTemporalStructureCasing.getLocalizedName(), false)
+            .addCasing("168", StatCollector.translateToLocal("gt.time_acceleration_field_generator.name"), true)
+            .addCasing("138", StatCollector.translateToLocal("gt.spacetime_compression_field_generator.name"), true)
+            .addCasing("48", StatCollector.translateToLocal("gt.stabilisation_field_generator.name"), true)
+            .addCasing("31", Casings.InfiniteSpacetimeEnergyBoundaryCasing.getLocalizedName(), false)
+            .addInputBus("1", StatCollector.translateToLocal(K + "any_boundary_no_stocking_bus"), 1)
+            .addInputHatch("2", StatCollector.translateToLocal(K + "any_boundary_no_stocking_hatch"), 1)
+            .addOutputBus("1", StatCollector.translateToLocal(K + "any_boundary_casing"), 1)
+            .addOutputHatch("1", StatCollector.translateToLocal(K + "any_boundary_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.EOH_STABILISATION)
             .addSubChannel(GTStructureChannels.EOH_DILATION)

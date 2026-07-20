@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -35,6 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import com.cleanroommc.modularui.utils.fluid.FluidTanksHandler;
 import com.cleanroommc.modularui.utils.fluid.IFluidTanksHandler;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -55,6 +57,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.MTEExoticModuleGui;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExoticModule extends MTEBaseModule {
 
     public static final int RECIPE_REFRESH_LIMIT = 60 * SECONDS;
@@ -509,27 +512,29 @@ public class MTEExoticModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Exotic Matter Producer")
-            .addInfo("This is a module of the Godforge")
-            .addInfo("Must be part of a Godforge to function")
-            .addInfo("Used for ultra high temperature matter degeneration")
+        final String anyFrontShieldingCasing = StatCollector
+            .translateToLocal("tt.mbtt.ExoticModule.any_front_shielding_casing");
+        tt.addMachineType(StatCollector.translateToLocal("tt.mbtt.ExoticModule.machine_type"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.ExoticModule.desc1"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.ExoticModule.desc2"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.ExoticModule.desc3"))
             .addSeparator(EnumChatFormatting.AQUA, 75)
-            .addInfo("The fourth and final module of the Godforge, this module breaks apart the very")
-            .addInfo("building blocks of matter, producing exotic mixtures in the process. Quark-Gluon Plasma")
-            .addInfo("can be manufactured right away, but production of Magnetic Monopole Matter (Magmatter)")
-            .addInfo("requires a fully upgraded Godforge")
-            .addInfo("This module is specialized towards acquisition of unique materials")
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.ExoticModule.desc4"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.ExoticModule.desc5"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.ExoticModule.desc6"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.ExoticModule.desc7"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.ExoticModule.desc8"))
             .beginStructureBlock(13, 7, 7, false)
-            .addController("Front center, 4th layer")
-            .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
-            .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
-            .addCasing("5", "Celestial Matter Guidance Casing", false)
-            .addCasing("5", "Harmonic Phonon Transmission Conduit", false)
-            .addCasing("1", "Stellar Energy Siphon Casing", false)
-            .addInputBus("0+", "Any front shielding casing", 1)
-            .addInputHatch("0+", "Any front shielding casing", 1)
-            .addOutputBus("1+", "Any front shielding casing", 1)
-            .addOutputHatch("1+", "Any front shielding casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-20", Casings.SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
+            .addCasing("20", Casings.BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.CelestialMatterGuidanceCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.HarmonicPhononTransmissionConduit.getLocalizedName(), false)
+            .addCasing("1", Casings.StellarEnergySiphonCasing.getLocalizedName(), false)
+            .addInputBus("0+", anyFrontShieldingCasing, 1)
+            .addInputHatch("0+", anyFrontShieldingCasing, 1)
+            .addOutputBus("1+", anyFrontShieldingCasing, 1)
+            .addOutputHatch("1+", anyFrontShieldingCasing, 1)
             .toolTipFinisher();
         return tt;
     }

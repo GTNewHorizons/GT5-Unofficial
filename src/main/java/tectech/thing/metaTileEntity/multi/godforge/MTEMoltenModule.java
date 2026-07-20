@@ -12,9 +12,11 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -29,6 +31,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEMoltenModuleGui;
 import tectech.recipe.TecTechRecipeMaps;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMoltenModule extends MTEBaseModule {
 
     private long EUt = 0;
@@ -163,26 +166,28 @@ public class MTEMoltenModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Smelter")
-            .addInfo("This is a module of the Godforge")
-            .addInfo("Must be part of a Godforge to function")
-            .addInfo("Used for high temperature material liquefaction")
+        final String anyFrontShieldingCasing = StatCollector
+            .translateToLocal("tt.mbtt.ExoticModule.any_front_shielding_casing");
+        tt.addMachineType(StatCollector.translateToLocal("tt.mbtt.MoltenModule.machine_type"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.MoltenModule.desc1"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.MoltenModule.desc2"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.MoltenModule.desc3"))
             .addSeparator(EnumChatFormatting.AQUA, 74)
-            .addInfo("The second module of the Godforge, this module melts materials directly into")
-            .addInfo("their liquid form. If an output material does not have a liquid form, it will be output")
-            .addInfo("as a regular solid instead")
-            .addInfo("This module is specialized towards parallel processing")
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.MoltenModule.desc4"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.MoltenModule.desc5"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.MoltenModule.desc6"))
+            .addInfo(StatCollector.translateToLocal("tt.mbtt.MoltenModule.desc7"))
             .beginStructureBlock(13, 7, 7, false)
-            .addController("Front center, 4th layer")
-            .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
-            .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
-            .addCasing("5", "Celestial Matter Guidance Casing", false)
-            .addCasing("5", "Harmonic Phonon Transmission Conduit", false)
-            .addCasing("1", "Stellar Energy Siphon Casing", false)
-            .addInputBus("0+", "Any front shielding casing", 1)
-            .addInputHatch("0+", "Any front shielding casing", 1)
-            .addOutputBus("0+", "Any front shielding casing", 1)
-            .addOutputHatch("0+", "Any front shielding casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-20", Casings.SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
+            .addCasing("20", Casings.BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.CelestialMatterGuidanceCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.HarmonicPhononTransmissionConduit.getLocalizedName(), false)
+            .addCasing("1", Casings.StellarEnergySiphonCasing.getLocalizedName(), false)
+            .addInputBus("0+", anyFrontShieldingCasing, 1)
+            .addInputHatch("0+", anyFrontShieldingCasing, 1)
+            .addOutputBus("0+", anyFrontShieldingCasing, 1)
+            .addOutputHatch("0+", anyFrontShieldingCasing, 1)
             .toolTipFinisher();
         return tt;
     }

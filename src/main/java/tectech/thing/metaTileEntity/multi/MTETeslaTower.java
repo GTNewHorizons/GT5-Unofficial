@@ -48,6 +48,7 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -69,6 +70,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.gui.modularui.multiblock.MTETeslaTowerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.loader.ConfigHandler;
@@ -94,6 +96,7 @@ import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETeslaTower extends TTMultiblockBase
     implements ISurvivalConstructable, ITeslaConnectable, IParametrized {
 
@@ -567,13 +570,17 @@ public class MTETeslaTower extends TTMultiblockBase
             // the Tesla Capacitor
             .addSupportAny()
             .beginStructureBlock(7, 7, 17, false)
-            .addController("Front bottom center")
-            .addCasing("128", "Tesla Toroid Casing", false)
-            .addCasing("17-33", "Tesla Base Casing", false)
-            .addCasing("20", "Primary Tesla Windings", true)
-            .addCasing("16", "Titanium Frame Box", false)
-            .addCasing("12", "Secondary Tesla Windings", false)
-            .addMiscHatch("1+", "Capacitor Hatch", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addController(translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("128", Casings.TeslaToroidCasing.getLocalizedName(), false)
+            .addCasing("17-33", Casings.TeslaBaseCasing.getLocalizedName(), false)
+            .addCasing("20", translateToLocal("gt.blockcasingsBA0.name"), true)
+            .addCasing("16", BlockFrameBox.getLocalizedName(Materials.Titanium), false)
+            .addCasing("12", Casings.TeslaSecondaryWindings.getLocalizedName(), false)
+            .addMiscHatch(
+                "1+",
+                translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"),
+                translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"),
+                1)
             .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .addInputHatch("0+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)

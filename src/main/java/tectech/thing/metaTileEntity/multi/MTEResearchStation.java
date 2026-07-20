@@ -42,6 +42,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -85,6 +86,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  * Created by danie_000 on 17.12.2016.
  * Updated by C0bra5 on 11.01.2026.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEResearchStation extends TTMultiblockBase implements ISurvivalConstructable {
 
     // region variables
@@ -251,10 +253,10 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.6"))
             .addSupportAny()
             .beginStructureBlock(7, 3, 7, false)
-            .addController("Front center")
-            .addCasing("52-58", "Computer Casing", false)
-            .addCasing("23", "Advanced Computer Casing", false)
-            .addCasing("14", "Computer Heat Vent", false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
+            .addCasing("52-58", Casings.ComputerCasing.getLocalizedName(), false)
+            .addCasing("23", Casings.AdvancedComputerCasing.getLocalizedName(), false)
+            .addCasing("14", Casings.ComputerHeatVent.getLocalizedName(), false)
             .addMiscHatch(
                 "1",
                 StatCollector.translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
@@ -263,13 +265,15 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addMiscHatch(
                 "1+",
                 StatCollector.translateToLocal("tt.keyword.Structure.DataInput"),
-                "Any back center casing",
+                StatCollector.translateToLocal("tt.mbtt.ResearchStation.any_back_center_casing"),
                 1)
-            .addEnergyHatch("1+", "Any back center casing", 1)
-            .addMaintenanceHatch("1", "Any back center casing", 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("tt.mbtt.ResearchStation.any_back_center_casing"), 1)
+            .addMaintenanceHatch(
+                "1",
+                StatCollector.translateToLocal("tt.mbtt.ResearchStation.any_back_center_casing"),
+                1)
             .addStructureInfo("")
-            .addStructureFooter(
-                EnumChatFormatting.GREEN + "Data Sticks " + EnumChatFormatting.RESET + "go in the controller")
+            .addStructureFooter(StatCollector.translateToLocal("tt.mbtt.ResearchStation.footer"))
             .toolTipFinisher();
         return tt;
     }

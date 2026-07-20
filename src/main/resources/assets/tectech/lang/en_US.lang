@@ -20,6 +20,7 @@ tile.reactorSim.desc.1=Explodes, but not as much...
 
 gt.spacetime_compression_field_generator.name=Spacetime Compression Field Generator
 gt.time_acceleration_field_generator.name=Time Dilation Field Generator
+gt.stabilisation_field_generator.name=Stabilisation Field Generator
 
 tile.Forge of the Gods Renderer.name=Forge of the Gods Renderer
 
@@ -830,6 +831,92 @@ gt.blockcasingsBA0.10.desc.0=Resistant to temporal shearing from time dilation d
 gt.blockcasingsBA0.10.desc.1=This block can last an eternity without any decay.
 eoh.rightclick.wirecutter.1=Can't retrieve Astral Array Fabricators when the machine is working!
 eoh.rightclick.wirecutter.2=Retrieved %s Astral Array Fabricators
+
+tt.mbtt.EyeOfHarmony.machine_type=Spacetime Manipulator, EOH
+tt.mbtt.EyeOfHarmony.desc1=Creates a pocket of spacetime that is bigger on the inside using transdimensional
+tt.mbtt.EyeOfHarmony.desc2=engineering. Certified Time Lord regulation compliant. This multi uses too much EU
+tt.mbtt.EyeOfHarmony.desc3=to be handled with conventional means. All EU requirements are handled directly by
+tt.mbtt.EyeOfHarmony.desc4=your wireless EU network
+tt.mbtt.EyeOfHarmony.desc5=This multiblock will constantly consume hydrogen and helium when it is not running a
+tt.mbtt.EyeOfHarmony.desc6=recipe once per second. It will store this internally, you can see the totals by
+tt.mbtt.EyeOfHarmony.desc7=using a scanner. This multi also has three tiered blocks with §c9§7 tiers
+tt.mbtt.EyeOfHarmony.desc8=each. They are as follows and have the associated effects on the multi:
+tt.mbtt.EyeOfHarmony.header_compression=§9Spacetime Compression Field Generator:
+tt.mbtt.EyeOfHarmony.desc9=- The tier of this block determines what recipes can be run. If the multiblocks
+tt.mbtt.EyeOfHarmony.desc10=  spacetime compression field block exceeds the requirements of the recipe it
+tt.mbtt.EyeOfHarmony.compression_discount=  will decrease the processing time by §c%s%%§7 per tier over the requirement (multiplicative)
+tt.mbtt.EyeOfHarmony.header_dilation=§9Time Dilation Field Generator:
+tt.mbtt.EyeOfHarmony.dilation_time=- Decreases the time required for a recipe by §c50%%§7 per tier of block (multiplicative)
+tt.mbtt.EyeOfHarmony.dilation_chance=  Decreases the probability of a recipe succeeding by §c%s%%§7 per tier (additive)
+tt.mbtt.EyeOfHarmony.header_stabilisation=§9Stabilisation Field Generator:
+tt.mbtt.EyeOfHarmony.stabilisation_chance=- Increases the probability of a recipe succeeding by §c%s%%§7 per tier (additive)
+tt.mbtt.EyeOfHarmony.stabilisation_yield=  Decreases the yield of a recipe by §c%s%%§7 per tier (additive).
+tt.mbtt.EyeOfHarmony.desc11=  > Low tier stabilisation field generators have a power output penalty
+tt.mbtt.EyeOfHarmony.crude_penalty=     The power output penalty for using Crude Stabilisation Field Generators is §c%s%%
+tt.mbtt.EyeOfHarmony.crude_penalty_decrease=     This penalty decreases by §c%s%%§7 per tier (additive)
+tt.mbtt.EyeOfHarmony.desc12=Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance
+tt.mbtt.EyeOfHarmony.desc13=All stored hydrogen and helium is consumed during a craft. The associated formulas are:
+tt.mbtt.EyeOfHarmony.formula_overflow=§aOverflow ratio = (Stored fluid / Recipe requirement) - 1
+tt.mbtt.EyeOfHarmony.formula_adjustment=§aAdjustment value = 1 - exp(-(30 * Overflow ratio)^2)
+tt.mbtt.EyeOfHarmony.desc14=The Adjustment value is then subtracted from the total yield and recipe chance
+tt.mbtt.EyeOfHarmony.desc15=It should be noted that base recipe chance is determined per recipe and yield always starts
+tt.mbtt.EyeOfHarmony.desc16=at 1 and subtracts depending on penalties. All fluid/item outputs are multiplied by the
+tt.mbtt.EyeOfHarmony.desc17=yield. Failure fluid is exempt
+tt.mbtt.EyeOfHarmony.desc18=This multiblock can only output to ME output buses/hatches
+tt.mbtt.EyeOfHarmony.desc19=This multiblock can be overclocked by placing a programmed circuit into the input bus
+tt.mbtt.EyeOfHarmony.desc20=E.g. A circuit of 2 will provide 2 OCs, 16x EU input and 0.25x the time. EU output is unaffected
+tt.mbtt.EyeOfHarmony.desc21=All outputs are equal. All item and fluid output chances & amounts per recipe are unaffected
+tt.mbtt.EyeOfHarmony.molten_output=If a recipe fails the EOH will output §aSuccess chance * %s * (%s)^(Recipe tier)§7L of molten
+tt.mbtt.EyeOfHarmony.molten_output_material=%s instead of fluid/item outputs and output as much EU as a successful recipe
+tt.mbtt.EyeOfHarmony.desc22=This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus
+tt.mbtt.EyeOfHarmony.desc23=They are stored internally and can be retrieved via right-clicking the controller with a wire cutter
+tt.mbtt.EyeOfHarmony.astral_limit=The maximum amount of stored Astral Arrays is %s. Parallel amount is calculated via these formulas:
+tt.mbtt.EyeOfHarmony.formula_parallel_exponent=§aParallel exponent = floor(log(%s * Astral Array amount) / log(%s))
+tt.mbtt.EyeOfHarmony.formula_parallel=§aParallel = 2^(Parallel exponent)
+tt.mbtt.EyeOfHarmony.desc24=If the EOH is running parallel recipes, the power calculation changes
+tt.mbtt.EyeOfHarmony.desc25=The power needed for parallel processing is calculated as follows:
+tt.mbtt.EyeOfHarmony.formula_parallel_power=§atotal EU = ((EU output - EU input * %s) / %s) * %s^(Parallel exponent)
+tt.mbtt.EyeOfHarmony.consume_rawstarmatter=Furthermore, if parallel recipes are run, the recipes consume %s
+tt.mbtt.EyeOfHarmony.desc26=instead of helium and hydrogen. Overflow penalties still apply
+tt.mbtt.EyeOfHarmony.fluid_required=The required amount of fluid to start a recipe is §a12.4 / 10^6 * Helium amount * Parallel
+tt.mbtt.EyeOfHarmony.desc27=The success or failure of each parallel is determined independently
+tt.mbtt.EyeOfHarmony.desc28=Animations can be disabled by using a screwdriver on the multiblock
+tt.mbtt.EyeOfHarmony.desc29=Planet block can be inserted directly by right-clicking the controller with planet block
+tt.mbtt.EyeOfHarmony.any_boundary_no_stocking_bus=Any boundary casing (no stocking bus)
+tt.mbtt.EyeOfHarmony.any_boundary_no_stocking_hatch=Any boundary casing (no stocking hatch)
+tt.mbtt.EyeOfHarmony.any_boundary_casing=Any boundary casing
+
+tt.mbtt.ResearchStation.any_back_center_casing=Any back center casing
+tt.mbtt.ResearchStation.footer=§aData Sticks §rgo in the controller
+
+tt.mbtt.ExoticModule.machine_type=Exotic Matter Producer
+tt.mbtt.ExoticModule.desc1=This is a module of the Godforge
+tt.mbtt.ExoticModule.desc2=Must be part of a Godforge to function
+tt.mbtt.ExoticModule.desc3=Used for ultra high temperature matter degeneration
+tt.mbtt.ExoticModule.desc4=The fourth and final module of the Godforge, this module breaks apart the very
+tt.mbtt.ExoticModule.desc5=building blocks of matter, producing exotic mixtures in the process. Quark-Gluon Plasma
+tt.mbtt.ExoticModule.desc6=can be manufactured right away, but production of Magnetic Monopole Matter (Magmatter)
+tt.mbtt.ExoticModule.desc7=requires a fully upgraded Godforge
+tt.mbtt.ExoticModule.desc8=This module is specialized towards acquisition of unique materials
+tt.mbtt.ExoticModule.any_front_shielding_casing=Any front shielding casing
+
+tt.mbtt.MoltenModule.machine_type=Blast Smelter
+tt.mbtt.MoltenModule.desc1=This is a module of the Godforge
+tt.mbtt.MoltenModule.desc2=Must be part of a Godforge to function
+tt.mbtt.MoltenModule.desc3=Used for high temperature material liquefaction
+tt.mbtt.MoltenModule.desc4=The second module of the Godforge, this module melts materials directly into
+tt.mbtt.MoltenModule.desc5=their liquid form. If an output material does not have a liquid form, it will be output
+tt.mbtt.MoltenModule.desc6=as a regular solid instead
+tt.mbtt.MoltenModule.desc7=This module is specialized towards parallel processing
+
+tt.mbtt.SmeltingModule.machine_type=Blast Furnace, Furnace
+tt.mbtt.SmeltingModule.desc1=This is a module of the Godforge
+tt.mbtt.SmeltingModule.desc2=Must be part of a Godforge to function
+tt.mbtt.SmeltingModule.desc3=Used for basic smelting operations at various temperatures
+tt.mbtt.SmeltingModule.desc4=As the first of the Godforge modules, this module performs the most basic
+tt.mbtt.SmeltingModule.desc5=thermal processing, namely smelting materials identically to a furnace or blast furnace
+tt.mbtt.SmeltingModule.desc6=The desired method of processing can be selected in the gui
+tt.mbtt.SmeltingModule.desc7=This module is specialized towards speed and high heat levels
 
 # Antimatter
 gt.blockmachines.antimatterForge.name=Semi-Stable Antimatter Stabilization Sequencer
