@@ -100,7 +100,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         if (cellMolten.isUnifiable()) {
             GTOreDictUnificator.set(cellMolten, tMaterial, tStack);
         } else {
-            GTOreDictUnificator.registerOre(cellMolten.get(tMaterial), tStack);
+            GTOreDictUnificator.registerOre(cellMolten.oreDictName(tMaterial), tStack);
         }
     }
 
