@@ -1797,12 +1797,12 @@ gt.multiblock.ExtremeHeatExchanger.desc3=Converts distilled water into §rSH Ste
 gt.multiblock.ExtremeHeatExchanger.desc4=Outputs §rSC Steam§7 if the input rate of hot fluid is above a certain §dthreshold
 gt.multiblock.ExtremeHeatExchanger.desc5=Explodes immediately if it runs out of distilled water
 gt.multiblock.ExtremeHeatExchanger.lava=§cLava§7 | SC Threshold §d80,000 %s/s§7 | Max Input §c160,000 %s/s§7 | Max Output §r640,000 %s/t SC Steam
-gt.multiblock.ExtremeHeatExchanger.hotcoolant=§cHot Coolant§7 | SC Threshold §d8,000 %s/s§7 | Max Input §c16,000 %s/s§7 | Max Output §r160,000 %s/t SC Steam
+gt.multiblock.ExtremeHeatExchanger.hotcoolant=§cHot Coolant§7 | SC Threshold §d8,000 %s/s§7 | Max Input §c128,000 %s/s§7 | Max Output §r1,280,000 %s/t SC Steam
 gt.multiblock.ExtremeHeatExchanger.hotsolarsalt=§cHot Solar Salt§7 | SC Threshold §d1,600 %s/s§7 | Max Input §c3,200 %s/s§7 | Max Output §r160,000 %s/t SC Steam
 gt.multiblock.ExtremeHeatExchanger.plasma1=§cPlasma§7 always outputs §rDense SC Steam§7 regardless of input rate
 gt.multiblock.ExtremeHeatExchanger.plasma2=The max input and output rates depend on the plasma's density (EU/L)
 gt.multiblock.ExtremeHeatExchanger.throttle1=A circuit in the controller lowers the SC threshold at the cost of steam
-gt.multiblock.ExtremeHeatExchanger.throttle2=§d-1.5%§7 SC Threshold and §r-1.5%§7 steam output per circuit over 1
+gt.multiblock.ExtremeHeatExchanger.throttle2=§d-150 %s/s§7 SC Threshold and §r-1.5%%§7 steam output per circuit over 1
 
 gt.multiblock.NeutralizationEngine.efficiency=Can §fuse §7a §bbase §7to boost §defficiency §7(consumes one by one):
 gt.multiblock.NeutralizationEngine.alkali_text=§b%s§7 : §d%d%%§7 : §f%d§7/§fminute
