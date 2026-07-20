@@ -11,7 +11,6 @@ import java.util.Set;
 import net.minecraft.util.StatCollector;
 
 import galacticgreg.api.enums.DimensionDef;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
@@ -124,9 +123,9 @@ public class OreMixBuilder {
      * @param materials The materials to be used for localization. The first material in the array will be used to
      *                  represent to ore mix in GUI's. If none are provided the {@link #primary} will be used.
      */
-    public OreMixBuilder setLocalizedName(Materials... materials) {
+    public OreMixBuilder setLocalizedName(IOreMaterial... materials) {
         if (materials.length == 1) this.representative = materials[0];
-        for (Materials m : materials) {
+        for (IOreMaterial m : materials) {
             materialKeys.add(m.getLocalizedNameKey());
         }
         return this;

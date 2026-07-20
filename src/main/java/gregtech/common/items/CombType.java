@@ -10,6 +10,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 
@@ -254,14 +255,14 @@ public enum CombType {
     public static final CombType[] VALUES = values();
     public boolean showInList;
     public final ItemComb.Voltage voltage;
-    public final Materials material;
+    public final IOreMaterial material;
     public final int chance;
 
     private final int id;
     private final String name;
     private final int[] color;
 
-    CombType(int id, String pName, boolean show, Materials material, int chance, int color1, int color2) {
+    CombType(int id, String pName, boolean show, IOreMaterial material, int chance, int color1, int color2) {
         this(id, pName, show, material, chance, color1, color2, null);
     }
 
@@ -270,7 +271,7 @@ public enum CombType {
         this(id, pName, show, MU.materialOf(material), chance, color1, color2, voltage);
     }
 
-    CombType(int id, String pName, boolean show, Materials material, int chance, int color1, int color2,
+    CombType(int id, String pName, boolean show, IOreMaterial material, int chance, int color1, int color2,
         ItemComb.Voltage voltage) {
         if (id < 0 && !"INVALIDCOMB".equals(pName)) throw new IllegalArgumentException();
         this.id = id;

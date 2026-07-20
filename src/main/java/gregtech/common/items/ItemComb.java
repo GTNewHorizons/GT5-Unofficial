@@ -63,6 +63,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -151,12 +152,12 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
     @Override
     public boolean shouldUseCustomRenderer(int aMetaData) {
-        return CombType.valueOf(aMetaData).material.renderer != null;
+        return CombType.valueOf(aMetaData).material.getRenderer() != null;
     }
 
     @Override
     public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
-        return CombType.valueOf(aMetaData).material.renderer;
+        return CombType.valueOf(aMetaData).material.getRenderer();
     }
 
     @Override
@@ -176,7 +177,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        return CombType.valueOf(aStack.getItemDamage()).material.mRGBa;
+        return CombType.valueOf(aStack.getItemDamage()).material.getRGBA();
     }
 
     public void initCombsRecipes() {
@@ -460,7 +461,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         // Gem Line
         addProcessGT(CombType.STONE, new Material[] { Materials2Materials.Soapstone }, Voltage.LV);
         addProcessGT(CombType.CERTUS, new Material[] { Materials2Materials.CertusQuartz }, Voltage.LV);
-        addProcessGT(CombType.FLUIX, new Materials[] { Materials.Fluix }, Voltage.LV);
+        addProcessGT(CombType.FLUIX, new IOreMaterial[] { Materials.Fluix }, Voltage.LV);
         addProcessGT(CombType.REDSTONE, new Material[] { Materials2Materials.Redstone }, Voltage.LV);
         addCentrifugeToMaterial(
             CombType.RAREEARTH,
@@ -494,7 +495,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             50 * 100);
         addCentrifugeToMaterial(
             CombType.FLUIX,
-            new Materials[] { Materials.Fluix },
+            new IOreMaterial[] { Materials.Fluix },
             new int[] { 25 * 100 },
             new int[] { 9 },
             Voltage.ULV,
@@ -502,7 +503,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             30 * 100);
 
         // Metals Line
-        addProcessGT(CombType.SLAG, new Materials[] { Materials.Limestone }, Voltage.LV);
+        addProcessGT(CombType.SLAG, new IOreMaterial[] { Materials.Limestone }, Voltage.LV);
         addProcessGT(CombType.COPPER, new Material[] { Materials2Materials.Copper }, Voltage.LV);
         addProcessGT(CombType.TIN, new Material[] { Materials2Materials.Tin }, Voltage.LV);
         addProcessGT(CombType.LEAD, new Material[] { Materials2Materials.Lead }, Voltage.LV);
@@ -1030,9 +1031,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         addProcessGT(comb, toLegacy(aMaterial), volt);
     }
 
-    public void addProcessGT(CombType comb, Materials[] aMaterial, Voltage volt) {
+    public void addProcessGT(CombType comb, IOreMaterial[] aMaterial, Voltage volt) {
         ItemStack tComb = getStackForType(comb);
-        for (Materials materials : aMaterial) {
+        for (IOreMaterial materials : aMaterial) {
             if (GTOreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4) != null) {
                 ItemStack combInput;
                 ItemStack combOutput;
@@ -1157,12 +1158,12 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         return legacy;
     }
 
-    public void addCentrifugeToMaterial(CombType comb, Materials[] aMaterial, int[] chance, int[] stackSize,
+    public void addCentrifugeToMaterial(CombType comb, IOreMaterial[] aMaterial, int[] chance, int[] stackSize,
         Voltage volt, ItemStack beeWax, int waxChance) {
         addCentrifugeToMaterial(comb, aMaterial, chance, stackSize, volt, volt.getSimpleTime(), beeWax, waxChance);
     }
 
-    public void addCentrifugeToMaterial(CombType comb, Materials[] aMaterial, int[] chance, int[] stackSize,
+    public void addCentrifugeToMaterial(CombType comb, IOreMaterial[] aMaterial, int[] chance, int[] stackSize,
         Voltage volt, int duration, ItemStack beeWax, int waxChance) {
         ItemStack[] aOutPut = new ItemStack[aMaterial.length + 1];
         stackSize = Arrays.copyOf(stackSize, aMaterial.length);
