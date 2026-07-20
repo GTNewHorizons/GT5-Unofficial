@@ -29,6 +29,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -255,22 +256,34 @@ public class GTItemIterator implements Runnable {
 
                     // BoP
                     case "tile.bop.redRocks" -> {
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 0));
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 1));
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 2));
+                        GTOreDictUnificator.registerOre(
+                            OrePrefixes.stone,
+                            MU.materialOf(Materials2Materials.Redrock),
+                            new ItemStack(tItem, 1, 0));
+                        GTOreDictUnificator.registerOre(
+                            OrePrefixes.stone,
+                            MU.materialOf(Materials2Materials.Redrock),
+                            new ItemStack(tItem, 1, 1));
+                        GTOreDictUnificator.registerOre(
+                            OrePrefixes.stone,
+                            MU.materialOf(Materials2Materials.Redrock),
+                            new ItemStack(tItem, 1, 2));
                     }
 
                     // Thaumcraft
                     case "tile.blockCosmeticSolid" -> {
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 0));
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 1));
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.block, Materials.Thaumium, new ItemStack(tItem, 1, 4));
+                        GTOreDictUnificator.registerOre(
+                            OrePrefixes.stone,
+                            MU.materialOf(Materials2Materials.Obsidian),
+                            new ItemStack(tItem, 1, 0));
+                        GTOreDictUnificator.registerOre(
+                            OrePrefixes.stone,
+                            MU.materialOf(Materials2Materials.Obsidian),
+                            new ItemStack(tItem, 1, 1));
+                        GTOreDictUnificator.registerOre(
+                            OrePrefixes.block,
+                            MU.materialOf(Materials2Materials.Thaumium),
+                            new ItemStack(tItem, 1, 4));
                     }
 
                     // minecraft
