@@ -16,4 +16,12 @@ public interface IOreRecipeRegistrator {
      * @param aStack    always != null
      */
     void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack);
+
+    /// Bridges the [IOreMaterial]-typed ore-processing pipeline to the [Materials]-typed registrator. A material
+    /// that is not a legacy [Materials] carries no ore-processing recipes, so it is a no-op.
+    default void registerOre(OrePrefixes aPrefix, IOreMaterial aMaterial, String aOreDictName, String aModName,
+        ItemStack aStack) {
+        if (aMaterial instanceof Materials aLegacyMaterial)
+            registerOre(aPrefix, aLegacyMaterial, aOreDictName, aModName, aStack);
+    }
 }

@@ -8,16 +8,17 @@ import com.ruling_0.materiallib.MaterialLib;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.util.GTUtility;
 
 public class OreDictEventContainer {
 
     public final OreDictionary.OreRegisterEvent mEvent;
     public final OrePrefixes mPrefix;
-    public final Materials mMaterial;
+    public final IOreMaterial mMaterial;
     public final String mModID;
 
-    public OreDictEventContainer(OreDictionary.OreRegisterEvent aEvent, OrePrefixes aPrefix, Materials aMaterial,
+    public OreDictEventContainer(OreDictionary.OreRegisterEvent aEvent, OrePrefixes aPrefix, IOreMaterial aMaterial,
         String aModID) {
         this.mEvent = aEvent;
         this.mPrefix = aPrefix;

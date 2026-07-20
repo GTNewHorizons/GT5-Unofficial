@@ -3013,8 +3013,8 @@ public class OrePrefixes {
         return false;
     }
 
-    public boolean doGenerateItem(Materials aMaterial) {
-        if (aMaterial == null) return false;
+    public boolean doGenerateItem(IOreMaterial aOreMaterial) {
+        if (!(aOreMaterial instanceof Materials aMaterial)) return false;
         if (aMaterial == Materials._NULL) return false;
         if (aMaterial.mMetaItemSubID == -1) return false;
         if (!aMaterial.mHasParentMod) return false;
@@ -3044,8 +3044,9 @@ public class OrePrefixes {
         return true;
     }
 
-    public boolean isIgnored(Materials aMaterial) {
-        if (aMaterial != null && (!aMaterial.mUnifiable || aMaterial != aMaterial.mMaterialInto)) return true;
+    public boolean isIgnored(IOreMaterial aMaterial) {
+        if (aMaterial instanceof Materials aLegacyMaterial
+            && (!aLegacyMaterial.mUnifiable || aLegacyMaterial != aLegacyMaterial.mMaterialInto)) return true;
         return mIgnoredMaterials.contains(aMaterial);
     }
 
@@ -3059,7 +3060,7 @@ public class OrePrefixes {
         return mOreProcessing.add(aRegistrator);
     }
 
-    public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void processOre(IOreMaterial aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
 
         if (aMaterial == null) return;
         if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_RECIPES)) return;
@@ -3073,7 +3074,7 @@ public class OrePrefixes {
                         + "' with the Prefix '"
                         + name
                         + "' and the Material '"
-                        + aMaterial.mName
+                        + aMaterial.getInternalName()
                         + "' at "
                         + GTUtility.getClassName(tRegistrator));
             }
