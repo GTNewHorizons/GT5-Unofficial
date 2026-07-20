@@ -43,6 +43,7 @@ import gregtech.api.enums.Superconductors;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -53,7 +54,7 @@ public class CraftingRecipes implements Runnable {
     @Override
     public void run() {
 
-        Materials[] cables = { // Cable material used in the acid gen, diode and energy distributor below
+        IOreMaterial[] cables = { // Cable material used in the acid gen, diode and energy distributor below
             Materials.Lead, // ULV
             Materials.Tin, // LV
             Materials.AnnealedCopper, // MV
@@ -151,7 +152,7 @@ public class CraftingRecipes implements Runnable {
                 'F', new ItemStack(Items.string), });
 
         for (int i = 0; i < 4; i++) {
-            Materials cable = cables[i + 2];
+            IOreMaterial cable = cables[i + 2];
             ItemStack machinehull = ItemList.MACHINE_HULLS[i + 2].get(1L);
             GTModHandler.addCraftingRecipe(
                 ItemRegistry.acidGens[i],
@@ -169,7 +170,7 @@ public class CraftingRecipes implements Runnable {
 
         for (int i = 0; i < 9; i++) {
             try {
-                Materials cable = cables[i];
+                IOreMaterial cable = cables[i];
                 ItemStack hull = hulls[i] instanceof Materials
                     ? GTOreDictUnificator.get(OrePrefixes.plate, hulls[i], 1L)
                     : ((Werkstoff) hulls[i]).get(OrePrefixes.plate);

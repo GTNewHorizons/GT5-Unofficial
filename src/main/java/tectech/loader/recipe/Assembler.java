@@ -116,10 +116,7 @@ public class Assembler implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.rotor, 2),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.StainlessSteel, 16),
                 MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.plate, 16),
-                GTOreDictUnificator.get(
-                    OrePrefixes.wireGt01,
-                    BaseRecipeLoader.getOrDefault("SuperconductorIV", Materials.SuperconductorUHV),
-                    1))
+                Superconductors.IV.getWireGt01(1))
             .itemOutputs(CustomItemList.eM_Computer_Vent.get(1))
             .fluidInputs(
                 MaterialLibAPI
@@ -2860,10 +2857,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.WetTransformer_ZPM_LuV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("HighEnergyFlowCircuit", 1),
-                GTOreDictUnificator.get(
-                    OrePrefixes.wireGt01,
-                    BaseRecipeLoader.getOrDefault("SuperconductorLuV", Materials.SuperconductorUHV),
-                    16),
+                Superconductors.LuV.getWireGt01(16),
                 ItemList.valueOf("Circuit_Chip_UHPIC")
                     .get(2))
             .itemOutputs(CustomItemList.Machine_Multi_Transformer.get(1))
@@ -2925,10 +2919,7 @@ public class Assembler implements Runnable {
                 Circuits.ZPM.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.wireFine, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Electrum, Materials2Shapes.wireFine, 64),
-                GTOreDictUnificator.get(
-                    OrePrefixes.wireGt02,
-                    BaseRecipeLoader.getOrDefault("SuperconductorLuV", Materials.SuperconductorUHV),
-                    4))
+                Superconductors.LuV.getWireGt02(4))
             .itemOutputs(CustomItemList.eM_Computer_Bus.get(1))
             .fluidInputs(
                 MaterialLibAPI
