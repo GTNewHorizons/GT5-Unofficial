@@ -31,9 +31,9 @@ import gregtech.api.interfaces.IStoneType;
 /// implementer of the core [IOreMaterial] contract, on the same footing as the other material systems that
 /// implement it.
 ///
-/// [#toString] returns the internal name so that a marker routed through [OrePrefixes#get(Object)]'s non-`Materials`
-/// branch (`name + material`) stringifies to the exact ore-dictionary name a `Materials`-backed marker produced
-/// through [gregtech.api.objects.ItemData#toString].
+/// [#toString] returns the internal name so that a marker routed through [OrePrefixes#oreDictName(IOreMaterial)]
+/// (`name + material`) stringifies to the exact ore-dictionary name a `Materials`-backed marker produced through
+/// [gregtech.api.objects.ItemData#toString].
 public final class MarkerMaterial implements IOreMaterial {
 
     private final String internalName;

@@ -3081,9 +3081,36 @@ public class OrePrefixes {
         }
     }
 
+    /// The crafting ingredient for this prefix and `material`. Stringifies to the ore-dictionary name, and
+    /// additionally carries the material composition that reversible crafting recipes
+    /// ([gregtech.api.util.GTModHandler#addCraftingRecipe]) and
+    /// [gregtech.api.util.GTOreDictUnificator#addItemDataFromInputs] account against.
+    public ItemData ingredient(Materials material) {
+        return new ItemData(this, material);
+    }
+
+    /// The ore-dictionary name for this prefix and `material`, carrying no composition. Use when the consumer
+    /// only needs the name -- registration, lookup, and logging.
+    public String oreDictName(IOreMaterial material) {
+        return name + material.getInternalName();
+    }
+
+    /// The ore-dictionary name for this prefix and a material named directly, for the entries whose material
+    /// side is not an [IOreMaterial] at all.
+    public String oreDictName(String materialName) {
+        return name + materialName;
+    }
+
+    /// The ore-dictionary name for this prefix and a material of statically unknown type. Exists only for the
+    /// [gregtech.api.util.GTOreDictUnificator] forwarders that still take an untyped material; delete once those
+    /// are narrowed to [IOreMaterial].
+    public String oreDictName(Object material) {
+        return material instanceof IOreMaterial ore ? name + ore.getInternalName() : name + material;
+    }
+
+    @Deprecated
     public Object get(Object aMaterial) {
-        if (aMaterial instanceof Materials) return new ItemData(this, (Materials) aMaterial);
-        return name + aMaterial;
+        return aMaterial instanceof Materials legacy ? ingredient(legacy) : oreDictName(aMaterial);
     }
 
     public String getDefaultLocalNameForItem(Materials material) {
