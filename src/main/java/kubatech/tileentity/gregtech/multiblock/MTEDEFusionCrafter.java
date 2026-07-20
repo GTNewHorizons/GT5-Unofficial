@@ -26,7 +26,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -166,8 +165,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addStructureInfo("")
-            .addStructureFooter(
-                EnumChatFormatting.RED + StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.footer"))
+            .addStructureFooter(StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.footer"))
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
             .toolTipFinisher(GTAuthors.AuthorKuba, "Prometheus0000");
         return tt;

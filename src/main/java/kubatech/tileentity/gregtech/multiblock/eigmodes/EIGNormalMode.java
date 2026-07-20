@@ -2,7 +2,6 @@ package kubatech.tileentity.gregtech.multiblock.eigmodes;
 
 import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -72,8 +71,7 @@ public class EIGNormalMode extends EIGMode {
         String fertilizerBonus = String.format("%.0f%%", fertilizerBonusMultiplier);
 
         return builder.addSeparator()
-            .addInfo(
-                EnumChatFormatting.GOLD + StatCollector.translateToLocal("kubatech.multiblock.EIGNormalMode.header"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.EIGNormalMode.header"))
             .addInfo(StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGNormalMode.desc1", minVoltageTier))
             .addInfo(
                 StatCollector

@@ -354,9 +354,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     .translateToLocalFormatted("kubatech.multiblock.ExtremeEntityCrusher.desc9", MAX_LOOTING_LEVEL))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc10"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc11"))
-            .addInfo(
-                EnumChatFormatting.RED
-                    + StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc12"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc12"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc13"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc14"))

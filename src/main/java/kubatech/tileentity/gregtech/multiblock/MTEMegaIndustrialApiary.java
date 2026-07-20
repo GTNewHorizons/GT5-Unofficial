@@ -339,21 +339,15 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc3"))
             .addGlassEnergyLimitInfo()
             .addSeparator()
-            .addInfo(
-                EnumChatFormatting.GOLD
-                    + StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.input_mode"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.input_mode"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc4"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc5"))
             .addSeparator()
-            .addInfo(
-                EnumChatFormatting.GOLD
-                    + StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.output_mode"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.output_mode"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc4"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc6"))
             .addSeparator()
-            .addInfo(
-                EnumChatFormatting.GOLD
-                    + StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.operating_mode"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.operating_mode"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.normal_header"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc7"))
             .addInfo(

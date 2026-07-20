@@ -404,9 +404,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     fertilizerBoostMax))
             .addGlassEnergyLimitInfo()
             .addSeparator()
-            .addInfo(
-                EnumChatFormatting.GOLD
-                    + StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.setup_mode"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.setup_mode"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc9"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc10"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc11"))
