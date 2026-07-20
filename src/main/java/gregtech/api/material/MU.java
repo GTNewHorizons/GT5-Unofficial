@@ -292,17 +292,23 @@ public class MU {
     /// A legacy [Materials] delegates to that overload; a [MarkerMaterial] resolves to its declared smelting
     /// target when it has one, otherwise `null`.
     public static @Nullable Materials smeltInto(@Nullable IOreMaterial material) {
-        return material instanceof Materials legacy ? smeltInto(legacy) : null;
+        if (material instanceof Materials legacy) return smeltInto(legacy);
+        if (material instanceof MarkerMaterial marker) return marker.getSmeltInto();
+        return null;
     }
 
     /// [#smeltInto(IOreMaterial)], for `Materials#mMacerateInto`/[GTMaterialProperties#MACERATE_INTO].
     public static @Nullable Materials macerateInto(@Nullable IOreMaterial material) {
-        return material instanceof Materials legacy ? macerateInto(legacy) : null;
+        if (material instanceof Materials legacy) return macerateInto(legacy);
+        if (material instanceof MarkerMaterial marker) return marker.getMacerateInto();
+        return null;
     }
 
     /// [#smeltInto(IOreMaterial)], for `Materials#mArcSmeltInto`/[GTMaterialProperties#ARC_SMELT_INTO].
     public static @Nullable Materials arcSmeltInto(@Nullable IOreMaterial material) {
-        return material instanceof Materials legacy ? arcSmeltInto(legacy) : null;
+        if (material instanceof Materials legacy) return arcSmeltInto(legacy);
+        if (material instanceof MarkerMaterial marker) return marker.getArcSmeltInto();
+        return null;
     }
 
     /// Whether a material carries a legacy [gregtech.api.enums.SubTag], ported 1:1 to [GTMaterialFlag] of the
