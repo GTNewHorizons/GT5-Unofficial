@@ -129,12 +129,14 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
                 buildHatchAdder(MTELINAC.class).atLeast(BeamlineInput)
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(1)
+                    .exclusive()
                     .build())
             .addElement(
                 'o',
                 buildHatchAdder(MTELINAC.class).atLeast(BeamlineOutput)
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(4)
+                    .exclusive()
                     .build())
             .addElement('v', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
             .addElement('k', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
