@@ -82,16 +82,10 @@ public class GTOreDictUnificator {
             || Items.feather.getDamage(aStack) == WILDCARD) return;
         isAddingOre++;
         aStack = GTUtility.copyAmount(1, aStack);
-        if (!aAlreadyRegistered) registerOre(aPrefix.get(aMaterial), aStack);
+        if (!aAlreadyRegistered) registerOre(aPrefix.oreDictName(aMaterial), aStack);
         addAssociation(aPrefix, aMaterial, aStack, isBlacklisted(aStack));
-        if (aOverwrite || GTUtility.isStackInvalid(
-            sName2StackMap.get(
-                aPrefix.get(aMaterial)
-                    .toString())))
-            sName2StackMap.put(
-                aPrefix.get(aMaterial)
-                    .toString(),
-                aStack);
+        if (aOverwrite || GTUtility.isStackInvalid(sName2StackMap.get(aPrefix.oreDictName(aMaterial))))
+            sName2StackMap.put(aPrefix.oreDictName(aMaterial), aStack);
         isAddingOre--;
     }
 
@@ -117,13 +111,13 @@ public class GTOreDictUnificator {
     public static ItemStack get(OrePrefixes aPrefix, Object aMaterial, ItemStack aReplacement, long aAmount) {
         if (OrePrefixes.mPreventableComponents.contains(aPrefix) && aPrefix.mDisabledItems.contains(aMaterial))
             return aReplacement;
-        return get(aPrefix.get(aMaterial), aReplacement, aAmount, false, true);
+        return get(aPrefix.oreDictName(aMaterial), aReplacement, aAmount, false, true);
     }
 
     public static ItemStack get(OrePrefixes aPrefix, Object aMaterial, long aAmount, boolean aNoInvalidAmounts) {
         if (OrePrefixes.mPreventableComponents.contains(aPrefix) && aPrefix.mDisabledItems.contains(aMaterial))
             return null;
-        return get(aPrefix.get(aMaterial), null, aAmount, false, aNoInvalidAmounts);
+        return get(aPrefix.oreDictName(aMaterial), null, aAmount, false, aNoInvalidAmounts);
     }
 
     public static ItemStack get(Object aName, ItemStack aReplacement, long aAmount, boolean aMentionPossibleTypos,
@@ -448,7 +442,7 @@ public class GTOreDictUnificator {
     }
 
     public static boolean registerOre(OrePrefixes aPrefix, Object aMaterial, ItemStack aStack) {
-        return registerOre(aPrefix.get(aMaterial), aStack);
+        return registerOre(aPrefix.oreDictName(aMaterial), aStack);
     }
 
     public static boolean registerOre(Object aName, ItemStack aStack) {
@@ -569,7 +563,7 @@ public class GTOreDictUnificator {
      * @return a Copy of the OreDictionary.getOres() List
      */
     public static ArrayList<ItemStack> getOres(OrePrefixes aPrefix, Object aMaterial) {
-        return getOres(aPrefix.get(aMaterial));
+        return getOres(aPrefix.oreDictName(aMaterial));
     }
 
     /**

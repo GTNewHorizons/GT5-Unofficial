@@ -113,9 +113,8 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
     /**
      * @return the name of the Item to be registered at the OreDict.
      */
-    public String getOreDictString(OrePrefixes aPrefix, Materials aMaterial) {
-        return aPrefix.get(aMaterial)
-            .toString();
+    public String getOreDictString(OrePrefixes prefix, Materials material) {
+        return prefix.oreDictName(material);
     }
 
     public IIconContainer getIconContainer(int aMetaData, Materials aMaterial) {

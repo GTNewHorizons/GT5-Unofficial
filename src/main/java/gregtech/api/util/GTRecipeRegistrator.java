@@ -763,17 +763,17 @@ public class GTRecipeRegistrator {
                                 tStack,
                                 GTModHandler.RecipeBits.BUFFERED,
                                 new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
-                                    OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
+                                    OrePrefixes.stick.ingredient(tMaterial), s_I.charAt(0), aItemData });
                             case 3 -> GTModHandler.addCraftingRecipe(
                                 tStack,
                                 GTModHandler.RecipeBits.BUFFERED,
                                 new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate, s_R.charAt(0),
-                                    OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
+                                    OrePrefixes.stick.ingredient(tMaterial), s_I.charAt(0), aItemData });
                             default -> GTModHandler.addCraftingRecipe(
                                 tStack,
                                 GTModHandler.RecipeBits.BUFFERED,
                                 new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3], s_P.charAt(0), aPlate,
-                                    s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
+                                    s_R.charAt(0), OrePrefixes.stick.ingredient(tMaterial), s_I.charAt(0), aItemData });
                         }
                     }
                 }
