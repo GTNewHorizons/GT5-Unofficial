@@ -9,12 +9,11 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.material.MarkerMaterial;
 
 /// `Materials` fields that MaterialLib carries no data for and that unchanged code still references
-/// directly: the voltage-tier markers (`ULV`..`MAX`), superconductor markers
-/// (`SuperconductorMV`..`SuperconductorUMV`), and wildcard markers
+/// directly: the superconductor markers (`SuperconductorMV`..`SuperconductorUMV`) and wildcard markers
 /// (`AnyBronze`/`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`, used by
-/// `Materials#setReRegistration`) are reproduced here through `MaterialBuilder`. The circuit-component markers
-/// (`Resistor`, `Diode`, `Transistor`, `Capacitor`, `Inductor`) name their `componentCircuit` ore-dictionary
-/// entry and nothing more, so they are plain [MarkerMaterial]s.
+/// `Materials#setReRegistration`) are reproduced here through `MaterialBuilder`. The voltage-tier markers
+/// (`ULV`..`MAX`) and circuit-component markers (`Resistor`, `Diode`, `Transistor`, `Capacitor`, `Inductor`)
+/// name their ore-dictionary entry and nothing more, so they are plain [MarkerMaterial]s.
 ///
 /// [RecognitionMaterials] separately builds the markers that exist so `Materials.get(name)` resolves other
 /// mods' ore-dictionary entries and legacy names, and that carry ore-unification identity or composition
@@ -102,161 +101,21 @@ public class LegacyMarkerMaterials {
     }
 
     private static void loadTiersMarkers() {
-        Materials.ULV = loadULV();
-        Materials.LV = loadLV();
-        Materials.MV = loadMV();
-        Materials.HV = loadHV();
-        Materials.EV = loadEV();
-        Materials.IV = loadIV();
-        Materials.LuV = loadLuV();
-        Materials.ZPM = loadZPM();
-        Materials.UV = loadUV();
-        Materials.UHV = loadUHV();
-        Materials.UEV = loadUEV();
-        Materials.UIV = loadUIV();
-        Materials.UMV = loadUMV();
-        Materials.UXV = loadUXV();
-        Materials.MAX = loadMAX();
-    }
-
-    private static Materials loadULV() {
-        return new MaterialBuilder().setName("Primitive")
-            .setDefaultLocalName("Primitive")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.MACHINA, 1)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadLV() {
-        return new MaterialBuilder().setName("Basic")
-            .setDefaultLocalName("Basic")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.MACHINA, 2)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadMV() {
-        return new MaterialBuilder().setName("Good")
-            .setDefaultLocalName("Good")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.MACHINA, 3)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadHV() {
-        return new MaterialBuilder().setName("Advanced")
-            .setDefaultLocalName("Advanced")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.MACHINA, 4)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadEV() {
-        return new MaterialBuilder().setName("Data")
-            .setDefaultLocalName("Data")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.MACHINA, 5)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadIV() {
-        return new MaterialBuilder().setName("Elite")
-            .setDefaultLocalName("Elite")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.MACHINA, 6)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadLuV() {
-        return new MaterialBuilder().setName("Master")
-            .setDefaultLocalName("Master")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.MACHINA, 7)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadZPM() {
-        return new MaterialBuilder().setName("Ultimate")
-            .setDefaultLocalName("Ultimate")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.MACHINA, 8)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadUV() {
-        return new MaterialBuilder().setName("Superconductor")
-            .setDefaultLocalName("Superconductor")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.MACHINA, 9)
-            .constructMaterial();
-    }
-
-    private static Materials loadUHV() {
-        return new MaterialBuilder().setName("Infinite")
-            .setDefaultLocalName("Infinite")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.ELECTRUM, 10)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadUEV() {
-        return new MaterialBuilder().setName("Bio")
-            .setDefaultLocalName("Bio")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.ELECTRUM, 11)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadUIV() {
-        return new MaterialBuilder().setName("Optical")
-            .setDefaultLocalName("Optical")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.ELECTRUM, 12)
-            .constructMaterial();
-    }
-
-    private static Materials loadUMV() {
-        return new MaterialBuilder().setName("Exotic")
-            .setDefaultLocalName("Exotic")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.ELECTRUM, 13)
-            .constructMaterial();
-    }
-
-    private static Materials loadUXV() {
-        return new MaterialBuilder().setName("Cosmic")
-            .setDefaultLocalName("Cosmic")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.ELECTRUM, 14)
-            .constructMaterial();
-    }
-
-    private static Materials loadMAX() {
-        return new MaterialBuilder().setName("Transcendent")
-            .setDefaultLocalName("Transcendent")
-            .setColor(Dyes.dyeLightGray)
-            .addAspect(TCAspects.ELECTRUM, 15)
-            .constructMaterial();
+        Materials.ULV = new MarkerMaterial("Primitive", "Primitive", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.LV = new MarkerMaterial("Basic", "Basic", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.MV = new MarkerMaterial("Good", "Good", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.HV = new MarkerMaterial("Advanced", "Advanced", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.EV = new MarkerMaterial("Data", "Data", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.IV = new MarkerMaterial("Elite", "Elite", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.LuV = new MarkerMaterial("Master", "Master", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.ZPM = new MarkerMaterial("Ultimate", "Ultimate", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.UV = new MarkerMaterial("Superconductor", "Superconductor", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.UHV = new MarkerMaterial("Infinite", "Infinite", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.UEV = new MarkerMaterial("Bio", "Bio", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.UIV = new MarkerMaterial("Optical", "Optical", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.UMV = new MarkerMaterial("Exotic", "Exotic", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.UXV = new MarkerMaterial("Cosmic", "Cosmic", TextureSet.SET_NONE, DEFAULT_ARGB);
+        Materials.MAX = new MarkerMaterial("Transcendent", "Transcendent", TextureSet.SET_NONE, DEFAULT_ARGB);
     }
 
     private static void loadCircuitryMarkers() {
