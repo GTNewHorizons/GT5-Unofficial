@@ -4,12 +4,13 @@ import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.material.MarkerMaterial;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
 /// The [OrePrefixes#circuit] and [OrePrefixes#wrapCircuit] ore-dictionary entries, keyed by voltage tier.
 ///
-/// Each tier is backed by a `Materials` marker whose name is unrelated to the tier abbreviation
+/// Each tier is backed by a [MarkerMaterial] whose name is unrelated to the tier abbreviation
 /// (`LV` is named `Basic`, `UHV` is named `Infinite`, and so on), so the ore-dictionary names these entries resolve
 /// to cannot be spelled from the tier name. Routing every call site through this enum keeps that mapping in one
 /// place.
@@ -40,9 +41,9 @@ public enum Circuits {
     UXV(() -> Materials.UXV),
     MAX(() -> Materials.MAX);
 
-    private final Supplier<Materials> marker;
+    private final Supplier<MarkerMaterial> marker;
 
-    Circuits(Supplier<Materials> marker) {
+    Circuits(Supplier<MarkerMaterial> marker) {
         this.marker = marker;
     }
 

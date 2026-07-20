@@ -328,21 +328,21 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     // endregion
 
     // region Tier materials
-    public static Materials ULV;
-    public static Materials LV;
-    public static Materials MV;
-    public static Materials HV;
-    public static Materials EV;
-    public static Materials IV;
-    public static Materials LuV;
-    public static Materials ZPM;
-    public static Materials UV;
-    public static Materials UHV;
-    public static Materials UEV;
-    public static Materials UIV;
-    public static Materials UMV;
-    public static Materials UXV;
-    public static Materials MAX;
+    public static MarkerMaterial ULV;
+    public static MarkerMaterial LV;
+    public static MarkerMaterial MV;
+    public static MarkerMaterial HV;
+    public static MarkerMaterial EV;
+    public static MarkerMaterial IV;
+    public static MarkerMaterial LuV;
+    public static MarkerMaterial ZPM;
+    public static MarkerMaterial UV;
+    public static MarkerMaterial UHV;
+    public static MarkerMaterial UEV;
+    public static MarkerMaterial UIV;
+    public static MarkerMaterial UMV;
+    public static MarkerMaterial UXV;
+    public static MarkerMaterial MAX;
     // endregion
 
     // region Circuitry
