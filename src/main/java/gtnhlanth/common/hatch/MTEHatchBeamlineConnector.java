@@ -2,6 +2,9 @@ package gtnhlanth.common.hatch;
 
 import static tectech.util.CommonValues.MOVE_AT;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -12,6 +15,7 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
+import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 
@@ -93,12 +97,29 @@ public abstract class MTEHatchBeamlineConnector extends MTEHatch implements ICon
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            IGregTechDeviceInformation
-                .encode("tt.keyword.Content.fmt", this.dataPacket != null ? this.dataPacket.getContentString() : 0),
-            IGregTechDeviceInformation.encode(
-                "tt.keyword.PacketHistory.fmt",
-                this.dataPacket != null ? this.dataPacket.getTraceSize() : 0), };
+        List<String> lines = new ArrayList<>();
+
+        if (this.dataPacket != null) {
+            BeamInformation content = this.dataPacket.getContent();
+            lines.add(IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", " "));
+            lines.add(
+                IGregTechDeviceInformation
+                    .encode("beamline.energy.keV.fmt", Math.floor(content.getEnergy() * 1000000) / 1000));
+            lines.add(
+                content.getParticle()
+                    .encodeInfoData());
+            lines.add(IGregTechDeviceInformation.encode("beamline.amount.fmt", content.getRate()));
+            lines
+                .add(IGregTechDeviceInformation.encode("beamline.focus.fmt", Math.floor(content.getFocus() * 10) / 10));
+
+            lines
+                .add(IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", this.dataPacket.getTraceSize()));
+        } else {
+            lines.add(IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", 0));
+            lines.add(IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", 0));
+        }
+
+        return lines.toArray(String[]::new);
     }
 
     @Override
