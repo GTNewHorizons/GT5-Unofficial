@@ -29,13 +29,27 @@ public final class MarkerMaterial implements IOreMaterial {
     private final String defaultLocalName;
     private final TextureSet textureSet;
     private final short[] rgba;
+    private final boolean unifiable;
 
     public MarkerMaterial(String internalName, String defaultLocalName, TextureSet textureSet, int argb) {
+        this(internalName, defaultLocalName, textureSet, argb, true);
+    }
+
+    public MarkerMaterial(String internalName, String defaultLocalName, TextureSet textureSet, int argb,
+        boolean unifiable) {
         this.internalName = internalName;
         this.defaultLocalName = defaultLocalName;
         this.textureSet = textureSet;
         this.rgba = new short[] { (short) ((argb >>> 16) & 0xFF), (short) ((argb >>> 8) & 0xFF), (short) (argb & 0xFF),
             (short) ((argb >>> 24) & 0xFF) };
+        this.unifiable = unifiable;
+    }
+
+    /// Whether an ore-dictionary entry named for this marker participates in unification, mirroring
+    /// `Materials#mUnifiable`. Consulted by [gregtech.common.GTProxy#registerOre] when a foreign ore resolves
+    /// to this marker.
+    public boolean isUnifiable() {
+        return unifiable;
     }
 
     @Override
