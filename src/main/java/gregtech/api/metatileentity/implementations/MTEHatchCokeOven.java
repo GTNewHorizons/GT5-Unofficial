@@ -211,6 +211,11 @@ public class MTEHatchCokeOven extends MTEHatch {
         controllers.add(controller);
     }
 
+    /** Removes a controller from this hatch's controller list. */
+    public void removeController(MTECokeOven controller) {
+        controllers.remove(controller);
+    }
+
     /** Sets the next active controller. */
     private boolean nextActiveController() {
         if (controllerIndex >= controllers.size()) {
