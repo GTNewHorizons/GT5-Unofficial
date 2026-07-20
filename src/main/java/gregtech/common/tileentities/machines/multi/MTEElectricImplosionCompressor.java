@@ -138,7 +138,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
             .addMaxTierSkips(1)
             .addSupportAny()
-            .beginStructureBlock(7, 15, 7, true)
+            .beginStructureBlock(15, 7, 7, true)
             .addController("Front center, 2nd layer")
             .addCasing("230-247", "Naquadah Reinforced Block", false)
             .addCasing("36", "Robust Tungstensteel Machine Casing", false)

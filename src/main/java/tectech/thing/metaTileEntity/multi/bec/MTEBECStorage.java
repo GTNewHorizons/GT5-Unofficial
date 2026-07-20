@@ -145,7 +145,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
             .addMarkdown(new ResourceLocation("gregtech", "bec-storage"))
             .addSupportAny();
 
-        tt.beginStructureBlock(45, 45, 17, true)
+        tt.beginStructureBlock(45, 17, 45, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-storage.controller-pos"))
             .addCasing("1045", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
             .addCasing("1236", ElectromagneticWaveguide.getLocalizedName(), false)

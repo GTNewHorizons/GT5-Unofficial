@@ -411,7 +411,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc12"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc13"));
         EIGModes.addTooltipInfo(tt);
-        tt.beginStructureBlock(9, 7, 7, true)
+        tt.beginStructureBlock(7, 7, 9, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("102", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
             .addCasing(

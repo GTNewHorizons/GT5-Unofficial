@@ -373,7 +373,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     "kubatech.multiblock.MegaIndustrialApiary.desc22",
                     voltageTooltipFormatted(5)))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc23"))
-            .beginStructureBlock(15, 15, 17, true)
+            .beginStructureBlock(15, 17, 15, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_9th_layer"))
             .addCasing(
                 "455",

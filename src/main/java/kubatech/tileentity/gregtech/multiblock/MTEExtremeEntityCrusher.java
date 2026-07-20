@@ -368,7 +368,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc20"))
             .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc21"))
             .addGlassEnergyLimitInfo()
-            .beginStructureBlock(5, 5, 7, true)
+            .beginStructureBlock(5, 7, 5, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("60", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
             .addCasing("35-46", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
