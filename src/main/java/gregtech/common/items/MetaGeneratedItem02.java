@@ -1388,7 +1388,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Bottle_Milk.ID,
                 "gt.item.bottle.milk.name",
                 "gt.item.bottle.milk.tooltip",
-                OrePrefixes.bottle.get(Materials.Milk),
+                OrePrefixes.bottle.ingredient(Materials.Milk),
                 new GTFoodStat(
                     0,
                     0.0F,
@@ -1405,7 +1405,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Bottle_Holy_Water.ID,
                 "gt.item.bottle.holy_water.name",
                 "gt.item.bottle.holy_water.tooltip",
-                OrePrefixes.bottle.get(Materials.HolyWater),
+                OrePrefixes.bottle.ingredient(Materials.HolyWater),
                 new GTFoodStat(
                     0,
                     0.0F,
