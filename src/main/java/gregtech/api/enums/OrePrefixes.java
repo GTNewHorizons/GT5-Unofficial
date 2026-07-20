@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 
-import gregtech.GTLoggers;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreMaterial;
@@ -34,6 +33,7 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTInflectionManager;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.config.Gregtech;
@@ -3013,8 +3013,8 @@ public class OrePrefixes {
         return false;
     }
 
-    public boolean doGenerateItem(Materials aMaterial) {
-        if (aMaterial == null) return false;
+    public boolean doGenerateItem(IOreMaterial aOreMaterial) {
+        if (!(aOreMaterial instanceof Materials aMaterial)) return false;
         if (aMaterial == Materials._NULL) return false;
         if (aMaterial.mMetaItemSubID == -1) return false;
         if (!aMaterial.mHasParentMod) return false;
@@ -3044,8 +3044,9 @@ public class OrePrefixes {
         return true;
     }
 
-    public boolean isIgnored(Materials aMaterial) {
-        if (aMaterial != null && (!aMaterial.mUnifiable || aMaterial != aMaterial.mMaterialInto)) return true;
+    public boolean isIgnored(IOreMaterial aMaterial) {
+        if (aMaterial instanceof Materials aLegacyMaterial
+            && (!aLegacyMaterial.mUnifiable || aLegacyMaterial != aLegacyMaterial.mMaterialInto)) return true;
         return mIgnoredMaterials.contains(aMaterial);
     }
 
@@ -3059,7 +3060,7 @@ public class OrePrefixes {
         return mOreProcessing.add(aRegistrator);
     }
 
-    public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void processOre(IOreMaterial aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
 
         if (aMaterial == null) return;
         if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_RECIPES)) return;
@@ -3068,12 +3069,14 @@ public class OrePrefixes {
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
             if (D2) {
-                GTLoggers.GT_ORE_DICT_LOGGER.info(
-                    "Processing '{}' with the Prefix '{}' and the Material '{}' at {}",
-                    aOreDictName,
-                    name,
-                    aMaterial.mName,
-                    GTUtility.getClassName(tRegistrator));
+                GTLog.ore.println(
+                    "Processing '" + aOreDictName
+                        + "' with the Prefix '"
+                        + name
+                        + "' and the Material '"
+                        + aMaterial.getInternalName()
+                        + "' at "
+                        + GTUtility.getClassName(tRegistrator));
             }
             tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
         }
