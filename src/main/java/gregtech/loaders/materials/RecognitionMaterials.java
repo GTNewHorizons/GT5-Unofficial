@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
@@ -28,13 +27,10 @@ import gregtech.api.material.MarkerMaterial;
 /// `Materials#get` misses. The RGBA and texture set reproduce the values a marker's consumers observe (for
 /// example a bee comb reads its tint through `CombType`).
 ///
-/// `Quartz` is a marker like the rest, but carries [SubTag]s (`CRYSTAL`, `CRYSTALLISABLE`, `NO_SMASHING`,
-/// `NO_SMELTING`, `QUARTZ`) and is steered by name in `GTProxy#registerRecognitionOre`, which reproduces its
-/// `crystal`/`craftingQuartz` cross-registrations.
-///
-/// `Fluix` is still a full `Materials`: a foreign `gem`/`crystal` entry named for it flows through
-/// `OrePrefixes#processOre` and the `Materials`-typed ore-processing pipeline to generate its crystal and
-/// dust recipes, which requires a real `Materials` in `MATERIALS_MAP`.
+/// `Fluix` and `Quartz` are markers like the rest, but carry [SubTag]s (`CRYSTAL`, `CRYSTALLISABLE`,
+/// `NO_SMASHING`, `NO_SMELTING`, `QUARTZ`) and are steered by name in `GTProxy#registerRecognitionOre`: both
+/// get their `crystal`/`gem`/`craftingQuartz` cross-registrations there, and `Fluix` additionally reaches
+/// `OrePrefixes#processOre` so its crystal and dust recipes generate.
 public class RecognitionMaterials {
 
     private static final int DEFAULT_ARGB = 0x00ffffff;
@@ -50,17 +46,6 @@ public class RecognitionMaterials {
     }
 
     public static void load() {
-        Materials.Fluix = new MaterialBuilder().setName("Fluix")
-            .setDefaultLocalName("Fluix")
-            .addDustItems()
-            .addGemItems()
-            .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
-            .addSubTag(SubTag.NO_SMASHING)
-            .addSubTag(SubTag.NO_SMELTING)
-            .addSubTag(SubTag.QUARTZ)
-            .constructMaterial();
-
         for (Marker marker : MARKERS) {
             MarkerMaterial material = new MarkerMaterial(
                 marker.name(),
@@ -120,6 +105,7 @@ public class RecognitionMaterials {
         marker(m -> Materials.Drulloy = m, "Drulloy", "Drulloy"),
         marker(m -> Materials.Ender = m, "Ender", "Ender"),
         marker(m -> Materials.Energized = m, "Energized", "Energized"),
+        marker(m -> Materials.Fluix = m, "Fluix", "Fluix", TextureSet.SET_NONE, DEFAULT_ARGB, true, SubTag.CRYSTAL, SubTag.CRYSTALLISABLE, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ),
         marker(m -> Materials.Fluorite = m, "Fluorite", "Fluorite"),
         marker(m -> Materials.Flux = m, "Flux", "Flux"),
         marker(m -> Materials.Infernal = m, "Infernal", "Infernal"),

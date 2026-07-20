@@ -11,6 +11,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -52,5 +53,43 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
             .eut(2)
             .addTo(maceratorRecipes);
 
+    }
+
+    /// A [gregtech.api.material.MarkerMaterial] carries no `mMacerateInto`, so unlike the legacy overload above
+    /// this falls back to macerating into `aMaterial` itself (mirroring `Materials`' own `mMacerateInto = this`
+    /// default) instead of dropping the recipe.
+    @Override
+    public void registerOre(OrePrefixes aPrefix, IOreMaterial aMaterial, String aOreDictName, String aModName,
+        ItemStack aStack) {
+        if (aMaterial instanceof Materials legacyMaterial) {
+            registerOre(aPrefix, legacyMaterial, aOreDictName, aModName, aStack);
+            return;
+        }
+        if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_ORE_PROCESSING)) {
+            return;
+        }
+
+        Object tMacerateTarget = MU.macerateInto(aMaterial);
+        if (tMacerateTarget == null) {
+            tMacerateTarget = aMaterial;
+        }
+
+        if (GTOreDictUnificator.get(OrePrefixes.dust, tMacerateTarget, 1) == null) {
+            return;
+        }
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, tMacerateTarget, 1L))
+            .duration(10 * TICKS)
+            .eut(TierEU.RECIPE_LV / 2)
+            .addTo(hammerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, tMacerateTarget, 1L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
     }
 }
