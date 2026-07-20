@@ -28,3 +28,27 @@ ggfab.info.biome=Биом:
 ggfab.tooltip.linked_input_bus.change_freq_warn=Если переключить канал, пока он последний, то все оставшиеся предметы выпадут!
 ggfab.tooltip.linked_input_bus.private=Приватный канал не передается другим пользователям.
 ggfab.tooltip.linked_input_bus.private.1=Если переключить канал, пока он последний, то все оставшиеся предметы выпадут!
+
+# Advanced Assembly Line tooltip
+ggfab.tt.advassline.machine_type=Сборочная линия, AAL
+ggfab.tt.advassline.desc1=Сборочная линия с конвейерной обработкой предметов
+ggfab.tt.advassline.desc2=Все жидкости расходуются в начале рецепта
+ggfab.tt.advassline.desc3=Тир рецепта ограничен тиром самого слабого энерговвода
+ggfab.tt.advassline.desc4=Выполняет неидеальные ускорения до тира энерговвода
+ggfab.tt.advassline.desc5=Каждое дополнительное ускорение обходится дороже предыдущего
+ggfab.tt.advassline.desc6=§bМножитель = 4^(обычные ускорения) × 4.3 × 4.6 × … × (4 + 0.3 × дополнительные ускорения)§7
+ggfab.tt.advassline.desc7=§bПотребление энергии = Множитель × (активные срезы) × (EU/t рецепта)§7
+ggfab.tt.advassline.desc8=Расчёт ускорения предполагает, что все срезы рецепта активны
+ggfab.tt.advassline.desc9=§lНе ускоряется быстрее 1 тика
+ggfab.tt.advassline.desc10=Строится идентично Сборочной линии
+ggfab.tt.advassline.structure.controller=Первый срез, 3-й слой
+ggfab.tt.advassline.structure.data_access_location=Любой корпус решётчатой машины НЕ на первом срезе
+ggfab.tt.advassline.structure.energy_location=Любой корпус 4-го слоя
+ggfab.tt.advassline.structure.layer1_side_casing=Любой боковой корпус 1-го слоя
+ggfab.tt.advassline.structure.input_bus_location=Снизу по центру каждого среза
+ggfab.tt.advassline.structure.output_bus_location=Любой корпус 1-го слоя на последнем срезе
+ggfab.tt.advassline.structure.layer4=§f4-й слой: §7Пусто, Корпус машины из прочной стали, Пусто
+ggfab.tt.advassline.structure.layer3=§f3-й слой: §7Корпус решётчатой машины, Корпус машины-сборщика, Корпус решётчатой машины
+ggfab.tt.advassline.structure.layer2=§f2-й слой: §7Любое тированное стекло, Корпус сборочной линии, Любое тированное стекло
+ggfab.tt.advassline.structure.layer1=§f1-й слой: §7Корпус машины из прочной стали, Входной люк, Корпус машины из прочной стали
+ggfab.tt.advassline.structure.footer=Всего до 16 срезов, каждый добавляет 1 предмет в рецепте

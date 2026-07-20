@@ -438,7 +438,7 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements ISurviva
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.GORGE;
     }
 }
