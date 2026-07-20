@@ -35,7 +35,7 @@ public class MTEHatchNanite extends MTEHatchNonConsumableBase {
         if (getItemStack() == null) return null;
         ItemData data = GTOreDictUnificator.getAssociation(getItemStack());
         if (data == null) return null;
-        return (Materials) data.mMaterial.mMaterial;
+        return data.mMaterial.mMaterial instanceof Materials material ? material : null;
     }
 
     @Override

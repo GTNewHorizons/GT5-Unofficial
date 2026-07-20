@@ -479,8 +479,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     if (renderActive) {
                         RenderingTileEntityNanoForge tile = getRenderer();
                         ItemData data = GTOreDictUnificator.getAssociation(outputNanite);
-                        if (data != null) {
-                            Materials mat = (Materials) data.mMaterial.mMaterial;
+                        if (data != null && data.mMaterial.mMaterial instanceof Materials mat) {
                             short[] color = mat.mRGBa;
                             tile.setColor(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f);
                         } else {

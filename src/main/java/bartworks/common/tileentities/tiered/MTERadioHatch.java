@@ -35,7 +35,6 @@ import bartworks.common.loaders.RadioHatchMaterialLoader.RadioHatchMaterial;
 import bartworks.util.BWColorUtil;
 import bartworks.util.BWTooltipReference;
 import bartworks.util.MathUtils;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -196,8 +195,8 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
                         this.material = this.lastUsedItem.getDisplayName();
                         ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
                         if (itemData != null) {
-                            Materials mat = (Materials) itemData.mMaterial.mMaterial;
-                            this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
+                            short[] rgba = itemData.mMaterial.mMaterial.getRGBA();
+                            this.colorForGUI = new short[] { rgba[0], rgba[1], rgba[2] };
                         } else {
                             this.colorForGUI = getEmptyColor();
                         }
@@ -229,8 +228,8 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
                     this.material = lStack.getDisplayName();
                     ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
                     if (itemData != null) {
-                        Materials mat = (Materials) itemData.mMaterial.mMaterial;
-                        this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
+                        short[] rgba = itemData.mMaterial.mMaterial.getRGBA();
+                        this.colorForGUI = new short[] { rgba[0], rgba[1], rgba[2] };
                     } else {
                         this.colorForGUI = getEmptyColor();
                     }
