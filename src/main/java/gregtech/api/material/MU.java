@@ -25,6 +25,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.objects.ItemData;
 
 /// Bridges legacy [OrePrefixes]/[Materials] pairs to their cutover MaterialLib [Shape]/[Material]
@@ -315,6 +316,13 @@ public class MU {
         Material ml = material(material);
         if (ml != null) return hasFlag(ml, flag);
         return material.contains(SubTag.getNewSubTag(flag.name()));
+    }
+
+    /// [#hasFlag(Materials, GTMaterialFlag)] for callers holding an [IOreMaterial] whose concrete type is not
+    /// statically known. A material that is not a legacy [Materials] carries no flag, so this returns `false`
+    /// for it.
+    public static boolean hasFlag(@Nullable IOreMaterial material, GTMaterialFlag flag) {
+        return material instanceof Materials legacy && hasFlag(legacy, flag);
     }
 
     private static String legacyName(Material material) {
