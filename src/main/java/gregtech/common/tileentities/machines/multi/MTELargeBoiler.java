@@ -169,7 +169,11 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         return tt;
     }
 
+    public abstract String getCasingMaterial();
+
     public abstract Block getCasingBlock();
+
+    public abstract String getCasingBlockType();
 
     public abstract byte getCasingMeta();
 

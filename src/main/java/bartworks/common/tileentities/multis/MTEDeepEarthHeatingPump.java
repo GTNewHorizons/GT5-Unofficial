@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -95,7 +96,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     .get(0)
                     .getDisplayName(),
                 false)
-            .addEnergyHatch("1+", GTUtility.nestParams("gt.dehp.info.energy", VN[this.getMinTier()]), 1)
+            .addEnergyHatch("1+", GTUtility.nestParams("gt.dehp.info.energy", GTValues.VN[this.getMinTier()]), 1)
             .addMaintenanceHatch("1", "gt.dehp.info.bottom_casing", 1)
             .addInputBus("0+", "gt.dehp.info.i_bus", 1)
             .addInputHatch("1+", "gt.dehp.info.bottom_casing", 1)

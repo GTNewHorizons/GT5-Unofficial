@@ -24,7 +24,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -50,6 +49,7 @@ import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -60,6 +60,7 @@ import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalConstructable {
 
     private static final Map<Locale, DecimalFormat> DECIMAL_FORMATTERS = new HashMap<>();
@@ -435,46 +436,54 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         tt.addMachineType("gt.blockmachines.multimachine.ig.dyson.type");
         if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.dysonLoreText));
 
-        tt.addInfo(
-            "gt.blockmachines.multimachine.ig.dyson.desc1",
-            getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule),
-            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
-            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
-            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB),
-            getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
-            IGConfig.dysonSwarm.getCoolantStack()
-                .getLocalizedName())
-            .addTecTechHatchInfo()
+        tt.addInfo("gt.blockmachines.multimachine.ig.dyson.desc1")
+            .addInfo(
+                "gt.blockmachines.multimachine.ig.dyson.desc2",
+                getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule))
+            .addInfo(
+                "gt.blockmachines.multimachine.ig.dyson.desc3",
+                getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
+                getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
+                getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB))
+            .addInfo("gt.blockmachines.multimachine.ig.dyson.desc4")
+            .addInfo(
+                "gt.blockmachines.multimachine.ig.dyson.desc5",
+                getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
+                IGConfig.dysonSwarm.getCoolantStack()
+                    .getLocalizedName())
+            .addInfo("gt.blockmachines.multimachine.ig.dyson.desc6")
+            .addInfo("gt.blockmachines.multimachine.ig.dyson.desc7")
+            .addSupportAny()
             .beginStructureBlock(16, 16, 20, false)
-            .addController("gt.blockmachines.multimachine.ig.dyson.desc.controller")
-            .addCasing("256", StatCollector.translateToLocal("tile.DysonSwarmFloor.name"), false)
-            .addCasing("115-138", StatCollector.translateToLocal("tile.DysonSwarmControlCasing.name"), false)
-            .addCasing("128", StatCollector.translateToLocal("tile.DysonSwarmControlToroid.name"), false)
-            .addCasing("81", StatCollector.translateToLocal("tile.DysonSwarmReceiverDish.name"), false)
-            .addCasing("62-72", StatCollector.translateToLocal("tile.DysonSwarmDeploymentUnitCasing.name"), false)
-            .addCasing("64", StatCollector.translateToLocal("ig.dyson.structure.base.frameUHVBase"), false)
-            .addCasing("53-64", StatCollector.translateToLocal("tile.DysonSwarmReceiverCasing.name"), false)
-            .addCasing("32", StatCollector.translateToLocal("tile.DysonSwarmDeploymentUnitMagnet.name"), false)
-            .addCasing("23", StatCollector.translateToLocal("ig.dyson.structure.base.frameHSSS"), false)
-            .addCasing("20", StatCollector.translateToLocal("tile.DysonSwarmControlPrimary.name"), false)
-            .addCasing("16", StatCollector.translateToLocal("ig.dyson.structure.base.frameTitanium"), false)
-            .addCasing("12", StatCollector.translateToLocal("tile.DysonSwarmControlSecondary.name"), false)
-            .addCasing("9", StatCollector.translateToLocal("ig.dyson.structure.base.coil"), false)
-            .addCasing("1", StatCollector.translateToLocal("tile.DysonSwarmDeploymentUnitCore.name"), false)
-            .addCasing("1", StatCollector.translateToLocal("ig.dyson.structure.base.hermetic"), false)
+            .addController("ig.dyson.structure.controller")
+            .addCasing("256", GTUtility.nestParams("ig.dyson.structure.base.floor"), false)
+            .addCasing("115-138", GTUtility.nestParams("ig.dyson.structure.control.base"), false)
+            .addCasing("128", GTUtility.nestParams("ig.dyson.structure.control.toroid"), false)
+            .addCasing("81", GTUtility.nestParams("ig.dyson.structure.receiver.dish"), false)
+            .addCasing("62-72", GTUtility.nestParams("ig.dyson.structure.deployment.base"), false)
+            .addCasing("64", GTUtility.nestParams("ig.dyson.structure.base.frameUHVBase"), false)
+            .addCasing("53-64", GTUtility.nestParams("ig.dyson.structure.receiver.base"), false)
+            .addCasing("32", GTUtility.nestParams("ig.dyson.structure.deployment.magnet"), false)
+            .addCasing("23", GTUtility.nestParams("ig.dyson.structure.base.frameHSSS"), false)
+            .addCasing("20", GTUtility.nestParams("ig.dyson.structure.control.primary"), false)
+            .addCasing("16", GTUtility.nestParams("ig.dyson.structure.base.frameTitanium"), false)
+            .addCasing("12", GTUtility.nestParams("ig.dyson.structure.control.secondary"), false)
+            .addCasing("9", GTUtility.nestParams("ig.dyson.structure.base.coil"), false)
+            .addCasing("1", GTUtility.nestParams("ig.dyson.structure.deployment.core"), false)
+            .addCasing("1", GTUtility.nestParams("ig.dyson.structure.base.hermetic"), false)
             .addMiscHatch(
                 "1+",
-                StatCollector.translateToLocal("gt.blockmachines.hatch.datain.tier.07.name"),
-                "Any center side casing on control center",
+                "gt.blockmachines.hatch.datain.tier.07.name",
+                "ig.dyson.structure.control.any_casing",
                 3)
             .addMiscHatch(
                 "1+",
-                StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
-                "Any center side casing on receiver",
+                "GT5U.tooltip.structure.laser_source_hatch",
+                "ig.dyson.structure.receiver.any_casing",
                 1)
-            .addInputBus("1+", "Any center side casing on deployment unit", 2)
-            .addInputHatch("1+", "Any center side casing on deployment unit", 2)
-            .addAir("All eight layers above the receiver dish")
+            .addInputBus("1+", "ig.dyson.structure.deployment.any_casing", 2)
+            .addInputHatch("1+", "ig.dyson.structure.deployment.any_casing", 2)
+            .addAir("ig.dyson.structure.air")
             .toolTipFinisher();
         return tt;
     }

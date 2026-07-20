@@ -51,6 +51,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -199,22 +200,22 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("machtype.digester")
-            .addInfo("gt.digester.tips")
+        tt.addMachineType("gtnhlanth.tt.digester.machinetype")
+            .addInfo("gtnhlanth.tt.digester.info1")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 4, true)
-            .addController("front_bottom_center")
+            .addController("gt.mbtt.structure.front_bottom_center")
             .addCasing("40-54", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
             .addCasing("16", Casings.HeatProofMachineCasing.getLocalizedName(), false)
             .addCasing("16", "gt.digester.casing.coil", false)
             .addCasing("9", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
-            .addEnergyHatch("1+", "gt.digester.pos.casing", 1)
-            .addMaintenanceHatch("1", "gt.digester.pos.casing", 1)
-            .addMufflerHatch("1", "gt.digester.pos.casing", 1)
-            .addInputAny("1+", "gt.digester.pos.casing", 1)
-            .addOutputAny("1+", "gt.digester.pos.casing", 1)
-            .addAir("gt.digester.structure.air")
+            .addEnergyHatch("1+", "gtnhlanth.tt.digester.structure.any_casing", 1)
+            .addMaintenanceHatch("1", "gtnhlanth.tt.digester.structure.any_casing", 1)
+            .addMufflerHatch("1", "gtnhlanth.tt.digester.structure.any_casing", 1)
+            .addInputAny("1+", "gtnhlanth.tt.digester.structure.any_casing", 1)
+            .addOutputAny("1+", "gtnhlanth.tt.digester.structure.any_casing", 1)
+            .addAir("gtnhlanth.tt.digester.structure.air")
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();

@@ -172,12 +172,12 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo(
                 "gt.ssass.tips",
                 formatNumber(BASE_CONSUMPTION),
-                passiveBaseMult,
-                passiveBaseExp,
-                formatNumber(activeBaseMult),
-                activeBaseExp,
-                coefficientBaseExp,
-                baseSkew)
+                PASSIVE_BASE_MULT,
+                PASSIVE_BASE_EXP,
+                formatNumber(ACTIVE_BASE_MULT),
+                ACTIVE_BASE_EXP,
+                COEFFICIENT_BASE_EXP,
+                BASE_SKEW)
             .beginStructureBlock(47, 53, 53, false)
             .addController("gt.ssass.structure.controller")
             .addCasing("2274", "gt.ssass.casing.magnetic_flux", false)

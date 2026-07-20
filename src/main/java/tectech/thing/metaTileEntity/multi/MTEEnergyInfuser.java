@@ -48,9 +48,6 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
  */
 public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConstructable {
 
-    private static final String hpCasingText = GTUtility
-        .translate("GT5U.MBTT.HatchInfo", Casings.HighPowerCasing.getLocalizedName());
-
     private static final int maxRepairedDamagePerOperation = 1000;
     private static final long usedEuPerDurability = 1000;
     private static final int usedUumPerDurability = 1;

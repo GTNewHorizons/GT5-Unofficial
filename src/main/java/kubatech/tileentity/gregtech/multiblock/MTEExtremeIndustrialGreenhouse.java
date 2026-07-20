@@ -103,6 +103,7 @@ import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
 import kubatech.api.eig.EIGMode;

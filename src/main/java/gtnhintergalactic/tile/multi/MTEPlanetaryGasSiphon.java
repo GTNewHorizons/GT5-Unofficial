@@ -76,6 +76,7 @@ import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
  *
  * @author glowredman
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPlanetaryGasSiphon>
     implements IChunkLoader, ISurvivalConstructable {
 
@@ -221,32 +222,26 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.type"));
+        tt.addMachineType("gt.blockmachines.multimachine.ig.siphon.type");
         if (TooltipUtil.siphonLoreText != null) {
             tt.addInfo(EnumChatFormatting.ITALIC + TooltipUtil.siphonLoreText);
         }
-        tt.addInfo(
-            "Every coil tier gives a " + EnumChatFormatting.GREEN
-                + "+"
-                + (int) (SPEED_PER_COIL * 100)
-                + "%"
-                + EnumChatFormatting.GRAY
-                + " speed bonus per coil tier");
-        tt.addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc1"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc2"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc3"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc4"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc5"))
+        tt.addInfo("gt.blockmachines.multimachine.ig.siphon.desc0", (int) (SPEED_PER_COIL * 100));
+        tt.addInfo("gt.blockmachines.multimachine.ig.siphon.desc1")
+            .addInfo("gt.blockmachines.multimachine.ig.siphon.desc2")
+            .addInfo("gt.blockmachines.multimachine.ig.siphon.desc3")
+            .addInfo("gt.blockmachines.multimachine.ig.siphon.desc4")
+            .addInfo("gt.blockmachines.multimachine.ig.siphon.desc5")
             .beginStructureBlock(13, 13, 23, false)
-            .addController(StatCollector.translateToLocal("ig.siphon.structure.ControllerPos"))
-            .addCasing("184", StatCollector.translateToLocal("ig.siphon.structure.SiphonCasing"), false)
-            .addCasing("93", StatCollector.translateToLocal("ig.siphon.structure.FrameTungstensteel"), false)
-            .addCasing("12", "Heating Coil", true)
-            .addCasing("6", StatCollector.translateToLocal("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"), false)
-            .addEnergyHatch("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addInputBus("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addOutputHatch("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addController("ig.siphon.structure.ControllerPos")
+            .addCasing("184", GTUtility.nestParams("ig.siphon.structure.SiphonCasing"), false)
+            .addCasing("93", GTUtility.nestParams("ig.siphon.structure.FrameTungstensteel"), false)
+            .addCasing("12", GTUtility.nestParams("Heating Coil"), true)
+            .addCasing("6", GTUtility.nestParams("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"), false)
+            .addEnergyHatch("1", "ig.siphon.structure.AnySiphonCasing", 1)
+            .addMaintenanceHatch("1", "ig.siphon.structure.AnySiphonCasing", 1)
+            .addInputBus("1", "ig.siphon.structure.AnySiphonCasing", 1)
+            .addOutputHatch("1", "ig.siphon.structure.AnySiphonCasing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")

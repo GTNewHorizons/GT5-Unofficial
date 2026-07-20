@@ -331,8 +331,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 formatNumber(COOLANT_SPEEDUP * 20 * 100),
                 formatNumber(WATER_SPEEDUP * 20 * 100),
                 formatNumber(((COOLANT_SPEEDUP + WATER_SPEEDUP) * 20 * 100)),
-                formatNumber(COOLANT_PER_PELLET),
-                formatNumber(WATER_PER_PELLET))
+                formatNumber(COOLANT_PER_BALL),
+                formatNumber(WATER_PER_BALL))
             .beginStructureBlock(16, 27, 15, true)
             .addController("gt.htgr.info.controller")
             .addCasing("273", "Beryllium Integrated Reactor Casing", false)

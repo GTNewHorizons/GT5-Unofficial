@@ -108,6 +108,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /*
  * Dev note: 1. This multi will be an assline but with greater throughput. it will take one input every 2.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -315,16 +316,32 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("machtype.adv_assline")
-            .addInfo("gt.adv_assline.tips")
+        tt.addMachineType("ggfab.tt.advassline.machine_type")
+            .addInfo("ggfab.tt.advassline.desc1")
+            .addInfo("ggfab.tt.advassline.desc2")
+            .addInfo("ggfab.tt.advassline.desc3")
+            .addSeparator(EnumChatFormatting.GOLD, 67)
+            .addInfo("ggfab.tt.advassline.desc4")
+            .addInfo("ggfab.tt.advassline.desc5")
+            .addInfo("ggfab.tt.advassline.desc6")
+            .addInfo("ggfab.tt.advassline.desc7")
+            .addInfo("ggfab.tt.advassline.desc8")
+            .addInfo("ggfab.tt.advassline.desc9")
+            .addSeparator(EnumChatFormatting.GOLD, 67)
+            .addInfo("ggfab.tt.advassline.desc10")
+            .addSupportAny()
             .beginVariableStructureBlock(3, 3, 5, 16, 4, 4, false)
-            .addController("gt.adv_assline.info.controller")
-            .addMiscHatch("1", "gt.blockmachines.hatch.dataaccess.name", "gt.asslike.info.dataaccess", 3)
-            .addEnergyHatch("1+", "gt.asslike.info.energy", 4)
-            .addMaintenanceHatch("1", "gt.asslike.info.i_hatch", 1)
-            .addInputBus("5-16", "gt.asslike.info.i_bus", 2)
-            .addInputHatch("1-4", "gt.asslike.info.i_hatch", 1)
-            .addOutputBus("1", "gt.asslike.info.o_bus", 1)
+            .addController("ggfab.tt.advassline.structure.controller")
+            .addMiscHatch(
+                "1",
+                "GT5U.tooltip.structure.data_access_hatch",
+                "ggfab.tt.advassline.structure.data_access_location",
+                3)
+            .addEnergyHatch("1+", "ggfab.tt.advassline.structure.energy_location", 4)
+            .addMaintenanceHatch("1", "ggfab.tt.advassline.structure.layer1_side_casing", 1)
+            .addInputBus("5-16", "ggfab.tt.advassline.structure.input_bus_location", 2)
+            .addInputHatch("1-4", "ggfab.tt.advassline.structure.layer1_side_casing", 1)
+            .addOutputBus("1", "ggfab.tt.advassline.structure.output_bus_location", 1)
             .addStructureInfo("")
             .addStructureInfo("GT5U.MBTT.Structure.Base")
             .addCasing("10", "gt.aal.casing.glass", false)
@@ -334,12 +351,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addCasing("5", "gt.aal.casing.assembler", false)
             .addStructureInfo("")
             .addStructureInfo("GT5U.MBTT.Structure.Slice")
-            .addStructureInfo("gt.aal.structure.layer4")
-            .addStructureInfo("gt.aal.structure.layer3")
-            .addStructureInfo("gt.aal.structure.layer2")
-            .addStructureInfo("gt.aal.structure.layer1")
+            .addStructureInfo("ggfab.tt.advassline.structure.layer4")
+            .addStructureInfo("ggfab.tt.advassline.structure.layer3")
+            .addStructureInfo("ggfab.tt.advassline.structure.layer2")
+            .addStructureInfo("ggfab.tt.advassline.structure.layer1")
             .addStructureInfo("")
-            .addStructureFooter("gt.aal.structure.footer")
+            .addStructureFooter("ggfab.tt.advassline.structure.footer")
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(EnumChatFormatting.GOLD);

@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 

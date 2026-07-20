@@ -15,7 +15,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -219,36 +218,21 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger, EHE")
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc2"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc3"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc4"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc5"))
+            .addInfo("gt.multiblock.ExtremeHeatExchanger.desc1")
+            .addInfo("gt.multiblock.ExtremeHeatExchanger.desc2")
+            .addInfo("gt.multiblock.ExtremeHeatExchanger.desc3")
+            .addInfo("gt.multiblock.ExtremeHeatExchanger.desc4")
+            .addInfo("gt.multiblock.ExtremeHeatExchanger.desc5")
             .addSeparator()
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.ExtremeHeatExchanger.lava",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.ExtremeHeatExchanger.hotcoolant",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.ExtremeHeatExchanger.hotsolarsalt",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
+            .addInfo("gt.multiblock.ExtremeHeatExchanger.lava", getFluidUnit(), getFluidUnit(), getFluidUnit())
+            .addInfo("gt.multiblock.ExtremeHeatExchanger.hotcoolant", getFluidUnit(), getFluidUnit(), getFluidUnit())
+            .addInfo("gt.multiblock.ExtremeHeatExchanger.hotsolarsalt", getFluidUnit(), getFluidUnit(), getFluidUnit())
             .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.plasma1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.plasma2"))
+            .addInfo("gt.multiblock.ExtremeHeatExchanger.plasma1")
+            .addInfo("gt.multiblock.ExtremeHeatExchanger.plasma2")
             .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.throttle1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.throttle2"))
+            .addInfo("gt.multiblock.ExtremeHeatExchanger.throttle1")
+            .addInfo("gt.multiblock.ExtremeHeatExchanger.throttle2", getFluidUnit())
             .beginStructureBlock(11, 5, 6, false)
             .addController("Front bottom center")
             .addCasing("25-120", "Robust Tungstensteel Machine Casing", false)
