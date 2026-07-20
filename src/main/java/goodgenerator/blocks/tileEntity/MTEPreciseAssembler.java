@@ -75,10 +75,12 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
     implements ISurvivalConstructable {
 
@@ -280,47 +282,56 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Precise Assembler, Assembler, PrAss")
-            .addInfo("No more than 7nm of error")
-            .addInfo("Has Two Modes: Precise and Normal")
-            .addInfo("Use a Screwdriver to change modes")
+        final String anyUnitCasing = StatCollector.translateToLocal("gg.multiblock.PreciseAssembler.any_unit_casing");
+        tt.addMachineType(StatCollector.translateToLocal("gg.multiblock.PreciseAssembler.machine_type"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.PreciseAssembler.desc1"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.PreciseAssembler.desc2"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.PreciseAssembler.desc3"))
             .addSeparator()
-            .addInfo("Precise Mode unlocks the ability to assemble precise components")
-            .addInfo("Casing Tier determines Maximum Recipe Tier")
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.PreciseAssembler.desc4"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.PreciseAssembler.desc5"))
             .addSeparator()
-            .addInfo("Normal Mode allows standard assembler recipes")
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.PreciseAssembler.desc6"))
             .addInfo(
-                EnumChatFormatting.WHITE + "Precise Casing"
-                    + EnumChatFormatting.GRAY
-                    + " Tier determines "
-                    + TooltipHelper.parallelText("Parallels"))
+                StatCollector.translateToLocalFormatted(
+                    "gg.multiblock.PreciseAssembler.precise_casing_tier",
+                    TooltipHelper
+                        .parallelText(StatCollector.translateToLocal("gg.multiblock.PreciseAssembler.parallels_word"))))
             .addInfo(
-                tieredTextLine("Imprecise", "Mk-I", "MK-II", "MK-III", "MK-IV") + "->"
-                    + tieredTextLine("16", "32", "64", "128", "256")
-                    + " Parallels")
+                StatCollector.translateToLocalFormatted(
+                    "gg.multiblock.PreciseAssembler.parallels_line",
+                    tieredTextLine(
+                        StatCollector.translateToLocal("gg.multiblock.PreciseAssembler.tier_imprecise"),
+                        "Mk-I",
+                        "MK-II",
+                        "MK-III",
+                        "MK-IV"),
+                    tieredTextLine("16", "32", "64", "128", "256")))
             .addStaticSpeedInfo(2f)
             .addSeparator()
             .addInfo(
-                "Machine Casing limits the voltage tier the machine can work on, "
-                    + GTValues.TIER_COLORS[VoltageIndex.UHV]
-                    + "UHV"
-                    + EnumChatFormatting.GRAY
-                    + "-tier Machine Casing unlocks all.")
+                StatCollector.translateToLocalFormatted(
+                    "gg.multiblock.PreciseAssembler.machine_casing_tier",
+                    GTValues.TIER_COLORS[VoltageIndex.UHV]))
             .addSupportAny()
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 9, 5, true)
-            .addController("Front bottom center")
-            .addCasing("42-81", "Precise Electronic Unit Casing", true)
-            .addCasing("42", "EV+ Tiered Glass", false)
-            .addCasing("21", "Machine Casing", true)
-            .addCasing("12", "Tungstensteel Frame Box", false)
-            .addEnergyHatch("1+", "Any unit casing", 1)
-            .addMaintenanceHatch("1", "Any unit casing", 1)
-            .addMufflerHatch("1", "Any unit casing", 1)
-            .addInputBus("1+", "Any unit casing", 1)
-            .addInputHatch("0+", "Any unit casing", 1)
-            .addOutputBus("1+", "Any unit casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("42-81", StatCollector.translateToLocal("preciseUnitCasing.name"), true)
+            .addCasing(
+                "42",
+                StatCollector
+                    .translateToLocalFormatted("GT5U.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]),
+                false)
+            .addCasing("21", StatCollector.translateToLocal("GT5U.MBTT.Tiers.MachineCasing"), true)
+            .addCasing("12", BlockFrameBox.getLocalizedName(Materials.TungstenSteel), false)
+            .addEnergyHatch("1+", anyUnitCasing, 1)
+            .addMaintenanceHatch("1", anyUnitCasing, 1)
+            .addMufflerHatch("1", anyUnitCasing, 1)
+            .addInputBus("1+", anyUnitCasing, 1)
+            .addInputHatch("0+", anyUnitCasing, 1)
+            .addOutputBus("1+", anyUnitCasing, 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.PRASS_UNIT_CASING)
             .addSubChannel(GTStructureChannels.BOROGLASS)

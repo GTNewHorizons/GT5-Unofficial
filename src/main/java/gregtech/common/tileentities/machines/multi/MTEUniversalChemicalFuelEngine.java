@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -54,9 +55,11 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.blocks.BlockFrameBox;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -178,44 +181,42 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Engine, UCFE")
-            .addInfo("BURNING BURNING BURNING")
-            .addInfo("Use combustible liquid to generate power")
-            .addInfo("You need to supply Combustion Promoter to keep it running")
-            .addInfo("It will consume all the fuel and combustion promoter in the hatch every second")
-            .addInfo("Energy output to the dynamo will be distributed over the next second")
-            .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop")
-            .addInfo(
-                "If the amount of energy to be produced is higher "
-                    + "than the dynamo hatch can handle then all produced energy will void")
-            .addInfo("When turned on, there is a 10-second period where the machine will not stop")
-            .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed")
-            .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel")
-            .addInfo("The higher the amount of promoter, the higher the efficiency")
-            .addInfo(
-                "Follows an exponential curve exp(-C/(p/x))*1.5, "
-                    + "where x is the amount of fuel in liters, p is the amount of promoter in liters")
-            .addInfo("and C depends on the fuel type. Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005")
-            .addInfo("It creates sqrt(Current Output Power) pollution every second")
-            .addInfo(
-                "If you forget to supply Combustion Promoter, this engine will swallow all the fuel "
-                    + EnumChatFormatting.YELLOW
-                    + "without outputting energy")
-            .addInfo("The efficiency is up to 150%")
+        final String anyMachineCasing = StatCollector
+            .translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.any_machine_casing");
+        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.machine_type"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc2"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc3"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc4"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc5"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc6"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc7"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc8"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc9"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc10"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc11"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc12"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc13"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc14"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc15"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.desc16"))
             .addSupportAny()
             .beginStructureBlock(13, 7, 7, true)
-            .addController("Front center, 3rd layer")
-            .addCasing("100-115", "Stable Titanium Machine Casing", false)
-            .addCasing("72", "PTFE Frame Box", false)
-            .addCasing("39", "Chemically Inert Machine Casing", false)
-            .addCasing("20", "Engine Intake Casing", false)
-            .addCasing("12", "Titanium Pipe Casing", false)
-            .addCasing("10", "Titanium Firebox Casing", false)
-            .addDynamoHatch("1", "Back center machine casing", 2)
-            .addMaintenanceHatch("1", "Any machine casing", 1)
-            .addMufflerHatch("1", "Any machine casing", 1)
-            .addInputHatch("1+", "Any machine casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "TimTems")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("100-115", Casings.StableTitaniumMachineCasing.getLocalizedName(), false)
+            .addCasing("72", BlockFrameBox.getLocalizedName(Materials.Polytetrafluoroethylene), false)
+            .addCasing("39", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
+            .addCasing("20", Casings.EngineIntakeCasing.getLocalizedName(), false)
+            .addCasing("12", Casings.TitaniumPipeCasing.getLocalizedName(), false)
+            .addCasing("10", Casings.TitaniumFireboxCasing.getLocalizedName(), false)
+            .addDynamoHatch(
+                "1",
+                StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.back_center_machine_casing"),
+                2)
+            .addMaintenanceHatch("1", anyMachineCasing, 1)
+            .addMufflerHatch("1", anyMachineCasing, 1)
+            .addInputHatch("1+", anyMachineCasing, 1)
+            .addStructureAuthors(StatCollector.translateToLocal("gt.multiblock.UniversalChemicalFuelEngine.author"))
             .toolTipFinisher();
         return tt;
     }

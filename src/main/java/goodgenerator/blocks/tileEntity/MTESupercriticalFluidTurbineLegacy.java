@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,6 +26,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegacy implements ICasingTextureProvider {
 
     private boolean looseFit = false;
@@ -140,20 +142,25 @@ public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegac
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Steam Turbine, LST-SC")
+        tt.addMachineType(StatCollector.translateToLocal("gg.multiblock.SupercriticalFluidTurbine.machine_type"))
             .addStructureDeprecatedLine()
-            .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Use Supercritical Steam to generate power")
-            .addInfo("Outputs 1L of SH Steam per 1L of SC Steam as well as producing power")
-            .addInfo("Power output depends on turbine and fitting")
-            .addInfo("Use screwdriver to adjust fitting of turbine")
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.SupercriticalFluidTurbine.desc1"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.SupercriticalFluidTurbine.desc2"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.SupercriticalFluidTurbine.desc3"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.SupercriticalFluidTurbine.desc4"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.SupercriticalFluidTurbine.desc5"))
             .beginStructureBlock(3, 3, 4, true)
-            .addController("Front center")
-            .addCasingInfoMin("SC Turbine Casing", 24, false)
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Side centered", 2)
-            .addInputHatch("Supercritical Fluid, Side centered", 2)
-            .addOutputHatch("Superheated Steam, Side centered", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
+            .addCasingInfoMin(
+                StatCollector.translateToLocal("gg.multiblock.SupercriticalFluidTurbine.casing"),
+                24,
+                false)
+            .addDynamoHatch(StatCollector.translateToLocal("gt.mbtt.structure.back_center"), 1)
+            .addMaintenanceHatch(
+                StatCollector.translateToLocal("gg.multiblock.SupercriticalFluidTurbine.side_centered"),
+                2)
+            .addInputHatch(StatCollector.translateToLocal("gg.multiblock.SupercriticalFluidTurbine.input_hatch"), 2)
+            .addOutputHatch(StatCollector.translateToLocal("gg.multiblock.SupercriticalFluidTurbine.output_hatch"), 2)
             .toolTipFinisher();
         return tt;
     }

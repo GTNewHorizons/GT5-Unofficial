@@ -64,6 +64,7 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
@@ -73,6 +74,7 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
@@ -438,28 +440,41 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Tank")
-            .addInfo("The max output speed is decided by the amount of stored liquid and the output hatch's capacity")
-            .addInfo("The max fluid cell tier is limited by the glass tier")
-            .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
-            .addInfo("The max height of the cell blocks is 15")
+        final String anyTieredGlass = StatCollector.translateToLocalFormatted(
+            "GT5U.MBTT.HatchInfo",
+            StatCollector.translateToLocal("GT5U.structure.tiered_glass"));
+        tt.addMachineType(StatCollector.translateToLocal("gg.multiblock.YottaFluidTank.machine_type"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.YottaFluidTank.desc1"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.YottaFluidTank.desc2"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.YottaFluidTank.desc3"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.YottaFluidTank.desc4"))
             .beginVariableStructureBlock(5, 5, 5, 5, 5, 19, false)
-            .addController("Front center, 2nd layer")
-            .addMiscHatch("0-1", "YOTHatch", "Any bottom center casing (replaces other hatches)", 2)
-            .addInputHatch("1+", "Any top center casing", 1)
-            .addOutputHatch("1+", "Any bottom center casing", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addMiscHatch(
+                "0-1",
+                StatCollector.translateToLocal("gg.multiblock.YottaFluidTank.yothatch"),
+                StatCollector.translateToLocal("gg.multiblock.YottaFluidTank.any_bottom_center_replaces"),
+                2)
+            .addInputHatch(
+                "1+",
+                StatCollector.translateToLocal("gg.multiblock.YottaFluidTank.any_top_center_casing"),
+                1)
+            .addOutputHatch(
+                "1+",
+                StatCollector.translateToLocal("gg.multiblock.YottaFluidTank.any_bottom_center_casing"),
+                2)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("25-57", "YOTTank Casing", false)
-            .addCasing("16", "Steel Frame Box", false)
-            .addCasing("16", "Any Tiered Glass", true)
-            .addCasing("9", "Fluid Cell Block", true)
+            .addCasing("25-57", StatCollector.translateToLocal("yottaFluidTankCasing.name"), false)
+            .addCasing("16", BlockFrameBox.getLocalizedName(Materials.Steel), false)
+            .addCasing("16", anyTieredGlass, true)
+            .addCasing("9", StatCollector.translateToLocal("yottaFluidTankCell.name"), true)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
-            .addCasing("16", "Any Tiered Glass", true)
-            .addCasing("9", "Fluid Cell Block", true)
+            .addCasing("16", anyTieredGlass, true)
+            .addCasing("9", StatCollector.translateToLocal("yottaFluidTankCell.name"), true)
             .addStructureInfo("")
-            .addStructureFooter("No air gaps allowed, but the fluid cell blocks can be different tiers")
+            .addStructureFooter(StatCollector.translateToLocal("gg.multiblock.YottaFluidTank.footer"))
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.height"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();

@@ -404,6 +404,70 @@ gui.AntimatterGenerator.1.s=§fЭффективность: §b%s §f%%
 batch_mode.cfgi.0=Размер партии
 gt.blockmachines.YottaFluidTank.cfgi.0=Ticks Between I/O Update
 
+# Multiblock Tooltips
+gg.multiblock.LargeEssentiaSmeltery.machine_type=Плавильня эссенции, LES
+gg.multiblock.LargeEssentiaSmeltery.desc1=Необходимое зло
+gg.multiblock.LargeEssentiaSmeltery.desc2=Передовая технология выплавки эссенции
+gg.multiblock.LargeEssentiaSmeltery.desc3=Максимум параллелей = 2^Тир * (Длина - 1)
+gg.multiblock.LargeEssentiaSmeltery.desc4=Тиры диффузионных ячеек начинаются с 0, длина - это полная длина мульти
+gg.multiblock.LargeEssentiaSmeltery.desc5=Тир энерговвода: HV+
+gg.multiblock.LargeEssentiaSmeltery.desc6=Вы можете получить информацию об этом механизме в Таумономиконе
+gg.multiblock.LargeEssentiaSmeltery.warded_glass=Стекло защиты
+gg.multiblock.LargeEssentiaSmeltery.alchemical_furnace=Таумиевая алхимическая печь
+gg.multiblock.LargeEssentiaSmeltery.top_center=Верхние центральные блоки
+gg.multiblock.LargeEssentiaSmeltery.essentia_output_hatch=Выходной шлюз эссенции
+
+gg.multiblock.NeutronActivator.machine_type=Нейтронный активатор, NA
+gg.multiblock.NeutronActivator.desc1=Движение со сверхсветовой скоростью.
+gg.multiblock.NeutronActivator.desc2=Минимальная высота Скоростного полого корпуса - 4
+gg.multiblock.NeutronActivator.desc3=Дополнительный Скоростной полый корпус даёт скидку по времени
+gg.multiblock.NeutronActivator.desc4=Но это снизит эффективность Ускорителя нейтронов
+gg.multiblock.NeutronActivator.desc5=Чтобы запустить Ускоритель нейтронов, вам нужно подать на него энергию
+gg.multiblock.NeutronActivator.desc6=При определённой кинетической энергии нейтронов он будет производить правильные продукты
+gg.multiblock.NeutronActivator.desc7=В противном случае он будет производить мусор
+gg.multiblock.NeutronActivator.desc8=Кинетическая энергия нейтронов уменьшится на 72KeV/с, если Ускоритель нейтронов не работает
+gg.multiblock.NeutronActivator.desc9=Ввод графитовой/бериллиевой пыли мгновенно снижает энергию на 10MeV за каждую пыль.
+gg.multiblock.NeutronActivator.neutron_accelerator=Ускоритель нейтронов
+gg.multiblock.NeutronActivator.neutron_sensor=Сенсор нейтронов
+gg.multiblock.NeutronActivator.any_bottom_edge_casing=Любой краевой блок снизу
+gg.multiblock.NeutronActivator.any_top_edge_casing=Любой краевой блок сверху
+
+gg.multiblock.PreciseAssembler.machine_type=Прецизионный авто-сборщик/Сборочная машина, PrAss
+gg.multiblock.PreciseAssembler.desc1=Погрешность не более 7 нм
+gg.multiblock.PreciseAssembler.desc2=Имеет два режима: прецизионный и нормальный
+gg.multiblock.PreciseAssembler.desc3=Для смены режима используйте отвёртку
+gg.multiblock.PreciseAssembler.desc4=Прецизионный режим открывает возможность собирать прецизионные компоненты
+gg.multiblock.PreciseAssembler.desc5=Тир корпуса определяет максимальный тир рецепта
+gg.multiblock.PreciseAssembler.desc6=Нормальный режим позволяет использовать стандартные рецепты сборщика
+gg.multiblock.PreciseAssembler.precise_casing_tier=Тир §fпрецизионного корпуса§7 определяет %s
+gg.multiblock.PreciseAssembler.parallels_word=параллели
+gg.multiblock.PreciseAssembler.tier_imprecise=Грубый
+gg.multiblock.PreciseAssembler.parallels_line=%s->%s параллелей
+gg.multiblock.PreciseAssembler.machine_casing_tier=Обшивка механизма ограничивает тир вольтажа, на котором может работать механизм, обшивка механизма %sUHV§7 тира разблокирует все вольтажи.
+gg.multiblock.PreciseAssembler.any_unit_casing=Любой блок корпуса
+
+gg.multiblock.SupercriticalFluidTurbine.machine_type=Паровая турбина, LST-SC
+gg.multiblock.SupercriticalFluidTurbine.desc1=Требуется турбина, поместите её в контроллер
+gg.multiblock.SupercriticalFluidTurbine.desc2=Используйте Сверхкритический пар для выработки энергии
+gg.multiblock.SupercriticalFluidTurbine.desc3=Вырабатывает 1Л ПГ пара на 1Л СК пара, а также вырабатывает энергию
+gg.multiblock.SupercriticalFluidTurbine.desc4=Выход энергии зависит от турбины и режима
+gg.multiblock.SupercriticalFluidTurbine.desc5=Используйте отвёртку для регулировки режима турбины
+gg.multiblock.SupercriticalFluidTurbine.casing=SC Корпус турбины
+gg.multiblock.SupercriticalFluidTurbine.side_centered=Сбоку в центре
+gg.multiblock.SupercriticalFluidTurbine.input_hatch=Сверхкритическая жидкость, сбоку в центре
+gg.multiblock.SupercriticalFluidTurbine.output_hatch=Перегретый пар, сбоку в центре
+
+gg.multiblock.YottaFluidTank.machine_type=Жидкостный резервуар
+gg.multiblock.YottaFluidTank.desc1=Макс. выходная скорость определяется количеством хранимой жидкости и ёмкостью выходного шлюза
+gg.multiblock.YottaFluidTank.desc2=Максимальный тир жидкостных ячеек ограничен тиром стекла
+gg.multiblock.YottaFluidTank.desc3=HV стекло для T1, EV стекло для T2, IV стекло для T3. . .
+gg.multiblock.YottaFluidTank.desc4=Максимальная высота блоков ячеек - 15
+gg.multiblock.YottaFluidTank.yothatch=YOTHatch
+gg.multiblock.YottaFluidTank.any_bottom_center_replaces=Любой центральный нижний корпус (заменяет собой прочие шлюзы)
+gg.multiblock.YottaFluidTank.any_top_center_casing=Любой центральный верхний корпус
+gg.multiblock.YottaFluidTank.any_bottom_center_casing=Любой центральный нижний корпус
+gg.multiblock.YottaFluidTank.footer=Воздушные зазоры не допускаются, но блоки жидкостных ячеек могут быть разных тиров
+
 # RecipeMaps
 gg.recipe.naquadah_reactor=Большой наквадаховый реактор
 gg.recipe.naquadah_fuel_refine_factory=Наквадаховый топливный завод

@@ -75,6 +75,7 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvivalConstructable {
 
     private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_On");
@@ -230,28 +231,38 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Essentia Smeltery, LES")
-            .addInfo("Necessary evil")
-            .addInfo("Advanced Essentia smelting technology")
-            .addInfo("Maximum parallel = 2^Tier * (Length - 1)")
-            .addInfo("Diffusion Cell Tiers start from 0, Length is full multi length")
-            .addInfo("Energy Hatch tier: HV+")
-            .addInfo("You can find more information about this machine in the Thaumonomicon")
+        tt.addMachineType(StatCollector.translateToLocal("gg.multiblock.LargeEssentiaSmeltery.machine_type"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.LargeEssentiaSmeltery.desc1"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.LargeEssentiaSmeltery.desc2"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.LargeEssentiaSmeltery.desc3"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.LargeEssentiaSmeltery.desc4"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.LargeEssentiaSmeltery.desc5"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.LargeEssentiaSmeltery.desc6"))
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(5, 9, 5, 5, 5, 5, true)
-            .addController("Front center, 3rd layer")
-            .addCasing("24-84", "Magic Casing", false)
-            .addCasing("12-28", "Essentia Diffusion Cell", true)
-            .addCasing("6-14", "Warded Glass", false)
-            .addCasing("3-7", "Thaumium Alchemical Furnace", false)
-            .addCasing("3-7", "Essentia Filter Casing", false)
-            .addEnergyHatch("1+", "Any magic casing", 1)
-            .addMaintenanceHatch("1", "Any magic casing", 1)
-            .addMufflerHatch("3-7", "Top center casings", 2)
-            .addInputAny("1+", "Any magic casing", 1)
-            .addMiscHatch("1+", "Essentia Output Hatch", "Any magic casing", 1)
-            .addAir("Interior of the structure")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("24-84", StatCollector.translateToLocal("magicCasing.name"), false)
+            .addCasing("12-28", StatCollector.translateToLocal("essentiaCell.name"), true)
+            .addCasing(
+                "6-14",
+                StatCollector.translateToLocal("gg.multiblock.LargeEssentiaSmeltery.warded_glass"),
+                false)
+            .addCasing(
+                "3-7",
+                StatCollector.translateToLocal("gg.multiblock.LargeEssentiaSmeltery.alchemical_furnace"),
+                false)
+            .addCasing("3-7", StatCollector.translateToLocal("essentiaFilterCasing.name"), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("3-7", StatCollector.translateToLocal("gg.multiblock.LargeEssentiaSmeltery.top_center"), 2)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMiscHatch(
+                "1+",
+                StatCollector.translateToLocal("gg.multiblock.LargeEssentiaSmeltery.essentia_output_hatch"),
+                StatCollector.translateToLocal("gt.mbtt.structure.any_casing"),
+                1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();

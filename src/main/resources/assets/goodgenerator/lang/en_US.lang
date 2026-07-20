@@ -384,6 +384,70 @@ gt.blockmachines.YottaFluidTank.cfgi.0=Tick rate (Update I/O every x ticks)
 
 gg.gui.text.large_essentia_smeltery.requires=Requires %s total §bAqua§f and §cIgnis §fcentivis to function.
 
+# Multiblock Tooltips
+gg.multiblock.LargeEssentiaSmeltery.machine_type=Essentia Smeltery, LES
+gg.multiblock.LargeEssentiaSmeltery.desc1=Necessary evil
+gg.multiblock.LargeEssentiaSmeltery.desc2=Advanced Essentia smelting technology
+gg.multiblock.LargeEssentiaSmeltery.desc3=Maximum parallel = 2^Tier * (Length - 1)
+gg.multiblock.LargeEssentiaSmeltery.desc4=Diffusion Cell Tiers start from 0, Length is full multi length
+gg.multiblock.LargeEssentiaSmeltery.desc5=Energy Hatch tier: HV+
+gg.multiblock.LargeEssentiaSmeltery.desc6=You can find more information about this machine in the Thaumonomicon
+gg.multiblock.LargeEssentiaSmeltery.warded_glass=Warded Glass
+gg.multiblock.LargeEssentiaSmeltery.alchemical_furnace=Thaumium Alchemical Furnace
+gg.multiblock.LargeEssentiaSmeltery.top_center=Top center casings
+gg.multiblock.LargeEssentiaSmeltery.essentia_output_hatch=Essentia Output Hatch
+
+gg.multiblock.NeutronActivator.machine_type=Neutron Activator, NA
+gg.multiblock.NeutronActivator.desc1=Superluminal-velocity Motion.
+gg.multiblock.NeutronActivator.desc2=The minimum height of the Speeding Pipe Casing is 4
+gg.multiblock.NeutronActivator.desc3=Per extra Speeding Pipe Casing will give time discount
+gg.multiblock.NeutronActivator.desc4=But it will reduce the Neutron Accelerator efficiency
+gg.multiblock.NeutronActivator.desc5=You need to input energy to the Neutron Accelerator to get it running
+gg.multiblock.NeutronActivator.desc6=It will output correct products with Specific Neutron Kinetic Energy
+gg.multiblock.NeutronActivator.desc7=Otherwise it will output trash
+gg.multiblock.NeutronActivator.desc8=The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running
+gg.multiblock.NeutronActivator.desc9=Inputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.
+gg.multiblock.NeutronActivator.neutron_accelerator=Neutron Accelerator
+gg.multiblock.NeutronActivator.neutron_sensor=Neutron Sensor
+gg.multiblock.NeutronActivator.any_bottom_edge_casing=Any bottom edge casing
+gg.multiblock.NeutronActivator.any_top_edge_casing=Any top edge casing
+
+gg.multiblock.PreciseAssembler.machine_type=Precise Assembler, Assembler, PrAss
+gg.multiblock.PreciseAssembler.desc1=No more than 7nm of error
+gg.multiblock.PreciseAssembler.desc2=Has Two Modes: Precise and Normal
+gg.multiblock.PreciseAssembler.desc3=Use a Screwdriver to change modes
+gg.multiblock.PreciseAssembler.desc4=Precise Mode unlocks the ability to assemble precise components
+gg.multiblock.PreciseAssembler.desc5=Casing Tier determines Maximum Recipe Tier
+gg.multiblock.PreciseAssembler.desc6=Normal Mode allows standard assembler recipes
+gg.multiblock.PreciseAssembler.precise_casing_tier=§fPrecise Casing§7 Tier determines %s
+gg.multiblock.PreciseAssembler.parallels_word=Parallels
+gg.multiblock.PreciseAssembler.tier_imprecise=Imprecise
+gg.multiblock.PreciseAssembler.parallels_line=%s->%s Parallels
+gg.multiblock.PreciseAssembler.machine_casing_tier=Machine Casing limits the voltage tier the machine can work on, %sUHV§7-tier Machine Casing unlocks all.
+gg.multiblock.PreciseAssembler.any_unit_casing=Any unit casing
+
+gg.multiblock.SupercriticalFluidTurbine.machine_type=Steam Turbine, LST-SC
+gg.multiblock.SupercriticalFluidTurbine.desc1=Needs a Turbine, place inside controller
+gg.multiblock.SupercriticalFluidTurbine.desc2=Use Supercritical Steam to generate power
+gg.multiblock.SupercriticalFluidTurbine.desc3=Outputs 1L of SH Steam per 1L of SC Steam as well as producing power
+gg.multiblock.SupercriticalFluidTurbine.desc4=Power output depends on turbine and fitting
+gg.multiblock.SupercriticalFluidTurbine.desc5=Use screwdriver to adjust fitting of turbine
+gg.multiblock.SupercriticalFluidTurbine.casing=SC Turbine Casing
+gg.multiblock.SupercriticalFluidTurbine.side_centered=Side centered
+gg.multiblock.SupercriticalFluidTurbine.input_hatch=Supercritical Fluid, Side centered
+gg.multiblock.SupercriticalFluidTurbine.output_hatch=Superheated Steam, Side centered
+
+gg.multiblock.YottaFluidTank.machine_type=Fluid Tank
+gg.multiblock.YottaFluidTank.desc1=The max output speed is decided by the amount of stored liquid and the output hatch's capacity
+gg.multiblock.YottaFluidTank.desc2=The max fluid cell tier is limited by the glass tier
+gg.multiblock.YottaFluidTank.desc3=HV glass for T1, EV glass for T2, IV glass for T3. . .
+gg.multiblock.YottaFluidTank.desc4=The max height of the cell blocks is 15
+gg.multiblock.YottaFluidTank.yothatch=YOTHatch
+gg.multiblock.YottaFluidTank.any_bottom_center_replaces=Any bottom center casing (replaces other hatches)
+gg.multiblock.YottaFluidTank.any_top_center_casing=Any top center casing
+gg.multiblock.YottaFluidTank.any_bottom_center_casing=Any bottom center casing
+gg.multiblock.YottaFluidTank.footer=No air gaps allowed, but the fluid cell blocks can be different tiers
+
 
 # RecipeMaps
 gg.recipe.naquadah_reactor=Large Naquadah Reactor

@@ -37,6 +37,7 @@ import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -59,6 +60,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
@@ -66,6 +68,7 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
     public Parameters.Group.ParameterIn batchSetting;
@@ -188,35 +191,53 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Neutron Activator, NA")
-            .addInfo("Superluminal-velocity Motion.")
-            .addInfo("The minimum height of the Speeding Pipe Casing is 4")
-            .addInfo("Per extra Speeding Pipe Casing will give time discount")
-            .addInfo("But it will reduce the Neutron Accelerator efficiency")
-            .addInfo("You need to input energy to the Neutron Accelerator to get it running")
-            .addInfo("It will output correct products with Specific Neutron Kinetic Energy")
-            .addInfo("Otherwise it will output trash")
-            .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running")
-            .addInfo("Inputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.")
+        final String anyTieredGlass = StatCollector.translateToLocalFormatted(
+            "GT5U.MBTT.HatchInfo",
+            StatCollector.translateToLocal("GT5U.structure.tiered_glass"));
+        final String steelFrameBox = BlockFrameBox.getLocalizedName(Materials.Steel);
+        tt.addMachineType(StatCollector.translateToLocal("gg.multiblock.NeutronActivator.machine_type"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.NeutronActivator.desc1"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.NeutronActivator.desc2"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.NeutronActivator.desc3"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.NeutronActivator.desc4"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.NeutronActivator.desc5"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.NeutronActivator.desc6"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.NeutronActivator.desc7"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.NeutronActivator.desc8"))
+            .addInfo(StatCollector.translateToLocal("gg.multiblock.NeutronActivator.desc9"))
             .beginVariableStructureBlock(5, 5, 5, 5, 6, 256, false)
-            .addController("Front bottom center")
-            .addMiscHatch("1+", "Neutron Accelerator", "Any bottom edge casing", 2)
-            .addMiscHatch("0+", "Neutron Sensor", "Any bottom edge casing", 2)
-            .addMaintenanceHatch("1", "Any bottom edge casing", 2)
-            .addInputAny("1+", "Any top edge casing", 1)
-            .addOutputAny("1+", "Any bottom edge casing", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addMiscHatch(
+                "1+",
+                StatCollector.translateToLocal("gg.multiblock.NeutronActivator.neutron_accelerator"),
+                StatCollector.translateToLocal("gg.multiblock.NeutronActivator.any_bottom_edge_casing"),
+                2)
+            .addMiscHatch(
+                "0+",
+                StatCollector.translateToLocal("gg.multiblock.NeutronActivator.neutron_sensor"),
+                StatCollector.translateToLocal("gg.multiblock.NeutronActivator.any_bottom_edge_casing"),
+                2)
+            .addMaintenanceHatch(
+                "1",
+                StatCollector.translateToLocal("gg.multiblock.NeutronActivator.any_bottom_edge_casing"),
+                2)
+            .addInputAny("1+", StatCollector.translateToLocal("gg.multiblock.NeutronActivator.any_top_edge_casing"), 1)
+            .addOutputAny(
+                "1+",
+                StatCollector.translateToLocal("gg.multiblock.NeutronActivator.any_bottom_edge_casing"),
+                2)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("32", "Any Tiered Glass", false)
-            .addCasing("7-27", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("18", "Processor Machine Casing", false)
-            .addCasing("16", "Steel Frame Box", false)
-            .addCasing("4", "Speeding Pipe Casing", false)
+            .addCasing("32", anyTieredGlass, false)
+            .addCasing("7-27", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("18", Casings.ProcessorMachineCasing.getLocalizedName(), false)
+            .addCasing("16", steelFrameBox, false)
+            .addCasing("4", StatCollector.translateToLocal("speedingPipe.name"), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
-            .addCasing("8", "Any Tiered Glass", false)
-            .addCasing("4", "Steel Frame Box", false)
-            .addCasing("1", "Speeding Pipe Casing", false)
+            .addCasing("8", anyTieredGlass, false)
+            .addCasing("4", steelFrameBox, false)
+            .addCasing("1", StatCollector.translateToLocal("speedingPipe.name"), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.height"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
