@@ -44,6 +44,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.fluid.GTFluidTank;
@@ -68,6 +69,7 @@ import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.misc.GTStructureChannels;
 import kekztech.common.Blocks;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -340,34 +342,58 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Tank")
-            .addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
-            .addInfo("Partitions 1/25th of the total capacity for each fluid, no overflowing allowed")
-            .addInfo("Right clicking the controller with a screwdriver enables excess voiding")
-            .addInfo("Fluid storage amount and running cost depends on the Storage Field Block used")
+        tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.machine_type"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc1"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc2"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc3"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc4"))
             .addSeparator()
-            .addInfo("Note on hatch locking:")
-            .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output")
-            .addInfo("The index of a stored fluid can be obtained through the Tricorder")
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc5"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc6"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc7"))
             .beginVariableStructureBlock(5, 15, 5, 5, 5, 5, false)
-            .addController("Front center")
-            .addEnergyHatch("0+", "Any casing", 1, 2)
-            .addMaintenanceHatch("1", "Any casing", 1, 2)
-            .addMiscHatch("0-1", "TFFT Multi I/O Hatch", "Any casing/glass adjacent to a field storage block", 2, 3)
-            .addInputHatch("1+", "Any casing/glass adjacent to a field storage block", 2, 3)
-            .addOutputHatch("1+", "Any casing/glass adjacent to a field storage block", 2, 3)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
+            .addEnergyHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addMiscHatch(
+                "0-1",
+                StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.multi_io_hatch"),
+                StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.any_casing_glass_adjacent"),
+                2,
+                3)
+            .addInputHatch(
+                "1+",
+                StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.any_casing_glass_adjacent"),
+                2,
+                3)
+            .addOutputHatch(
+                "1+",
+                StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.any_casing_glass_adjacent"),
+                2,
+                3)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("12-48", "EV+ Tiered Glass", false)
-            .addCasing(MIN_CASING_AMOUNT + "-46", "TFFT Casing", false)
-            .addCasing("27", "Field Storage Block", true)
+            .addCasing(
+                "12-48",
+                StatCollector
+                    .translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]),
+                false)
+            .addCasing(
+                MIN_CASING_AMOUNT + "-46",
+                StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.0.name"),
+                false)
+            .addCasing("27", StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.field_storage_block"), true)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addCasing("4-16", "EV+ Tiered Glass", false)
-            .addCasing("9", "Field Storage Block", true)
+            .addCasing(
+                "4-16",
+                StatCollector
+                    .translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]),
+                false)
+            .addCasing("9", StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.field_storage_block"), true)
             .addStructureInfo("")
-            .addStructureFooter("No air gaps allowed, but the field storage blocks can be different tiers")
-            .addStructureFooter("Place a fluid storage bus on the Multi I/O Hatch to interact with all fluids directly")
+            .addStructureFooter(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.footer1"))
+            .addStructureFooter(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.footer2"))
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.TFFT_FIELD)
