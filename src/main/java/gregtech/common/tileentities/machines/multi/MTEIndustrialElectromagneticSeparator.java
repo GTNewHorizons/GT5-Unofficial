@@ -148,6 +148,7 @@ public class MTEIndustrialElectromagneticSeparator
                 .hatchId(MetaTileEntityIDs.MAG_HATCH.ID)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
                 .hint(2)
+                .exclusive()
                 .build())
         .build();
 
