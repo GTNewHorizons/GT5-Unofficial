@@ -378,7 +378,7 @@ public class GTRecipeRegistrator {
 
         long tAmount = 0;
         for (MaterialStack tMaterial : aData.getAllMaterialStacks())
-            tAmount += tMaterial.mAmount * ((Materials) tMaterial.mMaterial).getMass();
+            tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
 
         ArrayList<ItemStack> outputs = new ArrayList<>();
         if (GTOreDictUnificator.getIngotOrDust(aData.mMaterial) != null) {
@@ -428,8 +428,9 @@ public class GTRecipeRegistrator {
         Set<Materials> gases = new LinkedHashSet<>();
         for (ItemStack output : outputs) {
             ItemData outputData = GTOreDictUnificator.getAssociation(output);
-            if (outputData != null)
-                gases.addAll(((Materials) outputData.mMaterial.mMaterial).mArcSmeltIntoWithGas.keySet());
+            if (outputData != null) gases.addAll(
+                outputData.mMaterial.mMaterial.getArcSmeltIntoWithGas()
+                    .keySet());
         }
         return gases;
     }
@@ -440,9 +441,9 @@ public class GTRecipeRegistrator {
         for (int i = 0; i < outputs.size(); i++) {
             ItemStack output = outputs.get(i);
             ItemData outputData = GTOreDictUnificator.getAssociation(output);
-            if (outputData != null
-                && ((Materials) outputData.mMaterial.mMaterial).mArcSmeltIntoWithGas.containsKey(gas)) {
-                Materials gasSmeltingMaterial = ((Materials) outputData.mMaterial.mMaterial).mArcSmeltIntoWithGas
+            if (outputData != null && outputData.mMaterial.mMaterial.getArcSmeltIntoWithGas()
+                .containsKey(gas)) {
+                Materials gasSmeltingMaterial = outputData.mMaterial.mMaterial.getArcSmeltIntoWithGas()
                     .get(gas);
                 long materialAmount = outputData.mMaterial.mAmount * output.stackSize;
                 gasOutputs[i] = GTOreDictUnificator.getIngotOrDust(gasSmeltingMaterial, materialAmount);

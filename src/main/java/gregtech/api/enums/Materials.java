@@ -1415,11 +1415,11 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         int tMeltingPoint = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             numberOfComponents += tMaterial.mAmount;
-            if (((Materials) tMaterial.mMaterial).mMeltingPoint > 0) {
-                tMeltingPoint += ((Materials) tMaterial.mMaterial).mMeltingPoint * tMaterial.mAmount;
+            if (tMaterial.mMaterial.getMeltingPoint() > 0) {
+                tMeltingPoint += tMaterial.mMaterial.getMeltingPoint() * tMaterial.mAmount;
             }
             if (aspects == null) {
-                for (TC_AspectStack tAspect : ((Materials) tMaterial.mMaterial).mAspects) {
+                for (TC_AspectStack tAspect : tMaterial.mMaterial.getAspects()) {
                     tAspect.addToAspectList(mAspects);
                 }
             }
@@ -1850,7 +1850,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         long rAmount = 0, tAmount = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             tAmount += tMaterial.mAmount;
-            rAmount += tMaterial.mAmount * ((Materials) tMaterial.mMaterial).getProtons();
+            rAmount += tMaterial.mAmount * tMaterial.mMaterial.getProtons();
         }
         return (getDensity() * rAmount) / (tAmount * M);
     }
@@ -1861,7 +1861,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         long rAmount = 0, tAmount = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             tAmount += tMaterial.mAmount;
-            rAmount += tMaterial.mAmount * ((Materials) tMaterial.mMaterial).getNeutrons();
+            rAmount += tMaterial.mAmount * tMaterial.mMaterial.getNeutrons();
         }
         return (getDensity() * rAmount) / (tAmount * M);
     }
@@ -1872,7 +1872,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         long rAmount = 0, tAmount = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             tAmount += tMaterial.mAmount;
-            rAmount += tMaterial.mAmount * ((Materials) tMaterial.mMaterial).getMass();
+            rAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
         }
         return (getDensity() * rAmount) / (tAmount * M);
     }

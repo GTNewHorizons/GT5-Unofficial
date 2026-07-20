@@ -1948,16 +1948,16 @@ public class GTUtility {
         ItemData tData = GTOreDictUnificator.getItemData(aStack);
         return tData == null ? 0
             : (tData.mPrefix == null ? 0 : tData.mPrefix.mHeatDamage)
-                + (tData.hasValidMaterialData() ? ((Materials) tData.mMaterial.mMaterial).mHeatDamage : 0);
+                + (tData.hasValidMaterialData() ? tData.mMaterial.mMaterial.getHeatDamage() : 0);
     }
 
     public static int getRadioactivityLevel(ItemStack aStack) {
         ItemData tData = GTOreDictUnificator.getItemData(aStack);
         if (tData != null && tData.hasValidMaterialData()) {
-            if (((Materials) tData.mMaterial.mMaterial).mArmorEnchantment instanceof EnchantmentRadioactivity)
-                return ((Materials) tData.mMaterial.mMaterial).mArmorEnchantmentLevel;
-            if (((Materials) tData.mMaterial.mMaterial).mToolEnchantment instanceof EnchantmentRadioactivity)
-                return ((Materials) tData.mMaterial.mMaterial).mToolEnchantmentLevel;
+            if (tData.mMaterial.mMaterial.getArmorEnchantment() instanceof EnchantmentRadioactivity)
+                return tData.mMaterial.mMaterial.getArmorEnchantmentLevel();
+            if (tData.mMaterial.mMaterial.getToolEnchantment() instanceof EnchantmentRadioactivity)
+                return tData.mMaterial.mMaterial.getToolEnchantmentLevel();
         }
         return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE.effectId, aStack);
     }

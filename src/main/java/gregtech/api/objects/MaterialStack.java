@@ -45,7 +45,7 @@ public class MaterialStack implements Cloneable {
     }
 
     public String toString(boolean single) {
-        String temp1 = "", temp2 = ((Materials) mMaterial).getChemicalTooltip(true), temp3 = "", temp4 = "";
+        String temp1 = "", temp2 = mMaterial.getChemicalTooltip(true), temp3 = "", temp4 = "";
         if (mAmount > 1) {
             temp4 = GTUtility.toSubscript(mAmount);
         }
@@ -57,13 +57,17 @@ public class MaterialStack implements Cloneable {
     }
 
     private boolean isMaterialListComplex(MaterialStack materialStack) {
-        if (((Materials) materialStack.mMaterial).mMaterialList.size() > 1) {
+        if (materialStack.mMaterial.getMaterialList()
+            .size() > 1) {
             return true;
         }
-        if (((Materials) materialStack.mMaterial).mMaterialList.isEmpty()) {
+        if (materialStack.mMaterial.getMaterialList()
+            .isEmpty()) {
             return false;
         }
-        return isMaterialListComplex(((Materials) materialStack.mMaterial).mMaterialList.get(0));
+        return isMaterialListComplex(
+            materialStack.mMaterial.getMaterialList()
+                .get(0));
     }
 
     @Override

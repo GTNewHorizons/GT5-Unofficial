@@ -15,7 +15,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
@@ -84,15 +83,15 @@ public class MicrowaveBackend extends NonGTBackend {
             ItemData itemData = GTOreDictUnificator.getItemData(item);
             if (itemData != null) {
                 if (itemData.mMaterial != null && itemData.mMaterial.mMaterial != null) {
-                    if (MU.hasFlag((Materials) itemData.mMaterial.mMaterial, GTMaterialFlag.METAL)
-                        || MU.hasFlag((Materials) itemData.mMaterial.mMaterial, GTMaterialFlag.EXPLOSIVE)) {
+                    if (MU.hasFlag(itemData.mMaterial.mMaterial, GTMaterialFlag.METAL)
+                        || MU.hasFlag(itemData.mMaterial.mMaterial, GTMaterialFlag.EXPLOSIVE)) {
                         GTLog.writeExplosionLog("Microwave Explosion due to METAL insertion");
                         return GTRecipeBuilder.empty()
                             .metadata(EXPLODE, true)
                             .build()
                             .orElse(null);
                     }
-                    if (MU.hasFlag((Materials) itemData.mMaterial.mMaterial, GTMaterialFlag.FLAMMABLE)) {
+                    if (MU.hasFlag(itemData.mMaterial.mMaterial, GTMaterialFlag.FLAMMABLE)) {
                         GTLog.writeExplosionLog("Microwave INFLAMMATION due to FLAMMABLE insertion");
                         return GTRecipeBuilder.empty()
                             .metadata(ON_FIRE, true)
@@ -102,15 +101,15 @@ public class MicrowaveBackend extends NonGTBackend {
                 }
                 for (MaterialStack materialStack : itemData.mByProducts) {
                     if (materialStack == null) continue;
-                    if (MU.hasFlag((Materials) materialStack.mMaterial, GTMaterialFlag.METAL)
-                        || MU.hasFlag((Materials) materialStack.mMaterial, GTMaterialFlag.EXPLOSIVE)) {
+                    if (MU.hasFlag(materialStack.mMaterial, GTMaterialFlag.METAL)
+                        || MU.hasFlag(materialStack.mMaterial, GTMaterialFlag.EXPLOSIVE)) {
                         GTLog.writeExplosionLog("Microwave Explosion due to METAL insertion");
                         return GTRecipeBuilder.empty()
                             .metadata(EXPLODE, true)
                             .build()
                             .orElse(null);
                     }
-                    if (MU.hasFlag((Materials) materialStack.mMaterial, GTMaterialFlag.FLAMMABLE)) {
+                    if (MU.hasFlag(materialStack.mMaterial, GTMaterialFlag.FLAMMABLE)) {
                         GTLog.writeExplosionLog("Microwave INFLAMMATION due to FLAMMABLE insertion");
                         return GTRecipeBuilder.empty()
                             .metadata(ON_FIRE, true)

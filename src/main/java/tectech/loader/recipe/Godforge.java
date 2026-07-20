@@ -81,7 +81,7 @@ public class Godforge implements Runnable {
                 GTLog.err.println("Godforge.convertToFluid: no unification data for " + itemStack + ", skipping");
                 continue;
             }
-            molten.add(((Materials) association.mMaterial.mMaterial).getMolten(1 * INGOTS));
+            molten.add(association.mMaterial.mMaterial.getMolten(1 * INGOTS));
         }
 
         return molten.toArray(new FluidStack[0]);
