@@ -706,7 +706,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.NANOCHIP;
     }
 
