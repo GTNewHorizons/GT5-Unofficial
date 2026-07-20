@@ -114,7 +114,7 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
             .addCasing("0-79", "Chemically Inert Machine Casing", false)
             .addCasing("64", "Any Tiered Glass", true)
             .addCasing("28", "PTFE Pipe Casing", false)
-            .addCasing("7", "Fusion Coil Block or Eternal Heating Coil", false)
+            .addCasing("7", "GT5U.MBTT.Part.FusionOrEternalHeatingCoil", false)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addInputAny("1+", "Any casing", 1)

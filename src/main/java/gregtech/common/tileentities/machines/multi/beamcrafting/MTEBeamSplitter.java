@@ -162,12 +162,12 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
             .addMiscHatch(
                 "1",
                 gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beaminput"),
-                "Above controller",
+                "GT5U.MBTT.Position.AboveController",
                 1)
             .addMiscHatch(
                 "4",
                 gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beamoutputfiltered"),
-                "Opposite controller",
+                "GT5U.MBTT.Position.OppositeController",
                 2)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)

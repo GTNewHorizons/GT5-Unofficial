@@ -37,7 +37,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -244,7 +243,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .beginStructureBlock(7, 7, 12, true)
             .addController("front_bottom_center")
             .addCasing("100", "gt.windmill.casing.planks", false)
-            .addCasing("40-47", StatCollector.translateToLocal("tile.clayHardened.name"), false)
+            .addCasing("40-47", "tile.clayHardened.name", false)
             .addCasing("44", "gt.windmill.casing.bricks", false)
             .addMiscHatch("1", "tile.BWRotorBlock.0.name", "front_center", 1)
             .addMiscHatch("1+", "tile.dispenser.name", "gt.windmill.info.1", 2)

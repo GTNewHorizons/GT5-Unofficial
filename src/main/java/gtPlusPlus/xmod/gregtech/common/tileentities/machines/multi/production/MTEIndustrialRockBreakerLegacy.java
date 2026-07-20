@@ -28,7 +28,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -44,7 +43,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -76,7 +74,7 @@ public class MTEIndustrialRockBreakerLegacy extends GTPPMultiBlockBase<MTEIndust
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.ThermalProcessingCasing);
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gtplusplus.blockcasings.2.0.name");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addStructureDeprecatedLine()
@@ -85,8 +83,8 @@ public class MTEIndustrialRockBreakerLegacy extends GTPPMultiBlockBase<MTEIndust
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("front_bottom_center")
-            .addCasingInfoMin(Casings.ThermalProcessingCasing.getLocalizedName(), 9, false)
-            .addCasingInfoExactly(Casings.ThermalContainmentCasing.getLocalizedName(), 16, false)
+            .addCasingInfoMin("gtplusplus.blockcasings.2.0.name", 9, false)
+            .addCasingInfoExactly("gtplusplus.blockcasings.2.11.name", 16, false)
             .addInputBus(anyCasing, 1)
             .addInputHatch(anyCasing, 1)
             .addOutputBus(anyCasing, 1)

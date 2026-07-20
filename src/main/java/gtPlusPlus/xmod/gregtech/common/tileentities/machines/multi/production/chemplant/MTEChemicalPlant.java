@@ -68,7 +68,6 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
@@ -142,7 +141,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         return new MultiblockTooltipBuilder().addMachineType(getMachineType())
             .addInfo("gt.exxonmobil.tips.1")
             .addDynamicParallelInfo(2, TooltipTier.PIPE_CASING)
-            .addInfo("gt.exxonmobil.tips.2", TooltipHelper.tierText(TooltipTier.PIPE_CASING))
+            .addInfo("gt.exxonmobil.tips.2", TooltipTier.PIPE_CASING.getLocalizedValue())
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
             .addInfo("gt.exxonmobil.tips.3")
             .beginStructureBlock(7, 7, 7, false)
@@ -150,7 +149,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addCasing("70-91", "Metal Machine Casing", true)
             .addCasing("57", "Machine Casing", true)
             .addCasing("27", "Heating Coil", true)
-            .addCasing("18", "Pipe Casing", true)
+            .addCasing("18", "GT5U.MBTT.Tiers.FluidPipe", true)
             .addMiscHatch("0-1", "gt.blockmachines.hatch.catalysts.name", "Any metal machine casing", 1)
             .addEnergyHatch("1+", "Any metal machine casing", 1)
             .addMaintenanceHatch("1", "Any metal machine casing", 1)

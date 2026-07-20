@@ -31,7 +31,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -418,15 +417,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 1)
             .addStructureInfo("gt.lapo_super_capacitor.info.energy.tip")
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing(
-                "17-48",
-                StatCollector.translateToLocal("tile.kekztech_lapotronicenergyunit_block.0.name"),
-                false)
-            .addCasing("41", StatCollector.translateToLocal("GT5U.MBTT.AnyGlass"), true)
+            .addStructureInfo("GT5U.MBTT.Structure.Base")
+            .addCasing("17-48", "tile.kekztech_lapotronicenergyunit_block.0.name", false)
+            .addCasing("41", "GT5U.MBTT.AnyGlass", true)
             .addCasing(
                 "9",
-                StatCollector.translateToLocalFormatted(
+                GTUtility.nestParams(
                     "gt.lapo_super_capacitor.info.caps",
                     TooltipHelper.voltageText(4),
                     TooltipHelper.voltageText(8),
@@ -434,11 +430,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     TooltipHelper.voltageText(12)),
                 true)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
-            .addCasing("16", StatCollector.translateToLocal("GT5U.MBTT.AnyGlass"), true)
+            .addStructureInfo("GT5U.MBTT.Structure.Layer")
+            .addCasing("16", "GT5U.MBTT.AnyGlass", true)
             .addCasing(
                 "9",
-                StatCollector.translateToLocalFormatted(
+                GTUtility.nestParams(
                     "gt.lapo_super_capacitor.info.caps",
                     TooltipHelper.voltageText(4),
                     TooltipHelper.voltageText(8),
@@ -446,7 +442,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     TooltipHelper.voltageText(12)),
                 true)
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("gt.lapo_super_capacitor.info.caps.tips"))
+            .addStructureFooter("gt.lapo_super_capacitor.info.caps.tips")
             .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureInfo(

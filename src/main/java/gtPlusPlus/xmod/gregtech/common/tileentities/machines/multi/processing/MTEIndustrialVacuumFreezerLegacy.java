@@ -68,10 +68,8 @@ public class MTEIndustrialVacuumFreezerLegacy extends GTPPMultiBlockBase<MTEIndu
 
         GregTechAPI.sAfterGTLoad.add(() -> {
             CRYO_STACK = new FluidStack(TFFluids.fluidCryotheum, 1);
-            CASING_NAME = GregtechItemList.Casing_AdvancedVacuum.get(1)
-                .getDisplayName();
-            HATCH_NAME = GregtechItemList.Hatch_Input_Cryotheum.get(1)
-                .getDisplayName();
+            CASING_NAME = "gtplusplus.blockcasings.3.10.name";
+            HATCH_NAME = "GT5U.MBTT.CryotheumHatch";
         });
     }
 

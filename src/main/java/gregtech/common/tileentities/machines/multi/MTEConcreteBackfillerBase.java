@@ -91,7 +91,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
     protected MultiblockTooltipBuilder createTooltip(String aStructureName) {
         String casings = getCasingBlockItem().get(0)
-            .getDisplayName();
+            .getUnlocalizedName() + ".name";
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);

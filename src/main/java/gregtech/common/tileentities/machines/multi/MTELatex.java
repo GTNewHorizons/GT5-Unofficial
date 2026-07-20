@@ -58,7 +58,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 
@@ -290,14 +289,14 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
         tt.addMachineType("machtype.latex")
             .addInfo("gt.latex.tips.1")
             .addBulkMachineInfo(8, 2F, 0.85F)
-            .addInfo("gt.latex.tips.2", TooltipHelper.tierText(TooltipTier.ITEM_PIPE_CASING))
+            .addInfo("gt.latex.tips.2", TooltipTier.ITEM_PIPE_CASING.getLocalizedValue())
             .addSeparator()
             .addInfo("gt.latex.tips.3")
             .beginStructureBlock(5, 5, 8, false)
             .addController("Front bottom center")
             .addCasing("14-36", gregtech.api.util.GTUtility.nestParams("gt.blockcasings8.0.name"), false)
             .addCasing("32", "Any Tiered Glass", false)
-            .addCasing("16", "Polyvinyl Chloride Frame Box", false)
+            .addCasing("16", "GT5U.MBTT.Part.PVCFrameBox", false)
             .addCasing("6", "Item Pipe Casing", true)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)

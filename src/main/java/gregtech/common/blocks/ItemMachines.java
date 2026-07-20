@@ -7,11 +7,8 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static org.apache.commons.lang3.StringUtils.removeStart;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -36,10 +33,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import appeng.me.helpers.AENetworkProxy;
@@ -65,6 +58,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.DelayedTooltipLocalization;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipMarkupProcessor;
 import gregtech.common.tileentities.storage.MTESuperChest;
@@ -73,7 +67,10 @@ import gregtech.crossmod.backhand.Backhand;
 
 public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
-    private static final Pattern GENERATED_FORMAT_MARKER = Pattern.compile("%%%(.*?)%%%");
+    private static final DelayedTooltipLocalization DELAYED_TOOLTIP_LOCALIZATION = new DelayedTooltipLocalization(
+        (key, parameters) -> parameters == null || parameters.length == 0 ? StatCollector.translateToLocal(key)
+            : StatCollector.translateToLocalFormatted(key, parameters),
+        (payload, exception) -> GT_FML_LOGGER.error("Failed to parse localization JSON: {}", payload, exception));
 
     public ItemMachines(Block block) {
         super(block);
@@ -87,43 +84,6 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (!(aStack.getItem() instanceof ItemMachines)) return null;
         if (aStack.getItemDamage() < 0 || aStack.getItemDamage() > GregTechAPI.METATILEENTITIES.length) return null;
         return GregTechAPI.METATILEENTITIES[aStack.getItemDamage()];
-    }
-
-    private String resolveJsonLocalization(String json) {
-        try {
-            JsonObject obj = new JsonParser().parse(json)
-                .getAsJsonObject();
-
-            String key = obj.get("k")
-                .getAsString();
-            JsonArray paramsArray = obj.getAsJsonArray("p");
-
-            boolean hasIndent = key.startsWith(INDENT_MARK);
-            String cleanKey = removeStart(key, INDENT_MARK);
-
-            List<Object> resolvedParams = new ArrayList<>();
-            for (JsonElement elem : paramsArray) {
-                if (elem.isJsonNull()) {
-                    resolvedParams.add("");
-                } else {
-                    String paramStr = elem.getAsString();
-                    if (paramStr.startsWith("{\"k\":")) {
-                        resolvedParams.add(stripGeneratedFormatMarkers(resolveJsonLocalization(paramStr)));
-                    } else {
-                        String translated = translateToLocal(paramStr);
-                        resolvedParams
-                            .add(stripGeneratedFormatMarkers(translated.equals(paramStr) ? paramStr : translated));
-                    }
-                }
-            }
-
-            String result = translate(cleanKey, resolvedParams.toArray());
-            if (result.isEmpty()) return key;
-            return hasIndent ? INDENT_MARK + result : result;
-        } catch (Exception e) {
-            GT_FML_LOGGER.error("Failed to parse localization JSON: {}", json, e);
-            return json;
-        }
     }
 
     @Override
@@ -226,7 +186,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (containsGeneratedFormatMarkers(aDescription)) {
             addResolvedDescription(
                 aList,
-                GTSplit.split(resolveGeneratedFormatMarkers(joinDescriptionLines(aDescription), tTranslated)));
+                GTSplit.split(
+                    DELAYED_TOOLTIP_LOCALIZATION
+                        .resolveGeneratedFormatMarkers(joinDescriptionLines(aDescription), tTranslated)));
         } else {
             addResolvedDescription(aList, GTSplit.split(tTranslated));
         }
@@ -239,9 +201,11 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
             String translated;
             if (tDescLine.startsWith("{\"k\":")) {
-                translated = stripGeneratedFormatMarkers(resolveJsonLocalization(tDescLine));
+                translated = DelayedTooltipLocalization
+                    .stripGeneratedFormatMarkers(DELAYED_TOOLTIP_LOCALIZATION.resolveJsonLocalization(tDescLine));
             } else {
-                translated = stripGeneratedFormatMarkers(translate(removeStart(tDescLine, INDENT_MARK)));
+                translated = DelayedTooltipLocalization
+                    .stripGeneratedFormatMarkers(translate(removeStart(tDescLine, INDENT_MARK)));
             }
 
             final String formatted = TooltipMarkupProcessor.formatTranslatedLine(tDescLine, translated);
@@ -292,41 +256,6 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         return Arrays.stream(aDescription)
             .filter(GTUtility::isStringValid)
             .collect(Collectors.joining(GTSplit.LB));
-    }
-
-    private String resolveGeneratedFormatMarkers(@Nullable String originalDescription,
-        @Nonnull String translatedDescription) {
-        if (!GTUtility.isStringValid(originalDescription) || !originalDescription.contains("%%%")) {
-            return stripGeneratedFormatMarkers(translatedDescription);
-        }
-        String resolvedDescription = translatedDescription;
-        final Matcher matcher = GENERATED_FORMAT_MARKER.matcher(originalDescription);
-        while (matcher.find()) {
-            final int placeholderIndex = resolvedDescription.indexOf("%s");
-            if (placeholderIndex < 0) break;
-            resolvedDescription = resolvedDescription.substring(0, placeholderIndex)
-                + resolveGeneratedFormatPayload(matcher.group(1))
-                + resolvedDescription.substring(placeholderIndex + 2);
-        }
-        return stripGeneratedFormatMarkers(resolvedDescription);
-    }
-
-    private String resolveGeneratedFormatPayload(@Nonnull String payload) {
-        if (payload.startsWith("{\"k\":")) {
-            return stripGeneratedFormatMarkers(resolveJsonLocalization(payload));
-        }
-        return stripGeneratedFormatMarkers(payload);
-    }
-
-    private static String stripGeneratedFormatMarkers(@Nonnull String text) {
-        if (!text.contains("%%%")) return text;
-        final Matcher matcher = GENERATED_FORMAT_MARKER.matcher(text);
-        final StringBuffer buffer = new StringBuffer();
-        while (matcher.find()) {
-            matcher.appendReplacement(buffer, Matcher.quoteReplacement(matcher.group(1)));
-        }
-        matcher.appendTail(buffer);
-        return buffer.toString();
     }
 
     @Override

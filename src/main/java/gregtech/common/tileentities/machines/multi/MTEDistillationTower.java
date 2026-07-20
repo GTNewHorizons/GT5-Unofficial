@@ -147,7 +147,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             .addInputBus("0+", "Any bottom casing", 1)
             .addInputHatch("1+", "Any bottom casing", 1)
             .addOutputBus("0+", "Any bottom casing", 1)
-            .addOutputHatch("2-11", "One per layer, except the bottom layer", 2)
+            .addOutputHatch("2-11", "GT5U.MBTT.Position.OnePerLayerExceptBottom", 2)
             .addAir("Interior of the structure")
             .addStructureInfo("")
             .addStructureFooter("gt.distillation_tower.info.1")

@@ -39,7 +39,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -106,7 +105,7 @@ public class MTEIndustrialArcFurnaceLegacy extends GTPPMultiBlockBase<MTEIndustr
             .addShiftInfo("gt.iaf.info.1")
             .addShiftInfo("GT5U.MBTT.Structure")
             .addController("front_center")
-            .addCasingInfoMin(Casings.TemperedArcFurnaceCasing.getLocalizedName(), 10)
+            .addCasingInfoMin("gtplusplus.blockcasings.4.3.name", 10)
             .addInputBus("<casing>", 1)
             .addOutputBus("<casing>", 1)
             .addInputHatch("<casing>", 1)

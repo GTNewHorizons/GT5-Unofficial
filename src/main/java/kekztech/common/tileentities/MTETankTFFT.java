@@ -64,7 +64,6 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.misc.GTStructureChannels;
 import kekztech.common.Blocks;
@@ -353,20 +352,17 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
             .addStructureInfo("gt.tfft.info.energy_tip")
             .addStructureInfo("gt.tfft.info.hatch_tip")
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("12-48", TooltipHelper.tieredGlassText(4), false)
-            .addCasing(
-                MIN_CASING_AMOUNT + "-46",
-                StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.0.name"),
-                false)
-            .addCasing("27", StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.generic.name"), true)
+            .addStructureInfo("GT5U.MBTT.Structure.Base")
+            .addCasing("12-48", "GT5U.MBTT.Part.EVPlusAnyGlass", false)
+            .addCasing(MIN_CASING_AMOUNT + "-46", "tile.kekztech_tfftstoragefield_block.0.name", false)
+            .addCasing("27", "tile.kekztech_tfftstoragefield_block.generic.name", true)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addCasing("4-16", TooltipHelper.tieredGlassText(4), false)
-            .addCasing("9", StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.generic.name"), true)
+            .addStructureInfo("GT5U.MBTT.Structure.Slice")
+            .addCasing("4-16", "GT5U.MBTT.Part.EVPlusAnyGlass", false)
+            .addCasing("9", "tile.kekztech_tfftstoragefield_block.generic.name", true)
             .addStructureInfo("")
             .addStructureFooter("gt.tfft.info.no_air")
-            .addStructureFooter(StatCollector.translateToLocal("gt.tfft.info.fluid_tip"))
+            .addStructureFooter("gt.tfft.info.fluid_tip")
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.TFFT_FIELD)

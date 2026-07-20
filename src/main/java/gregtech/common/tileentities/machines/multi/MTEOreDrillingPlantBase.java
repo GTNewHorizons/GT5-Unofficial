@@ -490,7 +490,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     protected MultiblockTooltipBuilder createTooltip() {
         String casings = getCasingBlockItem().get(0)
-            .getDisplayName();
+            .getUnlocalizedName() + ".name";
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);

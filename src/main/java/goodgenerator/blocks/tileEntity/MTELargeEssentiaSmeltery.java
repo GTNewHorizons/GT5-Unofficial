@@ -248,7 +248,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
             .addMiscHatch("1+", "gt.les.hatch.essentia_output", "gt.les.structure.magic_casing", 1)
             .addAir("gt.les.structure.air")
             .addStructureInfo("")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
+            .addMasterChannel("channels.gregtech.master.length")
             .toolTipFinisher();
         return tt;
     }

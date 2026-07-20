@@ -234,7 +234,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addMiscHatch(
                 "1",
                 gregtech.api.util.GTUtility.nestParams("GT5U.tooltip.structure.laser_source_hatch"),
-                "Casing above glass",
+                "GT5U.MBTT.Position.CasingAboveGlass",
                 2)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)

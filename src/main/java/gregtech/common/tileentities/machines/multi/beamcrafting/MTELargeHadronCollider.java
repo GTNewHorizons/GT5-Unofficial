@@ -317,7 +317,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         tt.addMachineType("gt.blockmachines.multimachine.beamcrafting.LHC.machinetype")
             .addInfo("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip")
             .beginStructureBlock(122, 109, 13, true)
-            .addController("Front center of accelerator ring, 12th layer")
+            .addController("GT5U.MBTT.Position.AcceleratorRingFrontCenterLayer12")
             .addCasing(
                 "5664",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
@@ -337,7 +337,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             .addMiscHatch(
                 "1",
                 gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beaminput"),
-                "Entrance to accelerator ring",
+                "GT5U.MBTT.Position.AcceleratorRingEntrance",
                 2)
             .addEnergyHatch("1+", "Any casing", 1)
             .addStructureInfo("")
@@ -346,7 +346,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 "523",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
                 false)
-            .addCasing("148", "Charged Matter Sensor Casing", false)
+            .addCasing("148", "gt.blockcasings13.11.name", false)
             .addCasing(
                 "126",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
@@ -358,7 +358,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             .addMiscHatch(
                 "2",
                 gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beamoutputfiltered"),
-                "Inner side of module",
+                "GT5U.MBTT.Position.InnerSideOfModule",
                 3)
             .addStructureInfo("")
             .addStructureInfo("gt.lhc.structure.module.atlas")
@@ -366,7 +366,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 "515",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
                 false)
-            .addCasing("160", "Advanced Total Lepton Assimilation Snare Casing", false)
+            .addCasing("160", "gt.blockcasings13.12.name", false)
             .addCasing(
                 "126",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
@@ -378,7 +378,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             .addMiscHatch(
                 "2",
                 gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beamoutputfiltered"),
-                "Inner side of module",
+                "GT5U.MBTT.Position.InnerSideOfModule",
                 4)
             .addStructureInfo("")
             .addStructureInfo("gt.lhc.structure.module.alice")
@@ -386,7 +386,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 "517",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
                 false)
-            .addCasing("158", "Absolute Lattice Integrated Chromodynamic Encapsulator Casing", false)
+            .addCasing("158", "gt.blockcasings13.13.name", false)
             .addCasing(
                 "140",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
@@ -398,7 +398,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             .addMiscHatch(
                 "2",
                 gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beamoutputfiltered"),
-                "Inner side of module",
+                "GT5U.MBTT.Position.InnerSideOfModule",
                 5)
             .addStructureInfo("")
             .addStructureInfo("gt.lhc.structure.module.lhcb")
@@ -406,7 +406,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 "511",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
                 false)
-            .addCasing("144", "Localized Horizon Curvature Binder Casing", false)
+            .addCasing("144", "gt.blockcasings13.14.name", false)
             .addCasing(
                 "126",
                 gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
@@ -418,7 +418,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             .addMiscHatch(
                 "2",
                 gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beamoutputfiltered"),
-                "Inner side of module",
+                "GT5U.MBTT.Position.InnerSideOfModule",
                 6)
             .addStructureInfo("")
             .addMasterChannel(gregtech.api.util.GTUtility.nestParams("channels.gregtech.master.modules"))

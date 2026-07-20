@@ -301,7 +301,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addController("front_bottom_center")
             .addCasing("42-81", "gt.prass.casing.unit", true)
             .addCasing("42", "gt.prass.casing.glass", false)
-            .addCasing("21", StatCollector.translateToLocal("gt.blockcasings.name"), true)
+            .addCasing("21", "gt.blockcasings.name", true)
             .addCasing("12", "gt.prass.casing.frame", false)
             .addEnergyHatch("1+", "gt.prass.pos.unit", 1)
             .addMaintenanceHatch("1", "gt.prass.pos.unit", 1)

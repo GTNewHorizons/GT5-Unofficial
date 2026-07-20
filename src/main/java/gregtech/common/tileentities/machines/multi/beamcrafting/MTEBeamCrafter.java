@@ -40,10 +40,10 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.MTEBeamCrafterGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
@@ -271,7 +271,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.ColliderCasing);
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gt.blockcasings13.10.name");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.blockmachines.multimachine.beamcrafting.beamcrafter.machinetype")
             .addInfo("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip")
@@ -289,12 +289,12 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             .addMiscHatch(
                 "2",
                 gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beaminput"),
-                "Center of both ends of the structure",
+                "GT5U.MBTT.Position.BothEndsCenter",
                 2)
-            .addEnergyHatch("1+", "Any accelerator casing", 1)
-            .addInputAny("1+", "Any accelerator casing", 1)
-            .addOutputBus("1+", "Any accelerator casing", 1)
-            .addOutputHatch("0+", "Any accelerator casing", 1)
+            .addEnergyHatch("1+", "GT5U.MBTT.Position.AnyAcceleratorCasing", 1)
+            .addInputAny("1+", "GT5U.MBTT.Position.AnyAcceleratorCasing", 1)
+            .addOutputBus("1+", "GT5U.MBTT.Position.AnyAcceleratorCasing", 1)
+            .addOutputHatch("0+", "GT5U.MBTT.Position.AnyAcceleratorCasing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorHamCorp);

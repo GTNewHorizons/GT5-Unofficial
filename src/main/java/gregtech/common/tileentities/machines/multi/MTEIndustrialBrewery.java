@@ -27,7 +27,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -46,9 +45,6 @@ import gregtech.common.misc.GTStructureChannels;
 
 public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndustrialBrewery>
     implements ISurvivalConstructable, ICasingTextureProvider {
-
-    private static final String ANY_CASING = GTUtility
-        .translate("GT5U.MBTT.HatchInfo", Casings.ReinforcedWoodenCasing.getLocalizedName());
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEIndustrialBrewery> STRUCTURE_DEFINITION = StructureDefinition
@@ -133,7 +129,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
             .addBulkMachineInfo(4, 1.5F, 1F)
             .beginStructureBlock(3, 3, 5, true)
             .addController("Front center, 3rd layer")
-            .addCasing("14-22", "Reinforced Wooden Casing", false)
+            .addCasing("14-22", "gt.blockcasings10.15.name", false)
             .addCasing("6", "Any Tiered Glass", false)
             .addCasing("4", "Steel Frame Box", false)
             .addEnergyHatch("1+", "Any casing", 1)

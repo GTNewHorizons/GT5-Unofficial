@@ -124,7 +124,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addMaintenanceHatch("1", "Any bottom casing", 1)
             .addMufflerHatch("1", "gt.ebf.info.muffler", 2)
             .addInputAny("1+", "Any bottom casing", 1)
-            .addOutputAny("1+", "Any bottom casing for solids/liquids, any top casing for gases", 1)
+            .addOutputAny("1+", "GT5U.MBTT.Position.BottomSolidsLiquidsTopGases", 1)
             .addAir("Interior of the structure")
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)

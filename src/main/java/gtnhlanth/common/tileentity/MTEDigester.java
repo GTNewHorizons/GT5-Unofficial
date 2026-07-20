@@ -32,7 +32,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -206,10 +205,10 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 4, true)
             .addController("gt.mbtt.structure.front_bottom_center")
-            .addCasing("40-54", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
-            .addCasing("16", Casings.HeatProofMachineCasing.getLocalizedName(), false)
+            .addCasing("40-54", "gt.blockcasings4.0.name", false)
+            .addCasing("16", "gt.blockcasings.11.name", false)
             .addCasing("16", "gt.digester.casing.coil", false)
-            .addCasing("9", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("9", "gt.blockcasings4.1.name", false)
             .addEnergyHatch("1+", "gtnhlanth.tt.digester.structure.any_casing", 1)
             .addMaintenanceHatch("1", "gtnhlanth.tt.digester.structure.any_casing", 1)
             .addMufflerHatch("1", "gtnhlanth.tt.digester.structure.any_casing", 1)

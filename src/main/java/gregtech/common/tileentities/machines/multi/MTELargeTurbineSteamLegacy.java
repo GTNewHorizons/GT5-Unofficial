@@ -17,7 +17,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -64,7 +63,7 @@ public class MTELargeTurbineSteamLegacy extends MTELargeTurbineLegacy {
             .addInfo("gt.lst.tips")
             .beginStructureBlock(3, 3, 4, true)
             .addController("front_center")
-            .addCasingInfoRange(Casings.TurbineCasing.getLocalizedName(), 8, 31, false)
+            .addCasingInfoRange("gt.blockcasings4.9.name", 8, 31, false)
             .addDynamoHatch("gt.mbtt.structure.back_center", 1)
             .addMaintenanceHatch("gt.lst.info.maintenance", 2)
             .addInputHatch("gt.lst.info.i_hatch", 2)

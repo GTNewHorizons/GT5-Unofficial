@@ -37,7 +37,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -220,9 +219,9 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
             .addInfo("gt.dissolution_tank.tips")
             .beginStructureBlock(5, 5, 5, true)
             .addController("front_center_layer2")
-            .addCasing("30-44", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("30-44", "gt.blockcasings4.1.name", false)
             .addCasing("24", "gt.dissolution_tank.casing.glass", false)
-            .addCasing("9", Casings.HeatProofMachineCasing.getLocalizedName(), false)
+            .addCasing("9", "gt.blockcasings.11.name", false)
             .addEnergyHatch("1+", "gt.dissolution_tank.pos.casing", 1)
             .addMaintenanceHatch("1", "gt.dissolution_tank.pos.casing", 1)
             .addInputAny("1+", "gt.dissolution_tank.pos.casing", 1)

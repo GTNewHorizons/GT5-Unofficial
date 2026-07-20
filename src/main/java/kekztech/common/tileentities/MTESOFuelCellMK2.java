@@ -23,7 +23,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -119,9 +118,9 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
                 OXYGEN_PER_SEC)
             .beginStructureBlock(5, 3, 3, false)
             .addController("gt.so_fuel_cell.info.controller")
-            .addCasing("12-31", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
-            .addCasing("6", StatCollector.translateToLocal("Material.reinforcedglass"), false)
-            .addCasing("3", StatCollector.translateToLocal("tile.kekztech_gdcceramicelectrolyteunit_block.name"), false)
+            .addCasing("12-31", "gt.blockcasings4.0.name", false)
+            .addCasing("6", "Material.reinforcedglass", false)
+            .addCasing("3", "tile.kekztech_gdcceramicelectrolyteunit_block.name", false)
             .addDynamoHatch("1", "gt.mbtt.structure.back_center", 2)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addInputHatch("1+", "Any casing", 1)
@@ -129,7 +128,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
             .addStructureInfo("gt.so_fuel_cell.info.i_hatch.2")
             .addOutputHatch("1+", "gt.so_fuel_cell_ii.info.o_hatch", 1)
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
+            .addStructureFooter("GT5U.MBTT.Structure.DynamoLimit")
             .toolTipFinisher();
         return tt;
     }

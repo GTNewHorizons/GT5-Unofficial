@@ -42,7 +42,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -799,8 +798,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addInputBus("1", "Around controller", 1)
             .addMiscHatch("1", "gt.blockmachines.hatch.output_bus.me.name", "Around controller", 1)
             .addStructureInfo("")
-            .addStructureInfo(
-                StatCollector.translateToLocal("GT5U.MBTT.Structure.Base") + EnumChatFormatting.AQUA + " (T1)")
+            .addStructureInfo("%s%s (T1)", "GT5U.MBTT.Structure.Base", EnumChatFormatting.AQUA)
             .addCasing("3949", "Transcendentally Amplified Magnetic Confinement Casing", false)
             .addCasing("2799-2815", "Singularity Reinforced Stellar Shielding Casing", false)
             .addCasing("345", "Remote Graviton Flow Modulator", false)
@@ -828,7 +826,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addCasing("14", "Boundless Gravitationally Severed Structure Casing", false)
             .addMiscHatch("0-16", "Forge of the Gods Module", "Any side center shielding casing", 2)
             .addStructureInfo("")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.rings"))
+            .addMasterChannel("channels.gregtech.master.rings")
             .toolTipFinisher();
         return tt;
     }

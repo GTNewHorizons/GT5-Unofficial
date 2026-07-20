@@ -60,7 +60,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
@@ -147,7 +146,7 @@ public class MTEMegaOilCrackerLegacy extends MegaMultiBlockBase<MTEMegaOilCracke
             .addStructureDeprecatedLine()
             .addInfo("gt.moc.tips.1")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo("gt.moc.tips.2", TooltipHelper.tierText(TooltipTier.COIL))
+            .addInfo("gt.moc.tips.2", TooltipTier.COIL.getLocalizedValue())
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()

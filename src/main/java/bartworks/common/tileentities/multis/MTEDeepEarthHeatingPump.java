@@ -90,12 +90,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .beginStructureBlock(3, 3, 7, false)
             .addController("front_bottom_center")
             .addCasing("15", GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, this.getFrameMaterial()), false)
-            .addCasing(
-                "3-7",
-                this.getCasingBlockItem()
-                    .get(0)
-                    .getDisplayName(),
-                false)
+            .addCasing("3-7", "gt.blockcasings.11.name", false)
             .addEnergyHatch("1+", GTUtility.nestParams("gt.dehp.info.energy", GTValues.VN[this.getMinTier()]), 1)
             .addMaintenanceHatch("1", "gt.dehp.info.bottom_casing", 1)
             .addInputBus("0+", "gt.dehp.info.i_bus", 1)

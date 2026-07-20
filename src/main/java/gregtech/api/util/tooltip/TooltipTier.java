@@ -1,5 +1,7 @@
 package gregtech.api.util.tooltip;
 
+import static gregtech.api.util.GTUtility.nestParams;
+
 import net.minecraft.util.StatCollector;
 
 /**
@@ -32,5 +34,12 @@ public enum TooltipTier {
 
     public String getValue() {
         return TooltipHelper.tierText(StatCollector.translateToLocal(this.key));
+    }
+
+    /**
+     * Returns this tier as a nested delayed-localization payload for multiblock tooltips.
+     */
+    public String getLocalizedValue() {
+        return nestParams("GT5U.MBTT.Tiers.Format", this.key);
     }
 }

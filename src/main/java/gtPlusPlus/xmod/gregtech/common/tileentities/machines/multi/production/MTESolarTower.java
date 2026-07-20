@@ -15,7 +15,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -100,7 +99,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .addInputHatch("1+", "gt.solar_tower.info.hatch", 2)
             .addOutputHatch("1+", "gt.solar_tower.info.hatch", 2)
             .addStructureInfo("")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.rings"))
+            .addMasterChannel("channels.gregtech.master.rings")
             .toolTipFinisher();
         return tt;
     }

@@ -23,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -173,21 +172,17 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
         if (TooltipUtil.siphonLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.siphonLoreText));
         tt.addInfo("gt.blockmachines.multimachine.ig.siphon.desc1")
             .beginStructureBlock(3, 7, 3, false)
-            .addController(StatCollector.translateToLocal("ig.siphon.structure.ControllerPos2"))
+            .addController("ig.siphon.structure.ControllerPos2")
+            .addOtherStructurePart("ig.siphon.structure.SiphonCasing", "ig.siphon.structure.Base")
             .addOtherStructurePart(
-                StatCollector.translateToLocal("ig.siphon.structure.SiphonCasing"),
-                StatCollector.translateToLocal("ig.siphon.structure.Base"))
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"),
-                StatCollector.translateToLocal("ig.siphon.structure.PillarMiddle"))
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("ig.siphon.structure.FrameTungstensteel"),
-                StatCollector.translateToLocal("ig.siphon.structure.Sides"))
-            .addEnergyHatch(StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addMaintenanceHatch(StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addInputBus(StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addOutputHatch(StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addStructureInfo(StatCollector.translateToLocal("ig.siphon.structure.HatchRequirement"))
+                "ig.siphon.structure.ReboltedRhodiumPalladiumCasing",
+                "ig.siphon.structure.PillarMiddle")
+            .addOtherStructurePart("ig.siphon.structure.FrameTungstensteel", "ig.siphon.structure.Sides")
+            .addEnergyHatch("ig.siphon.structure.AnySiphonCasing", 1)
+            .addMaintenanceHatch("ig.siphon.structure.AnySiphonCasing", 1)
+            .addInputBus("ig.siphon.structure.AnySiphonCasing", 1)
+            .addOutputHatch("ig.siphon.structure.AnySiphonCasing", 1)
+            .addStructureInfo("ig.siphon.structure.HatchRequirement")
             .toolTipFinisher();
         return tt;
     }

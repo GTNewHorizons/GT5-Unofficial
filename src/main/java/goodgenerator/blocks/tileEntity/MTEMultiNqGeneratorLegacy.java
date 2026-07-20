@@ -370,7 +370,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
             .addCasingInfoExactly("Field Restriction Casing", 48, false)
             .addCasingInfoExactly("Radiation Proof Steel Frame Box", 36, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 6, false)
-            .addCasingInfoExactly("Radiation Proof Machine Casing", 121, false)
+            .addCasingInfoExactly("gt.blockcasings3.12.name", 121, false)
             .addDynamoHatch("gt.multi_nq_gen.info.dynamo", 1)
             .addInputHatch("Any bottom layer Casing", 1)
             .addOutputHatch("Any bottom layer Casing", 1)

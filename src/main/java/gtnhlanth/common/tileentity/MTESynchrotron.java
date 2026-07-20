@@ -28,7 +28,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -76,7 +75,6 @@ import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
-import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
 
 public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotron>
@@ -499,46 +497,42 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.synch.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info1"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info2"))
-            .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
+        tt.addMachineType("gtnhlanth.tt.synch.machinetype")
+            .addInfo("gtnhlanth.tt.synch.info1")
+            .addInfo("gtnhlanth.tt.synch.info2")
+            .addInfo("gtnhlanth.tt.beaminfo")
             .addSeparator()
-            .addInfo(StatCollector.translateToLocalFormatted("gtnhlanth.tt.synch.info3", getFluidUnit()))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.oxygen"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.nitrogen"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.coolant"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.Scoolant"))
+            .addInfo("gtnhlanth.tt.synch.info3", getFluidUnit())
+            .addInfo("gtnhlanth.tt.coolant.oxygen")
+            .addInfo("gtnhlanth.tt.coolant.nitrogen")
+            .addInfo("gtnhlanth.tt.coolant.coolant")
+            .addInfo("gtnhlanth.tt.coolant.Scoolant")
             .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info4"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info5"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info6"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info7"))
+            .addInfo("gtnhlanth.tt.synch.info4")
+            .addInfo("gtnhlanth.tt.synch.info5")
+            .addInfo("gtnhlanth.tt.synch.info6")
+            .addInfo("gtnhlanth.tt.synch.info7")
             .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info8"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info9"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info10"))
+            .addInfo("gtnhlanth.tt.synch.info8")
+            .addInfo("gtnhlanth.tt.synch.info9")
+            .addInfo("gtnhlanth.tt.synch.info10")
             .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info11"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info12"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info13"))
+            .addInfo("gtnhlanth.tt.synch.info11")
+            .addInfo("gtnhlanth.tt.synch.info12")
+            .addInfo("gtnhlanth.tt.synch.info13")
             .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info14"))
+            .addInfo("gtnhlanth.tt.synch.info14")
             .addSupportAny()
             .beginStructureBlock(34, 36, 7, true)
             .addController("Front center, 4th layer")
-            .addCasing("1690", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
+            .addCasing("1690", "casing.shielded_accelerator.name", false)
             .addCasing("90", "Superconducting Coil Block", false)
-            .addCasing("64", LanthItemList.NIOBIUM_CAVITY_CASING.getLocalizedName(), false)
-            .addCasing("28", LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), false)
+            .addCasing("64", LanthItemList.NIOBIUM_CAVITY_CASING.getUnlocalizedName() + ".name", false)
+            .addCasing("28", LanthItemList.COOLANT_DELIVERY_CASING.getUnlocalizedName() + ".name", false)
             .addCasing("16", "LuV+ Tiered Glass", false)
             .addCasing("4", "Antenna Casing", true)
-            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Left of controller", 1)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"),
-                "Right and back of controller",
-                6)
+            .addMiscHatch("1", "gtnhlanth.tt.hatch.beaminput", "Left of controller", 1)
+            .addMiscHatch("1", "gtnhlanth.tt.hatch.beamoutput", "Right and back of controller", 6)
             .addEnergyHatch("4", "Above each antenna casing", 4)
             .addMaintenanceHatch("1", "Around controller", 5)
             .addInputHatch("2", "Between the energy hatches", 2)

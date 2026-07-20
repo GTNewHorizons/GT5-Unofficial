@@ -457,7 +457,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             .addCasing("9", "gt.yottank.casing.cell", true)
             .addStructureInfo("")
             .addStructureFooter("gt.yottank.structure.footer")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.height"))
+            .addMasterChannel("channels.gregtech.master.height")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

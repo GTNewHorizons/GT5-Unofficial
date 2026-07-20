@@ -189,7 +189,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             .addStructureInfo("gt.cal.structure.layer1")
             .addStructureInfo("")
             .addStructureFooter("gt.cal.structure.footer")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
+            .addMasterChannel("channels.gregtech.master.length")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

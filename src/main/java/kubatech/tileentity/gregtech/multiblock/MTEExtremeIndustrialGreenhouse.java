@@ -103,7 +103,6 @@ import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
 import kubatech.api.eig.EIGMode;
@@ -394,11 +393,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         tt.beginStructureBlock(9, 7, 7, true)
             .addController("front_bottom_center")
             .addCasing("102", "Any Tiered Glass", true)
-            .addCasing(
-                "70-86",
-                GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.get(1)
-                    .getDisplayName(),
-                false)
+            .addCasing("70-86", "gtplusplus.blockcasings.2.15.name", false)
             .addCasing("33", "Tunstensteel Frame Box", false)
             .addCasing("21", "Fertilized Dirt (RandomThings)", false)
             .addCasing("3", "Purple Lamp (ProjectRed Illumination, regular or inverted)", false)

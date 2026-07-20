@@ -19,7 +19,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -32,7 +31,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings2;
 
 public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanner>
@@ -99,7 +97,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.SolidSteelMachineCasing);
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gt.blockcasings2.0.name");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.turbocan")
             .addBulkMachineInfo(8, 2f, 1)

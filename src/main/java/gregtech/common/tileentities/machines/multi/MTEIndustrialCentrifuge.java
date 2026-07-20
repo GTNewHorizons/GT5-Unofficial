@@ -192,7 +192,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front center, 3rd layer")
             .addCasing("6-32", "Centrifuge Casing", false)
-            .addCasing("24", "Eglin Steel Frame Box", false)
+            .addCasing("24", "block.EglinSteel.frame.name", false)
             .addCasing("18", "Large Sieve Grate", false)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)

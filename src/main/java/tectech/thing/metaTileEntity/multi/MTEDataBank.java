@@ -29,7 +29,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -57,8 +56,6 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructable {
-
-    private static final String hpCasing = Casings.HighPowerCasing.getLocalizedName();
 
     // region variables
     private final ArrayList<MTEHatchDataItemsOutput> eStacksDataOutputs = new ArrayList<>();
@@ -133,20 +130,12 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             .addController("front_center")
             .addCasing("18", "Computer Heat Vent", false)
             .addCasing("3-16", "Computer Casing", false)
-            .addCasing("0-6", "High Power Casing", false)
-            .addEnergyHatch("1+", "Any high power casing", 1)
-            .addMaintenanceHatch("1", "Any high power casing", 1)
-            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataAccessHatch"), "Any computer casing", 2)
-            .addMiscHatch(
-                "1+",
-                translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"),
-                "Any computer casing",
-                2)
-            .addMiscHatch(
-                "0+",
-                translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"),
-                "Any computer casing",
-                2)
+            .addCasing("0-6", "gt.blockcasingsTT.0.name", false)
+            .addEnergyHatch("1+", "GT5U.MBTT.Position.AnyHighPowerCasing", 1)
+            .addMaintenanceHatch("1", "GT5U.MBTT.Position.AnyHighPowerCasing", 1)
+            .addMiscHatch("1+", "tt.keyword.Structure.DataAccessHatch", "Any computer casing", 2)
+            .addMiscHatch("1+", "gt.blockmachines.hatch.dataoutass.tier.07.name", "Any computer casing", 2)
+            .addMiscHatch("0+", "gt.blockmachines.hatch.datainass.tier.07.name", "Any computer casing", 2)
             .addStructureInfo("")
             .addStructureFooter("gt.blockmachines.multimachine.em.databank.footer")
             .toolTipFinisher();

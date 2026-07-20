@@ -95,7 +95,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             .addCasing("40-43", "IsaMill Exterior Casing", false)
             .addCasing("8", "IsaMill Piping", false)
             .addStructureInfo("gt.isamill.info.piping")
-            .addCasing("5", "IsaMill Gearbox", false)
+            .addCasing("5", "gtplusplus.blockcasings.5.2.name", false)
             .addStructureInfo("gt.isamill.info.gearbox")
             .addMiscHatch("1", "gt.blockmachines.hatch.milling.name", "Any casing", 1)
             .addEnergyHatch("1+", "Any casing", 1)

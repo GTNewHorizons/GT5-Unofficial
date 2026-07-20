@@ -233,12 +233,12 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
             .addMiscHatch(
                 "1",
                 gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beaminput"),
-                "Above controller",
+                "GT5U.MBTT.Position.AboveController",
                 1)
             .addMiscHatch(
                 "1",
                 gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beamoutput"),
-                "Opposite controller",
+                "GT5U.MBTT.Position.OppositeController",
                 2)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)

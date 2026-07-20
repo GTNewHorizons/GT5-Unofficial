@@ -210,7 +210,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             .addCasing("4", "gt.neutron_activator.casing.frame", false)
             .addCasing("1", "gt.neutron_activator.casing.pipe", false)
             .addStructureInfo("")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.height"))
+            .addMasterChannel("channels.gregtech.master.height")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

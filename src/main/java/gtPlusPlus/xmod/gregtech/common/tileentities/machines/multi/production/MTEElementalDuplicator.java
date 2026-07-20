@@ -100,11 +100,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addCasing("24", "Resonance Chamber III", false)
             .addCasing("20", "High Voltage Current Capacitor", false)
             .addCasing("16", "Modulator III", false)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
-                "Any confinement shell",
-                1)
+            .addMiscHatch("1", "GTPP.tooltip.structure.data_orb_repository", "Any confinement shell", 1)
             .addEnergyHatch("1+", "Any confinement shell", 1)
             .addMaintenanceHatch("1", "Any confinement shell", 1)
             .addMufflerHatch("1", "Any confinement shell", 1)

@@ -55,7 +55,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -81,7 +80,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
@@ -350,7 +348,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.BackgroundRadiationAbsorbentCasing);
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gt.blockcasings10.12.name");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.compressor", "machtype.adv_nt_compressor", "BHC")
             .addInfo("gt.bhc.tips.1")
@@ -359,15 +357,15 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addTecTechHatchInfo()
             .addInfo("gt.bhc.tips.3")
             .beginStructureBlock(35, 33, 35, true)
-            .addController("Middle of structure, 6th layer")
-            .addCasing("3667-3671", "Extreme Density Space-Bending Casing", false)
-            .addCasing("950-985", "Background Radiation Absorbent Casing", false)
+            .addController("GT5U.MBTT.Position.MiddleLayer6")
+            .addCasing("3667-3671", "gt.blockcasings10.11.name", false)
+            .addCasing("950-985", "gt.blockcasings10.12.name", false)
             .addCasing("144", "Naquadah Alloy Frame Box", false)
-            .addCasing("64", "Hawking Radiation Realignment Focus", false)
-            .addMiscHatch("0+", "Black Hole Utility Hatch", "Any absorbent casing", 1)
-            .addEnergyHatch("1+", "Any absorbent casing", 1)
-            .addInputAny("1+", "Any absorbent casing (inputs), the casing behind each laser (spacetime)", 1, 2)
-            .addOutputBus("1+", "Any absorbent casing", 1)
+            .addCasing("64", "gt.blockglass1.4.name", false)
+            .addMiscHatch("0+", "GT5U.MBTT.Part.BlackHoleUtilityHatch", "GT5U.MBTT.Position.AnyAbsorbentCasing", 1)
+            .addEnergyHatch("1+", "GT5U.MBTT.Position.AnyAbsorbentCasing", 1)
+            .addInputAny("1+", "GT5U.MBTT.Position.AbsorbentInputsAndSpacetimeLaser", 1, 2)
+            .addOutputBus("1+", "GT5U.MBTT.Position.AnyAbsorbentCasing", 1)
             .toolTipFinisher(Ollie, "BucketBrigade");
         return tt;
     }

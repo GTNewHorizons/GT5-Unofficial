@@ -49,7 +49,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -66,7 +65,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
@@ -206,7 +204,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.PressureContainmentCasing);
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gt.blockcasings10.3.name");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.autoclave")
             .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
@@ -217,7 +215,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addCasing("128-148", "Pressure Containment Casing", false)
             .addCasing("42", "PTFE Frame Box", false)
             .addCasing("42", "Any Tiered Glass", false)
-            .addCasing("14", "Pipe Casing", true)
+            .addCasing("14", "GT5U.MBTT.Tiers.FluidPipe", true)
             .addCasing("7", "Item Pipe Casing", true)
             .addCasing("7", "Heating Coil", true)
             .addEnergyHatch("1+", "Any containment casing", 1)

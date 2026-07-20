@@ -83,7 +83,7 @@ public class MTELargeTurbineSteam extends MTELargeTurbineBase {
             .beginStructureBlock(6, 3, 3, false)
             .addController("Front center, 2nd layer")
             .addCasing("14", "Iron Frame Box", false)
-            .addCasing("8-14", "Turbine Casing", false)
+            .addCasing("8-14", "gt.blockcasings4.9.name", false)
             .addCasing("12", "Steel Pipe Casing", false)
             .addDynamoHatch("1", "gt.mbtt.structure.back_center", 2)
             .addMaintenanceHatch("1", "gt.lst.info.maintenance", 1)

@@ -136,7 +136,7 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 3, 3, false)
             .addController("Front bottom center")
-            .addCasing("14-35", "Wire Factory Casing", false)
+            .addCasing("14-35", "miscutils.blockcasings.6.name", false)
             .addCasing("15", "Any Tiered Glass", false)
             .addCasing("3", "Item Pipe Casing", true)
             .addEnergyHatch("1+", "Any casing", 1)

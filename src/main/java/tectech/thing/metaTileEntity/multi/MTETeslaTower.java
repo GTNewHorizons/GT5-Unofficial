@@ -557,10 +557,10 @@ public class MTETeslaTower extends TTMultiblockBase
             .addCasing("20", "Primary Tesla Windings", true)
             .addCasing("16", "Titanium Frame Box", false)
             .addCasing("12", "Secondary Tesla Windings", false)
-            .addMiscHatch("1+", "Capacitor Hatch", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
-            .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
-            .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
-            .addInputHatch("0+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addMiscHatch("1+", "Capacitor Hatch", "tt.keyword.Structure.AnyTeslaBaseCasingOuter", 1)
+            .addEnergyHatch("1+", "tt.keyword.Structure.AnyTeslaBaseCasingOuter", 1)
+            .addMaintenanceHatch("1", "tt.keyword.Structure.AnyTeslaBaseCasingOuter", 1)
+            .addInputHatch("0+", "tt.keyword.Structure.AnyTeslaBaseCasingOuter", 1)
             .toolTipFinisher();
         return tt;
     }

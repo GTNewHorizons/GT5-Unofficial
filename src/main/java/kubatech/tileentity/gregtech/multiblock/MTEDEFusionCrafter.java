@@ -26,7 +26,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -150,12 +149,12 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             .addInfo("gt.defc.tips")
             .beginStructureBlock(5, 5, 10, false)
             .addController("front_bottom_center")
-            .addCasing("19-45", StatCollector.translateToLocal("defc.casing.7.name"), false)
-            .addCasing("32", StatCollector.translateToLocal("GT5U.tooltip.structure.tiered_fusion_casing"), true)
+            .addCasing("19-45", "defc.casing.7.name", false)
+            .addCasing("32", "GT5U.tooltip.structure.tiered_fusion_casing", true)
             .addStructureInfo("gt.defc.info.tiered_casing")
-            .addCasing("32", StatCollector.translateToLocal("gt.blockcasings4.6.name"), true)
+            .addCasing("32", "gt.blockcasings4.6.name", true)
             .addStructureInfo("gt.defc.info.casing")
-            .addCasing("8", StatCollector.translateToLocal("gt.blockcasings4.7.name"), false)
+            .addCasing("8", "gt.blockcasings4.7.name", false)
             .addStructureInfo("gt.defc.info.coil")
             .addStructureInfo("gt.defc.info.tiers")
             .addEnergyHatch("1+", "Any bottom casing", 1)
@@ -164,7 +163,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             .addOutputAny("1+", "Any bottom casing", 1)
             .addStructureInfo("")
             .addStructureFooter("gt.defc.info.pearl")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
+            .addMasterChannel("channels.gregtech.master.casingtier")
             .toolTipFinisher(GTAuthors.AuthorKuba, "Prometheus0000");
         return tt;
     }

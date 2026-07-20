@@ -109,7 +109,7 @@ public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFr
             .addInfo("gt.vf.tips")
             .beginStructureBlock(3, 3, 3, true)
             .addController(gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.front_center_2nd_layer"))
-            .addCasing("16-21", Casings.FrostProofMachineCasing.getLocalizedName(), false)
+            .addCasing("16-21", "gt.blockcasings2.1.name", false)
             .addEnergyHatch("1+", gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.any_casing"), 1)
             .addMaintenanceHatch("1", gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.any_casing"), 1)
             .addInputAny("1+", gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.any_casing"), 1)

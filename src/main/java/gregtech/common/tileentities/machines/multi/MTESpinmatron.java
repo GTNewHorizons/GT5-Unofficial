@@ -72,7 +72,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.gui.modularui.multiblock.MTESpinmatronGui;
@@ -373,7 +372,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.VibrationSafeCasing);
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gt.blockcasings12.9.name");
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.centrifuge")
             .addInfo("gt.spinmatron.tips.1")
@@ -388,32 +387,32 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addInfo("gt.spinmatron.tips.4")
             .beginStructureBlock(17, 17, 17, false)
             .addController("Front center, 9th layer")
-            .addCasing("550-712", "Vibration Safe Casing", false)
+            .addCasing("550-712", "gt.blockcasings12.9.name", false)
             .addCasing("264", "SC Turbine Casing", false)
             .addCasing("160", "PBI Pipe Casing", false)
-            .addCasing("144", "Chamber Grate", false)
+            .addCasing("144", "gt.blockglass1.6.name", false)
             .addCasing("81", "Any Tiered Glass", false)
-            .addCasing("54", "IsaMill Gearbox", false)
+            .addCasing("54", "gtplusplus.blockcasings.5.2.name", false)
             .addCasing("24", "Turbine Shaft", false)
-            .addCasing("8", "Rotor Assembly", false)
-            .addEnergyHatch("1+", "Any vibration safe casing", 1)
-            .addMaintenanceHatch("1", "Any vibration safe casing", 1)
-            .addInputAny("1+", "Any vibration safe casing", 1)
-            .addOutputAny("1+", "Any vibration safe casing", 1)
+            .addCasing("8", "GTPP.tooltip.structure.rotor_assembly", false)
+            .addEnergyHatch("1+", "GT5U.MBTT.Position.AnyVibrationSafeCasing", 1)
+            .addMaintenanceHatch("1", "GT5U.MBTT.Position.AnyVibrationSafeCasing", 1)
+            .addInputAny("1+", "GT5U.MBTT.Position.AnyVibrationSafeCasing", 1)
+            .addOutputAny("1+", "GT5U.MBTT.Position.AnyVibrationSafeCasing", 1)
             .addStructureInfo("")
             .addStructureInfo(gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.Tiers.One"))
-            .addCasing("56", "Block of Naquadah Alloy", false)
-            .addCasing("9", "Pikyonium 64B Frame Box", false)
+            .addCasing("56", "GT5U.MBTT.Part.NaquadahAlloyBlock", false)
+            .addCasing("9", "block.Pikyonium64B.frame.name", false)
             .addStructureInfo("")
             .addStructureInfo(gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.Tiers.Two"))
-            .addCasing("56", "Cosmic Neutronium Block", false)
+            .addCasing("56", "GT5U.MBTT.Part.CosmicNeutroniumBlock", false)
             .addCasing("9", "Neutronium Frame Box", false)
             .addStructureInfo("")
             .addStructureInfo(gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.Tiers.Three"))
-            .addCasing("56", "Infinity Block", false)
+            .addCasing("56", "GT5U.MBTT.Part.InfinityBlock", false)
             .addCasing("9", "Infinity Frame Box", false)
             .addStructureInfo("")
-            .addStructureFooter("Rotors go in the controller, not the rotor assemblies")
+            .addStructureFooter("GT5U.MBTT.Note.RotorsGoInController")
             .addMasterChannel(gregtech.api.util.GTUtility.nestParams("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();

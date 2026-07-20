@@ -25,7 +25,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -193,13 +192,13 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
             .addInfo("gtnhlanth.tt.linac.info11")
             .beginVariableStructureBlock(19, 83, 7, 7, 7, 7, false)
             .addController("front_bottom_center")
-            .addCasing("325-1285", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
-            .addCasing("148-852", LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), false)
-            .addCasing("156-732", LanthItemList.ELECTRODE_CASING.getLocalizedName(), false)
-            .addCasing("127-703", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)
+            .addCasing("325-1285", "casing.shielded_accelerator.name", false)
+            .addCasing("148-852", LanthItemList.COOLANT_DELIVERY_CASING.getUnlocalizedName() + ".name", false)
+            .addCasing("156-732", LanthItemList.ELECTRODE_CASING.getUnlocalizedName() + ".name", false)
+            .addCasing("127-703", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getUnlocalizedName() + ".name", false)
             .addCasing("56-312", "gt.linac.casing.coil", false)
             .addCasing("48", "gt.linac.casing.glass", false)
-            .addCasing("47", Casings.GrateMachineCasing.getLocalizedName(), false)
+            .addCasing("47", "gt.blockcasings3.10.name", false)
             .addMiscHatch("1", "gtnhlanth.tt.hatch.beaminput", "gt.linac.pos.beam_input", 1)
             .addMiscHatch("1", "gtnhlanth.tt.hatch.beamoutput", "gt.linac.pos.beam_output", 4)
             .addEnergyHatch("1-2", "gt.linac.pos.bottom_edge", 3)
@@ -208,7 +207,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
             .addOutputHatch("1", "gt.linac.pos.coolant_output", 2)
             .addAir("gt.linac.structure.air")
             .addStructureInfo("")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
+            .addMasterChannel("channels.gregtech.master.length")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

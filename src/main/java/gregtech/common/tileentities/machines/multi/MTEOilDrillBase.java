@@ -289,7 +289,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         String casings = getCasingBlockItem().get(0)
-            .getDisplayName();
+            .getUnlocalizedName() + ".name";
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);

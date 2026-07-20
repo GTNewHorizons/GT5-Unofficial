@@ -246,16 +246,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addCasing("52-58", "Computer Casing", false)
             .addCasing("23", "Advanced Computer Casing", false)
             .addCasing("14", "Computer Heat Vent", false)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
-                StatCollector.translateToLocal("tt.keyword.Structure.CenterPillar"),
-                2)
-            .addMiscHatch(
-                "1+",
-                StatCollector.translateToLocal("tt.keyword.Structure.DataInput"),
-                "Any back center casing",
-                1)
+            .addMiscHatch("1", "gt.blockmachines.hatch.holder.tier.09.name", "tt.keyword.Structure.CenterPillar", 2)
+            .addMiscHatch("1+", "tt.keyword.Structure.DataInput", "Any back center casing", 1)
             .addEnergyHatch("1+", "Any back center casing", 1)
             .addMaintenanceHatch("1", "Any back center casing", 1)
             .addStructureInfo("")

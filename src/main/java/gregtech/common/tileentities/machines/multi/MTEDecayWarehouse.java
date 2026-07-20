@@ -209,16 +209,16 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
         tt.beginStructureBlock(5, 5, 3, true)
             .addController("Front center, 2nd layer")
-            .addCasing("48-52", "Radiation Proof Machine Casing", false)
+            .addCasing("48-52", "gt.blockcasings3.12.name", false)
             .addCasing("17", "Water", false)
-            .addCasing("1", "Super/Quantum Chest", true)
+            .addCasing("1", "GT5U.MBTT.SuperChest", true)
             .addEnergyHatch("1", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addInputBus("1", "Any casing", 1)
             .addOutputBus("1", "Any casing", 1)
             .addStructureInfo("")
-            .addStructureFooter("The water is a one-time-cost to prime the machine, place manually")
-            .addStructureFooter("Do not insert isotopes into the super/quantum chest")
+            .addStructureFooter("GT5U.MBTT.Note.ManuallyPrimeWater")
+            .addStructureFooter("GT5U.MBTT.Note.NoIsotopesInSuperChest")
             .addSubChannel(GTStructureChannels.SUPER_CHEST)
             .toolTipFinisher();
         return tt;

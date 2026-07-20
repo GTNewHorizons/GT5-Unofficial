@@ -54,6 +54,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
@@ -93,11 +94,11 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                 "gt.massfab.tips.1",
                 TooltipHelper.parallelText(64),
                 TooltipHelper.parallelText(8),
-                TooltipHelper.tierText("Voltage"))
+                TooltipTier.VOLTAGE.getLocalizedValue())
             .addStaticSpeedInfo(1f)
             .addStaticEuEffInfo(0.8f)
             .addInfo("gt.massfab.tips.2")
-            .addInfo("gt.massfab.tips.3", TooltipHelper.tierText("Voltage"))
+            .addInfo("gt.massfab.tips.3", TooltipTier.VOLTAGE.getLocalizedValue())
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 4, true)

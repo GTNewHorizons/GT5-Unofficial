@@ -57,7 +57,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.block.ModBlocks;
@@ -271,10 +270,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         tt.addMachineType("machtype.mega_abs")
             .addInfo("gt.mega_abs.tips.1")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo(
-                "gt.mega_abs.tips.2",
-                TooltipHelper.tierText(TooltipTier.COIL),
-                TooltipHelper.tierText(TooltipTier.GLASS))
+            .addInfo("gt.mega_abs.tips.2", TooltipTier.COIL.getLocalizedValue(), TooltipTier.GLASS.getLocalizedValue())
             .addSeparator()
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)

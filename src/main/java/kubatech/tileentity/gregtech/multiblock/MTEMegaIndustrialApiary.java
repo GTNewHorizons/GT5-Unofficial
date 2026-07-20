@@ -337,7 +337,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .beginStructureBlock(15, 15, 17, true)
             .addController("gt.mapiary.info.controller")
             .addCasing("455", "Dirt or Grass", false)
-            .addCasing("190-200", StatCollector.translateToLocal("gt.blockcasings.10.name"), false)
+            .addCasing("190-200", "gt.blockcasings.10.name", false)
             .addCasing("185", "Wood Plank", false)
             .addCasing("121", "Any Tiered Glass", true)
             .addCasing("34", "Water", false)

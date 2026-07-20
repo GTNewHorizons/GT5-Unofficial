@@ -40,7 +40,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ParticleFX;
@@ -147,7 +146,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                 .addPollutionAmount(GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond)
                 .beginStructureBlock(3, 3, 4, true)
                 .addController("gt.mbtt.structure.front_center")
-                .addCasing("32", Casings.Firebricks.getLocalizedName(), false)
+                .addCasing("32", "gt.blockcasings4.15.name", false)
                 .addAir("gt.bbf.structure.air")
                 .addStructureInfo("")
                 .addStructureFooter("gt.bbf.structure.wallshare.1")

@@ -15,7 +15,6 @@ import java.util.Map;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +23,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -71,8 +69,6 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     private static final double INV_5SECS = 1d / 5d;
     private static final double INV_30SECS = 1d / 30d;
     private static final double INV_60SECS = 1d / 60d;
-
-    private static final String hpCasing = Casings.HighPowerCasing.getLocalizedName();
 
     @Override
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
@@ -177,8 +173,8 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 3, 3, false)
             .addController("front_center")
-            .addCasing("5-24", StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
-            .addCasing("1", StatCollector.translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"), false)
+            .addCasing("5-24", "gt.blockcasingsTT.0.name", false)
+            .addCasing("1", "tt.keyword.Structure.SuperconductingCoilBlock", false)
             .addEnergyHatch("1+", "Any casing", 1)
             .addDynamoHatch("0+", "Any casing", 1)
             .toolTipFinisher();

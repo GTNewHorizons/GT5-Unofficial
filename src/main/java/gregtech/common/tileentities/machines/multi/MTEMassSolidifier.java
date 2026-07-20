@@ -38,7 +38,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
@@ -149,7 +148,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String anyCasing = TooltipHelper.anyCasingText(Casings.SolidifierCasing);
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gt.blockcasings10.13.name");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.fluidsolidifier")
             .addVoltageParallelInfo(10)
@@ -159,17 +158,17 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             .addInfo("gt.mass_solidifier.tips.2")
             .beginStructureBlock(9, 5, 6, false)
             .addController("Front bottom center")
-            .addCasing(MIN_CASINGS + "-73", "Solidifier Casing", false)
+            .addCasing(MIN_CASINGS + "-73", "gt.blockcasings10.13.name", false)
             .addCasing("42", "Any Tiered Glass", true)
-            .addCasing("34", "Solidifier Radiator", false)
+            .addCasing("34", "gt.blockcasings10.14.name", false)
             .addCasing("13", "Heat Proof Machine Casing", false)
             .addCasing("7", "Clean Stainless Steel Machine Casing", false)
             .addCasing("3", "Steel Pipe Casing", false)
-            .addEnergyHatch("1+", "Any solidifier casing", 1)
-            .addMaintenanceHatch("1", "Any solidifier casing", 1)
-            .addInputBus("0+", "Any solidifier casing", 1)
-            .addMiscHatch("1+", "Input/Solidifier Hatch", "Any solidifier casing", 1)
-            .addOutputBus("1+", "Any solidifier casing", 1)
+            .addEnergyHatch("1+", "GT5U.MBTT.Position.AnySolidifierCasing", 1)
+            .addMaintenanceHatch("1", "GT5U.MBTT.Position.AnySolidifierCasing", 1)
+            .addInputBus("0+", "GT5U.MBTT.Position.AnySolidifierCasing", 1)
+            .addMiscHatch("1+", "GT5U.MBTT.Part.InputSolidifierHatch", "GT5U.MBTT.Position.AnySolidifierCasing", 1)
+            .addOutputBus("1+", "GT5U.MBTT.Position.AnySolidifierCasing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorOmdaCZ);

@@ -93,8 +93,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
                 1)
             .addAir("Interior of the structure")
             .addStructureInfo("")
-            .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
-            .addStructureFooter("to save on blocks, casings, glass, buses/hatches, etc.")
+            .addStructureFooter("GT5U.MBTT.Note.WallshareSides")
+            .addStructureFooter("GT5U.MBTT.Note.WallshareSavings")
             .toolTipFinisher(AuthorJulia);
     }
 
