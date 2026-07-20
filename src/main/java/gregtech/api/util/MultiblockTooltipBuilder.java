@@ -449,31 +449,6 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder beginVariableStructureBlock(int lmin, int lmax, int wmin, int wmax, int hmin,
         int hmax, boolean hollow) {
         addShiftInfo(
-            EnumChatFormatting.WHITE + "%s: "
-                + EnumChatFormatting.GOLD
-                + "%s"
-                + EnumChatFormatting.GRAY
-                + "x"
-                + EnumChatFormatting.GOLD
-                + "%s"
-                + EnumChatFormatting.GRAY
-                + "x"
-                + EnumChatFormatting.GOLD
-                + "%s"
-                + EnumChatFormatting.GRAY
-                + " ("
-                + EnumChatFormatting.GOLD
-                + "L"
-                + EnumChatFormatting.GRAY
-                + "x"
-                + EnumChatFormatting.GOLD
-                + "W"
-                + EnumChatFormatting.GRAY
-                + "x"
-                + EnumChatFormatting.GOLD
-                + "H"
-                + EnumChatFormatting.GRAY
-                + ") %s",
             "GT5U.MBTT.Dimensions",
             formatRange(lmin, lmax),
             formatRange(wmin, wmax),

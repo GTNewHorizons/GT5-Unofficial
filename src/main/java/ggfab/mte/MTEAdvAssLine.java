@@ -318,23 +318,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("ggfab.tt.advassline.machine_type")
             .addInfo("ggfab.tt.advassline.desc1")
-            .addInfo("ggfab.tt.advassline.desc2")
-            .addInfo("ggfab.tt.advassline.desc3")
-            .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo("ggfab.tt.advassline.desc4")
-            .addInfo("ggfab.tt.advassline.desc5")
-            .addInfo("ggfab.tt.advassline.desc6")
-            .addInfo("ggfab.tt.advassline.desc7")
-            .addInfo("ggfab.tt.advassline.desc8")
-            .addInfo("ggfab.tt.advassline.desc9")
-            .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo("ggfab.tt.advassline.desc10")
             .addSupportAny()
             .beginVariableStructureBlock(3, 3, 5, 16, 4, 4, false)
             .addController("ggfab.tt.advassline.structure.controller")
             .addMiscHatch(
                 "1",
-                "GT5U.tooltip.structure.data_access_hatch",
+                "tt.keyword.Structure.DataAccessHatch",
                 "ggfab.tt.advassline.structure.data_access_location",
                 3)
             .addEnergyHatch("1+", "ggfab.tt.advassline.structure.energy_location", 4)
@@ -344,9 +333,9 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addOutputBus("1", "ggfab.tt.advassline.structure.output_bus_location", 1)
             .addStructureInfo("")
             .addStructureInfo("GT5U.MBTT.Structure.Base")
-            .addCasing("10", "gt.aal.casing.glass", false)
-            .addCasing("8", "gt.aal.casing.grate", false)
-            .addCasing("4-8", "gt.aal.casing.steel", false)
+            .addCasing("10", "GT5U.MBTT.AnyTieredGlass", false)
+            .addCasing("8", "gt.blockcasings3.10.name", false)
+            .addCasing("4-8", "gt.blockcasings2.0.name", false)
             .addCasing("5", "gt.aal.casing.assembly_line", false)
             .addCasing("5", "gt.aal.casing.assembler", false)
             .addStructureInfo("")

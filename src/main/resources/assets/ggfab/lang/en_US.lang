@@ -34,16 +34,7 @@ ggfab.gui.linked_input_bus.channel=Channel
 
 # Advanced Assembly Line tooltip
 ggfab.tt.advassline.machine_type=Assembly Line, AAL
-ggfab.tt.advassline.desc1=Assembly Line with item pipelining
-ggfab.tt.advassline.desc2=All fluids are consumed at the start of the recipe
-ggfab.tt.advassline.desc3=Recipe tier is limited by the lowest Energy Hatch tier
-ggfab.tt.advassline.desc4=Runs imperfect overclocks until Energy Hatch tier
-ggfab.tt.advassline.desc5=Additional overclocks are increasingly more expensive
-ggfab.tt.advassline.desc6=§bMultiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)§7
-ggfab.tt.advassline.desc7=§bPower usage = Multiplier × (Active Slices) × (Recipe EU/t)§7
-ggfab.tt.advassline.desc8=Overclocking assumes all recipe slices are active
-ggfab.tt.advassline.desc9=§lDoes not overclock beyond 1 tick
-ggfab.tt.advassline.desc10=Constructed identically to the Assembly Line
+ggfab.tt.advassline.desc1=Assembly Line with item pipelining\nAll fluids are consumed at the start of the recipe\nRecipe tier is limited by the lowest Energy Hatch tier§6<SEPARATOR>Runs imperfect overclocks until Energy Hatch tier\nAdditional overclocks are increasingly more expensive\n§bMultiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)§7\n§bPower usage = Multiplier × (Active Slices) × (Recipe EU/t)§7\nOverclocking assumes all recipe slices are active\n§lDoes not overclock beyond 1 tick§6<SEPARATOR>Constructed identically to the Assembly Line
 ggfab.tt.advassline.structure.controller=First slice, 3rd layer
 ggfab.tt.advassline.structure.data_access_location=Any grate machine casing NOT on first slice
 ggfab.tt.advassline.structure.energy_location=Any layer 4 casing

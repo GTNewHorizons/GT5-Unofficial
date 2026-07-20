@@ -174,7 +174,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
             .beginStructureBlock(5, 5, 4, false)
             .addController("front_bottom_center")
             .addCasing("19-45", "gt.blockcasings.4.name", false)
-            .addCasing("32", "GT5U.MBTT.AnyTieredGlass", true)
+            .addCasing("32", "GT5U.MBTT.AnyGlass", true)
             .addMiscHatch("0-1", "tooltip.bw.structure.radio_hatch", "<casing>", 1)
             .addEnergyHatch("1+", "<casing>", 1)
             .addMaintenanceHatch("1", "<casing>", 1)
