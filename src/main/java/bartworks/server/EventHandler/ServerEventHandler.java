@@ -65,7 +65,8 @@ public class ServerEventHandler {
                                 if (prefixes == null) {
                                     continue;
                                 }
-                                toReplace = GTOreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
+                                toReplace = GTOreDictUnificator
+                                    .get(prefixes.oreDictName(e.getVarName()), null, stack.stackSize, false, true);
                                 break loop;
                             }
                             for (String s : e.getAdditionalOredict()) {
@@ -75,7 +76,8 @@ public class ServerEventHandler {
                                     if (prefixes == null) {
                                         continue;
                                     }
-                                    toReplace = GTOreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
+                                    toReplace = GTOreDictUnificator
+                                        .get(prefixes.oreDictName(e.getVarName()), null, stack.stackSize, false, true);
                                     break loop;
                                 }
                             }
