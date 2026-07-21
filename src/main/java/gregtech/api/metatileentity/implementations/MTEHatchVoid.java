@@ -181,7 +181,7 @@ public class MTEHatchVoid extends MTEHatchOutput implements IOutputHatch {
         }
 
         @Override
-        public void completeFluid(GTUtility.FluidId id) {
+        public void complete(GTUtility.FluidId id) {
             // do nothing
         }
 

@@ -3,13 +3,15 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.*;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,8 +68,7 @@ public class RecipeGenOre extends RecipeGenBase {
             mStone = MaterialUtils.generateMaterialFromGtENUM(Materials.Stone);
         }
 
-        // if (material.getMaterialComposites().length > 1){
-        int tVoltageMultiplier = MaterialUtils.getVoltageForTier(material.vTier);
+        int tVoltageMultiplier = MaterialUtils.getVoltageForTier(material.tier);
 
         final ItemStack dustStone = ItemUtils.getItemStackOfAmountFromOreDict("dustStone", 1);
         Material bonusA = null; // Ni
@@ -295,7 +296,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
         // Electrolyzer
 
-        if (!disableOptional) {
+        if (!disableOptional && material != MaterialsFluorides.FLUORITE) {
             // Process Dust
             if (!componentMap.isEmpty() && componentMap.size() <= 6) {
 
@@ -396,7 +397,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
                 ItemStack emptyCell = null;
                 if (mCellCount > 0) {
-                    emptyCell = ItemList.Cell_Empty.get(mCellCount);;
+                    emptyCell = ItemList.Cell_Empty.get(mCellCount);
                 }
 
                 ItemStack mainDust = material.getDust(material.smallestStackSizeWhenProcessing);

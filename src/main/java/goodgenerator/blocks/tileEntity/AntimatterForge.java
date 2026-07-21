@@ -316,19 +316,19 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "^(1/3) L of fluid per cycle)")
             .addInfo("1. Depleted Naquadah Fuel Mk V = " + EnumChatFormatting.AQUA + "0.05" + EnumChatFormatting.GRAY)
             .addInfo("2. Depleted Naquadah Fuel Mk VI = " + EnumChatFormatting.AQUA + "0.10" + EnumChatFormatting.GRAY)
-            .beginStructureBlock(47, 53, 53, false)
-            .addController("Front center")
+            .beginStructureBlock(53, 53, 47, false)
+            .addController("Front center, 27th layer")
             .addCasing("2274", "Magnetic Flux Casing", false)
             .addCasing("624-637", "Gravity Stabilization Casing", false)
             .addCasing("514", "Antimatter Containment Casing", false)
             .addCasing("126", "Protomatter Activation Coil", false)
+            .addEnergyHatch("1+", "Back, left, or right side of the structure", 2)
+            .addInputHatch("1+", "Top or bottom side of the structure", 1)
             .addMiscHatch(
                 "16",
                 StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
                 "Around the inner ring",
                 3)
-            .addEnergyHatch("1+", "Back, left, or right side of the structure", 2)
-            .addInputHatch("1+", "Top or bottom side of the structure", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -682,6 +682,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof MTEHatchInput tInput) {
             tInput.mRecipeMap = getRecipeMap();
             return mInputHatches.add(tInput);
@@ -706,6 +707,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof AntimatterOutputHatch tAntimatter) {
             return amOutputHatches.add(tAntimatter);
         }

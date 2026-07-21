@@ -39,13 +39,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -130,7 +130,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             .addInfo("Runs gases through depleted molten salts to extract precious fluids")
             .addInfo("Works the same way as the Distillation Tower, but with a fixed height of 8")
             .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
-            .beginStructureBlock(3, 3, 8, true)
+            .beginStructureBlock(3, 8, 3, true)
             .addController("Front bottom center")
             .addCasing("45-56", "Sparge Tower Exterior Casing", false)
             .addEnergyHatch("1+", "Any casing", 1, 2)
@@ -169,7 +169,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.spargeTowerRecipes;
+        return RecipeMaps.spargeTowerRecipes;
     }
 
     protected void onCasingFound() {
@@ -233,6 +233,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             mOutputHatchesByLayer.add(new ArrayList<>());
         }
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         boolean addedHatch = mOutputHatchesByLayer.get(mHeight - 1)
             .add(tHatch);
         return addedHatch;

@@ -468,7 +468,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TIERED_VARIANTS.get(getTieredVariant());
     }
 
@@ -504,11 +504,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
             new ModularSlot(inventoryHandler, 3).slotGroup("item_inv")
                 .accessibility(false, true))
             .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST);
-    }
-
-    @Override
-    public TieredVariant getTieredVariant() {
-        return TieredVariant.BRONZE;
     }
 
     public boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {

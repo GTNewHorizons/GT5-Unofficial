@@ -27,6 +27,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -385,6 +386,13 @@ public class MTEModificationTable extends MetaTileEntity {
 
             for (BehaviorName incompatible : augment.getIncompatibleBehaviors()) {
                 if (state.hasBehavior(incompatible)) return false;
+            }
+
+            for (ItemList incompatible : augment.getIncompatibleAugments()) {
+                for (Augments augmentListItem : state.augments.values()) {
+                    if (augmentListItem.getListItem()
+                        .equals(incompatible)) return false;
+                }
             }
 
             // Check armor slot is valid

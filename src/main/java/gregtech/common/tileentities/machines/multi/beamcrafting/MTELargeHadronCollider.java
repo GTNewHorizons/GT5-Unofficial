@@ -376,8 +376,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip32"))
             .addSeparator()
             .addSupportAny()
-            .beginStructureBlock(122, 109, 13, true)
-            .addController("Front center of accelerator ring")
+            .beginStructureBlock(109, 13, 122, true)
+            .addController("Front center of accelerator ring, 12th layer")
             .addCasing(
                 "5664",
                 StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),

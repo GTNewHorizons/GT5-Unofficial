@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
@@ -53,7 +52,7 @@ public class DustDecayable extends BaseItemTickable {
             }
         }
         list.add(
-            GTUtility.translate(
+            StatCollector.translateToLocalFormatted(
                 "GTPP.tooltip.dust-decay-hint",
                 ModBlocks.blockDecayablesChest.getLocalizedName(),
                 ItemList.DecayWarehouse.get(1)

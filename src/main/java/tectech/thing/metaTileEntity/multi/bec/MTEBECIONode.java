@@ -214,7 +214,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         tt.addMachineType("BEC I/O Node, Input Bus, Output Bus")
             .addMarkdown(new ResourceLocation("gregtech", "bec-ionode"));
 
-        tt.beginStructureBlock(13, 7, 23, false)
+        tt.beginStructureBlock(7, 23, 13, false)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.controller-pos"))
             .addCasing("94", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
             .addCasing("88", ConflictInducementCasing.getLocalizedName(), false)
@@ -770,7 +770,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     @Override
     public String generateCurrentRecipeInfoString() {
-        StringBuffer ret = new StringBuffer(GTUtility.translate("GT5U.gui.text.progress"));
+        StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
         ret.append(" ");
         ret.append(mProgresstime);
         ret.append(" / ");
@@ -813,8 +813,9 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         NBTTagCompound tag = accessor.getNBTData();
 
-        currenttip.add(GTUtility.translate("GT5U.chat.bec-processing-speed", tag.getFloat("speed")));
-        currenttip.add(GTUtility.translate("GT5U.chat.bec-slowdowns", tag.getInteger("slowdowns")));
+        currenttip
+            .add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-processing-speed", tag.getFloat("speed")));
+        currenttip.add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-slowdowns", tag.getInteger("slowdowns")));
     }
 
     @Override

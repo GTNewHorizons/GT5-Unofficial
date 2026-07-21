@@ -46,6 +46,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
@@ -58,7 +59,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -109,7 +109,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
             .addGlassEnergyLimitInfo()
             .addInfo("Accepts exactly 1 Energy Hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(10, 3, 6, false)
+            .beginStructureBlock(3, 6, 10, false)
             .addController("Front center, 3rd layer")
             .addCasing("64", "Any Tiered Glass", true)
             .addCasing("20-25", "Algae Casing", false)
@@ -296,7 +296,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
     }
 
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.algaePondRecipes;
+        return RecipeMaps.algaePondRecipes;
     }
 
     @SideOnly(Side.CLIENT)
@@ -326,7 +326,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
             inputs = GTValues.emptyItemStackArray;
         }
 
-        for (GTRecipe recipe : GTPPRecipeMaps.algaePondRecipes.getAllRecipes()) {
+        for (GTRecipe recipe : RecipeMaps.algaePondRecipes.getAllRecipes()) {
             // We assume the unicity of tiered recipes
             if (recipe.mSpecialValue == tier) {
                 matchingRecipe = recipe.copyShallow();

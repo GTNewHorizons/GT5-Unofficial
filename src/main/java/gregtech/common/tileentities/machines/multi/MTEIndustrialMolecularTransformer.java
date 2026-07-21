@@ -31,11 +31,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMolecularTransformer>
@@ -69,7 +69,7 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
         tt.addMachineType("Molecular Transformer")
             .addInfo("Changes the structure of items to produce new ones")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 7, 9, false)
+            .beginStructureBlock(7, 9, 7, false)
             .addController("Front center, 2nd layer")
             .addCasing("95-104", "Molecular Containment Casing", false)
             .addCasing("35", "Speeding Pipe Casing", false)
@@ -177,7 +177,7 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.molecularTransformerRecipes;
+        return RecipeMaps.molecularTransformerRecipes;
     }
 
     @Override

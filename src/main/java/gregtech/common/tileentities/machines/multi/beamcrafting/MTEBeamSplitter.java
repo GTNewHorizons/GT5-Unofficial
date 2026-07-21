@@ -85,13 +85,13 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         //spotless:on
         .addElement('B', Casings.ShieldedAcceleratorCasing.asElement())
         .addElement('A', chainAllGlasses())
-        .addElement('C', buildBeamlineInputHatch(MTEBeamSplitter.class, ShieldedAccCasingTextureID, 2))
+        .addElement('C', buildBeamlineInputHatch(MTEBeamSplitter.class, ShieldedAccCasingTextureID, 1))
         .addElement(
             'D',
             buildAdvancedBeamlineOutputHatch(
                 MTEBeamSplitter.class,
                 ShieldedAccCasingTextureID,
-                3,
+                2,
                 FundamentalForce.All))
         .addElement('E', Casings.GrateMachineCasing.asElement())
         .build();
@@ -156,7 +156,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
             .addInfo(
                 StatCollector
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip2"))
-            .beginStructureBlock(9, 9, 3, false)
+            .beginStructureBlock(9, 3, 9, false)
             .addController("Front bottom center")
             .addCasing(
                 "42",

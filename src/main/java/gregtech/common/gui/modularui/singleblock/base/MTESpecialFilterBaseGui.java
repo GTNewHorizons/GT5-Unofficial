@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -18,7 +17,8 @@ import gregtech.api.metatileentity.implementations.MTESpecialFilter;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
-import xyz.wagyourtail.jvmdg.util.Pair;
+import it.unimi.dsi.fastutil.booleans.BooleanObjectImmutablePair;
+import it.unimi.dsi.fastutil.booleans.BooleanObjectPair;
 
 public abstract class MTESpecialFilterBaseGui<T extends MTESpecialFilter> extends MTEFilterBaseGui<T> {
 
@@ -38,7 +38,7 @@ public abstract class MTESpecialFilterBaseGui<T extends MTESpecialFilter> extend
 
         // white arrow shaft
         mainRow.child(
-            new Rectangle().asWidget()
+            GTGuiTextures.PICTURE_ARROW_6_WHITE_PRE.asWidget()
                 .size(26, 6));
 
         // filter slot
@@ -84,13 +84,13 @@ public abstract class MTESpecialFilterBaseGui<T extends MTESpecialFilter> extend
     protected abstract List<String> getFilledFilterSlotTooltip(ModularPanel panel, PanelSyncManager syncManager);
 
     @Override
-    protected List<Pair<Boolean, Supplier<IWidget>>> createButtonList(ModularPanel panel,
+    protected List<BooleanObjectPair<Supplier<IWidget>>> createButtonList(ModularPanel panel,
         PanelSyncManager syncManager) {
-        List<Pair<Boolean, Supplier<IWidget>>> buttons = super.createButtonList(panel, syncManager);
+        List<BooleanObjectPair<Supplier<IWidget>>> buttons = super.createButtonList(panel, syncManager);
 
         // allow NBT button
         buttons.add(
-            new Pair<>(
+            new BooleanObjectImmutablePair<>(
                 supportsAllowNBT(),
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
                     new BooleanSyncValue(machine::isAllowNbt, machine::setAllowNbt).allowC2S(),

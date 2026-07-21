@@ -87,8 +87,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
             .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
-            .addCasing("0-26", "Coke Oven Casing", false)
-            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch"), "Any casing", 1)
+            .addCasing("0-26", "Coke Oven Bricks", false)
+            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch"), "Any coke oven brick", 1)
             .addAir("Interior of the structure")
             .addStructureInfo("")
             .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
@@ -152,13 +152,19 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.COKE_OVEN;
     }
 
     @Override
     protected @NotNull MTECokeOvenGui getGui() {
         return new MTECokeOvenGui(this);
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        hatches.clear();
     }
 
     @Override
@@ -488,7 +494,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity == null) return false;
-        if (metaTileEntity instanceof MTEHatchCokeOven hatch) {
+        if (metaTileEntity instanceof MTEHatchCokeOven hatch && !hatches.contains(hatch)) {
             hatch.addController(this);
             return hatches.add(hatch);
         }

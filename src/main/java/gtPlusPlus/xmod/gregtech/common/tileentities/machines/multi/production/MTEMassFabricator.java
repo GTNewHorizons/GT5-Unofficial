@@ -57,7 +57,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -110,7 +109,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                     + " Tier in recycler mode")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 5, 4, true)
+            .beginStructureBlock(5, 4, 5, true)
             .addController("Front bottom center")
             .addCasing("35-44", mCasingName1, false)
             .addCasing("24", mCasingName2, false)
@@ -218,13 +217,13 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
      */
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return machineMode == MODE_SCRAP ? RecipeMaps.recyclerRecipes : GTPPRecipeMaps.multiblockMassFabricatorRecipes;
+        return machineMode == MODE_SCRAP ? RecipeMaps.recyclerRecipes : RecipeMaps.multiblockMassFabricatorRecipes;
     }
 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.recyclerRecipes, GTPPRecipeMaps.multiblockMassFabricatorRecipes);
+        return Arrays.asList(RecipeMaps.recyclerRecipes, RecipeMaps.multiblockMassFabricatorRecipes);
     }
 
     @Override

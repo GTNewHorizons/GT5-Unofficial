@@ -23,6 +23,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -346,7 +347,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock {
     public void addTargetStackTooltip(int targetStackSize, List<String> tooltip) {
         if (targetStackSize > 0) {
             tooltip.add(
-                GTUtility.translate("GT5U.machines.target_stack_size.tooltip")
+                StatCollector.translateToLocal("GT5U.machines.target_stack_size.tooltip")
                     + String.format(": %s", targetStackSize));
         }
     }
