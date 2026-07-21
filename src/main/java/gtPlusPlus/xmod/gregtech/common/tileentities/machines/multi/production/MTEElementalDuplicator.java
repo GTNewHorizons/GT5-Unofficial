@@ -26,9 +26,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -92,7 +90,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addInfo("The programmed circuit selects which Data Orb to use (1-16)")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 9, 6, true)
+            .beginStructureBlock(9, 6, 9, true)
             .addController("Top center, 6th layer")
             .addCasing("120-139", "Elemental Confinement Shell", false)
             .addCasing("24", "Particle Containment Casing", false)
@@ -275,11 +273,6 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             }
         }
         return false;
-    }
-
-    @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d == ForgeDirection.UP;
     }
 
     @Override

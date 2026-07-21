@@ -245,7 +245,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addInfo("Automatically upgrade based on the drone level in the input bus")
             .addInfo("There is a chance per second that the drone will crash")
             .addInfo("Chance is determined by drone tier: T1: 1/28800, T2: 1/172800, T3 & T4: 0")
-            .beginStructureBlock(11, 11, 4, false)
+            .beginStructureBlock(11, 4, 11, false)
             .addController("Front bottom center")
             .addCasing("61", "Steel Pipe Casing", false)
             .addCasing("47", "Steel Frame Box", false)
