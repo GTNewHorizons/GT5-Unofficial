@@ -37,8 +37,8 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L),
-                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                new Object[] { " s ", "fSx", " S ", 'S', OrePrefixes.stickLong.get(aMaterial) });
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { " s ", "fSx", " S ", 'S', OrePrefixes.stickLong.ingredient(aMaterial) });
         }
         if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)) {
 
@@ -112,11 +112,11 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "sf", "G ", 'G', OrePrefixes.gemFlawless.get(aMaterial) });
+                        new Object[] { "sf", "G ", 'G', OrePrefixes.gemFlawless.ingredient(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 2L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "sf", "G ", 'G', OrePrefixes.gemExquisite.get(aMaterial) });
+                        new Object[] { "sf", "G ", 'G', OrePrefixes.gemExquisite.ingredient(aMaterial) });
                 }
             }
         }
@@ -139,7 +139,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "ShS", 'S', OrePrefixes.stick.get(aMaterial) });
+                        new Object[] { "ShS", 'S', OrePrefixes.stick.ingredient(aMaterial) });
                 }
         }
     }
