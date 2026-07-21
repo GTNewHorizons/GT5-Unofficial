@@ -103,9 +103,9 @@ public class CraftingRecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.FenceIron.get(6L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextIron2, aTextIron2, " w ", 'X', OrePrefixes.stick.get(Materials.AnyIron), 'S',
+            new Object[] { aTextIron2, aTextIron2, " w ", 'X', OrePrefixes.stick.ingredient(Materials.AnyIron), 'S',
                 MU.craftIngredient(OrePrefixes.stick, Materials2Materials.Wood), 'I',
-                OrePrefixes.ingot.get(Materials.AnyIron) });
+                OrePrefixes.ingot.ingredient(Materials.AnyIron) });
 
         tMat = new ItemStack(Items.gold_ingot);
         {
@@ -1720,8 +1720,8 @@ public class CraftingRecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("nanoSaber", 1L),
             bits_no_remove_buffered,
-            new Object[] { "PI ", "PI ", "CLC", 'L', "batteryData", 'I', OrePrefixes.plateAlloy.get("Iridium"), 'P',
-                "platePlatinum", 'C', "circuitElite" });
+            new Object[] { "PI ", "PI ", "CLC", 'L', "batteryData", 'I', OrePrefixes.plateAlloy.oreDictName("Iridium"),
+                'P', "platePlatinum", 'C', "circuitElite" });
 
         GTModHandler.removeRecipeByOutputDelayed(new ItemStack(Items.flint_and_steel, 1));
         GTModHandler.addCraftingRecipe(
