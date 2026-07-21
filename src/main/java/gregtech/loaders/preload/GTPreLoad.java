@@ -34,6 +34,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MarkerMaterial;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
@@ -48,6 +49,7 @@ import gregtech.common.config.OPStuff;
 import gregtech.common.config.Worldgen;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineBase;
+import gregtech.loaders.materials.LegacyMarkerMaterials;
 
 public class GTPreLoad {
 
@@ -123,6 +125,10 @@ public class GTPreLoad {
                     GTLanguageManager
                         .addStringLocalization(aMaterial.getLocalizedNameKey(), aMaterial.mDefaultLocalName);
                 });
+
+        for (MarkerMaterial marker : LegacyMarkerMaterials.getSuperconductorMarkers()) {
+            GTLanguageManager.addStringLocalization(marker.getLocalizedNameKey(), marker.getDefaultLocalName());
+        }
     }
 
     public static void getConfiguration(File configDir) {
