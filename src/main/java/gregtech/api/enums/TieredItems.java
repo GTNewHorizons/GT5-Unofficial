@@ -30,34 +30,40 @@ import gregtech.api.util.GTOreDictUnificator;
 /// no recycling output of their own.
 public enum TieredItems {
 
-    ULV(() -> Materials.ULV),
-    LV(() -> Materials.LV),
-    MV(() -> Materials.MV),
-    HV(() -> Materials.HV),
-    EV(() -> Materials.EV),
-    IV(() -> Materials.IV),
-    LuV(() -> Materials.LuV),
-    ZPM(() -> Materials.ZPM),
-    UV(() -> Materials.UV),
-    UHV(() -> Materials.UHV),
-    UEV(() -> Materials.UEV),
-    UIV(() -> Materials.UIV),
-    UMV(() -> Materials.UMV),
-    UXV(() -> Materials.UXV),
-    MAX(() -> Materials.MAX);
+    ULV(() -> Materials.ULV, "Primitive"),
+    LV(() -> Materials.LV, "Basic"),
+    MV(() -> Materials.MV, "Good"),
+    HV(() -> Materials.HV, "Advanced"),
+    EV(() -> Materials.EV, "Data"),
+    IV(() -> Materials.IV, "Elite"),
+    LuV(() -> Materials.LuV, "Master"),
+    ZPM(() -> Materials.ZPM, "Ultimate"),
+    UV(() -> Materials.UV, "Superconductor"),
+    UHV(() -> Materials.UHV, "Infinite"),
+    UEV(() -> Materials.UEV, "Bio"),
+    UIV(() -> Materials.UIV, "Optical"),
+    UMV(() -> Materials.UMV, "Exotic"),
+    UXV(() -> Materials.UXV, "Cosmic"),
+    MAX(() -> Materials.MAX, "Transcendent");
 
+    /// Still supplied lazily for the material-amount-bearing prefixes ([OrePrefixes#pipeSmall]/[#pipeMedium]/
+    /// [#pipeLarge]/[#pipeHuge], [OrePrefixes#wireGt04]): their [ItemData] survives the unification merge and has
+    /// suppressive side effects on byproduct-slot occupancy and the recycler blacklist, so it cannot be dropped
+    /// alongside [#materialName] here.
     private final Supplier<MarkerMaterial> marker;
+    private final String materialName;
 
-    TieredItems(Supplier<MarkerMaterial> marker) {
+    TieredItems(Supplier<MarkerMaterial> marker, String materialName) {
         this.marker = marker;
+        this.materialName = materialName;
     }
 
     public ItemStack getBattery(int amount) {
-        return get(OrePrefixes.battery, amount);
+        return GTOreDictUnificator.get(OrePrefixes.battery.oreDictName(materialName), amount);
     }
 
     public ItemData getBatteryIngredient() {
-        return ingredient(OrePrefixes.battery);
+        return new ItemData(OrePrefixes.battery, materialName);
     }
 
     public ItemStack getPipeSmall(int amount) {
@@ -101,11 +107,11 @@ public enum TieredItems {
     }
 
     public ItemStack getPlateAlloy(int amount) {
-        return get(OrePrefixes.plateAlloy, amount);
+        return GTOreDictUnificator.get(OrePrefixes.plateAlloy.oreDictName(materialName), amount);
     }
 
     public ItemData getPlateAlloyIngredient() {
-        return ingredient(OrePrefixes.plateAlloy);
+        return new ItemData(OrePrefixes.plateAlloy, materialName);
     }
 
     private ItemStack get(OrePrefixes prefix, int amount) {
