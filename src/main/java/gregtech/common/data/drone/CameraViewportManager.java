@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,6 +25,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.net.PacketObserveMachine;
@@ -391,8 +391,12 @@ public class CameraViewportManager {
                         IGregTechTileEntity hTe = tHatch.getBaseMetaTileEntity();
                         if (hTe != null) {
                             long eu = hTe.getStoredEU();
-                            if (storedEnergy >= Long.MAX_VALUE / 2L || eu >= Long.MAX_VALUE / 2L || (storedEnergy += eu) < 0) {
-                                storedEnergy = Long.MAX_VALUE;
+                            if (eu > 0) {
+                                if (Long.MAX_VALUE - storedEnergy < eu) {
+                                    storedEnergy = Long.MAX_VALUE;
+                                } else {
+                                    storedEnergy += eu;
+                                }
                             }
                         }
                     }
@@ -404,8 +408,12 @@ public class CameraViewportManager {
                         IGregTechTileEntity dTe = dHatch.getBaseMetaTileEntity();
                         if (dTe != null) {
                             long eu = dTe.getStoredEU();
-                            if (storedEnergy >= Long.MAX_VALUE / 2L || eu >= Long.MAX_VALUE / 2L || (storedEnergy += eu) < 0) {
-                                storedEnergy = Long.MAX_VALUE;
+                            if (eu > 0) {
+                                if (Long.MAX_VALUE - storedEnergy < eu) {
+                                    storedEnergy = Long.MAX_VALUE;
+                                } else {
+                                    storedEnergy += eu;
+                                }
                             }
                         }
                     }

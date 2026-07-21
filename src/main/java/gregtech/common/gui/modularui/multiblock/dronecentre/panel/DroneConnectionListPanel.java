@@ -493,14 +493,18 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .findSyncHandler("groupNameList", GenericListSyncHandler.class);
                 if (groupSyncValue != null && groupSyncValue.getValue() != null) {
                     List<String> groupNames = groupSyncValue.getValue();
-                    long mask = droneConnectionListSyncHandler.getValue()
-                        .stream()
-                        .filter(c -> c.uuid.equals(conn.uuid))
-                        .map(DroneConnection::getGroupMask)
-                        .findFirst()
-                        .orElse(conn.getGroupMask());
+                    List<DroneConnection> connList = droneConnectionListSyncHandler.getValue();
+                    long mask = conn.getGroupMask();
+                    if (connList != null) {
+                        mask = connList.stream()
+                            .filter(c -> c.uuid.equals(conn.uuid))
+                            .map(DroneConnection::getGroupMask)
+                            .findFirst()
+                            .orElse(conn.getGroupMask());
+                    }
                     List<String> inGroups = new ArrayList<>();
-                    for (int i = 1; i < groupNames.size(); i++) {
+                    int maxGroups = Math.min(groupNames.size(), 64);
+                    for (int i = 1; i < maxGroups; i++) {
                         if ((mask & (1L << i)) != 0) {
                             String name = groupNames.get(i);
                             if (name == null || name.isEmpty()) {
