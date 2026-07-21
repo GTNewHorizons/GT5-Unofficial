@@ -36,6 +36,7 @@ import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.CircuitComponents;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -63,8 +64,7 @@ public class CraftingRecipes implements Runnable {
             Materials.Tungsten, // IV
             Materials.VanadiumGallium, // LuV
             Materials.Naquadah, // ZPM
-            Materials.NaquadahAlloy, // UV
-            Materials.SuperconductorUV // UHV
+            Materials.NaquadahAlloy // UV
         };
 
         ISubTagContainer[] hulls = { // Plate material used in the acid gen, diode and energy distributor below
@@ -372,18 +372,18 @@ public class CraftingRecipes implements Runnable {
             BioItemList.mBioLabParts[2],
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SFE", "CPC", "NFN", 'N',
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Nichrome, 1L), 'C', "circuit" + Materials.EV,
-                'F', ItemList.Field_Generator_EV.get(1L), 'E', ItemList.Emitter_EV.get(1L), 'S',
-                ItemList.Sensor_EV.get(1L), 'P',
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Nichrome, 1L), 'C',
+                OrePrefixes.circuit.oreDictName(Circuits.EV.materialName()), 'F', ItemList.Field_Generator_EV.get(1L),
+                'E', ItemList.Emitter_EV.get(1L), 'S', ItemList.Sensor_EV.get(1L), 'P',
                 MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.plate, (int) (1L)), });
         // TransformationModule
         GTModHandler.addCraftingRecipe(
             BioItemList.mBioLabParts[3],
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SFE", "PCP", "NFN", 'N',
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Nichrome, 1L), 'C', "circuit" + Materials.EV,
-                'F', ItemList.Field_Generator_EV.get(1L), 'E', ItemList.Emitter_EV.get(1L), 'S',
-                ItemList.Sensor_EV.get(1L), 'P',
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Nichrome, 1L), 'C',
+                OrePrefixes.circuit.oreDictName(Circuits.EV.materialName()), 'F', ItemList.Field_Generator_EV.get(1L),
+                'E', ItemList.Emitter_EV.get(1L), 'S', ItemList.Sensor_EV.get(1L), 'P',
                 MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.plate, (int) (1L)), });
 
         // ClonalCellularSynthesisModule
@@ -391,15 +391,17 @@ public class CraftingRecipes implements Runnable {
             BioItemList.mBioLabParts[4],
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "FEF", "CPC", "FSF", 'N',
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 1L), 'C', "circuit" + Materials.LuV,
-                'F', ItemList.Field_Generator_LuV.get(1L), 'E', ItemList.Emitter_LuV.get(1L), 'S',
-                ItemList.Sensor_LuV.get(1L), 'P', WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.plate, 1), });
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 1L), 'C',
+                OrePrefixes.circuit.oreDictName(Circuits.LuV.materialName()), 'F', ItemList.Field_Generator_LuV.get(1L),
+                'E', ItemList.Emitter_LuV.get(1L), 'S', ItemList.Sensor_LuV.get(1L), 'P',
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.plate, 1), });
 
         GTModHandler.addCraftingRecipe(
             ItemRegistry.vat.copy(),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "GCG", "KHK", "GCG", 'G', new ItemStack(ItemRegistry.bw_glasses[0], 1, 1), 'C',
-                "circuit" + Materials.EV, 'K', GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Silver, 1L), 'H',
+                OrePrefixes.circuit.oreDictName(Circuits.EV.materialName()), 'K',
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Silver, 1L), 'H',
                 ItemList.MACHINE_HULLS[3].get(1L) });
 
         // BioLabs
@@ -413,7 +415,7 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI
                     .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.plate, (int) (1L)),
                 'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.plate, (int) (1L)), 'G',
-                "circuit" + Materials.HV, 'C', ItemList.MACHINE_HULLS[3].get(1L) });
+                OrePrefixes.circuit.oreDictName(Circuits.HV.materialName()), 'C', ItemList.MACHINE_HULLS[3].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_EV.ID, "bw.biolabEV", StatCollector.translateToLocal("tile.biolab.name"), 4)
@@ -425,7 +427,7 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI
                     .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.plate, (int) (1L)),
                 'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.plate, (int) (1L)), 'G',
-                "circuit" + Materials.EV, 'C', ItemList.MACHINE_HULLS[4].get(1L) });
+                OrePrefixes.circuit.oreDictName(Circuits.EV.materialName()), 'C', ItemList.MACHINE_HULLS[4].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_IV.ID, "bw.biolabIV", StatCollector.translateToLocal("tile.biolab.name"), 5)
@@ -437,7 +439,7 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI
                     .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.plate, (int) (1L)),
                 'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.plate, (int) (1L)), 'G',
-                "circuit" + Materials.IV, 'C', ItemList.MACHINE_HULLS[5].get(1L) });
+                OrePrefixes.circuit.oreDictName(Circuits.IV.materialName()), 'C', ItemList.MACHINE_HULLS[5].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_LuV.ID, "bw.biolabLuV", StatCollector.translateToLocal("tile.biolab.name"), 6)
@@ -448,7 +450,7 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI
                     .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.plate, (int) (1L)),
                 'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.plate, (int) (1L)), 'G',
-                "circuit" + Materials.LuV, 'C', ItemList.MACHINE_HULLS[6].get(1L) });
+                OrePrefixes.circuit.oreDictName(Circuits.LuV.materialName()), 'C', ItemList.MACHINE_HULLS[6].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_ZPM.ID, "bw.biolabZPM", StatCollector.translateToLocal("tile.biolab.name"), 7)
@@ -460,7 +462,7 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI
                     .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.plate, (int) (1L)),
                 'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.plate, (int) (1L)), 'G',
-                "circuit" + Materials.ZPM, 'C', ItemList.MACHINE_HULLS[7].get(1L) });
+                OrePrefixes.circuit.oreDictName(Circuits.ZPM.materialName()), 'C', ItemList.MACHINE_HULLS[7].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UV.ID, "bw.biolabUV", StatCollector.translateToLocal("tile.biolab.name"), 8)
@@ -471,7 +473,7 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI
                     .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.plate, (int) (1L)),
                 'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.plate, (int) (1L)), 'G',
-                "circuit" + Materials.UV, 'C', ItemList.MACHINE_HULLS[8].get(1L) });
+                OrePrefixes.circuit.oreDictName(Circuits.UV.materialName()), 'C', ItemList.MACHINE_HULLS[8].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UHV.ID, "bw.biolabUHV", StatCollector.translateToLocal("tile.biolab.name"), 9)
@@ -483,7 +485,7 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI
                     .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.plate, (int) (1L)),
                 'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.plate, (int) (1L)), 'G',
-                "circuit" + Materials.UHV, 'C', ItemList.MACHINE_HULLS[9].get(1L) });
+                OrePrefixes.circuit.oreDictName(Circuits.UHV.materialName()), 'C', ItemList.MACHINE_HULLS[9].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UEV.ID, "bw.biolabUEV", StatCollector.translateToLocal("tile.biolab.name"), 10)
@@ -495,7 +497,8 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI
                     .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.plate, (int) (1L)),
                 'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.plate, (int) (1L)), 'G',
-                "circuit" + Materials.UEV, 'C', ItemList.MACHINE_HULLS[10].get(1L) });
+                OrePrefixes.circuit.oreDictName(Circuits.UEV.materialName()), 'C',
+                ItemList.MACHINE_HULLS[10].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UIV.ID, "bw.biolabUIV", StatCollector.translateToLocal("tile.biolab.name"), 11)
@@ -507,7 +510,8 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI
                     .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.plate, (int) (1L)),
                 'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.plate, (int) (1L)), 'G',
-                "circuit" + Materials.UIV, 'C', ItemList.MACHINE_HULLS[11].get(1L) });
+                OrePrefixes.circuit.oreDictName(Circuits.UIV.materialName()), 'C',
+                ItemList.MACHINE_HULLS[11].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UMV.ID, "bw.biolabUMV", StatCollector.translateToLocal("tile.biolab.name"), 12)
@@ -519,7 +523,8 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI
                     .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.plate, (int) (1L)),
                 'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.plate, (int) (1L)), 'G',
-                "circuit" + Materials.UMV, 'C', ItemList.MACHINE_HULLS[12].get(1L) });
+                OrePrefixes.circuit.oreDictName(Circuits.UMV.materialName()), 'C',
+                ItemList.MACHINE_HULLS[12].get(1L) });
 
         // Radio Hatches
         GTModHandler.addCraftingRecipe(
