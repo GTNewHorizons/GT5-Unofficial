@@ -820,11 +820,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         }
                         mEfficiencyIncrease = 0;
                         mLastWorkingTick = mTotalRunTime;
-                        if (!isOutputAllItems && protectsExcessItem()) {
-                            stopMachine(ShutDownReasonRegistry.ITEM_OUTPUT_FAILED);
-                        } else if (!isOutputAllFluids && protectsExcessFluid()) {
-                            stopMachine(ShutDownReasonRegistry.FLUID_OUTPUT_FAILED);
-                        } else if (aBaseMetaTileEntity.isAllowedToWork()) {
+                        if (aBaseMetaTileEntity.isAllowedToWork()) {
                             checkRecipe();
                         }
                     }
@@ -2510,7 +2506,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         if (recipesDone > 0) {
-            info.add(StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone", formatNumber(recipesDone)));
+            info.add(
+                StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)));
         }
 
         info.add(StatCollector.translateToLocalFormatted(timeKey, timeValue));

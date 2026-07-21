@@ -248,8 +248,9 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
             .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.plasma2"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.throttle1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.throttle2"))
-            .beginStructureBlock(11, 5, 6, false)
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.multiblock.ExtremeHeatExchanger.throttle2", getFluidUnit()))
+            .beginStructureBlock(5, 6, 11, false)
             .addController("Front bottom center")
             .addCasing("25-120", "Robust Tungstensteel Machine Casing", false)
             .addCasing("72", "EV+ Tiered Glass", false)
