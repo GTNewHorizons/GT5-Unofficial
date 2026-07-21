@@ -9,9 +9,7 @@ import gregtech.api.material.MarkerMaterial;
 /// `Materials` fields that MaterialLib carries no data for and that unchanged code still references
 /// directly: the superconductor markers (`SuperconductorMV`..`SuperconductorUMV`) and wildcard markers
 /// (`AnyBronze`/`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`, used by
-/// `Materials#setReRegistration`) are reproduced here through `MaterialBuilder`. The voltage-tier markers
-/// (`ULV`..`MAX`) and circuit-component markers (`Resistor`, `Diode`, `Transistor`, `Capacitor`, `Inductor`)
-/// name their ore-dictionary entry and nothing more, so they are plain [MarkerMaterial]s.
+/// `Materials#setReRegistration`) are reproduced here through `MaterialBuilder`.
 ///
 /// [RecognitionMaterials] separately builds the markers that exist so `Materials.get(name)` resolves other
 /// mods' ore-dictionary entries and legacy names, and that carry ore-unification identity or composition
@@ -24,8 +22,6 @@ public class LegacyMarkerMaterials {
 
     public static void loadMarkers() {
         loadRandomMarkers();
-        loadTiersMarkers();
-        loadCircuitryMarkers();
         loadSuperconductorsMarkers();
     }
 
@@ -96,32 +92,6 @@ public class LegacyMarkerMaterials {
             .setUnifiable(false)
             .setIconSet(TextureSet.SET_SHINY)
             .constructMaterial();
-    }
-
-    private static void loadTiersMarkers() {
-        Materials.ULV = new MarkerMaterial("Primitive", "Primitive", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.LV = new MarkerMaterial("Basic", "Basic", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.MV = new MarkerMaterial("Good", "Good", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.HV = new MarkerMaterial("Advanced", "Advanced", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.EV = new MarkerMaterial("Data", "Data", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.IV = new MarkerMaterial("Elite", "Elite", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.LuV = new MarkerMaterial("Master", "Master", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.ZPM = new MarkerMaterial("Ultimate", "Ultimate", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.UV = new MarkerMaterial("Superconductor", "Superconductor", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.UHV = new MarkerMaterial("Infinite", "Infinite", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.UEV = new MarkerMaterial("Bio", "Bio", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.UIV = new MarkerMaterial("Optical", "Optical", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.UMV = new MarkerMaterial("Exotic", "Exotic", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.UXV = new MarkerMaterial("Cosmic", "Cosmic", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.MAX = new MarkerMaterial("Transcendent", "Transcendent", TextureSet.SET_NONE, DEFAULT_ARGB);
-    }
-
-    private static void loadCircuitryMarkers() {
-        Materials.Resistor = new MarkerMaterial("Resistor", "Resistor", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.Diode = new MarkerMaterial("Diode", "Diode", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.Transistor = new MarkerMaterial("Transistor", "Transistor", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.Capacitor = new MarkerMaterial("Capacitor", "Capacitor", TextureSet.SET_NONE, DEFAULT_ARGB);
-        Materials.Inductor = new MarkerMaterial("Inductor", "Inductor", TextureSet.SET_NONE, DEFAULT_ARGB);
     }
 
     private static void loadSuperconductorsMarkers() {

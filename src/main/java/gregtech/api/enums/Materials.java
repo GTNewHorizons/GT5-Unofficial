@@ -272,32 +272,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Zectium;
     // endregion
 
-    // region Tier materials
-    public static MarkerMaterial ULV;
-    public static MarkerMaterial LV;
-    public static MarkerMaterial MV;
-    public static MarkerMaterial HV;
-    public static MarkerMaterial EV;
-    public static MarkerMaterial IV;
-    public static MarkerMaterial LuV;
-    public static MarkerMaterial ZPM;
-    public static MarkerMaterial UV;
-    public static MarkerMaterial UHV;
-    public static MarkerMaterial UEV;
-    public static MarkerMaterial UIV;
-    public static MarkerMaterial UMV;
-    public static MarkerMaterial UXV;
-    public static MarkerMaterial MAX;
-    // endregion
-
-    // region Circuitry
-    public static MarkerMaterial Resistor;
-    public static MarkerMaterial Diode;
-    public static MarkerMaterial Transistor;
-    public static MarkerMaterial Capacitor;
-    public static MarkerMaterial Inductor;
-    // endregion
-
     // region Not possible to determine exact Components
     public static Materials Antimatter;
     public static Materials Biomass;
