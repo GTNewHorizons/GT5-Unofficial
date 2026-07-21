@@ -1,19 +1,16 @@
 package gregtech.api.enums;
 
-import java.util.function.Supplier;
-
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.material.MarkerMaterial;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
 /// The non-circuit ore-dictionary entries that hang off a voltage tier -- batteries, high-pressure fluid pipes,
 /// quadruple wires and alloy plates -- keyed by voltage tier.
 ///
-/// Each tier is backed by a [MarkerMaterial] whose name is unrelated to the tier abbreviation (`LV` is named
-/// `Basic`, `UHV` is named `Infinite`, and so on), so the ore-dictionary names these entries resolve to cannot be
-/// spelled from the tier name. Routing every call site through this enum keeps that mapping in one place.
+/// Each tier's ore-dictionary material name is unrelated to the tier abbreviation (`LV` is named `Basic`, `UHV` is
+/// named `Infinite`, and so on), so the ore-dictionary names these entries resolve to cannot be spelled from the
+/// tier name. Routing every call site through this enum keeps that mapping in one place.
 ///
 /// Every prefix is offered at every tier even though only some combinations are registered; asking for an
 /// unregistered one yields no stack, exactly as looking the ore-dictionary name up directly would.
@@ -24,37 +21,30 @@ import gregtech.api.util.GTOreDictUnificator;
 ///
 /// Crafting-grid recipes need the [ItemData] rather than the bare ore-dictionary name it stringifies to:
 /// [gregtech.api.util.GTModHandler#addCraftingRecipe] derives the recycling output of a reversible recipe from the
-/// [ItemData] of each ingredient, and a bare name carries no such association. The ingredient form names the
-/// ore-dictionary entry the marker resolves to; for prefixes that define a material amount, the resulting stack
-/// would participate in that merged item data, but a marker carries no composition, so these ingredients produce
-/// no recycling output of their own.
+/// [ItemData] of each ingredient, and a bare name carries no such association. The ingredient form is built from
+/// the name-only [ItemData] constructor, which carries no composition, so these ingredients produce no recycling
+/// output of their own.
 public enum TieredItems {
 
-    ULV(() -> Materials.ULV, "Primitive"),
-    LV(() -> Materials.LV, "Basic"),
-    MV(() -> Materials.MV, "Good"),
-    HV(() -> Materials.HV, "Advanced"),
-    EV(() -> Materials.EV, "Data"),
-    IV(() -> Materials.IV, "Elite"),
-    LuV(() -> Materials.LuV, "Master"),
-    ZPM(() -> Materials.ZPM, "Ultimate"),
-    UV(() -> Materials.UV, "Superconductor"),
-    UHV(() -> Materials.UHV, "Infinite"),
-    UEV(() -> Materials.UEV, "Bio"),
-    UIV(() -> Materials.UIV, "Optical"),
-    UMV(() -> Materials.UMV, "Exotic"),
-    UXV(() -> Materials.UXV, "Cosmic"),
-    MAX(() -> Materials.MAX, "Transcendent");
+    ULV("Primitive"),
+    LV("Basic"),
+    MV("Good"),
+    HV("Advanced"),
+    EV("Data"),
+    IV("Elite"),
+    LuV("Master"),
+    ZPM("Ultimate"),
+    UV("Superconductor"),
+    UHV("Infinite"),
+    UEV("Bio"),
+    UIV("Optical"),
+    UMV("Exotic"),
+    UXV("Cosmic"),
+    MAX("Transcendent");
 
-    /// Still supplied lazily for the material-amount-bearing prefixes ([OrePrefixes#pipeSmall]/[#pipeMedium]/
-    /// [#pipeLarge]/[#pipeHuge], [OrePrefixes#wireGt04]): their [ItemData] survives the unification merge and has
-    /// suppressive side effects on byproduct-slot occupancy and the recycler blacklist, so it cannot be dropped
-    /// alongside [#materialName] here.
-    private final Supplier<MarkerMaterial> marker;
     private final String materialName;
 
-    TieredItems(Supplier<MarkerMaterial> marker, String materialName) {
-        this.marker = marker;
+    TieredItems(String materialName) {
         this.materialName = materialName;
     }
 
@@ -67,43 +57,43 @@ public enum TieredItems {
     }
 
     public ItemStack getPipeSmall(int amount) {
-        return get(OrePrefixes.pipeSmall, amount);
+        return GTOreDictUnificator.get(OrePrefixes.pipeSmall.oreDictName(materialName), amount);
     }
 
     public ItemData getPipeSmallIngredient() {
-        return ingredient(OrePrefixes.pipeSmall);
+        return new ItemData(OrePrefixes.pipeSmall, materialName);
     }
 
     public ItemStack getPipeMedium(int amount) {
-        return get(OrePrefixes.pipeMedium, amount);
+        return GTOreDictUnificator.get(OrePrefixes.pipeMedium.oreDictName(materialName), amount);
     }
 
     public ItemData getPipeMediumIngredient() {
-        return ingredient(OrePrefixes.pipeMedium);
+        return new ItemData(OrePrefixes.pipeMedium, materialName);
     }
 
     public ItemStack getPipeLarge(int amount) {
-        return get(OrePrefixes.pipeLarge, amount);
+        return GTOreDictUnificator.get(OrePrefixes.pipeLarge.oreDictName(materialName), amount);
     }
 
     public ItemData getPipeLargeIngredient() {
-        return ingredient(OrePrefixes.pipeLarge);
+        return new ItemData(OrePrefixes.pipeLarge, materialName);
     }
 
     public ItemStack getPipeHuge(int amount) {
-        return get(OrePrefixes.pipeHuge, amount);
+        return GTOreDictUnificator.get(OrePrefixes.pipeHuge.oreDictName(materialName), amount);
     }
 
     public ItemData getPipeHugeIngredient() {
-        return ingredient(OrePrefixes.pipeHuge);
+        return new ItemData(OrePrefixes.pipeHuge, materialName);
     }
 
     public ItemStack getWireGt04(int amount) {
-        return get(OrePrefixes.wireGt04, amount);
+        return GTOreDictUnificator.get(OrePrefixes.wireGt04.oreDictName(materialName), amount);
     }
 
     public ItemData getWireGt04Ingredient() {
-        return ingredient(OrePrefixes.wireGt04);
+        return new ItemData(OrePrefixes.wireGt04, materialName);
     }
 
     public ItemStack getPlateAlloy(int amount) {
@@ -112,13 +102,5 @@ public enum TieredItems {
 
     public ItemData getPlateAlloyIngredient() {
         return new ItemData(OrePrefixes.plateAlloy, materialName);
-    }
-
-    private ItemStack get(OrePrefixes prefix, int amount) {
-        return GTOreDictUnificator.get(prefix, marker.get(), amount);
-    }
-
-    private ItemData ingredient(OrePrefixes prefix) {
-        return new ItemData(prefix, marker.get());
     }
 }
