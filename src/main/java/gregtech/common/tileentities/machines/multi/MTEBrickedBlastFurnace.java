@@ -131,7 +131,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                 .addInfo("Usable for Steel and general Pyrometallurgy")
                 .addInfo("All input/output is done manually through the controller")
                 .addPollutionAmount(GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond)
-                .beginStructureBlock(3, 3, 4, true)
+                .beginStructureBlock(3, 4, 3, true)
                 .addController("Front center")
                 .addCasing("32", "Firebricks", false)
                 .addAir("Interior and top center of the structure")

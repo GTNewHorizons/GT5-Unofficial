@@ -443,7 +443,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             .addInfo("The max fluid cell tier is limited by the glass tier")
             .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
             .addInfo("The max height of the cell blocks is 15")
-            .beginVariableStructureBlock(5, 5, 5, 5, 5, 19, false)
+            .beginVariableStructureBlock(5, 5, 5, 19, 5, 5, false)
             .addController("Front center, 2nd layer")
             .addMiscHatch("0-1", "YOTHatch", "Any bottom center casing (replaces other hatches)", 2)
             .addInputHatch("1+", "Any top center casing", 1)

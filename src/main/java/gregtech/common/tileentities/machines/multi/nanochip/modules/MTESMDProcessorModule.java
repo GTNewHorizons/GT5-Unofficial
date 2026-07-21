@@ -103,7 +103,7 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.smd_processor.action", TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.smd_processor.flavor.1")))
-            .beginStructureBlock(7, 7, 6, false)
+            .beginStructureBlock(7, 6, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
             .addCasing("44", translateToLocal("gt.blockcasings12.2.name"), false)

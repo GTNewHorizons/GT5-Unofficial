@@ -110,7 +110,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInfo("Each maintenance issue lowers output efficiency by " + EnumChatFormatting.GREEN + "10%")
             .addInfo("Explodes when it runs out of Distilled Water/Coolant")
             .addInfo("Base cycle time: 1 tick")
-            .beginStructureBlock(3, 3, 7, false)
+            .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
             .addCasing("15", "Tungsten Frame Box", false)
             .addCasing("3-7", "Heat Proof Machine Casing", false)
