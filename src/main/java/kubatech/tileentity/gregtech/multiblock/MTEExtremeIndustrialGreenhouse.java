@@ -59,6 +59,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -113,6 +114,7 @@ import kubatech.gui.modularui2.MTEExtremeIndustrialGreenhouseGui;
 import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGIC2Bucket;
 
 @SuppressWarnings("unused")
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTEExtremeIndustrialGreenhouse>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -380,29 +382,61 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         String fertilizerBoostMax = String.format("%.0f", EIG_BALANCE_MAX_FERTILIZER_BOOST * 100);
-        tt.addMachineType("machtype.ei_greenhouse")
+        tt.addMachineType(
+            StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.machine_type"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc1"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc2"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc3"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc4"))
             .addInfo(
-                "gt.ei_greenhouse.tips.1",
-                EIG_BALANCE_WATER_USAGE_PER_SEED,
-                new FluidStack(WEEDEX_FLUID, 1).getLocalizedName(),
-                EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT,
-                fertilizerBoostMax)
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.multiblock.ExtremeIndustrialGreenhouse.desc5",
+                    EIG_BALANCE_WATER_USAGE_PER_SEED))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.multiblock.ExtremeIndustrialGreenhouse.desc6",
+                    new FluidStack(WEEDEX_FLUID, 1).getLocalizedName(),
+                    EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc7"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.multiblock.ExtremeIndustrialGreenhouse.desc8",
+                    fertilizerBoostMax))
             .addGlassEnergyLimitInfo()
-            .addInfo("gt.ei_greenhouse.tips.2");
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.setup_mode"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc9"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc10"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc11"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc12"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.desc13"));
         EIGModes.addTooltipInfo(tt);
-        tt.beginStructureBlock(9, 7, 7, true)
-            .addController("front_bottom_center")
-            .addCasing("102", "Any Tiered Glass", true)
-            .addCasing("70-86", "gtplusplus.blockcasings.2.15.name", false)
-            .addCasing("33", "Tunstensteel Frame Box", false)
-            .addCasing("21", "Fertilized Dirt (RandomThings)", false)
-            .addCasing("3", "Purple Lamp (ProjectRed Illumination, regular or inverted)", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputAny("1+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+        tt.beginStructureBlock(7, 7, 9, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("102", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing(
+                "70-86",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.sterile_farm_casing"),
+                false)
+            .addCasing(
+                "33",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.frame_box"),
+                false)
+            .addCasing(
+                "21",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.fertilized_dirt"),
+                false)
+            .addCasing(
+                "3",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.purple_lamp"),
+                false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
-            .addStructureFooter("gt.ei_greenhouse.info.footer")
+            .addStructureFooter(
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.footer"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addAuthors(GTAuthors.AuthorKuba)
             .addStructureAuthors("HydroCN")

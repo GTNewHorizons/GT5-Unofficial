@@ -148,7 +148,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(beanOrBeamSplitter)
             .addInfo("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip")
-            .beginStructureBlock(9, 9, 3, false)
+            .beginStructureBlock(9, 3, 9, false)
             .addController("Front bottom center")
             .addCasing(
                 "42",

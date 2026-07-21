@@ -81,7 +81,7 @@ public class MTEFusionComputer1 extends MTEFusionComputer {
         tt.addMachineType("gt.recipe.fusionreactor")
             .addInfo("gt.fusion.tips.a")
             .addInfo("gt.fusion.tips", "2,048", "10M")
-            .beginStructureBlock(15, 15, 3, false)
+            .beginStructureBlock(15, 3, 15, false)
             .addController("gt.fusion.info.1")
             .addCasing("79-123", "LuV Machine Casing", false)
             .addCasing("32", "Superconducting Coil Block", false)

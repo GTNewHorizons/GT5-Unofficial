@@ -271,7 +271,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
                 "gt.slam.tips",
                 GTUtility.scientificFormat(Long.MAX_VALUE),
                 GTUtility.scientificFormat(ANTIMATTER_FUEL_VALUE))
-            .beginStructureBlock(35, 35, 43, true)
+            .beginStructureBlock(35, 43, 35, true)
             .addController("gt.slam.structure.controller")
             .addCasing("4127-4128", "gt.slam.casing.magnetic_flux", false)
             .addCasing("2481-2544", "gt.slam.casing.gravity", false)

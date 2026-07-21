@@ -240,7 +240,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.windmill")
             .addInfo("gt.windmill.tips.1")
-            .beginStructureBlock(7, 7, 12, true)
+            .beginStructureBlock(7, 12, 7, true)
             .addController("front_bottom_center")
             .addCasing("100", "gt.windmill.casing.planks", false)
             .addCasing("40-47", "tile.clayHardened.name", false)

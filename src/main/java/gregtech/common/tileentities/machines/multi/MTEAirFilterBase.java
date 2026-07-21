@@ -198,7 +198,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                 SCALING_FACTOR,
                 getBonusByTier(),
                 getEUt())
-            .beginStructureBlock(3, 3, 4, true)
+            .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom center")
             .addCasing("9-22", getCasingString(), false)
             .addCasing("8", getPipeString(), false)

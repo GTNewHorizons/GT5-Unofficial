@@ -229,7 +229,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingT
         tt.addMachineType("machtype.cpi")
             .addInfo("gt.charcoal_pit.tips.1")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(3, 13, 3, 13, 3, 7, false)
+            .beginVariableStructureBlock(3, 13, 3, 7, 3, 13, false)
             .addController("gt.charcoal_pit.info.controller")
             .addCasing("1-605", gregtech.api.util.GTUtility.nestParams("gt.charcoal_pit.info.6"), false)
             .addStructureInfo("gt.charcoal_pit.info.7")

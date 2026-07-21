@@ -128,7 +128,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.sparge")
             .addInfo("gt.sparge_tower.tips")
-            .beginStructureBlock(3, 3, 8, true)
+            .beginStructureBlock(3, 8, 3, true)
             .addController("front_bottom_center")
             .addCasing("45-56", "Sparge Tower Exterior Casing", false)
             .addEnergyHatch("1+", "Any casing", 1, 2)

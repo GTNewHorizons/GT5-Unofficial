@@ -169,7 +169,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             .addInfo("gt.cal.tips.1")
             .addPerfectOCInfo()
             .addInfo("gt.cal.tips.2", "chat.cal.mode.0", "chat.cal.mode.1", MINIMUM_CIRCUIT_ASSEMBLER_LENGTH)
-            .beginVariableStructureBlock(3, 3, 2, 7, 3, 3, false)
+            .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
             .addController("gt.cal.controller")
             .addEnergyHatch("1", "gt.cal.info.e_hatch", 3)
             .addMaintenanceHatch("1", "gt.asslike.info.i_hatch", 1)

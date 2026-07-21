@@ -31,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -71,7 +72,6 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.LongData;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
@@ -85,6 +85,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELapotronicSuperCapacitor>
     implements ISurvivalConstructable {
 
@@ -390,65 +391,69 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("machtype.energy_storage", "LSC")
+        tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.machine_type"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc1"))
             .addInfo(
-                "gt.lapo_super_capacitor.tips.1",
-                formatNumber(max_passive_drain_eu_per_tick_per_uhv_cap),
-                GTValues.TIER_COLORS[9],
-                GTValues.VN[9])
-            .addTecTechHatchInfo()
+                StatCollector.translateToLocalFormatted(
+                    "kekztech.multiblock.LapotronicSuperCapacitor.desc2",
+                    formatNumber(max_passive_drain_eu_per_tick_per_uhv_cap),
+                    GTValues.TIER_COLORS[9] + GTValues.VN[9]))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc3"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc4"))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc5"))
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc6"))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc7"))
             .addInfo(
-                "gt.lapo_super_capacitor.tips.2",
-                GTValues.TIER_COLORS[9],
-                GTValues.VN[9],
-                formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks),
-                formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap))
-            .beginVariableStructureBlock(5, 5, 5, 5, 4, 50, false)
-            .addStructureInfo("gt.lapo_super_capacitor.info.height")
-            .addController("front_bottom_center")
-            .addEnergyHatch("0+", "Any casing", 1)
-            .addDynamoHatch("0+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMiscHatch(
-                "0+",
-                "gt.lapo_super_capacitor.info.lasers",
-                GTUtility.nestParams("gt.lapo_super_capacitor.info.lasers.pos", TooltipHelper.voltageText(8)),
-                1)
-            .addStructureInfo("gt.lapo_super_capacitor.info.energy.tip")
+                StatCollector.translateToLocalFormatted(
+                    "kekztech.multiblock.LapotronicSuperCapacitor.desc8",
+                    GTValues.TIER_COLORS[9] + GTValues.VN[9]))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "kekztech.multiblock.LapotronicSuperCapacitor.desc9",
+                    formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc10"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "kekztech.multiblock.LapotronicSuperCapacitor.desc11",
+                    formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap),
+                    GTValues.TIER_COLORS[9] + GTValues.VN[9]))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc12"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc13"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc14"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc15"))
+            .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addEnergyHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addDynamoHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
-            .addStructureInfo("GT5U.MBTT.Structure.Base")
-            .addCasing("17-48", "tile.kekztech_lapotronicenergyunit_block.0.name", false)
-            .addCasing("41", "GT5U.MBTT.AnyGlass", true)
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing(
+                "17-48",
+                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.casing"),
+                false)
+            .addCasing("41", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
             .addCasing(
                 "9",
-                GTUtility.nestParams(
-                    "gt.lapo_super_capacitor.info.caps",
-                    TooltipHelper.voltageText(4),
-                    TooltipHelper.voltageText(8),
-                    TooltipHelper.voltageText(9),
-                    TooltipHelper.voltageText(12)),
+                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.capacitor"),
                 true)
             .addStructureInfo("")
-            .addStructureInfo("GT5U.MBTT.Structure.Layer")
-            .addCasing("16", "GT5U.MBTT.AnyGlass", true)
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
+            .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
             .addCasing(
                 "9",
-                GTUtility.nestParams(
-                    "gt.lapo_super_capacitor.info.caps",
-                    TooltipHelper.voltageText(4),
-                    TooltipHelper.voltageText(8),
-                    TooltipHelper.voltageText(9),
-                    TooltipHelper.voltageText(12)),
+                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.capacitor"),
                 true)
             .addStructureInfo("")
-            .addStructureFooter("gt.lapo_super_capacitor.info.caps.tips")
+            .addStructureFooter(
+                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.structure_footer"))
             .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureInfo(
-                "GT5U.MBTT.subchannel",
-                GTStructureChannels.LSC_CAPACITOR.get(),
-                "gt.lapo_super_capacitor.info.channel_purpose")
+            .addSubChannel(GTStructureChannels.LSC_CAPACITOR)
             .toolTipFinisher();
         return tt;
     }

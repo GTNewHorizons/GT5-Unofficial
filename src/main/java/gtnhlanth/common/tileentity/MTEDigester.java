@@ -203,7 +203,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
             .addInfo("gtnhlanth.tt.digester.info1")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 7, 4, true)
+            .beginStructureBlock(7, 4, 7, true)
             .addController("gt.mbtt.structure.front_bottom_center")
             .addCasing("40-54", "gt.blockcasings4.0.name", false)
             .addCasing("16", "gt.blockcasings.11.name", false)

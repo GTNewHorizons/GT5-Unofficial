@@ -219,7 +219,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.machinetype")
             .addInfo("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip")
-            .beginStructureBlock(11, 7, 7, true)
+            .beginStructureBlock(7, 7, 11, true)
             .addController("Front center, 3rd layer")
             .addCasing(
                 "95",

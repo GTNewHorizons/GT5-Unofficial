@@ -139,7 +139,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.distillation_tower")
             .addInfo("gt.distillation_tower.tips.1")
-            .beginVariableStructureBlock(3, 3, 3, 3, 3, 12, true)
+            .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
             .addController("Front bottom center")
             .addCasing("16-79", gregtech.api.util.GTUtility.nestParams("gt.blockcasings4.1.name"), false)
             .addEnergyHatch("1+", "gt.distillation_tower.info.2", 1, 2)

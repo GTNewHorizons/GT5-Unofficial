@@ -356,7 +356,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.completer")
             .addInfo("gt.completer.tips")
-            .beginVariableStructureBlock(3, MAX_LENGTH, 3, 3, 3, 3, true)
+            .beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
             .addController("Front center, 2nd layer")
             .addCasing("9-52", "gt.blockcasings8.8.name", false)
             .addCasing("7-27", "GT5U.MBTT.Part.WardedGlass", false)

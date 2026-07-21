@@ -275,7 +275,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.blockmachines.multimachine.beamcrafting.beamcrafter.machinetype")
             .addInfo("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip")
-            .beginStructureBlock(11, 17, 5, true)
+            .beginStructureBlock(17, 5, 11, true)
             .addController("Front center, 3rd layer")
             .addCasing(
                 "224-227",

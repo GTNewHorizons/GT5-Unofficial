@@ -395,7 +395,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                 "gt.solar_factory.tips",
                 tieredTextLine("Mk-I", "MK-II", "MK-III", "MK-IV"),
                 tieredTextLine("8", "16", "32", "64"))
-            .beginStructureBlock(8, 9, 10, false)
+            .beginStructureBlock(9, 10, 8, false)
             .addController("Front bottom center")
             .addEnergyHatch("1+", "Any machine casing", 1)
             .addMaintenanceHatch("1+", "Any machine casing", 1)

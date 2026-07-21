@@ -101,12 +101,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -134,6 +134,7 @@ import kubatech.network.CustomTileEntityPacket;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtremeEntityCrusher>
     implements CustomTileEntityPacketHandler, ISurvivalConstructable, ICasingTextureProvider {
 
@@ -338,20 +339,52 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("machtype.eec")
-            .addInfo("gt.eec.tips", MAX_LOOTING_LEVEL)
-            .addGlassEnergyLimitInfo(VoltageIndex.UV)
-            .beginStructureBlock(5, 5, 7, true)
-            .addController("front_bottom_center")
-            .addCasing("60", "Any Tiered Glass", true)
-            .addCasing("35-46", "Solid Steel Machine Casing", false)
-            .addCasing("20", "Steel Frame Box", false)
-            .addCasing("9", "tile.extrautils:spike_base_diamond.name", false)
-            .addEnergyHatch("1+", "Any bottom casing", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("0+", "Any bottom casing", 1)
-            .addOutputAny("1+", "Any bottom casing", 1)
-            .addAir("Interior of the structure")
+        tt.addMachineType(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.machine_type"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc1"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc2"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc3"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc4"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc5"))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc6"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc7"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc8"))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("kubatech.multiblock.ExtremeEntityCrusher.desc9", MAX_LOOTING_LEVEL))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc10"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc11"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc12"))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc13"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc14"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc15"))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc16"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc17"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc18"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc19"))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc20"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc21"))
+            .addGlassEnergyLimitInfo()
+            .beginStructureBlock(5, 7, 5, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("60", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("35-46", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing(
+                "20",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.steel_frame_box"),
+                false)
+            .addCasing(
+                "9",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.diamond_spike"),
+                false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorKuba);

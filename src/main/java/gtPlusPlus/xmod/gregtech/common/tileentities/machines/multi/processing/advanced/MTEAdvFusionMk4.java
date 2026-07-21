@@ -50,7 +50,7 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
             .addInfo("gt.fusion.tips.c")
             .addInfo("gt.fusion.tips", "131,072", "320M")
             .addInfo("gt.fusion.tips.overclock")
-            .beginStructureBlock(15, 15, 3, false)
+            .beginStructureBlock(15, 3, 15, false)
             .addController("gt.fusion.info.1")
             .addCasing("79-123", "Fusion Machine Casing Mk-III", false)
             .addStructureInfo("gt.fusion.info.2")

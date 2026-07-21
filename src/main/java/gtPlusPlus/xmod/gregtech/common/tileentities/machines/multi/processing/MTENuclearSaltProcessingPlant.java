@@ -81,7 +81,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
             .addBulkMachineInfo(2, 2.5f, 1f)
             .addInfo("gt.nuclear_salt_processing_plant.tips.1")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 9, 5, true)
+            .beginStructureBlock(9, 5, 3, true)
             .addController("front_center")
             .addCasing("58", "gt.blockcasings.5.name", false)
             .addCasing("0-32", "Thermally Insulated Casing", false)

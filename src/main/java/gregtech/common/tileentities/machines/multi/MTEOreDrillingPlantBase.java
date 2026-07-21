@@ -505,7 +505,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 GTUtility.getColoredTierNameFromTier((byte) getMinTier()),
                 baseCycleTime < 20 ? formatNumber(baseCycleTime) : formatNumber(baseCycleTime / 20.0),
                 baseCycleTime < 20 ? "gt.time.tick.plural" : "gt.time.second.plural")
-            .beginStructureBlock(3, 3, 7, false)
+            .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
             .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
             .addCasing("5-7", casings, false)

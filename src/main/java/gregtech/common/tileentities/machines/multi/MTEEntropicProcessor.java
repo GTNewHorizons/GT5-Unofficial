@@ -200,7 +200,7 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
             .addSeparator()
             .addInfo("gt.entropic_processor.tips.4");
 
-        tt.beginStructureBlock(7, 7, 5, true)
+        tt.beginStructureBlock(7, 5, 7, true)
             .addController("Front center")
             .addSubChannel(GTStructureChannels.ALCHEMICAL_CASING)
             .addSubChannel(GTStructureChannels.ALCHEMICAL_CONSTRUCT)

@@ -61,7 +61,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
         tt.addMachineType(getMachineType())
             .addInfo("gt.rfpp.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 9, false)
+            .beginStructureBlock(3, 9, 3, false)
             .addController("front_bottom_center")
             .addCasing("17", "Hastelloy-N Sealant Block", false)
             .addCasing("7-11", "Hastelloy-X Sealant Block", false)

@@ -88,7 +88,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                 "gt.solar_tower.tips",
                 MaterialMisc.SOLAR_SALT_COLD.getDefaultLocalName(),
                 MaterialMisc.SOLAR_SALT_HOT.getDefaultLocalName())
-            .beginVariableStructureBlock(15, 31, 15, 31, 28, 28, false)
+            .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
             .addController("top_center")
             .addCasing("36/88/156/240/340", "Solar Reflector", false)
             .addCasing("229-250", "Structural Solar Casing", false)

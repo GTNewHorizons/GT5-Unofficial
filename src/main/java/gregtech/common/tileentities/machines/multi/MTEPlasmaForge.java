@@ -581,7 +581,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 formatNumber(100 * maximum_discount),
                 formatNumber(efficiency_decay_rate))
             .addUnlimitedTierSkips()
-            .beginStructureBlock(33, 33, 24, false)
+            .beginStructureBlock(33, 24, 33, false)
             .addController("gt.dtpf.info.controller")
             .addCasing("2121", "gt.blockcasings.12.name", false)
             .addCasing("2112", "Heating Coil", true)

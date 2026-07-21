@@ -190,7 +190,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.neutron_activator")
             .addInfo("gt.neutron_activator.tips")
-            .beginVariableStructureBlock(5, 5, 5, 5, 6, 256, false)
+            .beginVariableStructureBlock(5, 5, 6, 256, 5, 5, false)
             .addController("front_bottom_center")
             .addMiscHatch("1+", "gt.neutron_activator.part.accelerator", "gt.neutron_activator.pos.bottom", 2)
             .addMiscHatch("0+", "gt.neutron_activator.part.sensor", "gt.neutron_activator.pos.bottom", 2)

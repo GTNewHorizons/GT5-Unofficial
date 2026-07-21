@@ -80,7 +80,7 @@ public class MTELargeTurbineSteam extends MTELargeTurbineBase {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.lst")
             .addInfo("gt.lst.tips")
-            .beginStructureBlock(6, 3, 3, false)
+            .beginStructureBlock(3, 3, 6, false)
             .addController("Front center, 2nd layer")
             .addCasing("14", "Iron Frame Box", false)
             .addCasing("8-14", "gt.blockcasings4.9.name", false)

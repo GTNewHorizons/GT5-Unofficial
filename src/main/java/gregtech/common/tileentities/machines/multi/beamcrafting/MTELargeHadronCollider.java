@@ -316,7 +316,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.blockmachines.multimachine.beamcrafting.LHC.machinetype")
             .addInfo("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip")
-            .beginStructureBlock(122, 109, 13, true)
+            .beginStructureBlock(109, 13, 122, true)
             .addController("GT5U.MBTT.Position.AcceleratorRingFrontCenterLayer12")
             .addCasing(
                 "5664",

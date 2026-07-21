@@ -87,7 +87,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.dehp")
             .addInfo("gt.dehp.tips", TierEU.RECIPE_HV, (long) (25600 * 20), (long) (192 * 20))
-            .beginStructureBlock(3, 3, 7, false)
+            .beginStructureBlock(3, 7, 3, false)
             .addController("front_bottom_center")
             .addCasing("15", GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, this.getFrameMaterial()), false)
             .addCasing("3-7", "gt.blockcasings.11.name", false)

@@ -391,18 +391,18 @@ public class MultiblockTooltipBuilder {
      * Begin adding structural information by adding a line about the structure's dimensions and then inserting a
      * "Structure:" line.
      *
-     * @param l      Structure length/depth
      * @param w      Structure width
      * @param h      Structure height
+     * @param l      Structure length/depth
      * @param hollow Flag for the (Hollow) tag
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder beginStructureBlock(int l, int w, int h, boolean hollow) {
         addShiftInfo(
             "GT5U.MBTT.Dimensions",
-            l,
             w,
             h,
+            l,
             hollow ? "GT5U.MBTT.Hollow" : "");
         addShiftInfo("GT5U.MBTT.Structure");
         return this;
@@ -412,12 +412,12 @@ public class MultiblockTooltipBuilder {
      * Begin adding structural information by adding a line about the structure's dimensions<br>
      * and then inserting a "Structure:" line. Variable version displays min and max.
      *
-     * @param lmin   Structure min length/depth
-     * @param lmax   Structure max length/depth
      * @param wmin   Structure min width
      * @param wmax   Structure max width
      * @param hmin   Structure min height
      * @param hmax   Structure max height
+     * @param lmin   Structure min length/depth
+     * @param lmax   Structure max length/depth
      * @param hollow Flag for the (Hollow) tag
      * @return Instance this method was called on.
      */
@@ -425,9 +425,9 @@ public class MultiblockTooltipBuilder {
         int hmax, boolean hollow) {
         addShiftInfo(
             "GT5U.MBTT.Dimensions",
-            formatRange(lmin, lmax),
             formatRange(wmin, wmax),
             formatRange(hmin, hmax),
+            formatRange(lmin, lmax),
             hollow ? "GT5U.MBTT.Hollow" : "");
         addShiftInfo("GT5U.MBTT.Structure");
         return this;

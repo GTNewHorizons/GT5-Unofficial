@@ -197,7 +197,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addInfo("gtnhlanth.tt.tc.info5")
             .addInfo("gtnhlanth.tt.tc.info6")
             .addInfo("gtnhlanth.tt.tc.info7")
-            .beginStructureBlock(6, 5, 5, true)
+            .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom center")
             .addCasing("34", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getUnlocalizedName() + ".name", false)
             .addCasing("27-29", "gt.blockcasings3.10.name", false)
@@ -297,8 +297,11 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         int inputParticle = inputInfo.getParticleId();
         float inputFocus = inputInfo.getFocus();
 
-        if (inputEnergy < metadata.minEnergy || inputEnergy > metadata.maxEnergy)
-            return CheckRecipeResultRegistry.NO_RECIPE;
+        if (inputEnergy < metadata.minEnergy) {
+            return CheckRecipeResultRegistry.LOW_ENERGY;
+        } else if (inputEnergy > metadata.maxEnergy) {
+            return CheckRecipeResultRegistry.HIGH_ENERGY;
+        }
         if (inputFocus < metadata.minFocus) return CheckRecipeResultRegistry.NO_RECIPE;
         if (inputParticle != metadata.particleID) return CheckRecipeResultRegistry.NO_RECIPE;
 

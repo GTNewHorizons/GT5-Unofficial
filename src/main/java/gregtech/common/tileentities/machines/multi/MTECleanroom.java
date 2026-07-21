@@ -133,7 +133,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.cleanroom")
             .addInfo("gt.cleanroom.tips")
-            .beginVariableStructureBlock(3, MAX_WIDTH, 3, MAX_WIDTH, 4, MAX_HEIGHT, true)
+            .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
             .addController("Top center")
             .addCasing(MachineStats.cleanroom.minCasingCount + "-1007", "Plascrete Block", false)
             .addCasing("0-168", "Filter Machine Casing", false)

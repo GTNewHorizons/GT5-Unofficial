@@ -440,7 +440,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.fluid_tank")
             .addInfo("gt.yottank.tips")
-            .beginVariableStructureBlock(5, 5, 5, 5, 5, 19, false)
+            .beginVariableStructureBlock(5, 5, 5, 19, 5, 5, false)
             .addController("front_center_layer2")
             .addMiscHatch("0-1", "gt.yottank.part.yothatch", "gt.yottank.pos.yothatch", 2)
             .addInputHatch("1+", "gt.yottank.pos.input", 1)

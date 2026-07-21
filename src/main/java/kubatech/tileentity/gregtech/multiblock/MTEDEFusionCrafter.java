@@ -26,6 +26,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -37,6 +38,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -55,6 +57,7 @@ import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.BlockLoader;
 import kubatech.loaders.DEFCRecipes;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCrafter> implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = (1 << 7) + (15 + 48);
@@ -145,25 +148,25 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("machtype.defc")
-            .addInfo("gt.defc.tips")
-            .beginStructureBlock(5, 5, 10, false)
-            .addController("front_bottom_center")
-            .addCasing("19-45", "defc.casing.7.name", false)
-            .addCasing("32", "GT5U.tooltip.structure.tiered_fusion_casing", true)
-            .addStructureInfo("gt.defc.info.tiered_casing")
-            .addCasing("32", "gt.blockcasings4.6.name", true)
-            .addStructureInfo("gt.defc.info.casing")
-            .addCasing("8", "gt.blockcasings4.7.name", false)
-            .addStructureInfo("gt.defc.info.coil")
-            .addStructureInfo("gt.defc.info.tiers")
-            .addEnergyHatch("1+", "Any bottom casing", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputAny("1+", "Any bottom casing", 1)
-            .addOutputAny("1+", "Any bottom casing", 1)
+        tt.addMachineType(StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.machine_type"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.desc1"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.desc2"))
+            .beginStructureBlock(5, 10, 5, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("19-45", StatCollector.translateToLocal("defc.casing.7.name"), false)
+            .addCasing("32", StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.fusion_casing"), true)
+            .addCasing(
+                "32",
+                StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.fusion_machine_casing"),
+                true)
+            .addCasing("8", Casings.FusionCoilBlock.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addStructureInfo("")
-            .addStructureFooter("gt.defc.info.pearl")
-            .addMasterChannel("channels.gregtech.master.casingtier")
+            .addStructureFooter(StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.footer"))
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
             .toolTipFinisher(GTAuthors.AuthorKuba, "Prometheus0000");
         return tt;
     }

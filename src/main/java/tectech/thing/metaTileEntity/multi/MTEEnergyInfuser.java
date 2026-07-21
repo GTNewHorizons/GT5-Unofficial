@@ -239,7 +239,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         tt.addMachineType("machtype.energy_infuser")
             .addInfo("gt.energy_infuser.tips")
             .addTecTechHatchInfo()
-            .beginStructureBlock(3, 3, 5, false)
+            .beginStructureBlock(3, 5, 3, false)
             .addController("front_center_layer3")
             .addCasing("16", "gt.blockcasingsTT.7.name", false)
             .addCasing("0-14", "gt.blockcasingsTT.0.name", false)

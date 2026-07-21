@@ -319,7 +319,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         tt.addMachineType("ggfab.tt.advassline.machine_type")
             .addInfo("ggfab.tt.advassline.desc1")
             .addSupportAny()
-            .beginVariableStructureBlock(3, 3, 5, 16, 4, 4, false)
+            .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addController("ggfab.tt.advassline.structure.controller")
             .addMiscHatch(
                 "1",

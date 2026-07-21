@@ -169,7 +169,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.purif_unit")
             .addInfo("gt.pu_clarifier.tips", formatNumber(getWaterTier()), formatNumber(FILTER_DAMAGE_RATE))
-            .beginStructureBlock(11, 11, 4, false)
+            .beginStructureBlock(11, 4, 11, false)
             .addController("Front center, 2nd layer")
             .addCasing("123-128", "Reinforced Sterile Water Plant Casing", false)
             .addCasing("21", "Filter Machine Casing", false)

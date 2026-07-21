@@ -182,7 +182,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.blockmachines.multimachine.beamcrafting.beammirror.machinetype")
             .addInfo("gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip")
-            .beginStructureBlock(5, 3, 6, false)
+            .beginStructureBlock(3, 6, 5, false)
             .addController("Front bottom center")
             .addMiscHatch(
                 "1",

@@ -749,7 +749,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             .addInfo("gt.nano_forge.tips")
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(41, 41, 52, false)
+            .beginStructureBlock(41, 52, 41, false)
             .addController("Front bottom center")
             .addEnergyHatch("1-2", "Any bottom casing", 1)
             .addMaintenanceHatch("1", "Any bottom casing", 1)

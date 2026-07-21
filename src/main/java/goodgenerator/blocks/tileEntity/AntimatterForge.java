@@ -178,7 +178,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 ACTIVE_BASE_EXP,
                 COEFFICIENT_BASE_EXP,
                 BASE_SKEW)
-            .beginStructureBlock(47, 53, 53, false)
+            .beginStructureBlock(53, 53, 47, false)
             .addController("gt.ssass.structure.controller")
             .addCasing("2274", "gt.ssass.casing.magnetic_flux", false)
             .addCasing("624-637", "gt.ssass.casing.gravity", false)
@@ -302,7 +302,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             if (!amOutputHatches.isEmpty()) {
                 drainEnergyInput(calculateEnergyContainmentCost(totalAntimatterAmount));
             }
-            this.guiAntimatterAmount = totalAntimatterAmount;
+
+            if (!aBaseMetaTileEntity.isActive()) {
+                this.guiAntimatterAmount = totalAntimatterAmount;
+            }
 
             if ((this.mProgresstime >= this.mMaxProgresstime) && (!isAllowedToWork())) {
                 setProtoRender(false);
@@ -424,6 +427,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
 
         this.guiAntimatterChange = ratioLosses + antimatterChange;
+        this.guiAntimatterAmount = totalAntimatterAmount;
 
         if (this.canRender) {
             updateAntimatterSize(this.guiAntimatterAmount);
@@ -650,6 +654,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         aNBT.setBoolean("canRender", this.canRender);
         aNBT.setLong("rollingCost", this.rollingCost);
         aNBT.setFloat("currentMagneticModifier", this.modifiers[MAGNETIC_ID]);
+        aNBT.setLong("guiAntimatterAmount", this.guiAntimatterAmount);
     }
 
     @Override
@@ -663,6 +668,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
         if (aNBT.hasKey("currentMagneticModifier")) {
             this.modifiers[MAGNETIC_ID] = aNBT.getFloat("currentMagneticModifier");
+        }
+        if (aNBT.hasKey("guiAntimatterAmount")) {
+            this.guiAntimatterAmount = aNBT.getLong("guiAntimatterAmount");
         }
     }
 

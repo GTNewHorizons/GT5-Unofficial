@@ -454,7 +454,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             .addInfo("gt.blockmachines.multimachine.ig.dyson.desc6")
             .addInfo("gt.blockmachines.multimachine.ig.dyson.desc7")
             .addSupportAny()
-            .beginStructureBlock(16, 16, 20, false)
+            .beginStructureBlock(16, 20, 16, false)
             .addController("ig.dyson.structure.controller")
             .addCasing("256", GTUtility.nestParams("ig.dyson.structure.base.floor"), false)
             .addCasing("115-138", GTUtility.nestParams("ig.dyson.structure.control.base"), false)

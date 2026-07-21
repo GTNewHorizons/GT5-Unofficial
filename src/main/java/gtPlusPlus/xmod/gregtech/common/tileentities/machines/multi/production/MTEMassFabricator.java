@@ -101,7 +101,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
             .addInfo("gt.massfab.tips.3", TooltipTier.VOLTAGE.getLocalizedValue())
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 5, 4, true)
+            .beginStructureBlock(5, 4, 5, true)
             .addController("front_bottom_center")
             .addCasing("35-44", mCasingName1, false)
             .addCasing("24", mCasingName2, false)

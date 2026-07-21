@@ -173,7 +173,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
             .addStaticEuEffInfo(0.8f)
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addInfo("gt.fluid_shaper.flavor")
-            .beginVariableStructureBlock(9, 33, 5, 5, 5, 5, true)
+            .beginVariableStructureBlock(5, 5, 5, 5, 9, 33, true)
             .addController("Front bottom center")
             .addCasingInfoRange("gt.blockcasings10.13.name", 91, 211, false)
             .addCasingInfoRange("gt.blockcasings10.14.name", 13, 73, false)

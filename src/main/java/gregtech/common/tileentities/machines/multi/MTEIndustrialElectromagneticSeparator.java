@@ -148,6 +148,7 @@ public class MTEIndustrialElectromagneticSeparator
                 .hatchId(MetaTileEntityIDs.MAG_HATCH.ID)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
                 .hint(2)
+                .exclusive()
                 .build())
         .build();
 
@@ -194,7 +195,7 @@ public class MTEIndustrialElectromagneticSeparator
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.polarizer", "gt.recipe.electromagneticseparator")
             .addInfo("gt.mfe.tips.1")
-            .beginStructureBlock(7, 7, 6, true)
+            .beginStructureBlock(7, 6, 7, true)
             .addController("Front bottom center")
             .addCasing(MIN_CASING + "-73", gregtech.api.util.GTUtility.nestParams("gt.blockcasings10.0.name"), false)
             .addCasing("37", "GT5U.MBTT.Part.MagneticNeodymiumFrameBox", false)

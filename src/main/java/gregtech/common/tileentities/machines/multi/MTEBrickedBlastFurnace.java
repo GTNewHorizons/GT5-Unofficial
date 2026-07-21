@@ -144,7 +144,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
             tooltipBuilder.addMachineType("machtype.bbf")
                 .addInfo("gt.bbf.tips.1")
                 .addPollutionAmount(GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond)
-                .beginStructureBlock(3, 3, 4, true)
+                .beginStructureBlock(3, 4, 3, true)
                 .addController("gt.mbtt.structure.front_center")
                 .addCasing("32", "gt.blockcasings4.15.name", false)
                 .addAir("gt.bbf.structure.air")
@@ -585,7 +585,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TIERED_VARIANTS.get(getTieredVariant());
     }
 

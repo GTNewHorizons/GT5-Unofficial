@@ -110,7 +110,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.tpm")
             .addInfo("gt.tpm.tips")
-            .beginStructureBlock(5, 5, 7, true)
+            .beginStructureBlock(5, 7, 5, true)
             .addController("Front center, 4th layer")
             .addCasing("48", "gt.blockcasings.12.name", false)
             .addCasing("0-35", "gt.blockcasings.13.name", false)

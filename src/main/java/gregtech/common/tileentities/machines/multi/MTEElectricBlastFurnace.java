@@ -116,7 +116,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
         tt.addMachineType("machtype.ebf")
             .addInfo("gt.ebf.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 4, true)
+            .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom center")
             .addCasing("16", "Heating Coil", true)
             .addCasing("0-12", gregtech.api.util.GTUtility.nestParams("gt.blockcasings.11.name"), false)

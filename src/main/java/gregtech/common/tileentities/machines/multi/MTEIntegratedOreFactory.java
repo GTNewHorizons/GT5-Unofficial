@@ -647,7 +647,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
             .addInfo("gt.ore_factory.tips.2")
-            .beginStructureBlock(13, 15, 9, false)
+            .beginStructureBlock(15, 9, 13, false)
             .addController("Front center, 3rd layer")
             .addCasing("462", "Advanced Iridium Plated Machine Casing", false)
             .addCasing("0-163", "Clean Stainless Steel Machine Casing", false)

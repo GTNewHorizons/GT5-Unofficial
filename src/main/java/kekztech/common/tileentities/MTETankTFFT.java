@@ -44,6 +44,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.fluid.GTFluidTank;
@@ -68,6 +69,7 @@ import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.misc.GTStructureChannels;
 import kekztech.common.Blocks;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -340,29 +342,58 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("machtype.fluid_tank")
-            .addInfo("gt.tfft.tips")
-            .beginVariableStructureBlock(5, 15, 5, 5, 5, 5, false)
-            .addController("front_center")
-            .addEnergyHatch("0+", "gt.tfft.info.maintenance", 1, 2)
-            .addMaintenanceHatch("1", "gt.tfft.info.maintenance", 1, 2)
-            .addMiscHatch("0-1", "gt.blockmachines.machine.tffthatch.name", "gt.tfft.info.i_hatch", 2, 3)
-            .addInputHatch("1+", "gt.tfft.info.i_hatch", 2, 3)
-            .addOutputHatch("1+", "gt.tfft.info.i_hatch", 2, 3)
-            .addStructureInfo("gt.tfft.info.energy_tip")
-            .addStructureInfo("gt.tfft.info.hatch_tip")
+        tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.machine_type"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc1"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc2"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc3"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc4"))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc5"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc6"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc7"))
+            .beginVariableStructureBlock(5, 5, 5, 5, 5, 15, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
+            .addEnergyHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addMiscHatch(
+                "0-1",
+                StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.multi_io_hatch"),
+                StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.any_casing_glass_adjacent"),
+                2,
+                3)
+            .addInputHatch(
+                "1+",
+                StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.any_casing_glass_adjacent"),
+                2,
+                3)
+            .addOutputHatch(
+                "1+",
+                StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.any_casing_glass_adjacent"),
+                2,
+                3)
             .addStructureInfo("")
-            .addStructureInfo("GT5U.MBTT.Structure.Base")
-            .addCasing("12-48", "GT5U.MBTT.Part.EVPlusAnyGlass", false)
-            .addCasing(MIN_CASING_AMOUNT + "-46", "tile.kekztech_tfftstoragefield_block.0.name", false)
-            .addCasing("27", "tile.kekztech_tfftstoragefield_block.generic.name", true)
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing(
+                "12-48",
+                StatCollector
+                    .translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]),
+                false)
+            .addCasing(
+                MIN_CASING_AMOUNT + "-46",
+                StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.0.name"),
+                false)
+            .addCasing("27", StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.field_storage_block"), true)
             .addStructureInfo("")
-            .addStructureInfo("GT5U.MBTT.Structure.Slice")
-            .addCasing("4-16", "GT5U.MBTT.Part.EVPlusAnyGlass", false)
-            .addCasing("9", "tile.kekztech_tfftstoragefield_block.generic.name", true)
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
+            .addCasing(
+                "4-16",
+                StatCollector
+                    .translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]),
+                false)
+            .addCasing("9", StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.field_storage_block"), true)
             .addStructureInfo("")
-            .addStructureFooter("gt.tfft.info.no_air")
-            .addStructureFooter("gt.tfft.info.fluid_tip")
+            .addStructureFooter(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.footer1"))
+            .addStructureFooter(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.footer2"))
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.TFFT_FIELD)

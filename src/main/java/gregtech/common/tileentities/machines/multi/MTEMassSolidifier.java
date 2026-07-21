@@ -156,7 +156,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             .addStaticEuEffInfo(0.8f)
             .addGlassEnergyLimitInfo(VoltageIndex.UEV)
             .addInfo("gt.mass_solidifier.tips.2")
-            .beginStructureBlock(9, 5, 6, false)
+            .beginStructureBlock(5, 6, 9, false)
             .addController("Front bottom center")
             .addCasing(MIN_CASINGS + "-73", "gt.blockcasings10.13.name", false)
             .addCasing("42", "Any Tiered Glass", true)

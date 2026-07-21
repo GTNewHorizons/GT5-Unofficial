@@ -148,7 +148,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.thtr")
             .addInfo("gt.thtr.tips", formatNumber(HELIUM_NEEDED), formatNumber(powerUsage))
-            .beginStructureBlock(11, 11, 12, true)
+            .beginStructureBlock(11, 12, 11, true)
             .addController("front_bottom_center")
             .addCasing("500-531", "gt.blockcasings.8.name", false)
             .addEnergyHatch("1+", "<bottom casing>", 1)

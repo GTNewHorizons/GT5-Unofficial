@@ -141,7 +141,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         }
         tt.addInfo("gt.mb_boiler.tips.2", formatNumber(500.0 / getEfficiencyIncrease())) // ? check semifluid again
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 5, 6, false)
+            .beginStructureBlock(5, 6, 3, false)
             .addController("gt.mb_boiler.info.controller")
             .addCasing(
                 "20-28",

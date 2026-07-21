@@ -792,7 +792,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.forge_of_gods")
             .addInfo("gt.forge_of_gods.tips")
-            .beginStructureBlock(186, 127, 29, true)
+            .beginStructureBlock(127, 29, 186, true)
             .addController("front_center")
             .addInputHatch("1", "Around controller", 1)
             .addInputBus("1", "Around controller", 1)

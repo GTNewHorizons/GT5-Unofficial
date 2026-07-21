@@ -356,7 +356,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addInfo("gt.bhc.tips.2")
             .addTecTechHatchInfo()
             .addInfo("gt.bhc.tips.3")
-            .beginStructureBlock(35, 33, 35, true)
+            .beginStructureBlock(33, 35, 35, true)
             .addController("GT5U.MBTT.Position.MiddleLayer6")
             .addCasing("3667-3671", "gt.blockcasings10.11.name", false)
             .addCasing("950-985", "gt.blockcasings10.12.name", false)

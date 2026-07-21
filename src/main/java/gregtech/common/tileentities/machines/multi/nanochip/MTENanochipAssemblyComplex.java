@@ -238,7 +238,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 TOOLTIP_VCI)
             .addTecTechHatchInfo()
             .addInfo("gt.nac.tips.2")
-            .beginStructureBlock(63, 63, 49, false)
+            .beginStructureBlock(63, 49, 63, false)
             .addController("GT5U.MBTT.Position.MiddleLayer9")
             // Nanochip Reinforcement Casing
             .addCasing("3956", "gt.blockcasings12.2.name", false)
@@ -690,7 +690,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.NANOCHIP;
     }
 

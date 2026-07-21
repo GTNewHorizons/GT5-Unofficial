@@ -510,7 +510,7 @@ public class MTEExoticModule extends MTEBaseModule {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.exotic_module")
             .addInfo("gt.exotic_module.tips")
-            .beginStructureBlock(13, 7, 7, false)
+            .beginStructureBlock(7, 7, 13, false)
             .addController("front_center")
             .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
             .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)

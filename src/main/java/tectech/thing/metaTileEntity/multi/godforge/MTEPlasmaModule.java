@@ -187,7 +187,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             .addInfo("of heat, ionizing and turning them into plasma directly. Not all plasmas can be produced")
             .addInfo("right away, some of them require certain upgrades to be unlocked")
             .addInfo("This module is specialized towards energy and overclock efficiency")
-            .beginStructureBlock(13, 7, 7, false)
+            .beginStructureBlock(7, 7, 13, false)
             .addController("Front center, 4th layer")
             .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
             .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)

@@ -126,7 +126,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addDynamicSpeedBonusInfo(0.05f, TooltipTier.COIL)
             .addInfo("gt.zyngen.tips.2")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 5, true)
+            .beginStructureBlock(3, 5, 3, true)
             .addController("front_bottom_center")
             .addCasing("16", "Heating Coil", true)
             .addStructureInfo("gt.zyngen.info.2")

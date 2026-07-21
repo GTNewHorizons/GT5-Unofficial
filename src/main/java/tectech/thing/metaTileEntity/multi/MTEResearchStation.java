@@ -241,7 +241,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         tt.addMachineType("gt.recipe.researchStation", "gt.recipe.scanner")
             .addInfo("gt.blockmachines.multimachine.em.research.desc")
             .addTecTechHatchInfo()
-            .beginStructureBlock(7, 3, 7, false)
+            .beginStructureBlock(3, 7, 7, false)
             .addController("tt.keyword.Structure.ResearchStationController")
             .addCasing("52-58", "Computer Casing", false)
             .addCasing("23", "Advanced Computer Casing", false)

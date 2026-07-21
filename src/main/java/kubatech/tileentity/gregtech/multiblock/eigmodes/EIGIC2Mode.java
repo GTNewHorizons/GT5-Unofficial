@@ -3,6 +3,8 @@ package kubatech.tileentity.gregtech.multiblock.eigmodes;
 import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 import static kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse.EIG_BALANCE_IC2_ACCELERATOR_TIER;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.eig.EIGMode;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
@@ -72,18 +74,31 @@ public class EIGIC2Mode extends EIGMode {
         String fertilizerBonus = String.format("%.0f%%", fertilizerBonusMultiplier);
 
         return builder.addSeparator()
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.EIGIC2Mode.deprecated"))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.EIGIC2Mode.header"))
+            .addInfo(StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGIC2Mode.desc1", minVoltageTier))
+            .addInfo(StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGIC2Mode.desc2", minGlassTier))
             .addInfo(
-                "gt.ei_greenhouse.tips.ic2",
-                minVoltageTier,
-                minGlassTier,
-                this.getStartingSlotCount(),
-                minVoltageTier,
-                this.getSlotPerTierMultiplier(),
-                this.getSeedCapacityPerSlot(),
-                acceleration,
-                this.getMaxFertilizerUsagePerSeed(),
-                fertilizerBonus,
-                this.getWeedEXMultiplier());
+                StatCollector
+                    .translateToLocalFormatted("kubatech.multiblock.EIGIC2Mode.desc3", this.getStartingSlotCount()))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.multiblock.EIGIC2Mode.desc4",
+                    minVoltageTier,
+                    this.getSlotPerTierMultiplier()))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("kubatech.multiblock.EIGIC2Mode.desc5", this.getSeedCapacityPerSlot()))
+            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.EIGIC2Mode.desc6"))
+            .addInfo(StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGIC2Mode.desc7", acceleration))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.multiblock.EIGIC2Mode.desc8",
+                    this.getMaxFertilizerUsagePerSeed()))
+            .addInfo(StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGIC2Mode.desc9", fertilizerBonus))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("kubatech.multiblock.EIGIC2Mode.desc10", this.getWeedEXMultiplier()));
     }
 
     @Override

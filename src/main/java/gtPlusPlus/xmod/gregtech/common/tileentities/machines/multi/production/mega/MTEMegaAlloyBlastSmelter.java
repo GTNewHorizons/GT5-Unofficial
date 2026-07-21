@@ -275,7 +275,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(11, 11, 20, true)
+            .beginStructureBlock(11, 20, 11, true)
             .addController("front_center")
             .addCasing("360", "Heating Coil", true)
             .addCasing("339", "Any Tiered Glass", true)

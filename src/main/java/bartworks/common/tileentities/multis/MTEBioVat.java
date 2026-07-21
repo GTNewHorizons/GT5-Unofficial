@@ -171,7 +171,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.bacvat")
             .addInfo("gt.bacvat.tips")
-            .beginStructureBlock(5, 5, 4, false)
+            .beginStructureBlock(5, 4, 5, false)
             .addController("front_bottom_center")
             .addCasing("19-45", "gt.blockcasings.4.name", false)
             .addCasing("32", "GT5U.MBTT.AnyGlass", true)

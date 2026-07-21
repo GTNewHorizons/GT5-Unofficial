@@ -123,14 +123,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                     'C',
                     GTStructureChannels.PRASS_UNIT_CASING.use(
                         buildHatchAdder(MTEPreciseAssembler.class)
-                            .atLeast(
-                                InputBus,
-                                InputHatch,
-                                OutputHatch,
-                                OutputBus,
-                                Maintenance,
-                                Muffler,
-                                ExoticEnergy.or(Energy))
+                            .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Muffler, ExoticEnergy.or(Energy))
                             .casingIndex(CASING_INDEX)
                             .hint(1)
                             .buildAndChain(
@@ -297,7 +290,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addSupportAny()
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 9, 5, true)
+            .beginStructureBlock(9, 5, 5, true)
             .addController("front_bottom_center")
             .addCasing("42-81", "gt.prass.casing.unit", true)
             .addCasing("42", "gt.prass.casing.glass", false)

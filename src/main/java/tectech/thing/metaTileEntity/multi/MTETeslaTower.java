@@ -550,7 +550,7 @@ public class MTETeslaTower extends TTMultiblockBase
         tt.addMachineType("gt.blockmachines.multimachine.tm.teslaCoil.name")
             .addInfo("gt.blockmachines.multimachine.tm.teslaCoil.desc")
             .addTecTechHatchInfo()
-            .beginStructureBlock(7, 7, 17, false)
+            .beginStructureBlock(7, 17, 7, false)
             .addController("front_bottom_center")
             .addCasing("128", "Tesla Toroid Casing", false)
             .addCasing("17-33", "Tesla Base Casing", false)

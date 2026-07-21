@@ -131,7 +131,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
             .addSeparator()
             .addInfo("gt.multiblock.HeatExchanger.throttle1")
             .addInfo("gt.multiblock.HeatExchanger.throttle2")
-            .beginStructureBlock(3, 3, 4, false)
+            .beginStructureBlock(3, 4, 3, false)
             .addController("Front bottom center")
             .addCasing("20-28", "Stable Titanium Machine Casing", false)
             .addCasing("2", "Titanium Pipe Casing", false)
