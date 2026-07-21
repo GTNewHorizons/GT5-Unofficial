@@ -23,8 +23,10 @@ import gregtech.api.util.GTOreDictUnificator;
 ///
 /// Crafting-grid recipes need the [ItemData] rather than the bare ore-dictionary name it stringifies to:
 /// [gregtech.api.util.GTModHandler#addCraftingRecipe] derives the recycling output of a reversible recipe from the
-/// [ItemData] of each ingredient, and a bare name carries no such association. The wire and cable prefixes define a
-/// material amount, so their [ItemData] contributes to that output.
+/// [ItemData] of each ingredient, and a bare name carries no such association. The ingredient form names the
+/// ore-dictionary entry the marker resolves to; for prefixes that define a material amount, the resulting stack
+/// would participate in that merged item data, but a marker carries no composition, so these ingredients produce
+/// no recycling output of their own.
 public enum Superconductors {
 
     MV(() -> Materials.SuperconductorMV),
