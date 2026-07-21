@@ -68,7 +68,7 @@ public class ThaumcraftRecipes implements Runnable {
             new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey,
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
-                    OrePrefixes.log.get(Materials.Wood),
+                    OrePrefixes.log.ingredient(Materials.Wood),
                     GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1L),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L),
