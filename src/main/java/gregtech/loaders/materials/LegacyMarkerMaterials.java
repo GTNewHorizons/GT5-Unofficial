@@ -25,6 +25,17 @@ public class LegacyMarkerMaterials {
         loadSuperconductorsMarkers();
     }
 
+    /// The superconductor wire markers, in tier order. [MarkerMaterial]s are absent from
+    /// [Materials#getMaterialsMap], so the material lang-registration pass in
+    /// [gregtech.loaders.preload.GTPreLoad] skips them; their display-name keys are registered from this
+    /// array instead. Evaluated after [#loadSuperconductorsMarkers] has populated the fields.
+    public static MarkerMaterial[] getSuperconductorMarkers() {
+        return new MarkerMaterial[] { Materials.SuperconductorMV, Materials.SuperconductorHV,
+            Materials.SuperconductorEV, Materials.SuperconductorIV, Materials.SuperconductorLuV,
+            Materials.SuperconductorZPM, Materials.SuperconductorUV, Materials.SuperconductorUHV,
+            Materials.SuperconductorUEV, Materials.SuperconductorUIV, Materials.SuperconductorUMV };
+    }
+
     private static void loadRandomMarkers() {
         Materials.AnyBronze = loadAnyBronze();
         Materials.AnyCopper = loadAnyCopper();
