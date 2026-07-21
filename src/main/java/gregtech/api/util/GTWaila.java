@@ -22,9 +22,10 @@ public abstract class GTWaila {
     public static String getMachineProgressString(boolean isActive, boolean isAllowedToWork, long maxProgresstime,
         long progresstime) {
 
-        if (!isAllowedToWork) return StatCollector.translateToLocal("GT5U.waila.machine.working_disabled");
+        if (!isAllowedToWork && !isActive) return StatCollector.translateToLocal("GT5U.waila.machine.working_disabled");
         if (!isActive) return StatCollector.translateToLocal("GT5U.waila.machine.idle");
 
-        return SpecialChars.getRenderString("waila.gt.progress", progresstime + "", maxProgresstime + "");
+        return SpecialChars
+            .getRenderString("waila.gt.progress", progresstime + "", maxProgresstime + "", isAllowedToWork + "");
     }
 }
