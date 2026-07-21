@@ -548,7 +548,7 @@ public class GTMod {
             GTModHandler.getIC2Item("machine", 1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "RRR", "RwR", "RRR", 'R', OrePrefixes.plate.get(Materials.Iron) });
+            new Object[] { "RRR", "RwR", "RRR", 'R', OrePrefixes.plate.ingredient(Materials.Iron) });
 
         GTPostLoad.registerFluidCannerRecipes();
 
