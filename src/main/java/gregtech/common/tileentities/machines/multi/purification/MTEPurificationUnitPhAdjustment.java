@@ -396,7 +396,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "materials. This necessitates the use of the corresponding neutralizing agents to pH balance the water.")
-            .beginStructureBlock(5, 15, 6, true)
+            .beginStructureBlock(15, 6, 5, true)
             .addController("Front center, 2nd layer")
             .addCasing("134", "Inert Neutralization Water Plant Casing", false)
             .addCasing("48", "Naquadah Alloy Frame Box", false)
