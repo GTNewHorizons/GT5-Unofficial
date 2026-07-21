@@ -69,7 +69,7 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
             return;
         }
 
-        Object tMacerateTarget = MU.macerateInto(material);
+        IOreMaterial tMacerateTarget = MU.macerateInto(material);
         if (tMacerateTarget == null) {
             tMacerateTarget = material;
         }

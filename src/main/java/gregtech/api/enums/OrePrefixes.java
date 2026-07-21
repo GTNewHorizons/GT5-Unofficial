@@ -3101,13 +3101,6 @@ public class OrePrefixes {
         return name + materialName;
     }
 
-    /// The ore-dictionary name for this prefix and a material of statically unknown type. Exists only for the
-    /// [gregtech.api.util.GTOreDictUnificator] forwarders that still take an untyped material; delete once those
-    /// are narrowed to [IOreMaterial].
-    public String oreDictName(Object material) {
-        return material instanceof IOreMaterial ore ? name + ore.getInternalName() : name + material;
-    }
-
     public String getDefaultLocalNameForItem(Materials material) {
         return material.getDefaultLocalizedNameForItem(getDefaultLocalNameFormatForItem(material.getInternalName()));
     }

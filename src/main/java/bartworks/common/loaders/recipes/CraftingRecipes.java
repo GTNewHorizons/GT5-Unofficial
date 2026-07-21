@@ -171,8 +171,8 @@ public class CraftingRecipes implements Runnable {
         for (int i = 0; i < 9; i++) {
             try {
                 IOreMaterial cable = cables[i];
-                ItemStack hull = hulls[i] instanceof Materials
-                    ? GTOreDictUnificator.get(OrePrefixes.plate, hulls[i], 1L)
+                ItemStack hull = hulls[i] instanceof Materials hullMaterial
+                    ? GTOreDictUnificator.get(OrePrefixes.plate, hullMaterial, 1L)
                     : ((Werkstoff) hulls[i]).get(OrePrefixes.plate);
                 ItemStack machinehull = ItemList.MACHINE_HULLS[i].get(1L);
 

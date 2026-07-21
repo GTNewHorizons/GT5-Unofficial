@@ -568,7 +568,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         if (o == null || o.equals(Werkstoff.default_null_Werkstoff) || o.equals(Materials._NULL))
             return this.get(prefixes);
         if (o instanceof Werkstoff) return WerkstoffLoader.getCorrespondingItemStack(prefixes, (Werkstoff) o);
-        if (o instanceof Materials) return GTOreDictUnificator.get(prefixes, o, 1L);
+        if (o instanceof Materials materials) return GTOreDictUnificator.get(prefixes, materials, 1L);
         return null;
     }
 

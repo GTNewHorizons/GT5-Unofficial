@@ -103,17 +103,17 @@ public class GTOreDictUnificator {
         return get(name, replacement, amount, true, true);
     }
 
-    public static ItemStack get(OrePrefixes prefix, Object material, long amount) {
+    public static ItemStack get(OrePrefixes prefix, IOreMaterial material, long amount) {
         return get(prefix, material, null, amount);
     }
 
-    public static ItemStack get(OrePrefixes prefix, Object material, ItemStack replacement, long amount) {
+    public static ItemStack get(OrePrefixes prefix, IOreMaterial material, ItemStack replacement, long amount) {
         if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material))
             return replacement;
         return get(prefix.oreDictName(material), replacement, amount, false, true);
     }
 
-    public static ItemStack get(OrePrefixes prefix, Object material, long amount, boolean noInvalidAmounts) {
+    public static ItemStack get(OrePrefixes prefix, IOreMaterial material, long amount, boolean noInvalidAmounts) {
         if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material))
             return null;
         return get(prefix.oreDictName(material), null, amount, false, noInvalidAmounts);
@@ -438,7 +438,7 @@ public class GTOreDictUnificator {
         return false;
     }
 
-    public static boolean registerOre(OrePrefixes prefix, Object material, ItemStack stack) {
+    public static boolean registerOre(OrePrefixes prefix, IOreMaterial material, ItemStack stack) {
         return registerOre(prefix.oreDictName(material), stack);
     }
 
@@ -558,7 +558,7 @@ public class GTOreDictUnificator {
     /**
      * @return a Copy of the OreDictionary.getOres() List
      */
-    public static ArrayList<ItemStack> getOres(OrePrefixes prefix, Object material) {
+    public static ArrayList<ItemStack> getOres(OrePrefixes prefix, IOreMaterial material) {
         return getOres(prefix.oreDictName(material));
     }
 
