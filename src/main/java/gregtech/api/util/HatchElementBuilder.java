@@ -26,6 +26,8 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -36,6 +38,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
+import blockrenderer6343.api.utils.CreativeItemSource;
 import gnu.trove.TIntCollection;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.hash.TIntHashSet;
@@ -311,6 +314,13 @@ public class HatchElementBuilder<T> {
         mCacheHint = true;
         return this;
     }
+
+    private String getHint() {
+        if (mHatchItemType != null) {
+            return mHatchItemType.get();
+        }
+        return "unspecified GT hatch";
+    }
     // endregion
 
     public HatchElementBuilder<T> continueIfSuccess() {
@@ -533,13 +543,15 @@ public class HatchElementBuilder<T> {
         }
         return new IStructureElement<>() {
 
-            private String mHint = mHatchItemType == null ? "unspecified GT hatch" : mHatchItemType.get();
-
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 return tileEntity instanceof IGregTechTileEntity
                     && mAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) mCasingIndex);
+            }
+
+            private String getHint() {
+                return HatchElementBuilder.this.getHint();
             }
 
             @Override
@@ -563,22 +575,23 @@ public class HatchElementBuilder<T> {
             }
 
             @Override
-            public boolean placeBlock(T t, World world, int i, int i1, int i2, ItemStack itemStack) {
-                // TODO
-                return false;
-            }
-
-            private String getHint() {
-                if (mHint != null) return mHint;
-                String tHint = mHatchItemType.get();
-                if (tHint == null) return "?";
-                if (mCacheHint) {
-                    mHint = tHint;
-                    if (mHint != null)
-                        // yeet the getter, since its product is retrieved and cached
-                        mHatchItemType = null;
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                EntityPlayerMP player = null;
+                if (t instanceof IMetaTileEntity metaTile) {
+                    player = GTUtility.getFakePlayer(metaTile.getBaseMetaTileEntity());
                 }
-                return tHint;
+                if (player == null && world instanceof WorldServer) {
+                    try {
+                        player = FakePlayerFactory.getMinecraft((WorldServer) world);
+                    } catch (Exception e) {
+                        return false;
+                    }
+                }
+
+                AutoPlaceEnvironment env = AutoPlaceEnvironment
+                    .fromLegacy(CreativeItemSource.instance, player, chat -> {});
+                PlaceResult result = survivalPlaceBlock(t, world, x, y, z, trigger, env);
+                return result == PlaceResult.ACCEPT || result == PlaceResult.ACCEPT_STOP;
             }
 
             @Override

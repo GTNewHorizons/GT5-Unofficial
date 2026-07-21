@@ -126,7 +126,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addDynamicSpeedBonusInfo(0.05f, TooltipTier.COIL)
             .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 5, true)
+            .beginStructureBlock(3, 5, 3, true)
             .addController("Front bottom center")
             .addCasing("16", "Heating Coil", true)
             .addCasing("5-12", "Inconel Reinforced Casing", false)
