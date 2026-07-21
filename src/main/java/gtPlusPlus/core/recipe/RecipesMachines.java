@@ -120,21 +120,22 @@ public class RecipesMachines {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Tesseract_Generator.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "CEC", "PXP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C', "circuitMaster",
-                'E', new ItemStack(Blocks.ender_chest), 'X', GregtechItemList.Gregtech_Computer_Cube });
+            new Object[] { "PCP", "CEC", "PXP", 'P', OrePrefixes.plate.ingredient(Materials.Titanium), 'C',
+                "circuitMaster", 'E', new ItemStack(Blocks.ender_chest), 'X',
+                GregtechItemList.Gregtech_Computer_Cube });
 
         // Tesseract Terminal
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Tesseract_Terminal.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "CEC", "PHP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C', "circuitElite",
-                'E', new ItemStack(Blocks.ender_chest), 'H', ItemList.Hull_EV });
+            new Object[] { "PCP", "CEC", "PHP", 'P', OrePrefixes.plate.ingredient(Materials.Titanium), 'C',
+                "circuitElite", 'E', new ItemStack(Blocks.ender_chest), 'H', ItemList.Hull_EV });
 
         // Air Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "PRP", "IHI", 'P', OrePrefixes.plate.get(Materials.Redstone), 'C',
+            new Object[] { "PCP", "PRP", "IHI", 'P', OrePrefixes.plate.ingredient(Materials.Redstone), 'C',
                 ItemList.Casing_Grate, 'R', ItemList.FluidRegulator_IV, 'I', "circuitElite", 'H',
                 ItemList.Hatch_Input_IV });
 
@@ -160,7 +161,7 @@ public class RecipesMachines {
             BITS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Pump_EV, 'C', Circuits.EV.getIngredient(), 'W',
-                OrePrefixes.cableGt08.get(Materials.Electrum), 'G', MaterialsAlloy.INCONEL_792.getGear(1) });
+                OrePrefixes.cableGt08.ingredient(Materials.Electrum), 'G', MaterialsAlloy.INCONEL_792.getGear(1) });
 
         // Reservoir Hatch
         if (RemoteIO.isModLoaded()) {
