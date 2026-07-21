@@ -199,7 +199,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info5"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info6"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info7"))
-            .beginStructureBlock(6, 5, 5, true)
+            .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom center")
             .addCasing("34", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)
             .addCasing("27-29", Casings.GrateMachineCasing.getLocalizedName(), false)

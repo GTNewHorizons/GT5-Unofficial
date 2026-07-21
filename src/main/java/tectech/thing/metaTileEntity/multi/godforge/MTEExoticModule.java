@@ -519,7 +519,7 @@ public class MTEExoticModule extends MTEBaseModule {
             .addInfo("can be manufactured right away, but production of Magnetic Monopole Matter (Magmatter)")
             .addInfo("requires a fully upgraded Godforge")
             .addInfo("This module is specialized towards acquisition of unique materials")
-            .beginStructureBlock(13, 7, 7, false)
+            .beginStructureBlock(7, 7, 13, false)
             .addController("Front center, 4th layer")
             .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
             .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)

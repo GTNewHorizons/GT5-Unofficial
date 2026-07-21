@@ -128,7 +128,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.flavor.2")))
-            .beginStructureBlock(7, 7, 8, false)
+            .beginStructureBlock(7, 8, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Mesh Interface Casing
             .addCasing("37", translateToLocal("gt.blockcasings12.1.name"), false)

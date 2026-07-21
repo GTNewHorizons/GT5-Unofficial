@@ -121,7 +121,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
             .addInfo("You can only ever process one type of material per controller")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(11, 11, 5, false)
+            .beginStructureBlock(11, 5, 11, false)
             .addController("Front center, 2nd layer")
             .addCasing("110-120", "Inconel Reinforced Casing", false)
             .addCasing("31", "Flotation Cell Casing", false)

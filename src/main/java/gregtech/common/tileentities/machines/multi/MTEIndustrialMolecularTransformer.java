@@ -69,7 +69,7 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
         tt.addMachineType("Molecular Transformer")
             .addInfo("Changes the structure of items to produce new ones")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 7, 9, false)
+            .beginStructureBlock(7, 9, 7, false)
             .addController("Front center, 2nd layer")
             .addCasing("95-104", "Molecular Containment Casing", false)
             .addCasing("35", "Speeding Pipe Casing", false)
