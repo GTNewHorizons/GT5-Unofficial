@@ -397,13 +397,8 @@ public class MultiblockTooltipBuilder {
      * @param hollow Flag for the (Hollow) tag
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder beginStructureBlock(int l, int w, int h, boolean hollow) {
-        addShiftInfo(
-            "GT5U.MBTT.Dimensions",
-            w,
-            h,
-            l,
-            hollow ? "GT5U.MBTT.Hollow" : "");
+    public MultiblockTooltipBuilder beginStructureBlock(int w, int h, int l, boolean hollow) {
+        addShiftInfo("GT5U.MBTT.Dimensions", l, w, h, hollow ? "GT5U.MBTT.Hollow" : "");
         addShiftInfo("GT5U.MBTT.Structure");
         return this;
     }
@@ -421,13 +416,13 @@ public class MultiblockTooltipBuilder {
      * @param hollow Flag for the (Hollow) tag
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder beginVariableStructureBlock(int lmin, int lmax, int wmin, int wmax, int hmin,
-        int hmax, boolean hollow) {
+    public MultiblockTooltipBuilder beginVariableStructureBlock(int wmin, int wmax, int hmin, int hmax, int lmin,
+        int lmax, boolean hollow) {
         addShiftInfo(
             "GT5U.MBTT.Dimensions",
+            formatRange(lmin, lmax),
             formatRange(wmin, wmax),
             formatRange(hmin, hmax),
-            formatRange(lmin, lmax),
             hollow ? "GT5U.MBTT.Hollow" : "");
         addShiftInfo("GT5U.MBTT.Structure");
         return this;
@@ -1538,8 +1533,6 @@ public class MultiblockTooltipBuilder {
             addInfo("GT5U.MBTT.Authors", GTAuthors.formatAuthors(authors));
         }
 
-        addStructureInfo(EnumChatFormatting.GRAY + STRUCTURE_SEPARATOR_MARK);
-        addShiftInfo("GT5U.MBTT.Structure.SeeStructure");
         addStructureHint("GT5U.MBTT.StructureHint");
         this.addStructureInfoSeparator(EnumChatFormatting.GRAY, 30, true);
         addShiftInfo("GT5U.MBTT.Structure.Projector");

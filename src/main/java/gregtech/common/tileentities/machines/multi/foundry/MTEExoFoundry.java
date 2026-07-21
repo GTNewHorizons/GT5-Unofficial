@@ -35,7 +35,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -445,52 +444,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier")
+        tt.addMachineType("gt.recipe.fluidsolidifier")
             .addBulkMachineInfo(foundryData.parallelScaleBase, foundryData.speedModifierBase, foundryData.euEffBase)
-            .addInfo(
-                "Will " + EnumChatFormatting.BOLD
-                    + "not"
-                    + EnumChatFormatting.GRAY
-                    + " perform "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "overclocks"
-                    + EnumChatFormatting.GRAY
-                    + " over the hatch tier without modules")
-            .addInfo(
-                "Will " + EnumChatFormatting.BOLD
-                    + "not"
-                    + EnumChatFormatting.GRAY
-                    + " process "
-                    + EnumChatFormatting.DARK_BLUE
-                    + EnumChatFormatting.UNDERLINE
-                    + "UIV+"
-                    + EnumChatFormatting.GRAY
-                    + " voltage tier recipes without modules")
-            .addInfo(
-                "Has " + EnumChatFormatting.GOLD
-                    + "3 Tiers"
-                    + EnumChatFormatting.GRAY
-                    + ", depending on Central Chassis Casing")
-            .addInfo(
-                "Has " + EnumChatFormatting.GOLD
-                    + "2/3/4"
-                    + EnumChatFormatting.GRAY
-                    + " Module Slots, based on machine tier")
-            .addInfo(
-                "Each Module Slot has " + EnumChatFormatting.GOLD
-                    + "7"
-                    + EnumChatFormatting.GRAY
-                    + " different options")
-            .addInfo(
-                EnumChatFormatting.GOLD + "Modules" + EnumChatFormatting.GRAY + " are selected inside the Controller")
-            .addInfo(
-                EnumChatFormatting.GOLD + "Module"
-                    + EnumChatFormatting.GRAY
-                    + " stats are shown in NEI and the Controller")
-            .addInfo("Toggle Render with Screwdriver")
+            .addInfo("gt.exofoundry.tips.1")
             .addSupportAny()
-            .addSeparator()
-            .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
+            .addInfo("gt.exofoundry.tips.2")
             .beginStructureBlock(15, 55, 15, true)
             .addController("Front center, 2nd layer")
             .addCasing("548", "Exo-Foundry Containment Glass", false)
