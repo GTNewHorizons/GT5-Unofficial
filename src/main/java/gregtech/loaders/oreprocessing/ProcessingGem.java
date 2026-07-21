@@ -219,20 +219,21 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 2L),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', OrePrefixes.gemFlawless.get(aMaterial) });
+                                new Object[] { "h", "X", 'X', OrePrefixes.gemFlawless.ingredient(aMaterial) });
 
                             if (MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_GEM)) {
                                 GTModHandler.addCraftingRecipe(
                                     GTUtility.copyAmount(1, aStack),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.nugget.get(aMaterial) });
+                                    new Object[] { "XXX", "XXX", "XXX", 'X',
+                                        OrePrefixes.nugget.ingredient(aMaterial) });
                             }
 
                             if (aSpecialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gem.get(aMaterial) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gem.ingredient(aMaterial) });
                             }
                         }
                     }
@@ -301,12 +302,12 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, 2L),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', OrePrefixes.gemFlawed.get(aMaterial) });
+                                new Object[] { "h", "X", 'X', OrePrefixes.gemFlawed.ingredient(aMaterial) });
                             if (aSpecialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gemChipped.get(aMaterial) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gemChipped.ingredient(aMaterial) });
                             }
                         }
                     }
@@ -341,7 +342,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 4L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gemExquisite.get(aMaterial) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gemExquisite.ingredient(aMaterial) });
                             }
                         }
                     }
@@ -402,12 +403,12 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 2L),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', OrePrefixes.gem.get(aMaterial) });
+                                new Object[] { "h", "X", 'X', OrePrefixes.gem.ingredient(aMaterial) });
                             if (aSpecialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 2L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gemFlawed.get(aMaterial) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gemFlawed.ingredient(aMaterial) });
                             }
                         }
                     }
@@ -480,12 +481,12 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 2L),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', OrePrefixes.gemExquisite.get(aMaterial) });
+                                new Object[] { "h", "X", 'X', OrePrefixes.gemExquisite.ingredient(aMaterial) });
                             if (aSpecialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gemFlawless.get(aMaterial) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gemFlawless.ingredient(aMaterial) });
                             }
                         }
                     }
