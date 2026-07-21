@@ -22,41 +22,41 @@ public class Crafting implements Runnable {
             GTModHandler.getModItem(StructureLibAPI.MOD_ID, "item.structurelib.frontRotationTool", 1L, 0),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "fPR", " RP", "S h", 'P', OrePrefixes.plate.get(Materials.Cobalt), 'R',
-                OrePrefixes.stick.get(Materials.Cobalt), 'S', OrePrefixes.stick.get(Materials.Wood), });
+            new Object[] { "fPR", " RP", "S h", 'P', OrePrefixes.plate.ingredient(Materials.Cobalt), 'R',
+                OrePrefixes.stick.ingredient(Materials.Cobalt), 'S', OrePrefixes.stick.ingredient(Materials.Wood), });
 
         // GT EU reader
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemEuMeterGT.INSTANCE, 1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PGW", "SCW", "BRN", 'P', OrePrefixes.plateDouble.get(Materials.Steel), 'G',
-                OrePrefixes.plate.get(Materials.Glass), 'W', OrePrefixes.cableGt01.get(Materials.Copper), 'S',
-                OrePrefixes.stick.get(Materials.Brass), 'C', ItemList.Casing_Coil_Cupronickel.get(1), 'B', Dyes.dyeBlue,
-                'R', Dyes.dyeRed, 'N', Dyes.dyeBlack, });
+            new Object[] { "PGW", "SCW", "BRN", 'P', OrePrefixes.plateDouble.ingredient(Materials.Steel), 'G',
+                OrePrefixes.plate.ingredient(Materials.Glass), 'W', OrePrefixes.cableGt01.ingredient(Materials.Copper),
+                'S', OrePrefixes.stick.ingredient(Materials.Brass), 'C', ItemList.Casing_Coil_Cupronickel.get(1), 'B',
+                Dyes.dyeBlue, 'R', Dyes.dyeRed, 'N', Dyes.dyeBlack, });
 
         // Owner detector
         GTModHandler.addCraftingRecipe(
             CustomItemList.Machine_OwnerDetector.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PPP", "GEG", "PPP", 'P', OrePrefixes.plate.get(Materials.IronMagnetic), 'G',
-                OrePrefixes.plate.get(Materials.Glass), 'E', OrePrefixes.gem.get(Materials.EnderPearl) });
+            new Object[] { "PPP", "GEG", "PPP", 'P', OrePrefixes.plate.ingredient(Materials.IronMagnetic), 'G',
+                OrePrefixes.plate.ingredient(Materials.Glass), 'E', OrePrefixes.gem.ingredient(Materials.EnderPearl) });
 
         // Tesla Base
         GTModHandler.addCraftingRecipe(
             CustomItemList.tM_TeslaBase.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PhP", "PFP", "PwP", 'P', OrePrefixes.plate.get(Materials.NickelZincFerrite), 'F',
-                OrePrefixes.frameGt.get(Materials.NickelZincFerrite) });
+            new Object[] { "PhP", "PFP", "PwP", 'P', OrePrefixes.plate.ingredient(Materials.NickelZincFerrite), 'F',
+                OrePrefixes.frameGt.ingredient(Materials.NickelZincFerrite) });
 
         // Tesla Toroid
         GTModHandler.addCraftingRecipe(
             CustomItemList.tM_TeslaToroid.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PhP", "PFP", "PwP", 'P', OrePrefixes.foil.get(Materials.Aluminium), 'F',
-                OrePrefixes.frameGt.get(Materials.Aluminium) });
+            new Object[] { "PhP", "PFP", "PwP", 'P', OrePrefixes.foil.ingredient(Materials.Aluminium), 'F',
+                OrePrefixes.frameGt.ingredient(Materials.Aluminium) });
     }
 }
