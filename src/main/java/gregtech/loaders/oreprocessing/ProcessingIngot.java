@@ -106,7 +106,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     GTModHandler.addShapelessCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.ingot.get(aMaterial) });
+                        new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.ingot.ingredient(aMaterial) });
                 }
                 if (!aNoSmashing) {
                     // Forge hammer recipes
