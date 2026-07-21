@@ -31,77 +31,77 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        switch (aPrefix.getName()) {
+    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
+        ItemStack stack) {
+        switch (prefix.getName()) {
             case "gearGt" -> {
-                GTModHandler.removeRecipeByOutputDelayed(aStack);
-                if (aMaterial.mStandardMoltenFluid != null) {
-                    if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
+                GTModHandler.removeRecipeByOutputDelayed(stack);
+                if (material.mStandardMoltenFluid != null) {
+                    if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear.get(0L))
-                            .itemOutputs(GTOreDictUnificator.get(aPrefix, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(4 * INGOTS))
+                            .itemOutputs(GTOreDictUnificator.get(prefix, material, 1L))
+                            .fluidInputs(material.getMolten(4 * INGOTS))
                             .duration(6 * SECONDS + 8 * TICKS)
-                            .eut(calculateRecipeEU(aMaterial, 8))
+                            .eut(calculateRecipeEU(material, 8))
                             .addTo(fluidSolidifierRecipes);
                     }
                 }
-                if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
-                    && !MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)) {
-                    switch (aMaterial.mName) {
+                if (material.mUnifiable && (material.mMaterialInto == material)
+                    && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+                    switch (material.mName) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
-                            GTOreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
+                            GTOreDictUnificator.get(OrePrefixes.gearGt, material, 1L),
                             GTModHandler.RecipeBits.BITS_STD,
-                            new Object[] { "SPS", "PsP", "SPS", 'P', OrePrefixes.plank.ingredient(aMaterial), 'S',
-                                OrePrefixes.stick.ingredient(aMaterial) });
+                            new Object[] { "SPS", "PsP", "SPS", 'P', OrePrefixes.plank.ingredient(material), 'S',
+                                OrePrefixes.stick.ingredient(material) });
                         case "Stone" -> GTModHandler.addCraftingRecipe(
-                            GTOreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
+                            GTOreDictUnificator.get(OrePrefixes.gearGt, material, 1L),
                             GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "SPS", "PfP", "SPS", 'P', OrePrefixes.stoneSmooth, 'S',
                                 new ItemStack(Blocks.stone_button, 1, 32767) });
                         default -> {
-                            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+                            if (material.getProcessingMaterialTierEU() < TierEU.IV) {
                                 GTModHandler.addCraftingRecipe(
-                                    GTOreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
+                                    GTOreDictUnificator.get(OrePrefixes.gearGt, material, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "SPS", "PwP", "SPS", 'P', OrePrefixes.plate.ingredient(aMaterial),
-                                        'S', OrePrefixes.stick.ingredient(aMaterial) });
+                                    new Object[] { "SPS", "PwP", "SPS", 'P', OrePrefixes.plate.ingredient(material),
+                                        'S', OrePrefixes.stick.ingredient(material) });
                             }
                         }
                     }
                 }
             }
             case "gearGtSmall" -> {
-                if (aMaterial.mStandardMoltenFluid != null) {
-                    if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
+                if (material.mStandardMoltenFluid != null) {
+                    if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear_Small.get(0L))
-                            .itemOutputs(GTUtility.copyAmount(1, aStack))
-                            .fluidInputs(aMaterial.getMolten(1 * INGOTS))
+                            .itemOutputs(GTUtility.copyAmount(1, stack))
+                            .fluidInputs(material.getMolten(1 * INGOTS))
                             .duration(16 * TICKS)
-                            .eut(calculateRecipeEU(aMaterial, 8))
+                            .eut(calculateRecipeEU(material, 8))
                             .addTo(fluidSolidifierRecipes);
                     }
                 }
-                if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
-                    && !MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)) {
-                    switch (aMaterial.mName) {
+                if (material.mUnifiable && (material.mMaterialInto == material)
+                    && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+                    switch (material.mName) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
-                            GTOreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
+                            GTOreDictUnificator.get(OrePrefixes.gearGtSmall, material, 1L),
                             GTModHandler.RecipeBits.BITS_STD,
-                            new Object[] { "P ", " s", 'P', OrePrefixes.plank.ingredient(aMaterial) });
+                            new Object[] { "P ", " s", 'P', OrePrefixes.plank.ingredient(material) });
                         case "Stone" -> GTModHandler.addCraftingRecipe(
-                            GTOreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
+                            GTOreDictUnificator.get(OrePrefixes.gearGtSmall, material, 1L),
                             GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "P ", " f", 'P', OrePrefixes.stoneSmooth });
                         default -> {
-                            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+                            if (material.getProcessingMaterialTierEU() < TierEU.IV) {
                                 GTModHandler.addCraftingRecipe(
-                                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
+                                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, material, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { " S ", "hPx", " S ", 'S', OrePrefixes.stick.ingredient(aMaterial),
-                                        'P', OrePrefixes.plate.ingredient(aMaterial) });
+                                    new Object[] { " S ", "hPx", " S ", 'S', OrePrefixes.stick.ingredient(material),
+                                        'P', OrePrefixes.plate.ingredient(material) });
                             }
                         }
                     }

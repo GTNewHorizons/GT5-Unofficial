@@ -16,15 +16,15 @@ public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegi
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        if (GTOreDictUnificator.isBlacklisted(aStack) && GregTech.ID.equals(aModName)) return;
-        switch (aMaterial.mName) {
+    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
+        ItemStack stack) {
+        if (GTOreDictUnificator.isBlacklisted(stack) && GregTech.ID.equals(modName)) return;
+        switch (material.mName) {
             case "Good", "Data", "Elite", "Master", "Ultimate", "Superconductor", "Infinite", "Bio" -> {
-                if (!GTOreDictUnificator.isBlacklisted(aStack) && !GregTech.ID.equals(aModName))
-                    GTModHandler.removeRecipeByOutputDelayed(aStack);
+                if (!GTOreDictUnificator.isBlacklisted(stack) && !GregTech.ID.equals(modName))
+                    GTModHandler.removeRecipeByOutputDelayed(stack);
             }
-            case "Primitive", "Basic", "Advanced" -> GTModHandler.removeRecipeByOutputDelayed(aStack);
+            case "Primitive", "Basic", "Advanced" -> GTModHandler.removeRecipeByOutputDelayed(stack);
         }
     }
 }

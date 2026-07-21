@@ -26,31 +26,31 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)) {
-            if (GTOreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L) != null) {
+    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
+        ItemStack stack) {
+        if (!MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+            if (GTOreDictUnificator.get(OrePrefixes.nugget, material, 1L) != null) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L))
-                    .itemOutputs(GTUtility.copyAmount(1, aStack))
-                    .duration(((int) Math.max(aMaterial.getMass() / 4L, 1L)) * TICKS)
+                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.nugget, material, 1L))
+                    .itemOutputs(GTUtility.copyAmount(1, stack))
+                    .duration(((int) Math.max(material.getMass() / 4L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_ULV)
                     .addTo(latheRecipes);
             }
 
-            if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)) {
+            if ((material.mUnifiable) && (material.mMaterialInto == material)) {
                 GTModHandler.addCraftingRecipe(
-                    GTOreDictUnificator.get(OrePrefixes.round, aMaterial, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.round, material, 1L),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "fX", "Xh", 'X', OrePrefixes.nugget.ingredient(aMaterial) });
+                    new Object[] { "fX", "Xh", 'X', OrePrefixes.nugget.ingredient(material) });
                 GTModHandler.addCraftingRecipe(
-                    GTOreDictUnificator.get(OrePrefixes.round, aMaterial, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.round, material, 4L),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "fXh", 'X', OrePrefixes.ingot.ingredient(aMaterial) });
+                    new Object[] { "fXh", 'X', OrePrefixes.ingot.ingredient(material) });
             }
         }
         Api.INSTANCE.registries()
             .matterCannon()
-            .registerAmmo(GTOreDictUnificator.get(OrePrefixes.round, aMaterial, 1L), aMaterial.getMass());
+            .registerAmmo(GTOreDictUnificator.get(OrePrefixes.round, material, 1L), material.getMass());
     }
 }

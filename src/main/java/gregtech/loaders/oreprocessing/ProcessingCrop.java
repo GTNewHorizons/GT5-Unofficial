@@ -18,10 +18,10 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
+    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
+        ItemStack stack) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(8, aStack))
+            .itemInputs(GTUtility.copyAmount(8, stack))
             .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
             .duration(15 * SECONDS)
             .eut(2)

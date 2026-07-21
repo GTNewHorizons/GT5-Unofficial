@@ -26,22 +26,22 @@ public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRe
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        if ((aMaterial != Materials.Empty) && (GTUtility.getFluidForFilledItem(aStack, true) == null)
-            && !MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_FLUID)
-            && (GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L) != null)) {
+    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
+        ItemStack stack) {
+        if ((material != Materials.Empty) && (GTUtility.getFluidForFilledItem(stack, true) == null)
+            && !MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
+            && (GTOreDictUnificator.get(OrePrefixes.dust, material, 1L) != null)) {
             GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-            recipeBuilder.itemInputs(aStack);
-            if (GTUtility.getContainerItem(aStack, true) == null) {
+            recipeBuilder.itemInputs(stack);
+            if (GTUtility.getContainerItem(stack, true) == null) {
                 recipeBuilder.itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.getMaterialAmount() / 3628800L));
+                    GTOreDictUnificator.get(OrePrefixes.dust, material, prefix.getMaterialAmount() / 3628800L));
             } else {
                 recipeBuilder.itemOutputs(
-                    GTUtility.getContainerItem(aStack, true),
-                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.getMaterialAmount() / 3628800L));
+                    GTUtility.getContainerItem(stack, true),
+                    GTOreDictUnificator.get(OrePrefixes.dust, material, prefix.getMaterialAmount() / 3628800L));
             }
-            recipeBuilder.duration(((int) Math.max(aMaterial.getMass() / 2L, 1L)) * TICKS)
+            recipeBuilder.duration(((int) Math.max(material.getMass() / 2L, 1L)) * TICKS)
                 .eut(2)
                 .addTo(cannerRecipes);
         }

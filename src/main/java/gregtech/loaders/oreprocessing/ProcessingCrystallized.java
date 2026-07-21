@@ -25,30 +25,30 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_ORE_PROCESSING)) {
+    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
+        ItemStack stack) {
+        if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
 
-        if (MU.macerateInto(aMaterial) == null) {
+        if (MU.macerateInto(material) == null) {
             return;
         }
 
-        if (GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1) == null) {
+        if (GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1) == null) {
             return;
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1L))
+            .itemInputs(GTUtility.copyAmount(1, stack))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1L))
+            .itemInputs(GTUtility.copyAmount(1, stack))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
@@ -56,22 +56,22 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
     }
 
     /// A [gregtech.api.material.MarkerMaterial] carries no `mMacerateInto`, so unlike the legacy overload above
-    /// this falls back to macerating into `aMaterial` itself (mirroring `Materials`' own `mMacerateInto = this`
+    /// this falls back to macerating into `material` itself (mirroring `Materials`' own `mMacerateInto = this`
     /// default) instead of dropping the recipe.
     @Override
-    public void registerOre(OrePrefixes aPrefix, IOreMaterial aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        if (aMaterial instanceof Materials legacyMaterial) {
-            registerOre(aPrefix, legacyMaterial, aOreDictName, aModName, aStack);
+    public void registerOre(OrePrefixes prefix, IOreMaterial material, String oreDictName, String modName,
+        ItemStack stack) {
+        if (material instanceof Materials legacyMaterial) {
+            registerOre(prefix, legacyMaterial, oreDictName, modName, stack);
             return;
         }
-        if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_ORE_PROCESSING)) {
+        if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
 
-        Object tMacerateTarget = MU.macerateInto(aMaterial);
+        Object tMacerateTarget = MU.macerateInto(material);
         if (tMacerateTarget == null) {
-            tMacerateTarget = aMaterial;
+            tMacerateTarget = material;
         }
 
         if (GTOreDictUnificator.get(OrePrefixes.dust, tMacerateTarget, 1) == null) {
@@ -79,14 +79,14 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, tMacerateTarget, 1L))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, tMacerateTarget, 1L))
             .duration(20 * SECONDS)
             .eut(2)
