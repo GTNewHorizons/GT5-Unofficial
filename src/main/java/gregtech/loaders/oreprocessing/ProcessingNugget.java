@@ -89,7 +89,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.nugget, aMaterial, 8L),
                     GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "sI ", 'I', OrePrefixes.ingot.get(aMaterial) });
+                    new Object[] { "sI ", 'I', OrePrefixes.ingot.ingredient(aMaterial) });
             }
         }
     }
