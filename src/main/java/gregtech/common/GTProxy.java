@@ -187,6 +187,7 @@ import gregtech.common.recipes.MacerationStackConversionRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.worldgen.HEEIslandScanner;
 import gregtech.loaders.materials.RecognitionMaterials;
+import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 import gregtech.nei.GTNEIDefaultHandler;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -1668,6 +1669,7 @@ public class GTProxy implements IFuelHandler {
             OrePrefixes aPrefix = OrePrefixes.getOrePrefix(aEvent.Name);
             Materials aMaterial = Materials._NULL;
             MarkerMaterial recognitionMarker = null;
+            RecognitionMarker recognitionRecord = null;
             if ((aPrefix == OrePrefixes.nugget) && (aMod.equals(Thaumcraft.ID))
                 && (aEvent.Ore.getItem()
                     .getUnlocalizedName()
@@ -1707,10 +1709,16 @@ public class GTProxy implements IFuelHandler {
                         || Character.isDigit(firstChar)) {
                         if (aPrefix.isMaterialBased()) {
                             aMaterial = Materials.get(tName);
-                            recognitionMarker = aMaterial == Materials._NULL ? RecognitionMaterials.getMarker(tName)
-                                : null;
+                            if (aMaterial == Materials._NULL) {
+                                recognitionMarker = RecognitionMaterials.getMarker(tName);
+                                recognitionRecord = recognitionMarker == null
+                                    ? RecognitionMaterials.getRecognitionMarker(tName)
+                                    : null;
+                            }
                             if (recognitionMarker != null) {
                                 registerRecognitionOre(aPrefix, recognitionMarker, aEvent);
+                            } else if (recognitionRecord != null) {
+                                registerRecognitionOre(aPrefix, recognitionRecord, aEvent);
                             } else {
                                 if (aMaterial != aMaterial.mMaterialInto) {
                                     GTOreDictUnificator.registerOre(aPrefix, aMaterial.mMaterialInto, aEvent.Ore);
@@ -2033,6 +2041,20 @@ public class GTProxy implements IFuelHandler {
         if ((tInternalName.equals("Fluix") || tInternalName.equals("Quartz")) && aPrefix == OrePrefixes.gem) {
             GTOreDictUnificator.registerOre(OrePrefixes.crystal, aMaterial, aEvent.Ore);
             GTOreDictUnificator.registerOre(OreDictNames.craftingQuartz, aEvent.Ore);
+        }
+    }
+
+    /// Unifies a foreign ore-dictionary entry whose name resolves to a [RecognitionMarker] (see
+    /// [RecognitionMaterials#getRecognitionMarker]): adds the stack to its prefix when unifiable, and, for a
+    /// `gearGt` entry, cross-registers it under `gear` as well.
+    private void registerRecognitionOre(OrePrefixes aPrefix, RecognitionMarker aMarker,
+        OreDictionary.OreRegisterEvent aEvent) {
+        if (aMarker.unifiable()) {
+            aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
+        }
+        if (aPrefix.getName()
+            .equals("gearGt")) {
+            GTOreDictUnificator.registerOre(OrePrefixes.gear.oreDictName(aMarker.name()), aEvent.Ore);
         }
     }
 
