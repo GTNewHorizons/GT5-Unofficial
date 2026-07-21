@@ -399,31 +399,6 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder beginStructureBlock(int l, int w, int h, boolean hollow) {
         addShiftInfo(
-            EnumChatFormatting.WHITE + "%s: "
-                + EnumChatFormatting.GOLD
-                + "%s"
-                + EnumChatFormatting.GRAY
-                + "x"
-                + EnumChatFormatting.GOLD
-                + "%s"
-                + EnumChatFormatting.GRAY
-                + "x"
-                + EnumChatFormatting.GOLD
-                + "%s"
-                + EnumChatFormatting.GRAY
-                + " ("
-                + EnumChatFormatting.GOLD
-                + "L"
-                + EnumChatFormatting.GRAY
-                + "x"
-                + EnumChatFormatting.GOLD
-                + "W"
-                + EnumChatFormatting.GRAY
-                + "x"
-                + EnumChatFormatting.GOLD
-                + "H"
-                + EnumChatFormatting.GRAY
-                + ") %s",
             "GT5U.MBTT.Dimensions",
             l,
             w,
@@ -769,7 +744,7 @@ public class MultiblockTooltipBuilder {
     }
 
     private MultiblockTooltipBuilder addLegacyStructurePart(String name, String info) {
-        addStructureInfo("GT5U.MBTT.PartInfo", name, info);
+        addStructureInfo("GT5U.MBTT.PartInfo", name, resolveStructureInfo(info));
         return this;
     }
 
@@ -804,12 +779,7 @@ public class MultiblockTooltipBuilder {
         if (info instanceof String text && text.equalsIgnoreCase("<hint>")) {
             addStructureInfo("GT5U.MBTT.PartInfo", partLocKey, new TooltipLine("GT5U.MBTT.PartHintDesc", dotStr));
         } else {
-            Object resolvedInfo = info instanceof String text ? switch (text.toLowerCase(Locale.ROOT)) {
-                case "<casing>", "any casing" -> "GT5U.MBTT.AnyCasing";
-                case "<bottom casing>", "bottom casing" -> "GT5U.MBTT.AnyBottomCasing";
-                case "<top casing>", "top casing" -> "GT5U.MBTT.AnyTopCasing";
-                default -> text;
-            } : info;
+            Object resolvedInfo = resolveStructureInfo(info);
             if (addHintInfo) {
                 addStructureInfo("GT5U.MBTT.PartInfoWithHint", partLocKey, resolvedInfo, dotStr);
             } else {
@@ -836,6 +806,17 @@ public class MultiblockTooltipBuilder {
             params[i * 2] = hintDots[i];
         }
         return new TooltipLine(format.toString(), params);
+    }
+
+    private Object resolveStructureInfo(Object info) {
+        if (!(info instanceof String text)) return info;
+
+        return switch (text.toLowerCase(Locale.ROOT)) {
+            case "<casing>", "any casing" -> "GT5U.MBTT.AnyCasing";
+            case "<bottom casing>", "bottom casing" -> "GT5U.MBTT.AnyBottomCasing";
+            case "<top casing>", "top casing" -> "GT5U.MBTT.AnyTopCasing";
+            default -> text;
+        };
     }
 
     public MultiblockTooltipBuilder addStructurePart(String partLocKey, String info, int... hintDots) {
@@ -1016,7 +997,7 @@ public class MultiblockTooltipBuilder {
         addShiftInfo(
             INDENT_MARK + EnumChatFormatting.YELLOW + "%s " + EnumChatFormatting.WHITE + "%s",
             count,
-            new TooltipLine("GT5U.MBTT.PartInfo", name, info));
+            new TooltipLine("GT5U.MBTT.PartInfo", name, resolveStructureInfo(info)));
         addStructureHint(name, dots);
         return this;
     }
