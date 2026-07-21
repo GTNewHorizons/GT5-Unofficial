@@ -299,8 +299,11 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         int inputParticle = inputInfo.getParticleId();
         float inputFocus = inputInfo.getFocus();
 
-        if (inputEnergy < metadata.minEnergy || inputEnergy > metadata.maxEnergy)
-            return CheckRecipeResultRegistry.NO_RECIPE;
+        if (inputEnergy < metadata.minEnergy) {
+            return CheckRecipeResultRegistry.LOW_ENERGY;
+        } else if (inputEnergy > metadata.maxEnergy) {
+            return CheckRecipeResultRegistry.HIGH_ENERGY;
+        }
         if (inputFocus < metadata.minFocus) return CheckRecipeResultRegistry.NO_RECIPE;
         if (inputParticle != metadata.particleID) return CheckRecipeResultRegistry.NO_RECIPE;
 
