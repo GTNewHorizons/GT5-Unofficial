@@ -60,7 +60,7 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
             .addInfo("Performs 4/4 overclock")
             .addInfo(createParallelText())
             .addSupportAny()
-            .beginStructureBlock(47, 47, 7, false)
+            .beginStructureBlock(47, 7, 47, false)
             .addController("Middle center, 4th layer")
             .addCasing("1662-1695", "Fusion Machine Casing Mk-III", false)
             .addCasing("560", "Compact Fusion Coil Mk-II Prototype", false)

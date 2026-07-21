@@ -141,7 +141,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addInfo("Items & Fluids are inserted in NEI order, one per slice")
             .addInfo("Does not run Assembler recipes")
             .addMaxTierSkips(1)
-            .beginVariableStructureBlock(3, 3, 5, 16, 4, 4, false)
+            .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addController("First slice, 3rd layer")
             .addMiscHatch(
                 "1",
