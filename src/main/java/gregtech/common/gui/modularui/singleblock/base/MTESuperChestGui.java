@@ -62,7 +62,8 @@ public class MTESuperChestGui extends MTETieredMachineBlockBaseGui<MTESuperChest
                 }
             }.slot(new ModularSlot(machine.inventoryHandler, 2).accessibility(false, false))
                 .bottomRel(0)
-                .rightRel(0));
+                .rightRel(0)
+                .background(GTGuiTextures.SLOT_ITEM_TANK));
 
         Flow ioColumn = Flow.column()
             .coverChildrenWidth()
@@ -96,7 +97,8 @@ public class MTESuperChestGui extends MTETieredMachineBlockBaseGui<MTESuperChest
                             .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)))
             .child(
                 new FilterSlot(machine::getLockedItem, machine::setLockedItem).bottomRel(0)
-                    .rightRel(0));
+                    .rightRel(0)
+                    .background(GTGuiTextures.SLOT_ITEM_TANK));
 
         return super.createContentSection(panel, syncManager).child(
             Flow.row()
