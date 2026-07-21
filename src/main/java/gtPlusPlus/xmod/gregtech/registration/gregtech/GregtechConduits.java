@@ -525,7 +525,7 @@ public class GregtechConduits {
         final int heatResistance, final boolean isGasProof) {
         final int transferRatePerTick = transferRatePerSec / 20;
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeTiny.get(material),
+            OrePrefixes.pipeTiny.oreDictName(material),
             new MTEFluidPipe(
                 startID,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Tiny",
@@ -536,7 +536,7 @@ public class GregtechConduits {
                 heatResistance,
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeSmall.get(material),
+            OrePrefixes.pipeSmall.oreDictName(material),
             new MTEFluidPipe(
                 startID + 1,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Small",
@@ -547,7 +547,7 @@ public class GregtechConduits {
                 heatResistance,
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeMedium.get(material),
+            OrePrefixes.pipeMedium.oreDictName(material),
             new MTEFluidPipe(
                 startID + 2,
                 "GT_Pipe_" + material.mDefaultLocalName,
@@ -558,7 +558,7 @@ public class GregtechConduits {
                 heatResistance,
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeLarge.get(material),
+            OrePrefixes.pipeLarge.oreDictName(material),
             new MTEFluidPipe(
                 startID + 3,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Large",
@@ -569,7 +569,7 @@ public class GregtechConduits {
                 heatResistance,
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeHuge.get(material),
+            OrePrefixes.pipeHuge.oreDictName(material),
             new MTEFluidPipe(
                 startID + 4,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Huge",
@@ -585,7 +585,7 @@ public class GregtechConduits {
         final int transferRatePerSec, final int heatResistance) {
         final int transferRatePerTick = transferRatePerSec / 20;
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeTiny.get(pipeStats),
+            OrePrefixes.pipeTiny.oreDictName(pipeStats.name()),
             new GTPPMTEFluidPipe(
                 startID,
                 "GT_Pipe_" + pipeStats.defaultLocalName + "_Tiny",
@@ -596,7 +596,7 @@ public class GregtechConduits {
                 heatResistance,
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeSmall.get(pipeStats),
+            OrePrefixes.pipeSmall.oreDictName(pipeStats.name()),
             new GTPPMTEFluidPipe(
                 startID + 1,
                 "GT_Pipe_" + pipeStats.defaultLocalName + "_Small",
@@ -607,7 +607,7 @@ public class GregtechConduits {
                 heatResistance,
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeMedium.get(pipeStats),
+            OrePrefixes.pipeMedium.oreDictName(pipeStats.name()),
             new GTPPMTEFluidPipe(
                 startID + 2,
                 "GT_Pipe_" + pipeStats.defaultLocalName,
@@ -618,7 +618,7 @@ public class GregtechConduits {
                 heatResistance,
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeLarge.get(pipeStats),
+            OrePrefixes.pipeLarge.oreDictName(pipeStats.name()),
             new GTPPMTEFluidPipe(
                 startID + 3,
                 "GT_Pipe_" + pipeStats.defaultLocalName + "_Large",
@@ -629,7 +629,7 @@ public class GregtechConduits {
                 heatResistance,
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeHuge.get(pipeStats),
+            OrePrefixes.pipeHuge.oreDictName(pipeStats.name()),
             new GTPPMTEFluidPipe(
                 startID + 4,
                 "GT_Pipe_" + pipeStats.defaultLocalName + "_Huge",
