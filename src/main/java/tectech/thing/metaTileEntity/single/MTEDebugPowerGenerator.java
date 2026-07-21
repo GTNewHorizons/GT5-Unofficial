@@ -75,8 +75,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
         GTUtility.sendChatTrans(
             aPlayer,
             "tt.chat.debug.generator",
-            new ChatComponentTranslation(
-                LASER ? "GT5U.gui.circuit.generic.data_display.on" : "GT5U.gui.circuit.generic.data_display.off"));
+            new ChatComponentTranslation("GT5U.gui.circuit.generic.data_display." + (LASER ? "on" : "off")));
     }
 
     @Override
