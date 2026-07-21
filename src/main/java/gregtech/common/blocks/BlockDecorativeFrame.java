@@ -60,7 +60,7 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
                 if (!material.generatesPrefix(OrePrefixes.frameGt)) continue;
 
                 OreDictionary.registerOre(
-                    OrePrefixes.frameGt.get(material.getInternalName())
+                    OrePrefixes.frameGt.oreDictName(material.getInternalName())
                         .toString(),
                     new ItemStack(this, 1, i));
             }

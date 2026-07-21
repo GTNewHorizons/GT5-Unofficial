@@ -52,7 +52,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
                 if (!material.generatesPrefix(OrePrefixes.sheetmetal)) continue;
 
                 OreDictionary.registerOre(
-                    OrePrefixes.sheetmetal.get(material.getInternalName())
+                    OrePrefixes.sheetmetal.oreDictName(material.getInternalName())
                         .toString(),
                     new ItemStack(this, 1, i));
             }
