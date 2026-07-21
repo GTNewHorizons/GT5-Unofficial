@@ -171,142 +171,142 @@ public class GTRecipeRegistrator {
         GregTechAPI.sAfterGTPostload.add(() -> indexedRecipeListCache = null);
     }
 
-    public static void registerMaterialRecycling(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
-        MaterialStack aByproduct) {
-        if (GTUtility.isStackInvalid(aStack)) return;
-        if (aByproduct != null) {
-            aByproduct = aByproduct.clone();
-            aByproduct.mAmount /= aStack.stackSize;
+    public static void registerMaterialRecycling(ItemStack stack, Materials material, long materialAmount,
+        MaterialStack byproduct) {
+        if (GTUtility.isStackInvalid(stack)) return;
+        if (byproduct != null) {
+            byproduct = byproduct.clone();
+            byproduct.mAmount /= stack.stackSize;
         }
         GTOreDictUnificator.addItemData(
-            GTUtility.copyAmount(1, aStack),
-            new ItemData(aMaterial, aMaterialAmount / aStack.stackSize, aByproduct));
+            GTUtility.copyAmount(1, stack),
+            new ItemData(material, materialAmount / stack.stackSize, byproduct));
     }
 
-    public static void registerMaterialRecycling(ItemStack aStack, ItemData aData) {
-        if (GTUtility.isStackInvalid(aStack) || GTUtility.areStacksEqual(new ItemStack(Items.blaze_rod), aStack)
-            || GTUtility.areStacksEqual(GTOreDictUnificator.get(OrePrefixes.block, Materials.Ichorium, 1L), aStack)
-            || GTUtility.areStacksEqual(new ItemStack(Blocks.quartz_block, 1), aStack)
-            || GTUtility.areStacksEqual(new ItemStack(Blocks.obsidian), aStack)
-            || aData == null
-            || !aData.hasValidMaterialData()
-            || (aData.mMaterial.mMaterial instanceof Materials primary && !primary.mAutoGenerateRecycleRecipes)
-            || aData.mMaterial.mAmount <= 0
-            || GTUtility.getFluidForFilledItem(aStack, false) != null) return;
-        registerReverseMacerating(GTUtility.copyAmount(1, aStack), aData, aData.mPrefix == null, true);
-        if (!GTUtility.areStacksEqual(GTModHandler.getIC2Item("iridiumOre", 1L), aStack)) {
+    public static void registerMaterialRecycling(ItemStack stack, ItemData data) {
+        if (GTUtility.isStackInvalid(stack) || GTUtility.areStacksEqual(new ItemStack(Items.blaze_rod), stack)
+            || GTUtility.areStacksEqual(GTOreDictUnificator.get(OrePrefixes.block, Materials.Ichorium, 1L), stack)
+            || GTUtility.areStacksEqual(new ItemStack(Blocks.quartz_block, 1), stack)
+            || GTUtility.areStacksEqual(new ItemStack(Blocks.obsidian), stack)
+            || data == null
+            || !data.hasValidMaterialData()
+            || (data.mMaterial.mMaterial instanceof Materials primary && !primary.mAutoGenerateRecycleRecipes)
+            || data.mMaterial.mAmount <= 0
+            || GTUtility.getFluidForFilledItem(stack, false) != null) return;
+        registerReverseMacerating(GTUtility.copyAmount(1, stack), data, data.mPrefix == null, true);
+        if (!GTUtility.areStacksEqual(GTModHandler.getIC2Item("iridiumOre", 1L), stack)) {
             registerReverseSmelting(
-                GTUtility.copyAmount(1, aStack),
-                aData.mMaterial.mMaterial,
-                aData.mMaterial.mAmount,
+                GTUtility.copyAmount(1, stack),
+                data.mMaterial.mMaterial,
+                data.mMaterial.mAmount,
                 true);
             registerReverseFluidSmelting(
-                GTUtility.copyAmount(1, aStack),
-                aData.mMaterial.mMaterial,
-                aData.mMaterial.mAmount,
-                aData.getByProduct(0),
+                GTUtility.copyAmount(1, stack),
+                data.mMaterial.mMaterial,
+                data.mMaterial.mAmount,
+                data.getByProduct(0),
                 true);
-            registerReverseArcSmelting(GTUtility.copyAmount(1, aStack), aData);
+            registerReverseArcSmelting(GTUtility.copyAmount(1, stack), data);
         }
     }
 
     /**
-     * @param aStack          the stack to be recycled.
-     * @param aMaterial       the Material.
-     * @param aMaterialAmount the amount of it in Material Units.
-     * @param isRecycling     whether to put in recycling tab.
+     * @param stack          the stack to be recycled.
+     * @param material       the Material.
+     * @param materialAmount the amount of it in Material Units.
+     * @param isRecycling    whether to put in recycling tab.
      */
     /// [#registerReverseFluidSmelting(ItemStack, Materials, long, MaterialStack, boolean)] for callers holding an
     /// [IOreMaterial] whose concrete type is not statically known. Only a legacy [Materials] carries a
     /// reverse-fluid-smelting recipe.
-    public static void registerReverseFluidSmelting(ItemStack aStack, IOreMaterial aMaterial, long aMaterialAmount,
-        MaterialStack aByproduct, boolean isRecycling) {
-        if (aMaterial instanceof Materials aLegacyMaterial)
-            registerReverseFluidSmelting(aStack, aLegacyMaterial, aMaterialAmount, aByproduct, isRecycling);
+    public static void registerReverseFluidSmelting(ItemStack stack, IOreMaterial material, long materialAmount,
+        MaterialStack byproduct, boolean isRecycling) {
+        if (material instanceof Materials legacyMaterial)
+            registerReverseFluidSmelting(stack, legacyMaterial, materialAmount, byproduct, isRecycling);
     }
 
-    public static void registerReverseFluidSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
-        MaterialStack aByproduct, boolean isRecycling) {
-        if (aStack == null || aMaterial == null
-            || MU.smeltInto(aMaterial).mStandardMoltenFluid == null
-            || !MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_FLUID)
-            || (aMaterialAmount * INGOTS) / (M * aStack.stackSize) <= 0) return;
+    public static void registerReverseFluidSmelting(ItemStack stack, Materials material, long materialAmount,
+        MaterialStack byproduct, boolean isRecycling) {
+        if (stack == null || material == null
+            || MU.smeltInto(material).mStandardMoltenFluid == null
+            || !MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
+            || (materialAmount * INGOTS) / (M * stack.stackSize) <= 0) return;
 
-        ItemStack recipeOutput = aByproduct == null || !(aByproduct.mMaterial instanceof Materials byproductMaterial)
+        ItemStack recipeOutput = byproduct == null || !(byproduct.mMaterial instanceof Materials byproductMaterial)
             ? null
             : MU.hasFlag(byproductMaterial, GTMaterialFlag.NO_SMELTING)
                 || !MU.hasFlag(byproductMaterial, GTMaterialFlag.METAL)
                     ? MU.hasFlag(byproductMaterial, GTMaterialFlag.FLAMMABLE)
-                        ? GTOreDictUnificator.getDust(Materials.Ash, aByproduct.mAmount / 2)
+                        ? GTOreDictUnificator.getDust(Materials.Ash, byproduct.mAmount / 2)
                         : MU.hasFlag(byproductMaterial, GTMaterialFlag.UNBURNABLE)
-                            ? GTOreDictUnificator.getDustOrIngot(MU.smeltInto(byproductMaterial), aByproduct.mAmount)
+                            ? GTOreDictUnificator.getDustOrIngot(MU.smeltInto(byproductMaterial), byproduct.mAmount)
                             : null
-                    : GTOreDictUnificator.getIngotOrDust(MU.smeltInto(byproductMaterial), aByproduct.mAmount);
+                    : GTOreDictUnificator.getIngotOrDust(MU.smeltInto(byproductMaterial), byproduct.mAmount);
 
         GTRecipeBuilder builder = RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack));
+            .itemInputs(GTUtility.copyAmount(1, stack));
         if (recipeOutput != null) {
             builder.itemOutputs(recipeOutput);
         }
         long powerUsage = Math
-            .max(8, (long) Math.sqrt(2 * MU.smeltInto(aMaterial).mStandardMoltenFluid.getTemperature()));
+            .max(8, (long) Math.sqrt(2 * MU.smeltInto(material).mStandardMoltenFluid.getTemperature()));
         // avoid full amp recipes
         int powerTier = getTier(powerUsage);
         if (powerTier > 0 && powerTier < VP.length && powerUsage > VP[powerTier]) {
             powerUsage = VP[powerTier];
         }
         builder.fluidOutputs(
-            MU.smeltInto(aMaterial)
-                .getMolten((aMaterialAmount * INGOTS) / (M * aStack.stackSize)))
-            .duration((int) Math.max(1, (24 * aMaterialAmount) / M))
+            MU.smeltInto(material)
+                .getMolten((materialAmount * INGOTS) / (M * stack.stackSize)))
+            .duration((int) Math.max(1, (24 * materialAmount) / M))
             .eut(powerUsage);
         if (isRecycling) builder.recipeCategory(RecipeCategories.fluidExtractorRecycling);
         builder.addTo(fluidExtractionRecipes);
     }
 
     /**
-     * @param aStack             the stack to be recycled.
-     * @param aMaterial          the Material.
-     * @param aMaterialAmount    the amount of it in Material Units.
-     * @param aAllowAlloySmelter if it is allowed to be recycled inside the Alloy Smelter.
+     * @param stack             the stack to be recycled.
+     * @param material          the Material.
+     * @param materialAmount    the amount of it in Material Units.
+     * @param allowAlloySmelter if it is allowed to be recycled inside the Alloy Smelter.
      */
     /// [#registerReverseSmelting(ItemStack, Materials, long, boolean)] for callers holding an [IOreMaterial]
     /// whose concrete type is not statically known. Only a legacy [Materials] carries a reverse-smelting recipe.
-    public static void registerReverseSmelting(ItemStack aStack, IOreMaterial aMaterial, long aMaterialAmount,
-        boolean aAllowAlloySmelter) {
-        if (aMaterial instanceof Materials aLegacyMaterial)
-            registerReverseSmelting(aStack, aLegacyMaterial, aMaterialAmount, aAllowAlloySmelter);
+    public static void registerReverseSmelting(ItemStack stack, IOreMaterial material, long materialAmount,
+        boolean allowAlloySmelter) {
+        if (material instanceof Materials legacyMaterial)
+            registerReverseSmelting(stack, legacyMaterial, materialAmount, allowAlloySmelter);
     }
 
-    public static void registerReverseSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
-        boolean aAllowAlloySmelter) {
-        if (aStack == null || aMaterial == null
-            || aMaterialAmount <= 0
-            || MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMELTING)
-            || (aMaterialAmount > M && MU.hasFlag(aMaterial, GTMaterialFlag.METAL))
-            || (aMaterial.getProcessingMaterialTierEU() > TierEU.IV)) return;
-        if (aMaterial == Materials.Naquadah || aMaterial == Materials.NaquadahEnriched) return;
+    public static void registerReverseSmelting(ItemStack stack, Materials material, long materialAmount,
+        boolean allowAlloySmelter) {
+        if (stack == null || material == null
+            || materialAmount <= 0
+            || MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)
+            || (materialAmount > M && MU.hasFlag(material, GTMaterialFlag.METAL))
+            || (material.getProcessingMaterialTierEU() > TierEU.IV)) return;
+        if (material == Materials.Naquadah || material == Materials.NaquadahEnriched) return;
 
-        aMaterialAmount /= aStack.stackSize;
+        materialAmount /= stack.stackSize;
 
-        if (aAllowAlloySmelter) GTModHandler.addSmeltingAndAlloySmeltingRecipe(
-            GTUtility.copyAmount(1, aStack),
-            GTOreDictUnificator.getIngot(MU.smeltInto(aMaterial), aMaterialAmount),
+        if (allowAlloySmelter) GTModHandler.addSmeltingAndAlloySmeltingRecipe(
+            GTUtility.copyAmount(1, stack),
+            GTOreDictUnificator.getIngot(MU.smeltInto(material), materialAmount),
             false);
         else GTModHandler.addSmeltingRecipe(
-            GTUtility.copyAmount(1, aStack),
-            GTOreDictUnificator.getIngot(MU.smeltInto(aMaterial), aMaterialAmount));
+            GTUtility.copyAmount(1, stack),
+            GTOreDictUnificator.getIngot(MU.smeltInto(material), materialAmount));
     }
 
-    public static void registerReverseArcSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
-        MaterialStack aByProduct01, MaterialStack aByProduct02, MaterialStack aByProduct03) {
+    public static void registerReverseArcSmelting(ItemStack stack, Materials material, long materialAmount,
+        MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03) {
         registerReverseArcSmelting(
-            aStack,
+            stack,
             new ItemData(
-                aMaterial == null ? null : new MaterialStack(aMaterial, aMaterialAmount),
-                aByProduct01,
-                aByProduct02,
-                aByProduct03));
+                material == null ? null : new MaterialStack(material, materialAmount),
+                byProduct01,
+                byProduct02,
+                byProduct03));
     }
 
     public static boolean hasReverseArcSmeltingRecipe(Materials material) {
@@ -323,28 +323,28 @@ public class GTRecipeRegistrator {
         arcFurnaceRecyclingCategorySupplier = () -> RecipeCategories.arcFurnaceRecycling;
     }
 
-    public static void registerReverseArcSmelting(ItemStack aStack, ItemData aData) {
-        registerReverseArcSmelting(aStack, aData, UniversalArcFurnace, arcFurnaceRecipes);
+    public static void registerReverseArcSmelting(ItemStack stack, ItemData data) {
+        registerReverseArcSmelting(stack, data, UniversalArcFurnace, arcFurnaceRecipes);
     }
 
-    static void registerReverseArcSmelting(ItemStack aStack, ItemData aData, IRecipeMap universalArcFurnace,
+    static void registerReverseArcSmelting(ItemStack stack, ItemData data, IRecipeMap universalArcFurnace,
         IRecipeMap arcFurnaceRecipes) {
-        registerReverseArcSmelting(aStack, aData, universalArcFurnace, arcFurnaceRecipes, Materials::getGas);
+        registerReverseArcSmelting(stack, data, universalArcFurnace, arcFurnaceRecipes, Materials::getGas);
     }
 
-    static void registerReverseArcSmelting(ItemStack aStack, ItemData aData, IRecipeMap universalArcFurnace,
+    static void registerReverseArcSmelting(ItemStack stack, ItemData data, IRecipeMap universalArcFurnace,
         IRecipeMap arcFurnaceRecipes, BiFunction<Materials, Long, FluidStack> gasStackSupplier) {
-        if (aStack == null || aData == null) return;
-        aData = new ItemData(aData);
+        if (stack == null || data == null) return;
+        data = new ItemData(data);
 
-        if (!aData.hasValidMaterialData()) return;
+        if (!data.hasValidMaterialData()) return;
 
-        if (aData.mMaterial.mMaterial instanceof Materials primary
+        if (data.mMaterial.mMaterial instanceof Materials primary
             && MU.hasFlag(primary, GTMaterialFlag.NO_RECYCLING_RECIPES)) return;
 
         boolean isRecycle = true;
 
-        for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
+        for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
             if (!(tMaterial.mMaterial instanceof Materials material)) {
                 Materials arcTarget = MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial));
                 if (arcTarget == null) {
@@ -358,7 +358,7 @@ public class GTRecipeRegistrator {
             if (material == Materials.Iron || material == Materials.Copper
                 || material == Materials.CastIron
                 || material == Materials.AnnealedCopper) {
-                ItemData stackData = GTOreDictUnificator.getItemData(aStack);
+                ItemData stackData = GTOreDictUnificator.getItemData(stack);
                 if (stackData != null
                     && (stackData.mPrefix == OrePrefixes.ingot || stackData.mPrefix == OrePrefixes.dust)) {
                     // iron ingot/dust -> cast iron, copper ingot/dust -> annealed copper
@@ -392,32 +392,32 @@ public class GTRecipeRegistrator {
             tMaterial.mAmount = 0;
         }
 
-        aData = new ItemData(aData);
-        if (aData.mByProducts.length > 3) for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
+        data = new ItemData(data);
+        if (data.mByProducts.length > 3) for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
             if (tMaterial.mMaterial == Materials.Ash) tMaterial.mAmount = 0;
         }
 
-        aData = new ItemData(aData);
+        data = new ItemData(data);
 
-        if (!aData.hasValidMaterialData()) return;
+        if (!data.hasValidMaterialData()) return;
 
         long tAmount = 0;
-        for (MaterialStack tMaterial : aData.getAllMaterialStacks())
+        for (MaterialStack tMaterial : data.getAllMaterialStacks())
             tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
 
         ArrayList<ItemStack> outputs = new ArrayList<>();
-        if (GTOreDictUnificator.getIngotOrDust(aData.mMaterial) != null) {
-            outputs.add(GTOreDictUnificator.getIngotOrDust(aData.mMaterial));
+        if (GTOreDictUnificator.getIngotOrDust(data.mMaterial) != null) {
+            outputs.add(GTOreDictUnificator.getIngotOrDust(data.mMaterial));
         }
         for (int i = 0; i < 8; i++) {
-            if (GTOreDictUnificator.getIngotOrDust(aData.getByProduct(i)) != null) {
-                outputs.add(GTOreDictUnificator.getIngotOrDust(aData.getByProduct(i)));
+            if (GTOreDictUnificator.getIngotOrDust(data.getByProduct(i)) != null) {
+                outputs.add(GTOreDictUnificator.getIngotOrDust(data.getByProduct(i)));
             }
         }
         if (!outputs.isEmpty()) {
-            if (!isNoOpReverseArcSmelting(aStack, outputs)) {
+            if (!isNoOpReverseArcSmelting(stack, outputs)) {
                 GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-                recipeBuilder.itemInputs(aStack)
+                recipeBuilder.itemInputs(stack)
                     .itemOutputs(outputs.toArray(new ItemStack[0]))
                     .duration(((int) Math.max(16L, tAmount / M)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
@@ -431,7 +431,7 @@ public class GTRecipeRegistrator {
                 FluidStack gasStack = gasStackSupplier.apply(gas, (long) gasAmount);
                 if (gasOutputs == null || gasStack == null) continue;
                 GTRecipeBuilder gasRecipeBuilder = GTValues.RA.stdBuilder()
-                    .itemInputs(aStack)
+                    .itemInputs(stack)
                     .circuit(11)
                     .itemOutputs(gasOutputs)
                     .fluidInputs(gasStack)
@@ -481,74 +481,74 @@ public class GTRecipeRegistrator {
         return replacedOutput ? gasOutputs : null;
     }
 
-    public static void registerReverseMacerating(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
-        MaterialStack aByProduct01, MaterialStack aByProduct02, MaterialStack aByProduct03, boolean aAllowHammer,
+    public static void registerReverseMacerating(ItemStack stack, Materials material, long materialAmount,
+        MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03, boolean allowHammer,
         boolean isRecycling) {
         registerReverseMacerating(
-            aStack,
+            stack,
             new ItemData(
-                aMaterial == null ? null : new MaterialStack(aMaterial, aMaterialAmount),
-                aByProduct01,
-                aByProduct02,
-                aByProduct03),
-            aAllowHammer,
+                material == null ? null : new MaterialStack(material, materialAmount),
+                byProduct01,
+                byProduct02,
+                byProduct03),
+            allowHammer,
             isRecycling);
     }
 
-    public static void registerReverseMacerating(ItemStack aStack, ItemData aData, boolean aAllowHammer,
+    public static void registerReverseMacerating(ItemStack stack, ItemData data, boolean allowHammer,
         boolean isRecycling) {
-        if (aStack == null || aData == null) return;
-        aData = new ItemData(aData);
+        if (stack == null || data == null) return;
+        data = new ItemData(data);
 
-        if (!aData.hasValidMaterialData()) return;
+        if (!data.hasValidMaterialData()) return;
 
-        for (MaterialStack tMaterial : aData.getAllMaterialStacks())
+        for (MaterialStack tMaterial : data.getAllMaterialStacks())
             if (tMaterial.mMaterial instanceof Materials material) tMaterial.mMaterial = MU.macerateInto(material);
 
-        aData = new ItemData(aData);
+        data = new ItemData(data);
 
-        if (!aData.hasValidMaterialData()) return;
+        if (!data.hasValidMaterialData()) return;
 
         long tAmount = 0;
-        for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
+        for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
             if (tMaterial.mMaterial instanceof Materials material) tAmount += tMaterial.mAmount * material.getMass();
         }
 
         {
             ArrayList<ItemStack> outputs = new ArrayList<>();
-            if (GTOreDictUnificator.getDust(aData.mMaterial) != null) {
-                outputs.add(GTOreDictUnificator.getDust(aData.mMaterial));
+            if (GTOreDictUnificator.getDust(data.mMaterial) != null) {
+                outputs.add(GTOreDictUnificator.getDust(data.mMaterial));
             }
             for (int i = 0; i < 3; i++) {
-                if (GTOreDictUnificator.getDust(aData.getByProduct(i)) != null) {
-                    outputs.add(GTOreDictUnificator.getDust(aData.getByProduct(i)));
+                if (GTOreDictUnificator.getDust(data.getByProduct(i)) != null) {
+                    outputs.add(GTOreDictUnificator.getDust(data.getByProduct(i)));
                 }
             }
             if (!outputs.isEmpty()) {
                 ItemStack[] outputsArray = outputs.toArray(new ItemStack[0]);
                 GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-                recipeBuilder.itemInputs(aStack)
+                recipeBuilder.itemInputs(stack)
                     .itemOutputs(outputsArray)
                     .duration(
-                        (aData.mMaterial.mMaterial == Materials.Marble ? 1 : (int) Math.max(16, tAmount / M)) * TICKS)
+                        (data.mMaterial.mMaterial == Materials.Marble ? 1 : (int) Math.max(16, tAmount / M)) * TICKS)
                     .eut(4);
                 if (isRecycling) recipeBuilder.recipeCategory(RecipeCategories.maceratorRecycling);
                 recipeBuilder.addTo(maceratorRecipes);
             }
         }
 
-        if (!aAllowHammer) {
+        if (!allowHammer) {
             return;
         }
 
-        for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
+        for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
             if (tMaterial.mMaterial instanceof Materials material && MU.hasFlag(material, GTMaterialFlag.CRYSTAL)
                 && !MU.hasFlag(material, GTMaterialFlag.METAL)
                 && tMaterial.mMaterial != Materials.Glass
-                && GTOreDictUnificator.getDust(aData.mMaterial) != null) {
+                && GTOreDictUnificator.getDust(data.mMaterial) != null) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(GTOreDictUnificator.getDust(aData.mMaterial))
+                    .itemInputs(GTUtility.copyAmount(1, stack))
+                    .itemOutputs(GTOreDictUnificator.getDust(data.mMaterial))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
                     .recipeCategory(RecipeCategories.forgeHammerRecycling)
@@ -569,48 +569,48 @@ public class GTRecipeRegistrator {
      * You give this Function a Material and it will scan almost everything for adding recycling Recipes and replacing
      * Ingots, Gems etc.
      *
-     * @param aMats            Materials, for example an Ingot or a Gem.
-     * @param aPlate           the Plate referenced to aMat
-     * @param aRecipeReplacing allows to replace the Recipe with a Plate variant
+     * @param mats            Materials, for example an Ingot or a Gem.
+     * @param plate           the Plate referenced to mat
+     * @param recipeReplacing allows to replace the Recipe with a Plate variant
      */
-    public static synchronized void registerUsagesForMaterials(String aPlate, boolean aRecipeReplacing,
-        ItemStack... aMats) {
-        for (ItemStack aMat : aMats) {
-            aMat = GTUtility.copyOrNull(aMat);
+    public static synchronized void registerUsagesForMaterials(String plate, boolean recipeReplacing,
+        ItemStack... mats) {
+        for (ItemStack mat : mats) {
+            mat = GTUtility.copyOrNull(mat);
 
-            if (aMat == null) continue;
+            if (mat == null) continue;
 
-            ItemData aItemData = GTOreDictUnificator.getItemData(aMat);
-            if (aItemData == null || aItemData.mPrefix != OrePrefixes.ingot) aPlate = null;
-            if (aPlate != null && GTOreDictUnificator.getFirstOre(aPlate, 1) == null) aPlate = null;
+            ItemData itemData = GTOreDictUnificator.getItemData(mat);
+            if (itemData == null || itemData.mPrefix != OrePrefixes.ingot) plate = null;
+            if (plate != null && GTOreDictUnificator.getFirstOre(plate, 1) == null) plate = null;
 
-            sMt1.func_150996_a(aMat.getItem());
+            sMt1.func_150996_a(mat.getItem());
             sMt1.stackSize = 1;
-            Items.feather.setDamage(sMt1, Items.feather.getDamage(aMat));
+            Items.feather.setDamage(sMt1, Items.feather.getDamage(mat));
 
             sMt2.func_150996_a(new ItemStack(Blocks.dirt).getItem());
             sMt2.stackSize = 1;
             Items.feather.setDamage(sMt2, 0);
 
-            if (aItemData != null && aItemData.hasValidPrefixMaterialData()) {
+            if (itemData != null && itemData.hasValidPrefixMaterialData()) {
                 for (RecipeShape tRecipe : sShapes) {
                     for (ItemStack tCrafted : GTModHandler.getRecipeOutputsBuffered(tRecipe.shape)) {
                         GTOreDictUnificator.addItemData(
                             tCrafted,
-                            new ItemData(aItemData.mMaterial.mMaterial, aItemData.mMaterial.mAmount * tRecipe.amount1));
+                            new ItemData(itemData.mMaterial.mMaterial, itemData.mMaterial.mAmount * tRecipe.amount1));
                         //
                         // GTLog.out.println("###################################################################################");
-                        // GTLog.out.println("registerUsagesForMaterials used aPlate: "+aPlate);
-                        // GTLog.out.println("registerUsagesForMaterials used aPlate:
-                        // "+aMat.getUnlocalizedName());
-                        // GTLog.out.println("registerUsagesForMaterials used aPlate:
-                        // "+aMat.getDisplayName());
+                        // GTLog.out.println("registerUsagesForMaterials used plate: "+plate);
+                        // GTLog.out.println("registerUsagesForMaterials used plate:
+                        // "+mat.getUnlocalizedName());
+                        // GTLog.out.println("registerUsagesForMaterials used plate:
+                        // "+mat.getDisplayName());
                         //
                         // GTLog.out.println("###################################################################################");
                     }
                 }
             }
-            registerStickStuff(aPlate, aItemData, aRecipeReplacing);
+            registerStickStuff(plate, itemData, recipeReplacing);
         }
     }
 
@@ -714,8 +714,8 @@ public class GTRecipeRegistrator {
         return true;
     }
 
-    private static synchronized void registerStickStuff(String aPlate, ItemData aItemData, boolean aRecipeReplacing) {
-        IdentityHashMap<IRecipe, Boolean> tKnownMatches = aRecipeReplacing && aPlate != null ? new IdentityHashMap<>()
+    private static synchronized void registerStickStuff(String plate, ItemData itemData, boolean recipeReplacing) {
+        IdentityHashMap<IRecipe, Boolean> tKnownMatches = recipeReplacing && plate != null ? new IdentityHashMap<>()
             : null;
         for (Materials tMaterial : sRodMaterialList) {
             ItemStack tMt2 = GTOreDictUnificator.get(OrePrefixes.stick, tMaterial, 1);
@@ -729,7 +729,7 @@ public class GTRecipeRegistrator {
 
             for (int i = 0; i < sShapes.length; i++) {
                 RecipeShape tRecipe = sShapes[i];
-                boolean tCanReplace = aRecipeReplacing && aPlate != null
+                boolean tCanReplace = recipeReplacing && plate != null
                     && sShapesA[i] != null
                     && sShapesA[i].length > 1;
                 if (tCanReplace) tKnownMatches.clear();
@@ -740,18 +740,18 @@ public class GTRecipeRegistrator {
                     true,
                     tRecipe.shape,
                     tCanReplace ? tKnownMatches : null)) {
-                    if (aItemData != null && aItemData.hasValidPrefixMaterialData()) {
+                    if (itemData != null && itemData.hasValidPrefixMaterialData()) {
                         GTOreDictUnificator.addItemData(
                             tCrafted,
                             new ItemData(
-                                aItemData.mMaterial.mMaterial,
-                                aItemData.mMaterial.mAmount * tRecipe.amount1,
+                                itemData.mMaterial.mMaterial,
+                                itemData.mMaterial.mAmount * tRecipe.amount1,
                                 new MaterialStack(tMaterial, OrePrefixes.stick.getMaterialAmount() * tRecipe.amount2)));
                     }
 
                     if (tCanReplace && !tRemovalAttempted) {
                         tRemovalAttempted = true;
-                        assert aItemData != null;
+                        assert itemData != null;
 
                         ItemStack tStack = GTModHandler.removeRecipe(tRecipe.shape, tKnownMatches);
                         if (tStack == null) {
@@ -762,18 +762,18 @@ public class GTRecipeRegistrator {
                             case 2 -> GTModHandler.addCraftingRecipe(
                                 tStack,
                                 GTModHandler.RecipeBits.BUFFERED,
-                                new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
-                                    OrePrefixes.stick.ingredient(tMaterial), s_I.charAt(0), aItemData });
+                                new Object[] { sShapesA[i][1], s_P.charAt(0), plate, s_R.charAt(0),
+                                    OrePrefixes.stick.ingredient(tMaterial), s_I.charAt(0), itemData });
                             case 3 -> GTModHandler.addCraftingRecipe(
                                 tStack,
                                 GTModHandler.RecipeBits.BUFFERED,
-                                new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate, s_R.charAt(0),
-                                    OrePrefixes.stick.ingredient(tMaterial), s_I.charAt(0), aItemData });
+                                new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), plate, s_R.charAt(0),
+                                    OrePrefixes.stick.ingredient(tMaterial), s_I.charAt(0), itemData });
                             default -> GTModHandler.addCraftingRecipe(
                                 tStack,
                                 GTModHandler.RecipeBits.BUFFERED,
-                                new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3], s_P.charAt(0), aPlate,
-                                    s_R.charAt(0), OrePrefixes.stick.ingredient(tMaterial), s_I.charAt(0), aItemData });
+                                new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3], s_P.charAt(0), plate,
+                                    s_R.charAt(0), OrePrefixes.stick.ingredient(tMaterial), s_I.charAt(0), itemData });
                         }
                     }
                 }
@@ -784,16 +784,16 @@ public class GTRecipeRegistrator {
     /**
      * Registers wiremill recipes for given material using integrated circuits.
      *
-     * @param aMaterial    material to register
+     * @param material     material to register
      * @param baseDuration base duration ticks for ingot -> 1x wire recipe
-     * @param aEUt         EU/t for recipe If you provide a proper EU tier for recipe processing then aEUt will be
+     * @param eut          EU/t for recipe If you provide a proper EU tier for recipe processing then eut will be
      *                     overriden with it.
      */
-    public static void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt) {
+    public static void registerWiremillRecipes(Materials material, int baseDuration, int eut) {
         registerWiremillRecipes(
-            aMaterial,
+            material,
             baseDuration,
-            calculateRecipeEU(aMaterial, aEUt),
+            calculateRecipeEU(material, eut),
             OrePrefixes.ingot,
             OrePrefixes.stick,
             2);
@@ -802,124 +802,124 @@ public class GTRecipeRegistrator {
     /**
      * Registers wiremill recipes for given material using integrated circuits.
      *
-     * @param aMaterial    material to register
+     * @param material     material to register
      * @param baseDuration base duration ticks for ingot -> 1x wire recipe
-     * @param aEUt         EU/t for recipe
+     * @param eut          EU/t for recipe
      * @param prefix1      prefix corresponds to ingot
      * @param prefix2      prefix corresponds to stick
      * @param multiplier   amount of wires created from 1 ingot
      */
-    public static void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt, OrePrefixes prefix1,
+    public static void registerWiremillRecipes(Materials material, int baseDuration, int eut, OrePrefixes prefix1,
         OrePrefixes prefix2, int multiplier) {
-        if (GTOreDictUnificator.get(prefix1, aMaterial, 1L) != null
-            && GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L) != null) {
+        if (GTOreDictUnificator.get(prefix1, material, 1L) != null
+            && GTOreDictUnificator.get(OrePrefixes.wireGt01, material, 1L) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 1L))
+                .itemInputs(GTOreDictUnificator.get(prefix1, material, 1L))
                 .circuit(1)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, multiplier))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, material, multiplier))
                 .duration(baseDuration * TICKS)
-                .eut(aEUt)
+                .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 2L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix1, material, 2L / multiplier))
                 .circuit(2)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt02, material, 1L))
                 .duration(((int) (baseDuration * 1.5f)) * TICKS)
-                .eut(aEUt)
+                .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 4L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix1, material, 4L / multiplier))
                 .circuit(4)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt04, material, 1L))
                 .duration(baseDuration * 2 * TICKS)
-                .eut(aEUt)
+                .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 8L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix1, material, 8L / multiplier))
                 .circuit(8)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt08, material, 1L))
                 .duration(((int) (baseDuration * 2.5f)) * TICKS)
-                .eut(aEUt)
+                .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 12L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix1, material, 12L / multiplier))
                 .circuit(12)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt12, material, 1L))
                 .duration(baseDuration * 3 * TICKS)
-                .eut(aEUt)
+                .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 16L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix1, material, 16L / multiplier))
                 .circuit(16)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt16, material, 1L))
                 .duration(((int) (baseDuration * 3.5f)) * TICKS)
-                .eut(aEUt)
+                .eut(eut)
                 .addTo(wiremillRecipes);
         }
 
-        if (GTOreDictUnificator.get(prefix2, aMaterial, 1L) != null
-            && GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L) != null) {
+        if (GTOreDictUnificator.get(prefix2, material, 1L) != null
+            && GTOreDictUnificator.get(OrePrefixes.wireGt01, material, 1L) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 1L))
+                .itemInputs(GTOreDictUnificator.get(prefix2, material, 1L))
                 .circuit(1)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 2L / multiplier))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, material, 2L / multiplier))
                 .duration(((int) (baseDuration * 0.5f)) * TICKS)
-                .eut(aEUt)
+                .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 4L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix2, material, 4L / multiplier))
                 .circuit(2)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt02, material, 1L))
                 .duration(baseDuration * TICKS)
-                .eut(aEUt)
+                .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 8L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix2, material, 8L / multiplier))
                 .circuit(4)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt04, material, 1L))
                 .duration(((int) (baseDuration * 1.5f)) * TICKS)
-                .eut(aEUt)
+                .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 16L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix2, material, 16L / multiplier))
                 .circuit(8)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt08, material, 1L))
                 .duration(baseDuration * 2 * TICKS)
-                .eut(aEUt)
+                .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 24L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix2, material, 24L / multiplier))
                 .circuit(12)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt12, material, 1L))
                 .duration(((int) (baseDuration * 2.5f)) * TICKS)
-                .eut(aEUt)
+                .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 32L / multiplier))
+                .itemInputs(GTOreDictUnificator.get(prefix2, material, 32L / multiplier))
                 .circuit(16)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt16, material, 1L))
                 .duration(baseDuration * 3 * TICKS)
-                .eut(aEUt)
+                .eut(eut)
                 .addTo(wiremillRecipes);
         }
-        if (GTOreDictUnificator.get(prefix1, aMaterial, 1L) != null
-            && GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 1L) != null) {
+        if (GTOreDictUnificator.get(prefix1, material, 1L) != null
+            && GTOreDictUnificator.get(OrePrefixes.wireFine, material, 1L) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix1, aMaterial, 1L))
+                .itemInputs(GTOreDictUnificator.get(prefix1, material, 1L))
                 .circuit(3)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 4L * multiplier))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireFine, material, 4L * multiplier))
                 .duration(baseDuration * TICKS)
-                .eut(aEUt)
+                .eut(eut)
                 .addTo(wiremillRecipes);
         }
-        if (GTOreDictUnificator.get(prefix2, aMaterial, 1L) != null
-            && GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 1L) != null) {
+        if (GTOreDictUnificator.get(prefix2, material, 1L) != null
+            && GTOreDictUnificator.get(OrePrefixes.wireFine, material, 1L) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(prefix2, aMaterial, 1L))
+                .itemInputs(GTOreDictUnificator.get(prefix2, material, 1L))
                 .circuit(3)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 2L * multiplier))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireFine, material, 2L * multiplier))
                 .duration(((int) (baseDuration * 0.5f)) * TICKS)
-                .eut(aEUt)
+                .eut(eut)
                 .addTo(wiremillRecipes);
         }
     }

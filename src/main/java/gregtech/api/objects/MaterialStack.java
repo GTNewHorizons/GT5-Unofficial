@@ -9,13 +9,13 @@ public class MaterialStack implements Cloneable {
     public long mAmount;
     public IOreMaterial mMaterial;
 
-    public MaterialStack(IOreMaterial aMaterial, long aAmount) {
-        mMaterial = aMaterial == null ? Materials._NULL : aMaterial;
-        mAmount = aAmount;
+    public MaterialStack(IOreMaterial material, long amount) {
+        mMaterial = material == null ? Materials._NULL : material;
+        mAmount = amount;
     }
 
-    public MaterialStack copy(long aAmount) {
-        return new MaterialStack(mMaterial, aAmount);
+    public MaterialStack copy(long amount) {
+        return new MaterialStack(mMaterial, amount);
     }
 
     @Override
@@ -28,15 +28,13 @@ public class MaterialStack implements Cloneable {
     }
 
     @Override
-    public boolean equals(Object aObject) {
-        if (aObject == this) return true;
-        return switch (aObject) {
-            case null -> false;
-            case Materials materials -> aObject == mMaterial;
-            case MaterialStack materialStack -> materialStack.mMaterial == mMaterial
-                && (mAmount < 0 || materialStack.mAmount < 0 || materialStack.mAmount == mAmount);
-            default -> false;
-        };
+    public boolean equals(Object object) {
+        if (object == this) return true;
+        if (object == null) return false;
+        if (object instanceof Materials) return object == mMaterial;
+        if (object instanceof MaterialStack) return ((MaterialStack) object).mMaterial == mMaterial
+            && (mAmount < 0 || ((MaterialStack) object).mAmount < 0 || ((MaterialStack) object).mAmount == mAmount);
+        return false;
     }
 
     @Override

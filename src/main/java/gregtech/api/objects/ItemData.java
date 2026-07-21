@@ -20,63 +20,63 @@ public class ItemData {
     public boolean mBlackListed = false;
     public ItemStack mUnificationTarget = null;
 
-    public ItemData(OrePrefixes aPrefix, IOreMaterial aMaterial, boolean aBlackListed) {
-        mPrefix = aPrefix;
-        mMaterial = aMaterial == null ? null : new MaterialStack(aMaterial, aPrefix.getMaterialAmount());
-        mBlackListed = aBlackListed;
-        mByProducts = aPrefix.mSecondaryMaterial == null || aPrefix.mSecondaryMaterial.mMaterial == null
+    public ItemData(OrePrefixes prefix, IOreMaterial material, boolean blackListed) {
+        mPrefix = prefix;
+        mMaterial = material == null ? null : new MaterialStack(material, prefix.getMaterialAmount());
+        mBlackListed = blackListed;
+        mByProducts = prefix.mSecondaryMaterial == null || prefix.mSecondaryMaterial.mMaterial == null
             ? EMPTY_MATERIALSTACK_ARRAY
-            : new MaterialStack[] { aPrefix.mSecondaryMaterial.clone() };
+            : new MaterialStack[] { prefix.mSecondaryMaterial.clone() };
     }
 
-    public ItemData(OrePrefixes aPrefix, IOreMaterial aMaterial) {
-        this(aPrefix, aMaterial, false);
+    public ItemData(OrePrefixes prefix, IOreMaterial material) {
+        this(prefix, material, false);
     }
 
-    public ItemData(MaterialStack aMaterial, MaterialStack... aByProducts) {
+    public ItemData(MaterialStack material, MaterialStack... byProducts) {
         mPrefix = null;
-        mMaterial = aMaterial.mMaterial == null ? null : aMaterial.clone();
+        mMaterial = material.mMaterial == null ? null : material.clone();
         mBlackListed = true;
-        if (aByProducts == null) {
+        if (byProducts == null) {
             mByProducts = EMPTY_MATERIALSTACK_ARRAY;
         } else {
-            MaterialStack[] tByProducts = aByProducts.length < 1 ? EMPTY_MATERIALSTACK_ARRAY
-                : new MaterialStack[aByProducts.length];
+            MaterialStack[] tByProducts = byProducts.length < 1 ? EMPTY_MATERIALSTACK_ARRAY
+                : new MaterialStack[byProducts.length];
             int j = 0;
-            for (MaterialStack aByProduct : aByProducts)
-                if (aByProduct != null && aByProduct.mMaterial != null) tByProducts[j++] = aByProduct.clone();
+            for (MaterialStack byProduct : byProducts)
+                if (byProduct != null && byProduct.mMaterial != null) tByProducts[j++] = byProduct.clone();
             mByProducts = j > 0 ? new MaterialStack[j] : EMPTY_MATERIALSTACK_ARRAY;
             System.arraycopy(tByProducts, 0, mByProducts, 0, mByProducts.length);
         }
     }
 
-    public ItemData(IOreMaterial aMaterial, long aAmount, MaterialStack... aByProducts) {
-        this(new MaterialStack(aMaterial, aAmount), aByProducts);
+    public ItemData(IOreMaterial material, long amount, MaterialStack... byProducts) {
+        this(new MaterialStack(material, amount), byProducts);
     }
 
-    public ItemData(IOreMaterial aMaterial, long aAmount, IOreMaterial aByProduct, long aByProductAmount) {
-        this(new MaterialStack(aMaterial, aAmount), new MaterialStack(aByProduct, aByProductAmount));
+    public ItemData(IOreMaterial material, long amount, IOreMaterial byProduct, long byProductAmount) {
+        this(new MaterialStack(material, amount), new MaterialStack(byProduct, byProductAmount));
     }
 
-    public ItemData(ItemData... aData) {
+    public ItemData(ItemData... data) {
         mPrefix = null;
         mBlackListed = true;
 
-        ArrayList<MaterialStack> aList = new ArrayList<>(), rList = new ArrayList<>();
+        ArrayList<MaterialStack> list = new ArrayList<>(), rList = new ArrayList<>();
 
-        for (ItemData tData : aData) if (tData != null) {
-            if (tData.hasValidMaterialData() && tData.mMaterial.mAmount > 0) aList.add(tData.mMaterial.clone());
-            for (MaterialStack tMaterial : tData.mByProducts) if (tMaterial.mAmount > 0) aList.add(tMaterial.clone());
+        for (ItemData tData : data) if (tData != null) {
+            if (tData.hasValidMaterialData() && tData.mMaterial.mAmount > 0) list.add(tData.mMaterial.clone());
+            for (MaterialStack tMaterial : tData.mByProducts) if (tMaterial.mAmount > 0) list.add(tMaterial.clone());
         }
 
-        for (MaterialStack aMaterial : aList) {
+        for (MaterialStack material : list) {
             boolean temp = true;
-            for (MaterialStack tMaterial : rList) if (aMaterial.mMaterial == tMaterial.mMaterial) {
-                tMaterial.mAmount += aMaterial.mAmount;
+            for (MaterialStack tMaterial : rList) if (material.mMaterial == tMaterial.mMaterial) {
+                tMaterial.mAmount += material.mAmount;
                 temp = false;
                 break;
             }
-            if (temp) rList.add(aMaterial.clone());
+            if (temp) rList.add(material.clone());
         }
 
         rList.sort((a, b) -> Long.compare(b.mAmount, a.mAmount));
@@ -110,8 +110,8 @@ public class ItemData {
         return rList;
     }
 
-    public final MaterialStack getByProduct(int aIndex) {
-        return aIndex >= 0 && aIndex < mByProducts.length ? mByProducts[aIndex] : null;
+    public final MaterialStack getByProduct(int index) {
+        return index >= 0 && index < mByProducts.length ? mByProducts[index] : null;
     }
 
     @Override
