@@ -103,7 +103,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo("Circuit " + JUNK_MODE + " for Junk")
             .addInfo("Circuit " + TREASURE_MODE + " for Treasure")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(11, 11, 4, false)
+            .beginStructureBlock(11, 4, 11, false)
             .addController("Front center, 2nd layer")
             .addCasing("160-167", "Aquatic Casing", false)
             .addCasing("40", "Water", false)

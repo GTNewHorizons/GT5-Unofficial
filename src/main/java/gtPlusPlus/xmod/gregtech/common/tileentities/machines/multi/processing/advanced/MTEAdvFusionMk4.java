@@ -49,7 +49,7 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")
             .addInfo("Performs 4/4 overclocks")
-            .beginStructureBlock(15, 15, 3, false)
+            .beginStructureBlock(15, 3, 15, false)
             .addController("Middle center, 2nd layer")
             .addCasing("79-123", "Fusion Machine Casing Mk-III", false)
             .addCasing("32", "Advanced Fusion Coil", false)
