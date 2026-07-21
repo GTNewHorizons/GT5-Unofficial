@@ -791,7 +791,7 @@ public class GregtechConduits {
     }
 
     public static boolean registerOre(OrePrefixes aPrefix, Material aMaterial, ItemStack aStack) {
-        return registerOre(aPrefix.get(StringUtils.sanitizeString(aMaterial.getDefaultLocalName())), aStack);
+        return registerOre(aPrefix.oreDictName(StringUtils.sanitizeString(aMaterial.getDefaultLocalName())), aStack);
     }
 
     public static boolean registerOre(Object aName, ItemStack aStack) {

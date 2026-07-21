@@ -32,7 +32,7 @@ public class LoaderMaterialLibCutover implements Runnable {
                 if (prefix.isUnifiable()) {
                     GTOreDictUnificator.set(prefix, material, stack);
                 } else {
-                    GTOreDictUnificator.registerOre(prefix.get(material), stack);
+                    GTOreDictUnificator.registerOre(prefix.oreDictName(material), stack);
                 }
                 if ((prefix == OrePrefixes.stick || prefix == OrePrefixes.wireFine || prefix == OrePrefixes.ingot)
                     && (material == Materials.Lead || material == Materials.Tin

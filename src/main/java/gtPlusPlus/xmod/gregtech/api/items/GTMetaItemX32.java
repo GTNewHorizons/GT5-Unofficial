@@ -68,7 +68,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
                 if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
-                    GTOreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
+                    GTOreDictUnificator.registerOre(tPrefix.oreDictName(tMaterial), tStack);
                 }
                 if (((tPrefix == OrePrefixes.stick) || (tPrefix == OrePrefixes.wireFine))
                     && ((tMaterial == Materials.Lead) || (tMaterial == Materials.Tin)

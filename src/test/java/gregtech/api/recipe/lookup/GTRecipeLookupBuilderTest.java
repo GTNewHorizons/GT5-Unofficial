@@ -134,8 +134,7 @@ class GTRecipeLookupBuilderTest {
         Item equivalentItem = item("builder.item.unified.equivalent");
         ItemStack representative = new ItemStack(representativeItem, 1, 0);
         ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
-        String unificationName = circuit.get(Materials.LV)
-            .toString();
+        String unificationName = circuit.oreDictName(Materials.LV);
         boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
             .containsKey(unificationName);
         ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()
