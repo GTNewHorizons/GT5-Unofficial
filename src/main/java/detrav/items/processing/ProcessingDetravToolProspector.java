@@ -44,7 +44,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .get(0), 'S',
                 OreDictionary.getOres("cellSaltWater")
                     .get(0),
-                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                'H', OrePrefixes.toolHeadDrill.ingredient(material), 'P', OrePrefixes.plate.ingredient(material), 'C',
                 Circuits.LV.getIngredient(), 'X', ItemList.Sensor_LV });
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE
@@ -54,7 +54,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .get(0), 'S',
                 OreDictionary.getOres("cellSaltWater")
                     .get(0),
-                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                'H', OrePrefixes.toolHeadDrill.ingredient(material), 'P', OrePrefixes.plate.ingredient(material), 'C',
                 Circuits.MV.getIngredient(), 'X', ItemList.Sensor_MV });
 
         GTModHandler.addCraftingRecipe(
@@ -65,7 +65,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .get(0), 'S',
                 OreDictionary.getOres("cellSodiumPersulfate")
                     .get(0),
-                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                'H', OrePrefixes.toolHeadDrill.ingredient(material), 'P', OrePrefixes.plate.ingredient(material), 'C',
                 Circuits.HV.getIngredient(), 'X', ItemList.Sensor_HV });
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE
@@ -75,7 +75,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .get(0), 'S',
                 OreDictionary.getOres("cellSodiumPersulfate")
                     .get(0),
-                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                'H', OrePrefixes.toolHeadDrill.ingredient(material), 'P', OrePrefixes.plate.ingredient(material), 'C',
                 Circuits.EV.getIngredient(), 'X', ItemList.Sensor_EV });
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE
@@ -85,7 +85,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .get(0), 'S',
                 OreDictionary.getOres("cellSodiumPersulfate")
                     .get(0),
-                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                'H', OrePrefixes.toolHeadDrill.ingredient(material), 'P', OrePrefixes.plate.ingredient(material), 'C',
                 Circuits.IV.getIngredient(), 'X', ItemList.Sensor_IV });
 
         GTModHandler.addCraftingRecipe(
@@ -96,7 +96,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .get(0), 'S',
                 OreDictionary.getOres("cellLithiumPeroxide")
                     .get(0),
-                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                'H', OrePrefixes.toolHeadDrill.ingredient(material), 'P', OrePrefixes.plate.ingredient(material), 'C',
                 Circuits.LuV.getIngredient(), 'X', ItemList.Sensor_LuV });
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE
@@ -106,7 +106,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .get(0), 'S',
                 OreDictionary.getOres("cellLithiumPeroxide")
                     .get(0),
-                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                'H', OrePrefixes.toolHeadDrill.ingredient(material), 'P', OrePrefixes.plate.ingredient(material), 'C',
                 Circuits.ZPM.getIngredient(), 'X', ItemList.Sensor_ZPM });
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE
@@ -116,7 +116,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .get(0), 'S',
                 OreDictionary.getOres("cellLithiumPeroxide")
                     .get(0),
-                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                'H', OrePrefixes.toolHeadDrill.ingredient(material), 'P', OrePrefixes.plate.ingredient(material), 'C',
                 Circuits.UV.getIngredient(), 'X', ItemList.Sensor_UV });
 
         GTModHandler.addCraftingRecipe(
@@ -127,7 +127,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .get(0), 'S',
                 OreDictionary.getOres("cellHydrogenPeroxide")
                     .get(0),
-                'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
+                'H', OrePrefixes.toolHeadDrill.ingredient(material), 'P', OrePrefixes.plate.ingredient(material), 'C',
                 Circuits.UHV.getIngredient(), 'X', ItemList.Sensor_UHV });
 
     }
