@@ -53,7 +53,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     GTModHandler.addCraftingRecipe(
                         block.getStackForm(2, meta),
                         GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "SSS", "SwS", "SSS", 'S', OrePrefixes.stick.get(material) });
+                        new Object[] { "SSS", "SwS", "SSS", 'S', OrePrefixes.stick.ingredient(material) });
                 }
 
                 if (!MU.hasFlag(material, GTMaterialFlag.NO_RECIPES)
@@ -605,7 +605,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
     private static void registerFluidPipes() {
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeSmall.get(MU.materialOf(Materials2Materials.Wood)),
+            OrePrefixes.pipeSmall.oreDictName(MU.materialOf(Materials2Materials.Wood)),
             new MTEFluidPipe(
                 5101,
                 "GT_Pipe_Wood_Small",
@@ -617,7 +617,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 false).renameMaterial("Wooden")
                     .getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeMedium.get(MU.materialOf(Materials2Materials.Wood)),
+            OrePrefixes.pipeMedium.oreDictName(MU.materialOf(Materials2Materials.Wood)),
             new MTEFluidPipe(
                 5102,
                 "GT_Pipe_Wood",
@@ -629,7 +629,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 false).renameMaterial("Wooden")
                     .getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeLarge.get(MU.materialOf(Materials2Materials.Wood)),
+            OrePrefixes.pipeLarge.oreDictName(MU.materialOf(Materials2Materials.Wood)),
             new MTEFluidPipe(
                 5103,
                 "GT_Pipe_Wood_Large",
@@ -1255,7 +1255,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             final String internalNameFluidPipe = "GT_Pipe_" + material.mName;
 
             GTOreDictUnificator.registerOre(
-                OrePrefixes.pipeTiny.get(material),
+                OrePrefixes.pipeTiny.oreDictName(material),
                 new MTEFluidPipe(
                     startId,
                     internalNameFluidPipe + "_Tiny",
@@ -1267,7 +1267,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     true).renameMaterial(displayName)
                         .getStackForm(1L));
             GTOreDictUnificator.registerOre(
-                OrePrefixes.pipeSmall.get(material),
+                OrePrefixes.pipeSmall.oreDictName(material),
                 new MTEFluidPipe(
                     startId + 1,
                     internalNameFluidPipe + "_Small",
@@ -1279,7 +1279,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     true).renameMaterial(displayName)
                         .getStackForm(1L));
             GTOreDictUnificator.registerOre(
-                OrePrefixes.pipeMedium.get(material),
+                OrePrefixes.pipeMedium.oreDictName(material),
                 new MTEFluidPipe(
                     startId + 2,
                     internalNameFluidPipe,
@@ -1291,7 +1291,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     true).renameMaterial(displayName)
                         .getStackForm(1L));
             GTOreDictUnificator.registerOre(
-                OrePrefixes.pipeLarge.get(material),
+                OrePrefixes.pipeLarge.oreDictName(material),
                 new MTEFluidPipe(
                     startId + 3,
                     internalNameFluidPipe + "_Large",
@@ -1303,7 +1303,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     true).renameMaterial(displayName)
                         .getStackForm(1L));
             GTOreDictUnificator.registerOre(
-                OrePrefixes.pipeHuge.get(material),
+                OrePrefixes.pipeHuge.oreDictName(material),
                 new MTEFluidPipe(
                     startId + 4,
                     internalNameFluidPipe + "_Huge",
@@ -1315,7 +1315,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     true).renameMaterial(displayName)
                         .getStackForm(1L));
             GTOreDictUnificator.registerOre(
-                OrePrefixes.pipeQuadruple.get(material),
+                OrePrefixes.pipeQuadruple.oreDictName(material),
                 new MTEFluidPipe(
                     multiFluidStartId,
                     internalNameFluidPipe + "_Quadruple",
@@ -1328,7 +1328,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     4).renameMaterial(displayName)
                         .getStackForm(1L));
             GTOreDictUnificator.registerOre(
-                OrePrefixes.pipeNonuple.get(material),
+                OrePrefixes.pipeNonuple.oreDictName(material),
                 new MTEFluidPipe(
                     multiFluidStartId + 1,
                     internalNameFluidPipe + "_Nonuple",
@@ -1438,7 +1438,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
             if (generateTinyAndSmall) {
                 GTOreDictUnificator.registerOre(
-                    OrePrefixes.pipeTiny.get(material),
+                    OrePrefixes.pipeTiny.oreDictName(material),
                     new MTEItemPipe(
                         idList[idIndex],
                         internalNameItemPipe + "_Tiny",
@@ -1452,7 +1452,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                             .getStackForm(1L));
                 idIndex++;
                 GTOreDictUnificator.registerOre(
-                    OrePrefixes.pipeSmall.get(material),
+                    OrePrefixes.pipeSmall.oreDictName(material),
                     new MTEItemPipe(
                         idList[idIndex],
                         internalNameItemPipe + "_Small",
@@ -1467,7 +1467,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 idIndex++;
             }
             GTOreDictUnificator.registerOre(
-                OrePrefixes.pipeMedium.get(material),
+                OrePrefixes.pipeMedium.oreDictName(material),
                 new MTEItemPipe(
                     idList[idIndex],
                     internalNameItemPipe,
@@ -1481,7 +1481,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                         .getStackForm(1L));
             idIndex++;
             GTOreDictUnificator.registerOre(
-                OrePrefixes.pipeLarge.get(material),
+                OrePrefixes.pipeLarge.oreDictName(material),
                 new MTEItemPipe(
                     idList[idIndex],
                     internalNameItemPipe + "_Large",
@@ -1495,7 +1495,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                         .getStackForm(1L));
             idIndex++;
             GTOreDictUnificator.registerOre(
-                OrePrefixes.pipeHuge.get(material),
+                OrePrefixes.pipeHuge.oreDictName(material),
                 new MTEItemPipe(
                     idList[idIndex],
                     internalNameItemPipe + "_Huge",
@@ -1509,7 +1509,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             idIndex++;
             if (generateTinyAndSmall) {
                 GTOreDictUnificator.registerOre(
-                    OrePrefixes.pipeRestrictiveTiny.get(material),
+                    OrePrefixes.pipeRestrictiveTiny.oreDictName(material),
                     new MTEItemPipe(
                         idList[idIndex],
                         internalNameRestrictivePipe + "_Tiny",
@@ -1523,7 +1523,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                             .getStackForm(1L));
                 idIndex++;
                 GTOreDictUnificator.registerOre(
-                    OrePrefixes.pipeRestrictiveSmall.get(material),
+                    OrePrefixes.pipeRestrictiveSmall.oreDictName(material),
                     new MTEItemPipe(
                         idList[idIndex],
                         internalNameRestrictivePipe + "_Small",
@@ -1538,7 +1538,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 idIndex++;
             }
             GTOreDictUnificator.registerOre(
-                OrePrefixes.pipeRestrictiveMedium.get(material),
+                OrePrefixes.pipeRestrictiveMedium.oreDictName(material),
                 new MTEItemPipe(
                     idList[idIndex],
                     internalNameRestrictivePipe,
@@ -1552,7 +1552,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                         .getStackForm(1L));
             idIndex++;
             GTOreDictUnificator.registerOre(
-                OrePrefixes.pipeRestrictiveLarge.get(material),
+                OrePrefixes.pipeRestrictiveLarge.oreDictName(material),
                 new MTEItemPipe(
                     idList[idIndex],
                     internalNameRestrictivePipe + "_Large",
@@ -1566,7 +1566,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                         .getStackForm(1L));
             idIndex++;
             GTOreDictUnificator.registerOre(
-                OrePrefixes.pipeRestrictiveHuge.get(material),
+                OrePrefixes.pipeRestrictiveHuge.oreDictName(material),
                 new MTEItemPipe(
                     idList[idIndex],
                     internalNameRestrictivePipe + "_Huge",
