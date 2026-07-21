@@ -728,28 +728,28 @@ public class RecipesMachinesTiered {
         // Modulator I
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Modulator_I.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "PHP", "CPC", 'C', "circuitData", 'P', MaterialsAlloy.INCOLOY_DS.getPlate(1), 'H',
                 ItemList.Casing_EV });
 
         // Modulator II
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Modulator_II.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "PHP", "CPC", 'C', "circuitElite", 'P', MaterialsAlloy.INCONEL_625.getPlate(1), 'H',
                 ItemList.Casing_IV });
 
         // Modulator III
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Modulator_III.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "PHP", "CPC", 'C', "circuitMaster", 'P', MaterialsAlloy.ZERON_100.getPlate(1), 'H',
                 ItemList.Casing_LuV });
 
         // Modulator IV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Modulator_IV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "PHP", "CPC", 'C', "circuitUltimate", 'P', MaterialsAlloy.PIKYONIUM.getPlate(1), 'H',
                 ItemList.Casing_ZPM });
     }
@@ -758,28 +758,28 @@ public class RecipesMachinesTiered {
         // Resonance Chamber I
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ResonanceChamber_I.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "FHF", "PFP", 'P', MaterialsAlloy.INCOLOY_DS.getPlateDouble(1), 'F',
                 ItemList.Field_Generator_LV, 'H', ItemList.Casing_EV });
 
         // Resonance Chamber II
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ResonanceChamber_II.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "FHF", "PFP", 'P', MaterialsAlloy.INCONEL_625.getPlateDouble(1), 'F',
                 ItemList.Field_Generator_MV, 'H', ItemList.Casing_IV });
 
         // Resonance Chamber III
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ResonanceChamber_III.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "FHF", "PFP", 'P', MaterialsAlloy.ZERON_100.getPlateDouble(1), 'F',
                 ItemList.Field_Generator_HV, 'H', ItemList.Casing_LuV });
 
         // Resonance Chamber IV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ResonanceChamber_IV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "FHF", "PFP", 'P', MaterialsAlloy.PIKYONIUM.getPlateDouble(1), 'F',
                 ItemList.Field_Generator_EV, 'H', ItemList.Casing_ZPM });
     }
@@ -788,64 +788,64 @@ public class RecipesMachinesTiered {
         // LV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_LV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.Steel), 'C',
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Steel), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', Circuits.LV.getIngredient(), 'H', ItemList.Hull_LV, 'R',
                 ItemList.Robot_Arm_LV });
 
         // MV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_MV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.Aluminium), 'C',
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Aluminium), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', Circuits.MV.getIngredient(), 'H', ItemList.Hull_MV, 'R',
                 ItemList.Robot_Arm_MV });
 
         // HV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_HV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'C',
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', Circuits.HV.getIngredient(), 'H', ItemList.Hull_HV, 'R',
                 ItemList.Robot_Arm_HV });
 
         // EV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_EV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C',
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Titanium), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', Circuits.EV.getIngredient(), 'H', ItemList.Hull_EV, 'R',
                 ItemList.Robot_Arm_EV });
 
         // IV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_IV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.TungstenSteel), 'C',
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.TungstenSteel), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', Circuits.IV.getIngredient(), 'H', ItemList.Hull_IV, 'R',
                 ItemList.Robot_Arm_IV });
 
         // LuV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_LuV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.Chrome), 'C',
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Chrome), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', Circuits.LuV.getIngredient(), 'H', ItemList.Hull_LuV, 'R',
                 ItemList.Robot_Arm_LuV });
 
         // ZPM
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_ZPM.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.Iridium), 'C',
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Iridium), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', Circuits.ZPM.getIngredient(), 'H', ItemList.Hull_ZPM, 'R',
                 ItemList.Robot_Arm_ZPM });
 
         // UV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_UV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.Osmium), 'C',
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Osmium), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', Circuits.UV.getIngredient(), 'H', ItemList.Hull_UV, 'R',
                 ItemList.Robot_Arm_UV });
     }
@@ -1080,10 +1080,10 @@ public class RecipesMachinesTiered {
         // LV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_LV.get(1L),
-            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            BITS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_LV, 'P', ItemList.Electric_Piston_LV, 'E',
                 ItemList.Electric_Motor_LV, 'C', Circuits.LV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.get(Materials.Tin), 'G', MaterialsAlloy.TUMBAGA.getGear(2) });
+                OrePrefixes.cableGt01.ingredient(Materials.Tin), 'G', MaterialsAlloy.TUMBAGA.getGear(2) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1105,10 +1105,11 @@ public class RecipesMachinesTiered {
         // MV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_MV.get(1L),
-            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            BITS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_MV, 'P', ItemList.Electric_Piston_MV, 'E',
                 ItemList.Electric_Motor_MV, 'C', Circuits.MV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.get(Materials.AnnealedCopper), 'G', MaterialsAlloy.EGLIN_STEEL.getGear(2) });
+                OrePrefixes.cableGt01.ingredient(Materials.AnnealedCopper), 'G',
+                MaterialsAlloy.EGLIN_STEEL.getGear(2) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1130,10 +1131,10 @@ public class RecipesMachinesTiered {
         // HV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_HV.get(1L),
-            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            BITS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_HV, 'P', ItemList.Electric_Piston_HV, 'E',
                 ItemList.Electric_Motor_HV, 'C', Circuits.HV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.get(Materials.Gold), 'G',
+                OrePrefixes.cableGt01.ingredient(Materials.Gold), 'G',
                 MaterialLibAPI.getStack(Materials2Materials.Chrome, Materials2Shapes.gearGt, (int) (1)) });
 
         GTValues.RA.stdBuilder()
@@ -1156,10 +1157,10 @@ public class RecipesMachinesTiered {
         // EV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_EV.get(1L),
-            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            BITS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Motor_EV, 'C', Circuits.EV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.get(Materials.Titanium), 'G', MaterialsAlloy.INCOLOY_DS.getGear(1) });
+                OrePrefixes.cableGt01.ingredient(Materials.Titanium), 'G', MaterialsAlloy.INCOLOY_DS.getGear(1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1181,10 +1182,10 @@ public class RecipesMachinesTiered {
         // IV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_IV.get(1L),
-            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            BITS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
                 ItemList.Electric_Motor_IV, 'C', Circuits.IV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.get(Materials.Tungsten), 'G', MaterialsAlloy.NITINOL_60.getGear(1) });
+                OrePrefixes.cableGt01.ingredient(Materials.Tungsten), 'G', MaterialsAlloy.NITINOL_60.getGear(1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1325,93 +1326,93 @@ public class RecipesMachinesTiered {
         // Air Filter [Tier 1]
         GTModHandler.addCraftingRecipe(
             GregtechItemList.AirFilter_Tier1.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PPP", "DDD", "PPP", 'P', OrePrefixes.plate.get(Materials.Carbon), 'D',
-                OrePrefixes.dust.get(Materials.Carbon) });
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PPP", "DDD", "PPP", 'P', OrePrefixes.plate.ingredient(Materials.Carbon), 'D',
+                OrePrefixes.dust.ingredient(Materials.Carbon) });
 
         // Air Filter [Tier 2]
         GTModHandler.addCraftingRecipe(
             GregtechItemList.AirFilter_Tier2.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PPP", "CDC", "PPP", 'P', OrePrefixes.plate.get(Materials.Carbon), 'C',
-                "cellLithiumPeroxide", 'D', OrePrefixes.dust.get(Materials.Carbon) });
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PPP", "CDC", "PPP", 'P', OrePrefixes.plate.ingredient(Materials.Carbon), 'C',
+                "cellLithiumPeroxide", 'D', OrePrefixes.dust.ingredient(Materials.Carbon) });
 
         // Pollution Detection Device
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Detector.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PSP", "PMP", "CHC", 'P', OrePrefixes.plate.get(Materials.Steel), 'S', ItemList.Sensor_LV,
-                'M', ItemList.Electric_Motor_LV, 'C', "circuitBasic", 'H', ItemList.Hull_LV });
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PSP", "PMP", "CHC", 'P', OrePrefixes.plate.ingredient(Materials.Steel), 'S',
+                ItemList.Sensor_LV, 'M', ItemList.Electric_Motor_LV, 'C', "circuitBasic", 'H', ItemList.Hull_LV });
 
         // Pollution Cleaners/Scrubbers
         // LV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_LV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
-                OrePrefixes.plate.get(Materials.Tin), 'M', ItemList.Electric_Motor_LV, 'C', "circuitBasic", 'H',
+                OrePrefixes.plate.ingredient(Materials.Tin), 'M', ItemList.Electric_Motor_LV, 'C', "circuitBasic", 'H',
                 ItemList.Hull_LV });
 
         // MV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_MV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
-                OrePrefixes.plate.get(Materials.Copper), 'M', ItemList.Electric_Motor_MV, 'C', "circuitGood", 'H',
-                ItemList.Hull_MV });
+                OrePrefixes.plate.ingredient(Materials.Copper), 'M', ItemList.Electric_Motor_MV, 'C', "circuitGood",
+                'H', ItemList.Hull_MV });
 
         // HV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_HV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
-                OrePrefixes.plate.get(Materials.Bronze), 'M', ItemList.Electric_Motor_HV, 'C', "circuitAdvanced", 'H',
-                ItemList.Hull_HV });
+                OrePrefixes.plate.ingredient(Materials.Bronze), 'M', ItemList.Electric_Motor_HV, 'C', "circuitAdvanced",
+                'H', ItemList.Hull_HV });
 
         // EV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_EV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
-                OrePrefixes.plate.get(Materials.Iron), 'M', ItemList.Electric_Motor_EV, 'C', "circuitData", 'H',
+                OrePrefixes.plate.ingredient(Materials.Iron), 'M', ItemList.Electric_Motor_EV, 'C', "circuitData", 'H',
                 ItemList.Hull_EV });
 
         // IV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_IV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
-                OrePrefixes.plate.get(Materials.Steel), 'M', ItemList.Electric_Motor_IV, 'C', "circuitElite", 'H',
-                ItemList.Hull_IV });
+                OrePrefixes.plate.ingredient(Materials.Steel), 'M', ItemList.Electric_Motor_IV, 'C', "circuitElite",
+                'H', ItemList.Hull_IV });
 
         // LuV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_LuV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
-                OrePrefixes.plate.get(Materials.Redstone), 'M', ItemList.Electric_Motor_LuV, 'C', "circuitMaster", 'H',
-                ItemList.Hull_LuV });
+                OrePrefixes.plate.ingredient(Materials.Redstone), 'M', ItemList.Electric_Motor_LuV, 'C',
+                "circuitMaster", 'H', ItemList.Hull_LuV });
 
         // ZPM
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_ZPM.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
-                OrePrefixes.plate.get(Materials.Aluminium), 'M', ItemList.Electric_Motor_ZPM, 'C', "circuitUltimate",
-                'H', ItemList.Hull_ZPM });
+                OrePrefixes.plate.ingredient(Materials.Aluminium), 'M', ItemList.Electric_Motor_ZPM, 'C',
+                "circuitUltimate", 'H', ItemList.Hull_ZPM });
 
         // UV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_UV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
-                OrePrefixes.plate.get(Materials.DarkSteel), 'M', ItemList.Electric_Motor_UV, 'C',
+                OrePrefixes.plate.ingredient(Materials.DarkSteel), 'M', ItemList.Electric_Motor_UV, 'C',
                 "circuitSuperconductor", 'H', ItemList.Hull_UV });
 
         // UHV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_MAX.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
                 MaterialsAlloy.ZERON_100.getPlate(1), 'M', ItemList.Electric_Motor_UHV, 'C', "circuitInfinite", 'H',
                 ItemList.Hull_MAX });
@@ -1421,51 +1422,52 @@ public class RecipesMachinesTiered {
         // Allows clearing stored fluids
         GTModHandler.addShapelessCraftingRecipe(
             GregtechItemList.GTFluidTank_ULV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.GTFluidTank_ULV.get(1) });
         GTModHandler.addShapelessCraftingRecipe(
             GregtechItemList.GTFluidTank_LV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.GTFluidTank_LV.get(1) });
         GTModHandler.addShapelessCraftingRecipe(
             GregtechItemList.GTFluidTank_MV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.GTFluidTank_MV.get(1) });
         GTModHandler.addShapelessCraftingRecipe(
             GregtechItemList.GTFluidTank_HV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.GTFluidTank_HV.get(1) });
 
         // ULV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_ULV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "TST", "IPI", "IBI", 'T', OrePrefixes.plate.get(Materials.Tin), 'S',
-                OrePrefixes.plate.get(Materials.Steel), 'I', OrePrefixes.plate.get(Materials.Iron), 'P',
-                OrePrefixes.pipeLarge.get(Materials.Clay), 'B', new ItemStack(Items.water_bucket) });
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "TST", "IPI", "IBI", 'T', OrePrefixes.plate.ingredient(Materials.Tin), 'S',
+                OrePrefixes.plate.ingredient(Materials.Steel), 'I', OrePrefixes.plate.ingredient(Materials.Iron), 'P',
+                OrePrefixes.pipeLarge.ingredient(Materials.Clay), 'B', new ItemStack(Items.water_bucket) });
 
         // LV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_LV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "SIS", "BPB", "BUB", 'S', OrePrefixes.plate.get(Materials.Steel), 'I',
-                OrePrefixes.plate.get(Materials.Iron), 'B', OrePrefixes.plate.get(Materials.Bronze), 'P',
-                OrePrefixes.pipeHuge.get(Materials.Clay), 'U', ItemList.Electric_Pump_LV });
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "SIS", "BPB", "BUB", 'S', OrePrefixes.plate.ingredient(Materials.Steel), 'I',
+                OrePrefixes.plate.ingredient(Materials.Iron), 'B', OrePrefixes.plate.ingredient(Materials.Bronze), 'P',
+                OrePrefixes.pipeHuge.ingredient(Materials.Clay), 'U', ItemList.Electric_Pump_LV });
 
         // MV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_MV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "DBD", "SPS", "SUS", 'D', OrePrefixes.plate.get(Materials.DarkSteel), 'B',
-                OrePrefixes.plate.get(Materials.Bronze), 'S', OrePrefixes.plate.get(Materials.Steel), 'P',
-                OrePrefixes.pipeMedium.get(Materials.Bronze), 'U', ItemList.Electric_Pump_LV });
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "DBD", "SPS", "SUS", 'D', OrePrefixes.plate.ingredient(Materials.DarkSteel), 'B',
+                OrePrefixes.plate.ingredient(Materials.Bronze), 'S', OrePrefixes.plate.ingredient(Materials.Steel), 'P',
+                OrePrefixes.pipeMedium.ingredient(Materials.Bronze), 'U', ItemList.Electric_Pump_LV });
 
         // HV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_HV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CAC", "DPD", "CUC", 'C', "circuitPrimitive", 'A',
-                OrePrefixes.plate.get(Materials.Aluminium), 'D', OrePrefixes.plate.get(Materials.DarkSteel), 'P',
-                OrePrefixes.pipeMedium.get(Materials.Steel), 'U', ItemList.Electric_Pump_MV });
+                OrePrefixes.plate.ingredient(Materials.Aluminium), 'D',
+                OrePrefixes.plate.ingredient(Materials.DarkSteel), 'P',
+                OrePrefixes.pipeMedium.ingredient(Materials.Steel), 'U', ItemList.Electric_Pump_MV });
     }
 }
