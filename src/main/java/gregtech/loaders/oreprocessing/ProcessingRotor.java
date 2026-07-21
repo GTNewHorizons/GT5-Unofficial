@@ -45,9 +45,10 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                         GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "PhP", "SRf", "PdP", 'P',
-                            aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
-                                : OrePrefixes.plate.get(aMaterial),
-                            'R', OrePrefixes.ring.get(aMaterial), 'S', OrePrefixes.screw.get(aMaterial) });
+                            aMaterial == Materials.Wood ? OrePrefixes.plank.ingredient(aMaterial)
+                                : OrePrefixes.plate.ingredient(aMaterial),
+                            'R', OrePrefixes.ring.ingredient(aMaterial), 'S',
+                            OrePrefixes.screw.ingredient(aMaterial) });
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(tPlate.copy(), tRing.copy())
