@@ -19,6 +19,7 @@ public class ItemData {
     public final MaterialStack[] mByProducts;
     public boolean mBlackListed = false;
     public ItemStack mUnificationTarget = null;
+    private final String oreDictName;
 
     public ItemData(OrePrefixes prefix, IOreMaterial material, boolean blackListed) {
         mPrefix = prefix;
@@ -27,10 +28,20 @@ public class ItemData {
         mByProducts = prefix.mSecondaryMaterial == null || prefix.mSecondaryMaterial.mMaterial == null
             ? EMPTY_MATERIALSTACK_ARRAY
             : new MaterialStack[] { prefix.mSecondaryMaterial.clone() };
+        oreDictName = null;
     }
 
     public ItemData(OrePrefixes prefix, IOreMaterial material) {
         this(prefix, material, false);
+    }
+
+    /// An ingredient that names an ore-dictionary entry and carries no composition, for the entries whose
+    /// material side is not a material at all.
+    public ItemData(OrePrefixes prefix, String materialName) {
+        mPrefix = prefix;
+        mMaterial = null;
+        mByProducts = EMPTY_MATERIALSTACK_ARRAY;
+        oreDictName = prefix.oreDictName(materialName);
     }
 
     public ItemData(MaterialStack material, MaterialStack... byProducts) {
@@ -48,6 +59,7 @@ public class ItemData {
             mByProducts = j > 0 ? new MaterialStack[j] : EMPTY_MATERIALSTACK_ARRAY;
             System.arraycopy(tByProducts, 0, mByProducts, 0, mByProducts.length);
         }
+        oreDictName = null;
     }
 
     public ItemData(IOreMaterial material, long amount, MaterialStack... byProducts) {
@@ -89,6 +101,7 @@ public class ItemData {
         }
 
         mByProducts = rList.toArray(new MaterialStack[0]);
+        oreDictName = null;
     }
 
     public final boolean hasValidPrefixMaterialData() {
@@ -116,6 +129,7 @@ public class ItemData {
 
     @Override
     public String toString() {
+        if (oreDictName != null) return oreDictName;
         if (mPrefix == null || mMaterial == null || mMaterial.mMaterial == null) return "";
         return mPrefix.getName() + mMaterial.mMaterial.getInternalName();
     }
