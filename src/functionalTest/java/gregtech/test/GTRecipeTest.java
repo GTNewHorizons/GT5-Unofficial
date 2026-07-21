@@ -71,7 +71,7 @@ class GTRecipeTest {
             .addTo(recipeMap);
 
         RA.stdBuilder()
-            .itemInputs(new ItemStack(lapis_block, 1), get(circuit, Materials.HV, 1))
+            .itemInputs(new ItemStack(lapis_block, 1), get(circuit, Materials.Iron, 1))
             .itemOutputs(IC2_LapotronCrystal.get(1))
             .duration(0)
             .eut(0)
@@ -146,7 +146,7 @@ class GTRecipeTest {
     @Test
     void findWithExactSameInputs() {
         GTRecipe recipe = recipeMap.findRecipeQuery()
-            .items(new ItemStack(lapis_block, 1), get(circuit, Materials.HV, 1))
+            .items(new ItemStack(lapis_block, 1), get(circuit, Materials.Iron, 1))
             .find();
         assertNotNull(recipe);
 
@@ -186,7 +186,7 @@ class GTRecipeTest {
         tag.setFloat("charge", 123456);
         lapisBlock.stackTagCompound = tag;
         GTRecipe recipe = recipeMap.findRecipeQuery()
-            .items(lapisBlock, get(circuit, Materials.HV, 1))
+            .items(lapisBlock, get(circuit, Materials.Iron, 1))
             .find();
         assertNotNull(recipe);
 
