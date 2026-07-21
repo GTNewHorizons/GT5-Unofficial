@@ -1990,7 +1990,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         @Override
         public String getDisplayName() {
-            return GTUtility.translate(name);
+            return StatCollector.translateToLocal(name);
         }
 
         @Override
@@ -2051,7 +2051,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TECTECH_STANDARD;
     }
 

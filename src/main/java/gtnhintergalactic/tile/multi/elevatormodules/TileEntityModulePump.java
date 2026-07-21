@@ -32,7 +32,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.gui.modularui.multiblock.TileEntityModulePumpGui;
@@ -97,8 +96,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
     private static final IStatusFunction<TileEntityModulePump> PARALLEL_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getParallels());
     /** Name of the batch setting */
-    private static final INameFunction<TileEntityModulePump> BATCH_SETTING_NAME = (base, p) -> GTUtility
-        .translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.3"); // Batch size
+    private static final INameFunction<TileEntityModulePump> BATCH_SETTING_NAME = (base, p) -> StatCollector
+        .translateToLocal("gt.blockmachines.multimachine.project.ig.pump.cfgi.3"); // Batch size
     /** Status of the batch setting */
     private static final IStatusFunction<TileEntityModulePump> BATCH_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);
@@ -525,7 +524,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
 
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t1.desc5"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT2"))
-                .beginStructureBlock(2, 1, 5, false)
+                .beginStructureBlock(1, 5, 2, false)
                 .addController("Front center, 4th layer")
                 .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
                 .addOutputHatch("1+", "Any casing", 1)
@@ -620,7 +619,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t2.desc5"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT3"))
-                .beginStructureBlock(2, 1, 5, false)
+                .beginStructureBlock(1, 5, 2, false)
                 .addController("Front center, 4th layer")
                 .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
                 .addOutputHatch("1+", "Any casing", 1)
@@ -715,7 +714,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t3.desc5"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT4"))
-                .beginStructureBlock(2, 1, 5, false)
+                .beginStructureBlock(1, 5, 2, false)
                 .addController("Front center, 4th layer")
                 .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
                 .addOutputHatch("1+", "Any casing", 1)

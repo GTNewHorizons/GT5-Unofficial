@@ -41,6 +41,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -927,7 +928,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                 if (originalAmount - astralArrayAmount > 0) {
                     GTUtility.sendChatToPlayer(
                         aPlayer,
-                        GTUtility.translate(
+                        StatCollector.translateToLocalFormatted(
                             "eoh.rightclick.wirecutter.2",
                             formatNumber(originalAmount - astralArrayAmount)));
                 }
@@ -1667,14 +1668,14 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             if (nbt.hasKey(PLANET_BLOCK)) {
                 tooltip.add(
                     1,
-                    GTUtility.translate(
+                    StatCollector.translateToLocalFormatted(
                         "EOH_Controller_PlanetBlock",
                         AQUA + new ItemStack(ModBlocks.getBlock(nbt.getString(PLANET_BLOCK))).getDisplayName()));
             }
             if (nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG) > 0) {
                 tooltip.add(
                     1,
-                    GTUtility.translate(
+                    StatCollector.translateToLocalFormatted(
                         "EOH_Controller_AstralArrayAmount",
                         AQUA + formatNumber(nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG))));
             }

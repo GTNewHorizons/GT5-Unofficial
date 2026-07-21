@@ -19,6 +19,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -49,7 +50,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -252,10 +252,10 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger")
-            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc1"))
-            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc2"))
-            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc3"))
-            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc4"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc2"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc3"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc4"))
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front center, 3rd layer")
             .addCasing("20-25", "Thermal Containment Casing", false)

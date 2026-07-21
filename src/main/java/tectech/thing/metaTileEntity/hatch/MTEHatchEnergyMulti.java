@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -20,7 +21,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -155,7 +155,7 @@ public class MTEHatchEnergyMulti extends MTEHatch implements IHideTooltipEnergyI
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            GTUtility.translate(
+            StatCollector.translateToLocalFormatted(
                 "gt.tileentity.throughput",
                 EnumChatFormatting.YELLOW + formatNumber(
                     accessor.getNBTData()
@@ -166,7 +166,7 @@ public class MTEHatchEnergyMulti extends MTEHatch implements IHideTooltipEnergyI
 
     @Override
     public String[] getInfoData() {
-        return new String[] { GTUtility.translate(
+        return new String[] { StatCollector.translateToLocalFormatted(
             "gt.tileentity.throughput",
             EnumChatFormatting.YELLOW + formatNumber(Amperes * V[mTier]) + EnumChatFormatting.RESET + " EU/t") };
     }

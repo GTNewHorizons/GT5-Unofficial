@@ -456,7 +456,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
     private final List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
-    private final List<IHatchWatcher> watchers = new ArrayList<>();
 
     // holds all internal inventories
     @SuppressWarnings("unchecked") // Java doesn't allow to create an array of a generic type.

@@ -4,6 +4,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.input.Keyboard;
 
@@ -17,7 +18,6 @@ import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
 import appeng.api.storage.data.IAEItemStack;
 import fox.spiteful.avaritia.items.ItemMatterCluster;
-import gregtech.api.util.GTUtility;
 import gregtech.common.inventory.AEInventory;
 
 public class AEItemSlot extends ItemSlot {
@@ -37,7 +37,10 @@ public class AEItemSlot extends ItemSlot {
 
             if (stack != null) {
                 tooltip.add(
-                    GTUtility.translate("GT5U.gui.text.amount_out_of", stack.getStackSize(), inv.getAESlotLimit(slot)));
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.amount_out_of",
+                        stack.getStackSize(),
+                        inv.getAESlotLimit(slot)));
                 tooltip.newLine();
                 if (dumpable) {
                     tooltip.add(EnumChatFormatting.BLUE + "Hold ALT and click slot to eject it into a matter cluster");

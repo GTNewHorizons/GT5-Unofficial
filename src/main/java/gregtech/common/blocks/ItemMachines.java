@@ -1,7 +1,6 @@
 package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.util.GTUtility.translate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -100,19 +99,19 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     if (!(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
                         if (gtTileEntity.getInputVoltage() > 0L) {
                             aList.add(
-                                translate(
+                                StatCollector.translateToLocalFormatted(
                                     "gt.tileentity.eup_in",
                                     TooltipHelper.voltageText(gtTileEntity.getInputVoltage())));
                         }
                         if (gtTileEntity.getOutputVoltage() > 0L) {
                             aList.add(
-                                translate(
+                                StatCollector.translateToLocalFormatted(
                                     "gt.tileentity.eup_out",
                                     TooltipHelper.voltageText(gtTileEntity.getOutputVoltage())));
                         }
                         if (gtTileEntity.getOutputAmperage() > 1L) {
                             aList.add(
-                                translate(
+                                StatCollector.translateToLocalFormatted(
                                     "gt.tileentity.amperage",
                                     TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
                         }

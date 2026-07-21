@@ -517,7 +517,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             .addInfo(
                 "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
                     : formatNumber(baseCycleTime / 20.0) + " seconds"))
-            .beginStructureBlock(3, 3, 7, false)
+            .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
             .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
             .addCasing("5-7", casings, false)

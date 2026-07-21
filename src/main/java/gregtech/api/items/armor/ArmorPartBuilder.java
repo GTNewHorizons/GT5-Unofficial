@@ -6,10 +6,10 @@ import java.util.Collections;
 
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.ArmorType;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
-import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("unchecked")
 public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
@@ -28,6 +28,8 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
     private Collection<BehaviorName> incompatibleBehaviors = Collections.emptyList();
     /// The armor types this part can fit into
     private Collection<ArmorType> allowedArmorTypes = Arrays.asList(ArmorType.values());
+    /// The augments that prevent this part from being installed
+    private Collection<ItemList> incompatibleAugments = Collections.emptyList();
 
     protected void onMutated() {
         if (finished) {
@@ -65,7 +67,7 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
     }
 
     public String getLocalizedName() {
-        return GTUtility.translate("GT5U.armor.part.name." + id);
+        return StatCollector.translateToLocal("GT5U.armor.part.name." + id);
     }
 
     public boolean hasTooltip() {
@@ -73,7 +75,7 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
     }
 
     public String getTooltip() {
-        return GTUtility.translate("GT5U.armor.part.tooltip." + id);
+        return StatCollector.translateToLocal("GT5U.armor.part.tooltip." + id);
     }
 
     public Collection<IArmorBehavior> getProvidedBehaviors() {
@@ -86,6 +88,10 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
 
     public Collection<BehaviorName> getIncompatibleBehaviors() {
         return incompatibleBehaviors;
+    }
+
+    public Collection<ItemList> getIncompatibleAugments() {
+        return incompatibleAugments;
     }
 
     public Self providesBehaviors(Collection<IArmorBehavior> behaviors) {
@@ -106,6 +112,12 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
         return (Self) this;
     }
 
+    public Self incompatibleAugments(Collection<ItemList> augments) {
+        onMutated();
+        this.incompatibleAugments = Collections.unmodifiableCollection(augments);
+        return (Self) this;
+    }
+
     public Self providesBehaviors(IArmorBehavior... behaviors) {
         onMutated();
         this.providedBehaviors = Collections.unmodifiableCollection(Arrays.asList(behaviors));
@@ -121,6 +133,12 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
     public Self incompatibleBehaviors(BehaviorName... behaviors) {
         onMutated();
         this.incompatibleBehaviors = Collections.unmodifiableCollection(Arrays.asList(behaviors));
+        return (Self) this;
+    }
+
+    public Self incompatibleAugments(ItemList... augments) {
+        onMutated();
+        this.incompatibleAugments = Collections.unmodifiableCollection(Arrays.asList(augments));
         return (Self) this;
     }
 
