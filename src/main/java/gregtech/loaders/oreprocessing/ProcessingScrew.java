@@ -42,7 +42,7 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "fX", "X ", 'X', OrePrefixes.bolt.get(aMaterial) });
+                        new Object[] { "fX", "X ", 'X', OrePrefixes.bolt.ingredient(aMaterial) });
                 }
         }
     }
