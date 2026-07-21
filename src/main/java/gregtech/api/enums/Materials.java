@@ -177,13 +177,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials AnyIron;
     public static Materials AnyRubber;
     public static Materials AnySyntheticRubber;
-    public static MarkerMaterial BrickNether;
-    public static MarkerMaterial Cobblestone;
-    public static MarkerMaterial Crystal;
-    public static MarkerMaterial Metal;
-    public static MarkerMaterial Organic;
     public static MarkerMaterial Quartz;
-    public static MarkerMaterial Unknown;
     // endregion
 
     // region I don't care
@@ -191,75 +185,45 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
      * The "I don't care" Section, everything I don't want to do anything with right now, is right here. Just to make
      * the Material Finder shut up about them. But I do see potential uses in some of these Materials.
      */
-    public static MarkerMaterial Alfium;
-    public static MarkerMaterial Aquamarine;
     public static Materials DarkThaumium;
     public static Materials Draconium;
     public static Materials DraconiumAwakened;
-    public static MarkerMaterial Ender;
     public static Materials Endium;
     public static MarkerMaterial Fluix;
-    public static MarkerMaterial Flux;
-    public static MarkerMaterial InfusedTeslatite;
-    public static MarkerMaterial IridiumSodiumOxide;
-    public static MarkerMaterial Mutation;
-    public static MarkerMaterial OsmiumTetroxide;
     public static Materials PhasedGold;
     public static Materials PhasedIron;
     public static Materials PlatinumGroupSludge;
-    public static MarkerMaterial PurpleAlloy;
-    public static MarkerMaterial RubberTreeSap;
     public static Materials Serpentine;
-    public static MarkerMaterial SodiumPeroxide;
     public static Materials Teslatite;
     // endregion
 
     // region Unknown Material Components. Dead End Section.
     public static Materials Adamantium;
-    public static MarkerMaterial Adamite;
     public static Materials Adluorite;
-    public static MarkerMaterial Agate;
     public static Materials Alduorite;
     public static Materials Amber;
     public static MarkerMaterial Ammonium;
     public static Materials Amordrine;
-    public static MarkerMaterial AncientDebris;
-    public static MarkerMaterial Andesite;
     public static Materials Ardite;
     public static Materials Aredrite;
-    public static MarkerMaterial Bitumen;
-    public static MarkerMaterial Black;
     public static Materials Blizz;
-    public static MarkerMaterial Bloodstone;
     public static Materials Bluestone;
     public static Materials Blutonium;
     public static Materials CertusQuartz;
     public static Materials CertusQuartzCharged;
     public static Materials Ceruclase;
-    public static MarkerMaterial Chimerite;
-    public static MarkerMaterial Chrysocolla;
-    public static MarkerMaterial Citrine;
     public static Materials CobaltHexahydrate;
     public static Materials ConstructionFoam;
-    public static MarkerMaterial Coral;
     public static Materials CrudeOil;
-    public static MarkerMaterial CrystalFlux;
-    public static MarkerMaterial Cyanite;
     public static Materials DarkIron;
-    public static MarkerMaterial DarkStone;
-    public static MarkerMaterial Demonite;
     public static Materials Desichalkos;
     public static Materials Dilithium;
-    public static MarkerMaterial Draconic;
-    public static MarkerMaterial Drulloy;
     public static Materials Duranium;
     public static Materials ElectrumFlux;
     public static Materials Emery;
     public static Materials EnderiumBase;
-    public static MarkerMaterial Energized;
     public static Materials FierySteel;
     public static Materials Firestone;
-    public static MarkerMaterial Fluorite;
     public static Materials Force;
     public static Materials Forcicium;
     public static Materials Forcillium;
@@ -269,58 +233,39 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Greenstone;
     public static Materials Hematite;
     public static Materials HSLA;
-    public static MarkerMaterial Infernal;
     public static Materials InfusedAir;
-    public static MarkerMaterial InfusedDull;
     public static Materials InfusedEarth;
     public static Materials InfusedEntropy;
     public static Materials InfusedFire;
     public static Materials InfusedGold;
     public static Materials InfusedOrder;
-    public static MarkerMaterial InfusedVis;
     public static Materials InfusedWater;
-    public static MarkerMaterial Invisium;
     public static Materials Jade;
     public static Materials Lava;
     public static MarkerMaterial Limestone;
-    public static MarkerMaterial Magma;
-    public static MarkerMaterial Mawsitsit;
     public static Materials Mercassium;
     public static Materials MeteoricSteel;
-    public static MarkerMaterial Meteorite;
     public static Materials Migmatite;
-    public static MarkerMaterial Mimichite;
-    public static MarkerMaterial Moonstone;
     public static Materials NaquadahAlloy;
     public static Materials NaquadahEnriched;
     public static Materials Naquadria;
-    public static MarkerMaterial Nether;
     public static Materials NetherBrick;
     public static Materials NetherQuartz;
     public static Materials NetherStar;
     public static Materials ObsidianFlux;
     public static Materials Oilsands;
-    public static MarkerMaterial Onyx;
     public static Materials Orichalcum;
     public static Materials Osmonium;
-    public static MarkerMaterial Painite;
-    public static MarkerMaterial Peanutwood;
-    public static MarkerMaterial Petroleum;
-    public static MarkerMaterial Pewter;
     public static Materials Phoenixite;
     public static Materials Quartzite;
-    public static MarkerMaterial Randomite;
     public static Materials Rubracium;
     public static MarkerMaterial Sand;
     public static Materials Siltstone;
     public static Materials Spinel;
-    public static MarkerMaterial Sunstone;
-    public static MarkerMaterial Tar;
     public static Materials Tartarite;
     public static Materials UUAmplifier;
     public static Materials UUMatter;
     public static Materials Void;
-    public static MarkerMaterial Voidstone;
     public static Materials Vulcanite;
     public static Materials Vyroxeres;
     public static Materials Yellorium;
@@ -351,8 +296,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static MarkerMaterial Transistor;
     public static MarkerMaterial Capacitor;
     public static MarkerMaterial Inductor;
-    public static MarkerMaterial Nano;
-    public static MarkerMaterial Piko;
     // endregion
 
     // region Not possible to determine exact Components
@@ -362,7 +305,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Cheese;
     public static Materials Chili;
     public static Materials Chocolate;
-    public static MarkerMaterial Cluster;
     public static Materials CoalFuel;
     public static Materials Cocoa;
     public static Materials Coffee;
@@ -382,20 +324,15 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials MeatCooked;
     public static Materials MeatRaw;
     public static Materials Milk;
-    public static MarkerMaterial Mud;
     public static Materials Oil;
     public static Materials Paper;
-    public static MarkerMaterial Peat;
     public static Materials RareEarth;
-    public static MarkerMaterial Red;
     public static Materials Reinforced;
     public static Materials SeedOil;
     public static Materials SeedOilHemp;
     public static Materials SeedOilLin;
     public static Materials Stone;
-    public static MarkerMaterial TNT;
     public static Materials Unstable;
-    public static MarkerMaterial UnstableIngot;
     public static Materials Vinegar;
     public static Materials WeedEX9000;
     public static Materials Wheat;
@@ -1117,10 +1054,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Lumium;
     public static MarkerMaterial Prismarine;
     public static Materials AquaRegia;
-    public static MarkerMaterial SolutionBlueVitriol;
-    public static MarkerMaterial SolutionNickelSulfate;
-    public static MarkerMaterial Lodestone;
-    public static MarkerMaterial Luminite;
     public static Materials Chlorite;
     public static Materials Staurolite;
     public static Materials Cordierite;
