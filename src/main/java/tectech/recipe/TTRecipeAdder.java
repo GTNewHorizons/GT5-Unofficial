@@ -83,7 +83,7 @@ public class TTRecipeAdder extends RecipeAdder {
             aFluidInputs,
             aOutput,
             assDuration,
-            assEUt,
+            researchEUt,
             totalComputationRequired,
             researchAmperage,
             computationRequiredPerSec);
@@ -243,7 +243,7 @@ public class TTRecipeAdder extends RecipeAdder {
             aFluidInputs,
             aOutput,
             assDuration,
-            assEUt,
+            researchEUt,
             tAlts,
             totalComputationRequired,
             researchAmperage,
