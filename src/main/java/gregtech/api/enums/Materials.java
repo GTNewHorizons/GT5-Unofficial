@@ -178,6 +178,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials AnyRubber;
     public static Materials AnySyntheticRubber;
     public static MarkerMaterial Quartz;
+    public static MarkerMaterial Advanced;
     // endregion
 
     // region I don't care

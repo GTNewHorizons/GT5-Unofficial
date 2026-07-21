@@ -72,7 +72,7 @@ public class LoaderGTOreDictionary implements Runnable {
             MU.materialOf(Materials2Materials.Iridium),
             GTModHandler.getIC2Item("iridiumPlate", 1L));
         GTOreDictUnificator
-            .set(OrePrefixes.plateAlloy, TieredItems.HV.materialName(), GTModHandler.getIC2Item("advancedAlloy", 1L));
+            .set(OrePrefixes.plateAlloy, Materials.Advanced, GTModHandler.getIC2Item("advancedAlloy", 1L));
         GTOreDictUnificator.set(
             OrePrefixes.plateAlloy,
             MU.materialOf(Materials2Materials.Carbon),
