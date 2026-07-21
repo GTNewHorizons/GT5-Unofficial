@@ -308,8 +308,12 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             updateMasterEnergyHatchList(aMetaTileEntity);
             return added;
         }
-        if (aMetaTileEntity instanceof MTEHatchDynamoMulti multiDynamoHatch) {
+        // HatchElement.Dynamo uses mDynamoHatches for the count, but I'm uncertain where GT++
+        // actually uses the TTDynamoHatch list, so I'm just excluding 4A hatches to be added here
+        // and be caught past the lower comment currently in line 340.
+        if (aMetaTileEntity instanceof MTEHatchDynamoMulti multiDynamoHatch && multiDynamoHatch.getAmperes() > 4) {
             boolean added = addToMachineListInternal(mTecTechDynamoHatches, multiDynamoHatch, aBaseCasingIndex);
+            mExoticDynamoHatches.add(multiDynamoHatch);
             updateMasterDynamoHatchList(aMetaTileEntity);
             return added;
         }
@@ -335,6 +339,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             updateMasterEnergyHatchList(aMetaTileEntity);
             return added;
         }
+        // which is here, catches all other dynamo hatches here.
         if (aMetaTileEntity instanceof MTEHatchDynamo dynamoHatch) {
             boolean added = addToMachineListInternal(mDynamoHatches, dynamoHatch, aBaseCasingIndex);
             updateMasterDynamoHatchList(aMetaTileEntity);
@@ -471,12 +476,18 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     /**
      * This is the array Used to Store the Tectech Multi-Amp Dynamo hatches.
+     *
+     * @deprecated use {@link #mExoticDynamoHatches}
      */
+    @Deprecated
     public ArrayList<MTEHatch> mTecTechDynamoHatches = new ArrayList<>();
 
     /**
      * This is the array Used to Store the Tectech Multi-Amp Energy hatches.
+     *
+     * @deprecated use {@link #mExoticEnergyHatches}
      */
+    @Deprecated
     public ArrayList<MTEHatch> mTecTechEnergyHatches = new ArrayList<>();
 
     /**
@@ -1215,6 +1226,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 return t.mAirIntakes.size();
             }
         },
+        /**
+         * @deprecated use {@link gregtech.api.enums.HatchElement#ExoticDynamo}
+         */
+        @Deprecated
         TTDynamo(GTPPMultiBlockBase::addMultiAmpDynamoToMachineList, MTEHatchDynamoMulti.class) {
 
             @Override
@@ -1222,6 +1237,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 return t.mTecTechDynamoHatches.size();
             }
         },
+        /**
+         * @deprecated use {@link gregtech.api.enums.HatchElement#ExoticEnergy} or
+         *             {@link gregtech.api.enums.HatchElement#MultiAmpEnergy}
+         */
+        @Deprecated
         TTEnergy(GTPPMultiBlockBase::addMultiAmpEnergyToMachineList, MTEHatchEnergyMulti.class) {
 
             @Override

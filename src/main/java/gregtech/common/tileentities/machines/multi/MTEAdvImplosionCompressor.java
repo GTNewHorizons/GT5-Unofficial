@@ -99,7 +99,7 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 7, 9, true)
+            .beginStructureBlock(7, 9, 7, true)
             .addController("Front center, 2nd layer")
             .addCasing("80", "Refined Graphite Block", false)
             .addCasing("50-60", "Robust Tungstensteel Machine Casing", false)

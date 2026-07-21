@@ -134,7 +134,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
             .addInfo("Steam - Outputs 50% more cracked fluid")
             .addInfo("(Values compared to cracking in the Chemical Reactor)")
             .addInfo("Place the appropriate circuit in the controller or an input bus")
-            .beginStructureBlock(3, 5, 3, true)
+            .beginStructureBlock(5, 3, 3, true)
             .addController("Front center, 2nd layer")
             .addCasing("18-20", "Clean Stainless Steel Machine Casing", false)
             .addCasing("16", "Heating Coil", true)
@@ -202,6 +202,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput tHatch) {
+            addIfSmartInput(aMetaTileEntity);
             tHatch.updateTexture(aBaseCasingIndex);
             tHatch.mRecipeMap = getRecipeMap();
             return mMiddleInputHatches.add(tHatch);
