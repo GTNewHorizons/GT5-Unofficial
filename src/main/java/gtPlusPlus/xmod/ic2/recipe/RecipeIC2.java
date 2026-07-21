@@ -54,19 +54,22 @@ public class RecipeIC2 {
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
-                OrePrefixes.plate.get(Materials.DarkSteel), 'S', OrePrefixes.screw.get(Materials.DarkSteel) });
+                OrePrefixes.plate.ingredient(Materials.DarkSteel), 'S',
+                OrePrefixes.screw.ingredient(Materials.DarkSteel) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
-                OrePrefixes.plate.get(Materials.TungstenSteel), 'S', OrePrefixes.screw.get(Materials.TungstenSteel) });
+                OrePrefixes.plate.ingredient(Materials.TungstenSteel), 'S',
+                OrePrefixes.screw.ingredient(Materials.TungstenSteel) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
-                OrePrefixes.plate.get(Materials.Molybdenum), 'S', OrePrefixes.screw.get(Materials.Molybdenum) });
+                OrePrefixes.plate.ingredient(Materials.Molybdenum), 'S',
+                OrePrefixes.screw.ingredient(Materials.Molybdenum) });
 
         // Shafts
         GTValues.RA.stdBuilder()
