@@ -37,4 +37,9 @@ public enum CircuitComponents {
     public ItemData getIngredient() {
         return new ItemData(OrePrefixes.componentCircuit, materialName);
     }
+
+    /// The ore-dictionary material name this constant stands for.
+    public String materialName() {
+        return materialName;
+    }
 }
