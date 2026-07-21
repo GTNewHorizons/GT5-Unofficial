@@ -21,9 +21,12 @@ import gregtech.api.material.MarkerMaterial;
 /// recycling; `Limestone` and `Prismarine` are read by `ItemComb`/`NetheriteRecipes`/
 /// `RecipeLoaderChemicalSkips` as an `IOreMaterial` to fetch or register registered-ore stacks; `Fluix` and
 /// `Quartz` carry [SubTag]s and are steered by name in `GTProxy#registerRecognitionOre`, and `Fluix`
-/// additionally reaches `OrePrefixes#processOre` so its crystal and dust recipes generate. These seven stay
-/// [MarkerMaterial]s, looked up through [#getMarker], and keep their `Materials` field so the rest of the code
-/// can reference them directly.
+/// additionally reaches `OrePrefixes#processOre` so its crystal and dust recipes generate. `Advanced` names
+/// IC2's advanced alloy plate for [OrePrefixes#plateAlloy], which is unifiable but not material-based: an entry
+/// registered under it without a material resolves to [Materials#_NULL] in `GTProxy#registerUnificationEntries`,
+/// and every `plateAlloy` entry then contends for that one shared unification key, so such an entry unifies into
+/// whichever plate claims it first. These eight stay [MarkerMaterial]s, looked up through [#getMarker], and keep
+/// their `Materials` field so the rest of the code can reference them directly.
 public class RecognitionMaterials {
 
     private static final int DEFAULT_ARGB = 0x00ffffff;
@@ -86,6 +89,7 @@ public class RecognitionMaterials {
 
     // spotless:off
     private static final Marker[] MARKERS = {
+        marker(m -> Materials.Advanced = m, "Advanced", "Advanced Alloy"),
         marker(m -> Materials.Ammonium = m, "Ammonium", "Ammonium"),
         marker(m -> Materials.Fluix = m, "Fluix", "Fluix", TextureSet.SET_NONE, DEFAULT_ARGB, true, SubTag.CRYSTAL, SubTag.CRYSTALLISABLE, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ),
         marker(m -> Materials.Leather = m, "Leather", "Leather", TextureSet.SET_ROUGH, 0x7f969650, true),
