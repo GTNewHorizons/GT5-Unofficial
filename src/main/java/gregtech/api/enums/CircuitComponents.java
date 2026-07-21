@@ -1,17 +1,14 @@
 package gregtech.api.enums;
 
-import java.util.function.Supplier;
-
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.material.MarkerMaterial;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
 /// The [OrePrefixes#componentCircuit] ore-dictionary entries, keyed by the discrete component they stand for.
 ///
-/// Each component is backed by a [MarkerMaterial] that carries no composition and generates no items; it exists
-/// only to name the ore-dictionary entry. Routing every call site through this enum keeps that mapping in one place.
+/// Each component names an ore-dictionary entry that carries no composition and generates no items. Routing every
+/// call site through this enum keeps that mapping in one place.
 ///
 /// Ingredients come in two shapes: [#get(int)] returns a unified [ItemStack] for recipe inputs and outputs that need
 /// a concrete stack, and [#getIngredient()] returns an [ItemData] for crafting-grid recipes.
@@ -21,23 +18,23 @@ import gregtech.api.util.GTOreDictUnificator;
 /// [ItemData] of each ingredient, and a bare name carries no such association.
 public enum CircuitComponents {
 
-    RESISTOR(() -> Materials.Resistor),
-    DIODE(() -> Materials.Diode),
-    TRANSISTOR(() -> Materials.Transistor),
-    CAPACITOR(() -> Materials.Capacitor),
-    INDUCTOR(() -> Materials.Inductor);
+    RESISTOR("Resistor"),
+    DIODE("Diode"),
+    TRANSISTOR("Transistor"),
+    CAPACITOR("Capacitor"),
+    INDUCTOR("Inductor");
 
-    private final Supplier<MarkerMaterial> marker;
+    private final String materialName;
 
-    CircuitComponents(Supplier<MarkerMaterial> marker) {
-        this.marker = marker;
+    CircuitComponents(String materialName) {
+        this.materialName = materialName;
     }
 
     public ItemStack get(int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.componentCircuit, marker.get(), amount);
+        return GTOreDictUnificator.get(OrePrefixes.componentCircuit.oreDictName(materialName), amount);
     }
 
     public ItemData getIngredient() {
-        return new ItemData(OrePrefixes.componentCircuit, marker.get());
+        return new ItemData(OrePrefixes.componentCircuit, materialName);
     }
 }
