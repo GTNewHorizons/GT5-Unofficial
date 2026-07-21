@@ -53,8 +53,8 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                         case "Wood" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
                             GTModHandler.RecipeBits.BITS_STD,
-                            new Object[] { "SPS", "PsP", "SPS", 'P', OrePrefixes.plank.get(aMaterial), 'S',
-                                OrePrefixes.stick.get(aMaterial) });
+                            new Object[] { "SPS", "PsP", "SPS", 'P', OrePrefixes.plank.ingredient(aMaterial), 'S',
+                                OrePrefixes.stick.ingredient(aMaterial) });
                         case "Stone" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
                             GTModHandler.RecipeBits.BITS_STD,
@@ -65,8 +65,8 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "SPS", "PwP", "SPS", 'P', OrePrefixes.plate.get(aMaterial), 'S',
-                                        OrePrefixes.stick.get(aMaterial) });
+                                    new Object[] { "SPS", "PwP", "SPS", 'P', OrePrefixes.plate.ingredient(aMaterial),
+                                        'S', OrePrefixes.stick.ingredient(aMaterial) });
                             }
                         }
                     }
@@ -90,7 +90,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                         case "Wood" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
                             GTModHandler.RecipeBits.BITS_STD,
-                            new Object[] { "P ", " s", 'P', OrePrefixes.plank.get(aMaterial) });
+                            new Object[] { "P ", " s", 'P', OrePrefixes.plank.ingredient(aMaterial) });
                         case "Stone" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
                             GTModHandler.RecipeBits.BITS_STD,
@@ -100,8 +100,8 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { " S ", "hPx", " S ", 'S', OrePrefixes.stick.get(aMaterial), 'P',
-                                        OrePrefixes.plate.get(aMaterial) });
+                                    new Object[] { " S ", "hPx", " S ", 'S', OrePrefixes.stick.ingredient(aMaterial),
+                                        'P', OrePrefixes.plate.ingredient(aMaterial) });
                             }
                         }
                     }
