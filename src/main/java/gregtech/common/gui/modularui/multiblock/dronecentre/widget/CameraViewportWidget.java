@@ -35,6 +35,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.widget.Widget;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.GTMod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -287,6 +288,26 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
         if (itemStack != null) {
             gte.getWailaBody(itemStack, wailaLines, accessor, CONFIG_INSTANCE);
         }
+
+        if (tag != null) {
+            long storedEU = tag.getLong("mStoredEnergy");
+            if (storedEU >= Long.MAX_VALUE - 1) {
+                wailaLines.add("§b" + StatCollector.translateToLocal("GT5U.gui.text.drone_stored_energy") + ": §aMAX");
+            } else if (storedEU > 0) {
+                wailaLines.add(
+                    "§b" + StatCollector.translateToLocal("GT5U.gui.text.drone_stored_energy")
+                        + ": §a"
+                        + NumberFormatUtil.formatNumber(storedEU)
+                        + " EU");
+            }
+
+            int maxParallel = tag.getInteger("maxParallelRecipes");
+            if (maxParallel > 1) {
+                wailaLines.add(
+                    "§b" + StatCollector.translateToLocal("GT5U.gui.text.drone_max_parallel") + ": §a" + maxParallel);
+            }
+        }
+
         return wailaLines;
     }
 

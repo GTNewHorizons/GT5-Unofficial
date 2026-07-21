@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,6 +27,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.net.PacketObserveMachine;
 import gregtech.api.objects.GTChunkManager;
@@ -282,6 +285,7 @@ public class CameraViewportManager {
             if (te instanceof BaseMetaTileEntity gte) {
                 NBTTagCompound statusTag = new NBTTagCompound();
                 gte.getWailaNBTData(player, gte, statusTag, world, finalX, finalY, finalZ);
+                statusTag.setLong("mStoredEnergy", calculateStoredEnergy(gte));
                 statusTag.setLong("observePos", (hCoord != NULL_COORD) ? hCoord : machineCoord);
                 PacketObserveMachine reply = new PacketObserveMachine(
                     dim,
@@ -374,5 +378,40 @@ public class CameraViewportManager {
                 }
             }
         }
+    }
+
+    public static long calculateStoredEnergy(BaseMetaTileEntity gte) {
+        if (gte == null) return 0;
+        long storedEnergy = gte.getStoredEU();
+        if (gte.getMetaTileEntity() instanceof MTEMultiBlockBase mte) {
+            List<?> hatchList = mte.getExoticAndNormalEnergyHatchList();
+            if (hatchList != null) {
+                for (Object obj : hatchList) {
+                    if (obj instanceof MTEHatch tHatch) {
+                        IGregTechTileEntity hTe = tHatch.getBaseMetaTileEntity();
+                        if (hTe != null) {
+                            long eu = hTe.getStoredEU();
+                            if (storedEnergy >= Long.MAX_VALUE / 2L || eu >= Long.MAX_VALUE / 2L || (storedEnergy += eu) < 0) {
+                                storedEnergy = Long.MAX_VALUE;
+                            }
+                        }
+                    }
+                }
+            }
+            if (mte.mDynamoHatches != null) {
+                for (MTEHatchDynamo dHatch : mte.mDynamoHatches) {
+                    if (dHatch != null) {
+                        IGregTechTileEntity dTe = dHatch.getBaseMetaTileEntity();
+                        if (dTe != null) {
+                            long eu = dTe.getStoredEU();
+                            if (storedEnergy >= Long.MAX_VALUE / 2L || eu >= Long.MAX_VALUE / 2L || (storedEnergy += eu) < 0) {
+                                storedEnergy = Long.MAX_VALUE;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return storedEnergy;
     }
 }

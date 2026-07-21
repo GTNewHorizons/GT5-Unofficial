@@ -340,7 +340,7 @@ public class CameraObservePanel extends ModularPanel {
                 .marginBottom(4));
 
         col.child(
-            IKey.str("§8------------------")
+            IKey.str("§7--------------")
                 .asWidget()
                 .width(innerW)
                 .scale(textScale)
@@ -484,6 +484,28 @@ public class CameraObservePanel extends ModularPanel {
             } else {
                 newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_none"));
             }
+
+            boolean isLocked = tag.getBoolean("isLockedToRecipe");
+            if (isLocked) {
+                newInfo.add("§7--------------");
+                newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.drone_locked_recipe") + ":");
+                String lockedName = tag.getString("lockedRecipeName");
+                if (lockedName != null && !lockedName.isEmpty()) {
+                    String[] lines = lockedName.split("\r?\n");
+                    for (String line : lines) {
+                        String trimmed = line.trim();
+                        if (!trimmed.isEmpty()) {
+                            if (trimmed.startsWith("-")) {
+                                newInfo.add("§e" + trimmed);
+                            } else {
+                                newInfo.add("§6" + trimmed);
+                            }
+                        }
+                    }
+                } else {
+                    newInfo.add("§aON");
+                }
+            }
         } else {
             if (hasHovered) {
                 newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_connecting_1"));
@@ -491,7 +513,7 @@ public class CameraObservePanel extends ModularPanel {
                 newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_connecting_3"));
             } else {
                 newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_no_conn_1"));
-                newInfo.add("§8------------------");
+                newInfo.add("§7--------------");
                 newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_no_conn_2"));
                 newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_no_conn_3"));
                 newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_no_conn_4"));
@@ -503,6 +525,7 @@ public class CameraObservePanel extends ModularPanel {
             if (line.startsWith("§b") || line.startsWith("§3")
                 || line.startsWith("§a")
                 || line.startsWith("§e")
+                || line.startsWith("§6")
                 || line.startsWith("§7")
                 || line.startsWith("§8")) {
                 this.rawRecipeInfo.add(line.substring(2));
