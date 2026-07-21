@@ -142,7 +142,7 @@ public class BlockReinforced extends GTGenericBlock {
         GTModHandler.addCraftingRecipe(
             ItemList.Block_Powderbarrel.get(1L),
             GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "WSW", "GGG", "WGW", 'W', OrePrefixes.plate.get(Materials.Wood), 'G',
+            new Object[] { "WSW", "GGG", "WGW", 'W', OrePrefixes.plate.ingredient(Materials.Wood), 'G',
                 new ItemStack(Items.gunpowder, 1), 'S', new ItemStack(Items.string, 1) });
         BlockDispenser.dispenseBehaviorRegistry
             .putObject(ItemList.Block_Powderbarrel.getItem(), new BehaviorDefaultDispenseItem() {
