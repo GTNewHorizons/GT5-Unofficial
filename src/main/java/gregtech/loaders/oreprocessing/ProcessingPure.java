@@ -27,30 +27,30 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_ORE_PROCESSING)) {
+    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
+        ItemStack stack) {
+        if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustPure, MU.macerateInto(aMaterial), 1L))
+            .itemInputs(GTUtility.copyAmount(1, stack))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustPure, MU.macerateInto(material), 1L))
             .duration(10)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
                 GTOreDictUnificator.get(
                     OrePrefixes.dustPure,
-                    MU.macerateInto(aMaterial),
-                    GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1L),
+                    MU.macerateInto(material),
+                    GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L),
                     1L),
                 GTOreDictUnificator.get(
                     OrePrefixes.dust,
-                    GTUtility.selectItemInList(1, MU.macerateInto(aMaterial), aMaterial.mOreByProducts),
+                    GTUtility.selectItemInList(1, MU.macerateInto(material), material.mOreByProducts),
                     1L))
             .outputChances(10000, 1000)
             .duration(20 * SECONDS)

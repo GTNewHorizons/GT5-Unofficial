@@ -29,26 +29,26 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
+    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
+        ItemStack stack) {
 
-        short aMeta = (short) aStack.getItemDamage();
+        short meta = (short) stack.getItemDamage();
 
-        if (aMeta == Short.MAX_VALUE) {
-            List<IRecipe> recipeCandidates = GTModHandler.getRecipeCandidates(aStack);
+        if (meta == Short.MAX_VALUE) {
+            List<IRecipe> recipeCandidates = GTModHandler.getRecipeCandidates(stack);
             if ((GTUtility.areStacksEqual(
-                GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, aStack), false, null),
+                GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, stack), false, null),
                 new ItemStack(Items.coal, 1, 1)))) {
-                GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, aStack));
+                GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, stack));
             }
             for (int i = 0; i < 32767; i++) {
                 if ((GTUtility.areStacksEqual(
-                    GTModHandler.getSmeltingOutput(new ItemStack(aStack.getItem(), 1, i), false, null),
+                    GTModHandler.getSmeltingOutput(new ItemStack(stack.getItem(), 1, i), false, null),
                     new ItemStack(Items.coal, 1, 1)))) {
-                    GTModHandler.removeFurnaceSmelting(new ItemStack(aStack.getItem(), 1, i));
+                    GTModHandler.removeFurnaceSmelting(new ItemStack(stack.getItem(), 1, i));
                 }
                 ItemStack tStack = GTModHandler
-                    .getRecipeOutputFrom(recipeCandidates, new ItemStack(aStack.getItem(), 1, i));
+                    .getRecipeOutputFrom(recipeCandidates, new ItemStack(stack.getItem(), 1, i));
                 if (tStack == null) {
                     if (i >= 16) {
                         break;
@@ -58,7 +58,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (tPlanks != null) {
                         tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
                         GTValues.RA.stdBuilder()
-                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
+                            .itemInputs(new ItemStack(stack.getItem(), 1, i))
                             .itemOutputs(
                                 GTUtility.copyOrNull(tPlanks),
                                 MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1)))
@@ -67,7 +67,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(cutterRecipes);
                         GTValues.RA.stdBuilder()
-                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
+                            .itemInputs(new ItemStack(stack.getItem(), 1, i))
                             .itemOutputs(
                                 GTUtility.copyOrNull(tPlanks),
                                 MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1)))
@@ -80,7 +80,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(cutterRecipes);
                         GTValues.RA.stdBuilder()
-                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
+                            .itemInputs(new ItemStack(stack.getItem(), 1, i))
                             .itemOutputs(
                                 GTUtility.copyAmount(
                                     GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
@@ -91,7 +91,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(cutterRecipes);
                         GTValues.RA.stdBuilder()
-                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
+                            .itemInputs(new ItemStack(stack.getItem(), 1, i))
                             .itemOutputs(
                                 GTUtility.copyAmount(
                                     GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
@@ -101,33 +101,33 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .duration(20 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(cutterRecipes);
-                        GTModHandler.removeRecipeDelayed(new ItemStack(aStack.getItem(), 1, i));
+                        GTModHandler.removeRecipeDelayed(new ItemStack(stack.getItem(), 1, i));
                         GTModHandler.addCraftingRecipe(
                             GTUtility.copyAmount(
                                 GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
                             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                            new Object[] { "s", "L", 'L', new ItemStack(aStack.getItem(), 1, i) });
+                            new Object[] { "s", "L", 'L', new ItemStack(stack.getItem(), 1, i) });
                         GTModHandler.addShapelessCraftingRecipe(
                             GTUtility.copyAmount(tStack.stackSize / (GTMod.proxy.mNerfedWoodPlank ? 2 : 1), tStack),
                             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                            new Object[] { new ItemStack(aStack.getItem(), 1, i) });
+                            new Object[] { new ItemStack(stack.getItem(), 1, i) });
                     }
                 }
             }
         } else {
             if ((GTUtility.areStacksEqual(
-                GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, aStack), false, null),
+                GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, stack), false, null),
                 new ItemStack(Items.coal, 1, 1)))) {
-                GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, aStack));
+                GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, stack));
             }
-            ItemStack tStack = GTModHandler.getRecipeOutput(GTUtility.copyAmount(1, aStack));
+            ItemStack tStack = GTModHandler.getRecipeOutput(GTUtility.copyAmount(1, stack));
             if (tStack != null) {
                 ItemStack tPlanks = GTUtility.copyOrNull(tStack);
                 if (tPlanks != null) {
                     tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
+                        .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(
                             GTUtility.copyOrNull(tPlanks),
                             MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1)))
@@ -136,7 +136,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(cutterRecipes);
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
+                        .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(
                             GTUtility.copyOrNull(tPlanks),
                             MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1)))
@@ -149,7 +149,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(cutterRecipes);
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
+                        .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(
                             GTUtility.copyAmount(
                                 GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
@@ -160,7 +160,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(cutterRecipes);
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
+                        .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(
                             GTUtility.copyAmount(
                                 GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
@@ -170,24 +170,24 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .duration(20 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(cutterRecipes);
-                    GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
+                    GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, stack));
                     GTModHandler.addCraftingRecipe(
                         GTUtility.copyAmount(
                             GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                             tStack),
                         GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                        new Object[] { "s", "L", 'L', GTUtility.copyAmount(1, aStack) });
+                        new Object[] { "s", "L", 'L', GTUtility.copyAmount(1, stack) });
                     GTModHandler.addShapelessCraftingRecipe(
                         GTUtility.copyAmount(tStack.stackSize / (GTMod.proxy.mNerfedWoodPlank ? 2 : 1), tStack),
-                        new Object[] { GTUtility.copyAmount(1, aStack) });
+                        new Object[] { GTUtility.copyAmount(1, stack) });
                 }
             }
         }
 
         if ((GTUtility.areStacksEqual(
-            GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, aStack), false, null),
+            GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, stack), false, null),
             new ItemStack(Items.coal, 1, 1)))) {
-            GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, aStack));
+            GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, stack));
         }
     }
 }

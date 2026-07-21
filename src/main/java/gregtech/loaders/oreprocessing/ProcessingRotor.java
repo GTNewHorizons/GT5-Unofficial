@@ -31,54 +31,53 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)
-            && !MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)) {
-            ItemStack tPlate = GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L);
-            ItemStack tRing = GTOreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L);
+    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
+        ItemStack stack) {
+        if ((material.mUnifiable) && (material.mMaterialInto == material)
+            && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+            ItemStack tPlate = GTOreDictUnificator.get(OrePrefixes.plate, material, 4L);
+            ItemStack tRing = GTOreDictUnificator.get(OrePrefixes.ring, material, 1L);
             if (GTUtility.isStackValid(tPlate) && GTUtility.isStackValid(tRing)) {
 
-                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+                if (material.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
+                        GTOreDictUnificator.get(OrePrefixes.rotor, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "PhP", "SRf", "PdP", 'P',
-                            aMaterial == Materials.Wood ? OrePrefixes.plank.ingredient(aMaterial)
-                                : OrePrefixes.plate.ingredient(aMaterial),
-                            'R', OrePrefixes.ring.ingredient(aMaterial), 'S',
-                            OrePrefixes.screw.ingredient(aMaterial) });
+                            material == Materials.Wood ? OrePrefixes.plank.ingredient(material)
+                                : OrePrefixes.plate.ingredient(material),
+                            'R', OrePrefixes.ring.ingredient(material), 'S', OrePrefixes.screw.ingredient(material) });
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(tPlate.copy(), tRing.copy())
                     .circuit(4)
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, material, 1L))
                     .fluidInputs(SubstituteFluidStack.soldering(1 * NUGGETS))
-                    .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 24))
+                    .duration(((int) Math.max(material.getMass(), 1L)) * TICKS)
+                    .eut(calculateRecipeEU(material, 24))
                     .addTo(assemblerRecipes);
             }
 
-            if (GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
+            if (GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 5L),
+                        GTOreDictUnificator.get(OrePrefixes.ingot, material, 5L),
                         ItemList.Shape_Extruder_Rotor.get(0L))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
-                    .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 24))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, material, 1L))
+                    .duration(((int) Math.max(material.getMass(), 1L)) * TICKS)
+                    .eut(calculateRecipeEU(material, 24))
                     .addTo(extruderRecipes);
             }
-            if (aMaterial.mStandardMoltenFluid != null) {
-                if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
+            if (material.mStandardMoltenFluid != null) {
+                if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Rotor.get(0L))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
-                        .fluidInputs(aMaterial.getMolten(612L))
-                        .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
-                        .eut(calculateRecipeEU(aMaterial, 24))
+                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, material, 1L))
+                        .fluidInputs(material.getMolten(612L))
+                        .duration(((int) Math.max(material.getMass(), 1L)) * TICKS)
+                        .eut(calculateRecipeEU(material, 24))
                         .addTo(fluidSolidifierRecipes);
                 }
             }

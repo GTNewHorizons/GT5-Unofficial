@@ -38,172 +38,172 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
+    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
+        ItemStack stack) {
         // Blacklist materials which are handled by Werkstoff loader
-        if (aMaterial == Materials.Calcium || aMaterial == Materials.Magnesia) return;
+        if (material == Materials.Calcium || material == Materials.Magnesia) return;
 
-        boolean aNoSmashing = MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMASHING);
-        boolean aStretchy = MU.hasFlag(aMaterial, GTMaterialFlag.STRETCHY);
-        boolean aNoSmelting = MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMELTING);
-        long aMaterialMass = aMaterial.getMass();
-        boolean aSpecialRecipeReq = aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
-            && !MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMASHING);
+        boolean noSmashing = MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
+        boolean stretchy = MU.hasFlag(material, GTMaterialFlag.STRETCHY);
+        boolean noSmelting = MU.hasFlag(material, GTMaterialFlag.NO_SMELTING);
+        long materialMass = material.getMass();
+        boolean specialRecipeReq = material.mUnifiable && (material.mMaterialInto == material)
+            && !MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
 
-        switch (aPrefix.getName()) {
+        switch (prefix.getName()) {
             case "ingot" -> {
                 // Fuel recipe
-                if (MU.fuelPower(aMaterial) > 0) {
+                if (MU.fuelPower(material) > 0) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .metadata(FUEL_VALUE, MU.fuelPower(aMaterial))
-                        .metadata(FUEL_TYPE, MU.fuelType(aMaterial))
+                        .itemInputs(GTUtility.copyAmount(1, stack))
+                        .metadata(FUEL_VALUE, MU.fuelPower(material))
+                        .metadata(FUEL_TYPE, MU.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
                 }
-                if (aMaterial.mStandardMoltenFluid != null
-                    && !(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
+                if (material.mStandardMoltenFluid != null
+                    && !(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
                     // Fluid solidifier recipes
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L))
-                        .fluidInputs(aMaterial.getMolten(1 * INGOTS))
+                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L))
+                        .fluidInputs(material.getMolten(1 * INGOTS))
                         .duration(1 * SECONDS + 12 * TICKS)
-                        .eut(calculateRecipeEU(aMaterial, 8))
+                        .eut(calculateRecipeEU(material, 8))
                         .addTo(fluidSolidifierRecipes);
                 }
                 // Reverse recipes
                 {
                     GTRecipeRegistrator
-                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, false);
+                        .registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, false);
                     GTRecipeRegistrator.registerReverseMacerating(
-                        aStack,
-                        aMaterial,
-                        aPrefix.getMaterialAmount(),
+                        stack,
+                        material,
+                        prefix.getMaterialAmount(),
                         null,
                         null,
                         null,
                         false,
                         false);
-                    if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(aMaterial)) {
+                    if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(material)) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
-                            GTUtility.copyAmount(1, aStack),
-                            aMaterial,
-                            aPrefix.getMaterialAmount(),
+                            GTUtility.copyAmount(1, stack),
+                            material,
+                            prefix.getMaterialAmount(),
                             null,
                             null,
                             null);
                     }
                 }
-                ItemStack tStack = GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1L);
-                if ((tStack != null) && ((aMaterial.mBlastFurnaceRequired) || aNoSmelting)) {
+                ItemStack tStack = GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L);
+                if ((tStack != null) && ((material.mBlastFurnaceRequired) || noSmelting)) {
                     GTModHandler.removeFurnaceSmelting(tStack);
                 }
-                if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
-                    && !MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)
-                    && !MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_GEM)
-                    && MU.hasFlag(aMaterial, GTMaterialFlag.MORTAR_GRINDABLE)) {
+                if (material.mUnifiable && (material.mMaterialInto == material)
+                    && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)
+                    && !MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
+                    && MU.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE)) {
                     GTModHandler.addShapelessCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.ingot.ingredient(aMaterial) });
+                        new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.ingot.ingredient(material) });
                 }
-                if (!aNoSmashing) {
+                if (!noSmashing) {
                     // Forge hammer recipes
-                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV
-                        && GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+                    if (material.getProcessingMaterialTierEU() < TierEU.IV
+                        && GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(3, aStack))
-                            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L))
-                            .duration(Math.max(aMaterialMass, 1L))
-                            .eut(calculateRecipeEU(aMaterial, 16))
+                            .itemInputs(GTUtility.copyAmount(3, stack))
+                            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 2L))
+                            .duration(Math.max(materialMass, 1L))
+                            .eut(calculateRecipeEU(material, 16))
                             .addTo(hammerRecipes);
                     }
                 }
-                if (!aNoSmashing || aStretchy) {
+                if (!noSmashing || stretchy) {
 
                     // Bender recipes
                     {
-                        if (GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+                        if (GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack))
+                                .itemInputs(GTUtility.copyAmount(1, stack))
                                 .circuit(1)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
-                                .duration(Math.max(aMaterialMass, 1L))
-                                .eut(calculateRecipeEU(aMaterial, 24))
+                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
+                                .duration(Math.max(materialMass, 1L))
+                                .eut(calculateRecipeEU(material, 24))
                                 .addTo(benderRecipes);
                         }
 
-                        if (GTOreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L) != null) {
+                        if (GTOreDictUnificator.get(OrePrefixes.plateDouble, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(2, aStack))
+                                .itemInputs(GTUtility.copyAmount(2, stack))
                                 .circuit(2)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L))
-                                .duration(Math.max(aMaterialMass * 2L, 1L))
-                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDouble, material, 1L))
+                                .duration(Math.max(materialMass * 2L, 1L))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (GTOreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L) != null) {
+                        if (GTOreDictUnificator.get(OrePrefixes.plateTriple, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(3, aStack))
+                                .itemInputs(GTUtility.copyAmount(3, stack))
                                 .circuit(3)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L))
-                                .duration(Math.max(aMaterialMass * 3L, 1L))
-                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateTriple, material, 1L))
+                                .duration(Math.max(materialMass * 3L, 1L))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (GTOreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L) != null) {
+                        if (GTOreDictUnificator.get(OrePrefixes.plateQuadruple, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(4, aStack))
+                                .itemInputs(GTUtility.copyAmount(4, stack))
                                 .circuit(4)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
-                                .duration(Math.max(aMaterialMass * 4L, 1L))
-                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuadruple, material, 1L))
+                                .duration(Math.max(materialMass * 4L, 1L))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (GTOreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L) != null) {
+                        if (GTOreDictUnificator.get(OrePrefixes.plateQuintuple, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(5, aStack))
+                                .itemInputs(GTUtility.copyAmount(5, stack))
                                 .circuit(5)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L))
-                                .duration(Math.max(aMaterialMass * 5L, 1L))
-                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuintuple, material, 1L))
+                                .duration(Math.max(materialMass * 5L, 1L))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (GTOreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L) != null) {
+                        if (GTOreDictUnificator.get(OrePrefixes.plateDense, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(9, aStack))
+                                .itemInputs(GTUtility.copyAmount(9, stack))
                                 .circuit(9)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L))
-                                .duration(Math.max(aMaterialMass * 9L, 1L))
-                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, material, 1L))
+                                .duration(Math.max(materialMass * 9L, 1L))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 1L) != null) {
+                        if (GTOreDictUnificator.get(OrePrefixes.foil, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack))
+                                .itemInputs(GTUtility.copyAmount(1, stack))
                                 .circuit(10)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 4L))
-                                .duration(Math.max(aMaterialMass * 2L, 1L))
-                                .eut(calculateRecipeEU(aMaterial, 24))
+                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.foil, material, 4L))
+                                .duration(Math.max(materialMass * 2L, 1L))
+                                .eut(calculateRecipeEU(material, 24))
                                 .addTo(benderRecipes);
                         }
                     }
                 }
             }
             case "ingotHot" -> {
-                if (aMaterial.mAutoGenerateVacuumFreezerRecipes
-                    && GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
+                if (material.mAutoGenerateVacuumFreezerRecipes
+                    && GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null) {
                     // Vacuum freezer recipes
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L))
-                        .duration(((int) Math.max(aMaterialMass * 3L, 1L)) * TICKS)
+                        .itemInputs(GTUtility.copyAmount(1, stack))
+                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L))
+                        .duration(((int) Math.max(materialMass * 3L, 1L)) * TICKS)
                         .eut(TierEU.RECIPE_MV)
                         .addTo(vacuumFreezerRecipes);
                 }

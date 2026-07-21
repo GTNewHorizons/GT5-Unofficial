@@ -16,10 +16,10 @@ public class ProcessingCompressed implements IOreRecipeRegistrator {
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        GTModHandler.removeRecipeByOutputDelayed(aStack);
+    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
+        ItemStack stack) {
+        GTModHandler.removeRecipeByOutputDelayed(stack);
         CoverRegistry
-            .registerDecorativeCover(aStack, TextureFactory.of(aMaterial.mIconSet.mTextures[72], aMaterial.mRGBa));
+            .registerDecorativeCover(stack, TextureFactory.of(material.mIconSet.mTextures[72], material.mRGBa));
     }
 }
