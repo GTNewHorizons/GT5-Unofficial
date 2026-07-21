@@ -593,8 +593,7 @@ class RecipeMapBackendLookupTest {
         Item circuitItem = item("lookup.validation.cross_unification.circuit");
         ItemStack representative = new ItemStack(representativeItem, 1, 0);
         ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
-        String unificationName = circuit.get(Materials.HV)
-            .toString();
+        String unificationName = circuit.oreDictName(Materials.HV);
         boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
             .containsKey(unificationName);
         ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()
@@ -647,8 +646,7 @@ class RecipeMapBackendLookupTest {
         Item equivalentItem = item("lookup.validation.item_data.equivalent");
         ItemStack representative = new ItemStack(representativeItem, 1, 0);
         ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
-        String unificationName = circuit.get(Materials.MV)
-            .toString();
+        String unificationName = circuit.oreDictName(Materials.MV);
         boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
             .containsKey(unificationName);
         ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()
@@ -791,8 +789,7 @@ class RecipeMapBackendLookupTest {
         Item equivalentItem = item("lookup.unified.equivalent");
         ItemStack representative = new ItemStack(representativeItem, 1, 0);
         ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
-        String unificationName = circuit.get(Materials.LV)
-            .toString();
+        String unificationName = circuit.oreDictName(Materials.LV);
         boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
             .containsKey(unificationName);
         ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()

@@ -48,7 +48,7 @@ public class BlockMetal extends BlockStorage {
                 if (aPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(aPrefix, materials, canonicalStack);
                 } else {
-                    GTOreDictUnificator.registerOre(aPrefix.get(materials), canonicalStack);
+                    GTOreDictUnificator.registerOre(aPrefix.oreDictName(materials), canonicalStack);
                 }
                 if (cutOver && mNEIisLoaded) {
                     codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i));

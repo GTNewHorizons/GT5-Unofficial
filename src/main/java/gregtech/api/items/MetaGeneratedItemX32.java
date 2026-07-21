@@ -90,7 +90,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
                 if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
-                    GTOreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
+                    GTOreDictUnificator.registerOre(tPrefix.oreDictName(tMaterial), tStack);
                 }
                 if ((tPrefix == OrePrefixes.stick || tPrefix == OrePrefixes.wireFine || tPrefix == OrePrefixes.ingot)
                     && (tMaterial == Materials.Lead || tMaterial == Materials.Tin

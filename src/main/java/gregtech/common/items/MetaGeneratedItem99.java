@@ -122,7 +122,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                 if (prefix.isUnifiable()) {
                     GTOreDictUnificator.set(prefix, tMaterial, tStack);
                 } else {
-                    GTOreDictUnificator.registerOre(prefix.get(tMaterial), tStack);
+                    GTOreDictUnificator.registerOre(prefix.oreDictName(tMaterial), tStack);
                 }
             }
 
