@@ -303,8 +303,8 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
 
             int maxParallel = tag.getInteger("maxParallelRecipes");
             if (maxParallel > 1) {
-                wailaLines.add(
-                    "§b" + StatCollector.translateToLocal("GT5U.gui.text.drone_max_parallel") + ": §a" + maxParallel);
+                wailaLines
+                    .add("§b" + StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": §a" + maxParallel);
             }
         }
 
