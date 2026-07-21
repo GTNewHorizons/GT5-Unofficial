@@ -421,7 +421,7 @@ public class GTPostLoad {
     }
 
     public static void doActualRegistration(Materials m) {
-        String plateName = OrePrefixes.plate.get(m)
+        String plateName = OrePrefixes.plate.oreDictName(m)
             .toString();
         boolean noSmash = !MU.hasFlag(m, GTMaterialFlag.NO_SMASHING);
         if (m.hasMetalItems()) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getIngots(1));
