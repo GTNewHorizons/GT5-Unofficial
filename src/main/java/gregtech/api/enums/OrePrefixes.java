@@ -3108,11 +3108,6 @@ public class OrePrefixes {
         return material instanceof IOreMaterial ore ? name + ore.getInternalName() : name + material;
     }
 
-    @Deprecated
-    public Object get(Object aMaterial) {
-        return aMaterial instanceof Materials legacy ? ingredient(legacy) : oreDictName(aMaterial);
-    }
-
     public String getDefaultLocalNameForItem(Materials material) {
         return material.getDefaultLocalizedNameForItem(getDefaultLocalNameFormatForItem(material.getInternalName()));
     }
