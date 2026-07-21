@@ -46,7 +46,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 1L),
                 GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { " s ", "fPx", 'P', OrePrefixes.stick.get(aMaterial) });
+                new Object[] { " s ", "fPx", 'P', OrePrefixes.stick.ingredient(aMaterial) });
         }
         if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)) {
 
@@ -138,11 +138,11 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "s", "X", 'X', OrePrefixes.stickLong.get(aMaterial) });
+                        new Object[] { "s", "X", 'X', OrePrefixes.stickLong.ingredient(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "f ", " X", 'X', OrePrefixes.ingot.get(aMaterial) });
+                        new Object[] { "f ", " X", 'X', OrePrefixes.ingot.ingredient(aMaterial) });
                 }
             }
         }
