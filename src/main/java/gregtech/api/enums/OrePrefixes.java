@@ -2832,37 +2832,37 @@ public class OrePrefixes {
             OrePrefixes.nanite,
             OrePrefixes.cell));
 
-    public static boolean isInstanceOf(String aName, OrePrefixes aPrefix) {
-        return aName != null && aName.startsWith(aPrefix.toString());
+    public static boolean isInstanceOf(String oreName, OrePrefixes prefix) {
+        return oreName != null && oreName.startsWith(prefix.toString());
     }
 
-    public void disableComponent(Materials aMaterial) {
-        if (!this.mDisabledItems.contains(aMaterial)) this.mDisabledItems.add(aMaterial);
+    public void disableComponent(Materials material) {
+        if (!this.mDisabledItems.contains(material)) this.mDisabledItems.add(material);
     }
 
-    public static OrePrefixes getOrePrefix(String aOre) {
-        for (OrePrefixes tPrefix : VALUES) if (aOre.startsWith(tPrefix.toString())) {
-            if (tPrefix == orePluto && aOre.equals("orePlutonium")) return ore;
-            if (tPrefix == orePluto && aOre.equals("orePlutonium241")) return ore;
-            if (tPrefix == oreTitan && aOre.equals("oreTitanium")) return ore;
-            if (tPrefix == oreCallisto && aOre.equals("oreCallistoIce")) return ore;
-            if (tPrefix == oreNether && aOre.equals("oreNetherQuartz")) return ore;
-            if (tPrefix == oreNether && aOre.equals("oreNetherStar")) return ore;
-            if (tPrefix == oreBasalt && aOre.equals("oreBasalticMineralSand")) return ore;
-            if (tPrefix == stickLong && aOre.equals("stickLongasssuperconductornameforuvwire")) return stick;
-            if (tPrefix == stickLong && aOre.equals("stickLongasssuperconductornameforuhvwire")) return stick;
+    public static OrePrefixes getOrePrefix(String oreName) {
+        for (OrePrefixes tPrefix : VALUES) if (oreName.startsWith(tPrefix.toString())) {
+            if (tPrefix == orePluto && oreName.equals("orePlutonium")) return ore;
+            if (tPrefix == orePluto && oreName.equals("orePlutonium241")) return ore;
+            if (tPrefix == oreTitan && oreName.equals("oreTitanium")) return ore;
+            if (tPrefix == oreCallisto && oreName.equals("oreCallistoIce")) return ore;
+            if (tPrefix == oreNether && oreName.equals("oreNetherQuartz")) return ore;
+            if (tPrefix == oreNether && oreName.equals("oreNetherStar")) return ore;
+            if (tPrefix == oreBasalt && oreName.equals("oreBasalticMineralSand")) return ore;
+            if (tPrefix == stickLong && oreName.equals("stickLongasssuperconductornameforuvwire")) return stick;
+            if (tPrefix == stickLong && oreName.equals("stickLongasssuperconductornameforuhvwire")) return stick;
             return tPrefix;
         }
         return null;
     }
 
-    public static String stripPrefix(String aOre) {
+    public static String stripPrefix(String oreName) {
         for (OrePrefixes tPrefix : VALUES) {
-            if (aOre.startsWith(tPrefix.toString())) {
-                return aOre.replaceFirst(tPrefix.toString(), "");
+            if (oreName.startsWith(tPrefix.toString())) {
+                return oreName.replaceFirst(tPrefix.toString(), "");
             }
         }
-        return aOre;
+        return oreName;
     }
 
     public static class ParsedOreDictName {
@@ -2943,10 +2943,10 @@ public class OrePrefixes {
         return prefixes;
     }
 
-    public static String replacePrefix(String aOre, OrePrefixes aPrefix) {
+    public static String replacePrefix(String oreName, OrePrefixes prefix) {
         for (OrePrefixes tPrefix : VALUES) {
-            if (aOre.startsWith(tPrefix.toString())) {
-                return aOre.replaceFirst(tPrefix.toString(), aPrefix.toString());
+            if (oreName.startsWith(tPrefix.toString())) {
+                return oreName.replaceFirst(tPrefix.toString(), prefix.toString());
             }
         }
         return "";
@@ -2960,124 +2960,124 @@ public class OrePrefixes {
         }
     }
 
-    public static OrePrefixes getPrefix(String aPrefixName) {
-        return getPrefix(aPrefixName, null);
+    public static OrePrefixes getPrefix(String prefixName) {
+        return getPrefix(prefixName, null);
     }
 
-    public static OrePrefixes getPrefix(String aPrefixName, OrePrefixes aReplacement) {
-        final OrePrefixes value = NAME_TO_OREPREFIX.get(aPrefixName);
+    public static OrePrefixes getPrefix(String prefixName, OrePrefixes replacement) {
+        final OrePrefixes value = NAME_TO_OREPREFIX.get(prefixName);
         if (value != null) {
             return value;
         }
-        return aReplacement;
+        return replacement;
     }
 
-    public static Materials getMaterial(String aOre) {
-        return Materials.get(stripPrefix(aOre));
+    public static Materials getMaterial(String oreName) {
+        return Materials.get(stripPrefix(oreName));
     }
 
-    public static Materials getMaterial(String aOre, OrePrefixes aPrefix) {
-        return Materials.get(aOre.replaceFirst(aPrefix.toString(), ""));
+    public static Materials getMaterial(String oreName, OrePrefixes prefix) {
+        return Materials.get(oreName.replaceFirst(prefix.toString(), ""));
     }
 
-    public static Materials getRealMaterial(String aOre, OrePrefixes aPrefix) {
-        return Materials.getRealMaterial(aOre.replaceFirst(aPrefix.toString(), ""));
+    public static Materials getRealMaterial(String oreName, OrePrefixes prefix) {
+        return Materials.getRealMaterial(oreName.replaceFirst(prefix.toString(), ""));
     }
 
-    public void enableComponent(Materials aMaterial) {
-        this.mDisabledItems.remove(aMaterial);
+    public void enableComponent(Materials material) {
+        this.mDisabledItems.remove(material);
     }
 
-    public boolean add(ItemStack aStack) {
-        if (aStack == null) return false;
-        if (!contains(aStack)) {
-            mPrefixedItems.add(aStack);
+    public boolean add(ItemStack stack) {
+        if (stack == null) return false;
+        if (!contains(stack)) {
+            mPrefixedItems.add(stack);
             // It's now in there... so update the cache
-            mContainsTestCache.add(aStack);
+            mContainsTestCache.add(stack);
         }
         return true;
     }
 
-    public boolean contains(ItemStack aStack) {
-        return !GTUtility.isStackInvalid(aStack) && mContainsTestCache.contains(aStack);
+    public boolean contains(ItemStack stack) {
+        return !GTUtility.isStackInvalid(stack) && mContainsTestCache.contains(stack);
     }
 
-    public boolean containsUnCached(ItemStack aStack) {
+    public boolean containsUnCached(ItemStack stack) {
         // In case someone needs this
         for (ItemStack tStack : mPrefixedItems) {
-            if (GTUtility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())) {
+            if (GTUtility.areStacksEqual(stack, tStack, !tStack.hasTagCompound())) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean doGenerateItem(IOreMaterial aOreMaterial) {
-        if (!(aOreMaterial instanceof Materials aMaterial)) return false;
-        if (aMaterial == Materials._NULL) return false;
-        if (aMaterial.mMetaItemSubID == -1) return false;
-        if (!aMaterial.mHasParentMod) return false;
+    public boolean doGenerateItem(IOreMaterial oreMaterial) {
+        if (!(oreMaterial instanceof Materials material)) return false;
+        if (material == Materials._NULL) return false;
+        if (material.mMetaItemSubID == -1) return false;
+        if (!material.mHasParentMod) return false;
 
         // This only falls through, returning false, when the material has no overlap with `mMaterialGenerationBits`.
         // spotless:off
-        if (!mGeneratedItems.contains(aMaterial))
-            if ((materialGenerationBits & DUST) == 0 || !aMaterial.hasDustItems())
-                if ((materialGenerationBits & METAL) == 0 || !aMaterial.hasMetalItems())
-                    if ((materialGenerationBits & GEM) == 0 || !aMaterial.hasGemItems())
-                        if ((materialGenerationBits & ORE) == 0 || !aMaterial.hasOresItems())
-                            if ((materialGenerationBits & CELL) == 0 || !aMaterial.hasCell())
-                                if ((materialGenerationBits & PLASMA) == 0 || !aMaterial.hasPlasma())
-                                    if ((materialGenerationBits & TOOL) == 0 || !aMaterial.hasToolHeadItems())
-                                        if ((materialGenerationBits & GEAR) == 0 || !aMaterial.hasGearItems())
-                                            if ((materialGenerationBits & EMPTY) == 0 || !aMaterial.hasEmpty())
+        if (!mGeneratedItems.contains(material))
+            if ((materialGenerationBits & DUST) == 0 || !material.hasDustItems())
+                if ((materialGenerationBits & METAL) == 0 || !material.hasMetalItems())
+                    if ((materialGenerationBits & GEM) == 0 || !material.hasGemItems())
+                        if ((materialGenerationBits & ORE) == 0 || !material.hasOresItems())
+                            if ((materialGenerationBits & CELL) == 0 || !material.hasCell())
+                                if ((materialGenerationBits & PLASMA) == 0 || !material.hasPlasma())
+                                    if ((materialGenerationBits & TOOL) == 0 || !material.hasToolHeadItems())
+                                        if ((materialGenerationBits & GEAR) == 0 || !material.hasGearItems())
+                                            if ((materialGenerationBits & EMPTY) == 0 || !material.hasEmpty())
                                                 return false;
         // spotless:on
 
-        if (mNotGeneratedItems.contains(aMaterial)) return false;
-        if (mDisabledItems.contains(aMaterial)) return false;
-        return mCondition == null || mCondition.isTrue(aMaterial);
+        if (mNotGeneratedItems.contains(material)) return false;
+        if (mDisabledItems.contains(material)) return false;
+        return mCondition == null || mCondition.isTrue(material);
     }
 
-    public boolean ignoreMaterials(Materials... aMaterials) {
-        for (Materials tMaterial : aMaterials) if (tMaterial != null) mIgnoredMaterials.add(tMaterial);
+    public boolean ignoreMaterials(Materials... materials) {
+        for (Materials tMaterial : materials) if (tMaterial != null) mIgnoredMaterials.add(tMaterial);
         return true;
     }
 
-    public boolean isIgnored(IOreMaterial aMaterial) {
-        if (aMaterial instanceof Materials aLegacyMaterial
-            && (!aLegacyMaterial.mUnifiable || aLegacyMaterial != aLegacyMaterial.mMaterialInto)) return true;
-        return mIgnoredMaterials.contains(aMaterial);
+    public boolean isIgnored(IOreMaterial material) {
+        if (material instanceof Materials legacyMaterial
+            && (!legacyMaterial.mUnifiable || legacyMaterial != legacyMaterial.mMaterialInto)) return true;
+        return mIgnoredMaterials.contains(material);
     }
 
-    public boolean addFamiliarPrefix(OrePrefixes aPrefix) {
-        if (aPrefix == null || mFamiliarPrefixes.contains(aPrefix) || aPrefix == this) return false;
-        return mFamiliarPrefixes.add(aPrefix);
+    public boolean addFamiliarPrefix(OrePrefixes prefix) {
+        if (prefix == null || mFamiliarPrefixes.contains(prefix) || prefix == this) return false;
+        return mFamiliarPrefixes.add(prefix);
     }
 
-    public boolean add(IOreRecipeRegistrator aRegistrator) {
-        if (aRegistrator == null) return false;
-        return mOreProcessing.add(aRegistrator);
+    public boolean add(IOreRecipeRegistrator registrator) {
+        if (registrator == null) return false;
+        return mOreProcessing.add(registrator);
     }
 
-    public void processOre(IOreMaterial aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+    public void processOre(IOreMaterial material, String oreDictName, String modName, ItemStack stack) {
 
-        if (aMaterial == null) return;
-        if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_RECIPES)) return;
-        if (aMaterial == Materials._NULL && !isSelfReferencing && isMaterialBased) return;
-        if (!GTUtility.isStackValid(aStack)) return;
+        if (material == null) return;
+        if (MU.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
+        if (material == Materials._NULL && !isSelfReferencing && isMaterialBased) return;
+        if (!GTUtility.isStackValid(stack)) return;
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
             if (D2) {
                 GTLog.ore.println(
-                    "Processing '" + aOreDictName
+                    "Processing '" + oreDictName
                         + "' with the Prefix '"
                         + name
                         + "' and the Material '"
-                        + aMaterial.getInternalName()
+                        + material.getInternalName()
                         + "' at "
                         + GTUtility.getClassName(tRegistrator));
             }
-            tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
+            tRegistrator.registerOre(this, material, oreDictName, modName, GTUtility.copyAmount(1, stack));
         }
     }
 

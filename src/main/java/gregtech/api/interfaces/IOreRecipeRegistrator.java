@@ -11,17 +11,17 @@ public interface IOreRecipeRegistrator {
      * Contains a Code Fragment, used in the OrePrefix to register Recipes. Better than using a switch/case, like I did
      * before.
      *
-     * @param aPrefix   always != null
-     * @param aMaterial always != null, and can be == _NULL if the Prefix is Self Referencing or not Material based!
-     * @param aStack    always != null
+     * @param prefix   always != null
+     * @param material always != null, and can be == _NULL if the Prefix is Self Referencing or not Material based!
+     * @param stack    always != null
      */
-    void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack);
+    void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName, ItemStack stack);
 
     /// Bridges the [IOreMaterial]-typed ore-processing pipeline to the [Materials]-typed registrator. A material
     /// that is not a legacy [Materials] carries no ore-processing recipes, so it is a no-op.
-    default void registerOre(OrePrefixes aPrefix, IOreMaterial aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        if (aMaterial instanceof Materials aLegacyMaterial)
-            registerOre(aPrefix, aLegacyMaterial, aOreDictName, aModName, aStack);
+    default void registerOre(OrePrefixes prefix, IOreMaterial material, String oreDictName, String modName,
+        ItemStack stack) {
+        if (material instanceof Materials legacyMaterial)
+            registerOre(prefix, legacyMaterial, oreDictName, modName, stack);
     }
 }
