@@ -75,6 +75,21 @@ public class GTOreDictUnificator {
         set(prefix, material, stack, true, false);
     }
 
+    /// Registers `stack` under the ore-dictionary name for `prefix` and `materialName`, makes it that name's
+    /// unification target, and associates it with the composition-free ingredient for that name.
+    public static void set(OrePrefixes prefix, String materialName, ItemStack stack) {
+        if (materialName == null || prefix == null
+            || GTUtility.isStackInvalid(stack)
+            || Items.feather.getDamage(stack) == WILDCARD) return;
+        isAddingOre++;
+        stack = GTUtility.copyAmount(1, stack);
+        String name = prefix.oreDictName(materialName);
+        registerOre(name, stack);
+        setItemData(stack, new ItemData(prefix, materialName));
+        sName2StackMap.put(name, stack);
+        isAddingOre--;
+    }
+
     public static void set(OrePrefixes prefix, IOreMaterial material, ItemStack stack, boolean overwrite,
         boolean alreadyRegistered) {
         if (material == null || prefix == null

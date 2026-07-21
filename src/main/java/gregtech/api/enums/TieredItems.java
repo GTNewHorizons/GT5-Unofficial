@@ -103,4 +103,9 @@ public enum TieredItems {
     public ItemData getPlateAlloyIngredient() {
         return new ItemData(OrePrefixes.plateAlloy, materialName);
     }
+
+    /// The ore-dictionary material name this constant stands for.
+    public String materialName() {
+        return materialName;
+    }
 }

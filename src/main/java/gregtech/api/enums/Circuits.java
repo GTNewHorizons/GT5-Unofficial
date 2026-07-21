@@ -59,4 +59,9 @@ public enum Circuits {
     public ItemData getWrapIngredient() {
         return new ItemData(OrePrefixes.wrapCircuit, materialName);
     }
+
+    /// The ore-dictionary material name this constant stands for.
+    public String materialName() {
+        return materialName;
+    }
 }

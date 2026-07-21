@@ -103,4 +103,9 @@ public enum Superconductors {
     private ItemData ingredient(OrePrefixes prefix) {
         return new ItemData(prefix, materialName);
     }
+
+    /// The ore-dictionary material name this constant stands for.
+    public String materialName() {
+        return materialName;
+    }
 }
