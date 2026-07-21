@@ -195,7 +195,7 @@ public class CrackRecipeAdder {
             .replace(" ", "_");
         String Name = material.getDefaultName();
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeTiny.get(material.getBridgeMaterial()),
+            OrePrefixes.pipeTiny.oreDictName(material.getBridgeMaterial()),
             new MTEFluidPipe(
                 ID,
                 "GT_Pipe_" + unName + "_Tiny",
@@ -206,7 +206,7 @@ public class CrackRecipeAdder {
                 temp,
                 gas).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeSmall.get(material.getBridgeMaterial()),
+            OrePrefixes.pipeSmall.oreDictName(material.getBridgeMaterial()),
             new MTEFluidPipe(
                 ID + 1,
                 "GT_Pipe_" + unName + "_Small",
@@ -217,7 +217,7 @@ public class CrackRecipeAdder {
                 temp,
                 gas).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeMedium.get(material.getBridgeMaterial()),
+            OrePrefixes.pipeMedium.oreDictName(material.getBridgeMaterial()),
             new MTEFluidPipe(
                 ID + 2,
                 "GT_Pipe_" + unName,
@@ -228,7 +228,7 @@ public class CrackRecipeAdder {
                 temp,
                 gas).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeLarge.get(material.getBridgeMaterial()),
+            OrePrefixes.pipeLarge.oreDictName(material.getBridgeMaterial()),
             new MTEFluidPipe(
                 ID + 3,
                 "GT_Pipe_" + unName + "_Large",
@@ -239,7 +239,7 @@ public class CrackRecipeAdder {
                 temp,
                 gas).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeHuge.get(material.getBridgeMaterial()),
+            OrePrefixes.pipeHuge.oreDictName(material.getBridgeMaterial()),
             new MTEFluidPipe(
                 ID + 4,
                 "GT_Pipe_" + unName + "_Huge",
