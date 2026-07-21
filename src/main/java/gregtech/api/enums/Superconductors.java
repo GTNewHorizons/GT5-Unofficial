@@ -1,21 +1,15 @@
 package gregtech.api.enums;
 
-import java.util.function.Supplier;
-
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.material.MarkerMaterial;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
 /// The tiered superconductor wire and cable ore-dictionary ingredients, keyed by voltage tier.
 ///
-/// The wires and cables are `MTECable` MetaPipeEntities registered into the ore dictionary against a `Materials`
-/// marker, so the only handle on them is the [OrePrefixes#wireGt01]..[OrePrefixes#wireGt16] and
-/// [OrePrefixes#cableGt04] prefix on that marker. Each tier is backed by the marker rather than spelling an
-/// ore-dictionary name, because the marker name does not track the tier abbreviation (`UHV` is named
-/// `Superconductor`), so the resolved name cannot be reconstructed from the tier. Routing every call site through
-/// this enum keeps that mapping in one place.
+/// Each tier's ore-dictionary material name is unrelated to the tier abbreviation (`UHV` is named
+/// `Superconductor`), so the ore-dictionary names these entries resolve to cannot be spelled from the tier name.
+/// Routing every call site through this enum keeps that mapping in one place.
 ///
 /// Ingredients come in two shapes, so each prefix exposes two accessors: a `get...(int)` returning a unified
 /// [ItemStack] for recipe inputs and outputs that need a concrete stack, and a `get...Ingredient()` returning an
@@ -23,28 +17,27 @@ import gregtech.api.util.GTOreDictUnificator;
 ///
 /// Crafting-grid recipes need the [ItemData] rather than the bare ore-dictionary name it stringifies to:
 /// [gregtech.api.util.GTModHandler#addCraftingRecipe] derives the recycling output of a reversible recipe from the
-/// [ItemData] of each ingredient, and a bare name carries no such association. The ingredient form names the
-/// ore-dictionary entry the marker resolves to; for prefixes that define a material amount, the resulting stack
-/// would participate in that merged item data, but a marker carries no composition, so these ingredients produce
-/// no recycling output of their own.
+/// [ItemData] of each ingredient, and a bare name carries no such association. The ingredient form is built from
+/// the name-only [ItemData] constructor, which carries no composition, so these ingredients produce no recycling
+/// output of their own.
 public enum Superconductors {
 
-    MV(() -> Materials.SuperconductorMV),
-    HV(() -> Materials.SuperconductorHV),
-    EV(() -> Materials.SuperconductorEV),
-    IV(() -> Materials.SuperconductorIV),
-    LuV(() -> Materials.SuperconductorLuV),
-    ZPM(() -> Materials.SuperconductorZPM),
-    UV(() -> Materials.SuperconductorUV),
-    UHV(() -> Materials.SuperconductorUHV),
-    UEV(() -> Materials.SuperconductorUEV),
-    UIV(() -> Materials.SuperconductorUIV),
-    UMV(() -> Materials.SuperconductorUMV);
+    MV("SuperconductorMV"),
+    HV("SuperconductorHV"),
+    EV("SuperconductorEV"),
+    IV("SuperconductorIV"),
+    LuV("SuperconductorLuV"),
+    ZPM("SuperconductorZPM"),
+    UV("SuperconductorUV"),
+    UHV("Superconductor"),
+    UEV("SuperconductorUEV"),
+    UIV("SuperconductorUIV"),
+    UMV("SuperconductorUMV");
 
-    private final Supplier<MarkerMaterial> marker;
+    private final String materialName;
 
-    Superconductors(Supplier<MarkerMaterial> marker) {
-        this.marker = marker;
+    Superconductors(String materialName) {
+        this.materialName = materialName;
     }
 
     public ItemStack getWireGt01(int amount) {
@@ -104,10 +97,10 @@ public enum Superconductors {
     }
 
     private ItemStack get(OrePrefixes prefix, int amount) {
-        return GTOreDictUnificator.get(prefix, marker.get(), amount);
+        return GTOreDictUnificator.get(prefix.oreDictName(materialName), amount);
     }
 
     private ItemData ingredient(OrePrefixes prefix) {
-        return new ItemData(prefix, marker.get());
+        return new ItemData(prefix, materialName);
     }
 }
