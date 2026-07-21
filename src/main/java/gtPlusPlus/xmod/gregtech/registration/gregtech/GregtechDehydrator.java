@@ -171,41 +171,44 @@ public class GregtechDehydrator {
         GTModHandler.addMachineCraftingRecipe(
             GregtechItemList.GT_Dehydrator_MV.get(1),
             new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E',
-                OrePrefixes.wireFine.get(Materials.RedAlloy), 'C', CIRCUIT, 'W',
-                OrePrefixes.cableGt04.get(Materials.Copper), 'G', OrePrefixes.gearGt.get(Materials.Steel) },
+                OrePrefixes.wireFine.ingredient(Materials.RedAlloy), 'C', CIRCUIT, 'W',
+                OrePrefixes.cableGt04.ingredient(Materials.Copper), 'G',
+                OrePrefixes.gearGt.ingredient(Materials.Steel) },
             2);
 
         GTModHandler.addMachineCraftingRecipe(
             GregtechItemList.GT_Dehydrator_HV.get(1),
             new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E',
-                OrePrefixes.wireFine.get(Materials.Electrum), 'C', CIRCUIT, 'W',
-                OrePrefixes.cableGt04.get(Materials.Silver), 'G', MaterialsAlloy.POTIN.getGear(1) },
+                OrePrefixes.wireFine.ingredient(Materials.Electrum), 'C', CIRCUIT, 'W',
+                OrePrefixes.cableGt04.ingredient(Materials.Silver), 'G', MaterialsAlloy.POTIN.getGear(1) },
             3);
 
         GTModHandler.addMachineCraftingRecipe(
             GregtechItemList.GT_Dehydrator_EV.get(1),
             new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', GregtechItemList.DehydratorCoilEV, 'C',
-                CIRCUIT, 'W', OrePrefixes.cableGt04.get(Materials.Aluminium), 'G', MaterialsAlloy.TUMBAGA.getGear(1) },
+                CIRCUIT, 'W', OrePrefixes.cableGt04.ingredient(Materials.Aluminium), 'G',
+                MaterialsAlloy.TUMBAGA.getGear(1) },
             4);
 
         GTModHandler.addMachineCraftingRecipe(
             GregtechItemList.GT_Dehydrator_IV.get(1),
             new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', GregtechItemList.DehydratorCoilIV, 'C',
-                CIRCUIT, 'W', OrePrefixes.cableGt04.get(Materials.Tungsten), 'G',
+                CIRCUIT, 'W', OrePrefixes.cableGt04.ingredient(Materials.Tungsten), 'G',
                 MaterialsAlloy.INCONEL_690.getGear(1) },
             5);
 
         GTModHandler.addMachineCraftingRecipe(
             GregtechItemList.GT_Dehydrator_LuV.get(1),
             new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', GregtechItemList.DehydratorCoilLuV, 'C',
-                CIRCUIT, 'W', OrePrefixes.cableGt04.get(Materials.Naquadah), 'G',
+                CIRCUIT, 'W', OrePrefixes.cableGt04.ingredient(Materials.Naquadah), 'G',
                 MaterialsAlloy.HASTELLOY_N.getGear(1) },
             6);
 
         GTModHandler.addMachineCraftingRecipe(
             GregtechItemList.GT_Dehydrator_ZPM.get(1),
             new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', GregtechItemList.DehydratorCoilZPM, 'C',
-                CIRCUIT, 'W', OrePrefixes.cableGt04.get(Materials.Osmium), 'G', MaterialsAlloy.ZERON_100.getGear(1) },
+                CIRCUIT, 'W', OrePrefixes.cableGt04.ingredient(Materials.Osmium), 'G',
+                MaterialsAlloy.ZERON_100.getGear(1) },
             7);
     }
 }
