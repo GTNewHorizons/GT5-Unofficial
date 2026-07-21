@@ -38,8 +38,15 @@ public class ItemData {
     /// An ingredient that names an ore-dictionary entry and carries no composition, for the entries whose
     /// material side is not a material at all.
     public ItemData(OrePrefixes prefix, String materialName) {
+        this(prefix, materialName, false);
+    }
+
+    /// An ingredient that names an ore-dictionary entry and carries no composition, blacklisted from unification
+    /// the way [#ItemData(OrePrefixes,IOreMaterial,boolean)] blacklists a material-backed one.
+    public ItemData(OrePrefixes prefix, String materialName, boolean blackListed) {
         mPrefix = prefix;
         mMaterial = null;
+        mBlackListed = blackListed;
         mByProducts = EMPTY_MATERIALSTACK_ARRAY;
         oreDictName = prefix.oreDictName(materialName);
     }

@@ -423,6 +423,13 @@ public class GTOreDictUnificator {
         setItemData(stack, new ItemData(prefix, material, blackListed));
     }
 
+    public static void addAssociation(OrePrefixes prefix, String materialName, ItemStack stack, boolean blackListed) {
+        if (prefix == null || materialName == null || GTUtility.isStackInvalid(stack)) return;
+        if (Items.feather.getDamage(stack) == WILDCARD) for (byte i = 0; i < 16; i++)
+            setItemData(GTUtility.copyAmountAndMetaData(1, i, stack), new ItemData(prefix, materialName, blackListed));
+        setItemData(stack, new ItemData(prefix, materialName, blackListed));
+    }
+
     @Nullable
     public static ItemData getItemData(ItemStack stack) {
         if (GTUtility.isStackInvalid(stack)) return null;
