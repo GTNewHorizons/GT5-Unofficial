@@ -150,25 +150,11 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
             .addInfo("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip")
             .beginStructureBlock(9, 3, 9, false)
             .addController("Front bottom center")
-            .addCasing(
-                "42",
-                "gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing",
-                false)
-            .addCasing(
-                "27",
-                "gt.blockmachines.multimachine.beamcrafting.ttgratecasing",
-                false)
+            .addCasing("42", "gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing", false)
+            .addCasing("27", "gt.blockmachines.multimachine.beamcrafting.ttgratecasing", false)
             .addCasing("9", "Any Tiered Glass", false)
-            .addMiscHatch(
-                "1",
-                "gtnhlanth.tt.hatch.beaminput",
-                "GT5U.MBTT.Position.AboveController",
-                1)
-            .addMiscHatch(
-                "4",
-                "gtnhlanth.tt.hatch.beamoutputfiltered",
-                "GT5U.MBTT.Position.OppositeController",
-                2)
+            .addMiscHatch("1", "gtnhlanth.tt.hatch.beaminput", "GT5U.MBTT.Position.AboveController", 1)
+            .addMiscHatch("4", "gtnhlanth.tt.hatch.beamoutputfiltered", "GT5U.MBTT.Position.OppositeController", 2)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorHamCorp);

@@ -221,25 +221,11 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
             .addInfo("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip")
             .beginStructureBlock(7, 7, 11, true)
             .addController("Front center, 3rd layer")
-            .addCasing(
-                "95",
-                "gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing",
-                false)
-            .addCasing(
-                "15",
-                "gt.blockmachines.multimachine.beamcrafting.ttgratecasing",
-                false)
+            .addCasing("95", "gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing", false)
+            .addCasing("15", "gt.blockmachines.multimachine.beamcrafting.ttgratecasing", false)
             .addCasing("9", "Any Tiered Glass", false)
-            .addMiscHatch(
-                "1",
-                "gtnhlanth.tt.hatch.beaminput",
-                "GT5U.MBTT.Position.AboveController",
-                1)
-            .addMiscHatch(
-                "1",
-                "gtnhlanth.tt.hatch.beamoutput",
-                "GT5U.MBTT.Position.OppositeController",
-                2)
+            .addMiscHatch("1", "gtnhlanth.tt.hatch.beaminput", "GT5U.MBTT.Position.AboveController", 1)
+            .addMiscHatch("1", "gtnhlanth.tt.hatch.beamoutput", "GT5U.MBTT.Position.OppositeController", 2)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorHamCorp, GTAuthors.Authorzub);

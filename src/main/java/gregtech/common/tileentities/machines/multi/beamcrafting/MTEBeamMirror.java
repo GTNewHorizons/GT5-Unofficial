@@ -184,37 +184,17 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
             .addInfo("gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip")
             .beginStructureBlock(3, 6, 5, false)
             .addController("Front bottom center")
-            .addMiscHatch(
-                "1",
-                "gtnhlanth.tt.hatch.beaminput",
-                "GT5U.MBTT.Position.AboveController",
-                1)
-            .addMiscHatch(
-                "1",
-                "gtnhlanth.tt.hatch.beamoutput",
-                "GT5U.MBTT.Position.OppositeController",
-                2)
+            .addMiscHatch("1", "gtnhlanth.tt.hatch.beaminput", "GT5U.MBTT.Position.AboveController", 1)
+            .addMiscHatch("1", "gtnhlanth.tt.hatch.beamoutput", "GT5U.MBTT.Position.OppositeController", 2)
             .addStructureInfo("")
             .addStructureInfo("gt.beam_mirror.structure.tier.1")
-            .addCasing(
-                "31",
-                "gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing",
-                false)
-            .addCasing(
-                "9",
-                "gt.blockmachines.multimachine.beamcrafting.ttgratecasing",
-                false)
+            .addCasing("31", "gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing", false)
+            .addCasing("9", "gt.blockmachines.multimachine.beamcrafting.ttgratecasing", false)
             .addCasing("5", "Any Tiered Glass", false)
             .addStructureInfo("")
             .addStructureInfo("gt.beam_mirror.structure.tier.2")
-            .addCasing(
-                "52",
-                "gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing",
-                false)
-            .addCasing(
-                "9",
-                "gt.blockmachines.multimachine.beamcrafting.ttgratecasing",
-                false)
+            .addCasing("52", "gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing", false)
+            .addCasing("9", "gt.blockmachines.multimachine.beamcrafting.ttgratecasing", false)
             .addCasing("8", "Any Tiered Glass", false)
             .addStructureInfo("")
             .addMasterChannel("channels.gregtech.master.structuretier")

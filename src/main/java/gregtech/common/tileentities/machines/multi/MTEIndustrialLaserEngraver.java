@@ -231,11 +231,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addCasing("9", "Tungstensteel Frame Box", false)
             .addCasing("3", "Any Tiered Glass", true)
             .addCasing("1", "gt.laserplate.name", false)
-            .addMiscHatch(
-                "1",
-                "GT5U.tooltip.structure.laser_source_hatch",
-                "GT5U.MBTT.Position.CasingAboveGlass",
-                2)
+            .addMiscHatch("1", "GT5U.tooltip.structure.laser_source_hatch", "GT5U.MBTT.Position.CasingAboveGlass", 2)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addInputAny("1+", "Any casing", 1)

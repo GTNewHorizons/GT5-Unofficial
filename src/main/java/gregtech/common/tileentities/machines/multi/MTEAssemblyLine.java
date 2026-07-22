@@ -139,11 +139,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addMaxTierSkips(1)
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addController("gt.assline.info.controller")
-            .addMiscHatch(
-                "1",
-                "gt.blockmachines.hatch.dataaccess.name",
-                "gt.asslike.info.dataaccess",
-                3)
+            .addMiscHatch("1", "gt.blockmachines.hatch.dataaccess.name", "gt.asslike.info.dataaccess", 3)
             .addEnergyHatch("1+", "gt.asslike.info.energy", 4)
             .addMaintenanceHatch("1", "gt.asslike.info.i_hatch", 1)
             .addInputBus("5-16", "gt.asslike.info.i_bus", 2)

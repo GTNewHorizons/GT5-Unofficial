@@ -277,20 +277,10 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             .addInfo("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip")
             .beginStructureBlock(17, 5, 11, true)
             .addController("Front center, 3rd layer")
-            .addCasing(
-                "224-227",
-                "gt.blockmachines.multimachine.beamcrafting.ttcasing",
-                false)
+            .addCasing("224-227", "gt.blockmachines.multimachine.beamcrafting.ttcasing", false)
             .addCasing("26", "Any Tiered Glass", false)
-            .addCasing(
-                "16",
-                "gt.blockmachines.multimachine.beamcrafting.ttgratecasing",
-                false)
-            .addMiscHatch(
-                "2",
-                "gtnhlanth.tt.hatch.beaminput",
-                "GT5U.MBTT.Position.BothEndsCenter",
-                2)
+            .addCasing("16", "gt.blockmachines.multimachine.beamcrafting.ttgratecasing", false)
+            .addMiscHatch("2", "gtnhlanth.tt.hatch.beaminput", "GT5U.MBTT.Position.BothEndsCenter", 2)
             .addEnergyHatch("1+", "GT5U.MBTT.Position.AnyAcceleratorCasing", 1)
             .addInputAny("1+", "GT5U.MBTT.Position.AnyAcceleratorCasing", 1)
             .addOutputBus("1+", "GT5U.MBTT.Position.AnyAcceleratorCasing", 1)

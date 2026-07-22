@@ -86,11 +86,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasing("0-26", "gt.mb_coke_oven.casing", false)
-            .addMiscHatch(
-                "0+",
-                "GT5U.MBTT.CokeOvenHatch",
-                "gt.mb_coke_oven.info.hatch",
-                1)
+            .addMiscHatch("0+", "GT5U.MBTT.CokeOvenHatch", "gt.mb_coke_oven.info.hatch", 1)
             .addAir("Interior of the structure")
             .addStructureInfo("")
             .addStructureFooter("GT5U.MBTT.Note.WallshareSides")

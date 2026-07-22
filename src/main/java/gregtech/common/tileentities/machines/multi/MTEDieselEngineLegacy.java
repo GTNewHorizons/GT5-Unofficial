@@ -122,11 +122,7 @@ public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEn
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
             .addController("gt.mbtt.structure.front_center")
-            .addCasingInfoRange(
-                "gt.blockcasings4.Casing_StableTitanium",
-                16,
-                22,
-                false)
+            .addCasingInfoRange("gt.blockcasings4.Casing_StableTitanium", 16, 22, false)
             .addOtherStructurePart(
                 "gt.blockcasings2.Casing_Gearbox_Titanium",
                 "gt.multiblock.DieselEngine.gear_box_inner")
@@ -134,9 +130,7 @@ public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEn
                 "gt.blockcasings4.Casing_EngineIntake",
                 "gt.multiblock.DieselEngine.engine_intake_ring")
             .addDynamoHatch("gt.mbtt.structure.back_center", 2)
-            .addMaintenanceHatch(
-                "gt.multiblock.DieselEngine.maintenance_hatch",
-                1)
+            .addMaintenanceHatch("gt.multiblock.DieselEngine.maintenance_hatch", 1)
             .addMufflerHatch("gt.multiblock.DieselEngine.muffler_hatch", 1)
             .addInputHatch("gt.multiblock.DieselEngine.diesel_fuel", 1)
             .addInputHatch("gt.multiblock.DieselEngine.lubricant", 1)

@@ -116,8 +116,7 @@ class MultiblockTooltipBuilderTest {
         assertTrue(
             Arrays.asList(resolve(payloads, translations))
                 .contains(
-                    "Structure by: "
-                        + EnumChatFormatting.GREEN
+                    "Structure by: " + EnumChatFormatting.GREEN
                         + EnumChatFormatting.GOLD
                         + "VorTex"
                         + EnumChatFormatting.RESET
