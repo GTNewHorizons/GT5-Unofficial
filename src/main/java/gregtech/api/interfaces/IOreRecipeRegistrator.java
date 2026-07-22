@@ -2,8 +2,11 @@ package gregtech.api.interfaces;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MU;
 
 public interface IOreRecipeRegistrator {
 
@@ -23,5 +26,15 @@ public interface IOreRecipeRegistrator {
         ItemStack stack) {
         if (material instanceof Materials legacyMaterial)
             registerOre(prefix, legacyMaterial, oreDictName, modName, stack);
+    }
+
+    /// Bridges the MaterialLib [Material]-typed ore-processing pipeline to the [Materials]-typed registrator,
+    /// resolving `material`'s legacy counterpart through [MU#materialOf]. A material with no legacy counterpart
+    /// carries no ore-processing recipes through this entry, so it is a no-op -- mirrors
+    /// [#registerOre(OrePrefixes, IOreMaterial, String, String, ItemStack)]'s `instanceof Materials` gate.
+    default void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
+        ItemStack stack) {
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial != null) registerOre(prefix, legacyMaterial, oreDictName, modName, stack);
     }
 }
