@@ -7,8 +7,11 @@ import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MU;
 
 public class AsteroidData {
 
@@ -22,14 +25,14 @@ public class AsteroidData {
     public final int minDroneTier;
     public final int maxDroneTier;
     public final ItemStack[] outputItems;
-    public final Materials[] output;
+    public final Material[] output;
     public final OrePrefixes orePrefixes;
     public final int[] chances;
     public final int requiredModuleTier;
     public final int duration;
 
     public AsteroidData(String asteroidName, int minDistance, int maxDistance, int minSize, int maxSize,
-        int computation, int recipeWeight, int minDroneTier, int maxDroneTier, Materials[] output,
+        int computation, int recipeWeight, int minDroneTier, int maxDroneTier, Material[] output,
         OrePrefixes orePrefixes, int[] chances, int requiredModuleTier, int duration) {
         this.asteroidName = asteroidName;
         this.minDistance = minDistance;
@@ -46,6 +49,34 @@ public class AsteroidData {
         this.requiredModuleTier = requiredModuleTier;
         this.outputItems = null;
         this.duration = duration;
+    }
+
+    public AsteroidData(String asteroidName, int minDistance, int maxDistance, int minSize, int maxSize,
+        int computation, int recipeWeight, int minDroneTier, int maxDroneTier, Materials[] output,
+        OrePrefixes orePrefixes, int[] chances, int requiredModuleTier, int duration) {
+        this(
+            asteroidName,
+            minDistance,
+            maxDistance,
+            minSize,
+            maxSize,
+            computation,
+            recipeWeight,
+            minDroneTier,
+            maxDroneTier,
+            toMaterialArray(output),
+            orePrefixes,
+            chances,
+            requiredModuleTier,
+            duration);
+    }
+
+    private static Material[] toMaterialArray(Materials[] materials) {
+        Material[] result = new Material[materials.length];
+        for (int i = 0; i < materials.length; i++) {
+            result[i] = MU.material(materials[i]);
+        }
+        return result;
     }
 
     public AsteroidData(String asteroidName, int minDistance, int maxDistance, int minSize, int maxSize,

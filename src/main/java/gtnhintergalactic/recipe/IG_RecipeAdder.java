@@ -5,9 +5,12 @@ import java.util.Arrays;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -134,6 +137,33 @@ public class IG_RecipeAdder extends RecipeAdder {
      */
     public static boolean addSpaceMiningRecipe(String asteroidName, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
         int[] aChances, Materials[] ores, OrePrefixes orePrefixes, int minSize, int maxSize, int minDistance,
+        int maxDistance, int computationRequiredPerSec, int minModuleTier, int duration, int EUt, int recipeWeight) {
+        if (ores == null) return false;
+
+        Material[] materials = new Material[ores.length];
+        for (int i = 0; i < ores.length; i++) {
+            materials[i] = MU.material(ores[i]);
+        }
+        return addSpaceMiningRecipe(
+            asteroidName,
+            aItemInputs,
+            aFluidInputs,
+            aChances,
+            materials,
+            orePrefixes,
+            minSize,
+            maxSize,
+            minDistance,
+            maxDistance,
+            computationRequiredPerSec,
+            minModuleTier,
+            duration,
+            EUt,
+            recipeWeight);
+    }
+
+    public static boolean addSpaceMiningRecipe(String asteroidName, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+        int[] aChances, Material[] ores, OrePrefixes orePrefixes, int minSize, int maxSize, int minDistance,
         int maxDistance, int computationRequiredPerSec, int minModuleTier, int duration, int EUt, int recipeWeight) {
         if (ores == null) return false;
 

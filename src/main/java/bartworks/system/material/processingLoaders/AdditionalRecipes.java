@@ -62,6 +62,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.API.enums.BioCultureEnum;
@@ -71,6 +72,7 @@ import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.WerkstoffReconstruction;
 import bartworks.util.BioCulture;
 import bartworks.util.BioData;
 import goodgenerator.items.GGMaterial;
@@ -83,6 +85,7 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -251,28 +254,26 @@ public class AdditionalRecipes {
             }
         }
 
-        List<Pair<Materials, Integer>> liquidFuels = Arrays.asList(
-            ImmutablePair.of(Materials.PhosphoricAcid, 66),
-            ImmutablePair.of(Materials.DilutedHydrochloricAcid, 26),
-            ImmutablePair.of(Materials.HypochlorousAcid, 56),
-            ImmutablePair.of(Materials.HydrofluoricAcid, 60),
-            ImmutablePair.of(Materials.HydrochloricAcid, 52),
-            ImmutablePair.of(Materials.NitricAcid, 72),
-            ImmutablePair.of(Materials.Mercury, 32),
-            ImmutablePair.of(Materials.DilutedSulfuricAcid, 14),
-            ImmutablePair.of(Materials.SulfuricAcid, 28),
-            ImmutablePair.of(Materials.AceticAcid, 21),
-            ImmutablePair.of(WerkstoffLoader.FormicAcid.getBridgeMaterial(), 40),
-            ImmutablePair.of(WerkstoffLoader.HexafluorosilicicAcid.getBridgeMaterial(), 350),
-            ImmutablePair.of(Materials.PhthalicAcid, 270),
-            ImmutablePair.of(Materials.NaphthenicAcid, 250),
-            ImmutablePair.of(Materials.ChlorosulfonicAcid, 2304),
-            ImmutablePair.of(GGMaterial.fluoroantimonicAcid.getBridgeMaterial(), 5760));
-        for (Pair<Materials, Integer> fuel : liquidFuels) {
+        List<Pair<Material, Integer>> liquidFuels = Arrays.asList(
+            ImmutablePair.of(MU.material(Materials.PhosphoricAcid), 66),
+            ImmutablePair.of(MU.material(Materials.DilutedHydrochloricAcid), 26),
+            ImmutablePair.of(MU.material(Materials.HypochlorousAcid), 56),
+            ImmutablePair.of(MU.material(Materials.HydrofluoricAcid), 60),
+            ImmutablePair.of(MU.material(Materials.HydrochloricAcid), 52),
+            ImmutablePair.of(MU.material(Materials.NitricAcid), 72),
+            ImmutablePair.of(MU.material(Materials.Mercury), 32),
+            ImmutablePair.of(MU.material(Materials.DilutedSulfuricAcid), 14),
+            ImmutablePair.of(MU.material(Materials.SulfuricAcid), 28),
+            ImmutablePair.of(MU.material(Materials.AceticAcid), 21),
+            ImmutablePair.of(WerkstoffReconstruction.materialLibOf(WerkstoffLoader.FormicAcid), 40),
+            ImmutablePair.of(WerkstoffReconstruction.materialLibOf(WerkstoffLoader.HexafluorosilicicAcid), 350),
+            ImmutablePair.of(MU.material(Materials.PhthalicAcid), 270),
+            ImmutablePair.of(MU.material(Materials.NaphthenicAcid), 250),
+            ImmutablePair.of(MU.material(Materials.ChlorosulfonicAcid), 2304),
+            ImmutablePair.of(WerkstoffReconstruction.materialLibOf(GGMaterial.fluoroantimonicAcid), 5760));
+        for (Pair<Material, Integer> fuel : liquidFuels) {
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    fuel.getLeft()
-                        .getCells(1))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, fuel.getLeft(), 1))
                 .itemOutputs(Materials.Empty.getCells(1))
                 .metadata(FUEL_VALUE, fuel.getRight())
                 .addTo(BartWorksRecipeMaps.acidGenFuels);

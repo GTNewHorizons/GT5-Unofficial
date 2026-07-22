@@ -134,6 +134,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.BWGTMaterialReference;
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.WerkstoffReconstruction;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.items.GGMaterial;
@@ -4370,10 +4371,12 @@ public class RecipeLoader {
 
         // For Cauldron Wash
         GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes to replace cerium sources");
-        registerCauldronCleaningFor(Materials.Cerium, WerkstoffMaterialPool.CeriumRichMixture.getBridgeMaterial());
+        registerCauldronCleaningFor(
+            Materials.Cerium,
+            WerkstoffReconstruction.materialLibOf(WerkstoffMaterialPool.CeriumRichMixture));
         registerCauldronCleaningFor(
             Materials.Samarium,
-            WerkstoffMaterialPool.SamariumOreConcentrate.getBridgeMaterial());
+            WerkstoffReconstruction.materialLibOf(WerkstoffMaterialPool.SamariumOreConcentrate));
         GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes done!");
 
         // For Crafting Table

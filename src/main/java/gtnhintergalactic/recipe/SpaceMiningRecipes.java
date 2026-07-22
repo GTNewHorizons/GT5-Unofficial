@@ -17,13 +17,17 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import akka.japi.Pair;
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.WerkstoffReconstruction;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -795,8 +799,9 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 3000, 2450, 2450, 2000, 100 },
-            new Materials[] { Materials.Uranium, Materials.Uranium235, Materials.Plutonium, Materials.Plutonium241,
-                WerkstoffLoader.Thorianit.getBridgeMaterial() },
+            new Material[] { MU.material(Materials.Uranium), MU.material(Materials.Uranium235),
+                MU.material(Materials.Plutonium), MU.material(Materials.Plutonium241),
+                WerkstoffReconstruction.materialLibOf(WerkstoffLoader.Thorianit) },
             OrePrefixes.ore,
             40,
             180,
@@ -816,8 +821,8 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 2000, 3000, 3000, 2000 },
-            new Materials[] { Materials.Holmium, Materials.Samarium, WerkstoffLoader.Tiberium.getBridgeMaterial(),
-                Materials.Strontium },
+            new Material[] { MU.material(Materials.Holmium), MU.material(Materials.Samarium),
+                WerkstoffReconstruction.materialLibOf(WerkstoffLoader.Tiberium), MU.material(Materials.Strontium) },
             OrePrefixes.ore,
             15,
             50,
@@ -837,8 +842,10 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 3800, 2000, 1500, 500, 1200, 1000 },
-            new Materials[] { Materials.Platinum, Materials.Palladium, Materials.Iridium, Materials.Osmium,
-                WerkstoffLoader.Ruthenium.getBridgeMaterial(), WerkstoffLoader.Rhodium.getBridgeMaterial() },
+            new Material[] { MU.material(Materials.Platinum), MU.material(Materials.Palladium),
+                MU.material(Materials.Iridium), MU.material(Materials.Osmium),
+                WerkstoffReconstruction.materialLibOf(WerkstoffLoader.Ruthenium),
+                WerkstoffReconstruction.materialLibOf(WerkstoffLoader.Rhodium) },
             OrePrefixes.dust,
             10,
             30,
@@ -858,7 +865,8 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 4000, 3000, 3000 },
-            new Materials[] { Materials.Magnesium, Materials.Manganese, WerkstoffLoader.Fluorspar.getBridgeMaterial() },
+            new Material[] { MU.material(Materials.Magnesium), MU.material(Materials.Manganese),
+                WerkstoffReconstruction.materialLibOf(WerkstoffLoader.Fluorspar) },
             OrePrefixes.ore,
             10,
             80,
@@ -878,8 +886,8 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 1500, 2000, 3000, 3500 },
-            new Materials[] { Materials.Trinium, Materials.Lanthanum, GGMaterial.orundum.getBridgeMaterial(),
-                Materials.Silver },
+            new Material[] { MU.material(Materials.Trinium), MU.material(Materials.Lanthanum),
+                WerkstoffReconstruction.materialLibOf(GGMaterial.orundum), MU.material(Materials.Silver) },
             OrePrefixes.ore,
             30,
             120,
@@ -899,8 +907,9 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 100, 1650, 3500, 2250, 2500 },
-            new Materials[] { Materials.Dilithium, GGMaterial.orundum.getBridgeMaterial(), Materials.Vanadium,
-                Materials.Ytterbium, Materials.TengamRaw },
+            new Material[] { MU.material(Materials.Dilithium),
+                WerkstoffReconstruction.materialLibOf(GGMaterial.orundum), MU.material(Materials.Vanadium),
+                MU.material(Materials.Ytterbium), MU.material(Materials.TengamRaw) },
             OrePrefixes.ore,
             5,
             100,
@@ -920,8 +929,9 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 4000, 3500, 2500 },
-            new Materials[] { GGMaterial.naquadahEarth.getBridgeMaterial(),
-                GGMaterial.enrichedNaquadahEarth.getBridgeMaterial(), GGMaterial.naquadriaEarth.getBridgeMaterial() },
+            new Material[] { WerkstoffReconstruction.materialLibOf(GGMaterial.naquadahEarth),
+                WerkstoffReconstruction.materialLibOf(GGMaterial.enrichedNaquadahEarth),
+                WerkstoffReconstruction.materialLibOf(GGMaterial.naquadriaEarth) },
             OrePrefixes.ore,
             20,
             80,
@@ -1054,6 +1064,34 @@ public class SpaceMiningRecipes {
 
     private static void addRecipesToDrones(String asteroidName, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
         int[] aChances, Materials[] ores, OrePrefixes orePrefixes, int minSize, int maxSize, int minDistance,
+        int maxDistance, int computationRequiredPerSec, int minModuleTier, int duration, int EUt, int startDroneTier,
+        int endDroneTier, int recipeWeight) {
+        Material[] materials = new Material[ores.length];
+        for (int i = 0; i < ores.length; i++) {
+            materials[i] = MU.material(ores[i]);
+        }
+        addRecipesToDrones(
+            asteroidName,
+            aItemInputs,
+            aFluidInputs,
+            aChances,
+            materials,
+            orePrefixes,
+            minSize,
+            maxSize,
+            minDistance,
+            maxDistance,
+            computationRequiredPerSec,
+            minModuleTier,
+            duration,
+            EUt,
+            startDroneTier,
+            endDroneTier,
+            recipeWeight);
+    }
+
+    private static void addRecipesToDrones(String asteroidName, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+        int[] aChances, Material[] ores, OrePrefixes orePrefixes, int minSize, int maxSize, int minDistance,
         int maxDistance, int computationRequiredPerSec, int minModuleTier, int duration, int EUt, int startDroneTier,
         int endDroneTier, int recipeWeight) {
         ItemStack[] tItemInputs;

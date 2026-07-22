@@ -485,6 +485,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.Optional;
@@ -3940,6 +3941,16 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
     public static void registerCauldronCleaningFor(Materials in, Materials out) {
         cauldronRemap.put(in, out);
+    }
+
+    /// [#registerCauldronCleaningFor(Materials, Materials)] for a replacement material held as its
+    /// MaterialLib counterpart -- e.g. a reconstructed werkstoff's bridge material. [#cauldronRemap]'s reader
+    /// always holds a legacy [Materials] (`GregTechAPI#sGeneratedMaterials` is a `Materials[]`), so `out` is
+    /// resolved back to its legacy bridge material via [MU#materialOf] before storing; a no-op when it has
+    /// none.
+    public static void registerCauldronCleaningFor(Materials in, Material out) {
+        Materials legacy = MU.materialOf(out);
+        if (legacy != null) cauldronRemap.put(in, legacy);
     }
 
     @Override

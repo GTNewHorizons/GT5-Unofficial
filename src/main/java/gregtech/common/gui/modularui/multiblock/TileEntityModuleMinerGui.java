@@ -62,9 +62,9 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import com.ruling_0.materiallib.api.Material;
 
 import akka.japi.Pair;
-import gregtech.api.enums.Materials;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -712,7 +712,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     private boolean asteroidContainsOre(AsteroidData data, String stringValue) {
         if (stringValue.isEmpty()) return false;
         if (data.output != null) {
-            for (Materials output : data.output) {
+            for (Material output : data.output) {
                 ItemStack itemOutput = GTOreDictUnificator.get(data.orePrefixes, output, 1);
                 if (itemOutput.getDisplayName()
                     .toLowerCase()
