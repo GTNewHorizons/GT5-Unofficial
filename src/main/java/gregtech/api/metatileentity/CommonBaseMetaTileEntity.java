@@ -3,6 +3,7 @@ package gregtech.api.metatileentity;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.IllegalFormatException;
@@ -32,6 +33,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.INonConsumedItemDisplay;
+import gregtech.api.interfaces.IPhysicalCircuitDisplay;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -561,15 +563,25 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     public String getInterfaceNameSuffix() {
         StringBuilder suffix = new StringBuilder();
 
-        // Ghost circuit suffix
+        // Ghost + physical circuit suffix
+        List<Integer> circuitNumbers = new ArrayList<>();
         final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
         if (ccs != null && ccs.allowSelectCircuit()) {
             ItemStack stack = getStackInSlot(ccs.getCircuitSlot());
             if (stack != null && stack.getItemDamage() > 0) {
-                try {
-                    suffix.append(String.format(Gregtech.machines.ghostCircuitSuffixFormat, stack.getItemDamage()));
-                } catch (IllegalFormatException ignored) {}
+                circuitNumbers.add(stack.getItemDamage());
             }
+        }
+        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IPhysicalCircuitDisplay provider) {
+            circuitNumbers.addAll(provider.getPhysicalCircuitNumbers());
+        }
+        if (!circuitNumbers.isEmpty()) {
+            String joined = circuitNumbers.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(", "));
+            try {
+                suffix.append(String.format(Gregtech.machines.ghostCircuitSuffixFormat, joined));
+            } catch (IllegalFormatException ignored) {}
         }
 
         // Non-consumed items suffix (e.g. molds in Extruder)

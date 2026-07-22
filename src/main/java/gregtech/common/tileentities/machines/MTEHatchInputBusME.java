@@ -6,11 +6,14 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -63,6 +66,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
+import gregtech.api.interfaces.IPhysicalCircuitDisplay;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -84,7 +88,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProcessingAwareHatch, IPowerChannelState,
-    ISmartInputHatch, IDataCopyable, IMEConnectable, IGridProxyable, IStackWatcherHost {
+    ISmartInputHatch, IDataCopyable, IMEConnectable, IGridProxyable, IStackWatcherHost, IPhysicalCircuitDisplay {
 
     public static final int SLOT_COUNT = 16;
     public static final String COPIED_DATA_IDENTIFIER = "stockingBus";
@@ -583,6 +587,33 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     @Override
     public int getCircuitSlotY() {
         return 64;
+    }
+
+    @Override
+    public List<Integer> getPhysicalCircuitNumbers() {
+        List<Integer> numbers = new ArrayList<>();
+        for (Slot slot : slots) {
+            if (slot == null || slot.config == null) continue;
+            if (GTUtility.isAnyIntegratedCircuit(slot.config)) {
+                numbers.add(slot.config.getItemDamage());
+            }
+        }
+        return numbers;
+    }
+
+    @Override
+    public List<ItemStack> getNonConsumedInputDisplayItems() {
+        if (mRecipeMap == null) return Collections.emptyList();
+        Set<GTUtility.ItemId> nonConsumedIds = mRecipeMap.getNonConsumedInputItemIds();
+        if (nonConsumedIds.isEmpty()) return Collections.emptyList();
+
+        List<ItemStack> result = new ArrayList<>();
+        for (Slot slot : slots) {
+            if (slot != null && slot.config != null && nonConsumedIds.contains(GTUtility.ItemId.create(slot.config))) {
+                result.add(slot.config);
+            }
+        }
+        return result;
     }
 
     @Override
