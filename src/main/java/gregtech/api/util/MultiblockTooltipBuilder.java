@@ -1385,19 +1385,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSubChannel(IStructureChannels channel) {
-        addShiftInfo("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip());
-        return this;
-    }
-
-    /**
-     * Use this method to add non-standard structural info:<br>
-     * (indent)Subchannel [channel] determines [channel.tooltip]
-     *
-     * @param channel Name of subchannel
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel) {
-        addStructureInfo(
+        addShiftInfo(
             "GT5U.MBTT.subchannel",
             channel.get(),
             new PrefixedFallbackText("gt.channelfor.", channel.get(), channel.getDefaultTooltip()));

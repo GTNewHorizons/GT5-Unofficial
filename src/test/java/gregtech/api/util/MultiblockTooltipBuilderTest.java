@@ -14,6 +14,7 @@ import net.minecraft.util.EnumChatFormatting;
 import org.junit.jupiter.api.Test;
 
 import gregtech.api.util.tooltip.DelayedTooltipLocalization;
+import gregtech.common.misc.GTStructureChannels;
 
 @SuppressWarnings("deprecation")
 class MultiblockTooltipBuilderTest {
@@ -71,6 +72,41 @@ class MultiblockTooltipBuilderTest {
     }
 
     @Test
+    void casingLocationAliasesStayLocalizedAcrossLegacyAndCurrentApis() {
+        String[] payloads = new MultiblockTooltipBuilder().addEnergyHatch("<casing>")
+            .addMaintenanceHatch("1", "ANY CASING", 1)
+            .addStructurePart("test.structure_part", "<bottom casing>")
+            .addStructurePart("test.structure_part", "top casing")
+            .getStructureInformation();
+        Map<String, String> translations = translations("A");
+
+        assertArrayEquals(casingAliasExpected("A"), resolve(payloads, translations));
+
+        translations.putAll(translations("B"));
+        assertArrayEquals(casingAliasExpected("B"), resolve(payloads, translations));
+    }
+
+    @Test
+    void subChannelPurposeUsesLocalizedCandidateWithEnglishFallback() {
+        String payload = new MultiblockTooltipBuilder().addSubChannel(GTStructureChannels.BOROGLASS)
+            .getStructureInformation()[0];
+        Map<String, String> translations = translations("A");
+
+        assertEquals("Subchannel glass determines Glass Tier", resolve(new String[] { payload }, translations)[0]);
+
+        translations.put("gt.channelfor.glass", "Localized Glass Tier A");
+        assertEquals(
+            "Subchannel glass determines Localized Glass Tier A",
+            resolve(new String[] { payload }, translations)[0]);
+
+        translations.put("GT5U.MBTT.subchannel", "Channel %s controls %s");
+        translations.put("gt.channelfor.glass", "Localized Glass Tier B");
+        assertEquals(
+            "Channel glass controls Localized Glass Tier B",
+            resolve(new String[] { payload }, translations)[0]);
+    }
+
+    @Test
     void controllerCandidateKeyFallsBackAndCanAppearAfterReload() {
         String payload = new MultiblockTooltipBuilder().addController("front_center")
             .getStructureInformation()[0];
@@ -112,7 +148,19 @@ class MultiblockTooltipBuilderTest {
         translations.put("GT5U.MBTT.MaintenanceHatch", "Maintenance " + version);
         translations.put("GT5U.MBTT.Controller", "Controller " + version);
         translations.put("test.legacy_location", "Legacy " + version);
+        translations.put("GT5U.MBTT.EnergyHatch", "Energy Hatch " + version);
+        translations.put("GT5U.MBTT.AnyCasing", "Any Casing " + version);
+        translations.put("GT5U.MBTT.AnyBottomCasing", "Any Bottom Casing " + version);
+        translations.put("GT5U.MBTT.AnyTopCasing", "Any Top Casing " + version);
+        translations.put("GT5U.MBTT.subchannel", "Subchannel %s determines %s");
         return translations;
+    }
+
+    private static String[] casingAliasExpected(String version) {
+        return new String[] { INDENT_MARK + "Energy Hatch " + version + " @ Any Casing " + version,
+            INDENT_MARK + "1 Maintenance " + version + " @ Any Casing " + version,
+            INDENT_MARK + "Part " + version + " @ Any Bottom Casing " + version,
+            INDENT_MARK + "Part " + version + " @ Any Top Casing " + version };
     }
 
     private static String[] expected(String version) {
