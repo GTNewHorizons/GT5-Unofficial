@@ -316,6 +316,22 @@ public class MU {
         return ref == null ? material : Materials.get(ref.name()).mDirectSmelting;
     }
 
+    /// The legacy `Materials#mHandleMaterial` tool-handle material, resolved from
+    /// [GTMaterialProperties#HANDLE_MATERIAL] -- or `material` itself when the property is absent, mirroring
+    /// `mHandleMaterial`'s own `= this` default. Falls back to the live `mHandleMaterial` field when
+    /// [#material] has no MaterialLib counterpart (proxies/third-party materials never dumped): unlike
+    /// [#smeltInto], safe only once both bridge loaders (bartworks' and gtpp's) have run their
+    /// `FMLInitializationEvent` handle-material writes, since `mHandleMaterial` is otherwise still carrying
+    /// its preInit `addToolValues` value -- every recipe-registration pass qualifies, as they all run after
+    /// both bridges.
+    public static @Nullable Materials handleMaterial(@Nullable Materials material) {
+        if (material == null) return null;
+        Material ml = material(material);
+        if (ml == null) return material.mHandleMaterial;
+        MaterialRef ref = ml.getProperty(GTMaterialProperties.HANDLE_MATERIAL);
+        return ref == null ? material : Materials.get(ref.name());
+    }
+
     /// [#smeltInto(Materials)] for a MaterialLib [Material] held directly, mirroring the same semantics on
     /// [GTMaterialProperties#SMELT_INTO]: an unset property means the material smelts into itself, and a set
     /// one is chased one more hop through the target's own property (the legacy `setSmeltingInto` indirection).
@@ -331,6 +347,17 @@ public class MU {
     /// [#smeltInto(Material)], for [GTMaterialProperties#ARC_SMELT_INTO].
     public static @Nullable Material arcSmeltInto(@Nullable Material material) {
         return chaseRef(material, GTMaterialProperties.ARC_SMELT_INTO);
+    }
+
+    /// [#handleMaterial(Materials)] for a MaterialLib [Material] held directly. Unlike [#smeltInto(Material)]
+    /// and its siblings, resolves a single hop only -- [GTMaterialProperties#HANDLE_MATERIAL] never chains
+    /// through another material's own handle, so there is nothing further to chase.
+    public static @Nullable Material handleMaterial(@Nullable Material material) {
+        if (material == null) return null;
+        MaterialRef ref = material.getProperty(GTMaterialProperties.HANDLE_MATERIAL);
+        if (ref == null) return material;
+        Material resolved = ref.resolve();
+        return resolved != null ? resolved : material;
     }
 
     private static @Nullable Material chaseRef(@Nullable Material material,

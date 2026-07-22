@@ -69,11 +69,11 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         IDMetaTool01.SCREWDRIVER.ID,
                         1,
                         legacyMaterial,
-                        legacyMaterial.mHandleMaterial,
+                        MU.handleMaterial(legacyMaterial),
                         null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { " fS", " Sh", "W  ", 'S', MU.craftIngredient(OrePrefixes.stick, material), 'W',
-                        OrePrefixes.stick.ingredient(legacyMaterial.mHandleMaterial) });
+                        OrePrefixes.stick.ingredient(MU.handleMaterial(legacyMaterial)) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE
                         .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, material, material, null),
@@ -223,11 +223,11 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         IDMetaTool01.TROWEL.ID,
                         1,
                         legacyMaterial,
-                        legacyMaterial.mHandleMaterial,
+                        MU.handleMaterial(legacyMaterial),
                         null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "  d", "SSC", "fPP", 'S',
-                        OrePrefixes.stick.ingredient(legacyMaterial.mHandleMaterial), 'C',
+                        OrePrefixes.stick.ingredient(MU.handleMaterial(legacyMaterial)), 'C',
                         MU.craftIngredient(OrePrefixes.screw, material), 'P',
                         MU.craftIngredient(OrePrefixes.plate, material) });
 
