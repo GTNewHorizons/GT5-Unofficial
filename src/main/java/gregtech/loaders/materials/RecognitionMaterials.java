@@ -4,9 +4,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MarkerMaterial;
 
 /// Recognition entries: names that generate no items of their own but exist so `gregtech.common.GTProxy#registerOre`
@@ -35,6 +39,11 @@ public class RecognitionMaterials {
     private static final Map<String, MarkerMaterial> MARKERS_BY_NAME = new LinkedHashMap<>();
     private static final Map<String, RecognitionMarker> RECOGNITION_MARKERS_BY_NAME = new LinkedHashMap<>();
 
+    /// The shapeless MaterialLib [Material] registered as each data-carrying marker's backing, keyed by internal
+    /// name. Populated by [#registerBackingMaterials] during material registration and read by [#load] when the
+    /// markers are built.
+    private static final Map<String, Material> BACKING_BY_NAME = new LinkedHashMap<>();
+
     private RecognitionMaterials() {}
 
     /// A foreign ore-dictionary name GregTech recognizes during unification. It names an entry and nothing more --
@@ -61,12 +70,34 @@ public class RecognitionMaterials {
                 marker.argb(),
                 marker.unifiable());
             material.add(marker.subTags());
+            material.setBackingMaterial(BACKING_BY_NAME.get(marker.name()));
             MARKERS_BY_NAME.put(marker.name(), material);
             marker.field()
                 .accept(material);
         }
         for (RecognitionMarker marker : RECOGNITION_MARKERS) {
             RECOGNITION_MARKERS_BY_NAME.put(marker.name(), marker);
+        }
+    }
+
+    /// Registers a shapeless MaterialLib [Material] backing each data-carrying marker in [#MARKERS], skipping
+    /// any whose internal name already names a MaterialLib material (that name unifies into the existing
+    /// material, so a duplicate would merge its shapes into the marker). Runs during material registration,
+    /// after [gregtech.api.enums.materials2.Materials2Materials#init], so the skip check sees every real
+    /// material.
+    public static void registerBackingMaterials() {
+        for (Marker marker : MARKERS) {
+            if (MaterialLibAPI.getMaterial("gregtech", marker.name()) != null) continue;
+            Material material = MaterialLibAPI
+                .newMaterial(
+                    "gregtech",
+                    marker.name(),
+                    com.ruling_0.materiallib.api.TextureSet.of("gregtech", marker.textureSet().mSetName))
+                .setProperty(GTMaterialProperties.LEGACY_NAME, marker.name())
+                .setProperty(GTMaterialProperties.LOCAL_NAME, marker.localName())
+                .setProperty(GTMaterialProperties.ARGB, marker.argb())
+                .build();
+            BACKING_BY_NAME.put(marker.name(), material);
         }
     }
 
