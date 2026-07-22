@@ -40,6 +40,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.IDMetaTool01;
@@ -69,11 +70,11 @@ public class ToolLoader implements IWerkstoffRunnable {
                         IDMetaTool01.HARDHAMMER.ID,
                         1,
                         werkstoff.getBridgeMaterial(),
-                        werkstoff.getBridgeMaterial().mHandleMaterial,
+                        MU.handleMaterial(werkstoff.getBridgeMaterial()),
                         null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "XX ", "XXS", "XX ", 'X', gem.ingredient(werkstoff.getBridgeMaterial()), 'S',
-                        stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial) });
+                        stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())) });
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(toolHeadSaw, werkstoff.getBridgeMaterial(), 1L),
                 GTModHandler.RecipeBits.BITS_STD,
@@ -90,48 +91,48 @@ public class ToolLoader implements IWerkstoffRunnable {
                     IDMetaTool01.SCREWDRIVER.ID,
                     1,
                     werkstoff.getBridgeMaterial(),
-                    werkstoff.getBridgeMaterial().mHandleMaterial,
+                    MU.handleMaterial(werkstoff.getBridgeMaterial()),
                     null),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { " fS", " Sh", "W  ", 'S', stick.ingredient(werkstoff.getBridgeMaterial()), 'W',
-                    stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial) });
+                    stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())) });
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(toolHeadWrench, werkstoff.getBridgeMaterial(), 1L),
                 GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "hXW", "XRX", "WXd", 'X', plate.ingredient(werkstoff.getBridgeMaterial()), 'S',
-                    plate.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial), 'R',
-                    ring.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial), 'W',
-                    screw.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial) });
+                    plate.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())), 'R',
+                    ring.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())), 'W',
+                    screw.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())) });
             GTModHandler.addShapelessCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                     IDMetaTool01.HARDHAMMER.ID,
                     1,
                     werkstoff.getBridgeMaterial(),
-                    werkstoff.getBridgeMaterial().mHandleMaterial,
+                    MU.handleMaterial(werkstoff.getBridgeMaterial()),
                     null),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { toolHeadHammer.ingredient(werkstoff.getBridgeMaterial()),
-                    stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial) });
+                    stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())) });
             GTModHandler.addCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                     IDMetaTool01.FILE.ID,
                     1,
                     werkstoff.getBridgeMaterial(),
-                    werkstoff.getBridgeMaterial().mHandleMaterial,
+                    MU.handleMaterial(werkstoff.getBridgeMaterial()),
                     null),
                 GTModHandler.RecipeBits.MIRRORED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                     | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "P", "P", "S", 'P', plate.ingredient(werkstoff.getBridgeMaterial()), 'S',
-                    stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial) });
+                    stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())) });
             GTModHandler.addShapelessCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                     IDMetaTool01.SAW.ID,
                     1,
                     werkstoff.getBridgeMaterial(),
-                    werkstoff.getBridgeMaterial().mHandleMaterial,
+                    MU.handleMaterial(werkstoff.getBridgeMaterial()),
                     null),
                 new Object[] { toolHeadSaw.ingredient(werkstoff.getBridgeMaterial()),
-                    stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial) });
+                    stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())) });
 
             // LV Soldering Iron
             GTModHandler.addCraftingRecipe(
@@ -144,7 +145,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.ingredient(werkstoff.getBridgeMaterial()), 'P',
                     plate.ingredient(Materials.AnyRubber), 'S',
-                    stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
+                    stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())), 'L',
                     ItemList.Battery_RE_LV_Lithium.get(1L) });
             GTModHandler.addCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -156,7 +157,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.ingredient(werkstoff.getBridgeMaterial()), 'P',
                     plate.ingredient(Materials.AnyRubber), 'S',
-                    stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
+                    stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())), 'L',
                     ItemList.Battery_RE_LV_Cadmium.get(1L) });
             GTModHandler.addCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -168,7 +169,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.ingredient(werkstoff.getBridgeMaterial()), 'P',
                     plate.ingredient(Materials.AnyRubber), 'S',
-                    stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
+                    stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())), 'L',
                     ItemList.Battery_RE_LV_Sodium.get(1L) });
             // MV Soldering Iron
             GTModHandler.addCraftingRecipe(
@@ -181,7 +182,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.ingredient(werkstoff.getBridgeMaterial()), 'P',
                     plate.ingredient(Materials.AnyRubber), 'S',
-                    stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
+                    stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())), 'L',
                     ItemList.Battery_RE_MV_Lithium.get(1L) });
             GTModHandler.addCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -193,7 +194,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.ingredient(werkstoff.getBridgeMaterial()), 'P',
                     plate.ingredient(Materials.AnyRubber), 'S',
-                    stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
+                    stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())), 'L',
                     ItemList.Battery_RE_MV_Cadmium.get(1L) });
             GTModHandler.addCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -205,7 +206,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.ingredient(werkstoff.getBridgeMaterial()), 'P',
                     plate.ingredient(Materials.AnyRubber), 'S',
-                    stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
+                    stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())), 'L',
                     ItemList.Battery_RE_MV_Sodium.get(1L) });
             // HV Soldering Iron
             GTModHandler.addCraftingRecipe(
@@ -218,7 +219,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.ingredient(werkstoff.getBridgeMaterial()), 'P',
                     plate.ingredient(Materials.StyreneButadieneRubber), 'S',
-                    stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
+                    stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())), 'L',
                     ItemList.Battery_RE_HV_Lithium.get(1L) });
             GTModHandler.addCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -230,7 +231,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.ingredient(werkstoff.getBridgeMaterial()), 'P',
                     plate.ingredient(Materials.StyreneButadieneRubber), 'S',
-                    stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
+                    stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())), 'L',
                     ItemList.Battery_RE_HV_Cadmium.get(1L) });
             GTModHandler.addCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -242,7 +243,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.ingredient(werkstoff.getBridgeMaterial()), 'P',
                     plate.ingredient(Materials.StyreneButadieneRubber), 'S',
-                    stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
+                    stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())), 'L',
                     ItemList.Battery_RE_HV_Sodium.get(1L) });
 
             if (!werkstoff.hasItemType(gem)) {
@@ -251,11 +252,11 @@ public class ToolLoader implements IWerkstoffRunnable {
                         IDMetaTool01.HARDHAMMER.ID,
                         1,
                         werkstoff.getBridgeMaterial(),
-                        werkstoff.getBridgeMaterial().mHandleMaterial,
+                        MU.handleMaterial(werkstoff.getBridgeMaterial()),
                         null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "XX ", "XXS", "XX ", 'X', ingot.ingredient(werkstoff.getBridgeMaterial()), 'S',
-                        stick.ingredient(werkstoff.getBridgeMaterial().mHandleMaterial) });
+                        stick.ingredient(MU.handleMaterial(werkstoff.getBridgeMaterial())) });
             }
         }
 
