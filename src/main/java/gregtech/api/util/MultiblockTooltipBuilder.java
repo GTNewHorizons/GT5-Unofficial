@@ -1519,6 +1519,8 @@ public class MultiblockTooltipBuilder {
             addInfo("GT5U.MBTT.AuthorsX", GTAuthors.formatAuthors(authors), GTAuthors.formatAuthors(structureAuthors));
         } else if (!this.authors.isEmpty()) {
             addInfo("GT5U.MBTT.Authors", GTAuthors.formatAuthors(authors));
+        } else if (!this.structureAuthors.isEmpty()) {
+            addInfo("GT5U.MBTT.StructureBy", GTAuthors.formatAuthors(structureAuthors));
         }
 
         addStructureHint("GT5U.MBTT.StructureHint");

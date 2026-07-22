@@ -107,6 +107,24 @@ class MultiblockTooltipBuilderTest {
     }
 
     @Test
+    void structureAuthorIsShownWithoutMachineAuthor() {
+        String[] payloads = new MultiblockTooltipBuilder().addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
+            .toolTipFinisher()
+            .getInformation();
+        Map<String, String> translations = translations("A");
+
+        assertTrue(
+            Arrays.asList(resolve(payloads, translations))
+                .contains(
+                    "Structure by: "
+                        + EnumChatFormatting.GREEN
+                        + EnumChatFormatting.GOLD
+                        + "VorTex"
+                        + EnumChatFormatting.RESET
+                        + EnumChatFormatting.GRAY));
+    }
+
+    @Test
     void controllerCandidateKeyFallsBackAndCanAppearAfterReload() {
         String payload = new MultiblockTooltipBuilder().addController("front_center")
             .getStructureInformation()[0];
@@ -153,6 +171,7 @@ class MultiblockTooltipBuilderTest {
         translations.put("GT5U.MBTT.AnyBottomCasing", "Any Bottom Casing " + version);
         translations.put("GT5U.MBTT.AnyTopCasing", "Any Top Casing " + version);
         translations.put("GT5U.MBTT.subchannel", "Subchannel %s determines %s");
+        translations.put("GT5U.MBTT.StructureBy", "Structure by: %s");
         return translations;
     }
 
