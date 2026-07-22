@@ -3082,6 +3082,30 @@ public class OrePrefixes {
         }
     }
 
+    /// [#processOre(IOreMaterial, String, String, ItemStack)] for a MaterialLib [Material], dispatching each
+    /// registrator's [IOreRecipeRegistrator#registerOre(OrePrefixes, Material, String, String, ItemStack)] entry.
+    public void processOre(Material material, String oreDictName, String modName, ItemStack stack) {
+
+        if (material == null) return;
+        if (MU.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
+        if (material == MU.material(Materials._NULL) && !isSelfReferencing && isMaterialBased) return;
+        if (!GTUtility.isStackValid(stack)) return;
+
+        for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
+            if (D2) {
+                GTLog.ore.println(
+                    "Processing '" + oreDictName
+                        + "' with the Prefix '"
+                        + name
+                        + "' and the Material '"
+                        + MU.internalName(material)
+                        + "' at "
+                        + GTUtility.getClassName(tRegistrator));
+            }
+            tRegistrator.registerOre(this, material, oreDictName, modName, GTUtility.copyAmount(1, stack));
+        }
+    }
+
     /// The crafting ingredient for this prefix and `material`. Stringifies to the ore-dictionary name, and
     /// additionally carries the material composition that reversible crafting recipes
     /// ([gregtech.api.util.GTModHandler#addCraftingRecipe]) and
