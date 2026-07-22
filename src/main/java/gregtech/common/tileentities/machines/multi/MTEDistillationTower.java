@@ -141,7 +141,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             .addInfo("gt.distillation_tower.tips.1")
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
             .addController("Front bottom center")
-            .addCasing("16-79", gregtech.api.util.GTUtility.nestParams("gt.blockcasings4.1.name"), false)
+            .addCasing("16-79", "gt.blockcasings4.1.name", false)
             .addEnergyHatch("1+", "gt.distillation_tower.info.2", 1, 2)
             .addMaintenanceHatch("1", "Any casing", 1, 2)
             .addInputBus("0+", "Any bottom casing", 1)

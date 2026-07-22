@@ -119,7 +119,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom center")
             .addCasing("16", "Heating Coil", true)
-            .addCasing("0-12", gregtech.api.util.GTUtility.nestParams("gt.blockcasings.11.name"), false)
+            .addCasing("0-12", "gt.blockcasings.11.name", false)
             .addEnergyHatch("1+", "Any bottom casing", 1)
             .addMaintenanceHatch("1", "Any bottom casing", 1)
             .addMufflerHatch("1", "gt.ebf.info.muffler", 2)

@@ -152,21 +152,21 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
             .addController("Front bottom center")
             .addCasing(
                 "42",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
+                "gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing",
                 false)
             .addCasing(
                 "27",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
+                "gt.blockmachines.multimachine.beamcrafting.ttgratecasing",
                 false)
             .addCasing("9", "Any Tiered Glass", false)
             .addMiscHatch(
                 "1",
-                gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beaminput"),
+                "gtnhlanth.tt.hatch.beaminput",
                 "GT5U.MBTT.Position.AboveController",
                 1)
             .addMiscHatch(
                 "4",
-                gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "gtnhlanth.tt.hatch.beamoutputfiltered",
                 "GT5U.MBTT.Position.OppositeController",
                 2)
             .addStructureInfo("")

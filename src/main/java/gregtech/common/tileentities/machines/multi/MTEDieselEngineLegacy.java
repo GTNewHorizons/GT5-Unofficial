@@ -121,26 +121,26 @@ public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEn
                 waitPower)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
-            .addController(gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.front_center"))
+            .addController("gt.mbtt.structure.front_center")
             .addCasingInfoRange(
-                gregtech.api.util.GTUtility.nestParams("gt.blockcasings4.Casing_StableTitanium"),
+                "gt.blockcasings4.Casing_StableTitanium",
                 16,
                 22,
                 false)
             .addOtherStructurePart(
-                gregtech.api.util.GTUtility.nestParams("gt.blockcasings2.Casing_Gearbox_Titanium"),
-                gregtech.api.util.GTUtility.nestParams("gt.multiblock.DieselEngine.gear_box_inner"))
+                "gt.blockcasings2.Casing_Gearbox_Titanium",
+                "gt.multiblock.DieselEngine.gear_box_inner")
             .addOtherStructurePart(
-                gregtech.api.util.GTUtility.nestParams("gt.blockcasings4.Casing_EngineIntake"),
-                gregtech.api.util.GTUtility.nestParams("gt.multiblock.DieselEngine.engine_intake_ring"))
-            .addDynamoHatch(gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.back_center"), 2)
+                "gt.blockcasings4.Casing_EngineIntake",
+                "gt.multiblock.DieselEngine.engine_intake_ring")
+            .addDynamoHatch("gt.mbtt.structure.back_center", 2)
             .addMaintenanceHatch(
-                gregtech.api.util.GTUtility.nestParams("gt.multiblock.DieselEngine.maintenance_hatch"),
+                "gt.multiblock.DieselEngine.maintenance_hatch",
                 1)
-            .addMufflerHatch(gregtech.api.util.GTUtility.nestParams("gt.multiblock.DieselEngine.muffler_hatch"), 1)
-            .addInputHatch(gregtech.api.util.GTUtility.nestParams("gt.multiblock.DieselEngine.diesel_fuel"), 1)
-            .addInputHatch(gregtech.api.util.GTUtility.nestParams("gt.multiblock.DieselEngine.lubricant"), 1)
-            .addInputHatch(gregtech.api.util.GTUtility.nestParams("gt.multiblock.DieselEngine.oxygen_optional"), 1)
+            .addMufflerHatch("gt.multiblock.DieselEngine.muffler_hatch", 1)
+            .addInputHatch("gt.multiblock.DieselEngine.diesel_fuel", 1)
+            .addInputHatch("gt.multiblock.DieselEngine.lubricant", 1)
+            .addInputHatch("gt.multiblock.DieselEngine.oxygen_optional", 1)
             .toolTipFinisher();
         return tt;
     }

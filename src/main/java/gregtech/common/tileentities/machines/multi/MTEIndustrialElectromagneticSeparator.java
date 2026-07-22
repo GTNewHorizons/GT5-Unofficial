@@ -197,12 +197,12 @@ public class MTEIndustrialElectromagneticSeparator
             .addInfo("gt.mfe.tips.1")
             .beginStructureBlock(7, 6, 7, true)
             .addController("Front bottom center")
-            .addCasing(MIN_CASING + "-73", gregtech.api.util.GTUtility.nestParams("gt.blockcasings10.0.name"), false)
+            .addCasing(MIN_CASING + "-73", "gt.blockcasings10.0.name", false)
             .addCasing("37", "GT5U.MBTT.Part.MagneticNeodymiumFrameBox", false)
             .addCasing("12", "Any Tiered Glass", false)
             .addMiscHatch(
                 "1",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.hatch.mag_hatch.name"),
+                "gt.blockmachines.hatch.mag_hatch.name",
                 "gt.mfe.info.1",
                 2)
             .addEnergyHatch("1+", "Any casing", 1)

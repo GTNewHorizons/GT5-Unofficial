@@ -186,38 +186,38 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
             .addController("Front bottom center")
             .addMiscHatch(
                 "1",
-                gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beaminput"),
+                "gtnhlanth.tt.hatch.beaminput",
                 "GT5U.MBTT.Position.AboveController",
                 1)
             .addMiscHatch(
                 "1",
-                gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beamoutput"),
+                "gtnhlanth.tt.hatch.beamoutput",
                 "GT5U.MBTT.Position.OppositeController",
                 2)
             .addStructureInfo("")
             .addStructureInfo("gt.beam_mirror.structure.tier.1")
             .addCasing(
                 "31",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
+                "gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing",
                 false)
             .addCasing(
                 "9",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
+                "gt.blockmachines.multimachine.beamcrafting.ttgratecasing",
                 false)
             .addCasing("5", "Any Tiered Glass", false)
             .addStructureInfo("")
             .addStructureInfo("gt.beam_mirror.structure.tier.2")
             .addCasing(
                 "52",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
+                "gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing",
                 false)
             .addCasing(
                 "9",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
+                "gt.blockmachines.multimachine.beamcrafting.ttgratecasing",
                 false)
             .addCasing("8", "Any Tiered Glass", false)
             .addStructureInfo("")
-            .addMasterChannel(gregtech.api.util.GTUtility.nestParams("channels.gregtech.master.structuretier"))
+            .addMasterChannel("channels.gregtech.master.structuretier")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;

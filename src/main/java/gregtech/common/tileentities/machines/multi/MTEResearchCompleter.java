@@ -367,7 +367,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
             .addStructureInfo("")
             .addStructureFooter("gt.completer.info.casing")
             .addStructureFooter("gt.completer.info.glass")
-            .addMasterChannel(gregtech.api.util.GTUtility.nestParams("channels.gregtech.master.length"))
+            .addMasterChannel("channels.gregtech.master.length")
             .toolTipFinisher();
         return tt;
     }

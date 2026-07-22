@@ -227,13 +227,13 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("gt.hi_engraver.tips.1", TooltipHelper.voltageText(VoltageIndex.UMV))
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front bottom center")
-            .addCasing("35-58", gregtech.api.util.GTUtility.nestParams("gt.blockcasings10.1.name"), false)
+            .addCasing("35-58", "gt.blockcasings10.1.name", false)
             .addCasing("9", "Tungstensteel Frame Box", false)
             .addCasing("3", "Any Tiered Glass", true)
-            .addCasing("1", gregtech.api.util.GTUtility.nestParams("gt.laserplate.name"), false)
+            .addCasing("1", "gt.laserplate.name", false)
             .addMiscHatch(
                 "1",
-                gregtech.api.util.GTUtility.nestParams("GT5U.tooltip.structure.laser_source_hatch"),
+                "GT5U.tooltip.structure.laser_source_hatch",
                 "GT5U.MBTT.Position.CasingAboveGlass",
                 2)
             .addEnergyHatch("1+", "Any casing", 1)

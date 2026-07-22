@@ -91,7 +91,7 @@ public class MTELargeTurbineSteam extends MTELargeTurbineBase {
             .addOutputHatch("0+", "gt.lst.info.o_hatch", 1)
             .addAir("3x3 area in front of controller")
             .addStructureInfo("")
-            .addStructureFooter(gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.Structure.DynamoLimit"))
+            .addStructureFooter("GT5U.MBTT.Structure.DynamoLimit")
             .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")
             .toolTipFinisher();
         return tt;

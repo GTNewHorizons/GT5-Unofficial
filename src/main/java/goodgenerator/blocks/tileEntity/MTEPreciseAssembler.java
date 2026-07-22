@@ -283,7 +283,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         tt.addMachineType("machtype.prass")
             .addInfo(
                 "gt.prass.tips.1",
-                tieredTextLine(GTUtility.nestParams("gt.prass.text.imprecise"), "Mk-I", "MK-II", "MK-III", "MK-IV"),
+                tieredTextLine("gt.prass.text.imprecise", "Mk-I", "MK-II", "MK-III", "MK-IV"),
                 tieredTextLine("16", "32", "64", "128", "256"))
             .addStaticSpeedInfo(2f)
             .addInfo("gt.prass.tips.2", voltageTierText(9))

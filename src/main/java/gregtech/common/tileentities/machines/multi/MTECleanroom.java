@@ -144,7 +144,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .addStructureInfo("gt.cleanroom.info.replacements", MachineStats.cleanroom.maxReplacementPercentage)
             .addStructureFooter("GT5U.MBTT.Note.UseAE2WirelessConnectors")
             .addStructureInfo("")
-            .addMasterChannel(gregtech.api.util.GTUtility.nestParams("channels.gregtech.master.size"))
+            .addMasterChannel("channels.gregtech.master.size")
             .toolTipFinisher();
         return tt;
     }

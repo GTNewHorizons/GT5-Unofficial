@@ -108,13 +108,13 @@ public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFr
         tt.addMachineType("machtype.vf")
             .addInfo("gt.vf.tips")
             .beginStructureBlock(3, 3, 3, true)
-            .addController(gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.front_center_2nd_layer"))
+            .addController("gt.mbtt.structure.front_center_2nd_layer")
             .addCasing("16-21", "gt.blockcasings2.1.name", false)
-            .addEnergyHatch("1+", gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.any_casing"), 1)
-            .addMaintenanceHatch("1", gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.any_casing"), 1)
-            .addInputAny("1+", gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.any_casing"), 1)
-            .addOutputAny("1+", gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.any_casing"), 1)
-            .addAir(gregtech.api.util.GTUtility.nestParams("gt.mbtt.structure.interior"))
+            .addEnergyHatch("1+", "gt.mbtt.structure.any_casing", 1)
+            .addMaintenanceHatch("1", "gt.mbtt.structure.any_casing", 1)
+            .addInputAny("1+", "gt.mbtt.structure.any_casing", 1)
+            .addOutputAny("1+", "gt.mbtt.structure.any_casing", 1)
+            .addAir("gt.mbtt.structure.interior")
             .toolTipFinisher();
         return tt;
     }

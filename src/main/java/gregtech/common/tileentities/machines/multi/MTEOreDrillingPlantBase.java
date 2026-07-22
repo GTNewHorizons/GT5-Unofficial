@@ -518,7 +518,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             .addInputHatch("1", "gt.ore_drill.info.i_hatch", 1)
             .addOutputBus("1", "gt.driller_shaped_mb.info.replace", 1)
             .addStructureInfo("")
-            .addStructureFooter(gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.Structure.Rain"))
+            .addStructureFooter("GT5U.MBTT.Structure.Rain")
             .toolTipFinisher();
         return tt;
     }

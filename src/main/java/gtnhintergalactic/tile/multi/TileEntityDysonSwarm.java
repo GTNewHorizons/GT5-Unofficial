@@ -49,7 +49,6 @@ import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -456,21 +455,21 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             .addSupportAny()
             .beginStructureBlock(16, 20, 16, false)
             .addController("ig.dyson.structure.controller")
-            .addCasing("256", GTUtility.nestParams("ig.dyson.structure.base.floor"), false)
-            .addCasing("115-138", GTUtility.nestParams("ig.dyson.structure.control.base"), false)
-            .addCasing("128", GTUtility.nestParams("ig.dyson.structure.control.toroid"), false)
-            .addCasing("81", GTUtility.nestParams("ig.dyson.structure.receiver.dish"), false)
-            .addCasing("62-72", GTUtility.nestParams("ig.dyson.structure.deployment.base"), false)
-            .addCasing("64", GTUtility.nestParams("ig.dyson.structure.base.frameUHVBase"), false)
-            .addCasing("53-64", GTUtility.nestParams("ig.dyson.structure.receiver.base"), false)
-            .addCasing("32", GTUtility.nestParams("ig.dyson.structure.deployment.magnet"), false)
-            .addCasing("23", GTUtility.nestParams("ig.dyson.structure.base.frameHSSS"), false)
-            .addCasing("20", GTUtility.nestParams("ig.dyson.structure.control.primary"), false)
-            .addCasing("16", GTUtility.nestParams("ig.dyson.structure.base.frameTitanium"), false)
-            .addCasing("12", GTUtility.nestParams("ig.dyson.structure.control.secondary"), false)
-            .addCasing("9", GTUtility.nestParams("ig.dyson.structure.base.coil"), false)
-            .addCasing("1", GTUtility.nestParams("ig.dyson.structure.deployment.core"), false)
-            .addCasing("1", GTUtility.nestParams("ig.dyson.structure.base.hermetic"), false)
+            .addCasing("256", "ig.dyson.structure.base.floor", false)
+            .addCasing("115-138", "ig.dyson.structure.control.base", false)
+            .addCasing("128", "ig.dyson.structure.control.toroid", false)
+            .addCasing("81", "ig.dyson.structure.receiver.dish", false)
+            .addCasing("62-72", "ig.dyson.structure.deployment.base", false)
+            .addCasing("64", "ig.dyson.structure.base.frameUHVBase", false)
+            .addCasing("53-64", "ig.dyson.structure.receiver.base", false)
+            .addCasing("32", "ig.dyson.structure.deployment.magnet", false)
+            .addCasing("23", "ig.dyson.structure.base.frameHSSS", false)
+            .addCasing("20", "ig.dyson.structure.control.primary", false)
+            .addCasing("16", "ig.dyson.structure.base.frameTitanium", false)
+            .addCasing("12", "ig.dyson.structure.control.secondary", false)
+            .addCasing("9", "ig.dyson.structure.base.coil", false)
+            .addCasing("1", "ig.dyson.structure.deployment.core", false)
+            .addCasing("1", "ig.dyson.structure.base.hermetic", false)
             .addMiscHatch(
                 "1+",
                 "gt.blockmachines.hatch.datain.tier.07.name",

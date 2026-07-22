@@ -141,7 +141,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addController("gt.assline.info.controller")
             .addMiscHatch(
                 "1",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.hatch.dataaccess.name"),
+                "gt.blockmachines.hatch.dataaccess.name",
                 "gt.asslike.info.dataaccess",
                 3)
             .addEnergyHatch("1+", "gt.asslike.info.energy", 4)
@@ -150,14 +150,14 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addInputHatch("1-4", "gt.asslike.info.i_hatch", 1)
             .addOutputBus("1", "gt.asslike.info.o_bus", 1)
             .addStructureInfo("")
-            .addStructureInfo(gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.Structure.Base"))
+            .addStructureInfo("GT5U.MBTT.Structure.Base")
             .addCasing("10", "Any Tiered Glass", false)
             .addCasing("8", "Grate Machine Casing", false)
             .addCasing("4-8", "Solid Steel Machine Casing", false)
             .addCasing("5", "Assembly Line Casing", false)
             .addCasing("5", "Assembler Machine Casing", false)
             .addStructureInfo("")
-            .addStructureInfo(gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.Structure.Slice"))
+            .addStructureInfo("GT5U.MBTT.Structure.Slice")
             .addStructureInfo("gt.assline.structure.layer.4")
             .addStructureInfo("gt.assline.structure.layer.3")
             .addStructureInfo("gt.assline.structure.layer.2")

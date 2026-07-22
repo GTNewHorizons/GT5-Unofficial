@@ -279,16 +279,16 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             .addController("Front center, 3rd layer")
             .addCasing(
                 "224-227",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                "gt.blockmachines.multimachine.beamcrafting.ttcasing",
                 false)
             .addCasing("26", "Any Tiered Glass", false)
             .addCasing(
                 "16",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
+                "gt.blockmachines.multimachine.beamcrafting.ttgratecasing",
                 false)
             .addMiscHatch(
                 "2",
-                gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beaminput"),
+                "gtnhlanth.tt.hatch.beaminput",
                 "GT5U.MBTT.Position.BothEndsCenter",
                 2)
             .addEnergyHatch("1+", "GT5U.MBTT.Position.AnyAcceleratorCasing", 1)

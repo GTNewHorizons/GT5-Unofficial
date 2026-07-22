@@ -756,7 +756,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             .addInputAny("1+", "Any bottom casing", 1)
             .addOutputBus("1+", "Any bottom casing", 1)
             .addStructureInfo("")
-            .addStructureInfo(gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.Tiers.One"))
+            .addStructureInfo("GT5U.MBTT.Tiers.One")
             .addStructureInfo("gt.nano_forge.structure.requirement.1")
             .addCasing("468-523", "Radiant Naquadah Alloy Casing", false)
             .addCasing("170", "Stellar Alloy Frame Box", false)
@@ -789,7 +789,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             .addInputAny("1+", "GT5U.MBTT.Position.AnyAnchorCasing", 1)
             .addOutputBus("1+", "GT5U.MBTT.Position.AnyAnchorCasing", 1)
             .addStructureInfo("")
-            .addMasterChannel(gregtech.api.util.GTUtility.nestParams("channels.gregtech.master.structuretier"))
+            .addMasterChannel("channels.gregtech.master.structuretier")
             .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }

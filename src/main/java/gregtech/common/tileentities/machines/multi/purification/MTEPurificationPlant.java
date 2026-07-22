@@ -162,7 +162,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addEnergyHatch("1-2", "GT5U.MBTT.Position.AdjacentController", 1)
             .addMaintenanceHatch("1", "GT5U.MBTT.Position.AdjacentController", 1)
             .addStructureInfo("")
-            .addStructureFooter(gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.Structure.WaterFree"))
+            .addStructureFooter("GT5U.MBTT.Structure.WaterFree")
             .toolTipFinisher();
         return tt;
     }

@@ -85,11 +85,11 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
             .addInfo("gt.mb_coke_oven.tips")
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
-            .addCasing("0-26", gregtech.api.util.GTUtility.nestParams("gt.mb_coke_oven.casing"), false)
+            .addCasing("0-26", "gt.mb_coke_oven.casing", false)
             .addMiscHatch(
                 "0+",
-                gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.CokeOvenHatch"),
-                gregtech.api.util.GTUtility.nestParams("gt.mb_coke_oven.info.hatch"),
+                "GT5U.MBTT.CokeOvenHatch",
+                "gt.mb_coke_oven.info.hatch",
                 1)
             .addAir("Interior of the structure")
             .addStructureInfo("")

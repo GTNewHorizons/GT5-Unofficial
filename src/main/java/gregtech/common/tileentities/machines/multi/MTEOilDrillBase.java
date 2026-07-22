@@ -312,7 +312,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .addInputBus("0-1", "gt.oil_drill.info.i_bus", 1)
             .addOutputHatch("1", "gt.driller_shaped_mb.info.replace", 1)
             .addStructureInfo("")
-            .addStructureFooter(gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.Structure.Rain"))
+            .addStructureFooter("GT5U.MBTT.Structure.Rain")
             .toolTipFinisher();
         return tt;
     }

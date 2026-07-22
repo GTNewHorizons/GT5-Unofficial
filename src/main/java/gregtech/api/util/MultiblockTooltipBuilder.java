@@ -72,8 +72,8 @@ public class MultiblockTooltipBuilder {
         (key, parameters) -> parameters == null || parameters.length == 0 ? StatCollector.translateToLocal(key)
             : StatCollector.translateToLocalFormatted(key, parameters));
 
-    private final List<Object> iLines;
-    private final List<Object> sLines;
+    private final List<TooltipLine> iLines;
+    private final List<TooltipLine> sLines;
     private List<TooltipLine> hLines;
     private List<String> authors;
     private List<String> structureAuthors;
@@ -1576,9 +1576,9 @@ public class MultiblockTooltipBuilder {
     private record StructureHintEntry(int dot, List<String> names) {}
 
     @NotNull
-    private String[] getStrings(List<Object> xLines) {
+    private String[] getStrings(List<TooltipLine> xLines) {
         return xLines.stream()
-            .map(line -> line instanceof TooltipLine tooltipLine ? serializeTooltipLine(tooltipLine) : line.toString())
+            .map(this::serializeTooltipLine)
             .toArray(String[]::new);
     }
 

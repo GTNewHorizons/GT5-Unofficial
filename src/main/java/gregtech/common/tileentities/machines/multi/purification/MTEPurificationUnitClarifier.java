@@ -181,8 +181,8 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             .addOutputBus("0+", "GT5U.MBTT.Position.AnyCenterSideCasing", 1)
             .addOutputHatch("1+", "GT5U.MBTT.Position.AnyCenterSideCasing", 1)
             .addStructureInfo("")
-            .addStructureFooter(gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.Structure.WaterFree"))
-            .addStructureFooter(gregtech.api.util.GTUtility.nestParams("GT5U.MBTT.Structure.DataStick.Waterline"))
+            .addStructureFooter("GT5U.MBTT.Structure.WaterFree")
+            .addStructureFooter("GT5U.MBTT.Structure.DataStick.Waterline")
             .toolTipFinisher();
         return tt;
     }

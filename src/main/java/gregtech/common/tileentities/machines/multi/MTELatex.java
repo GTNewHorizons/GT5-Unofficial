@@ -294,7 +294,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
             .addInfo("gt.latex.tips.3")
             .beginStructureBlock(5, 8, 5, false)
             .addController("Front bottom center")
-            .addCasing("14-36", gregtech.api.util.GTUtility.nestParams("gt.blockcasings8.0.name"), false)
+            .addCasing("14-36", "gt.blockcasings8.0.name", false)
             .addCasing("32", "Any Tiered Glass", false)
             .addCasing("16", "GT5U.MBTT.Part.PVCFrameBox", false)
             .addCasing("6", "Item Pipe Casing", true)

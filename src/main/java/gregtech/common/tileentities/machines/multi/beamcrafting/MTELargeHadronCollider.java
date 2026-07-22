@@ -54,7 +54,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
@@ -320,23 +319,23 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             .addController("GT5U.MBTT.Position.AcceleratorRingFrontCenterLayer12")
             .addCasing(
                 "5664",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                "gt.blockmachines.multimachine.beamcrafting.ttcasing",
                 false)
             .addCasing(
                 "73",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                "gt.blockmachines.multimachine.beamcrafting.ttanyneonite",
                 false)
             .addCasing(
                 "20",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
+                "gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass",
                 false)
             .addCasing(
                 "16",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
+                "gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing",
                 false)
             .addMiscHatch(
                 "1",
-                gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beaminput"),
+                "gtnhlanth.tt.hatch.beaminput",
                 "GT5U.MBTT.Position.AcceleratorRingEntrance",
                 2)
             .addEnergyHatch("1+", "Any casing", 1)
@@ -344,84 +343,84 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             .addStructureInfo("gt.lhc.structure.module.cms")
             .addCasing(
                 "523",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                "gt.blockmachines.multimachine.beamcrafting.ttcasing",
                 false)
             .addCasing("148", "gt.blockcasings13.11.name", false)
             .addCasing(
                 "126",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
+                "gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass",
                 false)
             .addCasing(
                 "11",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                "gt.blockmachines.multimachine.beamcrafting.ttanyneonite",
                 false)
             .addMiscHatch(
                 "2",
-                gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "gtnhlanth.tt.hatch.beamoutputfiltered",
                 "GT5U.MBTT.Position.InnerSideOfModule",
                 3)
             .addStructureInfo("")
             .addStructureInfo("gt.lhc.structure.module.atlas")
             .addCasing(
                 "515",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                "gt.blockmachines.multimachine.beamcrafting.ttcasing",
                 false)
             .addCasing("160", "gt.blockcasings13.12.name", false)
             .addCasing(
                 "126",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
+                "gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass",
                 false)
             .addCasing(
                 "13",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                "gt.blockmachines.multimachine.beamcrafting.ttanyneonite",
                 false)
             .addMiscHatch(
                 "2",
-                gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "gtnhlanth.tt.hatch.beamoutputfiltered",
                 "GT5U.MBTT.Position.InnerSideOfModule",
                 4)
             .addStructureInfo("")
             .addStructureInfo("gt.lhc.structure.module.alice")
             .addCasing(
                 "517",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                "gt.blockmachines.multimachine.beamcrafting.ttcasing",
                 false)
             .addCasing("158", "gt.blockcasings13.13.name", false)
             .addCasing(
                 "140",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
+                "gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass",
                 false)
             .addCasing(
                 "11",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                "gt.blockmachines.multimachine.beamcrafting.ttanyneonite",
                 false)
             .addMiscHatch(
                 "2",
-                gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "gtnhlanth.tt.hatch.beamoutputfiltered",
                 "GT5U.MBTT.Position.InnerSideOfModule",
                 5)
             .addStructureInfo("")
             .addStructureInfo("gt.lhc.structure.module.lhcb")
             .addCasing(
                 "511",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                "gt.blockmachines.multimachine.beamcrafting.ttcasing",
                 false)
             .addCasing("144", "gt.blockcasings13.14.name", false)
             .addCasing(
                 "126",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
+                "gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass",
                 false)
             .addCasing(
                 "17",
-                gregtech.api.util.GTUtility.nestParams("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                "gt.blockmachines.multimachine.beamcrafting.ttanyneonite",
                 false)
             .addMiscHatch(
                 "2",
-                gregtech.api.util.GTUtility.nestParams("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "gtnhlanth.tt.hatch.beamoutputfiltered",
                 "GT5U.MBTT.Position.InnerSideOfModule",
                 6)
             .addStructureInfo("")
-            .addMasterChannel(gregtech.api.util.GTUtility.nestParams("channels.gregtech.master.modules"))
+            .addMasterChannel("channels.gregtech.master.modules")
             .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }

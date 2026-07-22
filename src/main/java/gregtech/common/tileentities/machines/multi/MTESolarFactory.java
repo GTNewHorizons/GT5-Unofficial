@@ -421,7 +421,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addCasing("24", "Tungsten Frame Box", false)
             .addCasing("6", "gt.blockcasings11.7.name", false)
             .addStructureInfo("")
-            .addMasterChannel(gregtech.api.util.GTUtility.nestParams("channels.gregtech.master.structuretier"))
+            .addMasterChannel("channels.gregtech.master.structuretier")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.PRASS_UNIT_CASING)
             .toolTipFinisher(GTAuthors.AuthorPureBluez);
