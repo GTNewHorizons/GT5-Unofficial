@@ -66,13 +66,6 @@ public enum ArcFurnaceElectrode {
             configureOC.overclockCalculator.setEUt(Long.MAX_VALUE);
             return;
         }
-        if (event instanceof ArcFurnaceProcessingEvent.EventPostRecipeCheck afterRecipe) {
-            if (!afterRecipe.processingPhase || !afterRecipe.result.wasSuccessful()) return;
-            int actualParallel = Math.max(1, afterRecipe.helper.getCurrentParallel());
-            int targetParallel = getInfinityTargetParallel(afterRecipe.arcFurnace.getEffectState());
-            if (actualParallel < targetParallel) afterRecipe.eut = (afterRecipe.eut / actualParallel) * targetParallel;
-            return;
-        }
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             NBTTagCompound state = completed.arcFurnace.getEffectState();
             int next = getInfinityTargetParallel(state);
