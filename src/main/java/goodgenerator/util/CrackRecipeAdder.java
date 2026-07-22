@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffReconstruction;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -195,57 +196,57 @@ public class CrackRecipeAdder {
             .replace(" ", "_");
         String Name = material.getDefaultName();
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeTiny.oreDictName(material.getBridgeMaterial()),
+            OrePrefixes.pipeTiny.oreDictName(WerkstoffReconstruction.materialLibOf(material)),
             new MTEFluidPipe(
                 ID,
                 "GT_Pipe_" + unName + "_Tiny",
                 "gt.oreprefix.tiny_material_fluid_pipe",
                 0.25F,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 flow / 6,
                 temp,
                 gas).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeSmall.oreDictName(material.getBridgeMaterial()),
+            OrePrefixes.pipeSmall.oreDictName(WerkstoffReconstruction.materialLibOf(material)),
             new MTEFluidPipe(
                 ID + 1,
                 "GT_Pipe_" + unName + "_Small",
                 "gt.oreprefix.small_material_fluid_pipe",
                 0.375F,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 flow / 3,
                 temp,
                 gas).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeMedium.oreDictName(material.getBridgeMaterial()),
+            OrePrefixes.pipeMedium.oreDictName(WerkstoffReconstruction.materialLibOf(material)),
             new MTEFluidPipe(
                 ID + 2,
                 "GT_Pipe_" + unName,
                 "gt.oreprefix.material_fluid_pipe",
                 0.5F,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 flow,
                 temp,
                 gas).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeLarge.oreDictName(material.getBridgeMaterial()),
+            OrePrefixes.pipeLarge.oreDictName(WerkstoffReconstruction.materialLibOf(material)),
             new MTEFluidPipe(
                 ID + 3,
                 "GT_Pipe_" + unName + "_Large",
                 "gt.oreprefix.large_material_fluid_pipe",
                 0.75F,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 flow * 2,
                 temp,
                 gas).getStackForm(1L));
         GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeHuge.oreDictName(material.getBridgeMaterial()),
+            OrePrefixes.pipeHuge.oreDictName(WerkstoffReconstruction.materialLibOf(material)),
             new MTEFluidPipe(
                 ID + 4,
                 "GT_Pipe_" + unName + "_Huge",
                 "gt.oreprefix.huge_material_fluid_pipe",
                 0.875F,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 flow * 4,
                 temp,
                 gas).getStackForm(1L));
@@ -353,13 +354,13 @@ public class CrackRecipeAdder {
         int aLossInsulated = aLoss / 4;
         GTOreDictUnificator.registerOre(
             OrePrefixes.wireGt01,
-            material.getBridgeMaterial(),
+            WerkstoffReconstruction.materialLibOf(material),
             new MTECable(
                 ID + 0,
                 aTextWire1 + unName + ".01",
                 "gt.oreprefix.1x_material_wire",
                 0.125F,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 aLoss,
                 1L * aAmperage,
                 aVoltage,
@@ -367,13 +368,13 @@ public class CrackRecipeAdder {
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.wireGt02,
-            material.getBridgeMaterial(),
+            WerkstoffReconstruction.materialLibOf(material),
             new MTECable(
                 ID + 1,
                 aTextWire1 + unName + ".02",
                 "gt.oreprefix.2x_material_wire",
                 0.25F,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 aLoss,
                 2L * aAmperage,
                 aVoltage,
@@ -381,13 +382,13 @@ public class CrackRecipeAdder {
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.wireGt04,
-            material.getBridgeMaterial(),
+            WerkstoffReconstruction.materialLibOf(material),
             new MTECable(
                 ID + 2,
                 aTextWire1 + unName + ".04",
                 "gt.oreprefix.4x_material_wire",
                 0.375F,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 aLoss,
                 4L * aAmperage,
                 aVoltage,
@@ -395,13 +396,13 @@ public class CrackRecipeAdder {
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.wireGt08,
-            material.getBridgeMaterial(),
+            WerkstoffReconstruction.materialLibOf(material),
             new MTECable(
                 ID + 3,
                 aTextWire1 + unName + ".08",
                 "gt.oreprefix.8x_material_wire",
                 0.5F,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 aLoss,
                 8L * aAmperage,
                 aVoltage,
@@ -409,13 +410,13 @@ public class CrackRecipeAdder {
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.wireGt12,
-            material.getBridgeMaterial(),
+            WerkstoffReconstruction.materialLibOf(material),
             new MTECable(
                 ID + 4,
                 aTextWire1 + unName + ".12",
                 "gt.oreprefix.12x_material_wire",
                 0.625F,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 aLoss,
                 12L * aAmperage,
                 aVoltage,
@@ -423,13 +424,13 @@ public class CrackRecipeAdder {
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.wireGt16,
-            material.getBridgeMaterial(),
+            WerkstoffReconstruction.materialLibOf(material),
             new MTECable(
                 ID + 5,
                 aTextWire1 + unName + ".16",
                 "gt.oreprefix.16x_material_wire",
                 0.75F,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 aLoss,
                 16L * aAmperage,
                 aVoltage,
@@ -438,13 +439,13 @@ public class CrackRecipeAdder {
         if (cover) {
             GTOreDictUnificator.registerOre(
                 OrePrefixes.cableGt01,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 new MTECable(
                     ID + 6,
                     aTextCable1 + unName + ".01",
                     "gt.oreprefix.1x_material_cable",
                     0.25F,
-                    material.getBridgeMaterial(),
+                    WerkstoffReconstruction.materialLibOf(material),
                     aLossInsulated,
                     1L * aAmperage,
                     aVoltage,
@@ -452,13 +453,13 @@ public class CrackRecipeAdder {
                     false).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.cableGt02,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 new MTECable(
                     ID + 7,
                     aTextCable1 + unName + ".02",
                     "gt.oreprefix.2x_material_cable",
                     0.375F,
-                    material.getBridgeMaterial(),
+                    WerkstoffReconstruction.materialLibOf(material),
                     aLossInsulated,
                     2L * aAmperage,
                     aVoltage,
@@ -466,13 +467,13 @@ public class CrackRecipeAdder {
                     false).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.cableGt04,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 new MTECable(
                     ID + 8,
                     aTextCable1 + unName + ".04",
                     "gt.oreprefix.4x_material_cable",
                     0.5F,
-                    material.getBridgeMaterial(),
+                    WerkstoffReconstruction.materialLibOf(material),
                     aLossInsulated,
                     4L * aAmperage,
                     aVoltage,
@@ -480,13 +481,13 @@ public class CrackRecipeAdder {
                     false).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.cableGt08,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 new MTECable(
                     ID + 9,
                     aTextCable1 + unName + ".08",
                     "gt.oreprefix.8x_material_cable",
                     0.625F,
-                    material.getBridgeMaterial(),
+                    WerkstoffReconstruction.materialLibOf(material),
                     aLossInsulated,
                     8L * aAmperage,
                     aVoltage,
@@ -494,13 +495,13 @@ public class CrackRecipeAdder {
                     false).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.cableGt12,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 new MTECable(
                     ID + 10,
                     aTextCable1 + unName + ".12",
                     "gt.oreprefix.12x_material_cable",
                     0.75F,
-                    material.getBridgeMaterial(),
+                    WerkstoffReconstruction.materialLibOf(material),
                     aLossInsulated,
                     12L * aAmperage,
                     aVoltage,
@@ -508,13 +509,13 @@ public class CrackRecipeAdder {
                     false).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.cableGt16,
-                material.getBridgeMaterial(),
+                WerkstoffReconstruction.materialLibOf(material),
                 new MTECable(
                     ID + 11,
                     aTextCable1 + unName + ".16",
                     "gt.oreprefix.16x_material_cable",
                     0.875F,
-                    material.getBridgeMaterial(),
+                    WerkstoffReconstruction.materialLibOf(material),
                     aLossInsulated,
                     16L * aAmperage,
                     aVoltage,

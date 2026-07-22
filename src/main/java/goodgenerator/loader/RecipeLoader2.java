@@ -43,6 +43,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.WerkstoffReconstruction;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
@@ -1323,7 +1324,8 @@ public class RecipeLoader2 {
                 .itemInputs(
                     ItemList.Casing_ZPM.get(3),
                     ItemList.Robot_Arm_IV.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.cableGt04, GGMaterial.lumiium.getBridgeMaterial(), 2),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.cableGt04, WerkstoffReconstruction.materialLibOf(GGMaterial.lumiium), 2),
                     GGMaterial.marCeM200.get(OrePrefixes.plateDouble, 2),
                     ItemRefer.HiC_T1.get(1),
                     GGMaterial.signalium.get(OrePrefixes.bolt, 32),
