@@ -99,7 +99,7 @@ public class GregtechCustomHatches {
                 128000, // Capacity
                 Hatch_Input_Pyrotheum.ID, // ID
                 "hatch.pyrotheum.input.tier.00", // unlocal name
-                "Pyrotheum Heating Vent", // Local name
+                "Pyrotheum Heating Hatch", // Local name
                 5 // Casing texture
             ).getStackForm(1L));
 

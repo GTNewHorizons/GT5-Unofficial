@@ -842,7 +842,7 @@ public class RecipesMachinesMulti {
                 ItemList.Robot_Arm_IV, 'X', GregtechItemList.Casing_Adv_BlastFurnace, 'P',
                 MaterialsAlloy.HASTELLOY_N.getPlateDouble(1), 'Z', GregtechItemList.Gregtech_Computer_Cube });
 
-        // Pyrotheum Heating Vent
+        // Pyrotheum Heating Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Pyrotheum.get(1L),
             GTModHandler.RecipeBits.BUFFERED,
