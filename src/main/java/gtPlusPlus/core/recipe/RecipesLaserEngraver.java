@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
@@ -17,6 +18,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -32,6 +34,15 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
     @Override
     public void registerOre(final OrePrefixes aPrefix, final Materials aMaterial, final String aOreDictName,
         final String aModName, final ItemStack aStack) {
+        registerOre(aPrefix, MU.material(aMaterial), aOreDictName, aModName, aStack);
+    }
+
+    @Override
+    public void registerOre(final OrePrefixes aPrefix, final Material aMaterial, final String aOreDictName,
+        final String aModName, final ItemStack aStack) {
+        Materials legacyMaterial = MU.materialOf(aMaterial);
+        if (legacyMaterial == null) return;
+
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
             GTValues.RA.stdBuilder()
                 .itemInputs(

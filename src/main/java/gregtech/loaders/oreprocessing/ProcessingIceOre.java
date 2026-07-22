@@ -4,12 +4,15 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
@@ -27,11 +30,22 @@ public class ProcessingIceOre implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oredictName, String modName,
         ItemStack stack) {
+        registerOre(prefix, MU.material(material), oredictName, modName, stack);
+    }
+
+    @Override
+    public void registerOre(OrePrefixes prefix, Material material, String oredictName, String modName,
+        ItemStack stack) {
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial == null) return;
+
         if (!MU.hasFlag(material, GTMaterialFlag.ICE_ORE)) return;
 
+        Integer oreMultiplierProp = material.getProperty(GTMaterialProperties.ORE_MULTIPLIER);
+        int oreMultiplier = oreMultiplierProp == null ? 1 : oreMultiplierProp;
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
-            .fluidOutputs(material.getGas(1000L * material.mOreMultiplier))
+            .fluidOutputs(legacyMaterial.getGas(1000L * oreMultiplier))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(RecipeMaps.fluidExtractionRecipes);

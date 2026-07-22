@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
@@ -16,6 +17,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -33,12 +35,20 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
+        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
+    }
+
+    @Override
+    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
+        ItemStack stack) {
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial == null) return;
 
         if (prefix == OrePrefixes.plank) {
             prefix = OrePrefixes.plate;
         }
 
-        switch (material.mName) {
+        switch (MU.internalName(material)) {
             case "Wood" ->
             // Chemical bath recipes
             {

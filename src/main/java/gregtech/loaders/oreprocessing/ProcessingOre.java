@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
@@ -53,6 +54,15 @@ public class ProcessingOre implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
+        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
+    }
+
+    @Override
+    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
+        ItemStack stack) {
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial == null) return;
+
         if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
@@ -74,7 +84,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
             tIsRich = (prefix == OrePrefixes.oreEndstone) || (prefix == OrePrefixes.oreEnd);
         }
 
-        if (material == Materials.Oilsands) {
+        if (material == MU.material(Materials.Oilsands)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(new ItemStack(Blocks.sand, 1, 0))
@@ -88,7 +98,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);
         } else {
-            registerStandardOreRecipes(prefix, material, GTUtility.copyAmount(1, stack), tIsRich ? 2 : 1);
+            registerStandardOreRecipes(prefix, legacyMaterial, GTUtility.copyAmount(1, stack), tIsRich ? 2 : 1);
         }
     }
 
