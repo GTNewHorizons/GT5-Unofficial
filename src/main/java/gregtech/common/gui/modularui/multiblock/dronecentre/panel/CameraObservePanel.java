@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.multiblock.dronecentre.panel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -589,12 +590,24 @@ public class CameraObservePanel extends ModularPanel {
                 String key = parts[0];
                 if ("waila.gt.progress".equals(key) && parts.length >= 3) {
                     try {
-                        String progress = parts[1];
-                        String max = parts[2];
-                        return prefix + StatCollector.translateToLocal("GT5U.gui.text.progress")
-                            + progress
-                            + " / "
-                            + max;
+                        long progress = Long.parseLong(parts[1]);
+                        long max = Long.parseLong(parts[2]);
+                        String label = StatCollector.translateToLocal("GT5U.gui.text.progress");
+                        if (max <= 40) {
+                            if (max <= 1) {
+                                return String.format(Locale.ROOT, "%s%s%d / %d t", prefix, label, progress, max);
+                            } else {
+                                double pct = (progress * 100.0) / max;
+                                return String
+                                    .format(Locale.ROOT, "%s%s%d / %d t (%.1f%%)", prefix, label, progress, max, pct);
+                            }
+                        } else {
+                            double pSec = progress * 0.05;
+                            double mSec = max * 0.05;
+                            double pct = (progress * 100.0) / max;
+                            return String
+                                .format(Locale.ROOT, "%s%s%.1f / %.1f s (%.1f%%)", prefix, label, pSec, mSec, pct);
+                        }
                     } catch (Exception ignored) {}
                 } else if ("waila.stack".equals(key) && parts.length >= 5) {
                     try {
