@@ -51,9 +51,7 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
         }
 
         return blockOre.getPrefix()
-            .getLocalizedNameForItem(
-                werkstoff.getBridgeMaterial()
-                    .getInternalName());
+            .getLocalizedNameForItem(werkstoff.getInternalName());
     }
 
     @Override

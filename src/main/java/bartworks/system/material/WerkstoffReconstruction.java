@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -20,6 +21,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 import gregtech.api.material.MarkerMaterial;
 import gregtech.api.material.MaterialAtomics;
 import gregtech.api.material.MaterialRefStack;
@@ -110,6 +112,7 @@ public final class WerkstoffReconstruction {
     private static final Set<String> MATERIALS_BYPRODUCT_REFS = Set.of("Salt:RockSalt", "GreenFuchsite:Alumina");
 
     private static Map<Integer, Werkstoff> byId;
+    private static Map<Werkstoff, Material> materialLib;
 
     private WerkstoffReconstruction() {}
 
@@ -125,6 +128,18 @@ public final class WerkstoffReconstruction {
     public static boolean isReconstructed(Werkstoff werkstoff) {
         ensureBuilt();
         return byId.get((int) werkstoff.getmID()) == werkstoff;
+    }
+
+    /// The MaterialLib material backing `werkstoff`: the ML material it was reconstructed from when
+    /// [#isReconstructed] is true. For a non-reconstructed werkstoff (a `BWGTMaterialReference` proxy or a
+    /// third-party WerkstoffAdder's), falls back to resolving [Werkstoff#getBridgeMaterial] through [MU] --
+    /// this recovers the wrapped canonical material for a proxy, and is null both for a bridgeless werkstoff
+    /// and for a third party's. TRANSITIONAL: the fallback goes away once the bridge is retired.
+    public static @Nullable Material materialLibOf(Werkstoff werkstoff) {
+        ensureBuilt();
+        Material material = materialLib.get(werkstoff);
+        if (material != null) return material;
+        return MU.material(werkstoff.getBridgeMaterial());
     }
 
     /// See the class javadoc; called from `WerkstoffLoader#setUp` after `initPrefixLogic`.
@@ -168,6 +183,11 @@ public final class WerkstoffReconstruction {
             build(material, built, byName, pending, inProgress);
         }
         byId = built;
+        Map<Werkstoff, Material> lib = new HashMap<>();
+        for (Map.Entry<String, Werkstoff> entry : byName.entrySet()) {
+            lib.put(entry.getValue(), pending.get(entry.getKey()));
+        }
+        materialLib = lib;
     }
 
     private static void build(Material ml, Map<Integer, Werkstoff> built, Map<String, Werkstoff> byName,

@@ -301,15 +301,15 @@ public class WerkstoffLoader {
     }
 
     public static ItemStack getCorrespondingItemStackUnsafe(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
-        // Item/ore/block/casing cutover: a werkstoff's item prefixes resolve to the MaterialLib stack
-        // (via the bridge material, which maps proxies and reconstructed werkstoffe alike; a third-party
-        // werkstoff's bridge is unknown to MU and falls through to the legacy paths). `ore`/`oreSmall`/`block`/
-        // `blockCasing`/`blockCasingAdvanced` resolve through MU too (Materials2OreShapes/
-        // Materials2BlockShapes; the multiblock structure matchers referencing the casing blocks by identity
-        // resolve dynamically as well, see Casings#bwCasing). `sheetmetal`/`frameGt` stay legacy-canonical --
-        // not part of the block cutover.
+        // Item/ore/block/casing cutover: a werkstoff's item prefixes resolve to the MaterialLib stack via
+        // WerkstoffReconstruction#materialLibOf (the reconstruction pairing for a reconstructed werkstoff,
+        // falling back to the bridge material for a proxy; a third-party werkstoff resolves to null and falls
+        // through to the legacy paths). `ore`/`oreSmall`/`block`/`blockCasing`/`blockCasingAdvanced` resolve
+        // through MU too (Materials2OreShapes/Materials2BlockShapes; the multiblock structure matchers
+        // referencing the casing blocks by identity resolve dynamically as well, see Casings#bwCasing).
+        // `sheetmetal`/`frameGt` stay legacy-canonical -- not part of the block cutover.
         if (orePrefixes != OrePrefixes.sheetmetal && orePrefixes != OrePrefixes.frameGt) {
-            ItemStack mlStack = MU.stack(orePrefixes, werkstoff.getBridgeMaterial(), amount);
+            ItemStack mlStack = MU.stack(orePrefixes, WerkstoffReconstruction.materialLibOf(werkstoff), amount);
             if (mlStack != null) return mlStack;
         }
         if (!werkstoff.getGenerationFeatures().enforceUnification) {
@@ -650,7 +650,7 @@ public class WerkstoffLoader {
 
     private static void hideBlockSlot(Werkstoff w, OrePrefixes prefix, Block legacyBlock) {
         if (!w.hasItemType(prefix)) return;
-        if (MU.stack(prefix, w.getBridgeMaterial(), 1) == null) return;
+        if (MU.stack(prefix, WerkstoffReconstruction.materialLibOf(w), 1) == null) return;
 
         API.hideItem(new ItemStack(legacyBlock, 1, w.getmID()));
     }
