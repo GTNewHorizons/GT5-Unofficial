@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import appeng.api.config.TunnelType;
@@ -30,6 +31,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -55,6 +57,15 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
+        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
+    }
+
+    @Override
+    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
+        ItemStack stack) {
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial == null) return;
+
         if (tt == TunnelType.ME) {
             try {
                 tt = TunnelType.valueOf("GT_POWER");
@@ -79,7 +90,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                                 .circuit(1)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.springSmall, material, 2L))
                                 .duration(5 * SECONDS)
-                                .eut(calculateRecipeEU(material, 8))
+                                .eut(calculateRecipeEU(legacyMaterial, 8))
                                 .addTo(benderRecipes);
                         }
                     }
@@ -92,20 +103,22 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                                 .circuit(1)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireFine, material, 4L))
                                 .duration(10 * SECONDS)
-                                .eut(calculateRecipeEU(material, 8))
+                                .eut(calculateRecipeEU(legacyMaterial, 8))
                                 .addTo(wiremillRecipes);
                         }
                     }
                 }
 
                 // crafting recipe
-                if (material.mUnifiable && (material.mMaterialInto == material)
+                Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
+                if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+                    && (legacyMaterial.mMaterialInto == legacyMaterial)
                     && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)
-                    && (material.getProcessingMaterialTierEU() < TierEU.IV)) {
+                    && ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV)) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "Xx", 'X', OrePrefixes.plate.ingredient(material) });
+                        new Object[] { "Xx", 'X', MU.craftIngredient(OrePrefixes.plate, material) });
 
                 }
 
@@ -116,35 +129,35 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                         .circuit(2)
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt02, material, 1L))
                         .duration(7 * SECONDS + 10 * TICKS)
-                        .eut(calculateRecipeEU(material, 8))
+                        .eut(calculateRecipeEU(legacyMaterial, 8))
                         .addTo(assemblerRecipes);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(4, stack))
                         .circuit(4)
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt04, material, 1L))
                         .duration(10 * SECONDS)
-                        .eut(calculateRecipeEU(material, 8))
+                        .eut(calculateRecipeEU(legacyMaterial, 8))
                         .addTo(assemblerRecipes);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(8, stack))
                         .circuit(8)
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt08, material, 1L))
                         .duration(15 * SECONDS)
-                        .eut(calculateRecipeEU(material, 8))
+                        .eut(calculateRecipeEU(legacyMaterial, 8))
                         .addTo(assemblerRecipes);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(12, stack))
                         .circuit(12)
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt12, material, 1L))
                         .duration(20 * SECONDS)
-                        .eut(calculateRecipeEU(material, 8))
+                        .eut(calculateRecipeEU(legacyMaterial, 8))
                         .addTo(assemblerRecipes);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(16, stack))
                         .circuit(16)
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt16, material, 1L))
                         .duration(25 * SECONDS)
-                        .eut(calculateRecipeEU(material, 8))
+                        .eut(calculateRecipeEU(legacyMaterial, 8))
                         .addTo(assemblerRecipes);
                 }
             }
@@ -158,8 +171,8 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { OrePrefixes.wireGt01.ingredient(material),
-                        OrePrefixes.wireGt01.ingredient(material) });
+                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt01, material),
+                        MU.craftIngredient(OrePrefixes.wireGt01, material) });
             }
             case "wireGt04" -> {
                 cableWidth = 4;
@@ -171,12 +184,14 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { OrePrefixes.wireGt01.ingredient(material), OrePrefixes.wireGt01.ingredient(material),
-                        OrePrefixes.wireGt01.ingredient(material), OrePrefixes.wireGt01.ingredient(material) });
+                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt01, material),
+                        MU.craftIngredient(OrePrefixes.wireGt01, material),
+                        MU.craftIngredient(OrePrefixes.wireGt01, material),
+                        MU.craftIngredient(OrePrefixes.wireGt01, material) });
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { OrePrefixes.wireGt02.ingredient(material),
-                        OrePrefixes.wireGt02.ingredient(material) });
+                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt02, material),
+                        MU.craftIngredient(OrePrefixes.wireGt02, material) });
             }
             case "wireGt08" -> {
                 cableWidth = 8;
@@ -188,14 +203,18 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { OrePrefixes.wireGt01.ingredient(material), OrePrefixes.wireGt01.ingredient(material),
-                        OrePrefixes.wireGt01.ingredient(material), OrePrefixes.wireGt01.ingredient(material),
-                        OrePrefixes.wireGt01.ingredient(material), OrePrefixes.wireGt01.ingredient(material),
-                        OrePrefixes.wireGt01.ingredient(material), OrePrefixes.wireGt01.ingredient(material) });
+                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt01, material),
+                        MU.craftIngredient(OrePrefixes.wireGt01, material),
+                        MU.craftIngredient(OrePrefixes.wireGt01, material),
+                        MU.craftIngredient(OrePrefixes.wireGt01, material),
+                        MU.craftIngredient(OrePrefixes.wireGt01, material),
+                        MU.craftIngredient(OrePrefixes.wireGt01, material),
+                        MU.craftIngredient(OrePrefixes.wireGt01, material),
+                        MU.craftIngredient(OrePrefixes.wireGt01, material) });
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { OrePrefixes.wireGt04.ingredient(material),
-                        OrePrefixes.wireGt04.ingredient(material) });
+                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt04, material),
+                        MU.craftIngredient(OrePrefixes.wireGt04, material) });
             }
             case "wireGt12" -> {
                 cableWidth = 12;
@@ -207,8 +226,8 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { OrePrefixes.wireGt08.ingredient(material),
-                        OrePrefixes.wireGt04.ingredient(material) });
+                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt08, material),
+                        MU.craftIngredient(OrePrefixes.wireGt04, material) });
             }
             case "wireGt16" -> {
                 cableWidth = 16;
@@ -220,12 +239,12 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { OrePrefixes.wireGt08.ingredient(material),
-                        OrePrefixes.wireGt08.ingredient(material) });
+                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt08, material),
+                        MU.craftIngredient(OrePrefixes.wireGt08, material) });
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { OrePrefixes.wireGt12.ingredient(material),
-                        OrePrefixes.wireGt04.ingredient(material) });
+                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt12, material),
+                        MU.craftIngredient(OrePrefixes.wireGt04, material) });
 
                 AE2addNewAttunement(stack);
             }
@@ -233,14 +252,14 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 GTLog.err.println(
                     "OrePrefix " + prefix.getName()
                         + " cannot be registered as a cable for Material "
-                        + material.mName);
+                        + MU.internalName(material));
                 return;
             }
         }
 
         int costMultiplier = cableWidth / 4 + 1;
 
-        switch (material.mName) {
+        switch (MU.internalName(material)) {
             case "RedAlloy", "Cobalt", "Lead", "Tin", "Zinc", "SolderingAlloy" -> {
                 ArrayList<Object> craftingListRubber = new ArrayList<>();
                 craftingListRubber.add(oreDictName);
@@ -558,7 +577,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .itemOutputs(GTOreDictUnificator.get(correspondingCable, material, 1L))
                     .fluidInputs(Materials.RubberSilicone.getMolten(costMultiplier * HALF_INGOTS))
                     .duration(5 * SECONDS)
-                    .eut(calculateRecipeEU(material, 8))
+                    .eut(calculateRecipeEU(legacyMaterial, 8))
                     .addTo(cableRecipes);
 
                 // Assembler Recipes to be removed in the next Major Update
@@ -573,7 +592,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .itemOutputs(GTOreDictUnificator.get(correspondingCable, material, 1L))
                     .fluidInputs(Materials.RubberSilicone.getMolten(costMultiplier * HALF_INGOTS))
                     .duration(5 * SECONDS)
-                    .eut(calculateRecipeEU(material, 8))
+                    .eut(calculateRecipeEU(legacyMaterial, 8))
                     .addTo(assemblerRecipes);
 
                 for (Materials dielectric : dielectrics) {
@@ -587,7 +606,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemOutputs(GTOreDictUnificator.get(correspondingCable, material, 4L))
                             .fluidInputs(syntheticRubber.getMolten((long) costMultiplier * INGOTS))
                             .duration(20 * SECONDS)
-                            .eut(calculateRecipeEU(material, 8))
+                            .eut(calculateRecipeEU(legacyMaterial, 8))
                             .addTo(cableRecipes);
                         GTValues.RA.stdBuilder()
                             .itemInputs(
@@ -598,7 +617,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemOutputs(GTOreDictUnificator.get(correspondingCable, material, 1L))
                             .fluidInputs(syntheticRubber.getMolten(costMultiplier * 36L))
                             .duration(5 * SECONDS)
-                            .eut(calculateRecipeEU(material, 8))
+                            .eut(calculateRecipeEU(legacyMaterial, 8))
                             .addTo(cableRecipes);
 
                         // Assembler Recipes to be removed in the next Major Update
@@ -612,7 +631,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemOutputs(GTOreDictUnificator.get(correspondingCable, material, 4L))
                             .fluidInputs(syntheticRubber.getMolten((long) costMultiplier * INGOTS))
                             .duration(20 * SECONDS)
-                            .eut(calculateRecipeEU(material, 8))
+                            .eut(calculateRecipeEU(legacyMaterial, 8))
                             .addTo(assemblerRecipes);
                         GTValues.RA.stdBuilder()
                             .itemInputs(
@@ -623,7 +642,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemOutputs(GTOreDictUnificator.get(correspondingCable, material, 1L))
                             .fluidInputs(syntheticRubber.getMolten(costMultiplier * 36L))
                             .duration(5 * SECONDS)
-                            .eut(calculateRecipeEU(material, 8))
+                            .eut(calculateRecipeEU(legacyMaterial, 8))
                             .addTo(assemblerRecipes);
                     }
                 }
@@ -635,7 +654,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 .itemInputs(GTOreDictUnificator.get(correspondingCable, material, 1L))
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(5 * SECONDS)
-                .eut(calculateRecipeEU(material, 8))
+                .eut(calculateRecipeEU(legacyMaterial, 8))
                 .addTo(unpackagerRecipes);
 
             AE2AddNetAttunementCable(stack, correspondingCable, material);
@@ -659,7 +678,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
             .addNewAttunement(stack, (TunnelType) tt);
     }
 
-    private void AE2AddNetAttunementCable(ItemStack stack, OrePrefixes correspondingCable, Materials material) {
+    private void AE2AddNetAttunementCable(ItemStack stack, OrePrefixes correspondingCable, Material material) {
         Api.INSTANCE.registries()
             .p2pTunnel()
             .addNewAttunement(stack, (TunnelType) tt);

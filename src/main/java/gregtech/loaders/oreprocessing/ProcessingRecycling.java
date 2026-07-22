@@ -5,6 +5,8 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -28,7 +30,16 @@ public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRe
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
-        if ((material != Materials.Empty) && (GTUtility.getFluidForFilledItem(stack, true) == null)
+        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
+    }
+
+    @Override
+    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
+        ItemStack stack) {
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial == null) return;
+
+        if ((material != MU.material(Materials.Empty)) && (GTUtility.getFluidForFilledItem(stack, true) == null)
             && !MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
             && (GTOreDictUnificator.get(OrePrefixes.dust, material, 1L) != null)) {
             GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
@@ -41,7 +52,7 @@ public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRe
                     GTUtility.getContainerItem(stack, true),
                     GTOreDictUnificator.get(OrePrefixes.dust, material, prefix.getMaterialAmount() / 3628800L));
             }
-            recipeBuilder.duration(((int) Math.max(material.getMass() / 2L, 1L)) * TICKS)
+            recipeBuilder.duration(((int) Math.max(legacyMaterial.getMass() / 2L, 1L)) * TICKS)
                 .eut(2)
                 .addTo(cannerRecipes);
         }

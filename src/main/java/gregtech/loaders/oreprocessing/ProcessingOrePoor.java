@@ -6,6 +6,8 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -31,6 +33,15 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
+        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
+    }
+
+    @Override
+    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
+        ItemStack stack) {
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial == null) return;
+
         int multiplier = 1;
         switch (prefix.getName()) {
             case "oreSmall":
@@ -47,35 +58,34 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
             default:
                 break;
         }
-        if (material != null) {
-            if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
-                return;
-            }
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, stack))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, material, multiplier))
-                .duration(10)
-                .eut(TierEU.RECIPE_LV / 2)
-                .addTo(hammerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, stack))
-                .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, material, 2 * multiplier),
-                    GTOreDictUnificator.get(
-                        OrePrefixes.dustTiny,
-                        GTUtility.selectItemInList(0, material, material.mOreByProducts),
-                        1L),
-                    GTOreDictUnificator.getDust(prefix.mSecondaryMaterial))
-                .outputChances(10000, 100 * 5 * multiplier, 10000)
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
-
-            if (MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)) GTModHandler.addSmeltingRecipe(
-                GTUtility.copyAmount(1, stack),
-                GTOreDictUnificator.get(OrePrefixes.nugget, MU.directSmelting(material), multiplier));
+        if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
+            return;
         }
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, stack))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, material, multiplier))
+            .duration(10)
+            .eut(TierEU.RECIPE_LV / 2)
+            .addTo(hammerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, stack))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, material, 2 * multiplier),
+                GTOreDictUnificator.get(
+                    OrePrefixes.dustTiny,
+                    GTUtility.selectItemInList(0, legacyMaterial, legacyMaterial.mOreByProducts),
+                    1L),
+                GTOreDictUnificator.getDust(prefix.mSecondaryMaterial))
+            .outputChances(10000, 100 * 5 * multiplier, 10000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        if (MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)) GTModHandler.addSmeltingRecipe(
+            GTUtility.copyAmount(1, stack),
+            GTOreDictUnificator.get(OrePrefixes.nugget, MU.directSmelting(legacyMaterial), multiplier));
     }
 }

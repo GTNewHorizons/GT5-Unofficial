@@ -9,6 +9,7 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
@@ -20,6 +21,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
@@ -40,18 +42,29 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
+        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
+    }
+
+    @Override
+    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
+        ItemStack stack) {
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial == null) return;
+
         if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
 
         if (MU.hasFlag(material, GTMaterialFlag.ICE_ORE)) {
+            Integer oreMultiplierProp = material.getProperty(GTMaterialProperties.ORE_MULTIPLIER);
+            int oreMultiplier = oreMultiplierProp == null ? 1 : oreMultiplierProp;
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
-                .fluidOutputs(material.getGas(1000L * material.mOreMultiplier))
+                .fluidOutputs(legacyMaterial.getGas(1000L * oreMultiplier))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(RecipeMaps.fluidExtractionRecipes);
-        } else if (material == Materials.Oilsands) {
+        } else if (material == MU.material(Materials.Oilsands)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(new ItemStack(net.minecraft.init.Blocks.sand, 1, 0))
@@ -63,7 +76,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);
         } else {
-            registerStandardOreRecipes(prefix, material, GTUtility.copyAmount(1, stack), 1);
+            registerStandardOreRecipes(prefix, legacyMaterial, GTUtility.copyAmount(1, stack), 1);
         }
     }
 

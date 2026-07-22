@@ -16,12 +16,15 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
@@ -42,16 +45,26 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
-        // Blacklist materials which are handled by Werkstoff loader
-        if (material == Materials.Calcium || material == Materials.Magnesia) return;
+        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
+    }
 
-        if (((material == Materials.Glass) || (GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null))
+    @Override
+    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
+        ItemStack stack) {
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial == null) return;
+
+        // Blacklist materials which are handled by Werkstoff loader
+        if (legacyMaterial == Materials.Calcium || legacyMaterial == Materials.Magnesia) return;
+
+        if (((legacyMaterial == Materials.Glass) || (GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null))
             && (!MU.hasFlag(material, GTMaterialFlag.NO_SMELTING))) {
-            long materialMass = material.getMass();
+            long materialMass = legacyMaterial.getMass();
             int tAmount = (int) (prefix.getMaterialAmount() / 3628800L);
             if ((tAmount > 0) && (tAmount <= 64) && (prefix.getMaterialAmount() % 3628800L == 0L)) {
                 int tVoltageMultiplier = MU.blastFurnaceTemp(material) >= 2800 ? 60 : 15;
-                int tTrueVoltage = material.getProcessingMaterialTierEU();
+                Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
+                int tTrueVoltage = processingTierEU == null ? 0 : processingTierEU;
 
                 if (MU.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
                     tVoltageMultiplier /= 4;
@@ -60,15 +73,15 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         return;
                     }
 
-                if (!OrePrefixes.block.isIgnored(MU.smeltInto(material))
+                if (!OrePrefixes.block.isIgnored(MU.smeltInto(legacyMaterial))
                     && (GTOreDictUnificator.get(OrePrefixes.block, MU.smeltInto(material), 1L) != null)
-                    && material != Materials.Ichorium
-                    && material != Materials.Obsidian) {
+                    && legacyMaterial != Materials.Ichorium
+                    && legacyMaterial != Materials.Obsidian) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Extruder_Block.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, MU.smeltInto(material), tAmount))
                         .duration(materialMass * 9 * TICKS)
-                        .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                        .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
 
                     // Allow creation of alloy smelter recipes for material recycling if < IV tier.
@@ -77,7 +90,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Block.get(0L))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, MU.smeltInto(material), tAmount))
                             .duration(materialMass * 9 * TICKS)
-                            .eut(calculateRecipeEU(material, 4 * tVoltageMultiplier))
+                            .eut(calculateRecipeEU(legacyMaterial, 4 * tVoltageMultiplier))
                             .recipeCategory(RecipeCategories.alloySmelterMolding)
                             .addTo(alloySmelterRecipes);
                     }
@@ -88,7 +101,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Ingot.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MU.smeltInto(material), tAmount))
                         .duration(10 * TICKS)
-                        .eut(calculateRecipeEU(material, 4 * tVoltageMultiplier))
+                        .eut(calculateRecipeEU(legacyMaterial, 4 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
                 if (GTOreDictUnificator.get(OrePrefixes.pipeTiny, MU.smeltInto(material), 1L) != null) {
@@ -96,7 +109,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Pipe_Tiny.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeTiny, MU.smeltInto(material), tAmount * 2))
                         .duration((4 * tAmount) * TICKS)
-                        .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                        .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
                 if (GTOreDictUnificator.get(OrePrefixes.pipeSmall, MU.smeltInto(material), 1L) != null) {
@@ -104,7 +117,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Pipe_Small.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeSmall, MU.smeltInto(material), tAmount))
                         .duration((8 * tAmount) * TICKS)
-                        .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                        .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
                 if (GTOreDictUnificator.get(OrePrefixes.pipeMedium, MU.smeltInto(material), 1L) != null) {
@@ -112,7 +125,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GTUtility.copyAmount(3, stack), ItemList.Shape_Extruder_Pipe_Medium.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeMedium, MU.smeltInto(material), tAmount))
                         .duration((24 * tAmount) * TICKS)
-                        .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                        .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
                 if (GTOreDictUnificator.get(OrePrefixes.pipeLarge, MU.smeltInto(material), 1L) != null) {
@@ -120,7 +133,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GTUtility.copyAmount(6, stack), ItemList.Shape_Extruder_Pipe_Large.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeLarge, MU.smeltInto(material), tAmount))
                         .duration((48 * tAmount) * TICKS)
-                        .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                        .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
                 if (GTOreDictUnificator.get(OrePrefixes.pipeHuge, MU.smeltInto(material), 1L) != null) {
@@ -128,7 +141,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GTUtility.copyAmount(12, stack), ItemList.Shape_Extruder_Pipe_Huge.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeHuge, MU.smeltInto(material), tAmount))
                         .duration((96 * tAmount) * TICKS)
-                        .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                        .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
                 if (GTOreDictUnificator.get(OrePrefixes.plate, MU.smeltInto(material), 1L) != null) {
@@ -136,7 +149,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Plate.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, MU.smeltInto(material), tAmount))
                         .duration(((int) Math.max(materialMass * tAmount, tAmount)) * TICKS)
-                        .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                        .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
                 if (GTOreDictUnificator.get(OrePrefixes.gearGtSmall, MU.smeltInto(material), 1L) != null) {
@@ -144,7 +157,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Small_Gear.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gearGtSmall, MU.smeltInto(material), tAmount))
                         .duration(((int) Math.max(materialMass * tAmount, tAmount)) * TICKS)
-                        .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                        .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
                 if (GTOreDictUnificator.get(OrePrefixes.turbineBlade, MU.smeltInto(material), 1L) != null) {
@@ -152,133 +165,133 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GTUtility.copyAmount(6, stack), ItemList.Shape_Extruder_Turbine_Blade.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.turbineBlade, MU.smeltInto(material), tAmount))
                         .duration(((int) Math.max(materialMass * tAmount, tAmount)) * TICKS)
-                        .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                        .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
 
-                if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)
+                if (!(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)
                     && !(MU.hasFlag(material, GTMaterialFlag.NO_SMELTING))
                     && prefix == OrePrefixes.ingot) {
-                    if (material.mStandardMoltenFluid != null) {
+                    if (legacyMaterial.mStandardMoltenFluid != null) {
                         if (GTOreDictUnificator.get(OrePrefixes.ring, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Ring.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ring, material, 1L))
-                                .fluidInputs(material.getMolten(1 * QUARTER_INGOTS))
+                                .fluidInputs(legacyMaterial.getMolten(1 * QUARTER_INGOTS))
                                 .duration(5 * SECONDS)
-                                .eut(calculateRecipeEU(material, 4 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 4 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (GTOreDictUnificator.get(OrePrefixes.screw, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Screw.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.screw, material, 1L))
-                                .fluidInputs(material.getMolten(1 * EIGHTH_INGOTS))
+                                .fluidInputs(legacyMaterial.getMolten(1 * EIGHTH_INGOTS))
                                 .duration(2 * SECONDS + 10 * TICKS)
-                                .eut(calculateRecipeEU(material, 2 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 2 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (GTOreDictUnificator.get(OrePrefixes.stick, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Rod.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, material, 1L))
-                                .fluidInputs(material.getMolten(1 * HALF_INGOTS))
+                                .fluidInputs(legacyMaterial.getMolten(1 * HALF_INGOTS))
                                 .duration(7 * SECONDS + 10 * TICKS)
-                                .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (GTOreDictUnificator.get(OrePrefixes.bolt, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Bolt.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, material, 1L))
-                                .fluidInputs(material.getMolten(1 * EIGHTH_INGOTS))
+                                .fluidInputs(legacyMaterial.getMolten(1 * EIGHTH_INGOTS))
                                 .duration(2 * SECONDS + 10 * TICKS)
-                                .eut(calculateRecipeEU(material, 2 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 2 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (GTOreDictUnificator.get(OrePrefixes.round, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Round.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.round, material, 1L))
-                                .fluidInputs(material.getMolten(1 * NUGGETS))
+                                .fluidInputs(legacyMaterial.getMolten(1 * NUGGETS))
                                 .duration(2 * SECONDS + 10 * TICKS)
-                                .eut(calculateRecipeEU(material, 2 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 2 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (GTOreDictUnificator.get(OrePrefixes.stickLong, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Rod_Long.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stickLong, material, 1L))
-                                .fluidInputs(material.getMolten(1 * INGOTS))
+                                .fluidInputs(legacyMaterial.getMolten(1 * INGOTS))
                                 .duration(15 * SECONDS)
-                                .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (GTOreDictUnificator.get(OrePrefixes.turbineBlade, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Turbine_Blade.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.turbineBlade, material, 1L))
-                                .fluidInputs(material.getMolten(6 * INGOTS))
+                                .fluidInputs(legacyMaterial.getMolten(6 * INGOTS))
                                 .duration(20 * SECONDS)
-                                .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (GTOreDictUnificator.get(OrePrefixes.pipeTiny, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Tiny.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeTiny, material, 1L))
-                                .fluidInputs(material.getMolten(1 * HALF_INGOTS))
+                                .fluidInputs(legacyMaterial.getMolten(1 * HALF_INGOTS))
                                 .duration(1 * SECONDS)
-                                .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (GTOreDictUnificator.get(OrePrefixes.pipeSmall, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Small.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeSmall, material, 1L))
-                                .fluidInputs(material.getMolten(1 * INGOTS))
+                                .fluidInputs(legacyMaterial.getMolten(1 * INGOTS))
                                 .duration(2 * SECONDS)
-                                .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (GTOreDictUnificator.get(OrePrefixes.pipeMedium, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Medium.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeMedium, material, 1L))
-                                .fluidInputs(material.getMolten(3 * INGOTS))
+                                .fluidInputs(legacyMaterial.getMolten(3 * INGOTS))
                                 .duration(4 * SECONDS)
-                                .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (GTOreDictUnificator.get(OrePrefixes.pipeLarge, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Large.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeLarge, material, 1L))
-                                .fluidInputs(material.getMolten(6 * INGOTS))
+                                .fluidInputs(legacyMaterial.getMolten(6 * INGOTS))
                                 .duration(8 * SECONDS)
-                                .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (GTOreDictUnificator.get(OrePrefixes.pipeHuge, material, 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Huge.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeHuge, material, 1L))
-                                .fluidInputs(material.getMolten(1728L))
+                                .fluidInputs(legacyMaterial.getMolten(1728L))
                                 .duration(16 * SECONDS)
-                                .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
                     }
                 }
-                if (tAmount * 2 <= 64 && material != Materials.Obsidian) {
-                    if (!(material == Materials.Aluminium)) {
+                if (tAmount * 2 <= 64 && legacyMaterial != Materials.Obsidian) {
+                    if (!(legacyMaterial == Materials.Aluminium)) {
                         if (GTOreDictUnificator.get(OrePrefixes.stick, MU.smeltInto(material), 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Rod.get(0L))
                                 .itemOutputs(
                                     GTOreDictUnificator.get(OrePrefixes.stick, MU.smeltInto(material), tAmount * 2))
                                 .duration(((int) Math.max(materialMass * 2L * tAmount, tAmount)) * TICKS)
-                                .eut(calculateRecipeEU(material, 6 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 6 * tVoltageMultiplier))
                                 .addTo(extruderRecipes);
                         }
                     } else {
@@ -288,7 +301,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemOutputs(
                                     GTOreDictUnificator.get(OrePrefixes.stick, MU.smeltInto(material), tAmount * 2))
                                 .duration(10 * SECONDS)
-                                .eut(calculateRecipeEU(material, 2 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 2 * tVoltageMultiplier))
                                 .addTo(extruderRecipes);
                         }
                     }
@@ -300,7 +313,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.wireGt01, MU.smeltInto(material), tAmount * 2))
                             .duration(((int) Math.max(materialMass * 2L * tAmount, tAmount)) * TICKS)
-                            .eut(calculateRecipeEU(material, 6 * tVoltageMultiplier))
+                            .eut(calculateRecipeEU(legacyMaterial, 6 * tVoltageMultiplier))
                             .addTo(extruderRecipes);
                     }
                 }
@@ -310,7 +323,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Bolt.get(0L))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, MU.smeltInto(material), tAmount * 8))
                             .duration(((int) Math.max(materialMass * 2L * tAmount, tAmount)) * TICKS)
-                            .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                            .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                             .addTo(extruderRecipes);
                     }
                 }
@@ -320,18 +333,20 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Ring.get(0L))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ring, MU.smeltInto(material), tAmount * 4))
                             .duration(((int) Math.max(materialMass * 2L * tAmount, tAmount)) * TICKS)
-                            .eut(calculateRecipeEU(material, 6 * tVoltageMultiplier))
+                            .eut(calculateRecipeEU(legacyMaterial, 6 * tVoltageMultiplier))
                             .addTo(extruderRecipes);
                     }
-                    if ((material.mUnifiable) && (material.mMaterialInto == material)
+                    if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+                        && (legacyMaterial.mMaterialInto == legacyMaterial)
                         && !MU.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
                         // If material tier < IV then add manual recipe.
-                        if (material.getProcessingMaterialTierEU() < TierEU.IV
+                        Integer ringTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
+                        if ((ringTierEU == null ? 0 : ringTierEU) < TierEU.IV
                             && GTOreDictUnificator.get(OrePrefixes.ring, material, 1L) != null) {
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.ring, material, 1L),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h ", "fX", 'X', OrePrefixes.stick.ingredient(material) });
+                                new Object[] { "h ", "fX", 'X', MU.craftIngredient(OrePrefixes.stick, material) });
                         }
                     }
                 }
@@ -342,7 +357,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemOutputs(
                             GTOreDictUnificator.get(OrePrefixes.toolHeadHammer, MU.smeltInto(material), tAmount))
                         .duration(((int) Math.max(materialMass * 6L * tAmount, tAmount)) * TICKS)
-                        .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                        .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
                 if (GTOreDictUnificator.get(OrePrefixes.toolHeadFile, MU.smeltInto(material), 1L) != null) {
@@ -350,7 +365,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GTUtility.copyAmount(2, stack), ItemList.Shape_Extruder_File.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.toolHeadFile, MU.smeltInto(material), tAmount))
                         .duration(((int) Math.max(materialMass * 2L * tAmount, tAmount)) * TICKS)
-                        .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                        .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
                 if (GTOreDictUnificator.get(OrePrefixes.toolHeadSaw, MU.smeltInto(material), 1L) != null) {
@@ -358,7 +373,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GTUtility.copyAmount(2, stack), ItemList.Shape_Extruder_Saw.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.toolHeadSaw, MU.smeltInto(material), tAmount))
                         .duration(((int) Math.max(materialMass * 2L * tAmount, tAmount)) * TICKS)
-                        .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                        .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
                 if (GTOreDictUnificator.get(OrePrefixes.gearGt, MU.smeltInto(material), 1L) != null) {
@@ -366,19 +381,21 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GTUtility.copyAmount(4, stack), ItemList.Shape_Extruder_Gear.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gearGt, MU.smeltInto(material), tAmount))
                         .duration(((int) Math.max(materialMass * 5L * tAmount, tAmount)) * TICKS)
-                        .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                        .eut(calculateRecipeEU(legacyMaterial, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
 
-                if (!(material == Materials.StyreneButadieneRubber || material == Materials.RubberSilicone)) {
-                    if (material.getProcessingMaterialTierEU() < TierEU.IV) {
+                if (!(legacyMaterial == Materials.StyreneButadieneRubber
+                    || legacyMaterial == Materials.RubberSilicone)) {
+                    Integer plateTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
+                    if ((plateTierEU == null ? 0 : plateTierEU) < TierEU.IV) {
                         if (GTOreDictUnificator.get(OrePrefixes.plate, MU.smeltInto(material), 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(2, stack), ItemList.Shape_Mold_Plate.get(0L))
                                 .itemOutputs(
                                     GTOreDictUnificator.get(OrePrefixes.plate, MU.smeltInto(material), tAmount))
                                 .duration(((int) Math.max(materialMass * 2L * tAmount, tAmount)) * TICKS)
-                                .eut(calculateRecipeEU(material, 2 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 2 * tVoltageMultiplier))
                                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                                 .addTo(alloySmelterRecipes);
                         }
@@ -392,7 +409,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemOutputs(
                                     GTOreDictUnificator.get(OrePrefixes.plate, MU.smeltInto(material), tAmount))
                                 .duration(((int) Math.max(materialMass * 2L * tAmount, tAmount)) * TICKS)
-                                .eut(calculateRecipeEU(material, 2 * tVoltageMultiplier))
+                                .eut(calculateRecipeEU(legacyMaterial, 2 * tVoltageMultiplier))
                                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                                 .addTo(alloySmelterRecipes);
                         }
@@ -406,13 +423,13 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .itemInputs(GTUtility.copyAmount(8, stack), ItemList.Shape_Mold_Gear.get(0L))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gearGt, MU.smeltInto(material), tAmount))
                             .duration(((int) Math.max(materialMass * 10L * tAmount, tAmount)) * TICKS)
-                            .eut(calculateRecipeEU(material, 2 * tVoltageMultiplier))
+                            .eut(calculateRecipeEU(legacyMaterial, 2 * tVoltageMultiplier))
                             .recipeCategory(RecipeCategories.alloySmelterMolding)
                             .addTo(alloySmelterRecipes);
                     }
                 }
 
-                switch (MU.smeltInto(material).mName) {
+                switch (MU.internalName(MU.smeltInto(material))) {
                     case "Glass" -> {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Bottle.get(0L))

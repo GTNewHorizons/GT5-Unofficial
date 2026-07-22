@@ -17,11 +17,14 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -45,17 +48,28 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
-        long materialMass = material.getMass();
+        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
+    }
+
+    @Override
+    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
+        ItemStack stack) {
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial == null) return;
+
+        long materialMass = legacyMaterial.getMass();
         boolean noSmashing = MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         boolean noWorking = MU.hasFlag(material, GTMaterialFlag.NO_WORKING);
         boolean noSmelting = MU.hasFlag(material, GTMaterialFlag.NO_SMELTING);
         boolean specialRecipeReq = MU.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE);
         boolean fuelPower = MU.fuelPower(material) > 0;
+        boolean unifiable = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+            && legacyMaterial.mMaterialInto == legacyMaterial;
 
         // Blacklist materials which are handled by Werkstoff loader and nether quartz due to its 4:1 ratio
-        if (material == Materials.Salt || material == Materials.RockSalt
-            || material == Materials.Spodumene
-            || material == Materials.NetherQuartz) return;
+        if (legacyMaterial == Materials.Salt || legacyMaterial == Materials.RockSalt
+            || legacyMaterial == Materials.Spodumene
+            || legacyMaterial == Materials.NetherQuartz) return;
 
         switch (prefix.getName()) {
             case "gem" -> {
@@ -68,11 +82,11 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
-                if (!OrePrefixes.block.isIgnored(material)
+                if (!OrePrefixes.block.isIgnored(legacyMaterial)
                     && GTOreDictUnificator.get(OrePrefixes.block, material, 1L) != null) {
                     // Compressor recipes
                     // need to avoid iridium exploit
-                    if (material != Materials.Iridium) {
+                    if (legacyMaterial != Materials.Iridium) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(9, stack))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, material, 1L))
@@ -106,18 +120,18 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     {
                         // need to avoid iridium exploit
                         if (GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null
-                            && material != Materials.Iridium) {
+                            && legacyMaterial != Materials.Iridium) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
                                 .duration(Math.max(materialMass, 1L))
-                                .eut(calculateRecipeEU(material, 16))
+                                .eut(calculateRecipeEU(legacyMaterial, 16))
                                 .addTo(hammerRecipes);
                         }
                     }
 
                     // Bender recipes
-                    if (material != Materials.Iridium) {
+                    if (legacyMaterial != Materials.Iridium) {
                         if (GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null) {
                             // Plate
                             GTValues.RA.stdBuilder()
@@ -125,7 +139,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .circuit(1)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
                                 .duration((int) Math.max(materialMass * 2L, 1L))
-                                .eut(calculateRecipeEU(material, 24))
+                                .eut(calculateRecipeEU(legacyMaterial, 24))
                                 .addTo(benderRecipes);
                         }
 
@@ -136,7 +150,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .circuit(2)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDouble, material, 1L))
                                 .duration(Math.max(materialMass * 2L, 1L))
-                                .eut(calculateRecipeEU(material, 96))
+                                .eut(calculateRecipeEU(legacyMaterial, 96))
                                 .addTo(benderRecipes);
                         }
 
@@ -147,7 +161,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .circuit(3)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateTriple, material, 1L))
                                 .duration(Math.max(materialMass * 3L, 1L))
-                                .eut(calculateRecipeEU(material, 96))
+                                .eut(calculateRecipeEU(legacyMaterial, 96))
                                 .addTo(benderRecipes);
                         }
 
@@ -158,7 +172,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .circuit(4)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuadruple, material, 1L))
                                 .duration(Math.max(materialMass * 4L, 1L))
-                                .eut(calculateRecipeEU(material, 96))
+                                .eut(calculateRecipeEU(legacyMaterial, 96))
                                 .addTo(benderRecipes);
                         }
 
@@ -169,7 +183,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .circuit(5)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuintuple, material, 1L))
                                 .duration(Math.max(materialMass * 5L, 1L))
-                                .eut(calculateRecipeEU(material, 96))
+                                .eut(calculateRecipeEU(legacyMaterial, 96))
                                 .addTo(benderRecipes);
                         }
 
@@ -180,13 +194,14 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .circuit(9)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, material, 1L))
                                 .duration(Math.max(materialMass * 9L, 1L))
-                                .eut(calculateRecipeEU(material, 96))
+                                .eut(calculateRecipeEU(legacyMaterial, 96))
                                 .addTo(benderRecipes);
                         }
                     }
                 }
                 if (noWorking) {
-                    if (material.getProcessingMaterialTierEU() < TierEU.IV) {
+                    Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
+                    if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
                         // Lathe recipes
                         if (GTOreDictUnificator.get(OrePrefixes.stick, material, 1L) != null
                             && GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 1L) != null) {
@@ -196,12 +211,12 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                     GTOreDictUnificator.get(OrePrefixes.stick, material, 1L),
                                     GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 2L))
                                 .duration(((int) Math.max(materialMass, 1L)) * TICKS)
-                                .eut(calculateRecipeEU(material, 16))
+                                .eut(calculateRecipeEU(legacyMaterial, 16))
                                 .addTo(latheRecipes);
                         }
                     }
                 } else {
-                    if (material.mUnifiable && (material.mMaterialInto == material)) {
+                    if (unifiable) {
                         // Implosion compressor recipes
                         if (GTOreDictUnificator.get(OrePrefixes.gemFlawless, material, 1) != null) {
                             GTValues.RA.stdBuilder()
@@ -219,26 +234,28 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.gem, material, 2L),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', OrePrefixes.gemFlawless.ingredient(material) });
+                                new Object[] { "h", "X", 'X', MU.craftIngredient(OrePrefixes.gemFlawless, material) });
 
                             if (MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)) {
                                 GTModHandler.addCraftingRecipe(
                                     GTUtility.copyAmount(1, stack),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.nugget.ingredient(material) });
+                                    new Object[] { "XXX", "XXX", "XXX", 'X',
+                                        MU.craftIngredient(OrePrefixes.nugget, material) });
                             }
 
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gem.ingredient(material) });
+                                    new Object[] { "X", "m", 'X', MU.craftIngredient(OrePrefixes.gem, material) });
                             }
                         }
                     }
                 }
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + material.mColor.mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + legacyMaterial.mColor.mName.replace(" ", ""))) { // Engraver
                     // Laser engraver recipes
                     {
 
@@ -280,7 +297,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .addTo(latheRecipes);
                     }
 
-                    if (material.mUnifiable && (material.mMaterialInto == material)) {
+                    if (unifiable) {
                         // Implosion compressor recipes
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.gemFlawed, material, 1) != null) {
@@ -301,17 +318,19 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.gemChipped, material, 2L),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', OrePrefixes.gemFlawed.ingredient(material) });
+                                new Object[] { "h", "X", 'X', MU.craftIngredient(OrePrefixes.gemFlawed, material) });
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gemChipped.ingredient(material) });
+                                    new Object[] { "X", "m", 'X',
+                                        MU.craftIngredient(OrePrefixes.gemChipped, material) });
                             }
                         }
                     }
                 }
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + material.mColor.mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + legacyMaterial.mColor.mName.replace(" ", ""))) { // Engraver
                     is.stackSize = 0;
 
                     GTValues.RA.stdBuilder()
@@ -334,14 +353,15 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 }
 
                 if (!noWorking) {
-                    if (material.mUnifiable && (material.mMaterialInto == material)) {
+                    if (unifiable) {
                         // Crafting recipes
                         {
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.dust, material, 4L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gemExquisite.ingredient(material) });
+                                    new Object[] { "X", "m", 'X',
+                                        MU.craftIngredient(OrePrefixes.gemExquisite, material) });
                             }
                         }
                     }
@@ -381,7 +401,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .addTo(latheRecipes);
                     }
 
-                    if (material.mUnifiable && (material.mMaterialInto == material)) {
+                    if (unifiable) {
                         // Implosion compressor recipes
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.gem, material, 1) != null) {
@@ -402,12 +422,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.gemFlawed, material, 2L),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', OrePrefixes.gem.ingredient(material) });
+                                new Object[] { "h", "X", 'X', MU.craftIngredient(OrePrefixes.gem, material) });
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 2L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gemFlawed.ingredient(material) });
+                                    new Object[] { "X", "m", 'X',
+                                        MU.craftIngredient(OrePrefixes.gemFlawed, material) });
                             }
                         }
                     }
@@ -419,7 +440,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + material.mColor.mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + legacyMaterial.mColor.mName.replace(" ", ""))) { // Engraver
 
                     is.stackSize = 0;
 
@@ -459,7 +481,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .addTo(latheRecipes);
                     }
 
-                    if (material.mUnifiable && (material.mMaterialInto == material)) {
+                    if (unifiable) {
                         // Implosion compressor recipes
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.gemExquisite, material, 1) != null) {
@@ -480,12 +502,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.gemFlawless, material, 2L),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', OrePrefixes.gemExquisite.ingredient(material) });
+                                new Object[] { "h", "X", 'X', MU.craftIngredient(OrePrefixes.gemExquisite, material) });
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.dust, material, 2L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gemFlawless.ingredient(material) });
+                                    new Object[] { "X", "m", 'X',
+                                        MU.craftIngredient(OrePrefixes.gemFlawless, material) });
                             }
                         }
                     }
@@ -497,7 +520,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + material.mColor.mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + legacyMaterial.mColor.mName.replace(" ", ""))) { // Engraver
 
                     is.stackSize = 0;
                     GTValues.RA.stdBuilder()

@@ -10,6 +10,7 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
@@ -19,6 +20,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -36,17 +38,29 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
-        // Blacklist materials which are handled by Werkstoff loader
-        if (material == Materials.Salt || material == Materials.RockSalt
-            || material == Materials.Spodumene
-            || material == Materials.Calcium
-            || material == Materials.Magnesia) return;
+        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
+    }
 
-        if (material.getProcessingMaterialTierEU() < TierEU.IV) {
-            GTModHandler.addCraftingRecipe(
-                GTOreDictUnificator.get(OrePrefixes.springSmall, material, 1L),
-                GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { " s ", "fPx", 'P', OrePrefixes.stick.ingredient(material) });
+    @Override
+    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
+        ItemStack stack) {
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial == null) return;
+
+        // Blacklist materials which are handled by Werkstoff loader
+        if (legacyMaterial == Materials.Salt || legacyMaterial == Materials.RockSalt
+            || legacyMaterial == Materials.Spodumene
+            || legacyMaterial == Materials.Calcium
+            || legacyMaterial == Materials.Magnesia) return;
+
+        {
+            Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
+            if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+                GTModHandler.addCraftingRecipe(
+                    GTOreDictUnificator.get(OrePrefixes.springSmall, material, 1L),
+                    GTModHandler.RecipeBits.BUFFERED,
+                    new Object[] { " s ", "fPx", 'P', MU.craftIngredient(OrePrefixes.stick, material) });
+            }
         }
         if (!MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
 
@@ -61,8 +75,8 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemOutputs(
                         GTOreDictUnificator.get(OrePrefixes.stick, material, 1L),
                         GTOreDictUnificator.get(OrePrefixes.dustSmall, MU.macerateInto(material), 2L))
-                    .duration(((int) Math.max(material.getMass() * 5L, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(material, 16))
+                    .duration(((int) Math.max(legacyMaterial.getMass() * 5L, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(legacyMaterial, 16))
                     .addTo(latheRecipes);
             }
 
@@ -77,11 +91,11 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                                 4,
                                 Math.min(
                                     1000,
-                                    2 * ((int) Math.max(material.getMass() * 2L, 1L))
-                                        * calculateRecipeEU(material, 4)
+                                    2 * ((int) Math.max(legacyMaterial.getMass() * 2L, 1L))
+                                        * calculateRecipeEU(legacyMaterial, 4)
                                         / 320))))
-                    .duration(2 * ((int) Math.max(material.getMass() * 2L, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(material, 4))
+                    .duration(2 * ((int) Math.max(legacyMaterial.getMass() * 2L, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(legacyMaterial, 4))
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
@@ -93,11 +107,11 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                                 3,
                                 Math.min(
                                     750,
-                                    2 * ((int) Math.max(material.getMass() * 2L, 1L))
-                                        * calculateRecipeEU(material, 4)
+                                    2 * ((int) Math.max(legacyMaterial.getMass() * 2L, 1L))
+                                        * calculateRecipeEU(legacyMaterial, 4)
                                         / 426))))
-                    .duration(2 * ((int) Math.max(material.getMass() * 2L, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(material, 4))
+                    .duration(2 * ((int) Math.max(legacyMaterial.getMass() * 2L, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(legacyMaterial, 4))
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
@@ -111,10 +125,11 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                                 1,
                                 Math.min(
                                     250,
-                                    ((int) Math.max(material.getMass() * 2, 1)) * calculateRecipeEU(material, 4)
+                                    ((int) Math.max(legacyMaterial.getMass() * 2, 1))
+                                        * calculateRecipeEU(legacyMaterial, 4)
                                         / 1280)))))
-                    .duration(((int) Math.max(material.getMass() * 2L, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(material, 4))
+                    .duration(((int) Math.max(legacyMaterial.getMass() * 2L, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(legacyMaterial, 4))
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
@@ -126,23 +141,26 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                                 1,
                                 Math.min(
                                     10,
-                                    ((int) Math.max(material.getMass() * 2L, 1L)) * calculateRecipeEU(material, 4)
+                                    ((int) Math.max(legacyMaterial.getMass() * 2L, 1L))
+                                        * calculateRecipeEU(legacyMaterial, 4)
                                         / 4000))))
-                    .duration(((int) Math.max(material.getMass() * 2L / 2.5, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(material, 4))
+                    .duration(((int) Math.max(legacyMaterial.getMass() * 2L / 2.5, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(legacyMaterial, 4))
                     .addTo(cutterRecipes);
             }
 
-            if ((material.mUnifiable) && (material.mMaterialInto == material)) {
-                if (material.getProcessingMaterialTierEU() < TierEU.IV) {
+            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+                && (legacyMaterial.mMaterialInto == legacyMaterial)) {
+                Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
+                if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stick, material, 2L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "s", "X", 'X', OrePrefixes.stickLong.ingredient(material) });
+                        new Object[] { "s", "X", 'X', MU.craftIngredient(OrePrefixes.stickLong, material) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stick, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "f ", " X", 'X', OrePrefixes.ingot.ingredient(material) });
+                        new Object[] { "f ", " X", 'X', MU.craftIngredient(OrePrefixes.ingot, material) });
                 }
             }
         }
@@ -155,7 +173,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                         .circuit(1)
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.springSmall, material, 2L))
                         .duration(5 * SECONDS)
-                        .eut(calculateRecipeEU(material, 8))
+                        .eut(calculateRecipeEU(legacyMaterial, 8))
                         .addTo(benderRecipes);
                 }
             }
@@ -164,8 +182,8 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(2, stack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stickLong, material, 1L))
-                    .duration(Math.max(material.getMass(), 1L))
-                    .eut(calculateRecipeEU(material, 16))
+                    .duration(Math.max(legacyMaterial.getMass(), 1L))
+                    .eut(calculateRecipeEU(legacyMaterial, 16))
                     .addTo(hammerRecipes);
             }
         }

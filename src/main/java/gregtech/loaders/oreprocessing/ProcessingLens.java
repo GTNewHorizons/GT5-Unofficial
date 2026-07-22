@@ -6,6 +6,8 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import appeng.api.AEApi;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
@@ -14,6 +16,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.material.MU;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -31,15 +34,24 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
-        // Blacklist materials which are handled by Werkstoff loader
-        if (material == Materials.Salt || material == Materials.RockSalt || material == Materials.Spodumene) return;
+        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
+    }
+
+    @Override
+    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
+        ItemStack stack) {
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial == null) return;
+
+        if (legacyMaterial == Materials.Salt || legacyMaterial == Materials.RockSalt
+            || legacyMaterial == Materials.Spodumene) return;
 
         AEApi.instance()
             .registries()
             .blockingModeIgnoreItem()
             .register(stack);
 
-        switch (material.mName) {
+        switch (MU.internalName(material)) {
             case "Diamond", "Glass" -> {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
@@ -96,7 +108,8 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                         .eut(TierEU.RECIPE_LV)
                         .addTo(latheRecipes);
                 }
-                final ITexture lensCoverTexture = TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, material.mRGBa);
+                final ITexture lensCoverTexture = TextureFactory
+                    .of(Textures.BlockIcons.OVERLAY_LENS, MU.rgba(material));
                 CoverRegistry.registerDecorativeCover(
                     stack,
                     TextureFactory.of(Textures.BlockIcons.MACHINE_CASINGS[2][0], lensCoverTexture));
