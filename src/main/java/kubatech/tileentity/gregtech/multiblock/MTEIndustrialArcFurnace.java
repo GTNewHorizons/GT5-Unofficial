@@ -371,7 +371,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     + EnumChatFormatting.GRAY
                     + "% chance for random arc surge")
             .addInfo("Startup: machine ignites the arc before processing")
-            .addInfo("Startup power: based on electrode startup surge and parallels")
+            .addInfo("Startup power: based on electrode startup penalty and parallels")
             .addInfo("Shutdown: machine powers down the arc after work ends")
             .addInfo("-------------------------------Blast mode----------------------------------")
             .addInfo(
@@ -597,7 +597,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
     private int calculateMaximumParallel(long eut) {
         if (electrode == null) return 0;
-        eut = (long) ((double) eut * electrode.amperagePerParallel);
+        eut = (long) ((double) eut * electrode.euModifier);
         long volts = getAverageInputVoltage();
         long amps = getMaxInputAmps();
         int paraLimit = electrode.parallelLimit;
@@ -612,7 +612,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         logic.setSpeedBonus(1d / electrode.speedModifier);
         logic.setMaxParallel(electrode.parallelLimit);
         logic.setOverclock(electrode.OCSpeedFactor, electrode.OCPowerFactor);
-        logic.setEuModifier(electrode.amperagePerParallel);
+        logic.setEuModifier(electrode.euModifier);
         logic.setAvailableVoltage(getAverageInputVoltage());
         logic.setAvailableAmperage(getMaxInputAmps());
         logic.setMaxTierSkips(0);
@@ -999,8 +999,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     final long use = (long) (getAverageInputVoltage() * 30d
                         / 32d
                         * this.maxParallel
-                        * (electrode.startupSurge + 1d)
-                        * electrode.amperagePerParallel);
+                        * (electrode.startupPenalty + 1d)
+                        * electrode.euModifier);
                     // we set here to generate insufficient power error
                     ignitionRecipe.mEUt = (int) Math.min(use, Integer.MAX_VALUE);
                     ignitionRecipe.mDuration = STARTUP_DURATION_TICKS;

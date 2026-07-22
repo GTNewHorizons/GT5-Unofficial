@@ -123,14 +123,14 @@ public enum ArcFurnaceElectrode {
     public final double OCSpeedFactor;
     public final double OCPowerFactor;
     public final int durability;
-    public final double amperagePerParallel;
-    public final double startupSurge;
+    public final double euModifier;
+    public final double startupPenalty;
     public final Consumer<ArcFurnaceProcessingEvent> specialEffect;
 
     private ItemStack electrodeItem;
 
     ArcFurnaceElectrode(int id, IOreMaterial associatedMaterial, double speedModifier, int parallelLimit,
-        double OCSpeedFactor, double OCPowerFactor, int durability, double amperagePerParallel, double startupSurge) {
+        double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty) {
         this(
             id,
             associatedMaterial,
@@ -139,13 +139,13 @@ public enum ArcFurnaceElectrode {
             OCSpeedFactor,
             OCPowerFactor,
             durability,
-            amperagePerParallel,
-            startupSurge,
+            euModifier,
+            startupPenalty,
             null);
     }
 
     ArcFurnaceElectrode(int id, IOreMaterial associatedMaterial, double speedModifier, int parallelLimit,
-        double OCSpeedFactor, double OCPowerFactor, int durability, double amperagePerParallel, double startupSurge,
+        double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty,
         Consumer<ArcFurnaceProcessingEvent> specialEffect) {
         this.id = id;
         this.associatedMaterial = associatedMaterial;
@@ -154,8 +154,8 @@ public enum ArcFurnaceElectrode {
         this.OCSpeedFactor = OCSpeedFactor;
         this.OCPowerFactor = OCPowerFactor;
         this.durability = durability;
-        this.amperagePerParallel = amperagePerParallel;
-        this.startupSurge = startupSurge;
+        this.euModifier = euModifier;
+        this.startupPenalty = startupPenalty;
         this.specialEffect = specialEffect;
     }
 
@@ -208,12 +208,12 @@ public enum ArcFurnaceElectrode {
                 ""));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
-                "item.arc_furnace_electrode.tip.amperage_per_parallel",
-                getModifierFormatted(this.amperagePerParallel, true, 0.6d, 1d, 1.25d, "", "A")));
+                "item.arc_furnace_electrode.tip.eu_modifier",
+                getModifierFormatted(this.euModifier, true, 0.6d, 1d, 1.25d, "", "x")));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
-                "item.arc_furnace_electrode.tip.startup_surge",
-                getModifierFormatted(this.startupSurge + 1d, true, 0.25d, 0.5d, 1d, "x", "")));
+                "item.arc_furnace_electrode.tip.startup_penalty",
+                getModifierFormatted(this.startupPenalty + 1d, true, 0.25d, 0.5d, 1d, "x", "")));
         long startupAmperage = getStartupAmperage();
         tooltip.add(
             StatCollector.translateToLocalFormatted(
@@ -230,8 +230,8 @@ public enum ArcFurnaceElectrode {
     private long getStartupAmperage() {
         return Math.max(
             1L,
-            (long) Math.ceil(
-                30d / 32d * Math.max(1, this.parallelLimit) * (this.startupSurge + 1d) * this.amperagePerParallel));
+            (long) Math
+                .ceil(30d / 32d * Math.max(1, this.parallelLimit) * (this.startupPenalty + 1d) * this.euModifier));
     }
 
     private static int getInfinityTargetParallel(NBTTagCompound state) {
