@@ -92,7 +92,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             .addMarkdown(new ResourceLocation("gregtech", "bec-generator"))
             .addSupportAny();
 
-        tt.beginStructureBlock(34, 19, 19, true)
+        tt.beginStructureBlock(19, 19, 34, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-generator.controller-pos"))
             .addCasing("236", ConflictInducementCasing.getLocalizedName(), false)
             .addCasing("232", FineStructureConstantManipulator.getLocalizedName(), false)
