@@ -23,6 +23,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -32,6 +33,7 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
+import gregtech.loaders.materials.LegacyMaterials;
 
 /// Bridges legacy [OrePrefixes]/[Materials] pairs to their cutover MaterialLib [Shape]/[Material]
 /// equivalents.
@@ -150,6 +152,37 @@ public class MU {
         return MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidGas, (int) (1000 * entry.amount()));
     }
 
+    /// Whether a material carries a legacy `Materials#mStandardMoltenFluid` (see [#molten]) -- for callers that
+    /// need the presence check independent of a specific fluid amount, such as one gate guarding several
+    /// [#molten] calls of different amounts.
+    public static boolean hasMolten(@Nullable Material material) {
+        return material != null && material.hasShape(Materials2FluidShapes.fluidMolten);
+    }
+
+    /// The legacy `Materials#mStandardMoltenFluid`-backed `Materials#getMolten` stack for a material, or null
+    /// when it carries no molten fluid -- mirrors `getMolten`'s own null-on-absent behavior. Byte-identical for
+    /// every population that reaches a MaterialLib [Material]: `LegacyMaterials#build`'s `wireFluids` resolves
+    /// `mStandardMoltenFluid` from the same [Materials2FluidShapes#fluidMolten] Forge fluid this reads (both by
+    /// [GTMaterialProperties#LEGACY_FLUIDS]'s `molten` slot name); `BridgeMaterialsLoader` sets a werkstoff
+    /// bridge's field from `Werkstoff#getMolten`, whose backing Forge fluid MaterialLib already registered
+    /// under that identical name (`WerkstoffLoader#addItemsForGeneration`'s reconstructed branch); and
+    /// `GtppBridgeMaterialsLoader` sets a gtpp bridge's field from `Material#getFluid` gated on this same shape,
+    /// which resolves to the same `molten` slot fluid (`FluidNames#legacyGtppFluidName` prioritizes `molten`
+    /// over `fluid`/`gas`, and the shape gate guarantees the `molten` slot is the one present).
+    public static @Nullable FluidStack molten(@Nullable Material material, long amount) {
+        if (!hasMolten(material)) return null;
+        return MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) amount);
+    }
+
+    /// [#molten], for `Materials#mGas`/`Materials#getGas` -- the [Materials2FluidShapes#fluidGas] Forge fluid.
+    /// Every current call site this replaces is gated on [GTMaterialFlag#ICE_ORE], which only canonical
+    /// (script-generated [Materials2Materials]) entries ever carry, so only `LegacyMaterials#build`'s
+    /// `wireFluids` population needs to match -- the same name-based Forge fluid resolution as [#molten].
+    public static @Nullable FluidStack gas(@Nullable Material material, long amount) {
+        if (material == null || !material.hasShape(Materials2FluidShapes.fluidGas)) return null;
+        return MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidGas, (int) amount);
+    }
+
     /// The legacy [Materials] a MaterialLib material was ported from, or null if it has none.
     public static @Nullable Materials materialOf(Material material) {
         if (material == null) return null;
@@ -193,6 +226,27 @@ public class MU {
         if (argb == null) return null;
         return new short[] { (short) ((argb >>> 16) & 0xFF), (short) ((argb >>> 8) & 0xFF), (short) (argb & 0xFF),
             (short) ((argb >>> 24) & 0xFF) };
+    }
+
+    /// The legacy `Materials#mIconSet` texture set for a material, resolved by the same TEXTURE_SET-name lookup
+    /// [LegacyMaterials#iconSetOf] performs -- byte-identical for every population that reaches a MaterialLib
+    /// [Material]: `LegacyMaterials#build` calls it directly to set `mIconSet`; `BridgeMaterialsLoader` sets a
+    /// werkstoff bridge's `mIconSet` from `Werkstoff#getTexSet`, which the werkstoff's own constructor was built
+    /// with [LegacyMaterials#iconSetOf]'s result (`WerkstoffReconstruction`); and `GtppBridgeMaterialsLoader`
+    /// sets a gtpp bridge's `mIconSet` from the same [LegacyMaterials#iconSetOf] call made directly in
+    /// `MaterialReconstruction#build`. Null when `material` is null.
+    public static @Nullable TextureSet iconSet(@Nullable Material material) {
+        return material == null ? null : LegacyMaterials.iconSetOf(material);
+    }
+
+    /// The legacy `Materials#mBlastFurnaceRequired` flag for a material, mirroring its own `= false` default.
+    /// Ported byte-identically to [GTMaterialProperties#BLAST_REQUIRED]: `LegacyMaterials#build` sets it from
+    /// this exact `Boolean.TRUE.equals` check, and both `BridgeMaterialsLoader` (via
+    /// `Werkstoff.Stats#isBlastFurnace`) and `GtppBridgeMaterialsLoader` (via
+    /// `Material.GtppScalars#usesBlastFurnace`) compute their bridge's flag from the identical expression
+    /// against the same property.
+    public static boolean blastFurnaceRequired(@Nullable Material material) {
+        return material != null && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
     }
 
     /// The legacy `Materials#mMeltingPoint` Kelvin melting point for a material, or `0` if unset -- mirrors

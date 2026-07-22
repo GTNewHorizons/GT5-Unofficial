@@ -98,7 +98,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .eut(1)
                         .addTo(cannerRecipes);
                 }
-                if (!legacyMaterial.mBlastFurnaceRequired) {
+                if (!MU.blastFurnaceRequired(material)) {
                     GTRecipeRegistrator
                         .registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, false);
                     if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(material)) {
@@ -114,7 +114,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 ItemStack tDustStack;
                 if ((null != (tDustStack = GTOreDictUnificator.get(OrePrefixes.ingot, MU.smeltInto(material), 1L)))
                     && (!MU.hasFlag(material, GTMaterialFlag.NO_SMELTING))) {
-                    if (legacyMaterial.mBlastFurnaceRequired) {
+                    if (MU.blastFurnaceRequired(material)) {
                         GTModHandler.removeFurnaceSmelting(stack);
                         if (legacyMaterial.mAutoGenerateBlastFurnaceRecipes) {
                             GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
@@ -584,7 +584,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     .duration(1 * SECONDS)
                     .eut(4)
                     .addTo(packagerRecipes);
-                if (!legacyMaterial.mBlastFurnaceRequired) {
+                if (!MU.blastFurnaceRequired(material)) {
                     GTRecipeRegistrator
                         .registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, true);
                     if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(material)) {
@@ -605,7 +605,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     .duration(1 * SECONDS)
                     .eut(4)
                     .addTo(packagerRecipes);
-                if (!legacyMaterial.mBlastFurnaceRequired) {
+                if (!MU.blastFurnaceRequired(material)) {
                     GTRecipeRegistrator
                         .registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, true);
                     if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(material)) {
@@ -619,7 +619,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
                 if (!MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)) {
-                    if (legacyMaterial.mBlastFurnaceRequired) {
+                    if (MU.blastFurnaceRequired(material)) {
                         GTModHandler.removeFurnaceSmelting(stack);
                     }
                 }

@@ -71,12 +71,12 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .addTo(alloySmelterRecipes);
         }
 
-        if (legacyMaterial.mStandardMoltenFluid != null) {
+        if (MU.hasMolten(material)) {
             if (!(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, material, 1L))
-                    .fluidInputs(legacyMaterial.getMolten(1 * NUGGETS))
+                    .fluidInputs(MU.molten(material, 1 * NUGGETS))
                     .duration(16 * TICKS)
                     .eut(calculateRecipeEU(material, 4))
                     .addTo(fluidSolidifierRecipes);

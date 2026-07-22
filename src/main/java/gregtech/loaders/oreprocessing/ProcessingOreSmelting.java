@@ -59,7 +59,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
         if (MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)) return;
 
         // Blast furnace is required for processing this ore.
-        if (legacyMaterial.mBlastFurnaceRequired || MU.directSmelting(legacyMaterial).mBlastFurnaceRequired) {
+        if (MU.blastFurnaceRequired(material) || MU.blastFurnaceRequired(MU.directSmelting(material))) {
             if (MU.blastFurnaceTemp(material) >= 1000) return;
             if (MU.blastFurnaceTemp(MU.directSmelting(material)) >= 1000) return;
             if (!legacyMaterial.mAutoGenerateBlastFurnaceRecipes) return;

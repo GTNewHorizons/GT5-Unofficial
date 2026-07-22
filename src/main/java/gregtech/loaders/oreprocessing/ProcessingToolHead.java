@@ -560,11 +560,11 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "XSX", "XSX", "ShS", 'X', MU.craftIngredient(OrePrefixes.plate, material), 'S',
                             OrePrefixes.plate.ingredient(Materials.Steel) });
-                    if (legacyMaterial.mStandardMoltenFluid != null) {
+                    if (MU.hasMolten(material)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_ToolHeadDrill.get(0))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, material, 1L))
-                            .fluidInputs(legacyMaterial.getMolten(4 * INGOTS))
+                            .fluidInputs(MU.molten(material, 4 * INGOTS))
                             .duration(5 * SECONDS)
                             .eut(calculateRecipeEU(material, (int) TierEU.RECIPE_MV))
                             .addTo(fluidSolidifierRecipes);
