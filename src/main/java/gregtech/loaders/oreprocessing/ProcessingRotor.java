@@ -83,13 +83,13 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                     .eut(calculateRecipeEU(material, 24))
                     .addTo(extruderRecipes);
             }
-            if (legacyMaterial.mStandardMoltenFluid != null) {
+            if (MU.hasMolten(material)) {
                 if (!(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Rotor.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, material, 1L))
-                        .fluidInputs(legacyMaterial.getMolten(612L))
+                        .fluidInputs(MU.molten(material, 612L))
                         .duration(((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
                         .eut(calculateRecipeEU(material, 24))
                         .addTo(fluidSolidifierRecipes);

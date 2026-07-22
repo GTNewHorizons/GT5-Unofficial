@@ -48,12 +48,12 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
         switch (prefix.getName()) {
             case "gearGt" -> {
                 GTModHandler.removeRecipeByOutputDelayed(stack);
-                if (legacyMaterial.mStandardMoltenFluid != null) {
+                if (MU.hasMolten(material)) {
                     if (!(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear.get(0L))
                             .itemOutputs(GTOreDictUnificator.get(prefix, material, 1L))
-                            .fluidInputs(legacyMaterial.getMolten(4 * INGOTS))
+                            .fluidInputs(MU.molten(material, 4 * INGOTS))
                             .duration(6 * SECONDS + 8 * TICKS)
                             .eut(calculateRecipeEU(material, 8))
                             .addTo(fluidSolidifierRecipes);
@@ -88,12 +88,12 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case "gearGtSmall" -> {
-                if (legacyMaterial.mStandardMoltenFluid != null) {
+                if (MU.hasMolten(material)) {
                     if (!(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear_Small.get(0L))
                             .itemOutputs(GTUtility.copyAmount(1, stack))
-                            .fluidInputs(legacyMaterial.getMolten(1 * INGOTS))
+                            .fluidInputs(MU.molten(material, 1 * INGOTS))
                             .duration(16 * TICKS)
                             .eut(calculateRecipeEU(material, 8))
                             .addTo(fluidSolidifierRecipes);

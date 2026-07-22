@@ -143,12 +143,12 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(GTRecipeConstants.Fuel);
         }
 
-        if (legacyMaterial.mStandardMoltenFluid != null
+        if (MU.hasMolten(material)
             && !(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
-                .fluidInputs(legacyMaterial.getMolten(1 * INGOTS))
+                .fluidInputs(MU.molten(material, 1 * INGOTS))
                 .duration(1 * SECONDS + 12 * TICKS)
                 .eut(calculateRecipeEU(material, 8))
                 .addTo(fluidSolidifierRecipes);
@@ -441,11 +441,11 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.removeRecipeByOutputDelayed(stack);
 
-        if (legacyMaterial.mStandardMoltenFluid != null) {
+        if (MU.hasMolten(material)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Casing.get(0L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, material, 1L))
-                .fluidInputs(legacyMaterial.getMolten(1 * HALF_INGOTS))
+                .fluidInputs(MU.molten(material, 1 * HALF_INGOTS))
                 .duration(16 * TICKS)
                 .eut(calculateRecipeEU(material, 8))
                 .addTo(fluidSolidifierRecipes);
@@ -615,7 +615,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             tStack == NI ?
             // Use Materials mRGBa dyed blocs/materialicons/MATERIALSET/block1 icons
                 TextureFactory.builder()
-                    .addIcon(legacyMaterial.mIconSet.mTextures[MaterialIconRegistry.IconType.BLOCK1.ordinal()])
+                    .addIcon(MU.iconSet(material).mTextures[MaterialIconRegistry.IconType.BLOCK1.ordinal()])
                     .setRGBA(MU.rgba(material))
                     .stdOrient()
                     .build()

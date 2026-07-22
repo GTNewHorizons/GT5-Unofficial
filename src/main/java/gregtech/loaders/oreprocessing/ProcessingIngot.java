@@ -72,14 +72,14 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         .metadata(FUEL_TYPE, MU.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
                 }
-                if (legacyMaterial.mStandardMoltenFluid != null
+                if (MU.hasMolten(material)
                     && !(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)) {
                     // Fluid solidifier recipes
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L))
-                        .fluidInputs(legacyMaterial.getMolten(1 * INGOTS))
+                        .fluidInputs(MU.molten(material, 1 * INGOTS))
                         .duration(1 * SECONDS + 12 * TICKS)
                         .eut(calculateRecipeEU(material, 8))
                         .addTo(fluidSolidifierRecipes);
@@ -108,7 +108,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     }
                 }
                 ItemStack tStack = GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L);
-                if ((tStack != null) && ((legacyMaterial.mBlastFurnaceRequired) || noSmelting)) {
+                if ((tStack != null) && ((MU.blastFurnaceRequired(material)) || noSmelting)) {
                     GTModHandler.removeFurnaceSmelting(tStack);
                 }
                 if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))

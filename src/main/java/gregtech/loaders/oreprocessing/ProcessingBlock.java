@@ -202,7 +202,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             GTModHandler.removeRecipeDelayed(dust, dust, dust, dust, dust, dust, dust, dust, dust);
         }
 
-        if (legacyMaterial.mStandardMoltenFluid != null) {
+        if (MU.hasMolten(material)) {
             if (!(material == MU.material(Materials.AnnealedCopper) || material == MU.material(Materials.CastIron)
                 || material == MU.material(Materials.Obsidian))) {
                 if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
@@ -210,7 +210,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Block.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, material, 1L))
-                        .fluidInputs(legacyMaterial.getMolten(9 * INGOTS))
+                        .fluidInputs(MU.molten(material, 9 * INGOTS))
                         .duration(legacyMaterial.getMass() * 9 * TICKS)
                         .eut(calculateRecipeEU(material, 8))
                         .addTo(fluidSolidifierRecipes);

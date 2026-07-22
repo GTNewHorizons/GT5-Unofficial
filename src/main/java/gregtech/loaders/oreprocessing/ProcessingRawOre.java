@@ -60,7 +60,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
             int oreMultiplier = oreMultiplierProp == null ? 1 : oreMultiplierProp;
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
-                .fluidOutputs(legacyMaterial.getGas(1000L * oreMultiplier))
+                .fluidOutputs(MU.gas(material, 1000L * oreMultiplier))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(RecipeMaps.fluidExtractionRecipes);
