@@ -107,13 +107,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     private static final int SHUTDOWN_DURATION_TICKS = 20 * 6;
     private static final int ORE_MODE_STARTUP_TICKS = 20 * 10;
     private static final int ORE_MODE_IDLE_FINISH_TICKS = 5;
-    private static final int ARC_SURGE_DURABILITY_THRESHOLD_PERCENT = 30;
+    private static final int ARC_SURGE_DURABILITY_THRESHOLD_PERCENT = 25;
     private static final int ARC_SURGE_CHANCE_PERCENT = 5;
-    private static final int ARC_BREAK_DURABILITY_THRESHOLD_PERCENT = 10;
-    private static final int ARC_BREAK_CHANCE_PERCENT = 2;
     private static final int BLAST_MODE_POWER_MULTIPLIER = 16;
     private static final double ARC_SURGE_DAMAGE_THRESHOLD = 1d - (ARC_SURGE_DURABILITY_THRESHOLD_PERCENT / 100d);
-    private static final double ARC_BREAK_DAMAGE_THRESHOLD = 1d - (ARC_BREAK_DURABILITY_THRESHOLD_PERCENT / 100d);
 
     public MTEIndustrialArcFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -373,15 +370,6 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     + ARC_SURGE_CHANCE_PERCENT
                     + EnumChatFormatting.GRAY
                     + "% chance for random arc surge")
-            .addInfo(
-                "Below " + EnumChatFormatting.RED
-                    + ARC_BREAK_DURABILITY_THRESHOLD_PERCENT
-                    + EnumChatFormatting.GRAY
-                    + "% durability: "
-                    + EnumChatFormatting.RED
-                    + ARC_BREAK_CHANCE_PERCENT
-                    + EnumChatFormatting.GRAY
-                    + "% chance to destroy items in the arc")
             .addInfo("Startup: machine ignites the arc before processing")
             .addInfo("Startup power: based on electrode startup surge and parallels")
             .addInfo("Shutdown: machine powers down the arc after work ends")
@@ -946,11 +934,6 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                             bint += 1;
                         }
                         durabilityCostThisRun += bint;
-                    }
-                    if (electrodeDamagePercentage > ARC_BREAK_DAMAGE_THRESHOLD
-                        && getRandomNumber(100) < ARC_BREAK_CHANCE_PERCENT) {
-                        this.overwriteOutputItems();
-                        this.overwriteOutputFluids();
                     }
                 }
                 ArcFurnaceProcessingEvent.EventPostRecipeCheck afterRecipe = new ArcFurnaceProcessingEvent.EventPostRecipeCheck(
