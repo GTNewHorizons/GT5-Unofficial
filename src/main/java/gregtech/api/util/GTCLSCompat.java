@@ -15,6 +15,7 @@ import cpw.mods.fml.common.ProgressManager;
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MU;
 import gregtech.common.OreDictEventContainer;
 import gregtech.loaders.postload.GTPostLoad;
 
@@ -91,7 +92,9 @@ public class GTCLSCompat {
             "GregTech materials",
             mEvents,
             progressBar,
-            m -> m.mMaterial.getLocalizedName(),
+            m -> StatCollector.translateToLocal(
+                "Material." + MU.internalName(m.mMaterial)
+                    .toLowerCase()),
             OreDictEventContainer::registerRecipes);
         ProgressManager.pop(progressBar);
         MinecraftDisplayer.isRegisteringGTmaterials = false;

@@ -4,21 +4,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.MaterialLib;
+import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 
 public class OreDictEventContainer {
 
     public final OreDictionary.OreRegisterEvent mEvent;
     public final OrePrefixes mPrefix;
-    public final IOreMaterial mMaterial;
+    public final Material mMaterial;
     public final String mModID;
 
-    public OreDictEventContainer(OreDictionary.OreRegisterEvent aEvent, OrePrefixes aPrefix, IOreMaterial aMaterial,
+    public OreDictEventContainer(OreDictionary.OreRegisterEvent aEvent, OrePrefixes aPrefix, Material aMaterial,
         String aModID) {
         this.mEvent = aEvent;
         this.mPrefix = aPrefix;
@@ -29,7 +30,7 @@ public class OreDictEventContainer {
     public static void registerRecipes(OreDictEventContainer ore) {
         if ((ore.mEvent.Ore == null) || (ore.mEvent.Ore.getItem() == null)
             || (ore.mPrefix == null)
-            || (ore.mPrefix.isIgnored(ore.mMaterial))
+            || (ore.mPrefix.isIgnored(MU.materialOf(ore.mMaterial)))
             || isMaterialLibItem(ore.mEvent.Ore)) {
             return;
         }
@@ -38,7 +39,7 @@ public class OreDictEventContainer {
         }
 
         ore.mPrefix.processOre(
-            ore.mMaterial == null ? Materials._NULL : ore.mMaterial,
+            ore.mMaterial == null ? MU.material(Materials._NULL) : ore.mMaterial,
             ore.mEvent.Name,
             ore.mModID,
             GTUtility.copyAmount(1, ore.mEvent.Ore));

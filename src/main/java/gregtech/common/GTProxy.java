@@ -87,6 +87,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -132,7 +133,6 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.fluid.GTFluidFactory;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -1999,11 +1999,7 @@ public class GTProxy implements IFuelHandler {
             }
             GTLog.ore.println(tModToName);
 
-            // A recognition marker carries no composition of its own, so only Fluix -- identifiable among
-            // recognition markers by being both unifiable and CRYSTALLISABLE -- routes into processOre here;
-            // every other marker keeps registering only the identity cross-references in registerRecognitionOre.
-            IOreMaterial tCensusMaterial = recognitionMarker != null && recognitionMarker.isUnifiable()
-                && recognitionMarker.contains(SubTag.CRYSTALLISABLE) ? recognitionMarker : aMaterial;
+            Material tCensusMaterial = resolveCensusMaterial(aMaterial, recognitionMarker);
             OreDictEventContainer tOre = new OreDictEventContainer(aEvent, aPrefix, tCensusMaterial, aMod);
             if ((!this.mOreDictActivated) || (!GregTechAPI.sUnificationEntriesRegistered)) {
                 this.oreDictEvents.add(tOre);
@@ -2017,6 +2013,20 @@ public class GTProxy implements IFuelHandler {
             GT_FML_LOGGER
                 .error("Could not register ore (oredict name=" + aEvent.Name + ", item stack=" + aEvent.Ore + ")", e);
         }
+    }
+
+    /// The MaterialLib material an ore-dictionary registration's event pipeline carries downstream (the
+    /// [OreDictEventContainer] census and [#registerUnificationEntries]), resolved off the same name lookup
+    /// [#registerOre] already performed: `aMaterial` for a plain name (`Materials.get(tName)`, `_NULL` when
+    /// unresolved), or -- for a recognition marker that is both unifiable and CRYSTALLISABLE (only `Fluix`; a
+    /// marker carries no composition of its own, so no other marker routes into the census) -- that marker's own
+    /// backing. This is the one seam to repoint once GTProxy stops resolving through minted bridge facades.
+    private static Material resolveCensusMaterial(Materials aMaterial, MarkerMaterial recognitionMarker) {
+        if (recognitionMarker != null && recognitionMarker.isUnifiable()
+            && recognitionMarker.contains(SubTag.CRYSTALLISABLE)) {
+            return MU.toMaterial(recognitionMarker);
+        }
+        return MU.material(aMaterial);
     }
 
     /// Unifies a foreign ore-dictionary entry whose name resolves to a recognition [MarkerMaterial] instead of a
@@ -2616,7 +2626,7 @@ public class GTProxy implements IFuelHandler {
                 size += 5;
             }
             if (progressBar != null) {
-                progressBar.step(event.mMaterial == null ? "" : event.mMaterial.toString());
+                progressBar.step(event.mMaterial == null ? "" : MU.internalName(event.mMaterial));
             }
         }
         if (progressBar != null) {
