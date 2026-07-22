@@ -62,6 +62,22 @@ public class MU {
         return legacyNamedMaterials().get(material.mName);
     }
 
+    /// The MaterialLib [Material] backing a transitional [IOreMaterial], for migrating the plumbing off
+    /// `IOreMaterial` onto [Material]. A legacy [Materials] (including the `Any*` wildcard facades) resolves
+    /// through [#material]; a [MarkerMaterial] through its registered backing, falling back to a by-name lookup
+    /// for a marker whose name unifies into a real material (e.g. `Ammonium`); a Werkstoff or gtPlusPlus
+    /// material by its internal name. Null when nothing backs it. TRANSITIONAL -- removed once every call site
+    /// passes a [Material] directly.
+    public static @Nullable Material toMaterial(@Nullable IOreMaterial material) {
+        if (material == null) return null;
+        if (material instanceof Materials legacy) return material(legacy);
+        if (material instanceof MarkerMaterial marker) {
+            Material backing = marker.getMaterial();
+            if (backing != null) return backing;
+        }
+        return MaterialLibAPI.getMaterial("gregtech", material.getInternalName());
+    }
+
     /// The cutover MaterialLib stack for a legacy (prefix, material) pair, or null when either side has no
     /// cutover mapping. When a prefix maps to more than one candidate shape (`cellPlasma`), the first one
     /// `material` actually generates is used.
