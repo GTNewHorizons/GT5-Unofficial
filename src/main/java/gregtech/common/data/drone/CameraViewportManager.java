@@ -384,19 +384,17 @@ public class CameraViewportManager {
         if (gte == null) return 0;
         long storedEnergy = gte.getStoredEU();
         if (gte.getMetaTileEntity() instanceof MTEMultiBlockBase mte) {
-            List<?> hatchList = mte.getExoticAndNormalEnergyHatchList();
+            List<MTEHatch> hatchList = mte.getExoticAndNormalEnergyHatchList();
             if (hatchList != null) {
-                for (Object obj : hatchList) {
-                    if (obj instanceof MTEHatch tHatch) {
-                        IGregTechTileEntity hTe = tHatch.getBaseMetaTileEntity();
-                        if (hTe != null) {
-                            long eu = hTe.getStoredEU();
-                            if (eu > 0) {
-                                if (Long.MAX_VALUE - storedEnergy < eu) {
-                                    storedEnergy = Long.MAX_VALUE;
-                                } else {
-                                    storedEnergy += eu;
-                                }
+                for (MTEHatch tHatch : hatchList) {
+                    IGregTechTileEntity hTe = tHatch.getBaseMetaTileEntity();
+                    if (hTe != null) {
+                        long eu = hTe.getStoredEU();
+                        if (eu > 0) {
+                            if (Long.MAX_VALUE - storedEnergy < eu) {
+                                return Long.MAX_VALUE;
+                            } else {
+                                storedEnergy += eu;
                             }
                         }
                     }
@@ -410,7 +408,7 @@ public class CameraViewportManager {
                             long eu = dTe.getStoredEU();
                             if (eu > 0) {
                                 if (Long.MAX_VALUE - storedEnergy < eu) {
-                                    storedEnergy = Long.MAX_VALUE;
+                                    return Long.MAX_VALUE;
                                 } else {
                                     storedEnergy += eu;
                                 }
