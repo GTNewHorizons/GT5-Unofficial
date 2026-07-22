@@ -18,6 +18,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
+import gregtech.api.enums.Element;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -412,6 +413,13 @@ public class MU {
     public static String internalName(Material material) {
         String legacyName = material.getProperty(GTMaterialProperties.LEGACY_NAME);
         return legacyName != null ? legacyName : material.getName();
+    }
+
+    /// The [Element] a MaterialLib material's [GTMaterialProperties#ELEMENT] names, or null when it carries none.
+    public static @Nullable Element element(@Nullable Material material) {
+        if (material == null) return null;
+        String elementName = material.getProperty(GTMaterialProperties.ELEMENT);
+        return elementName == null ? null : Element.get(elementName);
     }
 
     /// The chemical formula of a MaterialLib material ([GTMaterialProperties#FORMULA], localized through the
