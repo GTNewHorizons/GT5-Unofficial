@@ -40,9 +40,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
             int aMetaData = aStack.getItemDamage();
             Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aMetaData);
             if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
-            return metaBlock.prefix.getLocalizedNameForItem(
-                werkstoff.getBridgeMaterial()
-                    .getInternalName());
+            return metaBlock.prefix.getLocalizedNameForItem(werkstoff.getInternalName());
         }
         return GTLanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".name");
     }

@@ -38,7 +38,6 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
@@ -232,7 +231,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
 
             if (!supports(info)) return false;
 
-            Material mlMat = MU.material(w.getBridgeMaterial());
+            Material mlMat = WerkstoffReconstruction.materialLibOf(w);
             Shape shape = small ? Materials2OreShapes.oreSmall : Materials2OreShapes.ore;
             return mlMat != null && mlMat.hasShape(shape);
         }
@@ -313,7 +312,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         OrePrefixes prefix = info.isSmall ? OrePrefixes.oreSmall : OrePrefixes.ore;
         if (!w.hasItemType(prefix)) return null;
 
-        Material mlMat = MU.material(w.getBridgeMaterial());
+        Material mlMat = WerkstoffReconstruction.materialLibOf(w);
         Shape shape = info.isSmall ? Materials2OreShapes.oreSmall : Materials2OreShapes.ore;
 
         if (mlMat != null && mlMat.hasShape(shape)) {
