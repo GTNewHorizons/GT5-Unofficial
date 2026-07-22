@@ -138,6 +138,7 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.mojang.authlib.GameProfile;
+import com.ruling_0.materiallib.api.Material;
 
 import buildcraft.api.transport.IPipeTile;
 import codechicken.translocator.TileItemTranslocator;
@@ -173,6 +174,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemEnergyArmor;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GTPacketSound;
@@ -1192,6 +1194,11 @@ public class GTUtility {
     public static int calculateRecipeEU(Materials aMaterial, int defaultRecipeEUPerTick) {
         return aMaterial.getProcessingMaterialTierEU() == 0 ? defaultRecipeEUPerTick
             : aMaterial.getProcessingMaterialTierEU();
+    }
+
+    public static long calculateRecipeEU(Material material, long defaultEU) {
+        Integer tierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
+        return tierEU == null || tierEU == 0 ? defaultEU : tierEU;
     }
 
     public static ItemStack getFluidDisplayStack(FluidStack fluid, FluidDisplayStackMode stackMode) {

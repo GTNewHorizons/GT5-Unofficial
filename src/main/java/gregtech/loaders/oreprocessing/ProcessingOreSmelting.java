@@ -59,11 +59,11 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
 
         // Blast furnace is required for processing this ore.
         if (legacyMaterial.mBlastFurnaceRequired || MU.directSmelting(legacyMaterial).mBlastFurnaceRequired) {
-            if (MU.blastFurnaceTemp(legacyMaterial) >= 1000) return;
-            if (MU.blastFurnaceTemp(MU.directSmelting(legacyMaterial)) >= 1000) return;
+            if (MU.blastFurnaceTemp(material) >= 1000) return;
+            if (MU.blastFurnaceTemp(MU.directSmelting(material)) >= 1000) return;
             if (!legacyMaterial.mAutoGenerateBlastFurnaceRecipes) return;
 
-            final ItemStack output = legacyMaterial.getIngots(1);
+            final ItemStack output = GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L);
 
             if (output == null) return;
 
@@ -71,9 +71,9 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .circuit(1)
                 .itemOutputs(output)
-                .duration(Math.max(legacyMaterial.getMass() / 4L, 1L) * MU.blastFurnaceTemp(legacyMaterial) * TICKS)
+                .duration(Math.max(legacyMaterial.getMass() / 4L, 1L) * MU.blastFurnaceTemp(material) * TICKS)
                 .eut(TierEU.RECIPE_MV)
-                .metadata(COIL_HEAT, MU.blastFurnaceTemp(legacyMaterial))
+                .metadata(COIL_HEAT, MU.blastFurnaceTemp(material))
                 .addTo(blastFurnaceRecipes);
 
             return;
@@ -82,7 +82,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
         // Blast furnace is *not* required for processing this ore.
         switch (prefix.getName()) {
             case "crushed", "crushedPurified", "crushedCentrifuged" -> {
-                if (MU.directSmelting(legacyMaterial) == legacyMaterial) {
+                if (MU.directSmelting(material) == material) {
                     addSmeltingRecipe(legacyMaterial, stack, OrePrefixes.nugget, 10);
                 } else if (GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
                     addSmeltingRecipe(legacyMaterial, stack, OrePrefixes.nugget, 6);
@@ -91,7 +91,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 }
             }
             case "dust" -> {
-                if (MU.directSmelting(legacyMaterial) == legacyMaterial) {
+                if (MU.directSmelting(material) == material) {
                     addSmeltingRecipe(legacyMaterial, stack, OrePrefixes.ingot, 1);
                 } else if (GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
                     addSmeltingRecipe(legacyMaterial, stack, OrePrefixes.nugget, 6);
@@ -99,18 +99,16 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     addSmeltingRecipe(legacyMaterial, stack, OrePrefixes.ingot, 1);
                 }
 
-                if (MU.directSmelting(legacyMaterial) == legacyMaterial) return;
+                if (MU.directSmelting(material) == material) return;
 
                 final int outputAmount = GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
 
                 if (!MU.hasFlag(material, GTMaterialFlag.DONT_ADD_DEFAULT_BBF_RECIPE)
-                    && MU.directSmelting(legacyMaterial)
-                        .getIngots(1) != null) {
+                    && GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(material), 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(2, stack))
                         .itemOutputs(
-                            MU.directSmelting(legacyMaterial)
-                                .getIngots(outputAmount))
+                            GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(material), outputAmount))
                         .duration(2 * MINUTES)
                         .metadata(ADDITIVE_AMOUNT, 2)
                         .addTo(primitiveBlastRecipes);
@@ -120,7 +118,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
 
             }
             case "dustImpure", "dustPure", "dustRefined" -> {
-                if (MU.directSmelting(legacyMaterial) == legacyMaterial) {
+                if (MU.directSmelting(material) == material) {
                     addSmeltingRecipe(legacyMaterial, stack, OrePrefixes.ingot, 1);
                 } else if (GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
                     addSmeltingRecipe(legacyMaterial, stack, OrePrefixes.nugget, 6);

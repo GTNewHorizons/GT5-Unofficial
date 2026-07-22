@@ -43,7 +43,7 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
             return;
         }
 
-        if (legacyMaterial.mMaterialInto != legacyMaterial) {
+        if (false) {
             return;
         }
 

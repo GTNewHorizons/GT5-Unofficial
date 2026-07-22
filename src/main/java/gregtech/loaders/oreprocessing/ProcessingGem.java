@@ -63,8 +63,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean noSmelting = MU.hasFlag(material, GTMaterialFlag.NO_SMELTING);
         boolean specialRecipeReq = MU.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE);
         boolean fuelPower = MU.fuelPower(material) > 0;
-        boolean unifiable = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-            && legacyMaterial.mMaterialInto == legacyMaterial;
+        boolean unifiable = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE));
 
         // Blacklist materials which are handled by Werkstoff loader and nether quartz due to its 4:1 ratio
         if (legacyMaterial == Materials.Salt || legacyMaterial == Materials.RockSalt
@@ -125,7 +124,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .itemInputs(GTUtility.copyAmount(1, stack))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
                                 .duration(Math.max(materialMass, 1L))
-                                .eut(calculateRecipeEU(legacyMaterial, 16))
+                                .eut(calculateRecipeEU(material, 16))
                                 .addTo(hammerRecipes);
                         }
                     }
@@ -139,7 +138,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .circuit(1)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
                                 .duration((int) Math.max(materialMass * 2L, 1L))
-                                .eut(calculateRecipeEU(legacyMaterial, 24))
+                                .eut(calculateRecipeEU(material, 24))
                                 .addTo(benderRecipes);
                         }
 
@@ -150,7 +149,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .circuit(2)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDouble, material, 1L))
                                 .duration(Math.max(materialMass * 2L, 1L))
-                                .eut(calculateRecipeEU(legacyMaterial, 96))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
@@ -161,7 +160,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .circuit(3)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateTriple, material, 1L))
                                 .duration(Math.max(materialMass * 3L, 1L))
-                                .eut(calculateRecipeEU(legacyMaterial, 96))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
@@ -172,7 +171,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .circuit(4)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuadruple, material, 1L))
                                 .duration(Math.max(materialMass * 4L, 1L))
-                                .eut(calculateRecipeEU(legacyMaterial, 96))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
@@ -183,7 +182,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .circuit(5)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuintuple, material, 1L))
                                 .duration(Math.max(materialMass * 5L, 1L))
-                                .eut(calculateRecipeEU(legacyMaterial, 96))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
@@ -194,7 +193,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .circuit(9)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, material, 1L))
                                 .duration(Math.max(materialMass * 9L, 1L))
-                                .eut(calculateRecipeEU(legacyMaterial, 96))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
                     }
@@ -211,7 +210,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                     GTOreDictUnificator.get(OrePrefixes.stick, material, 1L),
                                     GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 2L))
                                 .duration(((int) Math.max(materialMass, 1L)) * TICKS)
-                                .eut(calculateRecipeEU(legacyMaterial, 16))
+                                .eut(calculateRecipeEU(material, 16))
                                 .addTo(latheRecipes);
                         }
                     }

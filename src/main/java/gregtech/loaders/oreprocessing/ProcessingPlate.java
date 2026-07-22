@@ -147,10 +147,10 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             && !(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
-                .itemOutputs(legacyMaterial.getPlates(1))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
                 .fluidInputs(legacyMaterial.getMolten(1 * INGOTS))
                 .duration(1 * SECONDS + 12 * TICKS)
-                .eut(calculateRecipeEU(legacyMaterial, 8))
+                .eut(calculateRecipeEU(material, 8))
                 .addTo(fluidSolidifierRecipes);
         }
 
@@ -166,8 +166,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
         }
 
-        if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-            && legacyMaterial.mMaterialInto == legacyMaterial) {
+        if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
 
             Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
             boolean belowTierIV = (processingTierEU == null ? 0 : processingTierEU) < TierEU.IV;
@@ -176,13 +175,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
                 if (belowTierIV) {
                     GTModHandler.addCraftingRecipe(
-                        legacyMaterial.getPlates(1),
+                        GTOreDictUnificator.get(OrePrefixes.plate, material, 1L),
                         BITS_STD,
                         new Object[] { "h", // craftingToolHardHammer
                             "X", "X", 'X', MU.craftIngredient(OrePrefixes.ingot, material) });
 
                     GTModHandler.addCraftingRecipe(
-                        legacyMaterial.getPlates(1),
+                        GTOreDictUnificator.get(OrePrefixes.plate, material, 1L),
                         BITS_STD,
                         new Object[] { "h", // craftingToolHardHammer
                             "X", 'X', MU.craftIngredient(OrePrefixes.gem, material) });
@@ -193,7 +192,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
                 if (belowTierIV) {
                     GTModHandler.addShapelessCraftingRecipe(
-                        legacyMaterial.getDust(1),
+                        GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
                         BITS_STD,
                         new Object[] { ToolDictNames.craftingToolMortar,
                             MU.craftIngredient(OrePrefixes.plate, material) });
@@ -217,7 +216,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     .circuit(2)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuadruple, material, 1L))
                     .duration(Math.max(materialMass * 2L, 1L))
-                    .eut(calculateRecipeEU(legacyMaterial, 96))
+                    .eut(calculateRecipeEU(material, 96))
                     .addTo(benderRecipes);
             }
             // 2 plates -> 1 double plate
@@ -226,7 +225,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .circuit(2)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(Math.max(materialMass * 2L, 1L))
-                .eut(calculateRecipeEU(legacyMaterial, 96))
+                .eut(calculateRecipeEU(material, 96))
                 .addTo(benderRecipes);
         } else {
             GTValues.RA.stdBuilder()
@@ -269,7 +268,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, material, 1L))
                     .duration(Math.max(materialMass * 3L, 1L))
-                    .eut(calculateRecipeEU(legacyMaterial, 96))
+                    .eut(calculateRecipeEU(material, 96))
                     .addTo(benderRecipes);
             }
 
@@ -278,7 +277,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .circuit(3)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(Math.max(materialMass * 3L, 1L))
-                .eut(calculateRecipeEU(legacyMaterial, 96))
+                .eut(calculateRecipeEU(material, 96))
                 .addTo(benderRecipes);
         } else {
             GTValues.RA.stdBuilder()
@@ -332,7 +331,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .circuit(4)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(Math.max(materialMass * 4L, 1L))
-                .eut(calculateRecipeEU(legacyMaterial, 96))
+                .eut(calculateRecipeEU(material, 96))
                 .addTo(benderRecipes);
         } else {
             GTValues.RA.stdBuilder()
@@ -373,7 +372,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .circuit(5)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(Math.max(materialMass * 5L, 1L))
-                .eut(calculateRecipeEU(legacyMaterial, 96))
+                .eut(calculateRecipeEU(material, 96))
                 .addTo(benderRecipes);
         } else {
             GTValues.RA.stdBuilder()
@@ -414,7 +413,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .circuit(9)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(Math.max(materialMass * 9L, 1L))
-                .eut(calculateRecipeEU(legacyMaterial, 96))
+                .eut(calculateRecipeEU(material, 96))
                 .addTo(benderRecipes);
         }
     }
@@ -431,7 +430,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 64))
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(Math.max(materialMass * 32L, 1L))
-                .eut(calculateRecipeEU(legacyMaterial, 96))
+                .eut(calculateRecipeEU(material, 96))
                 .metadata(COMPRESSION_TIER, compression_tier)
                 .addTo(compressorRecipes);
         }
@@ -448,13 +447,11 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, material, 1L))
                 .fluidInputs(legacyMaterial.getMolten(1 * HALF_INGOTS))
                 .duration(16 * TICKS)
-                .eut(calculateRecipeEU(legacyMaterial, 8))
+                .eut(calculateRecipeEU(material, 8))
                 .addTo(fluidSolidifierRecipes);
         }
 
-        if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-            && legacyMaterial.mMaterialInto == legacyMaterial
-            && !noSmashing) {
+        if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE)) && !noSmashing) {
 
             Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
             if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
@@ -472,7 +469,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     ItemList.Shape_Mold_Casing.get(0L))
                 .itemOutputs(GTUtility.copyAmount(3, stack))
                 .duration(6 * SECONDS + 8 * TICKS)
-                .eut(calculateRecipeEU(legacyMaterial, 15))
+                .eut(calculateRecipeEU(material, 15))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                 .addTo(alloySmelterRecipes);
 
@@ -482,7 +479,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     ItemList.Shape_Extruder_Casing.get(0L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, material, 2L))
                 .duration(((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
-                .eut(calculateRecipeEU(legacyMaterial, 45))
+                .eut(calculateRecipeEU(material, 45))
                 .addTo(extruderRecipes);
         }
 
@@ -496,10 +493,10 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                             4,
                             Math.min(
                                 1000,
-                                ((int) Math.max(legacyMaterial.getMass(), 1L)) * (calculateRecipeEU(legacyMaterial, 16))
+                                ((int) Math.max(legacyMaterial.getMass(), 1L)) * (calculateRecipeEU(material, 16))
                                     / 320))))
                 .duration(2 * ((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
-                .eut(calculateRecipeEU(legacyMaterial, 16))
+                .eut(calculateRecipeEU(material, 16))
                 .addTo(cutterRecipes);
 
             GTValues.RA.stdBuilder()
@@ -511,10 +508,10 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                             3,
                             Math.min(
                                 750,
-                                ((int) Math.max(legacyMaterial.getMass(), 1L)) * (calculateRecipeEU(legacyMaterial, 16))
+                                ((int) Math.max(legacyMaterial.getMass(), 1L)) * (calculateRecipeEU(material, 16))
                                     / 426))))
                 .duration(2 * ((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
-                .eut(calculateRecipeEU(legacyMaterial, 16))
+                .eut(calculateRecipeEU(material, 16))
                 .addTo(cutterRecipes);
 
             GTValues.RA.stdBuilder()
@@ -528,10 +525,10 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                             1,
                             Math.min(
                                 250,
-                                ((int) Math.max(legacyMaterial.getMass(), 1)) * (calculateRecipeEU(legacyMaterial, 16))
+                                ((int) Math.max(legacyMaterial.getMass(), 1)) * (calculateRecipeEU(material, 16))
                                     / 1280)))))
                 .duration(((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
-                .eut(calculateRecipeEU(legacyMaterial, 16))
+                .eut(calculateRecipeEU(material, 16))
                 .addTo(cutterRecipes);
 
             GTValues.RA.stdBuilder()
@@ -543,10 +540,10 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                             1,
                             Math.min(
                                 10,
-                                ((int) Math.max(legacyMaterial.getMass(), 1L)) * (calculateRecipeEU(legacyMaterial, 16))
+                                ((int) Math.max(legacyMaterial.getMass(), 1L)) * (calculateRecipeEU(material, 16))
                                     / 4000))))
                 .duration(((int) Math.max(legacyMaterial.getMass() / 2.5, 1L)) * TICKS)
-                .eut(calculateRecipeEU(legacyMaterial, 16))
+                .eut(calculateRecipeEU(material, 16))
                 .addTo(cutterRecipes);
         }
     }

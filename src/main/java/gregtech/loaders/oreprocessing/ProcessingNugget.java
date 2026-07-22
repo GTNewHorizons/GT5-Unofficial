@@ -55,7 +55,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ball.get(0L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, MU.smeltInto(material), 1L))
                 .duration(10 * SECONDS)
-                .eut(calculateRecipeEU(legacyMaterial, 2))
+                .eut(calculateRecipeEU(material, 2))
                 .addTo(alloySmelterRecipes);
         }
 
@@ -66,7 +66,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ingot.get(0L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MU.smeltInto(material), 1L))
                 .duration(10 * SECONDS)
-                .eut(calculateRecipeEU(legacyMaterial, 2))
+                .eut(calculateRecipeEU(material, 2))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                 .addTo(alloySmelterRecipes);
         }
@@ -78,21 +78,14 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, material, 1L))
                     .fluidInputs(legacyMaterial.getMolten(1 * NUGGETS))
                     .duration(16 * TICKS)
-                    .eut(calculateRecipeEU(legacyMaterial, 4))
+                    .eut(calculateRecipeEU(material, 4))
                     .addTo(fluidSolidifierRecipes);
             }
         }
 
         GTRecipeRegistrator.registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, true);
-        GTRecipeRegistrator.registerReverseMacerating(
-            stack,
-            legacyMaterial,
-            prefix.getMaterialAmount(),
-            null,
-            null,
-            null,
-            false,
-            true);
+        GTRecipeRegistrator
+            .registerReverseMacerating(stack, material, prefix.getMaterialAmount(), null, null, null, false, true);
         if (!MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)
             && GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null) {
             GTValues.RA.stdBuilder()
@@ -101,7 +94,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                     ItemList.Shape_Mold_Nugget.get(0L))
                 .itemOutputs(GTUtility.copyAmount(9, stack))
                 .duration(5 * SECONDS)
-                .eut(calculateRecipeEU(legacyMaterial, 1))
+                .eut(calculateRecipeEU(material, 1))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                 .addTo(alloySmelterRecipes);
             Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);

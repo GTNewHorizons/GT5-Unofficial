@@ -51,7 +51,7 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
             .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.foil, material, 4L))
             .duration((int) Math.max(legacyMaterial.getMass(), 1L))
-            .eut(calculateRecipeEU(legacyMaterial, 24))
+            .eut(calculateRecipeEU(material, 24))
             .addTo(benderRecipes);
     }
 

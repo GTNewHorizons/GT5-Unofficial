@@ -86,7 +86,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                     750,
                                     ((int) Math.max(legacyMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))))
                     .duration(2 * ((int) Math.max(legacyMaterial.getMass() * 10L, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(legacyMaterial, 16))
+                    .eut(calculateRecipeEU(material, 16))
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
@@ -103,7 +103,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                     250,
                                     ((int) Math.max(legacyMaterial.getMass() * 10, 1)) * TICKS * 30 / 1280)))))
                     .duration(((int) Math.max(legacyMaterial.getMass() * 10L, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(legacyMaterial, 16))
+                    .eut(calculateRecipeEU(material, 16))
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
@@ -118,7 +118,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                     10,
                                     ((int) Math.max(legacyMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 4000))))
                     .duration(((int) Math.max(legacyMaterial.getMass() * 10L / 2.5, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(legacyMaterial, 16))
+                    .eut(calculateRecipeEU(material, 16))
                     .addTo(cutterRecipes);
 
             }
@@ -151,7 +151,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                         750,
                                         ((int) Math.max(legacyMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))))
                         .duration(2 * ((int) Math.max(legacyMaterial.getMass() * 10L, 1L)) * TICKS)
-                        .eut(calculateRecipeEU(legacyMaterial, 16))
+                        .eut(calculateRecipeEU(material, 16))
                         .addTo(cutterRecipes);
 
                     GTValues.RA.stdBuilder()
@@ -167,7 +167,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                         250,
                                         ((int) Math.max(legacyMaterial.getMass() * 10, 1)) * TICKS * 30 / 1280)))))
                         .duration(((int) Math.max(legacyMaterial.getMass() * 10L, 1L)) * TICKS)
-                        .eut(calculateRecipeEU(legacyMaterial, 16))
+                        .eut(calculateRecipeEU(material, 16))
                         .addTo(cutterRecipes);
 
                     GTValues.RA.stdBuilder()
@@ -181,7 +181,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                         10,
                                         ((int) Math.max(legacyMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 4000))))
                         .duration(((int) Math.max(legacyMaterial.getMass() * 10L / 2.5, 1L)) * TICKS)
-                        .eut(calculateRecipeEU(legacyMaterial, 16))
+                        .eut(calculateRecipeEU(material, 16))
                         .addTo(cutterRecipes);
                 }
         }
@@ -212,7 +212,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, material, 1L))
                         .fluidInputs(legacyMaterial.getMolten(9 * INGOTS))
                         .duration(legacyMaterial.getMass() * 9 * TICKS)
-                        .eut(calculateRecipeEU(legacyMaterial, 8))
+                        .eut(calculateRecipeEU(material, 8))
                         .addTo(fluidSolidifierRecipes);
                 }
             }
@@ -238,7 +238,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, material, 9L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, material, 1L))
                 .duration(legacyMaterial.getMass() * 2 * TICKS)
-                .eut(calculateRecipeEU(legacyMaterial, 2))
+                .eut(calculateRecipeEU(material, 2))
                 .addTo(compressorRecipes);
         }
 

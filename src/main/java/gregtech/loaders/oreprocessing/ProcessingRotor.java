@@ -46,7 +46,6 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
         if (legacyMaterial == null) return;
 
         if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-            && (legacyMaterial.mMaterialInto == legacyMaterial)
             && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             ItemStack tPlate = GTOreDictUnificator.get(OrePrefixes.plate, material, 4L);
             ItemStack tRing = GTOreDictUnificator.get(OrePrefixes.ring, material, 1L);
@@ -70,7 +69,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, material, 1L))
                     .fluidInputs(SubstituteFluidStack.soldering(1 * NUGGETS))
                     .duration(((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
-                    .eut(calculateRecipeEU(legacyMaterial, 24))
+                    .eut(calculateRecipeEU(material, 24))
                     .addTo(assemblerRecipes);
             }
 
@@ -81,7 +80,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                         ItemList.Shape_Extruder_Rotor.get(0L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, material, 1L))
                     .duration(((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
-                    .eut(calculateRecipeEU(legacyMaterial, 24))
+                    .eut(calculateRecipeEU(material, 24))
                     .addTo(extruderRecipes);
             }
             if (legacyMaterial.mStandardMoltenFluid != null) {
@@ -92,7 +91,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, material, 1L))
                         .fluidInputs(legacyMaterial.getMolten(612L))
                         .duration(((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
-                        .eut(calculateRecipeEU(legacyMaterial, 24))
+                        .eut(calculateRecipeEU(material, 24))
                         .addTo(fluidSolidifierRecipes);
                 }
             }

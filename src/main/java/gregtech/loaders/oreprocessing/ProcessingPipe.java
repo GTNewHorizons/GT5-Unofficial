@@ -133,7 +133,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     .circuit(9)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, material, 1))
                     .duration(3 * SECONDS)
-                    .eut(calculateRecipeEU(legacyMaterial, 4))
+                    .eut(calculateRecipeEU(material, 4))
                     .addTo(assemblerRecipes);
             }
             case "pipeNonuple" -> {
@@ -151,7 +151,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     .circuit(9)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeNonuple, material, 1))
                     .duration(3 * SECONDS)
-                    .eut(calculateRecipeEU(legacyMaterial, 8))
+                    .eut(calculateRecipeEU(material, 8))
                     .addTo(assemblerRecipes);
             }
             default -> {}
