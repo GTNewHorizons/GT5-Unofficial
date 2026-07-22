@@ -91,6 +91,7 @@ import gregtech.common.blocks.TileEntityOres;
 import gregtech.common.items.ItemAdvancedSensorCard;
 import gregtech.common.items.ItemDepletedCell;
 import gregtech.common.items.ItemFluidDisplay;
+import gregtech.common.items.ItemIceCream;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.items.ItemMagLevHarness;
 import gregtech.common.items.ItemNeutronReflector;
@@ -168,6 +169,30 @@ public class LoaderGTBlockFluid implements Runnable {
         GTLog.out.println("GTMod: Register Items.");
 
         new ItemIntegratedCircuit();
+
+        final ItemIceCream iceCream = new ItemIceCream();
+        ItemList.Ice_Cream_Random.set(new ItemStack(iceCream, 1, 0));
+        ItemList.Ice_Cream_Banana.set(new ItemStack(iceCream, 1, 1));
+        ItemList.Ice_Cream_Benzene.set(new ItemStack(iceCream, 1, 2));
+        ItemList.Ice_Cream_Blueberry.set(new ItemStack(iceCream, 1, 3));
+        ItemList.Ice_Cream_Brownie.set(new ItemStack(iceCream, 1, 4));
+        ItemList.Ice_Cream_Chocolate.set(new ItemStack(iceCream, 1, 5));
+        ItemList.Ice_Cream_Coffee.set(new ItemStack(iceCream, 1, 6));
+        ItemList.Ice_Cream_CookieDough.set(new ItemStack(iceCream, 1, 7));
+        ItemList.Ice_Cream_CookiesAndCream.set(new ItemStack(iceCream, 1, 8));
+        ItemList.Ice_Cream_CottonCandy.set(new ItemStack(iceCream, 1, 9));
+        ItemList.Ice_Cream_JustCone.set(new ItemStack(iceCream, 1, 10));
+        ItemList.Ice_Cream_Mango.set(new ItemStack(iceCream, 1, 11));
+        ItemList.Ice_Cream_Meat.set(new ItemStack(iceCream, 1, 12));
+        ItemList.Ice_Cream_MintChip.set(new ItemStack(iceCream, 1, 13));
+        ItemList.Ice_Cream_Neapolitan.set(new ItemStack(iceCream, 1, 14));
+        ItemList.Ice_Cream_NoFlavor.set(new ItemStack(iceCream, 1, 15));
+        ItemList.Ice_Cream_PeanutButter.set(new ItemStack(iceCream, 1, 16));
+        ItemList.Ice_Cream_Pistachio.set(new ItemStack(iceCream, 1, 17));
+        ItemList.Ice_Cream_SaltedCaramel.set(new ItemStack(iceCream, 1, 18));
+        ItemList.Ice_Cream_Strawberry.set(new ItemStack(iceCream, 1, 19));
+        ItemList.Ice_Cream_Vanilla.set(new ItemStack(iceCream, 1, 20));
+
         new MetaGeneratedItem01();
         new MetaGeneratedItem02();
         new MetaGeneratedItem03();
