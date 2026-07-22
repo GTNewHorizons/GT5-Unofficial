@@ -1,17 +1,26 @@
 package gregtech.api.objects;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 
 public class MaterialStack implements Cloneable {
 
     public long mAmount;
-    public IOreMaterial mMaterial;
+    public Material mMaterial;
 
-    public MaterialStack(IOreMaterial material, long amount) {
-        mMaterial = material == null ? Materials._NULL : material;
+    public MaterialStack(Material material, long amount) {
+        mMaterial = material == null ? MU.material(Materials._NULL) : material;
         mAmount = amount;
+    }
+
+    /// Transitional: accepts the legacy material types through [MU#toMaterial] until every caller passes a
+    /// [Material] directly. An unbacked legacy material collapses to the `_NULL` sentinel.
+    public MaterialStack(IOreMaterial material, long amount) {
+        this(MU.toMaterial(material), amount);
     }
 
     public MaterialStack copy(long amount) {
@@ -31,9 +40,10 @@ public class MaterialStack implements Cloneable {
     public boolean equals(Object object) {
         if (object == this) return true;
         if (object == null) return false;
-        if (object instanceof Materials) return object == mMaterial;
-        if (object instanceof MaterialStack) return ((MaterialStack) object).mMaterial == mMaterial
-            && (mAmount < 0 || ((MaterialStack) object).mAmount < 0 || ((MaterialStack) object).mAmount == mAmount);
+        if (object instanceof Material) return object == mMaterial;
+        if (object instanceof Materials legacy) return MU.material(legacy) == mMaterial;
+        if (object instanceof MaterialStack stack)
+            return stack.mMaterial == mMaterial && (mAmount < 0 || stack.mAmount < 0 || stack.mAmount == mAmount);
         return false;
     }
 
@@ -43,7 +53,7 @@ public class MaterialStack implements Cloneable {
     }
 
     public String toString(boolean single) {
-        String temp1 = "", temp2 = mMaterial.getChemicalTooltip(true), temp3 = "", temp4 = "";
+        String temp1 = "", temp2 = MU.chemicalTooltip(mMaterial, true), temp3 = "", temp4 = "";
         if (mAmount > 1) {
             temp4 = GTUtility.toSubscript(mAmount);
         }
@@ -55,17 +65,14 @@ public class MaterialStack implements Cloneable {
     }
 
     private boolean isMaterialListComplex(MaterialStack materialStack) {
-        if (materialStack.mMaterial.getMaterialList()
-            .size() > 1) {
+        var list = MU.materialList(materialStack.mMaterial);
+        if (list.size() > 1) {
             return true;
         }
-        if (materialStack.mMaterial.getMaterialList()
-            .isEmpty()) {
+        if (list.isEmpty()) {
             return false;
         }
-        return isMaterialListComplex(
-            materialStack.mMaterial.getMaterialList()
-                .get(0));
+        return isMaterialListComplex(list.get(0));
     }
 
     @Override

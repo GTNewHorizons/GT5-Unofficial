@@ -885,7 +885,8 @@ public class PlatinumSludgeOverHaul {
 
     private static boolean materialsContains(Materials one, ISubTagContainer other) {
         if (one == null || one.mMaterialList == null || one.mMaterialList.isEmpty()) return false;
-        for (MaterialStack stack : one.mMaterialList) if (stack.mMaterial == other) return true;
+        for (MaterialStack stack : one.mMaterialList)
+            if (other instanceof Materials legacy && stack.mMaterial == MU.material(legacy)) return true;
         return false;
     }
 
@@ -973,9 +974,9 @@ public class PlatinumSludgeOverHaul {
             if (!BWUtil.checkStackAndPrefix(outputAssociation)) continue;
 
             final Werkstoff newOutput;
-            if (outputAssociation.mMaterial.mMaterial == Materials.Platinum) {
+            if (outputAssociation.mMaterial.mMaterial == MU.material(Materials.Platinum)) {
                 newOutput = PTMetallicPowder;
-            } else if (outputAssociation.mMaterial.mMaterial == Materials.Palladium) {
+            } else if (outputAssociation.mMaterial.mMaterial == MU.material(Materials.Palladium)) {
                 newOutput = PDMetallicPowder;
             } else {
                 continue;
@@ -984,7 +985,7 @@ public class PlatinumSludgeOverHaul {
             ItemData inputAssociation = GTOreDictUnificator.getAssociation(input);
             if (!BWUtil.checkStackAndPrefix(inputAssociation)) continue;
 
-            if (inputAssociation.mMaterial.mMaterial == Materials.Platinum) {
+            if (inputAssociation.mMaterial.mMaterial == MU.material(Materials.Platinum)) {
                 if (inputAssociation.mPrefix == dust || inputAssociation.mPrefix == dustTiny) {
                     continue;
                 }
@@ -1107,13 +1108,13 @@ public class PlatinumSludgeOverHaul {
                     if (!BWUtil.checkStackAndPrefix(association)) continue;
 
                     final Werkstoff replacementMaterial;
-                    if (association.mMaterial.mMaterial == Materials.Platinum) {
+                    if (association.mMaterial.mMaterial == MU.material(Materials.Platinum)) {
                         replacementMaterial = PTMetallicPowder;
-                    } else if (association.mMaterial.mMaterial == Materials.Palladium) {
+                    } else if (association.mMaterial.mMaterial == MU.material(Materials.Palladium)) {
                         replacementMaterial = PDMetallicPowder;
-                    } else if (association.mMaterial.mMaterial == Materials.Osmium) {
+                    } else if (association.mMaterial.mMaterial == MU.material(Materials.Osmium)) {
                         replacementMaterial = IrOsLeachResidue;
-                    } else if (association.mMaterial.mMaterial == Materials.Iridium) {
+                    } else if (association.mMaterial.mMaterial == MU.material(Materials.Iridium)) {
                         replacementMaterial = IrLeachResidue;
                     } else {
                         continue;
@@ -1273,7 +1274,7 @@ public class PlatinumSludgeOverHaul {
                 return false;
             }
 
-            if (association.mMaterial.mMaterial != material) {
+            if (association.mMaterial.mMaterial != MU.material(material)) {
                 return false;
             }
         }

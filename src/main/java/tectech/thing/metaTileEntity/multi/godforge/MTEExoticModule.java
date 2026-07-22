@@ -44,6 +44,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -351,11 +352,13 @@ public class MTEExoticModule extends MTEBaseModule {
 
         for (ItemStack itemStack : items) {
             ItemData association = GTOreDictUnificator.getAssociation(itemStack);
-            if (association == null || association.mMaterial == null || association.mMaterial.mMaterial == null) {
+            Materials legacyMaterial = association == null || association.mMaterial == null
+                || association.mMaterial.mMaterial == null ? null : MU.materialOf(association.mMaterial.mMaterial);
+            if (legacyMaterial == null) {
                 GTLog.err.println("MTEExoticModule.convertItemToPlasma: no unification data for " + itemStack);
                 continue;
             }
-            plasmas.add(association.mMaterial.mMaterial.getPlasma((int) (INGOTS * multiplier * itemStack.stackSize)));
+            plasmas.add(legacyMaterial.getPlasma((int) (INGOTS * multiplier * itemStack.stackSize)));
         }
 
         return plasmas.toArray(new FluidStack[0]);

@@ -49,6 +49,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IItemContainer;
+import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTLanguageManager;
@@ -75,8 +76,10 @@ public class BWUtil {
         String ret = GTLanguageManager.getTranslation(GTLanguageManager.getTranslateableItemStackName(itemStack));
         if (!ret.contains("%material")) return ret;
         String matname = "";
-        if (BWUtil.checkStackAndPrefix(itemStack))
-            matname = GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.getDefaultLocalName();
+        if (BWUtil.checkStackAndPrefix(itemStack)) {
+            Materials legacyMaterial = MU.materialOf(GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial);
+            if (legacyMaterial != null) matname = legacyMaterial.getDefaultLocalName();
+        }
         return ret.replace("%material", matname);
     }
 

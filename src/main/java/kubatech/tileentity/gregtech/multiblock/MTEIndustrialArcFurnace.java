@@ -59,6 +59,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -68,6 +69,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
@@ -726,7 +728,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                             .equals(" Ore")) {
                         ItemData outputData = GTOreDictUnificator.getItemData(smeltedOutput);
                         if (outputData != null) {
-                            FluidStack output = outputData.mMaterial.mMaterial.getMolten(1);
+                            Materials legacyMaterial = MU.materialOf(outputData.mMaterial.mMaterial);
+                            FluidStack output = legacyMaterial == null ? null : legacyMaterial.getMolten(1);
                             long amount = outputData.mPrefix.getMaterialAmount() / (GTValues.M / 144L)
                                 * smeltedOutput.stackSize;
                             if (output != null) {

@@ -509,6 +509,7 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedItemX32;
+import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMaps;
@@ -5291,7 +5292,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     public boolean shouldBurn(ItemStack itemStack) {
         ItemData data = GTOreDictUnificator.getAssociation(itemStack);
         if (data == null || data.mMaterial == null
-            || data.mMaterial.mMaterial != Materials.Firestone
+            || data.mMaterial.mMaterial != MU.material(Materials.Firestone)
             || data.mPrefix == null) {
             return false;
         }

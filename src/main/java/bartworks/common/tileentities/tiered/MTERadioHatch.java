@@ -41,6 +41,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.ItemData;
@@ -195,7 +196,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
                         this.material = this.lastUsedItem.getDisplayName();
                         ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
                         if (itemData != null) {
-                            short[] rgba = itemData.mMaterial.mMaterial.getRGBA();
+                            short[] rgba = MU.rgba(itemData.mMaterial.mMaterial);
                             this.colorForGUI = new short[] { rgba[0], rgba[1], rgba[2] };
                         } else {
                             this.colorForGUI = getEmptyColor();
@@ -228,7 +229,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
                     this.material = lStack.getDisplayName();
                     ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
                     if (itemData != null) {
-                        short[] rgba = itemData.mMaterial.mMaterial.getRGBA();
+                        short[] rgba = MU.rgba(itemData.mMaterial.mMaterial);
                         this.colorForGUI = new short[] { rgba[0], rgba[1], rgba[2] };
                     } else {
                         this.colorForGUI = getEmptyColor();

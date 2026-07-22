@@ -58,6 +58,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchBulkCatalystHousing;
 import gregtech.api.objects.ItemData;
@@ -414,7 +415,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                         ItemStack item = recipe.getOutput(i);
                         if (item == null) continue;
                         ItemData data = getAssociation(item);
-                        Materials mat = data != null && data.mMaterial.mMaterial instanceof Materials m ? m : null;
+                        Materials mat = data != null ? MU.materialOf(data.mMaterial.mMaterial) : null;
                         if (mat != null) {
                             if (mat.mStandardMoltenFluid != null) {
                                 fluidModeItems[i] = mat.getMolten(1 * INGOTS);

@@ -8,6 +8,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
@@ -35,7 +36,7 @@ public class MTEHatchNanite extends MTEHatchNonConsumableBase {
         if (getItemStack() == null) return null;
         ItemData data = GTOreDictUnificator.getAssociation(getItemStack());
         if (data == null) return null;
-        return data.mMaterial.mMaterial instanceof Materials material ? material : null;
+        return MU.materialOf(data.mMaterial.mMaterial);
     }
 
     @Override

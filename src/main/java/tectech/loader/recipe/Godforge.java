@@ -38,6 +38,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLog;
@@ -77,11 +78,13 @@ public class Godforge implements Runnable {
 
         for (ItemStack itemStack : items) {
             ItemData association = GTOreDictUnificator.getAssociation(itemStack);
-            if (association == null || association.mMaterial == null || association.mMaterial.mMaterial == null) {
+            Materials legacyMaterial = association == null || association.mMaterial == null
+                || association.mMaterial.mMaterial == null ? null : MU.materialOf(association.mMaterial.mMaterial);
+            if (legacyMaterial == null) {
                 GTLog.err.println("Godforge.convertToFluid: no unification data for " + itemStack + ", skipping");
                 continue;
             }
-            molten.add(association.mMaterial.mMaterial.getMolten(1 * INGOTS));
+            molten.add(legacyMaterial.getMolten(1 * INGOTS));
         }
 
         return molten.toArray(new FluidStack[0]);
@@ -1135,7 +1138,7 @@ public class Godforge implements Runnable {
     private static FluidStack convertToMolten(ItemStack stack) {
         // if this is null it has to be a gt++ material
         ItemData data = GTOreDictUnificator.getAssociation(stack);
-        Materials mat = data != null && data.mMaterial.mMaterial instanceof Materials m ? m : null;
+        Materials mat = data != null ? MU.materialOf(data.mMaterial.mMaterial) : null;
         if (mat != null) {
             if (mat.mStandardMoltenFluid != null) {
                 return mat.getMolten(INGOTS * data.mMaterial.mAmount / GTValues.M);

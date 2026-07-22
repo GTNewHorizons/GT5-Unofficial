@@ -22,6 +22,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
@@ -150,7 +151,8 @@ public class ScannerHandlerLoader {
         // must be a dust or a cell
         if (tData.mPrefix != OrePrefixes.dust && tData.mPrefix != OrePrefixes.cell) return null;
         // must be a scannable element
-        return tData.mMaterial.mMaterial instanceof Materials material ? getElementScanResult(material) : null;
+        Materials material = MU.materialOf(tData.mMaterial.mMaterial);
+        return material != null ? getElementScanResult(material) : null;
     }
 
     public static @Nullable GTScannerResult getElementScanResult(Materials aMaterial) {

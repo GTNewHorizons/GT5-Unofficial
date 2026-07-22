@@ -173,6 +173,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemEnergyArmor;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GTPacketSound;
 import gregtech.api.objects.CollectorUtils;
@@ -1942,16 +1943,21 @@ public class GTUtility {
         ItemData tData = GTOreDictUnificator.getItemData(aStack);
         return tData == null ? 0
             : (tData.mPrefix == null ? 0 : tData.mPrefix.mHeatDamage)
-                + (tData.hasValidMaterialData() ? tData.mMaterial.mMaterial.getHeatDamage() : 0);
+                + (tData.hasValidMaterialData() ? MU.materialOf(tData.mMaterial.mMaterial)
+                    .getHeatDamage() : 0);
     }
 
     public static int getRadioactivityLevel(ItemStack aStack) {
         ItemData tData = GTOreDictUnificator.getItemData(aStack);
         if (tData != null && tData.hasValidMaterialData()) {
-            if (tData.mMaterial.mMaterial.getArmorEnchantment() instanceof EnchantmentRadioactivity)
-                return tData.mMaterial.mMaterial.getArmorEnchantmentLevel();
-            if (tData.mMaterial.mMaterial.getToolEnchantment() instanceof EnchantmentRadioactivity)
-                return tData.mMaterial.mMaterial.getToolEnchantmentLevel();
+            if (MU.materialOf(tData.mMaterial.mMaterial)
+                .getArmorEnchantment() instanceof EnchantmentRadioactivity)
+                return MU.materialOf(tData.mMaterial.mMaterial)
+                    .getArmorEnchantmentLevel();
+            if (MU.materialOf(tData.mMaterial.mMaterial)
+                .getToolEnchantment() instanceof EnchantmentRadioactivity)
+                return MU.materialOf(tData.mMaterial.mMaterial)
+                    .getToolEnchantmentLevel();
         }
         return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE.effectId, aStack);
     }
@@ -2691,7 +2697,7 @@ public class GTUtility {
      * there's no creative or 111 stack.
      */
     public static boolean consumeItems(EntityPlayer player, ItemStack stack, Materials mat, int count) {
-        if (stack != null && GTOreDictUnificator.getItemData(stack).mMaterial.mMaterial == mat
+        if (stack != null && GTOreDictUnificator.getItemData(stack).mMaterial.mMaterial == MU.material(mat)
             && stack.stackSize >= count) {
             if ((!player.capabilities.isCreativeMode) && (stack.stackSize != 111)) stack.stackSize -= count;
             return true;

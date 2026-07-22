@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -92,6 +93,7 @@ public enum NaniteTier {
         if (data == null) return null;
         if (data.mPrefix != OrePrefixes.nanite) return null;
 
-        return data.mMaterial.mMaterial instanceof Materials material ? fromMaterial(material) : null;
+        Materials material = MU.materialOf(data.mMaterial.mMaterial);
+        return material != null ? fromMaterial(material) : null;
     }
 }
