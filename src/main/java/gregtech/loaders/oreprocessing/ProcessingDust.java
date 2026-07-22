@@ -174,7 +174,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     long tDensityMultiplier = material.getDensity() > 3628800L ? material.getDensity() / 3628800L : 1L;
                     ArrayList<ItemStack> tList = new ArrayList<>();
                     for (MaterialStack tMat : material.mMaterialList) if (tMat.mAmount > 0L) {
-                        if (tMat.mMaterial == Materials.Air) {
+                        if (tMat.mMaterial == MU.material(Materials.Air)) {
                             tDustStack = ItemList.Cell_Air.get(tMat.mAmount / 2L);
                         } else {
                             tDustStack = GTOreDictUnificator.get(OrePrefixes.dust, tMat.mMaterial, tMat.mAmount);

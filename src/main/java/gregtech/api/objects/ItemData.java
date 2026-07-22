@@ -6,8 +6,11 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MU;
 
 public class ItemData {
 
@@ -21,7 +24,7 @@ public class ItemData {
     public ItemStack mUnificationTarget = null;
     private final String oreDictName;
 
-    public ItemData(OrePrefixes prefix, IOreMaterial material, boolean blackListed) {
+    public ItemData(OrePrefixes prefix, Material material, boolean blackListed) {
         mPrefix = prefix;
         mMaterial = material == null ? null : new MaterialStack(material, prefix.getMaterialAmount());
         mBlackListed = blackListed;
@@ -31,8 +34,18 @@ public class ItemData {
         oreDictName = null;
     }
 
-    public ItemData(OrePrefixes prefix, IOreMaterial material) {
+    public ItemData(OrePrefixes prefix, Material material) {
         this(prefix, material, false);
+    }
+
+    /// Transitional: accepts the legacy material types through [MU#toMaterial] until every caller passes a
+    /// [Material] directly.
+    public ItemData(OrePrefixes prefix, IOreMaterial material, boolean blackListed) {
+        this(prefix, MU.toMaterial(material), blackListed);
+    }
+
+    public ItemData(OrePrefixes prefix, IOreMaterial material) {
+        this(prefix, MU.toMaterial(material), false);
     }
 
     /// An ingredient that names an ore-dictionary entry and carries no composition, for the entries whose
@@ -69,6 +82,16 @@ public class ItemData {
         oreDictName = null;
     }
 
+    public ItemData(Material material, long amount, MaterialStack... byProducts) {
+        this(new MaterialStack(material, amount), byProducts);
+    }
+
+    public ItemData(Material material, long amount, Material byProduct, long byProductAmount) {
+        this(new MaterialStack(material, amount), new MaterialStack(byProduct, byProductAmount));
+    }
+
+    /// Transitional: accepts the legacy material types through [MU#toMaterial] until every caller passes a
+    /// [Material] directly.
     public ItemData(IOreMaterial material, long amount, MaterialStack... byProducts) {
         this(new MaterialStack(material, amount), byProducts);
     }
@@ -138,6 +161,6 @@ public class ItemData {
     public String toString() {
         if (oreDictName != null) return oreDictName;
         if (mPrefix == null || mMaterial == null || mMaterial.mMaterial == null) return "";
-        return mPrefix.getName() + mMaterial.mMaterial.getInternalName();
+        return mPrefix.getName() + MU.internalName(mMaterial.mMaterial);
     }
 }

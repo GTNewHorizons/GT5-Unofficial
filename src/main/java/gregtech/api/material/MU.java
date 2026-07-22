@@ -2,12 +2,14 @@ package gregtech.api.material;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Nullable;
@@ -16,6 +18,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -27,6 +30,7 @@ import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.MaterialStack;
 
 /// Bridges legacy [OrePrefixes]/[Materials] pairs to their cutover MaterialLib [Shape]/[Material]
 /// equivalents.
@@ -56,10 +60,14 @@ public class MU {
     }
 
     /// The MaterialLib material a legacy [Materials] cuts over to, or null if it has none (materials without
-    /// a MaterialLib counterpart never had generated items in the legacy system either).
+    /// a MaterialLib counterpart never had generated items in the legacy system either). Falls back to the
+    /// MaterialLib registry for materials that are not [Materials2Materials] fields, such as the shapeless
+    /// wildcard backings registered by [gregtech.loaders.materials.LegacyMarkerMaterials].
     public static @Nullable Material material(Materials material) {
         if (material == null) return null;
-        return legacyNamedMaterials().get(material.mName);
+        Material found = legacyNamedMaterials().get(material.mName);
+        if (found != null) return found;
+        return MaterialLibAPI.getMaterial("gregtech", material.mName);
     }
 
     /// The MaterialLib [Material] backing a transitional [IOreMaterial], for migrating the plumbing off
@@ -70,7 +78,10 @@ public class MU {
     /// passes a [Material] directly.
     public static @Nullable Material toMaterial(@Nullable IOreMaterial material) {
         if (material == null) return null;
-        if (material instanceof Materials legacy) return material(legacy);
+        if (material instanceof Materials legacy) {
+            Material ml = material(legacy);
+            if (ml != null) return ml;
+        }
         if (material instanceof MarkerMaterial marker) {
             Material backing = marker.getMaterial();
             if (backing != null) return backing;
@@ -142,7 +153,7 @@ public class MU {
     public static @Nullable Materials materialOf(Material material) {
         if (material == null) return null;
         return Materials.getMaterialsMap()
-            .get(legacyName(material));
+            .get(internalName(material));
     }
 
     /// The crafting-table ingredient a legacy `OrePrefixes.get(Materials)` call produced, rebuilt from a
@@ -304,6 +315,35 @@ public class MU {
         return ref == null ? material : Materials.get(ref.name()).mDirectSmelting;
     }
 
+    /// [#smeltInto(Materials)] for a MaterialLib [Material] held directly, mirroring the same semantics on
+    /// [GTMaterialProperties#SMELT_INTO]: an unset property means the material smelts into itself, and a set
+    /// one is chased one more hop through the target's own property (the legacy `setSmeltingInto` indirection).
+    public static @Nullable Material smeltInto(@Nullable Material material) {
+        return chaseRef(material, GTMaterialProperties.SMELT_INTO);
+    }
+
+    /// [#smeltInto(Material)], for [GTMaterialProperties#MACERATE_INTO].
+    public static @Nullable Material macerateInto(@Nullable Material material) {
+        return chaseRef(material, GTMaterialProperties.MACERATE_INTO);
+    }
+
+    /// [#smeltInto(Material)], for [GTMaterialProperties#ARC_SMELT_INTO].
+    public static @Nullable Material arcSmeltInto(@Nullable Material material) {
+        return chaseRef(material, GTMaterialProperties.ARC_SMELT_INTO);
+    }
+
+    private static @Nullable Material chaseRef(@Nullable Material material,
+        com.ruling_0.materiallib.api.Property<MaterialRef> property) {
+        if (material == null) return null;
+        MaterialRef ref = material.getProperty(property);
+        if (ref == null) return material;
+        Material target = ref.resolve();
+        if (target == null) return material;
+        MaterialRef hop = target.getProperty(property);
+        Material hopped = hop == null ? null : hop.resolve();
+        return hopped != null ? hopped : target;
+    }
+
     /// [#smeltInto(Materials)] for callers holding an [IOreMaterial] whose concrete type is not statically known.
     /// A legacy [Materials] delegates to that overload; a [MarkerMaterial] resolves to its declared smelting
     /// target when it has one, otherwise `null`.
@@ -366,9 +406,59 @@ public class MU {
         return material != null && material.contains(SubTag.getNewSubTag(flag.name()));
     }
 
-    private static String legacyName(Material material) {
+    /// The legacy internal name of a MaterialLib material -- [GTMaterialProperties#LEGACY_NAME] when present
+    /// (MaterialLib sanitizes registration names), otherwise the registration name. The [Material]-side
+    /// equivalent of `IOreMaterial#getInternalName`, used to build ore-dictionary names and lang keys.
+    public static String internalName(Material material) {
         String legacyName = material.getProperty(GTMaterialProperties.LEGACY_NAME);
         return legacyName != null ? legacyName : material.getName();
+    }
+
+    /// The chemical formula of a MaterialLib material ([GTMaterialProperties#FORMULA], localized through the
+    /// material's lang key when [GTMaterialProperties#FORMULA_LOCALIZED] is set), or the empty string when it
+    /// carries none.
+    public static String chemicalFormula(@Nullable Material material) {
+        if (material == null) return "";
+        String formula = material.getProperty(GTMaterialProperties.FORMULA);
+        if (formula == null) return "";
+        if (Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.FORMULA_LOCALIZED))) {
+            return StatCollector
+                .translateToLocal("Material." + internalName(material).toLowerCase() + ".ChemicalFormula");
+        }
+        return formula;
+    }
+
+    public static String chemicalTooltip(@Nullable Material material, boolean showQuestionMarks) {
+        return chemicalTooltip(material, 1, showQuestionMarks);
+    }
+
+    /// The chemical-formula tooltip of a MaterialLib material, matching the legacy `Materials` rendering: a
+    /// bare `?` formula is hidden unless `showQuestionMarks`, and a composed material at two or more full
+    /// units is parenthesized and suffixed with the multiplier.
+    public static String chemicalTooltip(@Nullable Material material, long multiplier, boolean showQuestionMarks) {
+        String formula = chemicalFormula(material);
+        if (!showQuestionMarks && formula.equals("?")) return "";
+        List<MaterialStack> list = materialList(material);
+        if (multiplier >= 2 * GTValues.M && !list.isEmpty()) {
+            return ((material.getProperty(GTMaterialProperties.ELEMENT) != null
+                || (list.size() < 2 && list.get(0).mAmount == 1)) ? formula : "(" + formula + ")") + multiplier;
+        }
+        return formula;
+    }
+
+    /// The composition of a MaterialLib material as [MaterialStack]s, resolved from
+    /// [GTMaterialProperties#COMPOSITION]; empty when it carries none.
+    public static List<MaterialStack> materialList(@Nullable Material material) {
+        if (material == null) return Collections.emptyList();
+        List<MaterialRefStack> composition = material.getProperty(GTMaterialProperties.COMPOSITION);
+        if (composition == null || composition.isEmpty()) return Collections.emptyList();
+        List<MaterialStack> list = new ArrayList<>(composition.size());
+        for (MaterialRefStack entry : composition) {
+            Material resolved = entry.material()
+                .resolve();
+            if (resolved != null) list.add(new MaterialStack(resolved, entry.amount()));
+        }
+        return list;
     }
 
     private static Map<String, List<Shape>> prefixShapes() {
@@ -406,7 +496,7 @@ public class MU {
             for (Field field : Materials2Materials.class.getFields()) {
                 if (field.getType() != Material.class) continue;
                 Material material = readStatic(field);
-                if (material != null) map.put(legacyName(material), material);
+                if (material != null) map.put(internalName(material), material);
             }
             legacyNameToMaterial = map;
         }

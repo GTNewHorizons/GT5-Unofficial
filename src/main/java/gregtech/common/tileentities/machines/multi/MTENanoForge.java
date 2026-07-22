@@ -54,6 +54,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -479,7 +480,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     if (renderActive) {
                         RenderingTileEntityNanoForge tile = getRenderer();
                         ItemData data = GTOreDictUnificator.getAssociation(outputNanite);
-                        if (data != null && data.mMaterial.mMaterial instanceof Materials mat) {
+                        Materials mat = data != null ? MU.materialOf(data.mMaterial.mMaterial) : null;
+                        if (mat != null) {
                             short[] color = mat.mRGBa;
                             tile.setColor(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f);
                         } else {

@@ -322,6 +322,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.items.MetaGeneratedItemX32;
+import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
@@ -2247,7 +2248,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         if (data == null || data.mMaterial == null || data.mPrefix == null) {
             return false;
         }
-        return data.mMaterial.mMaterial == Materials.Firestone && data.mPrefix == OrePrefixes.rawOre;
+        return data.mMaterial.mMaterial == MU.material(Materials.Firestone) && data.mPrefix == OrePrefixes.rawOre;
     }
 
     @Override

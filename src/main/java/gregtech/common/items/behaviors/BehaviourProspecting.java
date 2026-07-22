@@ -19,6 +19,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTModHandler;
@@ -44,7 +45,7 @@ public class BehaviourProspecting extends BehaviourNone {
         if (!association.mPrefix.toString()
             .startsWith("ore")) return null;
 
-        return association.mMaterial.mMaterial instanceof Materials material ? material : null;
+        return MU.materialOf(association.mMaterial.mMaterial);
     }
 
     @Override

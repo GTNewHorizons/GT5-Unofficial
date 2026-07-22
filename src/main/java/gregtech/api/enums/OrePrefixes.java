@@ -20,6 +20,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.ICondition;
@@ -3091,6 +3092,12 @@ public class OrePrefixes {
 
     /// The ore-dictionary name for this prefix and `material`, carrying no composition. Use when the consumer
     /// only needs the name -- registration, lookup, and logging.
+    public String oreDictName(Material material) {
+        return name + MU.internalName(material);
+    }
+
+    /// [#oreDictName(Material)] for the transitional legacy material types, kept until every caller passes a
+    /// [Material] directly.
     public String oreDictName(IOreMaterial material) {
         return name + material.getInternalName();
     }

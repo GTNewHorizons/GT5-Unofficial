@@ -83,7 +83,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         }
 
                         ItemStack tStack;
-                        if (tMat.mMaterial == Materials.Air) {
+                        if (tMat.mMaterial == MU.material(Materials.Air)) {
                             tStack = ItemList.Cell_Air.get(tMat.mAmount * tDensityMultiplier / 2L);
                         } else {
                             tStack = GTOreDictUnificator.get(OrePrefixes.dust, tMat.mMaterial, tMat.mAmount);

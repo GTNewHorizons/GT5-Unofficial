@@ -37,6 +37,7 @@ import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.material.MU;
 import gregtech.api.material.MarkerMaterial;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTLanguageManager;
@@ -1323,11 +1324,12 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         int tMeltingPoint = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             numberOfComponents += tMaterial.mAmount;
-            if (tMaterial.mMaterial.getMeltingPoint() > 0) {
-                tMeltingPoint += tMaterial.mMaterial.getMeltingPoint() * tMaterial.mAmount;
+            if (MU.meltingPoint(tMaterial.mMaterial) > 0) {
+                tMeltingPoint += MU.meltingPoint(tMaterial.mMaterial) * tMaterial.mAmount;
             }
             if (aspects == null) {
-                for (TC_AspectStack tAspect : tMaterial.mMaterial.getAspects()) {
+                for (TC_AspectStack tAspect : MU.materialOf(tMaterial.mMaterial)
+                    .getAspects()) {
                     tAspect.addToAspectList(mAspects);
                 }
             }
@@ -1756,7 +1758,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         long rAmount = 0, tAmount = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             tAmount += tMaterial.mAmount;
-            rAmount += tMaterial.mAmount * tMaterial.mMaterial.getProtons();
+            rAmount += tMaterial.mAmount * MU.materialOf(tMaterial.mMaterial)
+                .getProtons();
         }
         return (getDensity() * rAmount) / (tAmount * M);
     }
@@ -1767,7 +1770,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         long rAmount = 0, tAmount = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             tAmount += tMaterial.mAmount;
-            rAmount += tMaterial.mAmount * tMaterial.mMaterial.getNeutrons();
+            rAmount += tMaterial.mAmount * MU.materialOf(tMaterial.mMaterial)
+                .getNeutrons();
         }
         return (getDensity() * rAmount) / (tAmount * M);
     }
@@ -1778,7 +1782,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         long rAmount = 0, tAmount = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             tAmount += tMaterial.mAmount;
-            rAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
+            rAmount += tMaterial.mAmount * MU.materialOf(tMaterial.mMaterial)
+                .getMass();
         }
         return (getDensity() * rAmount) / (tAmount * M);
     }

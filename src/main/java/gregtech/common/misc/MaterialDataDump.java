@@ -318,7 +318,7 @@ public final class MaterialDataDump {
     private static Map<String, Object> dumpMaterialStack(MaterialStack stack) {
         if (stack == null || stack.mMaterial == null) return null;
         Map<String, Object> json = new LinkedHashMap<>();
-        json.put("material", stack.mMaterial.getInternalName());
+        json.put("material", MU.internalName(stack.mMaterial));
         json.put("amount", stack.mAmount);
         return json;
     }
