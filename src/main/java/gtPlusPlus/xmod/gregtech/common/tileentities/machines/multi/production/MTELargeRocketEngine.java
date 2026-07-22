@@ -116,7 +116,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addInfo("- 25% of max fuel efficiency at 98k or 294k EU/t output energy")
             .addInfo("formula: x = input of energy (30000^(1/3)/ x^(1/3)) * (80000^(1/3)/ x^(1/3))")
             .addSupportAny()
-            .beginStructureBlock(10, 3, 3, false)
+            .beginStructureBlock(3, 3, 10, false)
             .addController("Front center, 2nd layer")
             .addCasing("62-76", "Turbodyne Casing", false)
             .addCasing("8", "Inconel Reinforced Casing", false)

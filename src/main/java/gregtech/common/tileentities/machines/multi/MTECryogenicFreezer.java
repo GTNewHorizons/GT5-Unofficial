@@ -83,7 +83,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .addStaticEuEffInfo(0.9f)
             .addInfo("Consumes 10L of Gelid Cryotheum per second during operation")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 5, 4, true)
+            .beginStructureBlock(5, 4, 7, true)
             .addController("Front center, 2nd layer")
             .addCasing("46-56", "Advanced Cryogenic Casing", false)
             .addCasing("24", "Grisium Frame Box", false)

@@ -138,7 +138,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.wait_power", waitPower))
             .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.intake_warning2"))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 10, 5, false)
+            .beginStructureBlock(10, 5, 5, false)
             .addController("Front left, 2nd layer")
             .addCasing("30-33", "Robust Tungstensteel Machine Casing", false)
             .addCasing("32", "PTFE Frame Box", false)

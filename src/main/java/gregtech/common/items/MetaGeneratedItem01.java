@@ -513,6 +513,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 import gregtech.common.config.Other;
 import gregtech.common.covers.CoverAdvancedWirelessController;
 import gregtech.common.covers.CoverArm;
@@ -4076,7 +4077,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 if (aPrefix == OrePrefixes.dust && aMaterial == Materials.Wheat) {
                     aList.add(StatCollector.translateToLocal("GT5U.tooltip.flour.cauldron"));
                 }
+                if (aPrefix == OrePrefixes.ingotHot && Client.tooltip.showHotIngotText) {
+                    aList.add(StatCollector.translateToLocal("gtpp.tooltip.ingot.very_hot"));
+                }
             }
+        }
+        if (Client.tooltip.showRadioactiveText && GTUtility.getRadioactivityLevel(aStack) > 0) {
+            aList.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
+            aList.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
         }
     }
 
