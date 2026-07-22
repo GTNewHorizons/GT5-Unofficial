@@ -1,5 +1,6 @@
 package gregtech.loaders.materials;
 
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -11,8 +12,10 @@ import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MarkerMaterial;
+import gregtech.api.material.MaterialRef;
 
 /// `Materials` fields that MaterialLib carries no data for and that unchanged code still references
 /// directly: the superconductor markers (`SuperconductorMV`..`SuperconductorUMV`) and wildcard markers
@@ -74,6 +77,42 @@ public class LegacyMarkerMaterials {
                 .build();
             BACKING_BY_NAME.put(sc.internalName(), material);
         }
+        registerWildcard("AnyBronze", "AnyBronze", TextureSet.SET_SHINY, GTMaterialFlag.METAL, null, null, null);
+        registerWildcard(
+            "AnyCopper",
+            "AnyCopper",
+            TextureSet.SET_SHINY,
+            GTMaterialFlag.METAL,
+            "Copper",
+            "Copper",
+            "AnnealedCopper");
+        registerWildcard("AnyCarbon", "AnyCarbon", TextureSet.SET_DULL, null, null, null, null);
+        registerWildcard("AnyIron", "AnyIron", TextureSet.SET_SHINY, GTMaterialFlag.METAL, "Iron", "Iron", null);
+        registerWildcard("AnyRubber", "AnyRubber", TextureSet.SET_SHINY, null, null, "Rubber", null);
+        registerWildcard("AnySyntheticRubber", "AnySyntheticRubber", TextureSet.SET_SHINY, null, null, null, null);
+    }
+
+    /// Registers a shapeless MaterialLib backing for a wildcard `Materials` (`AnyCopper`, `AnyIron`, ...), which
+    /// `MU#material` resolves by [GTMaterialProperties#LEGACY_NAME]. Unlike the [MarkerMaterial] backings these
+    /// wildcards are facade `Materials` built in [#loadRandomMarkers], so the link is by name rather than a
+    /// backing field. Ports the smelt/macerate/arc targets and metal flag the facade carried; skips any whose
+    /// name already names a real MaterialLib material.
+    private static void registerWildcard(String name, String localName, TextureSet texture, GTMaterialFlag flag,
+        String smeltInto, String macerateInto, String arcSmeltInto) {
+        if (MaterialLibAPI.getMaterial("gregtech", name) != null) return;
+        com.ruling_0.materiallib.api.MaterialBuilder builder = MaterialLibAPI
+            .newMaterial("gregtech", name, com.ruling_0.materiallib.api.TextureSet.of("gregtech", texture.mSetName))
+            .setProperty(GTMaterialProperties.LEGACY_NAME, name)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, localName)
+            .setProperty(GTMaterialProperties.ARGB, DEFAULT_ARGB);
+        if (flag != null) builder = builder.setProperty(GTMaterialProperties.FLAGS, EnumSet.of(flag));
+        if (smeltInto != null)
+            builder = builder.setProperty(GTMaterialProperties.SMELT_INTO, new MaterialRef(smeltInto));
+        if (macerateInto != null)
+            builder = builder.setProperty(GTMaterialProperties.MACERATE_INTO, new MaterialRef(macerateInto));
+        if (arcSmeltInto != null)
+            builder = builder.setProperty(GTMaterialProperties.ARC_SMELT_INTO, new MaterialRef(arcSmeltInto));
+        BACKING_BY_NAME.put(name, builder.build());
     }
 
     /// The superconductor wire markers, in tier order. [MarkerMaterial]s are absent from
