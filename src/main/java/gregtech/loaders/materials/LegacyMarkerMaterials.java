@@ -1,9 +1,17 @@
 package gregtech.loaders.materials;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Consumer;
+
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MarkerMaterial;
 
 /// `Materials` fields that MaterialLib carries no data for and that unchanged code still references
@@ -18,11 +26,54 @@ public class LegacyMarkerMaterials {
 
     private static final int DEFAULT_ARGB = 0x00ffffff;
 
+    /// The shapeless MaterialLib [Material] registered as each superconductor marker's backing, keyed by
+    /// internal name. Populated by [#registerBackingMaterials] during material registration and read by
+    /// [#loadSuperconductorsMarkers] when the markers are built.
+    private static final Map<String, Material> BACKING_BY_NAME = new LinkedHashMap<>();
+
     private LegacyMarkerMaterials() {}
 
     public static void loadMarkers() {
         loadRandomMarkers();
         loadSuperconductorsMarkers();
+    }
+
+    private record Superconductor(Consumer<MarkerMaterial> field, String internalName, String localName, int argb) {}
+
+    private static final Superconductor[] SUPERCONDUCTORS = {
+        new Superconductor(m -> Materials.SuperconductorMV = m, "SuperconductorMV", "Superconductor MV", 0x00555555),
+        new Superconductor(m -> Materials.SuperconductorHV = m, "SuperconductorHV", "Superconductor HV", 0x00331900),
+        new Superconductor(m -> Materials.SuperconductorEV = m, "SuperconductorEV", "Superconductor EV", 0x00008700),
+        new Superconductor(m -> Materials.SuperconductorIV = m, "SuperconductorIV", "Superconductor IV", 0x00330033),
+        new Superconductor(m -> Materials.SuperconductorLuV = m, "SuperconductorLuV", "Superconductor LuV", 0x00994c00),
+        new Superconductor(m -> Materials.SuperconductorZPM = m, "SuperconductorZPM", "Superconductor ZPM", 0x000a0a0a),
+        new Superconductor(m -> Materials.SuperconductorUV = m, "SuperconductorUV", "Superconductor UV", 0x00e0d207),
+        new Superconductor(m -> Materials.SuperconductorUHV = m, "Superconductor", "Superconductor UHV", 0x002681bd),
+        new Superconductor(m -> Materials.SuperconductorUEV = m, "SuperconductorUEV", "Superconductor UEV", 0x00ae0808),
+        new Superconductor(m -> Materials.SuperconductorUIV = m, "SuperconductorUIV", "Superconductor UIV", 0x00e558b1),
+        new Superconductor(
+            m -> Materials.SuperconductorUMV = m,
+            "SuperconductorUMV",
+            "Superconductor UMV",
+            0x00b526cd), };
+
+    /// Registers a shapeless MaterialLib [Material] backing each superconductor marker, skipping any whose
+    /// internal name already names a MaterialLib material. Runs during material registration, after
+    /// [gregtech.api.enums.materials2.Materials2Materials#init], so the skip check sees every real material.
+    public static void registerBackingMaterials() {
+        for (Superconductor sc : SUPERCONDUCTORS) {
+            if (MaterialLibAPI.getMaterial("gregtech", sc.internalName()) != null) continue;
+            Material material = MaterialLibAPI
+                .newMaterial(
+                    "gregtech",
+                    sc.internalName(),
+                    com.ruling_0.materiallib.api.TextureSet.of("gregtech", TextureSet.SET_SHINY.mSetName))
+                .setProperty(GTMaterialProperties.LEGACY_NAME, sc.internalName())
+                .setProperty(GTMaterialProperties.LOCAL_NAME, sc.localName())
+                .setProperty(GTMaterialProperties.ARGB, sc.argb())
+                .build();
+            BACKING_BY_NAME.put(sc.internalName(), material);
+        }
     }
 
     /// The superconductor wire markers, in tier order. [MarkerMaterial]s are absent from
@@ -106,60 +157,15 @@ public class LegacyMarkerMaterials {
     }
 
     private static void loadSuperconductorsMarkers() {
-        Materials.SuperconductorMV = new MarkerMaterial(
-            "SuperconductorMV",
-            "Superconductor MV",
-            TextureSet.SET_SHINY,
-            0x00555555);
-        Materials.SuperconductorHV = new MarkerMaterial(
-            "SuperconductorHV",
-            "Superconductor HV",
-            TextureSet.SET_SHINY,
-            0x00331900);
-        Materials.SuperconductorEV = new MarkerMaterial(
-            "SuperconductorEV",
-            "Superconductor EV",
-            TextureSet.SET_SHINY,
-            0x00008700);
-        Materials.SuperconductorIV = new MarkerMaterial(
-            "SuperconductorIV",
-            "Superconductor IV",
-            TextureSet.SET_SHINY,
-            0x00330033);
-        Materials.SuperconductorLuV = new MarkerMaterial(
-            "SuperconductorLuV",
-            "Superconductor LuV",
-            TextureSet.SET_SHINY,
-            0x00994c00);
-        Materials.SuperconductorZPM = new MarkerMaterial(
-            "SuperconductorZPM",
-            "Superconductor ZPM",
-            TextureSet.SET_SHINY,
-            0x000a0a0a);
-        Materials.SuperconductorUV = new MarkerMaterial(
-            "SuperconductorUV",
-            "Superconductor UV",
-            TextureSet.SET_SHINY,
-            0x00e0d207);
-        Materials.SuperconductorUHV = new MarkerMaterial(
-            "Superconductor",
-            "Superconductor UHV",
-            TextureSet.SET_SHINY,
-            0x002681bd);
-        Materials.SuperconductorUEV = new MarkerMaterial(
-            "SuperconductorUEV",
-            "Superconductor UEV",
-            TextureSet.SET_SHINY,
-            0x00ae0808);
-        Materials.SuperconductorUIV = new MarkerMaterial(
-            "SuperconductorUIV",
-            "Superconductor UIV",
-            TextureSet.SET_SHINY,
-            0x00e558b1);
-        Materials.SuperconductorUMV = new MarkerMaterial(
-            "SuperconductorUMV",
-            "Superconductor UMV",
-            TextureSet.SET_SHINY,
-            0x00b526cd);
+        for (Superconductor sc : SUPERCONDUCTORS) {
+            MarkerMaterial marker = new MarkerMaterial(
+                sc.internalName(),
+                sc.localName(),
+                TextureSet.SET_SHINY,
+                sc.argb());
+            marker.setBackingMaterial(BACKING_BY_NAME.get(sc.internalName()));
+            sc.field()
+                .accept(marker);
+        }
     }
 }

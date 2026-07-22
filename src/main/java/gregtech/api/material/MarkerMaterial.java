@@ -7,6 +7,8 @@ import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
@@ -46,6 +48,12 @@ public final class MarkerMaterial implements IOreMaterial {
     private Supplier<Materials> macerateInto;
     private Supplier<Materials> arcSmeltInto;
     private Supplier<Materials> arcSmeltIntoGas;
+    /// Transitional link to the shapeless MaterialLib [Material] registered as this marker's backing during
+    /// material registration (see `LegacyMarkerMaterials#registerBackingMaterials` and
+    /// `RecognitionMaterials#registerBackingMaterials`). Null for a marker whose internal name collides with an
+    /// existing MaterialLib material, which is left unbacked rather than merged into it. Exists so consumers can
+    /// migrate off [MarkerMaterial] onto the unified [Material] registry.
+    private Material backingMaterial;
 
     public MarkerMaterial(String internalName, String defaultLocalName, TextureSet textureSet, int argb) {
         this(internalName, defaultLocalName, textureSet, argb, true);
@@ -172,6 +180,18 @@ public final class MarkerMaterial implements IOreMaterial {
     /// never called.
     public @Nullable Materials getArcSmeltIntoGas() {
         return arcSmeltIntoGas == null ? null : arcSmeltIntoGas.get();
+    }
+
+    /// Links this marker to the shapeless MaterialLib [Material] registered as its backing. See
+    /// [#backingMaterial].
+    public void setBackingMaterial(Material backingMaterial) {
+        this.backingMaterial = backingMaterial;
+    }
+
+    /// The shapeless MaterialLib [Material] backing this marker, or `null` if none was registered (name
+    /// collision). See [#backingMaterial].
+    public @Nullable Material getMaterial() {
+        return backingMaterial;
     }
 
     @Override

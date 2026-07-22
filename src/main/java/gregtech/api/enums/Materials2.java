@@ -8,6 +8,8 @@ import gregtech.api.enums.materials2.Materials2Formulas;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.loaders.materials.LegacyMarkerMaterials;
+import gregtech.loaders.materials.RecognitionMaterials;
 
 /// Holds the MaterialLib-backed shapes, families, and materials for GregTech.
 ///
@@ -27,6 +29,8 @@ public class Materials2 {
         Materials2Shapes.init();
         Materials2Families.init();
         Materials2Materials.init();
+        LegacyMarkerMaterials.registerBackingMaterials();
+        RecognitionMaterials.registerBackingMaterials();
         Materials2Formulas.init();
     }
 }
