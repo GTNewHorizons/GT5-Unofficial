@@ -17,6 +17,7 @@ import gregtech.api.enums.Element;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GTRecipe;
@@ -110,7 +111,8 @@ public class ReplicatorBackend extends RecipeMapBackend {
             throw new IllegalStateException("GTRecipeConstants.MATERIAL must be set for replicator recipe");
         }
         return Optional.of(material)
-            .map(material1 -> material1.mElement)
+            .map(MU::material)
+            .map(MU::element)
             .map(Element::getMass)
             .map(ReplicatorBackend::getUUMAmountFromMass)
             .flatMap(
