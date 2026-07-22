@@ -1,15 +1,17 @@
 package gtnhintergalactic.recipe;
 
-import static gregtech.GTLoggers.GT_FML_LOGGER;
-
 import java.util.Arrays;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MU;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.RecipeAdder;
@@ -138,6 +140,33 @@ public class IG_RecipeAdder extends RecipeAdder {
         int maxDistance, int computationRequiredPerSec, int minModuleTier, int duration, int EUt, int recipeWeight) {
         if (ores == null) return false;
 
+        Material[] materials = new Material[ores.length];
+        for (int i = 0; i < ores.length; i++) {
+            materials[i] = MU.material(ores[i]);
+        }
+        return addSpaceMiningRecipe(
+            asteroidName,
+            aItemInputs,
+            aFluidInputs,
+            aChances,
+            materials,
+            orePrefixes,
+            minSize,
+            maxSize,
+            minDistance,
+            maxDistance,
+            computationRequiredPerSec,
+            minModuleTier,
+            duration,
+            EUt,
+            recipeWeight);
+    }
+
+    public static boolean addSpaceMiningRecipe(String asteroidName, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+        int[] aChances, Material[] ores, OrePrefixes orePrefixes, int minSize, int maxSize, int minDistance,
+        int maxDistance, int computationRequiredPerSec, int minModuleTier, int duration, int EUt, int recipeWeight) {
+        if (ores == null) return false;
+
         // Map ores to actual items with stack minSize 64
         ItemStack[] outputs = new ItemStack[ores.length];
         for (int i = 0; i < ores.length; i++) {
@@ -171,22 +200,22 @@ public class IG_RecipeAdder extends RecipeAdder {
             return false;
         }
         if (recipeWeight <= 0) {
-            GT_FML_LOGGER
-                .error("Weight of mining recipe for main material {} is 0", aItemOutputs[0].getUnlocalizedName());
+            GTLog.err
+                .println("Weight of mining recipe for main material " + aItemOutputs[0].getUnlocalizedName() + " is 0");
         }
         if (aChances != null) {
             if (aChances.length < aItemOutputs.length) {
                 return false;
             } else if (aChances.length > aItemOutputs.length) {
-                GT_FML_LOGGER.error(
-                    "Chances and outputs of mining recipe for main material {} have different length!",
-                    aItemOutputs[0].getUnlocalizedName());
+                GTLog.err.println(
+                    "Chances and outputs of mining recipe for main material " + aItemOutputs[0].getUnlocalizedName()
+                        + " have different length!");
             }
             if (Arrays.stream(aChances)
                 .sum() != 10000) {
-                GT_FML_LOGGER.error(
-                    "Sum of chances in mining recipe for main material {} is not 100%! This will lead to no issue but might be unintentional",
-                    aItemOutputs[0].getUnlocalizedName());
+                GTLog.err.println(
+                    "Sum of chances in mining recipe for main material " + aItemOutputs[0].getUnlocalizedName()
+                        + " is not 100%! This will lead to no issue but might be unintentional");
             }
         } else {
             aChances = new int[aItemOutputs.length];

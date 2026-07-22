@@ -394,6 +394,18 @@ public class EyeOfHarmonyRecipe {
         }
     }
 
+    /// [#processHelper(HashMapHelper, Materials, double, double)] for a material held as its MaterialLib
+    /// counterpart -- e.g. a reconstructed werkstoff or a canonical material resolved through [MU#material].
+    /// Resolves back to the legacy [Materials] this method's byproduct/washing-flag logic reads via
+    /// [MU#materialOf] and delegates; a no-op when it has none.
+    public static void processHelper(HashMapHelper outputMap, com.ruling_0.materiallib.api.Material material,
+        double mainMultiplier, double probability) {
+        if (material == null) return;
+        Materials legacy = MU.materialOf(material);
+        if (legacy == null) return;
+        processHelper(outputMap, legacy, mainMultiplier, probability);
+    }
+
     public static void processHelper(HashMapHelper outputMap, Materials material, double mainMultiplier,
         double probability) {
         if (material == null) return;

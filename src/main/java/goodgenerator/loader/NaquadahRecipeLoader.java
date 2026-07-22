@@ -37,6 +37,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.WerkstoffReconstruction;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.main.GoodGenerator;
@@ -1132,9 +1133,15 @@ public class NaquadahReworkRecipeLoader {
         GTLog.out.print("Simple Washer done!\n");
 
         // For Cauldron Wash
-        registerCauldronCleaningFor(Materials.Naquadah, GGMaterial.naquadahEarth.getBridgeMaterial());
-        registerCauldronCleaningFor(Materials.NaquadahEnriched, GGMaterial.enrichedNaquadahEarth.getBridgeMaterial());
-        registerCauldronCleaningFor(Materials.Naquadria, GGMaterial.naquadriaEarth.getBridgeMaterial());
+        registerCauldronCleaningFor(
+            Materials.Naquadah,
+            WerkstoffReconstruction.materialLibOf(GGMaterial.naquadahEarth));
+        registerCauldronCleaningFor(
+            Materials.NaquadahEnriched,
+            WerkstoffReconstruction.materialLibOf(GGMaterial.enrichedNaquadahEarth));
+        registerCauldronCleaningFor(
+            Materials.Naquadria,
+            WerkstoffReconstruction.materialLibOf(GGMaterial.naquadriaEarth));
         GTLog.out.print(GoodGenerator.MOD_ID + ": Replace 3! ");
         GTLog.out.print("Cauldron Wash done!\n");
 

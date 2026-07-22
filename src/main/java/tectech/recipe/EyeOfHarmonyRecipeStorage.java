@@ -18,6 +18,7 @@ import com.google.common.math.LongMath;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffReconstruction;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
@@ -27,6 +28,7 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.BWOreAdapter;
@@ -148,19 +150,19 @@ public class EyeOfHarmonyRecipeStorage {
     private void specialDeepDarkRecipe(final HashMap<String, EyeOfHarmonyRecipe> hashMap,
         final BlockDimensionDisplay planetItem) {
 
-        final HashSet<Materials> validMaterialSet = new HashSet<>();
+        final HashSet<com.ruling_0.materiallib.api.Material> validMaterialSet = new HashSet<>();
         for (Materials material : Materials.values()) {
 
             ItemStack normalOre = GTOreDictUnificator.get(OrePrefixes.ore, material, 1);
 
             if ((normalOre != null)) {
-                validMaterialSet.add(material);
+                validMaterialSet.add(MU.material(material));
             }
 
             ItemStack smallOre = GTOreDictUnificator.get(OrePrefixes.oreSmall, material, 1);
 
             if ((smallOre != null)) {
-                validMaterialSet.add(material);
+                validMaterialSet.add(MU.material(material));
             }
         }
 
@@ -170,10 +172,12 @@ public class EyeOfHarmonyRecipeStorage {
             infoWerkstoff.material = mat;
 
             infoWerkstoff.isSmall = false;
-            if (BWOreAdapter.INSTANCE.supports(infoWerkstoff)) validMaterialSet.add(mat.getBridgeMaterial());
+            if (BWOreAdapter.INSTANCE.supports(infoWerkstoff))
+                validMaterialSet.add(WerkstoffReconstruction.materialLibOf(mat));
 
             infoWerkstoff.isSmall = true;
-            if (BWOreAdapter.INSTANCE.supports(infoWerkstoff)) validMaterialSet.add(mat.getBridgeMaterial());
+            if (BWOreAdapter.INSTANCE.supports(infoWerkstoff))
+                validMaterialSet.add(WerkstoffReconstruction.materialLibOf(mat));
         }
         infoWerkstoff.release();
 
@@ -191,7 +195,7 @@ public class EyeOfHarmonyRecipeStorage {
         }
         infoGTPP.release();
 
-        ArrayList<Materials> validMaterialList = new ArrayList<>(validMaterialSet);
+        ArrayList<com.ruling_0.materiallib.api.Material> validMaterialList = new ArrayList<>(validMaterialSet);
         ArrayList<Material> validGTPPMaterialList = new ArrayList<>(validGTPPMaterialSet);
 
         long rocketTier = 9;
@@ -213,7 +217,8 @@ public class EyeOfHarmonyRecipeStorage {
         return (long) (18_000L * GTUtility.powInt(1.4, rocketTier));
     }
 
-    private ArrayList<Pair<IOreMaterial, Long>> processDD(final ArrayList<Materials> validMaterialList,
+    private ArrayList<Pair<IOreMaterial, Long>> processDD(
+        final ArrayList<com.ruling_0.materiallib.api.Material> validMaterialList,
         ArrayList<Material> validGTPPMaterialList) {
         EyeOfHarmonyRecipe.HashMapHelper outputMap = new EyeOfHarmonyRecipe.HashMapHelper();
 
