@@ -313,7 +313,8 @@ public class WerkstoffLoader {
             if (mlStack != null) return mlStack;
         }
         if (!werkstoff.getGenerationFeatures().enforceUnification) {
-            ItemStack ret = GTOreDictUnificator.get(orePrefixes, werkstoff.getBridgeMaterial(), amount);
+            ItemStack ret = GTOreDictUnificator
+                .get(orePrefixes, WerkstoffReconstruction.materialLibOf(werkstoff), amount);
             if (ret != null) return ret;
             ret = OreDictHandler.getItemStack(werkstoff.getVarName(), orePrefixes, amount);
             if (ret != null) return ret;
