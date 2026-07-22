@@ -1832,6 +1832,7 @@ GT5U.MBTT.subchannel=Subchannel §b%s§7 determines §b%s
 
 GT5U.MBTT.CokeOvenHatch=Coke Oven Hatch
 GT5U.MBTT.CryotheumHatch=Cryotheum Cooling Hatch
+GT5U.MBTT.PyrotheumHatch=Pyrotheum Heating Hatch
 
 GT5U.cracker.io_side=Input/Output Hatches must be on opposite sides!
 GT5U.gui.text.structure_error.cracker_missing_middle_input_hatch=Missing Input Hatch for cracking fluid
@@ -2512,6 +2513,7 @@ GT5U.gui.button.voiding_mode_none=§7Void Nothing
 GT5U.gui.button.voiding_mode_item=§7Void Excess §6Items
 GT5U.gui.button.voiding_mode_fluid=§7Void Excess §9Fluids
 GT5U.gui.button.voiding_mode_all=§7Void Excess §6Items §7and §9Fluids
+GT5U.chat.voiding_mode_set=Voiding Mode: %s
 GT5U.gui.button.input_separation=Input Separation
 GT5U.gui.button.mode_switch=Mode Switch
 GT5U.gui.button.batch_mode=Batch Mode
