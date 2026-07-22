@@ -9380,6 +9380,7 @@ machtype.cyclotron=Particle Accelerator
 machtype.wwxl=Heat Exchanger, WWXL
 machtype.reactor_processing_unit=Reactor Processing Unit
 machtype.cold_trap=Cold Trap
+machtype.coolant_tower=Coolant Tower
 machtype.energy_storage=Energy Storage
 machtype.gas_turbine=Gas Turbine
 machtype.adv_assline=Assembly Line, AAL
@@ -9449,6 +9450,8 @@ machtype.dissolution_tank=Dissolution Tank
 machtype.linac=Particle Accelerator, LINAC
 machtype.energy_infuser=Restorer
 
+gt.coolant_tower.tips=Turns Steam back into Distilled Water
+gt.coolant_tower.pos.bottom_edge=Any Light Concrete along the bottom edge
 gt.exofoundry.tips.1=Will §lnot§7 perform §doverclocks§7 over the hatch tier without modules\nWill §lnot§7 process §1§nUIV+§7 voltage tier recipes without modules\nHas §63 Tiers§7, depending on Central Chassis Casing\nHas §62/3/4§7 Module Slots, based on machine tier\nEach Module Slot has §67§7 different options\n§6Modules§7 are selected inside the Controller\n§6Module§7 stats are shown in NEI and the Controller\nToggle Render with Screwdriver
 gt.exofoundry.tips.2=<SEPARATOR>§cGlorious Evolution!
 

@@ -20,6 +20,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -107,14 +108,14 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Coolant Tower")
-            .addInfo("Turn Steam back to Distilled Water")
+        tt.addMachineType("machtype.coolant_tower")
+            .addInfo("gt.coolant_tower.tips")
             .beginStructureBlock(11, 13, 11, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("252-277", "Light Concrete", false)
-            .addCasing("28", "Tungstencarbide Frame Box", false)
-            .addInputHatch("1+", "Any bottom edge concrete", 1)
-            .addOutputHatch("1+", "Any bottom edge concrete", 1)
+            .addController("front_center_layer2")
+            .addCasing("252-277", "gt.blockconcretes.8.name", false)
+            .addCasing("28", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.TungstenCarbide), false)
+            .addInputHatch("1+", "gt.coolant_tower.pos.bottom_edge", 1)
+            .addOutputHatch("1+", "gt.coolant_tower.pos.bottom_edge", 1)
             .toolTipFinisher();
         return tt;
     }
