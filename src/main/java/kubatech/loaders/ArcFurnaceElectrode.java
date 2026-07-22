@@ -218,8 +218,7 @@ public enum ArcFurnaceElectrode {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.startup_amperage",
-                formatNumber(startupAmperage),
-                formatNumber(getRequiredSixtyFourAmpHatches(startupAmperage))));
+                formatNumber(startupAmperage)));
         if (specialEffect != null) {
             tooltip.addAll(
                 Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
@@ -233,10 +232,6 @@ public enum ArcFurnaceElectrode {
             1L,
             (long) Math.ceil(
                 30d / 32d * Math.max(1, this.parallelLimit) * (this.startupSurge + 1d) * this.amperagePerParallel));
-    }
-
-    private static long getRequiredSixtyFourAmpHatches(long amperage) {
-        return Math.max(1L, (amperage + 63L) / 64L);
     }
 
     private static int getInfinityTargetParallel(NBTTagCompound state) {
