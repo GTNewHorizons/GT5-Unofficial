@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -78,7 +79,10 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
         TileEntity tTileEntity = world.getTileEntity(target.posX, target.posY, target.posZ);
         if (((tTileEntity instanceof IGregTechDeviceInformation))
             && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
-            String[] tInfoData = ((IGregTechDeviceInformation) tTileEntity).getInfoData();
+            IGregTechDeviceInformation info = (IGregTechDeviceInformation) tTileEntity;
+            List<String> tInfoList = new ArrayList<>(Arrays.asList(info.getInfoData()));
+            info.getExtraInfoData(tInfoList);
+            String[] tInfoData = tInfoList.toArray(new String[0]);
             for (int i = 0; i < tInfoData.length; i++) {
                 aCard.setString("mString" + i, tInfoData[i]);
             }

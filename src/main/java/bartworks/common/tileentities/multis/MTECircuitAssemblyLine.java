@@ -181,7 +181,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                     + EnumChatFormatting.GRAY)
             .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1")
             .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation")
-            .beginVariableStructureBlock(3, 3, 2, 7, 3, 3, false)
+            .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
             .addController("First slice, 3rd layer")
             .addEnergyHatch("1", "Any layer 3 casing", 3)
             .addMaintenanceHatch("1", "Any layer 1 side casing", 1)
@@ -326,7 +326,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
         // TODO: Replace with GT5U.MULTI_MACHINE_CHANGE. Requires changing translations
-        GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("chat.cal.mode." + machineMode));
+        GTUtility.sendChatTrans(aPlayer, "chat.cal.mode." + machineMode);
     }
 
     @Override
@@ -450,6 +450,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         if (!(aMetaTileEntity instanceof MTEHatchInput)) {
             return false;
         } else {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((MTEHatchInput) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
             return this.mInputHatches.add((MTEHatchInput) aMetaTileEntity);

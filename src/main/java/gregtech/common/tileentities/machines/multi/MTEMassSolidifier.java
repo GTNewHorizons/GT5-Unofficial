@@ -160,7 +160,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                     + EnumChatFormatting.GRAY
                     + " to hold fluids and molds in the same hatch")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
-            .beginStructureBlock(9, 5, 6, false)
+            .beginStructureBlock(5, 6, 9, false)
             .addController("Front bottom center")
             .addCasing(MIN_CASINGS + "-73", "Solidifier Casing", false)
             .addCasing("42", "Any Tiered Glass", true)

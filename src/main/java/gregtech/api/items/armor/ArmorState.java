@@ -56,7 +56,7 @@ public class ArmorState {
 
     public int visDiscount;
     public float manaDiscount;
-    public float speedBoost, jumpBoost;
+    public float speedBoostMulti, jumpBoostMulti;
 
     public void addArmorInformation(ArmorContext context, List<String> tooltip) {
         boolean showAllInfo = ArmorHelper.isShiftPressed();

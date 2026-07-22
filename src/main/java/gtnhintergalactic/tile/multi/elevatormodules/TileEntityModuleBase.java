@@ -370,7 +370,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.INTERGALACTIC_STANDARD;
     }
 
