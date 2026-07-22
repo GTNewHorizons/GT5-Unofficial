@@ -2,7 +2,6 @@ package goodgenerator.main;
 
 import net.minecraft.creativetab.CreativeTabs;
 
-import bartworks.API.WerkstoffAdderRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -11,7 +10,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import goodgenerator.common.CommonProxy;
 import goodgenerator.crossmod.thaumcraft.Research;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import goodgenerator.tabs.MyTabs;
 import gregtech.GT_Version;
@@ -46,7 +44,6 @@ public final class GoodGenerator {
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event) {
         GGConfigLoader.run();
-        WerkstoffAdderRegistry.addWerkstoffAdder(new GGMaterial());
         // WerkstoffAdderRegistry.addWerkstoffAdder(new IsotopeMaterialLoader());
         Loaders.preInitLoad();
         proxy.preInit(event);

@@ -78,7 +78,6 @@ import org.apache.logging.log4j.Level;
 
 import com.google.common.collect.HashBiMap;
 
-import bartworks.API.WerkstoffAdderRegistry;
 import bartworks.MainMod;
 import bartworks.system.material.CircuitGeneration.CircuitPartsItem;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;
@@ -107,6 +106,7 @@ import bwcrossmod.cls.CLSCompat;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
@@ -118,6 +118,8 @@ import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
+import gtnhlanth.common.register.BotWerkstoffMaterialPool;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 @SuppressWarnings("deprecation")
 public class WerkstoffLoader {
@@ -376,7 +378,9 @@ public class WerkstoffLoader {
     public static void runInit() {
         MainMod.LOGGER.info("Making Meta Items for BW Materials");
         long timepre = System.nanoTime();
-        WerkstoffAdderRegistry.run();
+        new GGMaterial().run();
+        new WerkstoffMaterialPool().run();
+        new BotWerkstoffMaterialPool().run();
         addItemsForGeneration();
         addBridgeSubTags();
         runAdditionalOreDict();
