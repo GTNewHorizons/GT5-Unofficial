@@ -299,6 +299,15 @@ public class GTRecipeRegistrator {
             GTOreDictUnificator.getIngot(MU.smeltInto(material), materialAmount));
     }
 
+    /// [#registerReverseArcSmelting(ItemStack, Materials, long, MaterialStack, MaterialStack, MaterialStack)] for
+    /// callers holding a [Material] whose legacy counterpart is not statically known. Only a legacy [Materials]
+    /// carries a reverse-arc-smelting recipe.
+    public static void registerReverseArcSmelting(ItemStack stack, Material material, long materialAmount,
+        MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03) {
+        if (MU.materialOf(material) instanceof Materials legacyMaterial)
+            registerReverseArcSmelting(stack, legacyMaterial, materialAmount, byProduct01, byProduct02, byProduct03);
+    }
+
     public static void registerReverseArcSmelting(ItemStack stack, Materials material, long materialAmount,
         MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03) {
         registerReverseArcSmelting(
@@ -308,6 +317,13 @@ public class GTRecipeRegistrator {
                 byProduct01,
                 byProduct02,
                 byProduct03));
+    }
+
+    /// [#hasReverseArcSmeltingRecipe(Materials)] for callers holding a [Material] whose legacy counterpart is not
+    /// statically known. Only a legacy [Materials] carries a reverse-arc-smelting recipe.
+    public static boolean hasReverseArcSmeltingRecipe(Material material) {
+        return MU.materialOf(material) instanceof Materials legacyMaterial
+            && hasReverseArcSmeltingRecipe(legacyMaterial);
     }
 
     public static boolean hasReverseArcSmeltingRecipe(Materials material) {
@@ -484,6 +500,23 @@ public class GTRecipeRegistrator {
             }
         }
         return replacedOutput ? gasOutputs : null;
+    }
+
+    /// [#registerReverseMacerating(ItemStack, Materials, long, MaterialStack, MaterialStack, MaterialStack,
+    /// boolean, boolean)] for callers holding a [Material] whose legacy counterpart is not statically known. Only
+    /// a legacy [Materials] carries a reverse-macerating recipe.
+    public static void registerReverseMacerating(ItemStack stack, Material material, long materialAmount,
+        MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03, boolean allowHammer,
+        boolean isRecycling) {
+        if (MU.materialOf(material) instanceof Materials legacyMaterial) registerReverseMacerating(
+            stack,
+            legacyMaterial,
+            materialAmount,
+            byProduct01,
+            byProduct02,
+            byProduct03,
+            allowHammer,
+            isRecycling);
     }
 
     public static void registerReverseMacerating(ItemStack stack, Materials material, long materialAmount,

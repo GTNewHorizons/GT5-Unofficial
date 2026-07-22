@@ -55,12 +55,11 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemOutputs(GTOreDictUnificator.get(prefix, material, 1L))
                             .fluidInputs(legacyMaterial.getMolten(4 * INGOTS))
                             .duration(6 * SECONDS + 8 * TICKS)
-                            .eut(calculateRecipeEU(legacyMaterial, 8))
+                            .eut(calculateRecipeEU(material, 8))
                             .addTo(fluidSolidifierRecipes);
                     }
                 }
                 if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                    && (legacyMaterial.mMaterialInto == legacyMaterial)
                     && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
                     switch (MU.internalName(material)) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
@@ -96,12 +95,11 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemOutputs(GTUtility.copyAmount(1, stack))
                             .fluidInputs(legacyMaterial.getMolten(1 * INGOTS))
                             .duration(16 * TICKS)
-                            .eut(calculateRecipeEU(legacyMaterial, 8))
+                            .eut(calculateRecipeEU(material, 8))
                             .addTo(fluidSolidifierRecipes);
                     }
                 }
                 if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                    && (legacyMaterial.mMaterialInto == legacyMaterial)
                     && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
                     switch (MU.internalName(material)) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(

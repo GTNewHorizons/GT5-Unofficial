@@ -101,10 +101,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (!legacyMaterial.mBlastFurnaceRequired) {
                     GTRecipeRegistrator
                         .registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, false);
-                    if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(legacyMaterial)) {
+                    if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(material)) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, stack),
-                            legacyMaterial,
+                            material,
                             prefix.getMaterialAmount(),
                             null,
                             null,
@@ -587,10 +587,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (!legacyMaterial.mBlastFurnaceRequired) {
                     GTRecipeRegistrator
                         .registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, true);
-                    if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(legacyMaterial)) {
+                    if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(material)) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, stack),
-                            legacyMaterial,
+                            material,
                             prefix.getMaterialAmount(),
                             null,
                             null,
@@ -608,10 +608,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (!legacyMaterial.mBlastFurnaceRequired) {
                     GTRecipeRegistrator
                         .registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, true);
-                    if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(legacyMaterial)) {
+                    if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(material)) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, stack),
-                            legacyMaterial,
+                            material,
                             prefix.getMaterialAmount(),
                             null,
                             null,

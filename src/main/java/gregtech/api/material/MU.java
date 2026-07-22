@@ -349,6 +349,11 @@ public class MU {
         return chaseRef(material, GTMaterialProperties.ARC_SMELT_INTO);
     }
 
+    /// [#smeltInto(Material)], for [GTMaterialProperties#DIRECT_SMELTING].
+    public static @Nullable Material directSmelting(@Nullable Material material) {
+        return chaseRef(material, GTMaterialProperties.DIRECT_SMELTING);
+    }
+
     /// [#handleMaterial(Materials)] for a MaterialLib [Material] held directly. Unlike [#smeltInto(Material)]
     /// and its siblings, resolves a single hop only -- [GTMaterialProperties#HANDLE_MATERIAL] never chains
     /// through another material's own handle, so there is nothing further to chase.

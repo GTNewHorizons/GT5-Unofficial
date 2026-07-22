@@ -46,11 +46,10 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemInputs(GTOreDictUnificator.get(OrePrefixes.bolt, material, 1L))
                     .itemOutputs(GTUtility.copyAmount(1, stack))
                     .duration(((int) Math.max(legacyMaterial.getMass() / 8L, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(legacyMaterial, 4))
+                    .eut(calculateRecipeEU(material, 4))
                     .addTo(latheRecipes);
             }
-            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                && (legacyMaterial.mMaterialInto == legacyMaterial)) {
+            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
                 Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
                 if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
