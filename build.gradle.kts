@@ -10,6 +10,12 @@ tasks.withType<Checkstyle>().configureEach {
     maxHeapSize = "1g"
 }
 
+// TEMPORARY (material unification): uncap javac's error limit so a full breaking-retype fan-out is
+// enumerable in one compile. Remove before the mu branch is finalized.
+tasks.withType<JavaCompile>().configureEach {
+    options.compilerArgs.addAll(listOf("-Xmaxerrs", "10000"))
+}
+
 tasks.test.configure {
     useJUnitPlatform()
     testLogging {
