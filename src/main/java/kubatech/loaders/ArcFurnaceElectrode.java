@@ -25,12 +25,12 @@ public enum ArcFurnaceElectrode {
     // Empty event handler to generate tooltip text, special effect handled as electrode parameter
     GraphiteElectrode(0, Materials.Graphite, 1, 4, 2d, 4d, 200, 1, 0, e -> {}),
     TantalumElectrode(1, Materials.Tantalum, 1.2d, 2, 4d, 4d, 500, 1.2d, 3),
-    MolybdenumElectrode(2, Materials.Molybdenum, 0.9d, 16, 3d, 4d, 400, 0.8d, 5),
-    TungstenElectrode(3, Materials.Tungsten, 1, 128, 1d, 4d, 1000, 1.1d, 1),
-    TungstenSteelElectrode(4, Materials.TungstenSteel, 0.8d, 256, 1d, 4d, 1600, 1.2d, 1),
+    MolybdenumElectrode(2, Materials.Molybdenum, 0.9d, 16, 3d, 4d, 400, 0.8d, 1),
+    TungstenElectrode(3, Materials.Tungsten, 1, 128, 1d, 4d, 1000, 0.75d, 0.5d),
+    TungstenSteelElectrode(4, Materials.TungstenSteel, 0.8d, 256, 1d, 4d, 1600, 0.5d, 0.5d),
     // Empty event handler to generate tooltip text, special effect handled as electrode parameter
     GrapheneElectrode(5, Materials.Graphene, 2.5d, 16, 2d, 4d, 900, 1, 0, e -> {}),
-    YBCOElectrode(6, Materials.YttriumBariumCuprate, 1.2d, 8, 6d, 4d, 900, 0.8d, 10d, event -> {
+    YBCOElectrode(6, Materials.YttriumBariumCuprate, 1.2d, 8, 6d, 4d, 900, 1d, 6d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventPostRecipeCheck postRecipe) {
             if (!postRecipe.result.wasSuccessful()) return;
             int performedOC = postRecipe.calculator.getPerformedOverclocks();
@@ -38,7 +38,7 @@ public enum ArcFurnaceElectrode {
                 postRecipe.arcFurnace.getDurabilityConsumptionThisRun() * (1 + performedOC));
         }
     }),
-    NetheriteElectrode(7, Materials.Netherite, 2.2d, 64, 1.5d, 4d, 1500, 1.3d, 9d, event -> {
+    NetheriteElectrode(7, Materials.Netherite, 2.2d, 64, 1.5d, 4d, 1500, 1.25d, 2d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventStartShutdown startShutdown) {
             startShutdown.duration = 1;
         }
@@ -51,7 +51,7 @@ public enum ArcFurnaceElectrode {
             }
         }
     }),
-    TritaniumElectrode(8, Materials.Tritanium, 3d, 48, 2d, 4d, 1200, 1.7d, 4d),
+    TritaniumElectrode(8, Materials.Tritanium, 3d, 48, 2d, 4d, 1200, 1.1d, 2d),
     InfinityElectrode(9, Materials.Infinity, 4.2d, 0, 1d, 4d, 2000, 1d, 1d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventConfigureProcessing configure) {
             configure.processingLogic.setMaxParallel(getInfinityTargetParallel(configure.arcFurnace.getEffectState()));
@@ -85,10 +85,10 @@ public enum ArcFurnaceElectrode {
                 .setInteger("infinityTargetParallel", 1);
         }
     }),
-    HypogenElectrode(10, MaterialsElements.STANDALONE.HYPOGEN, 6.5d, 256, 1d, 4d, 2500, 1.5d, 3.5d),
+    HypogenElectrode(10, MaterialsElements.STANDALONE.HYPOGEN, 6.5d, 256, 1d, 4d, 2500, 1.3d, 0.5d),
 
     // nanite eletrodes
-    NeutroniumNaniteElectrode(11, Materials.Neutronium, 5d, 64, 2d, 4d, 1750, 2d, 5d, event -> {
+    NeutroniumNaniteElectrode(11, Materials.Neutronium, 5d, 256, 2d, 4d, 1750, 2d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.Neutronium.getDust(1))
                 && completed.arcFurnace.getRandomNumber(100) < 70) {
@@ -96,14 +96,14 @@ public enum ArcFurnaceElectrode {
             }
         }
     }),
-    TranscendentNaniteElectrode(12, Materials.TranscendentMetal, 7.5d, 512, 4d, 4d, 3500, 2d, .5d, event -> {
+    TranscendentNaniteElectrode(12, Materials.TranscendentMetal, 7.5d, 512, 4d, 4d, 3500, 1.5d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.TranscendentMetal.getDust(1))) {
                 completed.arcFurnace.setDurabilityConsumptionThisRun(-1);
             }
         }
     }),
-    UniversiumNaniteElectrode(13, Materials.Universium, 10d, 1024, 8d, 4d, 5000, 2d, 0d, event -> {
+    UniversiumNaniteElectrode(13, Materials.Universium, 10d, 1024, 8d, 4d, 5000, 1d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.Universium.getDust(1))) {
                 completed.arcFurnace.setDurabilityConsumptionThisRun(-1000);
