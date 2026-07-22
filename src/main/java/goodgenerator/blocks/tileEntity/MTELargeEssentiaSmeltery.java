@@ -235,7 +235,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(5, 5, 5, 5, 5, 9, true)
-            .addController("gt.les.structure.controller")
+            .addController("gt.mbtt.structure.front_center_layer3")
             .addCasing("24-84", "gt.les.casing.magic", false)
             .addCasing("12-28", "gt.les.casing.diffusion", true)
             .addCasing("6-14", "gt.les.casing.glass", false)

@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.List;
 
+import gregtech.api.enums.OrePrefixes;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -102,25 +103,21 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Rock Breaker")
+        tt.addMachineType("gt.recipe.rockbreaker")
             .addBulkMachineInfo(8, 3f, 0.75f)
-            .addInfo("Use Integrated Circuit to determine recipe")
-            .addInfo("1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack, 7 = Endstone")
-            .addInfo("Needs Soul Sand and Blue Ice in input bus for basalt")
-            .addInfo("Needs Soul Sand and Magma in input bus for deepslate")
+            .addInfo("gt.boldarnator.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 5, 5, false)
-            .addController("Front center, 3rd layer")
-            .addCasing("50-55", "Thermal Processing Casing", false)
-            .addCasing("36", "Tungsten Frame Box", false)
-            .addCasing("12", "Any Tiered Glass", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputBus("0+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
-            .addStructureInfo("")
-            .addStructureFooter("The water and lava is spawned for free once formed")
+            .addController("gt.mbtt.structure.front_center_layer3")
+            .addCasing("50-55", "gtplusplus.blockcasings.2.0.name", false)
+            .addCasing("36", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing("12", "GT5U.MBTT.AnyGlass", true)
+            .addEnergyHatch("1+", "<casing>", 1)
+            .addMaintenanceHatch("1", "<casing>", 1)
+            .addMufflerHatch("1", "<casing>", 1)
+            .addInputBus("0+", "<casing>", 1)
+            .addOutputBus("1+", "<casing>", 1)
+            .addStructureFooter("gt.boldarnator.footer")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
