@@ -24,6 +24,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -202,7 +203,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.digester.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.digester.info1"))
+            .addMarkdown(new ResourceLocation("gregtech", "digester"))
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 4, 7, true)
