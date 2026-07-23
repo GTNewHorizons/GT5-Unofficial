@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +23,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -37,6 +39,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
+import gregtech.api.events.DrillChunkDiscoveryEvent;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -310,6 +313,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         if (mCurrentChunk == null) {
             createInitialWorkingChunk();
+            postDiscoveryEvent(true);
             return true;
         }
 
@@ -322,15 +326,37 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             fillChunkMineList(yHead, yDrill);
             if (oreBlockPositions.isEmpty()) {
                 GTChunkManager.releaseChunk((TileEntity) getBaseMetaTileEntity(), mCurrentChunk);
+
+                postDiscoveryEvent(false);
+
                 if (!moveToNextChunk(xDrill >> 4, zDrill >> 4)) {
                     workState = WorkState.UPWARD;
                     updateVeinNameFromVP(mCurrentChunk);
                     syncWorkAreaData();
                 }
+
+                postDiscoveryEvent(true);
+
                 return true;
             }
         }
         return tryProcessOreList();
+    }
+
+    private void postDiscoveryEvent(boolean discovery) {
+        if (mCurrentChunk == null) return;
+
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) return;
+
+        final World world = base.getWorld();
+        if (world == null) return;
+
+        final UUID owner = base.getOwnerUuid();
+        if (owner == null) return;
+
+        MinecraftForge.EVENT_BUS.post(
+            new DrillChunkDiscoveryEvent(world, owner, mCurrentChunk.chunkXPos, mCurrentChunk.chunkZPos, discovery));
     }
 
     @Override
