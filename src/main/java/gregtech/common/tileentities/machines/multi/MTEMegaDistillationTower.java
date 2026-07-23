@@ -572,7 +572,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addSupportAny()
             .addUnlimitedTierSkips()
             .addInfo(EnumChatFormatting.GOLD + "Big Oil will be pleased with this!")
-            .beginVariableStructureBlock(9, 9, 15, 15, 30, 54, true)
+            .beginVariableStructureBlock(15, 15, 30, 54, 9, 9, true)
             .addController("Front center, 3rd Layer")
             .addEnergyHatch("1+", "Any base reinforced distillation casing", 1)
             .addMaintenanceHatch("1+", "Any base reinforced distillation casing", 1)

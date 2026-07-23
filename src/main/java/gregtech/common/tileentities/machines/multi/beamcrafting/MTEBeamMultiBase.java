@@ -133,6 +133,7 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
             .casingIndex(casingIndex)
             .hint(hint)
             .adder(MTEBeamMultiBase::addBeamLineOutputHatch)
+            .exclusive()
             .build();
     }
 

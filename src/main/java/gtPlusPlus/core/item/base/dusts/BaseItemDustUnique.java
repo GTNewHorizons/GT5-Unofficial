@@ -122,7 +122,8 @@ public class BaseItemDustUnique extends Item {
         }
         if (Client.tooltip.showRadioactiveText) {
             if (this.sRadiation > 0) {
-                list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.sRadiation));
+                list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
+                list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
             }
         }
         super.addInformation(stack, player, list, adv);

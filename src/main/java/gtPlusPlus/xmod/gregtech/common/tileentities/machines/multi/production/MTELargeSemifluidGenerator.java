@@ -70,7 +70,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
             .addInfo("Boosted: Produces 6144EU/t at 150% efficiency")
             .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(4, 3, 3, false)
+            .beginStructureBlock(3, 3, 4, false)
             .addController("Front center, 2nd layer")
             .addCasing("16-21", "Stable Titanium Machine Casing", false)
             .addCasing("8", "Engine Intake Casing", false)

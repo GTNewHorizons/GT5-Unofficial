@@ -62,7 +62,7 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
                     + " , you can't do it either")
             .addInfo(createParallelText())
             .addSupportAny()
-            .beginStructureBlock(47, 47, 7, false)
+            .beginStructureBlock(47, 7, 47, false)
             .addController("Middle center, 4th layer")
             .addCasing("1662-1695", "LuV Machine Casing", false)
             .addCasing("560", "Ameliorated Superconducting Coil", false)
