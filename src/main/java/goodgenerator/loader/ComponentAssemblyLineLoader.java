@@ -37,7 +37,6 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -46,7 +45,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -2085,10 +2083,7 @@ public class ComponentAssemblyLineLoader {
 
     // CoAL recipes regularly require overly large ItemStacks, this lets use cleanly and
     // conveniently get over-sized stacks of many different types of items with different storages.
-    private static ItemStack get(OrePrefixes prefix, IOreMaterial material, int amount) {
-        if (material instanceof Werkstoff w) {
-            return GTUtility.copyAmountUnsafe(amount, w.get(prefix, 1));
-        }
+    private static ItemStack get(OrePrefixes prefix, Materials material, int amount) {
         return GTUtility.copyAmountUnsafe(amount, GTOreDictUnificator.get(prefix, material, 1));
     }
 
