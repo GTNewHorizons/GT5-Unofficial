@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffReconstruction;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
@@ -44,9 +45,11 @@ public class StaticRecipeChangeLoaders {
         }
 
         for (OrePrefixes prefixes : OrePrefixes.VALUES) if (werkstoff.hasItemType(prefixes)) {
-            GTOreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
+            GTOreDictUnificator
+                .set(prefixes, WerkstoffReconstruction.materialLibOf(werkstoff), werkstoff.get(prefixes), true, true);
             for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
+                GTOreDictUnificator
+                    .addAssociation(prefixes, WerkstoffReconstruction.materialLibOf(werkstoff), stack, false);
                 GTOreDictUnificator.getAssociation(stack).mUnificationTarget = werkstoff.get(prefixes);
             }
         }
@@ -62,9 +65,15 @@ public class StaticRecipeChangeLoaders {
 
         for (OrePrefixes prefixes : OrePrefixes.VALUES)
             if (werkstoff.hasItemType(prefixes) && werkstoff.getBridgeMaterial() != null) {
-                GTOreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
+                GTOreDictUnificator.set(
+                    prefixes,
+                    WerkstoffReconstruction.materialLibOf(werkstoff),
+                    werkstoff.get(prefixes),
+                    true,
+                    true);
                 for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                    GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
+                    GTOreDictUnificator
+                        .addAssociation(prefixes, WerkstoffReconstruction.materialLibOf(werkstoff), stack, false);
                 }
             }
     }
