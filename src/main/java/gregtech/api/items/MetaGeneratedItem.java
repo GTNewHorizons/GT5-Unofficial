@@ -30,15 +30,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
+import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTOreDictUnificator;
@@ -329,7 +330,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        return Materials._NULL.getRGBA();
+        return MU.rgba(Materials2Materials.NULL);
     }
 
     /**

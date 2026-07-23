@@ -18,8 +18,8 @@ import net.minecraft.util.IIcon;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.items.ItemAugment;
 import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.ItemAugmentFrame;
@@ -51,6 +51,7 @@ import gregtech.api.items.armor.behaviors.SwimSpeedBehavior;
 import gregtech.api.items.armor.behaviors.TerrasteelBehavior;
 import gregtech.api.items.armor.behaviors.VisDiscountBehavior;
 import gregtech.api.items.armor.behaviors.WaterBreathingBehavior;
+import gregtech.api.material.MU;
 
 public class MechArmorAugmentRegistries {
 
@@ -171,7 +172,7 @@ public class MechArmorAugmentRegistries {
             .setId("Infinity")
             .setItemId("armorframeinfinity")
             .setSlotCounts(5, 5, 5, 5)
-            .setColor(Materials.Infinity.mRGBa)
+            .setColor(MU.rgba(Materials2Materials.Infinity))
             .setRarity(EnumRarity.epic)
             .setProtection(1)
         );

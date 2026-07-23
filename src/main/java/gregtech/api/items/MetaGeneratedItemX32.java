@@ -22,6 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
@@ -110,11 +111,11 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     @Override
     public short[] getRGBa(ItemStack aStack) {
         if (!Materials.isMaterialItem(getDamage(aStack))) {
-            return Materials._NULL.mRGBa;
+            return MU.rgba(Materials2Materials.NULL);
         }
         Materials tMaterial = GregTechAPI.sGeneratedMaterials[getDamage(aStack) % 1000];
         if (tMaterial == null) {
-            return Materials._NULL.mRGBa;
+            return MU.rgba(Materials2Materials.NULL);
         }
         return tMaterial.mRGBa;
     }

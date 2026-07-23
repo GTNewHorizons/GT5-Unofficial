@@ -19,15 +19,15 @@ public enum CombType {
     // Organic Line
     LIGNIE(0, "lignite", true, Materials2Materials.Lignite, 100, 0x58300B, 0x906237, ItemComb.Voltage.LV),
     COAL(1, "coal", true, Materials2Materials.Coal, 100, 0x525252, 0x666666, ItemComb.Voltage.LV),
-    STICKY(2, "sticky_resin", true, Materials._NULL, 50, 0x2E8F5B, 0xDCC289, ItemComb.Voltage.LV),
-    OIL(3, "oil", true, Materials._NULL, 100, 0x333333, 0x4C4C4C, ItemComb.Voltage.LV),
+    STICKY(2, "sticky_resin", true, Materials2Materials.NULL, 50, 0x2E8F5B, 0xDCC289, ItemComb.Voltage.LV),
+    OIL(3, "oil", true, Materials2Materials.NULL, 100, 0x333333, 0x4C4C4C, ItemComb.Voltage.LV),
     APATITE(4, "apatite", true, Materials2Materials.Apatite, 100, 0xc1c1f6, 0x676784, ItemComb.Voltage.LV),
     ASH(5, "ash", true, Materials2Materials.Ash, 100, 0x1e1a18, 0xc6c6c6, ItemComb.Voltage.LV),
 
     // IC2 Line
-    COOLANT(6, "coolant", true, Materials._NULL, 100, 0x144F5A, 0x2494A2, ItemComb.Voltage.HV),
-    ENERGY(7, "energy", true, Materials._NULL, 80, 0xC11F1F, 0xEBB9B9, ItemComb.Voltage.HV),
-    LAPOTRON(8, "lapotron", true, Materials._NULL, 60, 0x1414FF, 0x6478FF, ItemComb.Voltage.HV),
+    COOLANT(6, "coolant", true, Materials2Materials.NULL, 100, 0x144F5A, 0x2494A2, ItemComb.Voltage.HV),
+    ENERGY(7, "energy", true, Materials2Materials.NULL, 80, 0xC11F1F, 0xEBB9B9, ItemComb.Voltage.HV),
+    LAPOTRON(8, "lapotron", true, Materials2Materials.NULL, 60, 0x1414FF, 0x6478FF, ItemComb.Voltage.HV),
     PYROTHEUM(9, "pyrotheum", true, Materials2Materials.Pyrotheum, 50, 0xffebc4, 0xe36400, ItemComb.Voltage.HV),
     CRYOTHEUM(10, "cryotheum", true, Materials2Materials.Cryotheum, 50, 0x2660ff, 0x5af7ff, ItemComb.Voltage.HV),
 
@@ -52,21 +52,21 @@ public enum CombType {
 
     // Thaumcraft Line
     THAUMIUMDUST(21, "thaumium_dust", true, Materials2Materials.Thaumium, 100, 0x7A007A, 0x5C005C, ItemComb.Voltage.MV),
-    THAUMIUMSHARD(22, "thaumium_shard", true, Materials._NULL, 85, 0x9966FF, 0xAD85FF, ItemComb.Voltage.LV),
+    THAUMIUMSHARD(22, "thaumium_shard", true, Materials2Materials.NULL, 85, 0x9966FF, 0xAD85FF, ItemComb.Voltage.LV),
     AMBER(23, "amber", true, Materials2Materials.Amber, 90, 0x774B15, 0xEE7700, ItemComb.Voltage.LV),
     QUICKSILVER(24, "quicksilver", true, Materials2Materials.Mercury, 90, 0xc7c7ea, 0xb5b3df, ItemComb.Voltage.LV),
-    SALISMUNDUS(25, "salis_mundus", true, Materials._NULL, 75, 0xF7ADDE, 0x592582, ItemComb.Voltage.MV),
-    TAINTED(26, "tainted", true, Materials._NULL, 80, 0x904BB8, 0xE800FF, ItemComb.Voltage.LV),
+    SALISMUNDUS(25, "salis_mundus", true, Materials2Materials.NULL, 75, 0xF7ADDE, 0x592582, ItemComb.Voltage.MV),
+    TAINTED(26, "tainted", true, Materials2Materials.NULL, 80, 0x904BB8, 0xE800FF, ItemComb.Voltage.LV),
     MITHRIL(27, "mithril", true, Materials2Materials.Mithril, 70, 0xF0E68C, 0xFFFFD2, ItemComb.Voltage.HV),
     ASTRALSILVER(28, "astral_silver", true, Materials2Materials.AstralSilver, 70, 0xAFEEEE, 0xE6E6FF,
         ItemComb.Voltage.HV),
-    THAUMINITE(29, "thauminite", true, Materials._NULL, 50, 0x2E2D79, 0x7581E0, ItemComb.Voltage.HV),
+    THAUMINITE(29, "thauminite", true, Materials2Materials.NULL, 50, 0x2E2D79, 0x7581E0, ItemComb.Voltage.HV),
     SHADOWMETAL(30, "shadow_metal", true, Materials2Materials.Shadow, 50, 0x100322, 0x100342, ItemComb.Voltage.HV),
     DIVIDED(31, "divided", true, Materials2Materials.Unstable, 40, 0xF0F0F0, 0xDCDCDC, ItemComb.Voltage.HV),
     SPARKLING(32, "nether_star", true, Materials2Materials.NetherStar, 40, 0x7A007A, 0xFFFFFF, ItemComb.Voltage.EV),
 
     // Gem Line
-    STONE(33, "stone", true, Materials._NULL, 70, 0x808080, 0x999999, ItemComb.Voltage.LV),
+    STONE(33, "stone", true, Materials2Materials.NULL, 70, 0x808080, 0x999999, ItemComb.Voltage.LV),
     CERTUS(34, "certus", true, Materials2Materials.CertusQuartz, 100, 0x57CFFB, 0xBBEEFF, ItemComb.Voltage.LV),
     FLUIX(35, "fluix", true, Materials.Fluix, 100, 0xA375FF, 0xB591FF, ItemComb.Voltage.LV),
     REDSTONE(36, "redstone", true, Materials2Materials.Redstone, 100, 0x7D0F0F, 0xD11919, ItemComb.Voltage.LV),
@@ -85,7 +85,7 @@ public enum CombType {
     FIRESTONE(48, "firestone", true, Materials2Materials.Firestone, 100, 0xC00000, 0xFF0000, ItemComb.Voltage.LV),
 
     // Metals Line
-    SLAG(49, "slag", true, Materials._NULL, 50, 0xD4D4D4, 0x58300B, ItemComb.Voltage.LV),
+    SLAG(49, "slag", true, Materials2Materials.NULL, 50, 0xD4D4D4, 0x58300B, ItemComb.Voltage.LV),
     COPPER(50, "copper", true, Materials2Materials.Copper, 100, 0xFF6600, 0xE65C00, ItemComb.Voltage.LV),
     TIN(51, "tin", true, Materials2Materials.Tin, 100, 0xD4D4D4, 0xDDDDDD, ItemComb.Voltage.LV),
     LEAD(52, "lead", true, Materials2Materials.Lead, 100, 0x666699, 0xA3A3CC, ItemComb.Voltage.LV),
@@ -121,21 +121,21 @@ public enum CombType {
     PLUTONIUM(78, "plutonium", true, Materials2Materials.Plutonium, 10, 0x240000, 0x570000, ItemComb.Voltage.IV),
     NAQUADAH(79, "naquadah", true, Materials2Materials.Naquadah, 10, 0x000000, 0x004400, ItemComb.Voltage.IV),
     NAQUADRIA(80, "naquadria", true, Materials2Materials.Naquadria, 5, 0x000000, 0x002400, ItemComb.Voltage.IV),
-    DOB(81, "d-o-b", true, Materials._NULL, 50, 0x007700, 0x002400, ItemComb.Voltage.LV),
+    DOB(81, "d-o-b", true, Materials2Materials.NULL, 50, 0x007700, 0x002400, ItemComb.Voltage.LV),
     THORIUM(82, "thorium", true, Materials2Materials.Thorium, 75, 0x001E00, 0x005000, ItemComb.Voltage.EV),
     LUTETIUM(83, "lutetium", true, Materials2Materials.Lutetium, 10, 0xE6FFE6, 0xFFFFFF, ItemComb.Voltage.IV),
     AMERICIUM(84, "americium", true, Materials2Materials.Americium, 5, 0xE6E6FF, 0xC8C8C8, ItemComb.Voltage.LuV),
     NEUTRONIUM(85, "neutronium", true, Materials2Materials.Neutronium, 2, 0xFFF0F0, 0xFAFAFA, ItemComb.Voltage.ZPM),
 
     // Twilight
-    NAGA(86, "naga", true, Materials._NULL, 100, 0x0D5A0D, 0x28874B, ItemComb.Voltage.MV),
-    LICH(87, "lich", true, Materials._NULL, 90, 0x5C605E, 0xC5C5C5, ItemComb.Voltage.HV),
-    HYDRA(88, "hydra", true, Materials._NULL, 80, 0x872836, 0xB8132C, ItemComb.Voltage.HV),
-    URGHAST(89, "ur_ghast", true, Materials._NULL, 70, 0x7C0618, 0xA7041C, ItemComb.Voltage.EV),
-    SNOWQUEEN(90, "snow_queen", true, Materials._NULL, 60, 0x9C0018, 0xD02001, ItemComb.Voltage.EV),
+    NAGA(86, "naga", true, Materials2Materials.NULL, 100, 0x0D5A0D, 0x28874B, ItemComb.Voltage.MV),
+    LICH(87, "lich", true, Materials2Materials.NULL, 90, 0x5C605E, 0xC5C5C5, ItemComb.Voltage.HV),
+    HYDRA(88, "hydra", true, Materials2Materials.NULL, 80, 0x872836, 0xB8132C, ItemComb.Voltage.HV),
+    URGHAST(89, "ur_ghast", true, Materials2Materials.NULL, 70, 0x7C0618, 0xA7041C, ItemComb.Voltage.EV),
+    SNOWQUEEN(90, "snow_queen", true, Materials2Materials.NULL, 60, 0x9C0018, 0xD02001, ItemComb.Voltage.EV),
 
     // Space
-    SPACE(91, "space", true, Materials._NULL, 100, 0x003366, 0xC0C0C0, ItemComb.Voltage.HV),
+    SPACE(91, "space", true, Materials2Materials.NULL, 100, 0x003366, 0xC0C0C0, ItemComb.Voltage.HV),
     METEORICIRON(92, "meteoric_iron", true, Materials2Materials.MeteoricIron, 100, 0x321928, 0x643250,
         ItemComb.Voltage.EV),
     DESH(93, "desh", true, Materials2Materials.Desh, 90, 0x282828, 0x323232, ItemComb.Voltage.IV),
@@ -151,21 +151,21 @@ public enum CombType {
     TRINIUM(101, "trinium", true, Materials2Materials.Trinium, 25, 0xB0E0E6, 0xC8C8D2, ItemComb.Voltage.ZPM),
 
     // Planet
-    MERCURY(102, "mercury", true, Materials._NULL, 65, 0x4A4033, 0xB5A288, ItemComb.Voltage.EV),
-    VENUS(103, "venus", true, Materials._NULL, 65, 0x120E07, 0x272010, ItemComb.Voltage.EV),
-    MOON(104, "moon", true, Materials._NULL, 90, 0x373735, 0x7E7E78, ItemComb.Voltage.MV),
-    MARS(105, "mars", true, Materials._NULL, 80, 0x220D05, 0x3A1505, ItemComb.Voltage.MV),
-    JUPITER(106, "jupiter", true, Materials._NULL, 75, 0x734B2E, 0xD0CBC4, ItemComb.Voltage.MV),
-    SATURN(107, "saturn", true, Materials._NULL, 55, 0xD2A472, 0xF8C37B, ItemComb.Voltage.IV),
-    URANUS(108, "uranus", true, Materials._NULL, 45, 0x75C0C9, 0x84D8EC, ItemComb.Voltage.IV),
-    NEPTUNE(109, "neptune", true, Materials._NULL, 35, 0x334CFF, 0x576DFF, ItemComb.Voltage.IV),
-    PLUTO(110, "pluto", true, Materials._NULL, 25, 0x34271E, 0x69503D, ItemComb.Voltage.LuV),
-    HAUMEA(111, "haumea", true, Materials._NULL, 20, 0x1C1413, 0x392B28, ItemComb.Voltage.LuV),
-    MAKEMAKE(112, "makemake", true, Materials._NULL, 20, 0x301811, 0x120A07, ItemComb.Voltage.LuV),
-    CENTAURI(113, "centauri", true, Materials._NULL, 15, 0x2F2A14, 0xB06B32, ItemComb.Voltage.ZPM),
-    TCETI(114, "tceti", true, Materials._NULL, 10, 0x46241A, 0x7B412F, ItemComb.Voltage.ZPM),
-    BARNARDA(115, "barnarda", true, Materials._NULL, 10, 0x0D5A0D, 0xE6C18D, ItemComb.Voltage.ZPM),
-    VEGA(116, "vega", true, Materials._NULL, 10, 0x1A2036, 0xB5C0DE, ItemComb.Voltage.ZPM),
+    MERCURY(102, "mercury", true, Materials2Materials.NULL, 65, 0x4A4033, 0xB5A288, ItemComb.Voltage.EV),
+    VENUS(103, "venus", true, Materials2Materials.NULL, 65, 0x120E07, 0x272010, ItemComb.Voltage.EV),
+    MOON(104, "moon", true, Materials2Materials.NULL, 90, 0x373735, 0x7E7E78, ItemComb.Voltage.MV),
+    MARS(105, "mars", true, Materials2Materials.NULL, 80, 0x220D05, 0x3A1505, ItemComb.Voltage.MV),
+    JUPITER(106, "jupiter", true, Materials2Materials.NULL, 75, 0x734B2E, 0xD0CBC4, ItemComb.Voltage.MV),
+    SATURN(107, "saturn", true, Materials2Materials.NULL, 55, 0xD2A472, 0xF8C37B, ItemComb.Voltage.IV),
+    URANUS(108, "uranus", true, Materials2Materials.NULL, 45, 0x75C0C9, 0x84D8EC, ItemComb.Voltage.IV),
+    NEPTUNE(109, "neptune", true, Materials2Materials.NULL, 35, 0x334CFF, 0x576DFF, ItemComb.Voltage.IV),
+    PLUTO(110, "pluto", true, Materials2Materials.NULL, 25, 0x34271E, 0x69503D, ItemComb.Voltage.LuV),
+    HAUMEA(111, "haumea", true, Materials2Materials.NULL, 20, 0x1C1413, 0x392B28, ItemComb.Voltage.LuV),
+    MAKEMAKE(112, "makemake", true, Materials2Materials.NULL, 20, 0x301811, 0x120A07, ItemComb.Voltage.LuV),
+    CENTAURI(113, "centauri", true, Materials2Materials.NULL, 15, 0x2F2A14, 0xB06B32, ItemComb.Voltage.ZPM),
+    TCETI(114, "tceti", true, Materials2Materials.NULL, 10, 0x46241A, 0x7B412F, ItemComb.Voltage.ZPM),
+    BARNARDA(115, "barnarda", true, Materials2Materials.NULL, 10, 0x0D5A0D, 0xE6C18D, ItemComb.Voltage.ZPM),
+    VEGA(116, "vega", true, Materials2Materials.NULL, 10, 0x1A2036, 0xB5C0DE, ItemComb.Voltage.ZPM),
 
     // Infinity
     COSMICNEUTRONIUM(117, "cosmic_neutronium", true, Materials2Materials.CosmicNeutronium, 5, 0x484848, 0x323232,
@@ -175,25 +175,25 @@ public enum CombType {
     INFINITY(119, "infinity", true, Materials2Materials.Infinity, 1, 0xFFFFFF, 0xFFFFFF, ItemComb.Voltage.UEV),
 
     // HEE
-    ENDDUST(120, "end_dust", true, Materials._NULL, 50, 0x003A7D, 0xCC00FA, ItemComb.Voltage.HV),
-    ECTOPLASMA(121, "ectoplasma", true, Materials._NULL, 35, 0x381C40, 0xDCB0E5, ItemComb.Voltage.EV),
-    ARCANESHARD(122, "arcane_shard", true, Materials._NULL, 35, 0x333D82, 0x9010AD, ItemComb.Voltage.EV),
-    STARDUST(123, "stardust", true, Materials._NULL, 60, 0xDCBE13, 0xffff00, ItemComb.Voltage.HV),
-    DRAGONESSENCE(124, "dragon_essence", true, Materials._NULL, 30, 0x911ECE, 0xFFA12B, ItemComb.Voltage.IV),
-    ENDERMAN(125, "enderman", true, Materials._NULL, 25, 0x6200e7, 0x161616, ItemComb.Voltage.IV),
-    SILVERFISH(126, "silverfish", true, Materials._NULL, 25, 0x0000000, 0xEE053D, ItemComb.Voltage.EV),
-    ENDIUM(127, "endium", true, Materials.Endium, 50, 0x2F5A6C, 0xa0ffff, ItemComb.Voltage.HV),
-    RUNEI(128, "rune_type_1", true, Materials._NULL, 10, 0x0104D9, 0xE31010, ItemComb.Voltage.IV),
-    RUNEII(129, "rune_type_2", true, Materials._NULL, 10, 0xE31010, 0x0104D9, ItemComb.Voltage.IV),
-    FIREESSENSE(130, "fire_essence", true, Materials._NULL, 30, 0xFFA157, 0xD41238, ItemComb.Voltage.IV),
+    ENDDUST(120, "end_dust", true, Materials2Materials.NULL, 50, 0x003A7D, 0xCC00FA, ItemComb.Voltage.HV),
+    ECTOPLASMA(121, "ectoplasma", true, Materials2Materials.NULL, 35, 0x381C40, 0xDCB0E5, ItemComb.Voltage.EV),
+    ARCANESHARD(122, "arcane_shard", true, Materials2Materials.NULL, 35, 0x333D82, 0x9010AD, ItemComb.Voltage.EV),
+    STARDUST(123, "stardust", true, Materials2Materials.NULL, 60, 0xDCBE13, 0xffff00, ItemComb.Voltage.HV),
+    DRAGONESSENCE(124, "dragon_essence", true, Materials2Materials.NULL, 30, 0x911ECE, 0xFFA12B, ItemComb.Voltage.IV),
+    ENDERMAN(125, "enderman", true, Materials2Materials.NULL, 25, 0x6200e7, 0x161616, ItemComb.Voltage.IV),
+    SILVERFISH(126, "silverfish", true, Materials2Materials.NULL, 25, 0x0000000, 0xEE053D, ItemComb.Voltage.EV),
+    ENDIUM(127, "endium", true, Materials2Materials.HeeEndium, 50, 0x2F5A6C, 0xa0ffff, ItemComb.Voltage.HV),
+    RUNEI(128, "rune_type_1", true, Materials2Materials.NULL, 10, 0x0104D9, 0xE31010, ItemComb.Voltage.IV),
+    RUNEII(129, "rune_type_2", true, Materials2Materials.NULL, 10, 0xE31010, 0x0104D9, ItemComb.Voltage.IV),
+    FIREESSENSE(130, "fire_essence", true, Materials2Materials.NULL, 30, 0xFFA157, 0xD41238, ItemComb.Voltage.IV),
     CRYOLITE(131, "cryolite", true, Materials2Materials.Cryolite, 90, 0xBFEFFF, 0x73B9D0, ItemComb.Voltage.LV),
     // (NOBLE) GAS LINE
     HELIUM(132, "helium", true, Materials2Materials.Helium, 90, 0xFFA9FF, 0xFFFFC3, ItemComb.Voltage.HV),
     ARGON(133, "argon", true, Materials2Materials.Argon, 95, 0x89D9E1, 0x160822, ItemComb.Voltage.MV),
     // XENON, NEON and KRYPTON Fluid extractor Recipes are located in GT_MachineRecipeLoader.java
-    XENON(134, "xenon", true, Materials._NULL, 85, 0x160822, 0x8A97B0, ItemComb.Voltage.IV),
-    NEON(135, "neon", true, Materials._NULL, 90, 0xFF7200, 0xFFC826, ItemComb.Voltage.IV),
-    KRYPTON(136, "krypton", true, Materials._NULL, 85, 0x160822, 0x8A97B0, ItemComb.Voltage.IV),
+    XENON(134, "xenon", true, Materials2Materials.NULL, 85, 0x160822, 0x8A97B0, ItemComb.Voltage.IV),
+    NEON(135, "neon", true, Materials2Materials.NULL, 90, 0xFF7200, 0xFFC826, ItemComb.Voltage.IV),
+    KRYPTON(136, "krypton", true, Materials2Materials.NULL, 85, 0x160822, 0x8A97B0, ItemComb.Voltage.IV),
     NITROGEN(137, "nitrogen", true, Materials2Materials.Nitrogen, 100, 0xA52A2A, 0xFFC832, ItemComb.Voltage.MV),
     OXYGEN(138, "oxygen", true, Materials2Materials.Oxygen, 100, 0x8F8FFF, 0xFFFFFF, ItemComb.Voltage.MV),
     HYDROGEN(139, "hydrogen", true, Materials2Materials.Hydrogen, 100, 0xFF1493, 0xFFFFFF, ItemComb.Voltage.MV),
@@ -202,30 +202,32 @@ public enum CombType {
     PHOSPHORUS(140, "phosphorus", true, Materials2Materials.Phosphorus, 100, 0xC1C1F6, 0xFFC826, ItemComb.Voltage.HV),
     MICA(141, "mica", true, Materials2Materials.Mica, 100, 0x8A97B0, 0x2F3641, ItemComb.Voltage.HV),
     // Seaweed is located in the planet line
-    SEAWEED(142, "seaweed", true, Materials._NULL, 90, 0x83FF83, 0xCBCBCB, ItemComb.Voltage.UV),
+    SEAWEED(142, "seaweed", true, Materials2Materials.NULL, 90, 0x83FF83, 0xCBCBCB, ItemComb.Voltage.UV),
     // just Walrus
-    WALRUS(143, "walrus", true, Materials._NULL, 100, 0xB5CFC9, 0xD6D580, ItemComb.Voltage.LV),
+    WALRUS(143, "walrus", true, Materials2Materials.NULL, 100, 0xB5CFC9, 0xD6D580, ItemComb.Voltage.LV),
     // TC infused Air shards line. Recipes in GT_MachineRecipeLoader.java Lines 1500+ + Nether/Endershard
-    INFUSEDAER(144, "infused_air", true, Materials._NULL, 100, 0x60602F, 0xFFFF7E, ItemComb.Voltage.LV),
-    INFUSEDTERRA(145, "infused_terra", true, Materials._NULL, 100, 0x003300, 0x008600, ItemComb.Voltage.LV),
-    INFUSEDIGNIS(146, "infused_ignis", true, Materials._NULL, 100, 0x3B0E00, 0xED3801, ItemComb.Voltage.LV),
-    INFUSEDAQUA(147, "infused_aqua", true, Materials._NULL, 100, 0x002542, 0x0090FF, ItemComb.Voltage.LV),
-    INFUSEDORDO(148, "infused_ordo", true, Materials._NULL, 100, 0x5C5F62, 0x8A97B0, ItemComb.Voltage.LV),
-    INFUSEDPERDITIO(149, "infused_perditio", true, Materials._NULL, 100, 0x232129, 0x2E2E41, ItemComb.Voltage.LV),
+    INFUSEDAER(144, "infused_air", true, Materials2Materials.NULL, 100, 0x60602F, 0xFFFF7E, ItemComb.Voltage.LV),
+    INFUSEDTERRA(145, "infused_terra", true, Materials2Materials.NULL, 100, 0x003300, 0x008600, ItemComb.Voltage.LV),
+    INFUSEDIGNIS(146, "infused_ignis", true, Materials2Materials.NULL, 100, 0x3B0E00, 0xED3801, ItemComb.Voltage.LV),
+    INFUSEDAQUA(147, "infused_aqua", true, Materials2Materials.NULL, 100, 0x002542, 0x0090FF, ItemComb.Voltage.LV),
+    INFUSEDORDO(148, "infused_ordo", true, Materials2Materials.NULL, 100, 0x5C5F62, 0x8A97B0, ItemComb.Voltage.LV),
+    INFUSEDPERDITIO(149, "infused_perditio", true, Materials2Materials.NULL, 100, 0x232129, 0x2E2E41,
+        ItemComb.Voltage.LV),
     FLUORINE(150, "fluorine", true, Materials2Materials.Fluorine, 100, 0xFF6D00, 0x86AFF0, ItemComb.Voltage.MV),
     BEDROCKIUM(151, "bedrockium", true, Materials2Materials.Bedrockium, 100, 0xC6C6C6, 0x0C0C0C, ItemComb.Voltage.EV),
     NETHERSHARD(152, "nether_shard", true, Materials2Materials.Netherrack, 100, 0x350211, 0xBE0135,
         ItemComb.Voltage.HV),
     ENDERSHARD(153, "ender_shard", true, Materials2Materials.EnderEye, 100, 0x232129, 0x2E2E41, ItemComb.Voltage.HV),
-    CAELESTISRED(154, "caelestis_red", true, Materials._NULL, 100, 0xFF0000, 0xFF00FF, ItemComb.Voltage.LV),
-    CAELESTISGREEN(155, "caelestis_green", true, Materials._NULL, 100, 0x00FF00, 0xB233FF, ItemComb.Voltage.LV),
-    CAELESTISBLUE(156, "caelestis_blue", true, Materials._NULL, 100, 0x0000FF, 0xFF99A5, ItemComb.Voltage.LV),
-    UNKNOWNLIQUID(157, "unknown_liquid", true, Materials._NULL, 100, 0x36ABFF, 0x4333A5, ItemComb.Voltage.ZPM),
+    CAELESTISRED(154, "caelestis_red", true, Materials2Materials.NULL, 100, 0xFF0000, 0xFF00FF, ItemComb.Voltage.LV),
+    CAELESTISGREEN(155, "caelestis_green", true, Materials2Materials.NULL, 100, 0x00FF00, 0xB233FF,
+        ItemComb.Voltage.LV),
+    CAELESTISBLUE(156, "caelestis_blue", true, Materials2Materials.NULL, 100, 0x0000FF, 0xFF99A5, ItemComb.Voltage.LV),
+    UNKNOWNLIQUID(157, "unknown_liquid", true, Materials2Materials.NULL, 100, 0x36ABFF, 0x4333A5, ItemComb.Voltage.ZPM),
     // ESSENTIA gets a use soon. Dont remove.
-    ESSENTIA(158, "essentia", true, Materials._NULL, 100, 0xED3601, 0xFF6D50, ItemComb.Voltage.MV),
+    ESSENTIA(158, "essentia", true, Materials2Materials.NULL, 100, 0xED3601, 0xFF6D50, ItemComb.Voltage.MV),
     INDIUM(159, "indium", true, Materials2Materials.Indium, 100, 0x8F5D99, 0xFFA9FF, ItemComb.Voltage.ZPM),
     BLIZZ(160, "blizz", true, Materials2Materials.Blizz, 50, 0xFF99A5, 0x5af7ff, ItemComb.Voltage.MV),
-    KEVLAR(161, "kevlar", true, Materials._NULL, 50, 0xa2baa3, 0x2d542f, ItemComb.Voltage.MV),
+    KEVLAR(161, "kevlar", true, Materials2Materials.NULL, 50, 0xa2baa3, 0x2d542f, ItemComb.Voltage.MV),
     DRACONIC(162, "draconium", true, Materials2Materials.Draconium, 50, 0x161616, 0x6200e7, ItemComb.Voltage.MV),
     AWAKENEDDRACONIUM(163, "awakened_draconium", true, Materials2Materials.DraconiumAwakened, 50, 0xD41238, 0xFFA157,
         ItemComb.Voltage.MV),
@@ -235,22 +237,23 @@ public enum CombType {
     // Additions to rare metals, moved here so we don't shift all comb IDs
     NEODYMIUM(166, "neodymium", true, Materials2Materials.Neodymium, 50, 0x555555, 0x4F4F4F, ItemComb.Voltage.HV),
     EUROPIUM(167, "europium", true, Materials2Materials.Europium, 10, 0xDAA0E2, 0xAB7EB1, ItemComb.Voltage.LuV),
-    MACHINIST(168, "machinist", true, Materials._NULL, 100, 0x552582, 0xFDB927, ItemComb.Voltage.MV),
-    NETHERITE(169, "netherite", true, Materials._NULL, 10, 0x31292a, 0xada9aa, ItemComb.Voltage.LuV),
+    MACHINIST(168, "machinist", true, Materials2Materials.NULL, 100, 0x552582, 0xFDB927, ItemComb.Voltage.MV),
+    NETHERITE(169, "netherite", true, Materials2Materials.NULL, 10, 0x31292a, 0xada9aa, ItemComb.Voltage.LuV),
     // Gem Addition
-    PRISMATIC(170, "prismatic", true, Materials._NULL, 10, 0x117777, 0xcfe4e4, ItemComb.Voltage.UHV),
-    REFINEDRAREEARTH(171, "refined_rare_earth", true, Materials._NULL, 85, 0x160822, 0x8A97B0, ItemComb.Voltage.IV),
+    PRISMATIC(170, "prismatic", true, Materials2Materials.NULL, 10, 0x117777, 0xcfe4e4, ItemComb.Voltage.UHV),
+    REFINEDRAREEARTH(171, "refined_rare_earth", true, Materials2Materials.NULL, 85, 0x160822, 0x8A97B0,
+        ItemComb.Voltage.IV),
     // Metals Addition
     PYRITE(172, "pyrite", true, Materials2Materials.Pyrite, 100, 0xB67206, 0x654004, ItemComb.Voltage.HV),
     // Botania Line
     MANASTEEL(173, "manasteel", true, Materials2Materials.Manasteel, 50, 0x4BAFFB, 0xCEEAFD, ItemComb.Voltage.LV),
-    MMM(174, "M-M-M", true, Materials._NULL, 50, 0x3F9B7B, 0x76FFCF, ItemComb.Voltage.EV),
-    ELVEN(175, "elven", true, Materials._NULL, 50, 0xC72ED9, 0xEFBFF9, ItemComb.Voltage.EV),
+    MMM(174, "M-M-M", true, Materials2Materials.NULL, 50, 0x3F9B7B, 0x76FFCF, ItemComb.Voltage.EV),
+    ELVEN(175, "elven", true, Materials2Materials.NULL, 50, 0xC72ED9, 0xEFBFF9, ItemComb.Voltage.EV),
     TERRASTEEL(176, "terrasteel", true, Materials2Materials.Terrasteel, 50, 0x51BA00, 0xAEFF6B, ItemComb.Voltage.IV),
     GAIASPIRIT(177, "gaia_spirit", true, Materials2Materials.GaiaSpirit, 50, 0x758997, 0xB7D6EB, ItemComb.Voltage.LuV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
-    _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
+    _NULL(-1, "INVALIDCOMB", false, Materials2Materials.NULL, 0, 0, 0, null);
 
     public boolean showInList;
     public final ItemComb.Voltage voltage;
@@ -260,10 +263,6 @@ public enum CombType {
     private final int id;
     private final String name;
     private final int[] color;
-
-    CombType(int id, String pName, boolean show, IOreMaterial material, int chance, int color1, int color2) {
-        this(id, pName, show, material, chance, color1, color2, null);
-    }
 
     CombType(int id, String pName, boolean show, Material material, int chance, int color1, int color2,
         ItemComb.Voltage voltage) {

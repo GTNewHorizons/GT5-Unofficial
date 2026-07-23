@@ -1388,7 +1388,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Bottle_Milk.ID,
                 "gt.item.bottle.milk.name",
                 "gt.item.bottle.milk.tooltip",
-                OrePrefixes.bottle.ingredient(Materials.Milk),
+                OrePrefixes.bottle.ingredient(Materials2Materials.Milk),
                 new GTFoodStat(
                     0,
                     0.0F,
@@ -1405,7 +1405,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Bottle_Holy_Water.ID,
                 "gt.item.bottle.holy_water.name",
                 "gt.item.bottle.holy_water.tooltip",
-                OrePrefixes.bottle.ingredient(Materials.HolyWater),
+                OrePrefixes.bottle.ingredient(Materials2Materials.HolyWater),
                 new GTFoodStat(
                     0,
                     0.0F,
@@ -1469,7 +1469,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                     7,
                     0.5F,
                     EnumAction.eat,
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials2Materials.Paper, 1L),
                     false,
                     true,
                     false),
@@ -1640,7 +1640,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
-                new ItemData(Materials.Cheese, 907200L)));
+                new ItemData(Materials2Materials.Cheese, 907200L)));
         ItemList.Food_Burger_Meat.set(
             addItemWithLocalizationKeys(
                 Food_Burger_Meat.ID,

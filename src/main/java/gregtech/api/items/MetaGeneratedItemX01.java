@@ -14,7 +14,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -149,7 +151,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
         int aMetaData = getDamage(aStack);
         return aMetaData < GregTechAPI.sGeneratedMaterials.length && GregTechAPI.sGeneratedMaterials[aMetaData] != null
             ? GregTechAPI.sGeneratedMaterials[aMetaData].mRGBa
-            : Materials._NULL.mRGBa;
+            : MU.rgba(Materials2Materials.NULL);
     }
 
     @Override
