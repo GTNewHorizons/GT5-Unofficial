@@ -32,6 +32,7 @@ import gregtech.api.material.FluidRef;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
 
@@ -329,11 +330,11 @@ public class LegacyMaterials {
     private static void wireFluids(Materials material, Material ml) {
         FluidNames legacyFluids = ml.getProperty(GTMaterialProperties.LEGACY_FLUIDS);
         if (legacyFluids != null) {
-            material.mSolid = resolveFluid(legacyFluids.solid(), material, true);
-            material.mFluid = resolveFluid(legacyFluids.fluid(), material, true);
-            material.mGas = resolveFluid(legacyFluids.gas(), material, true);
-            material.mPlasma = resolveFluid(legacyFluids.plasma(), material, true);
-            material.mStandardMoltenFluid = resolveFluid(legacyFluids.molten(), material, true);
+            material.mSolid = resolveFluid(legacyFluids.solid(), material, ml);
+            material.mFluid = resolveFluid(legacyFluids.fluid(), material, ml);
+            material.mGas = resolveFluid(legacyFluids.gas(), material, ml);
+            material.mPlasma = resolveFluid(legacyFluids.plasma(), material, ml);
+            material.mStandardMoltenFluid = resolveFluid(legacyFluids.molten(), material, ml);
         }
         List<FluidRef> hydroCracked = ml.getProperty(GTMaterialProperties.CRACKED_HYDRO_FLUIDS);
         if (hydroCracked != null) material.setHydroCrackedFluids(resolveFluids(hydroCracked, material));
@@ -343,11 +344,14 @@ public class LegacyMaterials {
 
     private static Fluid[] resolveFluids(List<FluidRef> refs, Materials material) {
         Fluid[] fluids = new Fluid[refs.size()];
-        for (int i = 0; i < refs.size(); i++) fluids[i] = resolveFluid(refs.get(i), material, false);
+        for (int i = 0; i < refs.size(); i++) fluids[i] = resolveFluid(refs.get(i), material, null);
         return fluids;
     }
 
-    private static Fluid resolveFluid(FluidRef ref, Materials material, boolean trackInFluidMap) {
+    /// A non-null `mlForFluidMaps` tracks the resolved fluid in both fluid-to-material maps
+    /// (`Materials#FLUID_MAP` and its [MU#recordFluidMaterial] twin); the cracked-fluid arrays pass null,
+    /// matching the legacy map they were never tracked in.
+    private static Fluid resolveFluid(FluidRef ref, Materials material, Material mlForFluidMaps) {
         if (ref == null) return null;
         Fluid fluid = FluidRegistry.getFluid(ref.name());
         if (fluid == null) {
@@ -357,7 +361,10 @@ public class LegacyMaterials {
                     + material.mName
                     + "; MaterialLib should have registered every material fluid before Materials.init() runs");
         }
-        if (trackInFluidMap) Materials.FLUID_MAP.put(fluid, material);
+        if (mlForFluidMaps != null) {
+            Materials.FLUID_MAP.put(fluid, material);
+            MU.recordFluidMaterial(fluid, mlForFluidMaps);
+        }
         return fluid;
     }
 

@@ -5,11 +5,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Nullable;
@@ -87,6 +91,22 @@ public class MU {
             if (ml != null) return ml;
         }
         return MaterialLibAPI.getMaterial("gregtech", material.getInternalName());
+    }
+
+    /// The MaterialLib material a legacy `Materials.get(name)` lookup cuts over to, or null on a miss --
+    /// replacing the `_NULL` sentinel with null. Resolves through [#material]'s exact chain, keyed by the
+    /// name directly: the [Materials2Materials]-field map (keyed by legacy internal name), then the
+    /// MaterialLib registry for the shapeless marker backings without a declared field
+    /// ([gregtech.loaders.materials.LegacyMarkerMaterials], [gregtech.loaders.materials.
+    /// RecognitionMaterials]). `Materials.get` keys its map by `Materials#mName` -- the same string
+    /// [#internalName] yields -- so any name it resolves to a facade resolves here to that facade's
+    /// [#material]. Marker names `Materials.get` cannot resolve (the superconductors kept out of
+    /// `getMaterialsMap`, the `RecognitionMarker`-typed fields) resolve here to their registered backing.
+    public static @Nullable Material byLegacyName(@Nullable String name) {
+        if (name == null) return null;
+        Material found = legacyNamedMaterials().get(name);
+        if (found != null) return found;
+        return MaterialLibAPI.getMaterial("gregtech", name);
     }
 
     /// The cutover MaterialLib stack for a legacy (prefix, material) pair, or null when either side has no
@@ -203,13 +223,67 @@ public class MU {
         return MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) amount);
     }
 
-    /// [#molten], for `Materials#mGas`/`Materials#getGas` -- the [Materials2FluidShapes#fluidGas] Forge fluid.
-    /// Every current call site this replaces is gated on [GTMaterialFlag#ICE_ORE], which only canonical
-    /// (script-generated [Materials2Materials]) entries ever carry, so only `LegacyMaterials#build`'s
-    /// `wireFluids` population needs to match -- the same name-based Forge fluid resolution as [#molten].
+    /// The legacy `Materials#mFluid`-backed `Materials#getFluid` stack for a material, or null when it carries
+    /// no fluid slot. Resolved from [GTMaterialProperties#LEGACY_FLUIDS]'s `fluid()` slot by Forge fluid name
+    /// -- the exact resolution `LegacyMaterials#wireFluids` assigns `mFluid` from -- NOT from a
+    /// [Materials2FluidShapes#fluidLiquid] shape lookup: a material whose legacy fluid is a vanilla or foreign
+    /// Forge fluid (`Water` -> `water`, `Milk` -> `milk`) carries the slot without any ML fluid shape, so a
+    /// shape-based lookup would miss it.
+    public static @Nullable FluidStack fluid(@Nullable Material material, long amount) {
+        Fluid fluid = fluidOf(material);
+        return fluid == null ? null : new FluidStack(fluid, (int) amount);
+    }
+
+    /// [#fluid]'s raw [Fluid] -- the legacy `Materials#mFluid` field value itself, for presence gates and
+    /// callers building their own stacks.
+    public static @Nullable Fluid fluidOf(@Nullable Material material) {
+        return slotFluid(material, FluidNames::fluid);
+    }
+
+    /// [#fluid], for `Materials#mGas`/`Materials#getGas` -- the `gas()` slot. Wherever the former
+    /// [Materials2FluidShapes#fluidGas] shape lookup succeeded this resolves the identical fluid: a material
+    /// only generates that shape when it carries the slot ([Materials2FluidShapes]'s `requireRef` fails fluid
+    /// registration otherwise), and the shape registers its Forge fluid under the slot's own name. The slot
+    /// additionally covers materials whose legacy gas fluid never became an ML shape.
     public static @Nullable FluidStack gas(@Nullable Material material, long amount) {
-        if (material == null || !material.hasShape(Materials2FluidShapes.fluidGas)) return null;
-        return MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidGas, (int) amount);
+        Fluid fluid = slotFluid(material, FluidNames::gas);
+        return fluid == null ? null : new FluidStack(fluid, (int) amount);
+    }
+
+    /// [#fluid], for `Materials#mPlasma`/`Materials#getPlasma` -- the `plasma()` slot.
+    public static @Nullable FluidStack plasma(@Nullable Material material, long amount) {
+        Fluid fluid = slotFluid(material, FluidNames::plasma);
+        return fluid == null ? null : new FluidStack(fluid, (int) amount);
+    }
+
+    /// [#fluid], for `Materials#mSolid`/`Materials#getSolid` -- the `solid()` slot.
+    public static @Nullable FluidStack solid(@Nullable Material material, long amount) {
+        Fluid fluid = slotFluid(material, FluidNames::solid);
+        return fluid == null ? null : new FluidStack(fluid, (int) amount);
+    }
+
+    private static @Nullable Fluid slotFluid(@Nullable Material material, Function<FluidNames, FluidRef> slot) {
+        if (material == null) return null;
+        FluidNames legacyFluids = material.getProperty(GTMaterialProperties.LEGACY_FLUIDS);
+        if (legacyFluids == null) return null;
+        FluidRef ref = slot.apply(legacyFluids);
+        return ref == null ? null : FluidRegistry.getFluid(ref.name());
+    }
+
+    private static final Map<Fluid, Material> fluidMaterials = new LinkedHashMap<>();
+
+    /// Records that `fluid` was registered for `material` -- the [Material]-side twin of
+    /// `Materials#FLUID_MAP`, written at the same two points (`LegacyMaterials`'s fluid wiring and
+    /// `GTFluid#configureMaterials`). A `FLUID_MAP` entry whose legacy material has no MaterialLib
+    /// counterpart is not mirrored here, so readers null-check exactly as they do against `FLUID_MAP`.
+    public static void recordFluidMaterial(Fluid fluid, Material material) {
+        fluidMaterials.put(fluid, material);
+    }
+
+    /// The material [#recordFluidMaterial] recorded for a fluid -- the `Materials#getGtMaterialFromFluid`/
+    /// `FLUID_MAP` lookup on the [Material] side. Null when no recorded material owns the fluid.
+    public static @Nullable Material materialOfFluid(@Nullable Fluid fluid) {
+        return fluid == null ? null : fluidMaterials.get(fluid);
     }
 
     /// The legacy [Materials] a MaterialLib material was ported from, or null if it has none.
@@ -301,6 +375,11 @@ public class MU {
     /// [#mass], for `Materials#getProtons()`/[MaterialAtomics#protons].
     public static long protons(@Nullable Material material) {
         return material == null ? Element.Tc.getProtons() : MaterialAtomics.protons(material);
+    }
+
+    /// [#mass], for `Materials#getNeutrons()`/[MaterialAtomics#neutrons].
+    public static long neutrons(@Nullable Material material) {
+        return material == null ? Element.Tc.getNeutrons() : MaterialAtomics.neutrons(material);
     }
 
     /// The legacy `Materials#mOreByProducts` list for a material, resolved from
@@ -409,6 +488,46 @@ public class MU {
         if (material == null) return 0;
         Integer tierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
         return tierEU == null ? 0 : tierEU;
+    }
+
+    /// The legacy `Materials#mDurability` tool durability for a material, or `0` if unset -- the same default
+    /// `LegacyMaterials#build` feeds `MaterialBuilder#setTool` when [GTMaterialProperties#DURABILITY] is
+    /// absent, itself mirroring `mDurability`'s own field default.
+    public static int durability(@Nullable Material material) {
+        if (material == null) return 0;
+        Integer durability = material.getProperty(GTMaterialProperties.DURABILITY);
+        return durability == null ? 0 : durability;
+    }
+
+    /// [#durability], for `Materials#mToolQuality`/[GTMaterialProperties#TOOL_QUALITY].
+    public static int toolQuality(@Nullable Material material) {
+        if (material == null) return 0;
+        Integer toolQuality = material.getProperty(GTMaterialProperties.TOOL_QUALITY);
+        return toolQuality == null ? 0 : toolQuality;
+    }
+
+    /// [#durability], for `Materials#mToolSpeed`/[GTMaterialProperties#TOOL_SPEED] -- absent defaults to
+    /// `1.0f`, the `setTool` default `LegacyMaterials#build` passes and `mToolSpeed`'s own field default.
+    public static float toolSpeed(@Nullable Material material) {
+        if (material == null) return 1.0f;
+        Float toolSpeed = material.getProperty(GTMaterialProperties.TOOL_SPEED);
+        return toolSpeed == null ? 1.0f : toolSpeed;
+    }
+
+    /// The legacy `Materials#mHeatDamage` for a material, or `0` if unset -- mirrors `MaterialBuilder`'s own
+    /// default (`LegacyMaterials#build` only calls `setHeatDamage` when [GTMaterialProperties#HEAT_DAMAGE] is
+    /// present).
+    public static float heatDamage(@Nullable Material material) {
+        if (material == null) return 0f;
+        Float heatDamage = material.getProperty(GTMaterialProperties.HEAT_DAMAGE);
+        return heatDamage == null ? 0f : heatDamage;
+    }
+
+    /// The legacy `Materials#mUnifiable` flag for a material -- `true` unless [GTMaterialProperties#UNIFIABLE]
+    /// is explicitly `false`, mirroring `MaterialBuilder`'s `true` default (`LegacyMaterials#build` only calls
+    /// `setUnifiable(false)` on an explicit `false`).
+    public static boolean unifiable(@Nullable Material material) {
+        return material == null || !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE));
     }
 
     /// The legacy `Materials#mFuelPower` fuel value for a material, or `0` if unset -- mirrors
@@ -676,6 +795,15 @@ public class MU {
         return legacyName != null ? legacyName : material.getName();
     }
 
+    /// The legacy `Materials#mDefaultLocalName` display name for a material --
+    /// [GTMaterialProperties#LOCAL_NAME] when present, otherwise the registration name, the exact fallback
+    /// `LegacyMaterials#build` feeds `setDefaultLocalName`. Null when `material` is null.
+    public static @Nullable String localName(@Nullable Material material) {
+        if (material == null) return null;
+        String localName = material.getProperty(GTMaterialProperties.LOCAL_NAME);
+        return localName != null ? localName : material.getName();
+    }
+
     /// The [Element] a MaterialLib material's [GTMaterialProperties#ELEMENT] names, or null when it carries none.
     public static @Nullable Element element(@Nullable Material material) {
         if (material == null) return null;
@@ -726,6 +854,41 @@ public class MU {
             Material resolved = entry.material()
                 .resolve();
             if (resolved != null) list.add(new MaterialStack(resolved, entry.amount()));
+        }
+        return list;
+    }
+
+    /// The legacy `Materials#mAspects` Thaumcraft aspect list for a material, as [AspectRefStack]s. An
+    /// explicit [GTMaterialProperties#ASPECTS] list is returned as-is (the legacy builder's `addAspect`
+    /// path); without one, a composed material derives its aspects exactly as `Materials`'s constructor
+    /// does -- each component's own aspects merged in first-seen order with amounts summed per aspect, then
+    /// divided by the density-scaled component count, minimum `1` each. Empty when neither source applies,
+    /// mirroring the legacy field's empty-list default.
+    public static List<AspectRefStack> aspects(@Nullable Material material) {
+        if (material == null) return Collections.emptyList();
+        List<AspectRefStack> aspects = material.getProperty(GTMaterialProperties.ASPECTS);
+        if (aspects != null) return aspects;
+        List<MaterialRefStack> composition = material.getProperty(GTMaterialProperties.COMPOSITION);
+        if (composition == null || composition.isEmpty()) return Collections.emptyList();
+        Map<String, Long> merged = new LinkedHashMap<>();
+        long components = 0;
+        for (MaterialRefStack entry : composition) {
+            components += entry.amount();
+            Material component = entry.material()
+                .resolve();
+            if (component == null) continue;
+            for (AspectRefStack aspect : aspects(component)) {
+                if (aspect.amount() == 0) continue;
+                merged.merge(aspect.name(), (long) aspect.amount(), Long::sum);
+            }
+        }
+        Integer multiplier = material.getProperty(GTMaterialProperties.DENSITY_MULTIPLIER);
+        Integer divider = material.getProperty(GTMaterialProperties.DENSITY_DIVIDER);
+        components = components * (multiplier == null ? 1 : multiplier) / (divider == null ? 1 : divider);
+        long divisor = Math.max(1, components);
+        List<AspectRefStack> list = new ArrayList<>(merged.size());
+        for (Map.Entry<String, Long> entry : merged.entrySet()) {
+            list.add(new AspectRefStack(entry.getKey(), (int) Math.max(1, entry.getValue() / divisor)));
         }
         return list;
     }
