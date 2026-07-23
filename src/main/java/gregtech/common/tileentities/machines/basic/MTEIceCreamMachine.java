@@ -29,6 +29,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
@@ -103,6 +104,11 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.iceCreamMachineRecipes;
+    }
+
+    @Override
+    public byte getTileEntityBaseType() {
+        return HarvestTool.PickaxeLevel2.toTileEntityBaseType();
     }
 
     @Override
