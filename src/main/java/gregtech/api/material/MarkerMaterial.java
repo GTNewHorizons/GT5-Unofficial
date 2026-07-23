@@ -49,8 +49,8 @@ public final class MarkerMaterial implements IOreMaterial {
     private Supplier<Materials> arcSmeltInto;
     private Supplier<Materials> arcSmeltIntoGas;
     /// Transitional link to the shapeless MaterialLib [Material] registered as this marker's backing during
-    /// material registration (see `LegacyMarkerMaterials#registerBackingMaterials` and
-    /// `RecognitionMaterials#registerBackingMaterials`). Null for a marker whose internal name collides with an
+    /// material registration (see `RecognitionMaterials#registerBackingMaterials`). Null for a marker whose
+    /// internal name collides with an
     /// existing MaterialLib material, which is left unbacked rather than merged into it. Exists so consumers can
     /// migrate off [MarkerMaterial] onto the unified [Material] registry.
     private Material backingMaterial;
