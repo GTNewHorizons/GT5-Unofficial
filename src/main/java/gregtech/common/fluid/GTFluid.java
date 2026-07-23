@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.ShapeItem;
 
 import gregtech.api.GregTechAPI;
@@ -27,6 +28,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.fluid.IGTFluid;
 import gregtech.api.interfaces.fluid.IGTRegisteredFluid;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
@@ -209,6 +211,10 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
                 default -> material.mFluid = registeredFluid;
             }
             Materials.FLUID_MAP.put(registeredFluid, material);
+            // The MU twin only carries ML-backed materials; a facade-only material's entry lives solely in
+            // FLUID_MAP, whose readers null-check either way.
+            Material ml = MU.material(material);
+            if (ml != null) MU.recordFluidMaterial(registeredFluid, ml);
         }
         return this;
     }
