@@ -18,11 +18,14 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -108,17 +111,13 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final Map<String, Object> vars = new HashMap<>();
+        vars.put("euPerTickX20", formatNumber(EU_PER_TICK * 20));
+        vars.put("euPerTick", EU_PER_TICK);
+        vars.put("steamPerSec", STEAM_PER_SEC);
+        vars.put("oxygenPerSec", OXYGEN_PER_SEC);
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.machine_type"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.desc1"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("kekztech.multiblock.SOFuelCell.desc2", formatNumber(EU_PER_TICK * 20)))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK2.desc3"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK2.desc3b"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("kekztech.multiblock.SOFuelCellMK2.desc4", EU_PER_TICK, STEAM_PER_SEC))
-            .addInfo(StatCollector.translateToLocalFormatted("kekztech.multiblock.SOFuelCell.desc5", OXYGEN_PER_SEC))
+            .addMarkdown(new ResourceLocation("gregtech", "so-fuel-cell-mk2"), vars)
             .beginStructureBlock(3, 3, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("12-31", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
