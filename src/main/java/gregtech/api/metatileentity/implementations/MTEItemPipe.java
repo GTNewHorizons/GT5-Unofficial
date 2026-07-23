@@ -7,8 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.PIPE_RESTRICTOR;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,7 +15,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityHopper;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -29,7 +26,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
@@ -45,9 +41,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.ItemMachines;
 import gregtech.common.blocks.PipeShapeBlock;
 import gregtech.common.blocks.PipeShapeItemBlock;
 import gregtech.common.covers.Cover;
@@ -56,68 +50,15 @@ import gregtech.common.covers.Cover;
 public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPipe, ILocalizedMetaPipeEntity {
 
     private final float mThickNess;
-    private final Materials mMaterial;
-    private final int mStepSize;
-    private final int mTickTime;
     public int mTransferredItems = 0;
     public long mCurrentTransferStartTick = 0;
     public ForgeDirection mLastReceivedFrom = ForgeDirection.UNKNOWN, oLastReceivedFrom = ForgeDirection.UNKNOWN;
     public boolean mIsRestrictive = false;
     private int[] cacheSides;
-    private String mPrefixKey;
-    private String materialKeyOverride;
+    private final String mPrefixKey;
     /// Inventory NBT stashed while the host material was unresolvable (chunk load runs before the world is
     /// bound), applied by [#onShapeMaterialResolved] once the inventory can be sized.
     private NBTTagList pendingInventory;
-
-    public MTEItemPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial,
-        int aInvSlotCount, int aStepSize, boolean aIsRestrictive, int aTickTime) {
-        super(aID, aName, aInvSlotCount, false);
-        this.mPrefixKey = aPrefixKey;
-        mIsRestrictive = aIsRestrictive;
-        mThickNess = aThickNess;
-        mMaterial = aMaterial;
-        mStepSize = aStepSize;
-        mTickTime = aTickTime;
-        addInfo(aID);
-    }
-
-    public MTEItemPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial,
-        int aInvSlotCount, int aStepSize, boolean aIsRestrictive) {
-        this(aID, aName, aPrefixKey, aThickNess, aMaterial, aInvSlotCount, aStepSize, aIsRestrictive, 20);
-    }
-
-    /// The Materials-typed constructor for MaterialLib-typed callers; delegates through [MU#materialOf] so
-    /// pipe identity is unchanged while call sites migrate off the legacy enum.
-    public MTEItemPipe(int aID, String aName, String aPrefixKey, float aThickNess, Material aMaterial,
-        int aInvSlotCount, int aStepSize, boolean aIsRestrictive, int aTickTime) {
-        this(
-            aID,
-            aName,
-            aPrefixKey,
-            aThickNess,
-            MU.materialOf(aMaterial),
-            aInvSlotCount,
-            aStepSize,
-            aIsRestrictive,
-            aTickTime);
-    }
-
-    /// See the MaterialLib-typed nine-argument constructor.
-    public MTEItemPipe(int aID, String aName, String aPrefixKey, float aThickNess, Material aMaterial,
-        int aInvSlotCount, int aStepSize, boolean aIsRestrictive) {
-        this(aID, aName, aPrefixKey, aThickNess, MU.materialOf(aMaterial), aInvSlotCount, aStepSize, aIsRestrictive);
-    }
-
-    public MTEItemPipe(String aName, float aThickNess, Materials aMaterial, int aInvSlotCount, int aStepSize,
-        boolean aIsRestrictive, int aTickTime) {
-        super(aName, aInvSlotCount);
-        mIsRestrictive = aIsRestrictive;
-        mThickNess = aThickNess;
-        mMaterial = aMaterial;
-        mStepSize = aStepSize;
-        mTickTime = aTickTime;
-    }
 
     /// The shape-scoped constructor: identity comes from the hosting [PipeShapeBlock], and material, stats,
     /// and inventory size resolve from the host block's metadata and [Materials2PipeProperties] through
@@ -127,9 +68,6 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
         mPrefixKey = shape.getPrefixKey();
         mIsRestrictive = shape.getFamily() == PipeShapeBlock.PipeFamily.ITEM_RESTRICTIVE;
         mThickNess = shape.getThickness();
-        mMaterial = null;
-        mStepSize = 0;
-        mTickTime = 0;
     }
 
     public MTEItemPipe(String aName, PipeShapeBlock shape) {
@@ -137,15 +75,11 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
         mPrefixKey = shape.getPrefixKey();
         mIsRestrictive = shape.getFamily() == PipeShapeBlock.PipeFamily.ITEM_RESTRICTIVE;
         mThickNess = shape.getThickness();
-        mMaterial = null;
-        mStepSize = 0;
-        mTickTime = 0;
     }
 
     @Override
     public byte getTileEntityBaseType() {
-        final int level = isShapeScoped() ? GTUtility.clamp(MU.toolQuality(shapeMaterial()), 0, 3)
-            : (mMaterial == null) ? 0 : GTUtility.clamp(mMaterial.mToolQuality, 0, 3);
+        final int level = GTUtility.clamp(MU.toolQuality(shapeMaterial()), 0, 3);
 
         HarvestTool tool = switch (level) {
             case 0 -> HarvestTool.WrenchPipeLevel0;
@@ -160,10 +94,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        if (isShapeScoped()) {
-            return new MTEItemPipe(mName, (PipeShapeBlock) getShapeHost());
-        }
-        return new MTEItemPipe(mName, mThickNess, mMaterial, mInventory.length, mStepSize, mIsRestrictive, mTickTime);
+        return new MTEItemPipe(mName, (PipeShapeBlock) getShapeHost());
     }
 
     /// The huge-pipe slot count of the resolved material, or 0 while unresolved.
@@ -214,9 +145,9 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
                 new EntityItem(pipe.getWorldObj(), pipe.xCoord + 0.5, pipe.yCoord + 0.5, pipe.zCoord + 0.5, stack));
     }
 
-    /// The live inventory, resolving the host material first so a shape-scoped pipe is sized before use.
+    /// The live inventory, resolving the host material first so the pipe is sized before use.
     private ItemStack[] inv() {
-        if (isShapeScoped()) shapeMaterial();
+        shapeMaterial();
         return mInventory;
     }
 
@@ -336,12 +267,10 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
         if (GTMod.proxy.gt6Pipe) {
             mConnections = aNBT.getByte("mConnections");
         }
-        if (isShapeScoped()) {
-            if (mInventory.length == 0) {
-                pendingInventory = aNBT.getTagList("Inventory", 10);
-            } else {
-                dropSlotsBeyondInventory(aNBT.getTagList("Inventory", 10));
-            }
+        if (mInventory.length == 0) {
+            pendingInventory = aNBT.getTagList("Inventory", 10);
+        } else {
+            dropSlotsBeyondInventory(aNBT.getTagList("Inventory", 10));
         }
     }
 
@@ -414,139 +343,12 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        // Only trigger if the player is sneaking
-        if (!aPlayer.isSneaking()) {
-            return;
-        }
+        if (!aPlayer.isSneaking()) return;
 
-        // Retrieve the item's MetaTileEntity
         final ItemStack handItem = aPlayer.inventory.getCurrentItem();
         if (handItem == null) return;
 
-        if (isShapeScoped()) {
-            trySwapShape(aBaseMetaTileEntity, aPlayer, handItem);
-            return;
-        }
-
-        IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
-        if (!(meta instanceof MTEItemPipe handPipe) || handPipe.isShapeScoped()) return;
-
-        // Preserve old connections and meta ID
-        byte oldConnections = this.mConnections;
-        short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
-
-        // Nothing to do if the pipe in hand is the very same type
-        if (oldMetaID == (short) handItem.getItemDamage()) return;
-
-        // Create the new item pipe
-        MTEItemPipe newPipe = (MTEItemPipe) handPipe.newMetaEntity(aBaseMetaTileEntity);
-        if (newPipe == null) return;
-
-        // Preserve old connections
-        newPipe.mConnections = oldConnections;
-
-        // Record old pipe parameters
-        int oldCapacity = this.getMaxPipeCapacity();
-        int oldStepSize = this.mStepSize;
-        boolean oldRestrictive = this.mIsRestrictive;
-
-        // Preserve in-flight routing state
-        newPipe.mLastReceivedFrom = this.mLastReceivedFrom;
-        newPipe.oLastReceivedFrom = this.oLastReceivedFrom;
-        newPipe.mTransferredItems = this.mTransferredItems;
-        newPipe.mCurrentTransferStartTick = this.mCurrentTransferStartTick;
-
-        // Move items that are currently in transit into the new pipe.
-        // If the new pipe holds fewer stacks, drop the overflow so nothing is voided.
-        int copyCount = Math.min(this.mInventory.length, newPipe.mInventory.length);
-        for (int i = 0; i < copyCount; i++) {
-            newPipe.mInventory[i] = this.mInventory[i];
-        }
-        for (int i = copyCount; i < this.mInventory.length; i++) {
-            if (this.mInventory[i] != null) {
-                aPlayer.dropPlayerItemWithRandomChoice(this.mInventory[i], false);
-            }
-        }
-
-        // Update to the new pipe
-        aBaseMetaTileEntity.setMetaTileID((short) handItem.getItemDamage());
-        newPipe.setBaseMetaTileEntity(aBaseMetaTileEntity);
-
-        // Construct a change message if needed
-        StringBuilder message = new StringBuilder();
-
-        // Compare item throughput
-        if (oldCapacity != newPipe.getMaxPipeCapacity()) {
-            int newCapacity = newPipe.getMaxPipeCapacity();
-            message.append(oldCapacity)
-                .append(" → ");
-            message.append(newCapacity > oldCapacity ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                .append(newCapacity)
-                .append(" items")
-                .append(EnumChatFormatting.RESET);
-        }
-
-        // Compare routing value (step size)
-        if (oldStepSize != newPipe.mStepSize) {
-            if (message.length() > 0) message.append(" | ");
-            message.append(oldStepSize)
-                .append(" → ");
-            message.append(newPipe.mStepSize > oldStepSize ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                .append(newPipe.mStepSize)
-                .append(" routing")
-                .append(EnumChatFormatting.RESET);
-        }
-
-        // Compare restrictive flag
-        if (oldRestrictive != newPipe.mIsRestrictive) {
-            if (message.length() > 0) message.append(" | ");
-            message.append(newPipe.mIsRestrictive ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
-                .append(newPipe.mIsRestrictive ? "Now Restrictive" : "No Longer Restrictive")
-                .append(EnumChatFormatting.RESET);
-        }
-
-        // Send a chat message if anything changed
-        if (message.length() > 0) {
-            GTUtility.sendChatTrans(aPlayer, "GT5U.item.pipe.swap.s", message.toString());
-        }
-
-        // Force updates to sync changes
-        aBaseMetaTileEntity.markDirty();
-        aBaseMetaTileEntity.issueTextureUpdate();
-        aBaseMetaTileEntity.issueBlockUpdate();
-        aBaseMetaTileEntity.issueTileUpdate();
-
-        // Handle inventory operations unless in creative mode
-        if (!aPlayer.capabilities.isCreativeMode) {
-            ItemStack oldPipe = new ItemStack(handItem.getItem(), 1, oldMetaID);
-            boolean addedToInventory = false;
-
-            // Attempt to stack with existing items
-            for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
-                ItemStack slot = aPlayer.inventory.mainInventory[i];
-                if (slot != null && slot.getItem() == oldPipe.getItem()
-                    && slot.getItemDamage() == oldPipe.getItemDamage()
-                    && slot.stackSize < slot.getMaxStackSize()) {
-                    slot.stackSize++;
-                    addedToInventory = true;
-                    break;
-                }
-            }
-            // Add new stack if stacking failed
-            if (!addedToInventory) {
-                addedToInventory = aPlayer.inventory.addItemStackToInventory(oldPipe);
-            }
-            // If still unsuccessful, drop the item
-            if (!addedToInventory) {
-                aPlayer.dropPlayerItemWithRandomChoice(oldPipe, false);
-            }
-
-            // Decrement the placed pipe from the player's hand
-            handItem.stackSize--;
-            if (handItem.stackSize <= 0) {
-                aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
-            }
-        }
+        trySwapShape(aBaseMetaTileEntity, aPlayer, handItem);
     }
 
     @Override
@@ -656,11 +458,8 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public int getStepSize() {
-        if (isShapeScoped()) {
-            int slots = hugeSlots();
-            return slots <= 0 ? 0 : PipeStats.itemPipeStepSize(slots, getShapeSizeIndex(), mIsRestrictive);
-        }
-        return mStepSize;
+        int slots = hugeSlots();
+        return slots <= 0 ? 0 : PipeStats.itemPipeStepSize(slots, getShapeSizeIndex(), mIsRestrictive);
     }
 
     @Override
@@ -735,23 +534,14 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
         return mThickNess;
     }
 
-    public Materials getPipeMaterial() {
-        if (isShapeScoped()) return MU.materialOf(shapeMaterial());
-        return mMaterial;
-    }
-
     public int getTickTime() {
-        if (isShapeScoped()) {
-            int slots = hugeSlots();
-            return slots <= 0 ? 20 : PipeStats.itemPipeTickTime(slots, getShapeSizeIndex());
-        }
-        return mTickTime;
+        int slots = hugeSlots();
+        return slots <= 0 ? 20 : PipeStats.itemPipeTickTime(slots, getShapeSizeIndex());
     }
 
     @Override
     public Object getMaterial() {
-        if (isShapeScoped()) return shapeMaterial();
-        return mMaterial;
+        return shapeMaterial();
     }
 
     @Override
@@ -761,15 +551,6 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public String getMaterialKeyOverride() {
-        if (isShapeScoped()) return PipeShapeItemBlock.overrideKeyFor(shapeMaterial(), ".itempipe.newname");
-        return materialKeyOverride;
-    }
-
-    public MTEItemPipe renameMaterial(@Nullable String newName) {
-        if (newName == null) return this;
-        final String key = mMaterial.getLocalizedNameKey() + ".itempipe.newname";
-        GTLanguageManager.addStringLocalization(key, newName);
-        this.materialKeyOverride = key;
-        return this;
+        return PipeShapeItemBlock.overrideKeyFor(shapeMaterial(), ".itempipe.newname");
     }
 }

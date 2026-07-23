@@ -144,10 +144,10 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Superconductors;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
@@ -356,7 +356,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Tungsten, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.plate, 4),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 5),
-                Superconductors.LuV.getWireGt04(4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Markers.SuperconductorLuV, 4),
                 new Object[] { Circuits.ZPM.getIngredient(), 4 },
                 ItemList.Emitter_LuV.get(6),
                 MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.wireFine, 32),
@@ -381,7 +381,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.TungstenCarbide, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.plate, 4),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 5),
-                Superconductors.ZPM.getWireGt04(4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Markers.SuperconductorZPM, 4),
                 new Object[] { Circuits.UV.getIngredient(), 4 },
                 ItemList.Emitter_ZPM.get(6),
                 MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.wireFine, 64),
@@ -599,7 +599,7 @@ public class RecipeLoader {
                 new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 4),
                 ItemList.Electric_Pump_LuV.get(2),
                 ItemList.Electric_Motor_LuV.get(4),
-                Superconductors.LuV.getWireGt01(8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Markers.SuperconductorLuV, 8),
                 LanthItemList.BEAMLINE_PIPE,
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 8)
 
