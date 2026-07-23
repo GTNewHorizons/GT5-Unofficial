@@ -570,11 +570,11 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                 && (activeGroup == 0 || (droneConnection.getGroupMask() & (1L << activeGroup)) != 0)) {
                 MTEMultiBlockBase linkedMachine = droneConnection.getLinkedMachine();
                 if (linkedMachine != null) {
-                    linkedMachine.enableWorking();
                     IGregTechTileEntity igte = linkedMachine.getBaseMetaTileEntity();
                     if (igte != null && igte.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
                         GTMod.proxy.powerfailTracker.removePowerfailEvents(igte);
                     }
+                    linkedMachine.enableWorking();
                 }
             }
         }
