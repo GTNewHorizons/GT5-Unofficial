@@ -23,6 +23,8 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -1670,6 +1672,7 @@ public class GTProxy implements IFuelHandler {
             Materials aMaterial = Materials._NULL;
             MarkerMaterial recognitionMarker = null;
             RecognitionMarker recognitionRecord = null;
+            String tName = null;
             if ((aPrefix == OrePrefixes.nugget) && (aMod.equals(Thaumcraft.ID))
                 && (aEvent.Ore.getItem()
                     .getUnlocalizedName()
@@ -1701,7 +1704,7 @@ public class GTProxy implements IFuelHandler {
                     GTOreDictUnificator.registerOre(tNewName, aEvent.Ore);
                     return;
                 }
-                String tName = aEvent.Name.replaceFirst(aPrefix.toString(), "");
+                tName = aEvent.Name.replaceFirst(aPrefix.toString(), "");
                 if (!tName.isEmpty()) {
                     char firstChar = tName.charAt(0);
                     if (Character.isUpperCase(firstChar) || Character.isLowerCase(firstChar)
@@ -1999,7 +2002,7 @@ public class GTProxy implements IFuelHandler {
             }
             GTLog.ore.println(tModToName);
 
-            Material tCensusMaterial = resolveCensusMaterial(aMaterial, recognitionMarker);
+            Material tCensusMaterial = resolveCensusMaterial(tName, aMaterial, recognitionMarker);
             MarkerMaterial tCensusRecognitionMarker = isCensusMarker(recognitionMarker) ? recognitionMarker : null;
             OreDictEventContainer tOre = new OreDictEventContainer(
                 aEvent,
@@ -2031,15 +2034,56 @@ public class GTProxy implements IFuelHandler {
     }
 
     /// The MaterialLib material an ore-dictionary registration's event pipeline carries downstream (the
-    /// [OreDictEventContainer] census and [#registerUnificationEntries]), resolved off the same name lookup
-    /// [#registerOre] already performed: `aMaterial` for a plain name (`Materials.get(tName)`, `_NULL` when
-    /// unresolved), or -- for a recognition marker that [#isCensusMarker] -- that marker's own backing. This is
-    /// the one seam to repoint once GTProxy stops resolving through minted bridge facades.
-    private static Material resolveCensusMaterial(Materials aMaterial, MarkerMaterial recognitionMarker) {
+    /// [OreDictEventContainer] census and [#registerUnificationEntries]) -- for a recognition marker that
+    /// [#isCensusMarker], that marker's own backing; otherwise resolved ML-registry-first, by the same raw
+    /// name [#registerOre] already stripped the prefix down to (`tName`), falling back to `aMaterial`'s
+    /// conversion (`Materials.get(tName)`, `_NULL` when unresolved) when the registry has nothing under that
+    /// exact name, or when `tName` still names a declared [Materials] field (see
+    /// [#hasDeclaredMaterialsField]). The registry-first lookup is the repoint this seam always meant (its own
+    /// prior comment): a name with no [Materials] field at all resolves independent of whether a legacy bridge
+    /// facade exists for it, so a reconstructed werkstoff/gtpp material keeps a census once minting no longer
+    /// mints one.
+    ///
+    /// The declared-field check matters because this runs during {@link #catchUpPreExistingOreDictEntries},
+    /// GT's own preInit -- before mods ordered `required-after:gregtech` (bartworks, gtPlusPlus) have built
+    /// their werkstoff-bridged `Materials` facades. A bridged field like `Materials#WoodSealed` already exists
+    /// as a declared field at that point (so this method can see it), but its value is still unassigned, so
+    /// `aMaterial` resolves to `_NULL` even though the ML registry -- populated independently, during
+    /// MaterialLib's own earlier preInit -- already has the material under that exact name. Preferring the
+    /// registry hit there would give the census a material the legacy `Materials.get(tName)` lookup could not
+    /// have named yet, splitting the two lookups this method must otherwise keep in lockstep with
+    /// [#registerOre]'s own upstream `aMaterial` resolution.
+    private static Material resolveCensusMaterial(@Nullable String tName, Materials aMaterial,
+        MarkerMaterial recognitionMarker) {
         if (isCensusMarker(recognitionMarker)) {
             return MU.toMaterial(recognitionMarker);
         }
+        if (tName != null && !hasDeclaredMaterialsField(tName)) {
+            Material ml = MaterialLibAPI.getMaterial("gregtech", tName);
+            // A shapeless registry hit is a recognition/wildcard backing; those names must keep
+            // resolving through the legacy path so name-only entries retain the _NULL semantics.
+            if (ml != null && !ml.getShapes()
+                .isEmpty()) return ml;
+        }
         return MU.material(aMaterial);
+    }
+
+    private static Set<String> materialsFieldNames;
+
+    /// Whether `name` is a declared `public static Materials` field on [Materials], regardless of whether that
+    /// field has been assigned yet. See [#resolveCensusMaterial] for why the declaration itself, not the
+    /// current value, is the signal this needs.
+    private static boolean hasDeclaredMaterialsField(String name) {
+        if (materialsFieldNames == null) {
+            Set<String> names = new HashSet<>();
+            for (Field field : Materials.class.getFields()) {
+                if (Modifier.isStatic(field.getModifiers()) && field.getType() == Materials.class) {
+                    names.add(field.getName());
+                }
+            }
+            materialsFieldNames = names;
+        }
+        return materialsFieldNames.contains(name);
     }
 
     /// Unifies a foreign ore-dictionary entry whose name resolves to a recognition [MarkerMaterial] instead of a

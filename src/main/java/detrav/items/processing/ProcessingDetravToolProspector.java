@@ -42,10 +42,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
     @Override
     public void registerOre(OrePrefixes aPrefix, Material material, String aOreDictName, String aModName,
         ItemStack aStack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
-        if (!aPrefix.doGenerateItem(legacyMaterial)) return;
+        if (!aPrefix.doGenerateItem(material)) return;
         if (DetravScannerMod.DEBUG_ENABLED) return;
 
         Material steel = MU.material(Materials.Steel);

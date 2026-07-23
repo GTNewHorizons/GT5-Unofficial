@@ -31,11 +31,8 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         if (!MU.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
-            GTRecipeRegistrator.registerWiremillRecipes(legacyMaterial, 100, 4);
+            GTRecipeRegistrator.registerWiremillRecipes(material, 100, 4);
         }
         if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
             && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {

@@ -41,6 +41,17 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
 
     @Override
     public void run(Werkstoff werkstoff) {
+        // Derived from `werkstoff` rather than the bridge facade built below, and run unconditionally here
+        // (not folded into the facade-construction branch), so this keeps registering the display name once
+        // minting stops building that facade for a reconstructed werkstoff -- the key/value are identical to
+        // what the facade would have carried (`Materials#mName`/`#mDefaultLocalName` are set from
+        // `werkstoff#getVarName`/`#getDefaultName` below), and the guard makes this idempotent with
+        // `Werkstoff`'s own constructor-time registration (`GregTechAPI#sAfterGTPreload`), which already wins
+        // this race for every pool-declared werkstoff by running before bartworks' own preInit.
+        if (!StatCollector.canTranslate(werkstoff.getLocalizedNameKey())) {
+            GTLanguageManager.addStringLocalization(werkstoff.getLocalizedNameKey(), werkstoff.getDefaultName());
+        }
+
         final short[] rgba = werkstoff.getRGBA();
         final int argb = (rgba[3] & 0xff) << 24 | (rgba[0] & 0xff) << 16 | (rgba[1] & 0xff) << 8 | rgba[2] & 0xff;
         final Werkstoff.Stats stats = werkstoff.getStats();
@@ -78,11 +89,6 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
         werkstoffBridgeMaterial.mName = werkstoff.getVarName();
         werkstoffBridgeMaterial.mDefaultLocalName = werkstoff.getDefaultName();
         werkstoffBridgeMaterial.setChemicalFormula(werkstoff.getFormulaTooltip(), werkstoff.isFormulaNeededLocalized());
-        if (!StatCollector.canTranslate(werkstoffBridgeMaterial.getLocalizedNameKey())) {
-            GTLanguageManager.addStringLocalization(
-                werkstoffBridgeMaterial.getLocalizedNameKey(),
-                werkstoffBridgeMaterial.mDefaultLocalName);
-        }
         if (Thaumcraft.isModLoaded()) {
             werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
         }
