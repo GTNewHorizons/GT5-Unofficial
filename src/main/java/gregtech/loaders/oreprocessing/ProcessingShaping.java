@@ -52,7 +52,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
 
         // Blacklist materials which are handled by Werkstoff loader
         if (legacyMaterial == Materials.Calcium || legacyMaterial == Materials.Magnesia) return;
@@ -337,7 +336,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .addTo(extruderRecipes);
                     }
                     if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                        && (legacyMaterial.mMaterialInto == legacyMaterial)
                         && !MU.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
                         // If material tier < IV then add manual recipe.
                         Integer ringTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);

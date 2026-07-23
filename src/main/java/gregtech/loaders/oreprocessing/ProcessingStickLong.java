@@ -42,9 +42,6 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         {
             Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
             if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
@@ -117,8 +114,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     .addTo(cutterRecipes);
             }
 
-            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                && (legacyMaterial.mMaterialInto == legacyMaterial)) {
+            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
                 Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
                 if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
@@ -146,8 +142,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                 }
             }
 
-            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                && (legacyMaterial.mMaterialInto == legacyMaterial)) {
+            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
                 Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
                 if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(

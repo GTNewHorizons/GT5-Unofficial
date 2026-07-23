@@ -45,7 +45,6 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
 
         // Blacklist materials which are handled by Werkstoff loader
         if (legacyMaterial == Materials.Salt || legacyMaterial == Materials.RockSalt
@@ -147,8 +146,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
             }
 
-            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                && (legacyMaterial.mMaterialInto == legacyMaterial)) {
+            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
                 Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
                 if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(

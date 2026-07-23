@@ -37,9 +37,6 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         if (!MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             if (GTOreDictUnificator.get(OrePrefixes.bolt, material, 1L) != null) {
                 GTValues.RA.stdBuilder()
@@ -49,8 +46,7 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
                     .eut(calculateRecipeEU(material, 4))
                     .addTo(latheRecipes);
             }
-            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                && (legacyMaterial.mMaterialInto == legacyMaterial)) {
+            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
                 Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
                 if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(

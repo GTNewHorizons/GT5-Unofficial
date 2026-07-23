@@ -31,19 +31,12 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
         if ((processingTierEU == null ? 0 : processingTierEU) >= TierEU.IV) {
             return;
         }
 
         if (Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
-            return;
-        }
-
-        if (legacyMaterial.mMaterialInto != legacyMaterial) {
             return;
         }
 

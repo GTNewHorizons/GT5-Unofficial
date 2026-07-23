@@ -43,10 +43,8 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
 
         if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-            && (legacyMaterial.mMaterialInto == legacyMaterial)
             && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             ItemStack tPlate = GTOreDictUnificator.get(OrePrefixes.plate, material, 4L);
             ItemStack tRing = GTOreDictUnificator.get(OrePrefixes.ring, material, 1L);

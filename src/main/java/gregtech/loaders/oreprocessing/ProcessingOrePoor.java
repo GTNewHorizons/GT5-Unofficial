@@ -39,9 +39,6 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         int multiplier = 1;
         switch (prefix.getName()) {
             case "oreSmall":

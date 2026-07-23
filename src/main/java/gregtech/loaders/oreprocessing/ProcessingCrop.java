@@ -29,9 +29,6 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(8, stack))
             .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))

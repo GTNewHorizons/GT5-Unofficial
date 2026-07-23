@@ -36,9 +36,6 @@ public class ProcessingIceOre implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oredictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         if (!MU.hasFlag(material, GTMaterialFlag.ICE_ORE)) return;
 
         Integer oreMultiplierProp = material.getProperty(GTMaterialProperties.ORE_MULTIPLIER);

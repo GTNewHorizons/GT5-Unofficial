@@ -40,9 +40,6 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
     @Override
     public void registerOre(final OrePrefixes aPrefix, final Material aMaterial, final String aOreDictName,
         final String aModName, final ItemStack aStack) {
-        Materials legacyMaterial = MU.materialOf(aMaterial);
-        if (legacyMaterial == null) return;
-
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
             GTValues.RA.stdBuilder()
                 .itemInputs(

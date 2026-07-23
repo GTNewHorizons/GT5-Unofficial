@@ -81,9 +81,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         if (!oreDictName.startsWith("plankWood")) {
             return;
         }

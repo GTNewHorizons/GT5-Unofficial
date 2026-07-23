@@ -37,9 +37,6 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         if (!MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             if (GTOreDictUnificator.get(OrePrefixes.nugget, material, 1L) != null) {
                 GTValues.RA.stdBuilder()
@@ -50,8 +47,7 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(latheRecipes);
             }
 
-            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                && (legacyMaterial.mMaterialInto == legacyMaterial)) {
+            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.round, material, 1L),
                     GTModHandler.RecipeBits.BITS_STD,

@@ -41,7 +41,6 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
 
         if (legacyMaterial == Materials.Salt || legacyMaterial == Materials.RockSalt
             || legacyMaterial == Materials.Spodumene) return;

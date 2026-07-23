@@ -166,8 +166,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
         }
 
-        if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-            && legacyMaterial.mMaterialInto == legacyMaterial) {
+        if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
 
             Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
             boolean belowTierIV = (processingTierEU == null ? 0 : processingTierEU) < TierEU.IV;
@@ -452,9 +451,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(fluidSolidifierRecipes);
         }
 
-        if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-            && legacyMaterial.mMaterialInto == legacyMaterial
-            && !noSmashing) {
+        if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE)) && !noSmashing) {
 
             Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
             if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
