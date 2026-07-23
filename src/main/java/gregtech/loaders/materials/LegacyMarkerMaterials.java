@@ -156,15 +156,16 @@ public class LegacyMarkerMaterials {
         return builder.build();
     }
 
-    /// The superconductor wire markers, in tier order. They are absent from [Materials#getMaterialsMap], so
-    /// the material lang-registration pass in [gregtech.loaders.preload.GTPreLoad] skips them; their
-    /// display-name keys are registered from this array instead. Evaluated after
-    /// [#loadSuperconductorsMarkers] has populated the fields.
-    public static Materials[] getSuperconductorMarkers() {
-        return new Materials[] { Materials.SuperconductorMV, Materials.SuperconductorHV, Materials.SuperconductorEV,
-            Materials.SuperconductorIV, Materials.SuperconductorLuV, Materials.SuperconductorZPM,
-            Materials.SuperconductorUV, Materials.SuperconductorUHV, Materials.SuperconductorUEV,
-            Materials.SuperconductorUIV, Materials.SuperconductorUMV };
+    /// The superconductor wire markers' MaterialLib backings, in tier order. The marker facades are absent
+    /// from [Materials#getMaterialsMap], so the material lang-registration pass in
+    /// [gregtech.loaders.preload.GTPreLoad] skips them; their display-name keys are registered from this array
+    /// instead. Evaluated after [#registerBackingMaterials] has populated the fields.
+    public static Material[] getSuperconductorMarkers() {
+        return new Material[] { Materials2Markers.SuperconductorMV, Materials2Markers.SuperconductorHV,
+            Materials2Markers.SuperconductorEV, Materials2Markers.SuperconductorIV, Materials2Markers.SuperconductorLuV,
+            Materials2Markers.SuperconductorZPM, Materials2Markers.SuperconductorUV,
+            Materials2Markers.SuperconductorUHV, Materials2Markers.SuperconductorUEV,
+            Materials2Markers.SuperconductorUIV, Materials2Markers.SuperconductorUMV };
     }
 
     private static void loadRandomMarkers() {

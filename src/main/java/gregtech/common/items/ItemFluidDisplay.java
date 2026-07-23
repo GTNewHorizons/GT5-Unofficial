@@ -29,9 +29,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 import gregtech.common.fluid.GTFluid;
@@ -144,7 +144,7 @@ public class ItemFluidDisplay extends GTGenericItem {
             if (material != null) return material;
         }
         if (fluid instanceof GTFluid gtFluid) {
-            return Materials.FLUID_MAP.get(gtFluid);
+            return MU.materialOf(MU.materialOfFluid(gtFluid));
         }
         return null;
     }
@@ -179,16 +179,16 @@ public class ItemFluidDisplay extends GTGenericItem {
         return false;
     }
 
-    public static Materials getMaterialFromCell(ItemStack tItemStack) {
+    public static com.ruling_0.materiallib.api.Material getMaterialFromCell(ItemStack tItemStack) {
         for (int tOreDict : OreDictionary.getOreIDs(tItemStack)) {
             String tOreDictName = OreDictionary.getOreName(tOreDict);
             if (tOreDictName.startsWith("cell")) {
-                return Materials.getRealMaterial(
+                return MU.byLegacyName(
                     tOreDictName.replace("cell", "")
                         .replace("Molten", "")
                         .replace("Plasma", ""));
             }
         }
-        return Materials._NULL;
+        return null;
     }
 }

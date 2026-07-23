@@ -243,19 +243,19 @@ public class GTPostLoad {
                 }
             }
         }
-        Materials.getMaterialsMap()
-            .values()
-            .forEach(tMaterial -> {
-                // check if material is scannable
-                GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(tMaterial);
-                if (scannerResult == null || scannerResult.isNotMet()) return;
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            Materials tMaterial = MU.materialOf(material);
+            if (tMaterial == null) continue;
+            // check if material is scannable
+            GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(tMaterial);
+            if (scannerResult == null || scannerResult.isNotMet()) continue;
 
-                addElementScannerAndReplicatorRecipes(
-                    scannerResult,
-                    MU.material(tMaterial),
-                    GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L));
-            });
+            addElementScannerAndReplicatorRecipes(
+                scannerResult,
+                material,
+                GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L));
+        }
 
         // Reconstructed werkstoff elements no longer appear in getMaterialsMap() once minting is retired.
         // The cell-bearing ones -- the population whose facades CellLoader's element branch used to link
@@ -421,8 +421,11 @@ public class GTPostLoad {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
         GTMod.GT_FML_LOGGER.info("Replacing Vanilla Materials in recipes, please wait.");
-        Set<Materials> replaceVanillaItemsSet = Arrays.stream(Materials.values())
+        Set<Materials> replaceVanillaItemsSet = MaterialLibAPI.getMaterials()
+            .stream()
             .filter(GTRecipeRegistrator::hasVanillaRecipes)
+            .map(MU::materialOf)
+            .filter(Objects::nonNull)
             .collect(Collectors.toSet());
 
         ProgressManager.ProgressBar progressBar = ProgressManager

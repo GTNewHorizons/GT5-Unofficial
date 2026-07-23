@@ -1058,27 +1058,27 @@ public class GTProxy implements IFuelHandler {
                 .getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0);
             GTOreDictUnificator.set(
                 OrePrefixes.bucketClay,
-                Materials.Empty,
+                Materials2Materials.Empty,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0));
             GTOreDictUnificator.set(
                 OrePrefixes.bucketClay,
-                Materials.Water,
+                Materials2Materials.Water,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketWater", 1L, 0));
             GTOreDictUnificator.set(
                 OrePrefixes.bucketClay,
-                Materials.Lava,
+                Materials2Materials.Lava,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketLava", 1L, 0));
             GTOreDictUnificator.set(
                 OrePrefixes.bucketClay,
-                Materials.Milk,
+                Materials2Materials.Milk,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketMilk", 1L, 0));
 
             FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
-                    GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Milk, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
+                    GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials2Materials.Milk, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials2Materials.Empty, 1L)));
         }
 
         if (!this.enableUndergroundGravelGen) PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.GRAVEL);
@@ -1131,9 +1131,10 @@ public class GTProxy implements IFuelHandler {
         // onInitialization() seems to be too early, as the New Horizons Core Mod registers some fluids in post-load.
         MetaGeneratedItem98.init();
 
-        GTOreDictUnificator.addItemData(new ItemStack(Items.iron_door, 1), new ItemData(Materials.Iron, 21772800L));
         GTOreDictUnificator
-            .addItemData(new ItemStack(Items.wooden_door, 1, 32767), new ItemData(Materials.Wood, 21772800L));
+            .addItemData(new ItemStack(Items.iron_door, 1), new ItemData(Materials2Materials.Iron, 21772800L));
+        GTOreDictUnificator
+            .addItemData(new ItemStack(Items.wooden_door, 1, 32767), new ItemData(Materials2Materials.Wood, 21772800L));
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
@@ -1152,7 +1153,9 @@ public class GTProxy implements IFuelHandler {
             }
         }
         GTLog.out.println("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
-        for (Materials aMaterial : Materials.values()) {
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            Materials aMaterial = MU.materialOf(material);
+            if (aMaterial == null) continue;
             if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)) {
                 if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_ORE_PROCESSING)) {
                     GTModHandler.addCraftingRecipe(
@@ -1587,7 +1590,7 @@ public class GTProxy implements IFuelHandler {
                         GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.Ore);
                     }
                     if (aEvent.Name.equals("itemRubber")) {
-                        GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Rubber, aEvent.Ore);
+                        GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials2Materials.Rubber, aEvent.Ore);
                     }
                     return;
                 }
@@ -1610,50 +1613,56 @@ public class GTProxy implements IFuelHandler {
                 } else if (aEvent.Name.equals("copperWire")) {
                     GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.Ore);
                 } else if (aEvent.Name.equals("oreHeeEndrium")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.Endium, aEvent.Ore);
+                    GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials2Materials.HeeEndium, aEvent.Ore);
                 } else if (aEvent.Name.equals("sheetPlastic")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Polyethylene, aEvent.Ore);
+                    GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials2Materials.Plastic, aEvent.Ore);
                 } else if (aEvent.Name.startsWith("shard")) {
                     switch (aEvent.Name) {
                         case "shardAir" -> {
-                            GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedAir, aEvent.Ore);
+                            GTOreDictUnificator
+                                .registerOre(OrePrefixes.gem, Materials2Materials.InfusedAir, aEvent.Ore);
                             return;
                         }
                         case "shardWater" -> {
-                            GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedWater, aEvent.Ore);
+                            GTOreDictUnificator
+                                .registerOre(OrePrefixes.gem, Materials2Materials.InfusedWater, aEvent.Ore);
                             return;
                         }
                         case "shardFire" -> {
-                            GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedFire, aEvent.Ore);
+                            GTOreDictUnificator
+                                .registerOre(OrePrefixes.gem, Materials2Materials.InfusedFire, aEvent.Ore);
                             return;
                         }
                         case "shardEarth" -> {
-                            GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEarth, aEvent.Ore);
+                            GTOreDictUnificator
+                                .registerOre(OrePrefixes.gem, Materials2Materials.InfusedEarth, aEvent.Ore);
                             return;
                         }
                         case "shardOrder" -> {
-                            GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedOrder, aEvent.Ore);
+                            GTOreDictUnificator
+                                .registerOre(OrePrefixes.gem, Materials2Materials.InfusedOrder, aEvent.Ore);
                             return;
                         }
                         case "shardEntropy" -> {
-                            GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEntropy, aEvent.Ore);
+                            GTOreDictUnificator
+                                .registerOre(OrePrefixes.gem, Materials2Materials.InfusedEntropy, aEvent.Ore);
                             return;
                         }
                     }
                 } else if (aEvent.Name.equals("fieryIngot")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.FierySteel, aEvent.Ore);
+                    GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials2Materials.FierySteel, aEvent.Ore);
                     return;
                 } else if (aEvent.Name.equals("ironwood")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.IronWood, aEvent.Ore);
+                    GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials2Materials.IronWood, aEvent.Ore);
                     return;
                 } else if (aEvent.Name.equals("steeleaf")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Steeleaf, aEvent.Ore);
+                    GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials2Materials.Steeleaf, aEvent.Ore);
                     return;
                 } else if (aEvent.Name.equals("knightmetal")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Knightmetal, aEvent.Ore);
+                    GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials2Materials.Knightmetal, aEvent.Ore);
                     return;
                 } else if (aEvent.Name.equals("compressedAluminum")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.compressed, Materials.Aluminium, aEvent.Ore);
+                    GTOreDictUnificator.registerOre(OrePrefixes.compressed, Materials2Materials.Aluminium, aEvent.Ore);
                     return;
                 } else if (aEvent.Name.contains(" ")) {
                     GTLog.ore.println(
@@ -1890,15 +1899,15 @@ public class GTProxy implements IFuelHandler {
                                                         .contains("red"))) {
                                                             GTOreDictUnificator.set(
                                                                 OrePrefixes.ingot,
-                                                                Materials.RedAlloy,
+                                                                Materials2Materials.RedAlloy,
                                                                 new ItemStack(aEvent.Ore.getItem(), 1, 0));
                                                             GTOreDictUnificator.set(
                                                                 OrePrefixes.ingot,
-                                                                Materials.BlueAlloy,
+                                                                Materials2Materials.BlueAlloy,
                                                                 new ItemStack(aEvent.Ore.getItem(), 1, 1));
                                                             GTOreDictUnificator.set(
                                                                 OrePrefixes.ingot,
-                                                                Materials.Brass,
+                                                                Materials2Materials.Brass,
                                                                 new ItemStack(aEvent.Ore.getItem(), 1, 2));
 
                                                             GTValues.RA.stdBuilder()
@@ -1965,19 +1974,21 @@ public class GTProxy implements IFuelHandler {
                     case "stoneCobble" -> GTOreDictUnificator.registerOre("cobblestone", aEvent.Ore);
                     case "plank" -> {
                         if (tName.equals("Wood")) {
-                            GTOreDictUnificator.addItemData(aEvent.Ore, new ItemData(Materials.Wood, 3628800L));
+                            GTOreDictUnificator
+                                .addItemData(aEvent.Ore, new ItemData(Materials2Materials.Wood, 3628800L));
                         }
                     }
                     case "slab" -> {
                         if (tName.equals("Wood")) {
-                            GTOreDictUnificator.addItemData(aEvent.Ore, new ItemData(Materials.Wood, 1814400L));
+                            GTOreDictUnificator
+                                .addItemData(aEvent.Ore, new ItemData(Materials2Materials.Wood, 1814400L));
                         }
                     }
                     case "sheet" -> {
                         if (tName.equals("Plastic")) {
-                            GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Polyethylene, aEvent.Ore);
+                            GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials2Materials.Plastic, aEvent.Ore);
                         } else if (tName.equals("Rubber")) {
-                            GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Rubber, aEvent.Ore);
+                            GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials2Materials.Rubber, aEvent.Ore);
                         }
                     }
                     case "crafting" -> {
@@ -1985,7 +1996,7 @@ public class GTProxy implements IFuelHandler {
                             case "ToolSolderingMetal" -> GregTechAPI.registerSolderingMetal(aEvent.Ore);
                             case "IndustrialDiamond" -> GTOreDictUnificator.addToBlacklist(aEvent.Ore);
                             case "WireCopper" -> GTOreDictUnificator
-                                .registerOre(OrePrefixes.wire, Materials.Copper, aEvent.Ore);
+                                .registerOre(OrePrefixes.wire, Materials2Materials.Copper, aEvent.Ore);
                         }
                     }
                     case "wood" -> {
@@ -1995,7 +2006,7 @@ public class GTProxy implements IFuelHandler {
                     }
                     case "food" -> {
                         if (tName.equals("Cocoapowder")) {
-                            GTOreDictUnificator.registerOre(OrePrefixes.dust, Materials.Cocoa, aEvent.Ore);
+                            GTOreDictUnificator.registerOre(OrePrefixes.dust, Materials2Materials.Cocoa, aEvent.Ore);
                         }
                     }
                     default -> {}
@@ -2515,7 +2526,7 @@ public class GTProxy implements IFuelHandler {
                     MaterialLibAPI
                         .getStack(Materials2Materials.Hydrogen, Materials2CellShapes.cell, (int) (hydrogenAmount)))
                 .circuit(i + 1)
-                .itemOutputs(Materials.Empty.getCells(hydrogenAmount))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, hydrogenAmount))
                 .fluidInputs(new FluidStack(uncrackedFluid, 1000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
@@ -2525,7 +2536,7 @@ public class GTProxy implements IFuelHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(aMaterial.getCells(1))
                 .circuit(i + 1)
-                .itemOutputs(Materials.Empty.getCells(1))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Hydrogen,
@@ -2593,7 +2604,7 @@ public class GTProxy implements IFuelHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTModHandler.getIC2Item("steamCell", 1L))
                 .circuit(i + 1)
-                .itemOutputs(Materials.Empty.getCells(1))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
                 .fluidInputs(new FluidStack(uncrackedFluid, 1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
@@ -2603,7 +2614,7 @@ public class GTProxy implements IFuelHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(aMaterial.getCells(1))
                 .circuit(i + 1)
-                .itemOutputs(Materials.Empty.getCells(1))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
                 .fluidInputs(Materials.Steam.getGas(1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
@@ -2613,7 +2624,7 @@ public class GTProxy implements IFuelHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(aMaterial.getCells(1))
                 .circuit(i + 1)
-                .itemOutputs(Materials.Empty.getCells(1))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
                 .fluidInputs(getFluidStack("ic2steam", 1000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)

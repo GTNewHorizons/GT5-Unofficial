@@ -24,6 +24,8 @@ import net.minecraftforge.common.config.Configuration;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
@@ -34,6 +36,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
@@ -125,9 +128,11 @@ public class GTPreLoad {
                         .addStringLocalization(aMaterial.getLocalizedNameKey(), aMaterial.mDefaultLocalName);
                 });
 
-        for (Materials superconductor : LegacyMarkerMaterials.getSuperconductorMarkers()) {
-            GTLanguageManager
-                .addStringLocalization(superconductor.getLocalizedNameKey(), superconductor.getDefaultLocalName());
+        for (Material superconductor : LegacyMarkerMaterials.getSuperconductorMarkers()) {
+            GTLanguageManager.addStringLocalization(
+                "Material." + MU.internalName(superconductor)
+                    .toLowerCase(),
+                MU.localName(superconductor));
         }
     }
 
