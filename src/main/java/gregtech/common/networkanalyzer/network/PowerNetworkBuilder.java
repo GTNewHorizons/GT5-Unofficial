@@ -706,9 +706,10 @@ public class PowerNetworkBuilder {
                                     : sideEntity instanceof IEnergySource sideEmitter ? sideEmitter : null;
 
                             if (emitter != null && countedEmitters.add(emitter)) {
-                                final long amps = Math.max(1L, (long) (emitter.getOfferedEnergy() / cable.mVoltage));
+                                final long amps = Math
+                                    .max(1L, (long) (emitter.getOfferedEnergy() / cable.getVoltage()));
                                 totalAmperage += amps;
-                                maxVoltage = cable.mVoltage;
+                                maxVoltage = cable.getVoltage();
                             }
                         }
 

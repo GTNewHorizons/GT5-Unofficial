@@ -46,10 +46,10 @@ import gregtech.common.covers.Cover;
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPipe, ILocalizedMetaPipeEntity {
 
-    public final float mThickNess;
-    public final Materials mMaterial;
-    public final int mStepSize;
-    public final int mTickTime;
+    private final float mThickNess;
+    private final Materials mMaterial;
+    private final int mStepSize;
+    private final int mTickTime;
     public int mTransferredItems = 0;
     public long mCurrentTransferStartTick = 0;
     public ForgeDirection mLastReceivedFrom = ForgeDirection.UNKNOWN, oLastReceivedFrom = ForgeDirection.UNKNOWN;
@@ -594,6 +594,14 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     @Override
     public float getCollisionThickness() {
         return mThickNess;
+    }
+
+    public Materials getPipeMaterial() {
+        return mMaterial;
+    }
+
+    public int getTickTime() {
+        return mTickTime;
     }
 
     @Override

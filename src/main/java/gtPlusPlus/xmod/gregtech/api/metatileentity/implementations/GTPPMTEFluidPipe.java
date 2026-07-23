@@ -56,11 +56,11 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GTPPMTEFluidPipe(
             this.mName,
-            this.mThickNess,
+            getCollisionThickness(),
             this.pipeStats,
-            this.mCapacity,
-            this.mHeatResistance,
-            this.mGasProof);
+            getBaseCapacity(),
+            getHeatResistance(),
+            isGasProof());
     }
 
     @Override

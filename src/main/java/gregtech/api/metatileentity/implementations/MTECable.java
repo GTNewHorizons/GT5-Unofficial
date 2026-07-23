@@ -70,10 +70,10 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 @IMetaTileEntity.SkipGenerateDescription
 public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, ILocalizedMetaPipeEntity {
 
-    public final float mThickNess;
-    public final Materials mMaterial;
-    public final long mCableLossPerMeter, mAmperage, mVoltage;
-    public final boolean mInsulated, mCanShock;
+    private final float mThickNess;
+    private final Materials mMaterial;
+    private final long mCableLossPerMeter, mAmperage, mVoltage;
+    private final boolean mInsulated, mCanShock;
     private String prefixKey;
 
     public int mTransferredAmperage = 0;
@@ -867,6 +867,30 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
                 TooltipHelper.voltageText(mVoltage),
                 TooltipHelper.ampText(mAmperage),
                 TooltipHelper.cableLossText(mCableLossPerMeter)));
+    }
+
+    public Materials getCableMaterial() {
+        return mMaterial;
+    }
+
+    public long getCableLoss() {
+        return mCableLossPerMeter;
+    }
+
+    public long getAmperage() {
+        return mAmperage;
+    }
+
+    public long getVoltage() {
+        return mVoltage;
+    }
+
+    public boolean isInsulated() {
+        return mInsulated;
+    }
+
+    public boolean canShock() {
+        return mCanShock;
     }
 
     @Override

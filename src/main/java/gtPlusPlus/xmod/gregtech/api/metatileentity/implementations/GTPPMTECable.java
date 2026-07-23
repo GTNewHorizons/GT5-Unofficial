@@ -75,13 +75,13 @@ public class GTPPMTECable extends MTECable {
         }
         return new GTPPMTECable(
             this.mName,
-            this.mThickNess,
+            getCollisionThickness(),
             this.material,
-            this.mCableLossPerMeter,
-            this.mAmperage,
-            this.mVoltage,
-            this.mInsulated,
-            this.mCanShock,
+            getCableLoss(),
+            getAmperage(),
+            getVoltage(),
+            isInsulated(),
+            canShock(),
             this.vRGB);
     }
 
@@ -98,7 +98,7 @@ public class GTPPMTECable extends MTECable {
 
         final Material wireMaterial = material;
 
-        if (!mInsulated) return new ITexture[] { TextureFactory.of(
+        if (!isInsulated()) return new ITexture[] { TextureFactory.of(
             wireMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()],
             Dyes.getModulation(aColorIndex, vRGB)) };
         if (aConnected) {
