@@ -3937,20 +3937,20 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         craftingShapelessRecipes();
     }
 
-    private static final Map<Materials, Materials> cauldronRemap = new HashMap<>();
+    private static final Map<Materials, Material> cauldronRemap = new HashMap<>();
 
+    /// Registers `out` as the cauldron-washing replacement dust for `in`'s `dustImpure`/`dustPure` items, held
+    /// as a MaterialLib [Material] so a replacement without a legacy [Materials] counterpart (e.g. a
+    /// reconstructed werkstoff) still survives -- converts through [MU#material], a no-op when `out` has none.
     public static void registerCauldronCleaningFor(Materials in, Materials out) {
-        cauldronRemap.put(in, out);
+        Material material = MU.material(out);
+        if (material != null) cauldronRemap.put(in, material);
     }
 
-    /// [#registerCauldronCleaningFor(Materials, Materials)] for a replacement material held as its
-    /// MaterialLib counterpart -- e.g. a reconstructed werkstoff's bridge material. [#cauldronRemap]'s reader
-    /// always holds a legacy [Materials] (`GregTechAPI#sGeneratedMaterials` is a `Materials[]`), so `out` is
-    /// resolved back to its legacy bridge material via [MU#materialOf] before storing; a no-op when it has
-    /// none.
+    /// [#registerCauldronCleaningFor(Materials, Materials)] for a replacement material held as its MaterialLib
+    /// counterpart directly, e.g. a reconstructed werkstoff's bridge material.
     public static void registerCauldronCleaningFor(Materials in, Material out) {
-        Materials legacy = MU.materialOf(out);
-        if (legacy != null) cauldronRemap.put(in, legacy);
+        cauldronRemap.put(in, out);
     }
 
     @Override
@@ -3969,11 +3969,11 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
 
-                        aMaterial = cauldronRemap.getOrDefault(aMaterial, aMaterial);
-
                         aItemEntity.setEntityItemStack(
-                            GTOreDictUnificator
-                                .get(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
+                            GTOreDictUnificator.get(
+                                OrePrefixes.dust,
+                                cauldronRemap.getOrDefault(aMaterial, MU.material(aMaterial)),
+                                aItemEntity.getEntityItem().stackSize));
                         aItemEntity.delayBeforeCanPickup = 0;
                         cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
@@ -4046,8 +4046,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             switch (oldPrefix.getName()) {
                 case "dustImpure":
                 case "dustPure":
-                    return GTOreDictUnificator
-                        .get(OrePrefixes.dust, cauldronRemap.getOrDefault(oldMaterial, oldMaterial), stackSize);
+                    return GTOreDictUnificator.get(
+                        OrePrefixes.dust,
+                        cauldronRemap.getOrDefault(oldMaterial, MU.material(oldMaterial)),
+                        stackSize);
                 case "crushed":
                     return GTOreDictUnificator.get(OrePrefixes.crushedPurified, oldMaterial, stackSize);
                 case "dust":

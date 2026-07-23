@@ -26,6 +26,7 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
+import gregtech.api.material.MUOre;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -98,15 +99,14 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);
         } else {
-            registerStandardOreRecipes(prefix, legacyMaterial, GTUtility.copyAmount(1, stack), tIsRich ? 2 : 1);
+            registerStandardOreRecipes(prefix, material, GTUtility.copyAmount(1, stack), tIsRich ? 2 : 1);
         }
     }
 
-    private boolean registerStandardOreRecipes(OrePrefixes prefix, Materials material, ItemStack oreStack,
+    private boolean registerStandardOreRecipes(OrePrefixes prefix, Material material, ItemStack oreStack,
         int multiplier) {
         if ((oreStack == null) || (material == null)) return false;
-        Material ml = MU.material(material);
-        Materials tMaterial = material.mOreReplacement;
+        Material tMaterial = MUOre.oreReplacement(material);
         Material tPrimaryByMaterial = null;
         multiplier = Math.max(1, multiplier);
         oreStack = GTUtility.copyAmount(1, oreStack);
@@ -136,18 +136,18 @@ public class ProcessingOre implements IOreRecipeRegistrator {
         ItemStack tDust = GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, tGem, 1L);
         ItemStack tCleaned = GTOreDictUnificator.get(OrePrefixes.crushedPurified, tMaterial, tDust, 1L);
         ItemStack tCrushed = GTOreDictUnificator
-            .get(OrePrefixes.crushed, tMaterial, (long) material.mOreMultiplier * multiplier);
+            .get(OrePrefixes.crushed, tMaterial, (long) MUOre.oreMultiplier(material) * multiplier);
         ItemStack tPrimaryByProduct = null;
 
         if (tCrushed == null) {
             tCrushed = GTOreDictUnificator.get(
                 OrePrefixes.dustImpure,
                 tMaterial,
-                GTUtility.copyAmount((long) material.mOreMultiplier * multiplier, tCleaned, tDust, tGem),
-                (long) material.mOreMultiplier * multiplier);
+                GTUtility.copyAmount((long) MUOre.oreMultiplier(material) * multiplier, tCleaned, tDust, tGem),
+                (long) MUOre.oreMultiplier(material) * multiplier);
         }
 
-        for (Material tMat : MU.oreByProducts(ml)) {
+        for (Material tMat : MU.oreByProducts(material)) {
             GTOreDictUnificator.get(OrePrefixes.dust, tMat, 1L);
             if (tPrimaryByProduct == null) {
                 tPrimaryByMaterial = tMat;
@@ -160,28 +160,28 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                 .get(OrePrefixes.dustTiny, tMat, GTOreDictUnificator.get(OrePrefixes.nugget, tMat, 2L), 2L);
         }
 
-        if (tPrimaryByMaterial == null) tPrimaryByMaterial = MU.material(tMaterial);
+        if (tPrimaryByMaterial == null) tPrimaryByMaterial = tMaterial;
         if (tPrimaryByProduct == null) tPrimaryByProduct = tDust;
         boolean tHasSmelting = false;
 
         if (tSmeltInto != null) {
-            if ((material.mBlastFurnaceRequired) || (MU.directSmelting(material).mBlastFurnaceRequired)) {
+            if (MU.blastFurnaceRequired(material) || MU.blastFurnaceRequired(MU.directSmelting(material))) {
                 GTModHandler.removeFurnaceSmelting(oreStack);
             } else {
                 tHasSmelting = GTModHandler.addSmeltingRecipe(
                     oreStack,
-                    GTUtility.copyAmount(multiplier * material.mSmeltingMultiplier, tSmeltInto));
+                    GTUtility.copyAmount(multiplier * MUOre.smeltingMultiplier(material), tSmeltInto));
             }
 
             if (MU.hasFlag(material, GTMaterialFlag.BLASTFURNACE_CALCITE_TRIPLE)) {
-                if (MU.autoGenerateBlastFurnaceRecipes(ml)) {
+                if (MU.autoGenerateBlastFurnaceRecipes(material)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             oreStack,
                             MaterialLibAPI
                                 .getStack(Materials2Materials.Calcite, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
-                            GTUtility.mul(multiplier * 3 * material.mSmeltingMultiplier, tSmeltInto),
+                            GTUtility.mul(multiplier * 3 * MUOre.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
@@ -194,7 +194,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                             MaterialLibAPI
                                 .getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
-                            GTUtility.mul(multiplier * 3 * material.mSmeltingMultiplier, tSmeltInto),
+                            GTUtility.mul(multiplier * 3 * MUOre.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
@@ -203,14 +203,14 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                         .addTo(blastFurnaceRecipes);
                 }
             } else if (MU.hasFlag(material, GTMaterialFlag.BLASTFURNACE_CALCITE_DOUBLE)) {
-                if (MU.autoGenerateBlastFurnaceRecipes(ml)) {
+                if (MU.autoGenerateBlastFurnaceRecipes(material)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             oreStack,
                             MaterialLibAPI
                                 .getStack(Materials2Materials.Calcite, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
-                            GTUtility.mul(multiplier * 2 * material.mSmeltingMultiplier, tSmeltInto),
+                            GTUtility.mul(multiplier * 2 * MUOre.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
@@ -223,7 +223,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                             MaterialLibAPI
                                 .getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
-                            GTUtility.mul(multiplier * 2 * material.mSmeltingMultiplier, tSmeltInto),
+                            GTUtility.mul(multiplier * 2 * MUOre.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
@@ -240,10 +240,10 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                 GTOreDictUnificator.get(
                     OrePrefixes.gem,
                     MU.directSmelting(tMaterial),
-                    Math.max(1, multiplier * material.mSmeltingMultiplier / 2)));
+                    Math.max(1, multiplier * MUOre.smeltingMultiplier(material) / 2)));
         }
 
-        if (tCrushed != null && material != Materials.Knightmetal) {
+        if (tCrushed != null && material != MU.material(Materials.Knightmetal)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(oreStack)
                 .itemOutputs(GTUtility.copy(GTUtility.copyAmount(tCrushed.stackSize, tGem), tCrushed))
@@ -271,7 +271,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
             }
 
             int chanceOre2 = tPrimaryByProduct == null ? 0
-                : tPrimaryByProduct.stackSize * 10 * multiplier * material.mByProductMultiplier;
+                : tPrimaryByProduct.stackSize * 10 * multiplier * MUOre.byProductMultiplier(material);
             chanceOre2 = 100 * chanceOre2; // converting to the GT format, 100% is 10000
             GTValues.RA.stdBuilder()
                 .itemInputs(oreStack)

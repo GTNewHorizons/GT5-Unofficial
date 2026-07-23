@@ -219,27 +219,20 @@ public class GTRecipeRegistrator {
      * @param isRecycling    whether to put in recycling tab.
      */
     /// [#registerReverseFluidSmelting(ItemStack, Materials, long, MaterialStack, boolean)] for callers holding a
-    /// [Material] whose legacy counterpart is not statically known. Only a legacy [Materials] carries a
-    /// reverse-fluid-smelting recipe.
+    /// [Material] directly -- the native ML body; the [Materials]-typed overload now delegates into this one.
     public static void registerReverseFluidSmelting(ItemStack stack, Material material, long materialAmount,
         MaterialStack byproduct, boolean isRecycling) {
-        if (MU.materialOf(material) instanceof Materials legacyMaterial)
-            registerReverseFluidSmelting(stack, legacyMaterial, materialAmount, byproduct, isRecycling);
-    }
-
-    public static void registerReverseFluidSmelting(ItemStack stack, Materials material, long materialAmount,
-        MaterialStack byproduct, boolean isRecycling) {
-        if (stack == null || material == null
-            || MU.smeltInto(material).mStandardMoltenFluid == null
-            || !MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
+        if (stack == null || material == null) return;
+        Material smeltTarget = MU.smeltInto(material);
+        if (!MU.hasMolten(smeltTarget) || !MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
             || (materialAmount * INGOTS) / (M * stack.stackSize) <= 0) return;
 
-        Materials byproductMaterial = byproduct == null ? null : MU.materialOf(byproduct.mMaterial);
+        Material byproductMaterial = byproduct == null ? null : byproduct.mMaterial;
         ItemStack recipeOutput = byproductMaterial == null ? null
             : MU.hasFlag(byproductMaterial, GTMaterialFlag.NO_SMELTING)
                 || !MU.hasFlag(byproductMaterial, GTMaterialFlag.METAL)
                     ? MU.hasFlag(byproductMaterial, GTMaterialFlag.FLAMMABLE)
-                        ? GTOreDictUnificator.getDust(Materials.Ash, byproduct.mAmount / 2)
+                        ? GTOreDictUnificator.getDust(MU.material(Materials.Ash), byproduct.mAmount / 2)
                         : MU.hasFlag(byproductMaterial, GTMaterialFlag.UNBURNABLE)
                             ? GTOreDictUnificator.getDustOrIngot(MU.smeltInto(byproductMaterial), byproduct.mAmount)
                             : null
@@ -250,20 +243,27 @@ public class GTRecipeRegistrator {
         if (recipeOutput != null) {
             builder.itemOutputs(recipeOutput);
         }
-        long powerUsage = Math
-            .max(8, (long) Math.sqrt(2 * MU.smeltInto(material).mStandardMoltenFluid.getTemperature()));
+        FluidStack moltenFluid = MU.molten(smeltTarget, (materialAmount * INGOTS) / (M * stack.stackSize));
+        long powerUsage = Math.max(
+            8,
+            (long) Math.sqrt(
+                2 * moltenFluid.getFluid()
+                    .getTemperature()));
         // avoid full amp recipes
         int powerTier = getTier(powerUsage);
         if (powerTier > 0 && powerTier < VP.length && powerUsage > VP[powerTier]) {
             powerUsage = VP[powerTier];
         }
-        builder.fluidOutputs(
-            MU.smeltInto(material)
-                .getMolten((materialAmount * INGOTS) / (M * stack.stackSize)))
+        builder.fluidOutputs(moltenFluid)
             .duration((int) Math.max(1, (24 * materialAmount) / M))
             .eut(powerUsage);
         if (isRecycling) builder.recipeCategory(RecipeCategories.fluidExtractorRecycling);
         builder.addTo(fluidExtractionRecipes);
+    }
+
+    public static void registerReverseFluidSmelting(ItemStack stack, Materials material, long materialAmount,
+        MaterialStack byproduct, boolean isRecycling) {
+        registerReverseFluidSmelting(stack, MU.material(material), materialAmount, byproduct, isRecycling);
     }
 
     /**
@@ -272,22 +272,16 @@ public class GTRecipeRegistrator {
      * @param materialAmount    the amount of it in Material Units.
      * @param allowAlloySmelter if it is allowed to be recycled inside the Alloy Smelter.
      */
-    /// [#registerReverseSmelting(ItemStack, Materials, long, boolean)] for callers holding a [Material] whose
-    /// legacy counterpart is not statically known. Only a legacy [Materials] carries a reverse-smelting recipe.
+    /// [#registerReverseSmelting(ItemStack, Materials, long, boolean)] for callers holding a [Material] directly
+    /// -- the native ML body; the [Materials]-typed overload now delegates into this one.
     public static void registerReverseSmelting(ItemStack stack, Material material, long materialAmount,
-        boolean allowAlloySmelter) {
-        if (MU.materialOf(material) instanceof Materials legacyMaterial)
-            registerReverseSmelting(stack, legacyMaterial, materialAmount, allowAlloySmelter);
-    }
-
-    public static void registerReverseSmelting(ItemStack stack, Materials material, long materialAmount,
         boolean allowAlloySmelter) {
         if (stack == null || material == null
             || materialAmount <= 0
             || MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)
             || (materialAmount > M && MU.hasFlag(material, GTMaterialFlag.METAL))
-            || (material.getProcessingMaterialTierEU() > TierEU.IV)) return;
-        if (material == Materials.Naquadah || material == Materials.NaquadahEnriched) return;
+            || (MU.processingMaterialTierEU(material) > TierEU.IV)) return;
+        if (material == MU.material(Materials.Naquadah) || material == MU.material(Materials.NaquadahEnriched)) return;
 
         materialAmount /= stack.stackSize;
 
@@ -300,16 +294,16 @@ public class GTRecipeRegistrator {
             GTOreDictUnificator.getIngot(MU.smeltInto(material), materialAmount));
     }
 
-    /// [#registerReverseArcSmelting(ItemStack, Materials, long, MaterialStack, MaterialStack, MaterialStack)] for
-    /// callers holding a [Material] whose legacy counterpart is not statically known. Only a legacy [Materials]
-    /// carries a reverse-arc-smelting recipe.
-    public static void registerReverseArcSmelting(ItemStack stack, Material material, long materialAmount,
-        MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03) {
-        if (MU.materialOf(material) instanceof Materials legacyMaterial)
-            registerReverseArcSmelting(stack, legacyMaterial, materialAmount, byProduct01, byProduct02, byProduct03);
+    public static void registerReverseSmelting(ItemStack stack, Materials material, long materialAmount,
+        boolean allowAlloySmelter) {
+        registerReverseSmelting(stack, MU.material(material), materialAmount, allowAlloySmelter);
     }
 
-    public static void registerReverseArcSmelting(ItemStack stack, Materials material, long materialAmount,
+    /// [#registerReverseArcSmelting(ItemStack, Materials, long, MaterialStack, MaterialStack, MaterialStack)] for
+    /// callers holding a [Material] directly -- the native ML body; the [Materials]-typed overload now delegates
+    /// into this one. Builds the [ItemData] straight from `material`, which already carries every read the
+    /// [ItemStack, ItemData] overload below needs, without a legacy round trip.
+    public static void registerReverseArcSmelting(ItemStack stack, Material material, long materialAmount,
         MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03) {
         registerReverseArcSmelting(
             stack,
@@ -320,17 +314,26 @@ public class GTRecipeRegistrator {
                 byProduct03));
     }
 
-    /// [#hasReverseArcSmeltingRecipe(Materials)] for callers holding a [Material] whose legacy counterpart is not
-    /// statically known. Only a legacy [Materials] carries a reverse-arc-smelting recipe.
+    public static void registerReverseArcSmelting(ItemStack stack, Materials material, long materialAmount,
+        MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03) {
+        registerReverseArcSmelting(stack, MU.material(material), materialAmount, byProduct01, byProduct02, byProduct03);
+    }
+
+    /// [#hasReverseArcSmeltingRecipe(Materials)] for callers holding a [Material] directly -- the native ML body;
+    /// the [Materials]-typed overload now delegates into this one. The gas-conditional arc-smelting recipe
+    /// (`Materials#mArcSmeltIntoWithGas`) has no MaterialLib property equivalent -- see [LegacyMaterials]'s
+    /// javadoc, only `Copper`'s canonical port and the unbacked `AnyCopper` marker ever carry one -- so this
+    /// keeps a [MU#materialOf] guard for that residual read alone, matching the legacy interface default of no
+    /// gas-arc recipe when the material has no legacy counterpart to read it from.
     public static boolean hasReverseArcSmeltingRecipe(Material material) {
-        return MU.materialOf(material) instanceof Materials legacyMaterial
-            && hasReverseArcSmeltingRecipe(legacyMaterial);
+        if (material == null) return false;
+        Material arcSmeltingMaterial = MU.arcSmeltInto(MU.smeltInto(material));
+        if (arcSmeltingMaterial != material) return true;
+        return MU.materialOf(arcSmeltingMaterial) instanceof Materials legacy && !legacy.mArcSmeltIntoWithGas.isEmpty();
     }
 
     public static boolean hasReverseArcSmeltingRecipe(Materials material) {
-        if (material == null) return false;
-        Materials arcSmeltingMaterial = MU.arcSmeltInto(MU.smeltInto(material));
-        return arcSmeltingMaterial != material || !arcSmeltingMaterial.mArcSmeltIntoWithGas.isEmpty();
+        return hasReverseArcSmeltingRecipe(MU.material(material));
     }
 
     static void setArcFurnaceRecyclingCategorySupplier(Supplier<RecipeCategory> supplier) {
@@ -510,23 +513,11 @@ public class GTRecipeRegistrator {
     }
 
     /// [#registerReverseMacerating(ItemStack, Materials, long, MaterialStack, MaterialStack, MaterialStack,
-    /// boolean, boolean)] for callers holding a [Material] whose legacy counterpart is not statically known. Only
-    /// a legacy [Materials] carries a reverse-macerating recipe.
+    /// boolean, boolean)] for callers holding a [Material] directly -- the native ML body; the
+    /// [Materials]-typed overload now delegates into this one. Builds the [ItemData] straight from `material`,
+    /// which already carries every read the [ItemStack, ItemData, boolean, boolean] overload below needs,
+    /// without a legacy round trip.
     public static void registerReverseMacerating(ItemStack stack, Material material, long materialAmount,
-        MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03, boolean allowHammer,
-        boolean isRecycling) {
-        if (MU.materialOf(material) instanceof Materials legacyMaterial) registerReverseMacerating(
-            stack,
-            legacyMaterial,
-            materialAmount,
-            byProduct01,
-            byProduct02,
-            byProduct03,
-            allowHammer,
-            isRecycling);
-    }
-
-    public static void registerReverseMacerating(ItemStack stack, Materials material, long materialAmount,
         MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03, boolean allowHammer,
         boolean isRecycling) {
         registerReverseMacerating(
@@ -536,6 +527,20 @@ public class GTRecipeRegistrator {
                 byProduct01,
                 byProduct02,
                 byProduct03),
+            allowHammer,
+            isRecycling);
+    }
+
+    public static void registerReverseMacerating(ItemStack stack, Materials material, long materialAmount,
+        MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03, boolean allowHammer,
+        boolean isRecycling) {
+        registerReverseMacerating(
+            stack,
+            MU.material(material),
+            materialAmount,
+            byProduct01,
+            byProduct02,
+            byProduct03,
             allowHammer,
             isRecycling);
     }

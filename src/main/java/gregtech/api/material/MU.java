@@ -196,17 +196,17 @@ public class MU {
             .get(internalName(material));
     }
 
-    /// The crafting-table ingredient a legacy `OrePrefixes.get(Materials)` call produced, rebuilt from a
-    /// MaterialLib [Material] rather than a legacy [Materials] constant. Returns the [ItemData] that
-    /// [gregtech.api.util.GTModHandler#addCraftingRecipe] resolves to an ore-dictionary name (through
-    /// [ItemData#toString]) so the ingredient still accepts any matching item, while also carrying the material
-    /// association that drives a reversible recipe's auto-generated recycling recipes. A bare ore-dictionary
-    /// [String] ingredient supplies only the name, not that association, so a reversible recipe built from one
-    /// silently loses its recycling; this preserves both. Null when `material` has no legacy counterpart --
-    /// markers such as `AnyIron` have no MaterialLib material and keep their legacy ingredient.
+    /// The crafting-table ingredient a legacy `OrePrefixes.get(Materials)` call produced, built directly from the
+    /// MaterialLib [Material] rather than routed through its legacy [Materials] counterpart. Returns the
+    /// [ItemData] that [gregtech.api.util.GTModHandler#addCraftingRecipe] resolves to an ore-dictionary name
+    /// (through [ItemData#toString]) so the ingredient still accepts any matching item, while also carrying the
+    /// material association that drives a reversible recipe's auto-generated recycling recipes. A bare
+    /// ore-dictionary [String] ingredient supplies only the name, not that association, so a reversible recipe
+    /// built from one silently loses its recycling; this preserves both. Null when `prefix` or `material` is
+    /// null -- a marker such as `AnyIron` carries no MaterialLib [Material] to pass here in the first place, so
+    /// callers building its ingredient use `OrePrefixes#ingredient(Materials)` instead.
     public static @Nullable ItemData craftIngredient(OrePrefixes prefix, @Nullable Material material) {
-        Materials legacy = materialOf(material);
-        return prefix == null || legacy == null ? null : new ItemData(prefix, legacy);
+        return prefix == null || material == null ? null : new ItemData(prefix, material);
     }
 
     /// The legacy `mMetaItemSubID` a material was assigned (block-form metadata index, e.g. the frame and
@@ -377,6 +377,17 @@ public class MU {
         return ml != null ? blastFurnaceTemp(ml) : material.mBlastFurnaceTemp;
     }
 
+    /// The legacy `Materials#getProcessingMaterialTierEU()` value for a material, or `0` if unset -- mirrors
+    /// `Materials#processingMaterialTierEU`'s own default. Ported byte-identically to
+    /// [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU]: `LegacyMaterials.build` and both bridge loaders
+    /// (`WerkstoffReconstruction`, `GtppBridgeMaterialsLoader`) feed this exact property through
+    /// `setProcessingMaterialTierEU` when present, and otherwise leave the `0` default every population shares.
+    public static int processingMaterialTierEU(@Nullable Material material) {
+        if (material == null) return 0;
+        Integer tierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
+        return tierEU == null ? 0 : tierEU;
+    }
+
     /// The legacy `Materials#mFuelPower` fuel value for a material, or `0` if unset -- mirrors
     /// `MaterialBuilder`'s own default (`LegacyMaterials.build` only calls `MaterialBuilder#setFuel` when
     /// [GTMaterialProperties#FUEL_TYPE] or [GTMaterialProperties#FUEL_POWER] is present).
@@ -500,11 +511,20 @@ public class MU {
         return chaseRef(material, GTMaterialProperties.DIRECT_SMELTING);
     }
 
-    /// [#handleMaterial(Materials)] for a MaterialLib [Material] held directly. Unlike [#smeltInto(Material)]
-    /// and its siblings, resolves a single hop only -- [GTMaterialProperties#HANDLE_MATERIAL] never chains
-    /// through another material's own handle, so there is nothing further to chase.
+    /// [#handleMaterial(Materials)] for a MaterialLib [Material] held directly. HYBRID: when `material` has a
+    /// legacy [Materials] counterpart, mirrors [#handleMaterial(Materials)] by reading the live
+    /// `Materials#mHandleMaterial` field and converting the result back through [#material] -- the property
+    /// path below is a load-time snapshot of that field and can diverge from it, same as the `Materials`
+    /// overload. Materials without a legacy counterpart (werkstoffe, gtpp materials) have no live field to
+    /// fall back to, so those resolve [GTMaterialProperties#HANDLE_MATERIAL] instead, one hop only -- the
+    /// property never chains through another material's own handle, so there is nothing further to chase.
     public static @Nullable Material handleMaterial(@Nullable Material material) {
         if (material == null) return null;
+        Materials legacy = materialOf(material);
+        if (legacy != null) {
+            Material handle = material(legacy.mHandleMaterial);
+            return handle != null ? handle : material;
+        }
         MaterialRef ref = material.getProperty(GTMaterialProperties.HANDLE_MATERIAL);
         if (ref == null) return material;
         Material resolved = ref.resolve();
