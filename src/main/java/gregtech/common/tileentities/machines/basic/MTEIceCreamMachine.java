@@ -123,10 +123,9 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         return SoundResource.GTCEU_LOOP_MIXER;
     }
 
-    // Once per in-game day, 40% chance the machine works that day. Only rolled lazily when the GUI is opened,
-    // never on a per-tick basis, and cached/persisted so it doesn't need re-rolling until the day changes.
-    // When broken, there's a chance it'll also accept a repair item (in the special slot) to fix it early.
+    /** Chance out of 100 that the machine works on that day */
     private static final int WORK_CHANCE_PERCENT = 40;
+    /** Chance out of 100 that it also asks for a repair item */
     private static final int REPAIR_REQUEST_CHANCE_PERCENT = 60;
     private static final int BROKEN_TOOLTIP_COUNT = 4;
     private static final long TICKS_PER_DAY = 24000L;
@@ -165,6 +164,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         return mBrokenTooltipIndex;
     }
 
+    /** Rolls whether the machine is broken today */
     private void rollDailyMalfunctionIfNeeded() {
         final long day = getBaseMetaTileEntity().getWorld()
             .getTotalWorldTime() / TICKS_PER_DAY;
@@ -178,8 +178,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         mBrokenTooltipIndex = getBaseMetaTileEntity().getRandomNumber(BROKEN_TOOLTIP_COUNT);
     }
 
-    // Checks the special slot for the requested repair item; if present in enough quantity, consumes it and
-    // clears the broken state early (instead of waiting for tomorrow's roll)
+    /** Requested repair item logic - Consumes on SpecialSlot and fixes the machine */
     private void tryRepair() {
         if (mRepairItemIndex < 0) return;
         final ItemStack special = getSpecialSlot();
@@ -263,8 +262,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        // Server-authoritative, and runs before any widgets are built (so the special slot/tooltip below always
-        // reflect today's just-rolled state, not yesterday's).
+        /** Runs before any widgets are built / reflects today's rolled state */
         if (!data.isClient()) rollDailyMalfunctionIfNeeded();
         return new MTEBasicMachineBaseGui<>(this, this.getUIProperties()) {
 
@@ -281,9 +279,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
             @Override
             protected void initErrors(PanelSyncManager syncManager) {
                 super.initErrors(syncManager);
-                // One synced boolean per possible tooltip outcome (rather than picking the lang key from the raw
-                // field at construction time), since only the synced value is guaranteed to reach the client -
-                // the machine's own fields are never networked outside of this sync layer.
+
                 for (int i = 0; i < getRepairItems().length; i++) {
                     final int idx = i;
                     final BooleanSyncValue repairSyncer = new BooleanSyncValue(
@@ -305,7 +301,6 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
                 }
             }
 
-            // Special slot doubles as the repair-item slot, so it needs its own tooltip
             @Override
             protected ItemSlot createSpecialSlot() {
                 return new ItemSlot().marginRight(SLOT_SIZE / 2)
@@ -321,7 +316,6 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
                     .tooltipShowUpTimer(BaseTileEntity.TOOLTIP_DELAY);
             }
 
-            // Does not use EU / tooltip to the generic one
             @Override
             protected ProgressWidget createProgressBar(ModularPanel panel, PanelSyncManager syncManager) {
                 return new GTProgressWidget().neiTransferRect(properties.neiTransferRectId)
