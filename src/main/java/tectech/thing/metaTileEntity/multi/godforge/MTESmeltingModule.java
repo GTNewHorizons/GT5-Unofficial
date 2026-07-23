@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,6 +32,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTESmeltingModuleGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESmeltingModule extends MTEBaseModule {
 
     private long EUt = 0;
@@ -207,14 +208,7 @@ public class MTESmeltingModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace, Furnace")
-            .addInfo("This is a module of the Godforge")
-            .addInfo("Must be part of a Godforge to function")
-            .addInfo("Used for basic smelting operations at various temperatures")
-            .addSeparator(EnumChatFormatting.AQUA, 74)
-            .addInfo("As the first of the Godforge modules, this module performs the most basic")
-            .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace")
-            .addInfo("The desired method of processing can be selected in the gui")
-            .addInfo("This module is specialized towards speed and high heat levels")
+            .addMarkdown(new ResourceLocation("gregtech", "godforge-smelting-module"))
             .beginStructureBlock(7, 7, 13, false)
             .addController("Front center, 4th layer")
             .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
