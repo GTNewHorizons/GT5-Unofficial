@@ -31,12 +31,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
-    }
-
-    @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         Materials legacyMaterial = MU.materialOf(material);
@@ -72,7 +66,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .itemOutputs(
                                 GTUtility.copyOrNull(tPlanks),
                                 MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1)))
-                            .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1L))
+                            .fluidInputs(MU.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, 1L))
                             .duration(4 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(cutterRecipes);
@@ -96,7 +90,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                     GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
                                 MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (2)))
-                            .fluidInputs(Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)))
+                            .fluidInputs(MU.fluid(Materials2Materials.Water, Math.min(1_000, 200 * 8 / 320)))
                             .duration(20 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(cutterRecipes);
@@ -141,7 +135,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemOutputs(
                             GTUtility.copyOrNull(tPlanks),
                             MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1)))
-                        .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1L))
+                        .fluidInputs(MU.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, 1L))
                         .duration(4 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(cutterRecipes);
@@ -165,7 +159,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
                             MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (2)))
-                        .fluidInputs(Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)))
+                        .fluidInputs(MU.fluid(Materials2Materials.Water, Math.min(1_000, 200 * 8 / 320)))
                         .duration(20 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(cutterRecipes);

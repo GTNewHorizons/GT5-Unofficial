@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
@@ -16,12 +15,6 @@ public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegi
 
     public ProcessingCircuit() {
         OrePrefixes.circuit.add(this);
-    }
-
-    @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
     }
 
     @Override

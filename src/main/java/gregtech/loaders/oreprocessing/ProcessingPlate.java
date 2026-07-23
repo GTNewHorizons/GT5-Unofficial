@@ -37,7 +37,6 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MaterialIconRegistry;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
@@ -82,12 +81,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
      * @param stack       always != null, the {@link ItemStack} to register
      */
     @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
-    }
-
-    @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         final boolean noSmashing = MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
@@ -129,7 +122,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (MU.hasMolten(material)
-            && !(material == MU.material(Materials.AnnealedCopper) || material == MU.material(Materials.CastIron))) {
+            && !(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
@@ -144,7 +137,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             BITS_STD,
             new Object[] { "hX", 'X', MU.craftIngredient(OrePrefixes.plate, material) });
 
-        if (material == MU.material(Materials.Paper)) {
+        if (material == Materials2Materials.Paper) {
             GTModHandler.addCraftingRecipe(
                 GTUtility.copyAmount(2, stack),
                 BUFFERED,
@@ -294,7 +287,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(
                     GTOreDictUnificator.get(OrePrefixes.compressed, material, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 1L))
+                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 1L))
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .metadata(ADDITIVE_AMOUNT, 2)
@@ -473,7 +466,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, material, 2L))
                 .fluidInputs(
-                    Materials.Water.getFluid(
+                    MU.fluid(
+                        Materials2Materials.Water,
                         Math.max(
                             4,
                             Math.min(
@@ -517,7 +511,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, material, 2L))
                 .fluidInputs(
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(
+                    MU.fluid(
+                        Materials2Materials.dimensionallyshiftedsuperfluid,
                         Math.max(
                             1,
                             Math.min(

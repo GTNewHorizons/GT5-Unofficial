@@ -37,17 +37,11 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
-    }
-
-    @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         Materials legacyMaterial = MU.materialOf(material);
 
-        if (material == MU.material(Materials.Ichorium) || material == MU.material(Materials.NetherQuartz)) {
+        if (material == Materials2Materials.Ichorium || material == Materials2Materials.NetherQuartz) {
             return;
         }
 
@@ -55,15 +49,16 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV
             && GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null) {
 
-            if (material == MU.material(Materials.Livingrock) || material == MU.material(Materials.Livingwood)
-                || material == MU.material(Materials.Dreamwood)) {
+            if (material == Materials2Materials.Livingrock || material == Materials2Materials.Livingwood
+                || material == Materials2Materials.Dreamwood) {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 9L))
                     .fluidInputs(
-                        Materials.Water.getFluid(
+                        MU.fluid(
+                            Materials2Materials.Water,
                             Math.max(
                                 4,
                                 Math.min(1000, ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS * 30 / 320))))
@@ -104,7 +99,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 9L))
                     .fluidInputs(
-                        Materials.DimensionallyShiftedSuperfluid.getFluid(
+                        MU.fluid(
+                            Materials2Materials.dimensionallyshiftedsuperfluid,
                             Math.max(
                                 1,
                                 Math.min(10, ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS * 30 / 4000))))
@@ -114,14 +110,15 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
             }
 
-            else if (material != MU.material(Materials.Clay) && material != MU.material(Materials.Basalt)
-                && material != MU.material(Materials.Obsidian)) {
+            else if (material != Materials2Materials.Clay && material != Materials2Materials.Basalt
+                && material != Materials2Materials.Obsidian) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 9L))
                         .fluidInputs(
-                            Materials.Water.getFluid(
+                            MU.fluid(
+                                Materials2Materials.Water,
                                 Math.max(
                                     4,
                                     Math.min(1000, ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS * 30 / 320))))
@@ -159,7 +156,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 9L))
                         .fluidInputs(
-                            Materials.DimensionallyShiftedSuperfluid.getFluid(
+                            MU.fluid(
+                                Materials2Materials.dimensionallyshiftedsuperfluid,
                                 Math.max(
                                     1,
                                     Math.min(10, ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS * 30 / 4000))))
@@ -186,8 +184,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (MU.hasMolten(material)) {
-            if (!(material == MU.material(Materials.AnnealedCopper) || material == MU.material(Materials.CastIron)
-                || material == MU.material(Materials.Obsidian))) {
+            if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron
+                || material == Materials2Materials.Obsidian)) {
                 if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
 
                     GTValues.RA.stdBuilder()
@@ -214,8 +212,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(hammerRecipes);
         }
 
-        if (ingot != null && !OrePrefixes.block.isIgnored(legacyMaterial)
-            && material != MU.material(Materials.Obsidian)) {
+        if (ingot != null && !OrePrefixes.block.isIgnored(legacyMaterial) && material != Materials2Materials.Obsidian) {
             // 9 ingots -> 1 block
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, material, 9L))

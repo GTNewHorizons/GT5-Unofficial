@@ -13,9 +13,9 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
@@ -34,21 +34,13 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
-    }
-
-    @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-
         switch (prefix.getName()) {
             case "gearGt" -> {
                 GTModHandler.removeRecipeByOutputDelayed(stack);
                 if (MU.hasMolten(material)) {
-                    if (!(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)) {
+                    if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear.get(0L))
                             .itemOutputs(GTOreDictUnificator.get(prefix, material, 1L))
@@ -88,7 +80,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             case "gearGtSmall" -> {
                 if (MU.hasMolten(material)) {
-                    if (!(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)) {
+                    if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear_Small.get(0L))
                             .itemOutputs(GTUtility.copyAmount(1, stack))

@@ -16,7 +16,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -38,12 +37,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
     public ProcessingOreSmelting() {
         INSTANCE = this;
         for (OrePrefixes tPrefix : this.mSmeltingPrefixes) tPrefix.add(this);
-    }
-
-    @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
     }
 
     @Override
@@ -131,7 +124,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
     }
 
     private static void addSpecialDustRecipes(Material material, int outputAmount) {
-        if (material == MU.material(Materials.Chalcopyrite)) {
+        if (material == Materials2Materials.Chalcopyrite) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, material, 2L), new ItemStack(Blocks.sand, 2))
                 .itemOutputs(
@@ -193,7 +186,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
-        } else if (material == MU.material(Materials.Tetrahedrite)) {
+        } else if (material == Materials2Materials.Tetrahedrite) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, material, 2L))
                 .itemOutputs(
@@ -203,7 +196,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
-        } else if (material == MU.material(Materials.Galena)) {
+        } else if (material == Materials2Materials.Galena) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, material, 2L))
                 .itemOutputs(

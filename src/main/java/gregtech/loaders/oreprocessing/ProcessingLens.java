@@ -11,10 +11,10 @@ import com.ruling_0.materiallib.api.Material;
 import appeng.api.AEApi;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.MU;
 import gregtech.api.render.TextureFactory;
@@ -32,18 +32,10 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
-    }
-
-    @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-
-        if (legacyMaterial == Materials.Salt || legacyMaterial == Materials.RockSalt
-            || legacyMaterial == Materials.Spodumene) return;
+        if (material == Materials2Materials.Salt || material == Materials2Materials.RockSalt
+            || material == Materials2Materials.Spodumene) return;
 
         AEApi.instance()
             .registries()

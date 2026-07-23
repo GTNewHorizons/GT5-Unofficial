@@ -13,9 +13,9 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
@@ -34,16 +34,8 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
-    }
-
-    @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-
         if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
             && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             ItemStack tPlate = GTOreDictUnificator.get(OrePrefixes.plate, material, 4L);
@@ -57,7 +49,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                         GTOreDictUnificator.get(OrePrefixes.rotor, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "PhP", "SRf", "PdP", 'P',
-                            legacyMaterial == Materials.Wood ? OrePrefixes.plank.ingredient(legacyMaterial)
+                            material == Materials2Materials.Wood ? MU.craftIngredient(OrePrefixes.plank, material)
                                 : MU.craftIngredient(OrePrefixes.plate, material),
                             'R', MU.craftIngredient(OrePrefixes.ring, material), 'S',
                             MU.craftIngredient(OrePrefixes.screw, material) });
@@ -83,7 +75,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(extruderRecipes);
             }
             if (MU.hasMolten(material)) {
-                if (!(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)) {
+                if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Rotor.get(0L))

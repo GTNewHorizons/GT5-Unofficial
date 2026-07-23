@@ -4,7 +4,6 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -20,12 +19,6 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
     public ProcessingFineWire() {
         INSTANCE = this;
         OrePrefixes.wireFine.add(this);
-    }
-
-    @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
     }
 
     @Override

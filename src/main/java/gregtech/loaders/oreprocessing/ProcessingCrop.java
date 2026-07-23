@@ -9,21 +9,13 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
     public ProcessingCrop() {
         OrePrefixes.crop.add(this);
-    }
-
-    @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
     }
 
     @Override

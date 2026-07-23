@@ -13,7 +13,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
@@ -40,12 +39,6 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
-    }
-
-    @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         if (material == null) return;
@@ -61,7 +54,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(RecipeMaps.fluidExtractionRecipes);
-        } else if (material == MU.material(Materials.Oilsands)) {
+        } else if (material == Materials2Materials.Oilsands) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(new ItemStack(net.minecraft.init.Blocks.sand, 1, 0))
@@ -152,7 +145,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                                 .getStack(Materials2Materials.Calcite, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(3 * MUOre.smeltingMultiplier(material), tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -165,7 +158,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                                 .getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(3 * MUOre.smeltingMultiplier(material), tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -181,7 +174,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                                 .getStack(Materials2Materials.Calcite, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(2 * MUOre.smeltingMultiplier(material), tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -194,7 +187,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                                 .getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(2 * MUOre.smeltingMultiplier(material), tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -234,7 +227,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                     GTUtility.mul(2, tCrushed),
                     MU.hasFlag(tMaterial, GTMaterialFlag.PULVERIZING_CINNABAR) ? GTOreDictUnificator.get(
                         OrePrefixes.crystal,
-                        Materials.Cinnabar,
+                        Materials2Materials.Cinnabar,
                         GTOreDictUnificator
                             .get(OrePrefixes.gem, tPrimaryByMaterial, GTUtility.copyAmount(1, tPrimaryByProduct), 1L),
                         1L)

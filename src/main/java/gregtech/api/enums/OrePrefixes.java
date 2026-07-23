@@ -3073,7 +3073,19 @@ public class OrePrefixes {
         return mOreProcessing.add(registrator);
     }
 
+    /// [#processOre(Material, String, String, ItemStack)] for the recognition-marker path and legacy callers. A
+    /// legacy [Materials] resolves its MaterialLib backing and takes the [Material]-typed dispatch; anything
+    /// else (a recognition marker, or a legacy material with no backing) dispatches each registrator's
+    /// [IOreRecipeRegistrator#registerOre(OrePrefixes, IOreMaterial, String, String, ItemStack)] entry.
     public void processOre(IOreMaterial material, String oreDictName, String modName, ItemStack stack) {
+
+        if (material instanceof Materials legacyMaterial) {
+            Material mlMaterial = MU.material(legacyMaterial);
+            if (mlMaterial != null) {
+                processOre(mlMaterial, oreDictName, modName, stack);
+                return;
+            }
+        }
 
         if (material == null) return;
         if (MU.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
@@ -3095,7 +3107,7 @@ public class OrePrefixes {
         }
     }
 
-    /// [#processOre(IOreMaterial, String, String, ItemStack)] for a MaterialLib [Material], dispatching each
+    /// Runs every registered ore-processing registrator for a MaterialLib [Material], dispatching each
     /// registrator's [IOreRecipeRegistrator#registerOre(OrePrefixes, Material, String, String, ItemStack)] entry.
     public void processOre(Material material, String oreDictName, String modName, ItemStack stack) {
 

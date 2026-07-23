@@ -14,7 +14,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -36,21 +35,13 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
-    }
-
-    @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-
         // Blacklist materials which are handled by Werkstoff loader
-        if (legacyMaterial == Materials.Salt || legacyMaterial == Materials.RockSalt
-            || legacyMaterial == Materials.Spodumene
-            || legacyMaterial == Materials.Calcium
-            || legacyMaterial == Materials.Magnesia) return;
+        if (material == Materials2Materials.Salt || material == Materials2Materials.RockSalt
+            || material == Materials2Materials.Spodumene
+            || material == Materials2Materials.Calcium
+            || material == Materials2Materials.Magnesia) return;
 
         {
             Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
@@ -85,7 +76,8 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, material, 4L))
                     .fluidInputs(
-                        Materials.Water.getFluid(
+                        MU.fluid(
+                            Materials2Materials.Water,
                             Math.max(
                                 4,
                                 Math.min(
@@ -134,7 +126,8 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, material, 4L))
                     .fluidInputs(
-                        Materials.DimensionallyShiftedSuperfluid.getFluid(
+                        MU.fluid(
+                            Materials2Materials.dimensionallyshiftedsuperfluid,
                             Math.max(
                                 1,
                                 Math.min(

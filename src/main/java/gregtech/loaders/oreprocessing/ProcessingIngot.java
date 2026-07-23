@@ -17,10 +17,10 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
@@ -41,18 +41,10 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
-    }
-
-    @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-
         // Blacklist materials which are handled by Werkstoff loader
-        if (legacyMaterial == Materials.Calcium || legacyMaterial == Materials.Magnesia) return;
+        if (material == Materials2Materials.Calcium || material == Materials2Materials.Magnesia) return;
 
         boolean noSmashing = MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         boolean stretchy = MU.hasFlag(material, GTMaterialFlag.STRETCHY);
@@ -72,7 +64,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         .addTo(GTRecipeConstants.Fuel);
                 }
                 if (MU.hasMolten(material)
-                    && !(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)) {
+                    && !(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)) {
                     // Fluid solidifier recipes
 
                     GTValues.RA.stdBuilder()

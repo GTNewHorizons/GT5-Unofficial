@@ -20,7 +20,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -70,12 +69,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
 
     public ProcessingPlank() {
         OrePrefixes.plank.add(this);
-    }
-
-    @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
     }
 
     @Override
@@ -211,7 +204,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, plankInput))
             .itemOutputs(slabOutput)
-            .fluidInputs(Materials.Water.getFluid(4))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 4))
             .duration(2 * 25 * TICKS)
             .eut(4)
             .addTo(cutterRecipes);
@@ -234,7 +227,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, plankInput))
             .itemOutputs(slabOutput)
-            .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
+            .fluidInputs(MU.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, 1))
             .duration(10 * TICKS)
             .eut(4)
             .addTo(cutterRecipes);

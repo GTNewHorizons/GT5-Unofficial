@@ -12,7 +12,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -31,12 +30,6 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
     public ProcessingStickLong() {
         INSTANCE = this;
         OrePrefixes.stickLong.add(this);
-    }
-
-    @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
     }
 
     @Override
@@ -59,7 +52,8 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, material, 2L))
                     .fluidInputs(
-                        Materials.Water.getFluid(
+                        MU.fluid(
+                            Materials2Materials.Water,
                             Math.max(
                                 4,
                                 Math.min(
@@ -103,7 +97,8 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, material, 2L))
                     .fluidInputs(
-                        Materials.DimensionallyShiftedSuperfluid.getFluid(
+                        MU.fluid(
+                            Materials2Materials.dimensionallyshiftedsuperfluid,
                             Math.max(
                                 1,
                                 Math.min(
