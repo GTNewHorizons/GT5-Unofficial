@@ -126,6 +126,14 @@ public class ArmorActionManager {
                 SyncedKeybind.createConfigurable("key.gt.jump_decrease", "Gregtech Armor", Keyboard.KEY_NONE),
                 BehaviorName.JumpBoost));
 
+        register(
+            new ArmorAction(
+                "levitation_mode",
+                "Levitation Mode",
+                true,
+                SyncedKeybind.createConfigurable("key.gt.toggle_levitation_mode", "Gregtech Armor", Keyboard.KEY_NONE),
+                BehaviorName.Levitation));
+
         // Keybinds
 
         register(
