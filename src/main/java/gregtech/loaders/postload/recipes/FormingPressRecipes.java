@@ -24,6 +24,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -72,7 +73,7 @@ public class FormingPressRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.gem, Materials.EnderPearl, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.EnderPearl, 1L),
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 2L, 4))
                 .duration(10 * SECONDS)
@@ -137,7 +138,7 @@ public class FormingPressRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.SiliconSG, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials2Materials.SiliconSolarGrade, 1L),
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 19))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 20))
                 .duration(10 * SECONDS)
@@ -208,11 +209,11 @@ public class FormingPressRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MagMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Magmatter, 1L),
                 MaterialLibAPI.getStack(Materials2Materials.WhiteDwarfMatter, Materials2Shapes.plate, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 4L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.SixPhasedCopper, 4L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 4L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.TranscendentMetal, 4L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.SixPhasedCopper, 4L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Eternity, 4L),
                 MaterialLibAPI.getStack(Materials2Materials.BlackDwarfMatter, Materials2Shapes.plate, (int) (1)))
             .fluidInputs(Materials.UUMatter.getFluid(4_096_000L))
             .itemOutputs(ItemList.NaniteFramework.get(1))
@@ -261,10 +262,10 @@ public class FormingPressRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.gear, Materials.MysteriousCrystal, 16),
+                GTOreDictUnificator.get(OrePrefixes.gear, Materials2Materials.MysteriousCrystal, 16),
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.plate, (int) (8)),
                 WerkstoffLoader.HDCS.get(OrePrefixes.ring, 2),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.PrismaticNaquadah, 16L))
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials2Materials.prismaticnaquadah, 16L))
             .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS))
             .itemOutputs(ItemList.T2Sawblade.get(1))
             .duration(120 * SECONDS)
@@ -273,7 +274,7 @@ public class FormingPressRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.gear, Materials.Neutronium, 16),
+                GTOreDictUnificator.get(OrePrefixes.gear, Materials2Materials.Neutronium, 16),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.plate, (int) (8)),
                 GGMaterial.tairitsu.get(OrePrefixes.ring, 2),
                 MaterialLibAPI.getStack(Materials2Materials.ElectrumFlux, Materials2Shapes.screw, (int) (16)))
@@ -285,11 +286,11 @@ public class FormingPressRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.gear, Materials.TranscendentMetal, 16),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.ProtoHalkonite, 8),
+                GTOreDictUnificator.get(OrePrefixes.gear, Materials2Materials.TranscendentMetal, 16),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials2Materials.protohalkonite, 8),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.ring, (int) (2)),
                 GGMaterial.metastableOganesson.get(OrePrefixes.screw, 16))
-            .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(10 * INGOTS))
+            .fluidInputs(MU.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, 10 * INGOTS))
             .itemOutputs(ItemList.T4Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -300,7 +301,7 @@ public class FormingPressRecipes implements Runnable {
             .itemInputs(
                 new ItemStack(ItemRegistry.bw_glasses[0], 1, 0),
                 MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.stick, (int) (12)),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Netherite, 1))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 9))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
@@ -327,7 +328,7 @@ public class FormingPressRecipes implements Runnable {
         // Conflict Inducement Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Shijima, 1),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Shijima, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.itemCasing, (int) (2)))
             .itemOutputs(ItemList.ConflictInducementCasing.get(1))
             .fluidInputs(GGMaterial.tairitsu.getMolten(2 * INGOTS))

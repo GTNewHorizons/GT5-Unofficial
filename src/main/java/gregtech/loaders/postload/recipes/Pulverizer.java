@@ -26,6 +26,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTOreDictUnificator;
@@ -119,7 +120,7 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Ichorium, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Ichorium, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ichorium, Materials2Shapes.dust, (int) (2)))
             .duration(44 * SECONDS + 2 * TICKS)
             .eut(4)
@@ -144,7 +145,7 @@ public class Pulverizer implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.reeds, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.Sugar, 1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(2)
             .addTo(maceratorRecipes);
@@ -192,7 +193,7 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_TungstenSteel.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TPV, 8),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.TPVAlloy, 8),
                 MaterialLibAPI.getStack(Materials2Materials.Nichrome, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.QuartzSand, Materials2Shapes.dust, (int) (5)))
             .duration(1 * MINUTES + 15 * SECONDS)
@@ -204,7 +205,7 @@ public class Pulverizer implements Runnable {
             .itemInputs(ItemList.Casing_Coil_HSSG.get(1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.HSSG, Materials2Shapes.dust, (int) (8)),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TPV, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.TPVAlloy, 1),
                 MaterialLibAPI.getStack(Materials2Materials.QuartzSand, Materials2Shapes.dust, (int) (6)))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(80)
@@ -249,7 +250,7 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Trinium, Materials2Shapes.dust, (int) (8)),
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.dust, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 16),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.prismaticnaquadah, 16),
                 MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.dust, (int) (1)))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(80)
@@ -261,7 +262,7 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.ElectrumFlux, Materials2Shapes.dust, (int) (8)),
                 MaterialLibAPI.getStack(Materials2Materials.Trinium, Materials2Shapes.dust, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 24),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.prismaticnaquadah, 24),
                 MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.dustSmall, (int) (6)))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(80)
@@ -273,7 +274,7 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.DraconiumAwakened, Materials2Shapes.dust, (int) (8)),
                 MaterialLibAPI.getStack(Materials2Materials.ElectrumFlux, Materials2Shapes.dust, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 32),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.prismaticnaquadah, 32),
                 MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.dust, (int) (2)))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(80)
@@ -285,7 +286,7 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.dust, (int) (9)),
                 MaterialLibAPI.getStack(Materials2Materials.DraconiumAwakened, Materials2Shapes.dust, (int) (4)),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 48),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.prismaticnaquadah, 48),
                 MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.dust, (int) (3)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -297,7 +298,7 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 MaterialsElements.STANDALONE.HYPOGEN.getDust(9),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.dust, (int) (4)),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.prismaticnaquadah, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.dust, (int) (4)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -309,7 +310,7 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.dust, (int) (9)),
                 MaterialsElements.STANDALONE.HYPOGEN.getDust(4),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.prismaticnaquadah, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.dust, (int) (8)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -401,7 +402,7 @@ public class Pulverizer implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 2))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Polyethylene, 12),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.Plastic, 12),
                     MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.dustSmall, (int) (3)))
                 .duration(22 * SECONDS + 10 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
@@ -647,7 +648,7 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.rod, Materials.Blizz, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.rod, Materials2Materials.Blizz, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Blizz, Materials2Shapes.dust, (int) (3)),
                 MaterialLibAPI.getStack(Materials2Materials.Blizz, Materials2Shapes.dust, (int) (1)))
@@ -697,7 +698,7 @@ public class Pulverizer implements Runnable {
             .itemInputs(new ItemStack(Items.item_frame, 1, 32767))
             .itemOutputs(
                 new ItemStack(Items.leather, 1),
-                GTOreDictUnificator.getDust(Materials.Wood, OrePrefixes.stick.getMaterialAmount() * 4L))
+                GTOreDictUnificator.getDust(Materials2Materials.Wood, OrePrefixes.stick.getMaterialAmount() * 4L))
             .outputChances(10000, 9500)
             .duration(20 * SECONDS)
             .eut(2)
@@ -708,7 +709,7 @@ public class Pulverizer implements Runnable {
             .itemInputs(new ItemStack(Items.bow, 1, 0))
             .itemOutputs(
                 new ItemStack(Items.string, 3),
-                GTOreDictUnificator.getDust(Materials.Wood, OrePrefixes.stick.getMaterialAmount() * 3))
+                GTOreDictUnificator.getDust(Materials2Materials.Wood, OrePrefixes.stick.getMaterialAmount() * 3))
             .outputChances(10000, 9500)
             .duration(20 * SECONDS)
             .eut(2)
@@ -744,7 +745,7 @@ public class Pulverizer implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(BiomesOPlenty.ID, "gemOre", 1, 5))
                 .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Olivine, Materials2Shapes.dust, (int) (9)))
-                .duration(Materials.Olivine.getMass() * 9 * TICKS)
+                .duration(MU.mass(Materials2Materials.Olivine) * 9 * TICKS)
                 .eut(4)
                 .addTo(maceratorRecipes);
         }
@@ -753,7 +754,7 @@ public class Pulverizer implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(ProjectRedExploration.ID, "projectred.exploration.stone", 1, 7))
                 .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Olivine, Materials2Shapes.dust, (int) (9)))
-                .duration(Materials.Olivine.getMass() * 9 * TICKS)
+                .duration(MU.mass(Materials2Materials.Olivine) * 9 * TICKS)
                 .eut(4)
                 .addTo(maceratorRecipes);
         }
@@ -788,7 +789,7 @@ public class Pulverizer implements Runnable {
             .itemInputs(new OreDictItemStack("stoneNetherrack", 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Netherrack, Materials2Shapes.dustImpure, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Gold, 1L))
+                GTOreDictUnificator.get(OrePrefixes.nugget, Materials2Materials.Gold, 1L))
             .outputChances(10000, 500)
             .duration(20 * SECONDS)
             .eut(2)

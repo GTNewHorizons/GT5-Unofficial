@@ -30,6 +30,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTLog;
@@ -394,12 +395,14 @@ public class PosteaTransformers implements Runnable {
 
     private void registerPotassiumHydroxideTransformer() {
         // For players updating from dailies
-        ItemStackReplacementManager
-            .addSimpleReplacement("dreamcraft:PotassiumHydroxideDust", Materials.PotassiumHydroxide.getDust(1), true);
+        ItemStackReplacementManager.addSimpleReplacement(
+            "dreamcraft:PotassiumHydroxideDust",
+            MU.stack(OrePrefixes.dust, Materials2Materials.PotassiumHydroxideGT5U, 1),
+            true);
         // For players updating directly from 2.8.4 or before
         ItemStackReplacementManager.addSimpleReplacement(
             "dreamcraft:item.PotassiumHydroxideDust",
-            Materials.PotassiumHydroxide.getDust(1),
+            MU.stack(OrePrefixes.dust, Materials2Materials.PotassiumHydroxideGT5U, 1),
             true); // FML Warning suppression in coremod
     }
 

@@ -93,7 +93,6 @@ import forestry.core.genetics.alleles.AlleleHelper;
 import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -277,7 +276,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         beeSpecies.addProduct(GTModHandler.getModItem(ExtraBees.ID, "honeyComb", 1, 9), 0.15f);
         beeSpecies
             .addSpecialty(MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dustTiny, (int) (1)), 0.2f);
-        beeSpecies.addSpecialty(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 1), 0.2f);
+        beeSpecies.addSpecialty(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 1), 0.2f);
         beeSpecies.addSpecialty(ItemList.FR_Fertilizer.get(1), 0.3f);
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setTemperature(WARM);

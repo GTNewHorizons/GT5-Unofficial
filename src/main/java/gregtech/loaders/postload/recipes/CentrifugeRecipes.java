@@ -34,6 +34,7 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTOreDictUnificator;
@@ -123,7 +124,7 @@ public class CentrifugeRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SluiceJuice, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
-            .fluidOutputs(Materials.Water.getFluid(500))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 500))
             .duration(2 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
@@ -945,7 +946,7 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.EnderEye, Materials2Shapes.dust, (int) (1)))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.Blaze, 1),
                 MaterialLibAPI.getStack(Materials2Materials.EnderPearl, Materials2Shapes.dust, (int) (1)))
             .duration(32 * SECONDS + 4 * TICKS)
             .eut(10)
@@ -982,7 +983,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.Blaze, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Sulfur, Materials2Shapes.dust, (int) (1)))
             .duration(43 * SECONDS + 16 * TICKS)
             .eut(20)
@@ -1011,7 +1012,9 @@ public class CentrifugeRecipes implements Runnable {
 
         // From ProcessingSand
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ore, Materials.Oilsands, 2), ItemList.Cell_Empty.get(1))
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.ore, Materials2Materials.Oilsands, 2),
+                ItemList.Cell_Empty.get(1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Oil, Materials2CellShapes.cell, (int) (1)),
                 new ItemStack(Blocks.sand, 1, 0))

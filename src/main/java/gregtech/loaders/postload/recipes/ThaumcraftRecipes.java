@@ -16,7 +16,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentHazmat;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -55,7 +54,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Turning wood into charcoal",
             new String[] { "ALUMENTUM" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1L),
+            GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Charcoal, 1L),
             2,
             0,
             13,
@@ -68,8 +67,8 @@ public class ThaumcraftRecipes implements Runnable {
             new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey,
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
-                    OrePrefixes.log.ingredient(Materials.Wood),
-                    GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1L),
+                    OrePrefixes.log.ingredient(Materials2Materials.Wood),
+                    GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Charcoal, 1L),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L))) });
@@ -84,7 +83,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Filling buckets with water",
             null,
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Water, 1L),
+            GTOreDictUnificator.get(OrePrefixes.bucket, Materials2Materials.Water, 1L),
             2,
             0,
             16,
@@ -96,23 +95,23 @@ public class ThaumcraftRecipes implements Runnable {
             new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey,
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
-                    GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Water, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.bucket, Materials2Materials.Empty, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.bucket, Materials2Materials.Water, 1L),
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L))),
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
-                    GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Water, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials2Materials.Empty, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials2Materials.Water, 1L),
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L))),
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
-                    GTOreDictUnificator.get(OrePrefixes.capsule, Materials.Empty, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.capsule, Materials.Water, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.capsule, Materials2Materials.Empty, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.capsule, Materials2Materials.Water, 1L),
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L))),
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
-                    GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Water, 1L),
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L))) });
 
         tKey = "GT_TRANSZINC";
@@ -507,7 +506,7 @@ public class ThaumcraftRecipes implements Runnable {
             new String[] { "GT_TRANSBISMUTH", "GT_IRON_TO_STEEL", "GT_TRANSSOLDERINGALLOY", "GT_TRANSBATTERYALLOY",
                 "GT_TRANSBRASS", "GT_TRANSELECTRUM", "GT_TRANSCUPRONICKEL", "GT_TRANSINVAR" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L),
+            GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, 1L),
             3,
             0,
             16,

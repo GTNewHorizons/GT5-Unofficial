@@ -47,12 +47,12 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
@@ -1611,7 +1611,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.FR_Wax.get(6), new ItemStack(Items.string, 1, 32767))
             .itemOutputs(getModItem(Forestry.ID, "candle", 24L, 0))
-            .fluidInputs(Materials.Water.getFluid(600))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 600))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
@@ -1619,7 +1619,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.FR_Wax.get(2), ItemList.FR_Silk.get(1))
             .itemOutputs(getModItem(Forestry.ID, "candle", 8L, 0))
-            .fluidInputs(Materials.Water.getFluid(200))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 200))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
@@ -1628,7 +1628,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(ItemList.FR_Silk.get(9))
             .circuit(9)
             .itemOutputs(getModItem(Forestry.ID, "craftingMaterial", 1L, 3))
-            .fluidInputs(Materials.Water.getFluid(500))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 500))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);

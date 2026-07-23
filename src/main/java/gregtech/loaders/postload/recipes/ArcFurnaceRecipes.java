@@ -16,8 +16,10 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -519,7 +521,7 @@ public class ArcFurnaceRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     Materials.Iron.getPart(ironPrefix, 3),
-                    new OreDictItemStack(OrePrefixes.dust.getName() + Materials.AnyCarbon.getName(), 1))
+                    new OreDictItemStack(OrePrefixes.dust.getName() + MU.internalName(Materials2Markers.AnyCarbon), 1))
                 .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.CastIron, Materials2Shapes.ingot, 3))
                 .duration(9 * SECONDS)
                 .eut(TierEU.RECIPE_LV)

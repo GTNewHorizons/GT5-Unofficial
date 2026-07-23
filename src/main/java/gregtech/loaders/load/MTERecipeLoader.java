@@ -1662,7 +1662,7 @@ public class MTERecipeLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.Radiation_Protection_Plate.get(2),
-                Materials.PrismaticNaquadah.getPlates(2),
+                MU.stack(OrePrefixes.plate, Materials2Materials.prismaticnaquadah, 2),
                 GTOreDictUnificator.get("frameGtNaquadah", 1))
             .circuit(1)
             .itemOutputs(ItemList.NaquadahReactorCasing.get(1))

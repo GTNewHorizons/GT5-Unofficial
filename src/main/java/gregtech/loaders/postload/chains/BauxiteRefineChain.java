@@ -14,12 +14,12 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class BauxiteRefineChain {
@@ -32,7 +32,7 @@ public class BauxiteRefineChain {
                 MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (4)))
             .circuit(8)
-            .fluidInputs(Materials.Water.getFluid(5_000))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 5_000))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.BauxiteSlurry, Materials2FluidShapes.fluidLiquid, (int) (8_000)))
@@ -46,7 +46,7 @@ public class BauxiteRefineChain {
                 MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (4)))
             .circuit(8)
-            .fluidInputs(Materials.Water.getFluid(5_000))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 5_000))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.BauxiteSlurry, Materials2FluidShapes.fluidLiquid, (int) (8_000)))
@@ -146,7 +146,7 @@ public class BauxiteRefineChain {
         for (OrePrefixes ore : washable) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(ore, Materials.Sapphire, 1),
+                    GTOreDictUnificator.get(ore, Materials2Materials.Sapphire, 1),
                     MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dustTiny, 1))
                 .circuit(1)
                 .fluidInputs(
@@ -165,7 +165,7 @@ public class BauxiteRefineChain {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(ore, Materials.GreenSapphire, 1),
+                    GTOreDictUnificator.get(ore, Materials2Materials.GreenSapphire, 1),
                     MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dustTiny, 1))
                 .circuit(1)
                 .fluidInputs(
@@ -184,7 +184,7 @@ public class BauxiteRefineChain {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(ore, Materials.Ruby, 1),
+                    GTOreDictUnificator.get(ore, Materials2Materials.Ruby, 1),
                     MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dustTiny, 1))
                 .circuit(1)
                 .fluidInputs(
@@ -201,7 +201,7 @@ public class BauxiteRefineChain {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(ore, Materials.Sapphire, 9),
+                    GTOreDictUnificator.get(ore, Materials2Materials.Sapphire, 9),
                     MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 1))
                 .circuit(9)
                 .fluidInputs(
@@ -220,7 +220,7 @@ public class BauxiteRefineChain {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(ore, Materials.GreenSapphire, 9),
+                    GTOreDictUnificator.get(ore, Materials2Materials.GreenSapphire, 9),
                     MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 1))
                 .circuit(9)
                 .fluidInputs(
@@ -239,7 +239,7 @@ public class BauxiteRefineChain {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(ore, Materials.Ruby, 9),
+                    GTOreDictUnificator.get(ore, Materials2Materials.Ruby, 9),
                     MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 1))
                 .circuit(9)
                 .fluidInputs(

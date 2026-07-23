@@ -21,6 +21,7 @@ import static kekztech.common.Blocks.lscLapotronicEnergyUnit;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
@@ -31,7 +32,6 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -60,10 +60,11 @@ public class BECRecipes implements Runnable {
     // "Bolt" is used for brevity.
     private static final int[] BOLT_TIER = { 1, 2, 2, 2, 3, 3, 3, 4, 4 };
     private static final int[] BOLT_POS = { 0, 0, 1, 2, 0, 1, 2, 0, 1 };
-    // Materials used to differentiate each tier of EoH part
-    private static final Materials[] TIER_MATS = { Materials.Netherite, Materials.ProtoHalkonite,
-        Materials.SixPhasedCopper, Materials.TranscendentMetal, Materials.Mellion, Materials.Creon, Materials.SpaceTime,
-        Materials.Hexanite, Materials.Eternity };
+    // Material per tier differentiating each EoH part
+    private static final Material[] TIER_MATS = { Materials2Materials.Netherite, Materials2Materials.protohalkonite,
+        Materials2Materials.SixPhasedCopper, Materials2Materials.TranscendentMetal, Materials2Materials.Mellion,
+        Materials2Materials.Creon, Materials2Materials.SpaceTime, Materials2Materials.Hexanite,
+        Materials2Materials.Eternity };
 
     @Override
     public void run() {

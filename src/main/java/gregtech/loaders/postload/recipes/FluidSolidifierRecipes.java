@@ -31,6 +31,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -65,7 +66,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0L))
             .itemOutputs(new ItemStack(Items.snowball, 1, 0))
-            .fluidInputs(Materials.Water.getFluid(250))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 250))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);
@@ -81,7 +82,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
             .itemOutputs(new ItemStack(Blocks.snow, 1, 0))
-            .fluidInputs(Materials.Water.getFluid(1_000))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
             .duration(25 * SECONDS + 12 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);
@@ -431,8 +432,8 @@ public class FluidSolidifierRecipes implements Runnable {
         final int partFraction = (int) (prefix.getMaterialAmount() * INGOTS / M);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(prefix, Materials.Netherite, multiplier))
-            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.Hexanite, multiplier))
+            .itemInputs(GTOreDictUnificator.get(prefix, Materials2Materials.Netherite, multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, Materials2Materials.Hexanite, multiplier))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.UnformedHexanite,

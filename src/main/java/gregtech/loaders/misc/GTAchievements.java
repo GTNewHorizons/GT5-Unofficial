@@ -30,6 +30,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
@@ -491,25 +492,25 @@ public class GTAchievements {
 
         if ((data != null) && (data.mPrefix == OrePrefixes.ingot)) {
             Material tMaterial = data.mMaterial.mMaterial;
-            if (tMaterial == MU.material(Materials.Aluminium)) {
+            if (tMaterial == Materials2Materials.Aluminium) {
                 issueAchievement(player, "gtaluminium");
-            } else if (tMaterial == MU.material(Materials.Titanium)) {
+            } else if (tMaterial == Materials2Materials.Titanium) {
                 issueAchievement(player, "titan");
-            } else if (tMaterial == MU.material(Materials.BlueSteel)) {
+            } else if (tMaterial == Materials2Materials.BlueSteel) {
                 issueAchievement(player, "complexalloys");
-            } else if (tMaterial == MU.material(Materials.Tungsten)) {
+            } else if (tMaterial == Materials2Materials.Tungsten) {
                 issueAchievement(player, "tungsten");
-            } else if (tMaterial == MU.material(Materials.Osmium)) {
+            } else if (tMaterial == Materials2Materials.Osmium) {
                 issueAchievement(player, "osmium");
-            } else if (tMaterial == MU.material(Materials.TungstenSteel)) {
+            } else if (tMaterial == Materials2Materials.TungstenSteel) {
                 issueAchievement(player, "tungstensteel");
-            } else if (tMaterial == MU.material(Materials.HSSG)) {
+            } else if (tMaterial == Materials2Materials.HSSG) {
                 issueAchievement(player, "hssg");
-            } else if (tMaterial == MU.material(Materials.Naquadah)) {
+            } else if (tMaterial == Materials2Materials.Naquadah) {
                 issueAchievement(player, "stargatematerial");
-            } else if (tMaterial == MU.material(Materials.NaquadahAlloy)) {
+            } else if (tMaterial == Materials2Materials.NaquadahAlloy) {
                 issueAchievement(player, "alienmetallurgy");
-            } else if (tMaterial == MU.material(Materials.Naquadria)) {
+            } else if (tMaterial == Materials2Materials.Naquadria) {
                 issueAchievement(player, "finalpreparations");
             }
         }
@@ -543,7 +544,7 @@ public class GTAchievements {
         }
         ItemData data = GTOreDictUnificator.getItemData(stack);
         if (data != null) {
-            if (data.mPrefix == OrePrefixes.dust && data.mMaterial.mMaterial == MU.material(Materials.Bronze)) {
+            if (data.mPrefix == OrePrefixes.dust && data.mMaterial.mMaterial == Materials2Materials.Bronze) {
                 issueAchievement(player, "bronze");
             }
         }
@@ -711,10 +712,10 @@ public class GTAchievements {
         ItemData data = GTOreDictUnificator.getItemData(stack);
         if (data != null && data.mPrefix != null) {
             if (data.mPrefix == OrePrefixes.dust) {
-                if (data.mMaterial.mMaterial == MU.material(Materials.Lutetium)) {
+                if (data.mMaterial.mMaterial == Materials2Materials.Lutetium) {
                     issueAchievement(player, "newmetal");
                 }
-                if (data.mMaterial.mMaterial != MU.material(Materials.Gunpowder)) {
+                if (data.mMaterial.mMaterial != Materials2Materials.Gunpowder) {
                     issueAchievement(player, "cleandust");
                 }
             } else if (data.mPrefix.getName()
@@ -728,13 +729,13 @@ public class GTAchievements {
                                 data.getAllMaterialStacks()
                                     .get(i).mMaterial));
                         if (data.getAllMaterialStacks()
-                            .get(i).mMaterial == MU.material(Materials.AnyIron)) {
+                            .get(i).mMaterial == Materials2Markers.AnyIron) {
                             issueAchievement(player, "iron");
                         }
                         if (data.getAllMaterialStacks()
-                            .get(i).mMaterial == MU.material(Materials.Copper)
+                            .get(i).mMaterial == Materials2Materials.Copper
                             || data.getAllMaterialStacks()
-                                .get(i).mMaterial == MU.material(Materials.Tin)) {
+                                .get(i).mMaterial == Materials2Materials.Tin) {
                             issueAchievement(event.entityPlayer, "mineOre");
                         }
                     }
@@ -744,7 +745,7 @@ public class GTAchievements {
                     issueAchievement(player, "washing");
                 } else if (data.mPrefix == OrePrefixes.crushedCentrifuged) {
                     issueAchievement(player, "spinit");
-                } else if (data.mMaterial.mMaterial == MU.material(Materials.Steel)) {
+                } else if (data.mMaterial.mMaterial == Materials2Materials.Steel) {
                     if (data.mPrefix == OrePrefixes.ingot && stack.stackSize == stack.getMaxStackSize()) {
                         issueAchievement(player, "steel");
                     } else if (data.mPrefix == OrePrefixes.nugget && Thaumcraft.isModLoaded()

@@ -566,7 +566,7 @@ public class NetheriteRecipes {
         addNetheritePartRecipe(OrePrefixes.gearGt, 1, 4);
         if (EtFuturumRequiem.isModLoaded()) {
             addNetheritePartRecipe(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.InfusedGold, 1),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.InfusedGold, 1),
                 getModItem(EtFuturumRequiem.ID, "netherite_block", 1, missing),
                 9);
         }
@@ -574,7 +574,7 @@ public class NetheriteRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.stick, (int) (4)))
             .circuit(4)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Netherite, 1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -630,9 +630,9 @@ public class NetheriteRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MU.stack(prefix, Materials.InfusedGold, multiplier),
+                MU.stack(prefix, Materials2Materials.InfusedGold, multiplier),
                 ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(inverseMultiplier))
-            .itemOutputs(MU.stack(prefix, Materials.Netherite, multiplier))
+            .itemOutputs(MU.stack(prefix, Materials2Materials.Netherite, multiplier))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Boron,
