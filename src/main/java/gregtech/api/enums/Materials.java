@@ -38,7 +38,6 @@ import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.MU;
-import gregtech.api.material.MarkerMaterial;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
@@ -56,6 +55,7 @@ import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import gregtech.loaders.materials.MaterialsLegacyBridge;
+import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 
 /// @deprecated Terminally deprecated; scheduled for removal in 5.10.0.0. Use the MaterialLib-backed
 /// materials2 API instead.
@@ -178,8 +178,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials AnyIron;
     public static Materials AnyRubber;
     public static Materials AnySyntheticRubber;
-    public static MarkerMaterial Quartz;
-    public static MarkerMaterial Advanced;
+    public static RecognitionMarker Quartz;
+    public static RecognitionMarker Advanced;
     // endregion
 
     // region I don't care
@@ -191,7 +191,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Draconium;
     public static Materials DraconiumAwakened;
     public static Materials Endium;
-    public static MarkerMaterial Fluix;
+    public static RecognitionMarker Fluix;
     public static Materials PhasedGold;
     public static Materials PhasedIron;
     public static Materials PlatinumGroupSludge;
@@ -204,7 +204,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Adluorite;
     public static Materials Alduorite;
     public static Materials Amber;
-    public static MarkerMaterial Ammonium;
+    public static RecognitionMarker Ammonium;
     public static Materials Amordrine;
     public static Materials Ardite;
     public static Materials Aredrite;
@@ -244,7 +244,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials InfusedWater;
     public static Materials Jade;
     public static Materials Lava;
-    public static MarkerMaterial Limestone;
+    public static RecognitionMarker Limestone;
     public static Materials Mercassium;
     public static Materials MeteoricSteel;
     public static Materials Migmatite;
@@ -261,7 +261,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Phoenixite;
     public static Materials Quartzite;
     public static Materials Rubracium;
-    public static MarkerMaterial Sand;
+    public static RecognitionMarker Sand;
     public static Materials Siltstone;
     public static Materials Spinel;
     public static Materials Tartarite;
@@ -294,7 +294,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials GlueAdvanced;
     public static Materials Gunpowder;
     public static Materials Honey;
-    public static MarkerMaterial Leather;
+    public static RecognitionMarker Leather;
     public static Materials Lubricant;
     public static Materials McGuffium239;
     public static Materials MeatCooked;
@@ -1028,7 +1028,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     // region GTNH Materials
     public static Materials Signalum;
     public static Materials Lumium;
-    public static MarkerMaterial Prismarine;
+    public static RecognitionMarker Prismarine;
     public static Materials AquaRegia;
     public static Materials Chlorite;
     public static Materials Staurolite;

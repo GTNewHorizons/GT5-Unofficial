@@ -579,8 +579,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
     /// Emits the wireGt01 -> wireGt02..16 assembler recipes that
     /// [gregtech.loaders.oreprocessing.ProcessingWire] generates for every wire material. The ore-registration
-    /// dispatch resolves that registrator's material from the ore name through the legacy registry, which a
-    /// [gregtech.api.material.MarkerMaterial] is absent from, so the superconductor wires are reproduced here
+    /// dispatch resolves that registrator's material from the ore name through the legacy registry, which the
+    /// superconductor facades are absent from, so the superconductor wires are reproduced here
     /// through the [Superconductors] enum. Superconductors carry no processing tier, so the recipe EU is
     /// ProcessingWire's default of 8.
     private static void registerSuperconductorWireAssemblies() {

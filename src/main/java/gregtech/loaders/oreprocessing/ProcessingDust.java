@@ -625,7 +625,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     /// Runs only the `dust` prefix's CRYSTALLISABLE autoclave recipes (see the `"dust"` case above) for a
-    /// [gregtech.api.material.MarkerMaterial] -- the rest of that switch depends on legacy-only state
+    /// recognition marker -- the rest of that switch depends on legacy-only state
     /// (`mBlastFurnaceRequired`, `mMaterialList`, `mName`, ...) that a marker never carries, and no recognition
     /// marker other than `Fluix` reaches this registrator to begin with.
     @Override

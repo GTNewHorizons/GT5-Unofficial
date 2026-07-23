@@ -22,11 +22,11 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
-import gregtech.api.material.MarkerMaterial;
 import gregtech.api.material.MaterialAtomics;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.loaders.materials.LegacyMaterials;
 import gregtech.loaders.materials.RecognitionMaterials;
+import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 
 /// Rebuilds every legacy `Werkstoff` from MaterialLib data (the werkstoff counterpart of
 /// `MaterialsLegacyBridge`): the pool declaration lists (`WerkstoffLoader`, `GGMaterial`,
@@ -391,7 +391,7 @@ public final class WerkstoffReconstruction {
         if (material != null && material != Materials._NULL) {
             return material;
         }
-        MarkerMaterial marker = RecognitionMaterials.getMarker(name);
+        RecognitionMarker marker = RecognitionMaterials.getRecognitionMarker(name);
         if (marker != null) {
             return marker;
         }
