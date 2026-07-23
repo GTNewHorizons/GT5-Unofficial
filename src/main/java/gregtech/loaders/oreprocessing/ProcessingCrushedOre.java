@@ -12,9 +12,9 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -28,12 +28,6 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
         INSTANCE = this;
         OrePrefixes.crushedCentrifuged.add(this);
         OrePrefixes.crushedPurified.add(this);
-    }
-
-    @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
     }
 
     @Override
@@ -89,9 +83,9 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                 }
 
                 // Blacklist materials which are handled by Werkstoff loader and coal, which has an override
-                if (material == MU.material(Materials.Salt) || material == MU.material(Materials.RockSalt)
-                    || material == MU.material(Materials.Spodumene)
-                    || material == MU.material(Materials.Coal)) return;
+                if (material == Materials2Materials.Salt || material == Materials2Materials.RockSalt
+                    || material == Materials2Materials.Spodumene
+                    || material == Materials2Materials.Coal) return;
 
                 switch (MU.internalName(material)) {
                     case "Tanzanite", "Sapphire", "Olivine", "GreenSapphire", "Opal", "Amethyst", "Emerald", "Ruby", "Amber", "Diamond", "FoolsRuby", "BlueTopaz", "GarnetRed", "Topaz", "Jasper", "GarnetYellow" -> GTValues.RA

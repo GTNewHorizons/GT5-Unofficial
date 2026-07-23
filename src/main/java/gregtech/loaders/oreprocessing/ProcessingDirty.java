@@ -14,7 +14,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -40,12 +39,6 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
 
     private boolean didPersulfate = false;
     private boolean didMercury = false;
-
-    @Override
-    public void registerOre(OrePrefixes orePrefix, Materials material, String oreDictName, String modName,
-        net.minecraft.item.ItemStack stack) {
-        registerOre(orePrefix, MU.material(material), oreDictName, modName, stack);
-    }
 
     @Override
     public void registerOre(OrePrefixes orePrefix, Material material, String oreDictName, String modName,
@@ -91,7 +84,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     1L),
                 MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dust, (int) (1)))
             .outputChances(100_00, 11_11, 100_00)
-            .fluidInputs(Materials.Water.getFluid(1_000))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(oreWasherRecipes);

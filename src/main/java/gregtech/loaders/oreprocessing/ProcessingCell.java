@@ -18,9 +18,9 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.MU;
 import gregtech.api.objects.MaterialStack;
@@ -41,19 +41,13 @@ public class ProcessingCell implements IOreRecipeRegistrator {
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
-    }
-
-    @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         if (material == null) return;
 
         switch (prefix.getName()) {
             case "cell" -> {
-                if (material == MU.material(Materials.Empty)) {
+                if (material == Materials2Materials.Empty) {
                     GTModHandler.removeRecipeByOutputDelayed(stack);
                     if (modName.equalsIgnoreCase("AtomicScience")) {
                         RA.stdBuilder()
@@ -96,7 +90,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         }
 
                         ItemStack tStack;
-                        if (tMat.mMaterial == MU.material(Materials.Air)) {
+                        if (tMat.mMaterial == Materials2Materials.Air) {
                             tStack = ItemList.Cell_Air.get(tMat.mAmount * tDensityMultiplier / 2L);
                         } else {
                             tStack = GTOreDictUnificator.get(OrePrefixes.dust, tMat.mMaterial, tMat.mAmount);
@@ -200,7 +194,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                 }
             }
             case "cellPlasma" -> {
-                if (material == MU.material(Materials.Empty)) {
+                if (material == Materials2Materials.Empty) {
                     GTModHandler.removeRecipeByOutputDelayed(stack);
                 } else {
                     GTRecipeBuilder recipeBuilder = RA.stdBuilder();

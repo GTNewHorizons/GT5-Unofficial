@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
@@ -25,12 +24,6 @@ public class ProcessingIceOre implements IOreRecipeRegistrator {
         INSTANCE = this;
         OrePrefixes.ore.add(this);
         OrePrefixes.rawOre.add(this);
-    }
-
-    @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oredictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oredictName, modName, stack);
     }
 
     @Override

@@ -13,9 +13,9 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
@@ -35,18 +35,10 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
-    }
-
-    @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-
         // Blacklist materials which are handled by Werkstoff loader
-        if (legacyMaterial == Materials.Calcium || legacyMaterial == Materials.Magnesia) return;
+        if (material == Materials2Materials.Calcium || material == Materials2Materials.Magnesia) return;
 
         if (MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
             && GTOreDictUnificator.get(OrePrefixes.gem, MU.smeltInto(material), 1L) != null) {
@@ -60,7 +52,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
 
         if ((!MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM))
             && GTOreDictUnificator.get(OrePrefixes.ingot, MU.smeltInto(material), 1L) != null
-            && legacyMaterial != Materials.Aluminium) {
+            && material != Materials2Materials.Aluminium) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ingot.get(0L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MU.smeltInto(material), 1L))
@@ -71,7 +63,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         }
 
         if (MU.hasMolten(material)) {
-            if (!(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)) {
+            if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, material, 1L))

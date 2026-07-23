@@ -23,6 +23,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
@@ -43,20 +44,15 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
-    }
-
-    @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         Materials legacyMaterial = MU.materialOf(material);
 
         // Blacklist materials which are handled by Werkstoff loader
-        if (legacyMaterial == Materials.Calcium || legacyMaterial == Materials.Magnesia) return;
+        if (material == Materials2Materials.Calcium || material == Materials2Materials.Magnesia) return;
 
-        if (((legacyMaterial == Materials.Glass) || (GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null))
+        if (((material == Materials2Materials.Glass)
+            || (GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null))
             && (!MU.hasFlag(material, GTMaterialFlag.NO_SMELTING))) {
             long materialMass = MU.mass(material);
             int tAmount = (int) (prefix.getMaterialAmount() / 3628800L);
@@ -74,8 +70,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
 
                 if (!OrePrefixes.block.isIgnored(MU.smeltInto(legacyMaterial))
                     && (GTOreDictUnificator.get(OrePrefixes.block, MU.smeltInto(material), 1L) != null)
-                    && legacyMaterial != Materials.Ichorium
-                    && legacyMaterial != Materials.Obsidian) {
+                    && material != Materials2Materials.Ichorium
+                    && material != Materials2Materials.Obsidian) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Extruder_Block.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, MU.smeltInto(material), tAmount))
@@ -168,7 +164,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .addTo(extruderRecipes);
                 }
 
-                if (!(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)
+                if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)
                     && !(MU.hasFlag(material, GTMaterialFlag.NO_SMELTING))
                     && prefix == OrePrefixes.ingot) {
                     if (MU.hasMolten(material)) {
@@ -282,8 +278,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         }
                     }
                 }
-                if (tAmount * 2 <= 64 && legacyMaterial != Materials.Obsidian) {
-                    if (!(legacyMaterial == Materials.Aluminium)) {
+                if (tAmount * 2 <= 64 && material != Materials2Materials.Obsidian) {
+                    if (!(material == Materials2Materials.Aluminium)) {
                         if (GTOreDictUnificator.get(OrePrefixes.stick, MU.smeltInto(material), 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Rod.get(0L))
@@ -383,8 +379,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .addTo(extruderRecipes);
                 }
 
-                if (!(legacyMaterial == Materials.StyreneButadieneRubber
-                    || legacyMaterial == Materials.RubberSilicone)) {
+                if (!(material == Materials2Materials.StyreneButadieneRubber
+                    || material == Materials2Materials.Silicone)) {
                     Integer plateTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
                     if ((plateTierEU == null ? 0 : plateTierEU) < TierEU.IV) {
                         if (GTOreDictUnificator.get(OrePrefixes.plate, MU.smeltInto(material), 1L) != null) {

@@ -9,7 +9,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import appeng.core.Api;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
@@ -26,12 +25,6 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
     public ProcessingRound() {
         INSTANCE = this;
         OrePrefixes.round.add(this);
-    }
-
-    @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
     }
 
     @Override

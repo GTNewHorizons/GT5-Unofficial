@@ -15,26 +15,25 @@ public interface IOreRecipeRegistrator {
      * before.
      *
      * @param prefix   always != null
-     * @param material always != null, and can be == _NULL if the Prefix is Self Referencing or not Material based!
+     * @param material always != null, and can be == Materials2Materials.NULL if the Prefix is Self Referencing or not
+     *                 Material based!
      * @param stack    always != null
      */
-    void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName, ItemStack stack);
+    void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName, ItemStack stack);
 
-    /// Bridges the [IOreMaterial]-typed ore-processing pipeline to the [Materials]-typed registrator. A material
-    /// that is not a legacy [Materials] carries no ore-processing recipes, so it is a no-op.
+    /// Bridges the legacy [Materials]-typed ore-processing pipeline to the [Material]-typed registrator,
+    /// resolving `material`'s MaterialLib counterpart through [MU#material].
+    default void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
+        ItemStack stack) {
+        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
+    }
+
+    /// Bridges the [IOreMaterial]-typed ore-processing pipeline to the [Material]-typed registrator. A material
+    /// that is not a legacy [Materials] carries no ore-processing recipes, so it is a no-op -- registrators that
+    /// do process recognition markers (e.g. `ProcessingDust`) override this entry.
     default void registerOre(OrePrefixes prefix, IOreMaterial material, String oreDictName, String modName,
         ItemStack stack) {
         if (material instanceof Materials legacyMaterial)
             registerOre(prefix, legacyMaterial, oreDictName, modName, stack);
-    }
-
-    /// Bridges the MaterialLib [Material]-typed ore-processing pipeline to the [Materials]-typed registrator,
-    /// resolving `material`'s legacy counterpart through [MU#materialOf]. A material with no legacy counterpart
-    /// carries no ore-processing recipes through this entry, so it is a no-op -- mirrors
-    /// [#registerOre(OrePrefixes, IOreMaterial, String, String, ItemStack)]'s `instanceof Materials` gate.
-    default void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial != null) registerOre(prefix, legacyMaterial, oreDictName, modName, stack);
     }
 }

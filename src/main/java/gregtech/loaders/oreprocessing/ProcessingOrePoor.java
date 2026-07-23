@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
@@ -28,12 +27,6 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
         OrePrefixes.oreSmall.add(this);
         OrePrefixes.oreNormal.add(this);
         OrePrefixes.oreRich.add(this);
-    }
-
-    @Override
-    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
     }
 
     @Override
