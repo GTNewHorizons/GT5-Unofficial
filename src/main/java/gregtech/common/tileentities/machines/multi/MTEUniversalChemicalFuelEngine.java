@@ -18,8 +18,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -101,29 +105,15 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
         return false;
     }
 
-    public final boolean addDynamoHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchDynamo) {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
-            } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
-            }
-        }
-        return false;
-    }
-
     @Override
     public IStructureDefinition<MTEUniversalChemicalFuelEngine> getStructure_EM() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEUniversalChemicalFuelEngine>builder()
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
-                    new String[][] { { "       ", "       ", "       ", "  BBB  ", "  B~B  ", "  BBB  ", "       " },
+                    new String[][] {
+                        // spotless:off
+                        { "       ", "       ", "       ", "  BBB  ", "  B~B  ", "  BBB  ", "       " },
                         { "B     B", "FB   BF", "FAFEFAF", " FBBBF ", " EB BE ", " FBBBF ", "  FEF  " },
                         { "       ", " D   D ", " D   D ", "  BBB  ", "  B B  ", "  CBC  ", "  EEE  " },
                         { "B     B", "FB   BF", "FAFEFAF", " FBBBF ", " EB BE ", " FBBBF ", "  FEF  " },
@@ -135,7 +125,9 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
                         { "B     B", "FB   BF", "FAFEFAF", " FBBBF ", " EB BE ", " FBBBF ", "  FEF  " },
                         { "       ", " D   D ", " D   D ", "  BBB  ", "  B B  ", "  CBC  ", "  EEE  " },
                         { "B     B", "FB   BF", "FAFEFAF", " FBBBF ", " EB BE ", " FBBBF ", "  FEF  " },
-                        { "       ", "       ", "       ", "  BBB  ", "  BGB  ", "  BBB  ", "       " } })
+                        { "       ", "       ", "       ", "  BBB  ", "  BGB  ", "  BBB  ", "       " }}
+                        //spotless:on
+                )
                 .addElement('A', Casings.TitaniumPipeCasing.asElement())
                 .addElement(
                     'B',
@@ -295,6 +287,28 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
             this.getIdealStatus() - this.getRepairStatus(),
             formatNumber(tEff / 100D) + " %");
         return info;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+
+        // we produce power, so we need to apply a unary minus to the power
+        // for waila to display it correctly since:
+        // https://github.com/GTNewHorizons/GT5-Unofficial/blob/39af6c67/src/main/java/gregtech/api/metatileentity/implementations/GT_MetaTileEntity_MultiBlockBase.java#L1251-L1253
+        tag.setLong("energyUsage", -this.getPowerFlow() * (tEff / 10000));
+        tag.setFloat("efficiency", tEff / 100F);
+        if (!mDynamoHatches.isEmpty()) tag.setLong(
+            "energyTier",
+            GTUtility.getTier(
+                mDynamoHatches.get(0)
+                    .maxEUOutput()));
+        if (!eDynamoMulti.isEmpty()) tag.setLong(
+            "energyTier",
+            GTUtility.getTier(
+                eDynamoMulti.get(0)
+                    .maxEUOutput()));
     }
 
     void addAutoEnergy() {
