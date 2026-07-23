@@ -92,7 +92,7 @@ public class PowerfailLayerManager extends InteractableLayerManager {
     }
 
     public void removePowerfail(long coord) {
-        removeLocation(coord);
+        invalidateLocation(coord);
     }
 
     private boolean matchesSearch(PowerfailLocationWrapper wrapper) {
