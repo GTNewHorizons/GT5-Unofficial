@@ -1,6 +1,7 @@
 package gregtech.common.gui.modularui.multiblock.dronecentre.panel;
 
 import java.text.Collator;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -418,8 +419,8 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .childPadding(4)
                     .paddingRight(4)
                     .marginBottom(2);
-                if (centre.getEditMode())
-                    row.child(createGroupButton(connection, droneConnectionListSyncHandler, dynamicSyncManager));
+                if (centre.getEditMode()) row.child(
+                    createGroupButton(connection, droneConnectionListSyncHandler, dynamicSyncManager, syncManager));
                 row.child(
                     new ItemDisplayWidget().disableThemeBackground(true)
                         .disableHoverThemeBackground(true)
@@ -446,7 +447,8 @@ public class DroneConnectionListPanel extends ModularPanel {
     }
 
     private IWidget createGroupButton(DroneConnection conn,
-        DroneConnectionListSyncHandler droneConnectionListSyncHandler, PanelSyncManager dynamicSyncManager) {
+        DroneConnectionListSyncHandler droneConnectionListSyncHandler, PanelSyncManager dynamicSyncManager,
+        PanelSyncManager syncManager) {
         BooleanSyncValue groupSyncHandler = dynamicSyncManager.getOrCreateSyncHandler(
             "group" + conn.uuid.toString(),
             BooleanSyncValue.class,
@@ -454,7 +456,9 @@ public class DroneConnectionListPanel extends ModularPanel {
                 () -> droneConnectionListSyncHandler.getValue()
                     .stream()
                     .filter(c -> c.uuid.equals(conn.uuid))
-                    .map(con -> (con.getGroupMask() & (1L << centre.getActiveGroup())) != 0)
+                    .map(
+                        con -> centre.getActiveGroup() != 0
+                            && (con.getGroupMask() & (1L << centre.getActiveGroup())) != 0)
                     .findFirst()
                     .orElse(false),
                 bool -> {
@@ -465,6 +469,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                             .findFirst()
                             .ifPresent(con -> {
                                 int active = centre.getActiveGroup();
+                                if (active == 0) return;
                                 long mask = con.getGroupMask();
                                 if (bool) {
                                     con.setGroupMask(mask | (1L << active));
@@ -479,7 +484,45 @@ public class DroneConnectionListPanel extends ModularPanel {
             .size(16)
             .disableThemeBackground(true)
             .disableHoverThemeBackground(true)
-            .tooltipBuilder(var -> var.add(IKey.lang("GT5U.gui.button.drone_select_group")))
+            .tooltipDynamic(builder -> {
+                builder.addLine(IKey.lang("GT5U.gui.button.drone_select_group"));
+                if (centre.getActiveGroup() == 0) {
+                    builder.addLine(IKey.lang("GT5U.gui.tooltip.drone_cannot_add_all_group"));
+                }
+                GenericListSyncHandler<String> groupSyncValue = syncManager
+                    .findSyncHandler("groupNameList", GenericListSyncHandler.class);
+                if (groupSyncValue != null && groupSyncValue.getValue() != null) {
+                    List<String> groupNames = groupSyncValue.getValue();
+                    List<DroneConnection> connList = droneConnectionListSyncHandler.getValue();
+                    long mask = conn.getGroupMask();
+                    if (connList != null) {
+                        mask = connList.stream()
+                            .filter(c -> c.uuid.equals(conn.uuid))
+                            .map(DroneConnection::getGroupMask)
+                            .findFirst()
+                            .orElse(conn.getGroupMask());
+                    }
+                    List<String> inGroups = new ArrayList<>();
+                    int maxGroups = Math.min(groupNames.size(), 64);
+                    for (int i = 1; i < maxGroups; i++) {
+                        if ((mask & (1L << i)) != 0) {
+                            String name = groupNames.get(i);
+                            if (name == null || name.isEmpty()) {
+                                name = String.valueOf(i);
+                            }
+                            inGroups.add(name);
+                        }
+                    }
+                    if (inGroups.isEmpty()) {
+                        builder.addLine(IKey.lang("GT5U.gui.tooltip.drone_in_no_group"));
+                    } else {
+                        builder.addLine(IKey.lang("GT5U.gui.tooltip.drone_in_groups"));
+                        for (String groupName : inGroups) {
+                            builder.addLine(IKey.str("  - " + groupName));
+                        }
+                    }
+                }
+            })
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS);
     }
