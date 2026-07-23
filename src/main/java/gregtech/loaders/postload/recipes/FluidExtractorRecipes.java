@@ -28,6 +28,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -39,7 +40,7 @@ public class FluidExtractorRecipes implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteBlack, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials2Materials.GraniteBlack, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.GraniteBlack,
@@ -51,7 +52,7 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteRed, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials2Materials.GraniteRed, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.GraniteRed,
@@ -138,13 +139,13 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.HydratedCoal, Materials2Shapes.dust, (int) (1L)))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.dust, (int) (1L)))
             .outputChances(10000)
-            .fluidOutputs(Materials.Water.getFluid(100L))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 100L))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Mercury, 1L))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Mercury, 1L))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Mercury, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
@@ -605,14 +606,14 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.snowball, 1, 0))
-            .fluidOutputs(Materials.Water.getFluid(250))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 250))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.snow, 1, 0))
-            .fluidOutputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);

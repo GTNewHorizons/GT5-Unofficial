@@ -16,13 +16,13 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -210,8 +210,8 @@ public class VacuumFreezerRecipes implements Runnable {
         // fluid vacuum
         {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Ice, 1L))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Water, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Ice, 1L))
                 .duration(2 * SECONDS + 10 * TICKS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(vacuumFreezerRecipes);
@@ -244,57 +244,84 @@ public class VacuumFreezerRecipes implements Runnable {
         // Freeze superconductors.
         {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorMVBase, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SuperconductorMVBase, 1L))
+                .itemInputs(
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingotHot, Materials2Materials.Pentacadmiummagnesiumhexaoxid, 1L))
+                .itemOutputs(
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Pentacadmiummagnesiumhexaoxid, 1L))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorHVBase, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SuperconductorHVBase, 1L))
+                .itemInputs(
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingotHot, Materials2Materials.Titaniumonabariumdecacoppereikosaoxid, 1L))
+                .itemOutputs(
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingot, Materials2Materials.Titaniumonabariumdecacoppereikosaoxid, 1L))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorEVBase, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SuperconductorEVBase, 1L))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials2Materials.Uraniumtriplatinid, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Uraniumtriplatinid, 1L))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorIVBase, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SuperconductorIVBase, 1L))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials2Materials.Vanadiumtriindinid, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Vanadiumtriindinid, 1L))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorLuVBase, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SuperconductorLuVBase, 1L))
+                .itemInputs(
+                    GTOreDictUnificator.get(
+                        OrePrefixes.ingotHot,
+                        Materials2Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+                        1L))
+                .itemOutputs(
+                    GTOreDictUnificator.get(
+                        OrePrefixes.ingot,
+                        Materials2Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+                        1L))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorZPMBase, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SuperconductorZPMBase, 1L))
+                .itemInputs(
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingotHot, Materials2Materials.Tetranaquadahdiindiumhexaplatiumosminid, 1L))
+                .itemOutputs(
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingot, Materials2Materials.Tetranaquadahdiindiumhexaplatiumosminid, 1L))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUVBase, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SuperconductorUVBase, 1L))
+                .itemInputs(
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingotHot, Materials2Materials.Longasssuperconductornameforuvwire, 1L))
+                .itemOutputs(
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingot, Materials2Materials.Longasssuperconductornameforuvwire, 1L))
                 .duration(40 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUHVBase, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SuperconductorUHVBase, 1L))
+                .itemInputs(
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingotHot, Materials2Materials.Longasssuperconductornameforuhvwire, 1L))
+                .itemOutputs(
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingot, Materials2Materials.Longasssuperconductornameforuhvwire, 1L))
                 .duration(1 * MINUTES + 20 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(vacuumFreezerRecipes);
@@ -338,7 +365,7 @@ public class VacuumFreezerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2CellShapes.cellPlasma, (int) (1)))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Americium, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.Americium, 1L))
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(vacuumFreezerRecipes);
@@ -408,10 +435,10 @@ public class VacuumFreezerRecipes implements Runnable {
         final int partFraction = (int) (prefix.getMaterialAmount() * INGOTS / M);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(prefix, Materials.HotProtoHalkonite, multiplier))
-            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.ProtoHalkonite, multiplier))
+            .itemInputs(GTOreDictUnificator.get(prefix, Materials2Materials.hotprotohalkonite, multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, Materials2Materials.protohalkonite, multiplier))
             .fluidInputs(
-                Materials.DimensionallyShiftedSuperfluid.getFluid((long) partFraction * multiplier / 4),
+                MU.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, (long) partFraction * multiplier / 4),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.SuperCoolant,
                     Materials2FluidShapes.fluidLiquid,

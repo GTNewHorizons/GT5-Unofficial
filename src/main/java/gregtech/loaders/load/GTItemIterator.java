@@ -23,7 +23,6 @@ import cpw.mods.fml.common.ModAPIManager;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -79,13 +78,13 @@ public class GTItemIterator implements Runnable {
         }
 
         ItemStack tStack3 = new ItemStack(Blocks.glass, 1, 0);
-        tStack2 = GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L);
+        tStack2 = GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, 1L);
         tStack = GTModHandler.getRecipeOutput(
             tStack2,
             tStack3,
             tStack2,
             tStack3,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L),
+            GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Gold, 1L),
             tStack3,
             tStack2,
             tStack3,
@@ -110,7 +109,7 @@ public class GTItemIterator implements Runnable {
             tStack3,
             tStack2,
             tStack3,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L),
+            GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Gold, 1L),
             tStack3,
             tStack2,
             tStack3,

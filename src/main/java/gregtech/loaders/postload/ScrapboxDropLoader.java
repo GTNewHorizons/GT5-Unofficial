@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
@@ -47,9 +46,9 @@ public class ScrapboxDropLoader implements Runnable {
         GTModHandler.addScrapboxDrop(
             0.2F,
             MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1L)));
-        GTModHandler.addScrapboxDrop(1.0F, GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L));
+        GTModHandler.addScrapboxDrop(1.0F, GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Water, 1L));
         GTModHandler.addScrapboxDrop(2.0F, ItemList.Cell_Empty.get(1L));
-        GTModHandler.addScrapboxDrop(5.0F, GTOreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 1L));
+        GTModHandler.addScrapboxDrop(5.0F, GTOreDictUnificator.get(OrePrefixes.plate, Materials2Materials.Paper, 1L));
         GTModHandler.addScrapboxDrop(1.0F, new ItemStack(Items.leather));
         GTModHandler.addScrapboxDrop(1.0F, new ItemStack(Items.feather));
         GTModHandler.addScrapboxDrop(0.7F, ItemList.IC2_Plantball.get(1L));
@@ -179,7 +178,7 @@ public class ScrapboxDropLoader implements Runnable {
         GTModHandler.addScrapboxDrop(
             0.05F,
             MaterialLibAPI.getStack(Materials2Materials.GreenSapphire, Materials2Shapes.gem, (int) (1L)));
-        GTModHandler.addScrapboxDrop(0.05F, GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L));
-        GTModHandler.addScrapboxDrop(0.05F, GTOreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1L));
+        GTModHandler.addScrapboxDrop(0.05F, GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Emerald, 1L));
+        GTModHandler.addScrapboxDrop(0.05F, GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Diamond, 1L));
     }
 }

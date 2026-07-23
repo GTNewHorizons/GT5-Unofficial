@@ -16,12 +16,12 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 
@@ -120,13 +120,13 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Biomass, Materials2FluidShapes.fluidLiquid, (int) (40)))
-            .fluidOutputs(Materials.Water.getFluid(12))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 12))
             .duration(16 * TICKS)
             .eut(24)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Water.getFluid(10))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 10))
             .fluidOutputs(GTModHandler.getDistilledWater(10))
             .duration(1 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_ULV)
@@ -154,7 +154,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SluiceJuice, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
-            .fluidOutputs(Materials.Water.getFluid(500))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 500))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(distilleryRecipes);
@@ -246,7 +246,7 @@ public class DistilleryRecipes implements Runnable {
                     Materials2Materials.FermentedBiomass,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1_000)))
-            .fluidOutputs(Materials.Water.getFluid(375))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 375))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(distilleryRecipes);
@@ -423,7 +423,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(2)
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 4))
-            .fluidOutputs(Materials.Water.getFluid(2))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 2))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(distilleryRecipes);
@@ -506,13 +506,13 @@ public class DistilleryRecipes implements Runnable {
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Ethanol, Materials2FluidShapes.fluidLiquid, (int) (600)),
-                Materials.Water.getFluid(300))
+                MU.fluid(Materials2Materials.Water, 300))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(400)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Water.getFluid(1_000))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
             .fluidOutputs(GTModHandler.getDistilledWater(1_000))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_MV)
@@ -840,7 +840,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, (int) (25)),
-                Materials.Water.getFluid(375),
+                MU.fluid(Materials2Materials.Water, 375),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Ethanol, Materials2FluidShapes.fluidLiquid, (int) (150)),
                 MaterialLibAPI
@@ -856,7 +856,9 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemOutputs(fertOutput)
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 3_000))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8_000), Materials.Water.getFluid(125))
+            .fluidOutputs(
+                new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8_000),
+                MU.fluid(Materials2Materials.Water, 125))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(distillationTowerRecipes);
@@ -911,7 +913,7 @@ public class DistilleryRecipes implements Runnable {
             new FluidStack[] {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, (int) (100)),
-                Materials.Water.getFluid(500),
+                MU.fluid(Materials2Materials.Water, 500),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Ethanol, Materials2FluidShapes.fluidLiquid, (int) (10)),
                 MaterialLibAPI
@@ -1015,7 +1017,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials2Materials.DilutedHydrochloricAcidGT5U,
                 Materials2FluidShapes.fluidLiquid,
                 2_000),
-            new FluidStack[] { Materials.Water.getFluid(1_000), MaterialLibAPI
+            new FluidStack[] { MU.fluid(Materials2Materials.Water, 1_000), MaterialLibAPI
                 .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000) },
             GTValues.NI,
             600,
@@ -1026,7 +1028,7 @@ public class DistilleryRecipes implements Runnable {
             new FluidStack[] {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, (int) (5)),
-                Materials.Water.getFluid(35) },
+                MU.fluid(Materials2Materials.Water, 35) },
             GTValues.NI,
             20,
             64);
@@ -1053,7 +1055,7 @@ public class DistilleryRecipes implements Runnable {
             new FluidStack[] {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, (int) (2_000)),
-                Materials.Water.getFluid(1_000) },
+                MU.fluid(Materials2Materials.Water, 1_000) },
             GTValues.NI,
             600,
             120);

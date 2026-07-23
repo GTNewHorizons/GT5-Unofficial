@@ -10,7 +10,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -27,7 +26,7 @@ public class ImplosionCompressorRecipes implements Runnable {
             .itemInputs(ItemList.IC2_Compressed_Coal_Chunk.get(1L))
             .itemOutputs(
                 ItemList.IC2_Industrial_Diamond.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 4L))
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 4L))
             .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 8)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -36,8 +35,8 @@ public class ImplosionCompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Ingot_IridiumAlloy.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 4L))
+                GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials2Materials.Iridium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 4L))
             .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 8)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)

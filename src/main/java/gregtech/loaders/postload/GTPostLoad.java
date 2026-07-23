@@ -346,7 +346,7 @@ public class GTPostLoad {
                     .bottomBlock(Blocks.soul_sand)
                     .inputItem(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0), false)
                     .circuit(1)
-                    .outputItem(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Basalt, 1L))
+                    .outputItem(GTOreDictUnificator.get(OrePrefixes.stone, Materials2Materials.Basalt, 1L))
                     .duration(16 * TICKS));
 
             MTERockBreaker.addRockBreakerRecipe(
@@ -454,20 +454,20 @@ public class GTPostLoad {
         RecipeMaps.largeBoilerFakeFuels.getBackend()
             .addSolidRecipes(
                 MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.dust, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 1),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Charcoal, 1),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Charcoal, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.dust, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Coal, 1),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Coal, 1),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Coal, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.crushed, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Lignite, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Lignite, Materials2Shapes.gem, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 1),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Lignite, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Lignite, Materials2Shapes.crushed, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1),
+                GTOreDictUnificator.get(OrePrefixes.log, Materials2Materials.Wood, 1),
+                GTOreDictUnificator.get(OrePrefixes.plank, Materials2Materials.Wood, 1),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials2Materials.Wood, 1),
+                GTOreDictUnificator.get(OrePrefixes.slab, Materials2Materials.Wood, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.dust, (int) (1)),
@@ -475,7 +475,7 @@ public class GTPostLoad {
                 MaterialLibAPI.getStack(Materials2Materials.Sulfur, Materials2Shapes.dust, (int) (1)),
                 GTOreDictUnificator.get(ItemList.Block_SSFUEL.get(1)),
                 GTOreDictUnificator.get(ItemList.Block_MSSFUEL.get(1)),
-                GTOreDictUnificator.get(OrePrefixes.rod, Materials.Blaze, 1));
+                GTOreDictUnificator.get(OrePrefixes.rod, Materials2Materials.Blaze, 1));
         if (Thaumcraft.isModLoaded()) {
             RecipeMaps.largeBoilerFakeFuels.getBackend()
                 .addSolidRecipe(GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1));
@@ -497,7 +497,7 @@ public class GTPostLoad {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(input)
-                    .fluidInputs(Materials.Water.getFluid(333))
+                    .fluidInputs(MU.fluid(Materials2Materials.Water, 333))
                     .itemOutputs(output)
                     .duration(0)
                     .eut(0)
@@ -522,7 +522,7 @@ public class GTPostLoad {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(input)
-                    .fluidInputs(Materials.Water.getFluid(333))
+                    .fluidInputs(MU.fluid(Materials2Materials.Water, 333))
                     .itemOutputs(output)
                     .duration(0)
                     .eut(0)

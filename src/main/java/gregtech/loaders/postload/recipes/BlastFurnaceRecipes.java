@@ -27,6 +27,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
 
@@ -661,7 +662,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 16),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.SiliconSolarGrade, 16),
                 ItemList.GalliumArsenideCrystal.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.ingot, (int) (1)))
             .circuit(3)
@@ -674,7 +675,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 32),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.SiliconSolarGrade, 32),
                 ItemList.GalliumArsenideCrystal.get(2),
                 MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.ingot, (int) (2)))
             .circuit(3)
@@ -687,7 +688,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 64),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.SiliconSolarGrade, 64),
                 ItemList.GalliumArsenideCrystal.get(4),
                 MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.ingot, (int) (4)))
             .circuit(3)
@@ -1041,7 +1042,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .addTo(primitiveBlastRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Iron.getBlocks(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Iron, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.ingot, (int) (9)))
             .duration(54 * MINUTES)
             .metadata(ADDITIVE_AMOUNT, 36)

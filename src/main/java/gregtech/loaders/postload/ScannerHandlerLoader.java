@@ -26,6 +26,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -101,7 +102,8 @@ public class ScannerHandlerLoader {
     public static @Nullable GTScannerResult scanForestryIndividual(@Nonnull MetaTileEntity aScanner,
         @Nonnull ItemStack aInput, @Nullable ItemStack aSpecialSlot, @Nullable FluidStack aFluid) {
         // must have at enough honey to start
-        if (aFluid == null || !aFluid.containsFluid(Materials.Honey.getFluid(FORESTRY_SCAN_HONEY_USAGE))) return null;
+        if (aFluid == null || !aFluid.containsFluid(MU.fluid(Materials2Materials.Honey, FORESTRY_SCAN_HONEY_USAGE)))
+            return null;
         try {
             IIndividual tIndividual = AlleleManager.alleleRegistry.getIndividual(aInput);
             if (tIndividual == null) return null;

@@ -12,6 +12,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -39,14 +40,14 @@ public class FluidHeaterRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.BioMediumRaw, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
-            .fluidOutputs(Materials.BioMediumSterilized.getFluid(1_000))
+            .fluidOutputs(MU.fluid(Materials2Materials.BiohMediumSterilized, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(fluidHeaterRecipes);
 
         GTValues.RA.stdBuilder()
             .circuit(1)
-            .fluidInputs(Materials.Water.getFluid(6))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 6))
             .fluidOutputs(Materials.Steam.getGas(960))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)

@@ -20,7 +20,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -261,7 +260,7 @@ public class PlasmaForgeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 // this is very gross
-                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
+                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Magmatter, 1)),
                 MaterialLibAPI.getStack(Materials2Materials.Eternity, Materials2Shapes.round, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Magmatter, Materials2Shapes.round, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Hexanite, Materials2Shapes.round, (int) (64)),

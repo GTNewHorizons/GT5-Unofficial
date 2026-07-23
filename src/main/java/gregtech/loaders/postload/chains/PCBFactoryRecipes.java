@@ -123,7 +123,7 @@ public class PCBFactoryRecipes {
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
                     GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.AnnealedCopper, (long) (16 * (Math.sqrt(tier)))),
+                        .get(OrePrefixes.foil, Materials2Materials.AnnealedCopper, (long) (16 * (Math.sqrt(tier)))),
                     MaterialLibAPI.getStack(
                         Materials2Materials.Copper,
                         Materials2Shapes.foil,
@@ -157,7 +157,7 @@ public class PCBFactoryRecipes {
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
                     GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.AnnealedCopper, (long) (16 * (Math.sqrt(tier)))),
+                        .get(OrePrefixes.foil, Materials2Materials.AnnealedCopper, (long) (16 * (Math.sqrt(tier)))),
                     MaterialLibAPI.getStack(
                         Materials2Materials.Copper,
                         Materials2Shapes.foil,
@@ -192,7 +192,7 @@ public class PCBFactoryRecipes {
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
                     GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.AnnealedCopper, (long) (16 * (Math.sqrt(tier)))),
+                        .get(OrePrefixes.foil, Materials2Materials.AnnealedCopper, (long) (16 * (Math.sqrt(tier)))),
                     MaterialLibAPI.getStack(
                         Materials2Materials.Copper,
                         Materials2Shapes.foil,
@@ -345,7 +345,7 @@ public class PCBFactoryRecipes {
                         Materials2Shapes.foil,
                         (int) ((long) (16 * (Math.sqrt(tier - 2))))),
                     GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2)))))
+                        .get(OrePrefixes.foil, Materials2Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2)))))
                 .circuit(1)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -379,7 +379,7 @@ public class PCBFactoryRecipes {
                         Materials2Shapes.foil,
                         (int) ((long) (16 * (Math.sqrt(tier - 2))))),
                     GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2)))))
+                        .get(OrePrefixes.foil, Materials2Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2)))))
                 .circuit(2)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -414,7 +414,7 @@ public class PCBFactoryRecipes {
                         Materials2Shapes.foil,
                         (int) ((long) (16 * (Math.sqrt(tier - 2))))),
                     GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2)))))
+                        .get(OrePrefixes.foil, Materials2Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2)))))
                 .circuit(3)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -558,10 +558,14 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.EnrichedHolmium, (long) (16 * (Math.sqrt(tier - 4)))),
-                    GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.NiobiumTitanium, (long) (16 * (Math.sqrt(tier - 4)))))
+                    GTOreDictUnificator.get(
+                        OrePrefixes.foil,
+                        Materials2Materials.EnrichedHolmium,
+                        (long) (16 * (Math.sqrt(tier - 4)))),
+                    GTOreDictUnificator.get(
+                        OrePrefixes.foil,
+                        Materials2Materials.NiobiumTitanium,
+                        (long) (16 * (Math.sqrt(tier - 4)))))
                 .circuit(1)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -595,10 +599,14 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.EnrichedHolmium, (long) (16 * (Math.sqrt(tier - 4)))),
-                    GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.NiobiumTitanium, (long) (16 * (Math.sqrt(tier - 4)))))
+                    GTOreDictUnificator.get(
+                        OrePrefixes.foil,
+                        Materials2Materials.EnrichedHolmium,
+                        (long) (16 * (Math.sqrt(tier - 4)))),
+                    GTOreDictUnificator.get(
+                        OrePrefixes.foil,
+                        Materials2Materials.NiobiumTitanium,
+                        (long) (16 * (Math.sqrt(tier - 4)))))
                 .circuit(2)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -633,10 +641,14 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.EnrichedHolmium, (long) (16 * (Math.sqrt(tier - 4)))),
-                    GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.NiobiumTitanium, (long) (16 * (Math.sqrt(tier - 4)))))
+                    GTOreDictUnificator.get(
+                        OrePrefixes.foil,
+                        Materials2Materials.EnrichedHolmium,
+                        (long) (16 * (Math.sqrt(tier - 4)))),
+                    GTOreDictUnificator.get(
+                        OrePrefixes.foil,
+                        Materials2Materials.NiobiumTitanium,
+                        (long) (16 * (Math.sqrt(tier - 4)))))
                 .circuit(3)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -673,10 +685,12 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
+                    GTOreDictUnificator.get(
+                        OrePrefixes.foil,
+                        Materials2Materials.Longasssuperconductornameforuvwire,
+                        (long) (16 * (Math.sqrt(tier - 5)))),
                     GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.SuperconductorUVBase, (long) (16 * (Math.sqrt(tier - 5)))),
-                    GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
+                        .get(OrePrefixes.foil, Materials2Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .circuit(1)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -710,10 +724,12 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
+                    GTOreDictUnificator.get(
+                        OrePrefixes.foil,
+                        Materials2Materials.Longasssuperconductornameforuvwire,
+                        (long) (16 * (Math.sqrt(tier - 5)))),
                     GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.SuperconductorUVBase, (long) (16 * (Math.sqrt(tier - 5)))),
-                    GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
+                        .get(OrePrefixes.foil, Materials2Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .circuit(2)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -748,10 +764,12 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
+                    GTOreDictUnificator.get(
+                        OrePrefixes.foil,
+                        Materials2Materials.Longasssuperconductornameforuvwire,
+                        (long) (16 * (Math.sqrt(tier - 5)))),
                     GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.SuperconductorUVBase, (long) (16 * (Math.sqrt(tier - 5)))),
-                    GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
+                        .get(OrePrefixes.foil, Materials2Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .circuit(3)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -792,8 +810,10 @@ public class PCBFactoryRecipes {
                         WerkstoffLoader.items.get(OrePrefixes.foil),
                         (int) (16 * (Math.sqrt(tier - 6))),
                         10106),
-                    GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
+                    GTOreDictUnificator.get(
+                        OrePrefixes.foil,
+                        Materials2Materials.InfinityCatalyst,
+                        (long) (16 * (Math.sqrt(tier - 6)))),
                     CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .circuit(1)
                 .fluidInputs(
@@ -831,8 +851,10 @@ public class PCBFactoryRecipes {
                         WerkstoffLoader.items.get(OrePrefixes.foil),
                         (int) (16 * (Math.sqrt(tier - 6))),
                         10106),
-                    GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
+                    GTOreDictUnificator.get(
+                        OrePrefixes.foil,
+                        Materials2Materials.InfinityCatalyst,
+                        (long) (16 * (Math.sqrt(tier - 6)))),
                     CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .circuit(2)
                 .fluidInputs(
@@ -871,8 +893,10 @@ public class PCBFactoryRecipes {
                         WerkstoffLoader.items.get(OrePrefixes.foil),
                         (int) (16 * (Math.sqrt(tier - 6))),
                         10106),
-                    GTOreDictUnificator
-                        .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
+                    GTOreDictUnificator.get(
+                        OrePrefixes.foil,
+                        Materials2Materials.InfinityCatalyst,
+                        (long) (16 * (Math.sqrt(tier - 6)))),
                     CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .circuit(3)
                 .fluidInputs(

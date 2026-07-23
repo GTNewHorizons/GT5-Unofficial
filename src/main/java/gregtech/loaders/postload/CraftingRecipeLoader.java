@@ -1214,7 +1214,7 @@ public class CraftingRecipeLoader implements Runnable {
             GTModHandler.getIC2Item("reactorPlatingExplosive", 1L),
             bits_no_remove_buffered,
             new Object[] { GTModHandler.getIC2Item("reactorPlating", 1L), "plateLead" });
-        if (!Materials.Steel.mBlastFurnaceRequired) {
+        if (!MU.blastFurnaceRequired(Materials2Materials.Steel)) {
             GTModHandler.addShapelessCraftingRecipe(
                 MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.dust, 1),
                 bits_no_remove_buffered,
