@@ -123,7 +123,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         return SoundResource.GTCEU_LOOP_MIXER;
     }
 
-    // Once per in-game day, 60% chance the machine works that day. Only rolled lazily when the GUI is opened,
+    // Once per in-game day, 40% chance the machine works that day. Only rolled lazily when the GUI is opened,
     // never on a per-tick basis, and cached/persisted so it doesn't need re-rolling until the day changes.
     // When broken, there's a chance it'll also accept a repair item (in the special slot) to fix it early.
     private static final int WORK_CHANCE_PERCENT = 40;
