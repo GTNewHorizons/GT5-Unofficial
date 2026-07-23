@@ -90,42 +90,27 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         final boolean noSmashing = MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         final boolean noWorking = MU.hasFlag(material, GTMaterialFlag.NO_WORKING);
         final long materialMass = MU.mass(material);
 
         switch (prefix.getName()) {
-            case "plate" -> registerPlate(material, legacyMaterial, stack, noSmashing);
-            case "plateDouble" -> registerPlateDouble(material, legacyMaterial, stack, noSmashing, materialMass);
-            case "plateTriple" -> registerPlateTriple(material, legacyMaterial, stack, noSmashing, materialMass);
-            case "plateQuadruple" -> registerPlateQuadruple(
-                material,
-                legacyMaterial,
-                stack,
-                noSmashing,
-                materialMass,
-                noWorking);
-            case "plateQuintuple" -> registerPlateQuintuple(material, legacyMaterial, stack, noSmashing, materialMass);
-            case "plateDense" -> registerPlateDense(material, legacyMaterial, stack, noSmashing, materialMass);
-            case "plateSuperdense" -> registerPlateSuperdense(
-                material,
-                legacyMaterial,
-                stack,
-                noSmashing,
-                materialMass);
-            case "itemCasing" -> registerItemCasing(prefix, material, legacyMaterial, stack, noSmashing);
+            case "plate" -> registerPlate(material, stack, noSmashing);
+            case "plateDouble" -> registerPlateDouble(material, stack, noSmashing, materialMass);
+            case "plateTriple" -> registerPlateTriple(material, stack, noSmashing, materialMass);
+            case "plateQuadruple" -> registerPlateQuadruple(material, stack, noSmashing, materialMass, noWorking);
+            case "plateQuintuple" -> registerPlateQuintuple(material, stack, noSmashing, materialMass);
+            case "plateDense" -> registerPlateDense(material, stack, noSmashing, materialMass);
+            case "plateSuperdense" -> registerPlateSuperdense(material, stack, noSmashing, materialMass);
+            case "itemCasing" -> registerItemCasing(prefix, material, stack, noSmashing);
             case "plateAlloy" -> registerPlateAlloy(oreDictName, stack);
             default -> {}
         }
     }
 
-    private void registerPlate(final Material material, final Materials legacyMaterial, final ItemStack stack,
-        final boolean noSmashing) {
+    private void registerPlate(final Material material, final ItemStack stack, final boolean noSmashing) {
 
-        registerCover(material, legacyMaterial, stack);
+        registerCover(material, stack);
 
         GTModHandler.removeRecipeByOutputDelayed(stack);
         GTModHandler.removeRecipeDelayed(stack);
@@ -144,7 +129,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (MU.hasMolten(material)
-            && !(legacyMaterial == Materials.AnnealedCopper || legacyMaterial == Materials.CastIron)) {
+            && !(material == MU.material(Materials.AnnealedCopper) || material == MU.material(Materials.CastIron))) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
@@ -159,7 +144,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             BITS_STD,
             new Object[] { "hX", 'X', MU.craftIngredient(OrePrefixes.plate, material) });
 
-        if (legacyMaterial == Materials.Paper) {
+        if (material == MU.material(Materials.Paper)) {
             GTModHandler.addCraftingRecipe(
                 GTUtility.copyAmount(2, stack),
                 BUFFERED,
@@ -201,10 +186,10 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
     }
 
-    private void registerPlateDouble(final Material material, final Materials legacyMaterial, final ItemStack stack,
-        final boolean noSmashing, final long materialMass) {
+    private void registerPlateDouble(final Material material, final ItemStack stack, final boolean noSmashing,
+        final long materialMass) {
 
-        registerCover(material, legacyMaterial, stack);
+        registerCover(material, stack);
 
         GTModHandler.removeRecipeByOutputDelayed(stack);
 
@@ -253,10 +238,10 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
     }
 
-    private void registerPlateTriple(final Material material, final Materials legacyMaterial, final ItemStack stack,
-        final boolean noSmashing, final long materialMass) {
+    private void registerPlateTriple(final Material material, final ItemStack stack, final boolean noSmashing,
+        final long materialMass) {
 
-        registerCover(material, legacyMaterial, stack);
+        registerCover(material, stack);
 
         GTModHandler.removeRecipeByOutputDelayed(stack);
 
@@ -317,10 +302,10 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
     }
 
-    private void registerPlateQuadruple(final Material material, final Materials legacyMaterial, final ItemStack stack,
-        final boolean noSmashing, final long materialMass, final boolean noWorking) {
+    private void registerPlateQuadruple(final Material material, final ItemStack stack, final boolean noSmashing,
+        final long materialMass, final boolean noWorking) {
 
-        registerCover(material, legacyMaterial, stack);
+        registerCover(material, stack);
 
         GTModHandler.removeRecipeByOutputDelayed(stack);
 
@@ -358,10 +343,10 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
     }
 
-    private void registerPlateQuintuple(final Material material, final Materials legacyMaterial, final ItemStack stack,
-        final boolean noSmashing, final long materialMass) {
+    private void registerPlateQuintuple(final Material material, final ItemStack stack, final boolean noSmashing,
+        final long materialMass) {
 
-        registerCover(material, legacyMaterial, stack);
+        registerCover(material, stack);
 
         GTModHandler.removeRecipeByOutputDelayed(stack);
 
@@ -399,10 +384,10 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
     }
 
-    private void registerPlateDense(final Material material, final Materials legacyMaterial, final ItemStack stack,
-        final boolean noSmashing, final long materialMass) {
+    private void registerPlateDense(final Material material, final ItemStack stack, final boolean noSmashing,
+        final long materialMass) {
 
-        registerCover(material, legacyMaterial, stack);
+        registerCover(material, stack);
 
         GTModHandler.removeRecipeByOutputDelayed(stack);
 
@@ -418,8 +403,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
     }
 
-    private void registerPlateSuperdense(final Material material, final Materials legacyMaterial, final ItemStack stack,
-        final boolean noSmashing, final long materialMass) {
+    private void registerPlateSuperdense(final Material material, final ItemStack stack, final boolean noSmashing,
+        final long materialMass) {
         GTModHandler.removeRecipeByOutputDelayed(stack);
 
         if (!noSmashing || MU.hasFlag(material, GTMaterialFlag.STRETCHY)) {
@@ -436,8 +421,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
     }
 
-    private void registerItemCasing(final OrePrefixes prefix, final Material material, final Materials legacyMaterial,
-        final ItemStack stack, final boolean noSmashing) {
+    private void registerItemCasing(final OrePrefixes prefix, final Material material, final ItemStack stack,
+        final boolean noSmashing) {
 
         GTModHandler.removeRecipeByOutputDelayed(stack);
 
@@ -594,7 +579,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
     }
 
-    private void registerCover(final Material material, final Materials legacyMaterial, final ItemStack stack) {
+    private void registerCover(final Material material, final ItemStack stack) {
 
         // Get ItemStack of Block matching Materials
         ItemStack tStack = NI;

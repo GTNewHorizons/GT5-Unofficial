@@ -18,6 +18,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.ruling_0.materiallib.api.Material;
@@ -3011,6 +3012,18 @@ public class OrePrefixes {
             }
         }
         return false;
+    }
+
+    /// Twin of [#doGenerateItem(IOreMaterial)] for a MaterialLib [Material]. The legacy method's clauses past the
+    /// sub-ID check are all keyed on legacy `Materials`-only state (the `mGeneratedItems`/`mNotGeneratedItems`/
+    /// `mDisabledItems` sets, `mHasParentMod`, `mCondition`'s `ISubTagContainer` reads) with no MaterialLib
+    /// equivalent, so this resolves the legacy counterpart and delegates -- matching the legacy method's own
+    /// `false` for a material with no `Materials` counterpart (its `instanceof` gate).
+    public boolean doGenerateItem(@Nullable Material material) {
+        if (MU.oldSubId(material) == -1) return false;
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial == null) return false;
+        return doGenerateItem(legacyMaterial);
     }
 
     public boolean doGenerateItem(IOreMaterial oreMaterial) {

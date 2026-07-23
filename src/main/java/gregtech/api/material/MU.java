@@ -155,17 +155,31 @@ public class MU {
 
     /// Whether a material carries a legacy `Materials#mStandardMoltenFluid` (see [#molten]) -- for callers that
     /// need the presence check independent of a specific fluid amount, such as one gate guarding several
-    /// [#molten] calls of different amounts. Delegates to the live legacy facade through [#materialOf] rather
-    /// than re-deriving the condition from MaterialLib properties: which of the three population loaders sets
-    /// the field, and under what gate, differs per material and [Material] alone cannot distinguish them -- a
-    /// gtpp bridge material only when `GtppBridgeMaterialsLoader`'s own `MU#isCutOver(OrePrefixes#cellMolten,
+    /// [#molten] calls of different amounts. HYBRID, P6-proof: while a material still has a live legacy
+    /// [Materials] counterpart ([#materialOf] non-null), delegates to that facade's field rather than
+    /// re-deriving the condition from MaterialLib properties -- which of the three population loaders sets the
+    /// field, and under what gate, differs per material and [Material] alone cannot distinguish them: a gtpp
+    /// bridge material only when `GtppBridgeMaterialsLoader`'s own `MU#isCutOver(OrePrefixes#cellMolten,
     /// Material)` check holds, a bartworks bridge material only under `Werkstoff#hasItemType(cellMolten)`, and
-    /// a canonical material from `LegacyMaterials#build`'s [GTMaterialProperties#LEGACY_FLUIDS] read -- so
-    /// merely having a [Materials2FluidShapes#fluidMolten] shape (which every population above the fluid, not
-    /// the field, gates on) is wider than any of them.
+    /// a canonical material from `LegacyMaterials#build`'s [GTMaterialProperties#LEGACY_FLUIDS] read. Once
+    /// minting retires and a reconstructed werkstoff/gtpp material has no facade left ([#materialOf] null),
+    /// falls back to [#isCutOver] of [OrePrefixes#cellMolten] directly against `material` -- proven to
+    /// reproduce each bridge's own gate for exactly that population: a gtpp bridge's gate already is that
+    /// literal expression (`GtppBridgeMaterialsLoader`); a bartworks bridge's `hasItemType(cellMolten)`, for
+    /// every `WerkstoffReconstruction`-built werkstoff (the only ones this fallback ever reaches -- a proxy or
+    /// third-party werkstoff's material keeps its live facade), tracks
+    /// [GTMaterialProperties#WERKSTOFF_PREFIXES] containing `"cellMolten"` 1:1 with no exceptions, which in
+    /// turn was generated 1:1 with the material's own `cellMolten` [Materials2CellShapes] shape membership.
+    /// The handful of `Materials2Materials` entries where that generated correspondence does not hold (the
+    /// dual-nature elements and gtpp-bridged-durability materials, e.g. `Zirconium`/`Hafnium`/`Thorium232`)
+    /// all keep a live [Materials] counterpart, so they never reach this fallback in the first place. Merely
+    /// having a [Materials2FluidShapes#fluidMolten] shape, without the container shape, would be wider than
+    /// any population's gate -- [#isCutOver] checks the container ([OrePrefixes#cellMolten]), not the bare
+    /// fluid.
     public static boolean hasMolten(@Nullable Material material) {
         Materials legacy = materialOf(material);
-        return legacy != null && legacy.mStandardMoltenFluid != null;
+        if (legacy != null) return legacy.mStandardMoltenFluid != null;
+        return isCutOver(OrePrefixes.cellMolten, material);
     }
 
     /// The legacy `Materials#mStandardMoltenFluid`-backed `Materials#getMolten` stack for a material, or null

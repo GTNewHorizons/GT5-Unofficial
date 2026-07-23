@@ -830,14 +830,20 @@ public class GTRecipeRegistrator {
      * @param eut          EU/t for recipe If you provide a proper EU tier for recipe processing then eut will be
      *                     overriden with it.
      */
-    public static void registerWiremillRecipes(Materials material, int baseDuration, int eut) {
+    /// [#registerWiremillRecipes(Materials, int, int)] for callers holding a [Material] directly -- the native
+    /// ML body; the [Materials]-typed overload now delegates into this one.
+    public static void registerWiremillRecipes(Material material, int baseDuration, int eut) {
         registerWiremillRecipes(
             material,
             baseDuration,
-            calculateRecipeEU(material, eut),
+            (int) calculateRecipeEU(material, eut),
             OrePrefixes.ingot,
             OrePrefixes.stick,
             2);
+    }
+
+    public static void registerWiremillRecipes(Materials material, int baseDuration, int eut) {
+        registerWiremillRecipes(MU.material(material), baseDuration, eut);
     }
 
     /**
@@ -850,7 +856,9 @@ public class GTRecipeRegistrator {
      * @param prefix2      prefix corresponds to stick
      * @param multiplier   amount of wires created from 1 ingot
      */
-    public static void registerWiremillRecipes(Materials material, int baseDuration, int eut, OrePrefixes prefix1,
+    /// [#registerWiremillRecipes(Materials, int, int, OrePrefixes, OrePrefixes, int)] for callers holding a
+    /// [Material] directly -- the native ML body; the [Materials]-typed overload now delegates into this one.
+    public static void registerWiremillRecipes(Material material, int baseDuration, int eut, OrePrefixes prefix1,
         OrePrefixes prefix2, int multiplier) {
         if (GTOreDictUnificator.get(prefix1, material, 1L) != null
             && GTOreDictUnificator.get(OrePrefixes.wireGt01, material, 1L) != null) {
@@ -963,6 +971,11 @@ public class GTRecipeRegistrator {
                 .eut(eut)
                 .addTo(wiremillRecipes);
         }
+    }
+
+    public static void registerWiremillRecipes(Materials material, int baseDuration, int eut, OrePrefixes prefix1,
+        OrePrefixes prefix2, int multiplier) {
+        registerWiremillRecipes(MU.material(material), baseDuration, eut, prefix1, prefix2, multiplier);
     }
 
     public static boolean hasVanillaRecipes(Materials materials) {
