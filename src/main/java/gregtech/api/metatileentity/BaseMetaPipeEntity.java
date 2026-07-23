@@ -698,7 +698,10 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public ArrayList<ItemStack> getDrops() {
-        final ItemStack rStack = new ItemStack(GregTechAPI.sBlockMachines, 1, mID);
+        // A shape-scoped pipe's stack form is its shape block's item; a legacy pipe's is the machine block
+        // item at its own id, byte-identical to constructing the ItemMachines stack here directly.
+        final ItemStack rStack = hasValidMetaTileEntity() ? mMetaTileEntity.getStackForm(1)
+            : new ItemStack(GregTechAPI.sBlockMachines, 1, mID);
         final NBTTagCompound tNBT = new NBTTagCompound();
 
         writeCoverNBT(tNBT, true);

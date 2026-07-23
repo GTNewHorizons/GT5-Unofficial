@@ -9,9 +9,11 @@ import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityHopper;
@@ -26,14 +28,19 @@ import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2PipeProperties;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityItemPipe;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.material.MU;
+import gregtech.api.material.PipeStats;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
@@ -41,6 +48,8 @@ import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.blocks.PipeShapeBlock;
+import gregtech.common.blocks.PipeShapeItemBlock;
 import gregtech.common.covers.Cover;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -57,6 +66,9 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     private int[] cacheSides;
     private String mPrefixKey;
     private String materialKeyOverride;
+    /// Inventory NBT stashed while the host material was unresolvable (chunk load runs before the world is
+    /// bound), applied by [#onShapeMaterialResolved] once the inventory can be sized.
+    private NBTTagList pendingInventory;
 
     public MTEItemPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial,
         int aInvSlotCount, int aStepSize, boolean aIsRestrictive, int aTickTime) {
@@ -107,9 +119,33 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
         mTickTime = aTickTime;
     }
 
+    /// The shape-scoped constructor: identity comes from the hosting [PipeShapeBlock], and material, stats,
+    /// and inventory size resolve from the host block's metadata and [Materials2PipeProperties] through
+    /// [PipeStats]. The inventory starts empty and is sized on the first material resolution.
+    public MTEItemPipe(int aID, String aName, PipeShapeBlock shape) {
+        super(aID, aName, 0, false, shape, shape.getSizeIndex());
+        mPrefixKey = shape.getPrefixKey();
+        mIsRestrictive = shape.getFamily() == PipeShapeBlock.PipeFamily.ITEM_RESTRICTIVE;
+        mThickNess = shape.getThickness();
+        mMaterial = null;
+        mStepSize = 0;
+        mTickTime = 0;
+    }
+
+    public MTEItemPipe(String aName, PipeShapeBlock shape) {
+        super(aName, 0, shape, shape.getSizeIndex());
+        mPrefixKey = shape.getPrefixKey();
+        mIsRestrictive = shape.getFamily() == PipeShapeBlock.PipeFamily.ITEM_RESTRICTIVE;
+        mThickNess = shape.getThickness();
+        mMaterial = null;
+        mStepSize = 0;
+        mTickTime = 0;
+    }
+
     @Override
     public byte getTileEntityBaseType() {
-        final int level = (mMaterial == null) ? 0 : GTUtility.clamp(mMaterial.mToolQuality, 0, 3);
+        final int level = isShapeScoped() ? GTUtility.clamp(MU.toolQuality(shapeMaterial()), 0, 3)
+            : (mMaterial == null) ? 0 : GTUtility.clamp(mMaterial.mToolQuality, 0, 3);
 
         HarvestTool tool = switch (level) {
             case 0 -> HarvestTool.WrenchPipeLevel0;
@@ -124,70 +160,143 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        if (isShapeScoped()) {
+            return new MTEItemPipe(mName, (PipeShapeBlock) getShapeHost());
+        }
         return new MTEItemPipe(mName, mThickNess, mMaterial, mInventory.length, mStepSize, mIsRestrictive, mTickTime);
+    }
+
+    /// The huge-pipe slot count of the resolved material, or 0 while unresolved.
+    private int hugeSlots() {
+        Material material = shapeMaterial();
+        Integer slots = material == null ? null : material.getProperty(Materials2PipeProperties.BASE_ITEM_PIPE_SLOTS);
+        return slots == null ? 0 : slots;
+    }
+
+    /// Sizes the inventory for a freshly resolved material, carrying over what fits, dropping overflow in
+    /// the world, and applying an inventory NBT list stashed before the material was resolvable.
+    @Override
+    protected void onShapeMaterialResolved(Material material) {
+        Integer baseSlots = material.getProperty(Materials2PipeProperties.BASE_ITEM_PIPE_SLOTS);
+        int slots = baseSlots == null ? 0 : PipeStats.itemPipeSlots(baseSlots, getShapeSizeIndex());
+        if (mInventory.length != slots) {
+            ItemStack[] resized = new ItemStack[slots];
+            int kept = Math.min(mInventory.length, slots);
+            System.arraycopy(mInventory, 0, resized, 0, kept);
+            for (int i = kept; i < mInventory.length; i++) {
+                if (mInventory[i] != null) dropOverflow(mInventory[i]);
+            }
+            mInventory = resized;
+            cacheSides = null;
+        }
+        if (pendingInventory != null) {
+            NBTTagList stash = pendingInventory;
+            pendingInventory = null;
+            for (int i = 0; i < stash.tagCount(); i++) {
+                NBTTagCompound tag = stash.getCompoundTagAt(i);
+                int slot = tag.getInteger("IntSlot");
+                ItemStack loaded = GTUtility.loadItem(tag);
+                if (loaded == null || loaded.getItem() == ItemList.Display_Fluid.getItem()) continue;
+                if (slot >= 0 && slot < mInventory.length) {
+                    mInventory[slot] = loaded;
+                } else {
+                    dropOverflow(loaded);
+                }
+            }
+        }
+    }
+
+    private void dropOverflow(ItemStack stack) {
+        if (!(getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe)) return;
+        if (pipe.getWorldObj() == null || pipe.isClientSide()) return;
+        pipe.getWorldObj()
+            .spawnEntityInWorld(
+                new EntityItem(pipe.getWorldObj(), pipe.xCoord + 0.5, pipe.yCoord + 0.5, pipe.zCoord + 0.5, stack));
+    }
+
+    /// The live inventory, resolving the host material first so a shape-scoped pipe is sized before use.
+    private ItemStack[] inv() {
+        if (isShapeScoped()) shapeMaterial();
+        return mInventory;
+    }
+
+    @Override
+    public ItemStack[] getRealInventory() {
+        return inv();
+    }
+
+    @Override
+    public int getSizeInventory() {
+        return inv().length;
+    }
+
+    @Override
+    protected void onShapeSwapped() {
+        shapeMaterial();
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int aColorIndex, boolean aConnected, boolean redstoneLevel) {
+        final TextureSet textureSet = MU.textureSetOf(getMaterial());
+        final short[] rgba = MU.rgbaOf(getMaterial());
+        if (textureSet == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING;
         if (mIsRestrictive) {
             if (aConnected) {
                 float tThickNess = getThickness();
                 if (tThickNess < 0.124F) return new ITexture[] { TextureFactory.of(
-                    mMaterial.mIconSet.mTextures[OrePrefixes.pipe.getTextureIndex()],
-                    Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
+                    textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()],
+                    Dyes.getModulation(aColorIndex, rgba)), TextureFactory.of(PIPE_RESTRICTOR) };
                 if (tThickNess < 0.374F) // 0.375
                     return new ITexture[] { TextureFactory.of(
-                        mMaterial.mIconSet.mTextures[OrePrefixes.pipeTiny.getTextureIndex()],
-                        Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
+                        textureSet.mTextures[OrePrefixes.pipeTiny.getTextureIndex()],
+                        Dyes.getModulation(aColorIndex, rgba)), TextureFactory.of(PIPE_RESTRICTOR) };
                 if (tThickNess < 0.499F) // 0.500
                     return new ITexture[] { TextureFactory.of(
-                        mMaterial.mIconSet.mTextures[OrePrefixes.pipeSmall.getTextureIndex()],
-                        Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
+                        textureSet.mTextures[OrePrefixes.pipeSmall.getTextureIndex()],
+                        Dyes.getModulation(aColorIndex, rgba)), TextureFactory.of(PIPE_RESTRICTOR) };
                 if (tThickNess < 0.749F) // 0.750
                     return new ITexture[] { TextureFactory.of(
-                        mMaterial.mIconSet.mTextures[OrePrefixes.pipeMedium.getTextureIndex()],
-                        Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
+                        textureSet.mTextures[OrePrefixes.pipeMedium.getTextureIndex()],
+                        Dyes.getModulation(aColorIndex, rgba)), TextureFactory.of(PIPE_RESTRICTOR) };
                 if (tThickNess < 0.874F) // 0.825
                     return new ITexture[] { TextureFactory.of(
-                        mMaterial.mIconSet.mTextures[OrePrefixes.pipeLarge.getTextureIndex()],
-                        Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
+                        textureSet.mTextures[OrePrefixes.pipeLarge.getTextureIndex()],
+                        Dyes.getModulation(aColorIndex, rgba)), TextureFactory.of(PIPE_RESTRICTOR) };
                 return new ITexture[] { TextureFactory.of(
-                    mMaterial.mIconSet.mTextures[OrePrefixes.pipeHuge.getTextureIndex()],
-                    Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
+                    textureSet.mTextures[OrePrefixes.pipeHuge.getTextureIndex()],
+                    Dyes.getModulation(aColorIndex, rgba)), TextureFactory.of(PIPE_RESTRICTOR) };
             }
-            return new ITexture[] { TextureFactory.of(
-                mMaterial.mIconSet.mTextures[OrePrefixes.pipe.getTextureIndex()],
-                Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
+            return new ITexture[] { TextureFactory
+                .of(textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()], Dyes.getModulation(aColorIndex, rgba)),
+                TextureFactory.of(PIPE_RESTRICTOR) };
         }
         if (aConnected) {
             float tThickNess = getThickness();
-            if (tThickNess < 0.124F) return new ITexture[] { TextureFactory.of(
-                mMaterial.mIconSet.mTextures[OrePrefixes.pipe.getTextureIndex()],
-                Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+            if (tThickNess < 0.124F) return new ITexture[] { TextureFactory
+                .of(textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()], Dyes.getModulation(aColorIndex, rgba)) };
             if (tThickNess < 0.374F) // 0.375
                 return new ITexture[] { TextureFactory.of(
-                    mMaterial.mIconSet.mTextures[OrePrefixes.pipeTiny.getTextureIndex()],
-                    Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+                    textureSet.mTextures[OrePrefixes.pipeTiny.getTextureIndex()],
+                    Dyes.getModulation(aColorIndex, rgba)) };
             if (tThickNess < 0.499F) // 0.500
                 return new ITexture[] { TextureFactory.of(
-                    mMaterial.mIconSet.mTextures[OrePrefixes.pipeSmall.getTextureIndex()],
-                    Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+                    textureSet.mTextures[OrePrefixes.pipeSmall.getTextureIndex()],
+                    Dyes.getModulation(aColorIndex, rgba)) };
             if (tThickNess < 0.749F) // 0.750
                 return new ITexture[] { TextureFactory.of(
-                    mMaterial.mIconSet.mTextures[OrePrefixes.pipeMedium.getTextureIndex()],
-                    Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+                    textureSet.mTextures[OrePrefixes.pipeMedium.getTextureIndex()],
+                    Dyes.getModulation(aColorIndex, rgba)) };
             if (tThickNess < 0.874F) // 0.825
                 return new ITexture[] { TextureFactory.of(
-                    mMaterial.mIconSet.mTextures[OrePrefixes.pipeLarge.getTextureIndex()],
-                    Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+                    textureSet.mTextures[OrePrefixes.pipeLarge.getTextureIndex()],
+                    Dyes.getModulation(aColorIndex, rgba)) };
             return new ITexture[] { TextureFactory.of(
-                mMaterial.mIconSet.mTextures[OrePrefixes.pipeHuge.getTextureIndex()],
-                Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+                textureSet.mTextures[OrePrefixes.pipeHuge.getTextureIndex()],
+                Dyes.getModulation(aColorIndex, rgba)) };
         }
-        return new ITexture[] { TextureFactory.of(
-            mMaterial.mIconSet.mTextures[OrePrefixes.pipe.getTextureIndex()],
-            Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+        return new ITexture[] { TextureFactory
+            .of(textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()], Dyes.getModulation(aColorIndex, rgba)) };
     }
 
     @Override
@@ -227,13 +336,33 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
         if (GTMod.proxy.gt6Pipe) {
             mConnections = aNBT.getByte("mConnections");
         }
+        if (isShapeScoped()) {
+            if (mInventory.length == 0) {
+                pendingInventory = aNBT.getTagList("Inventory", 10);
+            } else {
+                dropSlotsBeyondInventory(aNBT.getTagList("Inventory", 10));
+            }
+        }
+    }
+
+    /// Drops the stacks of inventory NBT slots beyond the current slot count, which the base inventory load
+    /// skips; they occur when a swap or reload lands on a material with fewer slots.
+    private void dropSlotsBeyondInventory(NBTTagList inventoryTags) {
+        for (int i = 0; i < inventoryTags.tagCount(); i++) {
+            NBTTagCompound tag = inventoryTags.getCompoundTagAt(i);
+            if (tag.getInteger("IntSlot") < mInventory.length) continue;
+            ItemStack loaded = GTUtility.loadItem(tag);
+            if (loaded != null && loaded.getItem() != ItemList.Display_Fluid.getItem()) {
+                dropOverflow(loaded);
+            }
+        }
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && (aTick - mCurrentTransferStartTick) % 10 == 0) {
-            if ((aTick - mCurrentTransferStartTick) % mTickTime == 0) {
+            if ((aTick - mCurrentTransferStartTick) % getTickTime() == 0) {
                 mTransferredItems = 0;
                 mCurrentTransferStartTick = 0;
             }
@@ -294,8 +423,13 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
         final ItemStack handItem = aPlayer.inventory.getCurrentItem();
         if (handItem == null) return;
 
+        if (isShapeScoped()) {
+            trySwapShape(aBaseMetaTileEntity, aPlayer, handItem);
+            return;
+        }
+
         IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
-        if (!(meta instanceof MTEItemPipe handPipe)) return;
+        if (!(meta instanceof MTEItemPipe handPipe) || handPipe.isShapeScoped()) return;
 
         // Preserve old connections and meta ID
         byte oldConnections = this.mConnections;
@@ -517,11 +651,15 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
      * Amount of ItemStacks this Pipe can conduct per Second.
      */
     public int getPipeCapacity() {
-        return mInventory.length;
+        return inv().length;
     }
 
     @Override
     public int getStepSize() {
+        if (isShapeScoped()) {
+            int slots = hugeSlots();
+            return slots <= 0 ? 0 : PipeStats.itemPipeStepSize(slots, getShapeSizeIndex(), mIsRestrictive);
+        }
         return mStepSize;
     }
 
@@ -564,30 +702,31 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
         if (side == ForgeDirection.UNKNOWN) return true;
         if (!isConnectedAtSide(side)) return false;
         if (isInventoryEmpty()) mLastReceivedFrom = side;
-        return mLastReceivedFrom == side && mInventory[aIndex] == null;
+        return mLastReceivedFrom == side && inv()[aIndex] == null;
     }
 
     @Override
     public String[] getDescription() {
+        final int tickTime = getTickTime();
         final String capacity;
-        if (mTickTime == 20) {
+        if (tickTime == 20) {
             capacity = StatCollector
                 .translateToLocalFormatted("gt.blockmachines.itempipe.capacity.persecond", getMaxPipeCapacity());
-        } else if (mTickTime % 20 == 0) {
+        } else if (tickTime % 20 == 0) {
             capacity = StatCollector.translateToLocalFormatted(
                 "gt.blockmachines.itempipe.capacity.second",
                 getMaxPipeCapacity(),
-                mTickTime / 20);
+                tickTime / 20);
         } else {
             capacity = StatCollector
-                .translateToLocalFormatted("gt.blockmachines.itempipe.capacity.tick", getMaxPipeCapacity(), mTickTime);
+                .translateToLocalFormatted("gt.blockmachines.itempipe.capacity.tick", getMaxPipeCapacity(), tickTime);
         }
         return new String[] { capacity, StatCollector
-            .translateToLocalFormatted("gt.blockmachines.itempipe.rounting_value", formatNumber(mStepSize)) };
+            .translateToLocalFormatted("gt.blockmachines.itempipe.rounting_value", formatNumber(getStepSize())) };
     }
 
     private boolean isInventoryEmpty() {
-        for (ItemStack tStack : mInventory) if (tStack != null) return false;
+        for (ItemStack tStack : inv()) if (tStack != null) return false;
         return true;
     }
 
@@ -597,15 +736,21 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     }
 
     public Materials getPipeMaterial() {
+        if (isShapeScoped()) return MU.materialOf(shapeMaterial());
         return mMaterial;
     }
 
     public int getTickTime() {
+        if (isShapeScoped()) {
+            int slots = hugeSlots();
+            return slots <= 0 ? 20 : PipeStats.itemPipeTickTime(slots, getShapeSizeIndex());
+        }
         return mTickTime;
     }
 
     @Override
     public Object getMaterial() {
+        if (isShapeScoped()) return shapeMaterial();
         return mMaterial;
     }
 
@@ -616,6 +761,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public String getMaterialKeyOverride() {
+        if (isShapeScoped()) return PipeShapeItemBlock.overrideKeyFor(shapeMaterial(), ".itempipe.newname");
         return materialKeyOverride;
     }
 

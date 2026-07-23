@@ -55,6 +55,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
@@ -679,6 +680,10 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     @Override
     public void getSubBlocks(Item item, CreativeTabs aCreativeTab, List<ItemStack> outputSubBlocks) {
         for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+            if (GregTechAPI.METATILEENTITIES[i] instanceof MetaPipeEntity pipe && pipe.isShapeScoped()) {
+                // Shape-hosted pipes are itemized by their shape block, never as a machine-block stack.
+                continue;
+            }
             if (GregTechAPI.METATILEENTITIES[i] != null) {
                 outputSubBlocks.add(new ItemStack(item, 1, i));
             }
