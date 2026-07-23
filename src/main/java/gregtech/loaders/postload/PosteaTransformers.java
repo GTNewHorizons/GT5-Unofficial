@@ -37,6 +37,7 @@ import gregtech.api.material.MU;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.blocks.FrameShapeBlock;
+import gregtech.common.blocks.PipeShapeBlock;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.loaders.postload.GtppItemCutoverTable.Entry;
 import gtPlusPlus.core.material.MaterialReconstruction;
@@ -74,6 +75,49 @@ public class PosteaTransformers implements Runnable {
         registerGtppItemCutoverTransformers();
         registerGtppCarryoverCellTransformers();
         registerGtppOreCutoverTransformers();
+        registerPipeCutoverTransformers();
+    }
+
+    /// Migrates saved legacy pipe-family instances (per-material wire/cable/fluid-pipe/item-pipe MTE ids,
+    /// see [LegacyPipeCutoverTable]) onto the material-agnostic MaterialLib shape blocks: block = the
+    /// shape's [PipeShapeBlock], meta = the MaterialLib material index. Every legacy pipe was TE-backed and
+    /// every shape block hosts an eager TE, so placed instances keep their tile entity with `mID` rewritten
+    /// to the shape's single MTE id; the rest of the tag (connections, covers, paint, stored fluids/items)
+    /// rides along untouched. Inventory stacks (`gt.blockmachines`, damage = MTE id) become the shape
+    /// block's ItemBlock at the material index, mirroring [#registerFrameboxTransformers]' item idiom.
+    /// Ids outside the table -- gaps inside the freed ranges and every live MTE id -- pass through to the
+    /// other `BaseMetaPipeEntity`/`gt.blockmachines` handlers unchanged.
+    private static void registerPipeCutoverTransformers() {
+        Map<Integer, LegacyPipeCutoverTable.Entry> table = LegacyPipeCutoverTable.entries();
+
+        TileEntityReplacementManager.tileEntityTransformer("BaseMetaPipeEntity", (tag, world, chunk) -> {
+            LegacyPipeCutoverTable.Entry entry = table.get(tag.getInteger("mID"));
+            if (entry == null) return null;
+            PipeShapeBlock shapeBlock = (PipeShapeBlock) MaterialLibAPI.getBlock(entry.shape());
+            return new BlockInfo(
+                shapeBlock,
+                entry.material()
+                    .getIndex(),
+                pipeTag -> {
+                    pipeTag.setInteger("mID", shapeBlock.getMteId());
+                    return pipeTag;
+                });
+        });
+
+        ItemStackReplacementManager.addTransformationHandler("gregtech:gt.blockmachines", (originalId, tag) -> {
+            LegacyPipeCutoverTable.Entry entry = table.get(tag.getInteger("Damage"));
+            if (entry == null) return false;
+            Item shapeItem = Item.getItemFromBlock(MaterialLibAPI.getBlock(entry.shape()));
+            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(shapeItem));
+            tag.setShort(
+                "Damage",
+                (short) entry.material()
+                    .getIndex());
+            return true;
+        });
+
+        GTLog.out
+            .println("PosteaTransformers: registered pipe-family transformers for " + table.size() + " legacy MTE ids");
     }
 
     /// Migrates saved legacy `BlockBaseOre` placed/inventory stacks into the equivalent MaterialLib
