@@ -3914,6 +3914,7 @@ GT5U.multiblock.mei=Max Energy Income
 GT5U.multiblock.maxtier=Max Tier
 GT5U.multiblock.usage=Currently uses
 GT5U.multiblock.parallelism=Max Parallel
+GT5U.multiblock.parallelism_override=Max Parallel: §f%d §7(%d)
 GT5U.multiblock.curparallelism=Current Parallel
 GT5U.multiblock.euModifier=EU Modifier
 GT5U.multiblock.speed=Speed

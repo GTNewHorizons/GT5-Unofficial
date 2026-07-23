@@ -1001,20 +1001,27 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     maxParallelSyncer,
                     alwaysMaxParallelSyncer,
                     powerPanelMaxParallelSyncer))
-            .child(new ButtonWidget<>().overlay(new DynamicDrawable(() -> {
-                if (alwaysMaxParallelSyncer.getValue()) {
-                    return GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
-                } else {
-                    return GTGuiTextures.OVERLAY_BUTTON_CROSS;
-                }
-            }))
-                .onMousePressed(d -> {
-                    alwaysMaxParallelSyncer.setValue(!alwaysMaxParallelSyncer.getValue());
-                    powerPanelMaxParallelSyncer.setValue(maxParallelSyncer.getValue());
-                    return true;
-                })
-                .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.max_parallel")))
-                .tooltipShowUpTimer(TOOLTIP_DELAY));
+            .child(
+                new ToggleButton().value(alwaysMaxParallelSyncer)
+                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                    .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.max_parallel")))
+                    .tooltipShowUpTimer(TOOLTIP_DELAY))
+        // .child(new ButtonWidget<>().overlay(new DynamicDrawable(() -> {
+        // if (alwaysMaxParallelSyncer.getValue()) {
+        // return GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
+        // } else {
+        // return GTGuiTextures.OVERLAY_BUTTON_CROSS;
+        // }
+        // }))
+        // .onMousePressed(d -> {
+        // alwaysMaxParallelSyncer.setValue(!alwaysMaxParallelSyncer.getValue());
+        // powerPanelMaxParallelSyncer.setValue(maxParallelSyncer.getValue());
+        // return true;
+        // })
+        // .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.max_parallel")))
+        // .tooltipShowUpTimer(TOOLTIP_DELAY))
+        ;
     }
 
     protected IWidget makeParallelConfiguratorTextFieldWidget(IntSyncValue maxParallelSyncer,
