@@ -45,6 +45,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.API.enums.BioCultureEnum;
@@ -60,6 +61,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.material.MU;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AssemblerBackend;
@@ -915,14 +917,20 @@ public final class RecipeMaps {
             }
 
             GTRecipeTemplate coll = asTemplate(rr.get());
-            for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
+            for (Material coal : new Material[] { Materials2Materials.Coal, Materials2Materials.Charcoal }) {
                 coll.derive()
-                    .setInputs(aInput1, aInput2, coal.getGems(aCoalAmount))
-                    .setOutputs(aOutput1, aOutput2, Materials.AshDark.getDust(aDustAmount))
+                    .setInputs(aInput1, aInput2, GTOreDictUnificator.get(OrePrefixes.gem, coal, aCoalAmount))
+                    .setOutputs(
+                        aOutput1,
+                        aOutput2,
+                        GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, aDustAmount))
                     .setOutputChances(coalChances);
                 coll.derive()
-                    .setInputs(aInput1, aInput2, coal.getDust(aCoalAmount))
-                    .setOutputs(aOutput1, aOutput2, Materials.AshDark.getDust(aDustAmount))
+                    .setInputs(aInput1, aInput2, GTOreDictUnificator.get(OrePrefixes.dust, coal, aCoalAmount))
+                    .setOutputs(
+                        aOutput1,
+                        aOutput2,
+                        GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, aDustAmount))
                     .setOutputChances(coalChances);
             }
             int aDuration = builder.getDuration();
@@ -982,10 +990,13 @@ public final class RecipeMaps {
                 aInput2 = multiplyStack(10, aInput2);
                 aOutput1 = multiplyStack(10, aOutput1);
                 aOutput2 = multiplyStack(10, aOutput2);
-                for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
+                for (Material coal : new Material[] { Materials2Materials.Coal, Materials2Materials.Charcoal }) {
                     coll.derive()
-                        .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))
-                        .setOutputs(aOutput1, aOutput2, Materials.AshDark.getDust(aCoalAmount))
+                        .setInputs(aInput1, aInput2, GTOreDictUnificator.get(OrePrefixes.block, coal, aCoalAmount))
+                        .setOutputs(
+                            aOutput1,
+                            aOutput2,
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, aCoalAmount))
                         .setDuration(aDuration * 10);
                 }
                 if (Railcraft.isModLoaded()) {
@@ -1413,7 +1424,7 @@ public final class RecipeMaps {
             int aDuration = b.getDuration(), aEUt = b.getEUt();
             Collection<GTRecipe> ret = new ArrayList<>();
             b.copy()
-                .fluidInputs(Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)))
+                .fluidInputs(MU.fluid(Materials2Materials.Water, clamp(aDuration * aEUt / 320, 4, 1000)))
                 .duration(aDuration * 2)
                 .build()
                 .ifPresent(ret::add);
@@ -1431,7 +1442,8 @@ public final class RecipeMaps {
                 .duration(aDuration)
                 .build()
                 .ifPresent(ret::add);
-            b.fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(clamp(aDuration * aEUt / 4000, 1, 10)))
+            b.fluidInputs(
+                MU.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, clamp(aDuration * aEUt / 4000, 1, 10)))
                 .duration((int) (aDuration / 2.5))
                 .build()
                 .ifPresent(ret::add);

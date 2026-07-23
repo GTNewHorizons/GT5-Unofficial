@@ -8,7 +8,6 @@ import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.Materials.FLUID_MAP;
 import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
@@ -1246,9 +1245,10 @@ public class GTUtility {
             aFluid.getFluid()
                 .isGaseous(aFluid));
         tNBT.setBoolean("mHideStackSize", aHideStackSize);
-        try {
-            tNBT.setString("mFluidMaterialName", FLUID_MAP.get(aFluid.getFluid()).mName);
-        } catch (Exception ignored) {}
+        Material fluidMaterial = MU.materialOfFluid(aFluid.getFluid());
+        if (fluidMaterial != null) {
+            tNBT.setString("mFluidMaterialName", MU.internalName(fluidMaterial));
+        }
         rStack.setTagCompound(tNBT);
         return rStack;
     }

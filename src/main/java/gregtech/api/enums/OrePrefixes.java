@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableList;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
@@ -2741,40 +2742,42 @@ public class OrePrefixes {
             new ICondition.Nor<>(SubTag.STRETCHY, SubTag.SOFT, SubTag.BOUNCY, SubTag.NO_SMASHING));
         // -----
 
-        pipeRestrictiveTiny.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount);
-        pipeRestrictiveSmall.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 2);
-        pipeRestrictiveMedium.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 3);
-        pipeRestrictiveLarge.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 4);
-        pipeRestrictiveHuge.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.materialAmount * 5);
-        bucket.mSecondaryMaterial = new MaterialStack(Materials.Iron, ingot.materialAmount * 3);
-        bucketClay.mSecondaryMaterial = new MaterialStack(Materials.Clay, dust.materialAmount * 5);
-        CELL_TYPES
-            .forEach(prefix -> prefix.mSecondaryMaterial = new MaterialStack(Materials.Tin, plate.materialAmount * 2));
-        oreRedgranite.mSecondaryMaterial = new MaterialStack(Materials.GraniteRed, dust.materialAmount);
-        oreBlackgranite.mSecondaryMaterial = new MaterialStack(Materials.GraniteBlack, dust.materialAmount);
-        oreNetherrack.mSecondaryMaterial = new MaterialStack(Materials.Netherrack, dust.materialAmount);
-        oreNether.mSecondaryMaterial = new MaterialStack(Materials.Netherrack, dust.materialAmount);
-        oreEndstone.mSecondaryMaterial = new MaterialStack(Materials.Endstone, dust.materialAmount);
-        oreEnd.mSecondaryMaterial = new MaterialStack(Materials.Endstone, dust.materialAmount);
-        oreMarble.mSecondaryMaterial = new MaterialStack(Materials.Marble, dust.materialAmount);
-        oreBasalt.mSecondaryMaterial = new MaterialStack(Materials.Basalt, dust.materialAmount);
-        oreDense.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
-        orePoor.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
-        oreSmall.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
-        oreNormal.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
-        rawOre.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
-        oreRich.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
-        ore.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
-        crushed.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
+        pipeRestrictiveTiny.mSecondaryMaterial = new MaterialStack(Materials2Materials.Steel, ring.materialAmount);
+        pipeRestrictiveSmall.mSecondaryMaterial = new MaterialStack(Materials2Materials.Steel, ring.materialAmount * 2);
+        pipeRestrictiveMedium.mSecondaryMaterial = new MaterialStack(
+            Materials2Materials.Steel,
+            ring.materialAmount * 3);
+        pipeRestrictiveLarge.mSecondaryMaterial = new MaterialStack(Materials2Materials.Steel, ring.materialAmount * 4);
+        pipeRestrictiveHuge.mSecondaryMaterial = new MaterialStack(Materials2Materials.Steel, ring.materialAmount * 5);
+        bucket.mSecondaryMaterial = new MaterialStack(Materials2Materials.Iron, ingot.materialAmount * 3);
+        bucketClay.mSecondaryMaterial = new MaterialStack(Materials2Materials.Clay, dust.materialAmount * 5);
+        CELL_TYPES.forEach(
+            prefix -> prefix.mSecondaryMaterial = new MaterialStack(Materials2Materials.Tin, plate.materialAmount * 2));
+        oreRedgranite.mSecondaryMaterial = new MaterialStack(Materials2Materials.GraniteRed, dust.materialAmount);
+        oreBlackgranite.mSecondaryMaterial = new MaterialStack(Materials2Materials.GraniteBlack, dust.materialAmount);
+        oreNetherrack.mSecondaryMaterial = new MaterialStack(Materials2Materials.Netherrack, dust.materialAmount);
+        oreNether.mSecondaryMaterial = new MaterialStack(Materials2Materials.Netherrack, dust.materialAmount);
+        oreEndstone.mSecondaryMaterial = new MaterialStack(Materials2Materials.Endstone, dust.materialAmount);
+        oreEnd.mSecondaryMaterial = new MaterialStack(Materials2Materials.Endstone, dust.materialAmount);
+        oreMarble.mSecondaryMaterial = new MaterialStack(Materials2Materials.Marble, dust.materialAmount);
+        oreBasalt.mSecondaryMaterial = new MaterialStack(Materials2Materials.Basalt, dust.materialAmount);
+        oreDense.mSecondaryMaterial = new MaterialStack(Materials2Materials.Stone, dust.materialAmount);
+        orePoor.mSecondaryMaterial = new MaterialStack(Materials2Materials.Stone, dust.materialAmount * 2);
+        oreSmall.mSecondaryMaterial = new MaterialStack(Materials2Materials.Stone, dust.materialAmount * 2);
+        oreNormal.mSecondaryMaterial = new MaterialStack(Materials2Materials.Stone, dust.materialAmount * 2);
+        rawOre.mSecondaryMaterial = new MaterialStack(Materials2Materials.Stone, dust.materialAmount);
+        oreRich.mSecondaryMaterial = new MaterialStack(Materials2Materials.Stone, dust.materialAmount * 2);
+        ore.mSecondaryMaterial = new MaterialStack(Materials2Materials.Stone, dust.materialAmount);
+        crushed.mSecondaryMaterial = new MaterialStack(Materials2Materials.Stone, dust.materialAmount);
         toolHeadChainsaw.mSecondaryMaterial = new MaterialStack(
-            Materials.Steel,
+            Materials2Materials.Steel,
             plate.materialAmount * 4 + ring.materialAmount * 2);
         toolHeadWrench.mSecondaryMaterial = new MaterialStack(
-            Materials.Steel,
+            Materials2Materials.Steel,
             ring.materialAmount + screw.materialAmount * 2);
-        bulletGtSmall.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 9);
-        bulletGtMedium.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 6);
-        bulletGtLarge.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 3);
+        bulletGtSmall.mSecondaryMaterial = new MaterialStack(Materials2Materials.Brass, ingot.materialAmount / 9);
+        bulletGtMedium.mSecondaryMaterial = new MaterialStack(Materials2Materials.Brass, ingot.materialAmount / 6);
+        bulletGtLarge.mSecondaryMaterial = new MaterialStack(Materials2Materials.Brass, ingot.materialAmount / 3);
     }
 
     public final ArrayList<ItemStack> mPrefixedItems = new GTArrayList<>(false, 16);
@@ -3308,7 +3311,7 @@ public class OrePrefixes {
     }
 
     public String getOreprefixKey() {
-        return getOreprefixKeyForMaterial(Materials._NULL.getInternalName());
+        return getOreprefixKeyForMaterial(MU.internalName(Materials2Materials.NULL));
     }
 
     public String getLocalizedNameForItem(String materialName) {

@@ -12,6 +12,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.fluid.IGTFluidBuilder;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.Lazy;
 import gregtech.common.fluid.GTFluid;
@@ -33,17 +34,17 @@ public enum CondensateType {
     // spotless:off
     Neutronium(
         "neutronium",
-        () -> Materials.Neutronium,
+        () -> Materials2Materials.Neutronium,
         144,
         () -> MaterialLibAPI.getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidMolten, (int) (144)), 20, TierEU.RECIPE_UHV),
     CosmicNeutronium(
         "cosmicneutronium",
-        () -> Materials.CosmicNeutronium,
+        () -> Materials2Materials.CosmicNeutronium,
         144,
         () -> MaterialLibAPI.getFluidStack(Materials2Materials.CosmicNeutronium, Materials2FluidShapes.fluidMolten, (int) (144)), 20, TierEU.RECIPE_UHV),
     Bedrockium(
         "bedrockium",
-        () -> Materials.Bedrockium,
+        () -> Materials2Materials.Bedrockium,
         144,
         () -> MaterialLibAPI.getFluidStack(Materials2Materials.Bedrockium, Materials2FluidShapes.fluidMolten, (int) (144)), 20, TierEU.RECIPE_UEV),
     ChromaticGlass(
@@ -58,7 +59,7 @@ public enum CondensateType {
         () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(144), 20, TierEU.RECIPE_UEV),
     Infinity(
         "infinity",
-        () -> Materials.Infinity,
+        () -> Materials2Materials.Infinity,
         144,
         () -> MaterialLibAPI.getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, (int) (144)), 20, TierEU.RECIPE_UEV),
     Hypogen(
@@ -68,62 +69,62 @@ public enum CondensateType {
         () -> MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(144), 40, TierEU.RECIPE_UIV),
     TranscendentMetal(
         "transcendentmetal",
-        () -> Materials.TranscendentMetal,
+        () -> Materials2Materials.TranscendentMetal,
         144,
         () -> MaterialLibAPI.getFluidStack(Materials2Materials.TranscendentMetal, Materials2FluidShapes.fluidMolten, (int) (144)), 40, TierEU.RECIPE_UIV),
     DimensionallyShiftedSuperfluid(
         "dimshiftedsuperfluid",
-        () -> Materials.DimensionallyShiftedSuperfluid,
+        () -> Materials2Materials.dimensionallyshiftedsuperfluid,
         1000,
-        () -> Materials.DimensionallyShiftedSuperfluid.getFluid(1000), 120, TierEU.RECIPE_UIV),
+        () -> MU.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, 1000), 120, TierEU.RECIPE_UIV),
     PhononMedium(
         "phononmedium",
-        () -> Materials.PhononMedium,
+        () -> Materials2Materials.PhononMedium,
         1000,
         () -> MaterialLibAPI.getFluidStack(Materials2Materials.PhononMedium, Materials2FluidShapes.fluidLiquid, (int) (1000)), 120, TierEU.RECIPE_UIV),
     QuarkGluonPlasma(
         "quarkgluonplasma",
-        () -> Materials.QuarkGluonPlasma,
+        () -> Materials2Materials.QuarkGluonPlasma,
         1000,
         () -> MaterialLibAPI.getFluidStack(Materials2Materials.QuarkGluonPlasma, Materials2FluidShapes.fluidLiquid, (int) (1000)), 120, TierEU.RECIPE_UIV),
     SpaceTime(
         "spacetime",
-        () -> Materials.SpaceTime,
+        () -> Materials2Materials.SpaceTime,
         144,
         () -> MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, (int) (144)), 60, TierEU.RECIPE_UIV),
     Time(
         "time",
-        () -> Materials.Time,
+        () -> Materials2Materials.temporalFluid,
         144,
-        () -> Materials.Time.getMolten(144), 60, TierEU.RECIPE_UMV),
+        () -> MU.molten(Materials2Materials.temporalFluid, 144), 60, TierEU.RECIPE_UMV),
     Space(
         "space",
-        () -> Materials.Space,
+        () -> Materials2Materials.spatialFluid,
         144,
-        () -> Materials.Space.getMolten(144), 60, TierEU.RECIPE_UMV),
+        () -> MU.molten(Materials2Materials.spatialFluid, 144), 60, TierEU.RECIPE_UMV),
     BoundlessCosmicSolder(
         "cosmicsolder",
-        () -> Materials.BoundlessCosmicSolder,
+        () -> Materials2Materials.BoundlessCosmicSolder,
         1000,
         () -> MaterialLibAPI.getFluidStack(Materials2Materials.BoundlessCosmicSolder, Materials2FluidShapes.fluidLiquid, (int) (1000)), 160, TierEU.RECIPE_UMV),
     MHDCSM(
         "mhdcsm",
-        () -> Materials.MHDCSM,
+        () -> Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter,
         144,
-        () -> Materials.MHDCSM.getMolten(144), 80, TierEU.RECIPE_UXV),
+        () -> MU.molten(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 144), 80, TierEU.RECIPE_UXV),
     MagMatter(
         "magmatter",
-        () -> Materials.MagMatter,
+        () -> Materials2Materials.Magmatter,
         144,
-        () -> Materials.MagMatter.getMolten(144), 80, TierEU.RECIPE_UXV),
+        () -> MU.molten(Materials2Materials.Magmatter, 144), 80, TierEU.RECIPE_UXV),
     Universium(
         "universium",
-        () -> Materials.Universium,
+        () -> Materials2Materials.Universium,
         144,
         () -> MaterialLibAPI.getFluidStack(Materials2Materials.Universium, Materials2FluidShapes.fluidMolten, (int) (144)), 80, TierEU.RECIPE_UXV),
     Eternity(
         "eternity",
-        () -> Materials.Eternity,
+        () -> Materials2Materials.Eternity,
         144,
         () -> MaterialLibAPI.getFluidStack(Materials2Materials.Eternity, Materials2FluidShapes.fluidMolten, (int) (144)), 80, TierEU.RECIPE_UXV),
     // spotless:on
@@ -175,7 +176,8 @@ public enum CondensateType {
     public static void registerFluids() {
         for (CondensateType type : values()) {
             Object material = type.getMaterial();
-            short[] rgba = material instanceof Material gtppMat ? gtppMat.getRGBA() : ((Materials) material).getRGBA();
+            short[] rgba = material instanceof Material gtppMat ? gtppMat.getRGBA()
+                : MU.rgba((com.ruling_0.materiallib.api.Material) material);
             IGTFluidBuilder builder = GTFluidFactory.builder("entangled_" + type.id)
                 .withColorRGBA(rgba)
                 .withStateAndTemperature(FluidState.GAS, 0);

@@ -14,10 +14,13 @@ import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPhAdjustment;
@@ -57,13 +60,13 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         // Add pH adjustment values
-        if (stack.isItemEqual(Materials.SodiumHydroxide.getDust(1))) {
+        if (stack.isItemEqual(GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.SodiumHydroxideGT5U, 1))) {
             currentTip.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.nei.purified_water.grade_4.0",
                     MTEPurificationUnitPhAdjustment.PH_PER_ALKALINE_DUST * 64));
-        } else
-            if (stack.isItemEqual(GTUtility.getFluidDisplayStack(Materials.HydrochloricAcid.getFluid(1_000), false))) {
+        } else if (stack.isItemEqual(
+            GTUtility.getFluidDisplayStack(MU.fluid(Materials2Materials.HydrochloricAcidGT5U, 1_000), false))) {
                 currentTip.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.nei.purified_water.grade_4.1",

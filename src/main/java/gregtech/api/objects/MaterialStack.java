@@ -3,6 +3,7 @@ package gregtech.api.objects;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
@@ -13,7 +14,7 @@ public class MaterialStack implements Cloneable {
     public Material mMaterial;
 
     public MaterialStack(Material material, long amount) {
-        mMaterial = material == null ? MU.material(Materials._NULL) : material;
+        mMaterial = material == null ? Materials2Materials.NULL : material;
         mAmount = amount;
     }
 
