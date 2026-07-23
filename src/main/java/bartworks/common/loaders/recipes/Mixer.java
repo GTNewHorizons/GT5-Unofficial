@@ -13,13 +13,13 @@ import bartworks.common.loaders.FluidLoader;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class Mixer implements Runnable {
 
@@ -39,7 +39,7 @@ public class Mixer implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Radon, Materials2CellShapes.cell, (int) (1L)))
                 .circuit(17)
-                .itemOutputs(Materials.Empty.getCells(1))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1))
                 .fluidInputs(GTModHandler.getLiquidDNA(1_000))
                 .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[0], 2_000))
                 .duration(25 * SECONDS)

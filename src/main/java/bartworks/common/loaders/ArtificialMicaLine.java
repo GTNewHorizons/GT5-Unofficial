@@ -18,14 +18,15 @@ import bartworks.system.material.BWGTMaterialReference;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ArtificialMicaLine {
@@ -46,9 +47,9 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, 1),
-                Materials.Empty.getCells(4))
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 4))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Hydrogen, Materials2CellShapes.cell, 4))
-            .fluidInputs(Materials.HydrofluoricAcid.getFluid(6_000))
+            .fluidInputs(MU.fluid(Materials2Materials.HydrofluoricAcidGT5U, 6_000))
             .fluidOutputs(WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -70,7 +71,7 @@ public class ArtificialMicaLine {
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.RockSalt, Materials2Shapes.dust, 4))
             .itemOutputs(WerkstoffLoader.Potassiumfluorosilicate.get(OrePrefixes.dust, 9))
             .fluidInputs(WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1_000))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(2_000))
+            .fluidOutputs(MU.fluid(Materials2Materials.HydrochloricAcidGT5U, 2_000))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -80,7 +81,9 @@ public class ArtificialMicaLine {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Potassium, Materials2Shapes.dust, 2),
                 MaterialLibAPI.getStack(Materials2Materials.CarbonDioxide, Materials2CellShapes.cell, 1))
-            .itemOutputs(WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 6), Materials.Empty.getCells(1))
+            .itemOutputs(
+                WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 6),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, 1_000))
             .duration(10 * SECONDS)
@@ -92,7 +95,9 @@ public class ArtificialMicaLine {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Potash, Materials2Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials2Materials.CarbonDioxide, Materials2CellShapes.cell, 1))
-            .itemOutputs(WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 6), Materials.Empty.getCells(1))
+            .itemOutputs(
+                WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 6),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);

@@ -48,6 +48,7 @@ import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
@@ -533,16 +534,16 @@ public class BWUtil {
                 String tString = in.toString();
                 switch (tString) {
                     case "plankWood":
-                        tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
+                        tItemDataMap.put(chr, new ItemData(Materials2Materials.Wood, M));
                         break;
                     case "stoneNetherrack":
-                        tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
+                        tItemDataMap.put(chr, new ItemData(Materials2Materials.Netherrack, M));
                         break;
                     case "stoneObsidian":
-                        tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
+                        tItemDataMap.put(chr, new ItemData(Materials2Materials.Obsidian, M));
                         break;
                     case "stoneEndstone":
-                        tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
+                        tItemDataMap.put(chr, new ItemData(Materials2Materials.Endstone, M));
                         break;
                     default:
                         tItemDataMap.put(chr, (ItemData) in);
@@ -554,17 +555,17 @@ public class BWUtil {
                 aRecipe[idx + 1] = in.toString();
             } else if (in instanceof String) {
                 if (in.equals(OreDictNames.craftingChest.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
+                    tItemDataMap.put(chr, new ItemData(Materials2Materials.Wood, M * 8));
                 else if (in.equals(OreDictNames.craftingBook.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
-                else if (in.equals(OreDictNames.craftingPiston.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
+                    tItemDataMap.put(chr, new ItemData(Materials2Materials.Paper, M * 3));
+                else if (in.equals(OreDictNames.craftingPiston.toString())) tItemDataMap
+                    .put(chr, new ItemData(Materials2Materials.Stone, M * 4, Materials2Materials.Wood, M * 3));
                 else if (in.equals(OreDictNames.craftingFurnace.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
+                    tItemDataMap.put(chr, new ItemData(Materials2Materials.Stone, M * 8));
                 else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
+                    tItemDataMap.put(chr, new ItemData(Materials2Materials.Diamond, M));
                 else if (in.equals(OreDictNames.craftingAnvil.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
+                    tItemDataMap.put(chr, new ItemData(Materials2Materials.Iron, M * 10));
                 ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
                 if (tStack == null) tRemoveRecipe = false;
                 else tItemStackMap.put(chr, tStack);

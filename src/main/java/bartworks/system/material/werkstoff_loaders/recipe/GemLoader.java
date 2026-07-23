@@ -42,9 +42,9 @@ import bartworks.util.BWColorUtil;
 import bartworks.util.BWUtil;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -110,7 +110,9 @@ public class GemLoader implements IWerkstoffRunnable {
             if (!werkstoff.contains(WerkstoffLoader.NO_BLAST)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(gemFlawless, 3))
-                    .itemOutputs(werkstoff.get(gemExquisite), GTOreDictUnificator.get(dustTiny, Materials.AshDark, 2))
+                    .itemOutputs(
+                        werkstoff.get(gemExquisite),
+                        GTOreDictUnificator.get(dustTiny, Materials2Materials.DarkAsh, 2))
                     .duration(20 * TICKS)
                     .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_LV))
                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -118,7 +120,9 @@ public class GemLoader implements IWerkstoffRunnable {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(gem, 3))
-                    .itemOutputs(werkstoff.get(gemFlawless), GTOreDictUnificator.get(dustTiny, Materials.AshDark, 2))
+                    .itemOutputs(
+                        werkstoff.get(gemFlawless),
+                        GTOreDictUnificator.get(dustTiny, Materials2Materials.DarkAsh, 2))
                     .duration(20 * TICKS)
                     .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_LV))
                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -126,7 +130,7 @@ public class GemLoader implements IWerkstoffRunnable {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(gemFlawed, 3))
-                    .itemOutputs(werkstoff.get(gem), GTOreDictUnificator.get(dustTiny, Materials.AshDark, 2))
+                    .itemOutputs(werkstoff.get(gem), GTOreDictUnificator.get(dustTiny, Materials2Materials.DarkAsh, 2))
                     .duration(20 * TICKS)
                     .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_LV))
                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -134,7 +138,9 @@ public class GemLoader implements IWerkstoffRunnable {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(gemChipped, 3))
-                    .itemOutputs(werkstoff.get(gemFlawed), GTOreDictUnificator.get(dustTiny, Materials.AshDark, 2))
+                    .itemOutputs(
+                        werkstoff.get(gemFlawed),
+                        GTOreDictUnificator.get(dustTiny, Materials2Materials.DarkAsh, 2))
                     .duration(20 * TICKS)
                     .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_LV))
                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -142,7 +148,9 @@ public class GemLoader implements IWerkstoffRunnable {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(dust, 4))
-                    .itemOutputs(werkstoff.get(gem, 3), GTOreDictUnificator.get(dustTiny, Materials.AshDark, 8))
+                    .itemOutputs(
+                        werkstoff.get(gem, 3),
+                        GTOreDictUnificator.get(dustTiny, Materials2Materials.DarkAsh, 8))
                     .duration(20 * TICKS)
                     .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_LV))
                     .metadata(ADDITIVE_AMOUNT, 24)

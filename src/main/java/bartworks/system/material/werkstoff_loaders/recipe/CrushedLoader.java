@@ -33,7 +33,6 @@ import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -100,7 +99,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 .itemOutputs(
                     werkstoff.get(crushedPurified),
                     werkstoff.getOreByProduct(1, dust),
-                    GTOreDictUnificator.get(dust, Materials.Stone, 1L))
+                    GTOreDictUnificator.get(dust, Materials2Materials.Stone, 1L))
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(
                     MaterialLibAPI
@@ -117,7 +116,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 .itemOutputs(
                     werkstoff.get(crushedPurified),
                     werkstoff.getOreByProduct(1, dust),
-                    GTOreDictUnificator.get(dust, Materials.Stone, 1L))
+                    GTOreDictUnificator.get(dust, Materials2Materials.Stone, 1L))
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -135,8 +134,8 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(dustPure))
                 .itemOutputs(
                     werkstoff.get(dust),
-                    GTOreDictUnificator.get(dustSmall, Materials.Gold, 1L),
-                    GTOreDictUnificator.get(nugget, Materials.Gold, 1L))
+                    GTOreDictUnificator.get(dustSmall, Materials2Materials.Gold, 1L),
+                    GTOreDictUnificator.get(nugget, Materials2Materials.Gold, 1L))
                 .outputChances(10000, 4000, 2000)
                 .duration(20 * SECONDS)
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
@@ -148,8 +147,8 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(dustPure))
                 .itemOutputs(
                     werkstoff.get(dust),
-                    GTOreDictUnificator.get(dustSmall, Materials.Iron, 1L),
-                    GTOreDictUnificator.get(nugget, Materials.Iron, 1L))
+                    GTOreDictUnificator.get(dustSmall, Materials2Materials.Iron, 1L),
+                    GTOreDictUnificator.get(nugget, Materials2Materials.Iron, 1L))
                 .outputChances(10000, 4000, 2000)
                 .duration(20 * SECONDS)
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
@@ -161,8 +160,8 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(dustPure))
                 .itemOutputs(
                     werkstoff.get(dust),
-                    GTOreDictUnificator.get(dustSmall, Materials.Neodymium, 1L),
-                    GTOreDictUnificator.get(nugget, Materials.Neodymium, 1L))
+                    GTOreDictUnificator.get(dustSmall, Materials2Materials.Neodymium, 1L),
+                    GTOreDictUnificator.get(nugget, Materials2Materials.Neodymium, 1L))
                 .outputChances(10000, 4000, 2000)
                 .duration(20 * SECONDS)
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 24))

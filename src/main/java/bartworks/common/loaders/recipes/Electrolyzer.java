@@ -9,7 +9,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
@@ -82,7 +81,7 @@ public class Electrolyzer implements Runnable {
             .itemInputs(WerkstoffLoader.FuchsitAL.get(OrePrefixes.dust, 21), ItemList.Cell_Empty.get(2))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Potassium, Materials2Shapes.dust, (int) (1L)),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 3L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.Alumina, 3L),
                 MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.dust, (int) (3L)),
                 MaterialLibAPI.getStack(Materials2Materials.Hydrogen, Materials2CellShapes.cell, (int) (2)))
             .fluidOutputs(
@@ -141,7 +140,7 @@ public class Electrolyzer implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, (int) (1L)),
                 MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dust, (int) (3L)),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 6L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.Alumina, 6L),
                 MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.dust, (int) (6)),
                 MaterialLibAPI.getStack(Materials2Materials.Boron, Materials2Shapes.dust, (int) (3)),
                 MaterialLibAPI.getStack(Materials2Materials.Fluorine, Materials2CellShapes.cell, (int) (3)))
@@ -155,7 +154,7 @@ public class Electrolyzer implements Runnable {
             .itemInputs(WerkstoffLoader.Olenit.get(OrePrefixes.dust, 51), ItemList.Cell_Empty.get(1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, (int) (1L)),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 9L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.Alumina, 9L),
                 MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.dust, (int) (6L)),
                 MaterialLibAPI.getStack(Materials2Materials.Boron, Materials2Shapes.dust, (int) (3)),
                 MaterialLibAPI.getStack(Materials2Materials.Hydrogen, Materials2CellShapes.cell, (int) (1)))

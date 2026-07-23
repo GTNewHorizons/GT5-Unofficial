@@ -42,20 +42,22 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -89,22 +91,22 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
 
     private static class SubspaceCoolingFluid {
 
-        public Materials material;
+        public Material material;
         public int perfectOverclocks;
         // Consumption per second of runtime
         public long amount;
 
-        public SubspaceCoolingFluid(Materials material, int perfectOverclocks, long amount) {
+        public SubspaceCoolingFluid(Material material, int perfectOverclocks, long amount) {
             this.material = material;
             this.perfectOverclocks = perfectOverclocks;
             this.amount = amount;
         }
 
         public FluidStack getStack() {
-            FluidStack stack = material.getFluid(amount);
+            FluidStack stack = MU.fluid(material, amount);
             // FUCK THIS FUCK THIS FUCK THIS
             if (stack == null) {
-                return material.getMolten(amount);
+                return MU.molten(material, amount);
             }
             return stack;
         }
@@ -112,9 +114,9 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
 
     private static final ArrayList<SubspaceCoolingFluid> SUBSPACE_COOLING_FLUIDS = new ArrayList<>(
         Arrays.asList(
-            new SubspaceCoolingFluid(Materials.SpaceTime, 1, 75),
-            new SubspaceCoolingFluid(Materials.Space, 2, 50),
-            new SubspaceCoolingFluid(Materials.Eternity, 3, 25)));
+            new SubspaceCoolingFluid(Materials2Materials.SpaceTime, 1, 75),
+            new SubspaceCoolingFluid(Materials2Materials.spatialFluid, 2, 50),
+            new SubspaceCoolingFluid(Materials2Materials.Eternity, 3, 25)));
 
     private SubspaceCoolingFluid currentCoolingFluid = null;
 

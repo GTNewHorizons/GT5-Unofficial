@@ -50,9 +50,11 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 
 /// Composition decomposition (electrolyzer/centrifuge/chemical-synthesis/mixer), dust-crafting, dust<->ingot
 /// smelting (including the gas-aware and primitive-blast-furnace fallback paths), vacuum freezer, and reverse
@@ -199,7 +201,9 @@ public class DustLoader implements IWerkstoffRunnable {
                     if (werkstoffStats.isElektrolysis()) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(
-                                cells > 0 ? new ItemStack[] { werkstoffDust, Materials.Empty.getCells(cells) }
+                                cells > 0
+                                    ? new ItemStack[] { werkstoffDust,
+                                        GTOreDictUnificator.get(cell, Materials2Materials.Empty, cells) }
                                     : new ItemStack[] { werkstoffDust })
                             .itemOutputs(itemComponents.toArray(new ItemStack[0]))
                             .fluidOutputs(
@@ -226,7 +230,9 @@ public class DustLoader implements IWerkstoffRunnable {
                     if (werkstoffStats.isCentrifuge()) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(
-                                cells > 0 ? new ItemStack[] { werkstoffDust, Materials.Empty.getCells(cells) }
+                                cells > 0
+                                    ? new ItemStack[] { werkstoffDust,
+                                        GTOreDictUnificator.get(cell, Materials2Materials.Empty, cells) }
                                     : new ItemStack[] { werkstoffDust })
                             .itemOutputs(itemComponents.toArray(new ItemStack[0]))
                             .fluidOutputs(
