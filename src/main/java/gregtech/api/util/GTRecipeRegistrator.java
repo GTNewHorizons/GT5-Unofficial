@@ -372,10 +372,9 @@ public class GTRecipeRegistrator {
                 .isEmpty()) {
                 // An unbacked RecognitionMaterials/LegacyMarkerMaterials marker's shapeless wildcard backing
                 // never defaults to smelting into itself: unlike a shaped material, it only has an arc-smelting
-                // target when one was explicitly declared, mirroring MarkerMaterial#getSmeltInto/
-                // #getArcSmeltInto. A shaped material without a live legacy counterpart (a reconstructed
-                // werkstoff/gtpp material) instead takes the flag ladder below, exactly as it did through its
-                // facade before minting retired.
+                // target when one was explicitly declared. A shaped material without a live legacy counterpart
+                // (a reconstructed werkstoff/gtpp material) instead takes the flag ladder below, exactly as it
+                // did through its facade before minting retired.
                 boolean declaresSmeltTarget = tMaterial.mMaterial.getProperty(GTMaterialProperties.SMELT_INTO) != null
                     || tMaterial.mMaterial.getProperty(GTMaterialProperties.ARC_SMELT_INTO) != null;
                 Material arcTarget = declaresSmeltTarget ? MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial)) : null;
