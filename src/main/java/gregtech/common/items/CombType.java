@@ -8,11 +8,10 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.loaders.materials.RecognitionMaterials;
 
 public enum CombType {
 
@@ -68,7 +67,7 @@ public enum CombType {
     // Gem Line
     STONE(33, "stone", true, Materials2Materials.NULL, 70, 0x808080, 0x999999, ItemComb.Voltage.LV),
     CERTUS(34, "certus", true, Materials2Materials.CertusQuartz, 100, 0x57CFFB, 0xBBEEFF, ItemComb.Voltage.LV),
-    FLUIX(35, "fluix", true, Materials.Fluix, 100, 0xA375FF, 0xB591FF, ItemComb.Voltage.LV),
+    FLUIX(35, "fluix", true, RecognitionMaterials.Fluix, 100, 0xA375FF, 0xB591FF, ItemComb.Voltage.LV),
     REDSTONE(36, "redstone", true, Materials2Materials.Redstone, 100, 0x7D0F0F, 0xD11919, ItemComb.Voltage.LV),
     RAREEARTH(37, "rare_earth", true, Materials2Materials.RareEarth, 100, 0x555643, 0x343428, ItemComb.Voltage.LV),
     LAPIS(38, "lapis", true, Materials2Materials.Lapis, 100, 0x1947D1, 0x476CDA, ItemComb.Voltage.LV),
@@ -257,7 +256,9 @@ public enum CombType {
 
     public boolean showInList;
     public final ItemComb.Voltage voltage;
-    public final IOreMaterial material;
+    /// A legacy `Materials` (resolved from the declaring constant's MaterialLib material), or the
+    /// `RecognitionMarker` of the Fluix comb -- read through `instanceof`/[MU] union accessors in [ItemComb].
+    public final Object material;
     public final int chance;
 
     private final int id;
@@ -266,10 +267,10 @@ public enum CombType {
 
     CombType(int id, String pName, boolean show, Material material, int chance, int color1, int color2,
         ItemComb.Voltage voltage) {
-        this(id, pName, show, MU.materialOf(material), chance, color1, color2, voltage);
+        this(id, pName, show, (Object) MU.materialOf(material), chance, color1, color2, voltage);
     }
 
-    CombType(int id, String pName, boolean show, IOreMaterial material, int chance, int color1, int color2,
+    CombType(int id, String pName, boolean show, Object material, int chance, int color1, int color2,
         ItemComb.Voltage voltage) {
         if (id < 0 && !"INVALIDCOMB".equals(pName)) throw new IllegalArgumentException();
         this.id = id;

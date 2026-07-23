@@ -35,7 +35,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.objects.MaterialStack;
@@ -45,6 +44,7 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
+import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 
 public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -623,12 +623,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
     /// (`mBlastFurnaceRequired`, `mMaterialList`, `mName`, ...) that a marker never carries, and no recognition
     /// marker other than `Fluix` reaches this registrator to begin with.
     @Override
-    public void registerOre(OrePrefixes prefix, IOreMaterial material, String oreDictName, String modName,
+    public void registerOre(OrePrefixes prefix, RecognitionMarker material, String oreDictName, String modName,
         ItemStack stack) {
-        if (material instanceof Materials legacyMaterial) {
-            registerOre(prefix, legacyMaterial, oreDictName, modName, stack);
-            return;
-        }
         if (prefix != OrePrefixes.dust) {
             return;
         }

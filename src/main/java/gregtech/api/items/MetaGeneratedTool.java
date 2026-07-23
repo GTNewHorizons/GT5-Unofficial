@@ -155,7 +155,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return Materials2Materials.NULL;
     }
 
-    /// Reproduces [gregtech.api.interfaces.IOreMaterial#getLocalizedName]'s `"Material." + internalName`
+    /// Reproduces [gregtech.api.enums.Materials#getLocalizedName]'s `"Material." + internalName`
     /// lang key directly off a MaterialLib material's [MU#internalName], without resolving a legacy [Materials]
     /// instance just to call it on -- that facade disappears for a werkstoff/gtpp material once minting retires.
     private static String getMaterialLocalizedName(com.ruling_0.materiallib.api.Material aMaterial) {

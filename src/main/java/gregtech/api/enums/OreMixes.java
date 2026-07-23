@@ -57,13 +57,13 @@ import com.ruling_0.materiallib.api.Material;
 import bartworks.system.material.WerkstoffLoader;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.OreMixBuilder;
 import gregtech.common.WorldgenGTOreLayer;
+import gregtech.loaders.materials.RecognitionMaterials;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
@@ -953,7 +953,7 @@ public enum OreMixes {
         .secondary(Materials2Materials.Barite)
         .inBetween(Materials2Materials.CertusQuartz)
         .sporadic(Materials2Materials.CertusQuartz)
-        .setLocalizedName(Materials.Quartz)),
+        .setLocalizedName(RecognitionMaterials.Quartz)),
 
     Rutile(new OreMixBuilder().name("ore.mix.rutile")
         .heightRange(5, 20)
@@ -1571,7 +1571,7 @@ public enum OreMixes {
      * @param stackSize The stacksize of the variants
      * @return The array containing all the stone variants of the given ore, with the given stack size
      */
-    public static ItemStack[] getOreVariants(IOreMaterial material, int stackSize) {
+    public static ItemStack[] getOreVariants(Materials material, int stackSize) {
         List<ItemStack> variants = new ArrayList<>();
         Set<StoneType> stoneTypes = getStoneTypesFromMixes(material);
         for (StoneType stoneType : stoneTypes) {
@@ -1601,7 +1601,7 @@ public enum OreMixes {
         return false;
     }
 
-    public static List<OreMixes> getOreMixes(IOreMaterial material) {
+    public static List<OreMixes> getOreMixes(Materials material) {
         List<OreMixes> mixes = new ArrayList<>();
         for (OreMixes mix : OreMixes.VALUES) {
             if (mix.containMaterial(material)) {
@@ -1612,7 +1612,7 @@ public enum OreMixes {
         return mixes;
     }
 
-    public static Set<StoneType> getStoneTypesFromMixes(IOreMaterial material) {
+    public static Set<StoneType> getStoneTypesFromMixes(Materials material) {
         List<OreMixes> mixes = getOreMixes(material);
         Set<StoneType> stoneTypes = new HashSet<>();
         for (OreMixes mix : mixes) {
@@ -1669,9 +1669,9 @@ public enum OreMixes {
         }
     }
 
-    /// The builder stores MaterialLib materials; a legacy caller's [IOreMaterial] resolves to its MaterialLib
+    /// The builder stores MaterialLib materials; a legacy caller's [Materials] resolves to its MaterialLib
     /// backing (a canonical singleton) before the identity comparison.
-    public boolean containMaterial(IOreMaterial material) {
+    public boolean containMaterial(Materials material) {
         Material ml = MU.toMaterial(material);
         if (ml == null) return false;
         return oreMixBuilder.primary == ml || oreMixBuilder.secondary == ml

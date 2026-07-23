@@ -34,7 +34,6 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.MU;
@@ -55,13 +54,12 @@ import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import gregtech.loaders.materials.MaterialsLegacyBridge;
-import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 
 /// @deprecated Terminally deprecated; scheduled for removal in 5.10.0.0. Use the MaterialLib-backed
 /// materials2 API instead.
 @Deprecated
 @SuppressWarnings("unused") // API Legitimately has unused Members and Methods
-public class Materials implements IColorModulationContainer, IOreMaterial {
+public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     // region Elements
     public static Materials Aluminium;
@@ -178,8 +176,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials AnyIron;
     public static Materials AnyRubber;
     public static Materials AnySyntheticRubber;
-    public static RecognitionMarker Quartz;
-    public static RecognitionMarker Advanced;
     // endregion
 
     // region I don't care
@@ -191,7 +187,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Draconium;
     public static Materials DraconiumAwakened;
     public static Materials Endium;
-    public static RecognitionMarker Fluix;
     public static Materials PhasedGold;
     public static Materials PhasedIron;
     public static Materials PlatinumGroupSludge;
@@ -204,7 +199,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Adluorite;
     public static Materials Alduorite;
     public static Materials Amber;
-    public static RecognitionMarker Ammonium;
     public static Materials Amordrine;
     public static Materials Ardite;
     public static Materials Aredrite;
@@ -244,7 +238,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials InfusedWater;
     public static Materials Jade;
     public static Materials Lava;
-    public static RecognitionMarker Limestone;
     public static Materials Mercassium;
     public static Materials MeteoricSteel;
     public static Materials Migmatite;
@@ -261,7 +254,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Phoenixite;
     public static Materials Quartzite;
     public static Materials Rubracium;
-    public static RecognitionMarker Sand;
     public static Materials Siltstone;
     public static Materials Spinel;
     public static Materials Tartarite;
@@ -294,7 +286,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials GlueAdvanced;
     public static Materials Gunpowder;
     public static Materials Honey;
-    public static RecognitionMarker Leather;
     public static Materials Lubricant;
     public static Materials McGuffium239;
     public static Materials MeatCooked;
@@ -1028,7 +1019,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     // region GTNH Materials
     public static Materials Signalum;
     public static Materials Lumium;
-    public static RecognitionMarker Prismarine;
     public static Materials AquaRegia;
     public static Materials Chlorite;
     public static Materials Staurolite;
@@ -1802,52 +1792,42 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return mDensity;
     }
 
-    @Override
     public int getMeltingPoint() {
         return mMeltingPoint;
     }
 
-    @Override
     public List<MaterialStack> getMaterialList() {
         return mMaterialList;
     }
 
-    @Override
     public Map<Materials, Materials> getArcSmeltIntoWithGas() {
         return mArcSmeltIntoWithGas;
     }
 
-    @Override
     public GeneratedMaterialRenderer getRenderer() {
         return renderer;
     }
 
-    @Override
     public float getHeatDamage() {
         return mHeatDamage;
     }
 
-    @Override
     public List<TC_AspectStack> getAspects() {
         return mAspects;
     }
 
-    @Override
     public Enchantment getToolEnchantment() {
         return mToolEnchantment;
     }
 
-    @Override
     public byte getToolEnchantmentLevel() {
         return mToolEnchantmentLevel;
     }
 
-    @Override
     public Enchantment getArmorEnchantment() {
         return mArmorEnchantment;
     }
 
-    @Override
     public byte getArmorEnchantmentLevel() {
         return mArmorEnchantmentLevel;
     }
@@ -1915,7 +1895,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         }
     }
 
-    @Override
     public void addTooltips(List<String> list) {
         addTooltips(list, 1);
     }
@@ -2055,7 +2034,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return mRGBa;
     }
 
-    @Override
     public TextureSet getTextureSet() {
         return mIconSet;
     }
@@ -2065,7 +2043,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return this.mName;
     }
 
-    @Override
     public int getId() {
         return mMetaItemSubID;
     }
@@ -2078,12 +2055,10 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         }
     }
 
-    @Override
     public @Nullable Materials getGTMaterial() {
         return this;
     }
 
-    @Override
     public List<IStoneType> getValidStones() {
         if (contains(SubTag.ICE_ORE)) {
             return StoneType.ICES;
@@ -2092,14 +2067,24 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         }
     }
 
-    @Override
     public String getInternalName() {
         return mName;
     }
 
-    @Override
     public String getDefaultLocalName() {
         return mDefaultLocalName;
+    }
+
+    public String getLocalizedNameKey() {
+        return "Material." + getInternalName().toLowerCase();
+    }
+
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal(getLocalizedNameKey());
+    }
+
+    public ItemStack getPart(OrePrefixes prefix, int amount) {
+        return GTOreDictUnificator.get(prefix, this, amount);
     }
 
     public String getDefaultLocalizedNameForItem(String aFormat) {
@@ -2124,7 +2109,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return isMaterialItem(stack.getItemDamage());
     }
 
-    @Override
     public boolean generatesPrefix(OrePrefixes prefix) {
         return prefix.doGenerateItem(this);
     }

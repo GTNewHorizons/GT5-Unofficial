@@ -38,6 +38,7 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
+import gregtech.loaders.materials.RecognitionMaterials;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -364,7 +365,7 @@ public class RecipeLoaderChemicalSkips {
         // Prismarine
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 12),
+                GTOreDictUnificator.get(OrePrefixes.shard, RecognitionMaterials.Prismarine, 12),
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.dust, (int) (32)))
             .fluidInputs(
                 MaterialLibAPI
@@ -699,7 +700,7 @@ public class RecipeLoaderChemicalSkips {
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.prismaticnaquadah, Materials2Shapes.dust, (int) (64)),
-                GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 64),
+                GTOreDictUnificator.get(OrePrefixes.shard, RecognitionMaterials.Prismarine, 64),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Silver, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.CrystalColorizationCatalyst.get(1))

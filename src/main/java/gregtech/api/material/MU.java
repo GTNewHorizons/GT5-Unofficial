@@ -37,12 +37,12 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.loaders.materials.LegacyMaterials;
+import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 import gtPlusPlus.core.material.MaterialReconstruction;
 
 /// Bridges legacy [OrePrefixes]/[Materials] pairs to their cutover MaterialLib [Shape]/[Material]
@@ -84,8 +84,8 @@ public class MU {
     }
 
     /// The MaterialLib [Material] backing a transitional legacy-family material object -- a [Materials], a
-    /// `Werkstoff`, a gtPlusPlus `Material`, or a remaining [IOreMaterial] implementer such as a recognition
-    /// marker -- for migrating the plumbing off the legacy families onto [Material]. A legacy [Materials]
+    /// `Werkstoff`, a gtPlusPlus `Material`, or a [RecognitionMarker] -- for migrating the plumbing off the
+    /// legacy families onto [Material]. A legacy [Materials]
     /// (including the `Any*` wildcard facades) resolves through [#material]; anything else by its internal
     /// name, which for a marker finds its registered shapeless backing or the real material its name unifies
     /// into (e.g. `Ammonium`). A [Material] passes through unchanged. Null when nothing backs it.
@@ -761,25 +761,6 @@ public class MU {
         return hopped != null ? hopped : target;
     }
 
-    /// [#smeltInto(Materials)] for callers holding an [IOreMaterial] whose concrete type is not statically known.
-    /// A legacy [Materials] delegates to that overload; any other implementer resolves to `null`.
-    public static @Nullable Materials smeltInto(@Nullable IOreMaterial material) {
-        if (material instanceof Materials legacy) return smeltInto(legacy);
-        return null;
-    }
-
-    /// [#smeltInto(IOreMaterial)], for `Materials#mMacerateInto`/[GTMaterialProperties#MACERATE_INTO].
-    public static @Nullable Materials macerateInto(@Nullable IOreMaterial material) {
-        if (material instanceof Materials legacy) return macerateInto(legacy);
-        return null;
-    }
-
-    /// [#smeltInto(IOreMaterial)], for `Materials#mArcSmeltInto`/[GTMaterialProperties#ARC_SMELT_INTO].
-    public static @Nullable Materials arcSmeltInto(@Nullable IOreMaterial material) {
-        if (material instanceof Materials legacy) return arcSmeltInto(legacy);
-        return null;
-    }
-
     /// Whether a material carries a legacy [gregtech.api.enums.SubTag], ported 1:1 to [GTMaterialFlag] of the
     /// same name -- see [GTMaterialProperties#FLAGS]. Also true when [GTMaterialProperties#SUB_TAGS] (the
     /// werkstoff facade's raw `Werkstoff` SubTag list, captured separately from FLAGS -- see that property's
@@ -810,18 +791,15 @@ public class MU {
         return material.contains(SubTag.getNewSubTag(flag.name()));
     }
 
-    /// [#hasFlag(Materials, GTMaterialFlag)] for callers holding an [IOreMaterial] whose concrete type is not
-    /// statically known. A legacy [Materials] delegates to that overload; any other material is consulted through
-    /// its own [gregtech.api.interfaces.ISubTagContainer#contains] for the [SubTag] whose name matches `flag`
-    /// 1:1.
-    public static boolean hasFlag(@Nullable IOreMaterial material, GTMaterialFlag flag) {
-        if (material instanceof Materials legacy) return hasFlag(legacy, flag);
+    /// [#hasFlag(Materials, GTMaterialFlag)] for a recognition marker, consulted through its own sub-tag set
+    /// for the [SubTag] whose name matches `flag` 1:1.
+    public static boolean hasFlag(@Nullable RecognitionMarker material, GTMaterialFlag flag) {
         return material != null && material.contains(SubTag.getNewSubTag(flag.name()));
     }
 
     /// The legacy internal name of a MaterialLib material -- [GTMaterialProperties#LEGACY_NAME] when present
     /// (MaterialLib sanitizes registration names), otherwise the registration name. The [Material]-side
-    /// equivalent of `IOreMaterial#getInternalName`, used to build ore-dictionary names and lang keys.
+    /// equivalent of `Materials#getInternalName`, used to build ore-dictionary names and lang keys.
     public static String internalName(Material material) {
         String legacyName = material.getProperty(GTMaterialProperties.LEGACY_NAME);
         return legacyName != null ? legacyName : material.getName();
@@ -926,12 +904,11 @@ public class MU {
     }
 
     // Union dispatch helpers: the transitional three-family union (Materials / Werkstoff / gtPlusPlus
-    // Material, plus the remaining IOreMaterial implementers such as recognition markers) previously flowed
-    // through IOreMaterial-typed slots; those slots are now Object-typed (or MaterialLib Material-typed) and
-    // these helpers reproduce the exact per-family member behavior at the read sites. TRANSITIONAL -- each
-    // dies with its last union call site.
+    // Material, plus the recognition markers) previously flowed through legacy-interface-typed slots; those
+    // slots are now Object-typed (or MaterialLib Material-typed) and these helpers reproduce the exact
+    // per-family member behavior at the read sites. TRANSITIONAL -- each dies with its last union call site.
 
-    /// [IOreMaterial#findMaterial]'s lookup for the transitional union: a werkstoff by var name first, then a
+    /// The legacy `findMaterial` lookup for the transitional union: a werkstoff by var name first, then a
     /// gtPlusPlus material, then a legacy [Materials]. Null on a miss.
     public static @Nullable Object findLegacyMaterial(String name) {
         Werkstoff bw = Werkstoff.werkstoffVarNameHashMap.get(name);
@@ -946,7 +923,8 @@ public class MU {
     public static @Nullable String internalNameOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getInternalName();
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getInternalName();
-        if (material instanceof IOreMaterial legacy) return legacy.getInternalName();
+        if (material instanceof Materials legacy) return legacy.getInternalName();
+        if (material instanceof RecognitionMarker marker) return marker.getInternalName();
         if (material instanceof Material ml) return internalName(ml);
         return null;
     }
@@ -955,7 +933,8 @@ public class MU {
     public static @Nullable String localizedNameKeyOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getLocalizedNameKey();
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getLocalizedNameKey();
-        if (material instanceof IOreMaterial legacy) return legacy.getLocalizedNameKey();
+        if (material instanceof Materials legacy) return legacy.getLocalizedNameKey();
+        if (material instanceof RecognitionMarker marker) return marker.getLocalizedNameKey();
         if (material instanceof Material ml) return localizedNameKeyOf(legacyMaterialOf(ml));
         return null;
     }
@@ -964,7 +943,7 @@ public class MU {
     public static @Nullable String localizedNameOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getLocalizedName();
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getLocalizedName();
-        if (material instanceof IOreMaterial legacy) return legacy.getLocalizedName();
+        if (material instanceof Materials legacy) return legacy.getLocalizedName();
         if (material instanceof Material ml) return localizedNameOf(legacyMaterialOf(ml));
         return null;
     }
@@ -973,7 +952,7 @@ public class MU {
     public static @Nullable String defaultLocalNameOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getDefaultLocalName();
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getDefaultLocalName();
-        if (material instanceof IOreMaterial legacy) return legacy.getDefaultLocalName();
+        if (material instanceof Materials legacy) return legacy.getDefaultLocalName();
         if (material instanceof Material ml) return localName(ml);
         return null;
     }
@@ -982,7 +961,7 @@ public class MU {
     public static @Nullable TextureSet textureSetOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getTextureSet();
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getTextureSet();
-        if (material instanceof IOreMaterial legacy) return legacy.getTextureSet();
+        if (material instanceof Materials legacy) return legacy.getTextureSet();
         if (material instanceof Material ml) return textureSetOf(legacyMaterialOf(ml));
         return null;
     }
@@ -991,7 +970,8 @@ public class MU {
     public static @Nullable short[] rgbaOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getRGBA();
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getRGBA();
-        if (material instanceof IOreMaterial legacy) return legacy.getRGBA();
+        if (material instanceof Materials legacy) return legacy.getRGBA();
+        if (material instanceof RecognitionMarker marker) return marker.getRGBA();
         if (material instanceof Material ml) return rgbaOf(legacyMaterialOf(ml));
         return null;
     }
@@ -1000,7 +980,7 @@ public class MU {
     public static List<IStoneType> validStonesOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getValidStones();
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getValidStones();
-        if (material instanceof IOreMaterial legacy) return legacy.getValidStones();
+        if (material instanceof Materials legacy) return legacy.getValidStones();
         if (material instanceof Material ml) return validStonesOf(legacyMaterialOf(ml));
         return Collections.emptyList();
     }
@@ -1009,7 +989,7 @@ public class MU {
     public static boolean generatesPrefix(@Nullable Object material, OrePrefixes prefix) {
         if (material instanceof Werkstoff w) return w.generatesPrefix(prefix);
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.generatesPrefix(prefix);
-        if (material instanceof IOreMaterial legacy) return legacy.generatesPrefix(prefix);
+        if (material instanceof Materials legacy) return legacy.generatesPrefix(prefix);
         if (material instanceof Material ml) return generatesPrefix(legacyMaterialOf(ml), prefix);
         return false;
     }
@@ -1019,12 +999,12 @@ public class MU {
     public static boolean hasSubTag(@Nullable Object material, SubTag subTag) {
         if (material instanceof Werkstoff w) return w.contains(subTag);
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.contains(subTag);
-        if (material instanceof IOreMaterial legacy) return legacy.contains(subTag);
+        if (material instanceof Materials legacy) return legacy.contains(subTag);
         if (material instanceof Material ml) return hasSubTag(legacyMaterialOf(ml), subTag);
         return false;
     }
 
-    /// `getPart` across the union (a gtPlusPlus material reproduces [IOreMaterial#getPart]'s default -- through
+    /// `getPart` across the union (a gtPlusPlus material reproduces `Materials#getPart` -- through
     /// its bridge [Materials] when it has one, by ore-dictionary name otherwise); null for null or a foreign
     /// type.
     public static @Nullable ItemStack partOf(@Nullable Object material, OrePrefixes prefix, int amount) {
@@ -1034,7 +1014,7 @@ public class MU {
             if (gt != null) return GTOreDictUnificator.get(prefix, gt, amount);
             return GTOreDictUnificator.get(prefix.oreDictName(gtpp.getInternalName()), amount);
         }
-        if (material instanceof IOreMaterial legacy) return legacy.getPart(prefix, amount);
+        if (material instanceof Materials legacy) return legacy.getPart(prefix, amount);
         if (material instanceof Material ml) return partOf(legacyMaterialOf(ml), prefix, amount);
         return null;
     }
@@ -1044,7 +1024,7 @@ public class MU {
     public static @Nullable Materials gtMaterialOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getGTMaterial();
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getGTMaterial();
-        if (material instanceof IOreMaterial legacy) return legacy.getGTMaterial();
+        if (material instanceof Materials legacy) return legacy.getGTMaterial();
         if (material instanceof Material ml) return gtMaterialOf(legacyMaterialOf(ml));
         return null;
     }
@@ -1053,7 +1033,7 @@ public class MU {
     public static int idOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getId();
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getId();
-        if (material instanceof IOreMaterial legacy) return legacy.getId();
+        if (material instanceof Materials legacy) return legacy.getId();
         if (material instanceof Material ml) return idOf(legacyMaterialOf(ml));
         return 0;
     }
@@ -1062,7 +1042,7 @@ public class MU {
     public static void addTooltipsOf(@Nullable Object material, List<String> list) {
         if (material instanceof Werkstoff w) w.addTooltips(list);
         else if (material instanceof gtPlusPlus.core.material.Material gtpp) gtpp.addTooltips(list);
-        else if (material instanceof IOreMaterial legacy) legacy.addTooltips(list);
+        else if (material instanceof Materials legacy) legacy.addTooltips(list);
         else if (material instanceof Material ml) addTooltipsOf(legacyMaterialOf(ml), list);
     }
 

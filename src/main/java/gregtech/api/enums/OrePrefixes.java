@@ -26,7 +26,6 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ICondition;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTMaterialFlag;
@@ -41,6 +40,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.config.Gregtech;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
+import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
@@ -3017,11 +3017,11 @@ public class OrePrefixes {
         return false;
     }
 
-    /// Twin of [#doGenerateItem(IOreMaterial)] for a MaterialLib [Material]. The legacy method's clauses past the
+    /// Twin of [#doGenerateItem(Materials)] for a MaterialLib [Material]. The legacy method's clauses past the
     /// sub-ID check are all keyed on legacy `Materials`-only state (the `mGeneratedItems`/`mNotGeneratedItems`/
     /// `mDisabledItems` sets, `mHasParentMod`, `mCondition`'s `ISubTagContainer` reads) with no MaterialLib
     /// equivalent, so this resolves the legacy counterpart and delegates -- matching the legacy method's own
-    /// `false` for a material with no `Materials` counterpart (its `instanceof` gate).
+    /// `false` for a material with no `Materials` counterpart (its null gate).
     public boolean doGenerateItem(@Nullable Material material) {
         if (MU.oldSubId(material) == -1) return false;
         Materials legacyMaterial = MU.materialOf(material);
@@ -3029,8 +3029,8 @@ public class OrePrefixes {
         return doGenerateItem(legacyMaterial);
     }
 
-    public boolean doGenerateItem(IOreMaterial oreMaterial) {
-        if (!(oreMaterial instanceof Materials material)) return false;
+    public boolean doGenerateItem(Materials material) {
+        if (material == null) return false;
         if (material == Materials._NULL) return false;
         if (material.mMetaItemSubID == -1) return false;
         if (!material.mHasParentMod) return false;
@@ -3060,9 +3060,14 @@ public class OrePrefixes {
         return true;
     }
 
-    public boolean isIgnored(IOreMaterial material) {
-        if (material instanceof Materials legacyMaterial
-            && (!legacyMaterial.mUnifiable || legacyMaterial != legacyMaterial.mMaterialInto)) return true;
+    public boolean isIgnored(Materials material) {
+        if (material != null && (!material.mUnifiable || material != material.mMaterialInto)) return true;
+        return mIgnoredMaterials.contains(material);
+    }
+
+    /// [#isIgnored(Materials)] for a recognition marker. Markers carry no unification redirects of their own,
+    /// so only [#mIgnoredMaterials] membership applies.
+    public boolean isIgnored(RecognitionMarker material) {
         return mIgnoredMaterials.contains(material);
     }
 
@@ -3076,23 +3081,13 @@ public class OrePrefixes {
         return mOreProcessing.add(registrator);
     }
 
-    /// [#processOre(Material, String, String, ItemStack)] for the recognition-marker path and legacy callers. A
-    /// legacy [Materials] resolves its MaterialLib backing and takes the [Material]-typed dispatch; anything
-    /// else (a recognition marker, or a legacy material with no backing) dispatches each registrator's
-    /// [IOreRecipeRegistrator#registerOre(OrePrefixes, IOreMaterial, String, String, ItemStack)] entry.
-    public void processOre(IOreMaterial material, String oreDictName, String modName, ItemStack stack) {
-
-        if (material instanceof Materials legacyMaterial) {
-            Material mlMaterial = MU.material(legacyMaterial);
-            if (mlMaterial != null) {
-                processOre(mlMaterial, oreDictName, modName, stack);
-                return;
-            }
-        }
+    /// [#processOre(Material, String, String, ItemStack)] for the recognition-marker path, dispatching each
+    /// registrator's [IOreRecipeRegistrator#registerOre(OrePrefixes, RecognitionMarker, String, String,
+    /// ItemStack)] entry.
+    public void processOre(RecognitionMarker material, String oreDictName, String modName, ItemStack stack) {
 
         if (material == null) return;
         if (MU.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
-        if (material == Materials._NULL && !isSelfReferencing && isMaterialBased) return;
         if (!GTUtility.isStackValid(stack)) return;
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
@@ -3153,14 +3148,19 @@ public class OrePrefixes {
         return name + MU.internalName(material);
     }
 
-    /// [#oreDictName(Material)] for the transitional legacy material types, kept until every caller passes a
+    /// [#oreDictName(Material)] for the transitional legacy [Materials], kept until every caller passes a
     /// [Material] directly.
-    public String oreDictName(IOreMaterial material) {
+    public String oreDictName(Materials material) {
+        return name + material.getInternalName();
+    }
+
+    /// [#oreDictName(Material)] for a recognition marker.
+    public String oreDictName(RecognitionMarker material) {
         return name + material.getInternalName();
     }
 
     /// The ore-dictionary name for this prefix and a material named directly, for the entries whose material
-    /// side is not an [IOreMaterial] at all.
+    /// side is not a material object at all.
     public String oreDictName(String materialName) {
         return name + materialName;
     }
