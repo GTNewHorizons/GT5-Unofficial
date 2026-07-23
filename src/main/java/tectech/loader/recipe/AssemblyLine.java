@@ -16,9 +16,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Superconductors;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
@@ -127,7 +127,8 @@ public class AssemblyLine implements Runnable {
                 new Object[] { Circuits.UV.getIngredient(), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
-                new ItemStack[] { Superconductors.UV.getWireGt04(8) },
+                new ItemStack[] {
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Markers.SuperconductorUV, 8) },
                 CustomItemList.DATApipe.get(8),
                 new ItemStack[] { MaterialLibAPI
                     .getStack(Materials2Materials.Polybenzimidazole, Materials2Shapes.plateSuperdense, 2) })

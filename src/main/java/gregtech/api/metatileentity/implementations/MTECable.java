@@ -4,7 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.Mods.GalacticraftCore;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +29,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.MaterialIconRegistry;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2PipeProperties;
@@ -41,7 +39,6 @@ import gregtech.api.graphs.PowerNodes;
 import gregtech.api.graphs.consumers.ConsumerNode;
 import gregtech.api.graphs.paths.PowerNodePath;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
@@ -59,7 +56,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.common.blocks.ItemMachines;
 import gregtech.common.blocks.PipeShapeBlock;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverSolarPanel;
@@ -76,54 +72,10 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, ILocalizedMetaPipeEntity {
 
     private final float mThickNess;
-    private final Materials mMaterial;
-    private final long mCableLossPerMeter, mAmperage, mVoltage;
-    private final boolean mInsulated, mCanShock;
-    private String prefixKey;
+    private final boolean mInsulated;
+    private final String prefixKey;
 
     public int mTransferredAmperage = 0;
-
-    public MTECable(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial,
-        long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
-        super(aID, aName, 0);
-        prefixKey = aPrefixKey;
-        mThickNess = aThickNess;
-        mMaterial = aMaterial;
-        mAmperage = aAmperage;
-        mVoltage = aVoltage;
-        mInsulated = aInsulated;
-        mCanShock = aCanShock;
-        mCableLossPerMeter = aCableLossPerMeter;
-    }
-
-    /// The Materials-typed constructor for MaterialLib-typed callers; delegates through [MU#materialOf] so
-    /// cable identity is unchanged while call sites migrate off the legacy enum.
-    public MTECable(int aID, String aName, String aPrefixKey, float aThickNess, Material aMaterial,
-        long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
-        this(
-            aID,
-            aName,
-            aPrefixKey,
-            aThickNess,
-            MU.materialOf(aMaterial),
-            aCableLossPerMeter,
-            aAmperage,
-            aVoltage,
-            aInsulated,
-            aCanShock);
-    }
-
-    public MTECable(String aName, float aThickNess, Materials aMaterial, long aCableLossPerMeter, long aAmperage,
-        long aVoltage, boolean aInsulated, boolean aCanShock) {
-        super(aName, 0);
-        mThickNess = aThickNess;
-        mMaterial = aMaterial;
-        mAmperage = aAmperage;
-        mVoltage = aVoltage;
-        mInsulated = aInsulated;
-        mCanShock = aCanShock;
-        mCableLossPerMeter = aCableLossPerMeter;
-    }
 
     /// The shape-scoped constructor: identity comes from the hosting [PipeShapeBlock], and material and
     /// stats resolve from the host block's metadata and [Materials2PipeProperties] through [PipeStats].
@@ -131,24 +83,14 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
         super(aID, aName, 0, false, shape, shape.getSizeIndex());
         prefixKey = shape.getPrefixKey();
         mThickNess = shape.getThickness();
-        mMaterial = null;
-        mAmperage = 0;
-        mVoltage = 0;
-        mCableLossPerMeter = 0;
         mInsulated = shape.getFamily() == PipeShapeBlock.PipeFamily.CABLE;
-        mCanShock = !mInsulated;
     }
 
     public MTECable(String aName, PipeShapeBlock shape) {
         super(aName, 0, shape, shape.getSizeIndex());
         prefixKey = shape.getPrefixKey();
         mThickNess = shape.getThickness();
-        mMaterial = null;
-        mAmperage = 0;
-        mVoltage = 0;
-        mCableLossPerMeter = 0;
         mInsulated = shape.getFamily() == PipeShapeBlock.PipeFamily.CABLE;
-        mCanShock = !mInsulated;
     }
 
     @Override
@@ -159,18 +101,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        if (isShapeScoped()) {
-            return new MTECable(mName, (PipeShapeBlock) getShapeHost());
-        }
-        return new MTECable(
-            mName,
-            mThickNess,
-            mMaterial,
-            mCableLossPerMeter,
-            mAmperage,
-            mVoltage,
-            mInsulated,
-            mCanShock);
+        return new MTECable(mName, (PipeShapeBlock) getShapeHost());
     }
 
     @Override
@@ -322,153 +253,12 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
 
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        // Only perform the logic if the player is sneaking.
-        if (!aPlayer.isSneaking()) {
-            return;
-        }
+        if (!aPlayer.isSneaking()) return;
 
         ItemStack handItem = aPlayer.inventory.getCurrentItem();
-        if (handItem == null) {
-            return;
-        }
+        if (handItem == null) return;
 
-        if (isShapeScoped()) {
-            trySwapShape(aBaseMetaTileEntity, aPlayer, handItem);
-            return;
-        }
-
-        IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
-        if (!(meta instanceof MTECable handCable) || handCable.isShapeScoped()) {
-            return;
-        }
-
-        // 1) Record & disconnect old cable from all sides where it was connected
-        MTECable oldCable = this;
-        byte oldConnections = oldCable.mConnections;
-
-        // We'll remember which sides were connected, so we can reconnect the new cable
-        List<ForgeDirection> oldConnectedSides = new ArrayList<>();
-        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            if (oldCable.isConnectedAtSide(side)) {
-                oldConnectedSides.add(side);
-            }
-        }
-
-        short newMetaID = (short) handItem.getItemDamage();
-        long oldVoltage = this.mVoltage;
-        long oldAmperage = this.mAmperage;
-
-        short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
-
-        // If the cable is the same as old one, skip
-        if (oldMetaID == newMetaID) {
-            return;
-        }
-
-        // Construct the new cable
-        MTECable newCable = new MTECable(
-            handCable.mName,
-            handCable.mThickNess,
-            handCable.mMaterial,
-            handCable.mCableLossPerMeter,
-            handCable.mAmperage,
-            handCable.mVoltage,
-            handCable.mInsulated,
-            handCable.mCanShock);
-
-        // Swap in the new cable
-        aBaseMetaTileEntity.setMetaTileID(newMetaID);
-        newCable.setBaseMetaTileEntity(aBaseMetaTileEntity);
-
-        aBaseMetaTileEntity.markDirty();
-        aBaseMetaTileEntity.issueBlockUpdate();
-        aBaseMetaTileEntity.issueTileUpdate();
-
-        // 7) Reconnect the *new* cable to the old sides (modified for both cables and machines)
-        if (newCable.getBaseMetaTileEntity() != null) {
-            // For each side that was previously connected
-            for (ForgeDirection side : oldConnectedSides) {
-                IGregTechTileEntity neighborTile = newCable.getBaseMetaTileEntity()
-                    .getIGregTechTileEntityAtSide(side);
-                int result = newCable.connect(side);
-                // If there is a neighbor tile, then:
-                if (neighborTile != null) {
-                    // If the neighbor is a cable (implements IConnectable), then require a successful connection
-                    if (neighborTile.getMetaTileEntity() instanceof IConnectable) {
-                        if (result > 0) {
-                            ((IConnectable) neighborTile.getMetaTileEntity()).connect(side.getOpposite());
-                        } else {
-                            newCable.disconnect(side);
-                        }
-                    }
-                    // Otherwise, if the neighbor is a machine (or any non-cable tile), don't connect.
-                } else {
-                    // No neighbor exists at this side, so disconnect
-                    newCable.disconnect(side);
-                }
-            }
-        }
-        aBaseMetaTileEntity.issueTextureUpdate();
-
-        // Handle inventory changes (old <-> new cable) if not creative
-        if (!aPlayer.capabilities.isCreativeMode) {
-            ItemStack oldCableStack = new ItemStack(handItem.getItem(), 1, oldMetaID);
-            boolean addedToInventory = false;
-
-            if (oldCableStack != null) {
-                // Try stacking with existing inventory
-                for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
-                    ItemStack slot = aPlayer.inventory.mainInventory[i];
-                    if (slot != null && slot.getItem() == oldCableStack.getItem()
-                        && slot.getItemDamage() == oldCableStack.getItemDamage()
-                        && slot.stackSize < slot.getMaxStackSize()) {
-                        slot.stackSize++;
-                        addedToInventory = true;
-                        break;
-                    }
-                }
-
-                // If not stacked, add new item
-                if (!addedToInventory) {
-                    addedToInventory = aPlayer.inventory.addItemStackToInventory(oldCableStack);
-                }
-                // If still unsuccessful, drop it
-                if (!addedToInventory) {
-                    aPlayer.dropPlayerItemWithRandomChoice(oldCableStack, false);
-                }
-            }
-
-            // Decrease the held cable quantity
-            handItem.stackSize--;
-            if (handItem.stackSize <= 0) {
-                aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
-            }
-        }
-
-        // Optionally, notify the player if voltage or amperage changed
-        if (oldAmperage != handCable.mAmperage || oldVoltage != handCable.mVoltage) {
-            StringBuilder message = new StringBuilder();
-            if (oldAmperage != handCable.mAmperage) {
-                message.append(oldAmperage)
-                    .append("A → ")
-                    .append(handCable.mAmperage > oldAmperage ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                    .append(handCable.mAmperage)
-                    .append("A")
-                    .append(EnumChatFormatting.RESET);
-            }
-            if (oldAmperage != handCable.mAmperage && oldVoltage != handCable.mVoltage) {
-                message.append(" | ");
-            }
-            if (oldVoltage != handCable.mVoltage) {
-                message.append(oldVoltage)
-                    .append("V → ")
-                    .append(handCable.mVoltage > oldVoltage ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                    .append(handCable.mVoltage)
-                    .append("V")
-                    .append(EnumChatFormatting.RESET);
-            }
-            GTUtility.sendChatTrans(aPlayer, "GT5U.item.cable.swapped.s", message.toString());
-        }
+        trySwapShape(aBaseMetaTileEntity, aPlayer, handItem);
     }
 
     /**
@@ -909,40 +699,25 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
                 TooltipHelper.cableLossText(getCableLoss())));
     }
 
-    public Materials getCableMaterial() {
-        if (isShapeScoped()) return MU.materialOf(shapeMaterial());
-        return mMaterial;
-    }
-
     public long getCableLoss() {
-        if (isShapeScoped()) {
-            Material material = shapeMaterial();
-            if (material == null) return 0;
-            Integer baseLoss = material.getProperty(Materials2PipeProperties.BASE_CABLE_LOSS);
-            int cableLoss = baseLoss == null ? 0 : baseLoss;
-            if (mInsulated) return PipeStats.cableLoss(cableLoss);
-            return PipeStats.wireLoss(material.getProperty(Materials2PipeProperties.WIRE_LOSS), cableLoss);
-        }
-        return mCableLossPerMeter;
+        Material material = shapeMaterial();
+        if (material == null) return 0;
+        Integer baseLoss = material.getProperty(Materials2PipeProperties.BASE_CABLE_LOSS);
+        int cableLoss = baseLoss == null ? 0 : baseLoss;
+        if (mInsulated) return PipeStats.cableLoss(cableLoss);
+        return PipeStats.wireLoss(material.getProperty(Materials2PipeProperties.WIRE_LOSS), cableLoss);
     }
 
     public long getAmperage() {
-        if (isShapeScoped()) {
-            Material material = shapeMaterial();
-            Integer baseAmperage = material == null ? null
-                : material.getProperty(Materials2PipeProperties.BASE_CABLE_AMP);
-            return baseAmperage == null ? 0 : PipeStats.wireAmperage(baseAmperage, getShapeSizeIndex());
-        }
-        return mAmperage;
+        Material material = shapeMaterial();
+        Integer baseAmperage = material == null ? null : material.getProperty(Materials2PipeProperties.BASE_CABLE_AMP);
+        return baseAmperage == null ? 0 : PipeStats.wireAmperage(baseAmperage, getShapeSizeIndex());
     }
 
     public long getVoltage() {
-        if (isShapeScoped()) {
-            Material material = shapeMaterial();
-            Long voltage = material == null ? null : material.getProperty(Materials2PipeProperties.BASE_CABLE_VOLT);
-            return voltage == null ? 0 : voltage;
-        }
-        return mVoltage;
+        Material material = shapeMaterial();
+        Long voltage = material == null ? null : material.getProperty(Materials2PipeProperties.BASE_CABLE_VOLT);
+        return voltage == null ? 0 : voltage;
     }
 
     public boolean isInsulated() {
@@ -950,18 +725,14 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     }
 
     public boolean canShock() {
-        if (isShapeScoped()) {
-            if (mInsulated) return false;
-            Material material = shapeMaterial();
-            return material == null || !Boolean.TRUE.equals(material.getProperty(Materials2PipeProperties.NO_SHOCK));
-        }
-        return mCanShock;
+        if (mInsulated) return false;
+        Material material = shapeMaterial();
+        return material == null || !Boolean.TRUE.equals(material.getProperty(Materials2PipeProperties.NO_SHOCK));
     }
 
     @Override
     public Object getMaterial() {
-        if (isShapeScoped()) return shapeMaterial();
-        return mMaterial;
+        return shapeMaterial();
     }
 
     @Override

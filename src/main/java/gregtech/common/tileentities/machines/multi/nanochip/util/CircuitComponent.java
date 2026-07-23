@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Superconductors;
+import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.util.GTOreDictUnificator;
@@ -271,31 +271,31 @@ public enum CircuitComponent {
     SuperconductorLuV(
         1200,
         "gt.circuitcomponent.superconductorluv",
-        () -> Superconductors.LuV.getWireGt01(1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Markers.SuperconductorLuV, 1)),
     SuperconductorZPM(
         1201,
         "gt.circuitcomponent.superconductorzpm",
-        () -> Superconductors.ZPM.getWireGt01(1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Markers.SuperconductorZPM, 1)),
     SuperconductorUV(
         1202,
         "gt.circuitcomponent.superconductoruv",
-        () -> Superconductors.UV.getWireGt01(1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Markers.SuperconductorUV, 1)),
     SuperconductorUHV(
         1203,
         "gt.circuitcomponent.superconductoruhv",
-        () -> Superconductors.UHV.getWireGt01(1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Markers.SuperconductorUHV, 1)),
     SuperconductorUEV(
         1204,
         "gt.circuitcomponent.superconductoruev",
-        () -> Superconductors.UEV.getWireGt01(1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Markers.SuperconductorUEV, 1)),
     SuperconductorUIV(
         1205,
         "gt.circuitcomponent.superconductoruiv",
-        () -> Superconductors.UIV.getWireGt01(1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Markers.SuperconductorUIV, 1)),
     SuperconductorUMV(
         1206,
         "gt.circuitcomponent.superconductorumv",
-        () -> Superconductors.UMV.getWireGt01(1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Markers.SuperconductorUMV, 1)),
 
     ProcessedSuperconductorLuV(1300, "gt.circuitcomponent.processed.superconductorluv", () -> SuperconductorLuV, true),
     ProcessedSuperconductorZPM(1301, "gt.circuitcomponent.processed.superconductorzpm", () -> SuperconductorZPM, true),

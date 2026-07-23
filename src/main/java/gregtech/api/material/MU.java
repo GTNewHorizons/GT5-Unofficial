@@ -352,6 +352,14 @@ public class MU {
         return prefix == null || material == null ? null : new ItemData(prefix, material);
     }
 
+    /// [#craftIngredient(OrePrefixes,Material)] without the material association: the [ItemData] only names
+    /// the ore-dictionary entry, so a reversible recipe derives no recycling output from this ingredient.
+    /// The superconductor marker ingredients use this form -- their wires unify under the marker name but
+    /// are not composed of the marker.
+    public static @Nullable ItemData namedIngredient(OrePrefixes prefix, @Nullable Material material) {
+        return prefix == null || material == null ? null : new ItemData(prefix, internalName(material));
+    }
+
     /// The legacy `mMetaItemSubID` a material was assigned (block-form metadata index, e.g. the frame and
     /// storage-block variant selector), or -1 if unset -- mirrors legacy `Materials#mMetaItemSubID`'s own
     /// unset default. Ported byte-identically to [GTMaterialProperties#OLD_SUB_ID]; callers reading

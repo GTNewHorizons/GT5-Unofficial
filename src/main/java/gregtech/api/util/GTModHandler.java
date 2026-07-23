@@ -71,10 +71,10 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Superconductors;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
@@ -743,7 +743,7 @@ public class GTModHandler {
                     case  6 -> MU.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.NiobiumTitanium);
                     case  7 -> MU.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.Naquadah);
                     case  8 -> MU.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.NaquadahAlloy);
-                    default -> Superconductors.UHV.getWireGt01Ingredient();
+                    default -> MU.namedIngredient(OrePrefixes.wireGt01, Materials2Markers.SuperconductorUHV);
                 };
 
                 case WIRE4 -> switch (machineTier) {
@@ -755,8 +755,8 @@ public class GTModHandler {
                     case  5 -> MU.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Platinum);
                     case  6 -> MU.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.NiobiumTitanium);
                     case  7 -> MU.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Naquadah);
-                    case  8 -> Superconductors.UHV.getWireGt01Ingredient();
-                    default -> Superconductors.UHV.getWireGt04Ingredient();
+                    case  8 -> MU.namedIngredient(OrePrefixes.wireGt01, Materials2Markers.SuperconductorUHV);
+                    default -> MU.namedIngredient(OrePrefixes.wireGt04, Materials2Markers.SuperconductorUHV);
                 };
 
                 case STICK_DISTILLATION -> MU.craftIngredient(OrePrefixes.stick, Materials2Materials.Blaze);
