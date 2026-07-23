@@ -24,13 +24,17 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.HarvestTool;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -43,9 +47,11 @@ import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
+import gregtech.common.gui.modularui.util.MachineModularSlot;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 import gregtech.common.render.IMTERenderer;
 
@@ -117,16 +123,40 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         return SoundResource.GTCEU_LOOP_MIXER;
     }
 
-    // Once per in-game day, 40% chance the machine works that day. Only rolled lazily when the GUI is opened,
-    // never on a per-tick basis, and cached/persisted so it doesn't need re-rolling until the day changes
-    private static final int WORK_CHANCE_PERCENT = 40;
+    // Once per in-game day, 60% chance the machine works that day. Only rolled lazily when the GUI is opened,
+    // never on a per-tick basis, and cached/persisted so it doesn't need re-rolling until the day changes.
+    // When broken, there's a chance it'll also accept a repair item (in the special slot) to fix it early.
+    private static final int WORK_CHANCE_PERCENT = 60;
+    private static final int REPAIR_REQUEST_CHANCE_PERCENT = 60;
     private static final long TICKS_PER_DAY = 24000L;
+
+    private static ItemStack[] sRepairItems;
+
+    private static ItemStack[] getRepairItems() {
+        if (sRepairItems == null) {
+            sRepairItems = new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1L),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 1L),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Iron, 1L),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 1L),
+                ItemList.Electric_Motor_LV.get(1L) };
+        }
+        return sRepairItems;
+    }
 
     private long mLastRolledDay = -1L;
     private boolean mBrokenToday = true;
+    private int mRepairItemIndex = -1;
 
     public boolean isBrokenToday() {
         return mBrokenToday;
+    }
+
+    public boolean isRepairRequested() {
+        return mBrokenToday && mRepairItemIndex >= 0;
+    }
+
+    public int getRepairItemIndex() {
+        return mRepairItemIndex;
     }
 
     private void rollDailyMalfunctionIfNeeded() {
@@ -135,6 +165,26 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         if (day == mLastRolledDay) return;
         mLastRolledDay = day;
         mBrokenToday = getBaseMetaTileEntity().getRandomNumber(100) >= WORK_CHANCE_PERCENT;
+        mRepairItemIndex = (mBrokenToday
+            && getBaseMetaTileEntity().getRandomNumber(100) < REPAIR_REQUEST_CHANCE_PERCENT)
+                ? getBaseMetaTileEntity().getRandomNumber(getRepairItems().length)
+                : -1;
+    }
+
+    // Checks the special slot for the requested repair item; if present in enough quantity, consumes it and
+    // clears the broken state early (instead of waiting for tomorrow's roll)
+    private void tryRepair() {
+        if (mRepairItemIndex < 0) return;
+        final ItemStack special = getSpecialSlot();
+        if (special == null) return;
+        final ItemStack needed = getRepairItems()[mRepairItemIndex];
+        if (special.getItem() != needed.getItem() || special.getItemDamage() != needed.getItemDamage()
+            || special.stackSize < needed.stackSize) return;
+
+        special.stackSize -= needed.stackSize;
+        if (special.stackSize <= 0) mInventory[getSpecialSlotIndex()] = null;
+        mBrokenToday = false;
+        mRepairItemIndex = -1;
     }
 
     @Override
@@ -142,6 +192,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         super.saveNBTData(aNBT);
         aNBT.setLong("mLastRolledDay", mLastRolledDay);
         aNBT.setBoolean("mBrokenToday", mBrokenToday);
+        aNBT.setInteger("mRepairItemIndex", mRepairItemIndex);
     }
 
     @Override
@@ -149,6 +200,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         super.loadNBTData(aNBT);
         mLastRolledDay = aNBT.getLong("mLastRolledDay");
         mBrokenToday = aNBT.getBoolean("mBrokenToday");
+        mRepairItemIndex = aNBT.getInteger("mRepairItemIndex");
     }
 
     @Override
@@ -156,11 +208,15 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         super.setItemNBT(aNBT);
         aNBT.setLong("mLastRolledDay", mLastRolledDay);
         aNBT.setBoolean("mBrokenToday", mBrokenToday);
+        aNBT.setInteger("mRepairItemIndex", mRepairItemIndex);
     }
 
     @Override
     public int checkRecipe() {
-        if (mBrokenToday) return DID_NOT_FIND_RECIPE;
+        if (mBrokenToday) {
+            tryRepair();
+            if (mBrokenToday) return DID_NOT_FIND_RECIPE;
+        }
         if (getOutputAt(0) != null) {
             mOutputBlocked++;
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -197,17 +253,13 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        // Server-authoritative: only rolls once per real day-change, and only when a player opens the GUI
-        syncManager.addOpenListener(player -> { if (!syncManager.isClient()) rollDailyMalfunctionIfNeeded(); });
+        // Server-authoritative, and runs before any widgets are built (so the special slot/tooltip below always
+        // reflect today's just-rolled state, not yesterday's).
+        if (!data.isClient()) rollDailyMalfunctionIfNeeded();
         return new MTEBasicMachineBaseGui<>(this, this.getUIProperties()) {
 
             @Override
             protected boolean supportsBottomLeftCornerFlow() {
-                return false;
-            }
-
-            @Override
-            protected boolean doesAddSpecialSlot() {
                 return false;
             }
 
@@ -219,9 +271,37 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
             @Override
             protected void initErrors(PanelSyncManager syncManager) {
                 super.initErrors(syncManager);
-                final BooleanSyncValue brokenSyncer = new BooleanSyncValue(machine::isBrokenToday);
-                syncManager.syncValue("icecreamBroken", brokenSyncer);
-                errorMap.put(brokenSyncer, machine.mTooltipCache.getData("gt.icecreammachine.broken.tooltip"));
+                // One synced boolean per possible tooltip outcome (rather than picking the lang key from the raw
+                // field at construction time), since only the synced value is guaranteed to reach the client -
+                // the machine's own fields are never networked outside of this sync layer.
+                for (int i = 0; i < getRepairItems().length; i++) {
+                    final int idx = i;
+                    final BooleanSyncValue repairSyncer = new BooleanSyncValue(
+                        () -> machine.getRepairItemIndex() == idx);
+                    syncManager.syncValue("icecreamRepair" + idx, repairSyncer);
+                    errorMap.put(
+                        repairSyncer,
+                        machine.mTooltipCache.getData("gt.icecreammachine.repair." + idx + ".tooltip"));
+                }
+                final BooleanSyncValue brokenNoRepairSyncer = new BooleanSyncValue(
+                    () -> machine.isBrokenToday() && machine.getRepairItemIndex() < 0);
+                syncManager.syncValue("icecreamBrokenNoRepair", brokenNoRepairSyncer);
+                errorMap.put(brokenNoRepairSyncer, machine.mTooltipCache.getData("gt.icecreammachine.broken.tooltip"));
+            }
+
+            // Special slot doubles as the repair-item slot, so it needs its own tooltip
+            @Override
+            protected ItemSlot createSpecialSlot() {
+                return new ItemSlot().marginRight(SLOT_SIZE / 2)
+                    .slot(
+                        new MachineModularSlot(
+                            machine.inventoryHandler,
+                            machine.getSpecialSlotIndex(),
+                            baseMetaTileEntity))
+                    .tooltip(
+                        t -> t.addLine(StatCollector.translateToLocal("gt.icecreammachine.repairslot.tooltip"))
+                            .addLine(StatCollector.translateToLocal("gt.icecreammachine.repairslot.tooltip.1")))
+                    .tooltipShowUpTimer(BaseTileEntity.TOOLTIP_DELAY);
             }
 
             // Does not use EU / tooltip to the generic one
