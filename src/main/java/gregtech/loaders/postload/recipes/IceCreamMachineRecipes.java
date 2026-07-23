@@ -3,6 +3,9 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.recipe.RecipeMaps.iceCreamMachineRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -11,6 +14,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
 
 public class IceCreamMachineRecipes implements Runnable {
 
@@ -63,5 +67,10 @@ public class IceCreamMachineRecipes implements Runnable {
             .eut(0)
             .hidden()
             .addTo(iceCreamMachineRecipes);
+
+        // Redirect it tothe visible "Random Ice Cream" fake recipe
+        List<ItemStack> associations = CCNEIRepresentation.NEI_RECIPE_ASSOCIATIONS
+            .computeIfAbsent(flavor.get(1), k -> new ArrayList<>());
+        associations.add(ItemList.Ice_Cream_Random.get(1));
     }
 }
