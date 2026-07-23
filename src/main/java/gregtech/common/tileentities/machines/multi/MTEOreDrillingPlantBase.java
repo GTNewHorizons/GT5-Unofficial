@@ -313,7 +313,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         if (mCurrentChunk == null) {
             createInitialWorkingChunk();
-            postDiscoveryEvent();
+            postDiscoveryEvent(true);
             return true;
         }
 
@@ -327,13 +327,15 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             if (oreBlockPositions.isEmpty()) {
                 GTChunkManager.releaseChunk((TileEntity) getBaseMetaTileEntity(), mCurrentChunk);
 
+                postDiscoveryEvent(false);
+
                 if (!moveToNextChunk(xDrill >> 4, zDrill >> 4)) {
                     workState = WorkState.UPWARD;
                     updateVeinNameFromVP(mCurrentChunk);
                     syncWorkAreaData();
                 }
 
-                postDiscoveryEvent();
+                postDiscoveryEvent(true);
 
                 return true;
             }
@@ -341,7 +343,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         return tryProcessOreList();
     }
 
-    private void postDiscoveryEvent() {
+    private void postDiscoveryEvent(boolean discovery) {
         if (mCurrentChunk == null) return;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -353,8 +355,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         final UUID owner = base.getOwnerUuid();
         if (owner == null) return;
 
-        MinecraftForge.EVENT_BUS
-            .post(new DrillChunkDiscoveryEvent(world, owner, mCurrentChunk.chunkXPos, mCurrentChunk.chunkZPos));
+        MinecraftForge.EVENT_BUS.post(
+            new DrillChunkDiscoveryEvent(world, owner, mCurrentChunk.chunkXPos, mCurrentChunk.chunkZPos, discovery));
     }
 
     @Override
@@ -931,7 +933,6 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         }
 
         if (nextChunkZ >= bottom) {
-            postDiscoveryEvent();
             mCurrentChunk = null;
             return false;
         }

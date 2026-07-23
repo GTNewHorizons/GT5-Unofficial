@@ -20,10 +20,15 @@ public class DrillChunkDiscoveryEvent extends Event {
     /// Coordinates of the chunk being mined.
     public final int chunkX, chunkZ;
 
-    public DrillChunkDiscoveryEvent(@NotNull World world, @NotNull UUID owner, int chunkX, int chunkZ) {
+    /// Whether this is a chunk discovery or depletion.
+    public final boolean discovery;
+
+    public DrillChunkDiscoveryEvent(@NotNull World world, @NotNull UUID owner, int chunkX, int chunkZ,
+        boolean discovery) {
         this.world = world;
         this.owner = owner;
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
+        this.discovery = discovery;
     }
 }
