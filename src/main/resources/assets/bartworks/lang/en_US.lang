@@ -131,13 +131,10 @@ tooltip.rotor.3.name=Speed:
 tooltip.rotor.4.name=Output:
 tooltip.cp.0.name=Has Circuit inside?
 
-tooltip.bw.0.name=Added by
-tooltip.bw.1.name=Added by bartimaeusnek via
 tooltip.bw.yes.name=Yes
 tooltip.bw.no.name=No
 tooltip.bw.tier.name=Tier:
 tooltip.bw.empty.name=Empty
-tooltip.bw.mb_via.name=%s§7 via §2BartWorks
 
 tooltip.bw.item.circuit.tagged.imprint=An imprint for: %s
 tooltip.bw.item.circuit.tagged.sliced=A sliced %s
@@ -196,7 +193,6 @@ tooltip.tile.acidgen.1.name=Creates Power from Chemical Energy Potentials.
 
 tooltip.bw.structure.glass=Glass
 tooltip.bw.structure.radio_hatch=Radio Hatch
-tooltip.bw.structure.tier_glass=%s+ Tier Glass
 
 # RecipeMap
 bw.recipe.biolab=Bio Lab
@@ -339,3 +335,28 @@ bw.bioname.mutagen_bacteria_a_spatio.latin=Mutagen bacteria a spatio
 bw.bioname.mutagen_bacteria_a_spatio=Mutagen bacteria from space
 bw.bioname.null.latin=Cimex remotum
 bw.bioname.null=Debug
+
+# MBTT MC-lang migration entries retained from PR #4912
+GT5U.gui.text.no_imprint=Missing imprint
+GT5U.gui.text.not_enough_length=Multiblock Too Short
+item.IncubationModule.name=Incubation Module
+BW_GlasBlocks.name=Borosilicate Glass Block
+BW_GlasBlocks.0.name=Borosilicate Glass Block
+BW_GlasBlocks.1.name=Titanium Reinforced Borosilicate Glass Block
+BW_GlasBlocks.2.name=Tungstensteel Reinforced Borosilicate Glass Block
+BW_GlasBlocks.3.name=Rhodium-Plated Palladium Reinforced Borosilicate Glass Block
+BW_GlasBlocks.4.name=Iridium Reinforced Borosilicate Glass Block
+BW_GlasBlocks.5.name=Osmium Reinforced Borosilicate Glass Block
+BW_GlasBlocks.6.name=Colored Borosilicate Glass Block (Red)
+BW_GlasBlocks.7.name=Colored Borosilicate Glass Block (Green)
+BW_GlasBlocks.8.name=Colored Borosilicate Glass Block (Purple)
+BW_GlasBlocks.9.name=Colored Borosilicate Glass Block (Yellow)
+BW_GlasBlocks.10.name=Colored Borosilicate Glass Block (Light Green)
+BW_GlasBlocks.11.name=Colored Borosilicate Glass Block (Brown)
+BW_GlasBlocks.12.name=Thorium Yttrium Glass Block
+BW_GlasBlocks.13.name=Neutronium Reinforced Borosilicate Glass Block
+BW_GlasBlocks.14.name=Cosmic Neutronium Reinforced Borosilicate Glass Block
+BW_GlasBlocks.15.name=Infinity Reinforced Borosilicate Glass Block
+BW_GlasBlocks2.name=Borosilicate Glass Block
+BW_GlasBlocks2.0.name=Transcendentally Reinforced Borosilicate Glass Block
+tooltip.bw.author_bart_via_bw.name=§abartimaeusnek§7 via §2BartWorks

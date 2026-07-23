@@ -27,8 +27,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -136,50 +134,32 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Assembly Line, Assline, AL")
-            .addInfo("Used to craft complex machine parts (LuV+)")
-            .addInfo("Items & Fluids are inserted in NEI order, one per slice")
-            .addInfo("Does not run Assembler recipes")
+        tt.addMachineType("machtype.assline")
+            .addInfo("gt.assline.tips")
             .addMaxTierSkips(1)
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
-            .addController("First slice, 3rd layer")
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
-                "Any grate machine casing NOT on first slice",
-                3)
-            .addEnergyHatch("1+", "Any layer 4 casing", 4)
-            .addMaintenanceHatch("1", "Any layer 1 side casing", 1)
-            .addInputBus("5-16", "Bottom center of each slice", 2)
-            .addInputHatch("1-4", "Any layer 1 side casing", 1)
-            .addOutputBus("1", "Any layer 1 casing on last slice", 1)
+            .addController("gt.assline.info.controller")
+            .addMiscHatch("1", "gt.blockmachines.hatch.dataaccess.name", "gt.asslike.info.dataaccess", 3)
+            .addEnergyHatch("1+", "gt.asslike.info.energy", 4)
+            .addMaintenanceHatch("1", "gt.asslike.info.i_hatch", 1)
+            .addInputBus("5-16", "gt.asslike.info.i_bus", 2)
+            .addInputHatch("1-4", "gt.asslike.info.i_hatch", 1)
+            .addOutputBus("1", "gt.asslike.info.o_bus", 1)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addStructureInfo("GT5U.MBTT.Structure.Base")
             .addCasing("10", "Any Tiered Glass", false)
             .addCasing("8", "Grate Machine Casing", false)
             .addCasing("4-8", "Solid Steel Machine Casing", false)
             .addCasing("5", "Assembly Line Casing", false)
             .addCasing("5", "Assembler Machine Casing", false)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 4: "
-                    + EnumChatFormatting.GRAY
-                    + "Empty, Solid Steel Machine Casing, Empty")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 3: "
-                    + EnumChatFormatting.GRAY
-                    + "Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 2: "
-                    + EnumChatFormatting.GRAY
-                    + "Any Tiered Glass, Assembly Line Casing, Any Tiered Glass")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 1: "
-                    + EnumChatFormatting.GRAY
-                    + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+            .addStructureInfo("GT5U.MBTT.Structure.Slice")
+            .addStructureInfo("gt.assline.structure.layer.4")
+            .addStructureInfo("gt.assline.structure.layer.3")
+            .addStructureInfo("gt.assline.structure.layer.2")
+            .addStructureInfo("gt.assline.structure.layer.1")
             .addStructureInfo("")
-            .addStructureFooter("Up to 16 total slices, each one allows for 1 more item in recipes")
+            .addStructureFooter("gt.assline.structure.footer")
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();

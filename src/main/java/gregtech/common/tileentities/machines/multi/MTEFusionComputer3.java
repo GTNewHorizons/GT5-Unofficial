@@ -6,11 +6,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION3_GLOW;
 import net.minecraft.block.Block;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 
 public class MTEFusionComputer3 extends MTEFusionComputer {
 
@@ -76,18 +78,19 @@ public class MTEFusionComputer3 extends MTEFusionComputer {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Reactor")
-            .addInfo("A SUN DOWN ON EARTH")
-            .addInfo("§b32,768§7 EU/t and §b40M§7 EU capacity per Energy Hatch")
-            .addInfo("If the recipe has a startup cost greater than the")
-            .addInfo("number of energy hatches * cap, you can't do it")
+        tt.addMachineType("gt.recipe.fusionreactor")
+            .addInfo("gt.fusion.tips.b")
+            .addInfo("gt.fusion.tips", "32,768", "40M")
             .beginStructureBlock(15, 3, 15, false)
-            .addController("Middle center, 2nd layer")
+            .addController("gt.fusion.info.1")
             .addCasing("79-123", "Fusion Machine Casing Mk-II", false)
             .addCasing("32", "Fusion Coil Block", false)
-            .addEnergyHatch("1-16", "Specific middle casings on each curve (UV+)", 2)
-            .addInputHatch("1+", "Specific top or bottom casings on each side", 1)
-            .addOutputHatch("1+", "Specific middle casings on each side", 3)
+            .addStructureInfo("gt.fusion.info.2")
+            .addStructureInfo("gt.fusion.info.3")
+            .addEnergyHatch("1-16", gregtech.api.util.GTUtility.nestParams("gt.fusion.info.energy", "UV"), 2)
+            .addInputHatch("1+", "gt.fusion.info.input", 1)
+            .addOutputHatch("1+", "gt.fusion.info.output", 3)
+            .addStructureInfo("gt.fusion.info.6", TooltipHelper.voltageText(VoltageIndex.UV))
             .toolTipFinisher();
         return tt;
     }

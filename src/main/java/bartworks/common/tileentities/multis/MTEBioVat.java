@@ -46,8 +46,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -171,47 +169,19 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Bacterial Vat, Bac Vat")
-            .addInfo(EnumChatFormatting.AQUA + "Advanced Bio Processing")
-            .addSeparator()
-            .addInfo(
-                "Some recipes require " + EnumChatFormatting.GREEN
-                    + "R"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "A"
-                    + EnumChatFormatting.GREEN
-                    + "D"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "I"
-                    + EnumChatFormatting.GREEN
-                    + "A"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "T"
-                    + EnumChatFormatting.GREEN
-                    + "I"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "O"
-                    + EnumChatFormatting.GREEN
-                    + "N"
-                    + EnumChatFormatting.GRAY
-                    + " supplied with a "
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.GREEN
-                    + "Radio Hatch")
-            .addInfo("Radiation can be either a minimum requirement or an exact value")
-            .addInfo("Efficiency depends on Output Hatch fluid level")
-            .addInfo("Efficiency peaks at " + EnumChatFormatting.LIGHT_PURPLE + "50%")
+        tt.addMachineType("machtype.bacvat")
+            .addInfo("gt.bacvat.tips")
             .beginStructureBlock(5, 4, 5, false)
-            .addController("Front bottom center")
-            .addCasing("19-45", "Stainless Steel Machine Casing", false)
-            .addCasing("32", "Any Tiered Glass", true)
-            .addMiscHatch("0-1", StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any casing", 1)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputBus("0+", "Any casing", 1)
-            .addInputHatch("1+", "Any casing", 1)
-            .addOutputBus("0+", "Any casing", 1)
-            .addOutputHatch("1", "Any casing", 1)
+            .addController("front_bottom_center")
+            .addCasing("19-45", "gt.blockcasings.4.name", false)
+            .addCasing("32", "GT5U.MBTT.AnyGlass", true)
+            .addMiscHatch("0-1", "tooltip.bw.structure.radio_hatch", "<casing>", 1)
+            .addEnergyHatch("1+", "<casing>", 1)
+            .addMaintenanceHatch("1", "<casing>", 1)
+            .addInputBus("0+", "<casing>", 1)
+            .addInputHatch("1+", "<casing>", 1)
+            .addOutputBus("0+", "<casing>", 1)
+            .addOutputHatch("1", "<casing>", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();

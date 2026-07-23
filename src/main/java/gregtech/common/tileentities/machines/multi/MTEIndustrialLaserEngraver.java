@@ -57,6 +57,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
@@ -220,34 +221,17 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Laser Engraver, HILE")
+        tt.addMachineType("machtype.hi_engraver")
             .addStaticSpeedInfo(3.5F)
             .addStaticEuEffInfo(0.8F)
-            .addInfo("Laser source hatch determines maximum recipe tier and parallels")
-            .addInfo("Recipe tier and overclocks limited to laser source tier + 1")
-            .addInfo(
-                "When using a " + GTValues.TIER_COLORS[VoltageIndex.UEV]
-                    + GTValues.VN[VoltageIndex.UEV]
-                    + EnumChatFormatting.GRAY
-                    + "+ laser source, one multi-amp energy hatch is allowed instead of regular energy hatches")
-            .addInfo("Parallels equal to the cube root of laser source amperage input")
-            .addInfo(
-                EnumChatFormatting.WHITE + "Glass "
-                    + EnumChatFormatting.GRAY
-                    + "tier determines maximum laser source tier")
-            .addInfo("Use screwdriver to disable laser rendering")
-            .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
+            .addInfo("gt.hi_engraver.tips.1", TooltipHelper.voltageText(VoltageIndex.UMV))
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front bottom center")
-            .addCasing("35-58", "Laser Containment Casing", false)
+            .addCasing("35-58", "gt.blockcasings10.1.name", false)
             .addCasing("9", "Tungstensteel Frame Box", false)
             .addCasing("3", "Any Tiered Glass", true)
-            .addCasing("1", "Laser Resistant Plate", false)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
-                "Casing above glass",
-                2)
+            .addCasing("1", "gt.laserplate.name", false)
+            .addMiscHatch("1", "GT5U.tooltip.structure.laser_source_hatch", "GT5U.MBTT.Position.CasingAboveGlass", 2)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addInputAny("1+", "Any casing", 1)

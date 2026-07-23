@@ -137,21 +137,20 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("DT")
-            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
-            .addInfo("Increase the height to output more fluid types")
+        tt.addMachineType("machtype.distillation_tower")
+            .addInfo("gt.distillation_tower.tips.1")
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
             .addController("Front bottom center")
-            .addCasing("16-79", "Clean Stainless Steel Machine Casing", false)
-            .addEnergyHatch("1+", "Any casing", 1, 2)
+            .addCasing("16-79", "gt.blockcasings4.1.name", false)
+            .addEnergyHatch("1+", "gt.distillation_tower.info.2", 1, 2)
             .addMaintenanceHatch("1", "Any casing", 1, 2)
             .addInputBus("0+", "Any bottom casing", 1)
             .addInputHatch("1+", "Any bottom casing", 1)
             .addOutputBus("0+", "Any bottom casing", 1)
-            .addOutputHatch("2-11", "One per layer, except the bottom layer", 2)
+            .addOutputHatch("2-11", "GT5U.MBTT.Position.OnePerLayerExceptBottom", 2)
             .addAir("Interior of the structure")
             .addStructureInfo("")
-            .addStructureFooter("Minimum casings increases with height (7 x h - 5)")
+            .addStructureFooter("gt.distillation_tower.info.1")
             .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
         return tt;

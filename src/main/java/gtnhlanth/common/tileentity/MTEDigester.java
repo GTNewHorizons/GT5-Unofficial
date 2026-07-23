@@ -24,7 +24,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -33,7 +32,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -201,22 +199,22 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.digester.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.digester.info1"))
+        tt.addMachineType("gtnhlanth.tt.digester.machinetype")
+            .addInfo("gtnhlanth.tt.digester.info1")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 4, 7, true)
-            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
-            .addCasing("40-54", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
-            .addCasing("16", Casings.HeatProofMachineCasing.getLocalizedName(), false)
-            .addCasing("16", "Heating Coil", false)
-            .addCasing("9", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
-            .addEnergyHatch("1+", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
-            .addMufflerHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
-            .addInputAny("1+", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
-            .addOutputAny("1+", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
-            .addAir(StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.air"))
+            .addController("gt.mbtt.structure.front_bottom_center")
+            .addCasing("40-54", "gt.blockcasings4.0.name", false)
+            .addCasing("16", "gt.blockcasings.11.name", false)
+            .addCasing("16", "gt.digester.casing.coil", false)
+            .addCasing("9", "gt.blockcasings4.1.name", false)
+            .addEnergyHatch("1+", "gtnhlanth.tt.digester.structure.any_casing", 1)
+            .addMaintenanceHatch("1", "gtnhlanth.tt.digester.structure.any_casing", 1)
+            .addMufflerHatch("1", "gtnhlanth.tt.digester.structure.any_casing", 1)
+            .addInputAny("1+", "gtnhlanth.tt.digester.structure.any_casing", 1)
+            .addOutputAny("1+", "gtnhlanth.tt.digester.structure.any_casing", 1)
+            .addAir("gtnhlanth.tt.digester.structure.air")
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();

@@ -171,54 +171,45 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     public String getCasingString() {
         return switch (getCasingMeta()) {
-            case 0 -> "Air Filter Turbine Casing";
-            case 3 -> "Advanced Air Filter Turbine Casing";
-            case 5 -> "Super Air Filter Turbine Casing";
-            default -> "fill a ticket on github if you read this";
+            case 0 -> "gt.blockcasingsNH.0.name";
+            case 3 -> "gt.blockcasingsNH.3.name";
+            case 5 -> "gt.blockcasingsNH.5.name";
+            default -> "gt.generic_error";
         };
     }
 
     public String getPipeString() {
         return switch (getPipeMeta()) {
-            case 1 -> "Air Filter Vent Casing";
-            case 4 -> "Advanced Air Filter Vent Casing";
-            case 6 -> "Super Air Filter Vent Casing";
-            default -> "fill a ticket on github if you read this";
+            case 1 -> "gt.blockcasingsNH.1.name";
+            case 4 -> "gt.blockcasingsNH.4.name";
+            case 6 -> "gt.blockcasingsNH.6.name";
+            default -> "gt.generic_error";
         };
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Air Filter, EAF")
-            .addInfo("Needs a Turbine in the controller")
-            .addInfo("Can process " + (2 * multiTier + 1) + "x" + (2 * multiTier + 1) + " chunks")
-            .addInfo("Each muffler hatch reduces pollution in one chunk of the working area by:")
+        tt.addMachineType("machtype.mb_air_filter")
             .addInfo(
-                "  " + EnumChatFormatting.WHITE
-                    + GLOBAL_MULTIPLIER
-                    + " * multiTierBonus * turbineEff * FLOOR("
-                    + SCALING_FACTOR
-                    + "^mufflerTier)")
-            .addInfo("every second")
-            .addInfo("- multiTierBonus for this controller is " + getBonusByTier())
-            .addInfo("- turbineEff is the efficiency of the Turbine in controller slot")
-            .addInfo("- Effective muffler tier is limited by energy input tier")
-            .addInfo("- Uses " + getEUt() + " EU/t while working")
-            .addSeparator()
-            .addInfo("Insert Absorption Filter in an input bus")
-            .addInfo("  to double pollution cleaning amount (30 uses per item)")
-            .addInfo("Each maintenance issue reduces cleaning amount by 10%")
+                "gt.mb_air_filter.tips",
+                2 * multiTier + 1,
+                GLOBAL_MULTIPLIER,
+                SCALING_FACTOR,
+                getBonusByTier(),
+                getEUt())
             .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom center")
             .addCasing("9-22", getCasingString(), false)
             .addCasing("8", getPipeString(), false)
             .addEnergyHatch("1+", "Any bottom casing", 1)
             .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addMufflerHatch("1-8", "Any center side casing", 2)
+            .addMufflerHatch("1-8", "gt.mb_air_filter.info.muffler", 2)
             .addInputBus("0+", "Any bottom casing", 1)
             .addOutputBus("0+", "Any bottom casing", 1)
             .addAir("Interior of the structure")
+            .addStructureInfo("gt.mb_air_filter.info.casing")
+            .addStructureInfo("gt.mb_air_filter.info.pipe")
             .toolTipFinisher();
         return tt;
     }

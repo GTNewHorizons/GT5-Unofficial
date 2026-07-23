@@ -92,6 +92,16 @@ public class GTOreDictUnificator {
         isAddingOre--;
     }
 
+    @Nullable
+    public static String getLocalizedName(OrePrefixes prefix, Materials material) {
+        String key = prefix.get(material)
+            .toString();
+        ItemStack stack = sName2StackMap.get(key);
+        if (stack != null) return stack.getDisplayName();
+        ItemStack ore = getFirstOre(key, 1);
+        return ore != null ? ore.getDisplayName() : "ERROR";
+    }
+
     public static ItemStack getFirstOre(Object aName, long aAmount) {
         if (GTUtility.isStringInvalid(aName)) return null;
         ItemStack tStack = sName2StackMap.get(aName.toString());

@@ -204,8 +204,9 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gt.blockcasings10.3.name");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Autoclave, IAC")
+        tt.addMachineType("gt.recipe.autoclave")
             .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
             .addDynamicSpeedBonusInfo(0.25f, TooltipTier.COIL)
             .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
@@ -214,7 +215,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addCasing("128-148", "Pressure Containment Casing", false)
             .addCasing("42", "PTFE Frame Box", false)
             .addCasing("42", "Any Tiered Glass", false)
-            .addCasing("14", "Pipe Casing", true)
+            .addCasing("14", "GT5U.MBTT.Tiers.FluidPipe", true)
             .addCasing("7", "Item Pipe Casing", true)
             .addCasing("7", "Heating Coil", true)
             .addEnergyHatch("1+", "Any containment casing", 1)

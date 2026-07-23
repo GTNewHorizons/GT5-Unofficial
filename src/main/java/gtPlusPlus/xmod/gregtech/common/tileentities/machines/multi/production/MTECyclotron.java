@@ -57,7 +57,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
 
     @Override
     public String getMachineType() {
-        return "Particle Accelerator";
+        return "machtype.cyclotron";
     }
 
     @Override
@@ -150,17 +150,11 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Super Magnetic Speed Shooter")
+            .addInfo("gt.cyclotron.tips.1")
             .addSeparator()
-            .addInfo("Particles are accelerated over 186 revolutions to 80% light speed")
-            .addInfo("Can produce a continuous beam current of 2.2 mA at 590 MeV")
-            .addInfo("Which will be extracted from the Isochronous Cyclotron")
+            .addInfo("gt.cyclotron.tips.2")
             .addSeparator()
-            .addInfo("Similar structure to the Fusion Reactor")
-            .addInfo("Any external casing can be a hatch/bus, unlike Fusion")
-            .addInfo("Cyclotron Machine Casing around Cyclotron Coil Block")
-            .addSeparator()
-            .addInfo("§4DEPRECATED")
+            .addInfo("gt.cyclotron.tips.3")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addCasingInfoMin("Cyclotron Machine Casing", 40, false)
             .addCasingInfoMin("Cyclotron Coil", 32, false)

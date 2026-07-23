@@ -282,38 +282,37 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         }
         GTChunkManager.releaseTicket((TileEntity) getBaseMetaTileEntity());
         workState = WorkState.UPWARD;
-        setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.drill_exhausted"));
+        setShutdownReason(GTUtility.translate("GT5U.gui.text.drill_exhausted"));
         return true;
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         String casings = getCasingBlockItem().get(0)
-            .getDisplayName();
+            .getUnlocalizedName() + ".name";
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
-        tt.addMachineType("Pump, FDR")
-            .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
-            .addInfo("Use a Screwdriver to configure range")
-            .addInfo("Use Programmed Circuits to ignore near exhausted oil field")
-            .addInfo("If total circuit # is greater than output per operation, the machine will halt.") // doesn't
-            // work
-            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
+        tt.addMachineType("machtype.oil_drill")
             .addInfo(
-                "Base cycle time: "
-                    + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + (baseCycleTime == 1 ? " tick" : " ticks")
-                        : formatNumber(baseCycleTime / 20.0) + " seconds"))
+                "gt.oil_drill.tips",
+                getRangeInChunks(),
+                GTUtility.getColoredTierNameFromTier((byte) getMinTier()),
+                baseCycleTime < 20 ? formatNumber(baseCycleTime) : formatNumber(baseCycleTime / 20.0),
+                baseCycleTime < 20 ? "gt.time.tick.plural" : "gt.time.second.plural")
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
             .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
             .addCasing("7-8", casings, false)
-            .addEnergyHatch("1", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("0-1", "Any bottom casing", 1)
-            .addOutputHatch("1", "Any bottom casing", 1)
+            .addEnergyHatch(
+                "1",
+                gregtech.api.util.GTUtility.nestParams("gt.driller_shaped_mb.info.energy", VN[getMinTier()]),
+                1)
+            .addMaintenanceHatch("1", "gt.driller_shaped_mb.info.replace", 1)
+            .addInputBus("0-1", "gt.oil_drill.info.i_bus", 1)
+            .addOutputHatch("1", "gt.driller_shaped_mb.info.replace", 1)
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
+            .addStructureFooter("GT5U.MBTT.Structure.Rain")
             .toolTipFinisher();
         return tt;
     }

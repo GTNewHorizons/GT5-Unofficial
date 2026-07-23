@@ -106,7 +106,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Furnace")
+        tt.addMachineType("gt.recipe.furnace")
             .addStaticParallelInfo(4)
             .addDynamicMultiplicativeParallelInfo(2, TooltipTier.COIL)
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -116,11 +116,12 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
             .addCasing("8", "Heating Coil", true)
             .addEnergyHatch("1", "Any bottom casing", 1)
             .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addMufflerHatch("1", "Top center casing", 2)
+            .addMufflerHatch("1", "gt.multi_furnace.info.muffler", 2)
             .addInputBus("1+", "Any bottom casing", 1)
             .addOutputBus("1+", "Any bottom casing", 1)
             .addAir("Interior of the structure")
             .addStructureInfo("")
+            .addStructureFooter("gt.multi_furnace.info.coil")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

@@ -8,6 +8,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -20,7 +21,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AdvancedFusionOverclockDescriber;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -43,19 +46,20 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Reactor")
-            .addInfo("HARNESSING THE POWER OF A NEUTRON STAR")
-            .addInfo("§b524,288§7 EU/t and §b1.28B§7 EU capacity per Energy Hatch")
-            .addInfo("If the recipe has a startup cost greater than the")
-            .addInfo("number of energy hatches * cap, you can't do it")
-            .addInfo("Performs 4/4 overclocks")
+        tt.addMachineType("gt.recipe.fusionreactor")
+            .addInfo("gt.fusion.tips.d")
+            .addInfo("gt.fusion.tips", "524,288", "1.28B")
+            .addInfo("gt.fusion.tips.overclock")
             .beginStructureBlock(15, 3, 15, false)
-            .addController("Middle center, 2nd layer")
+            .addController("gt.fusion.info.1")
             .addCasing("79-123", "Fusion Machine Casing Mk-IV", false)
+            .addStructureInfo("gt.fusion.info.2")
             .addCasing("32", "Advanced Fusion Coil II", false)
-            .addEnergyHatch("1-16", "Specific middle casings on each curve (UEV+)", 2)
-            .addInputHatch("1+", "Specific top or bottom casings on each side", 1)
-            .addOutputHatch("1+", "Specific middle casings on each side", 3)
+            .addStructureInfo("gt.fusion.info.3")
+            .addEnergyHatch("1-16", GTUtility.nestParams("gt.fusion.info.energy", "UEV"), 2)
+            .addInputHatch("1+", "gt.fusion.info.input", 1)
+            .addOutputHatch("1+", "gt.fusion.info.output", 3)
+            .addStructureInfo("gt.fusion.info.6", TooltipHelper.voltageText(VoltageIndex.UEV))
             .toolTipFinisher();
         return tt;
     }

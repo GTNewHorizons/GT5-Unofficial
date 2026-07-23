@@ -18,10 +18,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
-import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
-import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
-import static net.minecraft.util.EnumChatFormatting.GREEN;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,7 +28,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -63,7 +58,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 
@@ -292,27 +286,17 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cable Coater, LATEX")
-            .addInfo(
-                DARK_GRAY + "" + EnumChatFormatting.ITALIC + "AKA Laminate Application and Thermal Enclosure eXocoater")
+        tt.addMachineType("machtype.latex")
+            .addInfo("gt.latex.tips.1")
             .addBulkMachineInfo(8, 2F, 0.85F)
-            .addInfo(
-                "Recipes have an additive " + TooltipHelper.coloredText("6.25%", DARK_GREEN)
-                    + " rubber discount based on "
-                    + TooltipHelper.tierText(TooltipTier.ITEM_PIPE_CASING))
-            .addInfo("An Elastic Singularity can be inserted into the controller to gain the following bonuses")
-            .addInfo(
-                TooltipHelper.parallelText("2x") + " parallels, +"
-                    + TooltipHelper.coloredText("25%", DARK_GREEN)
-                    + " rubber discount, and the use of "
-                    + TooltipHelper.coloredText("Multi-Amp & Laser Energy Hatches", GREEN))
+            .addInfo("gt.latex.tips.2", TooltipTier.ITEM_PIPE_CASING.getLocalizedValue())
             .addSeparator()
-            .addInfo(DARK_AQUA + "Make sure to cover up!")
+            .addInfo("gt.latex.tips.3")
             .beginStructureBlock(5, 8, 5, false)
             .addController("Front bottom center")
-            .addCasing("14-36", "Chemically Inert Casing", false)
+            .addCasing("14-36", "gt.blockcasings8.0.name", false)
             .addCasing("32", "Any Tiered Glass", false)
-            .addCasing("16", "Polyvinyl Chloride Frame Box", false)
+            .addCasing("16", "GT5U.MBTT.Part.PVCFrameBox", false)
             .addCasing("6", "Item Pipe Casing", true)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)

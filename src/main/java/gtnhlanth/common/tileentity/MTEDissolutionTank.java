@@ -24,7 +24,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -38,7 +37,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -217,19 +215,18 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.disstank.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.disstank.info1"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.disstank.info2"))
+        tt.addMachineType("machtype.dissolution_tank")
+            .addInfo("gt.dissolution_tank.tips")
             .beginStructureBlock(5, 5, 5, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("30-44", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
-            .addCasing("24", "Any Tiered Glass", false)
-            .addCasing("9", Casings.HeatProofMachineCasing.getLocalizedName(), false)
-            .addEnergyHatch("1+", "Any stainless steel casing", 1)
-            .addMaintenanceHatch("1", "Any stainless steel casing", 1)
-            .addInputAny("1+", "Any stainless steel casing", 1)
-            .addOutputAny("1+", "Any stainless steel casing", 1)
-            .addAir("Interior of the structure")
+            .addController("front_center_layer2")
+            .addCasing("30-44", "gt.blockcasings4.1.name", false)
+            .addCasing("24", "gt.dissolution_tank.casing.glass", false)
+            .addCasing("9", "gt.blockcasings.11.name", false)
+            .addEnergyHatch("1+", "gt.dissolution_tank.pos.casing", 1)
+            .addMaintenanceHatch("1", "gt.dissolution_tank.pos.casing", 1)
+            .addInputAny("1+", "gt.dissolution_tank.pos.casing", 1)
+            .addOutputAny("1+", "gt.dissolution_tank.pos.casing", 1)
+            .addAir("gt.dissolution_tank.structure.air")
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();

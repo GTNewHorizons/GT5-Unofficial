@@ -126,17 +126,15 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Sparge Tower")
-            .addInfo("Runs gases through depleted molten salts to extract precious fluids")
-            .addInfo("Works the same way as the Distillation Tower, but with a fixed height of 8")
-            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
+        tt.addMachineType("machtype.sparge")
+            .addInfo("gt.sparge_tower.tips")
             .beginStructureBlock(3, 8, 3, true)
-            .addController("Front bottom center")
+            .addController("front_bottom_center")
             .addCasing("45-56", "Sparge Tower Exterior Casing", false)
             .addEnergyHatch("1+", "Any casing", 1, 2)
             .addMaintenanceHatch("1", "Any casing", 1, 2)
-            .addInputHatch("1+", "Any bottom casing", 1)
-            .addOutputHatch("7", "One per layer, except the bottom layer", 2)
+            .addInputHatch("1+", "gt.sparge_tower.info.i_hatch", 1)
+            .addOutputHatch("7", "gt.sparge_tower.info.o_hatch", 2)
             .addAir("Interior of the structure")
             .toolTipFinisher();
         return tt;

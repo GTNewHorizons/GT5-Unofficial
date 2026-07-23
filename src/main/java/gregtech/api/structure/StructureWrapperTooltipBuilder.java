@@ -196,7 +196,7 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
         }
 
         if (nameOverride != null) {
-            addOtherStructurePart(nameOverride, info, hintNumbers);
+            addStructurePart(nameOverride, info, hintNumbers);
         } else {
             // try to use an existing addXHatch method if possible
             if (hatch instanceof HatchElement gtHatch) {
@@ -208,21 +208,12 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
                         addEnergyHatch(info, hintNumbers);
                         break;
                     case ExoticEnergy:
-                        addOtherStructurePart(
-                            StatCollector.translateToLocal("GT5U.MBTT.MultiampEnergyHatch"),
-                            info,
-                            hintNumbers);
-                        addOtherStructurePart(
-                            StatCollector.translateToLocal("GT5U.MBTT.LaserTargetHatch"),
-                            info,
-                            hintNumbers);
+                        addStructurePart("GT5U.MBTT.MultiampEnergyHatch", info, hintNumbers);
+                        addStructurePart("GT5U.MBTT.LaserTargetHatch", info, hintNumbers);
                         hasExoticHatches = true;
                         break;
                     case MultiAmpEnergy:
-                        addOtherStructurePart(
-                            StatCollector.translateToLocal("GT5U.MBTT.MultiampEnergyHatch"),
-                            info,
-                            hintNumbers);
+                        addStructurePart("GT5U.MBTT.MultiampEnergyHatch", info, hintNumbers);
                         hasMultiAmpHatches = true;
                         break;
                     case InputBus:
@@ -249,34 +240,20 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
             } else if (hatch instanceof TTMultiblockBase.HatchElement ttHatch) {
                 switch (ttHatch) {
                     case EnergyMulti -> {
-                        addOtherStructurePart(
-                            StatCollector.translateToLocal("GT5U.MBTT.MultiampEnergyHatch"),
-                            info,
-                            hintNumbers);
-                        addOtherStructurePart(
-                            StatCollector.translateToLocal("GT5U.MBTT.LaserTargetHatch"),
-                            info,
-                            hintNumbers);
+                        addStructurePart("GT5U.MBTT.MultiampEnergyHatch", info, hintNumbers);
+                        addStructurePart("GT5U.MBTT.LaserTargetHatch", info, hintNumbers);
                         hasExoticHatches = true;
                     }
                     case DynamoMulti -> {
-                        addOtherStructurePart(
-                            StatCollector.translateToLocal("GT5U.MBTT.MultiampEnergyDynamo"),
-                            info,
-                            hintNumbers);
-                        addOtherStructurePart(
-                            StatCollector.translateToLocal("GT5U.MBTT.LaserSourceHatch"),
-                            info,
-                            hintNumbers);
+                        addStructurePart("GT5U.MBTT.MultiampEnergyDynamo", info, hintNumbers);
+                        addStructurePart("GT5U.MBTT.LaserSourceHatch", info, hintNumbers);
                         hasExoticHatches = true;
                     }
-                    default -> {
-                        addOtherStructurePart(ttHatch.getDisplayName(), info, hintNumbers);
-                    }
+                    default -> addStructurePart(ttHatch.getDisplayName(), info, hintNumbers);
                 }
             } else {
                 // fallback for custom hatches
-                addOtherStructurePart(hatch.getDisplayName(), info, hintNumbers);
+                addStructurePart(hatch.getDisplayName(), info, hintNumbers);
             }
         }
 

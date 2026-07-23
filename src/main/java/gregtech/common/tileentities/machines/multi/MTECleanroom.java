@@ -21,8 +21,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -133,58 +131,20 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cleanroom")
-            .addInfo("Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency")
-            .addInfo("Can accept 2A from an LV energy hatch")
-            .addInfo("Will overclock and gain efficiency faster starting from HV")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.RED + "Warning:")
-            .addInfo("Below 100% efficiency machines inside have a chance to void outputs!")
-            .addInfo("Each maintenance issue reduces maximum efficiency by 10%")
-            .addInfo("Generating any pollution inside causes the cleanroom to shut down")
+        tt.addMachineType("machtype.cleanroom")
+            .addInfo("gt.cleanroom.tips")
             .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
             .addController("Top center")
             .addCasing(MachineStats.cleanroom.minCasingCount + "-1007", "Plascrete Block", false)
             .addCasing("0-168", "Filter Machine Casing", false)
-            .addEnergyHatch("1", "Any plascrete block", 1)
-            .addMaintenanceHatch("1", "Any plascrete block", 1)
+            .addEnergyHatch("1", "GT5U.MBTT.Position.AnyPlascreteBlock", 1)
+            .addMaintenanceHatch("1", "GT5U.MBTT.Position.AnyPlascreteBlock", 1)
             .addStructureInfo("")
-            .addStructureFooter(
-                "If the width or length is even, the controller can be in either of the two middle positions")
-            .addStructureFooter(
-                "Up to " + EnumChatFormatting.GOLD
-                    + MachineStats.cleanroom.maxReplacementPercentage
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " of the plascrete blocks can be replaced by other valid blocks:")
-            .addStructureFooter(
-                "- Any " + EnumChatFormatting.DARK_GRAY + "EV+" + EnumChatFormatting.GRAY + " Tiered Glass")
-            .addStructureFooter("- Machine Hulls or Diodes for item or power transfer, respectively")
-            .addStructureFooter(
-                "- Reinforced Doors (" + EnumChatFormatting.ITALIC
-                    + "IC2"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + "). Keep closed, no gaps allowed or efficiency will drop!")
-            .addStructureFooter(
-                "- Elevators (" + EnumChatFormatting.ITALIC
-                    + "OpenBlocks"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ") or Travel Anchors ("
-                    + EnumChatFormatting.ITALIC
-                    + "EnderIO"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ")")
-            .addStructureFooter(
-                "See " + EnumChatFormatting.DARK_GRAY
-                    + "config/GregTech/MachineStats.cfg"
-                    + EnumChatFormatting.GRAY
-                    + " for more valid blocks")
-            .addStructureFooter("Use Wireless Connectors for transferring AE2 channels")
+            .addStructureFooter("gt.cleanroom.info.controller")
+            .addStructureInfo("gt.cleanroom.info.replacements", MachineStats.cleanroom.maxReplacementPercentage)
+            .addStructureFooter("GT5U.MBTT.Note.UseAE2WirelessConnectors")
             .addStructureInfo("")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.size"))
+            .addMasterChannel("channels.gregtech.master.size")
             .toolTipFinisher();
         return tt;
     }

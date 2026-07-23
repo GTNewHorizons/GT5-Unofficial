@@ -112,40 +112,32 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.type")) // Machine Type: Data
-                                                                                              // Bank, DB
+            // Bank, DB
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0")) // Controller block of
-                                                                                           // the Data Bank
+            // the Data Bank
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.1")) // Used to supply
-                                                                                           // Assembling Lines
+            // Assembling Lines
             // with more Data Sticks
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.2")) // and give multiple
-                                                                                           // Assembling Lines
-                                                                                           // access to
-                                                                                           // the same Data
+            // Assembling Lines
+            // access to
+            // the same Data
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to
-                                                                                           // toggle
-                                                                                           // wireless mode
-            .addSupportAny()
+            // toggle
+            // wireless mode
+            .addTecTechHatchInfo()
             .beginStructureBlock(5, 3, 3, false)
-            .addController("Front center, 2nd layer")
+            .addController("front_center")
             .addCasing("18", "Computer Heat Vent", false)
             .addCasing("3-16", "Computer Casing", false)
-            .addCasing("0-6", "High Power Casing", false)
-            .addEnergyHatch("1+", "Any high power casing", 1)
-            .addMaintenanceHatch("1", "Any high power casing", 1)
-            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataAccessHatch"), "Any computer casing", 2)
-            .addMiscHatch(
-                "1+",
-                translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"),
-                "Any computer casing",
-                2)
-            .addMiscHatch(
-                "0+",
-                translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"),
-                "Any computer casing",
-                2)
+            .addCasing("0-6", "gt.blockcasingsTT.0.name", false)
+            .addEnergyHatch("1+", "GT5U.MBTT.Position.AnyHighPowerCasing", 1)
+            .addMaintenanceHatch("1", "GT5U.MBTT.Position.AnyHighPowerCasing", 1)
+            .addMiscHatch("1+", "tt.keyword.Structure.DataAccessHatch", "Any computer casing", 2)
+            .addMiscHatch("1+", "gt.blockmachines.hatch.dataoutass.tier.07.name", "Any computer casing", 2)
+            .addMiscHatch("0+", "gt.blockmachines.hatch.datainass.tier.07.name", "Any computer casing", 2)
             .addStructureInfo("")
-            .addStructureFooter("Use an assembly line reception connector to daisy-chain machines")
+            .addStructureFooter("gt.blockmachines.multimachine.em.databank.footer")
             .toolTipFinisher();
         return tt;
     }

@@ -125,46 +125,45 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
-        tt.addMachineType("Boiler");
-        tt.addStructureDeprecatedLine();
+        tt.addMachineType("gt.recipe.largeboilerfakefuels");
         // Tooltip differs between the boilers that output Superheated Steam (Titanium and Tungstensteel) and the ones
         // that do not (Bronze and Steel)
         if (isSuperheated()) {
             tt.addInfo(
-                "Produces " + formatNumber((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam))
-                    + "L of Superheated Steam with 1 Coal at "
-                    + formatNumber((getEUt() * 40L) / superToNormalSteam)
-                    + "L/s") // ?
-                .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
-                .addInfo("Only some solid fuels are allowed (check the NEI Large Boiler tab for details)")
-                .addInfo("If there are any disallowed fuels in the input bus, the boiler won't run!");
+                "gt.mb_boiler.tips.1a",
+                formatNumber((getEUt() * 40) * ((runtimeBoost(20) / 20f) / superToNormalSteam)),
+                formatNumber((getEUt() * 40L) / superToNormalSteam)); // ?
         } else {
             tt.addInfo(
-                "Produces " + formatNumber((getEUt() * 40) * (runtimeBoost(20) / 20f))
-                    + "L of Steam with 1 Coal at "
-                    + formatNumber(getEUt() * 40L)
-                    + "L/s") // ?
-                .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
-                .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
+                "gt.mb_boiler.tips.1b",
+                formatNumber((getEUt() * 40) * (runtimeBoost(20) / 20f)),
+                formatNumber(getEUt() * 40L)); // ?
         }
-        tt.addInfo(
-            String.format(
-                "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
-                formatNumber(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
+        tt.addInfo("gt.mb_boiler.tips.2", formatNumber(500.0 / getEfficiencyIncrease())) // ? check semifluid again
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 3, false)
-            .addController("Front bottom center, 2nd layer")
-            .addCasing("20-28", getCasingMaterial() + " " + getCasingBlockType(), false)
-            .addCasing("5-15", getCasingMaterial() + " Firebox Casing", false)
-            .addCasing("4", getCasingMaterial() + " Pipe Casing", false)
-            .addMaintenanceHatch("1", "Any machine or firebox casing", 1)
-            .addMufflerHatch("1", "Any machine or firebox casing", 1)
-            .addInputBus("0+", "Any machine or firebox casing", 1)
-            .addInputHatch("1+", "Any machine or firebox casing", 1)
-            .addOutputHatch("1+", "Any machine or firebox casing", 1)
+            .addController("gt.mb_boiler.info.controller")
+            .addCasing(
+                "20-28",
+                gregtech.api.util.GTUtility
+                    .nestParams("gt.mb_boiler.casing.machine", getCasingMaterial(), getCasingBlockType()),
+                false)
+            .addCasing(
+                "5-15",
+                gregtech.api.util.GTUtility.nestParams("gt.mb_boiler.casing.firebox", getCasingMaterial()),
+                false)
+            .addCasing(
+                "4",
+                gregtech.api.util.GTUtility.nestParams("gt.mb_boiler.casing.pipe", getCasingMaterial()),
+                false)
+            .addMaintenanceHatch("1", "gt.mb_boiler.info.maintenance", 1)
+            .addMufflerHatch("1", "gt.mb_boiler.info.maintenance", 1)
+            .addInputBus("0+", "gt.mb_boiler.info.i_bus", 1)
+            .addInputHatch("1+", "gt.mb_boiler.info.i_hatch.1", 1)
+            .addOutputHatch("1+", "gt.mb_boiler.info.o_hatch", 1)
             .addStructureInfo("")
-            .addStructureFooter("Use solid fuel, liquid fuel, or both")
-            .addStructureFooter("Use regular or distilled water")
+            .addStructureFooter("gt.mb_boiler.info.fuel")
+            .addStructureFooter("gt.mb_boiler.info.water")
             .toolTipFinisher();
 
         return tt;

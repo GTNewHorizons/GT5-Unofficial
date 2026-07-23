@@ -57,7 +57,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.block.ModBlocks;
@@ -268,36 +267,23 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Alloy Cooker, MABS")
-            .addInfo(
-                TooltipHelper.coloredText(
-                    TooltipHelper.italicText("\"all it does is make metals hot\""),
-                    EnumChatFormatting.DARK_GRAY))
+        tt.addMachineType("machtype.mega_abs")
+            .addInfo("gt.mega_abs.tips.1")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo(
-                TooltipHelper.speedText("-5%") + " Recipe Time per "
-                    + TooltipHelper.tierText(TooltipTier.COIL)
-                    + " Tier above TPV (additive)")
-            .addInfo(
-                TooltipHelper.effText("-5%") + " EU Usage per "
-                    + TooltipHelper.tierText(TooltipTier.COIL)
-                    + " Tier above the Recipe Tier (multiplicative)")
-            .addSeparator()
-            .addInfo("Recipe Tier limited by " + TooltipHelper.tierText(TooltipTier.GLASS) + " Tier")
-            .addInfo("Can also use normal ABS coils in their place instead, if you don't like the bonuses :)")
+            .addInfo("gt.mega_abs.tips.2", TooltipTier.COIL.getLocalizedValue(), TooltipTier.GLASS.getLocalizedValue())
             .addSeparator()
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, true)
-            .addController("Front center, 4th layer")
+            .addController("front_center")
             .addCasing("360", "Heating Coil", true)
             .addCasing("339", "Any Tiered Glass", true)
             .addCasing("129-220", "Blast Smelter Casing Block", false)
             .addCasing("56", "Blast Smelter Heat Containment Coil", false)
             .addEnergyHatch("1+", "Any bottom casing", 1)
-            .addMaintenanceHatch("1", "Any casing around controller", 2)
-            .addMufflerHatch("1", "Top center casing", 3)
+            .addMaintenanceHatch("1", "gt.mega_abs.info.maintenance", 2)
+            .addMufflerHatch("1", "gt.mega_abs.info.muffler", 3)
             .addInputAny("1+", "Any bottom casing", 1)
             .addOutputHatch("1+", "Any bottom casing", 1)
             .addStructureInfo("")

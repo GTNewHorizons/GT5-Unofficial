@@ -5,6 +5,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTUtility.translate;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -127,19 +128,18 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         this.shutdownReasonTextureMap.put("computation_loss", GTGuiTextures.OVERLAY_COMPUTATION_LOSS);
         this.shutdownReasonTooltipMap.put(
             ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey(),
-            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.incomplete"));
+            EnumChatFormatting.DARK_RED + translate("GT5U.gui.hoverable.incomplete"));
         this.shutdownReasonTooltipMap.put(
             ShutDownReasonRegistry.POWER_LOSS.getKey(),
-            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.powerloss"));
+            EnumChatFormatting.DARK_RED + translate("GT5U.gui.hoverable.powerloss"));
         this.shutdownReasonTooltipMap.put(
             ShutDownReasonRegistry.NO_REPAIR.getKey(),
-            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.norepair"));
+            EnumChatFormatting.DARK_RED + translate("GT5U.gui.hoverable.norepair"));
         this.shutdownReasonTooltipMap.put(
             ShutDownReasonRegistry.NONE.getKey(),
-            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.manualshutdown"));
-        this.shutdownReasonTooltipMap.put(
-            "computation_loss",
-            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.text.computation_loss"));
+            EnumChatFormatting.DARK_RED + translate("GT5U.gui.hoverable.manualshutdown"));
+        this.shutdownReasonTooltipMap
+            .put("computation_loss", EnumChatFormatting.DARK_RED + translate("GT5U.gui.text.computation_loss"));
     }
 
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
@@ -274,10 +274,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .childIf(
                 multiblock.supportsMachineModeSwitch(),
-                () -> IKey
-                    .dynamic(
-                        () -> StatCollector
-                            .translateToLocalFormatted("gt.interact.desc.mb.mode", machineModeSyncer.getStringValue()))
+                () -> IKey.dynamic(() -> translate("gt.interact.desc.mb.mode", machineModeSyncer.getStringValue()))
                     .asWidget()
                     .marginBottom(2)
                     .fullWidth())
@@ -292,8 +289,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .fullWidth())
             .childIf(
                 multiblock.hasRunningText(),
-                () -> new TextWidget<>(StatCollector.translateToLocalFormatted("gt.interact.desc.mb.running"))
-                    .color(Color.WHITE.main)
+                () -> new TextWidget<>(translate("gt.interact.desc.mb.running")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> multiblock.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)
                     .fullWidth())
@@ -311,7 +307,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .getSyncHandlerFromMapKey("shutdownDuration:0");
         return IKey.dynamic(() -> {
             Duration time = Duration.ofSeconds(shutdownDurationSyncer.getValue());
-            return StatCollector.translateToLocalFormatted(
+            return translate(
                 "GT5U.gui.text.shutdown_duration",
                 time.toHours(),
                 time.toMinutes() % 60,
@@ -758,10 +754,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private void createVoidExcessTooltip(RichTooltip t) {
-        t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.voiding_mode")))
+        t.addLine(IKey.dynamic(() -> translate("GT5U.gui.button.voiding_mode")))
             .addLine(
                 IKey.dynamic(
-                    () -> StatCollector.translateToLocal(
+                    () -> translate(
                         multiblock.getVoidingMode()
                             .getTransKey())));
         if (!multiblock.supportsVoidProtection()) {
@@ -1028,12 +1024,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 t -> t.addLine(
                     IKey.dynamic(
                         () -> alwaysMaxParallelSyncer.getValue()
-                            ? StatCollector
-                                .translateToLocalFormatted("GT5U.gui.text.lockedvalue", maxParallelSyncer.getValue())
-                            : StatCollector.translateToLocalFormatted(
-                                "GT5U.gui.text.rangedvalue",
-                                1,
-                                maxParallelSyncer.getValue()))))
+                            ? translate("GT5U.gui.text.lockedvalue", maxParallelSyncer.getValue())
+                            : translate("GT5U.gui.text.rangedvalue", 1, maxParallelSyncer.getValue()))))
             .tooltipShowUpTimer(TOOLTIP_DELAY)
             .size(70, 14)
             .marginBottom(4)
@@ -1065,7 +1057,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected void makeMaintenanceHoverableTooltip(RichTooltip t, IntSyncValue maintSyncer) {
         if (maintSyncer.getValue() == 0) {
-            t.addLine(IKey.str(EnumChatFormatting.GREEN + "No maintenance issues!"));
+            t.addLine(IKey.str(EnumChatFormatting.GREEN + translate("GT5U.gui.hoverable.noissue")));
             return;
         }
         if (!multiblock.mCrowbar) t.add(
@@ -1342,6 +1334,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected String getToolTipForReason(String key) {
         return this.shutdownReasonTooltipMap
-            .getOrDefault(key, EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.gui.hoverable.error"));
+            .getOrDefault(key, EnumChatFormatting.RED + translate("GT5U.gui.hoverable.error"));
     }
 }

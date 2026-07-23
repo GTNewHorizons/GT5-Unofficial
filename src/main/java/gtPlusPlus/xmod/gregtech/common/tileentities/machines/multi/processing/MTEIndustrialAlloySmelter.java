@@ -45,7 +45,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
@@ -115,22 +114,25 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
 
     @Override
     public String getMachineType() {
-        return "Alloy Smelter";
+        return "gt.recipe.alloysmelter";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gtplusplus.blockcasings.3.1.name");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Processes " + TooltipHelper.parallelText("Voltage Tier * Coil Tier") + " items")
+            .addInfo("gt.zyngen.tips.1")
             .addDynamicSpeedBonusInfo(0.05f, TooltipTier.COIL)
-            .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
+            .addInfo("gt.zyngen.tips.2")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
-            .addController("Front bottom center")
+            .addController("front_bottom_center")
             .addCasing("16", "Heating Coil", true)
+            .addStructureInfo("gt.zyngen.info.2")
             .addCasing("5-12", "Inconel Reinforced Casing", false)
             .addCasing("8", "Integral Encasement V", false)
+            .addStructureInfo("gt.zyngen.info.1")
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addMufflerHatch("1", "Any casing", 1)

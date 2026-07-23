@@ -57,7 +57,7 @@ public class MTEIndustrialElectrolyzerLegacy extends GTPPMultiBlockBase<MTEIndus
 
     @Override
     public String getMachineType() {
-        return "Electrolyzer";
+        return "gt.recipe.electrolyzer";
     }
 
     @Override
@@ -68,8 +68,8 @@ public class MTEIndustrialElectrolyzerLegacy extends GTPPMultiBlockBase<MTEIndus
             .addBulkMachineInfo(2, 2.8f, 0.9f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
-            .addCasingInfoMin("Electrolyzer Casing", 6, false)
+            .addController("front_center")
+            .addCasingInfoMin("miscutils.blockcasings.5.name", 6, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)

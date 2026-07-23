@@ -23,7 +23,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -110,38 +109,32 @@ public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEn
         String boostedEfficiency = TooltipHelper.effText(1.5f);
         String waitPower = TooltipHelper.effText(3.0f);
 
-        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.DieselEngine.machine_type"))
-            .addStructureDeprecatedLine()
-            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.desc1", lubricantRate))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.desc2", oxygenRate))
+        tt.addMachineType("gt.multiblock.DieselEngine.machine_type")
             .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.DieselEngine.default_output",
-                    defaultOutput,
-                    defaultEfficiency))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.DieselEngine.boosted_output",
-                    boostedOutput,
-                    boostedEfficiency))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.wait_power", waitPower))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.DieselEngine.intake_warning"))
+                "gt.multiblock.DieselEngine.desc",
+                lubricantRate,
+                oxygenRate,
+                defaultOutput,
+                defaultEfficiency,
+                boostedOutput,
+                boostedEfficiency,
+                waitPower)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
-            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
-            .addCasingInfoRange(StatCollector.translateToLocal("gt.blockcasings4.Casing_StableTitanium"), 16, 22, false)
+            .addController("gt.mbtt.structure.front_center")
+            .addCasingInfoRange("gt.blockcasings4.Casing_StableTitanium", 16, 22, false)
             .addOtherStructurePart(
-                StatCollector.translateToLocal("gt.blockcasings2.Casing_Gearbox_Titanium"),
-                StatCollector.translateToLocal("gt.multiblock.DieselEngine.gear_box_inner"))
+                "gt.blockcasings2.Casing_Gearbox_Titanium",
+                "gt.multiblock.DieselEngine.gear_box_inner")
             .addOtherStructurePart(
-                StatCollector.translateToLocal("gt.blockcasings4.Casing_EngineIntake"),
-                StatCollector.translateToLocal("gt.multiblock.DieselEngine.engine_intake_ring"))
-            .addDynamoHatch(StatCollector.translateToLocal("gt.mbtt.structure.back_center"), 2)
-            .addMaintenanceHatch(StatCollector.translateToLocal("gt.multiblock.DieselEngine.maintenance_hatch"), 1)
-            .addMufflerHatch(StatCollector.translateToLocal("gt.multiblock.DieselEngine.muffler_hatch"), 1)
-            .addInputHatch(StatCollector.translateToLocal("gt.multiblock.DieselEngine.diesel_fuel"), 1)
-            .addInputHatch(StatCollector.translateToLocal("gt.multiblock.DieselEngine.lubricant"), 1)
-            .addInputHatch(StatCollector.translateToLocal("gt.multiblock.DieselEngine.oxygen_optional"), 1)
+                "gt.blockcasings4.Casing_EngineIntake",
+                "gt.multiblock.DieselEngine.engine_intake_ring")
+            .addDynamoHatch("gt.mbtt.structure.back_center", 2)
+            .addMaintenanceHatch("gt.multiblock.DieselEngine.maintenance_hatch", 1)
+            .addMufflerHatch("gt.multiblock.DieselEngine.muffler_hatch", 1)
+            .addInputHatch("gt.multiblock.DieselEngine.diesel_fuel", 1)
+            .addInputHatch("gt.multiblock.DieselEngine.lubricant", 1)
+            .addInputHatch("gt.multiblock.DieselEngine.oxygen_optional", 1)
             .toolTipFinisher();
         return tt;
     }

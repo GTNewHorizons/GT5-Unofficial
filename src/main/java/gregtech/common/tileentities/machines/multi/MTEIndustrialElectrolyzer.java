@@ -144,21 +144,22 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "miscutils.blockcasings.5.name");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Electrolyzer")
+        tt.addMachineType("gt.recipe.electrolyzer")
             .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front center, 3rd layer")
-            .addCasing("6-43", "Electrolyzer Casing", false)
-            .addCasing("12", "Potin Frame Box", false)
+            .addCasing("6-43", "miscutils.blockcasings.5.name", false)
+            .addCasing("12", "block.Potin.frame.name", false)
             .addCasing("4", "Tin Item Pipe Casing", false)
-            .addCasing("4", "Brass Item Pipe Casing", false)
-            .addEnergyHatch("1+", "Any electrolyzer casing", 1)
-            .addMaintenanceHatch("1", "Any electrolyzer casing", 1)
-            .addMufflerHatch("1", "Any electrolyzer casing", 1)
-            .addInputAny("1+", "Any electrolyzer casing", 1)
-            .addOutputAny("1+", "Any electrolyzer casing", 1)
+            .addCasing("4", "gt.blockcasings11.1.name", false)
+            .addEnergyHatch("1+", "GT5U.MBTT.Position.AnyElectrolyzerCasing", 1)
+            .addMaintenanceHatch("1", "GT5U.MBTT.Position.AnyElectrolyzerCasing", 1)
+            .addMufflerHatch("1", "GT5U.MBTT.Position.AnyElectrolyzerCasing", 1)
+            .addInputAny("1+", "GT5U.MBTT.Position.AnyElectrolyzerCasing", 1)
+            .addOutputAny("1+", "GT5U.MBTT.Position.AnyElectrolyzerCasing", 1)
             .addStructureAuthors(EnumChatFormatting.BLUE + "Vortex")
             .toolTipFinisher();
         return tt;

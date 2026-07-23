@@ -18,8 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -170,165 +168,25 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Antimatter Forge, SSASS")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Dimensions not included!" + EnumChatFormatting.GRAY)
-            .addInfo("Converts protomatter into antimatter")
-            .addInfo("Use screwdriver to disable rendering")
+        tt.addMachineType("machtype.ssass")
             .addInfo(
-                "Passively consumes " + formatNumber(BASE_CONSUMPTION)
-                    + " + ("
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + " * "
-                    + PASSIVE_BASE_MULT
-                    + ")^("
-                    + PASSIVE_BASE_EXP
-                    + " - "
-                    + EnumChatFormatting.GREEN
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "M"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ") EU/t")
-            .addInfo("The consumption decays by 0.5% every tick when empty")
-            .addInfo(
-                "Actively uses (" + EnumChatFormatting.DARK_AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + " * "
-                    + formatNumber(ACTIVE_BASE_MULT)
-                    + ")^("
-                    + ACTIVE_BASE_EXP
-                    + " - "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "G"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ") EU per cycle to produce antimatter")
-            .addSeparator()
-            .addInfo("Cycles every second")
-            .addInfo("Every cycle, the lowest amount of antimatter in the 16 antimatter hatches is recorded")
-            .addInfo(
-                "All hatches with more than the lowest amount " + EnumChatFormatting.RED
-                    + "lose half the difference!"
-                    + EnumChatFormatting.GRAY)
-            .addInfo(
-                EnumChatFormatting.RED + "Voids 10% of antimatter "
-                    + EnumChatFormatting.GRAY
-                    + "if it runs out of energy/protomatter during a cycle")
-            .addInfo(
-                "Base production per hatch is (1/16) * (" + EnumChatFormatting.DARK_AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + "^("
-                    + COEFFICIENT_BASE_EXP
-                    + " + "
-                    + EnumChatFormatting.GOLD
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "C"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ")) of antimatter each cycle")
-            .addInfo("Each hatch multiplies the base production per hatch with a random number pulled from")
-            .addInfo(
-                "a normal distribution with a mean of " + BASE_SKEW
-                    + " + "
-                    + EnumChatFormatting.AQUA
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "A"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + " and a variance of 1")
-            .addInfo("The total gain of antimatter can be negative!")
-            .addSeparator()
-            .addInfo("Can be supplied with stabilization fluids to improve antimatter generation")
-            .addInfo("Each stabilization can only use one of the fluids at a time")
-            .addInfo(
-                "" + EnumChatFormatting.GREEN
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "M"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GREEN
-                    + "agnetic Stabilization"
-                    + EnumChatFormatting.GRAY
-                    + " (Consumes "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + "^0.5 L of fluid per cycle)")
-            .addInfo("1. Molten Purified Tengam = " + EnumChatFormatting.GREEN + "0.1" + EnumChatFormatting.GRAY)
-            .addInfo("2. Tachyon Rich Fluid = " + EnumChatFormatting.GREEN + "0.2" + EnumChatFormatting.GRAY)
-            .addInfo("3. Molten MagMatter = " + EnumChatFormatting.GREEN + "0.3" + EnumChatFormatting.GRAY)
-            .addInfo(
-                "" + EnumChatFormatting.DARK_PURPLE
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "G"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "ravity Stabilization"
-                    + EnumChatFormatting.GRAY
-                    + " (Consumes "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + "^0.5 L of fluid per cycle)")
-            .addInfo("1. Molten Spacetime = " + EnumChatFormatting.DARK_PURPLE + "0.05" + EnumChatFormatting.GRAY)
-            .addInfo(
-                "2. Spatially Enlarged Fluid = " + EnumChatFormatting.DARK_PURPLE + "0.10" + EnumChatFormatting.GRAY)
-            .addInfo("3. Molten Eternity = " + EnumChatFormatting.DARK_PURPLE + "0.15" + EnumChatFormatting.GRAY)
-            .addInfo(
-                "" + EnumChatFormatting.GOLD
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "C"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GOLD
-                    + "ontainment Stabilization"
-                    + EnumChatFormatting.GRAY
-                    + " (Consumes "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + "^(2/7) L of fluid per cycle)")
-            .addInfo("1. Molten Shirabon = " + EnumChatFormatting.GOLD + "0.05" + EnumChatFormatting.GRAY)
-            .addInfo("2. Molten MHDCSM = " + EnumChatFormatting.GOLD + "0.10" + EnumChatFormatting.GRAY)
-            .addInfo(
-                "" + EnumChatFormatting.AQUA
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "A"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.AQUA
-                    + "ctivation Stabilization"
-                    + EnumChatFormatting.GRAY
-                    + " (Consumes "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Antimatter"
-                    + EnumChatFormatting.GRAY
-                    + "^(1/3) L of fluid per cycle)")
-            .addInfo("1. Depleted Naquadah Fuel Mk V = " + EnumChatFormatting.AQUA + "0.05" + EnumChatFormatting.GRAY)
-            .addInfo("2. Depleted Naquadah Fuel Mk VI = " + EnumChatFormatting.AQUA + "0.10" + EnumChatFormatting.GRAY)
+                "gt.ssass.tips",
+                formatNumber(BASE_CONSUMPTION),
+                PASSIVE_BASE_MULT,
+                PASSIVE_BASE_EXP,
+                formatNumber(ACTIVE_BASE_MULT),
+                ACTIVE_BASE_EXP,
+                COEFFICIENT_BASE_EXP,
+                BASE_SKEW)
             .beginStructureBlock(53, 53, 47, false)
-            .addController("Front center, 27th layer")
-            .addCasing("2274", "Magnetic Flux Casing", false)
-            .addCasing("624-637", "Gravity Stabilization Casing", false)
-            .addCasing("514", "Antimatter Containment Casing", false)
-            .addCasing("126", "Protomatter Activation Coil", false)
-            .addEnergyHatch("1+", "Back, left, or right side of the structure", 2)
-            .addInputHatch("1+", "Top or bottom side of the structure", 1)
-            .addMiscHatch(
-                "16",
-                StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
-                "Around the inner ring",
-                3)
+            .addController("gt.ssass.structure.controller")
+            .addCasing("2274", "gt.ssass.casing.magnetic_flux", false)
+            .addCasing("624-637", "gt.ssass.casing.gravity", false)
+            .addCasing("514", "gt.ssass.casing.containment", false)
+            .addCasing("126", "gt.ssass.casing.coil", false)
+            .addEnergyHatch("1+", "gt.ssass.structure.energy", 2)
+            .addInputHatch("1+", "gt.ssass.structure.input", 1)
+            .addMiscHatch("16", "gg.structure.tooltip.antimatter_hatch", "gt.ssass.structure.antimatter_hatch", 3)
             .toolTipFinisher();
         return tt;
     }

@@ -11,7 +11,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -98,10 +97,11 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gt.blockcasings2.0.name");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Canner, TCP")
+        tt.addMachineType("machtype.turbocan")
             .addBulkMachineInfo(8, 2f, 1)
-            .addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
+            .addInfo("gt.turbocan.tips")
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front center, 3rd layer")
             .addCasing("85-93", "Solid Steel Machine Casing", false)

@@ -31,6 +31,7 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
@@ -214,35 +215,28 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("High-Capacity Component Assembler, CoAL")
-            .addInfo("Assembles basic components (motors, pumps, etc.) in large batches")
-            .addInfo(
-                "The " + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.YELLOW
-                    + "Component Assembly Line Casing "
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + "limits the recipes the machine can perform. See the NEI pages for details")
-            .addInfo("Using casings above the required recipe tier provides a speed bonus:")
-            .addInfo(EnumChatFormatting.YELLOW + "Halves recipe time per tier above recipe")
-            .addInfo(EnumChatFormatting.ITALIC + "Much more efficient than other competing brands!")
+        tt.addMachineType("machtype.coal")
+            .addInfo("gt.coal.tips", "componentAssemblyLineCasing.name")
             .addSupportAny()
             .addUnlimitedTierSkips()
             .beginStructureBlock(9, 10, 33, true)
-            .addController("Front center, 8th layer")
-            .addCasing("516-646", "Advanced Iridium Plated Machine Casing", false)
-            .addCasing("280", "UV+ Tiered Glass", false)
-            .addCasing("126", "PBI Pipe Casing", false)
-            .addCasing("124", "Advanced Filter Casing", false)
-            .addCasing("55", "Assembly Line Casing", false)
-            .addCasing("43", "Component Assembly Line Casing", true)
-            .addCasing("30", "Assembler Machine Casing", false)
-            .addCasing("2-4", "Tungstensteel Frame Box", false)
-            .addEnergyHatch("1+", "Any outer iridium casing on the 2nd to top layer", 3)
-            .addMaintenanceHatch("1", "Any casing around controller", 4)
-            .addInputBus("1-8", "Any casing or frame box at front of conveyor belt", 1)
-            .addInputHatch("0+", "Any side bottom edge casing", 2)
-            .addOutputBus("1+", "Any casing at end of conveyor belt", 5)
+            .addController("front_center_layer8")
+            .addCasing("516-646", "gt.blockcasings8.7.name", false)
+            .addCasing(
+                "280",
+                GTUtility.nestParams("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.UV]),
+                false)
+            .addCasing("126", "gt.blockcasings9.0.name", false)
+            .addCasing("124", "gt.blockcasings9.1.name", false)
+            .addCasing("55", "gt.blockcasings2.5.name", false)
+            .addCasing("43", "componentAssemblyLineCasing.name", true)
+            .addCasing("30", "gt.blockcasings2.9.name", false)
+            .addCasing("2-4", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.TungstenSteel), false)
+            .addEnergyHatch("1+", "gt.coal.info.e_hatch", 3)
+            .addMaintenanceHatch("1", "gt.coal.info.maintenance", 4)
+            .addInputBus("1-8", "gt.coal.info.i_bus", 1)
+            .addInputHatch("0+", "gt.coal.info.i_hatch", 2)
+            .addOutputBus("1+", "gt.coal.info.o_bus", 5)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING)

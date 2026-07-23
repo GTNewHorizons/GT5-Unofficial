@@ -351,62 +351,27 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Naquadah Reactor, LNR")
+        tt.addMachineType("machtype.multi_nq_gen")
             .addStructureDeprecatedLine()
-            .addInfo("Environmentally Friendly!")
-            .addInfo("Generate power from high-energy liquids")
-            .addInfo(
-                String.format(
-                    "Consumes %s%d L/s Liquid Air%s to keep running, otherwise" + EnumChatFormatting.YELLOW
-                        + " it will void your fuel"
-                        + EnumChatFormatting.GRAY
-                        + ".",
-                    EnumChatFormatting.AQUA,
-                    LiquidAirConsumptionPerSecond,
-                    EnumChatFormatting.GRAY))
-            .addInfo(
-                "The reactor will explode when there is more than" + EnumChatFormatting.RED
-                    + " ONE"
-                    + EnumChatFormatting.GRAY
-                    + " type of fuel in hatches!")
-            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel")
-            .addSeparator()
-            .addInfo(
-                "Can increase " + EnumChatFormatting.LIGHT_PURPLE
-                    + "efficiency "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.WHITE
-                    + "consuming "
-                    + EnumChatFormatting.BLUE
-                    + "coolants:")
-            .addInfo(getCoolantTextFormatted("IC2 Coolant", "1000", CoolantEfficiency[3]))
-            .addInfo(getCoolantTextFormatted("Super Coolant", "1000", CoolantEfficiency[2]))
-            .addInfo(getCoolantTextFormatted("Cryotheum", "1000", CoolantEfficiency[1]))
-            .addInfo(getCoolantTextFormatted("Tachyon Rich Temporal Fluid", "20", CoolantEfficiency[0]))
-            .addSeparator()
-            .addInfo(
-                "Can increase " + EnumChatFormatting.LIGHT_PURPLE
-                    + "output power and fuel usage "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.WHITE
-                    + "consuming "
-                    + EnumChatFormatting.RED
-                    + "excited liquid:")
-            .addInfo(getExcitedTextFormatted("Molten Caesium", "180", ExcitedLiquidCoe[4]))
-            .addInfo(getExcitedTextFormatted("Molten Uranium-235", "180", ExcitedLiquidCoe[3]))
-            .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
-            .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
-            .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
+            .addInfo("gt.multi_nq_gen.tips.1", LiquidAirConsumptionPerSecond)
+            .addInfo(getCoolantTextFormatted("fluidCoolant", "1000", CoolantEfficiency[3]))
+            .addInfo(getCoolantTextFormatted("fluid.supercoolant", "1000", CoolantEfficiency[2]))
+            .addInfo(getCoolantTextFormatted("fluid.cryotheum", "1000", CoolantEfficiency[1]))
+            .addInfo(getCoolantTextFormatted("fluid.temporalfluid", "20", CoolantEfficiency[0]))
+            .addInfo("gt.multi_nq_gen.tips.2")
+            .addInfo(getExcitedTextFormatted("fluid.molten.caesium", "180", ExcitedLiquidCoe[4]))
+            .addInfo(getExcitedTextFormatted("fluid.molten.uranium235", "180", ExcitedLiquidCoe[3]))
+            .addInfo(getExcitedTextFormatted("fluid.molten.naquadah", "20", ExcitedLiquidCoe[2]))
+            .addInfo(getExcitedTextFormatted("fluid.molten.atomic separation catalyst", "20", ExcitedLiquidCoe[1]))
+            .addInfo(getExcitedTextFormatted("fluid.spatialfluid", "20", ExcitedLiquidCoe[0]))
             .addSupportAny()
             .beginStructureBlock(7, 8, 7, true)
-            .addController("Front bottom center")
+            .addController("front_bottom_center")
             .addCasingInfoExactly("Field Restriction Casing", 48, false)
             .addCasingInfoExactly("Radiation Proof Steel Frame Box", 36, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 6, false)
-            .addCasingInfoExactly("Radiation Proof Machine Casing", 121, false)
-            .addDynamoHatch("Any bottom layer Casing, only accept ONE!", 1)
+            .addCasingInfoExactly("gt.blockcasings3.12.name", 121, false)
+            .addDynamoHatch("gt.multi_nq_gen.info.dynamo", 1)
             .addInputHatch("Any bottom layer Casing", 1)
             .addOutputHatch("Any bottom layer Casing", 1)
             .addMaintenanceHatch("Any bottom layer Casing", 1)
@@ -452,30 +417,11 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
     }
 
     public String getCoolantTextFormatted(String fluidType, String litersConsumed, int effBoost) {
-        return String.format(
-            "%s%s L/s%s : %s%d%% %s: %s%s",
-            EnumChatFormatting.WHITE,
-            litersConsumed,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.LIGHT_PURPLE,
-            effBoost,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.BLUE,
-            fluidType);
+        return GTUtility.nestParams("gt.multi_nq_gen.coolanttext", litersConsumed, effBoost, fluidType);
     }
 
     public String getExcitedTextFormatted(String fluidType, String litersConsumed, int multiplier) {
-        return String.format(
-            "%s%s L/s %s: %s%dx power %s: %s%s",
-            EnumChatFormatting.WHITE,
-            litersConsumed,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.LIGHT_PURPLE,
-            multiplier,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.RED,
-            fluidType);
-
+        return GTUtility.nestParams("gt.multi_nq_gen.excitedtext", litersConsumed, multiplier, fluidType);
     }
 
 }

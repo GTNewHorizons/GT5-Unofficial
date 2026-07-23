@@ -25,7 +25,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -66,7 +65,6 @@ import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
-import gtnhlanth.util.DescTextLocalization;
 
 public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber>
     implements ISurvivalConstructable, ICasingTextureProvider {
@@ -80,37 +78,37 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
     // spotless:off
     static {
-    	STRUCTURE_DEFINITION = StructureDefinition.<MTETargetChamber>builder()
-    			.addShape(
-    					"base",
-    					new String[][] {
-    						{"ggggg", "gjjjg", "gjbjg", "gjjjg", "ff~ff"},
-    						{"cslsc", "s-r-s", "srhrs", "s-r-s", "ccccc"},
-    						{"csssc", "s---s", "s---s", "s---s", "ccccc"},
-    						{"csssc", "s---s", "s---s", "s---s", "ccccc"},
-    						{"cstsc", "s-u-s", "suius", "s-u-s", "ccccc"},
-    						{"ggggg", "gjjjg", "gjojg", "gjjjg", "ggggg"}})
+        STRUCTURE_DEFINITION = StructureDefinition.<MTETargetChamber>builder()
+        .addShape(
+        "base",
+        new String[][] {
+        {"ggggg", "gjjjg", "gjbjg", "gjjjg", "ff~ff"},
+        {"cslsc", "s-r-s", "srhrs", "s-r-s", "ccccc"},
+        {"csssc", "s---s", "s---s", "s---s", "ccccc"},
+        {"csssc", "s---s", "s---s", "s---s", "ccccc"},
+        {"cstsc", "s-u-s", "suius", "s-u-s", "ccccc"},
+        {"ggggg", "gjjjg", "gjojg", "gjjjg", "ggggg"}})
 
-    			.addElement('g', Casings.GrateMachineCasing.asElement())
-    			.addElement(
-    					'f',
-    					buildHatchAdder(MTETargetChamber.class).atLeast(Maintenance, Energy)
-    					.casingIndex(GrateMachineCasingTextureID).hint(4).buildAndChain(Casings.GrateMachineCasing.asElement()))
+        .addElement('g', Casings.GrateMachineCasing.asElement())
+        .addElement(
+        'f',
+        buildHatchAdder(MTETargetChamber.class).atLeast(Maintenance, Energy)
+        .casingIndex(GrateMachineCasingTextureID).hint(4).buildAndChain(Casings.GrateMachineCasing.asElement()))
 
-    			.addElement('j', ofBlockAdder(MTETargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
-    			.addElement('b', buildHatchAdder(MTETargetChamber.class).atLeast(BeamlineInput).casingIndex(ShieldedAccCasingTextureID).hint(1).build())
-    			.addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
+        .addElement('j', ofBlockAdder(MTETargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
+        .addElement('b', buildHatchAdder(MTETargetChamber.class).atLeast(BeamlineInput).casingIndex(ShieldedAccCasingTextureID).hint(1).build())
+        .addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
 
-    			.addElement('l', buildHatchAdder(MTETargetChamber.class).atLeast(InputBus).adder(MTETargetChamber::addMaskInputBus).casingIndex(ShieldedAccCasingTextureID).hint(2).build())
+        .addElement('l', buildHatchAdder(MTETargetChamber.class).atLeast(InputBus).adder(MTETargetChamber::addMaskInputBus).casingIndex(ShieldedAccCasingTextureID).hint(2).build())
 
-    			.addElement('t', buildHatchAdder(MTETargetChamber.class).atLeast(InputBus).casingIndex(ShieldedAccCasingTextureID).hint(3).build())
-    			.addElement('s', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
-    			.addElement('r', ofBlock(LanthItemList.FOCUS_MANIPULATION_CASING, 0))
-    			.addElement('h', ofBlock(LanthItemList.FOCUS_HOLDER, 0))
-    			.addElement('u', ofBlock(LanthItemList.TARGET_RECEPTACLE_CASING, 0))
-    			.addElement('i', ofBlock(LanthItemList.TARGET_HOLDER, 0))
-    			.addElement('o', buildHatchAdder(MTETargetChamber.class).atLeast(OutputBus).casingIndex(ShieldedAccCasingTextureID).hint(5).build())
-    			.build();
+        .addElement('t', buildHatchAdder(MTETargetChamber.class).atLeast(InputBus).casingIndex(ShieldedAccCasingTextureID).hint(3).build())
+        .addElement('s', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
+        .addElement('r', ofBlock(LanthItemList.FOCUS_MANIPULATION_CASING, 0))
+        .addElement('h', ofBlock(LanthItemList.FOCUS_HOLDER, 0))
+        .addElement('u', ofBlock(LanthItemList.TARGET_RECEPTACLE_CASING, 0))
+        .addElement('i', ofBlock(LanthItemList.TARGET_HOLDER, 0))
+        .addElement('o', buildHatchAdder(MTETargetChamber.class).atLeast(OutputBus).casingIndex(ShieldedAccCasingTextureID).hint(5).build())
+        .build();
     }
     //spotless:on
 
@@ -188,28 +186,28 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.tc.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info1"))
-            .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
+        tt.addMachineType("gtnhlanth.tt.tc.machinetype")
+            .addInfo("gtnhlanth.tt.tc.info1")
+            .addInfo("gtnhlanth.tt.beaminfo")
             .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info2"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info3"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info4"))
+            .addInfo("gtnhlanth.tt.tc.info2")
+            .addInfo("gtnhlanth.tt.tc.info3")
+            .addInfo("gtnhlanth.tt.tc.info4")
             .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info5"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info6"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info7"))
+            .addInfo("gtnhlanth.tt.tc.info5")
+            .addInfo("gtnhlanth.tt.tc.info6")
+            .addInfo("gtnhlanth.tt.tc.info7")
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom center")
-            .addCasing("34", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)
-            .addCasing("27-29", Casings.GrateMachineCasing.getLocalizedName(), false)
-            .addCasing("28", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
+            .addCasing("34", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getUnlocalizedName() + ".name", false)
+            .addCasing("27-29", "gt.blockcasings3.10.name", false)
+            .addCasing("28", "casing.shielded_accelerator.name", false)
             .addCasing("16", "LuV+ Tiered Glass", false)
-            .addCasing("4", LanthItemList.TARGET_RECEPTACLE_CASING.getLocalizedName(), false)
-            .addCasing("4", LanthItemList.FOCUS_MANIPULATION_CASING.getLocalizedName(), false)
-            .addCasing("1", LanthItemList.TARGET_HOLDER.getLocalizedName(), false)
-            .addCasing("1", LanthItemList.FOCUS_HOLDER.getLocalizedName(), false)
-            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Front center casing", 1)
+            .addCasing("4", LanthItemList.TARGET_RECEPTACLE_CASING.getUnlocalizedName() + ".name", false)
+            .addCasing("4", LanthItemList.FOCUS_MANIPULATION_CASING.getUnlocalizedName() + ".name", false)
+            .addCasing("1", LanthItemList.TARGET_HOLDER.getUnlocalizedName() + ".name", false)
+            .addCasing("1", LanthItemList.FOCUS_HOLDER.getUnlocalizedName() + ".name", false)
+            .addMiscHatch("1", "gtnhlanth.tt.hatch.beaminput", "Front center casing", 1)
             .addInputBus("1", "Mask input bus, Top center casing 2nd block from front", 2)
             .addEnergyHatch("1+", "Any front bottom casing", 4)
             .addMaintenanceHatch("1", "Any front bottom casing", 4)

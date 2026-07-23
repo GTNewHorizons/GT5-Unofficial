@@ -6,8 +6,6 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -182,47 +180,24 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(
-            StatCollector
-                .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beammirror.machinetype"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip1"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip2"))
+        tt.addMachineType("gt.blockmachines.multimachine.beamcrafting.beammirror.machinetype")
+            .addInfo("gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip")
             .beginStructureBlock(3, 6, 5, false)
             .addController("Front bottom center")
-            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Above controller", 1)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"),
-                "Opposite controller",
-                2)
+            .addMiscHatch("1", "gtnhlanth.tt.hatch.beaminput", "GT5U.MBTT.Position.AboveController", 1)
+            .addMiscHatch("1", "gtnhlanth.tt.hatch.beamoutput", "GT5U.MBTT.Position.OppositeController", 2)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "90 Degree Bend " + EnumChatFormatting.AQUA + "(T1)")
-            .addCasing(
-                "31",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
-                false)
-            .addCasing(
-                "9",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
-                false)
+            .addStructureInfo("gt.beam_mirror.structure.tier.1")
+            .addCasing("31", "gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing", false)
+            .addCasing("9", "gt.blockmachines.multimachine.beamcrafting.ttgratecasing", false)
             .addCasing("5", "Any Tiered Glass", false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "180 Degree Bend " + EnumChatFormatting.AQUA + "(T2)")
-            .addCasing(
-                "52",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
-                false)
-            .addCasing(
-                "9",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
-                false)
+            .addStructureInfo("gt.beam_mirror.structure.tier.2")
+            .addCasing("52", "gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing", false)
+            .addCasing("9", "gt.blockmachines.multimachine.beamcrafting.ttgratecasing", false)
             .addCasing("8", "Any Tiered Glass", false)
             .addStructureInfo("")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .addMasterChannel("channels.gregtech.master.structuretier")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;

@@ -91,28 +91,26 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
     protected MultiblockTooltipBuilder createTooltip(String aStructureName) {
         String casings = getCasingBlockItem().get(0)
-            .getDisplayName();
+            .getUnlocalizedName() + ".name";
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
-        tt.addMachineType("Concrete Backfiller")
-            .addInfo("Will fill in areas below it with light concrete. This goes through walls")
-            .addInfo("Use it to remove any spawning locations beneath your base to reduce lag")
-            .addInfo("Will pull back the pipes after it finishes that layer")
-            .addInfo("Range is " + getRadius() + "x" + getRadius() + " blocks horizontally")
-            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
+        tt.addMachineType("machtype.backfiller")
             .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
-                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
+                "gt.backfiller.tips",
+                getRadius(),
+                GTUtility.getColoredTierNameFromTier((byte) getMinTier()),
+                baseCycleTime < 20 ? formatNumber(baseCycleTime) : formatNumber(baseCycleTime / 20.0),
+                baseCycleTime < 20 ? "gt.time.tick.plural" : "gt.time.second.plural")
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
             .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
             .addCasing("3-8", casings, false)
             .addEnergyHatch("1+", "Any bottom casing", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("0+", "Any bottom casing", 1)
-            .addInputHatch("1+", "Any bottom casing", 1)
-            .addOutputBus("0+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "gt.driller_shaped_mb.info.replace", 1)
+            .addInputBus("0+", "gt.backfiller.info.i_bus", 1)
+            .addInputHatch("1+", "gt.backfiller.info.i_hatch", 1)
+            .addOutputBus("0+", "gt.backfiller.info.o_bus", 1)
             .toolTipFinisher();
         return tt;
     }

@@ -39,6 +39,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -161,30 +162,21 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier")
+        tt.addMachineType("gt.recipe.fluidsolidifier")
             .addStructureDeprecatedLine()
-            .addInfo(
-                "Can use " + EnumChatFormatting.YELLOW
-                    + "Solidifier Hatches"
-                    + EnumChatFormatting.GRAY
-                    + " to hold different molds")
+            .addInfo("gt.fluid_shaper.tips.1")
             .addVoltageParallelInfo(BASE_PARALLELS)
             .addInfo(
-                "Gains " + TooltipHelper.parallelText(PARALLELS_PER_WIDTH)
-                    + " Parallels per "
-                    + EnumChatFormatting.WHITE
-                    + "Voltage "
-                    + EnumChatFormatting.GRAY
-                    + "Tier per width expansion")
-            .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
-            .addInfo("Decays at double the rate that it speeds up at")
+                "gt.fluid_shaper.tips.2",
+                TooltipHelper.parallelText(PARALLELS_PER_WIDTH),
+                TooltipHelper.speedText(3f))
             .addStaticEuEffInfo(0.8f)
-            .addGlassEnergyLimitInfo()
-            .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
+            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
+            .addInfo("gt.fluid_shaper.flavor")
             .beginVariableStructureBlock(5, 5, 5, 5, 9, 33, true)
             .addController("Front bottom center")
-            .addCasingInfoRange("Solidifier Casing", 91, 211, false)
-            .addCasingInfoRange("Solidifier Radiator", 13, 73, false)
+            .addCasingInfoRange("gt.blockcasings10.13.name", 91, 211, false)
+            .addCasingInfoRange("gt.blockcasings10.14.name", 13, 73, false)
             .addCasingInfoRange("Heat Proof Machine Casing", 4, 16, false)
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 4, 16, false)
             .addCasingInfoRange("Any Tiered Glass", 14, 117, true)

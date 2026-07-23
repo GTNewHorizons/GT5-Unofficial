@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -206,17 +205,10 @@ public class MTESmeltingModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace, Furnace")
-            .addInfo("This is a module of the Godforge")
-            .addInfo("Must be part of a Godforge to function")
-            .addInfo("Used for basic smelting operations at various temperatures")
-            .addSeparator(EnumChatFormatting.AQUA, 74)
-            .addInfo("As the first of the Godforge modules, this module performs the most basic")
-            .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace")
-            .addInfo("The desired method of processing can be selected in the gui")
-            .addInfo("This module is specialized towards speed and high heat levels")
+        tt.addMachineType("gt.recipe.blastfurnace", "gt.recipe.furnace")
+            .addInfo("gt.smelting_module.tips")
             .beginStructureBlock(7, 7, 13, false)
-            .addController("Front center, 4th layer")
+            .addController("front_center")
             .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
             .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
             .addCasing("5", "Celestial Matter Guidance Casing", false)

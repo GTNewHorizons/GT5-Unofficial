@@ -59,22 +59,20 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Refines fluorides and Uranium into nuclear fuel for the LFTR")
-            .addInfo("LFTR Fuel 2 and Fuel 3 have alternative, much more efficient recipes")
-            .addInfo("Only one Energy Hatch is allowed per Processing Unit")
-            .addInfo("All recipe times in this multi are very long, watch out!")
+            .addInfo("gt.rfpp.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 9, 3, false)
-            .addController("Front bottom center")
+            .addController("front_bottom_center")
             .addCasing("17", "Hastelloy-N Sealant Block", false)
             .addCasing("7-11", "Hastelloy-X Sealant Block", false)
             .addCasing("5", "Incoloy-DS Fluid Containment Block", false)
             .addCasing("4", "Reactor Shield Casing", false)
-            .addEnergyHatch("1", "Any hastelloy-X casing", 1)
-            .addMaintenanceHatch("1", "Any hastelloy-X casing", 1)
-            .addMufflerHatch("1", "Any hastelloy-X casing", 1)
-            .addInputHatch("2+", "Any hastelloy-X casing", 1)
-            .addOutputHatch("1+", "Any hastelloy-X casing", 1)
+            .addEnergyHatch("1", "gt.rfpp.info.hatches", 1)
+            .addMaintenanceHatch("1", "gt.rfpp.info.hatches", 1)
+            .addMufflerHatch("1", "gt.rfpp.info.hatches", 1)
+            .addInputHatch("2+", "gt.rfpp.info.hatches", 1)
+            .addOutputHatch("1+", "gt.rfpp.info.hatches", 1)
+            .addStructureInfo("gt.rfpp.info")
             .toolTipFinisher();
         return tt;
     }

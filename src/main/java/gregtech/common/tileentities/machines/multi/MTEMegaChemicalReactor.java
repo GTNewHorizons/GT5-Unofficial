@@ -21,7 +21,6 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -46,7 +45,6 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMegaChemicalReactor>
@@ -102,10 +100,8 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Reactor, MCR")
-            .addInfo(
-                TooltipHelper
-                    .coloredText(TooltipHelper.italicText("Infinite Potential!"), EnumChatFormatting.DARK_GRAY))
+        tt.addMachineType("machtype.mcr")
+            .addInfo("gt.mcr.flavor")
             .addStaticParallelInfo(PARALLELS)
             .addPerfectOCInfo()
             .addSeparator()
@@ -118,7 +114,7 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
             .addCasing("0-79", "Chemically Inert Machine Casing", false)
             .addCasing("64", "Any Tiered Glass", true)
             .addCasing("28", "PTFE Pipe Casing", false)
-            .addCasing("7", "Fusion Coil Block or Eternal Heating Coil", false)
+            .addCasing("7", "GT5U.MBTT.Part.FusionOrEternalHeatingCoil", false)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addInputAny("1+", "Any casing", 1)

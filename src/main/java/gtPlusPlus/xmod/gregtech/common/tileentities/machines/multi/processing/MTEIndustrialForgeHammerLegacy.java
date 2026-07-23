@@ -84,7 +84,7 @@ public class MTEIndustrialForgeHammerLegacy extends GTPPMultiBlockBase<MTEIndust
 
     @Override
     public String getMachineType() {
-        return "Forge Hammer";
+        return "gt.recipe.hammer";
     }
 
     @Override
@@ -92,24 +92,24 @@ public class MTEIndustrialForgeHammerLegacy extends GTPPMultiBlockBase<MTEIndust
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addStructureDeprecatedLine()
+            .addInfo("gt.sledgehammer.tips.1")
             .addInfo(TooltipHelper.parallelText("Voltage Tier * Anvil Tier * 8") + " Parallels")
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
-            .addInfo("T1 - Vanilla Anvil");
+            .addInfo("gt.sledgehammer.tips.2");
         if (Railcraft.isModLoaded()) {
-            tt.addInfo("T2 - Steel Anvil");
+            tt.addInfo("gt.sledgehammer.tips.3");
         }
         if (EnderIO.isModLoaded()) {
-            tt.addInfo("T3 - Dark Steel Anvil");
+            tt.addInfo("gt.sledgehammer.tips.4");
         }
         if (ThaumicBases.isModLoaded()) {
-            tt.addInfo("T3 - Thaumium Anvil");
-            tt.addInfo("T4 - Void Metal Anvil");
+            tt.addInfo("gt.sledgehammer.tips.5");
         }
 
         tt.addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
+            .addController("front_center")
             .addCasingInfoMin("Forge Casing", 6, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -118,9 +118,7 @@ public class MTEIndustrialForgeHammerLegacy extends GTPPMultiBlockBase<MTEIndust
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GTPP.tooltip.structure.anvil"),
-                "In the center of 3x3x3 structure")
+            .addStructurePart("GTPP.tooltip.structure.anvil", "gt.sledgehammer.info.1", 2)
             .toolTipFinisher();
         return tt;
     }

@@ -125,11 +125,11 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Brewery, BBB")
+        tt.addMachineType("machtype.bbb")
             .addBulkMachineInfo(4, 1.5F, 1F)
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front center, 3rd layer")
-            .addCasing("14-22", "Reinforced Wooden Casing", false)
+            .addCasing("14-22", "gt.blockcasings10.15.name", false)
             .addCasing("6", "Any Tiered Glass", false)
             .addCasing("4", "Steel Frame Box", false)
             .addEnergyHatch("1+", "Any casing", 1)

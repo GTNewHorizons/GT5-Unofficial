@@ -14,7 +14,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -355,19 +354,20 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Research Completer")
-            .addInfo("Completes Thaumcraft research notes using EU and Thaumcraft nodes")
-            .addInfo("Place nodes in the center row")
+        tt.addMachineType("machtype.completer")
+            .addInfo("gt.completer.tips")
             .beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
             .addController("Front center, 2nd layer")
-            .addCasing("9-52", "Magical Machine Casing", false)
-            .addCasing("7-27", "Warded Glass", false)
+            .addCasing("9-52", "gt.blockcasings8.8.name", false)
+            .addCasing("7-27", "GT5U.MBTT.Part.WardedGlass", false)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addInputBus("1+", "Any casing", 1)
             .addOutputBus("1+", "Any casing", 1)
             .addStructureInfo("")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
+            .addStructureFooter("gt.completer.info.casing")
+            .addStructureFooter("gt.completer.info.glass")
+            .addMasterChannel("channels.gregtech.master.length")
             .toolTipFinisher();
         return tt;
     }

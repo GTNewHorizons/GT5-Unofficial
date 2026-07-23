@@ -81,7 +81,7 @@ public class MTEIndustrialChiselLegacy extends GTPPMultiBlockBase<MTEIndustrialC
 
     @Override
     public String getMachineType() {
-        return "Chisel";
+        return "machtype.chisel";
     }
 
     @Override
@@ -90,13 +90,10 @@ public class MTEIndustrialChiselLegacy extends GTPPMultiBlockBase<MTEIndustrialC
         tt.addMachineType(getMachineType())
             .addStructureDeprecatedLine()
             .addBulkMachineInfo(16, 3f, 0.75f)
-            .addInfo("Factory Grade Auto Chisel")
-            .addInfo("Target block goes in Controller slot for common Input Buses")
-            .addInfo("You can also set a target block in each Chisel Input Bus and use them as an Input Bus")
-            .addInfo("If no target is provided for common buses, the result is the next chisel")
+            .addInfo("gt.i_chisel.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
+            .addController("front_center")
             .addCasingInfoMin("Sturdy Printer Casing", 6, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)

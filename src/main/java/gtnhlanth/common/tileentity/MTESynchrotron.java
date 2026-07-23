@@ -28,7 +28,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -76,7 +75,6 @@ import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
-import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
 
 public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotron>
@@ -117,343 +115,343 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         STRUCTURE_DEFINITION = StructureDefinition.<MTESynchrotron>builder().addShape(
                 STRUCTURE_PIECE_ENTRANCE,
                 new String[][] {
-                		{
-                			"                                    ",
-                			"  ccc                               ",
-                			" cgggc                              ",
-                        	" cgvgc                              ",
-                        	" cgggc                              ",
-                        	"  ccc                               "
-                		}
+                    {
+                    "                                    ",
+                    "  ccc                               ",
+                    " cgggc                              ",
+                            " cgvgc                              ",
+                            " cgggc                              ",
+                            "  ccc                               "
+                    }
                 })
                 .addShape(
                     STRUCTURE_PIECE_BASE,
 
                     new String[][] {
-                    	{
-                    		"                                    ",
-                    		"  ccc                               ",
-                    		" ccccc       cjjjjjc                ",
-                    		" cc-cc      cjjc~cjjc               ",
-                    		" ccccc       cjjjjjc                ",
-                    		"  ccc                               ",
-                    		"                                    "
-                    	},
-                    	{
-                    		"                                    ",
-                    		"  ccc      ccccccccccc              ",
-                    		" c---c    ccc-------ccc             ",
-                    		" c---c    ccc-------ccc             ",
-                    		" c---c    ccc-------ccc             ",
-                    		"  ccc      ccccccccccc              ",
-                    		"                                    "
-                    	},
-                    	{
-                    		"           ccccccccccc              ",
-                    		"  ccc    cc-----------cc            ",
-                    		" c---c  cc-------------cc           ",
-                    		" c---c  cc-------------cc           ",
-                    		" c---c  cc-------------cc           ",
-                    		"  ccc    ccc---------ccc            ",
-                    		"           ccccccccccc              "
-                    	},
-                    	{
-                    		"         ccccccccccccccc            ",
-                    		"  ccc  cc---------------cc          ",
-                    		" c---ccc-----------------c          ",
-                    		" c---ccc-----------------cc         ",
-                    		" c---ccc-----------------c          ",
-                    		"  ccc  cc---------------cc          ",
-                    		"         ccccccccccccccc            ",
+                        {
+                        "                                    ",
+                        "  ccc                               ",
+                        " ccccc       cjjjjjc                ",
+                        " cc-cc      cjjc~cjjc               ",
+                        " ccccc       cjjjjjc                ",
+                        "  ccc                               ",
+                        "                                    "
+                        },
+                        {
+                        "                                    ",
+                        "  ccc      ccccccccccc              ",
+                        " c---c    ccc-------ccc             ",
+                        " c---c    ccc-------ccc             ",
+                        " c---c    ccc-------ccc             ",
+                        "  ccc      ccccccccccc              ",
+                        "                                    "
+                        },
+                        {
+                        "           ccccccccccc              ",
+                        "  ccc    cc-----------cc            ",
+                        " c---c  cc-------------cc           ",
+                        " c---c  cc-------------cc           ",
+                        " c---c  cc-------------cc           ",
+                        "  ccc    ccc---------ccc            ",
+                        "           ccccccccccc              "
+                        },
+                        {
+                        "         ccccccccccccccc            ",
+                        "  ccc  cc---------------cc          ",
+                        " c---ccc-----------------c          ",
+                        " c---ccc-----------------cc         ",
+                        " c---ccc-----------------c          ",
+                        "  ccc  cc---------------cc          ",
+                        "         ccccccccccccccc            ",
 
-                    	},
-                    	{
-                    		"  ccc  cccccccccccccccccc           ",
-                    		" ckkkccc-----------------cc         ",
-                    		"ck---kc-------------------cc        ",
-                    		"ck---kc--------------------c        ",
-                    		"ck---kc-------------------cc        ",
-                    		" ckkkccc-----------------cc         ",
-                    		"  ccc  cccccccccccccccccc           "
+                        },
+                        {
+                        "  ccc  cccccccccccccccccc           ",
+                        " ckkkccc-----------------cc         ",
+                        "ck---kc-------------------cc        ",
+                        "ck---kc--------------------c        ",
+                        "ck---kc-------------------cc        ",
+                        " ckkkccc-----------------cc         ",
+                        "  ccc  cccccccccccccccccc           "
 
-                    	},
-                    	{
-                    		"  cccccccccccc     ccccccc          ",
-                    		" cdddcc-------ccccc-------cc        ",
-                    		"cd---d----------------------c       ",
-                    		"cd---d----------------------c       ",
-                    		"cd---d----------------------c       ",
-                    		" cdddcc-------ccccc-------cc        ",
-                    		"  cccccccccccc     ccccccc          ",
-                    	},
-                    	{
-                    		"  ccccccccc           ccccc         ",
-                    		" ckkkc-----cccc   cccc-----cc       ",
-                    		"ck---k-------ccccccc--------c       ",
-                    		"ck---k-------ccccccc---------c      ",
-                    		"ck---k-------ccccccc--------c       ",
-                    		" ckkkc-----cccc   cccc-----cc       ",
-                    		"  ccccccccc           ccccc         "
-                    	},
-                    	{
-                    		"  cccccccc             ccccc        ",
-                    		" c--------cc         cc-----cc      ",
-                    		"c----------cc       cc-------c      ",
-                    		"c----------cc       cc-------c      ",
-                    		"c----------cc       cc-------c      ",
-                    		" c--------cc         cc-----cc      ",
-                    		"  cccccccc             ccccc        "
+                        },
+                        {
+                        "  cccccccccccc     ccccccc          ",
+                        " cdddcc-------ccccc-------cc        ",
+                        "cd---d----------------------c       ",
+                        "cd---d----------------------c       ",
+                        "cd---d----------------------c       ",
+                        " cdddcc-------ccccc-------cc        ",
+                        "  cccccccccccc     ccccccc          ",
+                        },
+                        {
+                        "  ccccccccc           ccccc         ",
+                        " ckkkc-----cccc   cccc-----cc       ",
+                        "ck---k-------ccccccc--------c       ",
+                        "ck---k-------ccccccc---------c      ",
+                        "ck---k-------ccccccc--------c       ",
+                        " ckkkc-----cccc   cccc-----cc       ",
+                        "  ccccccccc           ccccc         "
+                        },
+                        {
+                        "  cccccccc             ccccc        ",
+                        " c--------cc         cc-----cc      ",
+                        "c----------cc       cc-------c      ",
+                        "c----------cc       cc-------c      ",
+                        "c----------cc       cc-------c      ",
+                        " c--------cc         cc-----cc      ",
+                        "  cccccccc             ccccc        "
 
-                    	},
-                    	{
-                    		"  ccccccc               ccccc       ",
-                    		" c-------c             c-----c      ",
-                    		"c---------c           c-------c     ",
-                    		"c---------c           c-------c     ",
-                    		"c---------c           c-------c     ",
-                    		" c-------c             c-----c      ",
-                    		"  ccccccc               ccccc       "
+                        },
+                        {
+                        "  ccccccc               ccccc       ",
+                        " c-------c             c-----c      ",
+                        "c---------c           c-------c     ",
+                        "c---------c           c-------c     ",
+                        "c---------c           c-------c     ",
+                        " c-------c             c-----c      ",
+                        "  ccccccc               ccccc       "
 
-                    	},
-                    	{
-                    		"  cccccc                 ccccc      ",
-                    		" c------c               c-----c     ",
-                    		"c--------c             c------c     ",
-                    		"c--------c             c------c     ",
-                    		"c--------c             c------c     ",
-                    		" c------c               c-----c     ",
-                    		"  cccccc                 ccccc      "
+                        },
+                        {
+                        "  cccccc                 ccccc      ",
+                        " c------c               c-----c     ",
+                        "c--------c             c------c     ",
+                        "c--------c             c------c     ",
+                        "c--------c             c------c     ",
+                        " c------c               c-----c     ",
+                        "  cccccc                 ccccc      "
 
-                    	},
-                    	{
-                    		"  ccccc                   cccc      ",
-                    		" c-----c                 c----c     ",
-                    		"c-------c               c------c    ",
-                    		"c-------c               c------c    ",
-                    		"c-------c               c------c    ",
-                    		" c-----c                 c----c     ",
-                    		"  ccccc                   cccc      "
+                        },
+                        {
+                        "  ccccc                   cccc      ",
+                        " c-----c                 c----c     ",
+                        "c-------c               c------c    ",
+                        "c-------c               c------c    ",
+                        "c-------c               c------c    ",
+                        " c-----c                 c----c     ",
+                        "  ccccc                   cccc      "
 
-                    	},
-                    	{
-                    		"  cccc                     ccc      ",
-                    		" c----cc                 cc---cc    ",
-                    		"c------c                 c-----c    ",
-                    		"c------c                 c-----c    ",
-                    		"c------c                 c-----c    ",
-                    		" c----cc                 cc---cc    ",
-                    		"  cccc                     ccc      "
+                        },
+                        {
+                        "  cccc                     ccc      ",
+                        " c----cc                 cc---cc    ",
+                        "c------c                 c-----c    ",
+                        "c------c                 c-----c    ",
+                        "c------c                 c-----c    ",
+                        " c----cc                 cc---cc    ",
+                        "  cccc                     ccc      "
 
-                    	},
-                    	{
-                    		"  cccc                     cccc     ",
-                    		" c---cc                   c----c    ",
-                    		"c------c                 c-----c    ",
-                    		"c------c                 c-----cc   ",
-                    		"c------c                 c-----c    ",
-                    		" c---cc                   cc---c    ",
-                    		"  cccc                     cccc     "
+                        },
+                        {
+                        "  cccc                     cccc     ",
+                        " c---cc                   c----c    ",
+                        "c------c                 c-----c    ",
+                        "c------c                 c-----cc   ",
+                        "c------c                 c-----c    ",
+                        " c---cc                   cc---c    ",
+                        "  cccc                     cccc     "
 
-                    	},
-                    	{
-                    		"  cccc                     cccc     ",
-                    		" c---cc                   c----c    ",
-                    		"c-----c                   c----cc   ",
-                    		"c-----c                   c----cc   ",
-                    		"c-----c                   c----cc   ",
-                    		" c---cc                   cc---c    ",
-                    		"  cccc                     cccc     "
+                        },
+                        {
+                        "  cccc                     cccc     ",
+                        " c---cc                   c----c    ",
+                        "c-----c                   c----cc   ",
+                        "c-----c                   c----cc   ",
+                        "c-----c                   c----cc   ",
+                        " c---cc                   cc---c    ",
+                        "  cccc                     cccc     "
 
-                    	},
-                    	{
-                    		"  ccc                       ccc     ",
-                    		" ckkkcc                   cckkkc    ",
-                    		"ck---kc                   ck---kc   ",
-                    		"ck---kc                   ck---kc   ",
-                    		"ck---kc                   ck---kc   ",
-                    		" ckkkcc                   cckkkc    ",
-                    		"  ccc                       ccc     "
+                        },
+                        {
+                        "  ccc                       ccc     ",
+                        " ckkkcc                   cckkkc    ",
+                        "ck---kc                   ck---kc   ",
+                        "ck---kc                   ck---kc   ",
+                        "ck---kc                   ck---kc   ",
+                        " ckkkcc                   cckkkc    ",
+                        "  ccc                       ccc     "
 
-                    	},
-                    	{
-                    		"  cec                       cec     ",
-                    		" cnanc                     cnanc    ",
-                    		"cn---nc                   cn---nc   ",
-                    		"cn---nc                   cn---nc   ",
-                    		"cn---nc                   cn---nc   ",
-                    		" cnnnc                     cnnnc    ",
-                    		"  ccc                       ccc     "
+                        },
+                        {
+                        "  cec                       cec     ",
+                        " cnanc                     cnanc    ",
+                        "cn---nc                   cn---nc   ",
+                        "cn---nc                   cn---nc   ",
+                        "cn---nc                   cn---nc   ",
+                        " cnnnc                     cnnnc    ",
+                        "  ccc                       ccc     "
 
-                    	},
-                    	{
-                    		"  cic                       cic     ",
-                    		" cndnc                     cndnc    ",
-                    		"cn---nc                   cn---nc   ",
-                    		"cn---nc                   cn---nc   ",
-                    		"cn---nc                   cn---nc   ",
-                    		" cndnc                     cndnc    ",
-                    		"  coc                       coc     "
+                        },
+                        {
+                        "  cic                       cic     ",
+                        " cndnc                     cndnc    ",
+                        "cn---nc                   cn---nc   ",
+                        "cn---nc                   cn---nc   ",
+                        "cn---nc                   cn---nc   ",
+                        " cndnc                     cndnc    ",
+                        "  coc                       coc     "
 
-                    	},
-                    	{
-                    		"  cec                       cec     ",
-                    		" cnanc                     cnanc    ",
-                    		"cn---nc                   cn---nc   ",
-                    		"cn---nc                   cn---nc   ",
-                    		"cn---nc                   cn---nc   ",
-                    		" cnnnc                     cnnnc    ",
-                    		"  ccc                       ccc     "
+                        },
+                        {
+                        "  cec                       cec     ",
+                        " cnanc                     cnanc    ",
+                        "cn---nc                   cn---nc   ",
+                        "cn---nc                   cn---nc   ",
+                        "cn---nc                   cn---nc   ",
+                        " cnnnc                     cnnnc    ",
+                        "  ccc                       ccc     "
 
-                    	},
-                    	{
-                    		"  ccc                       ccc     ",
-                    		" ckkkcc                   cckkkc    ",
-                    		"ck---kc                   ck---kc   ",
-                    		"ck---kc                   ck---kc   ",
-                    		"ck---kc                   ck---kc   ",
-                    		" ckkkcc                   cckkkc    ",
-                    		"  ccc                       ccc     "
+                        },
+                        {
+                        "  ccc                       ccc     ",
+                        " ckkkcc                   cckkkc    ",
+                        "ck---kc                   ck---kc   ",
+                        "ck---kc                   ck---kc   ",
+                        "ck---kc                   ck---kc   ",
+                        " ckkkcc                   cckkkc    ",
+                        "  ccc                       ccc     "
 
-                    	},
-                    	{
-                    		"  cccc                     cccc     ",
-                    		" c----c                   c----c    ",
-                    		"cc----c                   c----cc   ",
-                    		"cc----c                   c----cc   ",
-                    		"cc----c                   c----cc   ",
-                    		" c---cc                   cc---c    ",
-                    		"  cccc                     cccc     "
+                        },
+                        {
+                        "  cccc                     cccc     ",
+                        " c----c                   c----c    ",
+                        "cc----c                   c----cc   ",
+                        "cc----c                   c----cc   ",
+                        "cc----c                   c----cc   ",
+                        " c---cc                   cc---c    ",
+                        "  cccc                     cccc     "
 
-                    	},
-                    	{
-                    		"  cccc                     cccc     ",
-                    		" c----c                   c----c    ",
-                    		" c-----c                 c-----c    ",
-                    		"cc-----c                 c-----cc   ",
-                    		" c-----c                 c-----c    ",
-                    		" c---cc                   cc---c    ",
-                    		"  cccc                     cccc     "
+                        },
+                        {
+                        "  cccc                     cccc     ",
+                        " c----c                   c----c    ",
+                        " c-----c                 c-----c    ",
+                        "cc-----c                 c-----cc   ",
+                        " c-----c                 c-----c    ",
+                        " c---cc                   cc---c    ",
+                        "  cccc                     cccc     "
 
-                    	},
-                    	{
-                    		"   ccc                     ccc      ",
-                    		" cc---cc                 cc---cc    ",
-                    		" c-----c                 c-----c    ",
-                    		" c-----c                 c-----c    ",
-                    		" c-----c                 c-----c    ",
-                    		" cc---cc                 cc---cc    ",
-                    		"   ccc                     ccc      "
+                        },
+                        {
+                        "   ccc                     ccc      ",
+                        " cc---cc                 cc---cc    ",
+                        " c-----c                 c-----c    ",
+                        " c-----c                 c-----c    ",
+                        " c-----c                 c-----c    ",
+                        " cc---cc                 cc---cc    ",
+                        "   ccc                     ccc      "
 
-                    	},
-                    	{
-                    		"   cccc                   cccc      ",
-                    		"  c----c                 c----c     ",
-                    		" c------c               c------c    ",
-                    		" c------c               c------c    ",
-                    		" c------c               c------c    ",
-                    		"  c----c                 c----c     ",
-                    		"   cccc                   cccc      "
+                        },
+                        {
+                        "   cccc                   cccc      ",
+                        "  c----c                 c----c     ",
+                        " c------c               c------c    ",
+                        " c------c               c------c    ",
+                        " c------c               c------c    ",
+                        "  c----c                 c----c     ",
+                        "   cccc                   cccc      "
 
-                    	},
-                    	{
-                    		"   ccccc                 ccccc      ",
-                    		"  c-----c               c-----c     ",
-                    		"  c------c             c------c     ",
-                    		"  c------c             c------c     ",
-                    		"  c------c             c------c     ",
-                    		"  c-----c               c-----c     ",
-                    		"   ccccc                 ccccc      "
+                        },
+                        {
+                        "   ccccc                 ccccc      ",
+                        "  c-----c               c-----c     ",
+                        "  c------c             c------c     ",
+                        "  c------c             c------c     ",
+                        "  c------c             c------c     ",
+                        "  c-----c               c-----c     ",
+                        "   ccccc                 ccccc      "
 
-                    	},
-                    	{
-                    		"    ccccc               ccccc       ",
-                    		"   c-----c             c-----c      ",
-                    		"  c-------c           c-------c     ",
-                    		"  c-------c           c-------c     ",
-                    		"  c-------c           c-------c     ",
-                    		"   c-----c             c-----c      ",
-                    		"    ccccc               ccccc       "
+                        },
+                        {
+                        "    ccccc               ccccc       ",
+                        "   c-----c             c-----c      ",
+                        "  c-------c           c-------c     ",
+                        "  c-------c           c-------c     ",
+                        "  c-------c           c-------c     ",
+                        "   c-----c             c-----c      ",
+                        "    ccccc               ccccc       "
 
-                    	},
-                    	{
-                    		"     ccccc             cccccc       ",
-                    		"    c-----cc         cc------c      ",
-                    		"   c-------cc       cc-------cc     ",
-                    		"   c-------cc       cc-------cc     ",
-                    		"   c-------cc       cc-------cc     ",
-                    		"    c-----cc         cc------c      ",
-                    		"     ccccc             cccccc       "
+                        },
+                        {
+                        "     ccccc             cccccc       ",
+                        "    c-----cc         cc------c      ",
+                        "   c-------cc       cc-------cc     ",
+                        "   c-------cc       cc-------cc     ",
+                        "   c-------cc       cc-------cc     ",
+                        "    c-----cc         cc------c      ",
+                        "     ccccc             cccccc       "
 
-                    	},
-                    	{
-                    		"      ccccc           ccccccc       ",
-                    		"    cc-----cccc   cccc-----ccc      ",
-                    		"    c--------ccccccc--------cccc    ",
-                    		"    c--------ccccccc--------cccc    ",
-                    		"    c--------ccccccc--------cccc    ",
-                    		"    cc-----cccc   cccc------cc      ",
-                    		"      ccccc           ccccccc       "
+                        },
+                        {
+                        "      ccccc           ccccccc       ",
+                        "    cc-----cccc   cccc-----ccc      ",
+                        "    c--------ccccccc--------cccc    ",
+                        "    c--------ccccccc--------cccc    ",
+                        "    c--------ccccccc--------cccc    ",
+                        "    cc-----cccc   cccc------cc      ",
+                        "      ccccc           ccccccc       "
 
-                    	},
-                    	{
-                    		"       ccccccc     cccccccccc       ",
-                    		"     cc-------ccccc--------cccc     ",
-                    		"    c---------kdkdk--------ccccccccc",
-                    		"    c---------kdkdk--------ccccccccc",
-                    		"    c---------kdkdk--------ccccccccc",
-                    		"     cc-------ccccc--------cccc     ",
-                    		"       ccccccc     cccccccccc       "
+                        },
+                        {
+                        "       ccccccc     cccccccccc       ",
+                        "     cc-------ccccc--------cccc     ",
+                        "    c---------kdkdk--------ccccccccc",
+                        "    c---------kdkdk--------ccccccccc",
+                        "    c---------kdkdk--------ccccccccc",
+                        "     cc-------ccccc--------cccc     ",
+                        "       ccccccc     cccccccccc       "
 
-                    	},
-                    	{
-                    		"        cccccccccccccccccccc        ",
-                    		"      cc-------------------ccccccccc",
-                    		"     cc---------------------------cg",
-                    		"     c----------------------------cg",
-                    		"     cc---------------------------cg",
-                    		"      cc-------------------ccccccccc",
-                    		"        cccccccccccccccccccc        "
+                        },
+                        {
+                        "        cccccccccccccccccccc        ",
+                        "      cc-------------------ccccccccc",
+                        "     cc---------------------------cg",
+                        "     c----------------------------cg",
+                        "     cc---------------------------cg",
+                        "      cc-------------------ccccccccc",
+                        "        cccccccccccccccccccc        "
 
-                    	},
-                    	{
-                    		"         ccccccccccccccccccc        ",
-                    		"       cc-----------------cccccccccc",
-                    		"       c--------------------------cg",
-                    		"      cc---------------------------b",
-                    		"       c--------------------------cg",
-                    		"       cc-----------------cccccccccc",
-                    		"         ccccccccccccccccccc        "
+                        },
+                        {
+                        "         ccccccccccccccccccc        ",
+                        "       cc-----------------cccccccccc",
+                        "       c--------------------------cg",
+                        "      cc---------------------------b",
+                        "       c--------------------------cg",
+                        "       cc-----------------cccccccccc",
+                        "         ccccccccccccccccccc        "
 
-                    	},
-                    	{
-                    		"            ccccccccccccccc         ",
-                    		"         ccc-------------ccccccccccc",
-                    		"        cc------------------------cg",
-                    		"        cc------------------------cg",
-                    		"        cc------------------------cg",
-                    		"         ccc-------------ccccccccccc",
-                    		"            ccccccccccccccc         "
+                        },
+                        {
+                        "            ccccccccccccccc         ",
+                        "         ccc-------------ccccccccccc",
+                        "        cc------------------------cg",
+                        "        cc------------------------cg",
+                        "        cc------------------------cg",
+                        "         ccc-------------ccccccccccc",
+                        "            ccccccccccccccc         "
 
-                    	},
-                    	{
-                    		"                                    ",
-                    		"           cccccccccccccccccc       ",
-                    		"          ccc-kdkdk------ccccccccccc",
-                    		"          cc--kdkdk------ccccccccccc",
-                    		"          ccc-kdkdk------ccccccccccc",
-                    		"           cccccccccccccccccc       "
+                        },
+                        {
+                        "                                    ",
+                        "           cccccccccccccccccc       ",
+                        "          ccc-kdkdk------ccccccccccc",
+                        "          cc--kdkdk------ccccccccccc",
+                        "          ccc-kdkdk------ccccccccccc",
+                        "           cccccccccccccccccc       "
 
-                    	},
-                    	{
-                    		"                                    ",
-                    		"                                    ",
-                    		"             cccccccccccccccc       ",
-                    		"            ccccccccccccccccc       ",
-                    		"             cccccccccccccccc       ",
-                    		"                                    ",
-                    		"                                    "
+                        },
+                        {
+                        "                                    ",
+                        "                                    ",
+                        "             cccccccccccccccc       ",
+                        "            ccccccccccccccccc       ",
+                        "             cccccccccccccccc       ",
+                        "                                    ",
+                        "                                    "
 
-                    	}
+                        }
 
                    }
 
@@ -464,11 +462,11 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).hint(4).casingIndex(ShieldedAccCasingTextureID).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
                 .addElement('a', GTStructureChannels.SYNCHROTRON_ANTENNA.use(StructureUtility.ofBlocksTiered(
-                		MTESynchrotron::getAntennaBlockTier,
-                		ImmutableList.of(
-                				Pair.of(LanthItemList.ANTENNA_CASING_T1, 0),
-                				Pair.of(LanthItemList.ANTENNA_CASING_T2, 0)),
-                		-1, MTESynchrotron::setAntennaTier, MTESynchrotron::getAntennaTier)))
+                    MTESynchrotron::getAntennaBlockTier,
+                    ImmutableList.of(
+                    Pair.of(LanthItemList.ANTENNA_CASING_T1, 0),
+                    Pair.of(LanthItemList.ANTENNA_CASING_T2, 0)),
+                    -1, MTESynchrotron::setAntennaTier, MTESynchrotron::getAntennaTier)))
                 .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).hint(2).casingIndex(ShieldedAccCasingTextureID).build())
                 .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).hint(3).casingIndex(ShieldedAccCasingTextureID).build())
                 .addElement('v', buildHatchAdder(MTESynchrotron.class).atLeast(BeamlineInput)
@@ -483,8 +481,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 .build())
                 .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement('j',
-                		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).hint(5).casingIndex(ShieldedAccCasingTextureID)
-                		.buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
+                    buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).hint(5).casingIndex(ShieldedAccCasingTextureID)
+                    .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
                 .build();
     }
     // spotless:on
@@ -505,46 +503,42 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.synch.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info1"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info2"))
-            .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
+        tt.addMachineType("gtnhlanth.tt.synch.machinetype")
+            .addInfo("gtnhlanth.tt.synch.info1")
+            .addInfo("gtnhlanth.tt.synch.info2")
+            .addInfo("gtnhlanth.tt.beaminfo")
             .addSeparator()
-            .addInfo(StatCollector.translateToLocalFormatted("gtnhlanth.tt.synch.info3", getFluidUnit()))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.oxygen"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.nitrogen"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.coolant"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.Scoolant"))
+            .addInfo("gtnhlanth.tt.synch.info3", getFluidUnit())
+            .addInfo("gtnhlanth.tt.coolant.oxygen")
+            .addInfo("gtnhlanth.tt.coolant.nitrogen")
+            .addInfo("gtnhlanth.tt.coolant.coolant")
+            .addInfo("gtnhlanth.tt.coolant.Scoolant")
             .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info4"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info5"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info6"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info7"))
+            .addInfo("gtnhlanth.tt.synch.info4")
+            .addInfo("gtnhlanth.tt.synch.info5")
+            .addInfo("gtnhlanth.tt.synch.info6")
+            .addInfo("gtnhlanth.tt.synch.info7")
             .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info8"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info9"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info10"))
+            .addInfo("gtnhlanth.tt.synch.info8")
+            .addInfo("gtnhlanth.tt.synch.info9")
+            .addInfo("gtnhlanth.tt.synch.info10")
             .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info11"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info12"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info13"))
+            .addInfo("gtnhlanth.tt.synch.info11")
+            .addInfo("gtnhlanth.tt.synch.info12")
+            .addInfo("gtnhlanth.tt.synch.info13")
             .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info14"))
+            .addInfo("gtnhlanth.tt.synch.info14")
             .addSupportAny()
             .beginStructureBlock(36, 7, 34, true)
             .addController("Front center, 4th layer")
-            .addCasing("1690", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
+            .addCasing("1690", "casing.shielded_accelerator.name", false)
             .addCasing("90", "Superconducting Coil Block", false)
-            .addCasing("64", LanthItemList.NIOBIUM_CAVITY_CASING.getLocalizedName(), false)
-            .addCasing("28", LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), false)
+            .addCasing("64", LanthItemList.NIOBIUM_CAVITY_CASING.getUnlocalizedName() + ".name", false)
+            .addCasing("28", LanthItemList.COOLANT_DELIVERY_CASING.getUnlocalizedName() + ".name", false)
             .addCasing("16", "LuV+ Tiered Glass", false)
             .addCasing("4", "Antenna Casing", true)
-            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Left of controller", 1)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"),
-                "Right and back of controller",
-                6)
+            .addMiscHatch("1", "gtnhlanth.tt.hatch.beaminput", "Left of controller", 1)
+            .addMiscHatch("1", "gtnhlanth.tt.hatch.beamoutput", "Right and back of controller", 6)
             .addEnergyHatch("4", "Above each antenna casing", 4)
             .addMaintenanceHatch("1", "Around controller", 5)
             .addInputHatch("2", "Between the energy hatches", 2)

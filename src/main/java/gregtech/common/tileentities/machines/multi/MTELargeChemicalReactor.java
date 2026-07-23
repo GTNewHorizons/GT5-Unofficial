@@ -106,21 +106,20 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Reactor, LCR")
-            .addInfo("Accepts fluids instead of fluid cells")
-            .addInfo("Can perform several direct recipes that skip intermediate compounds")
+        tt.addMachineType("machtype.lcr")
+            .addInfo("gt.lcr.tips.1")
             .addPerfectOCInfo()
             .beginStructureBlock(3, 3, 3, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("8-22", "Chemically Inert Machine Casing", false)
-            .addCasing("1", "PTFE Pipe Casing", false)
+            .addController("gt.lcr.info.1")
+            .addCasing("8-22", "gt.blockcasings8.0.name", false)
+            .addCasing("1", "gt.blockcasings8.1.name", false)
             .addCasing("1", "Heating Coil", false)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addInputAny("1+", "Any casing", 1)
             .addOutputAny("1+", "Any casing", 1)
             .addStructureInfo("")
-            .addStructureFooter("Heating Coil can be any tier and on any side")
+            .addStructureFooter("gt.lcr.structure.coil")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

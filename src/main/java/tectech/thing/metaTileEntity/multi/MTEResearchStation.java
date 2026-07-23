@@ -238,33 +238,16 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // Machine Type: Research Station, Scanner
-        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.type"))
-            // Used to scan Data Sticks for Assembling Line Recipes
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.1"))
-            // Needs to be fed with computation to work
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.2"))
-            // Does not consume the item until the Data Stick is written
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.3"))
-            // Use screwdriver to change mode
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.4"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.5"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.6"))
-            .addSupportAny()
+        tt.addMachineType("gt.recipe.researchStation", "gt.recipe.scanner")
+            .addInfo("gt.blockmachines.multimachine.em.research.desc")
+            .addTecTechHatchInfo()
             .beginStructureBlock(3, 7, 7, false)
-            .addController("Front center")
+            .addController("tt.keyword.Structure.ResearchStationController")
             .addCasing("52-58", "Computer Casing", false)
             .addCasing("23", "Advanced Computer Casing", false)
             .addCasing("14", "Computer Heat Vent", false)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
-                StatCollector.translateToLocal("tt.keyword.Structure.CenterPillar"),
-                2)
-            .addMiscHatch(
-                "1+",
-                StatCollector.translateToLocal("tt.keyword.Structure.DataInput"),
-                "Any back center casing",
-                1)
+            .addMiscHatch("1", "gt.blockmachines.hatch.holder.tier.09.name", "tt.keyword.Structure.CenterPillar", 2)
+            .addMiscHatch("1+", "tt.keyword.Structure.DataInput", "Any back center casing", 1)
             .addEnergyHatch("1+", "Any back center casing", 1)
             .addMaintenanceHatch("1", "Any back center casing", 1)
             .addStructureInfo("")

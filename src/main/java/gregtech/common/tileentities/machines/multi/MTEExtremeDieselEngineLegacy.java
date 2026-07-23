@@ -40,26 +40,21 @@ public class MTEExtremeDieselEngineLegacy extends MTEDieselEngineLegacy {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Combustion Generator, ECE")
-            .addStructureDeprecatedLine()
-            .addInfo("Supply high rating fuel and 8000L of Lubricant per hour to run")
-            .addInfo("Supply 40L/s of Liquid Oxygen to boost output (optional)")
-            .addInfo("Default: Produces 10900EU/t at 100% fuel efficiency")
-            .addInfo("Boosted: Produces 32700EU/t at 150% fuel efficiency")
-            .addInfo("You need to wait for it to reach 300% to output full power")
+        tt.addMachineType("machtype.ece")
+            .addInfo("gt.ece.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
             .addController("Front center")
             .addCasingInfoRange("Robust Tungstensteel Machine Casing", 16, 22, false)
-            .addOtherStructurePart("Titanium Gear Box Machine Casing", "Inner 2 blocks")
-            .addOtherStructurePart("Extreme Engine Intake Machine Casing", "8x, ring around controller")
-            .addStructureInfo("Extreme Engine Intake Casings must not be obstructed in front (only air blocks)")
-            .addDynamoHatch("Back center", 2)
-            .addMaintenanceHatch("Any Casing next to a Gear Box", 1)
-            .addMufflerHatch("Top middle back, above the rear Gear Box", 1)
-            .addInputHatch("HOG, next to a Gear Box", 1)
-            .addInputHatch("Lubricant, next to a Gear Box", 1)
-            .addInputHatch("Liquid Oxygen, optional, next to a Gear Box", 1)
+            .addOtherStructurePart("GT5U.MBTT.Part.TitaniumGearBoxMachineCasing", "gt.ece.info.ti_gearbox")
+            .addOtherStructurePart("GT5U.MBTT.Part.ExtremeEngineIntakeMachineCasing", "gt.ece.info.intake")
+            .addStructureInfo("gt.ece.info.intake_caution")
+            .addDynamoHatch("gt.mbtt.structure.back_center", 2)
+            .addMaintenanceHatch("gt.ece.info.maintenance", 1)
+            .addMufflerHatch("gt.ece.info.muffler", 1)
+            .addInputHatch("gt.ece.info.i_hatch.1", 1)
+            .addInputHatch("gt.ece.info.i_hatch.2", 1)
+            .addInputHatch("gt.ece.info.i_hatch.3", 1)
             .toolTipFinisher();
         return tt;
     }

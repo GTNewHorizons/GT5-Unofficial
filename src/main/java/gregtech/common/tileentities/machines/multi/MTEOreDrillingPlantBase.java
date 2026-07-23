@@ -490,44 +490,35 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     protected MultiblockTooltipBuilder createTooltip() {
         String casings = getCasingBlockItem().get(0)
-            .getDisplayName();
+            .getUnlocalizedName() + ".name";
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
         final String chunkDiameter = formatNumber(chunkRadiusConfig * 2L);
         final String blockDiameter = formatNumber(chunkRadiusConfig * 32L);
-        tt.addMachineType("Miner, MBM")
-            .addInfo("Use a Screwdriver to configure working area")
+        tt.addMachineType("machtype.ore_drill")
             .addInfo(
-                "Maximum area is " + chunkDiameter
-                    + "x"
-                    + chunkDiameter
-                    + " chunks ("
-                    + blockDiameter
-                    + "x"
-                    + blockDiameter
-                    + " blocks)")
-            .addInfo("In chunk mode, working area center is the chunk corner nearest to the drill")
-            .addInfo("Use Soldering iron to turn off chunk mode")
-            .addInfo("Use Wire Cutter to toggle replacing mined blocks with cobblestone")
-            .addInfo("Requires Drilling Fluid to operate")
-            .addInfo("Gives ~3x as much crushed ore vs normal processing")
-            .addInfo("Fortune bonus of " + formatNumber(mTier + 3) + ". Only works on small ores")
-            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
-            .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
-                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
+                "gt.ore_drill.tips",
+                chunkDiameter,
+                blockDiameter,
+                formatNumber(mTier + 3),
+                GTUtility.getColoredTierNameFromTier((byte) getMinTier()),
+                baseCycleTime < 20 ? formatNumber(baseCycleTime) : formatNumber(baseCycleTime / 20.0),
+                baseCycleTime < 20 ? "gt.time.tick.plural" : "gt.time.second.plural")
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
             .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
             .addCasing("5-7", casings, false)
-            .addEnergyHatch("1-2", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("0-1", "Any bottom casing", 1)
-            .addInputHatch("1", "Any bottom casing", 1)
-            .addOutputBus("1", "Any bottom casing", 1)
+            .addEnergyHatch(
+                "1-2",
+                gregtech.api.util.GTUtility.nestParams("gt.driller_shaped_mb.info.energy", VN[getMinTier()]),
+                1)
+            .addMaintenanceHatch("1", "gt.driller_shaped_mb.info.replace", 1)
+            .addInputBus("0-1", "gt.ore_drill.info.i_bus", 1)
+            .addInputHatch("1", "gt.ore_drill.info.i_hatch", 1)
+            .addOutputBus("1", "gt.driller_shaped_mb.info.replace", 1)
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
+            .addStructureFooter("GT5U.MBTT.Structure.Rain")
             .toolTipFinisher();
         return tt;
     }

@@ -26,7 +26,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -55,6 +54,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
@@ -89,28 +89,20 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
+        tt.addMachineType("gt.recipe.massfab", "ic.recipe.recycler")
             .addInfo(
-                "Parallel: Scrap = " + TooltipHelper.parallelText(64)
-                    + " | UU = "
-                    + TooltipHelper.parallelText(8)
-                    + " per "
-                    + TooltipHelper.tierText("Voltage")
-                    + " Tier")
+                "gt.massfab.tips.1",
+                TooltipHelper.parallelText(64),
+                TooltipHelper.parallelText(8),
+                TooltipTier.VOLTAGE.getLocalizedValue())
             .addStaticSpeedInfo(1f)
             .addStaticEuEffInfo(0.8f)
-            .addInfo("Produces UU-A, UU-M & Scrap")
-            .addInfo("Change mode with screwdriver")
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + "+10%"
-                    + EnumChatFormatting.GRAY
-                    + " scrap chance per "
-                    + TooltipHelper.tierText("Voltage")
-                    + " Tier in recycler mode")
+            .addInfo("gt.massfab.tips.2")
+            .addInfo("gt.massfab.tips.3", TooltipTier.VOLTAGE.getLocalizedValue())
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
-            .addController("Front bottom center")
+            .addController("front_bottom_center")
             .addCasing("35-44", mCasingName1, false)
             .addCasing("24", mCasingName2, false)
             .addCasing("9", mCasingName3, false)

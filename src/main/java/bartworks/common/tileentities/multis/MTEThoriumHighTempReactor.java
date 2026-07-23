@@ -32,7 +32,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -147,40 +146,17 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("High Temperature Reactor, THTR")
-            .addInfo("Needs to be primed with " + formatNumber(HELIUM_NEEDED) + " of helium")
-            .addInfo(
-                "Needs a constant supply of " + EnumChatFormatting.AQUA
-                    + "coolant"
-                    + EnumChatFormatting.GRAY
-                    + " while running")
-            .addInfo(
-                "Needs at least " + EnumChatFormatting.GOLD
-                    + "100K"
-                    + EnumChatFormatting.GRAY
-                    + " Fuel pebbles to start operation (can hold up to 675k pebbles)")
-            .addInfo(
-                "Consumes up to " + EnumChatFormatting.GOLD
-                    + "0.5%"
-                    + EnumChatFormatting.GRAY
-                    + " of total Fuel Pellets per Operation depending on efficiency")
-            .addInfo("Efficiency decreases exponentially if the internal buffer is not completely filled")
-            .addInfo(
-                "Reactor will take " + EnumChatFormatting.AQUA
-                    + "4800L/t"
-                    + EnumChatFormatting.GRAY
-                    + " of coolant multiplied by efficiency")
-            .addInfo("Uses " + formatNumber(powerUsage) + " EU/t")
-            .addInfo("One Operation takes 9 hours")
+        tt.addMachineType("machtype.thtr")
+            .addInfo("gt.thtr.tips", formatNumber(HELIUM_NEEDED), formatNumber(powerUsage))
             .beginStructureBlock(11, 12, 11, true)
-            .addController("Front bottom center")
-            .addCasing("500-531", "Radiation Proof Machine Casing", false)
-            .addEnergyHatch("1+", "Any bottom casing", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("1+", "Any top casing", 2)
-            .addInputHatch("1+", "Any top casing", 2)
-            .addOutputBus("1+", "Any bottom casing", 1)
-            .addOutputHatch("1+", "Any bottom casing", 1)
+            .addController("front_bottom_center")
+            .addCasing("500-531", "gt.blockcasings.8.name", false)
+            .addEnergyHatch("1+", "<bottom casing>", 1)
+            .addMaintenanceHatch("1", "<bottom casing>", 1)
+            .addInputBus("1+", "<top casing>", 2)
+            .addInputHatch("1+", "<top casing>", 2)
+            .addOutputBus("1+", "<bottom casing>", 1)
+            .addOutputHatch("1+", "<bottom casing>", 1)
             .toolTipFinisher();
         return tt;
     }

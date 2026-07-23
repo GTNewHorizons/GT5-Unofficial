@@ -61,19 +61,19 @@ public class MTEIndustrialWireMillLegacy extends GTPPMultiBlockBase<MTEIndustria
 
     @Override
     public String getMachineType() {
-        return "Wiremill, IWF";
+        return "IWF";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
+        tt.addMachineType("gt.recipe.wiremill", getMachineType())
             .addStructureDeprecatedLine()
             .addBulkMachineInfo(4, 3f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 5, true)
-            .addController("Front center")
-            .addCasingInfoMin("Wire Factory Casing", 14, false)
+            .addController("front_center")
+            .addCasingInfoMin("miscutils.blockcasings.6.name", 14, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)

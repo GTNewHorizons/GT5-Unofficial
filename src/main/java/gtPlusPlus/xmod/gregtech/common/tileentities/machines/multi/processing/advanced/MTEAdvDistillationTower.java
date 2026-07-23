@@ -28,7 +28,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -58,7 +57,6 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
@@ -186,25 +184,19 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Stats dictated by tower mode")
-            .addInfo("Right click the controller with screwdriver to change mode")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.WHITE + "Distillery Mode")
-            .addInfo("Outputs only one fluid and requires max height tower")
-            .addInfo(TooltipHelper.parallelText("(2 * floor(Height / 3)) * Voltage Tier") + " Parallels")
+        tt.addMachineType("gt.recipe.distillery", "gt.recipe.distillationtower")
+            .addInfo("gt.advdistill.tips.1")
+            .addInfo("gt.advdistill.tips.distillery")
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(0.15f)
-            .addSeparator()
-            .addInfo(EnumChatFormatting.WHITE + "Distillation Tower Mode")
-            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
-            .addInfo("Increase the height to output more fluid types")
+            .addInfo("gt.advdistill.tips.2")
+            .addInfo("gt.advdistill.tips.tower")
             .addStaticParallelInfo(DT_MODE_MAX_PARALLELS)
             .addStaticSpeedInfo(3.5f)
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
-            .addController("Front bottom center")
+            .addController("front_bottom_center")
             .addCasing("7-82", "Clean Stainless Steel Machine Casing", false)
             .addEnergyHatch("1+", "Any casing", 1, 2)
             .addMaintenanceHatch("1", "Any casing", 1, 2)
@@ -212,7 +204,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addInputBus("0+", "Any bottom casing", 1)
             .addInputHatch("1+", "Any bottom casing", 1)
             .addOutputBus("0+", "Any bottom casing", 1)
-            .addOutputHatch("2-11", "One per layer, except the bottom layer", 2)
+            .addOutputHatch("2-11", "gt.advdistill.info.o_hatch", 2)
             .addAir("Interior of the structure")
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)

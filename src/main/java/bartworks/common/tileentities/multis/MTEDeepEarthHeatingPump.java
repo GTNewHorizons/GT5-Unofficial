@@ -20,7 +20,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -30,8 +29,10 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -40,6 +41,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEDrillerBaseGui;
@@ -83,49 +85,19 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Geothermal Heat Pump, DEHP")
-            .addInfo("Consumes " + TierEU.RECIPE_HV + "EU/t")
-            .addInfo("Has 2 Modes, use the Screwdriver to change them:")
-            .addInfo("Direct Steam and Coolant Heating")
-            .addInfo(
-                "Direct Steam Mode: Consumes " + EnumChatFormatting.BLUE
-                    + "Distilled Water"
-                    + EnumChatFormatting.GRAY
-                    + " to produce "
-                    + EnumChatFormatting.WHITE
-                    + (long) (25600 * 20)
-                    + EnumChatFormatting.GRAY
-                    + "L/s of "
-                    + EnumChatFormatting.WHITE
-                    + "Superheated Steam")
-            .addInfo(
-                "Coolant Heating Mode: Converts " + (long) (192 * 20)
-                    + "L/s "
-                    + EnumChatFormatting.AQUA
-                    + "Coolant"
-                    + EnumChatFormatting.GRAY
-                    + " to "
-                    + EnumChatFormatting.RED
-                    + "Hot Coolant")
-            .addInfo("Each maintenance issue lowers output efficiency by " + EnumChatFormatting.GREEN + "10%")
-            .addInfo("Explodes when it runs out of Distilled Water/Coolant")
-            .addInfo("Base cycle time: 1 tick")
+        tt.addMachineType("machtype.dehp")
+            .addInfo("gt.dehp.tips", TierEU.RECIPE_HV, (long) (25600 * 20), (long) (192 * 20))
             .beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom center")
-            .addCasing("15", "Tungsten Frame Box", false)
-            .addCasing("3-7", "Heat Proof Machine Casing", false)
-            .addEnergyHatch("1+", "Any bottom casing (HV+)", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("0+", "Any bottom casing", 1)
-            .addInputHatch("1+", "Any bottom casing", 1)
-            .addOutputBus("0+", "Any bottom casing", 1)
-            .addOutputHatch("1+", "Any bottom casing", 1)
-            .toolTipFinisher(
-                EnumChatFormatting.GREEN + "bartimaeusnek"
-                    + EnumChatFormatting.GRAY
-                    + " via "
-                    + EnumChatFormatting.DARK_GREEN
-                    + "BartWorks");
+            .addController("front_bottom_center")
+            .addCasing("15", GTOreDictUnificator.getLocalizedName(OrePrefixes.frameGt, this.getFrameMaterial()), false)
+            .addCasing("3-7", "gt.blockcasings.11.name", false)
+            .addEnergyHatch("1+", GTUtility.nestParams("gt.dehp.info.energy", GTValues.VN[this.getMinTier()]), 1)
+            .addMaintenanceHatch("1", "gt.dehp.info.bottom_casing", 1)
+            .addInputBus("0+", "gt.dehp.info.i_bus", 1)
+            .addInputHatch("1+", "gt.dehp.info.bottom_casing", 1)
+            .addOutputBus("0+", "gt.dehp.info.bottom_casing", 1)
+            .addOutputHatch("1+", "gt.dehp.info.bottom_casing", 1)
+            .toolTipFinisher("tooltip.bw.author_bart_via_bw.name");
         return tt;
     }
 

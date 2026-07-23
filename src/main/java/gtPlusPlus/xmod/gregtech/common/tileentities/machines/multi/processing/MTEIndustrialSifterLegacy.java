@@ -62,7 +62,7 @@ public class MTEIndustrialSifterLegacy extends GTPPMultiBlockBase<MTEIndustrialS
 
     @Override
     public String getMachineType() {
-        return "Sifter";
+        return "gt.recipe.sifter";
     }
 
     @Override
@@ -73,7 +73,7 @@ public class MTEIndustrialSifterLegacy extends GTPPMultiBlockBase<MTEIndustrialS
             .addBulkMachineInfo(4, 5f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 5, false)
-            .addController("Front bottom center")
+            .addController("front_bottom_center")
             .addCasingInfoMin("Sieve Grate", 18, false)
             .addCasingInfoMin("Sieve Casing", 35, false)
             .addInputBus("Any Casing", 1)

@@ -53,6 +53,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.MTETranscendentPlasmaMixerGui;
@@ -105,20 +106,18 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gt.blockcasings.13.name");
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Transcendent Mixer, TPM")
-            .addInfo("Assisting in all your DTPF needs!")
-            .addInfo("Set the amount of parallels in the controller menu")
-            .addInfo("All inputs scale, except time...")
-            .addInfo("Power is only pulled from wireless networks")
+        tt.addMachineType("machtype.tpm")
+            .addInfo("gt.tpm.tips")
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front center, 4th layer")
-            .addCasing("48", "Dimensionally Transcendent Casing", false)
-            .addCasing("0-35", "Dimensional Injection Casing", false)
-            .addCasing("16", "Dimensional Bridge", false)
-            .addInputBus("0+", "Any injection casing", 1)
-            .addInputHatch("1+", "Any injection casing", 1)
-            .addOutputHatch("1+", "Any injection casing", 1)
+            .addCasing("48", "gt.blockcasings.12.name", false)
+            .addCasing("0-35", "gt.blockcasings.13.name", false)
+            .addCasing("16", "gt.blockcasings.14.name", false)
+            .addInputBus("0+", "GT5U.MBTT.Position.AnyInjectionCasing", 1)
+            .addInputHatch("1+", "GT5U.MBTT.Position.AnyInjectionCasing", 1)
+            .addOutputHatch("1+", "GT5U.MBTT.Position.AnyInjectionCasing", 1)
             .toolTipFinisher(AuthorColen);
         return tt;
     }

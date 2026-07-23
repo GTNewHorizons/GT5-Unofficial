@@ -6,6 +6,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.tooltip.TooltipHelper.voltageTierText;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -74,7 +75,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
@@ -278,47 +278,28 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Precise Assembler, Assembler, PrAss")
-            .addInfo("No more than 7nm of error")
-            .addInfo("Has Two Modes: Precise and Normal")
-            .addInfo("Use a Screwdriver to change modes")
-            .addSeparator()
-            .addInfo("Precise Mode unlocks the ability to assemble precise components")
-            .addInfo("Casing Tier determines Maximum Recipe Tier")
-            .addSeparator()
-            .addInfo("Normal Mode allows standard assembler recipes")
+        tt.addMachineType("machtype.prass")
             .addInfo(
-                EnumChatFormatting.WHITE + "Precise Casing"
-                    + EnumChatFormatting.GRAY
-                    + " Tier determines "
-                    + TooltipHelper.parallelText("Parallels"))
-            .addInfo(
-                tieredTextLine("Imprecise", "Mk-I", "MK-II", "MK-III", "MK-IV") + "->"
-                    + tieredTextLine("16", "32", "64", "128", "256")
-                    + " Parallels")
+                "gt.prass.tips.1",
+                tieredTextLine("gt.prass.text.imprecise", "Mk-I", "MK-II", "MK-III", "MK-IV"),
+                tieredTextLine("16", "32", "64", "128", "256"))
             .addStaticSpeedInfo(2f)
-            .addSeparator()
-            .addInfo(
-                "Machine Casing limits the voltage tier the machine can work on, "
-                    + GTValues.TIER_COLORS[VoltageIndex.UHV]
-                    + "UHV"
-                    + EnumChatFormatting.GRAY
-                    + "-tier Machine Casing unlocks all.")
+            .addInfo("gt.prass.tips.2", voltageTierText(9))
             .addSupportAny()
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 5, true)
-            .addController("Front bottom center")
-            .addCasing("42-81", "Precise Electronic Unit Casing", true)
-            .addCasing("42", "EV+ Tiered Glass", false)
-            .addCasing("21", "Machine Casing", true)
-            .addCasing("12", "Tungstensteel Frame Box", false)
-            .addEnergyHatch("1+", "Any unit casing", 1)
-            .addMaintenanceHatch("1", "Any unit casing", 1)
-            .addMufflerHatch("1", "Any unit casing", 1)
-            .addInputBus("1+", "Any unit casing", 1)
-            .addInputHatch("0+", "Any unit casing", 1)
-            .addOutputBus("1+", "Any unit casing", 1)
+            .addController("front_bottom_center")
+            .addCasing("42-81", "gt.prass.casing.unit", true)
+            .addCasing("42", "gt.prass.casing.glass", false)
+            .addCasing("21", "gt.blockcasings.name", true)
+            .addCasing("12", "gt.prass.casing.frame", false)
+            .addEnergyHatch("1+", "gt.prass.pos.unit", 1)
+            .addMaintenanceHatch("1", "gt.prass.pos.unit", 1)
+            .addMufflerHatch("1", "gt.prass.pos.unit", 1)
+            .addInputBus("1+", "gt.prass.pos.unit", 1)
+            .addInputHatch("0+", "gt.prass.pos.unit", 1)
+            .addOutputBus("1+", "gt.prass.pos.unit", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.PRASS_UNIT_CASING)
             .addSubChannel(GTStructureChannels.BOROGLASS)

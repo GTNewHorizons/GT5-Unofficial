@@ -10,6 +10,7 @@ import org.lwjgl.input.Keyboard;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -53,6 +54,9 @@ public abstract class MTETooltipMultiBlockBase extends MTEMultiBlockBase impleme
     protected abstract MultiblockTooltipBuilder createTooltip();
 
     protected final MultiblockTooltipBuilder getTooltip() {
+        if (GTValues.debugTooltips) {
+            return createTooltip();
+        }
         int tId = getBaseMetaTileEntity().getMetaTileID();
         MultiblockTooltipBuilder tooltip = tooltips.get(tId);
         if (tooltip == null) {

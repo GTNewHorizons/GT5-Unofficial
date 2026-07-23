@@ -1,15 +1,14 @@
 package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.api.util.GTUtility.translate;
+import static gregtech.api.util.tooltip.TooltipMarkupProcessor.INDENT_MARK;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+import static org.apache.commons.lang3.StringUtils.removeStart;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -53,17 +52,25 @@ import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
+import gregtech.api.metatileentity.implementations.MTETooltipMultiBlockBase;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.DelayedTooltipLocalization;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipMarkupProcessor;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
 import gregtech.crossmod.backhand.Backhand;
 
 public class ItemMachines extends ItemBlock implements IFluidContainerItem {
+
+    private static final DelayedTooltipLocalization DELAYED_TOOLTIP_LOCALIZATION = new DelayedTooltipLocalization(
+        (key, parameters) -> parameters == null || parameters.length == 0 ? StatCollector.translateToLocal(key)
+            : StatCollector.translateToLocalFormatted(key, parameters),
+        (payload, exception) -> GT_FML_LOGGER.error("Failed to parse localization JSON: {}", payload, exception));
 
     public ItemMachines(Block block) {
         super(block);
@@ -87,11 +94,19 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 return;
             }
 
-            if (GregTechAPI.METATILEENTITIES[tDamage] != null) {
-                final IGregTechTileEntity gtTileEntity = GregTechAPI.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
+            final IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[tDamage];
+            if (mte != null) {
+                final IGregTechTileEntity gtTileEntity = mte.getBaseMetaTileEntity();
                 final IMetaTileEntity metaTileEntity = gtTileEntity.getMetaTileEntity();
                 if (metaTileEntity instanceof ILocalizedMetaPipeEntity localizedMetaPipeEntity) {
                     localizedMetaPipeEntity.addMaterialTooltip(aList);
+                }
+                if (!GregTechAPI.sPostloadFinished && metaTileEntity instanceof ISecondaryDescribable
+                    && !shouldResolveDescriptionDirectly(metaTileEntity)) {
+                    registerDescription(
+                        ((ISecondaryDescribable) metaTileEntity).getSecondaryDescription(),
+                        "gt.blockmachines." + metaTileEntity.getMetaName() + ".tooltip_secondary",
+                        tDamage);
                 }
                 addDescription(aList, metaTileEntity, tDamage);
                 metaTileEntity.addAdditionalTooltipInformation(aStack, aList);
@@ -130,6 +145,10 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 if (aNBT.getBoolean("mSteamConverter")) {
                     aList.add(translateToLocal("gt.tileentity.has_steam_upgrade"));
                 }
+                int tAmount;
+                if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
+                    aList.add(translateToLocalFormatted("gt.tileentity.steamtanks", tAmount));
+                }
 
                 CoverableTileEntity.addInstalledCoversInformation(aNBT, aList);
                 if (aNBT.hasKey("mColor") && aNBT.getByte("mColor") != -1) {
@@ -140,6 +159,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                             Dyes.get(aNBT.getByte("mColor") - 1).mName));
                 }
             }
+            // Resolve line-break and separator markup after every tooltip contributor has run, so adaptive
+            // separators measure the final tooltip shown to the player.
+            TooltipMarkupProcessor.processTooltips(aList);
         } catch (Exception e) {
             aList.add("§cAn exception was thrown while getting this item's info.§r");
             aList.add(e.getLocalizedMessage());
@@ -150,8 +172,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     private void addDescription(List<String> aList, IMetaTileEntity metaTileEntity, int damage) {
         final String[] aDescription = metaTileEntity.getDescription();
         if (aDescription == null) return;
-        if (isSkipGenerateDescription(metaTileEntity)) {
-            Collections.addAll(aList, aDescription);
+        if (shouldResolveDescriptionDirectly(metaTileEntity)) {
+            addResolvedDescription(aList, aDescription);
             return;
         }
         final String tSuffix = (metaTileEntity instanceof ISecondaryDescribable
@@ -161,17 +183,33 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             key = key + "." + damage;
         }
         final String tTranslated = StatCollector.translateToLocal(key);
-        if (tTranslated.contains("%s")) {
-            final String tDescription = Arrays.stream(aDescription)
-                .filter(GTUtility::isStringValid)
-                .collect(Collectors.joining(""));
-            List<String> parameters = new ArrayList<>();
-            final Matcher matcher = Pattern.compile("%%%(.*?)%%%")
-                .matcher(tDescription);
-            while (matcher.find()) parameters.add(matcher.group(1));
-            Collections.addAll(aList, GTSplit.splitFormatted(tTranslated, parameters.toArray()));
+        if (containsGeneratedFormatMarkers(aDescription)) {
+            addResolvedDescription(
+                aList,
+                GTSplit.split(
+                    DELAYED_TOOLTIP_LOCALIZATION
+                        .resolveGeneratedFormatMarkers(joinDescriptionLines(aDescription), tTranslated)));
         } else {
-            Collections.addAll(aList, GTSplit.split(tTranslated));
+            addResolvedDescription(aList, GTSplit.split(tTranslated));
+        }
+    }
+
+    private void addResolvedDescription(@Nullable List<String> aList, @Nullable String[] aDescription) {
+        if (aDescription == null) return;
+        for (String tDescLine : aDescription) {
+            if (!GTUtility.isStringValid(tDescLine)) continue;
+
+            String translated;
+            if (tDescLine.startsWith("{\"k\":")) {
+                translated = DelayedTooltipLocalization
+                    .stripGeneratedFormatMarkers(DELAYED_TOOLTIP_LOCALIZATION.resolveJsonLocalization(tDescLine));
+            } else {
+                translated = DelayedTooltipLocalization
+                    .stripGeneratedFormatMarkers(translate(removeStart(tDescLine, INDENT_MARK)));
+            }
+
+            final String formatted = TooltipMarkupProcessor.formatTranslatedLine(tDescLine, translated);
+            if (aList != null) aList.add(formatted.isEmpty() ? tDescLine : formatted);
         }
     }
 
@@ -181,7 +219,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (GregTechAPI.METATILEENTITIES[aDamage] != null) {
             final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aDamage].getBaseMetaTileEntity()
                 .getMetaTileEntity();
-            if (isSkipGenerateDescription(tMetaTileEntity)) return;
+            if (shouldResolveDescriptionDirectly(tMetaTileEntity)) return;
             String key = "gt.blockmachines." + tMetaTileEntity.getMetaName() + ".tooltip";
             if (tMetaTileEntity instanceof ISecondaryDescribable) {
                 final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity)
@@ -195,9 +233,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     @SideOnly(Side.CLIENT)
     private void registerDescription(@Nullable String[] aDescription, String key, int damage) {
         if (aDescription == null) return;
-        String tDescription = Arrays.stream(aDescription)
-            .filter(GTUtility::isStringValid)
-            .collect(Collectors.joining(GTSplit.LB));
+        String tDescription = joinDescriptionLines(aDescription);
         if (tDescription.contains("%%%")) {
             tDescription = tDescription.replaceAll("%%%.*?%%%", "%s");
         }
@@ -206,6 +242,20 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             return;
         }
         GTLanguageManager.addStringLocalization(key, tDescription);
+    }
+
+    private static boolean containsGeneratedFormatMarkers(@Nullable String[] aDescription) {
+        return aDescription != null && Arrays.stream(aDescription)
+            .filter(GTUtility::isStringValid)
+            .anyMatch(line -> line.contains("%%%"));
+    }
+
+    @Nonnull
+    private static String joinDescriptionLines(@Nullable String[] aDescription) {
+        if (aDescription == null) return "";
+        return Arrays.stream(aDescription)
+            .filter(GTUtility::isStringValid)
+            .collect(Collectors.joining(GTSplit.LB));
     }
 
     @Override
@@ -467,5 +517,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     private static boolean isSkipGenerateDescription(IMetaTileEntity metaTE) {
         return metaTE.getClass()
             .getAnnotation(IMetaTileEntity.SkipGenerateDescription.class) != null;
+    }
+
+    private static boolean shouldResolveDescriptionDirectly(IMetaTileEntity metaTE) {
+        return isSkipGenerateDescription(metaTE) || metaTE instanceof MTETooltipMultiBlockBase;
     }
 }

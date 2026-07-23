@@ -17,7 +17,6 @@ import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -41,6 +40,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
@@ -271,61 +271,20 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gt.blockcasings13.10.name");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(
-            StatCollector
-                .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.machinetype"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip1"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip2"))
-            .addSeparator()
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip3"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip4"))
-            .addSeparator()
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5",
-                    MAX_BUFFER))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7"))
-            .addSeparator()
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8",
-                    MAX_PARALLEL))
-            .addSeparator()
-            .addSupportAny()
+        tt.addMachineType("gt.blockmachines.multimachine.beamcrafting.beamcrafter.machinetype")
+            .addInfo("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip")
             .beginStructureBlock(17, 5, 11, true)
             .addController("Front center, 3rd layer")
-            .addCasing(
-                "224-227",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                false)
+            .addCasing("224-227", "gt.blockmachines.multimachine.beamcrafting.ttcasing", false)
             .addCasing("26", "Any Tiered Glass", false)
-            .addCasing(
-                "16",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
-                false)
-            .addMiscHatch(
-                "2",
-                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"),
-                "Center of both ends of the structure",
-                2)
-            .addEnergyHatch("1+", "Any accelerator casing", 1)
-            .addInputAny("1+", "Any accelerator casing", 1)
-            .addOutputBus("1+", "Any accelerator casing", 1)
-            .addOutputHatch("0+", "Any accelerator casing", 1)
+            .addCasing("16", "gt.blockmachines.multimachine.beamcrafting.ttgratecasing", false)
+            .addMiscHatch("2", "gtnhlanth.tt.hatch.beaminput", "GT5U.MBTT.Position.BothEndsCenter", 2)
+            .addEnergyHatch("1+", "GT5U.MBTT.Position.AnyAcceleratorCasing", 1)
+            .addInputAny("1+", "GT5U.MBTT.Position.AnyAcceleratorCasing", 1)
+            .addOutputBus("1+", "GT5U.MBTT.Position.AnyAcceleratorCasing", 1)
+            .addOutputHatch("0+", "GT5U.MBTT.Position.AnyAcceleratorCasing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorHamCorp);

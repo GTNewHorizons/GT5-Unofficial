@@ -238,19 +238,16 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Macerator")
-            .addInfo("A primitive Grinder powered by Kinetic energy")
-            .addInfo("Speed and output will be affected by wind speed, recipe and rotor")
-            .addInfo("Please use the Primitive Rotor")
-            .addInfo("Macerates 16 items at a time")
+        tt.addMachineType("machtype.windmill")
+            .addInfo("gt.windmill.tips.1")
             .beginStructureBlock(7, 12, 7, true)
-            .addController("Front bottom center")
-            .addCasing("100", "Wood Planks (any type)", false)
-            .addCasing("40-47", "Terracotta (plain)", false)
-            .addCasing("44", "Bricks", false)
-            .addMiscHatch("1", "Primitive Kinetic Shaftbox", "Front center", 1)
-            .addMiscHatch("1+", "Dispenser", "Any terracotta", 2)
-            .addMiscHatch("0-1", "Oak Door", "Any terracotta", 2)
+            .addController("front_bottom_center")
+            .addCasing("100", "gt.windmill.casing.planks", false)
+            .addCasing("40-47", "tile.clayHardened.name", false)
+            .addCasing("44", "gt.windmill.casing.bricks", false)
+            .addMiscHatch("1", "tile.BWRotorBlock.0.name", "front_center", 1)
+            .addMiscHatch("1+", "tile.dispenser.name", "gt.windmill.info.1", 2)
+            .addMiscHatch("0-1", "tile.doorWood.name", "gt.windmill.info.2", 2)
             .toolTipFinisher();
         return tt;
     }

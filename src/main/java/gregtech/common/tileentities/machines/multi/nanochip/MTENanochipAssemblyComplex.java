@@ -14,8 +14,6 @@ import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_X;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.math.BigInteger;
 import java.util.ArrayDeque;
@@ -229,49 +227,35 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType(translateToLocal("GT5U.tooltip.nac.main.machine_type"))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.action", TOOLTIP_CCs))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.main.logo"))
-            .addSeparator()
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.1", TOOLTIP_CCs, VC_HATCHES))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.2", TOOLTIP_CCs, TOOLTIP_COLORED))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.3", TOOLTIP_COLORED))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.4", TOOLTIP_VCOs, TOOLTIP_COLOR))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.5", TOOLTIP_CCs, TOOLTIP_VCI))
+        return new MultiblockTooltipBuilder().addMachineType("GT5U.tooltip.nac.main.machine_type")
             .addInfo(
-                translateToLocalFormatted(
-                    "GT5U.tooltip.nac.main.body.6",
-                    TOOLTIP_CCs,
-                    TOOLTIP_COLORED,
-                    TOOLTIP_VCI,
-                    TOOLTIP_COLOR))
-            .addSeparator()
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.7", TOOLTIP_CCs))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.8", TOOLTIP_COLORED))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.9", TOOLTIP_COLORED))
-            .addSupportAny()
-            .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.1")))
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.2")))
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.3")))
+                "gt.nac.tips.1",
+                TOOLTIP_CCs,
+                VC_HATCHES,
+                TOOLTIP_COLORED,
+                TOOLTIP_VCOs,
+                TOOLTIP_COLOR,
+                TOOLTIP_VCI)
+            .addTecTechHatchInfo()
+            .addInfo("gt.nac.tips.2")
             .beginStructureBlock(63, 49, 63, false)
-            .addController("Middle of structure, 9th layer")
+            .addController("GT5U.MBTT.Position.MiddleLayer9")
             // Nanochip Reinforcement Casing
-            .addCasing("3956", translateToLocal("gt.blockcasings12.2.name"), false)
+            .addCasing("3956", "gt.blockcasings12.2.name", false)
             // Nanochip Complex Glass
-            .addCasing("2226", translateToLocal("gt.blockglass1.8.name"), false)
+            .addCasing("2226", "gt.blockglass1.8.name", false)
             // Nanochip Mesh Interface Casing
-            .addCasing("1124-1719", translateToLocal("gt.blockcasings12.1.name"), false)
+            .addCasing("1124-1719", "gt.blockcasings12.1.name", false)
             // Nanochip Computational Matrix Casing
-            .addCasing("721", translateToLocal("gt.blockcasings12.3.name"), false)
+            .addCasing("721", "gt.blockcasings12.3.name", false)
             // Naquadah Frame Box
             .addCasing("53", "Naquadah Frame Box", false)
             // Nanochip Firewall Projection Casing
-            .addCasing("32", translateToLocal("gt.blockcasings12.4.name"), false)
+            .addCasing("32", "gt.blockcasings12.4.name", false)
             .addMiscHatch(
                 "0-12",
-                translateToLocal("GT5U.tooltip.nac.interface.nac_module"),
-                translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"),
+                "GT5U.tooltip.nac.interface.nac_module",
+                "GT5U.tooltip.nac.interface.structure.module_controller",
                 1)
             .addEnergyHatch("1", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)
             .addInputBus("1+", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)

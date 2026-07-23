@@ -15,7 +15,7 @@ public class MachineTooltipsLoader implements Runnable {
         GTLog.out.println("GT Mod: Register Block Machine's tooltips");
         for (int i = 0; i < 32768; i++) {
             ItemStack tStack = new ItemStack(GregTechAPI.sBlockMachines, 1, i);
-            if (tStack.getItem() != null && tStack.getItem() instanceof ItemMachines) {
+            if (tStack.getItem() instanceof ItemMachines) {
                 ((ItemMachines) tStack.getItem()).registerDescription(i);
             }
         }

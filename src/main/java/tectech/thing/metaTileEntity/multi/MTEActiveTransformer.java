@@ -15,7 +15,6 @@ import java.util.Map;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -169,14 +168,13 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2"))
-            .addSupportAny()
+        tt.addMachineType("gt.blockmachines.multimachine.em.transformer.machinetype")
+            .addInfo("gt.blockmachines.multimachine.em.transformer.desc")
+            .addTecTechHatchInfo()
             .beginStructureBlock(3, 3, 3, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("5-24", StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
-            .addCasing("1", StatCollector.translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"), false)
+            .addController("front_center")
+            .addCasing("5-24", "gt.blockcasingsTT.0.name", false)
+            .addCasing("1", "tt.keyword.Structure.SuperconductingCoilBlock", false)
             .addEnergyHatch("1+", "Any casing", 1)
             .addDynamoHatch("0+", "Any casing", 1)
             .toolTipFinisher();

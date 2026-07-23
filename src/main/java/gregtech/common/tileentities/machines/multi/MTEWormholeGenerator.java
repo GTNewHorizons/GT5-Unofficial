@@ -969,35 +969,31 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
-        // spotless:off
-        tt.addMachineType("Wormhole Generator, MWG")
-            .addInfo("Transfers EU between two wormhole generators")
-            .addInfo("Wormholes are linked by placing an AE2 Entangled Singularity in each controller slot")
-            .addInfo("The transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate")
-            .addInfo("If the transfer rate is completely stable, the transfer efficiency is " + String.format("%.1f", TRANSFER_EFFICIENCY * 100.0) + "%")
-            .addInfo("EU will only be transferred if there is space in the laser source hatch")
-            .addInfo("Each laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side")
-            .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started")
-            .addInfo("Right click the controller with a screwdriver to disable overclocking")
+        tt.addMachineType("machtype.wormhole_gen")
+            .addInfo("gt.wormhole_gen.tips", String.format("%.1f", TRANSFER_EFFICIENCY * 100.0))
             .addGlassEnergyLimitInfo()
-            .addSupportAny()
+            .addTecTechHatchInfo()
             .beginStructureBlock(7, 7, 7, true)
             .addController("Front center, 4th layer")
-            .addCasing("0-51", "High Power Casing", false)
+            .addCasing("0-51", "gt.blockcasingsTT.0.name", false)
             .addCasing("36", "Any Tiered Glass", true)
-            .addCasing("24", "Molecular Casing", false)
+            .addCasing("24", "gt.blockcasingsTT.4.name", false)
             .addCasing("22", "Fusion Coil Block", false)
             .addCasing("8", "Europium Reinforced Radiation Proof Machine Casing", false)
-            .addMiscHatch("0-4", "Laser Target Hatch", "Any center side casing", 2)
-            .addMiscHatch("0-4", "Laser Source Hatch", "Any center side casing", 2)
-            .addMaintenanceHatch("1", "Any high power casing", 1)
-            .addInputBus("1+", "Any high power casing", 1)
+            .addMiscHatch("0-4", "GT5U.MBTT.LaserTargetHatch", "GT5U.MBTT.Position.AnyCenterSideCasing", 2)
+            .addMiscHatch("0-4", "GT5U.MBTT.LaserSourceHatch", "GT5U.MBTT.Position.AnyCenterSideCasing", 2)
+            .addMaintenanceHatch("1", "GT5U.MBTT.Position.AnyHighPowerCasing", 1)
+            .addInputBus("1+", "GT5U.MBTT.Position.AnyHighPowerCasing", 1)
             .addStructureInfo("")
-            .addStructureFooter("Insert an entangled singularity into the controller to link it with another one")
-            .addStructureFooter("Each laser target hatch must have a corresponding laser source hatch")
-            .addStructureFooter("on the other linked generator on the opposite side")
+            .addStructureFooter("GT5U.MBTT.Note.LinkEntangledSingularity")
+            .addStructureFooter("GT5U.MBTT.Note.LaserTargetRequiresSource")
+            .addStructureFooter("GT5U.MBTT.Note.OtherLinkedGeneratorOppositeSide")
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTAuthors.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
+            .toolTipFinisher(
+                GTAuthors.AuthorPineapple + EnumChatFormatting.GRAY
+                    + ", Rendering by: "
+                    + EnumChatFormatting.WHITE
+                    + "BucketBrigade");
         // spotless:on
 
         return tt;

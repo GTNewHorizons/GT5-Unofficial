@@ -30,7 +30,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -746,18 +745,9 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Nanite Fabricator")
-            .addInfo("Requires insane amounts of power to create nanites")
-            .addInfo("Each tier requires some structural changes")
-            .addInfo("Machine tier depends on Nanite in controller slot")
-            .addInfo("Tier 4 has additional mechanics, check the controller")
-            .addSeparator()
-            .addInfo(
-                "Performs " + EnumChatFormatting.LIGHT_PURPLE
-                    + "perfect overclocks"
-                    + EnumChatFormatting.GRAY
-                    + " on lower-tier recipes")
-            .addSupportAny()
+        tt.addMachineType("machtype.nano_forge")
+            .addInfo("gt.nano_forge.tips")
+            .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(41, 52, 41, false)
             .addController("Front bottom center")
@@ -766,40 +756,40 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             .addInputAny("1+", "Any bottom casing", 1)
             .addOutputBus("1+", "Any bottom casing", 1)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
-            .addStructureInfo(EnumChatFormatting.ITALIC + "Requires a Carbon Nanite in Controller")
+            .addStructureInfo("GT5U.MBTT.Tiers.One")
+            .addStructureInfo("gt.nano_forge.structure.requirement.1")
             .addCasing("468-523", "Radiant Naquadah Alloy Casing", false)
             .addCasing("170", "Stellar Alloy Frame Box", false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.AQUA + "Tier 2 " + EnumChatFormatting.BLUE + "(Adds to T1)")
-            .addStructureInfo(EnumChatFormatting.ITALIC + "Requires a Neutronium Nanite in Controller")
+            .addStructureInfo("gt.nano_forge.structure.tier.2")
+            .addStructureInfo("gt.nano_forge.structure.requirement.2")
             .addCasing("148", "Radiant Naquadah Alloy Casing", false)
             .addCasing("16", "Assembly Line Casing", false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.AQUA + "Tier 3 " + EnumChatFormatting.BLUE + "(Adds to T2)")
-            .addStructureInfo(EnumChatFormatting.ITALIC + "Requires a Transcendent Metal Nanite in Controller")
+            .addStructureInfo("gt.nano_forge.structure.tier.3")
+            .addStructureInfo("gt.nano_forge.structure.requirement.3")
             .addCasing("228", "Radiant Naquadah Alloy Casing", false)
             .addCasing("84", "Stellar Alloy Frame Box", false)
             .addCasing("16", "Assembly Line Casing", false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.AQUA + "Tier 4 " + EnumChatFormatting.BLUE + "(New Structure)")
-            .addStructureInfo(EnumChatFormatting.ITALIC + "Requires an Eternity Nanite in Controller")
-            .addCasing("3208", "Nanite Shielding Glass", false)
-            .addCasing("2780-2792", "Magnetic Anchor Casing", false)
-            .addCasing("1452", "Precision Field Sync Casing", false)
-            .addCasing("943", "Field Energy Absorber Casing", false)
-            .addCasing("871", "Loadbearing Distribution Casing", false)
-            .addCasing("582", "Magmatter Frame Box", false)
+            .addStructureInfo("gt.nano_forge.structure.tier.4")
+            .addStructureInfo("gt.nano_forge.structure.requirement.4")
+            .addCasing("3208", "gt.blockglass1.5.name", false)
+            .addCasing("2780-2792", "gt.blockcasings13.6.name", false)
+            .addCasing("1452", "gt.blockcasings13.5.name", false)
+            .addCasing("943", "gt.blockcasings13.7.name", false)
+            .addCasing("871", "gt.blockcasings13.8.name", false)
+            .addCasing("582", "GT5U.MBTT.Part.MagmatterFrameBox", false)
             .addCasing("349", "Radiant Naquadah Alloy Casing", false)
-            .addCasing("171", "Nanite Replication Framework", false)
+            .addCasing("171", "gt.blockcasings13.9.name", false)
             .addCasing("170", "Advanced Iridium Plated Machine Casing", false)
-            .addCasing("166", "White Dwarf Matter Frame Box", false)
-            .addCasing("147", "Black Dwarf Matter Frame Box", false)
-            .addEnergyHatch("1-2", "Any anchor casing", 1)
-            .addInputAny("1+", "Any anchor casing", 1)
-            .addOutputBus("1+", "Any anchor casing", 1)
+            .addCasing("166", "GT5U.MBTT.Part.WhiteDwarfMatterFrameBox", false)
+            .addCasing("147", "GT5U.MBTT.Part.BlackDwarfMatterFrameBox", false)
+            .addEnergyHatch("1-2", "GT5U.MBTT.Position.AnyAnchorCasing", 1)
+            .addInputAny("1+", "GT5U.MBTT.Position.AnyAnchorCasing", 1)
+            .addOutputBus("1+", "GT5U.MBTT.Position.AnyAnchorCasing", 1)
             .addStructureInfo("")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .addMasterChannel("channels.gregtech.master.structuretier")
             .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }
@@ -814,8 +804,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             + "/"
             + EnumChatFormatting.DARK_AQUA
             + tierThree
-            + EnumChatFormatting.GRAY
-            + " ";
+            + EnumChatFormatting.GRAY;
     }
 
     @Override

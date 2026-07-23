@@ -348,86 +348,24 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gt.blockcasings10.12.name");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Compressor, Advanced Neutronium Compressor, BHC")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Uses the immense power of the event horizon to compress things")
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE
-                    + "No longer requires heat management to perform superdense compression")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Can create advanced singularities!")
-            .addSeparator()
-            .addInfo(
-                "Insert a " + EnumChatFormatting.WHITE
-                    + "Black Hole Seed"
-                    + EnumChatFormatting.GRAY
-                    + " to open a black hole")
-            .addInfo(
-                "The black hole will begin its life at " + EnumChatFormatting.RED
-                    + "100"
-                    + EnumChatFormatting.GRAY
-                    + " stability and slowly decay")
-            .addInfo(
-                "Stability decays by " + EnumChatFormatting.RED
-                    + "1/s"
-                    + EnumChatFormatting.GRAY
-                    + " until it reaches 0")
-            .addInfo("At 0 stability, the black hole is " + EnumChatFormatting.DARK_RED + "UNSTABLE")
-            .addInfo("Once the black hole becomes unstable, it will void recipes and eventually close itself!")
-            .addSeparator()
-            .addInfo(
-                "The decay can be " + EnumChatFormatting.BOLD
-                    + "halted"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + " by inserting 1 L/s of spacetime into specific hatches")
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + "30"
-                    + EnumChatFormatting.GRAY
-                    + " total seconds saved by spacetime insertion will "
-                    + EnumChatFormatting.RED
-                    + "double"
-                    + EnumChatFormatting.GRAY
-                    + " the cost per second!")
-            .addInfo(
-                "Insert a " + EnumChatFormatting.WHITE
-                    + "Black Hole Collapser"
-                    + EnumChatFormatting.GRAY
-                    + " to close the black hole")
-            .addInfo("To restore stability and reset spacetime costs, close the black hole and open a new one")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.WHITE + "Use circuit 20 for Compressor and 21 for Neutronium Compressor")
+        tt.addMachineType("gt.recipe.compressor", "machtype.adv_nt_compressor", "BHC")
+            .addInfo("gt.bhc.tips.1")
             .addBulkMachineInfo(8, 5f, 0.7f)
-            .addInfo(
-                EnumChatFormatting.RED + "2x/4x"
-                    + EnumChatFormatting.GRAY
-                    + " parallels when stability is BELOW "
-                    + EnumChatFormatting.RED
-                    + "50/20")
-            .addInfo(
-                "Below " + EnumChatFormatting.RED
-                    + "20"
-                    + EnumChatFormatting.GRAY
-                    + " stability, parallels are "
-                    + EnumChatFormatting.RED
-                    + "uncapped"
-                    + EnumChatFormatting.GRAY
-                    + " for recipes that do not require a black hole.")
-            .addSupportAny()
-            .addInfo(
-                EnumChatFormatting.RED
-                    + "Recipe tier is limited to hatch tier + 1. Will not perform overclocks above the hatch tier")
-            .addInfo(EnumChatFormatting.RED + "Limited to one energy hatch if using a Multi-Amp or Laser hatch")
+            .addInfo("gt.bhc.tips.2")
+            .addTecTechHatchInfo()
+            .addInfo("gt.bhc.tips.3")
             .beginStructureBlock(33, 35, 35, true)
-            .addController("Middle of structure, 6th layer")
-            .addCasing("3667-3671", "Extreme Density Space-Bending Casing", false)
-            .addCasing("950-985", "Background Radiation Absorbent Casing", false)
+            .addController("GT5U.MBTT.Position.MiddleLayer6")
+            .addCasing("3667-3671", "gt.blockcasings10.11.name", false)
+            .addCasing("950-985", "gt.blockcasings10.12.name", false)
             .addCasing("144", "Naquadah Alloy Frame Box", false)
-            .addCasing("64", "Hawking Radiation Realignment Focus", false)
-            .addMiscHatch("0+", "Black Hole Utility Hatch", "Any absorbent casing", 1)
-            .addEnergyHatch("1+", "Any absorbent casing", 1)
-            .addInputAny("1+", "Any absorbent casing (inputs), the casing behind each laser (spacetime)", 1, 2)
-            .addOutputBus("1+", "Any absorbent casing", 1)
+            .addCasing("64", "gt.blockglass1.4.name", false)
+            .addMiscHatch("0+", "GT5U.MBTT.Part.BlackHoleUtilityHatch", "GT5U.MBTT.Position.AnyAbsorbentCasing", 1)
+            .addEnergyHatch("1+", "GT5U.MBTT.Position.AnyAbsorbentCasing", 1)
+            .addInputAny("1+", "GT5U.MBTT.Position.AbsorbentInputsAndSpacetimeLaser", 1, 2)
+            .addOutputBus("1+", "GT5U.MBTT.Position.AnyAbsorbentCasing", 1)
             .toolTipFinisher(Ollie, "BucketBrigade");
         return tt;
     }

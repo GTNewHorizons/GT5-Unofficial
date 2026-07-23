@@ -190,19 +190,17 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Entropic Processor")
-            .addInfo("Processes substances by increasing or decreasing their entropy")
+
+        tt.addMachineType("machtype.entropic_processor")
+            .addInfo("gt.entropic_processor.tips.1")
             .addSeparator()
-            .addInfo("Has " + TooltipHelper.parallelText(8) + " parallels by default")
-            .addInfo(
-                "Using Advanced Alchemical Constructs increases the machine's parallels to "
-                    + TooltipHelper.parallelText(32))
+            .addInfo("gt.entropic_processor.tips.2", TooltipHelper.parallelText(8), TooltipHelper.parallelText(32))
             .addSeparator()
-            .addInfo("Mixes fluids or solids with a magical catalyst")
-            .addInfo("Catalyst is consumed by the recipe, then returned upon completion")
+            .addInfo("gt.entropic_processor.tips.3")
             .addSeparator()
-            .addInfo("Performs one perfect overclock per casing tier (Thaumium = 1 perfect OC)")
-            .beginStructureBlock(7, 5, 7, true)
+            .addInfo("gt.entropic_processor.tips.4");
+
+        tt.beginStructureBlock(7, 5, 7, true)
             .addController("Front center")
             .addSubChannel(GTStructureChannels.ALCHEMICAL_CASING)
             .addSubChannel(GTStructureChannels.ALCHEMICAL_CONSTRUCT)

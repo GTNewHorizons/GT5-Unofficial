@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -79,24 +78,20 @@ public class MTELargeTurbineSteam extends MTELargeTurbineBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Steam Turbine, LST")
-            .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Generates power from Steam based on the turbine and fitting")
-            .addInfo("Outputs 1L of Distilled Water for every 160L of Steam")
-            .addInfo("Use a screwdriver to adjust the fitting of the turbine")
-            .addInfo("Loose fit increases flow in exchange for efficiency")
+        tt.addMachineType("machtype.lst")
+            .addInfo("gt.lst.tips")
             .beginStructureBlock(3, 3, 6, false)
             .addController("Front center, 2nd layer")
             .addCasing("14", "Iron Frame Box", false)
-            .addCasing("8-14", "Turbine Casing", false)
+            .addCasing("8-14", "gt.blockcasings4.9.name", false)
             .addCasing("12", "Steel Pipe Casing", false)
-            .addDynamoHatch("1", "Back center turbine casing", 2)
-            .addMaintenanceHatch("1", "Any back turbine casing", 1)
-            .addInputHatch("1+", "Any back turbine casing", 1)
-            .addOutputHatch("0+", "Any back turbine casing", 1)
+            .addDynamoHatch("1", "gt.mbtt.structure.back_center", 2)
+            .addMaintenanceHatch("1", "gt.lst.info.maintenance", 1)
+            .addInputHatch("1+", "gt.lst.info.i_hatch", 1)
+            .addOutputHatch("0+", "gt.lst.info.o_hatch", 1)
             .addAir("3x3 area in front of controller")
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
+            .addStructureFooter("GT5U.MBTT.Structure.DynamoLimit")
             .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")
             .toolTipFinisher();
         return tt;

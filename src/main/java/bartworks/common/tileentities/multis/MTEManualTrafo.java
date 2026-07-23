@@ -143,25 +143,20 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Transformer")
-            .addInfo("Operates in 4 diffrent modes:")
-            .addInfo("Mode 1: Circuit 0 in controller: Direct-Upstep")
-            .addInfo("Mode 2: Circuit 1 in controller: Direct-Downstep")
-            .addInfo("Mode 3: Circuit 2 in controller: Tapped-Upstep (currently disabled)")
-            .addInfo("Mode 4: Circuit 2 in controller: Tapped-Downstep (currently disabled)")
+        tt.addMachineType("machtype.manual_trafo")
+            .addInfo("gt.manual_trafo.tips")
             .beginVariableStructureBlock(3, 3, 3, 10, 3, 3, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("MV Machine Casing", 0, false)
-            .addOtherStructurePart("Transformer-Winding Block", "1 Layer for each tier transformed")
-            .addOtherStructurePart("Nickel-Zinc-Ferrite Block", "Middle of Transformer-Winding Block")
-            .addMaintenanceHatch("Any bottom layer Casing", 1)
-            .addEnergyHatch("Any bottom layer Casing", 1)
-            .addDynamoHatch("Any top layer Casing", 2)
-            .addStructureInfo("")
-            .addStructureInfo("Tapped Mode :")
-            .addEnergyHatch("Touching Transformer-Winding Block", 3)
-            .addDynamoHatch("Touching Transformer-Winding Block", 3)
-            .addStructureInfo("Hatches touching Transformer-Winding Block must be tiered from bottom to top")
+            .addController("front_bottom_center")
+            .addCasingInfoMin("gt.manual_trafo.casing.mv", 0, false)
+            .addStructurePart("BW_Machinery_Casings.1.name", "gt.manual_trafo.info.winding")
+            .addStructurePart("gt.manual_trafo.casing.ferrite", "gt.manual_trafo.info.nzf_block")
+            .addMaintenanceHatch("gt.manual_trafo.info.bottom_casing", 1)
+            .addEnergyHatch("gt.manual_trafo.info.bottom_casing", 1)
+            .addDynamoHatch("gt.manual_trafo.info.top_casing", 2)
+            .addStructureInfo("gt.manual_trafo.info")
+            .addEnergyHatch("gt.manual_trafo.info.e_hatches", 3)
+            .addDynamoHatch("gt.manual_trafo.info.e_hatches", 3)
+            .addStructureInfo("gt.manual_trafo.info.e_hatches_req")
             .toolTipFinisher();
         return tt;
     }

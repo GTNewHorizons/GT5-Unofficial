@@ -28,7 +28,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.apache.commons.lang3.tuple.Triple;
@@ -69,7 +68,6 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
@@ -135,37 +133,29 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     public String getMachineType() {
-        return "Chemical Plant";
+        return "machtype.chem_plant";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getMachineType())
-            .addInfo("Heavy Industry, now right at your doorstep!")
-            .addInfo("Plant tier is determined by casing tier")
-            .addInfo("Hatch tiers can't be higher than machine casing tier, UHV casing unlocks all tiers")
+            .addInfo("gt.exxonmobil.tips.1")
             .addDynamicParallelInfo(2, TooltipTier.PIPE_CASING)
-            .addInfo(
-                "+20% chance of not damaging catalyst per " + TooltipHelper.tierText(TooltipTier.PIPE_CASING) + " Tier")
+            .addInfo("gt.exxonmobil.tips.2", TooltipTier.PIPE_CASING.getLocalizedValue())
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
-            .addInfo("Any catalyst must be placed in the catalyst housing")
-            .addInfo("Awakened Draconium Coils combined with Tungstensteel Pipe Casings makes catalyst unbreakable")
+            .addInfo("gt.exxonmobil.tips.3")
             .beginStructureBlock(7, 7, 7, false)
-            .addController("Front bottom center")
+            .addController("front_bottom_center")
             .addCasing("70-91", "Metal Machine Casing", true)
             .addCasing("57", "Machine Casing", true)
             .addCasing("27", "Heating Coil", true)
-            .addCasing("18", "Pipe Casing", true)
-            .addStructureHint("item.GTPP.catalyst_housing.name", 1)
-            .addMiscHatch(
-                "0-1",
-                StatCollector.translateToLocal("item.GTPP.catalyst_housing.name"),
-                "Any metal machine casing",
-                1)
+            .addCasing("18", "GT5U.MBTT.Tiers.FluidPipe", true)
+            .addMiscHatch("0-1", "gt.blockmachines.hatch.catalysts.name", "Any metal machine casing", 1)
             .addEnergyHatch("1+", "Any metal machine casing", 1)
             .addMaintenanceHatch("1", "Any metal machine casing", 1)
             .addInputAny("1+", "Any metal machine casing", 1)
             .addOutputAny("1+", "Any metal machine casing", 1)
+            .addStructureInfo("gt.exxonmobil.info.1")
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.METAL_MACHINE_CASING)
             .addSubChannel(GTStructureChannels.TIER_MACHINE_CASING)

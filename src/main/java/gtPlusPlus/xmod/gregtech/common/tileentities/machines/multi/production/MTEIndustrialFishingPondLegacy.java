@@ -90,7 +90,7 @@ public class MTEIndustrialFishingPondLegacy extends GTPPMultiBlockBase<MTEIndust
 
     @Override
     public String getMachineType() {
-        return "Fish Trap";
+        return "machtype.fishtrap";
     }
 
     @Override
@@ -98,16 +98,10 @@ public class MTEIndustrialFishingPondLegacy extends GTPPMultiBlockBase<MTEIndust
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addStructureDeprecatedLine()
-            .addInfo("Can process (Tier + 1) * 2 recipes")
-            .addInfo("Put a numbered circuit into the input bus")
-            .addInfo("Circuit " + FISH_MODE + " for Fish")
-            .addInfo("Circuit " + JUNK_MODE + " for Junk")
-            .addInfo("Circuit " + TREASURE_MODE + " for Treasure")
-            .addInfo("Needs to be filled with water")
-            .addInfo("Will automatically fill water from input hatch")
+            .addInfo("gt.zhuhai.tips.1", FISH_MODE, JUNK_MODE, TREASURE_MODE)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 3, 9, true)
-            .addController("Front center")
+            .addController("front_center")
             .addCasingInfoMin("Aquatic Casing", 64, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)

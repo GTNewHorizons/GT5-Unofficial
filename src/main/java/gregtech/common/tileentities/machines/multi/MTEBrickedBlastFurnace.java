@@ -13,6 +13,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -83,7 +84,20 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
         .addElement('l', ofChain(ofBlockAnyMeta(Blocks.lava, 1), ofBlockAnyMeta(Blocks.flowing_lava, 1), isAir()))
         .build();
 
-    private MultiblockTooltipBuilder tooltipBuilder;
+    private static volatile MultiblockTooltipBuilder tooltipBuilder;
+
+    static {
+        if (GTUtility.isClient()) {
+            addTooltipResetListener();
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static void addTooltipResetListener() {
+        SimpleReloadableResourceManager manager = (SimpleReloadableResourceManager) Minecraft.getMinecraft()
+            .getResourceManager();
+        manager.registerReloadListener(resourceManager -> tooltipBuilder = null);
+    }
 
     public int mMaxProgresstime = 0;
     private volatile boolean mUpdated;
@@ -127,17 +141,16 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     protected MultiblockTooltipBuilder getTooltip() {
         if (tooltipBuilder == null) {
             tooltipBuilder = new MultiblockTooltipBuilder();
-            tooltipBuilder.addMachineType("Blast Furnace, BBF")
-                .addInfo("Usable for Steel and general Pyrometallurgy")
-                .addInfo("All input/output is done manually through the controller")
+            tooltipBuilder.addMachineType("machtype.bbf")
+                .addInfo("gt.bbf.tips.1")
                 .addPollutionAmount(GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond)
                 .beginStructureBlock(3, 4, 3, true)
-                .addController("Front center")
-                .addCasing("32", "Firebricks", false)
-                .addAir("Interior and top center of the structure")
+                .addController("gt.mbtt.structure.front_center")
+                .addCasing("32", "gt.blockcasings4.15.name", false)
+                .addAir("gt.bbf.structure.air")
                 .addStructureInfo("")
-                .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
-                .addStructureFooter("to save on blocks, casings, glass, buses/hatches, etc.")
+                .addStructureFooter("gt.bbf.structure.wallshare.1")
+                .addStructureFooter("gt.bbf.structure.wallshare.2")
                 .toolTipFinisher();
         }
         return tooltipBuilder;

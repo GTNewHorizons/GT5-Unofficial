@@ -62,7 +62,6 @@ public class MTEIndustrialArcFurnaceLegacy extends GTPPMultiBlockBase<MTEIndustr
 
     // 862
     private static final int mCasingTextureID = TAE.getIndexFromPage(3, 3);
-    public static String mCasingName = "Tempered Arc Furnace Casing";
 
     final static int MACHINE_MODE_ARC = 0;
     final static int MACHINE_MODE_PLASMA = 1;
@@ -92,26 +91,27 @@ public class MTEIndustrialArcFurnaceLegacy extends GTPPMultiBlockBase<MTEIndustr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
+        tt.addMachineType("gt.recipe.arcfurnace", "gt.recipe.plasmaarcfurnace", "IAF")
             .addDeprecatedLine("CHECK NEI TO FIND NEW CONTROLLER")
+            .addInfo("gt.iaf.tips.1")
             .addInfo(TooltipHelper.parallelText("Width * Voltage Tier") + " Parallels")
             .addInfo(TooltipHelper.parallelText("8x") + " Parallels in Plasma Mode")
             .addStaticSpeedInfo(3.5f)
             .addStaticEuEffInfo(1f)
-            .addInfo("Right-click controller with a Screwdriver to change modes")
-            .addInfo("Max Size required to process Plasma recipes")
+            .addInfo("gt.iaf.tips.2")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addController("Front center")
-            .addStructureInfo("Size: nxnx3 [WxHxL] (Hollow)")
-            .addStructureInfo("n can be 3, 5 or 7")
-            .addCasingInfoMin(mCasingName, 10, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .addShiftInfo("GT5U.MBTT.Dimensions", "n", "n", 3, "GT5U.MBTT.Hollow")
+            .addShiftInfo("gt.iaf.info.1")
+            .addShiftInfo("GT5U.MBTT.Structure")
+            .addController("front_center")
+            .addCasingInfoMin("gtplusplus.blockcasings.4.3.name", 10)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addInputHatch("<casing>", 1)
+            .addOutputHatch("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
+            .addMufflerHatch("<casing>", 1)
             .toolTipFinisher();
         return tt;
     }

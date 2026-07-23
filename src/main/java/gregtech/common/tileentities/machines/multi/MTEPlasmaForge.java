@@ -574,57 +574,22 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Forge, DTPF")
-            .addInfo("Transcending Dimensional Boundaries.")
+        tt.addMachineType("machtype.dtpf")
             .addInfo(
-                "Takes " + EnumChatFormatting.RED
-                    + formatNumber(max_efficiency_time_in_ticks / (3600 * 20))
-                    + EnumChatFormatting.GRAY
-                    + " hours of continuous run time to fully breach dimensional")
-            .addInfo(
-                "boundaries and achieve maximum efficiency, reducing fuel consumption by up to "
-                    + EnumChatFormatting.RED
-                    + formatNumber(100 * maximum_discount)
-                    + "%")
-            .addInfo(
-                "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
-                    + formatNumber(efficiency_decay_rate)
-                    + EnumChatFormatting.GRAY
-                    + " as fast as it builds up, draining")
-            .addInfo("the total amount of stored runtime")
-            .addSeparator()
-            .addInfo("Multidimensional spaces can be perfectly aligned and synchronized in this state, ")
-            .addInfo(
-                "allowing " + EnumChatFormatting.GOLD
-                    + "Dimensional Convergence "
-                    + EnumChatFormatting.GRAY
-                    + "to occur. To reach the required stability threshold,")
-            .addInfo(
-                "a " + EnumChatFormatting.AQUA
-                    + "Transdimensional Alignment Matrix "
-                    + EnumChatFormatting.GRAY
-                    + "must be placed in the controller")
-            .addInfo(
-                "When " + EnumChatFormatting.GOLD
-                    + "Convergence "
-                    + EnumChatFormatting.GRAY
-                    + "is active, it allows the forge to perform "
-                    + EnumChatFormatting.RED
-                    + "Perfect Overclocks"
-                    + EnumChatFormatting.GRAY
-                    + ",")
-            .addInfo("but the extra power cost is instead added in form of increased catalyst amounts")
+                "gt.dtpf.tips",
+                formatNumber(max_efficiency_time_in_ticks / (3600 * 20)),
+                formatNumber(100 * maximum_discount),
+                formatNumber(efficiency_decay_rate))
             .addUnlimitedTierSkips()
-            .addSupportAny()
             .beginStructureBlock(33, 24, 33, false)
-            .addController("Middle of the structure, 3rd layer")
-            .addCasing("2121", "Dimensionally Transcendent Casing", false)
+            .addController("gt.dtpf.info.controller")
+            .addCasing("2121", "gt.blockcasings.12.name", false)
             .addCasing("2112", "Heating Coil", true)
-            .addCasing("1250-1270", "Dimensional Injection Casing", false)
-            .addCasing("120", "Dimensional Bridge", false)
-            .addEnergyHatch("1-2", "Any injection casing", 1)
-            .addInputAny("1+", "Any injection casing", 1)
-            .addOutputAny("1+", "Any injection casing", 1)
+            .addCasing("1250-1270", "gt.blockcasings.13.name", false)
+            .addCasing("120", "gt.blockcasings.14.name", false)
+            .addEnergyHatch("1-2", "GT5U.MBTT.Position.AnyInjectionCasing", 1)
+            .addInputAny("1+", "GT5U.MBTT.Position.AnyInjectionCasing", 1)
+            .addOutputAny("1+", "GT5U.MBTT.Position.AnyInjectionCasing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher(AuthorColen);

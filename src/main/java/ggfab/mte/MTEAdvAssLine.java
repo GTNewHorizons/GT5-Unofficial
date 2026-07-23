@@ -43,7 +43,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -69,7 +68,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import ggfab.ConfigurationHandler;
 import ggfab.mui.ClickableTextWidget;
 import gregtech.api.GregTechAPI;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
@@ -318,58 +316,39 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("ggfab.tt.advassline.machine_type"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc1"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc2"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc3"))
-            .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc4"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc5"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc6"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc7"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc8"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc9"))
-            .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc10"))
+        tt.addMachineType("ggfab.tt.advassline.machine_type")
+            .addInfo("ggfab.tt.advassline.desc1")
             .addSupportAny()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
-            .addController(StatCollector.translateToLocal("ggfab.tt.advassline.structure.controller"))
+            .addController("ggfab.tt.advassline.structure.controller")
             .addMiscHatch(
                 "1",
-                StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
-                StatCollector.translateToLocal("ggfab.tt.advassline.structure.data_access_location"),
+                "tt.keyword.Structure.DataAccessHatch",
+                "ggfab.tt.advassline.structure.data_access_location",
                 3)
-            .addEnergyHatch("1+", StatCollector.translateToLocal("ggfab.tt.advassline.structure.energy_location"), 4)
-            .addMaintenanceHatch(
-                "1",
-                StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer1_side_casing"),
-                1)
-            .addInputBus("5-16", StatCollector.translateToLocal("ggfab.tt.advassline.structure.input_bus_location"), 2)
-            .addInputHatch("1-4", StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer1_side_casing"), 1)
-            .addOutputBus("1", StatCollector.translateToLocal("ggfab.tt.advassline.structure.output_bus_location"), 1)
+            .addEnergyHatch("1+", "ggfab.tt.advassline.structure.energy_location", 4)
+            .addMaintenanceHatch("1", "ggfab.tt.advassline.structure.layer1_side_casing", 1)
+            .addInputBus("5-16", "ggfab.tt.advassline.structure.input_bus_location", 2)
+            .addInputHatch("1-4", "ggfab.tt.advassline.structure.layer1_side_casing", 1)
+            .addOutputBus("1", "ggfab.tt.advassline.structure.output_bus_location", 1)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing(
-                "10",
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.MBTT.HatchInfo",
-                    StatCollector.translateToLocal("GT5U.structure.tiered_glass")),
-                false)
-            .addCasing("8", Casings.GrateMachineCasing.getLocalizedName(), false)
-            .addCasing("4-8", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
-            .addCasing("5", Casings.AssemblyLineCasing.getLocalizedName(), false)
-            .addCasing("5", Casings.AssemblerMachineCasing.getLocalizedName(), false)
+            .addStructureInfo("GT5U.MBTT.Structure.Base")
+            .addCasing("10", "GT5U.MBTT.AnyTieredGlass", false)
+            .addCasing("8", "gt.blockcasings3.10.name", false)
+            .addCasing("4-8", "gt.blockcasings2.0.name", false)
+            .addCasing("5", "gt.aal.casing.assembly_line", false)
+            .addCasing("5", "gt.aal.casing.assembler", false)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addStructureInfo(StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer4"))
-            .addStructureInfo(StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer3"))
-            .addStructureInfo(StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer2"))
-            .addStructureInfo(StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer1"))
+            .addStructureInfo("GT5U.MBTT.Structure.Slice")
+            .addStructureInfo("ggfab.tt.advassline.structure.layer4")
+            .addStructureInfo("ggfab.tt.advassline.structure.layer3")
+            .addStructureInfo("ggfab.tt.advassline.structure.layer2")
+            .addStructureInfo("ggfab.tt.advassline.structure.layer1")
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("ggfab.tt.advassline.structure.footer"))
+            .addStructureFooter("ggfab.tt.advassline.structure.footer")
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher();
+            .toolTipFinisher(EnumChatFormatting.GOLD);
         return tt;
     }
 

@@ -547,36 +547,20 @@ public class MTETeslaTower extends TTMultiblockBase
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.name")) // Machine Type: Tesla
-                                                                                               // Tower
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.0")) // Controller block of
-                                                                                            // the Tesla Tower
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.1")) // Used to transmit
-                                                                                            // power to Tesla
-            // Coil Covers and Tesla
-            // Transceivers
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.2")) // Can be fed with
-            // Helium/Nitrogen/Radon Plasma to
-            // increase the range
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.3")) // Transmitted voltage
-                                                                                            // depends on
-            // the used Tesla Capacitor tier
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.4")) // Primary Tesla
-                                                                                            // Windings need to
-            // be at least the same tier as
-            // the Tesla Capacitor
-            .addSupportAny()
+        tt.addMachineType("gt.blockmachines.multimachine.tm.teslaCoil.name")
+            .addInfo("gt.blockmachines.multimachine.tm.teslaCoil.desc")
+            .addTecTechHatchInfo()
             .beginStructureBlock(7, 17, 7, false)
-            .addController("Front bottom center")
+            .addController("front_bottom_center")
             .addCasing("128", "Tesla Toroid Casing", false)
             .addCasing("17-33", "Tesla Base Casing", false)
             .addCasing("20", "Primary Tesla Windings", true)
             .addCasing("16", "Titanium Frame Box", false)
             .addCasing("12", "Secondary Tesla Windings", false)
-            .addMiscHatch("1+", "Capacitor Hatch", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
-            .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
-            .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
-            .addInputHatch("0+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addMiscHatch("1+", "Capacitor Hatch", "tt.keyword.Structure.AnyTeslaBaseCasingOuter", 1)
+            .addEnergyHatch("1+", "tt.keyword.Structure.AnyTeslaBaseCasingOuter", 1)
+            .addMaintenanceHatch("1", "tt.keyword.Structure.AnyTeslaBaseCasingOuter", 1)
+            .addInputHatch("0+", "tt.keyword.Structure.AnyTeslaBaseCasingOuter", 1)
             .toolTipFinisher();
         return tt;
     }

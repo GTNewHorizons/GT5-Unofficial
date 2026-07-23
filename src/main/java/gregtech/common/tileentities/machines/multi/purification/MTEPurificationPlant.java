@@ -28,7 +28,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -145,80 +144,25 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Plant, WPP")
-            .addInfo("Main controller block for the Water Purification Plant")
+        tt.addMachineType("machtype.purif_plant")
+            .addInfo("gt.purification_plant.tips.1", MAX_UNIT_DISTANCE)
+            .addTecTechHatchInfo()
             .addInfo(
-                "Freely place " + EnumChatFormatting.YELLOW
-                    + "Purification Units "
-                    + EnumChatFormatting.GRAY
-                    + "within "
-                    + EnumChatFormatting.RED
-                    + MAX_UNIT_DISTANCE
-                    + EnumChatFormatting.GRAY
-                    + " blocks along each axis")
-            .addInfo("Left click this controller with a data stick, then right click a purification unit to link")
-            .addInfo("Supplies power to linked purification units")
-            .addSupportAny()
-            .addSeparator()
-            .addInfo(
-                "Works in fixed time processing cycles of " + EnumChatFormatting.RED
-                    + CYCLE_TIME_TICKS / SECONDS
-                    + EnumChatFormatting.GRAY
-                    + " seconds")
-            .addInfo("All linked units follow this cycle")
-            .addSeparator()
-            .addInfo("Every recipe has a base chance of success. Success rate can be boosted")
-            .addInfo("by using a portion of the target output as a secondary input")
-            .addInfo(
-                EnumChatFormatting.RED + formatNumber(WATER_BOOST_NEEDED_FLUID * 100)
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " of output yield will be consumed in exchange for an")
-            .addInfo(
-                "additive " + EnumChatFormatting.RED
-                    + formatNumber(WATER_BOOST_BONUS_CHANCE * 100)
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " increase to success")
-            .addInfo(
-                "On recipe failure, each purification unit has a " + EnumChatFormatting.RED
-                    + "50%"
-                    + EnumChatFormatting.GRAY
-                    + " chance")
-            .addInfo("to return water of the same quality as the input or lower")
-            .addSeparator()
-            .addInfo("Every purification unit has a configuration window to configure maximum parallel amount")
-            .addInfo(
-                "This will only scale purified water input, ALL fluid output and power usage. Other catalysts and outputs are unchanged")
-            .addInfo("Toggle debug mode to reduce cycle time to 30s but disable water I/O")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "Contaminants and ionized particles in water can cause significant imperfections in delicate")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "processes related to the cutting and engraving of silicon wafers and chips. It is crucial that")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "the water is systematically purified through a series of increasingly precise and complex")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "purification processes, and this multiblock is the heart of the operation")
+                "gt.purification_plant.tips.2",
+                CYCLE_TIME_TICKS / SECONDS,
+                formatNumber(WATER_BOOST_NEEDED_FLUID * 100),
+                formatNumber(WATER_BOOST_BONUS_CHANCE * 100))
             .beginStructureBlock(7, 9, 8, true)
             .addController("Front center, 3rd layer")
             .addCasing("77", "Reinforced Sterile Water Plant Casing", false)
             .addCasing("71-72", "Sterile Water Plant Casing", false)
-            .addCasing("56", "Superplasticizer-Treated High Strength Concrete", false)
+            .addCasing("56", "gt.blockcasings9.3.name", false)
             .addCasing("30", "Tungsten Frame Box", false)
             .addCasing("6", "Tinted Industrial Glass (any color)", false)
-            .addEnergyHatch("1-2", "Adjacent to controller", 1)
-            .addMaintenanceHatch("1", "Adjacent to controller", 1)
+            .addEnergyHatch("1-2", "GT5U.MBTT.Position.AdjacentController", 1)
+            .addMaintenanceHatch("1", "GT5U.MBTT.Position.AdjacentController", 1)
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
+            .addStructureFooter("GT5U.MBTT.Structure.WaterFree")
             .toolTipFinisher();
         return tt;
     }

@@ -193,21 +193,14 @@ public class MTEIndustrialElectromagneticSeparator
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Electromagnetic Separator/Polarizer, MFE")
-            .addInfo("Use screwdriver to switch mode")
-            .addInfo("Insert an electromagnet into the electromagnet housing to use")
-            .addInfo("Better electromagnets give further bonuses")
-            .addInfo("With Tengam electromagnet, multi-amp (NOT laser) hatches are allowed")
+        tt.addMachineType("gt.recipe.polarizer", "gt.recipe.electromagneticseparator")
+            .addInfo("gt.mfe.tips.1")
             .beginStructureBlock(7, 6, 7, true)
             .addController("Front bottom center")
-            .addCasing(MIN_CASING + "-73", "MagTech Casing", false)
-            .addCasing("37", "Magnetic Neodymium Frame Box", false)
+            .addCasing(MIN_CASING + "-73", "gt.blockcasings10.0.name", false)
+            .addCasing("37", "GT5U.MBTT.Part.MagneticNeodymiumFrameBox", false)
             .addCasing("12", "Any Tiered Glass", false)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("GT5U.tooltip.structure.electromagnet_housing"),
-                "One block above/behind controller",
-                2)
+            .addMiscHatch("1", "gt.blockmachines.hatch.mag_hatch.name", "gt.mfe.info.1", 2)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addInputBus("1+", "Any casing", 1)

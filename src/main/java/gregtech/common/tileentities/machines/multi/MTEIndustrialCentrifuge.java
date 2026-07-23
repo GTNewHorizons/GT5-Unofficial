@@ -175,26 +175,24 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Centrifuge")
+        tt.addMachineType("gt.recipe.centrifuge")
             .addInfo(
-                TooltipHelper.parallelText(BASE_PARALLEL_PER_TIER) + " - "
-                    + TooltipHelper.parallelText(BASE_PARALLEL_PER_TIER * 2)
-                    + " Parallels per "
-                    + TooltipHelper.coloredText("Voltage", TooltipHelper.TIER_COLOR)
-                    + " Tier")
-            .addInfo(TooltipHelper.speedText(SPEED) + " - " + TooltipHelper.speedText(MAX_SPEED) + " Speed")
+                "gt.multi_centrifuge.momentum.parallels",
+                TooltipHelper.parallelText(BASE_PARALLEL_PER_TIER),
+                TooltipHelper.parallelText(BASE_PARALLEL_PER_TIER * 2))
             .addInfo(
-                TooltipHelper.coloredText("Parallels", TooltipHelper.PARALLEL_COLOR) + " and "
-                    + TooltipHelper.coloredText("Speed", TooltipHelper.SPEED_COLOR)
-                    + " increase as the machine gains momentum")
-            .addInfo("Momentum is lost at four times the rate it is gained")
+                "gt.multi_centrifuge.momentum.speed",
+                TooltipHelper.speedText(SPEED),
+                TooltipHelper.speedText(MAX_SPEED))
+            .addInfo("gt.multi_centrifuge.momentum.scaling")
+            .addInfo("gt.multi_centrifuge.momentum.loss")
             .addStaticEuEffInfo(EU_EFFICIENCY)
-            .addInfo("Disable animations with a screwdriver")
+            .addInfo("gt.multi_centrifuge.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front center, 3rd layer")
             .addCasing("6-32", "Centrifuge Casing", false)
-            .addCasing("24", "Eglin Steel Frame Box", false)
+            .addCasing("24", "block.EglinSteel.frame.name", false)
             .addCasing("18", "Large Sieve Grate", false)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)

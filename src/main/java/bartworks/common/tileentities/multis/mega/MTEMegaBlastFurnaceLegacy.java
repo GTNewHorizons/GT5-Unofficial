@@ -36,7 +36,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -71,7 +70,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -167,50 +165,29 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace, MEBF, MBF")
+        tt.addMachineType("machtype.mebf")
             .addStructureDeprecatedLine()
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo(
-                TooltipHelper.effText("-5%") + " EU Usage per "
-                    + TooltipHelper.coloredText("900K", EnumChatFormatting.RED)
-                    + " above the recipe requirement")
-            .addSeparator()
-            .addInfo(
-                "Increases Heat by " + EnumChatFormatting.RED
-                    + "100K"
-                    + EnumChatFormatting.GRAY
-                    + " for every "
-                    + TooltipHelper.tierText("Voltage")
-                    + " tier past "
-                    + EnumChatFormatting.AQUA
-                    + "MV")
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + "1800K"
-                    + EnumChatFormatting.GRAY
-                    + " over the recipe requirement grants 1 "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Perfect Overclock")
-            .addSeparator()
+            .addInfo("gt.mebf.tips")
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo()
+            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
-            .addController("Front center, 3rd layer")
+            .addController("front_center_layer3")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 447, false)
-            .addCasingInfoExactly("Heating Coil", 864, true)
+            .addCasingInfoExactly("gt.mebf.casing.coil", 864, true)
             .addCasingInfoExactly("Any Tiered Glass", 1007, true)
-            .addStructureInfo("The glass tier limits the Energy Input tier")
+            .addStructureInfo("gt.mebf.info")
             .addEnergyHatch("Any bottom layer Casing")
             .addMaintenanceHatch("Any bottom layer Casing")
-            .addMufflerHatch("Top middle")
+            .addMufflerHatch("gt.ebf.info.muffler")
             .addInputBus("Any bottom layer Casing")
             .addInputHatch("Any bottom layer Casing")
             .addOutputBus("Any bottom layer Casing")
             .addOutputHatch("Any Heat Proof Machine Casing")
-            .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
+            .addStructureHint("GT5U.MBTT.Structure.MegaNoFullDisplay")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();

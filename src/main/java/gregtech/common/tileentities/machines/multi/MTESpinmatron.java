@@ -17,7 +17,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static net.minecraft.util.EnumChatFormatting.BOLD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,8 +28,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -375,109 +372,48 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gt.blockcasings12.9.name");
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Centrifuge")
-            .addInfo(
-                "3 Modes: " + EnumChatFormatting.LIGHT_PURPLE
-                    + "Light"
-                    + EnumChatFormatting.GRAY
-                    + " | "
-                    + EnumChatFormatting.GOLD
-                    + "Standard"
-                    + EnumChatFormatting.GRAY
-                    + " | "
-                    + EnumChatFormatting.GREEN
-                    + "Heavy")
-
-            .addInfo("Overclocks limited to " + EnumChatFormatting.WHITE + "Hatch Tier + 1")
-            .addSupportAny()
+        tt.addMachineType("gt.recipe.centrifuge")
+            .addInfo("gt.spinmatron.tips.1")
+            .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .addSeparator()
-            .addInfo(
-                "Gains " + EnumChatFormatting.WHITE
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " Turbine Slots per Structure Tier")
+            .addInfo("gt.spinmatron.tips.2")
             .addDynamicParallelInfo(4, TooltipTier.TURBINE)
-            .addInfo("Non-Huge Turbines have reduced effectiveness...")
+            .addInfo("gt.spinmatron.tips.3")
             .addStaticSpeedInfo(3f)
             .addStaticEuEffInfo(0.7f)
-            .addInfo(
-                "Requires Recipe Tier * " + EnumChatFormatting.BLUE
-                    + "10L/s"
-                    + EnumChatFormatting.GRAY
-                    + " of "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Kerosene"
-                    + EnumChatFormatting.GRAY
-                    + " to operate by default")
-            .addInfo(
-                "Supply " + EnumChatFormatting.DARK_PURPLE
-                    + "Biocatalyzed Propulsion Fluid"
-                    + EnumChatFormatting.GRAY
-                    + " instead for a "
-                    + EnumChatFormatting.WHITE
-                    + "1.25x "
-                    + EnumChatFormatting.GRAY
-                    + "Parallel multiplier")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + "Light Mode"
-                    + EnumChatFormatting.GRAY
-                    + ": +"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "100%"
-                    + EnumChatFormatting.GRAY
-                    + " Speed Bonus, "
-                    + "Maximum Recipe Tier is "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Voltage Tier - 3")
-            .addInfo(EnumChatFormatting.GOLD + "Standard Mode" + EnumChatFormatting.GRAY + ": No Changes")
-            .addInfo(
-                EnumChatFormatting.GREEN + "Heavy Mode"
-                    + EnumChatFormatting.GRAY
-                    + ": Divides Parallels by "
-                    + EnumChatFormatting.GREEN
-                    + "32"
-                    + EnumChatFormatting.GRAY
-                    + ", Requires T3+ Structure and "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Biocatalyzed Propulsion Fluid")
-            .addInfo("Multiplies EU Cost by " + EnumChatFormatting.RED + "16")
-            .addInfo(
-                "Some recipes " + EnumChatFormatting.RED + BOLD + "require" + EnumChatFormatting.GREEN + " Heavy Mode")
-
-            .addSeparator()
-            .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
+            .addInfo("gt.spinmatron.tips.4")
             .beginStructureBlock(17, 17, 17, false)
             .addController("Front center, 9th layer")
-            .addCasing("550-712", "Vibration Safe Casing", false)
+            .addCasing("550-712", "gt.blockcasings12.9.name", false)
             .addCasing("264", "SC Turbine Casing", false)
             .addCasing("160", "PBI Pipe Casing", false)
-            .addCasing("144", "Chamber Grate", false)
+            .addCasing("144", "gt.blockglass1.6.name", false)
             .addCasing("81", "Any Tiered Glass", false)
-            .addCasing("54", "IsaMill Gearbox", false)
+            .addCasing("54", "gtplusplus.blockcasings.5.2.name", false)
             .addCasing("24", "Turbine Shaft", false)
-            .addCasing("8", "Rotor Assembly", false)
-            .addEnergyHatch("1+", "Any vibration safe casing", 1)
-            .addMaintenanceHatch("1", "Any vibration safe casing", 1)
-            .addInputAny("1+", "Any vibration safe casing", 1)
-            .addOutputAny("1+", "Any vibration safe casing", 1)
+            .addCasing("8", "GTPP.tooltip.structure.rotor_assembly", false)
+            .addEnergyHatch("1+", "GT5U.MBTT.Position.AnyVibrationSafeCasing", 1)
+            .addMaintenanceHatch("1", "GT5U.MBTT.Position.AnyVibrationSafeCasing", 1)
+            .addInputAny("1+", "GT5U.MBTT.Position.AnyVibrationSafeCasing", 1)
+            .addOutputAny("1+", "GT5U.MBTT.Position.AnyVibrationSafeCasing", 1)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
-            .addCasing("56", "Block of Naquadah Alloy", false)
-            .addCasing("9", "Pikyonium 64B Frame Box", false)
+            .addStructureInfo("GT5U.MBTT.Tiers.One")
+            .addCasing("56", "GT5U.MBTT.Part.NaquadahAlloyBlock", false)
+            .addCasing("9", "block.Pikyonium64B.frame.name", false)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
-            .addCasing("56", "Cosmic Neutronium Block", false)
+            .addStructureInfo("GT5U.MBTT.Tiers.Two")
+            .addCasing("56", "GT5U.MBTT.Part.CosmicNeutroniumBlock", false)
             .addCasing("9", "Neutronium Frame Box", false)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Three"))
-            .addCasing("56", "Infinity Block", false)
+            .addStructureInfo("GT5U.MBTT.Tiers.Three")
+            .addCasing("56", "GT5U.MBTT.Part.InfinityBlock", false)
             .addCasing("9", "Infinity Frame Box", false)
             .addStructureInfo("")
-            .addStructureFooter("Rotors go in the controller, not the rotor assemblies")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .addStructureFooter("GT5U.MBTT.Note.RotorsGoInController")
+            .addMasterChannel("channels.gregtech.master.structuretier")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

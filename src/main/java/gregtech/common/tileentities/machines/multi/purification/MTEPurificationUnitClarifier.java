@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -169,50 +167,22 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit, CPU")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.BOLD
-                    + "Water Tier: "
-                    + EnumChatFormatting.WHITE
-                    + formatNumber(getWaterTier())
-                    + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work")
-            .addSeparator()
-            .addInfo("Requires a filter made of Activated Carbon to work")
-            .addInfo(
-                "Every cycle, has a " + EnumChatFormatting.RED
-                    + formatNumber(FILTER_DAMAGE_RATE)
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " chance to destroy the filter")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "The first step to acquiring purified water is to filter out macroscopic contaminants through the")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "use of large physical filters. As more contaminants are captured, the efficacy of the filter")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "decreases so continual replacements must be supplied to maintain full function of the Clarifier.")
+        tt.addMachineType("machtype.purif_unit")
+            .addInfo("gt.pu_clarifier.tips", formatNumber(getWaterTier()), formatNumber(FILTER_DAMAGE_RATE))
             .beginStructureBlock(11, 4, 11, false)
             .addController("Front center, 2nd layer")
             .addCasing("123-128", "Reinforced Sterile Water Plant Casing", false)
             .addCasing("21", "Filter Machine Casing", false)
-            .addCasing("12", "Iridium Frame Box", false)
+            .addCasing("12", "GT5U.MBTT.Part.IridiumFrameBox", false)
             .addCasing("12", "Damascus Steel Frame Box", false)
             .addCasing("3", "PTFE Pipe Casing", false)
-            .addInputBus("1+", "Any center side casing", 1)
-            .addInputHatch("1+", "Any center side casing", 1)
-            .addOutputBus("0+", "Any center side casing", 1)
-            .addOutputHatch("1+", "Any center side casing", 1)
+            .addInputBus("1+", "GT5U.MBTT.Position.AnyCenterSideCasing", 1)
+            .addInputHatch("1+", "GT5U.MBTT.Position.AnyCenterSideCasing", 1)
+            .addOutputBus("0+", "GT5U.MBTT.Position.AnyCenterSideCasing", 1)
+            .addOutputHatch("1+", "GT5U.MBTT.Position.AnyCenterSideCasing", 1)
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
+            .addStructureFooter("GT5U.MBTT.Structure.WaterFree")
+            .addStructureFooter("GT5U.MBTT.Structure.DataStick.Waterline")
             .toolTipFinisher();
         return tt;
     }

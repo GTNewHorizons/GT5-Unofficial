@@ -165,52 +165,31 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Circuit Assembler, CAL")
-            .addInfo("Change Mode with Screwdriver")
+        tt.addMachineType("machtype.cal")
+            .addInfo("gt.cal.tips.1")
             .addPerfectOCInfo()
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.0") + ":")
-            .addInfo("Imprint this machine with a Circuit Imprint,")
-            .addInfo("by putting the imprint in the controller")
-            .addInfo("Every Circuit Assembly Line can only be imprinted ONCE")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.1") + ":")
-            .addInfo(
-                "Does Circuit Assembler recipes, Minimum Length: " + EnumChatFormatting.RED
-                    + MINIMUM_CIRCUIT_ASSEMBLER_LENGTH
-                    + EnumChatFormatting.GRAY)
-            .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1")
-            .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation")
+            .addInfo("gt.cal.tips.2", "chat.cal.mode.0", "chat.cal.mode.1", MINIMUM_CIRCUIT_ASSEMBLER_LENGTH)
             .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
-            .addController("First slice, 3rd layer")
-            .addEnergyHatch("1", "Any layer 3 casing", 3)
-            .addMaintenanceHatch("1", "Any layer 1 side casing", 1)
-            .addInputBus("1-6", "Bottom center of each slice", 2)
-            .addInputHatch("1", "Any layer 1 side casing", 1)
-            .addOutputBus("1", "Bottom center of last slice", 2)
+            .addController("gt.cal.controller")
+            .addEnergyHatch("1", "gt.cal.info.e_hatch", 3)
+            .addMaintenanceHatch("1", "gt.asslike.info.i_hatch", 1)
+            .addInputBus("1-6", "gt.asslike.info.i_bus", 2)
+            .addInputHatch("1", "gt.asslike.info.i_hatch", 1)
+            .addOutputBus("1", "gt.cal.info.o_bus", 2)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("4", "Grate Machine Casing", false)
-            .addCasing("4", "EV+ Tiered Glass", false)
-            .addCasing("2", "Solid Steel Machine Casing", false)
-            .addCasing("2", "Assembly Line Casing", false)
+            .addStructureInfo("GT5U.MBTT.Structure.Base")
+            .addCasing("4", "gt.cal.casing.grate", false)
+            .addCasing("4", "gt.cal.casing.glass", false)
+            .addCasing("2", "gt.cal.casing.steel", false)
+            .addCasing("2", "gt.cal.casing.assembly_line", false)
             .addStructureInfo("")
-            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 3: "
-                    + EnumChatFormatting.GRAY
-                    + "Grate Machine Casing, Grate Machine Casing, Grate Machine Casing")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 2: "
-                    + EnumChatFormatting.GRAY
-                    + "EV+ Tiered Glass, Assembly Line Casing, EV+ Tiered Glass")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 1: "
-                    + EnumChatFormatting.GRAY
-                    + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+            .addStructureInfo("GT5U.MBTT.Structure.Slice")
+            .addStructureInfo("gt.cal.structure.layer3")
+            .addStructureInfo("gt.cal.structure.layer2")
+            .addStructureInfo("gt.cal.structure.layer1")
             .addStructureInfo("")
-            .addStructureFooter("Up to 7 total slices, each one allows for 1 more item in recipes")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
+            .addStructureFooter("gt.cal.structure.footer")
+            .addMasterChannel("channels.gregtech.master.length")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

@@ -140,20 +140,16 @@ public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegac
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Steam Turbine, LST-SC")
+        tt.addMachineType("machtype.sc_turbine")
             .addStructureDeprecatedLine()
-            .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Use Supercritical Steam to generate power")
-            .addInfo("Outputs 1L of SH Steam per 1L of SC Steam as well as producing power")
-            .addInfo("Power output depends on turbine and fitting")
-            .addInfo("Use screwdriver to adjust fitting of turbine")
+            .addInfo("gt.sc_turbine.tips")
             .beginStructureBlock(3, 3, 4, true)
-            .addController("Front center")
+            .addController("front_center")
             .addCasingInfoMin("SC Turbine Casing", 24, false)
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Side centered", 2)
-            .addInputHatch("Supercritical Fluid, Side centered", 2)
-            .addOutputHatch("Superheated Steam, Side centered", 2)
+            .addDynamoHatch("gt.mbtt.structure.back_center", 1)
+            .addMaintenanceHatch("gt.sc_turbine.info.maintenance", 2)
+            .addInputHatch("gt.sc_turbine.info.i_hatch", 2)
+            .addOutputHatch("gt.sc_turbine.info.o_hatch", 2)
             .toolTipFinisher();
         return tt;
     }

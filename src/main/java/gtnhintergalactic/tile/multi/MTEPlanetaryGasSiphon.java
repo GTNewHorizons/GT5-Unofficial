@@ -222,29 +222,26 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.type"));
+        tt.addMachineType("gt.blockmachines.multimachine.ig.siphon.type");
         if (TooltipUtil.siphonLoreText != null) {
             tt.addInfo(EnumChatFormatting.ITALIC + TooltipUtil.siphonLoreText);
         }
-        tt.addInfo(
-            StatCollector.translateToLocalFormatted(
-                "gt.blockmachines.multimachine.ig.siphon.desc0",
-                (int) (SPEED_PER_COIL * 100)));
-        tt.addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc1"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc2"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc3"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc4"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc5"))
+        tt.addInfo("gt.blockmachines.multimachine.ig.siphon.desc0", (int) (SPEED_PER_COIL * 100));
+        tt.addInfo("gt.blockmachines.multimachine.ig.siphon.desc1")
+            .addInfo("gt.blockmachines.multimachine.ig.siphon.desc2")
+            .addInfo("gt.blockmachines.multimachine.ig.siphon.desc3")
+            .addInfo("gt.blockmachines.multimachine.ig.siphon.desc4")
+            .addInfo("gt.blockmachines.multimachine.ig.siphon.desc5")
             .beginStructureBlock(13, 23, 13, false)
-            .addController(StatCollector.translateToLocal("ig.siphon.structure.ControllerPos"))
-            .addCasing("184", StatCollector.translateToLocal("ig.siphon.structure.SiphonCasing"), false)
-            .addCasing("93", StatCollector.translateToLocal("ig.siphon.structure.FrameTungstensteel"), false)
+            .addController("ig.siphon.structure.ControllerPos")
+            .addCasing("184", "ig.siphon.structure.SiphonCasing", false)
+            .addCasing("93", "ig.siphon.structure.FrameTungstensteel", false)
             .addCasing("12", "Heating Coil", true)
-            .addCasing("6", StatCollector.translateToLocal("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"), false)
-            .addEnergyHatch("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addInputBus("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addOutputHatch("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addCasing("6", "ig.siphon.structure.ReboltedRhodiumPalladiumCasing", false)
+            .addEnergyHatch("1", "ig.siphon.structure.AnySiphonCasing", 1)
+            .addMaintenanceHatch("1", "ig.siphon.structure.AnySiphonCasing", 1)
+            .addInputBus("1", "ig.siphon.structure.AnySiphonCasing", 1)
+            .addOutputHatch("1", "ig.siphon.structure.AnySiphonCasing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")

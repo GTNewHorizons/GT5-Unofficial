@@ -42,7 +42,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -791,57 +790,15 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Stellar Forge")
-            .addInfo(EnumChatFormatting.ITALIC + "Also known as Godforge or Gorge for short")
-            .addSeparator(EnumChatFormatting.AQUA, 73)
-            .addInfo("A massive structure harnessing the thermal, gravitational and")
-            .addInfo("kinetic energy of a stabilised neutron star for material processing")
-            .addInfo(
-                "This multiblock can house " + EnumChatFormatting.RED
-                    + "up to 16 modules "
-                    + EnumChatFormatting.GRAY
-                    + "which utilize the star to energize materials")
-            .addInfo("to varying degrees, ranging from regular smelting to matter degeneration")
-            .addInfo("EU requirements for all modules are handled via wireless energy directly")
-            .addSeparator(EnumChatFormatting.AQUA, 73)
-            .addInfo(
-                "This multiblock has an " + EnumChatFormatting.GOLD
-                    + "extensive upgrade tree "
-                    + EnumChatFormatting.GRAY
-                    + "which influences all of its functions,")
-            .addInfo(
-                "such as " + EnumChatFormatting.GOLD
-                    + "unlocking new module types"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.GOLD
-                    + "increasing heat levels "
-                    + EnumChatFormatting.GRAY
-                    + "and "
-                    + EnumChatFormatting.GOLD
-                    + "granting")
-            .addInfo(
-                EnumChatFormatting.GOLD + "various processing speed bonuses"
-                    + EnumChatFormatting.GRAY
-                    + ". "
-                    + EnumChatFormatting.GRAY
-                    + "These upgrades can be unlocked by reaching")
-            .addInfo("certain milestones and/or spending materials")
-            .addSeparator(EnumChatFormatting.AQUA, 73)
-            .addInfo(
-                EnumChatFormatting.GREEN
-                    + "Clicking on the logo in the controller gui opens an extensive information window"
-                    + EnumChatFormatting.GRAY
-                    + ",")
-            .addInfo("explaining everything there is to know about this multiblock")
+        tt.addMachineType("machtype.forge_of_gods")
+            .addInfo("gt.forge_of_gods.tips")
             .beginStructureBlock(127, 29, 186, true)
-            .addController("Front center, 15th layer")
+            .addController("front_center")
             .addInputHatch("1", "Around controller", 1)
             .addInputBus("1", "Around controller", 1)
-            .addOutputBus("1", "Around controller (ME only)", 1)
+            .addMiscHatch("1", "gt.blockmachines.hatch.output_bus.me.name", "Around controller", 1)
             .addStructureInfo("")
-            .addStructureInfo(
-                StatCollector.translateToLocal("GT5U.MBTT.Structure.Base") + EnumChatFormatting.AQUA + " (T1)")
+            .addStructureInfo("%s%s (T1)", "GT5U.MBTT.Structure.Base", EnumChatFormatting.AQUA)
             .addCasing("3949", "Transcendentally Amplified Magnetic Confinement Casing", false)
             .addCasing("2799-2815", "Singularity Reinforced Stellar Shielding Casing", false)
             .addCasing("345", "Remote Graviton Flow Modulator", false)
@@ -851,7 +808,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addCasing("9", "Spatially Transcendent Gravitational Lens Block", false)
             .addMiscHatch("0-8", "Forge of the Gods Module", "Any side center shielding casing", 2)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Second Ring" + EnumChatFormatting.AQUA + " (T2)")
+            .addStructureInfo("gt.forge_of_gods.info.ring2")
             .addCasing("3336", "Transcendentally Amplified Magnetic Confinement Casing", false)
             .addCasing("2012", "Singularity Reinforced Stellar Shielding Casing", false)
             .addCasing("357", "Medial Graviton Flow Modulator", false)
@@ -860,7 +817,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addCasing("14", "Boundless Gravitationally Severed Structure Casing", false)
             .addMiscHatch("0-12", "Forge of the Gods Module", "Any side center shielding casing", 2)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Third Ring" + EnumChatFormatting.AQUA + " (T3)")
+            .addStructureInfo("gt.forge_of_gods.info.ring3")
             .addCasing("3728", "Transcendentally Amplified Magnetic Confinement Casing", false)
             .addCasing("1736", "Singularity Reinforced Stellar Shielding Casing", false)
             .addCasing("397", "Central Graviton Flow Modulator", false)
@@ -869,23 +826,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addCasing("14", "Boundless Gravitationally Severed Structure Casing", false)
             .addMiscHatch("0-16", "Forge of the Gods Module", "Any side center shielding casing", 2)
             .addStructureInfo("")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.rings"))
+            .addMasterChannel("channels.gregtech.master.rings")
             .toolTipFinisher();
         return tt;
     }
 
     private static String getRingText(String oneRing, String twoRings, String threeRings) {
-        return EnumChatFormatting.DARK_PURPLE + oneRing
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.DARK_GREEN
-            + twoRings
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.AQUA
-            + threeRings
-            + EnumChatFormatting.GRAY
-            + " ";
+        return "§5" + oneRing + "§7/§2" + twoRings + "§7/§b" + threeRings + "§7 ";
     }
 
     @Override

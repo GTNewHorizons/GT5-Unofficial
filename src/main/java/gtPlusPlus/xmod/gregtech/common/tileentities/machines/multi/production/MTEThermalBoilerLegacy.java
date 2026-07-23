@@ -20,7 +20,6 @@ import javax.annotation.Nullable;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -275,12 +274,9 @@ public class MTEThermalBoilerLegacy extends GTPPMultiBlockBase<MTEThermalBoilerL
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addStructureDeprecatedLine()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc2"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc3"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc4"))
+            .addInfo("gt.thermal_boiler.tips")
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
+            .addController("front_center")
             .addCasingInfoMin("Thermal Containment Casing", 10, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)

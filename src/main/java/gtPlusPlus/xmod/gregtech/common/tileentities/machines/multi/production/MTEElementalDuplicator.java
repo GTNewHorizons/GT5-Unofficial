@@ -76,7 +76,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
 
     @Override
     public String getMachineType() {
-        return "Replicator";
+        return "gt.recipe.replicator";
     }
 
     @Override
@@ -84,14 +84,13 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
 
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Produces raw elements from UU-Matter")
+            .addInfo("gt.duplicator.tips.1")
             .addBulkMachineInfo(8, 2f, 1f)
-            .addInfo("Maximum 1x Data Orb Repository")
-            .addInfo("The programmed circuit selects which Data Orb to use (1-16)")
+            .addInfo("gt.duplicator.tips.2")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 6, 9, true)
-            .addController("Top center, 6th layer")
+            .addController("top_center")
             .addCasing("120-139", "Elemental Confinement Shell", false)
             .addCasing("24", "Particle Containment Casing", false)
             .addCasing("24", "Matter Fabricator Casing", false)
@@ -99,11 +98,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addCasing("24", "Resonance Chamber III", false)
             .addCasing("20", "High Voltage Current Capacitor", false)
             .addCasing("16", "Modulator III", false)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
-                "Any confinement shell",
-                1)
+            .addMiscHatch("1", "GTPP.tooltip.structure.data_orb_repository", "Any confinement shell", 1)
             .addEnergyHatch("1+", "Any confinement shell", 1)
             .addMaintenanceHatch("1", "Any confinement shell", 1)
             .addMufflerHatch("1", "Any confinement shell", 1)

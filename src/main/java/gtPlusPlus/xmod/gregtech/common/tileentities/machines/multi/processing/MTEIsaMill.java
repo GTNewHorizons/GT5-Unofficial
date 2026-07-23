@@ -21,7 +21,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -87,16 +86,18 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo(EnumChatFormatting.GREEN + "G.O.G, Grinds Ores Good")
+            .addInfo("gt.isamill.tips.1")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addInfo(EnumChatFormatting.GREEN + "It'sa mill!")
+            .addInfo("gt.isamill.tips.2")
             .beginStructureBlock(3, 3, 7, false)
-            .addController("Front center, 2nd layer")
+            .addController("front_center")
             .addCasing("40-43", "IsaMill Exterior Casing", false)
             .addCasing("8", "IsaMill Piping", false)
-            .addCasing("5", "IsaMill Gearbox", false)
-            .addMiscHatch("1", "Ball Housing", "Any casing", 1)
+            .addStructureInfo("gt.isamill.info.piping")
+            .addCasing("5", "gtplusplus.blockcasings.5.2.name", false)
+            .addStructureInfo("gt.isamill.info.gearbox")
+            .addMiscHatch("1", "gt.blockmachines.hatch.milling.name", "Any casing", 1)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addMufflerHatch("1", "Any casing", 1)
@@ -388,7 +389,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
     @Override
     public String getMachineType() {
-        return "Grinding Machine, IGM";
+        return "machtype.isamill";
     }
 
     public int getMaxBallDurability(ItemStack aStack) {

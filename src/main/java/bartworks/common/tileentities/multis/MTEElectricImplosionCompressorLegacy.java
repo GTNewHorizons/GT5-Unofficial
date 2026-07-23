@@ -215,37 +215,23 @@ public class MTEElectricImplosionCompressorLegacy
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Implosion Compressor, EIC")
+        tt.addMachineType("machtype.eic")
             .addStructureDeprecatedLine()
-            .addInfo("Explosions are fun!")
-            .addInfo("Uses electricity instead of Explosives")
-            .addInfo(
-                EnumChatFormatting.GOLD + "Parallels"
-                    + EnumChatFormatting.GRAY
-                    + " are determined by "
-                    + EnumChatFormatting.WHITE
-                    + "Containment Block"
-                    + EnumChatFormatting.GRAY
-                    + " Tier")
-            .addInfo(createParallelText(EnumChatFormatting.WHITE, "Neutronium", 1))
-            .addInfo(createParallelText(EnumChatFormatting.RED, "Infinity", 4))
-            .addInfo(createParallelText(EnumChatFormatting.DARK_GRAY, "Transcendent Metal", 16))
-            .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
-            .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
+            .addInfo("gt.eic.tips")
             .addMaxTierSkips(1)
             .addSupportAny()
             .beginStructureBlock(3, 9, 3, false)
-            .addController("Front center, 3rd layer")
-            .addCasingInfoMin("Solid Steel Machine Casing", 8, false)
-            .addStructureInfo("Casings can be replaced with Explosion Hazard Signs")
-            .addOtherStructurePart("Transformer-Winding Block", "Outer layer 2,3,7,8")
-            .addOtherStructurePart("Nickel-Zinc-Ferrite Block", "Inner layer 2,3,7,8")
-            .addOtherStructurePart("Containment Block", "Layer 4,5,6")
-            .addMaintenanceHatch("Any Solid Steel Machine Casing", 1)
-            .addInputBus("Any Solid Steel Machine Casing", 1)
-            .addInputHatch("Any Solid Steel Machine Casing", 1)
-            .addOutputBus("Any Solid Steel Machine Casing", 1)
-            .addEnergyHatch("Bottom middle and/or top middle", 2)
+            .addController("front_center_layer3")
+            .addCasingInfoMin("gt.eic.casing.steel", 8, false)
+            .addStructureInfo("gt.eic.info.replacement")
+            .addStructurePart("gt.eic.casing.winding", "gt.eic.info.casing.a")
+            .addStructurePart("gt.eic.casing.ferrite", "gt.eic.info.casing.b")
+            .addStructurePart("GT5U.tooltip.structure.kaboom_containment", "gt.eic.info.casing.c")
+            .addMaintenanceHatch("gt.eic.pos.steel", 1)
+            .addInputBus("gt.eic.pos.steel", 1)
+            .addInputHatch("gt.eic.pos.steel", 1)
+            .addOutputBus("gt.eic.pos.steel", 1)
+            .addEnergyHatch("gt.eic.info.e_hatch", 2)
             .addSubChannel(GTStructureChannels.EIC_PISTON)
             .toolTipFinisher();
         return tt;

@@ -21,7 +21,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -82,17 +81,16 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("Coke Oven")
-            .addInfo("Turns coal into coke and produces creosote oil")
-            .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
+        return new MultiblockTooltipBuilder().addMachineType("gt.recipe.cokeoven")
+            .addInfo("gt.mb_coke_oven.tips")
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
-            .addCasing("0-26", "Coke Oven Bricks", false)
-            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch"), "Any coke oven brick", 1)
+            .addCasing("0-26", "gt.mb_coke_oven.casing", false)
+            .addMiscHatch("0+", "GT5U.MBTT.CokeOvenHatch", "gt.mb_coke_oven.info.hatch", 1)
             .addAir("Interior of the structure")
             .addStructureInfo("")
-            .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
-            .addStructureFooter("to save on blocks, casings, glass, buses/hatches, etc.")
+            .addStructureFooter("GT5U.MBTT.Note.WallshareSides")
+            .addStructureFooter("GT5U.MBTT.Note.WallshareSavings")
             .toolTipFinisher(AuthorJulia);
     }
 

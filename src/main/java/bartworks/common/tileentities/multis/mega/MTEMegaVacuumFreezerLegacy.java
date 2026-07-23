@@ -36,6 +36,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -65,7 +66,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasingsAbstract;
 
 public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuumFreezerLegacy>
@@ -235,66 +235,35 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Vacuum Freezer, MVF")
+        tt.addMachineType("machtype.mvf")
             .addStructureDeprecatedLine()
-            .addInfo(
-                TooltipHelper.coloredText(
-                    TooltipHelper.italicText("\"Handles all things cooling!\""),
-                    EnumChatFormatting.DARK_GRAY))
+            .addInfo("gt.mvf.flavor")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addSeparator()
             .addSupportAny()
             .addUnlimitedTierSkips()
-            .addSeparator()
-            .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.DARK_AQUA + "Subspace Cooling.")
             .addInfo(
-                "Will gain " + EnumChatFormatting.GOLD
-                    + "perfect overclocks "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.GREEN
-                    + "consuming "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "coolants:")
-            .addInfo(getCoolantTextFormatted("Molten Spacetime", "75", 1))
-            .addInfo(getCoolantTextFormatted("Spatially Enlarged Fluid", "50", 2))
-            .addInfo(getCoolantTextFormatted("Molten Eternity", "25", 3))
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.DARK_AQUA + "Reinforcing the structure allows the injection of exotic coolants,")
-            .addInfo(
-                EnumChatFormatting.DARK_AQUA + "enabling the capture of heat energy from miniature tears in spacetime,")
-            .addInfo(EnumChatFormatting.DARK_AQUA + "massively increasing the efficiency of the cooling process.")
+                "gt.mvf.tips",
+                Materials.SpaceTime.getLocalizedName(),
+                FluidRegistry.getFluid("spatialfluid")
+                    .getLocalizedName(),
+                Materials.Eternity.getLocalizedName())
             .beginStructureBlock(15, 15, 15, true)
-            .addController("Front center")
+            .addController("front_center")
             .addEnergyHatch("Any Frost Proof Machine Casing", 1)
             .addMaintenanceHatch("Any Frost Proof Machine Casing", 1)
             .addInputHatch("Any Frost Proof Machine Casing", 1)
             .addOutputHatch("Any Frost Proof Machine Casing", 1)
             .addInputBus("Any Frost Proof Machine Casing", 1)
             .addOutputBus("Any Frost Proof Machine Casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Base Multi (Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 1
-                    + EnumChatFormatting.BLUE
-                    + "):")
+            .addStructureInfo("gt.mvf.info.t1_multi")
             .addCasingInfoMinColored(
                 "Frost Proof Machine Casing",
                 EnumChatFormatting.GRAY,
                 800,
                 EnumChatFormatting.GOLD,
                 false)
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 2
-                    + EnumChatFormatting.BLUE
-                    + " (Upgrades from Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 1
-                    + EnumChatFormatting.BLUE
-                    + "):")
+            .addStructureInfo("gt.mvf.info.t2_multi")
             .addCasingInfoMinColored(
                 "Frost Proof Machine Casing",
                 EnumChatFormatting.GRAY,

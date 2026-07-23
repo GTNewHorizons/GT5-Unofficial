@@ -1,10 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.UNDERLINE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.casing.Casings.RadiationProofMachineCasing;
@@ -206,35 +203,22 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Decay Warehouse")
-            .addInfo("Stores a single type of radioactive isotope and allows it to decay over time")
-            .addInfo("Decay speed is dependent on the isotopes' half-lives (lower is faster)")
-            .addInfo("Isotopes decay regardless of whether the warehouse is on or powered")
-            .addSeparator()
-            .addInfo(
-                "The warehouse's capacity equals the super chest's capacity divided by " + BLUE
-                    + CAPACITY_DIVISOR
-                    + GRAY
-                    + ".")
-            .addInfo("The warehouse will pull in up to " + BLUE + "N / " + EU_PER_IO + GRAY + " items per second,")
-            .addInfo("where " + BLUE + "N" + GRAY + " is the warehouse's EU input (standard energy hatch rules)")
-            .addSeparator()
-            .addInfo("Right click the controller with a screwdriver to dump stored isotopes into the output bus")
-            .addInfo("Right click the controller with a plunger to empty it")
-            .addInfo(
-                "The warehouse's contents are " + RED + UNDERLINE + "voided" + GRAY + " when the controller is broken")
-            .beginStructureBlock(5, 3, 5, true)
+
+        tt.addMachineType("machtype.decay_warehouse")
+            .addInfo("gt.decay_warehouse.tips", CAPACITY_DIVISOR, EU_PER_IO);
+
+        tt.beginStructureBlock(5, 3, 5, true)
             .addController("Front center, 2nd layer")
-            .addCasing("48-52", "Radiation Proof Machine Casing", false)
+            .addCasing("48-52", "gt.blockcasings3.12.name", false)
             .addCasing("17", "Water", false)
-            .addCasing("1", "Super/Quantum Chest", true)
+            .addCasing("1", "GT5U.MBTT.SuperChest", true)
             .addEnergyHatch("1", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addInputBus("1", "Any casing", 1)
             .addOutputBus("1", "Any casing", 1)
             .addStructureInfo("")
-            .addStructureFooter("The water is a one-time-cost to prime the machine, place manually")
-            .addStructureFooter("Do not insert isotopes into the super/quantum chest")
+            .addStructureFooter("GT5U.MBTT.Note.ManuallyPrimeWater")
+            .addStructureFooter("GT5U.MBTT.Note.NoIsotopesInSuperChest")
             .addSubChannel(GTStructureChannels.SUPER_CHEST)
             .toolTipFinisher();
         return tt;

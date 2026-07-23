@@ -17,7 +17,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -124,42 +123,30 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.desc1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.desc2"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.desc3"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.desc4"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.desc5"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.desc6"))
+            .addInfo("gt.multiblock.AdvHeatExchanger.desc1")
+            .addInfo("gt.multiblock.AdvHeatExchanger.desc2")
+            .addInfo("gt.multiblock.AdvHeatExchanger.desc3")
+            .addInfo("gt.multiblock.AdvHeatExchanger.desc4")
+            .addInfo("gt.multiblock.AdvHeatExchanger.desc5")
+            .addInfo("gt.multiblock.AdvHeatExchanger.desc6")
             .addSeparator()
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.AdvHeatExchanger.lava",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.AdvHeatExchanger.hotcoolant",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.AdvHeatExchanger.hotsolarsalt",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
+            .addInfo("gt.multiblock.AdvHeatExchanger.lava", getFluidUnit(), getFluidUnit(), getFluidUnit())
+            .addInfo("gt.multiblock.AdvHeatExchanger.hotcoolant", getFluidUnit(), getFluidUnit(), getFluidUnit())
+            .addInfo("gt.multiblock.AdvHeatExchanger.hotsolarsalt", getFluidUnit(), getFluidUnit(), getFluidUnit())
             .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.throttle1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.throttle2"))
+            .addInfo("gt.multiblock.AdvHeatExchanger.throttle1")
+            .addInfo("gt.multiblock.AdvHeatExchanger.throttle2")
             .beginStructureBlock(5, 9, 5, false)
-            .addController("Front center, 4th layer")
+            .addController("gt.wwxl.info.controller")
             .addCasing("90-96", "Reinforced Heat Exchanger Casing", false)
             .addCasing("45", "Tungstensteel Pipe Casing", false)
+            .addStructureInfo("gt.wwxl.info.casing")
             .addCasing("16", "Talonite Frame Box", false)
             .addMaintenanceHatch("1", "Any bottom edge casing", 1)
-            .addInputHatch("2+", "Any bottom center casing (hot fluid), any bottom edge casing (distilled water)", 1, 2)
-            .addOutputHatch("2+", "Any top center casing (cool fluid), any bottom edge casing (steam)", 1, 3)
+            .addInputHatch("1+", "gt.wwxl.info.i_hatch.1", 2)
+            .addInputHatch("1+", "gt.wwxl.info.i_hatch.2", 1)
+            .addOutputHatch("1+", "gt.wwxl.info.o_hatch.1", 3)
+            .addOutputHatch("1+", "gt.wwxl.info.o_hatch.2", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -379,7 +366,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
 
     @Override
     public String getMachineType() {
-        return "Heat Exchanger, WWXL";
+        return "machtype.wwxl";
     }
 
     @Override

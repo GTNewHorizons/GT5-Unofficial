@@ -22,7 +22,7 @@ public interface IOutputHatch {
 
     /**
      * Attempt to store as many fluids as possible into the internal inventory of this output Hatch.
-     * 
+     *
      * @param stack    The stack to insert. Will be modified by this method (will contain whatever fluids could not be
      *                 inserted; stackSize will be 0 when everything was inserted).
      * @param simulate When true this Hatch will not be modified.

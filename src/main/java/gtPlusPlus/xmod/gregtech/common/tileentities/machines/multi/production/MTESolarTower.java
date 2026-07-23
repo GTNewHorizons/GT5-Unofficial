@@ -15,7 +15,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -78,42 +77,29 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
 
     @Override
     public String getMachineType() {
-        return "Solar Tower";
+        return "machtype.solar_tower";
     }
 
     @Override
     protected final MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Contributing Green Energy towards the future")
-            .addInfo("Surround with rings of Solar Reflectors")
-            .addInfo("The Reflectors increase the internal heat value of the Tower (see below for formula)")
-            .addInfo("Each Reflector ring increases tier, the first ring is required for the Tower to work")
-            .addInfo("Input: " + MaterialMisc.SOLAR_SALT_COLD.getDefaultLocalName())
-            .addInfo("Output: " + MaterialMisc.SOLAR_SALT_HOT.getDefaultLocalName())
-            .addInfo("Every cycle (10 seconds), heat increases and all the Cold Solar Salt is heated")
-            .addInfo("Converting Cold to Hot Solar Salt reduces heat, equal to the amount converted")
-            .addInfo("This conversion only happens if heat >= 30000 and controller efficiency = 100%")
-            .addInfo("If there's more Cold Salt than heat, all the heat is used up and returns to 0")
-            .addInfo("The heat increase is most efficient at exactly half of maximum heat")
-            .addInfo("Minimum efficiency at 0 or 100000 heat, maximum efficiency at 50000")
-            .addInfo("Heat Efficiency formula: ( 7000 - [|currentHeat - 50000| ^ 0.8]) / 7000")
-            .addInfo("Heat gain per cycle: numberHeaters * heatEfficiency * (10 + bonus)")
-            .addInfo("Bonus: 1 ring  = +1, 2 rings = +2, 3 rings = +4, 4 rings = +8, 5 rings = +16")
-            .addInfo("Total number of reflectors based on how many rings are built:")
-            .addInfo("1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340")
+            .addInfo(
+                "gt.solar_tower.tips",
+                MaterialMisc.SOLAR_SALT_COLD.getDefaultLocalName(),
+                MaterialMisc.SOLAR_SALT_HOT.getDefaultLocalName())
             .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
-            .addController("Top center, 28th layer")
+            .addController("top_center")
             .addCasing("36/88/156/240/340", "Solar Reflector", false)
             .addCasing("229-250", "Structural Solar Casing", false)
             .addCasing("66", "Salt Containment Casing", false)
             .addCasing("60", "Thermal Containment Casing", false)
             .addCasing("60", "Thermally Insulated Casing", false)
-            .addMaintenanceHatch("1", "Any bottom side casing", 2)
-            .addInputHatch("1+", "Any bottom side casing", 2)
-            .addOutputHatch("1+", "Any bottom side casing", 2)
+            .addMaintenanceHatch("1", "gt.solar_tower.info.hatch", 2)
+            .addInputHatch("1+", "gt.solar_tower.info.hatch", 2)
+            .addOutputHatch("1+", "gt.solar_tower.info.hatch", 2)
             .addStructureInfo("")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.rings"))
+            .addMasterChannel("channels.gregtech.master.rings")
             .toolTipFinisher();
         return tt;
     }

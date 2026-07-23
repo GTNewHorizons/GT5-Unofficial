@@ -226,18 +226,19 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Charcoal Pile Igniter, CPI")
-            .addInfo("Converts Logs into Brittle Charcoal blocks")
-            .addInfo("Automatically starts when formed")
+        tt.addMachineType("machtype.cpi")
+            .addInfo("gt.charcoal_pit.tips.1")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 13, 3, 7, 3, 13, false)
-            .addController("Top layer, centered and touching a log")
-            .addCasing("1-605", "Any log", false)
-            .addCasing("4-431", "Dirt or grass covering the logs", false)
-            .addCasing("1-121", "Bricks underneath the logs", false)
+            .addController("gt.charcoal_pit.info.controller")
+            .addCasing("1-605", "gt.charcoal_pit.info.6", false)
+            .addStructureInfo("gt.charcoal_pit.info.7")
+            .addCasing("4-431", "gt.charcoal_pit.info.3", false)
+            .addStructureInfo("gt.charcoal_pit.info.4")
+            .addCasing("1-121", "tile.brick.name", false)
+            .addStructureInfo("gt.charcoal_pit.info.5")
             .addStructureInfo("")
-            .addStructureFooter("Can be anywhere up to 13x13x7 in size (including the dirt) but all logs")
-            .addStructureFooter("must be within 6 x/z of the controller and there cannot be any air gaps.")
+            .addStructureFooter("gt.charcoal_pit.info.8")
             .toolTipFinisher();
         return tt;
     }

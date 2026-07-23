@@ -68,10 +68,8 @@ public class MTEIndustrialVacuumFreezerLegacy extends GTPPMultiBlockBase<MTEIndu
 
         GregTechAPI.sAfterGTLoad.add(() -> {
             CRYO_STACK = new FluidStack(TFFluids.fluidCryotheum, 1);
-            CASING_NAME = GregtechItemList.Casing_AdvancedVacuum.get(1)
-                .getDisplayName();
-            HATCH_NAME = GregtechItemList.Hatch_Input_Cryotheum.get(1)
-                .getDisplayName();
+            CASING_NAME = "gtplusplus.blockcasings.3.10.name";
+            HATCH_NAME = "GT5U.MBTT.CryotheumHatch";
         });
     }
 
@@ -86,7 +84,7 @@ public class MTEIndustrialVacuumFreezerLegacy extends GTPPMultiBlockBase<MTEIndu
 
     @Override
     public String getMachineType() {
-        return "Vacuum Freezer";
+        return "gt.recipe.vacuumfreezer";
     }
 
     @Override
@@ -94,24 +92,23 @@ public class MTEIndustrialVacuumFreezerLegacy extends GTPPMultiBlockBase<MTEIndu
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addStructureDeprecatedLine()
-            .addInfo("Factory Grade Advanced Vacuum Freezer")
+            .addInfo("gt.cryo_freezer.tips.1")
             .addStaticParallelInfo(8)
             .addStaticSpeedInfo(2.2f)
             .addStaticEuEffInfo(0.9f)
-            .addInfo("Consumes 10L of " + CRYO_STACK.getLocalizedName() + "/s during operation")
-            .addInfo("Constructed exactly the same as a normal Vacuum Freezer")
+            .addInfo("gt.cryo_freezer.tips.2", CRYO_STACK.getLocalizedName())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
+            .addController("front_center")
             .addCasingInfoMin(CASING_NAME, 10, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addOtherStructurePart(HATCH_NAME, "Any Casing", 1)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addInputHatch("<casing>", 1)
+            .addOutputHatch("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
+            .addMufflerHatch("<casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
+            .addStructurePart(HATCH_NAME, "<casing>", 1)
             .toolTipFinisher();
         return tt;
     }

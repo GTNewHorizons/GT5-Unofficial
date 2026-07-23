@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -61,7 +60,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
@@ -144,34 +142,17 @@ public class MTEMegaOilCrackerLegacy extends MegaMultiBlockBase<MTEMegaOilCracke
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cracker, MOC")
+        tt.addMachineType("machtype.moc")
             .addStructureDeprecatedLine()
-            .addInfo(
-                TooltipHelper.coloredText(
-                    TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),
-                    EnumChatFormatting.DARK_GRAY))
+            .addInfo("gt.moc.tips.1")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo(
-                TooltipHelper.effText("-10%") + " EU Usage per " + TooltipHelper.tierText(TooltipTier.COIL) + " Tier")
-            .addInfo("up to a maximum of " + TooltipHelper.effText("-50%") + " EU Usage")
-            .addSeparator()
-            .addInfo("Gives different benefits whether it hydro or steam-cracks:")
-            .addInfo(
-                "Hydro - Consumes " + TooltipHelper.coloredText("20%", EnumChatFormatting.DARK_AQUA)
-                    + " less Hydrogen and outputs "
-                    + TooltipHelper.coloredText("25%", EnumChatFormatting.DARK_AQUA)
-                    + " more cracked fluid")
-            .addInfo(
-                "Steam - Outputs " + TooltipHelper.coloredText("50%", EnumChatFormatting.DARK_AQUA)
-                    + " more cracked fluid")
-            .addInfo(TooltipHelper.italicText("In comparison to a chemical reactor"))
-            .addSeparator()
+            .addInfo("gt.moc.tips.2", TooltipTier.COIL.getLocalizedValue())
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(13, 7, 9, true)
-            .addController("Front bottom center")
+            .addController("front_bottom_center")
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 197, false)
             .addCasingInfoExactly("Coil", 92, true)
             .addCasingInfoExactly("Any Tiered Glass", 196, true)
@@ -179,8 +160,8 @@ public class MTEMegaOilCrackerLegacy extends MegaMultiBlockBase<MTEMegaOilCracke
             .addMaintenanceHatch("Hint block", 1)
             .addInputHatch("Hint block", 2, 3)
             .addOutputHatch("Hint block", 2, 3)
-            .addInputHatch("Steam/Hydrogen ONLY, Hint block", 4)
-            .addInputBus("Optional, for programmed circuit automation. Hint block", 1)
+            .addInputHatch("gt.moc.info.i_hatch", 4)
+            .addInputBus("gt.moc.info.i_bus", 1)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
