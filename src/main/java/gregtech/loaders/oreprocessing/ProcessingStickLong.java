@@ -67,7 +67,8 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                                 4,
                                 Math.min(
                                     1000,
-                                    ((int) Math.max(legacyMaterial.getMass(), 1L)) * calculateRecipeEU(material, 4)
+                                    ((int) Math.max(legacyMaterial.getMass(), 1L))
+                                        * (int) calculateRecipeEU(material, 4)
                                         / 320))))
                     .duration(2 * ((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 4))
@@ -82,7 +83,8 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                                 3,
                                 Math.min(
                                     750,
-                                    ((int) Math.max(legacyMaterial.getMass(), 1L)) * calculateRecipeEU(material, 4)
+                                    ((int) Math.max(legacyMaterial.getMass(), 1L))
+                                        * (int) calculateRecipeEU(material, 4)
                                         / 426))))
                     .duration(2 * ((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 4))
@@ -99,7 +101,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                                 1,
                                 Math.min(
                                     250,
-                                    ((int) Math.max(legacyMaterial.getMass(), 1)) * calculateRecipeEU(material, 4)
+                                    ((int) Math.max(legacyMaterial.getMass(), 1)) * (int) calculateRecipeEU(material, 4)
                                         / 1280)))))
                     .duration(((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 4))
@@ -114,14 +116,16 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                                 1,
                                 Math.min(
                                     10,
-                                    ((int) Math.max(legacyMaterial.getMass(), 1L)) * calculateRecipeEU(material, 4)
+                                    ((int) Math.max(legacyMaterial.getMass(), 1L))
+                                        * (int) calculateRecipeEU(material, 4)
                                         / 4000))))
                     .duration((int) ((Math.max(legacyMaterial.getMass() / 2.5, 1L)) * TICKS))
                     .eut(calculateRecipeEU(material, 4))
                     .addTo(cutterRecipes);
             }
 
-            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
+            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+                && (legacyMaterial.mMaterialInto == legacyMaterial)) {
                 Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
                 if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
@@ -149,7 +153,8 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                 }
             }
 
-            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
+            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+                && (legacyMaterial.mMaterialInto == legacyMaterial)) {
                 Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
                 if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(

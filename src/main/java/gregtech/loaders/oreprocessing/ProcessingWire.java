@@ -112,6 +112,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 // crafting recipe
                 Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
                 if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+                    && (legacyMaterial.mMaterialInto == legacyMaterial)
                     && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)
                     && ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV)) {
                     GTModHandler.addCraftingRecipe(

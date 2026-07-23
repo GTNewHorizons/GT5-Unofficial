@@ -60,6 +60,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
         boolean noSmelting = MU.hasFlag(material, GTMaterialFlag.NO_SMELTING);
         long materialMass = legacyMaterial.getMass();
         boolean specialRecipeReq = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+            && (legacyMaterial.mMaterialInto == legacyMaterial)
             && !MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
 
         switch (prefix.getName()) {
@@ -112,6 +113,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     GTModHandler.removeFurnaceSmelting(tStack);
                 }
                 if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+                    && (legacyMaterial.mMaterialInto == legacyMaterial)
                     && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)
                     && !MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
                     && MU.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE)) {

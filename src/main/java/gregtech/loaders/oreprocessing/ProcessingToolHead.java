@@ -59,8 +59,10 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
         if (legacyMaterial == null) return;
 
         boolean unifiable = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE));
-        boolean specialRecipeReq1 = unifiable && !MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
-        boolean specialRecipeReq2 = unifiable && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING);
+        boolean specialRecipeReq1 = unifiable && (legacyMaterial.mMaterialInto == legacyMaterial)
+            && !MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
+        boolean specialRecipeReq2 = unifiable && (legacyMaterial.mMaterialInto == legacyMaterial)
+            && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING);
         boolean noWorking = MU.hasFlag(material, GTMaterialFlag.NO_WORKING);
         boolean producesSoftMallet = MU.hasFlag(material, GTMaterialFlag.BOUNCY)
             || MU.hasFlag(material, GTMaterialFlag.WOOD)
@@ -609,10 +611,10 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         }
                     }
                 }
-                if (GTOreDictUnificator.get(OrePrefixes.stick, MU.handleMaterial(material), 1L) != null) {
+                if (GTOreDictUnificator.get(OrePrefixes.stick, MU.handleMaterial(legacyMaterial), 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            GTOreDictUnificator.get(OrePrefixes.stick, MU.handleMaterial(material), 1L),
+                            GTOreDictUnificator.get(OrePrefixes.stick, MU.handleMaterial(legacyMaterial), 1L),
                             GTOreDictUnificator.get(OrePrefixes.toolHeadFile, material, 1L))
                         .circuit(15)
                         .itemOutputs(
@@ -650,10 +652,10 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "GGf", 'G', MU.craftIngredient(OrePrefixes.gem, material) });
                 }
-                if (GTOreDictUnificator.get(OrePrefixes.stick, MU.handleMaterial(material), 1L) != null) {
+                if (GTOreDictUnificator.get(OrePrefixes.stick, MU.handleMaterial(legacyMaterial), 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            GTOreDictUnificator.get(OrePrefixes.stick, MU.handleMaterial(material), 1L),
+                            GTOreDictUnificator.get(OrePrefixes.stick, MU.handleMaterial(legacyMaterial), 1L),
                             GTOreDictUnificator.get(OrePrefixes.toolHeadSaw, material, 1L))
                         .circuit(7)
                         .itemOutputs(
@@ -1185,10 +1187,10 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.screw.ingredient(Materials.Steel) });
             }
             case "toolHeadHammer", "toolHeadMallet" -> {
-                if (GTOreDictUnificator.get(OrePrefixes.stick, MU.handleMaterial(material), 1L) != null) {
+                if (GTOreDictUnificator.get(OrePrefixes.stick, MU.handleMaterial(legacyMaterial), 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            GTOreDictUnificator.get(OrePrefixes.stick, MU.handleMaterial(material), 1L),
+                            GTOreDictUnificator.get(OrePrefixes.stick, MU.handleMaterial(legacyMaterial), 1L),
                             GTOreDictUnificator.get(OrePrefixes.toolHeadHammer, material, 1L))
                         .circuit(14)
                         .itemOutputs(

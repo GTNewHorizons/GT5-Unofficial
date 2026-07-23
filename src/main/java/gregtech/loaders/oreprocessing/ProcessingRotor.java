@@ -46,6 +46,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
         if (legacyMaterial == null) return;
 
         if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+            && (legacyMaterial.mMaterialInto == legacyMaterial)
             && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             ItemStack tPlate = GTOreDictUnificator.get(OrePrefixes.plate, material, 4L);
             ItemStack tRing = GTOreDictUnificator.get(OrePrefixes.ring, material, 1L);

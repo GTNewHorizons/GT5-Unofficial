@@ -49,7 +49,8 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
                     .eut(calculateRecipeEU(material, 4))
                     .addTo(latheRecipes);
             }
-            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
+            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+                && (legacyMaterial.mMaterialInto == legacyMaterial)) {
                 Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
                 if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(

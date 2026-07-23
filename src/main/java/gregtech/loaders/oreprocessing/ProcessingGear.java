@@ -60,6 +60,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
                 if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+                    && (legacyMaterial.mMaterialInto == legacyMaterial)
                     && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
                     switch (MU.internalName(material)) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
@@ -100,6 +101,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
                 if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+                    && (legacyMaterial.mMaterialInto == legacyMaterial)
                     && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
                     switch (MU.internalName(material)) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(

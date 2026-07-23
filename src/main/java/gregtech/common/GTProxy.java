@@ -2000,7 +2000,13 @@ public class GTProxy implements IFuelHandler {
             GTLog.ore.println(tModToName);
 
             Material tCensusMaterial = resolveCensusMaterial(aMaterial, recognitionMarker);
-            OreDictEventContainer tOre = new OreDictEventContainer(aEvent, aPrefix, tCensusMaterial, aMod);
+            MarkerMaterial tCensusRecognitionMarker = isCensusMarker(recognitionMarker) ? recognitionMarker : null;
+            OreDictEventContainer tOre = new OreDictEventContainer(
+                aEvent,
+                aPrefix,
+                tCensusMaterial,
+                tCensusRecognitionMarker,
+                aMod);
             if ((!this.mOreDictActivated) || (!GregTechAPI.sUnificationEntriesRegistered)) {
                 this.oreDictEvents.add(tOre);
             } else {
@@ -2015,15 +2021,22 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
+    /// Whether a recognition marker is both unifiable and CRYSTALLISABLE (only `Fluix`; a marker carries no
+    /// composition of its own, so no other marker routes into the census). Shared by [#resolveCensusMaterial]
+    /// and the [OreDictEventContainer] construction in [#registerOre], which both need to agree on when a
+    /// registration's census is marker-driven.
+    private static boolean isCensusMarker(MarkerMaterial recognitionMarker) {
+        return recognitionMarker != null && recognitionMarker.isUnifiable()
+            && recognitionMarker.contains(SubTag.CRYSTALLISABLE);
+    }
+
     /// The MaterialLib material an ore-dictionary registration's event pipeline carries downstream (the
     /// [OreDictEventContainer] census and [#registerUnificationEntries]), resolved off the same name lookup
     /// [#registerOre] already performed: `aMaterial` for a plain name (`Materials.get(tName)`, `_NULL` when
-    /// unresolved), or -- for a recognition marker that is both unifiable and CRYSTALLISABLE (only `Fluix`; a
-    /// marker carries no composition of its own, so no other marker routes into the census) -- that marker's own
-    /// backing. This is the one seam to repoint once GTProxy stops resolving through minted bridge facades.
+    /// unresolved), or -- for a recognition marker that [#isCensusMarker] -- that marker's own backing. This is
+    /// the one seam to repoint once GTProxy stops resolving through minted bridge facades.
     private static Material resolveCensusMaterial(Materials aMaterial, MarkerMaterial recognitionMarker) {
-        if (recognitionMarker != null && recognitionMarker.isUnifiable()
-            && recognitionMarker.contains(SubTag.CRYSTALLISABLE)) {
+        if (isCensusMarker(recognitionMarker)) {
             return MU.toMaterial(recognitionMarker);
         }
         return MU.material(aMaterial);
