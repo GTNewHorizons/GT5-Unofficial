@@ -130,7 +130,7 @@ public class SingleRecipeCheck {
         FluidStack[] fluidInputs) {
         int currentParallel = maxParallel;
 
-        if (totalItemCost > 0) {
+        if (totalItemCost >= 0 && !itemCost.isEmpty()) {
             // Create a map for items to their stored amounts.
             Map<ItemId, Integer> itemMap = new HashMap<>();
             for (ItemStack itemStack : itemInputs) {
@@ -140,8 +140,12 @@ public class SingleRecipeCheck {
 
             // For each item cost, update the maximum parallel executions possible.
             for (Map.Entry<ItemId, Integer> costEntry : itemCost.entrySet()) {
-                currentParallel = Math
-                    .min(currentParallel, itemMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+                if (costEntry.getValue() > 0) {
+                    currentParallel = Math
+                        .min(currentParallel, itemMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+                } else { // Likely a non-consumable in itemCost. Check if machine has this non-consumable
+                    if (!itemMap.containsKey(costEntry.getKey())) currentParallel = 0;
+                }
                 if (currentParallel <= 0) {
                     return 0;
                 }
@@ -685,6 +689,31 @@ public class SingleRecipeCheck {
                 int cost = entry.getValue() - afterItems.getOrDefault(entry.getKey(), 0);
                 if (cost > 0) {
                     itemCostBuilder.put(entry.getKey(), cost);
+                } else {
+                    // Check if somehow an item not meant to be consumed was consumed
+                    // We don't want that possibility here
+                    if (Objects.equals(entry.getValue(), afterItems.getOrDefault(entry.getKey(), -1))) {
+                        // This is either a non-consumable or an item not used in the recipe
+                        // Filter for non-consumables based on oreDictAlt first
+                        if (this.recipe instanceof GTRecipe.GTRecipe_WithAlt recipeWithAlt) {
+                            if (Arrays.stream(recipeWithAlt.mOreDictAlt)
+                                .filter(Objects::nonNull)
+                                .flatMap(Arrays::stream)
+                                .anyMatch(
+                                    aStack -> aStack != null && entry.getKey()
+                                        .matches(aStack))) {
+                                itemCostBuilder.put(entry.getKey(), cost);
+                            }
+                        }
+                        // Filter for non-consumables that have no alts
+                        else if (Arrays.stream(this.recipe.mInputs)
+                            .anyMatch(
+                                aStack -> entry.getKey()
+                                    .matches(aStack))) {
+                                        itemCostBuilder.put(entry.getKey(), cost);
+                                    }
+                        // Anything left here isn't a non-consumable
+                    }
                 }
             }
             return itemCostBuilder.build();
