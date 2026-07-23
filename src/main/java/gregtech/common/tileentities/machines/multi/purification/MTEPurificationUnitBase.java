@@ -28,12 +28,13 @@ import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
@@ -456,8 +457,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
                 if (waterTier == 1) {
                     return GTModHandler.getDistilledWater(amount);
                 }
-                Materials water = PurifiedWaterHelpers.getPurifiedWaterTier(waterTier - 1);
-                return water.getFluid(amount);
+                Material water = PurifiedWaterHelpers.getPurifiedWaterTier(waterTier - 1);
+                return MU.fluid(water, amount);
             }
             // Bad roll, keep looping and degrade quality even further
         }

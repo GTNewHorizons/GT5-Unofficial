@@ -22,12 +22,15 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -189,7 +192,7 @@ public class MTEBoilerBronze extends MTEBoiler {
         });
     }
 
-    private static Optional<Materials> getCombustionPotential(ItemStack fuel, int burnTime) {
+    private static Optional<Material> getCombustionPotential(ItemStack fuel, int burnTime) {
         if (burnTime / 10 <= 0 || FluidContainerRegistry.isFilledContainer(fuel)) {
             return Optional.empty();
         }
@@ -197,10 +200,10 @@ public class MTEBoilerBronze extends MTEBoiler {
             .getUnlocalizedName()
             .toLowerCase();
         if (couldProduceDarkAshes(fuel, lowerCaseBlockName)) {
-            return Optional.of(Materials.AshDark);
+            return Optional.of(Materials2Materials.DarkAsh);
         }
         if (couldProduceRegularAshes(fuel, lowerCaseBlockName, burnTime)) {
-            return Optional.of(Materials.Ash);
+            return Optional.of(Materials2Materials.Ash);
         }
         return Optional.empty();
     }

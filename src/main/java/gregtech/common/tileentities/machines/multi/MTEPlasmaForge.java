@@ -53,7 +53,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -65,6 +64,7 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -785,7 +785,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
                 fluidOutputsWithResidue[i] = tRecipe.mFluidOutputs[i].copy();
             }
-            fluidOutputsWithResidue[tRecipe.mFluidOutputs.length] = Materials.DTR.getFluid(0);
+            fluidOutputsWithResidue[tRecipe.mFluidOutputs.length] = MU
+                .fluid(Materials2Materials.DimensionallyTranscendentResidue, 0);
             tRecipe.mFluidOutputs = fluidOutputsWithResidue;
             recalculateDiscount();
 
@@ -935,7 +936,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
         // Increase present catalyst and residue by calculated amount
         for (FluidStack outputFluid : recipe.mFluidOutputs) {
-            if (outputFluid.isFluidEqual(Materials.DTR.getFluid(1))) {
+            if (outputFluid.isFluidEqual(MU.fluid(Materials2Materials.DimensionallyTranscendentResidue, 1))) {
                 outputFluid.amount += (int) (extraCatalystNeeded * FUEL_ENERGY_VALUES.get(validFuel)
                     .getRight());
             }

@@ -20,10 +20,10 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -169,8 +169,8 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
     }
 
     @Override
-    protected Materials getFrameMaterial() {
-        return Materials.StainlessSteel;
+    protected Material getFrameMaterial() {
+        return Materials2Materials.StainlessSteel;
     }
 
     @Override

@@ -93,7 +93,8 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
     private float currentHumidity;
 
     private FluidStack[] getWater() {
-        return new FluidStack[] { Materials.Water.getFluid(
+        return new FluidStack[] { MU.fluid(
+            Materials2Materials.Water,
             calculateFinalWaterOutput() <= 250 && isMinWaterAllowedDim() ? 250 : calculateFinalWaterOutput()) };
     }
 

@@ -5,17 +5,17 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.base.Supplier;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public enum Fuels {
 
-    RESIDUE(() -> Materials.DTR.getFluid(1)),
+    RESIDUE(() -> MU.fluid(Materials2Materials.DimensionallyTranscendentResidue, 1)),
     STELLAR(() -> MaterialLibAPI
         .getFluidStack(Materials2Materials.RawStarMatter, Materials2FluidShapes.fluidLiquid, (int) (1))),
-    MHDCSM(() -> Materials.MHDCSM.getMolten(1));
+    MHDCSM(() -> MU.molten(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1));
 
     public static final Fuels[] VALUES = values();
 

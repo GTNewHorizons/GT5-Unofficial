@@ -13,8 +13,8 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;
@@ -58,7 +58,8 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
             .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .overlay(new DynamicDrawable(() -> {
                 if (magmatterMode.getBoolValue()) {
-                    return new ItemDrawable(GTOreDictUnificator.get(OrePrefixes.dust, Materials.MagMatter, 1));
+                    return new ItemDrawable(
+                        GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.Magmatter, 1));
                 }
                 return new ItemDrawable(CustomItemList.Godforge_FakeItemQGP.get(1));
             }))

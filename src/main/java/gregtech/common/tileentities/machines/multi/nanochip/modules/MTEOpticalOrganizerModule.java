@@ -21,14 +21,15 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -213,7 +214,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             if (firstWater != null && secondWater != null) break;
 
             final List<BoostingWater> fluid = WATER_LIST.stream()
-                .filter(candidate -> drain(hatch, candidate.water.getFluid(candidate.amount), false))
+                .filter(candidate -> drain(hatch, MU.fluid(candidate.water, candidate.amount), false))
                 .collect(Collectors.toList());
 
             if (fluid.size() >= 2) {
@@ -255,27 +256,27 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     }
 
     private static final List<BoostingWater> WATER_LIST = ImmutableList.of(
-        new BoostingWater(Materials.Grade3PurifiedWater, 1000, module -> { module.waterDiscount *= 0.8f; }),
-        new BoostingWater(Materials.Grade4PurifiedWater, 800, module -> { module.waterDiscount *= 0.6f; }),
-        new BoostingWater(Materials.Grade5PurifiedWater, 800, module -> { module.speedModifier *= 0.9f; }),
-        new BoostingWater(Materials.Grade6PurifiedWater, 600, module -> { module.speedModifier *= 0.7f; }),
-        new BoostingWater(Materials.Grade7PurifiedWater, 600, module -> { module.euMultiplier *= 0.9f; }),
-        new BoostingWater(Materials.Grade8PurifiedWater, 400, module -> { module.euMultiplier *= 0.7f; }));
+        new BoostingWater(Materials2Materials.Grade3PurifiedWater, 1000, module -> { module.waterDiscount *= 0.8f; }),
+        new BoostingWater(Materials2Materials.Grade4PurifiedWater, 800, module -> { module.waterDiscount *= 0.6f; }),
+        new BoostingWater(Materials2Materials.Grade5PurifiedWater, 800, module -> { module.speedModifier *= 0.9f; }),
+        new BoostingWater(Materials2Materials.Grade6PurifiedWater, 600, module -> { module.speedModifier *= 0.7f; }),
+        new BoostingWater(Materials2Materials.Grade7PurifiedWater, 600, module -> { module.euMultiplier *= 0.9f; }),
+        new BoostingWater(Materials2Materials.Grade8PurifiedWater, 400, module -> { module.euMultiplier *= 0.7f; }));
 
     private static class BoostingWater {
 
-        public final Materials water;
+        public final Material water;
         public final int amount;
         public final Consumer<MTEOpticalOrganizerModule> boosterFunction;
 
-        public BoostingWater(Materials water, int amount, Consumer<MTEOpticalOrganizerModule> boosterFunction) {
+        public BoostingWater(Material water, int amount, Consumer<MTEOpticalOrganizerModule> boosterFunction) {
             this.water = water;
             this.amount = amount;
             this.boosterFunction = boosterFunction;
         }
 
         public FluidStack getStack(float waterDiscount) {
-            return this.water.getFluid((long) (waterDiscount * this.amount));
+            return MU.fluid(this.water, (long) (waterDiscount * this.amount));
         }
     }
 }

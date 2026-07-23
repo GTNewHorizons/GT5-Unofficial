@@ -16,6 +16,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -50,7 +51,7 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
         // Superconductor UEV Base Sheetmetal
         .addElement('C', ofSheetMetal(Materials.SuperconductorUEVBase))
         // Superconductor UHV Base Framebox
-        .addElement('D', ofFrame(Materials.SuperconductorUHVBase))
+        .addElement('D', ofFrame(Materials2Materials.Longasssuperconductornameforuhvwire))
         // Nanochip Glass
         .addElement('E', Casings.NanochipComplexGlass.asElement())
         .build();

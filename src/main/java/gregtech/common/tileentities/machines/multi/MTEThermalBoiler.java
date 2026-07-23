@@ -36,10 +36,12 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
@@ -229,7 +231,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
 
     private boolean useWater(int steamAmount) {
         int waterAmount = Math.floorDiv(steamAmount + GTValues.STEAM_PER_WATER - 1, GTValues.STEAM_PER_WATER);
-        if (depleteInput(Materials.Water.getFluid(waterAmount))
+        if (depleteInput(MU.fluid(Materials2Materials.Water, waterAmount))
             || depleteInput(GTModHandler.getDistilledWater(waterAmount))) {
             dryHeatCounter = 0;
             return true;

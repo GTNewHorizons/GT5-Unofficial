@@ -15,7 +15,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.MachineType;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -191,7 +190,7 @@ public class MTEPotionBrewer extends MTEBasicMachine {
                     return setOutput("potion.mundane");
                 }
                 if (GTUtility.areStacksEqual(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gunpowder, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.Gunpowder, 1L),
                     getInputAt(0))) {
                     if (!tInputName.endsWith(".splash")) {
                         return setOutput("potion." + tInputName + ".splash");

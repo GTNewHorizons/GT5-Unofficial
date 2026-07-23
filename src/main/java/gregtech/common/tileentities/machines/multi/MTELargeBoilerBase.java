@@ -47,9 +47,11 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -452,9 +454,10 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     }
 
     private boolean consumeWater(int amount) {
-        if (amount <= 0) return depleteInput(Materials.Water.getFluid(1), true)
+        if (amount <= 0) return depleteInput(MU.fluid(Materials2Materials.Water, 1), true)
             || depleteInput(GTModHandler.getDistilledWater(1), true);
-        return depleteInput(Materials.Water.getFluid(amount)) || depleteInput(GTModHandler.getDistilledWater(amount));
+        return depleteInput(MU.fluid(Materials2Materials.Water, amount))
+            || depleteInput(GTModHandler.getDistilledWater(amount));
     }
 
     private int getSuperheatedSteam(long steamEquivalent) {

@@ -47,7 +47,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -57,6 +56,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -671,7 +671,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
                 if (checkTypes(tID, aTables)) {
                     GTRecipe tRecipe = simpleWasherRecipes.findRecipeQuery()
                         .items(aStack)
-                        .fluids(Materials.Water.getFluid(100))
+                        .fluids(MU.fluid(Materials2Materials.Water, 100))
                         .find();
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
