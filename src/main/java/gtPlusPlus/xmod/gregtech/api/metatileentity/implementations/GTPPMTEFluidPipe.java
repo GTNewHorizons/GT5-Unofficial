@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import gregtech.api.enums.HarvestTool;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -70,7 +69,7 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
     }
 
     @Override
-    public IOreMaterial getMaterial() {
+    public Object getMaterial() {
         if (pipeStats == null) {
             return null;
         }

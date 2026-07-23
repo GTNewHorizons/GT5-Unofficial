@@ -17,8 +17,8 @@ import com.google.common.collect.ImmutableMap;
 import gregtech.GTMod;
 import gregtech.api.enums.OreMixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
+import gregtech.api.material.MU;
 import gregtech.common.OreMixBuilder;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
@@ -75,31 +75,33 @@ public class GT5OreLayerHelper {
 
         public final String veinName, worldGenHeightRange;
         public final Map<String, String> dimWorldGenHeightRange;
-        public final IOreMaterial[] ores = new IOreMaterial[4];
+        /// The vein's four layer materials as legacy-family objects (resolved from the builder's MaterialLib
+        /// materials via [MU#legacyMaterialOf]), the same objects the ore adapters dispatch on.
+        public final Object[] ores = new Object[4];
         public final short randomWeight, size, density;
         /** {full dim name} */
         public final Set<String> allowedDimWithOrigNames;
         /** {abbr dim name} */
         public final Set<String> abbrDimNames;
 
-        public final IOreMaterial mPrimaryVeinMaterial;
-        public final IOreMaterial mSecondaryMaterial;
-        public final IOreMaterial mBetweenMaterial;
-        public final IOreMaterial mSporadicMaterial;
+        public final Object mPrimaryVeinMaterial;
+        public final Object mSecondaryMaterial;
+        public final Object mBetweenMaterial;
+        public final Object mSporadicMaterial;
         public final Supplier<String> localizedName;
 
         public OreLayerWrapper(OreMixBuilder mix) {
             this.veinName = mix.oreMixName;
             this.localizedName = mix::getLocalizedName;
-            this.ores[0] = mix.primary;
-            this.ores[1] = mix.secondary;
-            this.ores[2] = mix.between;
-            this.ores[3] = mix.sporadic;
+            this.ores[0] = MU.legacyMaterialOf(mix.primary);
+            this.ores[1] = MU.legacyMaterialOf(mix.secondary);
+            this.ores[2] = MU.legacyMaterialOf(mix.between);
+            this.ores[3] = MU.legacyMaterialOf(mix.sporadic);
 
-            this.mPrimaryVeinMaterial = mix.primary;
-            this.mSecondaryMaterial = mix.secondary;
-            this.mBetweenMaterial = mix.between;
-            this.mSporadicMaterial = mix.sporadic;
+            this.mPrimaryVeinMaterial = this.ores[0];
+            this.mSecondaryMaterial = this.ores[1];
+            this.mBetweenMaterial = this.ores[2];
+            this.mSporadicMaterial = this.ores[3];
 
             this.size = (short) mix.size;
             this.density = (short) mix.density;
@@ -121,7 +123,7 @@ public class GT5OreLayerHelper {
 
         public List<ItemStack> getVeinLayerOre(int veinLayer, Set<StoneType> stoneTypes) {
             List<ItemStack> stackList = new ArrayList<>();
-            List<IStoneType> validStones = ores[veinLayer].getValidStones();
+            List<IStoneType> validStones = MU.validStonesOf(ores[veinLayer]);
             for (IStoneType stoneType : validStones) {
                 if (stoneType instanceof StoneType && stoneTypes.contains(stoneType)) {
                     stackList.add(getLayerOre(veinLayer, stoneType));
@@ -135,7 +137,7 @@ public class GT5OreLayerHelper {
         }
 
         public ItemStack getLayerOre(int veinLayer, IStoneType stoneType) {
-            try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
+            try (OreInfo<Object> info = OreInfo.getNewInfo()) {
                 info.material = ores[veinLayer];
                 info.stoneType = stoneType;
 
@@ -154,7 +156,7 @@ public class GT5OreLayerHelper {
             }
         }
 
-        public boolean containsOre(IOreMaterial material) {
+        public boolean containsOre(Object material) {
             return ores[OreVeinLayer.VEIN_PRIMARY] == material || ores[OreVeinLayer.VEIN_SECONDARY] == material
                 || ores[OreVeinLayer.VEIN_BETWEEN] == material
                 || ores[OreVeinLayer.VEIN_SPORADIC] == material;

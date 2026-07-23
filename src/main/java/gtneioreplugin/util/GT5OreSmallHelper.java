@@ -15,7 +15,7 @@ import com.google.common.collect.MultimapBuilder;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SmallOres;
-import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MU;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.SmallOreBuilder;
 import gregtech.common.WorldgenGTOreSmallPieces;
@@ -26,9 +26,10 @@ public class GT5OreSmallHelper {
 
     public static final List<ItemStack> SMALL_ORE_LIST = new ArrayList<>();
     public static final HashMap<String, OreSmallWrapper> SMALL_ORES_BY_NAME = new HashMap<>();
-    public static final HashMap<IOreMaterial, OreSmallWrapper> SMALL_ORES_BY_MAT = new HashMap<>();
-    public static final HashMap<String, IOreMaterial> ORE_DROP_TO_MAT = new HashMap<>();
-    public static final HashMap<IOreMaterial, List<ItemStack>> ORE_MAT_TO_DROPS = new HashMap<>();
+    /// Keyed/valued by the legacy-family material objects (see [OreSmallWrapper#material]).
+    public static final HashMap<Object, OreSmallWrapper> SMALL_ORES_BY_MAT = new HashMap<>();
+    public static final HashMap<String, Object> ORE_DROP_TO_MAT = new HashMap<>();
+    public static final HashMap<Object, List<ItemStack>> ORE_MAT_TO_DROPS = new HashMap<>();
     /** {abbr dim name: wrapper} */
     private static Map<String, SmallOreDimensionWrapper> SMALL_ORES_BY_DIM;
 
@@ -43,18 +44,18 @@ public class GT5OreSmallHelper {
             .arrayListValues()
             .build();
 
-        OreInfo<IOreMaterial> info = OreInfo.getNewInfo();
+        OreInfo<Object> info = OreInfo.getNewInfo();
 
         for (GTWorldgen worldGen : GregTechAPI.sWorldgenList) {
             if (!(worldGen instanceof WorldgenGTOreSmallPieces smallOreWorldGen)) continue;
 
-            IOreMaterial material = smallOreWorldGen.getMaterial();
+            Object material = MU.legacyMaterialOf(smallOreWorldGen.getMaterial());
 
             OreSmallWrapper wrapper = new OreSmallWrapper(smallOreDefMap.get(smallOreWorldGen.mWorldGenName));
             SMALL_ORES_BY_NAME.put(worldGen.mWorldGenName, wrapper);
-            SMALL_ORES_BY_MAT.put(smallOreWorldGen.getMaterial(), wrapper);
+            SMALL_ORES_BY_MAT.put(material, wrapper);
 
-            if (ORE_MAT_TO_DROPS.containsKey(smallOreWorldGen.getMaterial())) {
+            if (ORE_MAT_TO_DROPS.containsKey(material)) {
                 throw new IllegalStateException(
                     "Duplicate small ore world gen for material " + smallOreWorldGen.getMaterial());
             }
@@ -108,7 +109,9 @@ public class GT5OreSmallHelper {
     public static class OreSmallWrapper {
 
         public final String oreGenName;
-        public final IOreMaterial material;
+        /// The small ore's material as the legacy-family object (resolved via [MU#legacyMaterialOf]), the same
+        /// object the ore adapters dispatch on.
+        public final Object material;
         public final String worldGenHeightRange;
         public final short amountPerChunk;
 
@@ -119,7 +122,7 @@ public class GT5OreSmallHelper {
 
         public OreSmallWrapper(SmallOreBuilder ore) {
             this.oreGenName = ore.smallOreName;
-            this.material = ore.ore;
+            this.material = MU.legacyMaterialOf(ore.ore);
             this.worldGenHeightRange = ore.minY + "-" + ore.maxY;
             this.amountPerChunk = (short) ore.amount;
 

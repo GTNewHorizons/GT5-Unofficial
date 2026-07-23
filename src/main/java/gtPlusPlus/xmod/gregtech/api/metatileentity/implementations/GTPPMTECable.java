@@ -6,7 +6,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -155,7 +154,7 @@ public class GTPPMTECable extends MTECable {
     }
 
     @Override
-    public IOreMaterial getMaterial() {
+    public Object getMaterial() {
         if (super.getMaterial() == null) {
             return material;
         }

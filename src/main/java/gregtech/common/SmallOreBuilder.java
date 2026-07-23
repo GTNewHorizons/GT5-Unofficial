@@ -4,8 +4,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.ruling_0.materiallib.api.Material;
+
+import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffReconstruction;
 import galacticgreg.api.enums.DimensionDef;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 
 public class SmallOreBuilder {
@@ -15,7 +18,7 @@ public class SmallOreBuilder {
     /** {full dimension name} */
     public Set<String> dimsEnabled = new HashSet<>();
     public int minY, maxY, amount;
-    public IOreMaterial ore;
+    public Material ore;
     public Set<IStoneCategory> stoneCategories;
     public boolean defaultStoneCategories = true;
 
@@ -54,9 +57,21 @@ public class SmallOreBuilder {
         return this;
     }
 
-    public SmallOreBuilder ore(IOreMaterial ore) {
+    public SmallOreBuilder ore(Material ore) {
         this.ore = ore;
         return this;
+    }
+
+    public SmallOreBuilder ore(Werkstoff ore) {
+        return ore(requireMaterialLib(ore));
+    }
+
+    static Material requireMaterialLib(Werkstoff werkstoff) {
+        Material ml = WerkstoffReconstruction.materialLibOf(werkstoff);
+        if (ml == null) {
+            throw new IllegalStateException("No MaterialLib material for werkstoff " + werkstoff.getVarName());
+        }
+        return ml;
     }
 
     public SmallOreBuilder stoneType(IStoneCategory... stoneCategories) {

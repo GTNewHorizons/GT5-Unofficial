@@ -11,7 +11,7 @@ import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MU;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(
@@ -53,11 +53,9 @@ public class ItemStorage extends ItemBlock implements IItemFirestoneBurning {
                 blockMetal.mMats[aDamage].addTooltips(aList);
             }
         } else if (this.field_150939_a instanceof BlockSheetMetal sheetMetal) {
-            IOreMaterial material = sheetMetal.materials.get(aDamage);
-            material.addTooltips(aList);
+            MU.addTooltipsOf(sheetMetal.materials.get(aDamage), aList);
         } else if (this.field_150939_a instanceof BlockDecorativeFrame frame) {
-            IOreMaterial material = frame.materials.get(aDamage);
-            if (material != null) material.addTooltips(aList);
+            MU.addTooltipsOf(frame.materials.get(aDamage), aList);
         }
         super.addInformation(aStack, aPlayer, aList, aF3_H);
     }

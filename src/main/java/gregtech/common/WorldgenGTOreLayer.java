@@ -20,10 +20,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.ruling_0.materiallib.api.Material;
+
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.StoneType;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
@@ -48,10 +49,10 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     public final short mWeight;
     public final short mDensity;
     public final short mSize;
-    public final IOreMaterial mPrimary;
-    public final IOreMaterial mSecondary;
-    public final IOreMaterial mBetween;
-    public final IOreMaterial mSporadic;
+    public final Material mPrimary;
+    public final Material mSecondary;
+    public final Material mBetween;
+    public final Material mSporadic;
     public final String mRestrictBiome;
     /** {full dim name} */
     private final Set<String> mAllowedDimensions;
@@ -128,12 +129,12 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     }
 
     @Override
-    public boolean contains(IOreMaterial material) {
+    public boolean contains(Material material) {
         return mPrimary == material || mBetween == material || mSecondary == material || mSporadic == material;
     }
 
     @Override
-    public IOreMaterial getOre(float k) {
+    public Material getOre(float k) {
         if (k < 1.0 / 7.0) {
             return mSporadic;
         }
@@ -541,7 +542,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
             level++;
         }
 
-        private boolean placeOre(int x, int y, int z, IOreMaterial material) {
+        private boolean placeOre(int x, int y, int z, Material material) {
             if (dryRun) {
                 return OreManager.canSetOreForWorldGenOrAlreadySet(world, x, y, z, null, material, false);
             }

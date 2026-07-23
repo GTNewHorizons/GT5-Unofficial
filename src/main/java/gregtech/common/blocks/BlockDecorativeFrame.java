@@ -26,8 +26,8 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IBlockWithTextures;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRendererBlock;
@@ -37,15 +37,15 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 /**
  * A purely decorative frame box block (GT++ style): a non-functional, see-through block oredicted under
  * {@link OrePrefixes#frameGt}. Unlike {@link BlockFrameBox}/{@code MTEFrame} it has no covers, redstone passthrough or
- * scaffolding behavior -- it exists so {@link IOreMaterial}s that lack a real frame box (e.g. Werkstoffs) can still
+ * scaffolding behavior -- it exists so materials that lack a real frame box (e.g. Werkstoffs) can still
  * satisfy {@code frameGt} in recipes.
  */
 public class BlockDecorativeFrame extends BlockStorage implements IBlockWithTextures {
 
-    final Int2ObjectFunction<IOreMaterial> materials;
+    final Int2ObjectFunction<Object> materials;
     private final int maxMeta;
 
-    public BlockDecorativeFrame(String aName, Int2ObjectFunction<IOreMaterial> materials, int maxMeta) {
+    public BlockDecorativeFrame(String aName, Int2ObjectFunction<Object> materials, int maxMeta) {
         super(ItemStorage.class, aName, Material.iron);
         this.materials = materials;
         this.maxMeta = maxMeta;
@@ -54,13 +54,13 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
             WerkstoffLoader.load();
 
             for (int i = 0; i < maxMeta; i++) {
-                IOreMaterial material = materials.get(i);
+                Object material = materials.get(i);
 
                 if (material == null) continue;
-                if (!material.generatesPrefix(OrePrefixes.frameGt)) continue;
+                if (!MU.generatesPrefix(material, OrePrefixes.frameGt)) continue;
 
                 OreDictionary.registerOre(
-                    OrePrefixes.frameGt.oreDictName(material.getInternalName())
+                    OrePrefixes.frameGt.oreDictName(MU.internalNameOf(material))
                         .toString(),
                     new ItemStack(this, 1, i));
             }
@@ -71,21 +71,21 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
 
     @Override
     public String getLocalizedName(int meta) {
-        IOreMaterial material = materials.get(meta);
+        Object material = materials.get(meta);
 
         if (material == null) material = Materials._NULL;
 
-        return OrePrefixes.frameGt.getLocalizedNameForItem(material.getInternalName());
+        return OrePrefixes.frameGt.getLocalizedNameForItem(MU.internalNameOf(material));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item self, CreativeTabs tab, List<ItemStack> stacks) {
         for (int i = 0; i < maxMeta; i++) {
-            IOreMaterial material = materials.get(i);
+            Object material = materials.get(i);
 
             if (material == null) continue;
-            if (!material.generatesPrefix(OrePrefixes.frameGt)) continue;
+            if (!MU.generatesPrefix(material, OrePrefixes.frameGt)) continue;
 
             stacks.add(new ItemStack(self, 1, i));
         }
@@ -139,14 +139,14 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
 
         if (cached != null) return cached;
 
-        IOreMaterial material = materials.get(meta);
+        Object material = materials.get(meta);
 
         ITexture texture;
 
         if (material != null) {
             texture = TextureFactory.builder()
-                .addIcon(material.getTextureSet().mTextures[OrePrefixes.frameGt.getTextureIndex()])
-                .setRGBA(material.getRGBA())
+                .addIcon(MU.textureSetOf(material).mTextures[OrePrefixes.frameGt.getTextureIndex()])
+                .setRGBA(MU.rgbaOf(material))
                 .build();
         } else {
             texture = TextureFactory.builder()
@@ -166,24 +166,24 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        IOreMaterial material = materials.get(aMeta);
+        Object material = materials.get(aMeta);
         if (material == null) return null;
-        return material.getTextureSet().mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon();
+        return MU.textureSetOf(material).mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon();
     }
 
     public void registerRecipes() {
         for (int i = 0; i < maxMeta; i++) {
-            IOreMaterial material = materials.get(i);
+            Object material = materials.get(i);
 
             if (material == null) continue;
-            if (!material.generatesPrefix(OrePrefixes.frameGt)) continue;
-            if (!material.generatesPrefix(OrePrefixes.stick)) continue;
-            if (material.contains(SubTag.NO_RECIPES)) continue;
+            if (!MU.generatesPrefix(material, OrePrefixes.frameGt)) continue;
+            if (!MU.generatesPrefix(material, OrePrefixes.stick)) continue;
+            if (MU.hasSubTag(material, SubTag.NO_RECIPES)) continue;
 
             GTValues.RA.stdBuilder()
-                .itemInputs(material.getPart(OrePrefixes.stick, 4))
+                .itemInputs(MU.partOf(material, OrePrefixes.stick, 4))
                 .circuit(4)
-                .itemOutputs(material.getPart(OrePrefixes.frameGt, 1))
+                .itemOutputs(MU.partOf(material, OrePrefixes.frameGt, 1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(3 * SECONDS + 4 * TICKS)
                 .addTo(RecipeMaps.assemblerRecipes);

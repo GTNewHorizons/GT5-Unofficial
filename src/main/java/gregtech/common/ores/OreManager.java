@@ -14,10 +14,11 @@ import net.minecraft.world.World;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.StoneType;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
+import gregtech.api.material.MU;
 import gregtech.api.util.OptionalBoolean;
 
 public final class OreManager {
@@ -43,12 +44,12 @@ public final class OreManager {
         return OptionalBoolean.NONE;
     }
 
-    public static OreInfo<IOreMaterial> getOreInfo(IBlockAccess world, int x, int y, int z) {
+    public static OreInfo<?> getOreInfo(IBlockAccess world, int x, int y, int z) {
         return getOreInfo(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static OreInfo<IOreMaterial> getOreInfo(Block block, int meta) {
+    public static OreInfo<?> getOreInfo(Block block, int meta) {
         int size = ORE_ADAPTERS.size();
 
         for (int i = 0; i < size; i++) {
@@ -64,7 +65,7 @@ public final class OreManager {
         return null;
     }
 
-    public static OreInfo<IOreMaterial> getOreInfo(ItemStack stack) {
+    public static OreInfo<?> getOreInfo(ItemStack stack) {
         if (!(stack.getItem() instanceof ItemBlock itemBlock)) return null;
 
         return getOreInfo(itemBlock.field_150939_a, Items.feather.getDamage(stack));
@@ -84,8 +85,11 @@ public final class OreManager {
         return null;
     }
 
-    public static boolean setOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone,
-        IOreMaterial material, boolean small) {
+    /// `material` is a legacy-family material object (`Materials`/`Werkstoff`/gtPlusPlus `Material`) or a
+    /// MaterialLib [Material], which is first resolved to the family object owning its ore behavior via
+    /// [MU#legacyMaterialOf] -- the adapters dispatch on the family type.
+    public static boolean setOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone, Object material,
+        boolean small) {
         ImmutableBlockMeta oreBlock = getOreBlockForWorldGen(world, x, y, z, defaultStone, material, small);
 
         if (oreBlock == null) return false;
@@ -96,22 +100,27 @@ public final class OreManager {
     }
 
     public static boolean canSetOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone,
-        IOreMaterial material, boolean small) {
+        Object material, boolean small) {
         return getOreBlockForWorldGen(world, x, y, z, defaultStone, material, small) != null;
     }
 
     public static boolean canSetOreForWorldGenOrAlreadySet(World world, int x, int y, int z, IStoneType defaultStone,
-        IOreMaterial material, boolean small) {
+        Object material, boolean small) {
         if (canSetOreForWorldGen(world, x, y, z, defaultStone, material, small)) return true;
 
-        try (OreInfo<IOreMaterial> info = getOreInfo(world, x, y, z)) {
+        if (material instanceof Material ml) material = MU.legacyMaterialOf(ml);
+
+        try (OreInfo<?> info = getOreInfo(world, x, y, z)) {
             return info != null && info.isNatural && info.isSmall == small && info.material == material;
         }
     }
 
     private static ImmutableBlockMeta getOreBlockForWorldGen(World world, int x, int y, int z, IStoneType defaultStone,
-        IOreMaterial material, boolean small) {
+        Object material, boolean small) {
         if (y < 0 || y >= world.getActualHeight()) return null;
+
+        if (material instanceof Material ml) material = MU.legacyMaterialOf(ml);
+        if (material == null) return null;
 
         IStoneType existingStone = StoneType.findStoneType(world, x, y, z);
 
@@ -123,7 +132,7 @@ public final class OreManager {
             }
         }
 
-        try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
+        try (OreInfo<Object> info = OreInfo.getNewInfo()) {
             info.material = material;
             info.stoneType = existingStone;
             info.isSmall = small;
@@ -203,13 +212,13 @@ public final class OreManager {
         return oreBlockDrops;
     }
 
-    public static IOreMaterial getMaterial(ItemStack stack) {
+    public static Object getMaterial(ItemStack stack) {
         if (!(stack.getItem() instanceof ItemBlock itemBlock)) return null;
 
         return getMaterial(itemBlock.field_150939_a, Items.feather.getDamage(stack));
     }
 
-    public static IOreMaterial getMaterial(Block block, int meta) {
+    public static Object getMaterial(Block block, int meta) {
         try (OreInfo<?> info = getOreInfo(block, meta)) {
             return info == null ? null : info.material;
         }

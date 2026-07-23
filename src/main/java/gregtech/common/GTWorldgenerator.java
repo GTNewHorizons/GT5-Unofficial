@@ -35,8 +35,9 @@ import galacticgreg.api.enums.DimensionDef;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.events.VeinGenerateEvent;
+import gregtech.api.material.MU;
 import gregtech.api.net.GTPacketSendOregenPattern;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
@@ -59,10 +60,10 @@ public class GTWorldgenerator implements IWorldGenerator {
             .weight(0)
             .density(255)
             .size(16)
-            .primary(Materials.Aluminium)
-            .secondary(Materials.Aluminium)
-            .inBetween(Materials.Aluminium)
-            .sporadic(Materials.Aluminium));
+            .primary(Materials2Materials.Aluminium)
+            .secondary(Materials2Materials.Aluminium)
+            .inBetween(Materials2Materials.Aluminium)
+            .sporadic(Materials2Materials.Aluminium));
 
     /**
      * Caches the resolved layer and placement so all chunks of an oreseed use the same vein geometry.
@@ -378,7 +379,7 @@ public class GTWorldgenerator implements IWorldGenerator {
 
                     // Resolve the exact placement seed using the first processed chunk, then cache it so every chunk
                     // in this vein regenerates the same geometry.
-                    long placementSeed = Fnv1a64.hashStep(seed, oreLayer.mPrimary.getId());
+                    long placementSeed = Fnv1a64.hashStep(seed, MU.idOf(oreLayer.mPrimary));
 
                     try {
                         veinRNG.setSeed(placementSeed);

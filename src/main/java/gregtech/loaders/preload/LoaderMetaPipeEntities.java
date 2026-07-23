@@ -17,7 +17,6 @@ import gregtech.api.enums.Superconductors;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTECable;
@@ -890,7 +889,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
     private static class WireCableBuilder {
 
-        private IOreMaterial material;
+        private Materials material;
         private Integer startId;
         private Integer lossCable;
         private Integer lossWire;
@@ -905,17 +904,15 @@ public final class LoaderMetaPipeEntities implements Runnable {
             return new WireCableBuilder();
         }
 
-        /**
-         * Sets material used for this wire/cable.
-         */
-        private WireCableBuilder material(IOreMaterial material) {
+        /// Sets the material used for this wire/cable -- kept Materials-typed for the superconductor marker
+        /// facades, which have no MaterialLib field to pass.
+        private WireCableBuilder material(Materials material) {
             this.material = material;
             return this;
         }
 
-        /// [#material(Materials)] for callers holding a MaterialLib material. Wires/cables are MTEs whose
-        /// identity, naming, and rendering all run on the legacy [Materials] type, so this resolves back to
-        /// the legacy material and stores that -- only the caller-facing type changes.
+        /// Wires/cables are MTEs whose identity, naming, and rendering all run on the legacy [Materials]
+        /// type, so this resolves the MaterialLib material back to the legacy one and stores that.
         private WireCableBuilder material(com.ruling_0.materiallib.api.Material material) {
             Materials legacyMaterial = MU.materialOf(material);
             if (legacyMaterial == null)

@@ -29,7 +29,6 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.MU;
@@ -48,7 +47,7 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 /// @deprecated Terminally deprecated; scheduled for removal in 5.10.0.0. Use the MaterialLib-backed
 /// materials2 API instead.
 @Deprecated
-public class Material implements IOreMaterial {
+public class Material {
 
     public static final Set<Material> mMaterialMap = new HashSet<>();
     public static final HashMap<String, Material> mMaterialCache = new HashMap<>();
@@ -747,7 +746,6 @@ public class Material implements IOreMaterial {
         registrationGateOpen = true;
     }
 
-    @Override
     public final TextureSet getTextureSet() {
         synchronized (this) {
             return textureSet;
@@ -844,12 +842,14 @@ public class Material implements IOreMaterial {
         return "ERROR BAD DEFAULT LOCAL NAME";
     }
 
-    @Override
     public String getLocalizedNameKey() {
         return MaterialUtils.getMaterialLocalizedNameKey(unlocalizedName);
     }
 
-    @Override
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal(getLocalizedNameKey());
+    }
+
     public int getId() {
         ItemStack dust = getDust(1);
 
@@ -866,12 +866,10 @@ public class Material implements IOreMaterial {
         return 0;
     }
 
-    @Override
     public List<IStoneType> getValidStones() {
         return StoneType.STONE_ONLY;
     }
 
-    @Override
     public String getInternalName() {
         return getUnlocalizedName();
     }
@@ -899,7 +897,6 @@ public class Material implements IOreMaterial {
         return new short[] { 255, 0, 0 };
     }
 
-    @Override
     public final short[] getRGBA() {
         if (this.RGBA != null) {
             if (this.RGBA.length == 4) {
@@ -1730,12 +1727,10 @@ public class Material implements IOreMaterial {
         return tryFindGregtechMaterialEquivalent(this);
     }
 
-    @Override
     public @Nullable Materials getGTMaterial() {
         return tryFindGregtechMaterialEquivalent();
     }
 
-    @Override
     public boolean generatesPrefix(OrePrefixes prefix) {
         // This is really unreliable but it's also gt++ so there isn't a better solution
         return getComponentByPrefix(prefix, 1) != null;
@@ -1767,22 +1762,18 @@ public class Material implements IOreMaterial {
         this.werkstoffID = werkstoffID;
     }
 
-    @Override
     public boolean contains(SubTag aTag) {
         return false;
     }
 
-    @Override
     public ISubTagContainer add(SubTag... aTags) {
         throw new UnsupportedOperationException("GT++ does not implement subtags");
     }
 
-    @Override
     public boolean remove(SubTag aTag) {
         return false;
     }
 
-    @Override
     public void addTooltips(List<String> list) {
         if (Client.tooltip.showFormula) {
             if (this.vChemicalFormula.contains("?")) {

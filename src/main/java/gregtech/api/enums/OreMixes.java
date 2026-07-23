@@ -52,10 +52,14 @@ import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import bartworks.system.material.WerkstoffLoader;
 import galacticgreg.api.enums.DimensionDef;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.OreMixBuilder;
@@ -87,10 +91,10 @@ public enum OreMixes {
             Titan,
             VegaB,
             Venus)
-        .primary(Materials.Naquadah)
-        .secondary(Materials.Naquadah)
-        .inBetween(Materials.Naquadah)
-        .sporadic(Materials.NaquadahEnriched)),
+        .primary(Materials2Materials.Naquadah)
+        .secondary(Materials2Materials.Naquadah)
+        .inBetween(Materials2Materials.Naquadah)
+        .sporadic(Materials2Materials.NaquadahEnriched)),
 
     LigniteCoal(new OreMixBuilder().name("ore.mix.lignite")
         .heightRange(80, 210)
@@ -99,10 +103,10 @@ public enum OreMixes {
         .size(32)
         .enableInDim(OW)
         .enableInDim(BarnardC)
-        .primary(Materials.Lignite)
-        .secondary(Materials.Lignite)
-        .inBetween(Materials.Lignite)
-        .sporadic(Materials.Coal)),
+        .primary(Materials2Materials.Lignite)
+        .secondary(Materials2Materials.Lignite)
+        .inBetween(Materials2Materials.Lignite)
+        .sporadic(Materials2Materials.Coal)),
 
     Coal(new OreMixBuilder().name("ore.mix.coal")
         .heightRange(30, 80)
@@ -111,10 +115,10 @@ public enum OreMixes {
         .size(32)
         .enableInDim(OW, TWILIGHT_FOREST)
         .heightRangeOverride(TwilightForest, 15, 40)
-        .primary(Materials.Coal)
-        .secondary(Materials.Coal)
-        .inBetween(Materials.Coal)
-        .sporadic(Materials.Lignite)),
+        .primary(Materials2Materials.Coal)
+        .secondary(Materials2Materials.Coal)
+        .inBetween(Materials2Materials.Coal)
+        .sporadic(Materials2Materials.Lignite)),
 
     Magnetite(new OreMixBuilder().name("ore.mix.magnetite")
         .heightRange(60, 180)
@@ -124,10 +128,10 @@ public enum OreMixes {
         .enableInDim(OW, TWILIGHT_FOREST)
         .enableInDim(Seth, BarnardE, Ceres, Deimos, Io, MakeMake, TcetiE)
         .heightRangeOverride(TwilightForest, 20, 32)
-        .primary(Materials.Magnetite)
-        .secondary(Materials.Magnetite)
-        .inBetween(Materials.Iron)
-        .sporadic(Materials.VanadiumMagnetite)),
+        .primary(Materials2Materials.Magnetite)
+        .secondary(Materials2Materials.Magnetite)
+        .inBetween(Materials2Materials.Iron)
+        .sporadic(Materials2Materials.VanadiumMagnetite)),
 
     Gold(new OreMixBuilder().name("ore.mix.gold")
         .heightRange(30, 60)
@@ -137,11 +141,11 @@ public enum OreMixes {
         .enableInDim(OW, THE_END, TWILIGHT_FOREST)
         .enableInDim(EndAsteroids, Seth, Asteroids, Mars, BarnardF, Callisto, Phobos, Pluto, TcetiE, Triton, VegaB)
         .heightRangeOverride(TwilightForest, 15, 30)
-        .primary(Materials.Magnetite)
-        .secondary(Materials.Magnetite)
-        .inBetween(Materials.VanadiumMagnetite)
-        .sporadic(Materials.Gold)
-        .setLocalizedName(Materials.Gold)),
+        .primary(Materials2Materials.Magnetite)
+        .secondary(Materials2Materials.Magnetite)
+        .inBetween(Materials2Materials.VanadiumMagnetite)
+        .sporadic(Materials2Materials.Gold)
+        .setLocalizedName(Materials2Materials.Gold)),
 
     Iron(new OreMixBuilder().name("ore.mix.iron")
         .heightRange(10, 40)
@@ -151,11 +155,11 @@ public enum OreMixes {
         .enableInDim(OW, NETHER, TWILIGHT_FOREST)
         .enableInDim(Mars, Callisto, Ceres, Ganymede, Mercury, Oberon, Pluto)
         .heightRangeOverride(TwilightForest, 5, 20)
-        .primary(Materials.BrownLimonite)
-        .secondary(Materials.YellowLimonite)
-        .inBetween(Materials.BandedIron)
-        .sporadic(Materials.Malachite)
-        .setLocalizedName(Materials.Iron)),
+        .primary(Materials2Materials.BrownLimonite)
+        .secondary(Materials2Materials.YellowLimonite)
+        .inBetween(Materials2Materials.BandedIron)
+        .sporadic(Materials2Materials.Malachite)
+        .setLocalizedName(Materials2Materials.Iron)),
 
     Cassiterite(new OreMixBuilder().name("ore.mix.cassiterite")
         .heightRange(60, 220)
@@ -165,11 +169,11 @@ public enum OreMixes {
         .enableInDim(EndAsteroids, MehenBelt, Seth, Moon, Io, Miranda, TcetiE, Venus)
         .enableInDim(OW, THE_END, TWILIGHT_FOREST)
         .heightRangeOverride(TwilightForest, 20, 32)
-        .primary(Materials.Tin)
-        .secondary(Materials.Tin)
-        .inBetween(Materials.Cassiterite)
-        .sporadic(Materials.Tin)
-        .setLocalizedName(Materials.Cassiterite)),
+        .primary(Materials2Materials.Tin)
+        .secondary(Materials2Materials.Tin)
+        .inBetween(Materials2Materials.Cassiterite)
+        .sporadic(Materials2Materials.Tin)
+        .setLocalizedName(Materials2Materials.Cassiterite)),
 
     Tetrahedrite(new OreMixBuilder().name("ore.mix.tetrahedrite")
         .heightRange(80, 120)
@@ -178,10 +182,10 @@ public enum OreMixes {
         .size(24)
         .enableInDim(NETHER, THE_END)
         .enableInDim(EndAsteroids, Asteroids, Mars, CentauriBb, Deimos, Ganymede, KuiperBelt, Miranda, VegaB, Venus)
-        .primary(Materials.Tetrahedrite)
-        .secondary(Materials.Tetrahedrite)
-        .inBetween(Materials.Copper)
-        .sporadic(Materials.Stibnite)),
+        .primary(Materials2Materials.Tetrahedrite)
+        .secondary(Materials2Materials.Tetrahedrite)
+        .inBetween(Materials2Materials.Copper)
+        .sporadic(Materials2Materials.Stibnite)),
 
     NetherQuartz(new OreMixBuilder().name("ore.mix.netherquartz")
         .heightRange(40, 80)
@@ -190,10 +194,10 @@ public enum OreMixes {
         .size(24)
         .enableInDim(NETHER)
         .enableInDim(Neper, CentauriBb)
-        .primary(Materials.NetherQuartz)
-        .secondary(Materials.NetherQuartz)
-        .inBetween(Materials.NetherQuartz)
-        .sporadic(Materials.Quartzite)),
+        .primary(Materials2Materials.NetherQuartz)
+        .secondary(Materials2Materials.NetherQuartz)
+        .inBetween(Materials2Materials.NetherQuartz)
+        .sporadic(Materials2Materials.Quartzite)),
 
     Sulfur(new OreMixBuilder().name("ore.mix.sulfur")
         .heightRange(5, 20)
@@ -202,10 +206,10 @@ public enum OreMixes {
         .size(24)
         .enableInDim(NETHER)
         .enableInDim(Anubis, Mars, CentauriBb, Deimos, Io, Phobos, Venus)
-        .primary(Materials.Sulfur)
-        .secondary(Materials.Sulfur)
-        .inBetween(Materials.Pyrite)
-        .sporadic(Materials.Sphalerite)),
+        .primary(Materials2Materials.Sulfur)
+        .secondary(Materials2Materials.Sulfur)
+        .inBetween(Materials2Materials.Pyrite)
+        .sporadic(Materials2Materials.Sphalerite)),
 
     Copper(new OreMixBuilder().name("ore.mix.copper")
         .heightRange(5, 60)
@@ -214,11 +218,11 @@ public enum OreMixes {
         .size(24)
         .enableInDim(EndAsteroids, Moon, BarnardE, BarnardF, Callisto, Ceres, Enceladus, Proteus)
         .enableInDim(OW, NETHER, THE_END)
-        .primary(Materials.Chalcopyrite)
-        .secondary(Materials.Iron)
-        .inBetween(Materials.Pyrite)
-        .sporadic(Materials.Copper)
-        .setLocalizedName(Materials.Copper)),
+        .primary(Materials2Materials.Chalcopyrite)
+        .secondary(Materials2Materials.Iron)
+        .inBetween(Materials2Materials.Pyrite)
+        .sporadic(Materials2Materials.Copper)
+        .setLocalizedName(Materials2Materials.Copper)),
 
     Bauxite(new OreMixBuilder().name("ore.mix.bauxite")
         .heightRange(10, 80)
@@ -239,10 +243,10 @@ public enum OreMixes {
             Proteus,
             TcetiE,
             Titan)
-        .primary(Materials.Bauxite)
-        .secondary(Materials.Ilmenite)
-        .inBetween(Materials.Aluminium)
-        .sporadic(Materials.Ilmenite)),
+        .primary(Materials2Materials.Bauxite)
+        .secondary(Materials2Materials.Ilmenite)
+        .inBetween(Materials2Materials.Aluminium)
+        .sporadic(Materials2Materials.Ilmenite)),
 
     Salts(new OreMixBuilder().name("ore.mix.salts")
         .heightRange(50, 70)
@@ -252,11 +256,11 @@ public enum OreMixes {
         .enableInDim(OW, TWILIGHT_FOREST)
         .enableInDim(Mars, BarnardC, TcetiE)
         .heightRangeOverride(TwilightForest, 25, 45)
-        .primary(Materials.RockSalt)
-        .secondary(Materials.Salt)
-        .inBetween(Materials.Lepidolite)
-        .sporadic(Materials.Spodumene)
-        .setLocalizedName(Materials.Salt)),
+        .primary(Materials2Materials.RockSalt)
+        .secondary(Materials2Materials.Salt)
+        .inBetween(Materials2Materials.Lepidolite)
+        .sporadic(Materials2Materials.Spodumene)
+        .setLocalizedName(Materials2Materials.Salt)),
 
     Redstone(new OreMixBuilder().name("ore.mix.redstone")
         .heightRange(5, 40)
@@ -265,10 +269,10 @@ public enum OreMixes {
         .size(24)
         .enableInDim(OW, NETHER)
         .enableInDim(Mars, BarnardF, CentauriBb, Ganymede, Mercury, Miranda, VegaB, Venus)
-        .primary(Materials.Redstone)
-        .secondary(Materials.Redstone)
-        .inBetween(Materials.Ruby)
-        .sporadic(Materials.Cinnabar)),
+        .primary(Materials2Materials.Redstone)
+        .secondary(Materials2Materials.Redstone)
+        .inBetween(Materials2Materials.Ruby)
+        .sporadic(Materials2Materials.Cinnabar)),
 
     Soapstone(new OreMixBuilder().name("ore.mix.soapstone")
         .heightRange(20, 50)
@@ -278,10 +282,10 @@ public enum OreMixes {
         .enableInDim(OW, TWILIGHT_FOREST)
         .enableInDim(Anubis, Maahes, Ceres)
         .heightRangeOverride(TwilightForest, 10, 25)
-        .primary(Materials.Soapstone)
-        .secondary(Materials.Talc)
-        .inBetween(Materials.Glauconite)
-        .sporadic(Materials.Pentlandite)),
+        .primary(Materials2Materials.Soapstone)
+        .secondary(Materials2Materials.Talc)
+        .inBetween(Materials2Materials.Glauconite)
+        .sporadic(Materials2Materials.Pentlandite)),
 
     Nickel(new OreMixBuilder().name("ore.mix.nickel")
         .heightRange(10, 40)
@@ -291,11 +295,11 @@ public enum OreMixes {
         .enableInDim(THE_END, TWILIGHT_FOREST)
         .enableInDim(EndAsteroids, MehenBelt, Mars, Deimos, KuiperBelt, Phobos, Titan, Triton, Venus)
         .heightRangeOverride(TwilightForest, 5, 20)
-        .primary(Materials.Garnierite)
-        .secondary(Materials.Nickel)
-        .inBetween(Materials.Cobaltite)
-        .sporadic(Materials.Pentlandite)
-        .setLocalizedName(Materials.Nickel)),
+        .primary(Materials2Materials.Garnierite)
+        .secondary(Materials2Materials.Nickel)
+        .inBetween(Materials2Materials.Cobaltite)
+        .sporadic(Materials2Materials.Pentlandite)
+        .setLocalizedName(Materials2Materials.Nickel)),
 
     Platinum(new OreMixBuilder().name("ore.mix.platinum")
         .heightRange(40, 50)
@@ -303,11 +307,11 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(EndAsteroids, Asteroids, Maahes, MehenBelt)
-        .primary(Materials.Cooperite)
-        .secondary(Materials.Palladium)
-        .inBetween(Materials.Platinum)
-        .sporadic(Materials.Iridium)
-        .setLocalizedName(Materials.Platinum)),
+        .primary(Materials2Materials.Cooperite)
+        .secondary(Materials2Materials.Palladium)
+        .inBetween(Materials2Materials.Platinum)
+        .sporadic(Materials2Materials.Iridium)
+        .setLocalizedName(Materials2Materials.Platinum)),
 
     Pitchblende(new OreMixBuilder().name("ore.mix.pitchblende")
         .heightRange(30, 60)
@@ -315,10 +319,10 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(Mars, BarnardF, CentauriBb, Haumea, Io, KuiperBelt, MakeMake, Oberon, Phobos, VegaB, Venus)
-        .primary(Materials.Pitchblende)
-        .secondary(Materials.Pitchblende)
-        .inBetween(Materials.Uraninite)
-        .sporadic(Materials.Uraninite)),
+        .primary(Materials2Materials.Pitchblende)
+        .secondary(Materials2Materials.Pitchblende)
+        .inBetween(Materials2Materials.Uraninite)
+        .sporadic(Materials2Materials.Uraninite)),
 
     Monazite(new OreMixBuilder().name("ore.mix.monazite")
         .heightRange(20, 40)
@@ -326,11 +330,11 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(Seth, Moon, BarnardF, Callisto, Deimos, Enceladus, Haumea, Io, MakeMake, Titan, Triton, Venus)
-        .primary(Materials.Bastnasite)
-        .secondary(Materials.Bastnasite)
-        .inBetween(Materials.Monazite)
-        .sporadic(Materials.Neodymium)
-        .setLocalizedName(Materials.Monazite)),
+        .primary(Materials2Materials.Bastnasite)
+        .secondary(Materials2Materials.Bastnasite)
+        .inBetween(Materials2Materials.Monazite)
+        .sporadic(Materials2Materials.Neodymium)
+        .setLocalizedName(Materials2Materials.Monazite)),
 
     Molybdenum(new OreMixBuilder().name("ore.mix.molybdenum")
         .heightRange(20, 50)
@@ -340,11 +344,11 @@ public enum OreMixes {
         .enableInDim(NETHER, THE_END, TWILIGHT_FOREST)
         .enableInDim(EndAsteroids, Moon, BarnardE, Ceres, Mercury, Phobos, Pluto, Proteus, Titan)
         .heightRangeOverride(TwilightForest, 10, 25)
-        .primary(Materials.Wulfenite)
-        .secondary(Materials.Molybdenite)
-        .inBetween(Materials.Molybdenum)
-        .sporadic(Materials.Powellite)
-        .setLocalizedName(Materials.Molybdenum)),
+        .primary(Materials2Materials.Wulfenite)
+        .secondary(Materials2Materials.Molybdenite)
+        .inBetween(Materials2Materials.Molybdenum)
+        .sporadic(Materials2Materials.Powellite)
+        .setLocalizedName(Materials2Materials.Molybdenum)),
 
     Tungstate(new OreMixBuilder().name("ore.mix.tungstate")
         .heightRange(20, 60)
@@ -366,11 +370,11 @@ public enum OreMixes {
             Pluto,
             Triton,
             VegaB)
-        .primary(Materials.Scheelite)
-        .secondary(Materials.Scheelite)
-        .inBetween(Materials.Tungstate)
-        .sporadic(Materials.Lithium)
-        .setLocalizedName(Materials.Tungstate)),
+        .primary(Materials2Materials.Scheelite)
+        .secondary(Materials2Materials.Scheelite)
+        .inBetween(Materials2Materials.Tungstate)
+        .sporadic(Materials2Materials.Lithium)
+        .setLocalizedName(Materials2Materials.Tungstate)),
 
     Sapphire(new OreMixBuilder().name("ore.mix.sapphire")
         .heightRange(10, 25)
@@ -379,11 +383,11 @@ public enum OreMixes {
         .size(16)
         .enableInDim(TWILIGHT_FOREST)
         .enableInDim(Horus)
-        .primary(Materials.Almandine)
-        .secondary(Materials.Pyrope)
-        .inBetween(Materials.Sapphire)
-        .sporadic(Materials.GreenSapphire)
-        .setLocalizedName(Materials.Sapphire)),
+        .primary(Materials2Materials.Almandine)
+        .secondary(Materials2Materials.Pyrope)
+        .inBetween(Materials2Materials.Sapphire)
+        .sporadic(Materials2Materials.GreenSapphire)
+        .setLocalizedName(Materials2Materials.Sapphire)),
 
     Manganese(new OreMixBuilder().name("ore.mix.manganese")
         .heightRange(20, 30)
@@ -392,11 +396,11 @@ public enum OreMixes {
         .size(16)
         .enableInDim(OW, NETHER)
         .enableInDim(EndAsteroids, BarnardE, BarnardF, CentauriBb, Ceres, Io, Oberon, Titan, Triton)
-        .primary(Materials.Grossular)
-        .secondary(Materials.Spessartine)
-        .inBetween(Materials.Pyrolusite)
-        .sporadic(Materials.Tantalite)
-        .setLocalizedName(Materials.Manganese)),
+        .primary(Materials2Materials.Grossular)
+        .secondary(Materials2Materials.Spessartine)
+        .inBetween(Materials2Materials.Pyrolusite)
+        .sporadic(Materials2Materials.Tantalite)
+        .setLocalizedName(Materials2Materials.Manganese)),
 
     Quartz(new OreMixBuilder().name("ore.mix.quartz")
         .heightRange(80, 120)
@@ -405,10 +409,10 @@ public enum OreMixes {
         .size(16)
         .enableInDim(NETHER)
         .enableInDim(Neper)
-        .primary(Materials.Quartzite)
-        .secondary(Materials.Barite)
-        .inBetween(Materials.CertusQuartz)
-        .sporadic(Materials.CertusQuartz)),
+        .primary(Materials2Materials.Quartzite)
+        .secondary(Materials2Materials.Barite)
+        .inBetween(Materials2Materials.CertusQuartz)
+        .sporadic(Materials2Materials.CertusQuartz)),
 
     Diamond(new OreMixBuilder().name("ore.mix.diamond")
         .heightRange(5, 20)
@@ -417,11 +421,11 @@ public enum OreMixes {
         .size(16)
         .enableInDim(BarnardF, Ganymede, KuiperBelt, Mercury, Miranda, Phobos, Pluto, Proteus, Titan)
         .enableInDim(OW, TWILIGHT_FOREST)
-        .primary(Materials.Graphite)
-        .secondary(Materials.Graphite)
-        .inBetween(Materials.Diamond)
-        .sporadic(Materials.Coal)
-        .setLocalizedName(Materials.Diamond)),
+        .primary(Materials2Materials.Graphite)
+        .secondary(Materials2Materials.Graphite)
+        .inBetween(Materials2Materials.Diamond)
+        .sporadic(Materials2Materials.Coal)
+        .setLocalizedName(Materials2Materials.Diamond)),
 
     Olivine(new OreMixBuilder().name("ore.mix.olivine")
         .heightRange(10, 25)
@@ -430,11 +434,11 @@ public enum OreMixes {
         .size(16)
         .enableInDim(TWILIGHT_FOREST)
         .enableInDim(EndAsteroids, Anubis, MehenBelt, BarnardE, Ceres, Haumea, MakeMake)
-        .primary(Materials.Bentonite)
-        .secondary(Materials.Magnesite)
-        .inBetween(Materials.Olivine)
-        .sporadic(Materials.Glauconite)
-        .setLocalizedName(Materials.Olivine)),
+        .primary(Materials2Materials.Bentonite)
+        .secondary(Materials2Materials.Magnesite)
+        .inBetween(Materials2Materials.Olivine)
+        .sporadic(Materials2Materials.Glauconite)
+        .setLocalizedName(Materials2Materials.Olivine)),
 
     Apatite(new OreMixBuilder().name("ore.mix.apatite")
         .heightRange(40, 60)
@@ -444,10 +448,10 @@ public enum OreMixes {
         .enableInDim(TcetiE)
         .enableInDim(OW, TWILIGHT_FOREST)
         .heightRangeOverride(TwilightForest, 20, 30)
-        .primary(Materials.Apatite)
-        .secondary(Materials.Apatite)
-        .inBetween(Materials.TricalciumPhosphate)
-        .sporadic(Materials.Pyrochlore)),
+        .primary(Materials2Materials.Apatite)
+        .secondary(Materials2Materials.Apatite)
+        .inBetween(Materials2Materials.TricalciumPhosphate)
+        .sporadic(Materials2Materials.Pyrochlore)),
 
     Galena(new OreMixBuilder().name("ore.mix.galena")
         .heightRange(5, 45)
@@ -455,10 +459,10 @@ public enum OreMixes {
         .density(4)
         .size(16)
         .enableInDim(Moon, Mars, Ganymede, Oberon, Triton, VegaB, Venus)
-        .primary(Materials.Galena)
-        .secondary(Materials.Galena)
-        .inBetween(Materials.Silver)
-        .sporadic(Materials.Lead)),
+        .primary(Materials2Materials.Galena)
+        .secondary(Materials2Materials.Galena)
+        .inBetween(Materials2Materials.Silver)
+        .sporadic(Materials2Materials.Lead)),
 
     Lapis(new OreMixBuilder().name("ore.mix.lapis")
         .heightRange(20, 50)
@@ -468,11 +472,11 @@ public enum OreMixes {
         .enableInDim(OW, TWILIGHT_FOREST)
         .enableInDim(EndAsteroids, MehenBelt, Ceres, Deimos, Enceladus, VegaB)
         .heightRangeOverride(TwilightForest, 10, 25)
-        .primary(Materials.Lazurite)
-        .secondary(Materials.Sodalite)
-        .inBetween(Materials.Lapis)
-        .sporadic(Materials.Calcite)
-        .setLocalizedName(Materials.Lapis)),
+        .primary(Materials2Materials.Lazurite)
+        .secondary(Materials2Materials.Sodalite)
+        .inBetween(Materials2Materials.Lapis)
+        .sporadic(Materials2Materials.Calcite)
+        .setLocalizedName(Materials2Materials.Lapis)),
 
     Beryllium(new OreMixBuilder().name("ore.mix.beryllium")
         .heightRange(5, 30)
@@ -481,10 +485,10 @@ public enum OreMixes {
         .size(16)
         .enableInDim(NETHER, THE_END)
         .enableInDim(EndAsteroids, Mars, BarnardF, CentauriBb, Ceres, Haumea, MakeMake, Pluto, Titan, Venus)
-        .primary(Materials.Beryllium)
-        .secondary(Materials.Beryllium)
-        .inBetween(Materials.Emerald)
-        .sporadic(Materials.Thorium)),
+        .primary(Materials2Materials.Beryllium)
+        .secondary(Materials2Materials.Beryllium)
+        .inBetween(Materials2Materials.Emerald)
+        .sporadic(Materials2Materials.Thorium)),
 
     Uranium(new OreMixBuilder().name("ore.mix.uranium")
         .heightRange(20, 30)
@@ -503,11 +507,11 @@ public enum OreMixes {
             MakeMake,
             Phobos,
             Proteus)
-        .primary(Materials.Uraninite)
-        .secondary(Materials.Uraninite)
-        .inBetween(Materials.Uranium)
-        .sporadic(Materials.Uranium)
-        .setLocalizedName(Materials.Uranium)),
+        .primary(Materials2Materials.Uraninite)
+        .secondary(Materials2Materials.Uraninite)
+        .inBetween(Materials2Materials.Uranium)
+        .sporadic(Materials2Materials.Uranium)
+        .setLocalizedName(Materials2Materials.Uranium)),
     OilSand(new OreMixBuilder().name("ore.mix.oilsand")
         .heightRange(50, 80)
         .weight(40)
@@ -515,10 +519,10 @@ public enum OreMixes {
         .size(16)
         .enableInDim(OW)
         .enableInDim(BarnardC, TcetiE)
-        .primary(Materials.Oilsands)
-        .secondary(Materials.Oilsands)
-        .inBetween(Materials.Oilsands)
-        .sporadic(Materials.Oilsands)),
+        .primary(Materials2Materials.Oilsands)
+        .secondary(Materials2Materials.Oilsands)
+        .inBetween(Materials2Materials.Oilsands)
+        .sporadic(Materials2Materials.Oilsands)),
 
     Neutronium(new OreMixBuilder().name("ore.mix.neutronium")
         .heightRange(5, 30)
@@ -526,10 +530,10 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(Maahes, MehenBelt, BarnardE, BarnardF, Haumea, KuiperBelt, MakeMake, Pluto, Proteus, Triton, VegaB)
-        .primary(Materials.Neutronium)
-        .secondary(Materials.Adamantium)
-        .inBetween(Materials.Naquadah)
-        .sporadic(Materials.Titanium)),
+        .primary(Materials2Materials.Neutronium)
+        .secondary(Materials2Materials.Adamantium)
+        .inBetween(Materials2Materials.Naquadah)
+        .sporadic(Materials2Materials.Titanium)),
 
     AquaIgnis(new OreMixBuilder().name("ore.mix.aquaignis")
         .heightRange(5, 20)
@@ -538,11 +542,11 @@ public enum OreMixes {
         .size(16)
         .enableInDim(Neper)
         .enableInDim(TWILIGHT_FOREST)
-        .primary(Materials.InfusedWater)
-        .secondary(Materials.InfusedFire)
-        .inBetween(Materials.Amber)
-        .sporadic(Materials.Cinnabar)
-        .setLocalizedName(Materials.InfusedFire, Materials.Amber)),
+        .primary(Materials2Materials.InfusedWater)
+        .secondary(Materials2Materials.InfusedFire)
+        .inBetween(Materials2Materials.Amber)
+        .sporadic(Materials2Materials.Cinnabar)
+        .setLocalizedName(Materials2Materials.InfusedFire, Materials2Materials.Amber)),
 
     TerraAer(new OreMixBuilder().name("ore.mix.terraaer")
         .heightRange(5, 20)
@@ -551,11 +555,11 @@ public enum OreMixes {
         .size(16)
         .enableInDim(Neper)
         .enableInDim(TWILIGHT_FOREST)
-        .primary(Materials.InfusedEarth)
-        .secondary(Materials.InfusedAir)
-        .inBetween(Materials.Amber)
-        .sporadic(Materials.Cinnabar)
-        .setLocalizedName(Materials.InfusedAir)),
+        .primary(Materials2Materials.InfusedEarth)
+        .secondary(Materials2Materials.InfusedAir)
+        .inBetween(Materials2Materials.Amber)
+        .sporadic(Materials2Materials.Cinnabar)
+        .setLocalizedName(Materials2Materials.InfusedAir)),
 
     PerditioOrdo(new OreMixBuilder().name("ore.mix.perditioordo")
         .heightRange(5, 20)
@@ -564,11 +568,11 @@ public enum OreMixes {
         .size(16)
         .enableInDim(TWILIGHT_FOREST)
         .enableInDim(Neper)
-        .primary(Materials.InfusedEntropy)
-        .secondary(Materials.InfusedOrder)
-        .inBetween(Materials.Amber)
-        .sporadic(Materials.Cinnabar)
-        .setLocalizedName(Materials.InfusedOrder)),
+        .primary(Materials2Materials.InfusedEntropy)
+        .secondary(Materials2Materials.InfusedOrder)
+        .inBetween(Materials2Materials.Amber)
+        .sporadic(Materials2Materials.Cinnabar)
+        .setLocalizedName(Materials2Materials.InfusedOrder)),
 
     CopperTin(new OreMixBuilder().name("ore.mix.coppertin")
         .heightRange(80, 200)
@@ -576,11 +580,11 @@ public enum OreMixes {
         .density(3)
         .size(24)
         .enableInDim(OW)
-        .primary(Materials.Chalcopyrite)
-        .secondary(Materials.Vermiculite)
-        .inBetween(Materials.Cassiterite)
-        .sporadic(Materials.Alunite)
-        .setLocalizedName(Materials.Vermiculite)),
+        .primary(Materials2Materials.Chalcopyrite)
+        .secondary(Materials2Materials.Vermiculite)
+        .inBetween(Materials2Materials.Cassiterite)
+        .sporadic(Materials2Materials.Alunite)
+        .setLocalizedName(Materials2Materials.Vermiculite)),
 
     TitaniumChrome(new OreMixBuilder().name("ore.mix.titaniumchrome")
         .heightRange(10, 70)
@@ -588,10 +592,10 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(MehenBelt, Moon, Asteroids, Callisto, Ganymede, Mercury, Miranda, Pluto, Proteus, TcetiE, Titan)
-        .primary(Materials.Ilmenite)
-        .secondary(Materials.Chromite)
-        .inBetween(Materials.Uvarovite)
-        .sporadic(Materials.Perlite)),
+        .primary(Materials2Materials.Ilmenite)
+        .secondary(Materials2Materials.Chromite)
+        .inBetween(Materials2Materials.Uvarovite)
+        .sporadic(Materials2Materials.Perlite)),
 
     MineralSand(new OreMixBuilder().name("ore.mix.mineralsand")
         .heightRange(50, 60)
@@ -600,10 +604,10 @@ public enum OreMixes {
         .size(24)
         .enableInDim(OW)
         .enableInDim(Anubis, Maahes, BarnardC, DimensionDef.Europa)
-        .primary(Materials.BasalticMineralSand)
-        .secondary(Materials.GraniticMineralSand)
-        .inBetween(Materials.FullersEarth)
-        .sporadic(Materials.Gypsum)),
+        .primary(Materials2Materials.BasalticMineralSand)
+        .secondary(Materials2Materials.GraniticMineralSand)
+        .inBetween(Materials2Materials.FullersEarth)
+        .sporadic(Materials2Materials.Gypsum)),
 
     GarnetTin(new OreMixBuilder().name("ore.mix.garnettin")
         .heightRange(50, 60)
@@ -612,11 +616,11 @@ public enum OreMixes {
         .size(24)
         .enableInDim(OW)
         .enableInDim(CentauriBb, DimensionDef.Europa)
-        .primary(Materials.CassiteriteSand)
-        .secondary(Materials.GarnetSand)
-        .inBetween(Materials.Asbestos)
-        .sporadic(Materials.Diatomite)
-        .setLocalizedName(Materials.Tin)),
+        .primary(Materials2Materials.CassiteriteSand)
+        .secondary(Materials2Materials.GarnetSand)
+        .inBetween(Materials2Materials.Asbestos)
+        .sporadic(Materials2Materials.Diatomite)
+        .setLocalizedName(Materials2Materials.Tin)),
 
     KaoliniteZeolite(new OreMixBuilder().name("ore.mix.kaolinitezeolite")
         .heightRange(50, 70)
@@ -625,10 +629,10 @@ public enum OreMixes {
         .size(16)
         .enableInDim(OW)
         .enableInDim(Neper, TcetiE)
-        .primary(Materials.Kaolinite)
-        .secondary(Materials.Zeolite)
-        .inBetween(Materials.FullersEarth)
-        .sporadic(Materials.GlauconiteSand)),
+        .primary(Materials2Materials.Kaolinite)
+        .secondary(Materials2Materials.Zeolite)
+        .inBetween(Materials2Materials.FullersEarth)
+        .sporadic(Materials2Materials.GlauconiteSand)),
 
     Mica(new OreMixBuilder().name("ore.mix.mica")
         .heightRange(20, 40)
@@ -637,11 +641,11 @@ public enum OreMixes {
         .size(16)
         .enableInDim(Anubis, Neper, BarnardC)
         .enableInDim(OW)
-        .primary(Materials.Kyanite)
-        .secondary(Materials.Mica)
-        .inBetween(Materials.Cassiterite)
-        .sporadic(Materials.Pollucite)
-        .setLocalizedName(Materials.Mica)),
+        .primary(Materials2Materials.Kyanite)
+        .secondary(Materials2Materials.Mica)
+        .inBetween(Materials2Materials.Cassiterite)
+        .sporadic(Materials2Materials.Pollucite)
+        .setLocalizedName(Materials2Materials.Mica)),
 
     Dolomite(new OreMixBuilder().name("ore.mix.dolomite")
         .heightRange(150, 200)
@@ -650,10 +654,10 @@ public enum OreMixes {
         .size(24)
         .enableInDim(OW)
         .enableInDim(Anubis, Neper)
-        .primary(Materials.Dolomite)
-        .secondary(Materials.Wollastonite)
-        .inBetween(Materials.Trona)
-        .sporadic(Materials.Andradite)),
+        .primary(Materials2Materials.Dolomite)
+        .secondary(Materials2Materials.Wollastonite)
+        .inBetween(Materials2Materials.Trona)
+        .sporadic(Materials2Materials.Andradite)),
 
     PlatinumChrome(new OreMixBuilder().name("ore.mix.platinumchrome")
         .heightRange(5, 30)
@@ -661,11 +665,11 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(Asteroids, MehenBelt, Seth, Callisto, Ceres, Ganymede, Io, KuiperBelt, Mercury, Oberon, Pluto)
-        .primary(Materials.Platinum)
-        .secondary(Materials.Chrome)
-        .inBetween(Materials.Cooperite)
-        .sporadic(Materials.Palladium)
-        .setLocalizedName(Materials.Palladium)),
+        .primary(Materials2Materials.Platinum)
+        .secondary(Materials2Materials.Chrome)
+        .inBetween(Materials2Materials.Cooperite)
+        .sporadic(Materials2Materials.Palladium)
+        .setLocalizedName(Materials2Materials.Palladium)),
 
     IridiumMytryl(new OreMixBuilder().name("ore.mix.iridiummytryl")
         .heightRange(15, 40)
@@ -673,11 +677,11 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(MehenBelt, Seth, Enceladus, Io, KuiperBelt, Mercury, Miranda, Titan, Triton, Venus)
-        .primary(Materials.Nickel)
-        .secondary(Materials.Iridium)
-        .inBetween(Materials.Palladium)
-        .sporadic(Materials.Mithril)
-        .setLocalizedName(Materials.Iridium)),
+        .primary(Materials2Materials.Nickel)
+        .secondary(Materials2Materials.Iridium)
+        .inBetween(Materials2Materials.Palladium)
+        .sporadic(Materials2Materials.Mithril)
+        .setLocalizedName(Materials2Materials.Iridium)),
 
     Osmium(new OreMixBuilder().name("ore.mix.osmium")
         .heightRange(5, 30)
@@ -685,11 +689,11 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(MehenBelt, Seth, BarnardC, Enceladus, KuiperBelt, Miranda, Oberon, Pluto, Proteus, Titan)
-        .primary(Materials.Nickel)
-        .secondary(Materials.Osmium)
-        .inBetween(Materials.Iridium)
-        .sporadic(Materials.Nickel)
-        .setLocalizedName(Materials.Osmium)),
+        .primary(Materials2Materials.Nickel)
+        .secondary(Materials2Materials.Osmium)
+        .inBetween(Materials2Materials.Iridium)
+        .sporadic(Materials2Materials.Nickel)
+        .setLocalizedName(Materials2Materials.Osmium)),
 
     SaltPeterElectrotine(new OreMixBuilder().name("ore.mix.saltpeterelectrotine")
         .heightRange(5, 45)
@@ -698,11 +702,11 @@ public enum OreMixes {
         .size(16)
         .enableInDim(NETHER)
         .enableInDim(CentauriBb, Ceres)
-        .primary(Materials.Saltpeter)
-        .secondary(Materials.Diatomite)
-        .inBetween(Materials.Electrotine)
-        .sporadic(Materials.Alunite)
-        .setLocalizedName(Materials.Electrotine)),
+        .primary(Materials2Materials.Saltpeter)
+        .secondary(Materials2Materials.Diatomite)
+        .inBetween(Materials2Materials.Electrotine)
+        .sporadic(Materials2Materials.Alunite)
+        .setLocalizedName(Materials2Materials.Electrotine)),
 
     Desh(new OreMixBuilder().name("ore.mix.desh")
         .heightRange(5, 40)
@@ -710,10 +714,10 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(Anubis, Mars, Miranda)
-        .primary(Materials.Desh)
-        .secondary(Materials.Desh)
-        .inBetween(Materials.Scheelite)
-        .sporadic(Materials.Tungstate)),
+        .primary(Materials2Materials.Desh)
+        .secondary(Materials2Materials.Desh)
+        .inBetween(Materials2Materials.Scheelite)
+        .sporadic(Materials2Materials.Tungstate)),
 
     Draconium(new OreMixBuilder().name("ore.mix.draconium")
         .heightRange(20, 40)
@@ -721,10 +725,10 @@ public enum OreMixes {
         .density(1)
         .size(16)
         .enableInDim(Horus, Seth, Deimos, Mercury, Miranda, Phobos)
-        .primary(Materials.Draconium)
-        .secondary(Materials.Electrotine)
-        .inBetween(Materials.Jade)
-        .sporadic(Materials.Vinteum)),
+        .primary(Materials2Materials.Draconium)
+        .secondary(Materials2Materials.Electrotine)
+        .inBetween(Materials2Materials.Jade)
+        .sporadic(Materials2Materials.Vinteum)),
 
     Quantium(new OreMixBuilder().name("ore.mix.quantium")
         .heightRange(5, 25)
@@ -732,10 +736,10 @@ public enum OreMixes {
         .density(3)
         .size(24)
         .enableInDim(Horus, Maahes, Venus)
-        .primary(Materials.Quantium)
-        .secondary(Materials.Amethyst)
-        .inBetween(Materials.Rutile)
-        .sporadic(Materials.Ardite)),
+        .primary(Materials2Materials.Quantium)
+        .secondary(Materials2Materials.Amethyst)
+        .inBetween(Materials2Materials.Rutile)
+        .sporadic(Materials2Materials.Ardite)),
 
     CallistoIce(new OreMixBuilder().name("ore.mix.callistoice")
         .heightRange(40, 60)
@@ -743,10 +747,10 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(Anubis, Maahes, Callisto)
-        .primary(Materials.CallistoIce)
-        .secondary(Materials.Topaz)
-        .inBetween(Materials.BlueTopaz)
-        .sporadic(Materials.Alduorite)),
+        .primary(Materials2Materials.CallistoIce)
+        .secondary(Materials2Materials.Topaz)
+        .inBetween(Materials2Materials.BlueTopaz)
+        .sporadic(Materials2Materials.Alduorite)),
 
     Mytryl(new OreMixBuilder().name("ore.mix.mytryl")
         .heightRange(10, 30)
@@ -754,10 +758,10 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(Anubis, Horus, Io)
-        .primary(Materials.Mytryl)
-        .secondary(Materials.Jasper)
-        .inBetween(Materials.Ceruclase)
-        .sporadic(Materials.Vulcanite)),
+        .primary(Materials2Materials.Mytryl)
+        .secondary(Materials2Materials.Jasper)
+        .inBetween(Materials2Materials.Ceruclase)
+        .sporadic(Materials2Materials.Vulcanite)),
 
     Ledox(new OreMixBuilder().name("ore.mix.ledox")
         .heightRange(55, 65)
@@ -765,10 +769,10 @@ public enum OreMixes {
         .density(2)
         .size(24)
         .enableInDim(Horus, Enceladus, DimensionDef.Europa)
-        .primary(Materials.Ledox)
-        .secondary(Materials.Opal)
-        .inBetween(Materials.Orichalcum)
-        .sporadic(Materials.Rubracium)),
+        .primary(Materials2Materials.Ledox)
+        .secondary(Materials2Materials.Opal)
+        .inBetween(Materials2Materials.Orichalcum)
+        .sporadic(Materials2Materials.Rubracium)),
 
     Oriharukon(new OreMixBuilder().name("ore.mix.oriharukon")
         .heightRange(30, 60)
@@ -776,10 +780,10 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(Horus, Deimos, Phobos)
-        .primary(Materials.Oriharukon)
-        .secondary(Materials.Tanzanite)
-        .inBetween(Materials.Vyroxeres)
-        .sporadic(Materials.Mirabilite)),
+        .primary(Materials2Materials.Oriharukon)
+        .secondary(Materials2Materials.Tanzanite)
+        .inBetween(Materials2Materials.Vyroxeres)
+        .sporadic(Materials2Materials.Mirabilite)),
 
     BlackPlutonium(new OreMixBuilder().name("ore.mix.blackplutonium")
         .heightRange(5, 25)
@@ -787,10 +791,10 @@ public enum OreMixes {
         .density(2)
         .size(24)
         .enableInDim(Horus, BarnardC, CentauriBb, MakeMake, Pluto, TcetiE)
-        .primary(Materials.BlackPlutonium)
-        .secondary(Materials.GarnetRed)
-        .inBetween(Materials.GarnetYellow)
-        .sporadic(Materials.Borax)),
+        .primary(Materials2Materials.BlackPlutonium)
+        .secondary(Materials2Materials.GarnetRed)
+        .inBetween(Materials2Materials.GarnetYellow)
+        .sporadic(Materials2Materials.Borax)),
 
     InfusedGold(new OreMixBuilder().name("ore.mix.infusedgold")
         .heightRange(15, 40)
@@ -798,11 +802,11 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(BarnardE, Haumea, Io, Proteus, Titan, VegaB)
-        .primary(Materials.Gold)
-        .secondary(Materials.Gold)
-        .inBetween(Materials.InfusedGold)
-        .sporadic(Materials.Platinum)
-        .setLocalizedName(Materials.InfusedGold)),
+        .primary(Materials2Materials.Gold)
+        .secondary(Materials2Materials.Gold)
+        .inBetween(Materials2Materials.InfusedGold)
+        .sporadic(Materials2Materials.Platinum)
+        .setLocalizedName(Materials2Materials.InfusedGold)),
 
     Niobium(new OreMixBuilder().name("ore.mix.niobium")
         .heightRange(5, 30)
@@ -810,10 +814,10 @@ public enum OreMixes {
         .density(2)
         .size(24)
         .enableInDim(BarnardF, MakeMake, Triton, VegaB)
-        .primary(Materials.Niobium)
-        .secondary(Materials.Yttrium)
-        .inBetween(Materials.Gallium)
-        .sporadic(Materials.Gallium)),
+        .primary(Materials2Materials.Niobium)
+        .secondary(Materials2Materials.Yttrium)
+        .inBetween(Materials2Materials.Gallium)
+        .sporadic(Materials2Materials.Gallium)),
 
     TungstenIrons(new OreMixBuilder().name("ore.mix.tungstenirons")
         .heightRange(5, 25)
@@ -821,10 +825,10 @@ public enum OreMixes {
         .density(2)
         .size(30)
         .enableInDim(Neper, BarnardC, BarnardE, BarnardF, Oberon, Pluto, Proteus, Triton)
-        .primary(Materials.Tungsten)
-        .secondary(Materials.Silicon)
-        .inBetween(Materials.DeepIron)
-        .sporadic(Materials.ShadowIron)),
+        .primary(Materials2Materials.Tungsten)
+        .secondary(Materials2Materials.Silicon)
+        .inBetween(Materials2Materials.DeepIron)
+        .sporadic(Materials2Materials.ShadowIron)),
 
     UraniumGTNH(new OreMixBuilder().name("ore.mix.uraniumgtnh")
         .heightRange(10, 30)
@@ -832,10 +836,10 @@ public enum OreMixes {
         .density(2)
         .size(24)
         .enableInDim(BarnardE, BarnardF, Haumea, Pluto, Triton, VegaB)
-        .primary(Materials.Thorium)
-        .secondary(Materials.Uranium)
-        .inBetween(Materials.Plutonium241)
-        .sporadic(Materials.Uranium235)),
+        .primary(Materials2Materials.Thorium)
+        .secondary(Materials2Materials.Uranium)
+        .inBetween(Materials2Materials.Plutonium241)
+        .sporadic(Materials2Materials.Uranium235)),
 
     VanadiumGold(new OreMixBuilder().name("ore.mix.vanadiumgold")
         .heightRange(10, 50)
@@ -843,10 +847,10 @@ public enum OreMixes {
         .density(2)
         .size(24)
         .enableInDim(Maahes, BarnardF, Enceladus, MakeMake, Proteus, VegaB)
-        .primary(Materials.Vanadium)
-        .secondary(Materials.Magnetite)
-        .inBetween(Materials.Gold)
-        .sporadic(Materials.Chrome)),
+        .primary(Materials2Materials.Vanadium)
+        .secondary(Materials2Materials.Magnetite)
+        .inBetween(Materials2Materials.Gold)
+        .sporadic(Materials2Materials.Chrome)),
 
     NetherStar(new OreMixBuilder().name("ore.mix.netherstar")
         .heightRange(20, 60)
@@ -854,11 +858,11 @@ public enum OreMixes {
         .density(2)
         .size(24)
         .enableInDim(Horus, BarnardE, Haumea, TcetiE, VegaB)
-        .primary(Materials.GarnetSand)
-        .secondary(Materials.NetherStar)
-        .inBetween(Materials.GarnetRed)
-        .sporadic(Materials.GarnetYellow)
-        .setLocalizedName(Materials.NetherStar)),
+        .primary(Materials2Materials.GarnetSand)
+        .secondary(Materials2Materials.NetherStar)
+        .inBetween(Materials2Materials.GarnetRed)
+        .sporadic(Materials2Materials.GarnetYellow)
+        .setLocalizedName(Materials2Materials.NetherStar)),
 
     Garnet(new OreMixBuilder().name("ore.mix.garnet")
         .heightRange(10, 30)
@@ -866,10 +870,10 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(Horus, BarnardF, MakeMake, VegaB)
-        .primary(Materials.GarnetRed)
-        .secondary(Materials.GarnetYellow)
-        .inBetween(Materials.Chrysotile)
-        .sporadic(Materials.Realgar)),
+        .primary(Materials2Materials.GarnetRed)
+        .secondary(Materials2Materials.GarnetYellow)
+        .inBetween(Materials2Materials.Chrysotile)
+        .sporadic(Materials2Materials.Realgar)),
 
     RareEarth(new OreMixBuilder().name("ore.mix.rareearth")
         .heightRange(30, 60)
@@ -877,11 +881,11 @@ public enum OreMixes {
         .density(2)
         .size(24)
         .enableInDim(BarnardE, BarnardF, CentauriBb, VegaB)
-        .primary(Materials.Cadmium)
-        .secondary(Materials.Caesium)
-        .inBetween(Materials.Lanthanum)
-        .sporadic(Materials.Cerium)
-        .setLocalizedName(Materials.RareEarth)),
+        .primary(Materials2Materials.Cadmium)
+        .secondary(Materials2Materials.Caesium)
+        .inBetween(Materials2Materials.Lanthanum)
+        .sporadic(Materials2Materials.Cerium)
+        .setLocalizedName(Materials2Materials.RareEarth)),
 
     RichNuclear(new OreMixBuilder().name("ore.mix.richnuclear")
         .heightRange(5, 40)
@@ -889,11 +893,11 @@ public enum OreMixes {
         .density(2)
         .size(8)
         .enableInDim(Callisto, Ceres, Ganymede, Io)
-        .primary(Materials.Uranium)
-        .secondary(Materials.Plutonium)
-        .inBetween(Materials.Thorium)
-        .sporadic(Materials.Thorium)
-        .setLocalizedName(Materials.Plutonium)),
+        .primary(Materials2Materials.Uranium)
+        .secondary(Materials2Materials.Plutonium)
+        .inBetween(Materials2Materials.Thorium)
+        .sporadic(Materials2Materials.Thorium)
+        .setLocalizedName(Materials2Materials.Plutonium)),
 
     HeavyPentele(new OreMixBuilder().name("ore.mix.heavypentele")
         .heightRange(40, 60)
@@ -901,10 +905,10 @@ public enum OreMixes {
         .density(5)
         .size(32)
         .enableInDim(Neper, Mars, BarnardC, Mercury, Phobos, Titan, VegaB)
-        .primary(Materials.Arsenic)
-        .secondary(Materials.Bismuth)
-        .inBetween(Materials.Antimony)
-        .sporadic(Materials.Antimony)),
+        .primary(Materials2Materials.Arsenic)
+        .secondary(Materials2Materials.Bismuth)
+        .inBetween(Materials2Materials.Antimony)
+        .sporadic(Materials2Materials.Antimony)),
 
     Europa(new OreMixBuilder().name("ore.mix.europa")
         .heightRange(55, 65)
@@ -912,10 +916,10 @@ public enum OreMixes {
         .density(4)
         .size(24)
         .enableInDim(Horus, DimensionDef.Europa, TcetiE)
-        .primary(Materials.Magnesite)
-        .secondary(Materials.BandedIron)
-        .inBetween(Materials.Sulfur)
-        .sporadic(Materials.Opal)),
+        .primary(Materials2Materials.Magnesite)
+        .secondary(Materials2Materials.BandedIron)
+        .inBetween(Materials2Materials.Sulfur)
+        .sporadic(Materials2Materials.Opal)),
 
     EuropaCore(new OreMixBuilder().name("ore.mix.europacore")
         .heightRange(5, 15)
@@ -923,10 +927,10 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(Maahes, DimensionDef.Europa, TcetiE)
-        .primary(Materials.Chrome)
-        .secondary(Materials.Tungstate)
-        .inBetween(Materials.Molybdenum)
-        .sporadic(Materials.Manganese)),
+        .primary(Materials2Materials.Chrome)
+        .secondary(Materials2Materials.Tungstate)
+        .inBetween(Materials2Materials.Molybdenum)
+        .sporadic(Materials2Materials.Manganese)),
 
     SecondLanthanid(new OreMixBuilder().name("ore.mix.secondlanthanid")
         .heightRange(10, 40)
@@ -934,10 +938,10 @@ public enum OreMixes {
         .density(3)
         .size(24)
         .enableInDim(Seth, BarnardC, CentauriBb)
-        .primary(Materials.Samarium)
-        .secondary(Materials.Neodymium)
-        .inBetween(Materials.Tartarite)
-        .sporadic(Materials.Tartarite)),
+        .primary(Materials2Materials.Samarium)
+        .secondary(Materials2Materials.Neodymium)
+        .inBetween(Materials2Materials.Tartarite)
+        .sporadic(Materials2Materials.Tartarite)),
 
     QuartzSpace(new OreMixBuilder().name("ore.mix.quartzspace")
         .heightRange(40, 80)
@@ -945,10 +949,10 @@ public enum OreMixes {
         .density(3)
         .size(16)
         .enableInDim(Horus, Moon, Mars, CentauriBb, Io, Phobos, Proteus, TcetiE, Venus)
-        .primary(Materials.Quartzite)
-        .secondary(Materials.Barite)
-        .inBetween(Materials.CertusQuartz)
-        .sporadic(Materials.CertusQuartz)
+        .primary(Materials2Materials.Quartzite)
+        .secondary(Materials2Materials.Barite)
+        .inBetween(Materials2Materials.CertusQuartz)
+        .sporadic(Materials2Materials.CertusQuartz)
         .setLocalizedName(Materials.Quartz)),
 
     Rutile(new OreMixBuilder().name("ore.mix.rutile")
@@ -957,10 +961,10 @@ public enum OreMixes {
         .density(4)
         .size(12)
         .enableInDim(Anubis, Titan, Venus)
-        .primary(Materials.Rutile)
-        .secondary(Materials.Titanium)
-        .inBetween(Materials.Bauxite)
-        .sporadic(Materials.MeteoricIron)),
+        .primary(Materials2Materials.Rutile)
+        .secondary(Materials2Materials.Titanium)
+        .inBetween(Materials2Materials.Bauxite)
+        .sporadic(Materials2Materials.MeteoricIron)),
 
     TFGalena(new OreMixBuilder().name("ore.mix.tfgalena")
         .heightRange(5, 20)
@@ -970,11 +974,11 @@ public enum OreMixes {
         .enableInDim(TWILIGHT_FOREST)
         .enableInDim(Anubis, Maahes)
         .heightRangeOverride(TwilightForest, 5, 30)
-        .primary(Materials.Galena)
-        .secondary(Materials.Silver)
-        .inBetween(Materials.Lead)
-        .sporadic(Materials.Cryolite)
-        .setLocalizedName(Materials.Cryolite)),
+        .primary(Materials2Materials.Galena)
+        .secondary(Materials2Materials.Silver)
+        .inBetween(Materials2Materials.Lead)
+        .sporadic(Materials2Materials.Cryolite)
+        .setLocalizedName(Materials2Materials.Cryolite)),
 
     LuVTantalite(new OreMixBuilder().name("ore.mix.luvtantalite")
         .heightRange(20, 30)
@@ -982,10 +986,10 @@ public enum OreMixes {
         .density(4)
         .size(16)
         .enableInDim(Io, Miranda)
-        .primary(Materials.Pyrolusite)
-        .secondary(Materials.Apatite)
-        .inBetween(Materials.Tantalite)
-        .sporadic(Materials.Pyrochlore)),
+        .primary(Materials2Materials.Pyrolusite)
+        .secondary(Materials2Materials.Apatite)
+        .inBetween(Materials2Materials.Tantalite)
+        .sporadic(Materials2Materials.Pyrochlore)),
 
     CertusQuartz(new OreMixBuilder().name("ore.mix.certusquartz")
         .heightRange(40, 80)
@@ -993,10 +997,10 @@ public enum OreMixes {
         .density(5)
         .size(32)
         .enableInDim(Horus, Neper)
-        .primary(Materials.CertusQuartz)
-        .secondary(Materials.CertusQuartz)
-        .inBetween(Materials.CertusQuartzCharged)
-        .sporadic(Materials.QuartzSand)),
+        .primary(Materials2Materials.CertusQuartz)
+        .secondary(Materials2Materials.CertusQuartz)
+        .inBetween(Materials2Materials.ChargedCertusQuartz)
+        .sporadic(Materials2Materials.QuartzSand)),
 
     InfinityCatalyst(new OreMixBuilder().name("ore.mix.infinitycatalyst")
         .heightRange(5, 20)
@@ -1004,11 +1008,11 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(Anubis)
-        .primary(Materials.Neutronium)
-        .secondary(Materials.Adamantium)
-        .inBetween(Materials.InfinityCatalyst)
-        .sporadic(Materials.Bedrockium)
-        .setLocalizedName(Materials.InfinityCatalyst)),
+        .primary(Materials2Materials.Neutronium)
+        .secondary(Materials2Materials.Adamantium)
+        .inBetween(Materials2Materials.InfinityCatalyst)
+        .sporadic(Materials2Materials.Bedrockium)
+        .setLocalizedName(Materials2Materials.InfinityCatalyst)),
 
     CosmicNeutronium(new OreMixBuilder().name("ore.mix.cosmicneutronium")
         .heightRange(5, 20)
@@ -1016,11 +1020,11 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(Horus)
-        .primary(Materials.Neutronium)
-        .secondary(Materials.CosmicNeutronium)
-        .inBetween(Materials.BlackPlutonium)
-        .sporadic(Materials.Bedrockium)
-        .setLocalizedName(Materials.CosmicNeutronium)),
+        .primary(Materials2Materials.Neutronium)
+        .secondary(Materials2Materials.CosmicNeutronium)
+        .inBetween(Materials2Materials.BlackPlutonium)
+        .sporadic(Materials2Materials.Bedrockium)
+        .setLocalizedName(Materials2Materials.CosmicNeutronium)),
 
     Dilithium(new OreMixBuilder().name("ore.mix.dilithium")
         .heightRange(30, 100)
@@ -1028,10 +1032,10 @@ public enum OreMixes {
         .density(3)
         .size(24)
         .enableInDim(Neper)
-        .primary(Materials.Dilithium)
-        .secondary(Materials.Dilithium)
-        .inBetween(Materials.MysteriousCrystal)
-        .sporadic(Materials.Vinteum)),
+        .primary(Materials2Materials.Dilithium)
+        .secondary(Materials2Materials.Dilithium)
+        .inBetween(Materials2Materials.MysteriousCrystal)
+        .sporadic(Materials2Materials.Vinteum)),
 
     Naquadria(new OreMixBuilder().name("ore.mix.naquadria")
         .heightRange(10, 90)
@@ -1039,11 +1043,11 @@ public enum OreMixes {
         .density(4)
         .size(24)
         .enableInDim(Maahes)
-        .primary(Materials.Naquadah)
-        .secondary(Materials.NaquadahEnriched)
-        .inBetween(Materials.Naquadria)
-        .sporadic(Materials.Trinium)
-        .setLocalizedName(Materials.Naquadria)),
+        .primary(Materials2Materials.Naquadah)
+        .secondary(Materials2Materials.NaquadahEnriched)
+        .inBetween(Materials2Materials.Naquadria)
+        .sporadic(Materials2Materials.Trinium)
+        .setLocalizedName(Materials2Materials.Naquadria)),
 
     AwakenedDraconium(new OreMixBuilder().name("ore.mix.awakeneddraconium")
         .heightRange(20, 40)
@@ -1051,11 +1055,11 @@ public enum OreMixes {
         .density(3)
         .size(16)
         .enableInDim(MehenBelt)
-        .primary(Materials.Draconium)
-        .secondary(Materials.Draconium)
-        .inBetween(Materials.DraconiumAwakened)
-        .sporadic(Materials.NetherStar)
-        .setLocalizedName(Materials.DraconiumAwakened)),
+        .primary(Materials2Materials.Draconium)
+        .secondary(Materials2Materials.Draconium)
+        .inBetween(Materials2Materials.DraconiumAwakened)
+        .sporadic(Materials2Materials.NetherStar)
+        .setLocalizedName(Materials2Materials.DraconiumAwakened)),
 
     Tengam(new OreMixBuilder().name("ore.mix.tengam")
         .heightRange(30, 180)
@@ -1063,10 +1067,10 @@ public enum OreMixes {
         .density(2)
         .size(32)
         .enableInDim(Seth)
-        .primary(Materials.TengamRaw)
-        .secondary(Materials.TengamRaw)
-        .inBetween(Materials.Electrotine)
-        .sporadic(Materials.Samarium)),
+        .primary(Materials2Materials.TengamRaw)
+        .secondary(Materials2Materials.TengamRaw)
+        .inBetween(Materials2Materials.Electrotine)
+        .sporadic(Materials2Materials.Samarium)),
 
     NitrogenIce(new OreMixBuilder().name("ore.mix.nitrogenice")
         .heightRange(30, 180)
@@ -1074,10 +1078,10 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(ASTEROIDS, KUIPERBELT)
-        .primary(Materials.Nitrogen)
-        .secondary(Materials.Ammonia)
-        .inBetween(Materials.Hydrogen)
-        .sporadic(Materials.Hydrogen)
+        .primary(Materials2Materials.Nitrogen)
+        .secondary(Materials2Materials.Ammonia)
+        .inBetween(Materials2Materials.Hydrogen)
+        .sporadic(Materials2Materials.Hydrogen)
         .stoneCategory(StoneCategory.Ice)),
 
     HydrocarbonIce(new OreMixBuilder().name("ore.mix.hydrocarbonice")
@@ -1086,10 +1090,10 @@ public enum OreMixes {
         .density(2)
         .size(12)
         .enableInDim(ASTEROIDS, KUIPERBELT)
-        .primary(Materials.Methane)
-        .secondary(Materials.Hydrogen)
-        .inBetween(Materials.Carbon)
-        .sporadic(Materials.Carbon)
+        .primary(Materials2Materials.Methane)
+        .secondary(Materials2Materials.Hydrogen)
+        .inBetween(Materials2Materials.Carbon)
+        .sporadic(Materials2Materials.Carbon)
         .stoneCategory(StoneCategory.Ice)),
 
     CarbonIce(new OreMixBuilder().name("ore.mix.carbonice")
@@ -1098,10 +1102,10 @@ public enum OreMixes {
         .density(2)
         .size(12)
         .enableInDim(ASTEROIDS, KUIPERBELT)
-        .primary(Materials.CarbonDioxide)
-        .secondary(Materials.Oxygen)
-        .inBetween(Materials.Carbon)
-        .sporadic(Materials.Carbon)
+        .primary(Materials2Materials.CarbonDioxide)
+        .secondary(Materials2Materials.Oxygen)
+        .inBetween(Materials2Materials.Carbon)
+        .sporadic(Materials2Materials.Carbon)
         .stoneCategory(StoneCategory.Ice)),
 
     HHOIce(new OreMixBuilder().name("ore.mix.hhoice")
@@ -1110,10 +1114,10 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(ASTEROIDS, KUIPERBELT)
-        .primary(Materials.Oxygen)
-        .secondary(Materials.Hydrogen)
-        .inBetween(Materials.Oxygen)
-        .sporadic(Materials.Hydrogen)
+        .primary(Materials2Materials.Oxygen)
+        .secondary(Materials2Materials.Hydrogen)
+        .inBetween(Materials2Materials.Oxygen)
+        .sporadic(Materials2Materials.Hydrogen)
         .stoneCategory(StoneCategory.Ice)),
 
     SulfurIce(new OreMixBuilder().name("ore.mix.sulfurice")
@@ -1122,10 +1126,10 @@ public enum OreMixes {
         .density(2)
         .size(8)
         .enableInDim(ASTEROIDS, KUIPERBELT)
-        .primary(Materials.SulfurDioxide)
-        .secondary(Materials.Oxygen)
-        .inBetween(Materials.Sulfur)
-        .sporadic(Materials.Oxygen)
+        .primary(Materials2Materials.SulfurDioxide)
+        .secondary(Materials2Materials.Oxygen)
+        .inBetween(Materials2Materials.Sulfur)
+        .sporadic(Materials2Materials.Oxygen)
         .stoneCategory(StoneCategory.Ice)),
 
     GTPP0(new OreMixBuilder().name("ore.mix.gtpp0")
@@ -1134,10 +1138,10 @@ public enum OreMixes {
         .density(1)
         .size(128)
         .enableInDim(EVERGLADES)
-        .primary(Materials.Iron)
-        .secondary(Materials.Iron)
-        .inBetween(Materials.Iron)
-        .sporadic(Materials.Iron)),
+        .primary(Materials2Materials.Iron)
+        .secondary(Materials2Materials.Iron)
+        .inBetween(Materials2Materials.Iron)
+        .sporadic(Materials2Materials.Iron)),
 
     GTPP1(new OreMixBuilder().name("ore.mix.gtpp1")
         .heightRange(0, 60)
@@ -1355,9 +1359,9 @@ public enum OreMixes {
         .size(16)
         .enableInDim(ROSS128B)
         .primary(WerkstoffLoader.Thorianit)
-        .secondary(Materials.Uraninite)
-        .inBetween(Materials.Lepidolite)
-        .sporadic(Materials.Spodumene)),
+        .secondary(Materials2Materials.Uraninite)
+        .inBetween(Materials2Materials.Lepidolite)
+        .sporadic(Materials2Materials.Spodumene)),
 
     RossCarbon(new OreMixBuilder().name("ore.mix.ross128.carbon")
         .heightRange(5, 25)
@@ -1365,10 +1369,10 @@ public enum OreMixes {
         .density(4)
         .size(12)
         .enableInDim(ROSS128B)
-        .primary(Materials.Graphite)
-        .secondary(Materials.Diamond)
-        .inBetween(Materials.Coal)
-        .sporadic(Materials.Graphite)),
+        .primary(Materials2Materials.Graphite)
+        .secondary(Materials2Materials.Diamond)
+        .inBetween(Materials2Materials.Coal)
+        .sporadic(Materials2Materials.Graphite)),
 
     Bismuth(new OreMixBuilder().name("ore.mix.ross128.bismuth")
         .heightRange(5, 80)
@@ -1377,8 +1381,8 @@ public enum OreMixes {
         .size(16)
         .enableInDim(ROSS128B)
         .primary(WerkstoffLoader.Bismuthinit)
-        .secondary(Materials.Stibnite)
-        .inBetween(Materials.Bismuth)
+        .secondary(Materials2Materials.Stibnite)
+        .inBetween(Materials2Materials.Bismuth)
         .sporadic(WerkstoffLoader.Bismutite)),
 
     TurmalinAlkali(new OreMixBuilder().name("ore.mix.ross128.TurmalinAlkali")
@@ -1412,7 +1416,7 @@ public enum OreMixes {
         .primary(WerkstoffLoader.Ferberite)
         .secondary(WerkstoffLoader.Huebnerit)
         .inBetween(WerkstoffLoader.Loellingit)
-        .sporadic(Materials.Scheelite)),
+        .sporadic(Materials2Materials.Scheelite)),
 
     CopperSulfits(new OreMixBuilder().name("ore.mix.ross128.CopperSulfits")
         .heightRange(40, 70)
@@ -1423,7 +1427,7 @@ public enum OreMixes {
         .primary(WerkstoffLoader.Djurleit)
         .secondary(WerkstoffLoader.Bornite)
         .inBetween(WerkstoffLoader.Wittichenit)
-        .sporadic(Materials.Tetrahedrite)),
+        .sporadic(Materials2Materials.Tetrahedrite)),
 
     Forsterit(new OreMixBuilder().name("ore.mix.ross128.Forsterit")
         .heightRange(20, 90)
@@ -1466,8 +1470,8 @@ public enum OreMixes {
         .enableInDim(ROSS128BA)
         .primary(WerkstoffLoader.Tiberium)
         .secondary(WerkstoffLoader.Tiberium)
-        .inBetween(Materials.NaquadahEnriched)
-        .sporadic(Materials.NaquadahEnriched)),
+        .inBetween(Materials2Materials.NaquadahEnriched)
+        .sporadic(Materials2Materials.NaquadahEnriched)),
 
     Ross128baTungstate(new OreMixBuilder().name("ore.mix.ross128ba.Tungstate")
         .heightRange(5, 40)
@@ -1478,7 +1482,7 @@ public enum OreMixes {
         .primary(WerkstoffLoader.Ferberite)
         .secondary(WerkstoffLoader.Huebnerit)
         .inBetween(WerkstoffLoader.Loellingit)
-        .sporadic(Materials.Scheelite)),
+        .sporadic(Materials2Materials.Scheelite)),
 
     Bart(new OreMixBuilder().name("ore.mix.ross128ba.bart")
         .heightRange(30, 60)
@@ -1508,8 +1512,8 @@ public enum OreMixes {
         .density(2)
         .size(8)
         .enableInDim(ROSS128BA)
-        .primary(Materials.Amethyst)
-        .secondary(Materials.Olivine)
+        .primary(Materials2Materials.Amethyst)
+        .secondary(Materials2Materials.Olivine)
         .inBetween(WerkstoffLoader.Prasiolite)
         .sporadic(WerkstoffLoader.Hedenbergit)),
 
@@ -1522,7 +1526,7 @@ public enum OreMixes {
         .primary(WerkstoffLoader.Djurleit)
         .secondary(WerkstoffLoader.Bornite)
         .inBetween(WerkstoffLoader.Wittichenit)
-        .sporadic(Materials.Tetrahedrite)),
+        .sporadic(Materials2Materials.Tetrahedrite)),
 
     Ross128baRedZircon(new OreMixBuilder().name("ore.mix.ross128ba.RedZircon")
         .heightRange(10, 80)
@@ -1541,10 +1545,10 @@ public enum OreMixes {
         .density(4)
         .size(8)
         .enableInDim(ROSS128BA)
-        .primary(Materials.Galena)
-        .secondary(Materials.Sphalerite)
+        .primary(Materials2Materials.Galena)
+        .secondary(Materials2Materials.Sphalerite)
         .inBetween(WerkstoffLoader.Fluorspar)
-        .sporadic(Materials.Barite));
+        .sporadic(Materials2Materials.Barite));
     // spotless : on
 
     public static final OreMixes[] VALUES = values();
@@ -1665,9 +1669,13 @@ public enum OreMixes {
         }
     }
 
+    /// The builder stores MaterialLib materials; a legacy caller's [IOreMaterial] resolves to its MaterialLib
+    /// backing (a canonical singleton) before the identity comparison.
     public boolean containMaterial(IOreMaterial material) {
-        return oreMixBuilder.primary == material || oreMixBuilder.secondary == material
-            || oreMixBuilder.sporadic == material
-            || oreMixBuilder.between == material;
+        Material ml = MU.toMaterial(material);
+        if (ml == null) return false;
+        return oreMixBuilder.primary == ml || oreMixBuilder.secondary == ml
+            || oreMixBuilder.sporadic == ml
+            || oreMixBuilder.between == ml;
     }
 }

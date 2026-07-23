@@ -6,7 +6,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.IOreMaterial;
 
 public interface IGTRegisteredFluid {
 
@@ -56,7 +55,9 @@ public interface IGTRegisteredFluid {
 
     IGTRegisteredFluid addLocalizedName();
 
-    IGTRegisteredFluid addLocalizedName(final IOreMaterial material);
+    /// `material` is a legacy-family material object (`Materials`/`Werkstoff`) or a MaterialLib material,
+    /// dispatched through `MU`'s union helpers.
+    IGTRegisteredFluid addLocalizedName(final Object material);
 
     /**
      * @return this {@link IGTRegisteredFluid} cast to {@link Fluid}

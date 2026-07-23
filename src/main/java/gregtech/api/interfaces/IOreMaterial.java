@@ -11,7 +11,6 @@ import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
 
-import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
@@ -19,7 +18,6 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
-import gtPlusPlus.core.material.Material;
 
 /**
  * A temporary material interface to unify the three material systems.
@@ -144,18 +142,5 @@ public interface IOreMaterial extends ISubTagContainer {
     /// The level of [#getArmorEnchantment], or `0` when there is none.
     default byte getArmorEnchantmentLevel() {
         return 0;
-    }
-
-    public static IOreMaterial findMaterial(String name) {
-        Werkstoff bw = Werkstoff.werkstoffVarNameHashMap.get(name);
-
-        if (bw != null) return bw;
-
-        IOreMaterial gtpp = Material.mMaterialsByName.get(name);
-
-        if (gtpp != null) return gtpp;
-
-        return Materials.getMaterialsMap()
-            .get(name);
     }
 }

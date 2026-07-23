@@ -4,7 +4,6 @@ import org.jetbrains.annotations.ApiStatus;
 
 import com.gtnewhorizon.gtnhlib.util.ObjectPooler;
 
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 
 /**
@@ -34,7 +33,7 @@ import gregtech.api.interfaces.IStoneType;
  * }
  * </pre>
  */
-public class OreInfo<TMat extends IOreMaterial> implements AutoCloseable {
+public class OreInfo<TMat> implements AutoCloseable {
 
     /**
      * The cached adapter that produced this info. May not be valid, so use {@link OreManager#getAdapter(OreInfo)}
@@ -52,7 +51,7 @@ public class OreInfo<TMat extends IOreMaterial> implements AutoCloseable {
     static final ObjectPooler<OreInfo<?>> ORE_INFO_POOL = new ObjectPooler<>(OreInfo::new);
 
     @SuppressWarnings("unchecked")
-    public static <T extends IOreMaterial> OreInfo<T> getNewInfo() {
+    public static <T> OreInfo<T> getNewInfo() {
         synchronized (ORE_INFO_POOL) {
             return (OreInfo<T>) ORE_INFO_POOL.getInstance();
         }
