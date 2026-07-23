@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -73,6 +74,7 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
@@ -439,10 +441,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Tank")
-            .addInfo("The max output speed is decided by the amount of stored liquid and the output hatch's capacity")
-            .addInfo("The max fluid cell tier is limited by the glass tier")
-            .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
-            .addInfo("The max height of the cell blocks is 15")
+            .addMarkdown(new ResourceLocation("gregtech", "yottank"))
             .beginVariableStructureBlock(5, 5, 5, 19, 5, 5, false)
             .addController("Front center, 2nd layer")
             .addMiscHatch("0-1", "YOTHatch", "Any bottom center casing (replaces other hatches)", 2)
