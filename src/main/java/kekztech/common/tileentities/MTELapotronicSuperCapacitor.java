@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -390,41 +392,21 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        final Map<String, Object> tooltipVars = Map.of(
+            "maxPassiveDrain",
+            formatNumber(max_passive_drain_eu_per_tick_per_uhv_cap),
+            "tierColorName",
+            GTValues.TIER_COLORS[9] + GTValues.VN[9],
+            "rebalanceTicks",
+            formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks),
+            "wirelessEuCap",
+            formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap));
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.machine_type"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc1"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kekztech.multiblock.LapotronicSuperCapacitor.desc2",
-                    formatNumber(max_passive_drain_eu_per_tick_per_uhv_cap),
-                    GTValues.TIER_COLORS[9] + GTValues.VN[9]))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc3"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc4"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc5"))
+            .addMarkdown(new ResourceLocation("gregtech", "lapotronic-super-capacitor-1"), tooltipVars)
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc6"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc7"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kekztech.multiblock.LapotronicSuperCapacitor.desc8",
-                    GTValues.TIER_COLORS[9] + GTValues.VN[9]))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kekztech.multiblock.LapotronicSuperCapacitor.desc9",
-                    formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc10"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kekztech.multiblock.LapotronicSuperCapacitor.desc11",
-                    formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap),
-                    GTValues.TIER_COLORS[9] + GTValues.VN[9]))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc12"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc13"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc14"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc15"))
+            .addMarkdown(new ResourceLocation("gregtech", "lapotronic-super-capacitor-2"), tooltipVars)
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addEnergyHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
