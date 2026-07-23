@@ -298,6 +298,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
                             machine.inventoryHandler,
                             machine.getSpecialSlotIndex(),
                             baseMetaTileEntity))
+                    .backgroundOverlay(GTGuiTextures.SLOT_MAINTENANCE)
                     .tooltip(
                         t -> t.addLine(StatCollector.translateToLocal("gt.icecreammachine.repairslot.tooltip"))
                             .addLine(StatCollector.translateToLocal("gt.icecreammachine.repairslot.tooltip.1")))
