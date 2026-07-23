@@ -14,7 +14,7 @@ public class IceCreamMachineRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Credit_Greg_Gold.get(2))
             .itemOutputs(ItemList.Ice_Cream_Random.get(1))
-            .duration(15 * SECONDS)
+            .duration(25 * SECONDS)
             .eut(0)
             .fake()
             .addTo(iceCreamMachineRecipes);
