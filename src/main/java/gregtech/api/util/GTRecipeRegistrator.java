@@ -66,6 +66,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
@@ -363,7 +364,13 @@ public class GTRecipeRegistrator {
 
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
             if (!(MU.materialOf(tMaterial.mMaterial) instanceof Materials material)) {
-                Material arcTarget = MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial));
+                // A material with no legacy Materials counterpart (e.g. an unbacked RecognitionMaterials/
+                // LegacyMarkerMaterials marker's shapeless wildcard backing) never defaults to smelting into
+                // itself: unlike a real Materials constant, it only has an arc-smelting target when one was
+                // explicitly declared, mirroring MarkerMaterial#getSmeltInto/#getArcSmeltInto.
+                boolean declaresSmeltTarget = tMaterial.mMaterial.getProperty(GTMaterialProperties.SMELT_INTO) != null
+                    || tMaterial.mMaterial.getProperty(GTMaterialProperties.ARC_SMELT_INTO) != null;
+                Material arcTarget = declaresSmeltTarget ? MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial)) : null;
                 if (arcTarget == null) {
                     tMaterial.mAmount = 0;
                 } else {

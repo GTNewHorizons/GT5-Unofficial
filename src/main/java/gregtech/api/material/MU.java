@@ -154,21 +154,26 @@ public class MU {
 
     /// Whether a material carries a legacy `Materials#mStandardMoltenFluid` (see [#molten]) -- for callers that
     /// need the presence check independent of a specific fluid amount, such as one gate guarding several
-    /// [#molten] calls of different amounts.
+    /// [#molten] calls of different amounts. Delegates to the live legacy facade through [#materialOf] rather
+    /// than re-deriving the condition from MaterialLib properties: which of the three population loaders sets
+    /// the field, and under what gate, differs per material and [Material] alone cannot distinguish them -- a
+    /// gtpp bridge material only when `GtppBridgeMaterialsLoader`'s own `MU#isCutOver(OrePrefixes#cellMolten,
+    /// Material)` check holds, a bartworks bridge material only under `Werkstoff#hasItemType(cellMolten)`, and
+    /// a canonical material from `LegacyMaterials#build`'s [GTMaterialProperties#LEGACY_FLUIDS] read -- so
+    /// merely having a [Materials2FluidShapes#fluidMolten] shape (which every population above the fluid, not
+    /// the field, gates on) is wider than any of them.
     public static boolean hasMolten(@Nullable Material material) {
-        return material != null && material.hasShape(Materials2FluidShapes.fluidMolten);
+        Materials legacy = materialOf(material);
+        return legacy != null && legacy.mStandardMoltenFluid != null;
     }
 
     /// The legacy `Materials#mStandardMoltenFluid`-backed `Materials#getMolten` stack for a material, or null
-    /// when it carries no molten fluid -- mirrors `getMolten`'s own null-on-absent behavior. Byte-identical for
-    /// every population that reaches a MaterialLib [Material]: `LegacyMaterials#build`'s `wireFluids` resolves
-    /// `mStandardMoltenFluid` from the same [Materials2FluidShapes#fluidMolten] Forge fluid this reads (both by
-    /// [GTMaterialProperties#LEGACY_FLUIDS]'s `molten` slot name); `BridgeMaterialsLoader` sets a werkstoff
-    /// bridge's field from `Werkstoff#getMolten`, whose backing Forge fluid MaterialLib already registered
-    /// under that identical name (`WerkstoffLoader#addItemsForGeneration`'s reconstructed branch); and
-    /// `GtppBridgeMaterialsLoader` sets a gtpp bridge's field from `Material#getFluid` gated on this same shape,
-    /// which resolves to the same `molten` slot fluid (`FluidNames#legacyGtppFluidName` prioritizes `molten`
-    /// over `fluid`/`gas`, and the shape gate guarantees the `molten` slot is the one present).
+    /// when [#hasMolten] is false -- mirrors `getMolten`'s own null-on-absent behavior. The
+    /// [Materials2FluidShapes#fluidMolten] Forge fluid this resolves is the same one every population's
+    /// `mStandardMoltenFluid` was set from (`LegacyMaterials#build`'s `wireFluids` resolves it by
+    /// [GTMaterialProperties#LEGACY_FLUIDS]'s `molten` slot name; both bridge loaders set their field from a
+    /// `Material#getFluid` gated on this same shape), so once [#hasMolten] is true this is byte-identical to
+    /// `getMolten`'s own stack.
     public static @Nullable FluidStack molten(@Nullable Material material, long amount) {
         if (!hasMolten(material)) return null;
         return MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) amount);
@@ -340,7 +345,9 @@ public class MU {
         Material ml = material(material);
         if (ml == null) return material.mSmeltInto;
         MaterialRef ref = ml.getProperty(GTMaterialProperties.SMELT_INTO);
-        return ref == null ? material : Materials.get(ref.name()).mSmeltInto;
+        if (ref == null) return material;
+        Materials resolved = resolveLegacyRef(ref);
+        return resolved != null ? resolved.mSmeltInto : material;
     }
 
     /// [#smeltInto], for `Materials#mMacerateInto`/[GTMaterialProperties#MACERATE_INTO].
@@ -349,7 +356,9 @@ public class MU {
         Material ml = material(material);
         if (ml == null) return material.mMacerateInto;
         MaterialRef ref = ml.getProperty(GTMaterialProperties.MACERATE_INTO);
-        return ref == null ? material : Materials.get(ref.name()).mMacerateInto;
+        if (ref == null) return material;
+        Materials resolved = resolveLegacyRef(ref);
+        return resolved != null ? resolved.mMacerateInto : material;
     }
 
     /// [#smeltInto], for `Materials#mArcSmeltInto`/[GTMaterialProperties#ARC_SMELT_INTO].
@@ -358,7 +367,9 @@ public class MU {
         Material ml = material(material);
         if (ml == null) return material.mArcSmeltInto;
         MaterialRef ref = ml.getProperty(GTMaterialProperties.ARC_SMELT_INTO);
-        return ref == null ? material : Materials.get(ref.name()).mArcSmeltInto;
+        if (ref == null) return material;
+        Materials resolved = resolveLegacyRef(ref);
+        return resolved != null ? resolved.mArcSmeltInto : material;
     }
 
     /// [#smeltInto], for `Materials#mDirectSmelting`/[GTMaterialProperties#DIRECT_SMELTING].
@@ -367,23 +378,20 @@ public class MU {
         Material ml = material(material);
         if (ml == null) return material.mDirectSmelting;
         MaterialRef ref = ml.getProperty(GTMaterialProperties.DIRECT_SMELTING);
-        return ref == null ? material : Materials.get(ref.name()).mDirectSmelting;
+        if (ref == null) return material;
+        Materials resolved = resolveLegacyRef(ref);
+        return resolved != null ? resolved.mDirectSmelting : material;
     }
 
-    /// The legacy `Materials#mHandleMaterial` tool-handle material, resolved from
-    /// [GTMaterialProperties#HANDLE_MATERIAL] -- or `material` itself when the property is absent, mirroring
-    /// `mHandleMaterial`'s own `= this` default. Falls back to the live `mHandleMaterial` field when
-    /// [#material] has no MaterialLib counterpart (proxies/third-party materials never dumped): unlike
-    /// [#smeltInto], safe only once both bridge loaders (bartworks' and gtpp's) have run their
-    /// `FMLInitializationEvent` handle-material writes, since `mHandleMaterial` is otherwise still carrying
-    /// its preInit `addToolValues` value -- every recipe-registration pass qualifies, as they all run after
-    /// both bridges.
+    /// The legacy `Materials#mHandleMaterial` tool-handle material -- the live field itself, not
+    /// [GTMaterialProperties#HANDLE_MATERIAL]. That property is a MaterialLib load-time snapshot, while
+    /// `mHandleMaterial` is only finalized later, at recipe-registration time, once the bartworks/gtpp bridge
+    /// loaders' `FMLInitializationEvent` handle-material writes have run; the two can disagree for materials
+    /// whose bridge-computed handle differs from the snapshot, so every recipe-registration call site reads
+    /// this live field, matching what it always read directly before this accessor existed.
     public static @Nullable Materials handleMaterial(@Nullable Materials material) {
         if (material == null) return null;
-        Material ml = material(material);
-        if (ml == null) return material.mHandleMaterial;
-        MaterialRef ref = ml.getProperty(GTMaterialProperties.HANDLE_MATERIAL);
-        return ref == null ? material : Materials.get(ref.name());
+        return material.mHandleMaterial;
     }
 
     /// [#smeltInto(Materials)] for a MaterialLib [Material] held directly, mirroring the same semantics on
@@ -417,6 +425,17 @@ public class MU {
         if (ref == null) return material;
         Material resolved = ref.resolve();
         return resolved != null ? resolved : material;
+    }
+
+    /// Resolves a [GTMaterialProperties] `MaterialRef` property to its legacy [Materials] counterpart through
+    /// [#materialOf], which keys off [GTMaterialProperties#LEGACY_NAME] -- not `Materials.get(ref.name())`,
+    /// which breaks whenever MaterialLib sanitized the target's registration name away from its true legacy
+    /// name (see `gregtech.loaders.materials.MaterialsLegacyBridge#ML_NAME_TO_FIELD_OVERRIDES`, e.g. ML `NULL`
+    /// vs legacy `_NULL`) and would otherwise silently land on `Materials#_NULL` instead of the real target.
+    private static @Nullable Materials resolveLegacyRef(@Nullable MaterialRef ref) {
+        if (ref == null) return null;
+        Material resolved = ref.resolve();
+        return resolved == null ? null : materialOf(resolved);
     }
 
     private static @Nullable Material chaseRef(@Nullable Material material,

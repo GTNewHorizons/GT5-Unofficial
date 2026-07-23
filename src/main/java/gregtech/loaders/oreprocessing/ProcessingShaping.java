@@ -337,6 +337,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .addTo(extruderRecipes);
                     }
                     if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+                        && (legacyMaterial.mMaterialInto == legacyMaterial)
                         && !MU.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
                         // If material tier < IV then add manual recipe.
                         Integer ringTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);

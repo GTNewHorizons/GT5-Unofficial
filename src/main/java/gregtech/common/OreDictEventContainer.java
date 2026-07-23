@@ -9,6 +9,7 @@ import com.ruling_0.materiallib.api.Material;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 
@@ -17,20 +18,30 @@ public class OreDictEventContainer {
     public final OreDictionary.OreRegisterEvent mEvent;
     public final OrePrefixes mPrefix;
     public final Material mMaterial;
+    /// The recognition marker this registration's census resolved through (see
+    /// `GTProxy#resolveCensusMaterial`), or null for a plain [Materials]-named registration. A marker carries no
+    /// legacy [Materials] counterpart, so [#registerRecipes] dispatches ore processing through it directly
+    /// instead of through [#mMaterial]'s backing -- the marker-aware registrator overloads
+    /// (e.g. `ProcessingDust`, `ProcessingCrystallized`) only trigger off an [IOreMaterial] that is not a
+    /// [Materials] constant.
+    public final IOreMaterial mRecognitionMarker;
     public final String mModID;
 
     public OreDictEventContainer(OreDictionary.OreRegisterEvent aEvent, OrePrefixes aPrefix, Material aMaterial,
-        String aModID) {
+        IOreMaterial aRecognitionMarker, String aModID) {
         this.mEvent = aEvent;
         this.mPrefix = aPrefix;
         this.mMaterial = aMaterial;
+        this.mRecognitionMarker = aRecognitionMarker;
         this.mModID = ((aModID == null) || (aModID.equals("UNKNOWN")) ? null : aModID);
     }
 
     public static void registerRecipes(OreDictEventContainer ore) {
+        IOreMaterial tIgnoreCheck = ore.mRecognitionMarker != null ? ore.mRecognitionMarker
+            : MU.materialOf(ore.mMaterial);
         if ((ore.mEvent.Ore == null) || (ore.mEvent.Ore.getItem() == null)
             || (ore.mPrefix == null)
-            || (ore.mPrefix.isIgnored(MU.materialOf(ore.mMaterial)))
+            || (ore.mPrefix.isIgnored(tIgnoreCheck))
             || isMaterialLibItem(ore.mEvent.Ore)) {
             return;
         }
@@ -38,11 +49,16 @@ public class OreDictEventContainer {
             ore.mEvent.Ore.stackSize = 1;
         }
 
-        ore.mPrefix.processOre(
-            ore.mMaterial == null ? MU.material(Materials._NULL) : ore.mMaterial,
-            ore.mEvent.Name,
-            ore.mModID,
-            GTUtility.copyAmount(1, ore.mEvent.Ore));
+        ItemStack tStack = GTUtility.copyAmount(1, ore.mEvent.Ore);
+        if (ore.mRecognitionMarker != null) {
+            ore.mPrefix.processOre(ore.mRecognitionMarker, ore.mEvent.Name, ore.mModID, tStack);
+        } else {
+            ore.mPrefix.processOre(
+                ore.mMaterial == null ? MU.material(Materials._NULL) : ore.mMaterial,
+                ore.mEvent.Name,
+                ore.mModID,
+                tStack);
+        }
     }
 
     /// Whether `stack`'s item belongs to MaterialLib -- such stacks are already covered by
