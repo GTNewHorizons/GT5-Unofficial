@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -74,11 +75,11 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
     implements ISurvivalConstructable {
 
@@ -279,23 +280,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Precise Assembler, Assembler, PrAss")
-            .addInfo("No more than 7nm of error")
-            .addInfo("Has Two Modes: Precise and Normal")
-            .addInfo("Use a Screwdriver to change modes")
-            .addSeparator()
-            .addInfo("Precise Mode unlocks the ability to assemble precise components")
-            .addInfo("Casing Tier determines Maximum Recipe Tier")
-            .addSeparator()
-            .addInfo("Normal Mode allows standard assembler recipes")
-            .addInfo(
-                EnumChatFormatting.WHITE + "Precise Casing"
-                    + EnumChatFormatting.GRAY
-                    + " Tier determines "
-                    + TooltipHelper.parallelText("Parallels"))
-            .addInfo(
-                tieredTextLine("Imprecise", "Mk-I", "MK-II", "MK-III", "MK-IV") + "->"
-                    + tieredTextLine("16", "32", "64", "128", "256")
-                    + " Parallels")
+            .addMarkdown(new ResourceLocation("gregtech", "precise-assembler"))
             .addStaticSpeedInfo(2f)
             .addSeparator()
             .addInfo(
@@ -512,26 +497,5 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                     .setEnabled(ignored -> machineTier > 0 && machineTier < 9))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> machineTier, tier -> machineTier = tier));
         super.drawTexts(screenElements, inventorySlot);
-    }
-
-    private String tieredTextLine(String mk0, String mk1, String mk2, String mk3, String mk4) {
-        return EnumChatFormatting.GREEN + mk0
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.BLUE
-            + mk1
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.LIGHT_PURPLE
-            + mk2
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.GOLD
-            + mk3
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.RED
-            + mk4
-            + EnumChatFormatting.GRAY;
     }
 }
