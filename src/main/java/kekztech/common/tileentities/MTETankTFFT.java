@@ -26,6 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -343,14 +344,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.machine_type"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc1"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc2"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc3"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc4"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc5"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc6"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc7"))
+            .addMarkdown(new ResourceLocation("gregtech", "tfft-fluid-tank"))
             .beginVariableStructureBlock(5, 5, 5, 5, 5, 15, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
             .addEnergyHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
