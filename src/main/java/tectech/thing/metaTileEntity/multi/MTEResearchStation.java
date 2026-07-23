@@ -31,6 +31,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -85,6 +86,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  * Created by danie_000 on 17.12.2016.
  * Updated by C0bra5 on 11.01.2026.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEResearchStation extends TTMultiblockBase implements ISurvivalConstructable {
 
     // region variables
@@ -239,16 +241,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // Machine Type: Research Station, Scanner
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.type"))
-            // Used to scan Data Sticks for Assembling Line Recipes
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.1"))
-            // Needs to be fed with computation to work
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.2"))
-            // Does not consume the item until the Data Stick is written
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.3"))
-            // Use screwdriver to change mode
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.4"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.5"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.6"))
+            .addMarkdown(new ResourceLocation("gregtech", "research-station"))
             .addSupportAny()
             .beginStructureBlock(3, 7, 7, false)
             .addController("Front center")
