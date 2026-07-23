@@ -1,6 +1,5 @@
 package gregtech.loaders.postload;
 
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
@@ -35,7 +34,6 @@ import com.google.common.collect.ImmutableSet;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
@@ -54,6 +52,7 @@ import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTForestryCompat;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -77,16 +76,16 @@ public class GTPostLoad {
         GTMod.proxy.activateOreDictHandler();
 
         // noinspection UnstableApiUsage// Stable enough for this project
-        GT_FML_LOGGER.info("Congratulations, you have been waiting long enough ({}). Have a Cake.", stopwatch.stop());
-        GT_FML_LOGGER.debug(
-            "GTMod: List of Lists of Tool Recipes: {}",
-            GTModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
-        GT_FML_LOGGER.debug(
-            "GTMod: Vanilla Recipe List -> Outputs null or stackSize <=0: {}",
-            GTModHandler.sVanillaRecipeList_warntOutput.toString());
-        GT_FML_LOGGER.debug(
-            "GTMod: Single Non Block Damageable Recipe List -> Outputs null or stackSize <=0: {}",
-            GTModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
+        GTMod.GT_FML_LOGGER
+            .info("Congratulations, you have been waiting long enough (" + stopwatch.stop() + "). Have a Cake.");
+        GTLog.out.println(
+            "GTMod: List of Lists of Tool Recipes: " + GTModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
+        GTLog.out.println(
+            "GTMod: Vanilla Recipe List -> Outputs null or stackSize <=0: "
+                + GTModHandler.sVanillaRecipeList_warntOutput.toString());
+        GTLog.out.println(
+            "GTMod: Single Non Block Damageable Recipe List -> Outputs null or stackSize <=0: "
+                + GTModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
     }
 
     public static void removeIc2Recipes(Map<IRecipeInput, RecipeOutput> aMaceratorRecipeList,
@@ -111,7 +110,7 @@ public class GTPostLoad {
         // Remove all IC2
         GTModHandler.removeAllIC2Recipes();
         // noinspection UnstableApiUsage// Stable enough for this project
-        GT_FML_LOGGER.debug("IC2 Removal ({}). Have a Cake.", stopwatch.stop());
+        GTMod.GT_FML_LOGGER.info("IC2 Removal (" + stopwatch.stop() + "). Have a Cake.");
     }
 
     public static void registerFluidCannerRecipes() {
@@ -130,13 +129,6 @@ public class GTPostLoad {
                 .duration((tData.fluid.amount / 62) * TICKS)
                 .eut(1)
                 .addTo(cannerRecipes);
-            if (GTUtility.areFluidsEqual(WerkstoffLoader.Ruthenium.getMolten(1), tData.fluid)
-                || GTUtility.areFluidsEqual(WerkstoffLoader.Rhodium.getMolten(1), tData.fluid)
-                || GTUtility.areFluidsEqual(Materials.Osmium.getMolten(1), tData.fluid)
-                || GTUtility.areFluidsEqual(Materials.Iridium.getMolten(1), tData.fluid)
-                || GTUtility.areFluidsEqual(Materials.Platinum.getMolten(1), tData.fluid)) {
-                continue;
-            }
             GTRecipeBuilder builder = GTValues.RA.stdBuilder()
                 .itemInputs(tData.filledContainer);
             if (tData.emptyContainer.stackSize > 0) {
@@ -150,7 +142,7 @@ public class GTPostLoad {
     }
 
     public static void addFakeRecipes() {
-        GT_FML_LOGGER.debug("GTMod: Adding Fake Recipes for NEI");
+        GTLog.out.println("GTMod: Adding Fake Recipes for NEI");
 
         if (Forestry.isModLoaded()) {
             GTForestryCompat.populateFakeNeiRecipes();
@@ -251,19 +243,19 @@ public class GTPostLoad {
                 }
             }
         }
-        Materials.getMaterialsMap()
-            .values()
-            .forEach(tMaterial -> {
-                // check if material is scannable
-                GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(tMaterial);
-                if (scannerResult == null || scannerResult.isNotMet()) return;
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            Materials tMaterial = MU.materialOf(material);
+            if (tMaterial == null) continue;
+            // check if material is scannable
+            GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(tMaterial);
+            if (scannerResult == null || scannerResult.isNotMet()) continue;
 
-                addElementScannerAndReplicatorRecipes(
-                    scannerResult,
-                    MU.material(tMaterial),
-                    GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L));
-            });
+            addElementScannerAndReplicatorRecipes(
+                scannerResult,
+                material,
+                GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L));
+        }
 
         // Reconstructed werkstoff elements no longer appear in getMaterialsMap() once minting is retired.
         // The cell-bearing ones -- the population whose facades CellLoader's element branch used to link
@@ -417,7 +409,7 @@ public class GTPostLoad {
             return;
         }
 
-        GT_FML_LOGGER.debug("GTMod: Updating Vanilla Wooden Tools");
+        GTLog.out.println("GTMod: Updating Vanilla Wooden Tools");
         Items.wooden_sword.setMaxDamage(64);
         Items.wooden_pickaxe.setMaxDamage(64);
         Items.wooden_shovel.setMaxDamage(64);
@@ -428,9 +420,12 @@ public class GTPostLoad {
     public static void replaceVanillaMaterials() {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
-        GT_FML_LOGGER.debug("Replacing Vanilla Materials in recipes, please wait.");
-        Set<Materials> replaceVanillaItemsSet = Arrays.stream(Materials.values())
+        GTMod.GT_FML_LOGGER.info("Replacing Vanilla Materials in recipes, please wait.");
+        Set<Materials> replaceVanillaItemsSet = MaterialLibAPI.getMaterials()
+            .stream()
             .filter(GTRecipeRegistrator::hasVanillaRecipes)
+            .map(MU::materialOf)
+            .filter(Objects::nonNull)
             .collect(Collectors.toSet());
 
         ProgressManager.ProgressBar progressBar = ProgressManager
@@ -446,7 +441,7 @@ public class GTPostLoad {
         }
         ProgressManager.pop(progressBar);
         // noinspection UnstableApiUsage// stable enough for project
-        GT_FML_LOGGER.debug("Replaced Vanilla Materials ({}). Have a Cake.", stopwatch.stop());
+        GTMod.GT_FML_LOGGER.info("Replaced Vanilla Materials (" + stopwatch.stop() + "). Have a Cake.");
     }
 
     public static void doActualRegistration(Materials m) {
