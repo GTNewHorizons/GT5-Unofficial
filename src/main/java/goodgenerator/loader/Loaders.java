@@ -366,9 +366,9 @@ public class Loaders {
             MetaTileEntityIDs.ComponentAssemblyLine.ID,
             "ComponentAssemblyLine",
             "Component Assembly Line").getStackForm(1L);
-        CrackRecipeAdder.registerPipe(MetaTileEntityIDs.PipeIncoloy903.ID, GGMaterial.incoloy903, 15000, 8000, true);
-        CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireSignalium.ID, GGMaterial.signalium, 12, 131072, 32, true);
-        CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireLumiium.ID, GGMaterial.lumiium, 8, 524288, 64, true);
+        CrackRecipeAdder.registerPipe(GGMaterial.incoloy903);
+        CrackRecipeAdder.registerWire(GGMaterial.signalium);
+        CrackRecipeAdder.registerWire(GGMaterial.lumiium);
         Loaders.AMForge = new AntimatterForge(
             MetaTileEntityIDs.AntimatterForge.ID,
             "AntimatterForge",

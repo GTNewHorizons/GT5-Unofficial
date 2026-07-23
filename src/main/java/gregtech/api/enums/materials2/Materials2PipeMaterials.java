@@ -10,10 +10,9 @@ import gregtech.api.enums.TierEU;
 
 /// The pipe-family stat tables: one declared row per material carrying wires/cables, fluid pipes, or item
 /// pipes, applied as [Materials2PipeProperties] values through [MaterialLibAPI#editMaterial]. The values
-/// duplicate the literals the pipe MTE registrations receive -- from
-/// [gregtech.loaders.preload.LoaderMetaPipeEntities],
-/// [gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits], and goodgenerator's
-/// [goodgenerator.util.CrackRecipeAdder] -- and the tables must stay in agreement with them.
+/// reproduce the literals the retired per-material pipe MTE registrations received (GregTech's own pipe
+/// loader, [gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits], and goodgenerator's
+/// [goodgenerator.util.CrackRecipeAdder]).
 ///
 /// The wooden and High Pressure fluid pipes exist in three sizes whose capacities follow no base-value
 /// formula, so they carry per-size capacity constants here instead of a [Materials2PipeProperties#BASE_PIPE_FLOW]
@@ -189,8 +188,8 @@ public class Materials2PipeMaterials {
             new FluidPipe(Materials2Materials.SpaceTime, 250000, Integer.MAX_VALUE),
             new FluidPipe(Materials2Materials.TranscendentMetal, 220000, Integer.MAX_VALUE),
             new FluidPipe(Materials2Materials.RadoxPoly, 5000, 1500),
-            // GregtechConduits declares fluid throughput per second; these rows store the medium pipe's
-            // per-tick capacity its MTE constructors receive, 12 * (declared / 20) with truncating division.
+            // The gtPlusPlus/goodgenerator pipes were declared as per-second throughputs; these rows store
+            // the medium pipe's per-tick capacity, 12 * (declared / 20) with truncating division.
             new FluidPipe(Materials2Materials.Staballoy, 7500, 7500),
             new FluidPipe(Materials2Materials.Tantalloy60, 6000, 4250),
             new FluidPipe(Materials2Materials.Tantalloy61, 7200, 5800),
@@ -215,8 +214,7 @@ public class Materials2PipeMaterials {
             MaterialEdit edit = edit(row.material())
                 .setProperty(Materials2PipeProperties.BASE_PIPE_FLOW, row.baseCapacity())
                 .setProperty(Materials2PipeProperties.PIPE_HEAT_RESISTANCE, row.heatResistance());
-            // Shape membership follows the legacy registrations, which gate these two rows on their parent
-            // mod (GregtechConduits registers Void pipes only with Thaumcraft and DarkSteel only with
+            // These two rows exist only with their parent mod (Void pipes with Thaumcraft, DarkSteel with
             // EnderIO); the properties themselves stay unconditional.
             if (row.material() == Materials2Materials.Void && !Mods.Thaumcraft.isModLoaded()) continue;
             if (row.material() == Materials2Materials.DarkSteel && !Mods.EnderIO.isModLoaded()) continue;

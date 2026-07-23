@@ -1,5 +1,7 @@
 package gregtech.api.enums.materials2;
 
+import java.util.Set;
+
 import com.ruling_0.materiallib.api.Material;
 
 /// The shapeless marker backings [gregtech.loaders.materials.LegacyMarkerMaterials#registerBackingMaterials]
@@ -27,6 +29,28 @@ public class Materials2Markers {
     public static Material SuperconductorUEV;
     public static Material SuperconductorUIV;
     public static Material SuperconductorUMV;
+
+    private static Set<Material> superconductorMarkers;
+
+    /// Whether `material` is one of the eleven superconductor wire marker backings. The set is built lazily
+    /// so callers constructed before the marker fields are assigned can still hold a reference to this check.
+    public static boolean isSuperconductorMarker(Material material) {
+        if (superconductorMarkers == null) {
+            superconductorMarkers = Set.of(
+                SuperconductorMV,
+                SuperconductorHV,
+                SuperconductorEV,
+                SuperconductorIV,
+                SuperconductorLuV,
+                SuperconductorZPM,
+                SuperconductorUV,
+                SuperconductorUHV,
+                SuperconductorUEV,
+                SuperconductorUIV,
+                SuperconductorUMV);
+        }
+        return superconductorMarkers.contains(material);
+    }
 
     private Materials2Markers() {}
 }

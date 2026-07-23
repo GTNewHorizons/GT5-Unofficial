@@ -60,6 +60,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
+import com.ruling_0.materiallib.api.BlockMaterialInfo;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
@@ -67,6 +69,8 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -78,7 +82,6 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCyclotronCoils;
-import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.material.Material;
@@ -235,6 +238,21 @@ public class GTStructureUtility {
 
     public static <T> IStructureElement<T> ofFrame(Materials aFrameMaterial) {
         if (aFrameMaterial == null) throw new IllegalArgumentException();
+        return ofFrameElement(() -> MU.material(aFrameMaterial));
+    }
+
+    /// [#ofFrame(Materials)] for callers holding a MaterialLib material instead of a legacy [Materials]
+    /// constant; matches the same frame shape block directly.
+    public static <T> IStructureElement<T> ofFrame(com.ruling_0.materiallib.api.Material material) {
+        if (material == null) throw new IllegalArgumentException();
+        return ofFrameElement(() -> material);
+    }
+
+    /// The frame structure element, matching the `frameGt` [gregtech.common.blocks.FrameShapeBlock] at the
+    /// target material's index. The target resolves lazily so elements built in static initializers, before
+    /// the MaterialLib registry settles, still work.
+    private static <T> IStructureElement<T> ofFrameElement(
+        Supplier<com.ruling_0.materiallib.api.Material> materialSupplier) {
         return new IStructureElement<>() {
 
             private IIcon[] mIcons;
@@ -242,12 +260,9 @@ public class GTStructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
-                if (block instanceof BlockFrameBox frameBox) {
-                    int meta = world.getBlockMetadata(x, y, z);
-                    Materials material = BlockFrameBox.getMaterial(meta);
-                    return aFrameMaterial == material;
-                }
-                return false;
+                BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, world.getBlockMetadata(x, y, z));
+                return info != null && info.shape() == Materials2PipeShapes.frameGt
+                    && info.material() == materialSupplier.get();
             }
 
             @Override
@@ -257,14 +272,16 @@ public class GTStructureUtility {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                com.ruling_0.materiallib.api.Material material = materialSupplier.get();
+                TextureSet textureSet = MU.textureSetOf(material);
+                short[] rgba = MU.rgbaOf(material);
+                if (textureSet == null || rgba == null) return false;
                 if (mIcons == null && FMLLaunchHandler.side()
                     .isClient()) {
                     mIcons = new IIcon[6];
-                    Arrays.fill(
-                        mIcons,
-                        aFrameMaterial.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon());
+                    Arrays.fill(mIcons, textureSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon());
                 }
-                StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, aFrameMaterial.mRGBa);
+                StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, rgba);
                 return true;
             }
 
@@ -278,7 +295,7 @@ public class GTStructureUtility {
             }
 
             private ItemStack getFrameStack() {
-                return GTOreDictUnificator.get(OrePrefixes.frameGt, aFrameMaterial, 1);
+                return GTOreDictUnificator.get(OrePrefixes.frameGt, materialSupplier.get(), 1);
             }
 
             @Override
@@ -336,17 +353,6 @@ public class GTStructureUtility {
 
     public static <T> IStructureElement<T> ofFrame(Material material) {
         return ofFrame(() -> material.getFrameBox(1));
-    }
-
-    /// [#ofFrame(Materials)] for callers holding a MaterialLib material instead of a legacy [Materials]
-    /// constant. Frames are legacy-canonical blocks (`frameGt` never cut over) for every material, so this
-    /// resolves back to the legacy material and delegates rather than reimplementing placement/check against
-    /// a MaterialLib item -- only the caller-facing type changes, not frame block identity.
-    public static <T> IStructureElement<T> ofFrame(com.ruling_0.materiallib.api.Material material) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null)
-            throw new IllegalArgumentException("No legacy Materials mapping for " + material.getName());
-        return ofFrame(legacyMaterial);
     }
 
     public static <T> HatchElementBuilder<T> buildHatchAdder() {

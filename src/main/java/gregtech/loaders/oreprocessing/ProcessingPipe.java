@@ -26,7 +26,10 @@ import gregtech.api.util.GTUtility;
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingPipe INSTANCE;
+
     public ProcessingPipe() {
+        INSTANCE = this;
         OrePrefixes.pipeHuge.add(this);
         OrePrefixes.pipeLarge.add(this);
         OrePrefixes.pipeMedium.add(this);

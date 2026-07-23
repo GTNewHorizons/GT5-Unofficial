@@ -30,7 +30,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.items.ItemTool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.common.blocks.BlockFrameBox;
+import gregtech.common.blocks.FrameShapeBlock;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import mods.railcraft.common.blocks.machine.TileMultiBlock;
@@ -206,7 +206,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     }
 
     private boolean isHarvestableGTSpecial(Block target, TileEntity tileEntity) {
-        if (target instanceof BlockFrameBox) return tileEntity == null;
+        if (target instanceof FrameShapeBlock) return tileEntity == null;
 
         // Cables extend BaseMetaPipeEntity (???)
         if (tileEntity instanceof BaseMetaPipeEntity) return true;
