@@ -32,6 +32,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -94,6 +95,7 @@ import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETeslaTower extends TTMultiblockBase
     implements ISurvivalConstructable, ITeslaConnectable, IParametrized {
 
@@ -549,22 +551,7 @@ public class MTETeslaTower extends TTMultiblockBase
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.name")) // Machine Type: Tesla
                                                                                                // Tower
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.0")) // Controller block of
-                                                                                            // the Tesla Tower
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.1")) // Used to transmit
-                                                                                            // power to Tesla
-            // Coil Covers and Tesla
-            // Transceivers
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.2")) // Can be fed with
-            // Helium/Nitrogen/Radon Plasma to
-            // increase the range
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.3")) // Transmitted voltage
-                                                                                            // depends on
-            // the used Tesla Capacitor tier
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.4")) // Primary Tesla
-                                                                                            // Windings need to
-            // be at least the same tier as
-            // the Tesla Capacitor
+            .addMarkdown(new ResourceLocation("gregtech", "tesla-tower"))
             .addSupportAny()
             .beginStructureBlock(7, 17, 7, false)
             .addController("Front bottom center")
