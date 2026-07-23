@@ -44,7 +44,6 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
 
         // Blacklist materials which are handled by Werkstoff loader
         if (legacyMaterial == Materials.Calcium || legacyMaterial == Materials.Magnesia) return;

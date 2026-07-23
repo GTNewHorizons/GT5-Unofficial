@@ -31,7 +31,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.ruling_0.materiallib.api.Material;
+
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffReconstruction;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.util.BWUtil;
 import gregtech.api.enums.Element;
@@ -42,6 +45,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
@@ -265,27 +269,31 @@ public class CellLoader implements IWerkstoffRunnable {
         }
 
         if (Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
-            Materials werkstoffBridgeMaterial = null;
+            boolean reconstructed = WerkstoffReconstruction.isReconstructed(werkstoff);
             boolean ElementSet = false;
             for (Element e : Element.values()) {
                 if (e.toString()
                     .equals(werkstoff.getFormulaTooltip())) {
-                    werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial()
-                        : new MaterialBuilder().setName(werkstoff.getDefaultName())
-                            .setDefaultLocalName(werkstoff.getDefaultName())
-                            .setUnifiable(false)
-                            .setIconSet(werkstoff.getTexSet())
-                            .constructMaterial();
-                    werkstoffBridgeMaterial.mElement = e;
-                    e.mLinkedMaterials.add(werkstoffBridgeMaterial);
+                    if (!reconstructed) {
+                        Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null
+                            ? werkstoff.getBridgeMaterial()
+                            : new MaterialBuilder().setName(werkstoff.getDefaultName())
+                                .setDefaultLocalName(werkstoff.getDefaultName())
+                                .setUnifiable(false)
+                                .setIconSet(werkstoff.getTexSet())
+                                .constructMaterial();
+                        werkstoffBridgeMaterial.mElement = e;
+                        e.mLinkedMaterials.add(werkstoffBridgeMaterial);
+                        werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
+                    }
                     ElementSet = true;
-                    werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
                     break;
                 }
             }
             if (!ElementSet) return;
 
-            GTOreDictUnificator.addAssociation(cell, werkstoffBridgeMaterial, werkstoff.get(cell), false);
+            Material material = WerkstoffReconstruction.materialLibOf(werkstoff);
+            GTOreDictUnificator.addAssociation(cell, material, werkstoff.get(cell), false);
 
             ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
             BehaviourDataOrb.setDataTitle(scannerOutput, "Elemental-Scan");
@@ -294,7 +302,7 @@ public class CellLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(cell))
                 .itemOutputs(scannerOutput)
                 .special(ItemList.Tool_DataOrb.get(1L))
-                .duration(werkstoffBridgeMaterial.getMass() * 8192)
+                .duration(MU.mass(material) * 8192)
                 .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_LV))
                 .ignoreCollision()
                 .fake()

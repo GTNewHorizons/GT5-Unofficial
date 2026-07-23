@@ -5,6 +5,8 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -14,14 +16,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
+import com.ruling_0.materiallib.api.Material;
 
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IIndividual;
+import gregtech.api.enums.Element;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.ItemData;
@@ -152,7 +157,13 @@ public class ScannerHandlerLoader {
         if (tData.mPrefix != OrePrefixes.dust && tData.mPrefix != OrePrefixes.cell) return null;
         // must be a scannable element
         Materials material = MU.materialOf(tData.mMaterial.mMaterial);
-        return material != null ? getElementScanResult(material) : null;
+        if (material != null) return getElementScanResult(material);
+        // A reconstructed werkstoff element has no legacy counterpart left; the cell-bearing ones are exactly
+        // the population whose retired facades carried mElement (CellLoader's element branch).
+        Material ml = tData.mMaterial.mMaterial;
+        List<String> werkstoffPrefixes = ml.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
+        if (werkstoffPrefixes == null || !werkstoffPrefixes.contains(OrePrefixes.cell.name())) return null;
+        return getElementScanResult(ml);
     }
 
     public static @Nullable GTScannerResult getElementScanResult(Materials aMaterial) {
@@ -178,6 +189,26 @@ public class ScannerHandlerLoader {
         if (aMaterial == Materials.Magic) return false;
         // must have mass > 1
         return aMaterial.getMass() > 0L;
+    }
+
+    /// [#getElementScanResult(Materials)] for a MaterialLib material with no legacy [Materials] counterpart,
+    /// keyed on [GTMaterialProperties#ELEMENT] where the legacy overload reads `Materials#mElement`. The
+    /// legacy overload's Magic exclusion has no analog here: Magic is canonical and never reaches this.
+    public static @Nullable GTScannerResult getElementScanResult(Material material) {
+        Element element = MU.element(material);
+        if (element == null || element == Element._NULL) return null;
+        if (element.mIsIsotope) return null;
+        if (element.getMass() <= 0L) return null;
+        ItemStack output = ItemList.Tool_DataOrb.get(1L);
+        BehaviourDataOrb.setDataTitle(output, "Elemental-Scan");
+        BehaviourDataOrb.setDataName(output, element.name());
+        return new GTScannerResult(
+            ELEMENT_SCAN_EUT,
+            GTUtility.safeInt(element.getMass() * ELEMENT_SCAN_DURATION_MULTIPLIER),
+            1,
+            1,
+            0,
+            output);
     }
 
     public static final int DATA_STICK_COPY_EUT = (int) TierEU.ULV;

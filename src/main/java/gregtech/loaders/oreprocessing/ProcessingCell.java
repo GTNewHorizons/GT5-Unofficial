@@ -49,8 +49,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
+        if (material == null) return;
 
         switch (prefix.getName()) {
             case "cell" -> {
@@ -65,15 +64,15 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             .addTo(extractorRecipes);
                     }
                 } else {
-                    if (MU.fuelPower(legacyMaterial) > 0) {
+                    if (MU.fuelPower(material) > 0) {
                         GTRecipeBuilder recipeBuilder = RA.stdBuilder();
                         recipeBuilder.itemInputs(GTUtility.copyAmount(1, stack));
                         if (GTUtility.getFluidForFilledItem(stack, true) == null
                             && GTUtility.getContainerItem(stack, true) != null) {
                             recipeBuilder.itemOutputs(GTUtility.getContainerItem(stack, true));
                         }
-                        recipeBuilder.metadata(FUEL_VALUE, MU.fuelPower(legacyMaterial))
-                            .metadata(FUEL_TYPE, MU.fuelType(legacyMaterial))
+                        recipeBuilder.metadata(FUEL_VALUE, MU.fuelPower(material))
+                            .metadata(FUEL_TYPE, MU.fuelType(material))
                             .addTo(GTRecipeConstants.Fuel);
                     }
                     List<MaterialStack> tMaterialList = MU.materialList(material);

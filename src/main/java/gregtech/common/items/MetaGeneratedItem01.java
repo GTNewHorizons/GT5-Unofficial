@@ -4062,6 +4062,19 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         return null;
     }
 
+    /// [#getCauldronWashingResult(OrePrefixes, Materials, int)] for a MaterialLib material with no legacy
+    /// [Materials] counterpart. The remap table and the `dust` (Wheat) case key on legacy constants, which
+    /// such a material can never match, so both collapse to plain per-prefix lookups.
+    public static ItemStack getCauldronWashingResult(final OrePrefixes oldPrefix, final Material oldMaterial,
+        final int stackSize) {
+        if (oldMaterial == null) return null;
+        return switch (oldPrefix.getName()) {
+            case "dustImpure", "dustPure" -> GTOreDictUnificator.get(OrePrefixes.dust, oldMaterial, stackSize);
+            case "crushed" -> GTOreDictUnificator.get(OrePrefixes.crushedPurified, oldMaterial, stackSize);
+            default -> null;
+        };
+    }
+
     /**
      * Cancels the movement of an EntityItem and teleports it above the cauldron.
      *

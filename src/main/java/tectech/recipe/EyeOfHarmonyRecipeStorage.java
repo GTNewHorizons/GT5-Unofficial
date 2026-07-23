@@ -27,7 +27,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -217,7 +216,7 @@ public class EyeOfHarmonyRecipeStorage {
         return (long) (18_000L * GTUtility.powInt(1.4, rocketTier));
     }
 
-    private ArrayList<Pair<IOreMaterial, Long>> processDD(
+    private ArrayList<Pair<Object, Long>> processDD(
         final ArrayList<com.ruling_0.materiallib.api.Material> validMaterialList,
         ArrayList<Material> validGTPPMaterialList) {
         EyeOfHarmonyRecipe.HashMapHelper outputMap = new EyeOfHarmonyRecipe.HashMapHelper();
@@ -230,7 +229,7 @@ public class EyeOfHarmonyRecipeStorage {
         validGTPPMaterialList
             .forEach((material) -> processHelperGTpp(outputMap, material, mainMultiplier, probability));
 
-        ArrayList<Pair<IOreMaterial, Long>> outputList = new ArrayList<>();
+        ArrayList<Pair<Object, Long>> outputList = new ArrayList<>();
 
         outputMap.forEach((material, quantity) -> outputList.add(Pair.of(material, (long) Math.floor(quantity))));
 

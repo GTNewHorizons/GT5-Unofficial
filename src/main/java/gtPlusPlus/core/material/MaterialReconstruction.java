@@ -16,6 +16,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.material.FluidNames;
+import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.material.MaterialAtomics;
@@ -287,14 +288,28 @@ public final class MaterialReconstruction {
         if (gtEquivalent != null && gtEquivalent != Materials._NULL) {
             MaterialUtils.seedGeneratedMaterial(gtEquivalent, material);
         } else {
-            // An ore-shaped material's bridge Materials carries no real legacy id (mMetaItemSubID stays -1, see
-            // MaterialBuilder), so gregtech.common.ores.GTOreAdapter/Materials2OreShapes defer ore-block concerns
-            // for it back to gregtech.common.ores.GTPPOreAdapter (see that pair's own javadoc/isGtpp) instead of
-            // indexing an array with it.
-            GtppBridgeMaterialsLoader.register(ml, name, localName, textureSet, rgba, scalars, material);
+            // Runs where the retired gtpp bridge facade used to be minted, recording the two facade fields
+            // recipe generation still keys on. The molten record keeps the facade's own gate, including its
+            // timing accident: a material constructed before Material#registerAllPending opened the fluid
+            // gate has a null getFluid() here and stays molten-less, exactly as its facade did.
+            if (MU.isCutOver(OrePrefixes.cellMolten, ml) && material.getFluid() != null) {
+                MU.recordLegacyMolten(ml);
+            }
+            MU.recordHandleMaterial(ml, handleMaterial(ml, scalars.durability()));
+            MU.recordBridgeRegistration(ml);
         }
 
         return material;
+    }
+
+    /// The tool-handle material the retired gtpp bridge facade carried, by that facade's own formula.
+    private static com.ruling_0.materiallib.api.Material handleMaterial(com.ruling_0.materiallib.api.Material ml,
+        int durability) {
+        if (MU.hasFlag(ml, GTMaterialFlag.BURNING)) return MU.material(Materials.Blaze);
+        if (MU.hasFlag(ml, GTMaterialFlag.MAGICAL)) return MU.material(Materials.Thaumium);
+        if (durability > 5120) return MU.material(Materials.TungstenSteel);
+        if (durability > 1280) return MU.material(Materials.Steel);
+        return MU.material(Materials.Wood);
     }
 
     /// The legacy gtpp fluid name for `ml`'s non-plasma fluid, or null when `generatesFluid` is false --

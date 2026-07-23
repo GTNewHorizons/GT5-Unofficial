@@ -342,7 +342,7 @@ class GTRecipeBackendLifecycleTest {
 
     private static GTRecipe addReplicatorRecipe(RecipeMap<ReplicatorBackend> map, Materials material) {
         GTRecipe recipe = RA.stdBuilder()
-            .metadata(GTRecipeConstants.MATERIAL, material)
+            .metadata(GTRecipeConstants.MATERIAL, gregtech.api.material.MU.material(material))
             .itemOutputs(new ItemStack(iron_ingot, 1))
             .duration(1)
             .eut(1)

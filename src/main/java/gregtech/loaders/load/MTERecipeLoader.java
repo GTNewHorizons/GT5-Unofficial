@@ -23,6 +23,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.WerkstoffReconstruction;
 import codechicken.nei.api.API;
 import goodgenerator.util.ItemRefer;
 import gregtech.GTMod;
@@ -2204,7 +2205,9 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Casing_LuV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
-                OrePrefixes.plate.ingredient(WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial()) });
+                MU.craftIngredient(
+                    OrePrefixes.plate,
+                    WerkstoffReconstruction.materialLibOf(WerkstoffLoader.RhodiumPlatedPalladium)) });
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_ZPM.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -2536,8 +2539,10 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Hull_LuV.get(1L),
             NOT_REMOVABLE | BUFFERED,
             new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_LuV, 'C', "cableGt01VanadiumGallium", 'H',
-                OrePrefixes.plate.ingredient(WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial()), 'P',
-                "platePolytetrafluoroethylene" });
+                MU.craftIngredient(
+                    OrePrefixes.plate,
+                    WerkstoffReconstruction.materialLibOf(WerkstoffLoader.RhodiumPlatedPalladium)),
+                'P', "platePolytetrafluoroethylene" });
         GTModHandler.addCraftingRecipe(
             ItemList.Hull_ZPM.get(1L),
             NOT_REMOVABLE | BUFFERED,

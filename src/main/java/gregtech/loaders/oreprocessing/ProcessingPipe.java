@@ -51,8 +51,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
+        if (material == null) return;
         Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
 
         switch (prefix.getName()) {
             case "pipeHuge", "pipeLarge", "pipeMedium", "pipeSmall", "pipeTiny" -> {

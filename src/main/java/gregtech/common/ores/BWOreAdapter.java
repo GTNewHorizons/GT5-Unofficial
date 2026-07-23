@@ -32,12 +32,12 @@ import bartworks.system.material.WerkstoffReconstruction;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MUOre;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
@@ -385,7 +385,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         if (info.isSmall) {
             ObjectLinkedOpenHashSet<ItemId> drops = new ObjectLinkedOpenHashSet<>();
 
-            for (ItemStack stack : SmallOreDrops.getDropList(info.material.getBridgeMaterial())) {
+            for (ItemStack stack : SmallOreDrops.getDropList(WerkstoffReconstruction.materialLibOf(info.material))) {
                 ItemId id = ItemId.create(stack);
 
                 drops.add(id);
@@ -404,15 +404,15 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
     }
 
     private ArrayList<ItemStack> getSmallOreDrops(Random random, OreInfo<Werkstoff> info, int fortune) {
-        Materials bridge = info.material.getBridgeMaterial();
+        Material material = WerkstoffReconstruction.materialLibOf(info.material);
 
-        ArrayList<ItemStack> possibleDrops = SmallOreDrops.getDropList(bridge);
+        ArrayList<ItemStack> possibleDrops = SmallOreDrops.getDropList(material);
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         if (!possibleDrops.isEmpty()) {
-            int dropCount = Math.max(
-                1,
-                bridge.mOreMultiplier + (fortune > 0 ? random.nextInt(1 + fortune * bridge.mOreMultiplier) : 0) / 2);
+            int oreMultiplier = MUOre.oreMultiplier(material);
+            int dropCount = Math
+                .max(1, oreMultiplier + (fortune > 0 ? random.nextInt(1 + fortune * oreMultiplier) : 0) / 2);
 
             for (int i = 0; i < dropCount; i++) {
                 drops.add(GTUtility.copyAmount(1, possibleDrops.get(random.nextInt(possibleDrops.size()))));

@@ -33,8 +33,7 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
+        if (material == null) return;
 
         if ((material == MU.material(Materials.Stone)) || (material == MU.material(Materials.Flint))) {
             return;

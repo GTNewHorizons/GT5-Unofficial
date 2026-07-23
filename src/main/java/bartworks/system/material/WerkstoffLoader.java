@@ -461,7 +461,9 @@ public class WerkstoffLoader {
 
     private static void addBridgeSubTags() {
         // add specific GT materials subtags to various werkstoff bridgematerials
-        SubTag.METAL.addTo(RhodiumPlatedPalladium.getBridgeMaterial());
+        if (!WerkstoffReconstruction.isReconstructed(RhodiumPlatedPalladium)) {
+            SubTag.METAL.addTo(RhodiumPlatedPalladium.getBridgeMaterial());
+        }
     }
 
     public static long toGenerateGlobal;
@@ -673,6 +675,7 @@ public class WerkstoffLoader {
 
     private static void addOreByProductsForBridgeMaterials() {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
+            if (WerkstoffReconstruction.isReconstructed(werkstoff)) continue;
             Materials bridgeMaterial = werkstoff.getBridgeMaterial();
             List<Materials> mOreByProducts = bridgeMaterial.mOreByProducts;
             if (mOreByProducts.size() > 0) continue; // Not to add if there're already oreByProducts.

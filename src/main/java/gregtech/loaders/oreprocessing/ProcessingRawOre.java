@@ -48,8 +48,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
+        if (material == null) return;
 
         if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
