@@ -15,10 +15,12 @@ package bartworks.system.material.werkstoff_loaders.registration;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.WerkstoffReconstruction;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -29,12 +31,12 @@ public class AssociationLoader implements IWerkstoffRunnable {
         for (OrePrefixes prefixes : OrePrefixes.VALUES) {
             if (!werkstoff.hasItemType(prefixes)) continue;
 
-            Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial();
+            Material werkstoffMaterial = WerkstoffReconstruction.materialLibOf(werkstoff);
             ItemStack stack = WerkstoffLoader.getCorrespondingItemStackUnsafe(prefixes, werkstoff, 1);
 
             if (stack != null && stack.getItem() != null) {
-                GTOreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, stack, false);
-                GTOreDictUnificator.set(prefixes, werkstoffBridgeMaterial, stack, true, true);
+                GTOreDictUnificator.addAssociation(prefixes, werkstoffMaterial, stack, false);
+                GTOreDictUnificator.set(prefixes, werkstoffMaterial, stack, true, true);
             }
         }
     }
