@@ -3,22 +3,6 @@ package gregtech.api.util;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.GTValues.VP;
-import static gregtech.api.enums.Materials.Bronze;
-import static gregtech.api.enums.Materials.Cobalt;
-import static gregtech.api.enums.Materials.DarkSteel;
-import static gregtech.api.enums.Materials.Diamond;
-import static gregtech.api.enums.Materials.FierySteel;
-import static gregtech.api.enums.Materials.Gold;
-import static gregtech.api.enums.Materials.Iron;
-import static gregtech.api.enums.Materials.IronWood;
-import static gregtech.api.enums.Materials.Knightmetal;
-import static gregtech.api.enums.Materials.Lead;
-import static gregtech.api.enums.Materials.Ruby;
-import static gregtech.api.enums.Materials.Sapphire;
-import static gregtech.api.enums.Materials.Steel;
-import static gregtech.api.enums.Materials.Steeleaf;
-import static gregtech.api.enums.Materials.Thaumium;
-import static gregtech.api.enums.Materials.Void;
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
@@ -64,6 +48,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -186,7 +171,8 @@ public class GTRecipeRegistrator {
 
     public static void registerMaterialRecycling(ItemStack stack, ItemData data) {
         if (GTUtility.isStackInvalid(stack) || GTUtility.areStacksEqual(new ItemStack(Items.blaze_rod), stack)
-            || GTUtility.areStacksEqual(GTOreDictUnificator.get(OrePrefixes.block, Materials.Ichorium, 1L), stack)
+            || GTUtility
+                .areStacksEqual(GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Ichorium, 1L), stack)
             || GTUtility.areStacksEqual(new ItemStack(Blocks.quartz_block, 1), stack)
             || GTUtility.areStacksEqual(new ItemStack(Blocks.obsidian), stack)
             || data == null
@@ -232,7 +218,7 @@ public class GTRecipeRegistrator {
             : MU.hasFlag(byproductMaterial, GTMaterialFlag.NO_SMELTING)
                 || !MU.hasFlag(byproductMaterial, GTMaterialFlag.METAL)
                     ? MU.hasFlag(byproductMaterial, GTMaterialFlag.FLAMMABLE)
-                        ? GTOreDictUnificator.getDust(MU.material(Materials.Ash), byproduct.mAmount / 2)
+                        ? GTOreDictUnificator.getDust(Materials2Materials.Ash, byproduct.mAmount / 2)
                         : MU.hasFlag(byproductMaterial, GTMaterialFlag.UNBURNABLE)
                             ? GTOreDictUnificator.getDustOrIngot(MU.smeltInto(byproductMaterial), byproduct.mAmount)
                             : null
@@ -281,7 +267,7 @@ public class GTRecipeRegistrator {
             || MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)
             || (materialAmount > M && MU.hasFlag(material, GTMaterialFlag.METAL))
             || (MU.processingMaterialTierEU(material) > TierEU.IV)) return;
-        if (material == MU.material(Materials.Naquadah) || material == MU.material(Materials.NaquadahEnriched)) return;
+        if (material == Materials2Materials.Naquadah || material == Materials2Materials.NaquadahEnriched) return;
 
         materialAmount /= stack.stackSize;
 
@@ -386,9 +372,9 @@ public class GTRecipeRegistrator {
                 continue;
             }
 
-            if (material == Materials.Iron || material == Materials.Copper
-                || material == Materials.CastIron
-                || material == Materials.AnnealedCopper) {
+            if (tMaterial.mMaterial == Materials2Materials.Iron || tMaterial.mMaterial == Materials2Materials.Copper
+                || tMaterial.mMaterial == Materials2Materials.CastIron
+                || tMaterial.mMaterial == Materials2Materials.AnnealedCopper) {
                 ItemData stackData = GTOreDictUnificator.getItemData(stack);
                 if (stackData != null
                     && (stackData.mPrefix == OrePrefixes.ingot || stackData.mPrefix == OrePrefixes.dust)) {
@@ -402,12 +388,12 @@ public class GTRecipeRegistrator {
                 continue;
             }
             if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.EXPLOSIVE)) {
-                tMaterial.mMaterial = MU.material(Materials.Ash);
+                tMaterial.mMaterial = Materials2Materials.Ash;
                 tMaterial.mAmount /= 16;
                 continue;
             }
             if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.FLAMMABLE)) {
-                tMaterial.mMaterial = MU.material(Materials.Ash);
+                tMaterial.mMaterial = Materials2Materials.Ash;
                 tMaterial.mAmount /= 8;
                 continue;
             }
@@ -425,7 +411,7 @@ public class GTRecipeRegistrator {
 
         data = new ItemData(data);
         if (data.mByProducts.length > 3) for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            if (tMaterial.mMaterial == MU.material(Materials.Ash)) tMaterial.mAmount = 0;
+            if (tMaterial.mMaterial == Materials2Materials.Ash) tMaterial.mAmount = 0;
         }
 
         data = new ItemData(data);
@@ -586,8 +572,8 @@ public class GTRecipeRegistrator {
                 recipeBuilder.itemInputs(stack)
                     .itemOutputs(outputsArray)
                     .duration(
-                        (data.mMaterial.mMaterial == MU.material(Materials.Marble) ? 1
-                            : (int) Math.max(16, tAmount / M)) * TICKS)
+                        (data.mMaterial.mMaterial == Materials2Materials.Marble ? 1 : (int) Math.max(16, tAmount / M))
+                            * TICKS)
                     .eut(4);
                 if (isRecycling) recipeBuilder.recipeCategory(RecipeCategories.maceratorRecycling);
                 recipeBuilder.addTo(maceratorRecipes);
@@ -602,7 +588,7 @@ public class GTRecipeRegistrator {
             if (MU.materialOf(tMaterial.mMaterial) instanceof Materials material
                 && MU.hasFlag(material, GTMaterialFlag.CRYSTAL)
                 && !MU.hasFlag(material, GTMaterialFlag.METAL)
-                && tMaterial.mMaterial != MU.material(Materials.Glass)
+                && tMaterial.mMaterial != Materials2Materials.Glass
                 && GTOreDictUnificator.getDust(data.mMaterial) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
@@ -620,8 +606,11 @@ public class GTRecipeRegistrator {
     /**
      * Place Materials which you want to replace in Non-GT-Recipes here (warning HUGHE impact on loading times!)
      */
-    private static final Materials[] VANILLA_MATS = { Cobalt, Gold, Iron, Lead, FierySteel, Void, Bronze, Diamond, Ruby,
-        Sapphire, Steel, IronWood, Steeleaf, Knightmetal, Thaumium, DarkSteel, };
+    private static final Material[] VANILLA_MATS = { Materials2Materials.Cobalt, Materials2Materials.Gold,
+        Materials2Materials.Iron, Materials2Materials.Lead, Materials2Materials.FierySteel, Materials2Materials.Void,
+        Materials2Materials.Bronze, Materials2Materials.Diamond, Materials2Materials.Ruby, Materials2Materials.Sapphire,
+        Materials2Materials.Steel, Materials2Materials.IronWood, Materials2Materials.Steeleaf,
+        Materials2Materials.Knightmetal, Materials2Materials.Thaumium, Materials2Materials.DarkSteel, };
 
     /**
      * You give this Function a Material and it will scan almost everything for adding recycling Recipes and replacing
@@ -995,9 +984,15 @@ public class GTRecipeRegistrator {
         registerWiremillRecipes(MU.material(material), baseDuration, eut, prefix1, prefix2, multiplier);
     }
 
-    public static boolean hasVanillaRecipes(Materials materials) {
+    /// [#hasVanillaRecipes(Materials)] for callers holding a [Material] directly -- the native ML body; the
+    /// [Materials]-typed overload now delegates into this one.
+    public static boolean hasVanillaRecipes(Material material) {
         return Arrays.stream(VANILLA_MATS)
-            .anyMatch(mat -> mat == materials);
+            .anyMatch(mat -> mat == material);
+    }
+
+    public static boolean hasVanillaRecipes(Materials materials) {
+        return hasVanillaRecipes(MU.material(materials));
     }
 
     private static int getRecipeWidth(ShapedOreRecipe r) {

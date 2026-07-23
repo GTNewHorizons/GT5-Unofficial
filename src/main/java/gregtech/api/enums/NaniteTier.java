@@ -3,7 +3,11 @@ package gregtech.api.enums;
 import java.text.MessageFormat;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
+import com.ruling_0.materiallib.api.Material;
+
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
@@ -39,20 +43,20 @@ public enum NaniteTier {
         return tier;
     }
 
-    public Materials getMaterial() {
+    public Material getMaterial() {
         return switch (this) {
-            case Carbon -> Materials.Carbon;
-            case Glowstone -> Materials.Glowstone;
-            case Silver -> Materials.Silver;
-            case Neutronium -> Materials.Neutronium;
-            case Gold -> Materials.Gold;
-            case Transcendent -> Materials.TranscendentMetal;
-            case WhiteDwarf -> Materials.WhiteDwarfMatter;
-            case BlackDwarf -> Materials.BlackDwarfMatter;
-            case SixPhasedCopper -> Materials.SixPhasedCopper;
-            case Universium -> Materials.Universium;
-            case MagMatter -> Materials.MagMatter;
-            case Eternity -> Materials.Eternity;
+            case Carbon -> Materials2Materials.Carbon;
+            case Glowstone -> Materials2Materials.Glowstone;
+            case Silver -> Materials2Materials.Silver;
+            case Neutronium -> Materials2Materials.Neutronium;
+            case Gold -> Materials2Materials.Gold;
+            case Transcendent -> Materials2Materials.TranscendentMetal;
+            case WhiteDwarf -> Materials2Materials.WhiteDwarfMatter;
+            case BlackDwarf -> Materials2Materials.BlackDwarfMatter;
+            case SixPhasedCopper -> Materials2Materials.SixPhasedCopper;
+            case Universium -> Materials2Materials.Universium;
+            case MagMatter -> Materials2Materials.Magmatter;
+            case Eternity -> Materials2Materials.Eternity;
         };
     }
 
@@ -65,22 +69,25 @@ public enum NaniteTier {
     }
 
     public String describe() {
-        return MessageFormat.format("{0} (Tier {1})", getMaterial().getLocalizedName(), tier);
+        String localizedName = StatCollector.translateToLocal(
+            "Material." + MU.internalName(getMaterial())
+                .toLowerCase());
+        return MessageFormat.format("{0} (Tier {1})", localizedName, tier);
     }
 
-    public static NaniteTier fromMaterial(Materials mat) {
-        if (mat == Materials.Carbon) return Carbon;
-        if (mat == Materials.Glowstone) return Glowstone;
-        if (mat == Materials.Silver) return Silver;
-        if (mat == Materials.Neutronium) return Neutronium;
-        if (mat == Materials.Gold) return Gold;
-        if (mat == Materials.TranscendentMetal) return Transcendent;
-        if (mat == Materials.WhiteDwarfMatter) return WhiteDwarf;
-        if (mat == Materials.BlackDwarfMatter) return BlackDwarf;
-        if (mat == Materials.SixPhasedCopper) return SixPhasedCopper;
-        if (mat == Materials.Universium) return Universium;
-        if (mat == Materials.MagMatter) return MagMatter;
-        if (mat == Materials.Eternity) return Eternity;
+    public static NaniteTier fromMaterial(Material mat) {
+        if (mat == Materials2Materials.Carbon) return Carbon;
+        if (mat == Materials2Materials.Glowstone) return Glowstone;
+        if (mat == Materials2Materials.Silver) return Silver;
+        if (mat == Materials2Materials.Neutronium) return Neutronium;
+        if (mat == Materials2Materials.Gold) return Gold;
+        if (mat == Materials2Materials.TranscendentMetal) return Transcendent;
+        if (mat == Materials2Materials.WhiteDwarfMatter) return WhiteDwarf;
+        if (mat == Materials2Materials.BlackDwarfMatter) return BlackDwarf;
+        if (mat == Materials2Materials.SixPhasedCopper) return SixPhasedCopper;
+        if (mat == Materials2Materials.Universium) return Universium;
+        if (mat == Materials2Materials.Magmatter) return MagMatter;
+        if (mat == Materials2Materials.Eternity) return Eternity;
 
         return null;
     }
@@ -93,7 +100,6 @@ public enum NaniteTier {
         if (data == null) return null;
         if (data.mPrefix != OrePrefixes.nanite) return null;
 
-        Materials material = MU.materialOf(data.mMaterial.mMaterial);
-        return material != null ? fromMaterial(material) : null;
+        return fromMaterial(data.mMaterial.mMaterial);
     }
 }

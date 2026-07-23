@@ -30,9 +30,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.MU;
 import gregtech.api.render.TextureFactory;
@@ -678,66 +678,66 @@ public enum Casings implements ICasing {
     BoltedOsmiridiumCasing(() -> WerkstoffLoader.BWBlockCasings, 32083, 32083) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.Osmiridium, false).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Osmiridium, false).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials.Osmiridium, false).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials2Materials.Osmiridium, false).getBlockMeta(); }
     },
     ReboltedOsmiridiumCasing(() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32083, 32083) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.Osmiridium, true).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Osmiridium, true).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials.Osmiridium, true).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials2Materials.Osmiridium, true).getBlockMeta(); }
     },
     BoltedNaquadahCasing(() -> WerkstoffLoader.BWBlockCasings, 32090, 32090) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.Naquadah, false).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Naquadah, false).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials.Naquadah, false).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials2Materials.Naquadah, false).getBlockMeta(); }
     },
     ReboltedNaquadahCasing(() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32090, 32090) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.Naquadah, true).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Naquadah, true).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials.Naquadah, true).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials2Materials.Naquadah, true).getBlockMeta(); }
     },
     BoltedNaquadahAlloyCasing(() -> WerkstoffLoader.BWBlockCasings, 32091, 32091) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.NaquadahAlloy, false).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.NaquadahAlloy, false).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials.NaquadahAlloy, false).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials2Materials.NaquadahAlloy, false).getBlockMeta(); }
     },
     ReboltedNaquadahAlloyCasing(() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32091, 32091) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.NaquadahAlloy, true).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.NaquadahAlloy, true).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials.NaquadahAlloy, true).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials2Materials.NaquadahAlloy, true).getBlockMeta(); }
     },
     BoltedIridiumCasing(() -> WerkstoffLoader.BWBlockCasings, 31850, 31850) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.Iridium, false).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Iridium, false).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials.Iridium, false).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials2Materials.Iridium, false).getBlockMeta(); }
     },
     ReboltedIridiumCasing(() -> WerkstoffLoader.BWBlockCasingsAdvanced, 31850, 31850) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.Iridium, true).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Iridium, true).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials.Iridium, true).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials2Materials.Iridium, true).getBlockMeta(); }
     },
     // spotless:on
 
@@ -1142,15 +1142,12 @@ public enum Casings implements ICasing {
     /// `MTEIndustrialArcFurnace` (kubatech) -- a runServer boot resolving all eight through this method (via a
     /// temporary verification hook) confirmed every one lands on the correct blockCasing/
     /// blockCasingAdvanced variant of its material.
-    private static ImmutableBlockMeta bwCasing(Materials material, boolean advanced) {
-        return BW_CASING_CACHE.computeIfAbsent(material.mName + (advanced ? "!adv" : ""), k -> {
-            Material mlMaterial = Objects.requireNonNull(
-                MU.material(material),
-                () -> "No MaterialLib material for casing material " + material.mName);
+    private static ImmutableBlockMeta bwCasing(Material material, boolean advanced) {
+        return BW_CASING_CACHE.computeIfAbsent(MU.internalName(material) + (advanced ? "!adv" : ""), k -> {
             Shape shape = advanced ? Materials2BlockShapes.blockCasingAdvanced : Materials2BlockShapes.blockCasing;
             ItemStack stack = Objects.requireNonNull(
-                MaterialLibAPI.getStack(mlMaterial, shape, 1),
-                () -> "No " + shape + " stack for casing material " + material.mName);
+                MaterialLibAPI.getStack(material, shape, 1),
+                () -> "No " + shape + " stack for casing material " + MU.internalName(material));
 
             return new BlockMeta(Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
         });

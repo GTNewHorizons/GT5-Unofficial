@@ -192,7 +192,7 @@ public class GTModHandler {
      */
     public static boolean isWater(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(Materials.Water.getFluid(1)) || aFluid.isFluidEqual(getDistilledWater(1));
+        return aFluid.isFluidEqual(MU.fluid(Materials2Materials.Water, 1)) || aFluid.isFluidEqual(getDistilledWater(1));
     }
 
     /**
@@ -202,7 +202,7 @@ public class GTModHandler {
      */
     @Deprecated
     public static FluidStack getWater(long aAmount) {
-        return Materials.Water.getFluid(aAmount);
+        return MU.fluid(Materials2Materials.Water, aAmount);
     }
 
     /**
@@ -210,7 +210,7 @@ public class GTModHandler {
      */
     public static FluidStack getDistilledWater(long aAmount) {
         FluidStack tFluid = FluidRegistry.getFluidStack("ic2distilledwater", (int) aAmount);
-        if (tFluid == null) tFluid = Materials.Water.getFluid(aAmount);
+        if (tFluid == null) tFluid = MU.fluid(Materials2Materials.Water, aAmount);
         return tFluid;
     }
 
@@ -219,7 +219,7 @@ public class GTModHandler {
      */
     public static FluidStack getIC2Coolant(long aAmount) {
         if (IndustrialCraft2.isModLoaded()) return FluidRegistry.getFluidStack("ic2coolant", (int) aAmount);
-        else return Materials.Water.getFluid(aAmount);
+        else return MU.fluid(Materials2Materials.Water, aAmount);
     }
 
     /**
@@ -1136,10 +1136,10 @@ public class GTModHandler {
                 case ItemData itemData -> {
                     String tString = in.toString();
                     switch (tString) {
-                        case "plankWood" -> tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
-                        case "stoneNetherrack" -> tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
-                        case "stoneObsidian" -> tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
-                        case "stoneEndstone" -> tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
+                        case "plankWood" -> tItemDataMap.put(chr, new ItemData(Materials2Materials.Wood, M));
+                        case "stoneNetherrack" -> tItemDataMap.put(chr, new ItemData(Materials2Materials.Netherrack, M));
+                        case "stoneObsidian" -> tItemDataMap.put(chr, new ItemData(Materials2Materials.Obsidian, M));
+                        case "stoneEndstone" -> tItemDataMap.put(chr, new ItemData(Materials2Materials.Endstone, M));
                         default -> tItemDataMap.put(chr, itemData);
                     }
                     ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
@@ -1149,17 +1149,17 @@ public class GTModHandler {
                 }
                 case String s -> {
                     if (in.equals(OreDictNames.craftingChest.toString()))
-                        tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
+                        tItemDataMap.put(chr, new ItemData(Materials2Materials.Wood, M * 8));
                     else if (in.equals(OreDictNames.craftingBook.toString()))
-                        tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
+                        tItemDataMap.put(chr, new ItemData(Materials2Materials.Paper, M * 3));
                     else if (in.equals(OreDictNames.craftingPiston.toString()))
-                        tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
+                        tItemDataMap.put(chr, new ItemData(Materials2Materials.Stone, M * 4, Materials2Materials.Wood, M * 3));
                     else if (in.equals(OreDictNames.craftingFurnace.toString()))
-                        tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
+                        tItemDataMap.put(chr, new ItemData(Materials2Materials.Stone, M * 8));
                     else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
-                        tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
+                        tItemDataMap.put(chr, new ItemData(Materials2Materials.Diamond, M));
                     else if (in.equals(OreDictNames.craftingAnvil.toString()))
-                        tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
+                        tItemDataMap.put(chr, new ItemData(Materials2Materials.Iron, M * 10));
                     ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
                     if (tStack == null) tRemoveRecipe = false;
                     else tItemStackMap.put(chr, tStack);
