@@ -384,18 +384,15 @@ public class CameraViewportManager {
         if (gte == null) return 0;
         long storedEnergy = gte.getStoredEU();
         if (gte.getMetaTileEntity() instanceof MTEMultiBlockBase mte) {
-            List<MTEHatch> hatchList = mte.getExoticAndNormalEnergyHatchList();
-            if (hatchList != null) {
-                for (MTEHatch tHatch : hatchList) {
-                    IGregTechTileEntity hTe = tHatch.getBaseMetaTileEntity();
-                    if (hTe != null) {
-                        long eu = hTe.getStoredEU();
-                        if (eu > 0) {
-                            if (Long.MAX_VALUE - storedEnergy < eu) {
-                                return Long.MAX_VALUE;
-                            } else {
-                                storedEnergy += eu;
-                            }
+            for (MTEHatch tHatch : mte.getExoticAndNormalEnergyHatchList()) {
+                IGregTechTileEntity hTe = tHatch.getBaseMetaTileEntity();
+                if (hTe != null) {
+                    long eu = hTe.getStoredEU();
+                    if (eu > 0) {
+                        if (Long.MAX_VALUE - storedEnergy < eu) {
+                            return Long.MAX_VALUE;
+                        } else {
+                            storedEnergy += eu;
                         }
                     }
                 }
