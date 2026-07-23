@@ -274,8 +274,13 @@ public class BlockOverlayRenderer {
                     if (iCoverable.hasCoverAtSide(tSide)) tConnections |= tSide.flag;
                 }
             } else if (tTile instanceof BaseMetaTileEntity baseMetaTile && baseMetaTile.getAlignment() == null) {
-                if (!aIsSneaking) tConnections |= baseMetaTile.getFrontFacing().flag;
-                else if (baseMetaTile.getMetaTileEntity() instanceof MTEBasicMachine basicMachine) {
+                if (!aIsSneaking) {
+                    tConnections |= baseMetaTile.getFrontFacing().flag;
+                    if (baseMetaTile.getMetaTileEntity() instanceof MTEBasicMachine basicMachine) {
+                        final ForgeDirection fluidOut = basicMachine.getFluidOutputFacing();
+                        if (fluidOut != ForgeDirection.UNKNOWN) tConnections |= fluidOut.flag;
+                    }
+                } else if (baseMetaTile.getMetaTileEntity() instanceof MTEBasicMachine basicMachine) {
                     tConnections |= basicMachine.mMainFacing.flag;
                 }
             } else if (tTile instanceof BaseMetaPipeEntity pipeEntity) tConnections = pipeEntity.mConnections;

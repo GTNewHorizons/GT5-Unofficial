@@ -1436,7 +1436,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         if (isClientSide()) {
             // Place/configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
-                return (effectiveSideCover.hasCoverGUI());
+                return effectiveSideCover.hasCoverGUI();
             }
 
             if (!getCoverAtSide(side).isGUIClickable()) return false;

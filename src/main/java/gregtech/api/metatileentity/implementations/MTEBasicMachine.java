@@ -4,6 +4,8 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOOUTPUT_FLUID;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOOUTPUT_ITEM;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.metatileentity.BaseTileEntity.FLUID_TRANSFER_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.ITEM_TRANSFER_TOOLTIP;
@@ -68,6 +70,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TieredVariant;
+import gregtech.api.enums.WrenchOutputConfig;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
@@ -97,8 +100,12 @@ import gregtech.api.util.GTWaila;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.thing.metaTileEntity.pipe.MTEPipeData;
+import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -120,13 +127,15 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public final ItemStack[] mOutputItems;
     public final int mInputSlotCount;
     public int mAmperage;
-    public boolean mAllowInputFromOutputSide = true, mFluidTransfer = false, mItemTransfer = false, mStuttering = false,
-        mCharge = false, mDecharge = false;
+    public boolean mAllowInputFromOutputSideItems = true, mAllowInputFromOutputSideFluids = true,
+        mFluidTransfer = false, mItemTransfer = false, mStuttering = false, mCharge = false, mDecharge = false;
     private int errorDisplayID;
     public boolean mDisableFilter = true;
     public boolean mDisableMultiStack = true;
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
     public ForgeDirection mMainFacing = ForgeDirection.WEST;
+    public ForgeDirection mItemOutputFacing = UNKNOWN;
+    public ForgeDirection mFluidOutputFacing = UNKNOWN;
     public FluidStack mOutputFluid;
     protected OverclockDescriber overclockDescriber;
     @SideOnly(Side.CLIENT)
@@ -236,12 +245,87 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public boolean setMainFacing(ForgeDirection side) {
         if (!isValidMainFacing(side)) return false;
         mMainFacing = side;
-        if (getBaseMetaTileEntity().getFrontFacing() == mMainFacing) {
-            getBaseMetaTileEntity().setFrontFacing(side.getOpposite());
+        if (mItemOutputFacing == UNKNOWN || mItemOutputFacing == mMainFacing) {
+            mItemOutputFacing = side.getOpposite();
         }
+        if (mFluidOutputFacing == UNKNOWN || mFluidOutputFacing == mMainFacing) {
+            mFluidOutputFacing = side.getOpposite();
+        }
+        syncTeFrontFromItemOutput();
         onFacingChange();
         onMachineBlockUpdate();
         return true;
+    }
+
+    public boolean setItemOutputFacing(ForgeDirection side) {
+        if (side == UNKNOWN || side == mMainFacing) return false;
+        mItemOutputFacing = side;
+        syncTeFrontFromItemOutput();
+        onFacingChange();
+        onMachineBlockUpdate();
+        return true;
+    }
+
+    public boolean setFluidOutputFacing(ForgeDirection side) {
+        if (side == UNKNOWN || side == mMainFacing) return false;
+        mFluidOutputFacing = side;
+        syncTeFrontFromItemOutput();
+        onFacingChange();
+        onMachineBlockUpdate();
+        return true;
+    }
+
+    public boolean setOutputFacings(ForgeDirection side) {
+        if (side == UNKNOWN || side == mMainFacing) return false;
+        mItemOutputFacing = side;
+        mFluidOutputFacing = side;
+        syncTeFrontFromItemOutput();
+        onFacingChange();
+        onMachineBlockUpdate();
+        return true;
+    }
+
+    /**
+     * Keep TE front facing = item output so existing client texture sync carries item pipe side.
+     */
+    private void syncTeFrontFromItemOutput() {
+        final IGregTechTileEntity te = getBaseMetaTileEntity();
+        if (te == null || mItemOutputFacing == UNKNOWN) return;
+        if (te.getFrontFacing() != mItemOutputFacing) {
+            te.setFrontFacing(mItemOutputFacing);
+        }
+    }
+
+    public ForgeDirection getItemOutputFacing() {
+        if (mItemOutputFacing != UNKNOWN) return mItemOutputFacing;
+        final IGregTechTileEntity te = getBaseMetaTileEntity();
+        return te != null ? te.getFrontFacing() : UNKNOWN;
+    }
+
+    public ForgeDirection getFluidOutputFacing() {
+        if (mFluidOutputFacing != UNKNOWN) return mFluidOutputFacing;
+        return getItemOutputFacing();
+    }
+
+    protected boolean isPipeOutputSide(ForgeDirection side, ForgeDirection itemFacingFromTe) {
+        return side == itemFacingFromTe || side == getFluidOutputFacing();
+    }
+
+    private boolean isAnyOutputFacing(ForgeDirection side) {
+        return side == getItemOutputFacing() || side == getFluidOutputFacing();
+    }
+
+    /** Append GregTech-Modern-style orange/blue output frames. */
+    private ITexture[] appendAutoOutputOverlays(ITexture[] base, ForgeDirection side, ForgeDirection itemFacingFromTe) {
+        final boolean itemOut = side == itemFacingFromTe;
+        final boolean fluidOut = side == getFluidOutputFacing();
+        final int extra = (itemOut ? 1 : 0) + (fluidOut ? 1 : 0);
+        if (extra == 0) return base;
+        final ITexture[] out = Arrays.copyOf(base, base.length + extra);
+        int i = base.length;
+        if (itemOut) out[i++] = TextureFactory.of(OVERLAY_AUTOOUTPUT_ITEM);
+        if (fluidOut) out[i] = TextureFactory.of(OVERLAY_AUTOOUTPUT_FLUID);
+        return out;
     }
 
     @Override
@@ -276,6 +360,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        // Inventory/NEI uses the prototype MTE with no world; skip I/O overlays there.
+        final boolean inWorld = baseMetaTileEntity != null && baseMetaTileEntity.getWorld() != null;
+        final boolean pipeOut = inWorld && showPipeFacing() && isPipeOutputSide(sideDirection, facingDirection);
         final int textureIndex;
         if ((mMainFacing.flag & (UP.flag | DOWN.flag)) != 0) { // UP or DOWN
             if (sideDirection == facingDirection) {
@@ -287,26 +374,23 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     default -> active ? 0 : 1;
                 };
             }
+        } else if (sideDirection == mMainFacing) {
+            textureIndex = active ? 2 : 3;
+        } else if (pipeOut) {
+            textureIndex = switch (sideDirection) {
+                case DOWN -> active ? 8 : 9;
+                case UP -> active ? 10 : 11;
+                default -> active ? 12 : 13;
+            };
         } else {
-            if (sideDirection == mMainFacing) {
-                textureIndex = active ? 2 : 3;
-            } else {
-                if (showPipeFacing() && sideDirection == facingDirection) {
-                    textureIndex = switch (sideDirection) {
-                        case DOWN -> active ? 8 : 9;
-                        case UP -> active ? 10 : 11;
-                        default -> active ? 12 : 13;
-                    };
-                } else {
-                    textureIndex = switch (sideDirection) {
-                        case DOWN -> active ? 6 : 7;
-                        case UP -> active ? 4 : 5;
-                        default -> active ? 0 : 1;
-                    };
-                }
-            }
+            textureIndex = switch (sideDirection) {
+                case DOWN -> active ? 6 : 7;
+                case UP -> active ? 4 : 5;
+                default -> active ? 0 : 1;
+            };
         }
-        return mTextures[textureIndex][colorIndex + 1];
+        final ITexture[] base = mTextures[textureIndex][colorIndex + 1];
+        return pipeOut ? appendAutoOutputOverlays(base, sideDirection, facingDirection) : base;
     }
 
     @Override
@@ -346,7 +430,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     @Override
     public boolean isLiquidInput(ForgeDirection side) {
-        return side != mMainFacing && (mAllowInputFromOutputSide || side != getBaseMetaTileEntity().getFrontFacing());
+        return side != mMainFacing && (mAllowInputFromOutputSideFluids || !isAnyOutputFacing(side));
     }
 
     @Override
@@ -515,11 +599,16 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mFluidTransfer", mFluidTransfer);
         aNBT.setBoolean("mItemTransfer", mItemTransfer);
-        aNBT.setBoolean("mAllowInputFromOutputSide", mAllowInputFromOutputSide);
+        aNBT.setBoolean("mAllowInputFromOutputSideItems", mAllowInputFromOutputSideItems);
+        aNBT.setBoolean("mAllowInputFromOutputSideFluids", mAllowInputFromOutputSideFluids);
+        // Legacy key for older readers: keep if either allow flag is on
+        aNBT.setBoolean("mAllowInputFromOutputSide", mAllowInputFromOutputSideItems || mAllowInputFromOutputSideFluids);
         aNBT.setBoolean("mDisableFilter", mDisableFilter);
         aNBT.setBoolean("mDisableMultiStack", mDisableMultiStack);
         aNBT.setInteger("mEUt", mEUt);
         aNBT.setInteger("mMainFacing", mMainFacing.ordinal());
+        aNBT.setInteger("mItemOutputFacing", getItemOutputFacing().ordinal());
+        aNBT.setInteger("mFluidOutputFacing", getFluidOutputFacing().ordinal());
         aNBT.setInteger("mProgresstime", mProgresstime);
         aNBT.setInteger("mMaxProgresstime", mMaxProgresstime);
         if (mOutputFluid != null) aNBT.setTag("mOutputFluid", mOutputFluid.writeToNBT(new NBTTagCompound()));
@@ -534,7 +623,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         super.loadNBTData(aNBT);
         mFluidTransfer = aNBT.getBoolean("mFluidTransfer");
         mItemTransfer = aNBT.getBoolean("mItemTransfer");
-        mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
+        if (aNBT.hasKey("mAllowInputFromOutputSideItems") || aNBT.hasKey("mAllowInputFromOutputSideFluids")) {
+            mAllowInputFromOutputSideItems = aNBT.getBoolean("mAllowInputFromOutputSideItems");
+            mAllowInputFromOutputSideFluids = aNBT.getBoolean("mAllowInputFromOutputSideFluids");
+        } else {
+            boolean legacyAllow = aNBT.getBoolean("mAllowInputFromOutputSide");
+            mAllowInputFromOutputSideItems = legacyAllow;
+            mAllowInputFromOutputSideFluids = legacyAllow;
+        }
         mDisableFilter = aNBT.getBoolean("mDisableFilter");
         mDisableMultiStack = aNBT.getBoolean("mDisableMultiStack");
         mEUt = aNBT.getInteger("mEUt");
@@ -543,6 +639,22 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         mMaxProgresstime = aNBT.getInteger("mMaxProgresstime");
         mOutputFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mOutputFluid"));
         mFluidOut = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluidOut"));
+
+        final IGregTechTileEntity te = getBaseMetaTileEntity();
+        final ForgeDirection legacyFront = te != null ? te.getFrontFacing() : UNKNOWN;
+        if (aNBT.hasKey("mItemOutputFacing")) {
+            mItemOutputFacing = ForgeDirection.getOrientation(aNBT.getInteger("mItemOutputFacing"));
+        } else {
+            mItemOutputFacing = legacyFront != UNKNOWN && legacyFront != mMainFacing ? legacyFront
+                : (mMainFacing != UNKNOWN ? mMainFacing.getOpposite() : UNKNOWN);
+        }
+        if (aNBT.hasKey("mFluidOutputFacing")) {
+            mFluidOutputFacing = ForgeDirection.getOrientation(aNBT.getInteger("mFluidOutputFacing"));
+        } else {
+            mFluidOutputFacing = mItemOutputFacing;
+        }
+
+        syncTeFrontFromItemOutput();
 
         for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = GTUtility.loadItem(aNBT, "mOutputItem" + i);
     }
@@ -609,28 +721,30 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             boolean tRemovedOutputFluid = false;
 
             if (doesAutoOutputFluids() && getDrainableStack() != null
-                && aBaseMetaTileEntity.getFrontFacing() != mMainFacing
+                && getFluidOutputFacing() != mMainFacing
+                && getFluidOutputFacing() != UNKNOWN
                 && (tSucceeded || aTick % 20 == 0)) {
-                IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
+                final ForgeDirection fluidOut = getFluidOutputFacing();
+                IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(fluidOut);
                 if (tTank != null) {
                     FluidStack tDrained = drain(1000, false);
                     if (tDrained != null) {
-                        final int tFilledAmount = tTank.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
-                        if (tFilledAmount > 0)
-                            tTank.fill(aBaseMetaTileEntity.getBackFacing(), drain(tFilledAmount, true), true);
+                        final int tFilledAmount = tTank.fill(fluidOut.getOpposite(), tDrained, false);
+                        if (tFilledAmount > 0) tTank.fill(fluidOut.getOpposite(), drain(tFilledAmount, true), true);
                     }
                 }
                 if (getDrainableStack() == null) tRemovedOutputFluid = true;
             }
 
             if (doesAutoOutput() && !isOutputEmpty()
-                && aBaseMetaTileEntity.getFrontFacing() != mMainFacing
+                && getItemOutputFacing() != mMainFacing
+                && getItemOutputFacing() != UNKNOWN
                 && (tSucceeded || mOutputBlocked % 300 == 1
                     || aBaseMetaTileEntity.hasInventoryBeenModified()
                     || aTick % 600 == 0)) {
                 GTItemTransfer transfer = new GTItemTransfer();
 
-                transfer.outOfMachine(this, aBaseMetaTileEntity.getFrontFacing());
+                transfer.outOfMachine(this, getItemOutputFacing());
                 transfer.dropItems(this);
 
                 transfer.setStacksToTransfer(mOutputItems.length);
@@ -785,12 +899,38 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     @Override
     public void onValueUpdate(byte aValue) {
-        mMainFacing = ForgeDirection.getOrientation(aValue);
+        // bits 0-1: main facing, 2-4: fluid out, item via TE front
+        mMainFacing = unpackMainFacingBits(aValue);
+        mFluidOutputFacing = ForgeDirection.getOrientation((aValue >> 2) & 7);
+        final IGregTechTileEntity te = getBaseMetaTileEntity();
+        if (te != null) {
+            mItemOutputFacing = te.getFrontFacing();
+        }
     }
 
     @Override
     public byte getUpdateData() {
-        return (byte) mMainFacing.ordinal();
+        // bits 0-1: main facing, 2-4: fluid out, item via TE front
+        return (byte) ((packMainFacingBits(mMainFacing) & 3) | ((getFluidOutputFacing().ordinal() & 7) << 2));
+    }
+
+    private static int packMainFacingBits(ForgeDirection main) {
+        return switch (main) {
+            case NORTH -> 0;
+            case SOUTH -> 1;
+            case WEST -> 2;
+            case EAST -> 3;
+            default -> 0;
+        };
+    }
+
+    private static ForgeDirection unpackMainFacingBits(int bits) {
+        return switch (bits & 3) {
+            case 0 -> ForgeDirection.NORTH;
+            case 1 -> ForgeDirection.SOUTH;
+            case 2 -> ForgeDirection.WEST;
+            default -> ForgeDirection.EAST;
+        };
     }
 
     @Override
@@ -922,19 +1062,95 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (wrenchingSide == mMainFacing || !isFacingValid(wrenchingSide)) return false;
+
+        final ItemStack toolStack = aTool != null && aTool.getItem() instanceof ItemGTToolbox
+            ? ToolboxUtil.getSelectedTool(aTool)
+                .orElse(aTool)
+            : aTool;
+        final WrenchOutputConfig config = WrenchOutputConfig.get(toolStack);
+        final boolean ok;
+        if (config == WrenchOutputConfig.ITEM) {
+            ok = setItemOutputFacing(wrenchingSide);
+            if (ok) {
+                GTUtility.sendChatTrans(
+                    entityPlayer,
+                    "GT5U.machines.output_facing.item",
+                    getFacingNameLocalized(wrenchingSide.ordinal()));
+            }
+        } else if (config == WrenchOutputConfig.FLUID) {
+            ok = setFluidOutputFacing(wrenchingSide);
+            if (ok) {
+                GTUtility.sendChatTrans(
+                    entityPlayer,
+                    "GT5U.machines.output_facing.fluid",
+                    getFacingNameLocalized(wrenchingSide.ordinal()));
+            }
+        } else {
+            ok = setOutputFacings(wrenchingSide);
+            if (ok) {
+                GTUtility.sendChatTrans(
+                    entityPlayer,
+                    "GT5U.machines.output_facing.both",
+                    getFacingNameLocalized(wrenchingSide.ordinal()));
+            }
+        }
+        if (!ok) return false;
+
+        final IGregTechTileEntity meta = getBaseMetaTileEntity();
+        for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
+            final IGregTechTileEntity neighbor = meta.getIGregTechTileEntityAtSide(s);
+            if (neighbor != null) {
+                if (neighbor.getMetaTileEntity() instanceof MTEPipeLaser pipe) pipe.updateNetwork(true);
+                if (neighbor.getMetaTileEntity() instanceof MTEPipeData pipe) pipe.updateNetwork(true);
+            }
+        }
+        return true;
+    }
+
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
+        if (side == mMainFacing) {
             if (aPlayer.isSneaking()) {
                 mDisableFilter = !mDisableFilter;
                 GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + mDisableFilter);
-            } else {
-                mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
-                GTUtility.sendChatTrans(
-                    aPlayer,
-                    mAllowInputFromOutputSide ? "gt.interact.desc.input_from_output_on"
-                        : "gt.interact.desc.input_from_output_off");
             }
+            return;
+        }
+        final boolean onItemOut = side == getItemOutputFacing();
+        final boolean onFluidOut = side == getFluidOutputFacing();
+        if (!onItemOut && !onFluidOut) return;
+
+        if (aPlayer.isSneaking()) {
+            mDisableFilter = !mDisableFilter;
+            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + mDisableFilter);
+            return;
+        }
+
+        // Prefer fluid when both share the side and player is not sneaking; if only one matches, toggle that.
+        // When both match, toggle both together so shared output side stays consistent.
+        if (onItemOut && onFluidOut) {
+            final boolean newVal = !mAllowInputFromOutputSideItems;
+            mAllowInputFromOutputSideItems = newVal;
+            mAllowInputFromOutputSideFluids = newVal;
+            GTUtility.sendChatTrans(
+                aPlayer,
+                newVal ? "gt.interact.desc.input_from_output_on" : "gt.interact.desc.input_from_output_off");
+        } else if (onItemOut) {
+            mAllowInputFromOutputSideItems = !mAllowInputFromOutputSideItems;
+            GTUtility.sendChatTrans(
+                aPlayer,
+                mAllowInputFromOutputSideItems ? "gt.interact.desc.input_from_output_item_on"
+                    : "gt.interact.desc.input_from_output_item_off");
+        } else {
+            mAllowInputFromOutputSideFluids = !mAllowInputFromOutputSideFluids;
+            GTUtility.sendChatTrans(
+                aPlayer,
+                mAllowInputFromOutputSideFluids ? "gt.interact.desc.input_from_output_fluid_on"
+                    : "gt.interact.desc.input_from_output_fluid_off");
         }
     }
 
@@ -967,7 +1183,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         if (side == mMainFacing) return false;
         if (aIndex < getInputSlot()) return false;
         if (aIndex >= getInputSlot() + mInputSlotCount) return false;
-        if (!mAllowInputFromOutputSide && side == aBaseMetaTileEntity.getFrontFacing()) return false;
+        if (!mAllowInputFromOutputSideItems && isAnyOutputFacing(side)) return false;
 
         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++) {
             if (GTUtility.areStacksEqual(GTOreDictUnificator.get(aStack), mInventory[i]) && mDisableMultiStack) {
@@ -1238,10 +1454,21 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 "GT5U.waila.machine_facing",
                 getFacingNameLocalized(tag.getInteger("mainFacingSingleBlock"))));
 
-        currenttip.add(
-            translateToLocalFormatted(
-                "GT5U.waila.output_facing",
-                getFacingNameLocalized(tag.getInteger("outputFacingSingleBlock"))));
+        if (tag.hasKey("itemOutputFacingSingleBlock") || tag.hasKey("fluidOutputFacingSingleBlock")) {
+            currenttip.add(
+                translateToLocalFormatted(
+                    "GT5U.waila.item_output_facing",
+                    getFacingNameLocalized(tag.getInteger("itemOutputFacingSingleBlock"))));
+            currenttip.add(
+                translateToLocalFormatted(
+                    "GT5U.waila.fluid_output_facing",
+                    getFacingNameLocalized(tag.getInteger("fluidOutputFacingSingleBlock"))));
+        } else {
+            currenttip.add(
+                translateToLocalFormatted(
+                    "GT5U.waila.output_facing",
+                    getFacingNameLocalized(tag.getInteger("outputFacingSingleBlock"))));
+        }
     }
 
     private static @NotNull String getWailaStutteringLine(NBTTagCompound tag) {
@@ -1264,10 +1491,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         if (tileEntity != null) {
             tag.setBoolean("isActiveSingleBlock", tileEntity.isActive());
             tag.setBoolean("isAllowedToWorkSingleBlock", tileEntity.isAllowedToWork());
-            tag.setInteger(
-                "outputFacingSingleBlock",
-                tileEntity.getFrontFacing()
-                    .ordinal());
+            tag.setInteger("itemOutputFacingSingleBlock", getItemOutputFacing().ordinal());
+            tag.setInteger("fluidOutputFacingSingleBlock", getFluidOutputFacing().ordinal());
+            tag.setInteger("outputFacingSingleBlock", getItemOutputFacing().ordinal());
             if (tileEntity.isActive()) tag.setInteger("eut", mEUt);
         }
     }
