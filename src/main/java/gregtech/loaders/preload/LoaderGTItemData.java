@@ -26,6 +26,7 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.loaders.materials.RecognitionMaterials;
 
 public class LoaderGTItemData implements Runnable {
 
@@ -78,7 +79,7 @@ public class LoaderGTItemData implements Runnable {
             new ItemData(MU.materialOf(Materials2Materials.NetherQuartz), 1814400L));
         GTOreDictUnificator.addItemData(
             GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 12),
-            new ItemData(Materials.Fluix, 1814400L));
+            new ItemData(RecognitionMaterials.Fluix, 1814400L));
         GTOreDictUnificator.addItemData(
             new ItemStack(Blocks.quartz_block, 1, 32767),
             new ItemData(MU.materialOf(Materials2Materials.NetherQuartz), 14515200L));
@@ -326,21 +327,21 @@ public class LoaderGTItemData implements Runnable {
             new ItemData(
                 MU.materialOf(Materials2Materials.Iron),
                 29030400L,
-                new MaterialStack(Materials.Leather, 21772800L)));
+                new MaterialStack(RecognitionMaterials.Leather, 21772800L)));
         GTOreDictUnificator.addItemData(
             new ItemStack(Items.golden_horse_armor, 1, 32767),
             new ItemData(
                 MU.materialOf(Materials2Materials.Gold),
                 29030400L,
-                new MaterialStack(Materials.Leather, 21772800L)));
+                new MaterialStack(RecognitionMaterials.Leather, 21772800L)));
         GTOreDictUnificator.addItemData(
             new ItemStack(Items.diamond_horse_armor, 1, 32767),
             new ItemData(
                 MU.materialOf(Materials2Materials.Diamond),
                 29030400L,
-                new MaterialStack(Materials.Leather, 21772800L)));
+                new MaterialStack(RecognitionMaterials.Leather, 21772800L)));
         GTOreDictUnificator
-            .addItemData(new ItemStack(Items.leather, 1, 32767), new ItemData(Materials.Leather, 3628800L));
+            .addItemData(new ItemStack(Items.leather, 1, 32767), new ItemData(RecognitionMaterials.Leather, 3628800L));
         GTOreDictUnificator.addItemData(
             new ItemStack(Blocks.beacon, 1, 32767),
             new ItemData(
@@ -388,9 +389,10 @@ public class LoaderGTItemData implements Runnable {
         GTOreDictUnificator.addItemData(
             new ItemStack(Blocks.snow_layer, 1, 32767),
             new ItemData(MU.materialOf(Materials2Materials.Snow), -1L));
-        GTOreDictUnificator.addItemData(new ItemStack(Blocks.sand, 1, 32767), new ItemData(Materials.Sand, 3628800L));
         GTOreDictUnificator
-            .addItemData(new ItemStack(Blocks.sandstone, 1, 32767), new ItemData(Materials.Sand, 3628800L));
+            .addItemData(new ItemStack(Blocks.sand, 1, 32767), new ItemData(RecognitionMaterials.Sand, 3628800L));
+        GTOreDictUnificator
+            .addItemData(new ItemStack(Blocks.sandstone, 1, 32767), new ItemData(RecognitionMaterials.Sand, 3628800L));
         GTOreDictUnificator.addItemData(
             new ItemStack(Blocks.stone_slab, 1, 0),
             new ItemData(MU.materialOf(Materials2Materials.Stone), 1814400L));
@@ -403,12 +405,16 @@ public class LoaderGTItemData implements Runnable {
         GTOreDictUnificator.addItemData(
             new ItemStack(Blocks.double_stone_slab, 1, 8),
             new ItemData(MU.materialOf(Materials2Materials.Stone), 3628800L));
-        GTOreDictUnificator.addItemData(new ItemStack(Blocks.stone_slab, 1, 1), new ItemData(Materials.Sand, 1814400L));
-        GTOreDictUnificator.addItemData(new ItemStack(Blocks.stone_slab, 1, 9), new ItemData(Materials.Sand, 1814400L));
         GTOreDictUnificator
-            .addItemData(new ItemStack(Blocks.double_stone_slab, 1, 1), new ItemData(Materials.Sand, 3628800L));
+            .addItemData(new ItemStack(Blocks.stone_slab, 1, 1), new ItemData(RecognitionMaterials.Sand, 1814400L));
         GTOreDictUnificator
-            .addItemData(new ItemStack(Blocks.double_stone_slab, 1, 9), new ItemData(Materials.Sand, 3628800L));
+            .addItemData(new ItemStack(Blocks.stone_slab, 1, 9), new ItemData(RecognitionMaterials.Sand, 1814400L));
+        GTOreDictUnificator.addItemData(
+            new ItemStack(Blocks.double_stone_slab, 1, 1),
+            new ItemData(RecognitionMaterials.Sand, 3628800L));
+        GTOreDictUnificator.addItemData(
+            new ItemStack(Blocks.double_stone_slab, 1, 9),
+            new ItemData(RecognitionMaterials.Sand, 3628800L));
         GTOreDictUnificator.addItemData(
             new ItemStack(Blocks.stone_slab, 1, 2),
             new ItemData(MU.materialOf(Materials2Materials.Wood), 1814400L));

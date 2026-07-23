@@ -44,6 +44,7 @@ import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.loaders.materials.RecognitionMaterials;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
@@ -574,7 +575,7 @@ public class MixerRecipes implements Runnable {
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.NetherQuartz, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Fluix, 2))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, RecognitionMaterials.Fluix, 2))
             .fluidInputs(MU.fluid(Materials2Materials.Water, 500))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -585,7 +586,7 @@ public class MixerRecipes implements Runnable {
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.NetherQuartz, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Fluix, 2))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, RecognitionMaterials.Fluix, 2))
             .fluidInputs(GTModHandler.getDistilledWater(500))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)

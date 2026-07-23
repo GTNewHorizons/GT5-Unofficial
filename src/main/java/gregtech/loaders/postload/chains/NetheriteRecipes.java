@@ -56,6 +56,7 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.CombType;
+import gregtech.loaders.materials.RecognitionMaterials;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -80,7 +81,7 @@ public class NetheriteRecipes {
                         Materials2Materials.Grade1PurifiedWater,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (8000)))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 8))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, RecognitionMaterials.Prismarine, 8))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(autoclaveRecipes);
@@ -95,14 +96,14 @@ public class NetheriteRecipes {
                             Materials2Materials.Grade1PurifiedWater,
                             Materials2FluidShapes.fluidLiquid,
                             (int) (8000)))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 16))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, RecognitionMaterials.Prismarine, 16))
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(autoclaveRecipes);
             }
 
             GTValues.RA.stdBuilder() // Leaching
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 24))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, RecognitionMaterials.Prismarine, 24))
                 .fluidInputs(
                     new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 4000),
                     new FluidStack(GTPPFluids.HydrogenPeroxide, 4000))
@@ -117,7 +118,7 @@ public class NetheriteRecipes {
                 .addTo(dissolutionTankRecipes);
 
             GTValues.RA.stdBuilder() // Looped Leaching
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 6))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, RecognitionMaterials.Prismarine, 6))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.prismarinecontaminatedhydrogenperoxide,

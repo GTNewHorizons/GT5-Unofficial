@@ -9,9 +9,9 @@ import com.ruling_0.materiallib.api.Material;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
+import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 
 public class OreDictEventContainer {
 
@@ -21,14 +21,13 @@ public class OreDictEventContainer {
     /// The recognition marker this registration's census resolved through (see
     /// `GTProxy#resolveCensusMaterial`), or null for a plain [Materials]-named registration. A marker carries no
     /// legacy [Materials] counterpart, so [#registerRecipes] dispatches ore processing through it directly
-    /// instead of through [#mMaterial]'s backing -- the marker-aware registrator overloads
-    /// (e.g. `ProcessingDust`, `ProcessingCrystallized`) only trigger off an [IOreMaterial] that is not a
-    /// [Materials] constant.
-    public final IOreMaterial mRecognitionMarker;
+    /// instead of through [#mMaterial]'s backing -- via the marker-typed registrator entries
+    /// (e.g. `ProcessingDust`, `ProcessingCrystallized`).
+    public final RecognitionMarker mRecognitionMarker;
     public final String mModID;
 
     public OreDictEventContainer(OreDictionary.OreRegisterEvent aEvent, OrePrefixes aPrefix, Material aMaterial,
-        IOreMaterial aRecognitionMarker, String aModID) {
+        RecognitionMarker aRecognitionMarker, String aModID) {
         this.mEvent = aEvent;
         this.mPrefix = aPrefix;
         this.mMaterial = aMaterial;
@@ -37,11 +36,10 @@ public class OreDictEventContainer {
     }
 
     public static void registerRecipes(OreDictEventContainer ore) {
-        IOreMaterial tIgnoreCheck = ore.mRecognitionMarker != null ? ore.mRecognitionMarker
-            : MU.materialOf(ore.mMaterial);
         if ((ore.mEvent.Ore == null) || (ore.mEvent.Ore.getItem() == null)
             || (ore.mPrefix == null)
-            || (ore.mPrefix.isIgnored(tIgnoreCheck))
+            || (ore.mRecognitionMarker != null ? ore.mPrefix.isIgnored(ore.mRecognitionMarker)
+                : ore.mPrefix.isIgnored(MU.materialOf(ore.mMaterial)))
             || isMaterialLibItem(ore.mEvent.Ore)) {
             return;
         }

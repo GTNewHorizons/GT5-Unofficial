@@ -8,9 +8,10 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.MU;
+import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 
 public class ItemData {
 
@@ -38,13 +39,13 @@ public class ItemData {
         this(prefix, material, false);
     }
 
-    /// Transitional: accepts the legacy material types through [MU#toMaterial] until every caller passes a
+    /// Transitional: accepts a legacy [Materials] through [MU#toMaterial] until every caller passes a
     /// [Material] directly.
-    public ItemData(OrePrefixes prefix, IOreMaterial material, boolean blackListed) {
+    public ItemData(OrePrefixes prefix, Materials material, boolean blackListed) {
         this(prefix, MU.toMaterial(material), blackListed);
     }
 
-    public ItemData(OrePrefixes prefix, IOreMaterial material) {
+    public ItemData(OrePrefixes prefix, Materials material) {
         this(prefix, MU.toMaterial(material), false);
     }
 
@@ -55,7 +56,7 @@ public class ItemData {
     }
 
     /// An ingredient that names an ore-dictionary entry and carries no composition, blacklisted from unification
-    /// the way [#ItemData(OrePrefixes,IOreMaterial,boolean)] blacklists a material-backed one.
+    /// the way [#ItemData(OrePrefixes,Material,boolean)] blacklists a material-backed one.
     public ItemData(OrePrefixes prefix, String materialName, boolean blackListed) {
         mPrefix = prefix;
         mMaterial = null;
@@ -90,14 +91,20 @@ public class ItemData {
         this(new MaterialStack(material, amount), new MaterialStack(byProduct, byProductAmount));
     }
 
-    /// Transitional: accepts the legacy material types through [MU#toMaterial] until every caller passes a
+    /// Transitional: accepts a legacy [Materials] through [MU#toMaterial] until every caller passes a
     /// [Material] directly.
-    public ItemData(IOreMaterial material, long amount, MaterialStack... byProducts) {
+    public ItemData(Materials material, long amount, MaterialStack... byProducts) {
         this(new MaterialStack(material, amount), byProducts);
     }
 
-    public ItemData(IOreMaterial material, long amount, IOreMaterial byProduct, long byProductAmount) {
+    public ItemData(Materials material, long amount, Materials byProduct, long byProductAmount) {
         this(new MaterialStack(material, amount), new MaterialStack(byProduct, byProductAmount));
+    }
+
+    /// [#ItemData(Materials, long, MaterialStack...)] for a recognition marker, resolving its registered
+    /// backing.
+    public ItemData(RecognitionMarker material, long amount, MaterialStack... byProducts) {
+        this(new MaterialStack(material, amount), byProducts);
     }
 
     public ItemData(ItemData... data) {

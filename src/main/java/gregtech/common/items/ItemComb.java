@@ -63,7 +63,6 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -71,6 +70,8 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
+import gregtech.loaders.materials.RecognitionMaterials;
+import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 import gregtech.loaders.misc.GTBees;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 import vazkii.botania.common.item.ModItems;
@@ -152,12 +153,13 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
     @Override
     public boolean shouldUseCustomRenderer(int aMetaData) {
-        return CombType.valueOf(aMetaData).material.getRenderer() != null;
+        return getMaterialRenderer(aMetaData) != null;
     }
 
+    /// Only a legacy [Materials] carries a custom renderer; the Fluix comb's recognition marker never does.
     @Override
     public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
-        return CombType.valueOf(aMetaData).material.getRenderer();
+        return CombType.valueOf(aMetaData).material instanceof Materials legacy ? legacy.getRenderer() : null;
     }
 
     @Override
@@ -177,7 +179,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        return CombType.valueOf(aStack.getItemDamage()).material.getRGBA();
+        return MU.rgbaOf(CombType.valueOf(aStack.getItemDamage()).material);
     }
 
     public void initCombsRecipes() {
@@ -462,7 +464,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         // Gem Line
         addProcessGT(CombType.STONE, new Material[] { Materials2Materials.Soapstone }, Voltage.LV);
         addProcessGT(CombType.CERTUS, new Material[] { Materials2Materials.CertusQuartz }, Voltage.LV);
-        addProcessGT(CombType.FLUIX, new IOreMaterial[] { Materials.Fluix }, Voltage.LV);
+        addProcessGT(CombType.FLUIX, RecognitionMaterials.Fluix, Voltage.LV);
         addProcessGT(CombType.REDSTONE, new Material[] { Materials2Materials.Redstone }, Voltage.LV);
         addCentrifugeToMaterial(
             CombType.RAREEARTH,
@@ -496,7 +498,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             50 * 100);
         addCentrifugeToMaterial(
             CombType.FLUIX,
-            new IOreMaterial[] { Materials.Fluix },
+            RecognitionMaterials.Fluix,
             new int[] { 25 * 100 },
             new int[] { 9 },
             Voltage.ULV,
@@ -504,7 +506,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             30 * 100);
 
         // Metals Line
-        addProcessGT(CombType.SLAG, new IOreMaterial[] { Materials.Limestone }, Voltage.LV);
+        addProcessGT(CombType.SLAG, RecognitionMaterials.Limestone, Voltage.LV);
         addProcessGT(CombType.COPPER, new Material[] { Materials2Materials.Copper }, Voltage.LV);
         addProcessGT(CombType.TIN, new Material[] { Materials2Materials.Tin }, Voltage.LV);
         addProcessGT(CombType.LEAD, new Material[] { Materials2Materials.Lead }, Voltage.LV);
@@ -1032,9 +1034,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         addProcessGT(comb, toLegacy(aMaterial), volt);
     }
 
-    public void addProcessGT(CombType comb, IOreMaterial[] aMaterial, Voltage volt) {
+    public void addProcessGT(CombType comb, Materials[] aMaterial, Voltage volt) {
         ItemStack tComb = getStackForType(comb);
-        for (IOreMaterial materials : aMaterial) {
+        for (Materials materials : aMaterial) {
             if (GTOreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4) != null) {
                 ItemStack combInput;
                 ItemStack combOutput;
@@ -1159,12 +1161,53 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         return legacy;
     }
 
-    public void addCentrifugeToMaterial(CombType comb, IOreMaterial[] aMaterial, int[] chance, int[] stackSize,
+    /// [#addProcessGT] for the recognition-marker combs (Fluix, Slag). No marker comb is one of the
+    /// special-cased metal combs, so this reproduces only the default branch of the legacy overload's switch.
+    public void addProcessGT(CombType comb, RecognitionMarker material, Voltage volt) {
+        ItemStack tComb = getStackForType(comb);
+        if (GTOreDictUnificator.get(OrePrefixes.crushedPurified, material, 4) != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(4, tComb))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, material, 4))
+                .fluidInputs(volt.getFluidAccordingToCombTier())
+                .duration(volt.getComplexTime())
+                .eut(volt.getChemicalEnergy())
+                .metadata(CLEANROOM, volt.compareTo(Voltage.IV) > 0)
+                .addTo(UniversalChemical);
+        }
+    }
+
+    public void addCentrifugeToMaterial(CombType comb, Materials[] aMaterial, int[] chance, int[] stackSize,
         Voltage volt, ItemStack beeWax, int waxChance) {
         addCentrifugeToMaterial(comb, aMaterial, chance, stackSize, volt, volt.getSimpleTime(), beeWax, waxChance);
     }
 
-    public void addCentrifugeToMaterial(CombType comb, IOreMaterial[] aMaterial, int[] chance, int[] stackSize,
+    /// [#addCentrifugeToMaterial] for a single recognition-marker comb (Fluix), reproducing the legacy array
+    /// overload's per-element dust sizing for one marker.
+    public void addCentrifugeToMaterial(CombType comb, RecognitionMarker material, int[] chance, int[] stackSize,
+        Voltage volt, ItemStack beeWax, int waxChance) {
+        ItemStack[] aOutPut = new ItemStack[2];
+        stackSize = Arrays.copyOf(stackSize, 1);
+        chance = Arrays.copyOf(chance, 2);
+        chance[1] = waxChance;
+        if (chance[0] != 0) {
+            if (Math.max(1, stackSize[0]) % 9 == 0) {
+                aOutPut[0] = GTOreDictUnificator.get(OrePrefixes.dust, material, (Math.max(1, stackSize[0]) / 9));
+            } else if (Math.max(1, stackSize[0]) % 4 == 0) {
+                aOutPut[0] = GTOreDictUnificator.get(OrePrefixes.dust, material, (Math.max(1, stackSize[0]) / 4));
+            } else {
+                aOutPut[0] = GTOreDictUnificator.get(OrePrefixes.dust, material, Math.max(1, stackSize[0]));
+            }
+        }
+        if (beeWax != NI) {
+            aOutPut[1] = beeWax;
+        } else {
+            aOutPut[1] = ItemList.FR_Wax.get(1);
+        }
+        addCentrifugeToItemStack(comb, aOutPut, chance, volt, volt.getSimpleTime());
+    }
+
+    public void addCentrifugeToMaterial(CombType comb, Materials[] aMaterial, int[] chance, int[] stackSize,
         Voltage volt, int duration, ItemStack beeWax, int waxChance) {
         ItemStack[] aOutPut = new ItemStack[aMaterial.length + 1];
         stackSize = Arrays.copyOf(stackSize, aMaterial.length);

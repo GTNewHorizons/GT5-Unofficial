@@ -37,7 +37,7 @@ public final class MaterialFormulas {
         return GTUtility.isStringValid(formula) && !"?".equals(formula) ? formula : null;
     }
 
-    /// Mirrors `IOreMaterial#getLocalizedNameKey` (`"Material." + getInternalName().toLowerCase()`) for the
+    /// Mirrors `Materials#getLocalizedNameKey` (`"Material." + getInternalName().toLowerCase()`) for the
     /// reconstructed legacy `Materials` instance -- `getInternalName()` there is `mName`, i.e.
     /// [GTMaterialProperties#LEGACY_NAME] when present, else the MaterialLib registration name. The
     /// reconstructed `Werkstoff`'s own key (`getVarName().toLowerCase()`) resolves identically for every
