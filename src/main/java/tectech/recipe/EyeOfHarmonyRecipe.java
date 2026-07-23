@@ -32,7 +32,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.material.MUOre;
@@ -559,7 +558,7 @@ public class EyeOfHarmonyRecipe {
         } else outputMap.add(Materials.Stone, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
     }
 
-    public static void processHelperIfPossible(HashMapHelper outputMap, IOreMaterial material, double mainMultiplier,
+    public static void processHelperIfPossible(HashMapHelper outputMap, Object material, double mainMultiplier,
         double probability) {
         if (material instanceof Materials gtMat) processHelper(outputMap, gtMat, mainMultiplier, probability);
         else if (material instanceof Werkstoff bwMat)
