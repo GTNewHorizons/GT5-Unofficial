@@ -444,11 +444,14 @@ public final class ModItems {
         MaterialGenerator.generate(MaterialsElements.getInstance().SELENIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().BROMINE);
         MaterialGenerator.generate(MaterialsElements.getInstance().KRYPTON);
-        MaterialGenerator.generate(MaterialsElements.getInstance().IODINE);
         MaterialGenerator.generate(MaterialsElements.getInstance().RHENIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().THALLIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().GERMANIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().TECHNETIUM);
+
+        // Special (Only Plasma)
+        Material materialIodine = MaterialsElements.getInstance().IODINE;
+        materialIodine.mPlasma = materialIodine.generatePlasma();
 
         // RADIOACTIVE ELEMENTS
         MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().POLONIUM, false);
@@ -598,7 +601,6 @@ public final class ModItems {
         MaterialsElements.getInstance().THORIUM232.setWerkstoffID((short) 30);
         MaterialsElements.getInstance().RUTHENIUM.setWerkstoffID((short) 64);
         MaterialsElements.getInstance().HAFNIUM.setWerkstoffID((short) 11000);
-        MaterialsElements.getInstance().IODINE.setWerkstoffID((short) 11012);
 
         // Custom fluids
 

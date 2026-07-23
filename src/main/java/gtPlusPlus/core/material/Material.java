@@ -60,7 +60,7 @@ public class Material implements IOreMaterial {
     private TextureSet textureSet;
 
     private Fluid mFluid;
-    private Fluid mPlasma;
+    public Fluid mPlasma;
 
     private boolean generateCells;
     private boolean shouldGenerateFluid;
@@ -238,6 +238,28 @@ public class Material implements IOreMaterial {
             radiationLevel,
             true,
             true,
+            inputs);
+    }
+
+    public Material(final String materialName, final MaterialState defaultState, TextureSet textureSet,
+        final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons,
+        final boolean blastFurnace, final String chemicalSymbol, final boolean generateFluid, final int radiationLevel,
+        final MaterialStack... inputs) {
+        this(
+            materialName,
+            defaultState,
+            textureSet,
+            0,
+            rgba,
+            meltingPoint,
+            boilingPoint,
+            protons,
+            neutrons,
+            blastFurnace,
+            chemicalSymbol,
+            radiationLevel,
+            true,
+            generateFluid,
             inputs);
     }
 
