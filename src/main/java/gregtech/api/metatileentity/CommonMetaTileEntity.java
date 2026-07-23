@@ -58,9 +58,10 @@ import gregtech.common.covers.Cover;
 public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     /**
-     * Inventory of this block.
+     * Inventory of this block. Sized at construction; a shape-scoped pipe whose slot count depends on the
+     * host block's material reassigns it once the material resolves (see MTEItemPipe).
      */
-    public final ItemStack[] mInventory;
+    public ItemStack[] mInventory;
 
     /**
      * Internal name of this block, mainly used for localization keys.

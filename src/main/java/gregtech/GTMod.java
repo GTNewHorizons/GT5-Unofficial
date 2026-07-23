@@ -146,6 +146,7 @@ import gregtech.loaders.preload.LoaderMaterialLibCutover;
 import gregtech.loaders.preload.LoaderMetaPipeEntities;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
 import gregtech.loaders.preload.LoaderOreProcessing;
+import gregtech.loaders.preload.LoaderPipeShapeEntities;
 import gregtech.loaders.shapeconsumers.LoaderShapeConsumers;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
@@ -363,6 +364,7 @@ public class GTMod {
         new LoaderMaterialLibCutover().run();
         new LoaderMetaTileEntities().run();
         new LoaderMetaPipeEntities().run();
+        new LoaderPipeShapeEntities().run();
 
         new LoaderCircuitBehaviors().run();
 

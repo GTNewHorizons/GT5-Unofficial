@@ -26,6 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -38,6 +39,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IAllSidedTexturedTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
+import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
@@ -45,6 +47,7 @@ import gregtech.api.render.RenderOverlay;
 import gregtech.api.render.SBRContextHolder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockMachines;
+import gregtech.common.blocks.PipeShapeBlock;
 import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 
 @ThreadSafeISBRH(perThread = true)
@@ -196,6 +199,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     }
 
     private IMetaTileEntity getMTE(Block block, int meta) {
+        if (block instanceof PipeShapeBlock pipeShape) {
+            return GTUtility.getIndexSafe(GregTechAPI.METATILEENTITIES, pipeShape.getMteId());
+        }
         if (!(block instanceof BlockMachines)) return null;
 
         return GTUtility.getIndexSafe(GregTechAPI.METATILEENTITIES, meta);
@@ -212,7 +218,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
         IMetaTileEntity imte = getMTE(aBlock, aMeta);
 
-        if (imte != null && !imte.renderInInventory(ctx)) {
+        if (imte != null && !renderMTEInInventory(ctx, aBlock, aMeta, imte)) {
             renderNormalInventoryMetaTileEntity(ctx, imte);
         } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
             ITexture[][] texture = texturedBlock.getInventoryTextures(aMeta);
@@ -233,6 +239,15 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         ctx.doCleanup();
+    }
+
+    /// Renders an MTE's inventory form; a pipe-shape block's stack encodes its material as the damage value,
+    /// which the material-agnostic canonical instance needs handed in to resolve its textures.
+    private static boolean renderMTEInInventory(ISBRInventoryContext ctx, Block block, int meta, IMetaTileEntity imte) {
+        if (block instanceof PipeShapeBlock && imte instanceof MetaPipeEntity pipe) {
+            return pipe.renderInInventory(ctx, MaterialLibAPI.getMaterialByIndex(meta));
+        }
+        return imte.renderInInventory(ctx);
     }
 
     private static void renderNormalInventoryMetaTileEntity(ISBRInventoryContext ctx, IMetaTileEntity imte) {

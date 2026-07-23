@@ -3,7 +3,9 @@ package gregtech.api.enums.materials2;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialEdit;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
 
 /// The pipe-family stat tables: one declared row per material carrying wires/cables, fluid pipes, or item
@@ -42,6 +44,7 @@ public class Materials2PipeMaterials {
         applyWireCables();
         applyFluidPipes();
         applyItemPipes();
+        applyFrames();
     }
 
     // spotless:off
@@ -124,7 +127,9 @@ public class Materials2PipeMaterials {
         for (WireCable row : wireCables) {
             edit(row.material()).setProperty(Materials2PipeProperties.BASE_CABLE_AMP, row.amperage())
                 .setProperty(Materials2PipeProperties.BASE_CABLE_VOLT, row.voltage())
-                .setProperty(Materials2PipeProperties.BASE_CABLE_LOSS, row.cableLoss());
+                .setProperty(Materials2PipeProperties.BASE_CABLE_LOSS, row.cableLoss())
+                .generateShapes(wireShapes())
+                .generateShapes(cableShapes());
         }
         // These wires break the twice-cable-loss default: the two redstone alloys pair lossless cables with
         // lossy wires, and CrackRecipeAdder.registerWire derives cable loss as a quarter of wire loss.
@@ -139,12 +144,25 @@ public class Materials2PipeMaterials {
                     .setProperty(Materials2PipeProperties.BASE_CABLE_AMP, row.amperage())
                     .setProperty(Materials2PipeProperties.BASE_CABLE_VOLT, row.voltage())
                     .setProperty(Materials2PipeProperties.WIRE_LOSS, row.wireLoss())
-                    .setProperty(Materials2PipeProperties.NO_CABLE, true);
+                    .setProperty(Materials2PipeProperties.NO_CABLE, true)
+                    .generateShapes(wireShapes());
                 if (!row.shock()) {
                     edit.setProperty(Materials2PipeProperties.NO_SHOCK, true);
                 }
             }
         }
+    }
+
+    private static Shape[] wireShapes() {
+        return new Shape[] { Materials2PipeShapes.wireGt01, Materials2PipeShapes.wireGt02,
+            Materials2PipeShapes.wireGt04, Materials2PipeShapes.wireGt08, Materials2PipeShapes.wireGt12,
+            Materials2PipeShapes.wireGt16 };
+    }
+
+    private static Shape[] cableShapes() {
+        return new Shape[] { Materials2PipeShapes.cableGt01, Materials2PipeShapes.cableGt02,
+            Materials2PipeShapes.cableGt04, Materials2PipeShapes.cableGt08, Materials2PipeShapes.cableGt12,
+            Materials2PipeShapes.cableGt16 };
     }
 
     // spotless:off
@@ -194,16 +212,38 @@ public class Materials2PipeMaterials {
         // spotless:on
 
         for (FluidPipe row : fluidPipes) {
-            edit(row.material()).setProperty(Materials2PipeProperties.BASE_PIPE_FLOW, row.baseCapacity())
+            MaterialEdit edit = edit(row.material())
+                .setProperty(Materials2PipeProperties.BASE_PIPE_FLOW, row.baseCapacity())
                 .setProperty(Materials2PipeProperties.PIPE_HEAT_RESISTANCE, row.heatResistance());
+            // Shape membership follows the legacy registrations, which gate these two rows on their parent
+            // mod (GregtechConduits registers Void pipes only with Thaumcraft and DarkSteel only with
+            // EnderIO); the properties themselves stay unconditional.
+            if (row.material() == Materials2Materials.Void && !Mods.Thaumcraft.isModLoaded()) continue;
+            if (row.material() == Materials2Materials.DarkSteel && !Mods.EnderIO.isModLoaded()) continue;
+            edit.generateShapes(
+                Materials2PipeShapes.pipeTiny,
+                Materials2PipeShapes.pipeSmall,
+                Materials2PipeShapes.pipeMedium,
+                Materials2PipeShapes.pipeLarge,
+                Materials2PipeShapes.pipeHuge,
+                Materials2PipeShapes.pipeQuadruple,
+                Materials2PipeShapes.pipeNonuple);
         }
 
         edit(Materials2Materials.Wood)
             .setProperty(Materials2PipeProperties.PIPE_HEAT_RESISTANCE, WOOD_FLUID_PIPE_HEAT_RESISTANCE)
-            .setProperty(Materials2PipeProperties.PIPE_GAS_PROOF, false);
+            .setProperty(Materials2PipeProperties.PIPE_GAS_PROOF, false)
+            .generateShapes(
+                Materials2PipeShapes.pipeSmall,
+                Materials2PipeShapes.pipeMedium,
+                Materials2PipeShapes.pipeLarge);
         edit(Materials2Materials.Clay).setProperty(Materials2PipeProperties.PIPE_GAS_PROOF, false);
         edit(Materials2Materials.Redstone)
-            .setProperty(Materials2PipeProperties.PIPE_HEAT_RESISTANCE, HIGH_PRESSURE_FLUID_PIPE_HEAT_RESISTANCE);
+            .setProperty(Materials2PipeProperties.PIPE_HEAT_RESISTANCE, HIGH_PRESSURE_FLUID_PIPE_HEAT_RESISTANCE)
+            .generateShapes(
+                Materials2PipeShapes.pipeSmall,
+                Materials2PipeShapes.pipeMedium,
+                Materials2PipeShapes.pipeLarge);
     }
 
     // spotless:off
@@ -227,10 +267,139 @@ public class Materials2PipeMaterials {
 
         for (ItemPipe row : itemPipes) {
             MaterialEdit edit = edit(row.material())
-                .setProperty(Materials2PipeProperties.BASE_ITEM_PIPE_SLOTS, row.hugeSlots());
-            if (!row.smallPipes()) {
+                .setProperty(Materials2PipeProperties.BASE_ITEM_PIPE_SLOTS, row.hugeSlots())
+                .generateShapes(
+                    Materials2PipeShapes.itemPipeMedium,
+                    Materials2PipeShapes.itemPipeLarge,
+                    Materials2PipeShapes.itemPipeHuge,
+                    Materials2PipeShapes.itemPipeRestrictiveMedium,
+                    Materials2PipeShapes.itemPipeRestrictiveLarge,
+                    Materials2PipeShapes.itemPipeRestrictiveHuge);
+            if (row.smallPipes()) {
+                edit.generateShapes(
+                    Materials2PipeShapes.itemPipeTiny,
+                    Materials2PipeShapes.itemPipeSmall,
+                    Materials2PipeShapes.itemPipeRestrictiveTiny,
+                    Materials2PipeShapes.itemPipeRestrictiveSmall);
+            } else {
                 edit.setProperty(Materials2PipeProperties.NO_SMALL_ITEM_PIPES, true);
             }
+        }
+    }
+
+    // spotless:off
+    /// Frame membership: the materials the legacy frame registrations serve, i.e. every generated legacy
+    /// material whose dumped [gregtech.api.material.GTMaterialProperties#GENERATION_FLAGS] carry `METAL`
+    /// (the `Materials#hasMetalItems` mirror) and whose
+    /// [gregtech.api.material.GTMaterialProperties#OLD_SUB_ID] marks a generated slot. The list is declared
+    /// rather than derived because membership must be settled during material registration, where neither the
+    /// legacy `Materials` class (its static initializer rebuilds from the resolved MaterialLib registry) nor
+    /// MaterialLib property reads are available yet; [gregtech.loaders.preload.LoaderPipeShapeEntities]
+    /// re-evaluates the live legacy predicate at preload and logs any divergence from this list.
+    public static Material[] frameMaterials() {
+        return new Material[] {
+            Materials2Materials.Adamantium, Materials2Materials.Alduorite, Materials2Materials.Aluminium,
+            Materials2Materials.Alumite, Materials2Materials.Americium, Materials2Materials.AnnealedCopper,
+            Materials2Materials.Antimony, Materials2Materials.Ardite, Materials2Materials.Arsenic,
+            Materials2Materials.AstralSilver, Materials2Materials.Barium, Materials2Materials.BatteryAlloy,
+            Materials2Materials.Bedrockium, Materials2Materials.Beryllium, Materials2Materials.Bismuth,
+            Materials2Materials.BismuthBronze, Materials2Materials.BlackBronze,
+            Materials2Materials.BlackDwarfMatter, Materials2Materials.BlackPlutonium,
+            Materials2Materials.BlackSteel, Materials2Materials.BloodInfusedIron, Materials2Materials.BlueAlloy,
+            Materials2Materials.BlueSteel, Materials2Materials.BorosilicateGlass, Materials2Materials.Brass,
+            Materials2Materials.Bronze, Materials2Materials.Caesium, Materials2Materials.CallistoIce,
+            Materials2Materials.Carbon, Materials2Materials.CastIron, Materials2Materials.Cerium,
+            Materials2Materials.Ceruclase, Materials2Materials.Chrome, Materials2Materials.ChromiumDioxide,
+            Materials2Materials.Chrysotile, Materials2Materials.Churitsu, Materials2Materials.Cobalt,
+            Materials2Materials.CobaltBrass, Materials2Materials.ConductiveIron, Materials2Materials.Copper,
+            Materials2Materials.CosmicNeutronium, Materials2Materials.Creon, Materials2Materials.CrudeSteel,
+            Materials2Materials.CrystallineAlloy, Materials2Materials.CrystallinePinkSlime,
+            Materials2Materials.Cupronickel, Materials2Materials.DamascusSteel, Materials2Materials.DarkIron,
+            Materials2Materials.DarkSteel, Materials2Materials.DeepIron, Materials2Materials.Desh,
+            Materials2Materials.Draconium, Materials2Materials.DraconiumAwakened, Materials2Materials.Dreamwood,
+            Materials2Materials.Duralumin, Materials2Materials.Duranium, Materials2Materials.Dysprosium,
+            Materials2Materials.ElectricalSteel, Materials2Materials.Electrum, Materials2Materials.ElectrumFlux,
+            Materials2Materials.ElvenElementium, Materials2Materials.EndSteel, Materials2Materials.Enderium,
+            Materials2Materials.EnderiumBase, Materials2Materials.EnergeticAlloy,
+            Materials2Materials.EnergeticSilver, Materials2Materials.EnhancedGalgadorian,
+            Materials2Materials.EnrichedHolmium, Materials2Materials.Epoxid,
+            Materials2Materials.EpoxidFiberReinforced, Materials2Materials.Erbium, Materials2Materials.Eternity,
+            Materials2Materials.Europium, Materials2Materials.FierySteel, Materials2Materials.FleroviumGT5U,
+            Materials2Materials.Force, Materials2Materials.Gadolinium, Materials2Materials.GaiaSpirit,
+            Materials2Materials.Galgadorian, Materials2Materials.Gallium, Materials2Materials.GalliumArsenide,
+            Materials2Materials.Gold, Materials2Materials.HSSE, Materials2Materials.HSSG,
+            Materials2Materials.HSSS, Materials2Materials.HeeEndium, Materials2Materials.HellishMetal,
+            Materials2Materials.Hexanite, Materials2Materials.Holmium, Materials2Materials.Ichorium,
+            Materials2Materials.Indium, Materials2Materials.IndiumGalliumPhosphide, Materials2Materials.Infinity,
+            Materials2Materials.InfinityCatalyst, Materials2Materials.InfusedGold, Materials2Materials.Invar,
+            Materials2Materials.Iridium, Materials2Materials.Iron, Materials2Materials.IronMagnetic,
+            Materials2Materials.IronWood, Materials2Materials.Kanthal, Materials2Materials.Kevlar,
+            Materials2Materials.Knightmetal, Materials2Materials.Lanthanum, Materials2Materials.Lead,
+            Materials2Materials.Ledox, Materials2Materials.Lithium, Materials2Materials.Livingwood,
+            Materials2Materials.Longasssuperconductornameforuhvwire,
+            Materials2Materials.Longasssuperconductornameforuvwire, Materials2Materials.Lutetium,
+            Materials2Materials.Magmatter, Materials2Materials.Magnalium, Materials2Materials.Magnesium,
+            Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, Materials2Materials.Manasteel,
+            Materials2Materials.Manganese, Materials2Materials.Manyullyn, Materials2Materials.Mellion,
+            Materials2Materials.MelodicAlloy, Materials2Materials.MeteoricIron, Materials2Materials.MeteoricSteel,
+            Materials2Materials.Mithril, Materials2Materials.Molybdenum, Materials2Materials.MysteriousCrystal,
+            Materials2Materials.Mytryl, Materials2Materials.Naquadah, Materials2Materials.NaquadahAlloy,
+            Materials2Materials.NaquadahEnriched, Materials2Materials.Naquadria, Materials2Materials.Neodymium,
+            Materials2Materials.NeodymiumMagnetic, Materials2Materials.Netherite, Materials2Materials.Neutronium,
+            Materials2Materials.Nichrome, Materials2Materials.Nickel, Materials2Materials.NickelAluminide,
+            Materials2Materials.NickelZincFerrite, Materials2Materials.Niobium, Materials2Materials.NiobiumNitride,
+            Materials2Materials.NiobiumTitanium, Materials2Materials.Obsidian, Materials2Materials.Orichalcum,
+            Materials2Materials.Oriharukon, Materials2Materials.Osmiridium, Materials2Materials.Osmium,
+            Materials2Materials.Palladium, Materials2Materials.Pentacadmiummagnesiumhexaoxid,
+            Materials2Materials.PigIron, Materials2Materials.Plastic, Materials2Materials.Platinum,
+            Materials2Materials.Plutonium, Materials2Materials.Plutonium241, Materials2Materials.Polybenzimidazole,
+            Materials2Materials.Polycaprolactam, Materials2Materials.PolyphenyleneSulfide,
+            Materials2Materials.Polystyrene, Materials2Materials.Polytetrafluoroethylene,
+            Materials2Materials.PolyvinylChloride, Materials2Materials.Potassium, Materials2Materials.Praseodymium,
+            Materials2Materials.Promethium, Materials2Materials.PulsatingIron, Materials2Materials.Quantium,
+            Materials2Materials.RadoxPoly, Materials2Materials.Realgar, Materials2Materials.RedAlloy,
+            Materials2Materials.RedSteel, Materials2Materials.RedstoneAlloy, Materials2Materials.Reinforced,
+            Materials2Materials.RoseGold, Materials2Materials.Rubber, Materials2Materials.Rubidium,
+            Materials2Materials.Rubracium, Materials2Materials.Samarium, Materials2Materials.SamariumMagnetic,
+            Materials2Materials.Scandium, Materials2Materials.Shadow, Materials2Materials.ShadowIron,
+            Materials2Materials.ShadowSteel, Materials2Materials.Shijima, Materials2Materials.Silicon,
+            Materials2Materials.SiliconSolarGrade, Materials2Materials.Silicone, Materials2Materials.Silver,
+            Materials2Materials.SixPhasedCopper, Materials2Materials.SolderingAlloy, Materials2Materials.Soularium,
+            Materials2Materials.SpaceTime, Materials2Materials.StainlessSteel, Materials2Materials.Steel,
+            Materials2Materials.SteelMagnetic, Materials2Materials.Steeleaf, Materials2Materials.StellarAlloy,
+            Materials2Materials.SterlingSilver, Materials2Materials.Strontium,
+            Materials2Materials.StyreneButadieneRubber, Materials2Materials.Sunnarium,
+            Materials2Materials.SuperconductorUEVBase, Materials2Materials.SuperconductorUIVBase,
+            Materials2Materials.SuperconductorUMVBase, Materials2Materials.TPVAlloy, Materials2Materials.Tantalum,
+            Materials2Materials.Tartarite, Materials2Materials.Tellurium, Materials2Materials.TengamAttuned,
+            Materials2Materials.TengamPurified, Materials2Materials.Terbium, Materials2Materials.Terrasteel,
+            Materials2Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+            Materials2Materials.Tetranaquadahdiindiumhexaplatiumosminid, Materials2Materials.Thaumium,
+            Materials2Materials.Thorium, Materials2Materials.Thulium, Materials2Materials.Tin,
+            Materials2Materials.TinAlloy, Materials2Materials.Titanium,
+            Materials2Materials.Titaniumonabariumdecacoppereikosaoxid, Materials2Materials.TranscendentMetal,
+            Materials2Materials.Trinium, Materials2Materials.Tritanium, Materials2Materials.Tungsten,
+            Materials2Materials.TungstenCarbide, Materials2Materials.TungstenSteel, Materials2Materials.Ultimet,
+            Materials2Materials.Universium, Materials2Materials.Uranium, Materials2Materials.Uranium235,
+            Materials2Materials.Uraniumtriplatinid, Materials2Materials.Vanadium,
+            Materials2Materials.VanadiumGallium, Materials2Materials.VanadiumSteel,
+            Materials2Materials.Vanadiumtriindinid, Materials2Materials.VibrantAlloy, Materials2Materials.Vinteum,
+            Materials2Materials.VividAlloy, Materials2Materials.Void, Materials2Materials.Vulcanite,
+            Materials2Materials.Vyroxeres, Materials2Materials.WhiteDwarfMatter, Materials2Materials.Wood,
+            Materials2Materials.WoodSealed, Materials2Materials.Ytterbium, Materials2Materials.Yttrium,
+            Materials2Materials.YttriumBariumCuprate, Materials2Materials.Zinc, Materials2Materials.exohalkonite,
+            Materials2Materials.hotexohalkonite, Materials2Materials.hotprotohalkonite,
+            Materials2Materials.prismaticnaquadah, Materials2Materials.protohalkonite };
+    }
+    // spotless:on
+
+    private static void applyFrames() {
+        for (Material material : frameMaterials()) {
+            edit(material).generateShape(Materials2PipeShapes.frameGt);
+        }
+        // ProcessingModSupport drops HSLA from the generated set when RotaryCraft is absent.
+        if (Mods.RotaryCraft.isModLoaded()) {
+            edit(Materials2Materials.HSLA).generateShape(Materials2PipeShapes.frameGt);
         }
     }
 
