@@ -126,8 +126,9 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
     // Once per in-game day, 60% chance the machine works that day. Only rolled lazily when the GUI is opened,
     // never on a per-tick basis, and cached/persisted so it doesn't need re-rolling until the day changes.
     // When broken, there's a chance it'll also accept a repair item (in the special slot) to fix it early.
-    private static final int WORK_CHANCE_PERCENT = 60;
+    private static final int WORK_CHANCE_PERCENT = 40;
     private static final int REPAIR_REQUEST_CHANCE_PERCENT = 60;
+    private static final int BROKEN_TOOLTIP_COUNT = 4;
     private static final long TICKS_PER_DAY = 24000L;
 
     private static ItemStack[] sRepairItems;
@@ -146,6 +147,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
     private long mLastRolledDay = -1L;
     private boolean mBrokenToday = true;
     private int mRepairItemIndex = -1;
+    private int mBrokenTooltipIndex = 0;
 
     public boolean isBrokenToday() {
         return mBrokenToday;
@@ -159,6 +161,10 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         return mRepairItemIndex;
     }
 
+    public int getBrokenTooltipIndex() {
+        return mBrokenTooltipIndex;
+    }
+
     private void rollDailyMalfunctionIfNeeded() {
         final long day = getBaseMetaTileEntity().getWorld()
             .getTotalWorldTime() / TICKS_PER_DAY;
@@ -169,6 +175,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
             && getBaseMetaTileEntity().getRandomNumber(100) < REPAIR_REQUEST_CHANCE_PERCENT)
                 ? getBaseMetaTileEntity().getRandomNumber(getRepairItems().length)
                 : -1;
+        mBrokenTooltipIndex = getBaseMetaTileEntity().getRandomNumber(BROKEN_TOOLTIP_COUNT);
     }
 
     // Checks the special slot for the requested repair item; if present in enough quantity, consumes it and
@@ -193,6 +200,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         aNBT.setLong("mLastRolledDay", mLastRolledDay);
         aNBT.setBoolean("mBrokenToday", mBrokenToday);
         aNBT.setInteger("mRepairItemIndex", mRepairItemIndex);
+        aNBT.setInteger("mBrokenTooltipIndex", mBrokenTooltipIndex);
     }
 
     @Override
@@ -201,6 +209,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         mLastRolledDay = aNBT.getLong("mLastRolledDay");
         mBrokenToday = aNBT.getBoolean("mBrokenToday");
         mRepairItemIndex = aNBT.getInteger("mRepairItemIndex");
+        mBrokenTooltipIndex = aNBT.getInteger("mBrokenTooltipIndex");
     }
 
     @Override
@@ -209,6 +218,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         aNBT.setLong("mLastRolledDay", mLastRolledDay);
         aNBT.setBoolean("mBrokenToday", mBrokenToday);
         aNBT.setInteger("mRepairItemIndex", mRepairItemIndex);
+        aNBT.setInteger("mBrokenTooltipIndex", mBrokenTooltipIndex);
     }
 
     @Override
@@ -283,10 +293,16 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
                         repairSyncer,
                         machine.mTooltipCache.getData("gt.icecreammachine.repair." + idx + ".tooltip"));
                 }
-                final BooleanSyncValue brokenNoRepairSyncer = new BooleanSyncValue(
-                    () -> machine.isBrokenToday() && machine.getRepairItemIndex() < 0);
-                syncManager.syncValue("icecreamBrokenNoRepair", brokenNoRepairSyncer);
-                errorMap.put(brokenNoRepairSyncer, machine.mTooltipCache.getData("gt.icecreammachine.broken.tooltip"));
+                for (int i = 0; i < BROKEN_TOOLTIP_COUNT; i++) {
+                    final int idx = i;
+                    final BooleanSyncValue brokenNoRepairSyncer = new BooleanSyncValue(
+                        () -> machine.isBrokenToday() && machine.getRepairItemIndex() < 0
+                            && machine.getBrokenTooltipIndex() == idx);
+                    syncManager.syncValue("icecreamBrokenNoRepair" + idx, brokenNoRepairSyncer);
+                    errorMap.put(
+                        brokenNoRepairSyncer,
+                        machine.mTooltipCache.getData("gt.icecreammachine.broken." + idx + ".tooltip"));
+                }
             }
 
             // Special slot doubles as the repair-item slot, so it needs its own tooltip
