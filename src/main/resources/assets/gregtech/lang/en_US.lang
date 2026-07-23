@@ -1983,6 +1983,7 @@ gt.recipe.industrialchisel=Industrial Chisel
 gt.recipe.industrialchisel.description=Chisels blocks automatically
 gt.recipe.icecreammachine=Ice Cream Machine
 gt.icecreammachine.tooltip.0=Sometimes it works
+gt.icecreammachine.broken.tooltip=The machine seems to be broken today. Try again tomorrow!
 gt.recipe.press=Forming Press
 gt.recipe.press.description=Imprinting Images into things
 gt.recipe.fluidheater=Fluid Heater

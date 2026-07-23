@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.IItemRenderer;
@@ -19,6 +20,7 @@ import org.lwjgl.opengl.GL11;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
@@ -109,8 +111,50 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         return SoundResource.GTCEU_LOOP_MIXER;
     }
 
+    // Once per in-game day, 40% chance the machine works that day. Only rolled lazily when the GUI is opened,
+    // never on a per-tick basis, and cached/persisted so it doesn't need re-rolling until the day changes
+    private static final int WORK_CHANCE_PERCENT = 40;
+    private static final long TICKS_PER_DAY = 24000L;
+
+    private long mLastRolledDay = -1L;
+    private boolean mBrokenToday = true;
+
+    public boolean isBrokenToday() {
+        return mBrokenToday;
+    }
+
+    private void rollDailyMalfunctionIfNeeded() {
+        final long day = getBaseMetaTileEntity().getWorld()
+            .getTotalWorldTime() / TICKS_PER_DAY;
+        if (day == mLastRolledDay) return;
+        mLastRolledDay = day;
+        mBrokenToday = getBaseMetaTileEntity().getRandomNumber(100) >= WORK_CHANCE_PERCENT;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setLong("mLastRolledDay", mLastRolledDay);
+        aNBT.setBoolean("mBrokenToday", mBrokenToday);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        mLastRolledDay = aNBT.getLong("mLastRolledDay");
+        mBrokenToday = aNBT.getBoolean("mBrokenToday");
+    }
+
+    @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        super.setItemNBT(aNBT);
+        aNBT.setLong("mLastRolledDay", mLastRolledDay);
+        aNBT.setBoolean("mBrokenToday", mBrokenToday);
+    }
+
     @Override
     public int checkRecipe() {
+        if (mBrokenToday) return DID_NOT_FIND_RECIPE;
         if (getOutputAt(0) != null) {
             mOutputBlocked++;
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -147,6 +191,8 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        // Server-authoritative: only rolls once per real day-change, and only when a player opens the GUI
+        syncManager.addOpenListener(player -> { if (!syncManager.isClient()) rollDailyMalfunctionIfNeeded(); });
         return new MTEBasicMachineBaseGui<>(this, this.getUIProperties()) {
 
             @Override
@@ -162,6 +208,14 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
             @Override
             protected boolean supportsChargerSlot() {
                 return false;
+            }
+
+            @Override
+            protected void initErrors(PanelSyncManager syncManager) {
+                super.initErrors(syncManager);
+                final BooleanSyncValue brokenSyncer = new BooleanSyncValue(machine::isBrokenToday);
+                syncManager.syncValue("icecreamBroken", brokenSyncer);
+                errorMap.put(brokenSyncer, machine.mTooltipCache.getData("gt.icecreammachine.broken.tooltip"));
             }
 
             // Does not use EU / tooltip to the generic one
