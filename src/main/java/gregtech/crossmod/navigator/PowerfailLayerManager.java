@@ -107,8 +107,8 @@ public class PowerfailLayerManager extends InteractableLayerManager {
         if (!(GTMod.clientProxy().powerfailRenderer.powerfailIcon instanceof TextureAtlasSprite icon)) return null;
         return new MapMarker(TextureMap.locationBlocksTexture, icon).setDisplaySize(32, 32)
             .setDisplayZoomScale(1, 2, 3, 5)
-            .setLabel(
-                location.powerfail.toSummary()
+            .setLabelSupplier(
+                () -> location.powerfail.toSummary()
                     .toString())
             .setLabelZoomScale(1, 3, 3, 5)
             .setLabelMinZoom(2)
