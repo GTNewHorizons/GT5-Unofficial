@@ -61,7 +61,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
         if (MU.blastFurnaceRequired(material) || MU.blastFurnaceRequired(MU.directSmelting(material))) {
             if (MU.blastFurnaceTemp(material) >= 1000) return;
             if (MU.blastFurnaceTemp(MU.directSmelting(material)) >= 1000) return;
-            if (!legacyMaterial.mAutoGenerateBlastFurnaceRecipes) return;
+            if (!MU.autoGenerateBlastFurnaceRecipes(material)) return;
 
             final ItemStack output = GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L);
 
@@ -71,7 +71,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .circuit(1)
                 .itemOutputs(output)
-                .duration(Math.max(legacyMaterial.getMass() / 4L, 1L) * MU.blastFurnaceTemp(material) * TICKS)
+                .duration(Math.max(MU.mass(material) / 4L, 1L) * MU.blastFurnaceTemp(material) * TICKS)
                 .eut(TierEU.RECIPE_MV)
                 .metadata(COIL_HEAT, MU.blastFurnaceTemp(material))
                 .addTo(blastFurnaceRecipes);

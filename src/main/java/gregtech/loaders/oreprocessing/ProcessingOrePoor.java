@@ -74,10 +74,8 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, material, 2 * multiplier),
-                GTOreDictUnificator.get(
-                    OrePrefixes.dustTiny,
-                    GTUtility.selectItemInList(0, legacyMaterial, legacyMaterial.mOreByProducts),
-                    1L),
+                GTOreDictUnificator
+                    .get(OrePrefixes.dustTiny, GTUtility.selectItemInList(0, material, MU.oreByProducts(material)), 1L),
                 GTOreDictUnificator.getDust(prefix.mSecondaryMaterial))
             .outputChances(10000, 100 * 5 * multiplier, 10000)
             .duration(20 * SECONDS)

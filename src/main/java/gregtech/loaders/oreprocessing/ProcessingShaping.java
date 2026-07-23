@@ -59,7 +59,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
 
         if (((legacyMaterial == Materials.Glass) || (GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null))
             && (!MU.hasFlag(material, GTMaterialFlag.NO_SMELTING))) {
-            long materialMass = legacyMaterial.getMass();
+            long materialMass = MU.mass(material);
             int tAmount = (int) (prefix.getMaterialAmount() / 3628800L);
             if ((tAmount > 0) && (tAmount <= 64) && (prefix.getMaterialAmount() % 3628800L == 0L)) {
                 int tVoltageMultiplier = MU.blastFurnaceTemp(material) >= 2800 ? 60 : 15;

@@ -61,7 +61,7 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
                     1L),
                 GTOreDictUnificator.get(
                     OrePrefixes.dust,
-                    GTUtility.selectItemInList(1, MU.macerateInto(legacyMaterial), legacyMaterial.mOreByProducts),
+                    GTUtility.selectItemInList(1, MU.macerateInto(material), MU.oreByProducts(material)),
                     1L))
             .outputChances(10000, 1000)
             .duration(20 * SECONDS)
