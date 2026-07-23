@@ -1,26 +1,32 @@
 package gregtech.loaders.materials;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MarkerMaterial;
 
 /// Recognition entries: names that generate no items of their own but exist so `gregtech.common.GTProxy#registerOre`
 /// resolves every ore-dictionary registration another mod fires against them by name, so a foreign entry such as
 /// `gemCitrine`, `oreFluorite`, or `dustAgate` unifies against one of these instead of falling through unrecognized.
 ///
-/// Most entries carry only a name and whether an entry named for them unifies, held as [RecognitionMarker] and
-/// looked up through [#getRecognitionMarker]. A handful carry more because something besides name recognition
-/// reads them: `Ammonium` is read by `bartworks.system.material.WerkstoffReconstruction` as a composition
-/// reference (`AmmoniumChloride`'s contents name it); `Leather` and `Sand` are read by
+/// Every entry is a [RecognitionMarker], looked up through [#getRecognitionMarker]. Most carry only a name and
+/// whether an entry named for them unifies. A handful carry more because something besides name recognition
+/// reads them, and keep their `Materials` field so the rest of the code can reference them directly: `Ammonium`
+/// is read by `bartworks.system.material.WerkstoffReconstruction` as a composition reference
+/// (`AmmoniumChloride`'s contents name it); `Leather` and `Sand` are read by
 /// `gregtech.loaders.preload.LoaderGTItemData` as the material of an `ItemData`/`MaterialStack` for vanilla-item
 /// recycling; `Limestone` and `Prismarine` are read by `ItemComb`/`NetheriteRecipes`/
 /// `RecipeLoaderChemicalSkips` as an `IOreMaterial` to fetch or register registered-ore stacks; `Fluix` and
@@ -29,31 +35,98 @@ import gregtech.api.material.MarkerMaterial;
 /// IC2's advanced alloy plate for [OrePrefixes#plateAlloy], which is unifiable but not material-based: an entry
 /// registered under it without a material resolves to [Materials#_NULL] in `GTProxy#registerUnificationEntries`,
 /// and every `plateAlloy` entry then contends for that one shared unification key, so such an entry unifies into
-/// whichever plate claims it first. These eight stay [MarkerMaterial]s, looked up through [#getMarker], and keep
-/// their `Materials` field so the rest of the code can reference them directly.
+/// whichever plate claims it first.
 public class RecognitionMaterials {
 
     private static final int DEFAULT_ARGB = 0x00ffffff;
-    private static final SubTag[] NO_SUBTAGS = {};
 
-    private static final Map<String, MarkerMaterial> MARKERS_BY_NAME = new LinkedHashMap<>();
     private static final Map<String, RecognitionMarker> RECOGNITION_MARKERS_BY_NAME = new LinkedHashMap<>();
-
-    /// The shapeless MaterialLib [Material] registered as each data-carrying marker's backing, keyed by internal
-    /// name. Populated by [#registerBackingMaterials] during material registration and read by [#load] when the
-    /// markers are built.
-    private static final Map<String, Material> BACKING_BY_NAME = new LinkedHashMap<>();
 
     private RecognitionMaterials() {}
 
     /// A foreign ore-dictionary name GregTech recognizes during unification. It names an entry and nothing more --
-    /// it is not a material and generates no items.
-    public record RecognitionMarker(String name, boolean unifiable) {}
+    /// it is not a material and generates no items. Implements [IOreMaterial] so the data-carrying entries in
+    /// [#MARKERS] can flow through the transitional `IOreMaterial`-typed plumbing (`ItemData`, `MaterialStack`,
+    /// `GTOreDictUnificator`, `OrePrefixes#processOre`), where staying a non-`Materials` implementer preserves
+    /// the marker-specific dispatch those paths key on `instanceof Materials`.
+    ///
+    /// [#toString] returns the name so a marker routed through [OrePrefixes#oreDictName(IOreMaterial)]
+    /// stringifies to the exact ore-dictionary name a `Materials`-backed marker produced.
+    public record RecognitionMarker(String name, String localName, TextureSet textureSet, int argb, boolean unifiable,
+        Set<SubTag> subTags) implements IOreMaterial {
 
-    /// The [MarkerMaterial] whose internal name is `name`, or null if `name` is not one of the recognition
-    /// entries that stays a marker (see the class javadoc).
-    public static MarkerMaterial getMarker(String name) {
-        return MARKERS_BY_NAME.get(name);
+        public RecognitionMarker {
+            subTags = new LinkedHashSet<>(subTags);
+        }
+
+        public RecognitionMarker(String name, boolean unifiable) {
+            this(name, name, TextureSet.SET_NONE, DEFAULT_ARGB, unifiable, Set.of());
+        }
+
+        @Override
+        public String getInternalName() {
+            return name;
+        }
+
+        @Override
+        public String getDefaultLocalName() {
+            return localName;
+        }
+
+        @Override
+        public Materials getGTMaterial() {
+            return null;
+        }
+
+        @Override
+        public int getId() {
+            return -1;
+        }
+
+        @Override
+        public short[] getRGBA() {
+            return new short[] { (short) ((argb >>> 16) & 0xFF), (short) ((argb >>> 8) & 0xFF), (short) (argb & 0xFF),
+                (short) ((argb >>> 24) & 0xFF) };
+        }
+
+        @Override
+        public TextureSet getTextureSet() {
+            return textureSet;
+        }
+
+        @Override
+        public List<IStoneType> getValidStones() {
+            return StoneType.STONES;
+        }
+
+        @Override
+        public boolean generatesPrefix(OrePrefixes prefix) {
+            return false;
+        }
+
+        @Override
+        public void addTooltips(List<String> list) {}
+
+        @Override
+        public boolean contains(SubTag tag) {
+            return subTags.contains(tag);
+        }
+
+        @Override
+        public RecognitionMarker add(SubTag... tags) {
+            if (tags != null) for (SubTag tag : tags) if (tag != null) subTags.add(tag);
+            return this;
+        }
+
+        @Override
+        public boolean remove(SubTag tag) {
+            return subTags.remove(tag);
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 
     /// The [RecognitionMarker] whose name is `name`, or null if no recognition entry claims that name.
@@ -63,71 +136,51 @@ public class RecognitionMaterials {
 
     public static void load() {
         for (Marker marker : MARKERS) {
-            MarkerMaterial material = new MarkerMaterial(
-                marker.name(),
-                marker.localName(),
-                marker.textureSet(),
-                marker.argb(),
-                marker.unifiable());
-            material.add(marker.subTags());
-            material.setBackingMaterial(BACKING_BY_NAME.get(marker.name()));
-            MARKERS_BY_NAME.put(marker.name(), material);
+            RECOGNITION_MARKERS_BY_NAME.put(
+                marker.marker()
+                    .name(),
+                marker.marker());
             marker.field()
-                .accept(material);
+                .accept(marker.marker());
         }
         for (RecognitionMarker marker : RECOGNITION_MARKERS) {
             RECOGNITION_MARKERS_BY_NAME.put(marker.name(), marker);
         }
     }
 
-    /// Registers a shapeless MaterialLib [Material] backing each data-carrying marker in [#MARKERS], skipping
-    /// any whose internal name already names a MaterialLib material (that name unifies into the existing
-    /// material, so a duplicate would merge its shapes into the marker). Runs during material registration,
-    /// after [gregtech.api.enums.materials2.Materials2Materials#init], so the skip check sees every real
-    /// material.
+    /// Registers a shapeless MaterialLib [com.ruling_0.materiallib.api.Material] backing each data-carrying
+    /// marker in [#MARKERS], skipping any whose name already names a MaterialLib material (that name unifies
+    /// into the existing material, so a duplicate would merge its shapes into the marker). Runs during material
+    /// registration, after [gregtech.api.enums.materials2.Materials2Materials#init], so the skip check sees
+    /// every real material.
     public static void registerBackingMaterials() {
         for (Marker marker : MARKERS) {
-            if (MaterialLibAPI.getMaterial("gregtech", marker.name()) != null) continue;
-            Material material = MaterialLibAPI
+            RecognitionMarker m = marker.marker();
+            if (MaterialLibAPI.getMaterial("gregtech", m.name()) != null) continue;
+            MaterialLibAPI
                 .newMaterial(
                     "gregtech",
-                    marker.name(),
-                    com.ruling_0.materiallib.api.TextureSet.of("gregtech", marker.textureSet().mSetName))
-                .setProperty(GTMaterialProperties.LEGACY_NAME, marker.name())
-                .setProperty(GTMaterialProperties.LOCAL_NAME, marker.localName())
-                .setProperty(GTMaterialProperties.ARGB, marker.argb())
+                    m.name(),
+                    com.ruling_0.materiallib.api.TextureSet.of("gregtech", m.textureSet().mSetName))
+                .setProperty(GTMaterialProperties.LEGACY_NAME, m.name())
+                .setProperty(GTMaterialProperties.LOCAL_NAME, m.localName())
+                .setProperty(GTMaterialProperties.ARGB, m.argb())
                 .build();
-            BACKING_BY_NAME.put(marker.name(), material);
         }
     }
 
-    private record Marker(Consumer<MarkerMaterial> field, String name, String localName, TextureSet textureSet,
-        int argb, boolean unifiable, SubTag[] subTags) {}
-
-    private static Marker marker(Consumer<MarkerMaterial> field, String name, String localName) {
-        return new Marker(field, name, localName, TextureSet.SET_NONE, DEFAULT_ARGB, true, NO_SUBTAGS);
-    }
-
-    private static Marker marker(Consumer<MarkerMaterial> field, String name, String localName, TextureSet textureSet,
-        int argb, boolean unifiable) {
-        return new Marker(field, name, localName, textureSet, argb, unifiable, NO_SUBTAGS);
-    }
-
-    private static Marker marker(Consumer<MarkerMaterial> field, String name, String localName, TextureSet textureSet,
-        int argb, boolean unifiable, SubTag... subTags) {
-        return new Marker(field, name, localName, textureSet, argb, unifiable, subTags);
-    }
+    private record Marker(Consumer<RecognitionMarker> field, RecognitionMarker marker) {}
 
     // spotless:off
     private static final Marker[] MARKERS = {
-        marker(m -> Materials.Advanced = m, "Advanced", "Advanced Alloy"),
-        marker(m -> Materials.Ammonium = m, "Ammonium", "Ammonium"),
-        marker(m -> Materials.Fluix = m, "Fluix", "Fluix", TextureSet.SET_NONE, DEFAULT_ARGB, true, SubTag.CRYSTAL, SubTag.CRYSTALLISABLE, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ),
-        marker(m -> Materials.Leather = m, "Leather", "Leather", TextureSet.SET_ROUGH, 0x7f969650, true),
-        marker(m -> Materials.Limestone = m, "Limestone", "Limestone"),
-        marker(m -> Materials.Prismarine = m, "Prismarine", "Prismarine"),
-        marker(m -> Materials.Quartz = m, "Quartz", "Quartz", TextureSet.SET_QUARTZ, DEFAULT_ARGB, false, SubTag.CRYSTAL, SubTag.CRYSTALLISABLE, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ),
-        marker(m -> Materials.Sand = m, "Sand", "Sand"), };
+        new Marker(m -> Materials.Advanced = m, new RecognitionMarker("Advanced", "Advanced Alloy", TextureSet.SET_NONE, DEFAULT_ARGB, true, Set.of())),
+        new Marker(m -> Materials.Ammonium = m, new RecognitionMarker("Ammonium", "Ammonium", TextureSet.SET_NONE, DEFAULT_ARGB, true, Set.of())),
+        new Marker(m -> Materials.Fluix = m, new RecognitionMarker("Fluix", "Fluix", TextureSet.SET_NONE, DEFAULT_ARGB, true, Set.of(SubTag.CRYSTAL, SubTag.CRYSTALLISABLE, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ))),
+        new Marker(m -> Materials.Leather = m, new RecognitionMarker("Leather", "Leather", TextureSet.SET_ROUGH, 0x7f969650, true, Set.of())),
+        new Marker(m -> Materials.Limestone = m, new RecognitionMarker("Limestone", "Limestone", TextureSet.SET_NONE, DEFAULT_ARGB, true, Set.of())),
+        new Marker(m -> Materials.Prismarine = m, new RecognitionMarker("Prismarine", "Prismarine", TextureSet.SET_NONE, DEFAULT_ARGB, true, Set.of())),
+        new Marker(m -> Materials.Quartz = m, new RecognitionMarker("Quartz", "Quartz", TextureSet.SET_QUARTZ, DEFAULT_ARGB, false, Set.of(SubTag.CRYSTAL, SubTag.CRYSTALLISABLE, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ))),
+        new Marker(m -> Materials.Sand = m, new RecognitionMarker("Sand", "Sand", TextureSet.SET_NONE, DEFAULT_ARGB, true, Set.of())), };
 
     private static final RecognitionMarker[] RECOGNITION_MARKERS = {
         new RecognitionMarker("Adamite", true),

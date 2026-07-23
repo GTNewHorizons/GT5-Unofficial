@@ -65,7 +65,7 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
 
     }
 
-    /// A [gregtech.api.material.MarkerMaterial] carries no `mMacerateInto`, so unlike the legacy overload above
+    /// A recognition marker carries no macerate target, so unlike the legacy overload above
     /// this falls back to macerating into `material` itself (mirroring `Materials`' own `mMacerateInto = this`
     /// default) instead of dropping the recipe.
     @Override
