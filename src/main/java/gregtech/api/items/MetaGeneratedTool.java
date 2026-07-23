@@ -8,7 +8,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -44,7 +43,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
-import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import appeng.api.implementations.items.IAEWrench;
 import buildcraft.api.tools.IToolWrench;
@@ -58,6 +56,7 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.material.GTMaterialProperties;
@@ -115,34 +114,31 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     /* ---------- FOR ADDING CUSTOM ITEMS INTO THE REMAINING 766 RANGE ---------- */
 
+    /// [#getPrimaryMaterialML] mapped back to its legacy [Materials] facade, with [Materials#_NULL] on a
+    /// missing/unresolvable name -- the same result [Materials#getRealMaterial] produced from the stored name,
+    /// kept for legacy-typed callers.
     public static Materials getPrimaryMaterial(ItemStack aStack) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("GT.ToolStats");
-            if (aNBT != null) return Materials.getRealMaterial(aNBT.getString("PrimaryMaterial"));
-        }
-        return Materials._NULL;
+        Materials legacy = MU.materialOf(getPrimaryMaterialML(aStack));
+        return legacy == null ? Materials._NULL : legacy;
     }
 
+    /// [#getPrimaryMaterial], for the secondary (rod/handle) material.
     public static Materials getSecondaryMaterial(ItemStack aStack) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("GT.ToolStats");
-            if (aNBT != null) return Materials.getRealMaterial(aNBT.getString("SecondaryMaterial"));
-        }
-        return Materials._NULL;
+        Materials legacy = MU.materialOf(getSecondaryMaterialML(aStack));
+        return legacy == null ? Materials._NULL : legacy;
     }
 
-    /// [#getPrimaryMaterial], resolving straight to the MaterialLib material via [#materialByInternalName]
-    /// instead of through the legacy [Materials] registry -- survives minting retirement, when a werkstoff/gtpp
-    /// tool's stored name no longer resolves through [Materials#getRealMaterial]. Falls back to
-    /// [Materials#_NULL]'s own material on a missing/unresolvable name, mirroring [#getPrimaryMaterial]'s
+    /// The MaterialLib material a tool's `PrimaryMaterial` NBT string resolves to, via [MU#byLegacyName] --
+    /// which covers both what [#getToolWithStats(int, int, com.ruling_0.materiallib.api.Material,
+    /// com.ruling_0.materiallib.api.Material, long[])] writes ([MU#internalName] strings) and the legacy
+    /// `Materials#mName` strings older saves contain (byte-identical for every ported material). Falls back to
+    /// [Materials#_NULL]'s own material on a missing/unresolvable name, mirroring the legacy
     /// sentinel-on-absent default.
     public static com.ruling_0.materiallib.api.Material getPrimaryMaterialML(ItemStack aStack) {
         return resolveMaterialML(aStack, "PrimaryMaterial");
     }
 
-    /// [#getPrimaryMaterialML], for [#getSecondaryMaterial].
+    /// [#getPrimaryMaterialML], for the `SecondaryMaterial` NBT string.
     public static com.ruling_0.materiallib.api.Material getSecondaryMaterialML(ItemStack aStack) {
         return resolveMaterialML(aStack, "SecondaryMaterial");
     }
@@ -152,31 +148,11 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
             if (aNBT != null) {
-                com.ruling_0.materiallib.api.Material material = materialByInternalName(aNBT.getString(aKey));
+                com.ruling_0.materiallib.api.Material material = MU.byLegacyName(aNBT.getString(aKey));
                 if (material != null) return material;
             }
         }
-        return MU.material(Materials._NULL);
-    }
-
-    private static Map<String, com.ruling_0.materiallib.api.Material> sInternalNameToMaterial;
-
-    /// The registered MaterialLib material whose [MU#internalName] is `name` -- the reverse of what
-    /// [#getToolWithStats(int, int, com.ruling_0.materiallib.api.Material, com.ruling_0.materiallib.api.Material,
-    /// long[])] wrote into the `PrimaryMaterial`/`SecondaryMaterial` NBT strings, so [#resolveMaterialML] can
-    /// resolve those back to a material without going through the legacy [Materials] registry. Scans the whole
-    /// `"gregtech"`-domain registry rather than [MU]'s own canonical-only cache, since a werkstoff/gtpp bridge
-    /// material -- whose legacy [Materials] counterpart disappears once minting retires -- is registered there
-    /// too. Built once and cached, matching [MU]'s own lazy registry-scan caches (e.g. `MU#legacyNamedMaterials`).
-    private static @Nullable com.ruling_0.materiallib.api.Material materialByInternalName(String name) {
-        if (sInternalNameToMaterial == null) {
-            Map<String, com.ruling_0.materiallib.api.Material> map = new HashMap<>();
-            for (com.ruling_0.materiallib.api.Material material : MaterialLibAPI.getMaterials()) {
-                if ("gregtech".equals(material.getModId())) map.put(MU.internalName(material), material);
-            }
-            sInternalNameToMaterial = map;
-        }
-        return sInternalNameToMaterial.get(name);
+        return Materials2Materials.NULL;
     }
 
     /// Reproduces [gregtech.api.interfaces.IOreMaterial#getLocalizedName]'s `"Material." + internalName`
@@ -195,10 +171,6 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     private static int getToolDurability(com.ruling_0.materiallib.api.Material aMaterial) {
         Integer durability = aMaterial == null ? null : aMaterial.getProperty(GTMaterialProperties.DURABILITY);
         return durability == null ? 0 : durability;
-    }
-
-    private static int getToolDurability(Materials aMaterial) {
-        return getToolDurability(MU.material(aMaterial));
     }
 
     private static float getToolSpeed(com.ruling_0.materiallib.api.Material aMaterial) {
@@ -558,7 +530,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 ItemStack tStack = new ItemStack(this, 1, i);
                 isItemStackUsable(tStack);
                 aList.add(tStack);
-                aList.add(getToolWithStats(i, 1, Materials.Neutronium, Materials.Neutronium, null));
+                aList.add(getToolWithStats(i, 1, Materials2Materials.Neutronium, Materials2Materials.Neutronium, null));
             }
         }
     }

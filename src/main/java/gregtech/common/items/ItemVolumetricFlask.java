@@ -41,7 +41,9 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.item.VolumetricFlaskGui;
 import gregtech.crossmod.backhand.Backhand;
@@ -269,7 +271,7 @@ public class ItemVolumetricFlask extends GTGenericItem
                     fluid = Materials.Lava.getFluid(1_000);
                 }
             } else {
-                fluid = Materials.Water.getFluid(1_000);
+                fluid = MU.fluid(Materials2Materials.Water, 1_000);
             }
 
             if (fluid != null) {

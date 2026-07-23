@@ -23,10 +23,11 @@ import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -234,7 +235,8 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
 
         // We'll just steal the icons from Water. They are all the same anyway (except _NULL is broken for cells).
         for (CellType cellType : CellType.values()) {
-            IIconContainer iconContainer = Materials.Water.mIconSet.mTextures[cellType.prefix.getTextureIndex()];
+            IIconContainer iconContainer = MU.iconSet(Materials2Materials.Water).mTextures[cellType.prefix
+                .getTextureIndex()];
             INSTANCE.iconContainerMap.put(cellType, iconContainer);
         }
     }
@@ -308,15 +310,16 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
 
         // Register IC2 steam cell and Railcraft steam cell as synonyms.
         // There is no steam material, so we'll use Water.cellMolten instead.
-        GTOreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, GTModHandler.getIC2Item("steamCell", 1L));
-        GTOreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
+        GTOreDictUnificator
+            .add(OrePrefixes.cellMolten, Materials2Materials.Water, GTModHandler.getIC2Item("steamCell", 1L));
+        GTOreDictUnificator.add(OrePrefixes.cellMolten, Materials2Materials.Water, FluidCell.STEAM.getNoCopy());
     }
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
         RegisteredFluidData fluidData = registeredFluidDataMap.get(aStack.getItemDamage());
         if (fluidData == null) {
-            return Materials._NULL.mRGBa;
+            return MU.rgba(Materials2Materials.NULL);
         }
 
         return fluidData.rgba;
