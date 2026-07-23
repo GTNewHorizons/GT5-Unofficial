@@ -58,7 +58,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
         boolean noSmashing = MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         boolean stretchy = MU.hasFlag(material, GTMaterialFlag.STRETCHY);
         boolean noSmelting = MU.hasFlag(material, GTMaterialFlag.NO_SMELTING);
-        long materialMass = legacyMaterial.getMass();
+        long materialMass = MU.mass(material);
         boolean specialRecipeReq = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
             && (legacyMaterial.mMaterialInto == legacyMaterial)
             && !MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
@@ -213,7 +213,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 }
             }
             case "ingotHot" -> {
-                if (legacyMaterial.mAutoGenerateVacuumFreezerRecipes
+                if (MU.autoGenerateVacuumFreezerRecipes(material)
                     && GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null) {
                     // Vacuum freezer recipes
                     GTValues.RA.stdBuilder()

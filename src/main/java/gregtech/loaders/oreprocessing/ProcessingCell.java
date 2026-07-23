@@ -77,7 +77,8 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             .addTo(GTRecipeConstants.Fuel);
                     }
                     List<MaterialStack> tMaterialList = MU.materialList(material);
-                    if (!((!tMaterialList.isEmpty()) && ((legacyMaterial.mExtraData & 0x3) != 0))) {
+                    if (!((!tMaterialList.isEmpty())
+                        && (MU.hasElectrolyzerRecipe(material) || MU.hasCentrifugeRecipe(material)))) {
                         break;
                     }
 
@@ -88,9 +89,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                     long tItemAmount = 0L;
                     long tCapsuleCount = (long) GTModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(stack)
                         * -tAllAmount;
-                    long tDensityMultiplier = legacyMaterial.getDensity() > 3628800L
-                        ? legacyMaterial.getDensity() / 3628800L
-                        : 1L;
+                    long tDensityMultiplier = MU.density(material) > 3628800L ? MU.density(material) / 3628800L : 1L;
                     ArrayList<ItemStack> tList = new ArrayList<>();
                     for (MaterialStack tMat : tMaterialList) {
                         if (tMat.mAmount <= 0) {
@@ -106,8 +105,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                 tStack = GTOreDictUnificator.get(OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
                             }
                         }
-                        if (tItemAmount + tMat.mAmount * 3628800L
-                            > stack.getMaxStackSize() * legacyMaterial.getDensity()) {
+                        if (tItemAmount + tMat.mAmount * 3628800L > stack.getMaxStackSize() * MU.density(material)) {
                             continue;
                         }
 
@@ -137,13 +135,13 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         }
                     }
 
-                    tItemAmount = GTUtility.ceilDiv(tItemAmount * tDensityMultiplier, legacyMaterial.getDensity());
+                    tItemAmount = GTUtility.ceilDiv(tItemAmount * tDensityMultiplier, MU.density(material));
 
                     if (tList.isEmpty()) {
                         break;
                     }
 
-                    if ((legacyMaterial.mExtraData & 0x1) != 0) {
+                    if (MU.hasElectrolyzerRecipe(material)) {
 
                         // Electrolyzer recipe
                         if (GTUtility.getFluidForFilledItem(stack, true) == null) {
@@ -161,7 +159,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             }
                             ItemStack[] outputsArray = tList.toArray(new ItemStack[Math.min(tList.size(), 6)]);
                             recipeBuilder.itemOutputs(outputsArray)
-                                .duration(Math.max(1L, Math.abs(legacyMaterial.getProtons() * 2L * tItemAmount)))
+                                .duration(Math.max(1L, Math.abs(MU.protons(material) * 2L * tItemAmount)))
                                 .eut(Math.min(4, tList.size()) * 30)
                                 .addTo(electrolyzerRecipes);
                         } else {
@@ -177,12 +175,12 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             }
                             ItemStack[] outputsArray = tList.toArray(new ItemStack[Math.min(tList.size(), 6)]);
                             recipeBuilder.itemOutputs(outputsArray)
-                                .duration(Math.max(1L, Math.abs(legacyMaterial.getProtons() * 8L * tItemAmount)))
+                                .duration(Math.max(1L, Math.abs(MU.protons(material) * 8L * tItemAmount)))
                                 .eut(Math.min(4, tList.size()) * 30)
                                 .addTo(electrolyzerRecipes);
                         }
                     }
-                    if ((legacyMaterial.mExtraData & 0x2) != 0) {
+                    if (MU.hasCentrifugeRecipe(material)) {
                         GTRecipeBuilder recipeBuilder = RA.stdBuilder();
                         if (tCapsuleCount > 0L) {
                             recipeBuilder.itemInputs(
@@ -196,7 +194,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         }
                         ItemStack[] outputsArray = tList.toArray(new ItemStack[Math.min(tList.size(), 6)]);
                         recipeBuilder.itemOutputs(outputsArray)
-                            .duration(Math.max(1L, Math.abs(legacyMaterial.getMass() * 2L * tItemAmount)))
+                            .duration(Math.max(1L, Math.abs(MU.mass(material) * 2L * tItemAmount)))
                             .eut(5)
                             .addTo(centrifugeRecipes);
                     }
@@ -447,8 +445,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         case "Zinc" -> recipeBuilder.metadata(FUEL_VALUE, 226_304)
                             .metadata(FUEL_TYPE, 4)
                             .addTo(GTRecipeConstants.Fuel);
-                        default -> recipeBuilder
-                            .metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * legacyMaterial.getMass()))
+                        default -> recipeBuilder.metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * MU.mass(material)))
                             .metadata(FUEL_TYPE, 4)
                             .addTo(GTRecipeConstants.Fuel);
                     }
@@ -456,7 +453,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, material, 1L))
-                            .duration(((int) Math.max(legacyMaterial.getMass() * 2L, 1L)) * TICKS)
+                            .duration(((int) Math.max(MU.mass(material) * 2L, 1L)) * TICKS)
                             .eut(TierEU.RECIPE_MV)
                             .addTo(vacuumFreezerRecipes);
                     }

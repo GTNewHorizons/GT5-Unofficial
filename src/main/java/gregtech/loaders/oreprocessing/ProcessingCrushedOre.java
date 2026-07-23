@@ -61,8 +61,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                         GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L),
                         GTOreDictUnificator.get(
                             OrePrefixes.dust,
-                            GTUtility
-                                .selectItemInList(2, MU.macerateInto(legacyMaterial), legacyMaterial.mOreByProducts),
+                            GTUtility.selectItemInList(2, MU.macerateInto(material), MU.oreByProducts(material)),
                             1L))
                     .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
@@ -80,8 +79,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                             1L),
                         GTOreDictUnificator.get(
                             OrePrefixes.dust,
-                            GTUtility
-                                .selectItemInList(1, MU.macerateInto(legacyMaterial), legacyMaterial.mOreByProducts),
+                            GTUtility.selectItemInList(1, MU.macerateInto(material), MU.oreByProducts(material)),
                             1L))
                     .outputChances(10000, 1111)
                     .duration(25 * SECONDS)

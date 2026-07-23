@@ -45,7 +45,7 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTOreDictUnificator.get(OrePrefixes.bolt, material, 1L))
                     .itemOutputs(GTUtility.copyAmount(1, stack))
-                    .duration(((int) Math.max(legacyMaterial.getMass() / 8L, 1L)) * TICKS)
+                    .duration(((int) Math.max(MU.mass(material) / 8L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 4))
                     .addTo(latheRecipes);
             }

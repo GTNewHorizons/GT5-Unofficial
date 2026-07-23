@@ -45,7 +45,7 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTOreDictUnificator.get(OrePrefixes.nugget, material, 1L))
                     .itemOutputs(GTUtility.copyAmount(1, stack))
-                    .duration(((int) Math.max(legacyMaterial.getMass() / 4L, 1L)) * TICKS)
+                    .duration(((int) Math.max(MU.mass(material) / 4L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_ULV)
                     .addTo(latheRecipes);
             }
@@ -64,6 +64,6 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
         }
         Api.INSTANCE.registries()
             .matterCannon()
-            .registerAmmo(GTOreDictUnificator.get(OrePrefixes.round, material, 1L), legacyMaterial.getMass());
+            .registerAmmo(GTOreDictUnificator.get(OrePrefixes.round, material, 1L), MU.mass(material));
     }
 }

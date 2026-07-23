@@ -69,7 +69,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                     .circuit(4)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, material, 1L))
                     .fluidInputs(SubstituteFluidStack.soldering(1 * NUGGETS))
-                    .duration(((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
+                    .duration(((int) Math.max(MU.mass(material), 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 24))
                     .addTo(assemblerRecipes);
             }
@@ -80,7 +80,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                         GTOreDictUnificator.get(OrePrefixes.ingot, material, 5L),
                         ItemList.Shape_Extruder_Rotor.get(0L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, material, 1L))
-                    .duration(((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
+                    .duration(((int) Math.max(MU.mass(material), 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 24))
                     .addTo(extruderRecipes);
             }
@@ -91,7 +91,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemInputs(ItemList.Shape_Mold_Rotor.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, material, 1L))
                         .fluidInputs(MU.molten(material, 612L))
-                        .duration(((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
+                        .duration(((int) Math.max(MU.mass(material), 1L)) * TICKS)
                         .eut(calculateRecipeEU(material, 24))
                         .addTo(fluidSolidifierRecipes);
                 }

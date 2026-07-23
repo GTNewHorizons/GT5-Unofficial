@@ -95,7 +95,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         final boolean noSmashing = MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         final boolean noWorking = MU.hasFlag(material, GTMaterialFlag.NO_WORKING);
-        final long materialMass = legacyMaterial.getMass();
+        final long materialMass = MU.mass(material);
 
         switch (prefix.getName()) {
             case "plate" -> registerPlate(material, legacyMaterial, stack, noSmashing);
@@ -481,18 +481,12 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L),
                     ItemList.Shape_Extruder_Casing.get(0L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, material, 2L))
-                .duration(((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
+                .duration(((int) Math.max(MU.mass(material), 1L)) * TICKS)
                 .eut(calculateRecipeEU(material, 45))
                 .addTo(extruderRecipes);
         }
 
         if (GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null) {
-            // Deliberately int arithmetic below: calculateRecipeEU(Material, long) returns long, but the
-            // pre-cutover calculateRecipeEU(Materials, int) it replaced returned int, so `mass * eu` computed
-            // in 32-bit precision. High-tier materials (e.g. Eternity's UMV-tier EU) overflow that product,
-            // and the recipe-census baseline captured the wrapped (usually floor-clamped) result of that
-            // overflow. Casting back to int here reproduces the same overflow instead of the mathematically
-            // "correct" (but baseline-diverging) amount a widened long product would give.
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, material, 2L))
@@ -502,9 +496,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                             4,
                             Math.min(
                                 1000,
-                                ((int) Math.max(legacyMaterial.getMass(), 1L)) * (int) calculateRecipeEU(material, 16)
-                                    / 320))))
-                .duration(2 * ((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
+                                ((int) Math.max(MU.mass(material), 1L)) * (calculateRecipeEU(material, 16)) / 320))))
+                .duration(2 * ((int) Math.max(MU.mass(material), 1L)) * TICKS)
                 .eut(calculateRecipeEU(material, 16))
                 .addTo(cutterRecipes);
 
@@ -517,9 +510,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                             3,
                             Math.min(
                                 750,
-                                ((int) Math.max(legacyMaterial.getMass(), 1L)) * (int) calculateRecipeEU(material, 16)
-                                    / 426))))
-                .duration(2 * ((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
+                                ((int) Math.max(MU.mass(material), 1L)) * (calculateRecipeEU(material, 16)) / 426))))
+                .duration(2 * ((int) Math.max(MU.mass(material), 1L)) * TICKS)
                 .eut(calculateRecipeEU(material, 16))
                 .addTo(cutterRecipes);
 
@@ -530,13 +522,12 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Lubricant,
                         Materials2FluidShapes.fluidLiquid,
-                        Math.max(
+                        (int) Math.max(
                             1,
                             Math.min(
                                 250,
-                                ((int) Math.max(legacyMaterial.getMass(), 1)) * (int) calculateRecipeEU(material, 16)
-                                    / 1280))))
-                .duration(((int) Math.max(legacyMaterial.getMass(), 1L)) * TICKS)
+                                ((int) Math.max(MU.mass(material), 1)) * (calculateRecipeEU(material, 16)) / 1280))))
+                .duration(((int) Math.max(MU.mass(material), 1L)) * TICKS)
                 .eut(calculateRecipeEU(material, 16))
                 .addTo(cutterRecipes);
 
@@ -549,9 +540,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                             1,
                             Math.min(
                                 10,
-                                ((int) Math.max(legacyMaterial.getMass(), 1L)) * (int) calculateRecipeEU(material, 16)
-                                    / 4000))))
-                .duration(((int) Math.max(legacyMaterial.getMass() / 2.5, 1L)) * TICKS)
+                                ((int) Math.max(MU.mass(material), 1L)) * (calculateRecipeEU(material, 16)) / 4000))))
+                .duration(((int) Math.max(MU.mass(material) / 2.5, 1L)) * TICKS)
                 .eut(calculateRecipeEU(material, 16))
                 .addTo(cutterRecipes);
         }

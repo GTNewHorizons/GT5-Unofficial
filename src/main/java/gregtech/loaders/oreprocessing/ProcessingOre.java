@@ -105,8 +105,9 @@ public class ProcessingOre implements IOreRecipeRegistrator {
     private boolean registerStandardOreRecipes(OrePrefixes prefix, Materials material, ItemStack oreStack,
         int multiplier) {
         if ((oreStack == null) || (material == null)) return false;
+        Material ml = MU.material(material);
         Materials tMaterial = material.mOreReplacement;
-        Materials tPrimaryByMaterial = null;
+        Material tPrimaryByMaterial = null;
         multiplier = Math.max(1, multiplier);
         oreStack = GTUtility.copyAmount(1, oreStack);
         oreStack.stackSize = 1;
@@ -146,7 +147,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                 (long) material.mOreMultiplier * multiplier);
         }
 
-        for (Materials tMat : material.mOreByProducts) {
+        for (Material tMat : MU.oreByProducts(ml)) {
             GTOreDictUnificator.get(OrePrefixes.dust, tMat, 1L);
             if (tPrimaryByProduct == null) {
                 tPrimaryByMaterial = tMat;
@@ -159,7 +160,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                 .get(OrePrefixes.dustTiny, tMat, GTOreDictUnificator.get(OrePrefixes.nugget, tMat, 2L), 2L);
         }
 
-        if (tPrimaryByMaterial == null) tPrimaryByMaterial = tMaterial;
+        if (tPrimaryByMaterial == null) tPrimaryByMaterial = MU.material(tMaterial);
         if (tPrimaryByProduct == null) tPrimaryByProduct = tDust;
         boolean tHasSmelting = false;
 
@@ -173,7 +174,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
             }
 
             if (MU.hasFlag(material, GTMaterialFlag.BLASTFURNACE_CALCITE_TRIPLE)) {
-                if (material.mAutoGenerateBlastFurnaceRecipes) {
+                if (MU.autoGenerateBlastFurnaceRecipes(ml)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             oreStack,
@@ -202,7 +203,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                         .addTo(blastFurnaceRecipes);
                 }
             } else if (MU.hasFlag(material, GTMaterialFlag.BLASTFURNACE_CALCITE_DOUBLE)) {
-                if (material.mAutoGenerateBlastFurnaceRecipes) {
+                if (MU.autoGenerateBlastFurnaceRecipes(ml)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             oreStack,

@@ -18,6 +18,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -252,6 +253,89 @@ public class MU {
     /// against the same property.
     public static boolean blastFurnaceRequired(@Nullable Material material) {
         return material != null && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
+    }
+
+    /// The legacy `Materials#getDensity()` value for a material -- `(M * densityMultiplier) / densityDivider`,
+    /// from [GTMaterialProperties#DENSITY_MULTIPLIER]/[#DENSITY_DIVIDER] (each `1` when absent, mirroring
+    /// `MaterialBuilder`'s own default), the exact integer math `Materials`'s constructor performs on the ported
+    /// data (`LegacyMaterials.build`'s `builder.setDensity`). `null` mirrors the same 1/1 default.
+    public static long density(@Nullable Material material) {
+        if (material == null) return GTValues.M;
+        Integer multiplier = material.getProperty(GTMaterialProperties.DENSITY_MULTIPLIER);
+        Integer divider = material.getProperty(GTMaterialProperties.DENSITY_DIVIDER);
+        return (GTValues.M * (multiplier == null ? 1 : multiplier)) / (divider == null ? 1 : divider);
+    }
+
+    /// The legacy `Materials#getMass()` value for a material -- [MaterialAtomics#mass], which reproduces the
+    /// identical formula (linked [Element] mass when [GTMaterialProperties#ELEMENT] is present, else
+    /// `Element.Tc`'s mass when [GTMaterialProperties#COMPOSITION] is empty or absent, else the
+    /// density-weighted average of the composition's own values). `null` mirrors the composition-absent
+    /// default.
+    public static long mass(@Nullable Material material) {
+        return material == null ? Element.Tc.getMass() : MaterialAtomics.mass(material);
+    }
+
+    /// [#mass], for `Materials#getProtons()`/[MaterialAtomics#protons].
+    public static long protons(@Nullable Material material) {
+        return material == null ? Element.Tc.getProtons() : MaterialAtomics.protons(material);
+    }
+
+    /// The legacy `Materials#mOreByProducts` list for a material, resolved from
+    /// [GTMaterialProperties#ORE_BYPRODUCTS] in declaration order; empty when absent. A reference that fails to
+    /// resolve is skipped. The [Material]-side equivalent of the legacy field -- `Materials#setOreByproducts`'s
+    /// `.mMaterialInto` remap is a proven no-op (every `Materials` instance's `mMaterialInto` is itself), so
+    /// unlike that method this does not repeat it.
+    public static List<Material> oreByProducts(@Nullable Material material) {
+        if (material == null) return Collections.emptyList();
+        List<MaterialRefStack> oreByProducts = material.getProperty(GTMaterialProperties.ORE_BYPRODUCTS);
+        if (oreByProducts == null || oreByProducts.isEmpty()) return Collections.emptyList();
+        List<Material> list = new ArrayList<>(oreByProducts.size());
+        for (MaterialRefStack entry : oreByProducts) {
+            Material resolved = entry.material()
+                .resolve();
+            if (resolved != null) list.add(resolved);
+        }
+        return list;
+    }
+
+    /// The legacy `(Materials#mExtraData & 1) != 0` electrolyzer-recipe gate for a material, from
+    /// [GTMaterialProperties#HAS_ELECTROLYZER_RECIPE] -- absent mirrors `mExtraData`'s `0` default (bit unset).
+    public static boolean hasElectrolyzerRecipe(@Nullable Material material) {
+        return material != null
+            && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE));
+    }
+
+    /// [#hasElectrolyzerRecipe], for the legacy `(Materials#mExtraData & 2) != 0` centrifuge-recipe gate /
+    /// [GTMaterialProperties#HAS_CENTRIFUGE_RECIPE].
+    public static boolean hasCentrifugeRecipe(@Nullable Material material) {
+        return material != null
+            && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE));
+    }
+
+    /// The legacy `Materials#mColor` [Dyes] for a material, from [GTMaterialProperties#DYE] -- or [Dyes#_NULL]
+    /// when absent, mirroring `mColor`'s own default (and, since [Dyes#_NULL]'s name never matches a real lens
+    /// ore-dict suffix, its practical never-generates behavior).
+    public static Dyes dye(@Nullable Material material) {
+        if (material == null) return Dyes._NULL;
+        String dye = material.getProperty(GTMaterialProperties.DYE);
+        return dye == null ? Dyes._NULL : Dyes.valueOf(dye);
+    }
+
+    /// The legacy `Materials#mAutoGenerateBlastFurnaceRecipes` flag for a material, from
+    /// [GTMaterialProperties#AUTO_BLAST_FURNACE_RECIPES] -- `true` when absent, mirroring the field's own
+    /// default (`LegacyMaterials.build` only overrides it when the property is present).
+    public static boolean autoGenerateBlastFurnaceRecipes(@Nullable Material material) {
+        if (material == null) return true;
+        Boolean value = material.getProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES);
+        return value == null || value;
+    }
+
+    /// [#autoGenerateBlastFurnaceRecipes], for `Materials#mAutoGenerateVacuumFreezerRecipes`/
+    /// [GTMaterialProperties#AUTO_VACUUM_FREEZER_RECIPES].
+    public static boolean autoGenerateVacuumFreezerRecipes(@Nullable Material material) {
+        if (material == null) return true;
+        Boolean value = material.getProperty(GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES);
+        return value == null || value;
     }
 
     /// The legacy `Materials#mMeltingPoint` Kelvin melting point for a material, or `0` if unset -- mirrors
