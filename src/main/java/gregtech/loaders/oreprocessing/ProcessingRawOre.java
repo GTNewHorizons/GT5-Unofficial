@@ -21,8 +21,8 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MUOre;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -56,11 +56,9 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
         }
 
         if (MU.hasFlag(material, GTMaterialFlag.ICE_ORE)) {
-            Integer oreMultiplierProp = material.getProperty(GTMaterialProperties.ORE_MULTIPLIER);
-            int oreMultiplier = oreMultiplierProp == null ? 1 : oreMultiplierProp;
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
-                .fluidOutputs(MU.gas(material, 1000L * oreMultiplier))
+                .fluidOutputs(MU.gas(material, 1000L * MUOre.oreMultiplier(material)))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(RecipeMaps.fluidExtractionRecipes);
@@ -76,15 +74,14 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);
         } else {
-            registerStandardOreRecipes(prefix, legacyMaterial, GTUtility.copyAmount(1, stack), 1);
+            registerStandardOreRecipes(prefix, material, GTUtility.copyAmount(1, stack), 1);
         }
     }
 
-    private boolean registerStandardOreRecipes(OrePrefixes prefix, Materials material, ItemStack oreStack,
+    private boolean registerStandardOreRecipes(OrePrefixes prefix, Material material, ItemStack oreStack,
         int multiplier) {
         if ((oreStack == null) || (material == null)) return false;
-        Material ml = MU.material(material);
-        Materials tMaterial = material.mOreReplacement;
+        Material tMaterial = MUOre.oreReplacement(material);
         Material tPrimaryByMaterial = null;
         multiplier = Math.max(1, multiplier);
         oreStack = GTUtility.copyAmount(1, oreStack);
@@ -111,18 +108,18 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                     : tIngot;
         ItemStack tDust = GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, tGem, 1L);
         ItemStack tCleaned = GTOreDictUnificator.get(OrePrefixes.crushedPurified, tMaterial, tDust, 1L);
-        ItemStack tCrushed = GTOreDictUnificator.get(OrePrefixes.crushed, tMaterial, material.mOreMultiplier);
+        ItemStack tCrushed = GTOreDictUnificator.get(OrePrefixes.crushed, tMaterial, MUOre.oreMultiplier(material));
         ItemStack tPrimaryByProduct = null;
 
         if (tCrushed == null) {
             tCrushed = GTOreDictUnificator.get(
                 OrePrefixes.dustImpure,
                 tMaterial,
-                GTUtility.copyAmount(material.mOreMultiplier, tCleaned, tDust, tGem),
-                material.mOreMultiplier);
+                GTUtility.copyAmount(MUOre.oreMultiplier(material), tCleaned, tDust, tGem),
+                MUOre.oreMultiplier(material));
         }
 
-        for (Material tMat : MU.oreByProducts(ml)) {
+        for (Material tMat : MU.oreByProducts(material)) {
             GTOreDictUnificator.get(OrePrefixes.dust, tMat, 1L);
             if (tPrimaryByProduct == null) {
                 tPrimaryByMaterial = tMat;
@@ -135,27 +132,27 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .get(OrePrefixes.dustTiny, tMat, GTOreDictUnificator.get(OrePrefixes.nugget, tMat, 2L), 2L);
         }
 
-        if (tPrimaryByMaterial == null) tPrimaryByMaterial = MU.material(tMaterial);
+        if (tPrimaryByMaterial == null) tPrimaryByMaterial = tMaterial;
         if (tPrimaryByProduct == null) tPrimaryByProduct = tDust;
         boolean tHasSmelting = false;
 
         if (tSmeltInto != null) {
-            if ((material.mBlastFurnaceRequired) || (MU.directSmelting(material).mBlastFurnaceRequired)) {
+            if (MU.blastFurnaceRequired(material) || MU.blastFurnaceRequired(MU.directSmelting(material))) {
                 GTModHandler.removeFurnaceSmelting(oreStack);
             } else {
                 tHasSmelting = GTModHandler
-                    .addSmeltingRecipe(oreStack, GTUtility.copyAmount(material.mSmeltingMultiplier, tSmeltInto));
+                    .addSmeltingRecipe(oreStack, GTUtility.copyAmount(MUOre.smeltingMultiplier(material), tSmeltInto));
             }
 
             if (MU.hasFlag(material, GTMaterialFlag.BLASTFURNACE_CALCITE_TRIPLE)) {
-                if (MU.autoGenerateBlastFurnaceRecipes(ml)) {
+                if (MU.autoGenerateBlastFurnaceRecipes(material)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             oreStack,
                             MaterialLibAPI
                                 .getStack(Materials2Materials.Calcite, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
-                            GTUtility.mul(3 * material.mSmeltingMultiplier, tSmeltInto),
+                            GTUtility.mul(3 * MUOre.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
@@ -168,7 +165,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                             MaterialLibAPI
                                 .getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
-                            GTUtility.mul(3 * material.mSmeltingMultiplier, tSmeltInto),
+                            GTUtility.mul(3 * MUOre.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
@@ -177,14 +174,14 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                         .addTo(blastFurnaceRecipes);
                 }
             } else if (MU.hasFlag(material, GTMaterialFlag.BLASTFURNACE_CALCITE_DOUBLE)) {
-                if (MU.autoGenerateBlastFurnaceRecipes(ml)) {
+                if (MU.autoGenerateBlastFurnaceRecipes(material)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             oreStack,
                             MaterialLibAPI
                                 .getStack(Materials2Materials.Calcite, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
-                            GTUtility.mul(2 * material.mSmeltingMultiplier, tSmeltInto),
+                            GTUtility.mul(2 * MUOre.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
@@ -197,7 +194,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                             MaterialLibAPI
                                 .getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
-                            GTUtility.mul(2 * material.mSmeltingMultiplier, tSmeltInto),
+                            GTUtility.mul(2 * MUOre.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
@@ -211,8 +208,10 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
         if (!tHasSmelting) {
             GTModHandler.addSmeltingRecipe(
                 oreStack,
-                GTOreDictUnificator
-                    .get(OrePrefixes.gem, MU.directSmelting(tMaterial), Math.max(1, material.mSmeltingMultiplier / 2)));
+                GTOreDictUnificator.get(
+                    OrePrefixes.gem,
+                    MU.directSmelting(tMaterial),
+                    Math.max(1, MUOre.smeltingMultiplier(material) / 2)));
         }
 
         if (tCrushed != null) {
@@ -228,7 +227,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .addTo(hammerRecipes);
 
             int chanceOre2 = tPrimaryByProduct == null ? 0
-                : tPrimaryByProduct.stackSize * 5 * material.mByProductMultiplier;
+                : tPrimaryByProduct.stackSize * 5 * MUOre.byProductMultiplier(material);
             chanceOre2 = 100 * chanceOre2; // converting to the GT format, 100% is 10000
             GTValues.RA.stdBuilder()
                 .itemInputs(oreStack)
