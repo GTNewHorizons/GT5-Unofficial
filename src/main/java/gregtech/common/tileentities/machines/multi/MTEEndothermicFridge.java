@@ -46,6 +46,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.Side;
@@ -61,6 +62,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
@@ -385,9 +387,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
 
     private static final int BOOSTER_DRAIN = 20;
     private static final List<BoosterFluid> BOOSTER_FLUIDS = ImmutableList.of(
-        new BoosterFluid(Materials.Infinity, 1, BOOSTER_DRAIN),
-        new BoosterFluid(Materials.SpaceTime, 2, BOOSTER_DRAIN),
-        new BoosterFluid(Materials.Eternity, 3, BOOSTER_DRAIN));
+        new BoosterFluid(Materials2Materials.Infinity, 1, BOOSTER_DRAIN),
+        new BoosterFluid(Materials2Materials.SpaceTime, 2, BOOSTER_DRAIN),
+        new BoosterFluid(Materials2Materials.Eternity, 3, BOOSTER_DRAIN));
 
     // without cryotheum, max speed up takes 5 minutes of running to reach max speed (50%)
     // with cryotheum, it takes 1 minute.
@@ -557,20 +559,20 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     // data class
     public static class BoosterFluid {
 
-        public Materials material;
+        public Material material;
         public int perfectOverclock;
         public int amount;
 
-        public BoosterFluid(Materials material, int perfectOverclock, int amount) {
+        public BoosterFluid(Material material, int perfectOverclock, int amount) {
             this.material = material;
             this.perfectOverclock = perfectOverclock;
             this.amount = amount;
         }
 
         public FluidStack getStack() {
-            FluidStack stack = material.getFluid(amount);
+            FluidStack stack = MU.fluid(material, amount);
             if (stack == null) {
-                return material.getMolten(amount);
+                return MU.molten(material, amount);
             }
             return stack;
         }

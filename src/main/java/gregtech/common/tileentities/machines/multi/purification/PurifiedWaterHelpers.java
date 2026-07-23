@@ -2,35 +2,38 @@ package gregtech.common.tileentities.machines.multi.purification;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.Material;
+
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTRecipe;
 
 public class PurifiedWaterHelpers {
 
-    public static Materials getPurifiedWaterTier(int tier) {
+    public static Material getPurifiedWaterTier(int tier) {
         return switch (tier) {
-            case 1 -> Materials.Grade1PurifiedWater;
-            case 2 -> Materials.Grade2PurifiedWater;
-            case 3 -> Materials.Grade3PurifiedWater;
-            case 4 -> Materials.Grade4PurifiedWater;
-            case 5 -> Materials.Grade5PurifiedWater;
-            case 6 -> Materials.Grade6PurifiedWater;
-            case 7 -> Materials.Grade7PurifiedWater;
-            case 8 -> Materials.Grade8PurifiedWater;
+            case 1 -> Materials2Materials.Grade1PurifiedWater;
+            case 2 -> Materials2Materials.Grade2PurifiedWater;
+            case 3 -> Materials2Materials.Grade3PurifiedWater;
+            case 4 -> Materials2Materials.Grade4PurifiedWater;
+            case 5 -> Materials2Materials.Grade5PurifiedWater;
+            case 6 -> Materials2Materials.Grade6PurifiedWater;
+            case 7 -> Materials2Materials.Grade7PurifiedWater;
+            case 8 -> Materials2Materials.Grade8PurifiedWater;
             default -> throw new IllegalStateException("Unexpected value: " + tier);
         };
     }
 
     public static int getWaterTier(FluidStack fluid) {
         if (fluid == null) return 0;
-        else if (fluid.isFluidEqual(Materials.Grade1PurifiedWater.getFluid(1_000))) return 1;
-        else if (fluid.isFluidEqual(Materials.Grade2PurifiedWater.getFluid(1_000))) return 2;
-        else if (fluid.isFluidEqual(Materials.Grade3PurifiedWater.getFluid(1_000))) return 3;
-        else if (fluid.isFluidEqual(Materials.Grade4PurifiedWater.getFluid(1_000))) return 4;
-        else if (fluid.isFluidEqual(Materials.Grade5PurifiedWater.getFluid(1_000))) return 5;
-        else if (fluid.isFluidEqual(Materials.Grade6PurifiedWater.getFluid(1_000))) return 6;
-        else if (fluid.isFluidEqual(Materials.Grade7PurifiedWater.getFluid(1_000))) return 7;
-        else if (fluid.isFluidEqual(Materials.Grade8PurifiedWater.getFluid(1_000))) return 8;
+        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade1PurifiedWater, 1_000))) return 1;
+        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade2PurifiedWater, 1_000))) return 2;
+        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade3PurifiedWater, 1_000))) return 3;
+        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade4PurifiedWater, 1_000))) return 4;
+        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade5PurifiedWater, 1_000))) return 5;
+        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade6PurifiedWater, 1_000))) return 6;
+        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade7PurifiedWater, 1_000))) return 7;
+        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade8PurifiedWater, 1_000))) return 8;
         else return 0;
     }
 

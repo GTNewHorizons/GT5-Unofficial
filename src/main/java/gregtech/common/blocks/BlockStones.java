@@ -3,8 +3,9 @@ package gregtech.common.blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class BlockStones extends BlockStonesAbstract {
@@ -13,12 +14,17 @@ public class BlockStones extends BlockStonesAbstract {
         super(ItemGranites.class, "gt.blockstones");
         setResistance(60.0F);
         for (int i = 0; i < 16; i++) {
-            GTOreDictUnificator
-                .registerOre(OrePrefixes.stone, i < 8 ? Materials.Marble : Materials.Basalt, new ItemStack(this, 1, i));
-            GTOreDictUnificator
-                .registerOre(OrePrefixes.block, i < 8 ? Materials.Marble : Materials.Basalt, new ItemStack(this, 1, i));
             GTOreDictUnificator.registerOre(
-                (i < 8 ? Materials.Marble.mName.toLowerCase() : Materials.Basalt.mName.toLowerCase()),
+                OrePrefixes.stone,
+                i < 8 ? Materials2Materials.Marble : Materials2Materials.Basalt,
+                new ItemStack(this, 1, i));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.block,
+                i < 8 ? Materials2Materials.Marble : Materials2Materials.Basalt,
+                new ItemStack(this, 1, i));
+            GTOreDictUnificator.registerOre(
+                MU.internalName(i < 8 ? Materials2Materials.Marble : Materials2Materials.Basalt)
+                    .toLowerCase(),
                 new ItemStack(this, 1, i));
         }
     }

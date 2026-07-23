@@ -33,17 +33,18 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
@@ -202,8 +203,8 @@ public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEn
         return 2048;
     }
 
-    protected Materials getBooster() {
-        return Materials.Oxygen;
+    protected Material getBooster() {
+        return Materials2Materials.Oxygen;
     }
 
     /**
@@ -268,7 +269,7 @@ public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEn
 
                 // Deplete that amount
                 if (!depleteInput(tLiquid)) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
-                boostEu = depleteInput(getBooster().getGas(2L * getAdditiveFactor()));
+                boostEu = depleteInput(MU.gas(getBooster(), 2L * getAdditiveFactor()));
 
                 // Check to prevent burning HOG without consuming it, if not boosted
                 if (!boostEu && fuelValue > getNominalOutput()) {

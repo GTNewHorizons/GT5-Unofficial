@@ -36,9 +36,11 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TieredVariant;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
@@ -134,7 +136,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         }
         if (aPlayer != null) {
             if (GTUtility.areStacksEqual(aPlayer.getCurrentEquippedItem(), new ItemStack(Items.water_bucket, 1))) {
-                fill(Materials.Water.getFluid(1000L * (long) aPlayer.getCurrentEquippedItem().stackSize), true);
+                fill(
+                    MU.fluid(Materials2Materials.Water, 1000L * (long) aPlayer.getCurrentEquippedItem().stackSize),
+                    true);
 
                 if (!aPlayer.capabilities.isCreativeMode) {
                     aPlayer.getCurrentEquippedItem()

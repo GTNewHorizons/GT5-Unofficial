@@ -13,9 +13,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -126,8 +128,8 @@ public class MTEExtremeDieselEngineLegacy extends MTEDieselEngineLegacy {
     }
 
     @Override
-    protected Materials getBooster() {
-        return Materials.LiquidOxygen;
+    protected Material getBooster() {
+        return Materials2Materials.LiquidOxygen;
     }
 
     @Override

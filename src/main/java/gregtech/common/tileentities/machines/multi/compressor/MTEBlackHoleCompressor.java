@@ -56,7 +56,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -67,6 +66,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -167,7 +167,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @SideOnly(Side.CLIENT)
     private SoundLoopAnyBlock blackholeSoundLoop;
 
-    private final FluidStack blackholeCatalyzingCost = (Materials.SpaceTime).getMolten(1);
+    private final FluidStack blackholeCatalyzingCost = MU.molten(Materials2Materials.SpaceTime, 1);
     private int catalyzingCostModifier = 1;
 
     public MTEBlackHoleCompressor(final int aID, final String aName, final String aNameRegional) {

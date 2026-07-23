@@ -42,9 +42,11 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -307,7 +309,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         if (!tInputList.isEmpty()) {
             if (isSuperheated()) {
                 for (ItemStack tInput : tInputList) {
-                    if (tInput != GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)) {
+                    if (tInput != GTOreDictUnificator.get(OrePrefixes.bucket, Materials2Materials.Lava, 1)) {
                         if (GTUtility.getFluidForFilledItem(tInput, true) == null
                             && (this.mMaxProgresstime = GTModHandler.getFuelValue(tInput) / 80) > 0) {
                             this.excessFuel += GTModHandler.getFuelValue(tInput) % 80;
@@ -329,7 +331,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 }
             } else {
                 for (ItemStack tInput : tInputList) {
-                    if (tInput != GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)) {
+                    if (tInput != GTOreDictUnificator.get(OrePrefixes.bucket, Materials2Materials.Lava, 1)) {
                         // Solid fuels with burn values below getEUt are ignored (mostly items like sticks), and also
                         // those with very high fuel values that would cause an overflow error.
                         if (GTUtility.getFluidForFilledItem(tInput, true) == null
@@ -388,7 +390,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 if (isSuperheated()) {
                     // Consumes only one third of the water if producing Superheated Steam, to maintain water in the
                     // chain.
-                    if (depleteInput(Materials.Water.getFluid(amount / superToNormalSteam))
+                    if (depleteInput(MU.fluid(Materials2Materials.Water, amount / superToNormalSteam))
                         || depleteInput(GTModHandler.getDistilledWater(amount / superToNormalSteam))) {
                         // Outputs Superheated Steam instead of Steam, at one third of the amount (equivalent in power
                         // output to the normal Steam amount).
@@ -399,7 +401,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                         explodeMultiblock();
                     }
                 } else {
-                    if (depleteInput(Materials.Water.getFluid(amount))
+                    if (depleteInput(MU.fluid(Materials2Materials.Water, amount))
                         || depleteInput(GTModHandler.getDistilledWater(amount))) {
                         addOutputPartial(Materials.Steam.getGas(tGeneratedEU));
                     } else {

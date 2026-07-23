@@ -57,6 +57,7 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.XSTR;
@@ -505,7 +506,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         processStep(
             stack -> simpleWasherRecipes.findRecipeQuery()
                 .items(stack)
-                .fluids(Materials.Water.getFluid(100))
+                .fluids(MU.fluid(Materials2Materials.Water, 100))
                 .find(),
             tables);
     }

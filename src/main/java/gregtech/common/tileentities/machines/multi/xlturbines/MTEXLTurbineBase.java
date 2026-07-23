@@ -33,11 +33,13 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
@@ -286,8 +288,8 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
         return Casings.ReinforcedSteamTurbineCasing;
     }
 
-    protected Materials getFrameMaterial() {
-        return Materials.Steel;
+    protected Material getFrameMaterial() {
+        return Materials2Materials.Steel;
     }
 
     protected Casings getRotorCasing() {

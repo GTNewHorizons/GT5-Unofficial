@@ -30,11 +30,11 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -43,6 +43,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
@@ -124,23 +125,15 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
         String boostedEfficiency = TooltipHelper.effText(1.5f);
         String waitPower = TooltipHelper.effText(3.0f);
 
-        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.DieselEngine.machine_type"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.desc1", lubricantRate))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.desc2", oxygenRate))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.DieselEngine.default_output",
-                    defaultOutput,
-                    defaultEfficiency))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.DieselEngine.boosted_output",
-                    boostedOutput,
-                    boostedEfficiency))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.wait_power", waitPower))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.DieselEngine.intake_warning"))
+        tt.addMachineType(GTUtility.translate("gt.multiblock.DieselEngine.machine_type"))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc1", lubricantRate))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc2", oxygenRate))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.default_output", defaultOutput, defaultEfficiency))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.boosted_output", boostedOutput, boostedEfficiency))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.wait_power", waitPower))
+            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.intake_warning"))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(8, 3, 3, false)
+            .beginStructureBlock(3, 8, 3, false)
             .addController("Front left, 2nd layer")
             .addCasing("21", "PTFE Frame Box", false)
             .addCasing("19", "Chemically Inert Machine Casing", false)
@@ -205,8 +198,8 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
         return 2048;
     }
 
-    protected Materials getBooster() {
-        return Materials.Oxygen;
+    protected Material getBooster() {
+        return Materials2Materials.Oxygen;
     }
 
     /**
@@ -269,9 +262,9 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
                     fuelConsumption = tLiquid.amount = getNominalOutput() / fuelValue;
                 }
 
-                // Deplete that amount, try next fuel if this one is insufficient
-                if (!depleteInput(tLiquid)) continue;
-                boostEu = depleteInput(getBooster().getGas(2L * getAdditiveFactor()));
+                // Deplete that amount
+                if (!depleteInput(tLiquid)) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+                boostEu = depleteInput(MU.gas(getBooster(), 2L * getAdditiveFactor()));
 
                 // Check to prevent burning HOG without consuming it, if not boosted
                 if (!boostEu && fuelValue > getNominalOutput()) {

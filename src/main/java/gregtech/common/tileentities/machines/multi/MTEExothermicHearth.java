@@ -49,10 +49,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -148,7 +148,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             GTStructureChannels.HEATING_COIL
                 .use(activeCoils(ofCoil(MTEExothermicHearth::setCoilLevel, MTEExothermicHearth::getCoilLevel))))
         .addElement('F', Casings.RadiantNaquadahAlloyCasing.asElement())
-        .addElement('G', ofFrame(Materials.PrismaticNaquadah))
+        .addElement('G', ofFrame(Materials2Materials.prismaticnaquadah))
         .addElement('H', Casings.ThermalContainmentCasing.asElement())
         .addElement(
             'I',

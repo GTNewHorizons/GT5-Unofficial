@@ -47,7 +47,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -56,6 +55,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -158,7 +158,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
     private int base_parallel = 8;
     private static final FluidStack[] valid_rubbers = {
         MaterialLibAPI.getFluidStack(Materials2Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (1)),
-        Materials.RubberSilicone.getMolten(1L), MaterialLibAPI
+        MU.molten(Materials2Materials.Silicone, 1L), MaterialLibAPI
             .getFluidStack(Materials2Materials.StyreneButadieneRubber, Materials2FluidShapes.fluidMolten, (int) (1)) };
 
     @Override

@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
@@ -45,8 +46,8 @@ public class MTEXLTurbineHPSteam extends MTEXLTurbineBase {
     }
 
     @Override
-    protected Materials getFrameMaterial() {
-        return Materials.Titanium;
+    protected Material getFrameMaterial() {
+        return Materials2Materials.Titanium;
     }
 
     @Override

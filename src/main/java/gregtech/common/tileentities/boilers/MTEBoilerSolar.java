@@ -16,12 +16,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
@@ -118,7 +119,7 @@ public class MTEBoilerSolar extends MTEBoiler {
     protected void produceSteam(int aAmount) {
         super.produceSteam(aAmount);
         // Disable calcification when using distilled water
-        if (mFluid.isFluidEqual(Materials.Water.getFluid(1))) {
+        if (mFluid.isFluidEqual(MU.fluid(Materials2Materials.Water, 1))) {
             // produceSteam is getting called every 10 ticks
             if (mRunTimeTicks >= 0 && mRunTimeTicks < (Integer.MAX_VALUE - 10)) mRunTimeTicks += 10;
             else mRunTimeTicks = Integer.MAX_VALUE; // Prevent Integer overflow wrap

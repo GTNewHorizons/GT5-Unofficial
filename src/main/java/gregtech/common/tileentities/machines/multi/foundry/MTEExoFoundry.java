@@ -60,6 +60,7 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
@@ -77,6 +78,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -109,9 +111,9 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     implements ISurvivalConstructable, IMTERenderer, I3DGeometryRenderer, ICasingTextureProvider {
 
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
-        new CoolingFluid(Materials.SuperCoolant, 1, 100),
-        new CoolingFluid(Materials.SpaceTime, 2, 50),
-        new CoolingFluid(Materials.Eternity, 3, 25));
+        new CoolingFluid(Materials2Materials.SuperCoolant, 1, 100),
+        new CoolingFluid(Materials2Materials.SpaceTime, 2, 50),
+        new CoolingFluid(Materials2Materials.Eternity, 3, 25));
 
     private final ArrayList<MTEHatchInput> coolantHatches = new ArrayList<>();
     private CoolingFluid currentCoolingFluid = null;
@@ -362,7 +364,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('Q', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
         .addElement('R', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
         .addElement('S', ofFrame(Materials2Materials.Universium))
-        .addElement('T', ofFrame(Materials.MHDCSM))
+        .addElement('T', ofFrame(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter))
         .addElement('U', ofFrame(Materials2Materials.WhiteDwarfMatter))
         .addElement('V', ofFrame(Materials2Materials.BlackDwarfMatter))
         .addElement('W', ofBlock(GregTechAPI.sBlockMetal9, 6))
@@ -715,8 +717,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
                 if (foundryData.hypercoolerPresent) {
                     currentCoolingFluid = findCoolingFluid();
-                    if (currentCoolingFluid == null
-                        || (currentCoolingFluid.material == Materials.Eternity && !foundryData.allowEternity)) {
+                    if (currentCoolingFluid == null || (currentCoolingFluid.material == Materials2Materials.Eternity
+                        && !foundryData.allowEternity)) {
                         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                     }
                     additionalOverclocks = currentCoolingFluid.grantedOC;
@@ -1043,20 +1045,20 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     // data class
     public static class CoolingFluid {
 
-        public Materials material;
+        public Material material;
         public int grantedOC;
         public int amount;
 
-        public CoolingFluid(Materials material, int grantedOC, int amount) {
+        public CoolingFluid(Material material, int grantedOC, int amount) {
             this.material = material;
             this.grantedOC = grantedOC;
             this.amount = amount;
         }
 
         public FluidStack getStack() {
-            FluidStack stack = material.getFluid(amount);
+            FluidStack stack = MU.fluid(material, amount);
             if (stack == null) {
-                return material.getMolten(amount);
+                return MU.molten(material, amount);
             }
             return stack;
         }

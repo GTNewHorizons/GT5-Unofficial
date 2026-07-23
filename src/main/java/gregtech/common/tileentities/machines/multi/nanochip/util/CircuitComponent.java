@@ -11,9 +11,9 @@ import net.minecraft.item.ItemStack;
 
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Superconductors;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -30,11 +30,11 @@ public enum CircuitComponent {
     WireNiobiumTitanium(
         0,
         "gt.circuitcomponent.wirenbti",
-        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials2Materials.NiobiumTitanium, 1)),
     WireYttriumBariumCuprate(
         1,
         "gt.circuitcomponent.wireybc",
-        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.YttriumBariumCuprate, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials2Materials.YttriumBariumCuprate, 1)),
     WireLumiium(
         2,
         "gt.circuitcomponent.wirelumiium",
@@ -42,11 +42,11 @@ public enum CircuitComponent {
     WireProtoHalkonite(
         3,
         "gt.circuitcomponent.wireprotohalkonite",
-        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.ProtoHalkonite, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials2Materials.protohalkonite, 1)),
     WireSpacetime(
         4,
         "gt.circuitcomponent.wirespacetime",
-        () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Materials.SpaceTime, 1)),
     CableOpticalFiber(
         5,
         "gt.circuitcomponent.cable.opticalfiber",
@@ -54,7 +54,7 @@ public enum CircuitComponent {
     WireInfinity(
         6,
         "gt.circuitcomponent.wireinfinity",
-        () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Infinity, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Materials.Infinity, 1)),
     WireHypogen(
         7,
         "gt.circuitcomponent.wirehypogen",
@@ -62,7 +62,7 @@ public enum CircuitComponent {
     WireMagMatter(
         8,
         "gt.circuitcomponent.wiremagmatter",
-        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.MagMatter, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials2Materials.Magmatter, 1)),
 
     ProcessedWireNiobiumTitanium(100, "gt.circuitcomponent.processed.wirenbti", () -> WireNiobiumTitanium, true),
     ProcessedWireYttriumBariumCuprate(101, "gt.circuitcomponent.processed.wireybc", () -> WireYttriumBariumCuprate, true),
@@ -310,11 +310,11 @@ public enum CircuitComponent {
     FrameboxAluminium(
         1400,
         "gt.circuitcomponent.frame.aluminium",
-        () -> GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Aluminium, 1)),
     FrameboxTritanium(
         1401,
         "gt.circuitcomponent.frame.tritanium",
-        () -> GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Tritanium, 1)),
     FrameboxCelestialTungsten(
         1402,
         "gt.circuitcomponent.frame.celestialtungsten",
@@ -326,7 +326,7 @@ public enum CircuitComponent {
     FrameboxMagMatter(
         1404,
         "gt.circuitcomponent.frame.magmatter",
-        () -> GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MagMatter, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Magmatter, 1)),
 
     ProcessedFrameboxAluminium(1500, "gt.circuitcomponent.processed.frame.aluminium", () -> FrameboxAluminium, true),
     ProcessedFrameboxTritanium(1501, "gt.circuitcomponent.processed.frame.tritanium", () -> FrameboxTritanium, true),
@@ -339,15 +339,15 @@ public enum CircuitComponent {
     FoilSiliconeRubber(
         1600,
         "gt.circuitcomponent.sheet.siliconerubber",
-        () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials2Materials.Silicone, 1)),
     FoilPolybenzimidazole(
         1601,
         "gt.circuitcomponent.sheet.polybenzimidazole",
-        () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials2Materials.Polybenzimidazole, 1)),
     FoilRadoxPolymer(
         1602,
         "gt.circuitcomponent.sheet.radoxpolymer",
-        () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials.RadoxPolymer, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials2Materials.RadoxPoly, 1)),
     FoilShirabon(
         1603,
         "gt.circuitcomponent.sheet.shirabon",
@@ -355,11 +355,11 @@ public enum CircuitComponent {
     FoilStyreneRubber(
         1604,
         "gt.circuitcomponent.sheet.styrenebutadienerubber",
-        () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials.StyreneButadieneRubber, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials2Materials.StyreneButadieneRubber, 1)),
     FoilEternity(
         1605,
         "gt.circuitcomponent.sheet.eternity",
-        () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials.Eternity, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials2Materials.Eternity, 1)),
 
     ProcessedFoilSiliconeRubber(1700, "gt.circuitcomponent.sheet.processed.siliconerubber", () -> FoilSiliconeRubber, true),
     ProcessedFoilPolybenzimidazole(1701, "gt.circuitcomponent.sheet.processed.polybenzimidazole", () -> FoilPolybenzimidazole, true),
@@ -381,19 +381,19 @@ public enum CircuitComponent {
     BoltEnrichedHolmium(
         1900,
         "gt.circuitcomponent.bolt.enrichedholmium",
-        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.EnrichedHolmium, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials2Materials.EnrichedHolmium, 1)),
     BoltTranscendentMetal(
         1901,
         "gt.circuitcomponent.bolt.transcendentmetal",
-        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.TranscendentMetal, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials2Materials.TranscendentMetal, 1)),
     BoltYttriumBariumCuprate(
         1902,
         "gt.circuitcomponent.bolt.yttriumbariumcuprate",
-        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.YttriumBariumCuprate, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials2Materials.YttriumBariumCuprate, 1)),
     BoltCosmicNeutronium(
         1903,
         "gt.circuitcomponent.bolt.cosmicneutronium",
-        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.CosmicNeutronium, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials2Materials.CosmicNeutronium, 1)),
     BoltChromaticGlass(
         1904,
         "gt.circuitcomponent.bolt.chromaticglass",
@@ -401,7 +401,7 @@ public enum CircuitComponent {
     BoltUMVSuperconductor(
         1905,
         "gt.circuitcomponent.bolt.umvsuperconductor",
-        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.SuperconductorUMVBase, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials2Materials.SuperconductorUMVBase, 1)),
     PlateMetastableOganesson(
         1906,
         "gt.circuitcomponent.plate.metastableoganesson",
@@ -413,15 +413,15 @@ public enum CircuitComponent {
     CasingUEVSuperconductor(
         1908,
         "gt.circuitcomponent.casing.uevsuperconductor",
-        () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.SuperconductorUEVBase, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials2Materials.SuperconductorUEVBase, 1)),
     ScrewSixPhasedCopper(
         1909,
         "gt.circuitcomponent.screw.sixphasedcopper",
-        () -> GTOreDictUnificator.get(OrePrefixes.screw, Materials.SixPhasedCopper, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.screw, Materials2Materials.SixPhasedCopper, 1)),
     CasingCreon(
         1910,
         "gt.circuitcomponent.casing.creon",
-        () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Creon, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials2Materials.Creon, 1)),
     PlateRhugnor(
         1911,
         "gt.circuitcomponent.plate.rhugnor",
@@ -429,23 +429,23 @@ public enum CircuitComponent {
     BoltWhiteDwarfMatter(
         1912,
         "gt.circuitcomponent.bolt.whitedwarfmatter",
-        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.WhiteDwarfMatter, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials2Materials.WhiteDwarfMatter, 1)),
     PlateHexanite(
         1913,
         "gt.circuitcomponent.plate.hexanite",
-        () -> GTOreDictUnificator.get(OrePrefixes.plate, Materials.Hexanite, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.plate, Materials2Materials.Hexanite, 1)),
     CasingBlackDwarfMatter(
         1914,
         "gt.circuitcomponent.casing.blackdwarfmatter",
-        () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.BlackDwarfMatter, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials2Materials.BlackDwarfMatter, 1)),
     CasingEternity(
         1915,
         "gt.circuitcomponent.casing.eternity",
-        () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Eternity, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials2Materials.Eternity, 1)),
     ScrewUniversium(
         1916,
         "gt.circuitcomponent.casing.universium",
-        () -> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Universium, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.screw, Materials2Materials.Universium, 1)),
     ThermalSuperconductor(
         1917,
         "gt.circuitcomponent.thermalsuperconductor",

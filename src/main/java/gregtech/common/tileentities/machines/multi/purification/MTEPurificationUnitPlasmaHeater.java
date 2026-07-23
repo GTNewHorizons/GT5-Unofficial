@@ -34,6 +34,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
@@ -42,12 +43,14 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
@@ -109,8 +112,8 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     // Point at which the heating point of the cycle is reached
     public static final long HEATING_POINT = 10000;
 
-    private static final Materials plasmaMaterial = Materials.Helium;
-    private static final Materials coolantMaterial = Materials.SuperCoolant;
+    private static final Material plasmaMaterial = Materials2Materials.Helium;
+    private static final Material coolantMaterial = Materials2Materials.SuperCoolant;
 
     private MTEHatchInput plasmaInputHatch;
     private MTEHatchInput coolantInputHatch;
@@ -167,7 +170,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             }
         }))
         // Superconductor Base ZPM frame box
-        .addElement('G', ofFrame(Materials.SuperconductorZPMBase))
+        .addElement('G', ofFrame(Materials2Materials.Tetranaquadahdiindiumhexaplatiumosminid))
         // Coolant input hatch
         .addElement(
             'K',
@@ -292,7 +295,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + MAX_PLASMA_PER_SEC
                     + "L/s "
                     + EnumChatFormatting.WHITE
-                    + plasmaMaterial.getPlasma(1)
+                    + MU.plasma(plasmaMaterial, 1)
                         .getLocalizedName()
                     + EnumChatFormatting.GRAY
                     + " and up to "
@@ -300,7 +303,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + MAX_COOLANT_PER_SEC
                     + "L/s "
                     + EnumChatFormatting.WHITE
-                    + coolantMaterial.getFluid(1)
+                    + MU.fluid(coolantMaterial, 1)
                         .getLocalizedName())
             .addInfo(
                 EnumChatFormatting.RED + "Raises "
@@ -401,10 +404,10 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         super.runMachine(aBaseMetaTileEntity, aTick);
         if (mMaxProgresstime > 0 && aTick % CONSUME_INTERVAL == 0) {
             // Drain plasma and coolant up to limited amount per second
-            long plasmaDrained = drainFluidLimited(plasmaInputHatch, plasmaMaterial.getPlasma(1L), MAX_PLASMA_PER_SEC);
+            long plasmaDrained = drainFluidLimited(plasmaInputHatch, MU.plasma(plasmaMaterial, 1L), MAX_PLASMA_PER_SEC);
             long coolantDrained = drainFluidLimited(
                 coolantInputHatch,
-                coolantMaterial.getFluid(1L),
+                MU.fluid(coolantMaterial, 1L),
                 MAX_COOLANT_PER_SEC);
             // Calculate temperature change
             long tempChance = plasmaDrained * PLASMA_TEMP_PER_LITER + coolantDrained * COOLANT_TEMP_PER_LITER;

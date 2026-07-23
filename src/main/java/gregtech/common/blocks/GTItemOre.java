@@ -12,6 +12,8 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTDataUtils;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
@@ -75,6 +77,6 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
         int metadata = itemStack.getItemDamage();
         int matId = blockOre.getMaterialIndex(metadata);
 
-        return matId == Materials.Firestone.mMetaItemSubID;
+        return matId == MU.oldSubId(Materials2Materials.Firestone);
     }
 }
