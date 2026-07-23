@@ -75,8 +75,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.BUZZSAW_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 100000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
@@ -88,8 +88,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.BUZZSAW_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 75000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
@@ -101,8 +101,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.BUZZSAW_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 50000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
@@ -114,8 +114,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.BUZZSAW_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 400000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
@@ -127,8 +127,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.BUZZSAW_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 300000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
@@ -140,8 +140,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.BUZZSAW_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 200000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
@@ -153,8 +153,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.BUZZSAW_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 1600000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
@@ -166,8 +166,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.BUZZSAW_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 1200000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
@@ -179,8 +179,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.BUZZSAW_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 800000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
@@ -198,8 +198,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.CHAINSAW_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 100000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
@@ -211,8 +211,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.CHAINSAW_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 75000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
@@ -224,8 +224,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.CHAINSAW_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 50000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
@@ -237,8 +237,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.CHAINSAW_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 400000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
@@ -250,8 +250,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.CHAINSAW_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 300000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
@@ -263,8 +263,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.CHAINSAW_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 200000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
@@ -276,8 +276,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.CHAINSAW_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 1600000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
@@ -289,8 +289,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.CHAINSAW_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 1200000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
@@ -302,8 +302,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.CHAINSAW_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 800000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
@@ -323,8 +323,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.DRILL_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 100_000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
@@ -336,8 +336,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.DRILL_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 75_000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
@@ -349,8 +349,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.DRILL_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 50_000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
@@ -362,8 +362,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.DRILL_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 400_000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
@@ -375,8 +375,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.DRILL_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 300_000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
@@ -388,8 +388,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.DRILL_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 200_000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
@@ -401,8 +401,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.DRILL_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 1_600_000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
@@ -414,8 +414,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.DRILL_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 1_200_000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
@@ -427,8 +427,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.DRILL_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 800_000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
@@ -441,8 +441,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.JACKHAMMER_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 100_000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -453,8 +453,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.JACKHAMMER_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 75_000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -465,8 +465,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.JACKHAMMER_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 50_000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -478,8 +478,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.JACKHAMMER_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 400_000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -491,8 +491,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.JACKHAMMER_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 300_000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -504,8 +504,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.JACKHAMMER_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 200_000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -518,8 +518,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.JACKHAMMER_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 1_600_000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -532,8 +532,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.JACKHAMMER_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 1_200_000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -546,8 +546,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.JACKHAMMER_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 800_000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "PRP", "MPB", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -586,12 +586,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             case "toolHeadFile" -> {
                 if (belowProcessingTierIV) {
                     GTModHandler.addShapelessCraftingRecipe(
-                        MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                            IDMetaTool01.FILE.ID,
-                            1,
-                            legacyMaterial,
-                            MU.materialOf(MU.handleMaterial(material)),
-                            null),
+                        MetaGeneratedTool01.INSTANCE
+                            .getToolWithStats(IDMetaTool01.FILE.ID, 1, material, MU.handleMaterial(material), null),
                         new Object[] { oreDictName,
                             OrePrefixes.stick.ingredient(MU.materialOf(MU.handleMaterial(material))) });
 
@@ -602,8 +598,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                                     IDMetaTool01.FILE.ID,
                                     1,
-                                    legacyMaterial,
-                                    MU.materialOf(MU.handleMaterial(material)),
+                                    material,
+                                    MU.handleMaterial(material),
                                     null),
                                 GTModHandler.RecipeBits.MIRRORED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                                     | GTModHandler.RecipeBits.BUFFERED,
@@ -619,12 +615,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GTOreDictUnificator.get(OrePrefixes.toolHeadFile, material, 1L))
                         .circuit(15)
                         .itemOutputs(
-                            MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                                IDMetaTool01.FILE.ID,
-                                1,
-                                legacyMaterial,
-                                MU.materialOf(MU.handleMaterial(material)),
-                                null))
+                            MetaGeneratedTool01.INSTANCE
+                                .getToolWithStats(IDMetaTool01.FILE.ID, 1, material, MU.handleMaterial(material), null))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(material, (int) TierEU.RECIPE_MV))
                         .addTo(assemblerRecipes);
@@ -634,12 +626,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if (belowProcessingTierIV) {
 
                     GTModHandler.addShapelessCraftingRecipe(
-                        MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                            IDMetaTool01.SAW.ID,
-                            1,
-                            legacyMaterial,
-                            MU.materialOf(MU.handleMaterial(material)),
-                            null),
+                        MetaGeneratedTool01.INSTANCE
+                            .getToolWithStats(IDMetaTool01.SAW.ID, 1, material, MU.handleMaterial(material), null),
                         new Object[] { oreDictName,
                             OrePrefixes.stick.ingredient(MU.materialOf(MU.handleMaterial(material))) });
 
@@ -661,12 +649,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GTOreDictUnificator.get(OrePrefixes.toolHeadSaw, material, 1L))
                         .circuit(7)
                         .itemOutputs(
-                            MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                                IDMetaTool01.SAW.ID,
-                                1,
-                                legacyMaterial,
-                                MU.materialOf(MU.handleMaterial(material)),
-                                null))
+                            MetaGeneratedTool01.INSTANCE
+                                .getToolWithStats(IDMetaTool01.SAW.ID, 1, material, MU.handleMaterial(material), null))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(material, (int) TierEU.RECIPE_MV))
                         .addTo(assemblerRecipes);
@@ -677,8 +661,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.WRENCH_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 100000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
@@ -690,8 +674,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.WRENCH_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 75000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
@@ -703,8 +687,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.WRENCH_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 50000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
@@ -716,8 +700,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.WRENCH_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 400000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
@@ -729,8 +713,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.WRENCH_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 300000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
@@ -742,8 +726,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.WRENCH_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 200000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
@@ -755,8 +739,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.WRENCH_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 1600000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
@@ -768,8 +752,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.WRENCH_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 1200000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
@@ -781,8 +765,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.WRENCH_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 800000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
@@ -794,8 +778,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SCREWDRIVER_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 100000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -807,8 +791,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SCREWDRIVER_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 75000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -820,8 +804,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SCREWDRIVER_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 50000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -833,8 +817,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SCREWDRIVER_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 400000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -846,8 +830,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SCREWDRIVER_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 300000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -859,8 +843,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SCREWDRIVER_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 200000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -872,8 +856,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SCREWDRIVER_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 1600000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -885,8 +869,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SCREWDRIVER_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 1200000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -898,8 +882,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SCREWDRIVER_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 800000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(OrePrefixes.stickLong, material), 'M',
@@ -1057,8 +1041,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.FILE_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 100000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
@@ -1070,8 +1054,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.FILE_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 75000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
@@ -1083,8 +1067,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.FILE_LV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Steel,
+                        material,
+                        MU.material(Materials.Steel),
                         new long[] { 50000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
@@ -1097,8 +1081,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.FILE_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 400000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
@@ -1111,8 +1095,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.FILE_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 300000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
@@ -1125,8 +1109,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.FILE_MV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.Aluminium,
+                        material,
+                        MU.material(Materials.Aluminium),
                         new long[] { 200000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
@@ -1140,8 +1124,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.FILE_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 1600000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
@@ -1154,8 +1138,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.FILE_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 1200000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
@@ -1168,8 +1152,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.FILE_HV.ID,
                         1,
-                        legacyMaterial,
-                        Materials.StainlessSteel,
+                        material,
+                        MU.material(Materials.StainlessSteel),
                         new long[] { 800000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
@@ -1199,8 +1183,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                                 producesSoftMallet ? IDMetaTool01.SOFTMALLET.ID : IDMetaTool01.HARDHAMMER.ID,
                                 1,
-                                legacyMaterial,
-                                MU.materialOf(MU.handleMaterial(material)),
+                                material,
+                                MU.handleMaterial(material),
                                 null))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(material, (int) TierEU.RECIPE_MV))
@@ -1211,8 +1195,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         MetaGeneratedTool01.INSTANCE.getToolWithStats(
                             producesSoftMallet ? IDMetaTool01.SOFTMALLET.ID : IDMetaTool01.HARDHAMMER.ID,
                             1,
-                            legacyMaterial,
-                            MU.materialOf(MU.handleMaterial(material)),
+                            material,
+                            MU.handleMaterial(material),
                             null),
                         GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { oreDictName,
@@ -1221,8 +1205,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         MetaGeneratedTool01.INSTANCE.getToolWithStats(
                             producesSoftMallet ? IDMetaTool01.SOFTMALLET.ID : IDMetaTool01.HARDHAMMER.ID,
                             1,
-                            legacyMaterial,
-                            MU.materialOf(MU.handleMaterial(material)),
+                            material,
+                            MU.handleMaterial(material),
                             null),
                         GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "XX ", "XXS", "XX ", 'X',
@@ -1233,8 +1217,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         MetaGeneratedTool01.INSTANCE.getToolWithStats(
                             producesSoftMallet ? IDMetaTool01.SOFTMALLET.ID : IDMetaTool01.HARDHAMMER.ID,
                             1,
-                            legacyMaterial,
-                            MU.materialOf(MU.handleMaterial(material)),
+                            material,
+                            MU.handleMaterial(material),
                             null),
                         GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "XX ", "XXS", "XX ", 'X',

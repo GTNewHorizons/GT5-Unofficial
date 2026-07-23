@@ -70,12 +70,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             if (!werkstoff.getGenerationFeatures()
                 .isExtension())
                 GTModHandler.addCraftingRecipe(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                        IDMetaTool01.HARDHAMMER.ID,
-                        1,
-                        MU.materialOf(material),
-                        MU.materialOf(MU.handleMaterial(material)),
-                        null),
+                    MetaGeneratedTool01.INSTANCE
+                        .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, material, MU.handleMaterial(material), null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "XX ", "XXS", "XX ", 'X', MU.craftIngredient(gem, material), 'S',
                         stick.ingredient(MU.materialOf(MU.handleMaterial(material))) });
@@ -91,12 +87,8 @@ public class ToolLoader implements IWerkstoffRunnable {
         if (!werkstoff.getGenerationFeatures()
             .isExtension()) {
             GTModHandler.addCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    IDMetaTool01.SCREWDRIVER.ID,
-                    1,
-                    MU.materialOf(material),
-                    MU.materialOf(MU.handleMaterial(material)),
-                    null),
+                MetaGeneratedTool01.INSTANCE
+                    .getToolWithStats(IDMetaTool01.SCREWDRIVER.ID, 1, material, MU.handleMaterial(material), null),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { " fS", " Sh", "W  ", 'S', MU.craftIngredient(stick, material), 'W',
                     stick.ingredient(MU.materialOf(MU.handleMaterial(material))) });
@@ -108,33 +100,21 @@ public class ToolLoader implements IWerkstoffRunnable {
                     ring.ingredient(MU.materialOf(MU.handleMaterial(material))), 'W',
                     screw.ingredient(MU.materialOf(MU.handleMaterial(material))) });
             GTModHandler.addShapelessCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    IDMetaTool01.HARDHAMMER.ID,
-                    1,
-                    MU.materialOf(material),
-                    MU.materialOf(MU.handleMaterial(material)),
-                    null),
+                MetaGeneratedTool01.INSTANCE
+                    .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, material, MU.handleMaterial(material), null),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { MU.craftIngredient(toolHeadHammer, material),
                     stick.ingredient(MU.materialOf(MU.handleMaterial(material))) });
             GTModHandler.addCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    IDMetaTool01.FILE.ID,
-                    1,
-                    MU.materialOf(material),
-                    MU.materialOf(MU.handleMaterial(material)),
-                    null),
+                MetaGeneratedTool01.INSTANCE
+                    .getToolWithStats(IDMetaTool01.FILE.ID, 1, material, MU.handleMaterial(material), null),
                 GTModHandler.RecipeBits.MIRRORED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                     | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "P", "P", "S", 'P', MU.craftIngredient(plate, material), 'S',
                     stick.ingredient(MU.materialOf(MU.handleMaterial(material))) });
             GTModHandler.addShapelessCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    IDMetaTool01.SAW.ID,
-                    1,
-                    MU.materialOf(material),
-                    MU.materialOf(MU.handleMaterial(material)),
-                    null),
+                MetaGeneratedTool01.INSTANCE
+                    .getToolWithStats(IDMetaTool01.SAW.ID, 1, material, MU.handleMaterial(material), null),
                 new Object[] { MU.craftIngredient(toolHeadSaw, material),
                     stick.ingredient(MU.materialOf(MU.handleMaterial(material))) });
 
@@ -143,8 +123,8 @@ public class ToolLoader implements IWerkstoffRunnable {
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                     IDMetaTool01.SOLDERING_IRON_LV.ID,
                     1,
-                    MU.materialOf(material),
-                    Materials.Rubber,
+                    material,
+                    MU.material(Materials.Rubber),
                     new long[] { 100000L, 32L, 1L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
@@ -155,8 +135,8 @@ public class ToolLoader implements IWerkstoffRunnable {
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                     IDMetaTool01.SOLDERING_IRON_LV.ID,
                     1,
-                    MU.materialOf(material),
-                    Materials.Rubber,
+                    material,
+                    MU.material(Materials.Rubber),
                     new long[] { 75000L, 32L, 1L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
@@ -167,8 +147,8 @@ public class ToolLoader implements IWerkstoffRunnable {
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                     IDMetaTool01.SOLDERING_IRON_LV.ID,
                     1,
-                    MU.materialOf(material),
-                    Materials.Rubber,
+                    material,
+                    MU.material(Materials.Rubber),
                     new long[] { 50000L, 32L, 1L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
@@ -180,8 +160,8 @@ public class ToolLoader implements IWerkstoffRunnable {
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                     SOLDERING_IRON_MV,
                     1,
-                    MU.materialOf(material),
-                    Materials.Rubber,
+                    material,
+                    MU.material(Materials.Rubber),
                     new long[] { 400000L, 128L, 2L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
@@ -192,8 +172,8 @@ public class ToolLoader implements IWerkstoffRunnable {
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                     SOLDERING_IRON_MV,
                     1,
-                    MU.materialOf(material),
-                    Materials.Rubber,
+                    material,
+                    MU.material(Materials.Rubber),
                     new long[] { 300000L, 128L, 2L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
@@ -204,8 +184,8 @@ public class ToolLoader implements IWerkstoffRunnable {
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                     SOLDERING_IRON_MV,
                     1,
-                    MU.materialOf(material),
-                    Materials.Rubber,
+                    material,
+                    MU.material(Materials.Rubber),
                     new long[] { 200000L, 128L, 2L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
@@ -217,8 +197,8 @@ public class ToolLoader implements IWerkstoffRunnable {
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                     SOLDERING_IRON_HV,
                     1,
-                    MU.materialOf(material),
-                    Materials.StyreneButadieneRubber,
+                    material,
+                    MU.material(Materials.StyreneButadieneRubber),
                     new long[] { 1600000L, 512L, 3L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
@@ -229,8 +209,8 @@ public class ToolLoader implements IWerkstoffRunnable {
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                     SOLDERING_IRON_HV,
                     1,
-                    MU.materialOf(material),
-                    Materials.StyreneButadieneRubber,
+                    material,
+                    MU.material(Materials.StyreneButadieneRubber),
                     new long[] { 1200000L, 512L, 3L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
@@ -241,8 +221,8 @@ public class ToolLoader implements IWerkstoffRunnable {
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                     SOLDERING_IRON_HV,
                     1,
-                    MU.materialOf(material),
-                    Materials.StyreneButadieneRubber,
+                    material,
+                    MU.material(Materials.StyreneButadieneRubber),
                     new long[] { 800000L, 512L, 3L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
@@ -252,12 +232,8 @@ public class ToolLoader implements IWerkstoffRunnable {
 
             if (!werkstoff.hasItemType(gem)) {
                 GTModHandler.addCraftingRecipe(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                        IDMetaTool01.HARDHAMMER.ID,
-                        1,
-                        MU.materialOf(material),
-                        MU.materialOf(MU.handleMaterial(material)),
-                        null),
+                    MetaGeneratedTool01.INSTANCE
+                        .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, material, MU.handleMaterial(material), null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "XX ", "XXS", "XX ", 'X', MU.craftIngredient(ingot, material), 'S',
                         stick.ingredient(MU.materialOf(MU.handleMaterial(material))) });
@@ -308,8 +284,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WRENCH_LV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Steel,
+                material,
+                MU.material(Materials.Steel),
                 new long[] { 100000L, 32L, 1L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXd", "GMG", "PBP", 'X', MU.craftIngredient(toolHeadWrench, material), 'M',
@@ -320,8 +296,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WRENCH_LV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Steel,
+                material,
+                MU.material(Materials.Steel),
                 new long[] { 75000L, 32L, 1L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXd", "GMG", "PBP", 'X', MU.craftIngredient(toolHeadWrench, material), 'M',
@@ -332,8 +308,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WRENCH_LV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Steel,
+                material,
+                MU.material(Materials.Steel),
                 new long[] { 50000L, 32L, 1L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXd", "GMG", "PBP", 'X', MU.craftIngredient(toolHeadWrench, material), 'M',
@@ -344,8 +320,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WRENCH_MV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Aluminium,
+                material,
+                MU.material(Materials.Aluminium),
                 new long[] { 400000L, 128L, 2L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXd", "GMG", "PBP", 'X', MU.craftIngredient(toolHeadWrench, material), 'M',
@@ -356,8 +332,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WRENCH_MV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Aluminium,
+                material,
+                MU.material(Materials.Aluminium),
                 new long[] { 300000L, 128L, 2L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXd", "GMG", "PBP", 'X', MU.craftIngredient(toolHeadWrench, material), 'M',
@@ -368,8 +344,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WRENCH_MV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Aluminium,
+                material,
+                MU.material(Materials.Aluminium),
                 new long[] { 200000L, 128L, 2L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXd", "GMG", "PBP", 'X', MU.craftIngredient(toolHeadWrench, material), 'M',
@@ -380,8 +356,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WRENCH_HV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.StainlessSteel,
+                material,
+                MU.material(Materials.StainlessSteel),
                 new long[] { 1600000L, 512L, 3L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXd", "GMG", "PBP", 'X', MU.craftIngredient(toolHeadWrench, material), 'M',
@@ -392,8 +368,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WRENCH_HV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.StainlessSteel,
+                material,
+                MU.material(Materials.StainlessSteel),
                 new long[] { 1200000L, 512L, 3L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXd", "GMG", "PBP", 'X', MU.craftIngredient(toolHeadWrench, material), 'M',
@@ -404,8 +380,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WRENCH_HV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.StainlessSteel,
+                material,
+                MU.material(Materials.StainlessSteel),
                 new long[] { 800000L, 512L, 3L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXd", "GMG", "PBP", 'X', MU.craftIngredient(toolHeadWrench, material), 'M',
@@ -418,8 +394,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WIRECUTTER_LV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Steel,
+                material,
+                MU.material(Materials.Steel),
                 new long[] { 100000L, 32L, 1L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXS", "GMG", "PBP", 'X',
@@ -431,8 +407,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WIRECUTTER_LV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Steel,
+                material,
+                MU.material(Materials.Steel),
                 new long[] { 75000L, 32L, 1L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXS", "GMG", "PBP", 'X',
@@ -444,8 +420,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WIRECUTTER_LV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Steel,
+                material,
+                MU.material(Materials.Steel),
                 new long[] { 50000L, 32L, 1L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXS", "GMG", "PBP", 'X',
@@ -458,8 +434,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WIRECUTTER_MV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Aluminium,
+                material,
+                MU.material(Materials.Aluminium),
                 new long[] { 400000L, 128L, 2L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXS", "GMG", "PBP", 'X',
@@ -471,8 +447,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WIRECUTTER_MV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Aluminium,
+                material,
+                MU.material(Materials.Aluminium),
                 new long[] { 300000L, 128L, 2L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXS", "GMG", "PBP", 'X',
@@ -484,8 +460,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WIRECUTTER_MV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Aluminium,
+                material,
+                MU.material(Materials.Aluminium),
                 new long[] { 200000L, 128L, 2L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXS", "GMG", "PBP", 'X',
@@ -498,8 +474,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WIRECUTTER_HV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.StainlessSteel,
+                material,
+                MU.material(Materials.StainlessSteel),
                 new long[] { 1600000L, 512L, 3L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXS", "GMG", "PBP", 'X',
@@ -511,8 +487,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WIRECUTTER_HV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.StainlessSteel,
+                material,
+                MU.material(Materials.StainlessSteel),
                 new long[] { 1200000L, 512L, 3L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXS", "GMG", "PBP", 'X',
@@ -524,8 +500,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.WIRECUTTER_HV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.StainlessSteel,
+                material,
+                MU.material(Materials.StainlessSteel),
                 new long[] { 800000L, 512L, 3L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXS", "GMG", "PBP", 'X',
@@ -539,8 +515,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.FILE_LV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Steel,
+                material,
+                MU.material(Materials.Steel),
                 new long[] { 100000L, 32L, 1L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
@@ -551,8 +527,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.FILE_LV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Steel,
+                material,
+                MU.material(Materials.Steel),
                 new long[] { 75000L, 32L, 1L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
@@ -563,8 +539,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.FILE_LV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Steel,
+                material,
+                MU.material(Materials.Steel),
                 new long[] { 50000L, 32L, 1L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
@@ -576,8 +552,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.FILE_MV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Aluminium,
+                material,
+                MU.material(Materials.Aluminium),
                 new long[] { 400000L, 128L, 2L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
@@ -588,8 +564,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.FILE_MV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Aluminium,
+                material,
+                MU.material(Materials.Aluminium),
                 new long[] { 300000L, 128L, 2L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
@@ -600,8 +576,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.FILE_MV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Aluminium,
+                material,
+                MU.material(Materials.Aluminium),
                 new long[] { 200000L, 128L, 2L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
@@ -613,8 +589,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.FILE_HV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.StainlessSteel,
+                material,
+                MU.material(Materials.StainlessSteel),
                 new long[] { 1600000L, 512L, 3L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
@@ -625,8 +601,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.FILE_HV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.StainlessSteel,
+                material,
+                MU.material(Materials.StainlessSteel),
                 new long[] { 1200000L, 512L, 3L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
@@ -637,8 +613,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.FILE_HV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.StainlessSteel,
+                material,
+                MU.material(Materials.StainlessSteel),
                 new long[] { 800000L, 512L, 3L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
@@ -650,8 +626,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.SCREWDRIVER_LV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Steel,
+                material,
+                MU.material(Materials.Steel),
                 new long[] { 100000L, 32L, 1L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(stickLong, material), 'M',
@@ -662,8 +638,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.SCREWDRIVER_LV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Steel,
+                material,
+                MU.material(Materials.Steel),
                 new long[] { 75000L, 32L, 1L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(stickLong, material), 'M',
@@ -674,8 +650,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.SCREWDRIVER_LV.ID,
                 1,
-                MU.materialOf(material),
-                Materials.Steel,
+                material,
+                MU.material(Materials.Steel),
                 new long[] { 50000L, 32L, 1L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(stickLong, material), 'M',
@@ -686,8 +662,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 SCREWDRIVER_MV,
                 1,
-                MU.materialOf(material),
-                Materials.Aluminium,
+                material,
+                MU.material(Materials.Aluminium),
                 new long[] { 400000L, 128L, 2L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(stickLong, material), 'M',
@@ -698,8 +674,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 SCREWDRIVER_MV,
                 1,
-                MU.materialOf(material),
-                Materials.Aluminium,
+                material,
+                MU.material(Materials.Aluminium),
                 new long[] { 300000L, 128L, 2L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(stickLong, material), 'M',
@@ -710,8 +686,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 SCREWDRIVER_MV,
                 1,
-                MU.materialOf(material),
-                Materials.Aluminium,
+                material,
+                MU.material(Materials.Aluminium),
                 new long[] { 200000L, 128L, 2L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(stickLong, material), 'M',
@@ -722,8 +698,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 SCREWDRIVER_HV,
                 1,
-                MU.materialOf(material),
-                Materials.StainlessSteel,
+                material,
+                MU.material(Materials.StainlessSteel),
                 new long[] { 1600000L, 512L, 3L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(stickLong, material), 'M',
@@ -734,8 +710,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 SCREWDRIVER_HV,
                 1,
-                MU.materialOf(material),
-                Materials.StainlessSteel,
+                material,
+                MU.material(Materials.StainlessSteel),
                 new long[] { 1200000L, 512L, 3L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(stickLong, material), 'M',
@@ -746,8 +722,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 SCREWDRIVER_HV,
                 1,
-                MU.materialOf(material),
-                Materials.StainlessSteel,
+                material,
+                MU.material(Materials.StainlessSteel),
                 new long[] { 800000L, 512L, 3L, -1L }),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PdX", "MGS", "GBP", 'X', MU.craftIngredient(stickLong, material), 'M',

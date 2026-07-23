@@ -135,10 +135,13 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     /// legacy [Materials] ported from, not from the legacy fields directly, even though the legacy facade
     /// populates those fields from the same properties (see `LegacyMaterials#build`) -- this keeps
     /// `MetaGeneratedTool`'s stat computation off the deprecated legacy type.
-    private static int getToolDurability(Materials aMaterial) {
-        com.ruling_0.materiallib.api.Material mlMaterial = MU.material(aMaterial);
-        Integer durability = mlMaterial == null ? null : mlMaterial.getProperty(GTMaterialProperties.DURABILITY);
+    private static int getToolDurability(com.ruling_0.materiallib.api.Material aMaterial) {
+        Integer durability = aMaterial == null ? null : aMaterial.getProperty(GTMaterialProperties.DURABILITY);
         return durability == null ? 0 : durability;
+    }
+
+    private static int getToolDurability(Materials aMaterial) {
+        return getToolDurability(MU.material(aMaterial));
     }
 
     private static float getToolSpeed(Materials aMaterial) {
@@ -287,22 +290,14 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return null;
     }
 
-    /// [#getToolWithStats] for MaterialLib-typed materials; delegates to the legacy implementation so the
-    /// stored tool NBT (material name strings) is unchanged while call sites migrate off the legacy enum.
-    /// Fully qualified parameter type because this file imports `net.minecraft.block.material.Material`.
-    public final ItemStack getToolWithStats(int aToolID, int aAmount,
-        com.ruling_0.materiallib.api.Material aPrimaryMaterial,
-        com.ruling_0.materiallib.api.Material aSecondaryMaterial, long[] aElectricArray) {
-        return getToolWithStats(
-            aToolID,
-            aAmount,
-            MU.materialOf(aPrimaryMaterial),
-            MU.materialOf(aSecondaryMaterial),
-            aElectricArray);
-    }
-
     /**
      * This Function gets an ItemStack Version of this Tool
+     * <p/>
+     * NATIVE implementation: the tool NBT (material name strings, durability) is written directly off the
+     * MaterialLib materials, byte-identical to what the legacy [Materials] overload below wrote by delegating
+     * here through [MU#material] -- [MU#internalName] equals `Materials#mName` for every material that ever
+     * reached this method (canonical, werkstoff, gtpp), and [#getToolDurability] already read
+     * [GTMaterialProperties#DURABILITY] rather than `Materials#mDurability`.
      *
      * @param aToolID            the ID of the Tool Class
      * @param aAmount            Amount of Items (well normally you only need 1)
@@ -310,20 +305,22 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
      * @param aSecondaryMaterial Secondary (Rod/Handle) Material of this Tool
      * @param aElectricArray     The Electric Stats of this Tool (or null if not electric)
      */
-    public final ItemStack getToolWithStats(int aToolID, int aAmount, Materials aPrimaryMaterial,
-        Materials aSecondaryMaterial, long[] aElectricArray) {
+    public final ItemStack getToolWithStats(int aToolID, int aAmount,
+        com.ruling_0.materiallib.api.Material aPrimaryMaterial,
+        com.ruling_0.materiallib.api.Material aSecondaryMaterial, long[] aElectricArray) {
         ItemStack rStack = new ItemStack(this, aAmount, aToolID);
         IToolStats tToolStats = getToolStats(rStack);
         if (tToolStats != null) {
             NBTTagCompound tMainNBT = new NBTTagCompound(), tToolNBT = new NBTTagCompound();
             tToolNBT.setByte("Mode", (byte) 0);
             if (aPrimaryMaterial != null) {
-                tToolNBT.setString("PrimaryMaterial", aPrimaryMaterial.mName);
+                tToolNBT.setString("PrimaryMaterial", MU.internalName(aPrimaryMaterial));
                 tToolNBT.setLong(
                     "MaxDamage",
                     100L * (long) (getToolDurability(aPrimaryMaterial) * tToolStats.getMaxDurabilityMultiplier()));
             }
-            if (aSecondaryMaterial != null) tToolNBT.setString("SecondaryMaterial", aSecondaryMaterial.mName);
+            if (aSecondaryMaterial != null)
+                tToolNBT.setString("SecondaryMaterial", MU.internalName(aSecondaryMaterial));
 
             if (aElectricArray != null) {
                 tToolNBT.setBoolean("Electric", true);
@@ -338,6 +335,20 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         }
         isItemStackUsable(rStack);
         return rStack;
+    }
+
+    /// [#getToolWithStats(int, int, com.ruling_0.materiallib.api.Material, com.ruling_0.materiallib.api.Material,
+    /// long[])] for legacy-[Materials]-typed callers; converts through [MU#material] and delegates to the
+    /// native overload. Fully qualified parameter type because this file imports
+    /// `net.minecraft.block.material.Material`.
+    public final ItemStack getToolWithStats(int aToolID, int aAmount, Materials aPrimaryMaterial,
+        Materials aSecondaryMaterial, long[] aElectricArray) {
+        return getToolWithStats(
+            aToolID,
+            aAmount,
+            MU.material(aPrimaryMaterial),
+            MU.material(aSecondaryMaterial),
+            aElectricArray);
     }
 
     /**
