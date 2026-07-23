@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -103,8 +104,8 @@ public class GTRecipeConstants {
     /**
      * Replicator output material.
      */
-    public static final RecipeMetadataKey<Materials> MATERIAL = SimpleRecipeMetadataKey
-        .create(Materials.class, "material");
+    public static final RecipeMetadataKey<Material> MATERIAL = SimpleRecipeMetadataKey
+        .create(Material.class, "material");
     /**
      * Marker for {@link #UniversalArcFurnace} to tell that the recipe belongs to recycling category.
      */

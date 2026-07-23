@@ -15,9 +15,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.WerkstoffReconstruction;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -41,10 +43,10 @@ import tectech.thing.CustomItemList;
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AssemblyLineRecipes implements Runnable {
 
-    private final Materials LuVMat;
+    private final Material LuVMat;
 
     public AssemblyLineRecipes() {
-        LuVMat = WerkstoffLoader.Ruridit.getGTMaterial();
+        LuVMat = WerkstoffReconstruction.materialLibOf(WerkstoffLoader.Ruridit);
     }
 
     @Override

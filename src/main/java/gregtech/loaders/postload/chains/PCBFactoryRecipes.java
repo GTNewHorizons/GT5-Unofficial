@@ -70,8 +70,7 @@ public class PCBFactoryRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("frameGtNaquadahAlloy", 1),
-                Materials.get("Artherium-Sn")
-                    .getPlates(6))
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials2Materials.ArtheriumSn, 6))
             .itemOutputs(ItemList.BasicPhotolithographicFrameworkCasing.get(1))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)

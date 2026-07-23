@@ -63,19 +63,14 @@ public class StaticRecipeChangeLoaders {
             Element.get(werkstoff.getFormulaTooltip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
         }
 
-        for (OrePrefixes prefixes : OrePrefixes.VALUES)
-            if (werkstoff.hasItemType(prefixes) && werkstoff.getBridgeMaterial() != null) {
-                GTOreDictUnificator.set(
-                    prefixes,
-                    WerkstoffReconstruction.materialLibOf(werkstoff),
-                    werkstoff.get(prefixes),
-                    true,
-                    true);
-                for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                    GTOreDictUnificator
-                        .addAssociation(prefixes, WerkstoffReconstruction.materialLibOf(werkstoff), stack, false);
-                }
+        for (OrePrefixes prefixes : OrePrefixes.VALUES) if (werkstoff.hasItemType(prefixes)) {
+            GTOreDictUnificator
+                .set(prefixes, WerkstoffReconstruction.materialLibOf(werkstoff), werkstoff.get(prefixes), true, true);
+            for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
+                GTOreDictUnificator
+                    .addAssociation(prefixes, WerkstoffReconstruction.materialLibOf(werkstoff), stack, false);
             }
+        }
     }
 
     public static void addElectricImplosionCompressorRecipes() {

@@ -360,17 +360,22 @@ public class GTRecipeRegistrator {
 
         if (!data.hasValidMaterialData()) return;
 
-        if (MU.materialOf(data.mMaterial.mMaterial) instanceof Materials primary
-            && MU.hasFlag(primary, GTMaterialFlag.NO_RECYCLING_RECIPES)) return;
+        Material primary = data.mMaterial.mMaterial;
+        if ((MU.materialOf(primary) != null || !primary.getShapes()
+            .isEmpty()) && MU.hasFlag(primary, GTMaterialFlag.NO_RECYCLING_RECIPES)) return;
 
         boolean isRecycle = true;
 
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            if (!(MU.materialOf(tMaterial.mMaterial) instanceof Materials material)) {
-                // A material with no legacy Materials counterpart (e.g. an unbacked RecognitionMaterials/
-                // LegacyMarkerMaterials marker's shapeless wildcard backing) never defaults to smelting into
-                // itself: unlike a real Materials constant, it only has an arc-smelting target when one was
-                // explicitly declared, mirroring MarkerMaterial#getSmeltInto/#getArcSmeltInto.
+            Materials material = MU.materialOf(tMaterial.mMaterial);
+            if (material == null && tMaterial.mMaterial.getShapes()
+                .isEmpty()) {
+                // An unbacked RecognitionMaterials/LegacyMarkerMaterials marker's shapeless wildcard backing
+                // never defaults to smelting into itself: unlike a shaped material, it only has an arc-smelting
+                // target when one was explicitly declared, mirroring MarkerMaterial#getSmeltInto/
+                // #getArcSmeltInto. A shaped material without a live legacy counterpart (a reconstructed
+                // werkstoff/gtpp material) instead takes the flag ladder below, exactly as it did through its
+                // facade before minting retired.
                 boolean declaresSmeltTarget = tMaterial.mMaterial.getProperty(GTMaterialProperties.SMELT_INTO) != null
                     || tMaterial.mMaterial.getProperty(GTMaterialProperties.ARC_SMELT_INTO) != null;
                 Material arcTarget = declaresSmeltTarget ? MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial)) : null;
@@ -393,25 +398,25 @@ public class GTRecipeRegistrator {
                 }
             }
 
-            if (MU.hasFlag(material, GTMaterialFlag.UNBURNABLE)) {
+            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.UNBURNABLE)) {
                 tMaterial.mMaterial = MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial));
                 continue;
             }
-            if (MU.hasFlag(material, GTMaterialFlag.EXPLOSIVE)) {
+            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.EXPLOSIVE)) {
                 tMaterial.mMaterial = MU.material(Materials.Ash);
                 tMaterial.mAmount /= 16;
                 continue;
             }
-            if (MU.hasFlag(material, GTMaterialFlag.FLAMMABLE)) {
+            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.FLAMMABLE)) {
                 tMaterial.mMaterial = MU.material(Materials.Ash);
                 tMaterial.mAmount /= 8;
                 continue;
             }
-            if (MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)) {
+            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.NO_SMELTING)) {
                 tMaterial.mAmount = 0;
                 continue;
             }
-            if (MU.hasFlag(material, GTMaterialFlag.METAL)) {
+            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.METAL)) {
 
                 tMaterial.mMaterial = MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial));
                 continue;
@@ -430,8 +435,9 @@ public class GTRecipeRegistrator {
 
         long tAmount = 0;
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            Materials tMaterialLegacy = MU.materialOf(tMaterial.mMaterial);
-            tAmount += tMaterial.mAmount * (tMaterialLegacy == null ? 0 : tMaterialLegacy.getMass());
+            boolean shapeless = MU.materialOf(tMaterial.mMaterial) == null && tMaterial.mMaterial.getShapes()
+                .isEmpty();
+            tAmount += tMaterial.mAmount * (shapeless ? 0 : MU.mass(tMaterial.mMaterial));
         }
 
         ArrayList<ItemStack> outputs = new ArrayList<>();

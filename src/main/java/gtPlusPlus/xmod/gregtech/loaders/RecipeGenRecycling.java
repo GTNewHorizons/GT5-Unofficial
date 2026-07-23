@@ -30,6 +30,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialReconstruction;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -61,8 +62,10 @@ public class RecipeGenRecycling implements Runnable {
         if (material == null) return;
 
         final Materials gtMaterial = material.getGTMaterial();
-        if (gtMaterial != null && (MU.hasFlag(gtMaterial, GTMaterialFlag.NO_RECYCLING)
-            || MU.hasFlag(gtMaterial, GTMaterialFlag.NO_RECYCLING_RECIPES))) {
+        final com.ruling_0.materiallib.api.Material mlMaterial = gtMaterial != null ? MU.material(gtMaterial)
+            : MaterialReconstruction.materialLibOf(material.getUnlocalizedName());
+        if (MU.hasFlag(mlMaterial, GTMaterialFlag.NO_RECYCLING)
+            || MU.hasFlag(mlMaterial, GTMaterialFlag.NO_RECYCLING_RECIPES)) {
             return;
         }
 

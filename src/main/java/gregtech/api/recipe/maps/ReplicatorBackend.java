@@ -12,6 +12,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.GTMod;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.ItemList;
@@ -31,7 +33,7 @@ import gregtech.common.items.behaviors.BehaviourDataOrb;
 @MethodsReturnNonnullByDefault
 public class ReplicatorBackend extends RecipeMapBackend {
 
-    private final Map<Materials, GTRecipe> recipesByMaterial = new HashMap<>();
+    private final Map<Element, GTRecipe> recipesByElement = new HashMap<>();
 
     public ReplicatorBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         super(propertiesBuilder.recipeEmitter(ReplicatorBackend::replicatorRecipeEmitter));
@@ -40,39 +42,42 @@ public class ReplicatorBackend extends RecipeMapBackend {
     @Override
     public GTRecipe compileRecipe(GTRecipe recipe) {
         super.compileRecipe(recipe);
-        addRecipeToMaterialIndex(recipe);
+        addRecipeToElementIndex(recipe);
         return recipe;
     }
 
     @Override
     public void removeRecipes(Collection<? extends GTRecipe> recipesToRemove) {
         super.removeRecipes(recipesToRemove);
-        rebuildMaterialIndex();
+        rebuildElementIndex();
     }
 
     @Override
     public void clearRecipes() {
         super.clearRecipes();
-        recipesByMaterial.clear();
+        recipesByElement.clear();
     }
 
     @Override
     public void reInit() {
         super.reInit();
-        rebuildMaterialIndex();
+        rebuildElementIndex();
     }
 
-    private void rebuildMaterialIndex() {
-        recipesByMaterial.clear();
+    private void rebuildElementIndex() {
+        recipesByElement.clear();
         for (GTRecipe recipe : getAllRecipes()) {
-            addRecipeToMaterialIndex(recipe);
+            addRecipeToElementIndex(recipe);
         }
     }
 
-    private void addRecipeToMaterialIndex(GTRecipe recipe) {
-        Materials material = recipe.getMetadata(GTRecipeConstants.MATERIAL);
+    private void addRecipeToElementIndex(GTRecipe recipe) {
+        Material material = recipe.getMetadata(GTRecipeConstants.MATERIAL);
         assert material != null; // checked by replicatorRecipeEmitter
-        recipesByMaterial.put(material, recipe);
+        Element element = MU.element(material);
+        if (element != null) {
+            recipesByElement.put(element, recipe);
+        }
     }
 
     @Override
@@ -86,32 +91,32 @@ public class ReplicatorBackend extends RecipeMapBackend {
         if (specialSlot == null) {
             return null;
         }
-        Materials foundMaterial = getMaterialFromDataOrb(specialSlot);
-        if (foundMaterial == null) {
+        Element foundElement = getElementFromDataOrb(specialSlot);
+        if (foundElement == null) {
             return null;
         }
-        GTRecipe recipeFound = recipesByMaterial.getOrDefault(foundMaterial, null);
+        GTRecipe recipeFound = recipesByElement.get(foundElement);
+        if (recipeFound == null) {
+            return null;
+        }
         return recipeFound.maxParallelCalculatedByInputs(1, fluids, items) < 1 ? null : recipeFound;
     }
 
     @Nullable
-    private static Materials getMaterialFromDataOrb(ItemStack stack) {
+    private static Element getElementFromDataOrb(ItemStack stack) {
         if (ItemList.Tool_DataOrb.isStackEqual(stack, false, true) && BehaviourDataOrb.getDataTitle(stack)
             .equals("Elemental-Scan")) {
-            return Element.get(BehaviourDataOrb.getDataName(stack)).mLinkedMaterials.stream()
-                .findFirst()
-                .orElse(null);
+            return Element.get(BehaviourDataOrb.getDataName(stack));
         }
         return null;
     }
 
     private static Collection<GTRecipe> replicatorRecipeEmitter(GTRecipeBuilder builder) {
-        Materials material = builder.getMetadata(GTRecipeConstants.MATERIAL);
+        Material material = builder.getMetadata(GTRecipeConstants.MATERIAL);
         if (material == null) {
             throw new IllegalStateException("GTRecipeConstants.MATERIAL must be set for replicator recipe");
         }
         return Optional.of(material)
-            .map(MU::material)
             .map(MU::element)
             .map(Element::getMass)
             .map(ReplicatorBackend::getUUMAmountFromMass)

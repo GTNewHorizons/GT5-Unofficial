@@ -22,21 +22,20 @@ import java.util.Set;
 import net.minecraft.util.StatCollector;
 
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffReconstruction;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 
 public class BridgeMaterialsLoader implements IWerkstoffRunnable {
 
-    /// Werkstoffe whose gregtech-side bridge is constructed by `gtPlusPlus.core.material.MaterialReconstruction`
-    /// (via `GtppBridgeMaterialsLoader`) before this loader runs, rather than by this loader itself: its
-    /// `Materials.get(name)` fallback claims the name first, so [#run]'s own `werkstoffBridgeMaterial ==
-    /// Materials._NULL` construction branch never fires and `mDurability` on the found instance is gtpp's
-    /// ported durability figure, not this werkstoff's own. Handle-material computation stays keyed to this
-    /// werkstoff's own durability regardless of which side constructed the shared instance.
+    /// Werkstoffe whose retired gregtech-side bridge was constructed by gtPlusPlus's reconstruction (its
+    /// `Materials.get(name)` fallback claimed the name first) but whose handle-material computation stayed
+    /// keyed to the werkstoff's own durability rather than gtpp's ported figure.
     private static final Set<String> GTPP_BRIDGED_DURABILITY = Set.of("Hafnium", "Zirconium", "Thorium232");
 
     @Override
@@ -50,6 +49,31 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
         // this race for every pool-declared werkstoff by running before bartworks' own preInit.
         if (!StatCollector.canTranslate(werkstoff.getLocalizedNameKey())) {
             GTLanguageManager.addStringLocalization(werkstoff.getLocalizedNameKey(), werkstoff.getDefaultName());
+        }
+
+        if (WerkstoffReconstruction.isReconstructed(werkstoff)) {
+            // Replaces the retired facade's mHandleMaterial write with the equivalent MU-side record. The
+            // facade-era write ran unconditionally, last, and keyed the handle on the FACADE's durability --
+            // the werkstoff's own for a self-built facade, gtpp's ported figure for a dual-claimed name.
+            // The DURABILITY property carries exactly that facade value for both populations
+            // (census-verified via Tellurium, whose two durabilities straddle the TungstenSteel threshold).
+            com.ruling_0.materiallib.api.Material ml = WerkstoffReconstruction.materialLibOf(werkstoff);
+            Integer gtppDurability = ml.getProperty(gregtech.api.material.GTMaterialProperties.DURABILITY);
+            boolean gtppClaimed = ml.getProperty(gregtech.api.material.GTMaterialProperties.GTPP_STATE) != null
+                && !GTPP_BRIDGED_DURABILITY.contains(werkstoff.getVarName());
+            int facadeDurability = gtppClaimed && gtppDurability != null ? gtppDurability : werkstoff.getDurability();
+            Materials handle = getHandleMaterial(werkstoff, facadeDurability);
+            MU.recordHandleMaterial(ml, MU.material(handle));
+            // A dual-nature name (e.g. Tellurium) resolves to a LIVE canonical Materials constant, whose
+            // mHandleMaterial field this loader used to overwrite in place; the record above is never
+            // consulted for such names (the handle hybrid reads the live field), so the field write must
+            // be reproduced directly.
+            Materials live = Materials.get(werkstoff.getVarName());
+            if (live != null && live != Materials._NULL) {
+                live.mHandleMaterial = handle;
+            }
+            MU.recordBridgeRegistration(ml);
+            return;
         }
 
         final short[] rgba = werkstoff.getRGBA();
@@ -93,9 +117,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
             werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
         }
         werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
-        int handleDurability = GTPP_BRIDGED_DURABILITY.contains(werkstoff.getVarName()) ? werkstoff.getDurability()
-            : werkstoffBridgeMaterial.mDurability;
-        werkstoffBridgeMaterial.mHandleMaterial = getHandleMaterial(werkstoff, handleDurability);
+        werkstoffBridgeMaterial.mHandleMaterial = getHandleMaterial(werkstoff, werkstoffBridgeMaterial.mDurability);
         werkstoffBridgeMaterial.setProcessingMaterialTierEU(stats.getProcessingMaterialTierEU());
 
         if (stats.isRadioactive()) {

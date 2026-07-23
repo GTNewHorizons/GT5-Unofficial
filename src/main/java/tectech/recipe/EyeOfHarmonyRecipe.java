@@ -23,10 +23,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffReconstruction;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
@@ -34,6 +36,7 @@ import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.material.MUOre;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
@@ -157,7 +160,7 @@ public class EyeOfHarmonyRecipe {
         return rocketTier;
     }
 
-    public EyeOfHarmonyRecipe(final ArrayList<Pair<IOreMaterial, Long>> materialList, final BlockDimensionDisplay block,
+    public EyeOfHarmonyRecipe(final ArrayList<Pair<Object, Long>> materialList, final BlockDimensionDisplay block,
         final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
         final long miningTimeSeconds, final long rocketTierOfRecipe, final double baseSuccessChance) {
 
@@ -366,11 +369,16 @@ public class EyeOfHarmonyRecipe {
 
     private static final double[] ORE_MULTIPLIER = { PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER };
 
-    public static class HashMapHelper extends HashMap<IOreMaterial, Double> {
+    /// Accumulates output quantities keyed by material. Keys are the legacy [Materials] constant when one
+    /// exists (so canonical contributions from every source merge, exactly as they did when each source was
+    /// legacy-typed), the MaterialLib [Material] for a reconstructed material with no legacy counterpart, or
+    /// the gtPlusPlus [Material] for gtpp-typed sources with no legacy equivalent.
+    public static class HashMapHelper extends HashMap<Object, Double> {
 
         private static final long serialVersionUID = 2297018142561480614L;
 
-        void add(Materials material, double value) {
+        private void addRaw(Object material, double value) {
+            if (material == null) return;
 
             // If key already exists.
             if (this.containsKey(material)) {
@@ -382,16 +390,17 @@ public class EyeOfHarmonyRecipe {
             this.put(material, value);
         }
 
-        void addGTpp(Material mat, double value) {
-            IOreMaterial material = mat.getGTMaterial() != null ? mat.getGTMaterial() : mat;
-            // If key already exists.
-            if (this.containsKey(material)) {
-                this.put(material, value + this.get(material));
-                return;
-            }
+        void add(Materials material, double value) {
+            addRaw(material, value);
+        }
 
-            // Otherwise, add value to hashmap entry.
-            this.put(material, value);
+        void add(com.ruling_0.materiallib.api.Material material, double value) {
+            Materials legacy = MU.materialOf(material);
+            addRaw(legacy != null ? legacy : material, value);
+        }
+
+        void addGTpp(Material mat, double value) {
+            addRaw(mat.getGTMaterial() != null ? mat.getGTMaterial() : mat, value);
         }
     }
 
@@ -407,9 +416,7 @@ public class EyeOfHarmonyRecipe {
     public static void processHelper(HashMapHelper outputMap, com.ruling_0.materiallib.api.Material material,
         double mainMultiplier, double probability) {
         if (material == null) return;
-        outputMap.add(
-            MU.materialOf(MU.directSmelting(material)),
-            (MUOre.oreMultiplier(material) * 2) * mainMultiplier * probability);
+        outputMap.add(MU.directSmelting(material), (MUOre.oreMultiplier(material) * 2) * mainMultiplier * probability);
 
         if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_GOLD))
             outputMap.add(Materials.Gold, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
@@ -421,32 +428,25 @@ public class EyeOfHarmonyRecipe {
         List<com.ruling_0.materiallib.api.Material> byProducts = MU.oreByProducts(material);
 
         if (byProducts.isEmpty()) {
-            if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap.add(
-                MU.materialOf(MU.directSmelting(material)),
-                mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-            else if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY)) outputMap.add(
-                MU.materialOf(MU.directSmelting(material)),
-                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-            else if (MU.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE)) outputMap.add(
-                MU.materialOf(MU.directSmelting(material)),
-                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap
+                .add(MU.directSmelting(material), mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+            else if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY))
+                outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (MU.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE))
+                outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
         }
 
-        if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap.add(
-            MU.materialOf(MU.directSmelting(material)),
-            mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-        else if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY)) outputMap.add(
-            MU.materialOf(MU.directSmelting(material)),
-            mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-        else if (MU.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE)) outputMap.add(
-            MU.materialOf(MU.directSmelting(material)),
-            mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+        if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT))
+            outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+        else if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY))
+            outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+        else if (MU.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE))
+            outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
 
         int index = 0;
         for (com.ruling_0.materiallib.api.Material byProductMaterial : byProducts) {
-            if (index < 3) outputMap.add(
-                MU.materialOf(MU.directSmelting(byProductMaterial)),
-                mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
+            if (index < 3) outputMap
+                .add(MU.directSmelting(byProductMaterial), mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
             // For Materials that index is > 3, normally they will not be used (unless using Chem bath).
 
             // mMaterialInto is always self (Materials's constructor sets it once, never reassigned -- see
@@ -456,17 +456,14 @@ public class EyeOfHarmonyRecipe {
 
             // Will never duplicate since mOreByProducts does not support duplicate.
             if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap.add(
-                MU.materialOf(MU.directSmelting(byProductMaterial)),
+                MU.directSmelting(byProductMaterial),
                 mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-            else if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY)) outputMap.add(
-                MU.materialOf(MU.directSmelting(byProductMaterial)),
-                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-            else if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_SODIUMPERSULFATE)) outputMap.add(
-                MU.materialOf(MU.directSmelting(byProductMaterial)),
-                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-            else if (index >= 3) outputMap.add(
-                MU.materialOf(MU.directSmelting(byProductMaterial)),
-                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY)) outputMap
+                .add(MU.directSmelting(byProductMaterial), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_SODIUMPERSULFATE)) outputMap
+                .add(MU.directSmelting(byProductMaterial), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (index >= 3) outputMap
+                .add(MU.directSmelting(byProductMaterial), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
             // EOH is better than other ore processing so it can get products that normally cannot get.
 
             index++;
@@ -475,9 +472,7 @@ public class EyeOfHarmonyRecipe {
         for (int i = index; i < 3; i++) {
             com.ruling_0.materiallib.api.Material byProductMaterial = GTUtility
                 .selectItemInList(i, MU.macerateInto(material), byProducts);
-            outputMap.add(
-                MU.materialOf(MU.directSmelting(byProductMaterial)),
-                mainMultiplier * (ORE_MULTIPLIER[i] * 2) * probability);
+            outputMap.add(MU.directSmelting(byProductMaterial), mainMultiplier * (ORE_MULTIPLIER[i] * 2) * probability);
             // Since it's duplicate, do not check if it can Mercury/chem bath.
         }
     }
@@ -568,13 +563,13 @@ public class EyeOfHarmonyRecipe {
         double probability) {
         if (material instanceof Materials gtMat) processHelper(outputMap, gtMat, mainMultiplier, probability);
         else if (material instanceof Werkstoff bwMat)
-            processHelper(outputMap, bwMat.getBridgeMaterial(), mainMultiplier, probability);
+            processHelper(outputMap, WerkstoffReconstruction.materialLibOf(bwMat), mainMultiplier, probability);
         else if (material instanceof Material gtppMat) {
             processHelperGTpp(outputMap, gtppMat, mainMultiplier, probability);
         }
     }
 
-    private static ArrayList<Pair<IOreMaterial, Long>> processDimension(
+    private static ArrayList<Pair<Object, Long>> processDimension(
         GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimWrapper,
         GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimWrapper, long timeInSeconds) {
         HashMapHelper outputMap = new HashMapHelper();
@@ -599,18 +594,18 @@ public class EyeOfHarmonyRecipe {
                 });
         }
 
-        ArrayList<Pair<IOreMaterial, Long>> outputList = new ArrayList<>();
+        ArrayList<Pair<Object, Long>> outputList = new ArrayList<>();
 
         outputMap.forEach((material, quantity) -> outputList.add(Pair.of(material, (long) Math.floor(quantity))));
 
         return outputList;
     }
 
-    private static ArrayList<FluidStack> validPlasmaGenerator(final List<Pair<IOreMaterial, Long>> planetList) {
+    private static ArrayList<FluidStack> validPlasmaGenerator(final List<Pair<Object, Long>> planetList) {
 
         ArrayList<FluidStack> plasmaList = new ArrayList<>();
 
-        for (Pair<IOreMaterial, Long> pair : planetList) {
+        for (Pair<Object, Long> pair : planetList) {
             if (!(pair.getLeft() instanceof Materials left)) continue;
             if (VALID_PLASMAS.contains(left)) {
                 plasmaList.add(left.getPlasma(1));
@@ -620,13 +615,15 @@ public class EyeOfHarmonyRecipe {
         return plasmaList;
     }
 
-    private TMap<ItemStack, Long> validDustGenerator(final ArrayList<Pair<IOreMaterial, Long>> planetList) {
+    private TMap<ItemStack, Long> validDustGenerator(final ArrayList<Pair<Object, Long>> planetList) {
         TMap<ItemStack, Long> dustList = new TCustomHashMap<>(itemStackHashingStrategy);
 
-        for (Pair<IOreMaterial, Long> pair : planetList) {
-            final IOreMaterial mat = pair.getLeft();
+        for (Pair<Object, Long> pair : planetList) {
+            final Object mat = pair.getLeft();
             final ItemStack dust;
             if (mat instanceof Materials) dust = getUnificatedOreDictStack(((Materials) mat).getDust(1));
+            else if (mat instanceof com.ruling_0.materiallib.api.Material ml)
+                dust = getUnificatedOreDictStack(GTOreDictUnificator.get(OrePrefixes.dust, ml, 1L));
             else if (mat instanceof Material) dust = ((Material) mat).getDust(1);
             else dust = null;
             if (dust != null) {

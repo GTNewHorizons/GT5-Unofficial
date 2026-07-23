@@ -1921,6 +1921,14 @@ public class GTProxy implements IFuelHandler {
                                     if (aPrefix.isUnifiable() && !aMaterial.mUnifiable) {
                                         return;
                                     }
+                                } else if (reconstructedMaterial(tName) != null) {
+                                    // A reconstructed werkstoff/gtpp material has no Materials entry once minting
+                                    // is retired, but its bridge facade used to carry this registration through the
+                                    // full pipeline (census, unification entries, ore processing). The facade was
+                                    // always a plain unifiable material with mMaterialInto = self and no
+                                    // re-registrations, so nothing facade-specific needs reproducing here -- fall
+                                    // through to the common tail, whose census re-resolves the name
+                                    // ML-registry-first on its own.
                                 } else {
                                     for (Dyes tDye : Dyes.VALUES) {
                                         if (aEvent.Name.endsWith(
@@ -2066,6 +2074,19 @@ public class GTProxy implements IFuelHandler {
                 .isEmpty()) return ml;
         }
         return MU.material(aMaterial);
+    }
+
+    /// The reconstructed (werkstoff- or gtpp-owned) MaterialLib material registered under `tName`, or null when
+    /// the name must keep being dropped as unknown. Exactly the names with a minted bridge facade flowed
+    /// through [#registerOre]'s pipeline before minting retired, and only from the moment that facade entered
+    /// [Materials]'s map -- so dispatch keys on [MU#hasBridgeRegistration], the bridge loaders' record of that
+    /// same moment. An event registered earlier (notably the entire [#catchUpPreExistingOreDictEntries]
+    /// replay, which carries MaterialLib's own item registrations for every reconstructed material) resolved
+    /// `_NULL` in the bridge era and was dropped then too.
+    private static @Nullable Material reconstructedMaterial(@Nullable String tName) {
+        if (tName == null || hasDeclaredMaterialsField(tName)) return null;
+        Material ml = MaterialLibAPI.getMaterial("gregtech", tName);
+        return MU.hasBridgeRegistration(ml) ? ml : null;
     }
 
     private static Set<String> materialsFieldNames;

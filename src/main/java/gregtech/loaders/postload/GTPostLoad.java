@@ -15,6 +15,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -31,6 +32,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableSet;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.WerkstoffLoader;
@@ -47,6 +49,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTCLSCompat;
@@ -255,49 +258,30 @@ public class GTPostLoad {
                 GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(tMaterial);
                 if (scannerResult == null || scannerResult.isNotMet()) return;
 
-                // add recipe if a dust exists.
-                GTRecipeBuilder builder = null;
-                ItemStack dustItem = GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L);
-                if (dustItem != null) {
-                    builder = GTValues.RA.stdBuilder()
-                        .itemInputs(dustItem);
-                    // add corresponding fluid replicator recipe.
-                    GTValues.RA.stdBuilder()
-                        .itemOutputs(dustItem)
-                        .special(scannerResult.output)
-                        .metadata(GTRecipeConstants.MATERIAL, tMaterial)
-                        .addTo(RecipeMaps.replicatorRecipes);
-                }
-                // else try to add a recipe for the cell.
-                if (builder == null) {
-                    ItemStack cellItem = GTOreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
-                    if (cellItem == null) return;
-                    // create builder
-                    builder = GTValues.RA.stdBuilder()
-                        .itemInputs(cellItem);
-                    // add corresponding replicator recipe
-                    FluidStack fluidStack = GTUtility.getFluidForFilledItem(cellItem, false);
-                    GTRecipeBuilder replicatorRecipeBuilder = GTValues.RA.stdBuilder();
-                    if (fluidStack != null) {
-                        replicatorRecipeBuilder.fluidOutputs(fluidStack);
-                    } else {
-                        // if there is no fluid for some reason, add a cell recipe, with cell input.
-                        replicatorRecipeBuilder.itemInputs(Materials.Empty.getCells(1))
-                            .itemOutputs(cellItem);
-                    }
-                    replicatorRecipeBuilder.special(scannerResult.output)
-                        .metadata(GTRecipeConstants.MATERIAL, tMaterial)
-                        .addTo(RecipeMaps.replicatorRecipes);
-                }
-
-                builder.itemOutputs(scannerResult.output)
-                    .special(ItemList.Tool_DataOrb.get(1L))
-                    .duration(scannerResult.duration)
-                    .eut(scannerResult.eut)
-                    .fake()
-                    .ignoreCollision()
-                    .addTo(scannerFakeRecipes);
+                addElementScannerAndReplicatorRecipes(
+                    scannerResult,
+                    MU.material(tMaterial),
+                    GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L));
             });
+
+        // Reconstructed werkstoff elements no longer appear in getMaterialsMap() once minting is retired.
+        // The cell-bearing ones -- the population whose facades CellLoader's element branch used to link
+        // before this loop ran -- get the same recipes from the MaterialLib registry instead.
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            if (MU.materialOf(material) != null) continue;
+            List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
+            if (werkstoffPrefixes == null || !werkstoffPrefixes.contains(OrePrefixes.cell.name())) continue;
+
+            GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(material);
+            if (scannerResult == null || scannerResult.isNotMet()) continue;
+
+            addElementScannerAndReplicatorRecipes(
+                scannerResult,
+                material,
+                GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, material, 1L));
+        }
 
         if (!MTEMassfabricator.sRequiresUUA) {
 
@@ -383,6 +367,51 @@ public class GTPostLoad {
         }
     }
 
+    /// Adds the elemental-scan scanner recipe (and, when the material resolves in MaterialLib, the matching
+    /// replicator recipe) for one scannable element, preferring a dust form over a cell form.
+    private static void addElementScannerAndReplicatorRecipes(GTScannerResult scannerResult, Material material,
+        ItemStack dustItem, ItemStack cellItem) {
+        GTRecipeBuilder builder = null;
+        if (dustItem != null) {
+            builder = GTValues.RA.stdBuilder()
+                .itemInputs(dustItem);
+            if (material != null) {
+                GTValues.RA.stdBuilder()
+                    .itemOutputs(dustItem)
+                    .special(scannerResult.output)
+                    .metadata(GTRecipeConstants.MATERIAL, material)
+                    .addTo(RecipeMaps.replicatorRecipes);
+            }
+        }
+        if (builder == null) {
+            if (cellItem == null) return;
+            builder = GTValues.RA.stdBuilder()
+                .itemInputs(cellItem);
+            if (material != null) {
+                FluidStack fluidStack = GTUtility.getFluidForFilledItem(cellItem, false);
+                GTRecipeBuilder replicatorRecipeBuilder = GTValues.RA.stdBuilder();
+                if (fluidStack != null) {
+                    replicatorRecipeBuilder.fluidOutputs(fluidStack);
+                } else {
+                    // if there is no fluid for some reason, add a cell recipe, with cell input.
+                    replicatorRecipeBuilder.itemInputs(Materials.Empty.getCells(1))
+                        .itemOutputs(cellItem);
+                }
+                replicatorRecipeBuilder.special(scannerResult.output)
+                    .metadata(GTRecipeConstants.MATERIAL, material)
+                    .addTo(RecipeMaps.replicatorRecipes);
+            }
+        }
+
+        builder.itemOutputs(scannerResult.output)
+            .special(ItemList.Tool_DataOrb.get(1L))
+            .duration(scannerResult.duration)
+            .eut(scannerResult.eut)
+            .fake()
+            .ignoreCollision()
+            .addTo(scannerFakeRecipes);
+    }
+
     public static void changeWoodenVanillaTools() {
         if (!GTMod.proxy.mChangeWoodenVanillaTools) {
             return;
@@ -466,6 +495,31 @@ public class GTPostLoad {
             OrePrefixes.dust };
 
         for (Materials material : Materials.getAll()) {
+            for (OrePrefixes prefix : washablePrefixes) {
+                ItemStack input = GTOreDictUnificator.get(prefix, material, 1);
+                ItemStack output = MetaGeneratedItem01.getCauldronWashingResult(prefix, material, 1);
+
+                if (input == null || output == null) {
+                    continue;
+                }
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(input)
+                    .fluidInputs(Materials.Water.getFluid(333))
+                    .itemOutputs(output)
+                    .duration(0)
+                    .eut(0)
+                    .fake()
+                    .addTo(RecipeMaps.cauldronRecipe);
+            }
+        }
+
+        // Materials.getAll() no longer contains reconstructed werkstoff/gtpp materials once minting is
+        // retired; their washing recipes come from the MaterialLib registry instead, through the same
+        // lookups the facades used to route (a material without washable entries contributes nothing,
+        // exactly as its facade did).
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            if (MU.materialOf(material) != null) continue;
             for (OrePrefixes prefix : washablePrefixes) {
                 ItemStack input = GTOreDictUnificator.get(prefix, material, 1);
                 ItemStack output = MetaGeneratedItem01.getCauldronWashingResult(prefix, material, 1);

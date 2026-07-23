@@ -155,31 +155,44 @@ public class MU {
 
     /// Whether a material carries a legacy `Materials#mStandardMoltenFluid` (see [#molten]) -- for callers that
     /// need the presence check independent of a specific fluid amount, such as one gate guarding several
-    /// [#molten] calls of different amounts. HYBRID, P6-proof: while a material still has a live legacy
-    /// [Materials] counterpart ([#materialOf] non-null), delegates to that facade's field rather than
-    /// re-deriving the condition from MaterialLib properties -- which of the three population loaders sets the
-    /// field, and under what gate, differs per material and [Material] alone cannot distinguish them: a gtpp
-    /// bridge material only when `GtppBridgeMaterialsLoader`'s own `MU#isCutOver(OrePrefixes#cellMolten,
-    /// Material)` check holds, a bartworks bridge material only under `Werkstoff#hasItemType(cellMolten)`, and
-    /// a canonical material from `LegacyMaterials#build`'s [GTMaterialProperties#LEGACY_FLUIDS] read. Once
-    /// minting retires and a reconstructed werkstoff/gtpp material has no facade left ([#materialOf] null),
-    /// falls back to [#isCutOver] of [OrePrefixes#cellMolten] directly against `material` -- proven to
-    /// reproduce each bridge's own gate for exactly that population: a gtpp bridge's gate already is that
-    /// literal expression (`GtppBridgeMaterialsLoader`); a bartworks bridge's `hasItemType(cellMolten)`, for
-    /// every `WerkstoffReconstruction`-built werkstoff (the only ones this fallback ever reaches -- a proxy or
-    /// third-party werkstoff's material keeps its live facade), tracks
-    /// [GTMaterialProperties#WERKSTOFF_PREFIXES] containing `"cellMolten"` 1:1 with no exceptions, which in
-    /// turn was generated 1:1 with the material's own `cellMolten` [Materials2CellShapes] shape membership.
-    /// The handful of `Materials2Materials` entries where that generated correspondence does not hold (the
-    /// dual-nature elements and gtpp-bridged-durability materials, e.g. `Zirconium`/`Hafnium`/`Thorium232`)
-    /// all keep a live [Materials] counterpart, so they never reach this fallback in the first place. Merely
-    /// having a [Materials2FluidShapes#fluidMolten] shape, without the container shape, would be wider than
-    /// any population's gate -- [#isCutOver] checks the container ([OrePrefixes#cellMolten]), not the bare
-    /// fluid.
+    /// [#molten] calls of different amounts. HYBRID: while a material still has a live legacy [Materials]
+    /// counterpart ([#materialOf] non-null), delegates to that facade's field. A material without one answers
+    /// per reconstructed population, reproducing the field the retired bridge facade carried:
+    ///
+    /// - Werkstoff-reconstructed ([GTMaterialProperties#WERKSTOFF_PREFIXES] present): whether the prefix list
+    /// contains `cellMolten` -- the `Werkstoff#hasItemType(cellMolten)` ground truth the bartworks bridge
+    /// set its field under. NOT `cellMolten` shape membership: the dual-nature elements (e.g. `Zirconium`/
+    /// `Hafnium`/`Thorium232`) carry the shape from their gtpp fluid capture while the werkstoff side never
+    /// generated the item.
+    /// - gtpp-reconstructed ([GTMaterialProperties#GTPP_STATE] present): whether
+    /// `MaterialReconstruction#build` [#recordLegacyMolten]-ed the material -- the gtpp bridge facade held a
+    /// molten fluid only when the material's own fluid had already resolved at bridge-construction time
+    /// (materials constructed before gtpp's `Material#registerAllPending` gate opened deferred their fluid,
+    /// so their facades stayed molten-less even with a `cellMolten` cutover). A dual werkstoff+gtpp material
+    /// answers true when either side's writer fired, matching the facade both loaders mutated in turn.
+    /// - Otherwise: [#isCutOver] of [OrePrefixes#cellMolten]. Merely having a
+    /// [Materials2FluidShapes#fluidMolten] shape, without the container shape, would be wider than any
+    /// population's gate -- [#isCutOver] checks the container, not the bare fluid.
     public static boolean hasMolten(@Nullable Material material) {
         Materials legacy = materialOf(material);
         if (legacy != null) return legacy.mStandardMoltenFluid != null;
+        if (material == null) return false;
+        List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
+        boolean gtpp = material.getProperty(GTMaterialProperties.GTPP_STATE) != null;
+        if (werkstoffPrefixes != null || gtpp) {
+            return (werkstoffPrefixes != null && werkstoffPrefixes.contains(OrePrefixes.cellMolten.name()))
+                || reconstructedLegacyMolten.contains(material);
+        }
         return isCutOver(OrePrefixes.cellMolten, material);
+    }
+
+    private static final java.util.Set<Material> reconstructedLegacyMolten = new java.util.HashSet<>();
+
+    /// Records that `material`'s retired gtpp bridge facade would have carried a `mStandardMoltenFluid` (see
+    /// [#hasMolten]). Called by `MaterialReconstruction#build` at the exact point the facade assignment used
+    /// to run, with the same gate.
+    public static void recordLegacyMolten(Material material) {
+        reconstructedLegacyMolten.add(material);
     }
 
     /// The legacy `Materials#mStandardMoltenFluid`-backed `Materials#getMolten` stack for a material, or null
@@ -529,9 +542,11 @@ public class MU {
     /// legacy [Materials] counterpart, mirrors [#handleMaterial(Materials)] by reading the live
     /// `Materials#mHandleMaterial` field and converting the result back through [#material] -- the property
     /// path below is a load-time snapshot of that field and can diverge from it, same as the `Materials`
-    /// overload. Materials without a legacy counterpart (werkstoffe, gtpp materials) have no live field to
-    /// fall back to, so those resolve [GTMaterialProperties#HANDLE_MATERIAL] instead, one hop only -- the
-    /// property never chains through another material's own handle, so there is nothing further to chase.
+    /// overload. Materials without a legacy counterpart (werkstoffe, gtpp materials) have no live field left,
+    /// so those resolve the [#recordHandleMaterial] override the bridge loaders now push in place of their
+    /// retired facade write; [GTMaterialProperties#HANDLE_MATERIAL] remains the fallback for a reconstructed
+    /// material neither loader touched, one hop only -- the property never chains through another material's
+    /// own handle, so there is nothing further to chase.
     public static @Nullable Material handleMaterial(@Nullable Material material) {
         if (material == null) return null;
         Materials legacy = materialOf(material);
@@ -539,10 +554,41 @@ public class MU {
             Material handle = material(legacy.mHandleMaterial);
             return handle != null ? handle : material;
         }
+        Material override = reconstructedHandles.get(material);
+        if (override != null) return override;
         MaterialRef ref = material.getProperty(GTMaterialProperties.HANDLE_MATERIAL);
         if (ref == null) return material;
         Material resolved = ref.resolve();
         return resolved != null ? resolved : material;
+    }
+
+    private static final Map<Material, Material> reconstructedHandles = new HashMap<>();
+
+    /// Records the tool-handle material `material`'s retired bridge facade would have carried in
+    /// `Materials#mHandleMaterial` (see [#handleMaterial(Material)]). Called by the bridge loaders
+    /// (`MaterialReconstruction#build`, bartworks' `BridgeMaterialsLoader`) at the exact points the facade
+    /// writes used to run; a later write overrides an earlier one, matching the facade both loaders mutated
+    /// in turn for a dual werkstoff+gtpp material.
+    public static void recordHandleMaterial(Material material, Material handle) {
+        reconstructedHandles.put(material, handle);
+    }
+
+    private static final java.util.Set<Material> reconstructedBridgeRegistrations = new java.util.HashSet<>();
+
+    /// Records that `material`'s retired bridge facade would have entered `Materials#getMaterialsMap` by this
+    /// point in loading. Called by the bridge loaders (`MaterialReconstruction#build`, bartworks'
+    /// `BridgeMaterialsLoader`) at the exact former minting sites; recording twice for a dual werkstoff+gtpp
+    /// material is a no-op, matching the single facade both loaders shared.
+    public static void recordBridgeRegistration(Material material) {
+        reconstructedBridgeRegistrations.add(material);
+    }
+
+    /// Whether [#recordBridgeRegistration] has run for `material` -- the reconstructed-material equivalent of
+    /// the bridge era's `Materials.get(name) != _NULL`, which flipped true at the same moment. Keys
+    /// `GTProxy#registerOre`'s reconstructed-name dispatch, so an ore-dictionary event registered before this
+    /// point (notably GregTech's own preInit catch-up replay) is dropped exactly as the bridge era dropped it.
+    public static boolean hasBridgeRegistration(@Nullable Material material) {
+        return material != null && reconstructedBridgeRegistrations.contains(material);
     }
 
     /// Resolves a [GTMaterialProperties] `MaterialRef` property to its legacy [Materials] counterpart through
