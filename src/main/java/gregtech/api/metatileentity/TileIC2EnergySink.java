@@ -51,7 +51,7 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
              * and one of them is a GT cable that doesn't have anywhere to send its energy, the distribution will be a
              * bit weird. In that case, use only one cable or a transformer.
              */
-            return (cableMeta.mVoltage * cableMeta.mAmperage);
+            return (cableMeta.getVoltage() * cableMeta.getAmperage());
         } else return myMeta.getEUCapacity() - myMeta.getStoredEU();
     }
 
@@ -62,7 +62,7 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
      */
     @Override
     public int getSinkTier() {
-        return GTUtility.getTier(cableMeta != null ? cableMeta.mVoltage : myMeta.getInputVoltage());
+        return GTUtility.getTier(cableMeta != null ? cableMeta.getVoltage() : myMeta.getInputVoltage());
     }
 
     /**
@@ -79,7 +79,7 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
 
         final long amps = (long) Math
-            .max(amount / (cableMeta != null ? cableMeta.mVoltage : myMeta.getInputVoltage() * 1.0), 1.0);
+            .max(amount / (cableMeta != null ? cableMeta.getVoltage() : myMeta.getInputVoltage() * 1.0), 1.0);
         final long euPerAmp = (long) (amount / (amps * 1.0));
 
         final IMetaTileEntity metaTile = myMeta.getMetaTileEntity();
@@ -89,7 +89,7 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
         if (cableMeta != null) {
             usedAmps = ((IMetaTileEntityCable) metaTile).transferElectricity(
                 directionFrom,
-                Math.min(euPerAmp, cableMeta.mVoltage),
+                Math.min(euPerAmp, cableMeta.getVoltage()),
                 amps,
                 Sets.newHashSet((TileEntity) myMeta));
 

@@ -8,8 +8,10 @@ import gregtech.api.enums.TierEU;
 
 /// The pipe-family stat tables: one declared row per material carrying wires/cables, fluid pipes, or item
 /// pipes, applied as [Materials2PipeProperties] values through [MaterialLibAPI#editMaterial]. The values
-/// duplicate the literals [gregtech.loaders.preload.LoaderMetaPipeEntities] registers its pipe MTEs with, and
-/// the two must stay in agreement.
+/// duplicate the literals the pipe MTE registrations receive -- from
+/// [gregtech.loaders.preload.LoaderMetaPipeEntities],
+/// [gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits], and goodgenerator's
+/// [goodgenerator.util.CrackRecipeAdder] -- and the tables must stay in agreement with them.
 ///
 /// The wooden and High Pressure fluid pipes exist in three sizes whose capacities follow no base-value
 /// formula, so they carry per-size capacity constants here instead of a [Materials2PipeProperties#BASE_PIPE_FLOW]
@@ -51,6 +53,7 @@ public class Materials2PipeMaterials {
             new WireCable(Materials2Materials.Tin, 1, 1, TierEU.LV),
             new WireCable(Materials2Materials.Zinc, 1, 1, TierEU.LV),
             new WireCable(Materials2Materials.SolderingAlloy, 1, 1, TierEU.LV),
+            new WireCable(Materials2Materials.RedstoneAlloy, 0, 1, TierEU.LV),
             new WireCable(Materials2Materials.Iron, 3, 2, TierEU.MV),
             new WireCable(Materials2Materials.Nickel, 3, 3, TierEU.MV),
             new WireCable(Materials2Materials.Cupronickel, 3, 4, TierEU.MV),
@@ -76,13 +79,16 @@ public class Materials2PipeMaterials {
             new WireCable(Materials2Materials.VanadiumGallium, 4, 4, TierEU.LuV),
             new WireCable(Materials2Materials.YttriumBariumCuprate, 3, 6, TierEU.LuV),
             new WireCable(Materials2Materials.Naquadah, 2, 2, TierEU.ZPM),
+            new WireCable(Materials2Materials.Signalium, 8, 12, TierEU.ZPM),
             new WireCable(Materials2Materials.NaquadahAlloy, 4, 6, TierEU.UV),
             new WireCable(Materials2Materials.Duranium, 2, 4, TierEU.UV),
+            new WireCable(Materials2Materials.Lumiium, 16, 8, TierEU.UV),
         };
 
         WireOnly[] wireOnly = {
             new WireOnly(Materials2Materials.Graphene, 2, 1, TierEU.IV, false),
             new WireOnly(Materials2Materials.Ichorium, 8, 12, TierEU.UHV, false),
+            new WireOnly(Materials2Materials.Hypogen, 0, 8, TierEU.UIV, false),
             new WireOnly(Materials2Materials.SpaceTime, 0, 1_000_000, TierEU.MAX, false),
         };
 
@@ -120,8 +126,12 @@ public class Materials2PipeMaterials {
                 .setProperty(Materials2PipeProperties.BASE_CABLE_VOLT, row.voltage())
                 .setProperty(Materials2PipeProperties.BASE_CABLE_LOSS, row.cableLoss());
         }
-        // Red alloy wires lose 1 while its cables lose 0, so the twice-cable-loss default does not hold.
+        // These wires break the twice-cable-loss default: the two redstone alloys pair lossless cables with
+        // lossy wires, and CrackRecipeAdder.registerWire derives cable loss as a quarter of wire loss.
         edit(Materials2Materials.RedAlloy).setProperty(Materials2PipeProperties.WIRE_LOSS, 1);
+        edit(Materials2Materials.RedstoneAlloy).setProperty(Materials2PipeProperties.WIRE_LOSS, 2);
+        edit(Materials2Materials.Signalium).setProperty(Materials2PipeProperties.WIRE_LOSS, 32);
+        edit(Materials2Materials.Lumiium).setProperty(Materials2PipeProperties.WIRE_LOSS, 64);
 
         for (WireOnly[] rows : new WireOnly[][] { wireOnly, superconductorBases, superconductorMarkers }) {
             for (WireOnly row : rows) {
@@ -161,6 +171,25 @@ public class Materials2PipeMaterials {
             new FluidPipe(Materials2Materials.SpaceTime, 250000, Integer.MAX_VALUE),
             new FluidPipe(Materials2Materials.TranscendentMetal, 220000, Integer.MAX_VALUE),
             new FluidPipe(Materials2Materials.RadoxPoly, 5000, 1500),
+            // GregtechConduits declares fluid throughput per second; these rows store the medium pipe's
+            // per-tick capacity its MTE constructors receive, 12 * (declared / 20) with truncating division.
+            new FluidPipe(Materials2Materials.Staballoy, 7500, 7500),
+            new FluidPipe(Materials2Materials.Tantalloy60, 6000, 4250),
+            new FluidPipe(Materials2Materials.Tantalloy61, 7200, 5800),
+            new FluidPipe(Materials2Materials.Void, 960, 25000),
+            new FluidPipe(Materials2Materials.Europium, 7200, 7500),
+            new FluidPipe(Materials2Materials.Potin, 300, 2000),
+            new FluidPipe(Materials2Materials.MaragingSteel300, 8400, 2500),
+            new FluidPipe(Materials2Materials.MaragingSteel350, 9600, 2500),
+            new FluidPipe(Materials2Materials.Inconel690, 9000, 4800),
+            new FluidPipe(Materials2Materials.Inconel792, 9600, 5500),
+            new FluidPipe(Materials2Materials.HastelloyX, 12000, 4200),
+            new FluidPipe(Materials2Materials.TriniumNaquadahCarbonite, 12, 250000),
+            new FluidPipe(Materials2Materials.Tungsten, 2592, 7200),
+            new FluidPipe(Materials2Materials.DarkSteel, 1392, 2750),
+            new FluidPipe(Materials2Materials.Clay, 60, 500),
+            new FluidPipe(Materials2Materials.Lead, 204, 1200),
+            new FluidPipe(Materials2Materials.Incoloy903, 15000, 8000),
         };
         // spotless:on
 
@@ -172,6 +201,7 @@ public class Materials2PipeMaterials {
         edit(Materials2Materials.Wood)
             .setProperty(Materials2PipeProperties.PIPE_HEAT_RESISTANCE, WOOD_FLUID_PIPE_HEAT_RESISTANCE)
             .setProperty(Materials2PipeProperties.PIPE_GAS_PROOF, false);
+        edit(Materials2Materials.Clay).setProperty(Materials2PipeProperties.PIPE_GAS_PROOF, false);
         edit(Materials2Materials.Redstone)
             .setProperty(Materials2PipeProperties.PIPE_HEAT_RESISTANCE, HIGH_PRESSURE_FLUID_PIPE_HEAT_RESISTANCE);
     }

@@ -115,10 +115,11 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         RESTR_TEXTURE_MAP.put(TOP.mask | BOTTOM.mask | LEFT.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR);
     }
 
-    public final float mThickNess;
-    public final Materials mMaterial;
-    public final int mCapacity, mHeatResistance, mPipeAmount;
-    public final boolean mGasProof;
+    private final float mThickNess;
+    private final Materials mMaterial;
+    private final int mCapacity, mHeatResistance;
+    public final int mPipeAmount;
+    private final boolean mGasProof;
     public final FluidStack[] mFluids;
     public byte mLastReceivedFrom = 0, oLastReceivedFrom = 0;
     /**
@@ -1056,6 +1057,24 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     protected static ForgeDirection getSideAtBorder(ForgeDirection side, Border border) {
         return FACE_BORDER_MAP.get(side)
             .get(border);
+    }
+
+    public Materials getPipeMaterial() {
+        return mMaterial;
+    }
+
+    /// Returns the per-pipe throughput in liters per tick, unlike [#getCapacity] which reports the
+    /// total tank volume.
+    public int getBaseCapacity() {
+        return mCapacity;
+    }
+
+    public int getHeatResistance() {
+        return mHeatResistance;
+    }
+
+    public boolean isGasProof() {
+        return mGasProof;
     }
 
     @Override
