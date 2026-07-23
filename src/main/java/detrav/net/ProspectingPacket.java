@@ -19,7 +19,7 @@ import detrav.DetravScannerMod;
 import detrav.gui.DetravScannerGUI;
 import detrav.gui.textures.DetravMapTexture;
 import detrav.utils.FluidColors;
-import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MU;
 import gregtech.common.ores.OreManager;
 import it.unimi.dsi.fastutil.longs.Long2ShortOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ShortOpenHashMap;
@@ -156,13 +156,13 @@ public class ProspectingPacket extends DetravPacket {
         } else {
             objectId = nextId++;
 
-            IOreMaterial mat = OreManager.getMaterial(block, meta);
+            Object mat = OreManager.getMaterial(block, meta);
 
-            short[] rgba = mat == null ? new short[] { 125, 125, 125, 255 } : mat.getRGBA();
+            short[] rgba = mat == null ? new short[] { 125, 125, 125, 255 } : MU.rgbaOf(mat);
 
             nameLookup.put(stackName, objectId);
             objects.put(objectId, ObjectIntPair.of(stackName, rgba(rgba)));
-            oreMaterialNames.put(objectId, mat == null ? "" : mat.getInternalName());
+            oreMaterialNames.put(objectId, mat == null ? "" : MU.internalNameOf(mat));
         }
 
         map.put(CoordinatePacker.pack(aX, y, aZ), objectId);

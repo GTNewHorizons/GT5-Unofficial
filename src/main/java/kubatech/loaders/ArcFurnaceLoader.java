@@ -23,6 +23,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import kubatech.api.utils.ModUtils;
 import kubatech.loaders.item.arcfurnace.ElectrodeItem;
 
@@ -73,7 +74,7 @@ public class ArcFurnaceLoader {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    electrode.associatedMaterial.getPart(OrePrefixes.dust, 64),
+                    MU.partOf(electrode.associatedMaterial, OrePrefixes.dust, 64),
                     ItemList.Shape_Mold_Rod_Long.get(0))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(

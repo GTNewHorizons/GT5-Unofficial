@@ -14,7 +14,6 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.PluginBase;
@@ -58,8 +57,8 @@ public abstract class PluginGT5OreBase extends PluginBase {
         });
     }
 
-    protected String getGTOreLocalizedName(IOreMaterial ore, boolean small) {
-        try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
+    protected String getGTOreLocalizedName(Object ore, boolean small) {
+        try (OreInfo<Object> info = OreInfo.getNewInfo()) {
             info.material = ore;
             info.isSmall = small;
 

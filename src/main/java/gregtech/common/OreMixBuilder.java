@@ -10,11 +10,15 @@ import java.util.Set;
 
 import net.minecraft.util.StatCollector;
 
+import com.ruling_0.materiallib.api.Material;
+
+import bartworks.system.material.Werkstoff;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.StoneCategory;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
+import gregtech.api.material.MU;
 import gregtech.api.util.StringUtils;
+import gtPlusPlus.core.material.MaterialReconstruction;
 import it.unimi.dsi.fastutil.shorts.ShortShortPair;
 
 public class OreMixBuilder {
@@ -25,7 +29,8 @@ public class OreMixBuilder {
     public Set<String> dimsEnabled = new HashSet<>();
     public Map<String, ShortShortPair> dimVeinHeights = new HashMap<>();
     public int minY, maxY, weight, density, size;
-    public IOreMaterial primary, secondary, between, sporadic, representative;
+    public Material primary, secondary, between, sporadic;
+    public Object representative;
     public Set<IStoneCategory> stoneCategories = new HashSet<>(Arrays.asList(StoneCategory.Stone));
     public boolean defaultStoneCategories = true;
     public List<String> materialKeys = new ArrayList<>();
@@ -81,28 +86,69 @@ public class OreMixBuilder {
         return this;
     }
 
-    public OreMixBuilder primary(IOreMaterial primary) {
+    public OreMixBuilder primary(Material primary) {
         this.primary = primary;
         if (representative == null || materialKeys.isEmpty()) {
             representative = primary;
-            materialKeys.add(primary.getLocalizedNameKey());
+            materialKeys.add(MU.localizedNameKeyOf(primary));
         }
         return this;
     }
 
-    public OreMixBuilder secondary(IOreMaterial secondary) {
+    public OreMixBuilder secondary(Material secondary) {
         this.secondary = secondary;
         return this;
     }
 
-    public OreMixBuilder inBetween(IOreMaterial between) {
+    public OreMixBuilder inBetween(Material between) {
         this.between = between;
         return this;
     }
 
-    public OreMixBuilder sporadic(IOreMaterial sporadic) {
+    public OreMixBuilder sporadic(Material sporadic) {
         this.sporadic = sporadic;
         return this;
+    }
+
+    public OreMixBuilder primary(Werkstoff primary) {
+        return primary(SmallOreBuilder.requireMaterialLib(primary));
+    }
+
+    public OreMixBuilder secondary(Werkstoff secondary) {
+        return secondary(SmallOreBuilder.requireMaterialLib(secondary));
+    }
+
+    public OreMixBuilder inBetween(Werkstoff between) {
+        return inBetween(SmallOreBuilder.requireMaterialLib(between));
+    }
+
+    public OreMixBuilder sporadic(Werkstoff sporadic) {
+        return sporadic(SmallOreBuilder.requireMaterialLib(sporadic));
+    }
+
+    public OreMixBuilder primary(gtPlusPlus.core.material.Material primary) {
+        return primary(requireMaterialLib(primary));
+    }
+
+    public OreMixBuilder secondary(gtPlusPlus.core.material.Material secondary) {
+        return secondary(requireMaterialLib(secondary));
+    }
+
+    public OreMixBuilder inBetween(gtPlusPlus.core.material.Material between) {
+        return inBetween(requireMaterialLib(between));
+    }
+
+    public OreMixBuilder sporadic(gtPlusPlus.core.material.Material sporadic) {
+        return sporadic(requireMaterialLib(sporadic));
+    }
+
+    static Material requireMaterialLib(gtPlusPlus.core.material.Material material) {
+        Material ml = MaterialReconstruction.materialLibOf(material.getUnlocalizedName());
+        if (ml == null) {
+            throw new IllegalStateException(
+                "No MaterialLib material for gtPlusPlus material " + material.getUnlocalizedName());
+        }
+        return ml;
     }
 
     public OreMixBuilder stoneCategory(IStoneCategory... stoneCategories) {
@@ -123,10 +169,10 @@ public class OreMixBuilder {
      * @param materials The materials to be used for localization. The first material in the array will be used to
      *                  represent to ore mix in GUI's. If none are provided the {@link #primary} will be used.
      */
-    public OreMixBuilder setLocalizedName(IOreMaterial... materials) {
+    public OreMixBuilder setLocalizedName(Object... materials) {
         if (materials.length == 1) this.representative = materials[0];
-        for (IOreMaterial m : materials) {
-            materialKeys.add(m.getLocalizedNameKey());
+        for (Object m : materials) {
+            materialKeys.add(MU.localizedNameKeyOf(m));
         }
         return this;
     }

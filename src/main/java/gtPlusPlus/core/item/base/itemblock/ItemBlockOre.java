@@ -16,7 +16,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MU;
 import gregtech.common.WorldgenGTOreLayer;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -49,10 +49,11 @@ public class ItemBlockOre extends ItemBlock {
 
     private static void initVeinInfo() {
         for (WorldgenGTOreLayer oreLayer : WorldgenGTOreLayer.sList) {
-            IOreMaterial[] mats = { oreLayer.mPrimary, oreLayer.mSecondary, oreLayer.mBetween, oreLayer.mSporadic };
+            com.ruling_0.materiallib.api.Material[] mats = { oreLayer.mPrimary, oreLayer.mSecondary, oreLayer.mBetween,
+                oreLayer.mSporadic };
 
-            for (IOreMaterial mat : mats) {
-                if (mat instanceof Material gtppMat) {
+            for (com.ruling_0.materiallib.api.Material mat : mats) {
+                if (MU.legacyMaterialOf(mat) instanceof Material gtppMat) {
                     mMapOreBlockItemToDimName.put(gtppMat, oreLayer.getAllowedDimensions());
                 }
             }

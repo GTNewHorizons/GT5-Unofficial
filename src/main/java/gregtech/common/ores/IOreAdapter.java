@@ -15,9 +15,11 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 
 import gregtech.api.enums.StoneType;
-import gregtech.api.interfaces.IOreMaterial;
 
-public interface IOreAdapter<TMat extends IOreMaterial> {
+/// `TMat` is the adapter's legacy-family material type (`Materials`, `Werkstoff`, or gtPlusPlus `Material`);
+/// the parameter is unbounded because the families share no interface -- adapters dispatch on the concrete
+/// family type of [OreInfo#material] via `instanceof`.
+public interface IOreAdapter<TMat> {
 
     /**
      * A fast check to see if this adapter can support this block/meta combination.

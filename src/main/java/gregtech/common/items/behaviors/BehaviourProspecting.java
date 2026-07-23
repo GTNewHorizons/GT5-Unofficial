@@ -16,7 +16,6 @@ import net.minecraftforge.fluids.IFluidBlock;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.material.MU;
@@ -62,9 +61,9 @@ public class BehaviourProspecting extends BehaviourNone {
 
         int aMeta = aWorld.getBlockMetadata(aX, aY, aZ);
 
-        IOreMaterial mat = OreManager.getMaterial(aBlock, aMeta);
+        Object mat = OreManager.getMaterial(aBlock, aMeta);
         if (mat != null) {
-            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", mat.getLocalizedName());
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", MU.localizedNameOf(mat));
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             return true;
         }
@@ -121,7 +120,7 @@ public class BehaviourProspecting extends BehaviourNone {
                 mat = OreManager.getMaterial(tBlock, tMeta);
                 if (mat != null) {
                     GTUtility
-                        .sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.traces_of", mat.getLocalizedName());
+                        .sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.traces_of", MU.localizedNameOf(mat));
                     return true;
                 }
 

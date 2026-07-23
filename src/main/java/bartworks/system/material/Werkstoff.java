@@ -57,7 +57,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
@@ -72,7 +71,7 @@ import thaumcraft.api.aspects.Aspect;
 /// @deprecated Terminally deprecated; scheduled for removal in 5.10.0.0. Use the MaterialLib-backed
 /// materials2 API instead.
 @Deprecated
-public class Werkstoff implements IColorModulationContainer, IOreMaterial {
+public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
     public static final Short2ObjectMap<Werkstoff> werkstoffHashMap = new Short2ObjectLinkedOpenHashMap<>();
@@ -119,7 +118,6 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         return this.bridgeMaterial;
     }
 
-    @Override
     public @Nullable Materials getGTMaterial() {
         return bridgeMaterial;
     }
@@ -574,13 +572,20 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         return this.defaultName;
     }
 
-    @Override
     public String getDefaultLocalName() {
         return getDefaultName();
     }
 
     public String getVarName() {
         return this.defaultName.replace(" ", "");
+    }
+
+    public String getLocalizedNameKey() {
+        return "Material." + getInternalName().toLowerCase();
+    }
+
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal(getLocalizedNameKey());
     }
 
     public String getFormulaTooltip() {
@@ -594,7 +599,6 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         return this.toolTip;
     }
 
-    @Override
     public void addTooltips(List<String> list) {
         boolean showsRadioactiveWarning = Client.tooltip.showRadioactiveText && getStats().isRadioactive();
         boolean showsToxicWarning = Client.tooltip.showToxicText && getStats().isToxic();
@@ -628,17 +632,14 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         return this.mID;
     }
 
-    @Override
     public int getId() {
         return mID;
     }
 
-    @Override
     public List<IStoneType> getValidStones() {
         return StoneType.STONE_ONLY;
     }
 
-    @Override
     public String getInternalName() {
         return getVarName();
     }
@@ -664,7 +665,6 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         return new short[] { (short) (this.rgb[0] + 128), (short) (this.rgb[1] + 128), (short) (this.rgb[2] + 128), 0 };
     }
 
-    @Override
     public TextureSet getTextureSet() {
         return texSet;
     }
@@ -697,7 +697,6 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         return WerkstoffLoader.getCorrespondingItemStack(prefixes, this);
     }
 
-    @Override
     public ItemStack getPart(OrePrefixes prefix, int amount) {
         return GTUtility.copyAmountUnsafe(amount, get(prefix));
     }
@@ -751,7 +750,6 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
                     .getKey()));
     }
 
-    @Override
     public boolean generatesPrefix(OrePrefixes prefix) {
         return hasItemType(prefix);
     }

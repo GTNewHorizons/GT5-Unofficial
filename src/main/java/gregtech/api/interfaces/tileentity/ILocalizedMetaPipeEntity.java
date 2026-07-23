@@ -3,7 +3,7 @@ package gregtech.api.interfaces.tileentity;
 import java.util.List;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MU;
 
 /**
  * Interface to provide localization for meta pipe entity with a united format.
@@ -11,11 +11,12 @@ import gregtech.api.interfaces.IOreMaterial;
 public interface ILocalizedMetaPipeEntity {
 
     /**
-     * Get the GT material of the pipe.
+     * Get the material of the pipe: a legacy-family material object ({@code Materials} or gtPlusPlus
+     * {@code Material}), dispatched through {@link MU}'s union helpers.
      *
      * @apiNote if this returns <code>null</code>, you need to rewrite {@link #getLocalizedName()}.
      */
-    IOreMaterial getMaterial();
+    Object getMaterial();
 
     /**
      * Get the language key of the unformatted name.
@@ -39,11 +40,11 @@ public interface ILocalizedMetaPipeEntity {
      */
     default String getLocalizedName() {
         final String prefixKey = getPrefixKey();
-        final IOreMaterial material = getMaterial();
+        final Object material = getMaterial();
         if (prefixKey != null && material != null) {
             final String materialKeyOverride = getMaterialKeyOverride();
             if (materialKeyOverride == null) {
-                return OrePrefixes.getLocalizedNameForItemWithInflection(prefixKey, material.getInternalName());
+                return OrePrefixes.getLocalizedNameForItemWithInflection(prefixKey, MU.internalNameOf(material));
             }
             return OrePrefixes.getLocalizedNameForItemWithInflectionForKey(prefixKey, materialKeyOverride);
         }
@@ -64,7 +65,6 @@ public interface ILocalizedMetaPipeEntity {
      */
     default void addMaterialTooltip(List<String> desc) {
         if (shouldSkipMaterialTooltip()) return;
-        if (getMaterial() == null) return;
-        getMaterial().addTooltips(desc);
+        MU.addTooltipsOf(getMaterial(), desc);
     }
 }

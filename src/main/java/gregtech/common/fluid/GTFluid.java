@@ -25,7 +25,6 @@ import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.fluid.IGTFluid;
 import gregtech.api.interfaces.fluid.IGTRegisteredFluid;
 import gregtech.api.material.MU;
@@ -238,18 +237,18 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
         return this;
     }
 
-    private boolean addLocalizedNameHasOreprefix(IOreMaterial material, String[] oreprefixNames) {
+    private boolean addLocalizedNameHasOreprefix(Object material, String[] oreprefixNames) {
         return Arrays.stream(oreprefixNames)
             .anyMatch(oreprefixName -> addLocalizedNameHasOreprefix(material, oreprefixName));
     }
 
-    private boolean addLocalizedNameHasOreprefix(IOreMaterial material, String oreprefixName) {
+    private boolean addLocalizedNameHasOreprefix(Object material, String oreprefixName) {
         final String oreprefixNameRemovedFormat = oreprefixName.replace("%s", "");
         if (defaultLocalName.contains(oreprefixNameRemovedFormat)) {
-            if (String.format(oreprefixName, material.getDefaultLocalName())
+            if (String.format(oreprefixName, MU.defaultLocalNameOf(material))
                 .equals(defaultLocalName)) {
                 localizedName = () -> OrePrefixes
-                    .getLocalizedNameForItem(oreprefixName, "%s", material.getInternalName());
+                    .getLocalizedNameForItem(oreprefixName, "%s", MU.internalNameOf(material));
                 return true;
             }
         }
@@ -276,9 +275,9 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
      *           If a pattern matches, it uses formatted localization with the appropriate oreprefix key.
      */
     @Override
-    public IGTRegisteredFluid addLocalizedName(IOreMaterial material) {
+    public IGTRegisteredFluid addLocalizedName(Object material) {
         if (material == null) return addLocalizedName();
-        if (!material.getDefaultLocalName()
+        if (!MU.defaultLocalNameOf(material)
             .equals(defaultLocalName)) {
             if (addLocalizedNameHasOreprefix(
                 material,
@@ -289,7 +288,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
             }
             return addLocalizedName();
         }
-        localizedName = material::getLocalizedName;
+        localizedName = () -> MU.localizedNameOf(material);
         return this;
     }
 
