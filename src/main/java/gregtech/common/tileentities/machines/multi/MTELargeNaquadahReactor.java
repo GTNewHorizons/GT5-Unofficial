@@ -15,11 +15,14 @@ import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElem
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -59,6 +62,7 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeNaquadahReactor extends TTMultiblockBase
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -357,48 +361,24 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        Map<String, Object> ttVars = new HashMap<>();
+        ttVars.put("liquidAirConsumption", LiquidAirConsumptionPerSecond);
+        ttVars.put("coolant0", CoolantEfficiency[0]);
+        ttVars.put("coolant1", CoolantEfficiency[1]);
+        ttVars.put("coolant2", CoolantEfficiency[2]);
+        ttVars.put("coolant3", CoolantEfficiency[3]);
+        ttVars.put("excited0", ExcitedLiquidCoe[0]);
+        ttVars.put("excited1", ExcitedLiquidCoe[1]);
+        ttVars.put("excited2", ExcitedLiquidCoe[2]);
+        ttVars.put("excited3", ExcitedLiquidCoe[3]);
+        ttVars.put("excited4", ExcitedLiquidCoe[4]);
+
         tt.addMachineType("Naquadah Reactor, LNR")
-            .addInfo("Environmentally Friendly!")
-            .addInfo("Generate power from high-energy liquids")
-            .addInfo(
-                String.format(
-                    "Consumes %s%d L/s Liquid Air%s to keep running, otherwise" + EnumChatFormatting.YELLOW
-                        + " it will void your fuel"
-                        + EnumChatFormatting.GRAY
-                        + ".",
-                    EnumChatFormatting.AQUA,
-                    LiquidAirConsumptionPerSecond,
-                    EnumChatFormatting.GRAY))
-            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel")
+            .addMarkdown(new ResourceLocation("gregtech", "large-naquadah-reactor-1"), ttVars)
             .addSeparator()
-            .addInfo(
-                "Can increase " + EnumChatFormatting.LIGHT_PURPLE
-                    + "efficiency "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.WHITE
-                    + "consuming "
-                    + EnumChatFormatting.BLUE
-                    + "coolants:")
-            .addInfo(getCoolantTextFormatted("IC2 Coolant", "1000", CoolantEfficiency[3]))
-            .addInfo(getCoolantTextFormatted("Super Coolant", "1000", CoolantEfficiency[2]))
-            .addInfo(getCoolantTextFormatted("Cryotheum", "1000", CoolantEfficiency[1]))
-            .addInfo(getCoolantTextFormatted("Tachyon Rich Temporal Fluid", "20", CoolantEfficiency[0]))
+            .addMarkdown(new ResourceLocation("gregtech", "large-naquadah-reactor-2"), ttVars)
             .addSeparator()
-            .addInfo(
-                "Can increase " + EnumChatFormatting.LIGHT_PURPLE
-                    + "output power and fuel usage "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.WHITE
-                    + "consuming "
-                    + EnumChatFormatting.RED
-                    + "excited liquid:")
-            .addInfo(getExcitedTextFormatted("Molten Caesium", "180", ExcitedLiquidCoe[4]))
-            .addInfo(getExcitedTextFormatted("Molten Uranium-235", "180", ExcitedLiquidCoe[3]))
-            .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
-            .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
-            .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
+            .addMarkdown(new ResourceLocation("gregtech", "large-naquadah-reactor-3"), ttVars)
             .addSupportAny()
             .beginStructureBlock(7, 11, 7, false)
             .addController("Front bottom center")
