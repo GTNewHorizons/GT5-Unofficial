@@ -400,8 +400,8 @@ public class HTGRLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Titanium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials2Materials.Titanium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials2Materials.Titanium, 1L),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MicaInsulatorFoil", 16),
                 MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.plate, (int) (4)),
                 ItemList.Alumina_Support_Ring.get(2L))
@@ -415,7 +415,7 @@ public class HTGRLoader {
                 ItemList.Beryllium_Shielding_Plate.get(1L),
                 MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plate, (int) (6)),
                 MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.screw, (int) (8)),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.TungstenSteel, 1L))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lead, Materials2FluidShapes.fluidMolten, (int) (1152)))
             .itemOutputs(ItemList.Casing_Beryllium_Integrated_Reactor.get(1L))
@@ -444,7 +444,7 @@ public class HTGRLoader {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Aluminiumoxide.getDust(4), ItemList.Shape_Mold_Ring.get(0))
+            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.Alumina, 4), ItemList.Shape_Mold_Ring.get(0))
             .itemOutputs(ItemList.Alumina_Support_Ring_Raw.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 25)
             .eut(TierEU.RECIPE_IV)

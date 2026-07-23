@@ -36,7 +36,6 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -174,7 +173,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 .hint(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 2))) // Deployment Unit Base Casing
         .addElement('j', ofBlock(GregTechAPI.sBlockCasingsDyson, 3)) // Deployment Unit Core
-        .addElement('k', ofFrame(Materials.SuperconductorUHVBase))
+        .addElement('k', ofFrame(Materials2Materials.Longasssuperconductornameforuhvwire))
         .addElement('m', ofBlock(GregTechAPI.sBlockCasingsDyson, 4)) // Deployment Unit Superconducting Magnet
         .addElement(
             'o',

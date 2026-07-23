@@ -15,6 +15,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 
 /**
@@ -48,7 +49,7 @@ public class SpacePumpingRecipes {
                 Materials2FluidShapes.fluidLiquid,
                 (int) (1_400_000)));
         RECIPES.put(Pair.of(3, 3), Materials.Lava.getFluid(1_800_000));
-        RECIPES.put(Pair.of(3, 4), Materials.NaturalGas.getGas(1_400_000));
+        RECIPES.put(Pair.of(3, 4), MU.gas(Materials2Materials.NatruralGas, 1_400_000));
 
         // T4
         RECIPES.put(
@@ -84,7 +85,7 @@ public class SpacePumpingRecipes {
             Pair.of(5, 1),
             MaterialLibAPI
                 .getFluidStack(Materials2Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, (int) (4_480_000)));
-        RECIPES.put(Pair.of(5, 2), Materials.Helium3.getGas(2_800_000));
+        RECIPES.put(Pair.of(5, 2), MU.gas(Materials2Materials.Helium3, 2_800_000));
         RECIPES.put(
             Pair.of(5, 3),
             MaterialLibAPI
@@ -133,7 +134,7 @@ public class SpacePumpingRecipes {
                 .getFluidStack(Materials2Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (1_792_000)));
 
         // T7
-        RECIPES.put(Pair.of(7, 1), Materials.HydrofluoricAcid.getFluid(672_000));
+        RECIPES.put(Pair.of(7, 1), MU.fluid(Materials2Materials.HydrofluoricAcidGT5U, 672_000));
         RECIPES.put(
             Pair.of(7, 2),
             MaterialLibAPI

@@ -38,7 +38,6 @@ import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -47,6 +46,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -72,13 +72,13 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     private static final FluidStack[] magneticUpgrades = {
         MaterialLibAPI.getFluidStack(Materials2Materials.TengamPurified, Materials2FluidShapes.fluidMolten, 1),
-        Materials.Time.getMolten(1L), Materials.MagMatter.getMolten(1L) };
+        MU.molten(Materials2Materials.temporalFluid, 1L), MU.molten(Materials2Materials.Magmatter, 1L) };
     private static final FluidStack[] gravityUpgrades = {
         MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 1),
-        Materials.Space.getMolten(1L),
+        MU.molten(Materials2Materials.spatialFluid, 1L),
         MaterialLibAPI.getFluidStack(Materials2Materials.Eternity, Materials2FluidShapes.fluidMolten, 1) };
     private static final FluidStack[] containmentUpgrades = { GGMaterial.shirabon.getMolten(1),
-        Materials.MHDCSM.getMolten(1L) };
+        MU.molten(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1L) };
     private static final FluidStack[] activationUpgrades = { GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),
         GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1) };
     private static final FluidStack ZERO_ANTIMATTER = MaterialLibAPI

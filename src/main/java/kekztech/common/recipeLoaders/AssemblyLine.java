@@ -20,12 +20,12 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
@@ -45,7 +45,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Casing_Tank_7.get(4),
                 MaterialLibAPI
                     .getStack(Materials2Materials.CrystallinePinkSlime, Materials2Shapes.plateQuadruple, (int) (6)),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Naquadah, 3),
+                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials2Materials.Naquadah, 3),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "ChromeBars", 6),
                 MaterialLibAPI.getStack(Materials2Materials.Quantium, Materials2Shapes.rotor, (int) (6)),
                 ItemList.Field_Generator_EV.get(8),
@@ -72,7 +72,7 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 ItemList.Casing_Tank_10.get(16),
                 MaterialLibAPI.getStack(Materials2Materials.MelodicAlloy, Materials2Shapes.plateQuadruple, (int) (6)),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.NetherStar, 3),
+                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials2Materials.NetherStar, 3),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "OsmiumBars", 6),
                 MaterialLibAPI.getStack(Materials2Materials.MysteriousCrystal, Materials2Shapes.rotor, (int) (6)),
                 ItemList.Field_Generator_IV.get(16),
@@ -101,7 +101,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Quantum_Tank_IV.get(1),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.StellarAlloy, Materials2Shapes.plateDense, (int) (12)),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.DraconiumAwakened, 3),
+                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials2Materials.DraconiumAwakened, 3),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "NeutroniumBars", 6),
                 MaterialLibAPI.getStack(Materials2Materials.InfinityCatalyst, Materials2Shapes.rotor, (int) (6)),
                 ItemList.Field_Generator_ZPM.get(16),
@@ -113,7 +113,7 @@ public class AssemblyLine implements Runnable {
                     Materials2Materials.CrystallinePinkSlime,
                     Materials2FluidShapes.fluidMolten,
                     (int) (30 * INGOTS)),
-                Materials.RadoxPolymer.getMolten(20 * INGOTS))
+                MU.molten(Materials2Materials.RadoxPoly, 20 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 8))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -127,8 +127,8 @@ public class AssemblyLine implements Runnable {
                 ItemList.Quantum_Tank_IV.get(4),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(2),
                 MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.plateDense, (int) (6)),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.ProtoHalkonite, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 3),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials2Materials.protohalkonite, 6),
+                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials2Materials.Infinity, 3),
                 ItemList.EnergisedTesseract.get(1),
                 HYPOGEN.getRotor(6),
                 ItemList.Field_Generator_UHV.get(16),
@@ -140,7 +140,7 @@ public class AssemblyLine implements Runnable {
                     Materials2Materials.MelodicAlloy,
                     Materials2FluidShapes.fluidMolten,
                     (int) (40 * INGOTS)),
-                Materials.RadoxPolymer.getMolten(24 * INGOTS))
+                MU.molten(Materials2Materials.RadoxPoly, 24 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 9))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
@@ -154,7 +154,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Quantum_Tank_IV.get(16),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(4),
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plateDense, (int) (12)),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.SpaceTime, 3),
+                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials2Materials.SpaceTime, 3),
                 ItemList.EnergisedTesseract.get(6),
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.rotor, (int) (6)),
                 ItemList.Field_Generator_UEV.get(16),
@@ -167,7 +167,7 @@ public class AssemblyLine implements Runnable {
                     Materials2Materials.StellarAlloy,
                     Materials2FluidShapes.fluidMolten,
                     (int) (50 * INGOTS)),
-                Materials.RadoxPolymer.getMolten(32 * INGOTS))
+                MU.molten(Materials2Materials.RadoxPoly, 32 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 10))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
@@ -178,7 +178,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1))
             .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 4),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Osmiridium, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.screw, (int) (24)),
                 ItemList.Circuit_Board_Elite.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.foil, (int) (64)),
@@ -202,7 +202,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
             .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 4),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.NaquadahAlloy, 4),
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.screw, (int) (24)),
                 MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.plate, (int) (16)),
                 new Object[] { Circuits.ZPM.getIngredient(), 1 },
@@ -214,7 +214,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_SoC2.get(64),
                 ItemList.Circuit_Wafer_SoC2.get(64),
                 ItemList.Circuit_Parts_DiodeASMD.get(8),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32))
+                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials2Materials.Naquadah, 32))
             .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -226,7 +226,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
             .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Neutronium, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.screw, (int) (24)),
                 MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.plate, (int) (32)),
                 new Object[] { Circuits.UV.getIngredient(), 1 },
@@ -238,7 +238,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_HPIC.get(64),
                 ItemList.Circuit_Wafer_HPIC.get(64),
                 ItemList.Circuit_Parts_DiodeASMD.get(16),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32))
+                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials2Materials.NaquadahAlloy, 32))
             .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
             .eut(200_000)

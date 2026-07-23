@@ -32,7 +32,6 @@ import goodgenerator.loader.Loaders;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -40,6 +39,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -72,7 +72,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
 
     static {
         excitedLiquid = Arrays.asList(
-            Pair.of(Materials.Space.getMolten(20L), ExcitedLiquidCoe[0]),
+            Pair.of(MU.molten(Materials2Materials.spatialFluid, 20L), ExcitedLiquidCoe[0]),
             Pair.of(GGMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[1]),
             Pair.of(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Naquadah, Materials2FluidShapes.fluidMolten, 20),
@@ -84,7 +84,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
                 MaterialLibAPI.getFluidStack(Materials2Materials.Caesium, Materials2FluidShapes.fluidMolten, 180),
                 ExcitedLiquidCoe[4]));
         coolant = Arrays.asList(
-            Pair.of(Materials.Time.getMolten(20L), CoolantEfficiency[0]),
+            Pair.of(MU.molten(Materials2Materials.temporalFluid, 20L), CoolantEfficiency[0]),
             Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
             Pair.of(
                 MaterialLibAPI

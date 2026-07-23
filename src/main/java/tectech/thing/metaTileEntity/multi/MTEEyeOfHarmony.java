@@ -68,6 +68,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -1120,14 +1121,20 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 16, 16, 0);
     }
 
+    private static final Fluid HYDROGEN_GAS = MU.gas(Materials2Materials.Hydrogen, 1)
+        .getFluid();
+    private static final Fluid HELIUM_GAS = MU.gas(Materials2Materials.Helium, 1)
+        .getFluid();
+    private static final Fluid RAW_STAR_MATTER = MU.fluidOf(Materials2Materials.RawStarMatter);
+
     private final Map<Fluid, Long> validFluidMap = new HashMap<>() {
 
         private static final long serialVersionUID = -8452610443191188130L;
 
         {
-            put(Materials.Hydrogen.mGas, 0L);
-            put(Materials.Helium.mGas, 0L);
-            put(Materials.RawStarMatter.mFluid, 0L);
+            put(HYDROGEN_GAS, 0L);
+            put(HELIUM_GAS, 0L);
+            put(RAW_STAR_MATTER, 0L);
         }
     };
 
@@ -1189,15 +1196,15 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     }
 
     private long getHydrogenStored() {
-        return validFluidMap.get(Materials.Hydrogen.mGas);
+        return validFluidMap.get(HYDROGEN_GAS);
     }
 
     private long getHeliumStored() {
-        return validFluidMap.get(Materials.Helium.mGas);
+        return validFluidMap.get(HELIUM_GAS);
     }
 
     private long getStellarPlasmaStored() {
-        return validFluidMap.get(Materials.RawStarMatter.mFluid);
+        return validFluidMap.get(RAW_STAR_MATTER);
     }
 
     public CheckRecipeResult processRecipe(EyeOfHarmonyRecipe recipeObject) {
@@ -1319,10 +1326,10 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
 
         // Reduce internal storage by input fluid quantity required for recipe.
         if (parallelAmount > 1) {
-            validFluidMap.put(Materials.RawStarMatter.mFluid, 0L);
+            validFluidMap.put(RAW_STAR_MATTER, 0L);
         } else {
-            validFluidMap.put(Materials.Hydrogen.mGas, 0L);
-            validFluidMap.put(Materials.Helium.mGas, 0L);
+            validFluidMap.put(HYDROGEN_GAS, 0L);
+            validFluidMap.put(HELIUM_GAS, 0L);
         }
 
         yield = recipeYieldCalculator();

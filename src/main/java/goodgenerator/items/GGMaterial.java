@@ -1,7 +1,5 @@
 package goodgenerator.items;
 
-import static gregtech.api.enums.Materials.*;
-
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffReconstruction;
 

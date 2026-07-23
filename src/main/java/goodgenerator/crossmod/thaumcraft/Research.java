@@ -19,7 +19,6 @@ import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -127,13 +126,14 @@ public class Research {
                         'D',
                         new ItemStack(GregTechAPI.sBlockCasings3, 1, 11),
                         'E',
-                        GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.NetherStar, 1),
+                        GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials2Materials.NetherStar, 1),
                         'F',
                         thauminiteBlock),
                     GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                         "ESSENTIA_SMELTERY",
-                        GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Thaumium, 1),
-                        new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 1),
+                        GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Thaumium, 1),
+                        new ItemStack[] {
+                            GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials2Materials.Titanium, 1),
                             MaterialLibAPI.getStack(Materials2Materials.ElectricalSteel, Materials2Shapes.plate, 1),
                             MaterialLibAPI.getStack(Materials2Materials.ElectricalSteel, Materials2Shapes.plate, 1),
                             ItemList.Electric_Pump_EV.get(1L), new ItemStack(ConfigBlocks.blockTube, 1, 4),
@@ -214,7 +214,7 @@ public class Research {
                             MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.ring, 1),
                             ItemList.Emitter_LuV.get(1L), new ItemStack(ItemRegistry.bw_realglas, 1, 4),
                             MaterialLibAPI.getStack(Materials2Materials.StellarAlloy, Materials2Shapes.plate, 1),
-                            GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Helium, 1),
+                            GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials2Materials.Helium, 1),
                             new ItemStack(ConfigItems.itemShard, 1, 6), },
                         ItemRefer.Essentia_Cell_T4.get(1),
                         10,

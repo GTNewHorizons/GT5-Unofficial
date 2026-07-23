@@ -13,7 +13,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Superconductors;
 import gregtech.api.enums.TierEU;
@@ -38,7 +37,7 @@ public class ResearchableAssemblyLine implements Runnable {
             16,
             300000,
             3,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 4),
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.CosmicNeutronium, 4),
                 MaterialLibAPI.getStack(Materials2Materials.CosmicNeutronium, Materials2Shapes.screw, (int) (24)),
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.plateDouble, (int) (64)),
                 new Object[] { Circuits.UEV.getIngredient(), 4 }, ItemList.ZPM2.get(8L),
@@ -59,7 +58,7 @@ public class ResearchableAssemblyLine implements Runnable {
             128,
             (int) TierEU.RECIPE_UEV,
             16,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 4),
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Infinity, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.screw, (int) (24)),
                 MaterialLibAPI.getStack(Materials2Materials.InfinityCatalyst, Materials2Shapes.plateDouble, (int) (64)),
                 new Object[] { Circuits.UIV.getIngredient(), 4 }, ItemList.ZPM3.get(8L),
@@ -88,7 +87,7 @@ public class ResearchableAssemblyLine implements Runnable {
             1_280,
             (int) TierEU.RECIPE_UIV,
             32,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 4),
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.TranscendentMetal, 4),
                 MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.screw, (int) (24)),
                 HYPOGEN.getPlateDouble(64), new Object[] { Circuits.UMV.getIngredient(), 4 }, ItemList.ZPM4.get(8L),
                 ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
@@ -114,7 +113,7 @@ public class ResearchableAssemblyLine implements Runnable {
             12_288,
             (int) TierEU.RECIPE_UMV,
             64,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.SpaceTime, 4),
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.screw, (int) (24)),
                 DRAGON_METAL.getPlateDouble(64), new Object[] { Circuits.UXV.getIngredient(), 4 },
                 ItemList.ZPM5.get(8L), ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_FPIC.get(64),
