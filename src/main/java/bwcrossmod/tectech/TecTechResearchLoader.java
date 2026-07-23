@@ -23,7 +23,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Superconductors;
 import gregtech.api.enums.TierEU;
@@ -44,7 +43,7 @@ public class TecTechResearchLoader {
             (int) TierEU.RECIPE_ZPM,
             24,
             new Object[] { ItemRegistry.voidminer[0].copy(),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackPlutonium, 9L),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.BlackPlutonium, 9L),
                 MaterialLibAPI.getStack(Materials2Materials.BlackPlutonium, Materials2Shapes.plate, (int) (3)),
                 ItemList.Electric_Motor_ZPM.get(9L), ItemList.Sensor_ZPM.get(9L), ItemList.Field_Generator_ZPM.get(9L),
                 MaterialLibAPI.getStack(Materials2Materials.BlackPlutonium, Materials2Shapes.screw, (int) (36)) },
@@ -62,7 +61,7 @@ public class TecTechResearchLoader {
             (int) TierEU.RECIPE_UV,
             64,
             new Object[] { ItemRegistry.voidminer[1].copy(),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 9L),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Neutronium, 9L),
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.plate, (int) (3)),
                 ItemList.Electric_Motor_UV.get(9L), ItemList.Sensor_UV.get(9L), ItemList.Field_Generator_UV.get(9L),
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.screw, (int) (36)) },

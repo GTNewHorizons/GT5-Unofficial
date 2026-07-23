@@ -12,8 +12,9 @@ import net.minecraft.item.ItemStack;
 import bartworks.MainMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 
 public enum CircuitWraps {
@@ -138,7 +139,7 @@ public enum CircuitWraps {
         GTValues.RA.stdBuilder()
             .itemInputs(itemSingle.get(16), GTUtility.getIntegratedCircuit(16))
             .itemOutputs(getCircuitParts().getStack(id))
-            .fluidInputs(Materials.Polyethylene.getMolten(1 * HALF_INGOTS))
+            .fluidInputs(MU.molten(Materials2Materials.Plastic, 1 * HALF_INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);

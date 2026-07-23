@@ -14,7 +14,6 @@ import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -35,7 +34,7 @@ public class AssemblyLine implements Runnable {
             .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemList.OreDrill4.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 4L),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Netherite, 4L),
                 MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.plate, (int) (3)),
                 ItemList.Electric_Motor_LuV.get(9L),
                 ItemList.Sensor_LuV.get(9L),

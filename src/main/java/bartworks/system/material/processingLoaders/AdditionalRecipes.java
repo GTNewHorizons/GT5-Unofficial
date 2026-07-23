@@ -79,7 +79,6 @@ import bartworks.util.BioData;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
@@ -107,7 +106,7 @@ public class AdditionalRecipes {
                 .itemInputs(BioCultureEnum.getPetriDish(culture.bioCulture), DNAFlask, Detergent, EthanolCell)
                 .itemOutputs(
                     BioDataEnum.getDNASampleFlask(DNA),
-                    GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
+                    GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
                 .outputChances(DNA.getChance(), 100_00)
                 .fluidInputs(GTModHandler.getDistilledWater(1_000))
                 .special(BioItemList.mBioLabParts[0])
@@ -225,7 +224,7 @@ public class AdditionalRecipes {
             .fake()
             .addTo(bioLabRecipes);
 
-        FluidStack[] easyFluids = { Materials.Water.getFluid(1_000), GTModHandler.getDistilledWater(1_000) };
+        FluidStack[] easyFluids = { MU.fluid(Materials2Materials.Water, 1_000), GTModHandler.getDistilledWater(1_000) };
         for (FluidStack fluidStack : easyFluids) {
             for (BioCulture bioCulture : BioCultureEnum.BIO_CULTURES) {
                 if (bioCulture.isBreedable() && bioCulture.getTier() == 0) {
@@ -243,10 +242,13 @@ public class AdditionalRecipes {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             ItemList.EmptyPetriDish.get(1),
-                            fluidStack.equals(Materials.Water.getFluid(1_000)) ? Materials.Water.getCells(1)
+                            fluidStack.equals(MU.fluid(Materials2Materials.Water, 1_000))
+                                ? GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Water, 1)
                                 : GTUtility.getContainersFromFluid(GTModHandler.getDistilledWater(1_000))
                                     .get(0))
-                        .itemOutputs(BioCultureEnum.getPetriDish(bioCulture), Materials.Empty.getCells(1))
+                        .itemOutputs(
+                            BioCultureEnum.getPetriDish(bioCulture),
+                            GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1))
                         .outputChances(bioCulture.getChance(), 100_00)
                         .fluidInputs(new FluidStack(bioCulture.getFluid(), 1_000))
                         .duration(25 * SECONDS)
@@ -257,26 +259,26 @@ public class AdditionalRecipes {
         }
 
         List<Pair<Material, Integer>> liquidFuels = Arrays.asList(
-            ImmutablePair.of(MU.material(Materials.PhosphoricAcid), 66),
-            ImmutablePair.of(MU.material(Materials.DilutedHydrochloricAcid), 26),
-            ImmutablePair.of(MU.material(Materials.HypochlorousAcid), 56),
-            ImmutablePair.of(MU.material(Materials.HydrofluoricAcid), 60),
-            ImmutablePair.of(MU.material(Materials.HydrochloricAcid), 52),
-            ImmutablePair.of(MU.material(Materials.NitricAcid), 72),
-            ImmutablePair.of(MU.material(Materials.Mercury), 32),
-            ImmutablePair.of(MU.material(Materials.DilutedSulfuricAcid), 14),
-            ImmutablePair.of(MU.material(Materials.SulfuricAcid), 28),
-            ImmutablePair.of(MU.material(Materials.AceticAcid), 21),
+            ImmutablePair.of(Materials2Materials.PhosphoricAcidGT5U, 66),
+            ImmutablePair.of(Materials2Materials.DilutedHydrochloricAcidGT5U, 26),
+            ImmutablePair.of(Materials2Materials.HypochlorousAcid, 56),
+            ImmutablePair.of(Materials2Materials.HydrofluoricAcidGT5U, 60),
+            ImmutablePair.of(Materials2Materials.HydrochloricAcidGT5U, 52),
+            ImmutablePair.of(Materials2Materials.NitricAcid, 72),
+            ImmutablePair.of(Materials2Materials.Mercury, 32),
+            ImmutablePair.of(Materials2Materials.DilutedSulfuricAcid, 14),
+            ImmutablePair.of(Materials2Materials.SulfuricAcid, 28),
+            ImmutablePair.of(Materials2Materials.AceticAcid, 21),
             ImmutablePair.of(WerkstoffReconstruction.materialLibOf(WerkstoffLoader.FormicAcid), 40),
             ImmutablePair.of(WerkstoffReconstruction.materialLibOf(WerkstoffLoader.HexafluorosilicicAcid), 350),
-            ImmutablePair.of(MU.material(Materials.PhthalicAcid), 270),
-            ImmutablePair.of(MU.material(Materials.NaphthenicAcid), 250),
-            ImmutablePair.of(MU.material(Materials.ChlorosulfonicAcid), 2304),
+            ImmutablePair.of(Materials2Materials.phtalicacid, 270),
+            ImmutablePair.of(Materials2Materials.NaphthenicAcid, 250),
+            ImmutablePair.of(Materials2Materials.ChlorosulfonicAcid, 2304),
             ImmutablePair.of(WerkstoffReconstruction.materialLibOf(GGMaterial.fluoroantimonicAcid), 5760));
         for (Pair<Material, Integer> fuel : liquidFuels) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, fuel.getLeft(), 1))
-                .itemOutputs(Materials.Empty.getCells(1))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1))
                 .metadata(FUEL_VALUE, fuel.getRight())
                 .addTo(BartWorksRecipeMaps.acidGenFuels);
         }
@@ -284,13 +286,16 @@ public class AdditionalRecipes {
             ImmutablePair.of(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 320),
             ImmutablePair.of(GTPPFluids.IndustrialStrengthHydrogenChloride, 224),
             ImmutablePair.of(GTPPFluids.PropionicAcid, 150),
-            ImmutablePair.of(Materials.Redstone.mStandardMoltenFluid, 40));
+            ImmutablePair.of(
+                MU.molten(Materials2Materials.Redstone, 1)
+                    .getFluid(),
+                40));
         for (Pair<Fluid, Integer> otherFuel : liquidOtherFuels) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     FluidContainerRegistry
                         .fillFluidContainer(new FluidStack(otherFuel.getLeft(), 1000), ItemList.Cell_Empty.get(1L)))
-                .itemOutputs(Materials.Empty.getCells(1))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1))
                 .metadata(FUEL_VALUE, otherFuel.getRight())
                 .addTo(BartWorksRecipeMaps.acidGenFuels);
         }
@@ -496,7 +501,7 @@ public class AdditionalRecipes {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (10_000)))
-            .fluidOutputs(Materials.Water.getFluid(8_832))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 8_832))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);

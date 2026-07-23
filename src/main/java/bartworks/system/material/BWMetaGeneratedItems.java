@@ -38,11 +38,12 @@ import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.config.Client;
 import ic2.core.IC2Potion;
@@ -175,7 +176,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     @Override
     public short[] getRGBa(ItemStack aStack) {
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) this.getDamage(aStack));
-        return werkstoff == null ? Materials._NULL.mRGBa : werkstoff.getRGBA();
+        return werkstoff == null ? MU.rgba(Materials2Materials.NULL) : werkstoff.getRGBA();
     }
 
     @Override
@@ -250,7 +251,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     public ItemStack getContainerItem(ItemStack aStack) {
         if (this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma
             || this.orePrefixes == OrePrefixes.cellMolten) {
-            return Materials.Empty.getCells(1);
+            return GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1);
         }
         return null;
     }

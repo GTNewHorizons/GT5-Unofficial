@@ -45,6 +45,7 @@ import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeCategories;
@@ -164,13 +165,15 @@ public class CellLoader implements IWerkstoffRunnable {
                 int cellEmpty = cells - 1;
 
                 if (cellEmpty < 0) {
-                    stOutputs.add(Materials.Empty.getCells(-cellEmpty));
+                    stOutputs.add(GTOreDictUnificator.get(cell, Materials2Materials.Empty, -cellEmpty));
                 }
                 if (werkstoff.getStats()
                     .isElektrolysis())
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            cellEmpty > 0 ? new ItemStack[] { werkstoffCell, Materials.Empty.getCells(cellEmpty) }
+                            cellEmpty > 0
+                                ? new ItemStack[] { werkstoffCell,
+                                    GTOreDictUnificator.get(cell, Materials2Materials.Empty, cellEmpty) }
                                 : new ItemStack[] { werkstoffCell })
                         .itemOutputs(stOutputs.toArray(new ItemStack[0]))
                         .fluidOutputs(flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
@@ -197,7 +200,9 @@ public class CellLoader implements IWerkstoffRunnable {
                     .isCentrifuge())
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            cellEmpty > 0 ? new ItemStack[] { werkstoffCell, Materials.Empty.getCells(cellEmpty) }
+                            cellEmpty > 0
+                                ? new ItemStack[] { werkstoffCell,
+                                    GTOreDictUnificator.get(cell, Materials2Materials.Empty, cellEmpty) }
                                 : new ItemStack[] { werkstoffCell })
                         .itemOutputs(stOutputs.toArray(new ItemStack[0]))
                         .fluidOutputs(flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
@@ -232,7 +237,7 @@ public class CellLoader implements IWerkstoffRunnable {
             werkstoff.getFluidOrGas(1)
                 .getFluid(),
             werkstoff.get(cell),
-            Materials.Empty.getCells(1));
+            GTOreDictUnificator.get(cell, Materials2Materials.Empty, 1));
 
         if (werkstoff.hasItemType(dust)) {
 
