@@ -25,7 +25,6 @@ import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Superconductors;
@@ -345,13 +344,13 @@ public class RecipesMachinesCustom {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Machine_Custom_1.get(2),
             BITS,
-            new Object[] { "PhP", "PFP", "PwP", 'P', OrePrefixes.plate.ingredient(Materials.Bronze), 'F',
-                OrePrefixes.frameGt.ingredient(Materials.Bronze) });
+            new Object[] { "PhP", "PFP", "PwP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Bronze), 'F',
+                OrePrefixes.frameGt.ingredient(Materials2Materials.Bronze) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.plate, (int) (6)),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Bronze, 1))
             .circuit(2)
             .itemOutputs(GregtechItemList.Casing_Machine_Custom_1.get(2))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -362,13 +361,13 @@ public class RecipesMachinesCustom {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Machine_Custom_2.get(2),
             BITS,
-            new Object[] { "PPP", "hFw", "PPP", 'P', OrePrefixes.plate.ingredient(Materials.Aluminium), 'F',
-                OrePrefixes.frameGt.ingredient(Materials.Aluminium) });
+            new Object[] { "PPP", "hFw", "PPP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Aluminium), 'F',
+                OrePrefixes.frameGt.ingredient(Materials2Materials.Aluminium) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.plate, (int) (6)),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Aluminium, 1))
             .circuit(2)
             .itemOutputs(GregtechItemList.Casing_Machine_Custom_2.get(2))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -381,7 +380,7 @@ public class RecipesMachinesCustom {
                 GregtechItemList.GTPP_Casing_MV.get(4),
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.gearGt, (int) (4)),
                 MaterialLibAPI.getStack(Materials2Materials.AnnealedCopper, Materials2Shapes.plate, (int) (16)),
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Polyethylene, 4),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials2Materials.Plastic, 4),
                 MaterialsElements.STANDALONE.BLACK_METAL.getFrameBox(4))
             .circuit(19)
             .itemOutputs(GregtechItemList.ChemicalPlant_Controller.get(1))
@@ -431,7 +430,8 @@ public class RecipesMachinesCustom {
             GregtechItemList.Industrial_AlloyBlastSmelter.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "WMW", "PCP", 'P', MaterialsAlloy.ZIRCONIUM_CARBIDE.getPlate(1), 'C', "circuitElite",
-                'W', OrePrefixes.cableGt04.ingredient(Materials.Tungsten), 'M', ItemList.Machine_IV_AlloySmelter });
+                'W', OrePrefixes.cableGt04.ingredient(Materials2Materials.Tungsten), 'M',
+                ItemList.Machine_IV_AlloySmelter });
 
         // Blast Smelter Casing Block
         GTModHandler.addCraftingRecipe(
@@ -513,7 +513,7 @@ public class RecipesMachinesCustom {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialsAlloy.TUMBAGA.getFrameBox(1),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Steel, 1),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials2Materials.Steel, 1),
                 ItemList.MV_Coil.get(1),
                 ItemList.IC2_Plantball.get(4),
                 new OreDictItemStack("plankWood", 8))
@@ -531,8 +531,8 @@ public class RecipesMachinesCustom {
             GregtechItemList.ThoriumReactor.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "ABA", "CDC", "EFE", 'A', GregtechItemList.LFTRControlCircuit, 'B',
-                OrePrefixes.cableGt12.ingredient(Materials.Naquadah), 'C', MaterialsAlloy.HASTELLOY_N.getPlateDouble(1),
-                'D', GregtechItemList.Gregtech_Computer_Cube, 'E',
+                OrePrefixes.cableGt12.ingredient(Materials2Materials.Naquadah), 'C',
+                MaterialsAlloy.HASTELLOY_N.getPlateDouble(1), 'D', GregtechItemList.Gregtech_Computer_Cube, 'E',
                 MaterialsElements.getInstance().THORIUM232.getPlate(1), 'F', ItemList.Hull_IV });
 
         // Reactor Shield Casing
@@ -573,7 +573,7 @@ public class RecipesMachinesCustom {
             GregtechItemList.Industrial_FuelRefinery.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CiC", "PXP", "GHG", 'C', "circuitElite", 'P',
-                OrePrefixes.plateDense.ingredient(Materials.TungstenSteel), 'X',
+                OrePrefixes.plateDense.ingredient(Materials2Materials.TungstenSteel), 'X',
                 GregtechItemList.Gregtech_Computer_Cube, 'G', MaterialsAlloy.STELLITE.getGear(1), 'H',
                 ItemList.Hull_IV });
 
@@ -607,8 +607,8 @@ public class RecipesMachinesCustom {
             GregtechItemList.Casing_Refinery_Structural.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "RGP", "hFw", "PHR", 'R', MaterialsAlloy.INCONEL_792.getRing(1), 'G',
-                MaterialsAlloy.HASTELLOY_X.getGear(1), 'P', OrePrefixes.plate.ingredient(Materials.Steel), 'F',
-                MaterialsAlloy.HASTELLOY_C276.getFrameBox(1), 'H', ItemList.Casing_EV });
+                MaterialsAlloy.HASTELLOY_X.getGear(1), 'P', OrePrefixes.plate.ingredient(Materials2Materials.Steel),
+                'F', MaterialsAlloy.HASTELLOY_C276.getFrameBox(1), 'H', ItemList.Casing_EV });
 
         // Cold Trap I
         GTModHandler.addCraftingRecipe(
@@ -646,7 +646,7 @@ public class RecipesMachinesCustom {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Nuclear_Salt_Processing_Plant.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "ABA", "CDC", "AEA", 'A', OrePrefixes.plate.ingredient(Materials.Osmiridium), 'B',
+            new Object[] { "ABA", "CDC", "AEA", 'A', OrePrefixes.plate.ingredient(Materials2Materials.Osmiridium), 'B',
                 GregtechItemList.ReactorProcessingUnit_IV, 'C', WerkstoffLoader.Ruridit.get(OrePrefixes.plate), 'D',
                 "circuitUltimate", 'E', GregtechItemList.ColdTrap_IV });
     }
@@ -689,7 +689,7 @@ public class RecipesMachinesCustom {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Power_SubStation.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "SPS", "PFP", "SPS", 'S', OrePrefixes.screw.ingredient(Materials.Titanium), 'P',
+            new Object[] { "SPS", "PFP", "SPS", 'S', OrePrefixes.screw.ingredient(Materials2Materials.Titanium), 'P',
                 MaterialsAlloy.INCOLOY_020.getPlate(1), 'F', MaterialsAlloy.INCOLOY_MA956.getFrameBox(1) });
 
         // Power Station Control Node
@@ -810,7 +810,7 @@ public class RecipesMachinesCustom {
             ItemList.FishingPort.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "WFW", "PCP", 'P', MaterialsAlloy.AQUATIC_STEEL.getPlate(1), 'C', "circuitElite", 'W',
-                OrePrefixes.wireFine.ingredient(Materials.Electrum), 'F', GregtechItemList.FishTrap });
+                OrePrefixes.wireFine.ingredient(Materials2Materials.Electrum), 'F', GregtechItemList.FishTrap });
     }
 
     private static void milling() {
@@ -1044,8 +1044,8 @@ public class RecipesMachinesCustom {
                 MaterialsAlloy.HG1223.getFineWire(64),
                 ItemList.Electric_Motor_IV.get(16),
                 ItemList.Energy_LapotronicOrb.get(16),
-                GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.Platinum, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Nichrome, 32),
+                GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials2Materials.Platinum, 16),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Materials.Nichrome, 32),
                 MaterialsAlloy.ZERON_100.getFrameBox(4),
                 MaterialsAlloy.ZIRCONIUM_CARBIDE.getPlateDouble(32),
                 MaterialsAlloy.BABBIT_ALLOY.getPlate(64),
@@ -1098,7 +1098,7 @@ public class RecipesMachinesCustom {
             .itemInputs(
                 new ItemStack(Blocks.glowstone, 16),
                 MaterialsAlloy.INCONEL_625.getGear(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Titanium, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Materials.Titanium, 4),
                 ItemList.Field_Generator_EV.get(2),
                 Circuits.EV.get(8))
             .circuit(16)
@@ -1115,15 +1115,15 @@ public class RecipesMachinesCustom {
             ItemList.ThermalBoiler.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "LCL", "GIG", "LCL", 'L', getModItem(RemoteIO.ID, "tile.machine", 1, 1), 'C',
-                ItemList.Machine_HV_Centrifuge, 'G', OrePrefixes.gearGt.ingredient(Materials.TungstenSteel), 'I',
-                "circuitElite" });
+                ItemList.Machine_HV_Centrifuge, 'G', OrePrefixes.gearGt.ingredient(Materials2Materials.TungstenSteel),
+                'I', "circuitElite" });
 
         // Thermal Containment Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_ThermalContainment.get(2),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PSP", "CHC", "PPP", 'P', MaterialsAlloy.MARAGING350.getPlate(1), 'S',
-                OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'C', "circuitAdvanced", 'H',
+                OrePrefixes.plate.ingredient(Materials2Materials.StainlessSteel), 'C', "circuitAdvanced", 'H',
                 ItemList.Casing_HV });
 
         // Lava Filter

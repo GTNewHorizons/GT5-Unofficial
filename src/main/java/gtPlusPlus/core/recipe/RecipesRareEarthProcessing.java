@@ -22,13 +22,13 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
@@ -67,7 +67,7 @@ public class RecipesRareEarthProcessing {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Chlorine, Materials2CellShapes.cell, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Hydrogen, Materials2CellShapes.cell, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1L))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.SodiumHydroxideGT5U, 1L))
             .fluidInputs(new FluidStack(mBrine, 2_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -117,7 +117,7 @@ public class RecipesRareEarthProcessing {
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.RareEarth, Materials2Shapes.dust, (int) (3)))
             .itemOutputs(RARE_EARTH_MID.getCrushed(2), RARE_EARTH_MID.getCrushed(2), RARE_EARTH_MID.getCrushed(2))
             .outputChances(9000, 8000, 7000)
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(2_000))
+            .fluidInputs(MU.fluid(Materials2Materials.HydrochloricAcidGT5U, 2_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalBathRecipes);
@@ -136,7 +136,7 @@ public class RecipesRareEarthProcessing {
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.RareEarth, Materials2Shapes.dust, (int) (3)))
             .itemOutputs(RARE_EARTH_HIGH.getCrushed(2), RARE_EARTH_HIGH.getCrushed(2), RARE_EARTH_HIGH.getCrushed(2))
             .outputChances(9000, 8000, 7000)
-            .fluidInputs(Materials.HydrofluoricAcid.getFluid(2_000))
+            .fluidInputs(MU.fluid(Materials2Materials.HydrofluoricAcidGT5U, 2_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(chemicalBathRecipes);

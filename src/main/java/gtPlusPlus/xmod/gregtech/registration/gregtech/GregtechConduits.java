@@ -115,7 +115,7 @@ public class GregtechConduits {
 
     private static void wireFactory(final String Material, final int Voltage, final int ID, final long insulatedLoss,
         final long uninsulatedLoss, final long Amps, final short[] rgb) {
-        final Materials T = Materials.get(Material);
+        final com.ruling_0.materiallib.api.Material T = MU.byLegacyName(Material);
         int V = GTUtility.getTier(Voltage);
         if (V == -1) {
             V = 0;

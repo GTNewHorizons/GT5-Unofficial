@@ -16,7 +16,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -107,7 +106,7 @@ public class RecipesMachines {
                 ItemList.Hull_MV.get(1),
                 new ItemStack(ModBlocks.blockCircuitProgrammer),
                 ItemList.VOLUMETRIC_FLASK.get(8),
-                GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.StainlessSteel, 2),
+                GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials2Materials.StainlessSteel, 2),
                 MaterialsAlloy.EGLIN_STEEL.getPlate(4))
             .circuit(17)
             .itemOutputs(new ItemStack(ModBlocks.blockVolumetricFlaskSetter, 1))
@@ -120,7 +119,7 @@ public class RecipesMachines {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Tesseract_Generator.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "CEC", "PXP", 'P', OrePrefixes.plate.ingredient(Materials.Titanium), 'C',
+            new Object[] { "PCP", "CEC", "PXP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Titanium), 'C',
                 "circuitMaster", 'E', new ItemStack(Blocks.ender_chest), 'X',
                 GregtechItemList.Gregtech_Computer_Cube });
 
@@ -128,14 +127,14 @@ public class RecipesMachines {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Tesseract_Terminal.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "CEC", "PHP", 'P', OrePrefixes.plate.ingredient(Materials.Titanium), 'C',
+            new Object[] { "PCP", "CEC", "PHP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Titanium), 'C',
                 "circuitElite", 'E', new ItemStack(Blocks.ender_chest), 'H', ItemList.Hull_EV });
 
         // Air Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "PRP", "IHI", 'P', OrePrefixes.plate.ingredient(Materials.Redstone), 'C',
+            new Object[] { "PCP", "PRP", "IHI", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Redstone), 'C',
                 ItemList.Casing_Grate, 'R', ItemList.FluidRegulator_IV, 'I', "circuitElite", 'H',
                 ItemList.Hatch_Input_IV });
 
@@ -161,7 +160,8 @@ public class RecipesMachines {
             BITS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Pump_EV, 'C', Circuits.EV.getIngredient(), 'W',
-                OrePrefixes.cableGt08.ingredient(Materials.Electrum), 'G', MaterialsAlloy.INCONEL_792.getGear(1) });
+                OrePrefixes.cableGt08.ingredient(Materials2Materials.Electrum), 'G',
+                MaterialsAlloy.INCONEL_792.getGear(1) });
 
         // Reservoir Hatch
         if (RemoteIO.isModLoaded()) {
@@ -185,7 +185,7 @@ public class RecipesMachines {
                 ItemList.Emitter_HV.get(1),
                 ItemList.Sensor_HV.get(1),
                 MaterialsAlloy.PIKYONIUM.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 4))
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Naquadah, 4))
             .itemOutputs(new ItemStack(DimensionEverglades.blockPortalFrame, 2))
             .fluidInputs(MaterialsAlloy.ZERON_100.getFluidStack(8 * INGOTS))
             .duration(4 * MINUTES + 30 * SECONDS)

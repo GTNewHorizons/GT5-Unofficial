@@ -29,13 +29,14 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -152,7 +153,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(GregtechItemList.LithiumHydroxideDust.get(3))
             .itemOutputs(MaterialsFluorides.LITHIUM_FLUORIDE.getDust(2))
             .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 500))
-            .fluidOutputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -162,7 +163,7 @@ public class RecipeLoaderNuclear {
                 MaterialLibAPI.getStack(Materials2Materials.Oxygen, Materials2CellShapes.cell, (int) (8)),
                 MaterialsElements.getInstance().LITHIUM7.getDust(16))
             .itemOutputs(ItemList.Cell_Empty.get(8))
-            .fluidInputs(Materials.Water.getFluid(8_000))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 8_000))
             .fluidOutputs(new FluidStack(GTPPFluids.LithiumHydroxide, 48 * INGOTS))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_LV)
@@ -227,7 +228,7 @@ public class RecipeLoaderNuclear {
             .circuit(15)
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 500))
-            .fluidOutputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
@@ -239,7 +240,7 @@ public class RecipeLoaderNuclear {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
@@ -249,7 +250,7 @@ public class RecipeLoaderNuclear {
             .circuit(15)
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 500))
-            .fluidOutputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -261,7 +262,7 @@ public class RecipeLoaderNuclear {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -305,7 +306,7 @@ public class RecipeLoaderNuclear {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (2)))
             .itemOutputs(GregtechItemList.CalciumHydroxideDust.get(5))
-            .fluidInputs(Materials.Water.getFluid(1_000))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
             .eut(TierEU.RECIPE_MV)
             .duration(12 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
@@ -357,7 +358,7 @@ public class RecipeLoaderNuclear {
         // Outputs use fluid rule because they are not molten forms of solids
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsFluorides.BERYLLIUM_HYDROXIDE.getDust(3), ItemList.Cell_Empty.get(2))
-            .itemOutputs(Materials.Water.getCells(2))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Water, 2))
             .fluidInputs(MaterialsFluorides.AMMONIUM_BIFLUORIDE.getFluidStack(8 * INGOTS))
             .fluidOutputs(MaterialsFluorides.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1_000))
             .eut(TierEU.RECIPE_MV / 2)
@@ -368,7 +369,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(MaterialsFluorides.BERYLLIUM_HYDROXIDE.getDust(3))
             .fluidInputs(MaterialsFluorides.AMMONIUM_BIFLUORIDE.getFluidStack(8 * INGOTS))
             .fluidOutputs(
-                Materials.Water.getFluid(2_000),
+                MU.fluid(Materials2Materials.Water, 2_000),
                 MaterialsFluorides.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1_000))
             .eut(TierEU.RECIPE_MV)
             .duration(5 * MINUTES)

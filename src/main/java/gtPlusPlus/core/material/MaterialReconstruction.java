@@ -15,6 +15,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.FluidNames;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -305,11 +306,11 @@ public final class MaterialReconstruction {
     /// The tool-handle material the retired gtpp bridge facade carried, by that facade's own formula.
     private static com.ruling_0.materiallib.api.Material handleMaterial(com.ruling_0.materiallib.api.Material ml,
         int durability) {
-        if (MU.hasFlag(ml, GTMaterialFlag.BURNING)) return MU.material(Materials.Blaze);
-        if (MU.hasFlag(ml, GTMaterialFlag.MAGICAL)) return MU.material(Materials.Thaumium);
-        if (durability > 5120) return MU.material(Materials.TungstenSteel);
-        if (durability > 1280) return MU.material(Materials.Steel);
-        return MU.material(Materials.Wood);
+        if (MU.hasFlag(ml, GTMaterialFlag.BURNING)) return Materials2Materials.Blaze;
+        if (MU.hasFlag(ml, GTMaterialFlag.MAGICAL)) return Materials2Materials.Thaumium;
+        if (durability > 5120) return Materials2Materials.TungstenSteel;
+        if (durability > 1280) return Materials2Materials.Steel;
+        return Materials2Materials.Wood;
     }
 
     /// The legacy gtpp fluid name for `ml`'s non-plasma fluid, or null when `generatesFluid` is false --

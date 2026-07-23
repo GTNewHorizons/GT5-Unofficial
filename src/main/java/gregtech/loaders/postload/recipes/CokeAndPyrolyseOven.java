@@ -34,7 +34,7 @@ public class CokeAndPyrolyseOven {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("logWood", 20))
             .circuit(20)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Charcoal, 24))
             .fluidInputs(Materials.Steam.getGas(1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 1440))
             .duration(72 * SECONDS)
@@ -43,7 +43,7 @@ public class CokeAndPyrolyseOven {
 
         // Coal to Coke
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Coal, 16))
             .circuit(22)
             .itemOutputs(GTOreDictUnificator.get("fuelCoke", 10))
             .fluidInputs(Materials.Steam.getGas(1_000))
@@ -66,7 +66,7 @@ public class CokeAndPyrolyseOven {
         // Coke & Coal
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 12),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Coal, 12),
                 GTOreDictUnificator.get("fuelCoke", 6))
             .itemOutputs(GTOreDictUnificator.get("fuelCoke", 14))
             .fluidInputs(Materials.Steam.getGas(2_000))

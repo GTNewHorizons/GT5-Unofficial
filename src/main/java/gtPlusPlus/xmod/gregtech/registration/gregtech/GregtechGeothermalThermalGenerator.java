@@ -8,8 +8,8 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -48,7 +48,8 @@ public class GregtechGeothermalThermalGenerator {
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Motor_EV, 'C', Circuits.ZPM.getIngredient(), 'W',
-                OrePrefixes.cableGt04.ingredient(Materials.Aluminium), 'G', MaterialsAlloy.TANTALLOY_61.getGear(1) });
+                OrePrefixes.cableGt04.ingredient(Materials2Materials.Aluminium), 'G',
+                MaterialsAlloy.TANTALLOY_61.getGear(1) });
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Geothermal_Engine_IV.get(1L),
@@ -57,7 +58,8 @@ public class GregtechGeothermalThermalGenerator {
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
                 ItemList.Electric_Motor_IV, 'C', Circuits.UV.getIngredient(), 'W',
-                OrePrefixes.cableGt04.ingredient(Materials.Platinum), 'G', MaterialsAlloy.STELLITE.getGear(1) });
+                OrePrefixes.cableGt04.ingredient(Materials2Materials.Platinum), 'G',
+                MaterialsAlloy.STELLITE.getGear(1) });
 
         final ItemStack INGREDIENT_1 = ItemList.Electric_Piston_LuV.get(1);
         final ItemStack INGREDIENT_2 = ItemList.Electric_Motor_LuV.get(1);
@@ -67,7 +69,7 @@ public class GregtechGeothermalThermalGenerator {
                 | GTModHandler.RecipeBits.BUFFERED
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_LuV, 'P', INGREDIENT_1, 'E', INGREDIENT_2, 'C',
-                Circuits.UHV.getIngredient(), 'W', OrePrefixes.cableGt04.ingredient(Materials.Tungsten), 'G',
+                Circuits.UHV.getIngredient(), 'W', OrePrefixes.cableGt04.ingredient(Materials2Materials.Tungsten), 'G',
                 MaterialsAlloy.ZERON_100.getGear(1) });
     }
 }

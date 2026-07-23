@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -269,7 +268,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
                     3,
                     MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dustTiny, (int) (1)));
             } else {
-                tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 1L));
+                tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 1L));
             }
         }
     }

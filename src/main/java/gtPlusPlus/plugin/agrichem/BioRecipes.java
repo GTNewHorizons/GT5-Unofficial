@@ -276,13 +276,13 @@ public class BioRecipes {
                 GregtechItemList.WoodPellet.get(2),
                 true,
                 true,
-                Materials.Charcoal.getGems(3),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Charcoal, 3),
                 GTValues.NF,
                 1200);
         }
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.WoodPellet.get(2))
-            .itemOutputs(Materials.Charcoal.getGems(3))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Charcoal, 3))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(6 * SECONDS)
             .addTo(industrialCokeOvenRecipes);

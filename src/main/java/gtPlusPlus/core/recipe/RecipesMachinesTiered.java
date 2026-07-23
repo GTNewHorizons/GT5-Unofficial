@@ -16,7 +16,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -185,7 +184,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 ItemList.Hull_LV.get(1),
                 MaterialsAlloy.TUMBAGA.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Tin, 2),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.Tin, 2),
                 Circuits.LV.get(2),
                 MaterialsAlloy.TUMBAGA.getScrew(6),
                 MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.bolt, (int) (12)))
@@ -200,7 +199,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_ULV.get(1),
                 MaterialsAlloy.EGLIN_STEEL.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Cobalt, 2),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.Cobalt, 2),
                 Circuits.MV.get(2),
                 MaterialsAlloy.EGLIN_STEEL.getScrew(6),
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.bolt, (int) (12)))
@@ -215,7 +214,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_LV.get(1),
                 MaterialsAlloy.TANTALUM_CARBIDE.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.AnnealedCopper, 2),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.AnnealedCopper, 2),
                 Circuits.HV.get(2),
                 MaterialsAlloy.TANTALUM_CARBIDE.getScrew(6),
                 MaterialsElements.STANDALONE.BLACK_METAL.getBolt(12))
@@ -230,7 +229,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_MV.get(1),
                 MaterialsAlloy.INCOLOY_DS.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Gold, 2),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.Gold, 2),
                 Circuits.EV.get(2),
                 MaterialsAlloy.INCOLOY_DS.getScrew(6),
                 MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.bolt, (int) (12)))
@@ -245,7 +244,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_HV.get(1),
                 MaterialsAlloy.INCONEL_625.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Titanium, 2),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.Titanium, 2),
                 Circuits.IV.get(2),
                 MaterialsAlloy.INCONEL_625.getScrew(6),
                 MaterialsAlloy.HASTELLOY_N.getBolt(12))
@@ -260,7 +259,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_EV.get(1),
                 MaterialsAlloy.ZERON_100.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Nichrome, 2),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.Nichrome, 2),
                 Circuits.LuV.get(2),
                 MaterialsAlloy.ZERON_100.getScrew(6),
                 MaterialsAlloy.ENERGYCRYSTAL.getBolt(12))
@@ -275,7 +274,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_IV.get(1),
                 MaterialsAlloy.PIKYONIUM.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Platinum, 2),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.Platinum, 2),
                 Circuits.ZPM.get(2),
                 MaterialsAlloy.PIKYONIUM.getScrew(6),
                 MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getBolt(12))
@@ -290,7 +289,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_LuV.get(1),
                 MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.YttriumBariumCuprate, 2),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.YttriumBariumCuprate, 2),
                 Circuits.UV.get(2),
                 MaterialsAlloy.TITANSTEEL.getScrew(6),
                 MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getBolt(12))
@@ -305,7 +304,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_ZPM.get(1),
                 MaterialsAlloy.ABYSSAL.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Naquadah, 2),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.Naquadah, 2),
                 Circuits.UHV.get(2),
                 MaterialsAlloy.ABYSSAL.getScrew(6),
                 MaterialsAlloy.TITANSTEEL.getBolt(12))
@@ -320,7 +319,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_UV.get(1),
                 MaterialsAlloy.QUANTUM.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Duranium, 2),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.Duranium, 2),
                 Circuits.UEV.get(2),
                 MaterialsAlloy.QUANTUM.getScrew(6),
                 MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getBolt(12))
@@ -337,7 +336,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_ULV.get(4),
                 MaterialsAlloy.TUMBAGA.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Tin, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Tin, 4),
                 Circuits.ULV.get(4),
                 MaterialsAlloy.SILICON_CARBIDE.getLongRod(4),
                 MaterialsAlloy.POTIN.getGear(5))
@@ -352,7 +351,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_LV.get(4),
                 MaterialsAlloy.EGLIN_STEEL.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Cobalt, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Cobalt, 4),
                 Circuits.LV.get(4),
                 MaterialsAlloy.BLOODSTEEL.getLongRod(4),
                 MaterialsAlloy.TUMBAGA.getGear(5))
@@ -367,7 +366,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_MV.get(4),
                 MaterialsAlloy.TANTALUM_CARBIDE.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.AnnealedCopper, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.AnnealedCopper, 4),
                 Circuits.MV.get(4),
                 MaterialsAlloy.TANTALUM_CARBIDE.getLongRod(4),
                 MaterialsAlloy.EGLIN_STEEL.getGear(5))
@@ -382,7 +381,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_HV.get(4),
                 MaterialsAlloy.INCOLOY_DS.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Gold, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Gold, 4),
                 Circuits.HV.get(4),
                 MaterialsAlloy.INCONEL_792.getLongRod(4),
                 MaterialsAlloy.TANTALUM_CARBIDE.getGear(5))
@@ -397,7 +396,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_EV.get(4),
                 MaterialsAlloy.INCONEL_625.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Titanium, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Titanium, 4),
                 Circuits.EV.get(4),
                 MaterialsAlloy.ARCANITE.getLongRod(4),
                 MaterialsAlloy.INCOLOY_DS.getGear(5))
@@ -412,7 +411,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_IV.get(4),
                 MaterialsAlloy.ZERON_100.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Nichrome, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Nichrome, 4),
                 Circuits.IV.get(4),
                 MaterialsAlloy.LAFIUM.getLongRod(4),
                 MaterialsAlloy.INCONEL_625.getGear(5))
@@ -427,7 +426,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_LuV.get(4),
                 MaterialsAlloy.PIKYONIUM.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Platinum, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Platinum, 4),
                 Circuits.LuV.get(4),
                 MaterialsAlloy.CINOBITE.getLongRod(4),
                 MaterialsAlloy.ZERON_100.getGear(5))
@@ -442,7 +441,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_ZPM.get(4),
                 MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.YttriumBariumCuprate, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.YttriumBariumCuprate, 4),
                 Circuits.ZPM.get(4),
                 MaterialsAlloy.TITANSTEEL.getLongRod(4),
                 MaterialsAlloy.PIKYONIUM.getGear(5))
@@ -457,7 +456,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_UV.get(4),
                 MaterialsAlloy.ABYSSAL.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Naquadah, 4),
                 Circuits.UV.get(4),
                 MaterialsAlloy.OCTIRON.getLongRod(4),
                 MaterialsAlloy.TITANSTEEL.getGear(5))
@@ -472,7 +471,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_UHV.get(4),
                 MaterialsAlloy.QUANTUM.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Duranium, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Duranium, 4),
                 Circuits.UHV.get(4),
                 MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getLongRod(4),
                 MaterialsAlloy.ABYSSAL.getGear(5))
@@ -490,7 +489,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_ULV.get(1),
                 MaterialsAlloy.POTIN.getPlate(8),
                 MaterialsAlloy.POTIN.getGear(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Tin, 4),
+                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials2Materials.Tin, 4),
                 Circuits.ULV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_ULV.get(1))
@@ -507,7 +506,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_LV.get(1),
                 MaterialsAlloy.TUMBAGA.getPlate(8),
                 MaterialsAlloy.TUMBAGA.getGear(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Cobalt, 4),
+                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials2Materials.Cobalt, 4),
                 Circuits.LV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_LV.get(1))
@@ -522,7 +521,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_MV.get(1),
                 MaterialsAlloy.EGLIN_STEEL.getPlate(8),
                 MaterialsAlloy.EGLIN_STEEL.getGear(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.AnnealedCopper, 4),
+                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials2Materials.AnnealedCopper, 4),
                 Circuits.MV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_MV.get(1))
@@ -537,7 +536,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_HV.get(1),
                 MaterialsAlloy.TANTALUM_CARBIDE.getPlate(8),
                 MaterialsAlloy.TANTALUM_CARBIDE.getGear(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Gold, 4),
+                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials2Materials.Gold, 4),
                 Circuits.HV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_HV.get(1))
@@ -552,7 +551,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_EV.get(1),
                 MaterialsAlloy.INCOLOY_DS.getPlate(8),
                 MaterialsAlloy.INCOLOY_DS.getGear(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Titanium, 4),
+                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials2Materials.Titanium, 4),
                 Circuits.EV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_EV.get(1))
@@ -567,7 +566,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_IV.get(1),
                 MaterialsAlloy.INCONEL_625.getPlate(8),
                 MaterialsAlloy.INCONEL_625.getGear(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Nichrome, 4),
+                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials2Materials.Nichrome, 4),
                 Circuits.IV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_IV.get(1))
@@ -582,7 +581,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_LuV.get(1),
                 MaterialsAlloy.ZERON_100.getPlate(8),
                 MaterialsAlloy.ZERON_100.getGear(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Platinum, 4),
+                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials2Materials.Platinum, 4),
                 Circuits.LuV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_LuV.get(1))
@@ -597,7 +596,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_ZPM.get(1),
                 MaterialsAlloy.PIKYONIUM.getPlate(8),
                 MaterialsAlloy.PIKYONIUM.getGear(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.YttriumBariumCuprate, 4),
+                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials2Materials.YttriumBariumCuprate, 4),
                 Circuits.ZPM.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_ZPM.get(1))
@@ -612,7 +611,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_UV.get(1),
                 MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(8),
                 MaterialsAlloy.TITANSTEEL.getGear(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4),
+                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials2Materials.Naquadah, 4),
                 Circuits.UV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_UV.get(1))
@@ -627,7 +626,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_MAX.get(1),
                 MaterialsAlloy.ABYSSAL.getPlate(8),
                 MaterialsAlloy.ABYSSAL.getGear(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Duranium, 4),
+                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials2Materials.Duranium, 4),
                 Circuits.UHV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_UHV.get(1))
@@ -789,7 +788,7 @@ public class RecipesMachinesTiered {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_LV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Steel), 'C',
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Steel), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', Circuits.LV.getIngredient(), 'H', ItemList.Hull_LV, 'R',
                 ItemList.Robot_Arm_LV });
 
@@ -797,7 +796,7 @@ public class RecipesMachinesTiered {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_MV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Aluminium), 'C',
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Aluminium), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', Circuits.MV.getIngredient(), 'H', ItemList.Hull_MV, 'R',
                 ItemList.Robot_Arm_MV });
 
@@ -805,15 +804,15 @@ public class RecipesMachinesTiered {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_HV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'C',
-                new ItemStack(Blocks.crafting_table), 'I', Circuits.HV.getIngredient(), 'H', ItemList.Hull_HV, 'R',
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.StainlessSteel),
+                'C', new ItemStack(Blocks.crafting_table), 'I', Circuits.HV.getIngredient(), 'H', ItemList.Hull_HV, 'R',
                 ItemList.Robot_Arm_HV });
 
         // EV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_EV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Titanium), 'C',
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Titanium), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', Circuits.EV.getIngredient(), 'H', ItemList.Hull_EV, 'R',
                 ItemList.Robot_Arm_EV });
 
@@ -821,15 +820,15 @@ public class RecipesMachinesTiered {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_IV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.TungstenSteel), 'C',
-                new ItemStack(Blocks.crafting_table), 'I', Circuits.IV.getIngredient(), 'H', ItemList.Hull_IV, 'R',
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.TungstenSteel),
+                'C', new ItemStack(Blocks.crafting_table), 'I', Circuits.IV.getIngredient(), 'H', ItemList.Hull_IV, 'R',
                 ItemList.Robot_Arm_IV });
 
         // LuV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_LuV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Chrome), 'C',
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Chrome), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', Circuits.LuV.getIngredient(), 'H', ItemList.Hull_LuV, 'R',
                 ItemList.Robot_Arm_LuV });
 
@@ -837,7 +836,7 @@ public class RecipesMachinesTiered {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_ZPM.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Iridium), 'C',
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Iridium), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', Circuits.ZPM.getIngredient(), 'H', ItemList.Hull_ZPM, 'R',
                 ItemList.Robot_Arm_ZPM });
 
@@ -845,7 +844,7 @@ public class RecipesMachinesTiered {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_UV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Osmium), 'C',
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Osmium), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', Circuits.UV.getIngredient(), 'H', ItemList.Hull_UV, 'R',
                 ItemList.Robot_Arm_UV });
     }
@@ -1083,14 +1082,14 @@ public class RecipesMachinesTiered {
             BITS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_LV, 'P', ItemList.Electric_Piston_LV, 'E',
                 ItemList.Electric_Motor_LV, 'C', Circuits.LV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.ingredient(Materials.Tin), 'G', MaterialsAlloy.TUMBAGA.getGear(2) });
+                OrePrefixes.cableGt01.ingredient(Materials2Materials.Tin), 'G', MaterialsAlloy.TUMBAGA.getGear(2) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_LV.get(1),
                 ItemList.Electric_Motor_LV.get(2),
                 ItemList.Electric_Piston_LV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials2Materials.Tin, 1L),
                 Circuits.LV.get(1),
                 MaterialsAlloy.TUMBAGA.getGear(2))
             .circuit(14)
@@ -1108,7 +1107,7 @@ public class RecipesMachinesTiered {
             BITS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_MV, 'P', ItemList.Electric_Piston_MV, 'E',
                 ItemList.Electric_Motor_MV, 'C', Circuits.MV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.ingredient(Materials.AnnealedCopper), 'G',
+                OrePrefixes.cableGt01.ingredient(Materials2Materials.AnnealedCopper), 'G',
                 MaterialsAlloy.EGLIN_STEEL.getGear(2) });
 
         GTValues.RA.stdBuilder()
@@ -1116,7 +1115,7 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_MV.get(1),
                 ItemList.Electric_Motor_MV.get(2),
                 ItemList.Electric_Piston_MV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.AnnealedCopper, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials2Materials.AnnealedCopper, 1L),
                 Circuits.MV.get(1),
                 MaterialsAlloy.EGLIN_STEEL.getGear(2))
             .circuit(14)
@@ -1134,7 +1133,7 @@ public class RecipesMachinesTiered {
             BITS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_HV, 'P', ItemList.Electric_Piston_HV, 'E',
                 ItemList.Electric_Motor_HV, 'C', Circuits.HV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.ingredient(Materials.Gold), 'G',
+                OrePrefixes.cableGt01.ingredient(Materials2Materials.Gold), 'G',
                 MaterialLibAPI.getStack(Materials2Materials.Chrome, Materials2Shapes.gearGt, (int) (1)) });
 
         GTValues.RA.stdBuilder()
@@ -1142,7 +1141,7 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_HV.get(1),
                 ItemList.Electric_Motor_HV.get(2),
                 ItemList.Electric_Piston_HV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials2Materials.Gold, 1L),
                 Circuits.HV.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Chrome, Materials2Shapes.gearGt, (int) (2)))
             .circuit(14)
@@ -1160,14 +1159,15 @@ public class RecipesMachinesTiered {
             BITS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Motor_EV, 'C', Circuits.EV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.ingredient(Materials.Titanium), 'G', MaterialsAlloy.INCOLOY_DS.getGear(1) });
+                OrePrefixes.cableGt01.ingredient(Materials2Materials.Titanium), 'G',
+                MaterialsAlloy.INCOLOY_DS.getGear(1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_EV.get(1),
                 ItemList.Electric_Motor_EV.get(2),
                 ItemList.Electric_Piston_EV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Titanium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials2Materials.Titanium, 1L),
                 Circuits.EV.get(1),
                 MaterialsAlloy.INCOLOY_DS.getGear(2))
             .circuit(14)
@@ -1185,14 +1185,15 @@ public class RecipesMachinesTiered {
             BITS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
                 ItemList.Electric_Motor_IV, 'C', Circuits.IV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.ingredient(Materials.Tungsten), 'G', MaterialsAlloy.NITINOL_60.getGear(1) });
+                OrePrefixes.cableGt01.ingredient(Materials2Materials.Tungsten), 'G',
+                MaterialsAlloy.NITINOL_60.getGear(1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_IV.get(1),
                 ItemList.Electric_Motor_IV.get(2),
                 ItemList.Electric_Piston_IV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials2Materials.Tungsten, 1L),
                 Circuits.IV.get(1),
                 MaterialsAlloy.NITINOL_60.getGear(2))
             .circuit(14)
@@ -1327,21 +1328,21 @@ public class RecipesMachinesTiered {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.AirFilter_Tier1.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PPP", "DDD", "PPP", 'P', OrePrefixes.plate.ingredient(Materials.Carbon), 'D',
-                OrePrefixes.dust.ingredient(Materials.Carbon) });
+            new Object[] { "PPP", "DDD", "PPP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Carbon), 'D',
+                OrePrefixes.dust.ingredient(Materials2Materials.Carbon) });
 
         // Air Filter [Tier 2]
         GTModHandler.addCraftingRecipe(
             GregtechItemList.AirFilter_Tier2.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PPP", "CDC", "PPP", 'P', OrePrefixes.plate.ingredient(Materials.Carbon), 'C',
-                "cellLithiumPeroxide", 'D', OrePrefixes.dust.ingredient(Materials.Carbon) });
+            new Object[] { "PPP", "CDC", "PPP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Carbon), 'C',
+                "cellLithiumPeroxide", 'D', OrePrefixes.dust.ingredient(Materials2Materials.Carbon) });
 
         // Pollution Detection Device
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Detector.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PSP", "PMP", "CHC", 'P', OrePrefixes.plate.ingredient(Materials.Steel), 'S',
+            new Object[] { "PSP", "PMP", "CHC", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Steel), 'S',
                 ItemList.Sensor_LV, 'M', ItemList.Electric_Motor_LV, 'C', "circuitBasic", 'H', ItemList.Hull_LV });
 
         // Pollution Cleaners/Scrubbers
@@ -1350,47 +1351,47 @@ public class RecipesMachinesTiered {
             GregtechItemList.Pollution_Cleaner_LV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
-                OrePrefixes.plate.ingredient(Materials.Tin), 'M', ItemList.Electric_Motor_LV, 'C', "circuitBasic", 'H',
-                ItemList.Hull_LV });
+                OrePrefixes.plate.ingredient(Materials2Materials.Tin), 'M', ItemList.Electric_Motor_LV, 'C',
+                "circuitBasic", 'H', ItemList.Hull_LV });
 
         // MV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_MV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
-                OrePrefixes.plate.ingredient(Materials.Copper), 'M', ItemList.Electric_Motor_MV, 'C', "circuitGood",
-                'H', ItemList.Hull_MV });
+                OrePrefixes.plate.ingredient(Materials2Materials.Copper), 'M', ItemList.Electric_Motor_MV, 'C',
+                "circuitGood", 'H', ItemList.Hull_MV });
 
         // HV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_HV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
-                OrePrefixes.plate.ingredient(Materials.Bronze), 'M', ItemList.Electric_Motor_HV, 'C', "circuitAdvanced",
-                'H', ItemList.Hull_HV });
+                OrePrefixes.plate.ingredient(Materials2Materials.Bronze), 'M', ItemList.Electric_Motor_HV, 'C',
+                "circuitAdvanced", 'H', ItemList.Hull_HV });
 
         // EV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_EV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
-                OrePrefixes.plate.ingredient(Materials.Iron), 'M', ItemList.Electric_Motor_EV, 'C', "circuitData", 'H',
-                ItemList.Hull_EV });
+                OrePrefixes.plate.ingredient(Materials2Materials.Iron), 'M', ItemList.Electric_Motor_EV, 'C',
+                "circuitData", 'H', ItemList.Hull_EV });
 
         // IV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_IV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
-                OrePrefixes.plate.ingredient(Materials.Steel), 'M', ItemList.Electric_Motor_IV, 'C', "circuitElite",
-                'H', ItemList.Hull_IV });
+                OrePrefixes.plate.ingredient(Materials2Materials.Steel), 'M', ItemList.Electric_Motor_IV, 'C',
+                "circuitElite", 'H', ItemList.Hull_IV });
 
         // LuV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_LuV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
-                OrePrefixes.plate.ingredient(Materials.Redstone), 'M', ItemList.Electric_Motor_LuV, 'C',
+                OrePrefixes.plate.ingredient(Materials2Materials.Redstone), 'M', ItemList.Electric_Motor_LuV, 'C',
                 "circuitMaster", 'H', ItemList.Hull_LuV });
 
         // ZPM
@@ -1398,7 +1399,7 @@ public class RecipesMachinesTiered {
             GregtechItemList.Pollution_Cleaner_ZPM.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
-                OrePrefixes.plate.ingredient(Materials.Aluminium), 'M', ItemList.Electric_Motor_ZPM, 'C',
+                OrePrefixes.plate.ingredient(Materials2Materials.Aluminium), 'M', ItemList.Electric_Motor_ZPM, 'C',
                 "circuitUltimate", 'H', ItemList.Hull_ZPM });
 
         // UV
@@ -1406,7 +1407,7 @@ public class RecipesMachinesTiered {
             GregtechItemList.Pollution_Cleaner_UV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
-                OrePrefixes.plate.ingredient(Materials.DarkSteel), 'M', ItemList.Electric_Motor_UV, 'C',
+                OrePrefixes.plate.ingredient(Materials2Materials.DarkSteel), 'M', ItemList.Electric_Motor_UV, 'C',
                 "circuitSuperconductor", 'H', ItemList.Hull_UV });
 
         // UHV
@@ -1441,33 +1442,36 @@ public class RecipesMachinesTiered {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_ULV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "TST", "IPI", "IBI", 'T', OrePrefixes.plate.ingredient(Materials.Tin), 'S',
-                OrePrefixes.plate.ingredient(Materials.Steel), 'I', OrePrefixes.plate.ingredient(Materials.Iron), 'P',
-                OrePrefixes.pipeLarge.ingredient(Materials.Clay), 'B', new ItemStack(Items.water_bucket) });
+            new Object[] { "TST", "IPI", "IBI", 'T', OrePrefixes.plate.ingredient(Materials2Materials.Tin), 'S',
+                OrePrefixes.plate.ingredient(Materials2Materials.Steel), 'I',
+                OrePrefixes.plate.ingredient(Materials2Materials.Iron), 'P',
+                OrePrefixes.pipeLarge.ingredient(Materials2Materials.Clay), 'B', new ItemStack(Items.water_bucket) });
 
         // LV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_LV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "SIS", "BPB", "BUB", 'S', OrePrefixes.plate.ingredient(Materials.Steel), 'I',
-                OrePrefixes.plate.ingredient(Materials.Iron), 'B', OrePrefixes.plate.ingredient(Materials.Bronze), 'P',
-                OrePrefixes.pipeHuge.ingredient(Materials.Clay), 'U', ItemList.Electric_Pump_LV });
+            new Object[] { "SIS", "BPB", "BUB", 'S', OrePrefixes.plate.ingredient(Materials2Materials.Steel), 'I',
+                OrePrefixes.plate.ingredient(Materials2Materials.Iron), 'B',
+                OrePrefixes.plate.ingredient(Materials2Materials.Bronze), 'P',
+                OrePrefixes.pipeHuge.ingredient(Materials2Materials.Clay), 'U', ItemList.Electric_Pump_LV });
 
         // MV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_MV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "DBD", "SPS", "SUS", 'D', OrePrefixes.plate.ingredient(Materials.DarkSteel), 'B',
-                OrePrefixes.plate.ingredient(Materials.Bronze), 'S', OrePrefixes.plate.ingredient(Materials.Steel), 'P',
-                OrePrefixes.pipeMedium.ingredient(Materials.Bronze), 'U', ItemList.Electric_Pump_LV });
+            new Object[] { "DBD", "SPS", "SUS", 'D', OrePrefixes.plate.ingredient(Materials2Materials.DarkSteel), 'B',
+                OrePrefixes.plate.ingredient(Materials2Materials.Bronze), 'S',
+                OrePrefixes.plate.ingredient(Materials2Materials.Steel), 'P',
+                OrePrefixes.pipeMedium.ingredient(Materials2Materials.Bronze), 'U', ItemList.Electric_Pump_LV });
 
         // HV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_HV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CAC", "DPD", "CUC", 'C', "circuitPrimitive", 'A',
-                OrePrefixes.plate.ingredient(Materials.Aluminium), 'D',
-                OrePrefixes.plate.ingredient(Materials.DarkSteel), 'P',
-                OrePrefixes.pipeMedium.ingredient(Materials.Steel), 'U', ItemList.Electric_Pump_MV });
+                OrePrefixes.plate.ingredient(Materials2Materials.Aluminium), 'D',
+                OrePrefixes.plate.ingredient(Materials2Materials.DarkSteel), 'P',
+                OrePrefixes.pipeMedium.ingredient(Materials2Materials.Steel), 'U', ItemList.Electric_Pump_MV });
     }
 }

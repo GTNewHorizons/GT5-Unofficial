@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.material.Material;
@@ -119,11 +118,11 @@ public class BaseItemMilledOre extends BaseOreComponent {
 
     }
 
-    public static Item generate(Materials aMat, long aMaterialEU) {
+    public static Item generate(com.ruling_0.materiallib.api.Material aMat, long aMaterialEU) {
         return generate(MaterialUtils.generateMaterialFromGtENUM(aMat), aMaterialEU);
     }
 
-    public static Item generate(Materials aMat, long aMaterialEU, ItemStack custom) {
+    public static Item generate(com.ruling_0.materiallib.api.Material aMat, long aMaterialEU, ItemStack custom) {
         return generate(MaterialUtils.generateMaterialFromGtENUM(aMat), aMaterialEU, custom);
     }
 

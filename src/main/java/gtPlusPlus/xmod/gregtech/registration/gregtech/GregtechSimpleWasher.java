@@ -14,12 +14,16 @@ import static gtnhlanth.util.LanthanidesRecipeOutputs.convertDecomposition;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Markers;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -111,15 +115,19 @@ public class GregtechSimpleWasher {
         ItemStack dustClean;
         ItemStack dustDirty;
         ItemStack dustPure;
-        for (Materials v : Materials.values()) {
+        for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
+            Materials v = MU.materialOf(ml);
+            if (v == null) {
+                continue;
+            }
             if (MU.hasFlag(v, GTMaterialFlag.NO_ORE_PROCESSING)) {
                 continue;
             }
-            if (v == Materials.Platinum || v == Materials.Osmium
-                || v == Materials.Iridium
-                || v == Materials.Palladium
-                || v == Materials.AnyCopper
-                || v == Materials.AnyIron) {
+            if (ml == Materials2Materials.Platinum || ml == Materials2Materials.Osmium
+                || ml == Materials2Materials.Iridium
+                || ml == Materials2Materials.Palladium
+                || ml == Materials2Markers.AnyCopper
+                || ml == Materials2Markers.AnyIron) {
                 continue;
             }
 
@@ -159,7 +167,11 @@ public class GregtechSimpleWasher {
         // Generate Recipe Map for the Dust Washer.
         ItemStack crushedClean;
         ItemStack crushedDirty;
-        for (Materials v : Materials.values()) {
+        for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
+            Materials v = MU.materialOf(ml);
+            if (v == null) {
+                continue;
+            }
             if (MU.hasFlag(v, GTMaterialFlag.NO_ORE_PROCESSING)) {
                 continue;
             }
@@ -189,7 +201,7 @@ public class GregtechSimpleWasher {
             GTValues.RA.stdBuilder()
                 .itemInputs(aInput)
                 .itemOutputs(aOutput)
-                .fluidInputs(Materials.Water.getFluid(100))
+                .fluidInputs(MU.fluid(Materials2Materials.Water, 100))
                 .duration(5 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(simpleWasherRecipes);

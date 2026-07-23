@@ -26,6 +26,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -53,7 +54,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Indium, Materials2Shapes.dust, (int) (64)),
                 MaterialsElements.getInstance().GERMANIUM.getDust(15))
             .fluidInputs(new FluidStack(GTPPFluids.SphaleriteFlotationFroth, 4_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), Materials.Water.getFluid(2_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), MU.fluid(Materials2Materials.Water, 2_000))
             .eut(TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
@@ -70,7 +71,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Cadmium, Materials2Shapes.dust, (int) (50)),
                 MaterialLibAPI.getStack(Materials2Materials.Indium, Materials2Shapes.dust, (int) (10)))
             .fluidInputs(new FluidStack(GTPPFluids.ChalcopyriteFlotationFroth, 4_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), Materials.Water.getFluid(2_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), MU.fluid(Materials2Materials.Water, 2_000))
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
             .duration(2 * MINUTES)
@@ -86,7 +87,7 @@ public class RecipeLoaderMilling {
                 MaterialsElements.getInstance().RHODIUM.getDust(32),
                 MaterialsElements.getInstance().RUTHENIUM.getDust(16))
             .fluidInputs(new FluidStack(GTPPFluids.NickelFlotationFroth, 4_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), Materials.Water.getFluid(2_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), MU.fluid(Materials2Materials.Water, 2_000))
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
             .duration(2 * MINUTES)
@@ -100,7 +101,7 @@ public class RecipeLoaderMilling {
                 MaterialsElements.getInstance().SELENIUM.getDust(40),
                 MaterialLibAPI.getStack(Materials2Materials.Tellurium, Materials2Shapes.dust, (int) (10)))
             .fluidInputs(new FluidStack(GTPPFluids.PlatinumFlotationFroth, 4_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), Materials.Water.getFluid(2_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), MU.fluid(Materials2Materials.Water, 2_000))
             .eut(TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
@@ -116,7 +117,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.dust, (int) (20)),
                 MaterialsElements.getInstance().HAFNIUM.getDust(10))
             .fluidInputs(new FluidStack(GTPPFluids.PentlanditeFlotationFroth, 4_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), Materials.Water.getFluid(2_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), MU.fluid(Materials2Materials.Water, 2_000))
             .eut(TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
@@ -133,7 +134,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Firestone, Materials2Shapes.dust, (int) (45)),
                 MaterialLibAPI.getStack(Materials2Materials.Dysprosium, Materials2Shapes.dust, (int) (16)))
             .fluidInputs(new FluidStack(GTPPFluids.RedstoneFlotationFroth, 4_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), Materials.Water.getFluid(2_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), MU.fluid(Materials2Materials.Water, 2_000))
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
             .duration(2 * MINUTES)
@@ -149,7 +150,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.dust, (int) (30)),
                 MaterialLibAPI.getStack(Materials2Materials.Strontium, Materials2Shapes.dust, (int) (20)))
             .fluidInputs(new FluidStack(GTPPFluids.SpessartineFlotationFroth, 4_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), Materials.Water.getFluid(2_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), MU.fluid(Materials2Materials.Water, 2_000))
             .eut(TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
@@ -165,7 +166,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.dust, (int) (60)),
                 MaterialsElements.getInstance().THALLIUM.getDust(15))
             .fluidInputs(new FluidStack(GTPPFluids.GrossularFlotationFroth, 4_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), Materials.Water.getFluid(2_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), MU.fluid(Materials2Materials.Water, 2_000))
             .eut(TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
@@ -181,7 +182,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Yttrium, Materials2Shapes.dust, (int) (25)),
                 MaterialLibAPI.getStack(Materials2Materials.Ytterbium, Materials2Shapes.dust, (int) (15)))
             .fluidInputs(new FluidStack(GTPPFluids.AlmandineFlotationFroth, 4_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), Materials.Water.getFluid(2_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), MU.fluid(Materials2Materials.Water, 2_000))
             .eut(TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
@@ -196,7 +197,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Borax, Materials2Shapes.dust, (int) (60)),
                 MaterialsElements.getInstance().RHENIUM.getDust(20))
             .fluidInputs(new FluidStack(GTPPFluids.PyropeFlotationFroth, 4_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), Materials.Water.getFluid(2_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), MU.fluid(Materials2Materials.Water, 2_000))
             .eut(TierEU.RECIPE_EV)
             .metadata(COIL_HEAT, 3500)
             .duration(2 * MINUTES)
@@ -209,7 +210,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Lutetium, Materials2Shapes.dust, (int) (16)),
                 MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.dust, (int) (8)))
             .fluidInputs(new FluidStack(GTPPFluids.MonaziteFlotationFroth, 4_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), Materials.Water.getFluid(2_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), MU.fluid(Materials2Materials.Water, 2_000))
             .eut(TierEU.RECIPE_UV)
             .metadata(COIL_HEAT, 7500)
             // 60s UV instead of 120s ZPM to avoid fusion skip
@@ -228,7 +229,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Ardite, Materials2Shapes.dust, (int) (32)),
                 MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.dust, (int) (32)))
             .fluidInputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 3_000))
-            .fluidOutputs(Materials.PoorNetherWaste.getFluid(16_000))
+            .fluidOutputs(MU.fluid(Materials2Materials.poornetherwaste, 16_000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 7200)
             .duration(1 * MINUTES)
@@ -240,10 +241,10 @@ public class RecipeLoaderMilling {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.SodiumEthylXanthate.get(32),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Sphalerite, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Sphalerite, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Sphalerite, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Sphalerite, 64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Sphalerite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Sphalerite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Sphalerite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Sphalerite, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 14_000))
             .fluidOutputs(new FluidStack(GTPPFluids.SphaleriteFlotationFroth, 1_000))
             .duration(8 * MINUTES)
@@ -254,10 +255,10 @@ public class RecipeLoaderMilling {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.SodiumEthylXanthate.get(32),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Chalcopyrite, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Chalcopyrite, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Chalcopyrite, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Chalcopyrite, 64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Chalcopyrite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Chalcopyrite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Chalcopyrite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Chalcopyrite, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 12_000))
             .fluidOutputs(new FluidStack(GTPPFluids.ChalcopyriteFlotationFroth, 1_000))
             .duration(8 * MINUTES)
@@ -268,10 +269,10 @@ public class RecipeLoaderMilling {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.PotassiumEthylXanthate.get(32),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Nickel, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Nickel, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Nickel, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Nickel, 64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Nickel, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Nickel, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Nickel, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Nickel, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 25_000))
             .fluidOutputs(new FluidStack(GTPPFluids.NickelFlotationFroth, 1_000))
             .duration(8 * MINUTES)
@@ -282,10 +283,10 @@ public class RecipeLoaderMilling {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.PotassiumEthylXanthate.get(32),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Platinum, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Platinum, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Platinum, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Platinum, 64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Platinum, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Platinum, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Platinum, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Platinum, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 35_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PlatinumFlotationFroth, 1_000))
             .duration(8 * MINUTES)
@@ -296,10 +297,10 @@ public class RecipeLoaderMilling {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.SodiumEthylXanthate.get(32),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pentlandite, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pentlandite, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pentlandite, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pentlandite, 64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Pentlandite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Pentlandite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Pentlandite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Pentlandite, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 14_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PentlanditeFlotationFroth, 1_000))
             .duration(8 * MINUTES)
@@ -310,10 +311,10 @@ public class RecipeLoaderMilling {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.SodiumEthylXanthate.get(32),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Redstone, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Redstone, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Redstone, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Redstone, 64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Redstone, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Redstone, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Redstone, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Redstone, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 13_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedstoneFlotationFroth, 1_000))
             .duration(8 * MINUTES)
@@ -324,10 +325,10 @@ public class RecipeLoaderMilling {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.PotassiumEthylXanthate.get(32),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Spessartine, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Spessartine, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Spessartine, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Spessartine, 64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Spessartine, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Spessartine, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Spessartine, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Spessartine, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 35_000))
             .fluidOutputs(new FluidStack(GTPPFluids.SpessartineFlotationFroth, 1_000))
             .duration(8 * MINUTES)
@@ -338,10 +339,10 @@ public class RecipeLoaderMilling {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.PotassiumEthylXanthate.get(32),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Grossular, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Grossular, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Grossular, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Grossular, 64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Grossular, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Grossular, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Grossular, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Grossular, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 28_000))
             .fluidOutputs(new FluidStack(GTPPFluids.GrossularFlotationFroth, 1_000))
             .duration(8 * MINUTES)
@@ -352,10 +353,10 @@ public class RecipeLoaderMilling {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.SodiumEthylXanthate.get(32),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Almandine, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Almandine, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Almandine, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Almandine, 64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Almandine, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Almandine, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Almandine, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Almandine, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 18_000))
             .fluidOutputs(new FluidStack(GTPPFluids.AlmandineFlotationFroth, 1_000))
             .duration(8 * MINUTES)
@@ -366,10 +367,10 @@ public class RecipeLoaderMilling {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.SodiumEthylXanthate.get(32),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pyrope, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pyrope, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pyrope, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pyrope, 64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Pyrope, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Pyrope, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Pyrope, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Pyrope, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 8_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PyropeFlotationFroth, 1_000))
             .duration(8 * MINUTES)
@@ -380,10 +381,10 @@ public class RecipeLoaderMilling {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.PotassiumEthylXanthate.get(32),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Monazite, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Monazite, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Monazite, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Monazite, 64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Monazite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Monazite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Monazite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Monazite, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 30_000))
             .fluidOutputs(new FluidStack(GTPPFluids.MonaziteFlotationFroth, 1_000))
             .duration(8 * MINUTES)
@@ -393,11 +394,11 @@ public class RecipeLoaderMilling {
         // Netherrack
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
-                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64))
-            .fluidInputs(Materials.NefariousOil.getFluid(8_000))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Netherrack, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Netherrack, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Netherrack, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Netherrack, 64))
+            .fluidInputs(MU.fluid(Materials2Materials.nefariousoil, 8_000))
             .fluidOutputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 8_000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
@@ -433,8 +434,8 @@ public class RecipeLoaderMilling {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dustTiny, (int) (5)),
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dustTiny, (int) (5)),
-                Materials.AshDark.getDustTiny(5),
-                Materials.AshDark.getDustTiny(5))
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 5),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 5))
             .fluidInputs(Materials.Steam.getGas(5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 500))
             .duration(60 * SECONDS)
@@ -448,8 +449,8 @@ public class RecipeLoaderMilling {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dustTiny, (int) (5)),
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dustTiny, (int) (5)),
-                Materials.AshDark.getDustTiny(5),
-                Materials.AshDark.getDustTiny(5))
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 5),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 5))
             .fluidInputs(FluidRegistry.getFluidStack("ic2superheatedsteam", 5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 1_500))
             .duration(45 * SECONDS)

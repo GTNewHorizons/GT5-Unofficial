@@ -1,6 +1,6 @@
 package gtPlusPlus.core.recipe;
 
-import static gregtech.api.enums.Materials.Obsidian;
+import static gregtech.api.enums.materials2.Materials2Materials.Obsidian;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
@@ -63,12 +63,12 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -165,7 +165,7 @@ public class RecipesGeneral {
             GregtechItemList.MiningExplosives.get(3),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "ITI", "TFT", "STS", 'I', Ic2Items.industrialTnt.copy(), 'T', new ItemStack(Blocks.tnt), 'F',
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1), 'S', "dustSulfur" });
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Iron, 1), 'S', "dustSulfur" });
 
         // Alkalus Disk
         GTModHandler.addCraftingRecipe(
@@ -189,8 +189,8 @@ public class RecipesGeneral {
                 new ItemStack(Items.feather, 64),
                 new ItemStack(Blocks.emerald_block, 32),
                 new ItemStack(Blocks.diamond_block, 32),
-                Materials.Ruby.getBlocks(32),
-                Materials.Sapphire.getBlocks(32),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Ruby, 32),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Sapphire, 32),
                 new ItemStack(Blocks.gold_block, 32))
             .itemOutputs(GregtechItemList.MagicFeather.get(1))
             .fluidInputs(
@@ -277,13 +277,13 @@ public class RecipesGeneral {
     }
 
     private static void addCompressedObsidian() {
-        addCompressionRecipe(Obsidian.getBlocks(9), CompressedObsidian.get(1));
+        addCompressionRecipe(GTOreDictUnificator.get(OrePrefixes.block, Obsidian, 9), CompressedObsidian.get(1));
         addCompressionRecipe(CompressedObsidian.get(9), DoubleCompressedObsidian.get(1));
         addCompressionRecipe(DoubleCompressedObsidian.get(9), TripleCompressedObsidian.get(1));
         addCompressionRecipe(TripleCompressedObsidian.get(9), QuadrupleCompressedObsidian.get(1));
         addCompressionRecipe(QuadrupleCompressedObsidian.get(9), QuintupleCompressedObsidian.get(1));
 
-        addDecompressionRecipe(CompressedObsidian.get(1), Obsidian.getBlocks(9));
+        addDecompressionRecipe(CompressedObsidian.get(1), GTOreDictUnificator.get(OrePrefixes.block, Obsidian, 9));
         addDecompressionRecipe(DoubleCompressedObsidian.get(1), CompressedObsidian.get(9));
         addDecompressionRecipe(TripleCompressedObsidian.get(1), DoubleCompressedObsidian.get(9));
         addDecompressionRecipe(QuadrupleCompressedObsidian.get(1), TripleCompressedObsidian.get(9));
@@ -353,7 +353,7 @@ public class RecipesGeneral {
         generatePipeRecipes(MaterialsAlloy.INCONEL_792);
         generatePipeRecipes(MaterialsAlloy.HASTELLOY_X);
         generatePipeRecipes(MaterialsAlloy.TRINIUM_NAQUADAH_CARBON);
-        generatePipeRecipes(null, Materials.Clay.mDefaultLocalName, 15);
+        generatePipeRecipes(null, MU.localName(Materials2Materials.Clay), 15);
     }
 
     private static void migratedRecipes() {

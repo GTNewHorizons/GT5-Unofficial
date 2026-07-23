@@ -14,7 +14,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.Material;
+
+import gregtech.api.material.MU;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.misc.BaseItemParticle;
 import gtPlusPlus.core.util.Utils;
@@ -39,9 +41,9 @@ public class IonParticles extends BaseItemParticle {
             // Map names to Meta
             NameToMetaMap.put(StringUtils.sanitizeString(s.toLowerCase()), key);
             MetaToNameMap.put(key, StringUtils.sanitizeString(s.toLowerCase()));
-            Materials m = Materials.get(s);
-            int aColour = 0;
-            aColour = Utils.rgbtoHexValue(m.mRGBa[0], m.mRGBa[1], m.mRGBa[2]);
+            Material m = MU.byLegacyName(s);
+            short[] rgba = MU.rgba(m);
+            int aColour = Utils.rgbtoHexValue(rgba[0], rgba[1], rgba[2]);
             aColourMap.put(key++, aColour);
         }
     }

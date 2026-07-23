@@ -1,31 +1,31 @@
 package gtPlusPlus.core.material;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class MaterialsOther {
 
     // Soul Sand
-    public static final Material SOULSAND = MaterialUtils.generateMaterialFromGtENUM(Materials.SoulSand);
+    public static final Material SOULSAND = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.SoulSand);
 
     // Redstone
-    public static final Material REDSTONE = MaterialUtils.generateMaterialFromGtENUM(Materials.Redstone);
+    public static final Material REDSTONE = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.Redstone);
 
     // Glowstone Dust
-    public static final Material GLOWSTONE = MaterialUtils.generateMaterialFromGtENUM(Materials.Glowstone);
+    public static final Material GLOWSTONE = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.Glowstone);
 
     // Enderpearl
-    public static final Material ENDERPEARL = MaterialUtils.generateMaterialFromGtENUM(Materials.EnderPearl);
+    public static final Material ENDERPEARL = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.EnderPearl);
 
     // Raw Flesh
-    public static final Material MEAT = MaterialUtils.generateMaterialFromGtENUM(Materials.MeatRaw);
+    public static final Material MEAT = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.MeatRaw);
 
     // Clay
-    public static final Material CLAY = MaterialUtils.generateMaterialFromGtENUM(Materials.Clay);
+    public static final Material CLAY = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.Clay);
 
     // Cast Iron
-    public static final Material CAST_IRON = MaterialUtils.generateMaterialFromGtENUM(Materials.CastIron);
+    public static final Material CAST_IRON = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.CastIron);
 
     // PTFE
     public static final Material PTFE = MaterialUtils
