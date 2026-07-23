@@ -3,13 +3,27 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.recipe.RecipeMaps.iceCreamMachineRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTModHandler;
 
 public class IceCreamMachineRecipes implements Runnable {
 
     @Override
     public void run() {
+        GTModHandler.addCraftingRecipe(
+            ItemList.Ice_Cream_Machine.get(1L),
+            new Object[] { "FEF", "WIG", "SCT", 'F', OrePrefixes.frameGt.get(Materials.Iron), 'E',
+                ItemList.Electric_Motor_LV.get(1L), 'W', OrePrefixes.wireFine.get(Materials.Copper), 'I',
+                new ItemStack(Blocks.ice), 'G', OrePrefixes.gearGtSmall.get(Materials.Iron), 'S',
+                OrePrefixes.screw.get(Materials.Iron), 'C', ItemList.Cell_Empty.get(1L), 'T',
+                OrePrefixes.screw.get(Materials.Steel) });
+
         // Fake recipe
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Credit_Greg_Gold.get(2))
