@@ -8,9 +8,9 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.WerkstoffLoader;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 
 /**
  * Available fluids for the Gas Siphon are defined here
@@ -83,7 +83,7 @@ public class GasSiphonRecipes {
                 1,
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Tritium, Materials2FluidShapes.fluidGas, (int) (3_000)))
-            .addFluid(2, Materials.Helium3.getGas(500))
+            .addFluid(2, MU.gas(Materials2Materials.Helium3, 500))
             .addFluid(
                 3,
                 MaterialLibAPI.getFluidStack(Materials2Materials.Ammonia, Materials2FluidShapes.fluidGas, (int) (400)))

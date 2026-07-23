@@ -8,7 +8,9 @@ import java.lang.invoke.MethodType;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.Material;
+
+import gregtech.api.material.MU;
 import gregtech.loaders.postload.FoundryFakeModuleCostLoader;
 import tectech.TecTech;
 
@@ -49,9 +51,9 @@ public class BaseRecipeLoader {
         }
     }
 
-    public static Materials getOrDefault(String name, Materials def) {
-        Materials mat = Materials.get(name);
-        return mat == Materials._NULL ? def : mat;
+    public static Material getOrDefault(String name, Material def) {
+        Material mat = MU.byLegacyName(name);
+        return mat == null ? def : mat;
     }
 
     public void run() {

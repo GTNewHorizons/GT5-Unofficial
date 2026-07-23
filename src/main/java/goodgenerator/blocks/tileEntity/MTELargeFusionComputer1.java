@@ -7,11 +7,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
 import net.minecraft.block.Block;
 import net.minecraft.util.EnumChatFormatting;
 
+import com.ruling_0.materiallib.api.Material;
+
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputer;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -123,8 +125,8 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
     }
 
     @Override
-    public Materials getFrameBox() {
-        return Materials.NaquadahAlloy;
+    public Material getFrameBox() {
+        return Materials2Materials.NaquadahAlloy;
     }
 
     @Override

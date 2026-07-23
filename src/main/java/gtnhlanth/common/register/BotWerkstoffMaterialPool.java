@@ -1,7 +1,6 @@
 package gtnhlanth.common.register;
 
 import static bartworks.system.material.Werkstoff.Types.*;
-import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.TextureSet.*;
 
 import bartworks.system.material.Werkstoff;

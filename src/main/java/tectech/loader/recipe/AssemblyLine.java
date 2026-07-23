@@ -21,6 +21,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
@@ -58,11 +59,12 @@ public class AssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.plateQuadruple, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.plateDouble, 8),
                 MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.plate, 16),
-                GTOreDictUnificator
-                    .get(OrePrefixes.screw, BaseRecipeLoader.getOrDefault("Quantium", Materials.Europium), 16))
+                GTOreDictUnificator.get(
+                    OrePrefixes.screw,
+                    BaseRecipeLoader.getOrDefault("Quantium", Materials2Materials.Europium),
+                    16))
             .fluidInputs(
-                BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium)
-                    .getMolten(9 * INGOTS),
+                MU.molten(BaseRecipeLoader.getOrDefault("Trinium", Materials2Materials.Osmium), 9 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Osmium, Materials2FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(2_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Argon, Materials2FluidShapes.fluidGas, 1_000))
@@ -83,10 +85,9 @@ public class AssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.foil, 64))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Glass, Materials2FluidShapes.fluidMolten, 16 * INGOTS),
-                Materials.RubberSilicone.getMolten(1872),
+                MU.molten(Materials2Materials.Silicone, 1872),
                 GTModHandler.getIC2Coolant(2_000),
-                BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium)
-                    .getMolten(9 * INGOTS))
+                MU.molten(BaseRecipeLoader.getOrDefault("Trinium", Materials2Materials.Osmium), 9 * INGOTS))
             .itemOutputs(CustomItemList.eM_Coil.get(4))
             .eut(200_000)
             .duration(40 * SECONDS)
@@ -103,7 +104,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Robot_Arm_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
                 new Object[] { Circuits.UV.getIngredient(), 1 },
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 2) },
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials2Materials.Naquadah, 2) },
                 new ItemStack[] {
                     MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.wireFine, 16) },
                 CustomItemList.DATApipe.get(2))
@@ -151,7 +152,7 @@ public class AssemblyLine implements Runnable {
                 new Object[] { Circuits.UV.getIngredient(), 4 },
                 ItemList.Field_Generator_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4) },
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials2Materials.Naquadah, 4) },
                 new ItemStack[] {
                     MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.wireFine, 32) },
                 CustomItemList.DATApipe.get(16))

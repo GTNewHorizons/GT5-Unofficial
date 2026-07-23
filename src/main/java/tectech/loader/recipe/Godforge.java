@@ -26,6 +26,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import goodgenerator.items.GGMaterial;
@@ -58,7 +59,7 @@ import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 
 public class Godforge implements Runnable {
 
-    public static final ArrayList<Materials> plasmaGTMaterialList = new ArrayList<>();
+    public static final ArrayList<Material> plasmaGTMaterialList = new ArrayList<>();
     public static final ArrayList<Integer> plasmaGTWeightList = new ArrayList<>();
     public static final HashMap<ItemStack, Integer> exoticModulePlasmaItemMap = new HashMap<>();
     public static final HashMap<FluidStack, Integer> exoticModulePlasmaFluidMap = new HashMap<>();
@@ -690,75 +691,75 @@ public class Godforge implements Runnable {
         // GT materials
         plasmaGTMaterialList.addAll(
             Arrays.asList(
-                Materials.Aluminium,
-                Materials.Americium,
-                Materials.Antimony,
-                Materials.Ardite,
-                Materials.Argon,
-                Materials.Arsenic,
-                Materials.Barium,
-                Materials.Beryllium,
-                Materials.Caesium,
-                Materials.Calcium,
-                Materials.Cadmium,
-                Materials.Carbon,
-                Materials.Cerium,
-                Materials.Chlorine,
-                Materials.Cobalt,
-                Materials.Copper,
-                Materials.Desh,
-                Materials.Deuterium,
-                Materials.Dysprosium,
-                Materials.Erbium,
-                Materials.Europium,
-                Materials.Fluorine,
-                Materials.Gadolinium,
-                Materials.Gallium,
-                Materials.Gold,
-                Materials.Helium,
-                Materials.Holmium,
-                Materials.Hydrogen,
-                Materials.Indium,
-                Materials.Iron,
-                Materials.Lanthanum,
-                Materials.Lithium,
-                Materials.Lutetium,
-                Materials.Magnesium,
-                Materials.Manganese,
-                Materials.MeteoricIron,
-                Materials.Molybdenum,
-                Materials.Neodymium,
-                Materials.Nickel,
-                Materials.Niobium,
-                Materials.Nitrogen,
-                Materials.Oriharukon,
-                Materials.Palladium,
-                Materials.Phosphorus,
-                Materials.Potassium,
-                Materials.Praseodymium,
-                Materials.Promethium,
-                Materials.Radon,
-                Materials.Rubidium,
-                Materials.Samarium,
-                Materials.Silicon,
-                Materials.Silver,
-                Materials.Sodium,
-                Materials.Strontium,
-                Materials.Sulfur,
-                Materials.Tantalum,
-                Materials.Tellurium,
-                Materials.Terbium,
-                Materials.Thulium,
-                Materials.Tin,
-                Materials.Titanium,
-                Materials.Tritium,
-                Materials.Tungsten,
-                Materials.Uranium235,
-                Materials.Uranium,
-                Materials.Vanadium,
-                Materials.Ytterbium,
-                Materials.Yttrium,
-                Materials.Zinc));
+                Materials2Materials.Aluminium,
+                Materials2Materials.Americium,
+                Materials2Materials.Antimony,
+                Materials2Materials.Ardite,
+                Materials2Materials.Argon,
+                Materials2Materials.Arsenic,
+                Materials2Materials.Barium,
+                Materials2Materials.Beryllium,
+                Materials2Materials.Caesium,
+                Materials2Materials.Calcium,
+                Materials2Materials.Cadmium,
+                Materials2Materials.Carbon,
+                Materials2Materials.Cerium,
+                Materials2Materials.Chlorine,
+                Materials2Materials.Cobalt,
+                Materials2Materials.Copper,
+                Materials2Materials.Desh,
+                Materials2Materials.Deuterium,
+                Materials2Materials.Dysprosium,
+                Materials2Materials.Erbium,
+                Materials2Materials.Europium,
+                Materials2Materials.Fluorine,
+                Materials2Materials.Gadolinium,
+                Materials2Materials.Gallium,
+                Materials2Materials.Gold,
+                Materials2Materials.Helium,
+                Materials2Materials.Holmium,
+                Materials2Materials.Hydrogen,
+                Materials2Materials.Indium,
+                Materials2Materials.Iron,
+                Materials2Materials.Lanthanum,
+                Materials2Materials.Lithium,
+                Materials2Materials.Lutetium,
+                Materials2Materials.Magnesium,
+                Materials2Materials.Manganese,
+                Materials2Materials.MeteoricIron,
+                Materials2Materials.Molybdenum,
+                Materials2Materials.Neodymium,
+                Materials2Materials.Nickel,
+                Materials2Materials.Niobium,
+                Materials2Materials.Nitrogen,
+                Materials2Materials.Oriharukon,
+                Materials2Materials.Palladium,
+                Materials2Materials.Phosphorus,
+                Materials2Materials.Potassium,
+                Materials2Materials.Praseodymium,
+                Materials2Materials.Promethium,
+                Materials2Materials.Radon,
+                Materials2Materials.Rubidium,
+                Materials2Materials.Samarium,
+                Materials2Materials.Silicon,
+                Materials2Materials.Silver,
+                Materials2Materials.Sodium,
+                Materials2Materials.Strontium,
+                Materials2Materials.Sulfur,
+                Materials2Materials.Tantalum,
+                Materials2Materials.Tellurium,
+                Materials2Materials.Terbium,
+                Materials2Materials.Thulium,
+                Materials2Materials.Tin,
+                Materials2Materials.Titanium,
+                Materials2Materials.Tritium,
+                Materials2Materials.Tungsten,
+                Materials2Materials.Uranium235,
+                Materials2Materials.Uranium,
+                Materials2Materials.Vanadium,
+                Materials2Materials.Ytterbium,
+                Materials2Materials.Yttrium,
+                Materials2Materials.Zinc));
 
         plasmaGTWeightList.addAll(
             Arrays.asList(
@@ -852,17 +853,11 @@ public class Godforge implements Runnable {
 
         // Loop for adding all GT plasma materials
         for (int i = 0; i < plasmaGTMaterialList.size(); i++) {
-            if (plasmaGTMaterialList.get(i)
-                .getDustTiny(1) != null) {
-                exoticModulePlasmaItemMap.put(
-                    plasmaGTMaterialList.get(i)
-                        .getDust(1),
-                    plasmaGTWeightList.get(i));
+            if (MU.stack(OrePrefixes.dustTiny, plasmaGTMaterialList.get(i), 1) != null) {
+                exoticModulePlasmaItemMap
+                    .put(MU.stack(OrePrefixes.dust, plasmaGTMaterialList.get(i), 1), plasmaGTWeightList.get(i));
             } else {
-                exoticModulePlasmaFluidMap.put(
-                    plasmaGTMaterialList.get(i)
-                        .getGas(1),
-                    plasmaGTWeightList.get(i));
+                exoticModulePlasmaFluidMap.put(MU.gas(plasmaGTMaterialList.get(i), 1), plasmaGTWeightList.get(i));
             }
         }
 
@@ -904,17 +899,21 @@ public class Godforge implements Runnable {
             quarkGluonItemsForNEI.add(item);
         }
         for (int i = 0; i < 21; i++) {
-            magmatterTimeFluidItemsForNEI
-                .add(GTUtility.getFluidDisplayStack(Materials.Time.getMolten(getRandomIntInRange(1, 50)), true));
-            magmatterSpaceFluidItemsForNEI
-                .add(GTUtility.getFluidDisplayStack(Materials.Space.getMolten(getRandomIntInRange(51, 100)), true));
+            magmatterTimeFluidItemsForNEI.add(
+                GTUtility.getFluidDisplayStack(
+                    MU.molten(Materials2Materials.temporalFluid, getRandomIntInRange(1, 50)),
+                    true));
+            magmatterSpaceFluidItemsForNEI.add(
+                GTUtility.getFluidDisplayStack(
+                    MU.molten(Materials2Materials.spatialFluid, getRandomIntInRange(51, 100)),
+                    true));
         }
         magmatterItemsForNEI.addAll(exoticModuleMagmatterItemMap.keySet());
 
         // Godforge upgrade materials
         if (EternalSingularity.isModLoaded()) {
             ForgeOfGodsUpgrade.START.addExtraCost(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.SuperconductorUIVBase, 64),
                 ItemList.SuperconductorComposite.get(32),
                 GGMaterial.metastableOganesson.get(OrePrefixes.gearGt, 16),
                 getModItem(EternalSingularity.ID, "eternal_singularity", 8L),
@@ -954,8 +953,8 @@ public class Godforge implements Runnable {
                 ItemList.Field_Generator_UEV.get(64L));
 
             ForgeOfGodsUpgrade.CD.addExtraCost(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 64),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUMVBase, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.SpaceTime, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.SuperconductorUMVBase, 64),
                 MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(64),
                 MaterialsElements.STANDALONE.DRAGON_METAL.getFrameBox(64),
                 CustomItemList.EOH_Reinforced_Spatial_Casing.get(64),
@@ -964,10 +963,10 @@ public class Godforge implements Runnable {
                 ItemList.Field_Generator_UMV.get(32));
 
             ForgeOfGodsUpgrade.EE.addExtraCost(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.WhiteDwarfMatter, 64),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackDwarfMatter, 64),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Eternity, 16),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Universium, 2),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.WhiteDwarfMatter, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.BlackDwarfMatter, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Eternity, 16),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Universium, 2),
                 CustomItemList.EOH_Infinite_Energy_Casing.get(64),
                 CustomItemList.StabilisationFieldGeneratorTier6.get(48),
                 ItemList.ZPM6.get(16),
@@ -978,13 +977,14 @@ public class Godforge implements Runnable {
                 ItemList.Robot_Arm_UMV.get(64));
 
             ForgeOfGodsUpgrade.END.addExtraCost(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MHDCSM, 64),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Eternity, 64),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MagMatter, 64),
+                GTOreDictUnificator
+                    .get(OrePrefixes.frameGt, Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Eternity, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Magmatter, 64),
                 CustomItemList.StabilisationFieldGeneratorTier8.get(64),
                 CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(64),
                 CustomItemList.astralArrayFabricator.get(4),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Magmatter, 4),
                 ItemList.ZPM6.get(32),
                 ItemList.Field_Generator_UXV.get(64),
                 ItemList.Robot_Arm_UXV.get(64));

@@ -239,8 +239,8 @@ public class MTEExoticModule extends MTEBaseModule {
         numberOfFluids = 2;
         int timeAmount = GodforgeMath.getRandomIntInRange(1, 50);
         int spaceAmount = GodforgeMath.getRandomIntInRange(51, 100);
-        randomizedFluidInput = new FluidStack[] { Materials.Time.getMolten(timeAmount * 1000L),
-            Materials.Space.getMolten(spaceAmount * 1000L) };
+        randomizedFluidInput = new FluidStack[] { MU.molten(Materials2Materials.temporalFluid, timeAmount * 1000L),
+            MU.molten(Materials2Materials.spatialFluid, spaceAmount * 1000L) };
 
         return new GTRecipe(
             null,
@@ -252,9 +252,9 @@ public class MTEExoticModule extends MTEBaseModule {
             null,
             ArrayUtils.addAll(
                 convertItemToPlasma(randomizedItemInput, spaceAmount - timeAmount),
-                Materials.Time.getMolten(timeAmount),
-                Materials.Space.getMolten(spaceAmount)),
-            new FluidStack[] { Materials.MagMatter.getMolten(576 * actualParallel) },
+                MU.molten(Materials2Materials.temporalFluid, timeAmount),
+                MU.molten(Materials2Materials.spatialFluid, spaceAmount)),
+            new FluidStack[] { MU.molten(Materials2Materials.Magmatter, 576 * actualParallel) },
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
             0);
@@ -441,7 +441,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
             FluidStack outputFluid;
             if (magmatterMode) {
-                outputFluid = Materials.MagMatter.getMolten(actualParallel * 4 * INGOTS);
+                outputFluid = MU.molten(Materials2Materials.Magmatter, actualParallel * 4 * INGOTS);
             } else {
                 outputFluid = MaterialLibAPI.getFluidStack(
                     Materials2Materials.QuarkGluonPlasma,

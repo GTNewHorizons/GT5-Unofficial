@@ -9,7 +9,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -28,8 +27,8 @@ public class Unpackager implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 1))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.ClayCompound, 1),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.ClayCompound, 6))
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.CrudeSteel, 1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials2Materials.CrudeSteel, 6))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);

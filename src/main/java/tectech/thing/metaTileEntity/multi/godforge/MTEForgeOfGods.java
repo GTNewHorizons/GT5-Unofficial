@@ -66,7 +66,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -79,6 +78,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
@@ -127,7 +127,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     private static final String SCANNER_INFO_BAR = EnumChatFormatting.BLUE.toString() + EnumChatFormatting.STRIKETHROUGH
         + "--------------------------------------------";
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
-        : GTOreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 1);
+        : GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Neutronium, 1);
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
@@ -276,11 +276,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     private final ArrayList<FluidStack> validFuelList = new ArrayList<>() {
 
         {
-            add(Materials.DTR.getFluid(1));
+            add(MU.fluid(Materials2Materials.DimensionallyTranscendentResidue, 1));
             add(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.RawStarMatter, Materials2FluidShapes.fluidLiquid, (int) (1)));
-            add(Materials.MHDCSM.getMolten(1));
+            add(MU.molten(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1));
         }
     };
 

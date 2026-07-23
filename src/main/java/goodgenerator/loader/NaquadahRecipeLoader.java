@@ -462,7 +462,9 @@ public class NaquadahReworkRecipeLoader {
             .addTo(neutronActivatorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GGMaterial.lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 3), Materials.Water.getCells(3))
+            .itemInputs(
+                GGMaterial.lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 3),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Water, 3))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(500))
             .fluidOutputs(GGMaterial.lowQualityNaquadriaSolution.getFluidOrGas(3_500))
             .itemOutputs(ItemList.Cell_Empty.get(3))
@@ -562,7 +564,7 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 16),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.SiliconSolarGrade, 16),
                 GGMaterial.naquadahine.get(OrePrefixes.dust, 3),
                 ItemList.GalliumArsenideCrystal.get(1L))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot3.get(1))
@@ -1198,7 +1200,7 @@ public class NaquadahReworkRecipeLoader {
             result,
             MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.dust, (int) (1)),
             true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Naquadah)) {
+            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials2Materials.Naquadah)) {
                 return;
             }
             mutableRecipe.gt5u$setRecipeOutputItem(GGMaterial.naquadahEarth.get(OrePrefixes.dust, 2));
@@ -1206,7 +1208,7 @@ public class NaquadahReworkRecipeLoader {
             result,
             MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.dust, (int) (1)),
             true)) {
-                if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.NaquadahEnriched)) {
+                if (PlatinumSludgeOverHaul.checkRecipe(input, Materials2Materials.NaquadahEnriched)) {
                     return;
                 }
                 mutableRecipe.gt5u$setRecipeOutputItem(GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 2));
@@ -1214,7 +1216,7 @@ public class NaquadahReworkRecipeLoader {
                 result,
                 MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.dust, (int) (1)),
                 true)) {
-                    if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Naquadria)) {
+                    if (PlatinumSludgeOverHaul.checkRecipe(input, Materials2Materials.Naquadria)) {
                         return;
                     }
                     mutableRecipe.gt5u$setRecipeOutputItem(GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 2));

@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -65,7 +64,7 @@ public class Recipes {
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
             MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.plateDense, (int) (1)),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
-            GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1),
+            GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Titanium, 1),
             MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.plateDense, (int) (1)),
             new ItemStack(net.minecraft.init.Blocks.glass_pane),
             MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.plateDense, (int) (1)),
@@ -87,8 +86,8 @@ public class Recipes {
                 recipe_jarthaumiumreinforced));
         // Thaumium Reinforced Void Jar
         final ItemStack[] recipe_voidjarupgrade = {
-            GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Obsidian, 1),
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1),
+            GTOreDictUnificator.get(OrePrefixes.plateDense, Materials2Materials.Obsidian, 1),
+            GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.Blaze, 1),
             MaterialLibAPI.getStack(Materials2Materials.EnderEye, Materials2Shapes.plate, (int) (1)),
             ItemApi.getItem("itemNugget", 5) };
         final AspectList aspects_voidjarupgrade = new AspectList().add(Aspect.VOID, 14)

@@ -8,8 +8,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gtnhintergalactic.GTNHIntergalactic;
 
 /**
@@ -79,36 +81,36 @@ public class ItemMiningDrones extends Item {
      */
     public enum DroneMaterials {
 
-        LV(Materials.Steel),
-        MV(Materials.Steel),
-        HV(Materials.Titanium),
-        EV(Materials.Titanium),
-        IV(Materials.TungstenSteel),
-        LuV(Materials.TungstenSteel),
-        ZPM(Materials.Naquadah),
-        UV(Materials.Naquadah),
-        UHV(Materials.NaquadahAlloy),
-        UEV(Materials.Neutronium),
-        UIV(Materials.CosmicNeutronium),
-        UMV(Materials.Infinity),
-        UXV(Materials.TranscendentMetal);
+        LV(Materials2Materials.Steel),
+        MV(Materials2Materials.Steel),
+        HV(Materials2Materials.Titanium),
+        EV(Materials2Materials.Titanium),
+        IV(Materials2Materials.TungstenSteel),
+        LuV(Materials2Materials.TungstenSteel),
+        ZPM(Materials2Materials.Naquadah),
+        UV(Materials2Materials.Naquadah),
+        UHV(Materials2Materials.NaquadahAlloy),
+        UEV(Materials2Materials.Neutronium),
+        UIV(Materials2Materials.CosmicNeutronium),
+        UMV(Materials2Materials.Infinity),
+        UXV(Materials2Materials.TranscendentMetal);
 
         /** Material for this drone tier */
-        private final Materials mat;
+        private final Material mat;
 
         /**
          * Register a new drone tier material
          *
          * @param aMat needed material
          */
-        DroneMaterials(Materials aMat) {
+        DroneMaterials(Material aMat) {
             mat = aMat;
         }
 
         /**
          * @return Material which this drone tier needs
          */
-        public Materials getMaterial() {
+        public Material getMaterial() {
             return mat;
         }
     }
