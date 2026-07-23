@@ -1,6 +1,7 @@
 package gtPlusPlus.core.material;
 
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public final class MaterialMisc {
@@ -19,7 +20,7 @@ public final class MaterialMisc {
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(SODIUM_CYANIDE, false);
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(COPPER_SULFATE, false);
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(COPPER_SULFATE_HYDRATED, false);
-        WATER.registerComponentForMaterial(Materials.Water.getFluid(1_000));
+        WATER.registerComponentForMaterial(MU.fluid(Materials2Materials.Water, 1_000));
     }
 
     public static final Material POTASSIUM_NITRATE = MaterialReconstruction.byName("PotassiumNitrate");

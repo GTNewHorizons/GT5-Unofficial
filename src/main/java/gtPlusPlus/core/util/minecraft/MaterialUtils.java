@@ -11,10 +11,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.StringUtils;
@@ -40,6 +43,25 @@ public class MaterialUtils {
     /// those materials directly rather than through `generateMaterialFromGtENUM` itself.
     public static void seedGeneratedMaterial(Materials material, Material generated) {
         mGeneratedMaterialMap.put(getMaterialName(material).toLowerCase(), generated);
+    }
+
+    public static Material generateMaterialFromGtENUM(com.ruling_0.materiallib.api.Material material) {
+        return generateMaterialFromGtENUM(MU.materialOf(material), null, null);
+    }
+
+    public static Material generateMaterialFromGtENUM(com.ruling_0.materiallib.api.Material material,
+        TextureSet aCustomTextures) {
+        return generateMaterialFromGtENUM(MU.materialOf(material), null, aCustomTextures);
+    }
+
+    public static Material generateMaterialFromGtENUM(com.ruling_0.materiallib.api.Material material,
+        short[] customRGB) {
+        return generateMaterialFromGtENUM(MU.materialOf(material), customRGB, null);
+    }
+
+    public static Material generateMaterialFromGtENUM(com.ruling_0.materiallib.api.Material material, short[] customRGB,
+        TextureSet aCustomTextures) {
+        return generateMaterialFromGtENUM(MU.materialOf(material), customRGB, aCustomTextures);
     }
 
     public static Material generateMaterialFromGtENUM(final Materials material) {
@@ -179,7 +201,11 @@ public class MaterialUtils {
     }
 
     private static Materials getMaterialByName(String materialName) {
-        for (Materials m : Materials.values()) {
+        for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
+            Materials m = MU.materialOf(ml);
+            if (m == null) {
+                continue;
+            }
             if (MaterialUtils.getMaterialName(m)
                 .equalsIgnoreCase(materialName)) {
                 return m;
@@ -201,7 +227,7 @@ public class MaterialUtils {
         for (Material m : list) {
             TextureSet t = m.getTextureSet();
             if (t == null) {
-                t = Materials.Gold.mIconSet;
+                t = MU.iconSet(Materials2Materials.Gold);
             }
             if (t != null) {
                 counter.put(t, counter.getInt(t) + 1);
@@ -211,7 +237,7 @@ public class MaterialUtils {
             .stream()
             .max(Comparator.comparingInt(Object2IntMap.Entry::getIntValue))
             .map(Map.Entry::getKey)
-            .orElse(Materials.Gold.mIconSet);
+            .orElse(MU.iconSet(Materials2Materials.Gold));
     }
 
     public static Materials getMaterial(String aMaterialName, String aFallbackMaterialName) {

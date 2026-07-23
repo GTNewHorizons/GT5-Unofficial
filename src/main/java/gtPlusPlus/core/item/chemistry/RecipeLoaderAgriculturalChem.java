@@ -16,11 +16,11 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -229,7 +229,7 @@ public class RecipeLoaderAgriculturalChem {
                 MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.dustTiny, (int) (1)))
             .outputChances(3000, 3000, 2000, 2000, 1000, 1000)
             .fluidInputs(new FluidStack(GTPPFluids.RedMud, 1_000))
-            .fluidOutputs(Materials.Water.getFluid(500))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 500))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);

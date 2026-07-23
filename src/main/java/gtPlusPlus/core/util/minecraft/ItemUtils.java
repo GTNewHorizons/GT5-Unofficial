@@ -76,8 +76,8 @@ public class ItemUtils {
                 .contains("dust")) {
                 final String MaterialName = oredictName.toLowerCase()
                     .replace("dust", "");
-                final Materials m = Materials.get(MaterialName);
-                if (m != Materials._NULL) {
+                final com.ruling_0.materiallib.api.Material m = MU.byLegacyName(MaterialName);
+                if (m != null) {
                     ItemStack returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1);
                     if (returnValue != null) {
                         return returnValue;

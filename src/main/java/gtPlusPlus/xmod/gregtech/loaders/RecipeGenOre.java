@@ -26,10 +26,10 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -67,7 +67,7 @@ public class RecipeGenOre extends RecipeGenBase {
     private void generateRecipes(final Material material, final boolean disableOptional) {
 
         if (mStone == null) {
-            mStone = MaterialUtils.generateMaterialFromGtENUM(Materials.Stone);
+            mStone = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.Stone);
         }
 
         int tVoltageMultiplier = MaterialUtils.getVoltageForTier(material.vTier);
@@ -202,7 +202,7 @@ public class RecipeGenOre extends RecipeGenBase {
             .itemInputs(material.getCrushed(1))
             .itemOutputs(material.getCrushedPurified(1), matDustA, dustStone)
             .outputChances(100_00, 11_11, 100_00)
-            .fluidInputs(Materials.Water.getFluid(1_000))
+            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(oreWasherRecipes);

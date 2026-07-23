@@ -10,12 +10,12 @@ import java.util.Set;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -298,7 +298,7 @@ public class MaterialGenerator {
                             Materials2Materials.SulfuricAcid,
                             Materials2FluidShapes.fluidLiquid,
                             (int) (8000)))
-                    .fluidOutputs(Materials.HydrofluoricAcid.getFluid(16000))
+                    .fluidOutputs(MU.fluid(Materials2Materials.HydrofluoricAcidGT5U, 16000))
                     .eut(TierEU.RECIPE_HV / 2)
                     .duration(10 * MINUTES)
                     .addTo(chemicalDehydratorRecipes);

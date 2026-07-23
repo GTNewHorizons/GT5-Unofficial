@@ -17,10 +17,10 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gtPlusPlus.core.material.MaterialsElements;
 
 public class RecipeLoaderGTNH {
@@ -68,7 +68,7 @@ public class RecipeLoaderGTNH {
                     (int) (1 * INGOTS)),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Calcium, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
-            .fluidOutputs(Materials.Flerovium.getMolten(1 * INGOTS))
+            .fluidOutputs(MU.molten(Materials2Materials.FleroviumGT5U, 1 * INGOTS))
             .duration(8 * SECONDS)
             .eut(196608)
             .metadata(FUSION_THRESHOLD, 1_000_000_000L)

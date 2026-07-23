@@ -1,24 +1,27 @@
 package gtPlusPlus.core.material;
 
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public final class MaterialsAlloy {
 
     // Just some GT Alloys that I need within mine.
-    public static final Material BRONZE = MaterialUtils.generateMaterialFromGtENUM(Materials.Bronze);
-    public static final Material STEEL = MaterialUtils.generateMaterialFromGtENUM(Materials.Steel);
-    public static final Material STEEL_BLACK = MaterialUtils.generateMaterialFromGtENUM(Materials.BlackSteel);
-    public static final Material INVAR = MaterialUtils.generateMaterialFromGtENUM(Materials.Invar);
-    public static final Material KANTHAL = MaterialUtils.generateMaterialFromGtENUM(Materials.Kanthal);
-    public static final Material NICHROME = MaterialUtils.generateMaterialFromGtENUM(Materials.Nichrome);
-    public static final Material TUNGSTENSTEEL = MaterialUtils.generateMaterialFromGtENUM(Materials.TungstenSteel);
-    public static final Material STAINLESS_STEEL = MaterialUtils.generateMaterialFromGtENUM(Materials.StainlessSteel);
-    public static final Material OSMIRIDIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Osmiridium);
-    public static final Material POLYETHYLENE = MaterialUtils.generateMaterialFromGtENUM(Materials.Polyethylene);
-    public static final Material TUNGSTEN_CARBIDE = MaterialUtils.generateMaterialFromGtENUM(Materials.TungstenCarbide);
+    public static final Material BRONZE = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.Bronze);
+    public static final Material STEEL = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.Steel);
+    public static final Material STEEL_BLACK = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.BlackSteel);
+    public static final Material INVAR = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.Invar);
+    public static final Material KANTHAL = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.Kanthal);
+    public static final Material NICHROME = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.Nichrome);
+    public static final Material TUNGSTENSTEEL = MaterialUtils
+        .generateMaterialFromGtENUM(Materials2Materials.TungstenSteel);
+    public static final Material STAINLESS_STEEL = MaterialUtils
+        .generateMaterialFromGtENUM(Materials2Materials.StainlessSteel);
+    public static final Material OSMIRIDIUM = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.Osmiridium);
+    public static final Material POLYETHYLENE = MaterialUtils.generateMaterialFromGtENUM(Materials2Materials.Plastic);
+    public static final Material TUNGSTEN_CARBIDE = MaterialUtils
+        .generateMaterialFromGtENUM(Materials2Materials.TungstenCarbide);
     public static final Material POLYTETRAFLUOROETHYLENE = MaterialUtils
-        .generateMaterialFromGtENUM(Materials.Polytetrafluoroethylene);
+        .generateMaterialFromGtENUM(Materials2Materials.Polytetrafluoroethylene);
     public static final Material ENERGYCRYSTAL = MaterialReconstruction.byName("EnergyCrystal");
 
     public static final Material BLOODSTEEL = MaterialReconstruction.byName("BloodSteel");

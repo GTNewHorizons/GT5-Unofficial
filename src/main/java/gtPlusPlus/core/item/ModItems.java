@@ -21,7 +21,6 @@ import net.minecraft.util.EnumChatFormatting;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -310,36 +309,45 @@ public final class ModItems {
             .registerOre("catalystChlorination");
 
         // Milled Ore Processing
-        GregtechItemList.MilledSphalerite.set(BaseItemMilledOre.generate(Materials.Sphalerite, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledChalcopyrite.set(BaseItemMilledOre.generate(Materials.Chalcopyrite, TierEU.RECIPE_IV));
-        GregtechItemList.MilledNickel.set(BaseItemMilledOre.generate(Materials.Nickel, TierEU.RECIPE_IV));
-        GregtechItemList.MilledPlatinum.set(BaseItemMilledOre.generate(Materials.Platinum, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledPentlandite.set(BaseItemMilledOre.generate(Materials.Pentlandite, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledRedstone.set(BaseItemMilledOre.generate(Materials.Redstone, TierEU.RECIPE_IV));
-        GregtechItemList.MilledSpessartine.set(BaseItemMilledOre.generate(Materials.Spessartine, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledGrossular.set(BaseItemMilledOre.generate(Materials.Grossular, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledAlmandine.set(BaseItemMilledOre.generate(Materials.Almandine, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledPyrope.set(BaseItemMilledOre.generate(Materials.Pyrope, TierEU.RECIPE_EV));
-        GregtechItemList.MilledMonazite.set(BaseItemMilledOre.generate(Materials.Monazite, TierEU.RECIPE_ZPM));
+        GregtechItemList.MilledSphalerite
+            .set(BaseItemMilledOre.generate(Materials2Materials.Sphalerite, TierEU.RECIPE_LuV));
+        GregtechItemList.MilledChalcopyrite
+            .set(BaseItemMilledOre.generate(Materials2Materials.Chalcopyrite, TierEU.RECIPE_IV));
+        GregtechItemList.MilledNickel.set(BaseItemMilledOre.generate(Materials2Materials.Nickel, TierEU.RECIPE_IV));
+        GregtechItemList.MilledPlatinum
+            .set(BaseItemMilledOre.generate(Materials2Materials.Platinum, TierEU.RECIPE_LuV));
+        GregtechItemList.MilledPentlandite
+            .set(BaseItemMilledOre.generate(Materials2Materials.Pentlandite, TierEU.RECIPE_LuV));
+        GregtechItemList.MilledRedstone.set(BaseItemMilledOre.generate(Materials2Materials.Redstone, TierEU.RECIPE_IV));
+        GregtechItemList.MilledSpessartine
+            .set(BaseItemMilledOre.generate(Materials2Materials.Spessartine, TierEU.RECIPE_LuV));
+        GregtechItemList.MilledGrossular
+            .set(BaseItemMilledOre.generate(Materials2Materials.Grossular, TierEU.RECIPE_LuV));
+        GregtechItemList.MilledAlmandine
+            .set(BaseItemMilledOre.generate(Materials2Materials.Almandine, TierEU.RECIPE_LuV));
+        GregtechItemList.MilledPyrope.set(BaseItemMilledOre.generate(Materials2Materials.Pyrope, TierEU.RECIPE_EV));
+        GregtechItemList.MilledMonazite
+            .set(BaseItemMilledOre.generate(Materials2Materials.Monazite, TierEU.RECIPE_ZPM));
         GregtechItemList.MilledNetherite.set(
-            BaseItemMilledOre.generate(Materials.Netherrack, TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 256)));
+            BaseItemMilledOre
+                .generate(Materials2Materials.Netherrack, TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 256)));
 
         // These items stay registered for save/item-ID stability (BaseOreComponent's oredict skip already
         // defers the milled<Material> oredict name to MaterialLib once cut over), so only their NEI visibility
         // needs to follow the cutover.
         if (NotEnoughItems.isModLoaded()) {
-            hideMilledIfCutOver(Materials.Sphalerite, GregtechItemList.MilledSphalerite);
-            hideMilledIfCutOver(Materials.Chalcopyrite, GregtechItemList.MilledChalcopyrite);
-            hideMilledIfCutOver(Materials.Nickel, GregtechItemList.MilledNickel);
-            hideMilledIfCutOver(Materials.Platinum, GregtechItemList.MilledPlatinum);
-            hideMilledIfCutOver(Materials.Pentlandite, GregtechItemList.MilledPentlandite);
-            hideMilledIfCutOver(Materials.Redstone, GregtechItemList.MilledRedstone);
-            hideMilledIfCutOver(Materials.Spessartine, GregtechItemList.MilledSpessartine);
-            hideMilledIfCutOver(Materials.Grossular, GregtechItemList.MilledGrossular);
-            hideMilledIfCutOver(Materials.Almandine, GregtechItemList.MilledAlmandine);
-            hideMilledIfCutOver(Materials.Pyrope, GregtechItemList.MilledPyrope);
-            hideMilledIfCutOver(Materials.Monazite, GregtechItemList.MilledMonazite);
-            hideMilledIfCutOver(Materials.Netherrack, GregtechItemList.MilledNetherite);
+            hideMilledIfCutOver(Materials2Materials.Sphalerite, GregtechItemList.MilledSphalerite);
+            hideMilledIfCutOver(Materials2Materials.Chalcopyrite, GregtechItemList.MilledChalcopyrite);
+            hideMilledIfCutOver(Materials2Materials.Nickel, GregtechItemList.MilledNickel);
+            hideMilledIfCutOver(Materials2Materials.Platinum, GregtechItemList.MilledPlatinum);
+            hideMilledIfCutOver(Materials2Materials.Pentlandite, GregtechItemList.MilledPentlandite);
+            hideMilledIfCutOver(Materials2Materials.Redstone, GregtechItemList.MilledRedstone);
+            hideMilledIfCutOver(Materials2Materials.Spessartine, GregtechItemList.MilledSpessartine);
+            hideMilledIfCutOver(Materials2Materials.Grossular, GregtechItemList.MilledGrossular);
+            hideMilledIfCutOver(Materials2Materials.Almandine, GregtechItemList.MilledAlmandine);
+            hideMilledIfCutOver(Materials2Materials.Pyrope, GregtechItemList.MilledPyrope);
+            hideMilledIfCutOver(Materials2Materials.Monazite, GregtechItemList.MilledMonazite);
+            hideMilledIfCutOver(Materials2Materials.Netherrack, GregtechItemList.MilledNetherite);
         }
 
         // Baubles
@@ -376,7 +384,8 @@ public final class ModItems {
         GregtechItemList.BitCoin.set(new ItemStack(genericToken, 1, 0));
     }
 
-    private static void hideMilledIfCutOver(Materials material, GregtechItemList legacyItem) {
+    private static void hideMilledIfCutOver(com.ruling_0.materiallib.api.Material material,
+        GregtechItemList legacyItem) {
         if (MU.isCutOver(OrePrefixes.milled, material)) {
             codechicken.nei.api.API.hideItem(legacyItem.get(1));
         }
@@ -394,8 +403,9 @@ public final class ModItems {
         // Clay's plate/plateDouble are cut over to MaterialLib; constructing these
         // unconditionally would register a second, competing "plateClay"/"plateDoubleClay" oredict entry that
         // races the MaterialLib one across launches.
-        if (!MU.isCutOver(OrePrefixes.plate, Materials.Clay)) new BaseItemPlate(MaterialsOther.CLAY);
-        if (!MU.isCutOver(OrePrefixes.plateDouble, Materials.Clay)) new BaseItemPlateDouble(MaterialsOther.CLAY);
+        if (!MU.isCutOver(OrePrefixes.plate, Materials2Materials.Clay)) new BaseItemPlate(MaterialsOther.CLAY);
+        if (!MU.isCutOver(OrePrefixes.plateDouble, Materials2Materials.Clay))
+            new BaseItemPlateDouble(MaterialsOther.CLAY);
 
         // Springs
         MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
@@ -464,7 +474,7 @@ public final class ModItems {
 
         // Special Sillyness
         // Sodium's plate is cut over to MaterialLib; see the Clay comment above the same fix.
-        if (!MU.isCutOver(OrePrefixes.plate, Materials.Sodium))
+        if (!MU.isCutOver(OrePrefixes.plate, Materials2Materials.Sodium))
             new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
 
         // Tumbaga Mix (For Simple Crafting)

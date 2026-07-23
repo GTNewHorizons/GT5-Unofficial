@@ -22,12 +22,12 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
@@ -123,7 +123,7 @@ public class RecipeLoaderGenericChem {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Ethanol, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
                 new FluidStack(GTPPFluids.CarbonDisulfide, 1_000))
-            .fluidOutputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 4)
@@ -146,7 +146,7 @@ public class RecipeLoaderGenericChem {
             .itemInputs(
                 GTOreDictUnificator.get("fuelCoke", 8),
                 MaterialLibAPI.getStack(Materials2Materials.Sulfur, Materials2Shapes.dust, (int) (16)))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.AshDark, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, 1))
             .fluidOutputs(new FluidStack(GTPPFluids.CarbonDisulfide, 4_000))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_LV)

@@ -34,14 +34,15 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cofh.asmhooks.block.BlockTickingWater;
 import cofh.asmhooks.block.BlockWater;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -260,7 +261,7 @@ public class MTEIndustrialFishingPondLegacy extends GTPPMultiBlockBase<MTEIndust
                     if (isNotStaticWater(tBlock, tMeta)) {
                         if (this.getStoredFluids() != null) {
                             for (FluidStack stored : this.getStoredFluids()) {
-                                if (stored.isFluidEqual(Materials.Water.getFluid(1))) {
+                                if (stored.isFluidEqual(MU.fluid(Materials2Materials.Water, 1))) {
                                     if (stored.amount >= 1000) {
                                         // Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
                                         stored.amount -= 1000;

@@ -24,7 +24,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
 import galaxyspace.core.entity.mob.EntityEvolvedColdBlaze;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -135,7 +134,7 @@ public class CommonProxy implements IFuelHandler {
             ItemStack aCryo = MaterialLibAPI.getStack(Materials2Materials.Cryotheum, Materials2Shapes.dust, (int) (1));
             EntityUtils.registerDropsForMob(
                 EntityEvolvedColdBlaze.class,
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials2Materials.Blizz, 1),
                 1,
                 2500);
             if (aBlizz != null) {

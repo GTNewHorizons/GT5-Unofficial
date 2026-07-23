@@ -1,9 +1,9 @@
 package gtPlusPlus.xmod.railcraft;
 
-import static gregtech.api.enums.Materials.BioDiesel;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.materials2.Materials2Materials.BioDiesel;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -23,6 +23,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.item.base.BaseItemBurnable;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -78,10 +79,7 @@ public class HandlerRailcraft {
         // Taken from the Railcraft code
         if (Railcraft.isModLoaded()) {
             int bioheat = (int) (16000 * RailcraftConfig.boilerBiofuelMultiplier());
-            FuelManager.addBoilerFuel(
-                BioDiesel.getFluid(1L)
-                    .getFluid(),
-                bioheat);
+            FuelManager.addBoilerFuel(MU.fluidOf(BioDiesel), bioheat);
         }
     }
 

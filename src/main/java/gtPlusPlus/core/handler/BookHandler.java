@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import com.github.bsideup.jabel.Desugar;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
@@ -80,7 +79,7 @@ public class BookHandler {
         GTModHandler.addShapelessCraftingRecipe(
             new ItemStack(ModItems.itemCustomBook, 1, 1),
             new ItemStack[] { new ItemStack(Items.writable_book),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tin, 1) });
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Materials.Tin, 1) });
 
         // Nuclear Manual
         GTModHandler.addShapelessCraftingRecipe(

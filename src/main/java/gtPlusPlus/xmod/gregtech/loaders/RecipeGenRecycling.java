@@ -268,8 +268,8 @@ public class RecipeGenRecycling implements Runnable {
             .contains("dust")) {
             final String MaterialName = oredictName.toLowerCase()
                 .replace("dust", "");
-            final Materials m = Materials.get(MaterialName);
-            if (m != null && m != Materials._NULL) {
+            final com.ruling_0.materiallib.api.Material m = MU.byLegacyName(MaterialName);
+            if (m != null) {
                 returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1L);
                 if (returnValue != null) {
                     return returnValue;

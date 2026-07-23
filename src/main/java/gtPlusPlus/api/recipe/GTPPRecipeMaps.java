@@ -20,7 +20,9 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.material.MU;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
@@ -292,6 +294,7 @@ public class GTPPRecipeMaps {
         .of("gtpp.recipe.multiblockrockbreaker")
         .maxIO(3, 3, 2, 0)
         .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
-        .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
+        .neiFluidInputsGetter(
+            gtRecipe -> new FluidStack[] { MU.fluid(Materials2Materials.Water, 0), Materials.Lava.getFluid(0) })
         .build();
 }

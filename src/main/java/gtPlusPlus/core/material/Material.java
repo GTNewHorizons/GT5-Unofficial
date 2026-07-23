@@ -28,6 +28,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
@@ -833,7 +834,7 @@ public class Material implements IOreMaterial {
         if (mostUsedTypeTextureSet instanceof TextureSet) {
             return mostUsedTypeTextureSet;
         }
-        return Materials.Gold.mIconSet;
+        return MU.iconSet(Materials2Materials.Gold);
     }
 
     public final String getDefaultLocalName() {
@@ -1555,7 +1556,7 @@ public class Material implements IOreMaterial {
             Set<Material> materialSet = new HashSet<>(MaterialUtils.getCompoundMaterialsRecursively(this));
             final int size = materialSet.size();
             if (size == 0) {
-                return Materials.Steel.mRGBa;
+                return MU.rgba(Materials2Materials.Steel);
             }
             long redSum = 0;
             long greenSum = 0;
@@ -1572,11 +1573,11 @@ public class Material implements IOreMaterial {
             if (avgRed != 0 && avgGreen != 0 && avgBlue != 0) {
                 return new short[] { avgRed, avgGreen, avgBlue, 0 };
             } else {
-                return Materials.Steel.mRGBa;
+                return MU.rgba(Materials2Materials.Steel);
             }
         } catch (Exception t) {
             t.printStackTrace();
-            return Materials.Steel.mRGBa;
+            return MU.rgba(Materials2Materials.Steel);
         }
     }
 

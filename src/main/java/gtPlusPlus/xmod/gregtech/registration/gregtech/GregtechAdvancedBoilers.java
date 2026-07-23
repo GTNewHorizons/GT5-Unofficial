@@ -9,7 +9,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
@@ -45,8 +44,8 @@ public class GregtechAdvancedBoilers {
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "DSD", "BTB", "DSD", 'D',
                 MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.plateDouble, (int) (1)), 'S',
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1L), 'B',
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 1L), 'T',
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials2Materials.Steel, 1L), 'B',
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials2Materials.Bronze, 1L), 'T',
                 getModItem(IronTanks.ID, "silverTank", 1, 0) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.BoilerChassis_Tier1.get(1),
@@ -54,8 +53,8 @@ public class GregtechAdvancedBoilers {
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "DSD", "BTB", "DSD", 'D',
                 MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.plateDouble, (int) (1)),
-                'S', GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1L), 'B',
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1L), 'T',
+                'S', GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials2Materials.StainlessSteel, 1L), 'B',
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials2Materials.Steel, 1L), 'T',
                 getModItem(IronTanks.ID, "stainlesssteelTank", 1, 0) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.BoilerChassis_Tier2.get(1),
@@ -63,8 +62,8 @@ public class GregtechAdvancedBoilers {
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "DSD", "BTB", "DSD", 'D',
                 MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.plateDouble, (int) (1)), 'S',
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L), 'B',
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1L), 'T',
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials2Materials.Titanium, 1L), 'B',
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials2Materials.StainlessSteel, 1L), 'T',
                 getModItem(IronTanks.ID, "titaniumTank", 1, 0) });
 
         // Boiler Recipes
@@ -74,7 +73,7 @@ public class GregtechAdvancedBoilers {
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "EXE", "CMC", "PBP", 'E', ItemList.Electric_Pump_LV.get(1L), 'X', "circuitBasic", 'C',
                 GregtechItemList.BoilerChassis_Tier0, 'M', ItemList.Casing_LV.get(1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Steel, 1L), 'B',
+                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials2Materials.Steel, 1L), 'B',
                 ItemList.Machine_Steel_Boiler.get(1L) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Boiler_Advanced_MV.get(1),
@@ -82,7 +81,7 @@ public class GregtechAdvancedBoilers {
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "EXE", "CMC", "PBP", 'E', ItemList.Electric_Pump_MV.get(1L), 'X', "circuitGood", 'C',
                 GregtechItemList.BoilerChassis_Tier1, 'M', ItemList.Casing_MV.get(1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.StainlessSteel, 1L), 'B',
+                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials2Materials.StainlessSteel, 1L), 'B',
                 ItemList.Machine_Steel_Boiler.get(1L) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Boiler_Advanced_HV.get(1),
@@ -90,7 +89,7 @@ public class GregtechAdvancedBoilers {
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "EXE", "CMC", "PBP", 'E', ItemList.Electric_Pump_HV.get(1L), 'X', "circuitAdvanced", 'C',
                 GregtechItemList.BoilerChassis_Tier2, 'M', ItemList.Casing_HV.get(1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Titanium, 1L), 'B',
+                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials2Materials.Titanium, 1L), 'B',
                 ItemList.Machine_Steel_Boiler.get(1L) });
     }
 }

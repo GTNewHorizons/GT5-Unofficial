@@ -12,7 +12,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -54,22 +53,22 @@ public class RecipeIC2 {
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
-                OrePrefixes.plate.ingredient(Materials.DarkSteel), 'S',
-                OrePrefixes.screw.ingredient(Materials.DarkSteel) });
+                OrePrefixes.plate.ingredient(Materials2Materials.DarkSteel), 'S',
+                OrePrefixes.screw.ingredient(Materials2Materials.DarkSteel) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
-                OrePrefixes.plate.ingredient(Materials.TungstenSteel), 'S',
-                OrePrefixes.screw.ingredient(Materials.TungstenSteel) });
+                OrePrefixes.plate.ingredient(Materials2Materials.TungstenSteel), 'S',
+                OrePrefixes.screw.ingredient(Materials2Materials.TungstenSteel) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
-                OrePrefixes.plate.ingredient(Materials.Molybdenum), 'S',
-                OrePrefixes.screw.ingredient(Materials.Molybdenum) });
+                OrePrefixes.plate.ingredient(Materials2Materials.Molybdenum), 'S',
+                OrePrefixes.screw.ingredient(Materials2Materials.Molybdenum) });
 
         // Shafts
         GTValues.RA.stdBuilder()
@@ -82,7 +81,7 @@ public class RecipeIC2 {
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.EnergeticAlloy, 1),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.EnergeticAlloy, 1),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.EnergeticAlloyShaft.get(1))
             .duration(2 * MINUTES + 8 * SECONDS)
@@ -99,7 +98,7 @@ public class RecipeIC2 {
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.TungstenSteel, 1),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.TungstenSteel, 1),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.TungstenSteelShaft.get(1))
             .duration(4 * MINUTES + 16 * SECONDS)
@@ -116,7 +115,7 @@ public class RecipeIC2 {
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.VibrantAlloy, 1),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.VibrantAlloy, 1),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.VibrantAlloyShaft.get(1))
             .duration(8 * MINUTES + 32 * SECONDS)
@@ -133,7 +132,7 @@ public class RecipeIC2 {
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Iridium, 1),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Iridium, 1),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.IridiumShaft.get(1))
             .duration(17 * MINUTES + 4 * SECONDS)
