@@ -11,7 +11,7 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,6 +29,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEMoltenModuleGui;
 import tectech.recipe.TecTechRecipeMaps;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMoltenModule extends MTEBaseModule {
 
     private long EUt = 0;
@@ -164,14 +165,7 @@ public class MTEMoltenModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Smelter")
-            .addInfo("This is a module of the Godforge")
-            .addInfo("Must be part of a Godforge to function")
-            .addInfo("Used for high temperature material liquefaction")
-            .addSeparator(EnumChatFormatting.AQUA, 74)
-            .addInfo("The second module of the Godforge, this module melts materials directly into")
-            .addInfo("their liquid form. If an output material does not have a liquid form, it will be output")
-            .addInfo("as a regular solid instead")
-            .addInfo("This module is specialized towards parallel processing")
+            .addMarkdown(new ResourceLocation("gregtech", "godforge-molten-module"))
             .beginStructureBlock(7, 7, 13, false)
             .addController("Front center, 4th layer")
             .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
