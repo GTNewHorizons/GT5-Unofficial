@@ -817,17 +817,17 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     // endregion
 
     // region Superconductors
-    public static MarkerMaterial SuperconductorMV;
-    public static MarkerMaterial SuperconductorHV;
-    public static MarkerMaterial SuperconductorEV;
-    public static MarkerMaterial SuperconductorIV;
-    public static MarkerMaterial SuperconductorLuV;
-    public static MarkerMaterial SuperconductorZPM;
-    public static MarkerMaterial SuperconductorUV;
-    public static MarkerMaterial SuperconductorUHV;
-    public static MarkerMaterial SuperconductorUEV;
-    public static MarkerMaterial SuperconductorUIV;
-    public static MarkerMaterial SuperconductorUMV;
+    public static Materials SuperconductorMV;
+    public static Materials SuperconductorHV;
+    public static Materials SuperconductorEV;
+    public static Materials SuperconductorIV;
+    public static Materials SuperconductorLuV;
+    public static Materials SuperconductorZPM;
+    public static Materials SuperconductorUV;
+    public static Materials SuperconductorUHV;
+    public static Materials SuperconductorUEV;
+    public static Materials SuperconductorUIV;
+    public static Materials SuperconductorUMV;
     // endregion
 
     // region Waterline Chemicals
@@ -1207,14 +1207,15 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         Map<Supplier<Materials>, Supplier<Materials>> pendingArcSmeltingIntoWithGas,
         Supplier<Materials> pendingDirectSmelting,
         LinkedHashSet<SubTag> subTags,
-        boolean hasGlowingOre
+        boolean hasGlowingOre,
+        boolean registerInMaterialsMap
         // spotless:on
     ) {
 
         // Set names
         mName = name;
         mDefaultLocalName = defaultLocalName;
-        MATERIALS_MAP.put(mName, this);
+        if (registerInMaterialsMap) MATERIALS_MAP.put(mName, this);
 
         // Set element
         if (element != null) {

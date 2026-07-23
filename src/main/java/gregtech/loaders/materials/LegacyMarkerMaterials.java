@@ -1,11 +1,8 @@
 package gregtech.loaders.materials;
 
 import java.util.EnumSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.function.Consumer;
 
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.MaterialBuilder;
@@ -14,7 +11,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MarkerMaterial;
 import gregtech.api.material.MaterialRef;
 
 /// `Materials` fields that MaterialLib carries no data for and that unchanged code still references
@@ -29,11 +25,6 @@ public class LegacyMarkerMaterials {
 
     private static final int DEFAULT_ARGB = 0x00ffffff;
 
-    /// The shapeless MaterialLib [Material] registered as each superconductor marker's backing, keyed by
-    /// internal name. Populated by [#registerBackingMaterials] during material registration and read by
-    /// [#loadSuperconductorsMarkers] when the markers are built.
-    private static final Map<String, Material> BACKING_BY_NAME = new LinkedHashMap<>();
-
     private LegacyMarkerMaterials() {}
 
     public static void loadMarkers() {
@@ -41,7 +32,7 @@ public class LegacyMarkerMaterials {
         loadSuperconductorsMarkers();
     }
 
-    private record Superconductor(Consumer<MarkerMaterial> field, String internalName, String localName, int argb) {}
+    private record Superconductor(Consumer<Materials> field, String internalName, String localName, int argb) {}
 
     private static final Superconductor[] SUPERCONDUCTORS = {
         new Superconductor(m -> Materials.SuperconductorMV = m, "SuperconductorMV", "Superconductor MV", 0x00555555),
@@ -60,13 +51,14 @@ public class LegacyMarkerMaterials {
             "Superconductor UMV",
             0x00b526cd), };
 
-    /// Registers a shapeless MaterialLib [Material] backing each superconductor marker, skipping any whose
-    /// internal name already names a MaterialLib material. Runs during material registration, after
-    /// [gregtech.api.enums.materials2.Materials2Materials#init], so the skip check sees every real material.
+    /// Registers a shapeless MaterialLib [Material] backing each superconductor facade, which `MU#material`
+    /// resolves by registry name; skips any whose internal name already names a MaterialLib material. Runs
+    /// during material registration, after [gregtech.api.enums.materials2.Materials2Materials#init], so the
+    /// skip check sees every real material.
     public static void registerBackingMaterials() {
         for (Superconductor sc : SUPERCONDUCTORS) {
             if (MaterialLibAPI.getMaterial("gregtech", sc.internalName()) != null) continue;
-            Material material = MaterialLibAPI
+            MaterialLibAPI
                 .newMaterial(
                     "gregtech",
                     sc.internalName(),
@@ -75,7 +67,6 @@ public class LegacyMarkerMaterials {
                 .setProperty(GTMaterialProperties.LOCAL_NAME, sc.localName())
                 .setProperty(GTMaterialProperties.ARGB, sc.argb())
                 .build();
-            BACKING_BY_NAME.put(sc.internalName(), material);
         }
         registerWildcard("AnyBronze", "AnyBronze", TextureSet.SET_SHINY, GTMaterialFlag.METAL, null, null, null);
         registerWildcard(
@@ -93,10 +84,8 @@ public class LegacyMarkerMaterials {
     }
 
     /// Registers a shapeless MaterialLib backing for a wildcard `Materials` (`AnyCopper`, `AnyIron`, ...), which
-    /// `MU#material` resolves by [GTMaterialProperties#LEGACY_NAME]. Unlike the [MarkerMaterial] backings these
-    /// wildcards are facade `Materials` built in [#loadRandomMarkers], so the link is by name rather than a
-    /// backing field. Ports the smelt/macerate/arc targets and metal flag the facade carried; skips any whose
-    /// name already names a real MaterialLib material.
+    /// `MU#material` resolves by [GTMaterialProperties#LEGACY_NAME]. Ports the smelt/macerate/arc targets and
+    /// metal flag the facade carried; skips any whose name already names a real MaterialLib material.
     private static void registerWildcard(String name, String localName, TextureSet texture, GTMaterialFlag flag,
         String smeltInto, String macerateInto, String arcSmeltInto) {
         if (MaterialLibAPI.getMaterial("gregtech", name) != null) return;
@@ -112,18 +101,18 @@ public class LegacyMarkerMaterials {
             builder = builder.setProperty(GTMaterialProperties.MACERATE_INTO, new MaterialRef(macerateInto));
         if (arcSmeltInto != null)
             builder = builder.setProperty(GTMaterialProperties.ARC_SMELT_INTO, new MaterialRef(arcSmeltInto));
-        BACKING_BY_NAME.put(name, builder.build());
+        builder.build();
     }
 
-    /// The superconductor wire markers, in tier order. [MarkerMaterial]s are absent from
-    /// [Materials#getMaterialsMap], so the material lang-registration pass in
-    /// [gregtech.loaders.preload.GTPreLoad] skips them; their display-name keys are registered from this
-    /// array instead. Evaluated after [#loadSuperconductorsMarkers] has populated the fields.
-    public static MarkerMaterial[] getSuperconductorMarkers() {
-        return new MarkerMaterial[] { Materials.SuperconductorMV, Materials.SuperconductorHV,
-            Materials.SuperconductorEV, Materials.SuperconductorIV, Materials.SuperconductorLuV,
-            Materials.SuperconductorZPM, Materials.SuperconductorUV, Materials.SuperconductorUHV,
-            Materials.SuperconductorUEV, Materials.SuperconductorUIV, Materials.SuperconductorUMV };
+    /// The superconductor wire markers, in tier order. They are absent from [Materials#getMaterialsMap], so
+    /// the material lang-registration pass in [gregtech.loaders.preload.GTPreLoad] skips them; their
+    /// display-name keys are registered from this array instead. Evaluated after
+    /// [#loadSuperconductorsMarkers] has populated the fields.
+    public static Materials[] getSuperconductorMarkers() {
+        return new Materials[] { Materials.SuperconductorMV, Materials.SuperconductorHV, Materials.SuperconductorEV,
+            Materials.SuperconductorIV, Materials.SuperconductorLuV, Materials.SuperconductorZPM,
+            Materials.SuperconductorUV, Materials.SuperconductorUHV, Materials.SuperconductorUEV,
+            Materials.SuperconductorUIV, Materials.SuperconductorUMV };
     }
 
     private static void loadRandomMarkers() {
@@ -195,16 +184,20 @@ public class LegacyMarkerMaterials {
             .constructMaterial();
     }
 
+    /// Builds the superconductor facades. They stay out of [Materials#getMaterialsMap] so `Materials.get`
+    /// resolution, registry-wide iteration, and the lang pass over the map never see them;
+    /// [gregtech.loaders.preload.GTPreLoad] registers their display names from [#getSuperconductorMarkers]
+    /// instead, and `MU#toMaterial` resolves them to their [#registerBackingMaterials] backing by name.
     private static void loadSuperconductorsMarkers() {
         for (Superconductor sc : SUPERCONDUCTORS) {
-            MarkerMaterial marker = new MarkerMaterial(
-                sc.internalName(),
-                sc.localName(),
-                TextureSet.SET_SHINY,
-                sc.argb());
-            marker.setBackingMaterial(BACKING_BY_NAME.get(sc.internalName()));
             sc.field()
-                .accept(marker);
+                .accept(
+                    new MaterialBuilder().setName(sc.internalName())
+                        .setDefaultLocalName(sc.localName())
+                        .setIconSet(TextureSet.SET_SHINY)
+                        .setARGB(sc.argb())
+                        .setRegisterInMaterialsMap(false)
+                        .constructMaterial());
         }
     }
 }

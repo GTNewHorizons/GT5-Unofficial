@@ -91,6 +91,7 @@ public class MaterialBuilder {
     private final List<OrePrefixes> orePrefixBlacklist = new ArrayList<>();
     private final List<OrePrefixes> orePrefixWhitelist = new ArrayList<>();
     private boolean hasGlowingOre;
+    private boolean registerInMaterialsMap = true;
 
     public MaterialBuilder() {}
 
@@ -141,7 +142,8 @@ public class MaterialBuilder {
             pendingArcSmeltingIntoWithGas.isEmpty() ? null : pendingArcSmeltingIntoWithGas,
             pendingDirectSmelting,
             subTags,
-            hasGlowingOre
+            hasGlowingOre,
+            registerInMaterialsMap
             // spotless:on
         );
 
@@ -192,6 +194,15 @@ public class MaterialBuilder {
 
     public MaterialBuilder setUnifiable(boolean unifiable) {
         this.unifiable = unifiable;
+        return this;
+    }
+
+    /**
+     * Skips {@link Materials#getMaterialsMap()} registration, keeping the material invisible to
+     * {@link Materials#get(String)} and every registry-wide iteration.
+     */
+    public MaterialBuilder setRegisterInMaterialsMap(boolean registerInMaterialsMap) {
+        this.registerInMaterialsMap = registerInMaterialsMap;
         return this;
     }
 

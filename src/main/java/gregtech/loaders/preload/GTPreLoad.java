@@ -32,7 +32,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.material.MarkerMaterial;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
@@ -123,8 +122,9 @@ public class GTPreLoad {
                         .addStringLocalization(aMaterial.getLocalizedNameKey(), aMaterial.mDefaultLocalName);
                 });
 
-        for (MarkerMaterial marker : LegacyMarkerMaterials.getSuperconductorMarkers()) {
-            GTLanguageManager.addStringLocalization(marker.getLocalizedNameKey(), marker.getDefaultLocalName());
+        for (Materials superconductor : LegacyMarkerMaterials.getSuperconductorMarkers()) {
+            GTLanguageManager
+                .addStringLocalization(superconductor.getLocalizedNameKey(), superconductor.getDefaultLocalName());
         }
     }
 
