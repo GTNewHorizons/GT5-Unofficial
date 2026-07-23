@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
@@ -226,15 +227,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
         if (TooltipUtil.siphonLoreText != null) {
             tt.addInfo(EnumChatFormatting.ITALIC + TooltipUtil.siphonLoreText);
         }
-        tt.addInfo(
-            StatCollector.translateToLocalFormatted(
-                "gt.blockmachines.multimachine.ig.siphon.desc0",
-                (int) (SPEED_PER_COIL * 100)));
-        tt.addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc1"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc2"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc3"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc4"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc5"))
+        tt.addMarkdown(new ResourceLocation("gregtech", "planetary-gas-siphon"))
             .beginStructureBlock(13, 23, 13, false)
             .addController(StatCollector.translateToLocal("ig.siphon.structure.ControllerPos"))
             .addCasing("184", StatCollector.translateToLocal("ig.siphon.structure.SiphonCasing"), false)
