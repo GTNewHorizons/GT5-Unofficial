@@ -615,25 +615,21 @@ public class MU {
     }
 
     /// [#smeltInto(Materials)] for callers holding an [IOreMaterial] whose concrete type is not statically known.
-    /// A legacy [Materials] delegates to that overload; a [MarkerMaterial] resolves to its declared smelting
-    /// target when it has one, otherwise `null`.
+    /// A legacy [Materials] delegates to that overload; any other implementer resolves to `null`.
     public static @Nullable Materials smeltInto(@Nullable IOreMaterial material) {
         if (material instanceof Materials legacy) return smeltInto(legacy);
-        if (material instanceof MarkerMaterial marker) return marker.getSmeltInto();
         return null;
     }
 
     /// [#smeltInto(IOreMaterial)], for `Materials#mMacerateInto`/[GTMaterialProperties#MACERATE_INTO].
     public static @Nullable Materials macerateInto(@Nullable IOreMaterial material) {
         if (material instanceof Materials legacy) return macerateInto(legacy);
-        if (material instanceof MarkerMaterial marker) return marker.getMacerateInto();
         return null;
     }
 
     /// [#smeltInto(IOreMaterial)], for `Materials#mArcSmeltInto`/[GTMaterialProperties#ARC_SMELT_INTO].
     public static @Nullable Materials arcSmeltInto(@Nullable IOreMaterial material) {
         if (material instanceof Materials legacy) return arcSmeltInto(legacy);
-        if (material instanceof MarkerMaterial marker) return marker.getArcSmeltInto();
         return null;
     }
 

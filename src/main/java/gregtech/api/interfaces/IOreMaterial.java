@@ -8,7 +8,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -69,21 +68,6 @@ public interface IOreMaterial extends ISubTagContainer {
         } else {
             return GTOreDictUnificator.get(prefix.oreDictName(this.getInternalName()), amount);
         }
-    }
-
-    /// The molten fluid this material generates, sized to `amount`, or null if it generates none.
-    default FluidStack getMolten(long amount) {
-        return null;
-    }
-
-    /// The plasma fluid this material generates, sized to `amount`, or null if it generates none.
-    default FluidStack getPlasma(long amount) {
-        return null;
-    }
-
-    /// The dust [ItemStack] this material generates, sized to `amount`, or null if it generates none.
-    default ItemStack getDust(int amount) {
-        return null;
     }
 
     /// This material's atomic mass, or `0` when it carries no composition data.
