@@ -39,9 +39,6 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }

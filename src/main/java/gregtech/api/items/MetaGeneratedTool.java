@@ -8,6 +8,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -43,6 +44,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import appeng.api.implementations.items.IAEWrench;
 import buildcraft.api.tools.IToolWrench;
@@ -131,6 +133,61 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return Materials._NULL;
     }
 
+    /// [#getPrimaryMaterial], resolving straight to the MaterialLib material via [#materialByInternalName]
+    /// instead of through the legacy [Materials] registry -- survives minting retirement, when a werkstoff/gtpp
+    /// tool's stored name no longer resolves through [Materials#getRealMaterial]. Falls back to
+    /// [Materials#_NULL]'s own material on a missing/unresolvable name, mirroring [#getPrimaryMaterial]'s
+    /// sentinel-on-absent default.
+    public static com.ruling_0.materiallib.api.Material getPrimaryMaterialML(ItemStack aStack) {
+        return resolveMaterialML(aStack, "PrimaryMaterial");
+    }
+
+    /// [#getPrimaryMaterialML], for [#getSecondaryMaterial].
+    public static com.ruling_0.materiallib.api.Material getSecondaryMaterialML(ItemStack aStack) {
+        return resolveMaterialML(aStack, "SecondaryMaterial");
+    }
+
+    private static com.ruling_0.materiallib.api.Material resolveMaterialML(ItemStack aStack, String aKey) {
+        NBTTagCompound aNBT = aStack.getTagCompound();
+        if (aNBT != null) {
+            aNBT = aNBT.getCompoundTag("GT.ToolStats");
+            if (aNBT != null) {
+                com.ruling_0.materiallib.api.Material material = materialByInternalName(aNBT.getString(aKey));
+                if (material != null) return material;
+            }
+        }
+        return MU.material(Materials._NULL);
+    }
+
+    private static Map<String, com.ruling_0.materiallib.api.Material> sInternalNameToMaterial;
+
+    /// The registered MaterialLib material whose [MU#internalName] is `name` -- the reverse of what
+    /// [#getToolWithStats(int, int, com.ruling_0.materiallib.api.Material, com.ruling_0.materiallib.api.Material,
+    /// long[])] wrote into the `PrimaryMaterial`/`SecondaryMaterial` NBT strings, so [#resolveMaterialML] can
+    /// resolve those back to a material without going through the legacy [Materials] registry. Scans the whole
+    /// `"gregtech"`-domain registry rather than [MU]'s own canonical-only cache, since a werkstoff/gtpp bridge
+    /// material -- whose legacy [Materials] counterpart disappears once minting retires -- is registered there
+    /// too. Built once and cached, matching [MU]'s own lazy registry-scan caches (e.g. `MU#legacyNamedMaterials`).
+    private static @Nullable com.ruling_0.materiallib.api.Material materialByInternalName(String name) {
+        if (sInternalNameToMaterial == null) {
+            Map<String, com.ruling_0.materiallib.api.Material> map = new HashMap<>();
+            for (com.ruling_0.materiallib.api.Material material : MaterialLibAPI.getMaterials()) {
+                if ("gregtech".equals(material.getModId())) map.put(MU.internalName(material), material);
+            }
+            sInternalNameToMaterial = map;
+        }
+        return sInternalNameToMaterial.get(name);
+    }
+
+    /// Reproduces [gregtech.api.interfaces.IOreMaterial#getLocalizedName]'s `"Material." + internalName`
+    /// lang key directly off a MaterialLib material's [MU#internalName], without resolving a legacy [Materials]
+    /// instance just to call it on -- that facade disappears for a werkstoff/gtpp material once minting retires.
+    private static String getMaterialLocalizedName(com.ruling_0.materiallib.api.Material aMaterial) {
+        return translateToLocal(
+            "Material." + MU.internalName(aMaterial)
+                .toLowerCase());
+    }
+
     /// Tool durability/speed/quality/enchant are read from [GTMaterialProperties] on the MaterialLib material a
     /// legacy [Materials] ported from, not from the legacy fields directly, even though the legacy facade
     /// populates those fields from the same properties (see `LegacyMaterials#build`) -- this keeps
@@ -144,22 +201,19 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return getToolDurability(MU.material(aMaterial));
     }
 
-    private static float getToolSpeed(Materials aMaterial) {
-        com.ruling_0.materiallib.api.Material mlMaterial = MU.material(aMaterial);
-        Float toolSpeed = mlMaterial == null ? null : mlMaterial.getProperty(GTMaterialProperties.TOOL_SPEED);
+    private static float getToolSpeed(com.ruling_0.materiallib.api.Material aMaterial) {
+        Float toolSpeed = aMaterial == null ? null : aMaterial.getProperty(GTMaterialProperties.TOOL_SPEED);
         return toolSpeed == null ? 1.0F : toolSpeed;
     }
 
-    private static int getToolQuality(Materials aMaterial) {
-        com.ruling_0.materiallib.api.Material mlMaterial = MU.material(aMaterial);
-        Integer toolQuality = mlMaterial == null ? null : mlMaterial.getProperty(GTMaterialProperties.TOOL_QUALITY);
+    private static int getToolQuality(com.ruling_0.materiallib.api.Material aMaterial) {
+        Integer toolQuality = aMaterial == null ? null : aMaterial.getProperty(GTMaterialProperties.TOOL_QUALITY);
         return toolQuality == null ? 0 : toolQuality;
     }
 
-    private static @Nullable Enchantment getToolEnchantment(Materials aMaterial) {
-        com.ruling_0.materiallib.api.Material mlMaterial = MU.material(aMaterial);
-        String enchantmentName = mlMaterial == null ? null
-            : mlMaterial.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT);
+    private static @Nullable Enchantment getToolEnchantment(com.ruling_0.materiallib.api.Material aMaterial) {
+        String enchantmentName = aMaterial == null ? null
+            : aMaterial.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT);
         if (enchantmentName == null) return null;
         for (Enchantment enchantment : Enchantment.enchantmentsList) {
             if (enchantment != null && enchantmentName.equals(enchantment.getName())) return enchantment;
@@ -167,9 +221,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return null;
     }
 
-    private static int getToolEnchantmentLevel(Materials aMaterial) {
-        com.ruling_0.materiallib.api.Material mlMaterial = MU.material(aMaterial);
-        Integer level = mlMaterial == null ? null : mlMaterial.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT_LEVEL);
+    private static int getToolEnchantmentLevel(com.ruling_0.materiallib.api.Material aMaterial) {
+        Integer level = aMaterial == null ? null : aMaterial.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT_LEVEL);
         return level == null ? 0 : level;
     }
 
@@ -524,7 +577,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     @Override
     public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         long tMaxDamage = getToolMaxDamage(aStack);
-        Materials tMaterial = getPrimaryMaterial(aStack);
+        com.ruling_0.materiallib.api.Material tMaterial = getPrimaryMaterialML(aStack);
         IToolStats tStats = getToolStats(aStack);
         int tOffset = getElectricStats(aStack) != null ? 2 : 1;
         if (tStats != null) {
@@ -553,7 +606,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.GRAY
                         + translateToLocalFormatted(
                             "gt.item.desc.tier",
-                            tMaterial.getLocalizedName() + ":" + EnumChatFormatting.YELLOW,
+                            getMaterialLocalizedName(tMaterial) + ":" + EnumChatFormatting.YELLOW,
                             "" + getHarvestLevel(aStack, ""))
                         + EnumChatFormatting.GRAY);
                 aList.add(
@@ -695,7 +748,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.WHITE
                         + translateToLocalFormatted(
                             "gt.item.desc.level",
-                            tMaterial.getLocalizedName() + EnumChatFormatting.YELLOW,
+                            getMaterialLocalizedName(tMaterial) + EnumChatFormatting.YELLOW,
                             "" + getHarvestLevel(aStack, ""))
                         + EnumChatFormatting.GRAY);
                 aList.add(
@@ -713,7 +766,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                             "" + EnumChatFormatting.GOLD
                                 + Math.max(
                                     Float.MIN_NORMAL,
-                                    tStats.getSpeedMultiplier() * getToolSpeed(getPrimaryMaterial(aStack))))
+                                    tStats.getSpeedMultiplier() * getToolSpeed(getPrimaryMaterialML(aStack))))
                         + EnumChatFormatting.GRAY);
                 final NBTTagCompound nbt = aStack.getTagCompound();
                 if (nbt != null) {
@@ -762,7 +815,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     public float getToolCombatDamage(ItemStack aStack) {
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null) return 0;
-        return tStats.getBaseDamage() + getToolQuality(getPrimaryMaterial(aStack));
+        return tStats.getBaseDamage() + getToolQuality(getPrimaryMaterialML(aStack));
     }
 
     @Override
@@ -814,7 +867,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null || Math.max(0, getHarvestLevel(aStack, "")) < aBlock.getHarvestLevel(aMetaData)) return 0.0F;
         return tStats.isMinableBlock(aBlock, aMetaData)
-            ? Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getToolSpeed(getPrimaryMaterial(aStack)))
+            ? Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getToolSpeed(getPrimaryMaterialML(aStack)))
             : 0.0F;
     }
 
@@ -826,7 +879,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     @Override
     public final int getHarvestLevel(ItemStack aStack, String aToolClass) {
         IToolStats tStats = getToolStats(aStack);
-        return tStats == null ? -1 : tStats.getBaseQuality() + getToolQuality(getPrimaryMaterial(aStack));
+        return tStats == null ? -1 : tStats.getBaseQuality() + getToolQuality(getPrimaryMaterialML(aStack));
     }
 
     @Override
@@ -1016,7 +1069,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             ItemStackNBT.removeTag(aStack, "ench");
             return false;
         }
-        Materials aMaterial = getPrimaryMaterial(aStack);
+        com.ruling_0.materiallib.api.Material aMaterial = getPrimaryMaterialML(aStack);
         HashMap<Integer, Integer> tMap = new HashMap<>(), tResult = new HashMap<>();
         Enchantment tToolEnchantment = getToolEnchantment(aMaterial);
         if (tToolEnchantment != null) {

@@ -24,9 +24,6 @@ public class ProcessingAll implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         if (((stack.getItem() instanceof net.minecraft.item.ItemBlock))
             && (prefix.getDefaultStackSize() < stack.getItem()
                 .getItemStackLimit(stack)))

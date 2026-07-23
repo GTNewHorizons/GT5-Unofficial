@@ -74,7 +74,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                         .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, material, MU.handleMaterial(material), null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "XX ", "XXS", "XX ", 'X', MU.craftIngredient(gem, material), 'S',
-                        stick.ingredient(MU.materialOf(MU.handleMaterial(material))) });
+                        stick.ingredient(MU.handleMaterial(material)) });
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(toolHeadSaw, material, 1L),
                 GTModHandler.RecipeBits.BITS_STD,
@@ -91,32 +91,31 @@ public class ToolLoader implements IWerkstoffRunnable {
                     .getToolWithStats(IDMetaTool01.SCREWDRIVER.ID, 1, material, MU.handleMaterial(material), null),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { " fS", " Sh", "W  ", 'S', MU.craftIngredient(stick, material), 'W',
-                    stick.ingredient(MU.materialOf(MU.handleMaterial(material))) });
+                    stick.ingredient(MU.handleMaterial(material)) });
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(toolHeadWrench, material, 1L),
                 GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "hXW", "XRX", "WXd", 'X', MU.craftIngredient(plate, material), 'S',
-                    plate.ingredient(MU.materialOf(MU.handleMaterial(material))), 'R',
-                    ring.ingredient(MU.materialOf(MU.handleMaterial(material))), 'W',
-                    screw.ingredient(MU.materialOf(MU.handleMaterial(material))) });
+                    plate.ingredient(MU.handleMaterial(material)), 'R', ring.ingredient(MU.handleMaterial(material)),
+                    'W', screw.ingredient(MU.handleMaterial(material)) });
             GTModHandler.addShapelessCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE
                     .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, material, MU.handleMaterial(material), null),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { MU.craftIngredient(toolHeadHammer, material),
-                    stick.ingredient(MU.materialOf(MU.handleMaterial(material))) });
+                    stick.ingredient(MU.handleMaterial(material)) });
             GTModHandler.addCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE
                     .getToolWithStats(IDMetaTool01.FILE.ID, 1, material, MU.handleMaterial(material), null),
                 GTModHandler.RecipeBits.MIRRORED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                     | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "P", "P", "S", 'P', MU.craftIngredient(plate, material), 'S',
-                    stick.ingredient(MU.materialOf(MU.handleMaterial(material))) });
+                    stick.ingredient(MU.handleMaterial(material)) });
             GTModHandler.addShapelessCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE
                     .getToolWithStats(IDMetaTool01.SAW.ID, 1, material, MU.handleMaterial(material), null),
                 new Object[] { MU.craftIngredient(toolHeadSaw, material),
-                    stick.ingredient(MU.materialOf(MU.handleMaterial(material))) });
+                    stick.ingredient(MU.handleMaterial(material)) });
 
             // LV Soldering Iron
             GTModHandler.addCraftingRecipe(
@@ -128,8 +127,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     new long[] { 100000L, 32L, 1L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
-                    plate.ingredient(Materials.AnyRubber), 'S',
-                    stick.ingredient(MU.materialOf(MU.handleMaterial(material))), 'L',
+                    plate.ingredient(Materials.AnyRubber), 'S', stick.ingredient(MU.handleMaterial(material)), 'L',
                     ItemList.Battery_RE_LV_Lithium.get(1L) });
             GTModHandler.addCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -140,8 +138,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     new long[] { 75000L, 32L, 1L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
-                    plate.ingredient(Materials.AnyRubber), 'S',
-                    stick.ingredient(MU.materialOf(MU.handleMaterial(material))), 'L',
+                    plate.ingredient(Materials.AnyRubber), 'S', stick.ingredient(MU.handleMaterial(material)), 'L',
                     ItemList.Battery_RE_LV_Cadmium.get(1L) });
             GTModHandler.addCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -152,8 +149,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     new long[] { 50000L, 32L, 1L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
-                    plate.ingredient(Materials.AnyRubber), 'S',
-                    stick.ingredient(MU.materialOf(MU.handleMaterial(material))), 'L',
+                    plate.ingredient(Materials.AnyRubber), 'S', stick.ingredient(MU.handleMaterial(material)), 'L',
                     ItemList.Battery_RE_LV_Sodium.get(1L) });
             // MV Soldering Iron
             GTModHandler.addCraftingRecipe(
@@ -165,8 +161,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     new long[] { 400000L, 128L, 2L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
-                    plate.ingredient(Materials.AnyRubber), 'S',
-                    stick.ingredient(MU.materialOf(MU.handleMaterial(material))), 'L',
+                    plate.ingredient(Materials.AnyRubber), 'S', stick.ingredient(MU.handleMaterial(material)), 'L',
                     ItemList.Battery_RE_MV_Lithium.get(1L) });
             GTModHandler.addCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -177,8 +172,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     new long[] { 300000L, 128L, 2L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
-                    plate.ingredient(Materials.AnyRubber), 'S',
-                    stick.ingredient(MU.materialOf(MU.handleMaterial(material))), 'L',
+                    plate.ingredient(Materials.AnyRubber), 'S', stick.ingredient(MU.handleMaterial(material)), 'L',
                     ItemList.Battery_RE_MV_Cadmium.get(1L) });
             GTModHandler.addCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -189,8 +183,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     new long[] { 200000L, 128L, 2L, -1L }),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
-                    plate.ingredient(Materials.AnyRubber), 'S',
-                    stick.ingredient(MU.materialOf(MU.handleMaterial(material))), 'L',
+                    plate.ingredient(Materials.AnyRubber), 'S', stick.ingredient(MU.handleMaterial(material)), 'L',
                     ItemList.Battery_RE_MV_Sodium.get(1L) });
             // HV Soldering Iron
             GTModHandler.addCraftingRecipe(
@@ -203,8 +196,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
                     plate.ingredient(Materials.StyreneButadieneRubber), 'S',
-                    stick.ingredient(MU.materialOf(MU.handleMaterial(material))), 'L',
-                    ItemList.Battery_RE_HV_Lithium.get(1L) });
+                    stick.ingredient(MU.handleMaterial(material)), 'L', ItemList.Battery_RE_HV_Lithium.get(1L) });
             GTModHandler.addCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                     SOLDERING_IRON_HV,
@@ -215,8 +207,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
                     plate.ingredient(Materials.StyreneButadieneRubber), 'S',
-                    stick.ingredient(MU.materialOf(MU.handleMaterial(material))), 'L',
-                    ItemList.Battery_RE_HV_Cadmium.get(1L) });
+                    stick.ingredient(MU.handleMaterial(material)), 'L', ItemList.Battery_RE_HV_Cadmium.get(1L) });
             GTModHandler.addCraftingRecipe(
                 MetaGeneratedTool01.INSTANCE.getToolWithStats(
                     SOLDERING_IRON_HV,
@@ -227,8 +218,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "LBf", "Sd ", "P  ", 'B', MU.craftIngredient(bolt, material), 'P',
                     plate.ingredient(Materials.StyreneButadieneRubber), 'S',
-                    stick.ingredient(MU.materialOf(MU.handleMaterial(material))), 'L',
-                    ItemList.Battery_RE_HV_Sodium.get(1L) });
+                    stick.ingredient(MU.handleMaterial(material)), 'L', ItemList.Battery_RE_HV_Sodium.get(1L) });
 
             if (!werkstoff.hasItemType(gem)) {
                 GTModHandler.addCraftingRecipe(
@@ -236,7 +226,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                         .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, material, MU.handleMaterial(material), null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "XX ", "XXS", "XX ", 'X', MU.craftIngredient(ingot, material), 'S',
-                        stick.ingredient(MU.materialOf(MU.handleMaterial(material))) });
+                        stick.ingredient(MU.handleMaterial(material)) });
             }
         }
 

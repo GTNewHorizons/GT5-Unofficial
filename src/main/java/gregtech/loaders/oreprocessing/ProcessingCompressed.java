@@ -27,9 +27,6 @@ public class ProcessingCompressed implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         GTModHandler.removeRecipeByOutputDelayed(stack);
         CoverRegistry
             .registerDecorativeCover(stack, TextureFactory.of(MU.iconSet(material).mTextures[72], MU.rgba(material)));

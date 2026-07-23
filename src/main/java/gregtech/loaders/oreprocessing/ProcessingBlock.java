@@ -46,7 +46,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
 
         if (material == MU.material(Materials.Ichorium) || material == MU.material(Materials.NetherQuartz)) {
             return;

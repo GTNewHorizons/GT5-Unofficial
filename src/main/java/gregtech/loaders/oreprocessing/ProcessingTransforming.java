@@ -41,9 +41,6 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         if (prefix == OrePrefixes.plank) {
             prefix = OrePrefixes.plate;
         }

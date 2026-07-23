@@ -55,7 +55,6 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
 
         long materialMass = MU.mass(material);
         boolean noSmashing = MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
@@ -63,8 +62,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean noSmelting = MU.hasFlag(material, GTMaterialFlag.NO_SMELTING);
         boolean specialRecipeReq = MU.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE);
         boolean fuelPower = MU.fuelPower(material) > 0;
-        boolean unifiable = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-            && legacyMaterial.mMaterialInto == legacyMaterial;
+        boolean unifiable = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE));
 
         // Blacklist materials which are handled by Werkstoff loader and nether quartz due to its 4:1 ratio
         if (legacyMaterial == Materials.Salt || legacyMaterial == Materials.RockSalt

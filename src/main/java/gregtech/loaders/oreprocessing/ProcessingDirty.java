@@ -50,9 +50,6 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes orePrefix, Material material, String oreDictName, String modName,
         net.minecraft.item.ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }

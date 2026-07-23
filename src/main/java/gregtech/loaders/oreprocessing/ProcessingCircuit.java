@@ -27,9 +27,6 @@ public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegi
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         if (GTOreDictUnificator.isBlacklisted(stack) && GregTech.ID.equals(modName)) return;
         switch (MU.internalName(material)) {
             case "Good", "Data", "Elite", "Master", "Ultimate", "Superconductor", "Infinite", "Bio" -> {

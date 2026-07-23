@@ -3114,6 +3114,11 @@ public class OrePrefixes {
         return new ItemData(this, material);
     }
 
+    /// [#ingredient(Materials)] for a MaterialLib [Material] directly.
+    public ItemData ingredient(Material material) {
+        return new ItemData(this, material);
+    }
+
     /// The ore-dictionary name for this prefix and `material`, carrying no composition. Use when the consumer
     /// only needs the name -- registration, lookup, and logging.
     public String oreDictName(Material material) {

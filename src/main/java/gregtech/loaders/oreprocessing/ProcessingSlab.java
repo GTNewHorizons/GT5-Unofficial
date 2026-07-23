@@ -33,9 +33,6 @@ public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-        if (legacyMaterial == null) return;
-
         if (oreDictName.startsWith("slabWood")) {
             if (Railcraft.isModLoaded()) {
                 GTValues.RA.stdBuilder()
