@@ -36,6 +36,7 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
+import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.ItemData;
@@ -49,11 +50,15 @@ import gtPlusPlus.core.material.MaterialReconstruction;
 /// equivalents.
 ///
 /// The prefix-to-shape map reflects [Materials2Shapes]'s, [Materials2CellShapes]'s, [Materials2BlockShapes]'s,
-/// and [Materials2OreShapes]'s [Shape] fields (each named identically to the
+/// [Materials2OreShapes]'s, and [Materials2PipeShapes]'s [Shape] fields (each named identically to the
 /// [OrePrefixes] it cuts over to) instead of hand-listing the cutover prefixes, so it always matches whatever
 /// those declare. A prefix
-/// normally maps to exactly one shape; `cellPlasma` is the one exception (see [Materials2CellShapes]), mapping
-/// to an ordered candidate list that [#stack] resolves per material. The material lookup is keyed by legacy
+/// normally maps to exactly one shape; the exceptions map to an ordered candidate list that [#stack] resolves
+/// per material: `cellPlasma` (see [Materials2CellShapes]), and the five `pipeTiny`..`pipeHuge` prefix
+/// strings, which the fluid and item pipe families share for disjoint material sets (see
+/// [Materials2PipeShapes] -- the item shapes' field names deliberately differ from the prefix names, so they
+/// and the `pipeRestrictive*` item shapes are folded under their prefix keys explicitly). The material lookup
+/// is keyed by legacy
 /// name (`Materials#mName`), preferring [GTMaterialProperties#LEGACY_NAME] over [Material#getName] because
 /// MaterialLib sanitizes registration names that contain characters `Names#validate` rejects.
 public class MU {
@@ -64,12 +69,21 @@ public class MU {
     private MU() {}
 
     /// The MaterialLib shape a legacy item [OrePrefixes] cuts over to, or null if that prefix is not part of
-    /// the cutover (e.g. block-kind, or a not-yet-cut-over container prefix). For `cellPlasma`, the shape a
-    /// specific material actually generates may differ -- see [#stack].
+    /// the cutover (e.g. a not-yet-cut-over container prefix). For a multi-candidate prefix (`cellPlasma`,
+    /// `pipeTiny`..`pipeHuge`), the shape a specific material actually generates may differ -- see [#stack];
+    /// callers that must see every candidate use [#shapes].
     public static @Nullable Shape shape(OrePrefixes prefix) {
         if (prefix == null) return null;
         List<Shape> shapes = prefixShapes().get(prefix.name());
         return shapes == null ? null : shapes.get(0);
+    }
+
+    /// Every candidate shape a legacy [OrePrefixes] cuts over to, in resolution order ([#stack] uses the
+    /// first one a material generates); empty when the prefix is not part of the cutover.
+    public static List<Shape> shapes(OrePrefixes prefix) {
+        if (prefix == null) return Collections.emptyList();
+        List<Shape> shapes = prefixShapes().get(prefix.name());
+        return shapes == null ? Collections.emptyList() : shapes;
     }
 
     /// The MaterialLib material a legacy [Materials] cuts over to, or null if it has none (materials without
@@ -1053,6 +1067,7 @@ public class MU {
             collectShapes(map, Materials2CellShapes.class);
             collectShapes(map, Materials2BlockShapes.class);
             collectShapes(map, Materials2OreShapes.class);
+            collectShapes(map, Materials2PipeShapes.class);
             // cellPlasmaLight is a second candidate shape for the cellPlasma prefix, not a prefix of its own
             // (see Materials2CellShapes); its field name deliberately does not match an OrePrefixes name, so
             // fold it into "cellPlasma"'s candidate list instead of collecting it under its own key.
@@ -1060,9 +1075,29 @@ public class MU {
                 map.get("cellPlasma")
                     .add(Materials2CellShapes.cellPlasmaLight);
             }
+            // The item-pipe shapes' field names likewise differ from their oredict prefixes (fluid and item
+            // pipes share the pipeTiny..pipeHuge prefix strings, see Materials2PipeShapes); fold each under
+            // its prefix key, after the fluid shape where one exists.
+            foldPipeShapes(map, "itemPipeTiny", "pipeTiny");
+            foldPipeShapes(map, "itemPipeSmall", "pipeSmall");
+            foldPipeShapes(map, "itemPipeMedium", "pipeMedium");
+            foldPipeShapes(map, "itemPipeLarge", "pipeLarge");
+            foldPipeShapes(map, "itemPipeHuge", "pipeHuge");
+            foldPipeShapes(map, "itemPipeRestrictiveTiny", "pipeRestrictiveTiny");
+            foldPipeShapes(map, "itemPipeRestrictiveSmall", "pipeRestrictiveSmall");
+            foldPipeShapes(map, "itemPipeRestrictiveMedium", "pipeRestrictiveMedium");
+            foldPipeShapes(map, "itemPipeRestrictiveLarge", "pipeRestrictiveLarge");
+            foldPipeShapes(map, "itemPipeRestrictiveHuge", "pipeRestrictiveHuge");
             prefixToShapes = map;
         }
         return prefixToShapes;
+    }
+
+    private static void foldPipeShapes(Map<String, List<Shape>> map, String fieldName, String prefixName) {
+        List<Shape> folded = map.remove(fieldName);
+        if (folded == null) return;
+        map.computeIfAbsent(prefixName, k -> new ArrayList<>())
+            .addAll(folded);
     }
 
     private static void collectShapes(Map<String, List<Shape>> map, Class<?> shapesClass) {

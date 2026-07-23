@@ -9,15 +9,12 @@ import gtPlusPlus.xmod.gregtech.loaders.GTPPBlocks;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderMolecularTransformer;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAdvancedBoilers;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 
 public class HandlerGT {
 
     public static void init() {
         // Load General Blocks and set up some Basic Meta Tile Entity states
         GTPPBlocks.run();
-        // Add Custom Pipes, Wires and Cables.
-        GregtechConduits.run();
         // Register Tile Entities
         CompatHandler.registerGregtechMachines();
         MetaGeneratedGregtechTools.getInstance();

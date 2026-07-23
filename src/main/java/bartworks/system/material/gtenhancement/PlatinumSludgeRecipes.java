@@ -146,7 +146,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockFrameBox;
+import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.blocks.GTBlockOre;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.core.block.base.BlockBaseModular;
@@ -1332,7 +1332,7 @@ public class PlatinumSludgeOverHaul {
         if (block instanceof BlockBaseModular) {
             return true;
         }
-        if (block instanceof BlockFrameBox) {
+        if (block instanceof FrameShapeBlock) {
             return true;
         }
         if (item == HELICOPTER.getDust(1)

@@ -1,9 +1,11 @@
 package gregtech.loaders.shapeconsumers;
 
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
@@ -46,8 +48,17 @@ final class ShapeConsumerSupport {
     /// `INSTANCE` field eagerly at registration time would always see `null`; the supplier defers that read to
     /// dispatch time, well after `LoaderOreProcessing` has run.
     static void delegate(Shape shape, OrePrefixes prefix, Supplier<IOreRecipeRegistrator> registrator) {
+        delegate(shape, prefix, material -> true, registrator);
+    }
+
+    /// [#delegate(Shape, OrePrefixes, Supplier)] restricted to materials passing `filter` -- for a shape
+    /// whose membership is wider than the set of materials the legacy oredict path ever dispatched for
+    /// (see `ConsumerWire`'s superconductor markers).
+    static void delegate(Shape shape, OrePrefixes prefix, Predicate<Material> filter,
+        Supplier<IOreRecipeRegistrator> registrator) {
         if (shape == null) return;
         MaterialLibAPI.registerPostInitShapeConsumer("gregtech", shape, (s, material) -> {
+            if (!filter.test(material)) return;
             ItemStack stack = MaterialLibAPI.getStack(material, s, 1);
             if (stack == null) return;
             registrator.get()

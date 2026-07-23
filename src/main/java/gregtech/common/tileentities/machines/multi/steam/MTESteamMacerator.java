@@ -31,19 +31,18 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -121,10 +120,9 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
 
     @Nullable
     public static Integer getTierFrame(Block block, int meta) {
-        if (block == GregTechAPI.sBlockFrames) {
-            if (meta == MU.oldSubId(Materials2Materials.Bronze)) return 1;
-            // Steel is block-cutover-excluded; its frame metadata stays on the legacy field.
-            if (meta == Materials.Steel.mMetaItemSubID) return 2;
+        if (block == MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt)) {
+            if (meta == Materials2Materials.Bronze.getIndex()) return 1;
+            if (meta == Materials2Materials.Steel.getIndex()) return 2;
         }
         return null;
     }
@@ -215,8 +213,12 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
                     ofBlocksTiered(
                         MTESteamMacerator::getTierFrame,
                         ImmutableList.of(
-                            Pair.of(GregTechAPI.sBlockFrames, MU.oldSubId(Materials2Materials.Bronze)),
-                            Pair.of(GregTechAPI.sBlockFrames, Materials.Steel.mMetaItemSubID)),
+                            Pair.of(
+                                MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt),
+                                Materials2Materials.Bronze.getIndex()),
+                            Pair.of(
+                                MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt),
+                                Materials2Materials.Steel.getIndex())),
                         -1,
                         (t, m) -> t.tierFrame = m,
                         t -> t.tierFrame))

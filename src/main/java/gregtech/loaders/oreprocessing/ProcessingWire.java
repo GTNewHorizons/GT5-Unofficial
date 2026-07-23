@@ -27,6 +27,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
@@ -39,6 +40,8 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingWire INSTANCE;
+
     private final Material[] dielectrics = { Materials2Materials.PolyvinylChloride,
         Materials2Materials.Polydimethylsiloxane };
     private final Material[] syntheticRubbers = { Materials2Materials.StyreneButadieneRubber,
@@ -47,6 +50,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
     private static Object tt;
 
     public ProcessingWire() {
+        INSTANCE = this;
         OrePrefixes.wireGt01.add(this);
         OrePrefixes.wireGt02.add(this);
         OrePrefixes.wireGt04.add(this);
@@ -101,9 +105,12 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
 
-                // crafting recipe
+                // crafting recipe; the superconductor wire markers dispatch here only to reproduce the wire-
+                // combining assembler recipes below (see gregtech.loaders.shapeconsumers.ConsumerWire) and
+                // never had a plate crafting recipe, so they skip this block.
                 Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+                if (!Materials2Markers.isSuperconductorMarker(material)
+                    && !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
                     && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)
                     && ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV)) {
                     GTModHandler.addCraftingRecipe(

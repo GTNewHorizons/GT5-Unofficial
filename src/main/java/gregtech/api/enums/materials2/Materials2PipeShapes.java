@@ -14,8 +14,9 @@ import gregtech.common.blocks.PipeShapeBlock.PipeFamily;
 ///
 /// The fluid and item pipe prefixes share their oredict name strings (`pipeTiny`..`pipeHuge` serve both
 /// families for disjoint material sets), so the item-pipe shape NAMES differ (`itemPipeTiny`..) while their
-/// oredict prefixes keep the legacy strings. None of these fields feed [gregtech.api.material.MU]'s
-/// prefix-to-shape reflection map, which lists its source classes explicitly and does not include this one.
+/// oredict prefixes keep the legacy strings. These fields feed [gregtech.api.material.MU]'s prefix-to-shape
+/// reflection map; the `itemPipe*` fields, whose names match no `OrePrefixes`, are folded there under the
+/// `pipeTiny`..`pipeHuge` / `pipeRestrictive*` prefix keys, the fluid shape staying the first candidate.
 public class Materials2PipeShapes {
 
     // spotless:off

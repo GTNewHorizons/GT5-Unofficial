@@ -2,11 +2,17 @@ package gregtech.loaders.preload;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
+import com.ruling_0.materiallib.api.ShapeBlock;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TieredItems;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -17,7 +23,15 @@ import gregtech.api.util.GTOreDictUnificator;
 /// soldering-metal and toolbox bookkeeping), run after that constructor so the MaterialLib stack becomes
 /// the unificator's preferred one.
 ///
-/// Legacy stacks are untouched by this: nothing is deleted or deregistered yet.
+/// The pipe-family prefixes get a second, shape-membership-driven pass: their legacy items were meta tile
+/// entities, never generated items, so `OrePrefixes#doGenerateItem` cannot gate them, and their material sets
+/// (superconductor markers included) live only in the MaterialLib registry. Each `set` call makes the shape
+/// stack the prefix's unification target and adds the material association that drives the auto-generated
+/// recycling recipes, as the legacy meta tile entity registrations' ore-dictionary events used to.
+///
+/// The High Pressure (Redstone) fluid pipes additionally register under the tier-keyed
+/// `pipeSmallUltimate`..`pipeLargeUltimate` names ([TieredItems#ZPM]'s ingredient names), the identity every
+/// recipe referencing them uses.
 public class LoaderMaterialLibCutover implements Runnable {
 
     @Override
@@ -42,5 +56,44 @@ public class LoaderMaterialLibCutover implements Runnable {
                 }
             }
         }
+
+        unifyPipeFamily();
+        registerHighPressureNames();
+    }
+
+    private static final OrePrefixes[] PIPE_FAMILY_PREFIXES = { OrePrefixes.wireGt01, OrePrefixes.wireGt02,
+        OrePrefixes.wireGt04, OrePrefixes.wireGt08, OrePrefixes.wireGt12, OrePrefixes.wireGt16, OrePrefixes.cableGt01,
+        OrePrefixes.cableGt02, OrePrefixes.cableGt04, OrePrefixes.cableGt08, OrePrefixes.cableGt12,
+        OrePrefixes.cableGt16, OrePrefixes.pipeTiny, OrePrefixes.pipeSmall, OrePrefixes.pipeMedium,
+        OrePrefixes.pipeLarge, OrePrefixes.pipeHuge, OrePrefixes.pipeQuadruple, OrePrefixes.pipeNonuple,
+        OrePrefixes.pipeRestrictiveTiny, OrePrefixes.pipeRestrictiveSmall, OrePrefixes.pipeRestrictiveMedium,
+        OrePrefixes.pipeRestrictiveLarge, OrePrefixes.pipeRestrictiveHuge, OrePrefixes.frameGt };
+
+    private static void unifyPipeFamily() {
+        for (OrePrefixes prefix : PIPE_FAMILY_PREFIXES) {
+            for (Shape shape : MU.shapes(prefix)) {
+                ShapeBlock block = (ShapeBlock) MaterialLibAPI.getBlock(shape);
+                for (Material material : block.getServedMaterials()) {
+                    ItemStack stack = block.getStack(material, 1);
+                    if (prefix.isUnifiable()) {
+                        GTOreDictUnificator.set(prefix, material, stack);
+                    } else {
+                        GTOreDictUnificator.registerOre(prefix.oreDictName(MU.internalName(material)), stack);
+                    }
+                }
+            }
+        }
+    }
+
+    private static void registerHighPressureNames() {
+        GTOreDictUnificator.registerOre(
+            TieredItems.ZPM.getPipeSmallIngredient(),
+            MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2PipeShapes.pipeSmall, 1));
+        GTOreDictUnificator.registerOre(
+            TieredItems.ZPM.getPipeMediumIngredient(),
+            MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2PipeShapes.pipeMedium, 1));
+        GTOreDictUnificator.registerOre(
+            TieredItems.ZPM.getPipeLargeIngredient(),
+            MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2PipeShapes.pipeLarge, 1));
     }
 }

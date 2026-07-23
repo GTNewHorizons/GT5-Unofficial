@@ -9,13 +9,13 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import com.gtnewhorizons.postea.api.BlockReplacementManager;
 import com.gtnewhorizons.postea.api.IDExtenderCompat;
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.BWMetaGeneratedItems;
@@ -31,11 +31,12 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTLog;
-import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMetal;
+import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.loaders.postload.GtppItemCutoverTable.Entry;
 import gtPlusPlus.core.material.MaterialReconstruction;
@@ -312,10 +313,6 @@ public class PosteaTransformers implements Runnable {
         });
     }
 
-    private static NBTTagCompound passthrough(NBTTagCompound tag) {
-        return tag;
-    }
-
     private void registerIC2BlocksTransformer() {
         // These are used to convert ic2 blocks to their new counterparts.
         // I.e. Reinforced glass, iron fences, etc.
@@ -334,29 +331,30 @@ public class PosteaTransformers implements Runnable {
         TileEntityReplacementManager.tileEntityTransformer("BaseMetaPipeEntity", (tag, world, chunk) -> {
             // Read the MTE ID from the NBT data and try to figure out if this is a frame box
             int id = tag.getInteger("mID");
-            // Framebox IDs start at 4096
+            // Legacy per-material framebox IDs start at 4096; the offset is the index in the material list
             int indexInMaterialList = id - 4096;
-            // The offset from 4096 is the index in the material list, so if this is outside the valid range then this
-            // is not a valid frame box, and we don't want to modify it
             if (indexInMaterialList < 0 || indexInMaterialList >= GregTechAPI.sGeneratedMaterials.length) {
                 // Do not modify this TE, so return null
                 return null;
             }
 
-            // Now we know for sure that the tileentity is a frame box
-            // If this frame has a cover on it, we need to keep it, but we still need to make sure the block
-            // is the new frame block. We can make sure to keep the TE using a pass-through transformer.
-            // This works because between the old and new frame systems, the TileEntity used for covered frames
-            // is still the same
+            Material material = MU.material(GregTechAPI.sGeneratedMaterials[indexInMaterialList]);
+            if (material == null) {
+                return null;
+            }
+            FrameShapeBlock frameBlock = (FrameShapeBlock) MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt);
+
+            // If this frame has a cover on it, we need to keep its TileEntity, rewritten to the single
+            // material-agnostic frame MTE the shape block binds
             if (tag.hasKey(GTValues.NBT.COVERS)) {
-                return new BlockInfo(
-                    GregTechAPI.sBlockFrames,
-                    indexInMaterialList | BlockFrameBox.MTE_BIT,
-                    PosteaTransformers::passthrough);
+                return new BlockInfo(frameBlock, material.getIndex(), coveredFrameTag -> {
+                    coveredFrameTag.setInteger("mID", frameBlock.getMteId());
+                    return coveredFrameTag;
+                });
             }
 
             // If this frame has no covers, simply return a block and delete the TileEntity
-            return new BlockInfo(GregTechAPI.sBlockFrames, indexInMaterialList);
+            return new BlockInfo(frameBlock, material.getIndex());
         });
 
         ItemStackReplacementManager.addTransformationHandler("gregtech:gt.blockmachines", (originalId, tag) -> {
@@ -372,11 +370,15 @@ public class PosteaTransformers implements Runnable {
             if (!GregTechAPI.sGeneratedMaterials[indexInMaterialList].hasMetalItems()) {
                 return false;
             }
-            Item frameItem = GameRegistry.findItem(Mods.GregTech, "gt.blockframes");
+            Material material = MU.material(GregTechAPI.sGeneratedMaterials[indexInMaterialList]);
+            if (material == null) {
+                return false;
+            }
+            Item frameItem = Item.getItemFromBlock(MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt));
             int itemId = Item.getIdFromItem(frameItem);
             // Change this item into the correct frame item (make sure to keep amount)
             tag.setInteger("id", itemId);
-            tag.setInteger("Damage", indexInMaterialList);
+            tag.setInteger("Damage", material.getIndex());
             return true;
         });
     }
