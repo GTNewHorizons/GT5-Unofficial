@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -75,6 +76,7 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvivalConstructable {
 
     private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_On");
@@ -231,12 +233,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Essentia Smeltery, LES")
-            .addInfo("Necessary evil")
-            .addInfo("Advanced Essentia smelting technology")
-            .addInfo("Maximum parallel = 2^Tier * (Length - 1)")
-            .addInfo("Diffusion Cell Tiers start from 0, Length is full multi length")
-            .addInfo("Energy Hatch tier: HV+")
-            .addInfo("You can find more information about this machine in the Thaumonomicon")
+            .addMarkdown(new ResourceLocation("gregtech", "large-essentia-smeltery"))
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(5, 5, 5, 5, 5, 9, true)

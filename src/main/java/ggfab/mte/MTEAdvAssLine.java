@@ -42,7 +42,7 @@ import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
@@ -319,18 +319,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("ggfab.tt.advassline.machine_type"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc1"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc2"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc3"))
-            .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc4"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc5"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc6"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc7"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc8"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc9"))
-            .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc10"))
+            .addMarkdown(new ResourceLocation("gregtech", "advanced-assembly-line"))
             .addSupportAny()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addController(StatCollector.translateToLocal("ggfab.tt.advassline.structure.controller"))

@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -57,6 +58,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -179,29 +181,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Engine, UCFE")
-            .addInfo("BURNING BURNING BURNING")
-            .addInfo("Use combustible liquid to generate power")
-            .addInfo("You need to supply Combustion Promoter to keep it running")
-            .addInfo("It will consume all the fuel and combustion promoter in the hatch every second")
-            .addInfo("Energy output to the dynamo will be distributed over the next second")
-            .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop")
-            .addInfo(
-                "If the amount of energy to be produced is higher "
-                    + "than the dynamo hatch can handle then all produced energy will void")
-            .addInfo("When turned on, there is a 10-second period where the machine will not stop")
-            .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed")
-            .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel")
-            .addInfo("The higher the amount of promoter, the higher the efficiency")
-            .addInfo(
-                "Follows an exponential curve exp(-C/(p/x))*1.5, "
-                    + "where x is the amount of fuel in liters, p is the amount of promoter in liters")
-            .addInfo("and C depends on the fuel type. Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005")
-            .addInfo("It creates sqrt(Current Output Power) pollution every second")
-            .addInfo(
-                "If you forget to supply Combustion Promoter, this engine will swallow all the fuel "
-                    + EnumChatFormatting.YELLOW
-                    + "without outputting energy")
-            .addInfo("The efficiency is up to 150%")
+            .addMarkdown(new ResourceLocation("gregtech", "universal-chemical-fuel-engine"))
             .addSupportAny()
             .beginStructureBlock(7, 7, 13, true)
             .addController("Front center, 3rd layer")

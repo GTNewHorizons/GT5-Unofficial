@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,6 +26,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegacy implements ICasingTextureProvider {
 
     private boolean looseFit = false;
@@ -142,11 +144,7 @@ public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegac
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Steam Turbine, LST-SC")
             .addStructureDeprecatedLine()
-            .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Use Supercritical Steam to generate power")
-            .addInfo("Outputs 1L of SH Steam per 1L of SC Steam as well as producing power")
-            .addInfo("Power output depends on turbine and fitting")
-            .addInfo("Use screwdriver to adjust fitting of turbine")
+            .addMarkdown(new ResourceLocation("gregtech", "supercritical-fluid-turbine"))
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfoMin("SC Turbine Casing", 24, false)

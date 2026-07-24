@@ -56,6 +56,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -333,46 +334,13 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        Map<String, Object> ttVars = new HashMap<>();
+        ttVars.put("voltageTier6", voltageTooltipFormatted(6));
+        ttVars.put("voltageTier5", voltageTooltipFormatted(5));
         tt.addMachineType(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.machine_type"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc1"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc2"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc3"))
+            .addMarkdown(new ResourceLocation("gregtech", "mega-apiary-1"))
             .addGlassEnergyLimitInfo()
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.input_mode"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc4"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc5"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.output_mode"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc4"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc6"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.operating_mode"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.normal_header"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc7"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.multiblock.MegaIndustrialApiary.desc8",
-                    voltageTooltipFormatted(6)))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc9"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc10"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc11"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc12"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc13"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc14"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc15"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc16"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc17"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.swarmer_header"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc18"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc19"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc20"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc21"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.multiblock.MegaIndustrialApiary.desc22",
-                    voltageTooltipFormatted(5)))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc23"))
+            .addMarkdown(new ResourceLocation("gregtech", "mega-apiary-2"), ttVars)
             .beginStructureBlock(15, 17, 15, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_9th_layer"))
             .addCasing(

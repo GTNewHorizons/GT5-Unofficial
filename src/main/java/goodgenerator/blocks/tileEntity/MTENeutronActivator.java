@@ -15,6 +15,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -66,6 +67,7 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
     public Parameters.Group.ParameterIn batchSetting;
@@ -189,15 +191,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Neutron Activator, NA")
-            .addInfo("Superluminal-velocity Motion.")
-            .addInfo("The minimum height of the Speeding Pipe Casing is 4")
-            .addInfo("Per extra Speeding Pipe Casing will give time discount")
-            .addInfo("But it will reduce the Neutron Accelerator efficiency")
-            .addInfo("You need to input energy to the Neutron Accelerator to get it running")
-            .addInfo("It will output correct products with Specific Neutron Kinetic Energy")
-            .addInfo("Otherwise it will output trash")
-            .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running")
-            .addInfo("Inputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.")
+            .addMarkdown(new ResourceLocation("gregtech", "neutron-activator"))
             .beginVariableStructureBlock(5, 5, 6, 256, 5, 5, false)
             .addController("Front bottom center")
             .addMiscHatch("1+", "Neutron Accelerator", "Any bottom edge casing", 2)
