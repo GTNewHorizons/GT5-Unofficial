@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
@@ -43,9 +44,11 @@ import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
+import gregtech.api.net.GTPacketFrameEntity;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.covers.Cover;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -253,6 +256,20 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     private byte getUpdateData() {
         IMetaTileEntity mte = getMetaTileEntity();
         return mte == null ? 0 : mte.getUpdateData();
+    }
+
+    /// Frame boxes have no client-side tile entity for the vanilla description packet to land on
+    /// ([FrameShapeBlock] never creates tile entities), so a frame-hosted tile entity describes itself
+    /// through [GTPacketFrameEntity], whose client handler creates the tile entity when missing.
+    @Override
+    public Packet getDescriptionPacket() {
+        if (getBlockType() instanceof FrameShapeBlock) {
+            if (!worldObj.isRemote) {
+                GTValues.NW.sendPacketToAllPlayersInRange(worldObj, new GTPacketFrameEntity(this), xCoord, zCoord);
+            }
+            return null;
+        }
+        return super.getDescriptionPacket();
     }
 
     @Override
