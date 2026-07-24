@@ -20,6 +20,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedItemX32;
@@ -61,26 +62,27 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
         for (int i = 0; i < 1000; i++) {
             Material material = generatedMaterial(i);
-            Materials tMaterial = MU.materialOf(material);
-            if (tMaterial == null || tMaterial.mMetaItemSubID < 0 || tMaterial.mMetaItemSubID >= 1_000) {
+            int subId = MU.oldSubId(material);
+            if (material == null || subId < 0 || subId >= 1_000) {
                 continue;
             }
 
-            if ((MU.hasFlag(tMaterial, GTMaterialFlag.SMELTING_TO_FLUID))
-                && (!MU.hasFlag(tMaterial, GTMaterialFlag.NO_SMELTING))
-                && !MU.hasFlag(tMaterial, GTMaterialFlag.SMELTING_TO_GEM)) {
-                // extra check for if the material is not in the molten cell blacklist.
-                if (!cellMolten.mNotGeneratedItems.contains(tMaterial)) {
-                    registerMolten(tMaterial, tMaterial.mMetaItemSubID);
+            if (MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
+                && !MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)
+                && !MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)) {
+                // The molten cell blacklist is keyed on the legacy material; it retires with the facade.
+                if (!cellMolten.mNotGeneratedItems.contains(MU.materialOf(material))) {
+                    registerMolten(material, subId);
                 }
-                Materials smeltInto = MU.smeltInto(tMaterial);
-                if (smeltInto != tMaterial && smeltInto.mMetaItemSubID >= 0 && smeltInto.mMetaItemSubID < 1_000) {
-                    registerMolten(smeltInto, smeltInto.mMetaItemSubID);
+                Material smeltInto = MU.smeltInto(material);
+                int smeltSubId = MU.oldSubId(smeltInto);
+                if (smeltInto != material && smeltSubId >= 0 && smeltSubId < 1_000) {
+                    registerMolten(smeltInto, smeltSubId);
                 }
             }
 
             if (MU.canBeCracked(material)) {
-                registerCracked(tMaterial, tMaterial.mMetaItemSubID);
+                registerCracked(material, subId);
             }
         }
 
@@ -89,24 +91,28 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         mVisibleItems.clear();
     }
 
-    private void registerMolten(Materials tMaterial, int i) {
+    private void registerMolten(Material material, int i) {
         if (MetaGeneratedItemX32.DUMP_MODE) {
-            MetaGeneratedItemX32.DUMP_VARIANTS
-                .add(new MetaGeneratedItemX32.LegacyVariant("metaitem.99", cellMolten.getName(), tMaterial.mName, i));
+            MetaGeneratedItemX32.DUMP_VARIANTS.add(
+                new MetaGeneratedItemX32.LegacyVariant(
+                    "metaitem.99",
+                    cellMolten.getName(),
+                    MU.internalName(material),
+                    i));
         }
-        if (!MetaGeneratedItemX32.DUMP_MODE && MU.isCutOver(cellMolten, tMaterial)) return;
+        if (!MetaGeneratedItemX32.DUMP_MODE && MU.isCutOver(cellMolten, material)) return;
 
         ItemStack tStack = new ItemStack(this, 1, i);
         enabled.set(i);
 
         if (cellMolten.isUnifiable()) {
-            GTOreDictUnificator.set(cellMolten, tMaterial, tStack);
+            GTOreDictUnificator.set(cellMolten, material, tStack);
         } else {
-            GTOreDictUnificator.registerOre(cellMolten.oreDictName(tMaterial), tStack);
+            GTOreDictUnificator.registerOre(cellMolten.oreDictName(material), tStack);
         }
     }
 
-    private void registerCracked(Materials tMaterial, int i) {
+    private void registerCracked(Material material, int i) {
         int offset = 10_000;
         for (OrePrefixes prefix : CRACKED_CELL_TYPES) {
             if (MetaGeneratedItemX32.DUMP_MODE) {
@@ -114,17 +120,17 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                     new MetaGeneratedItemX32.LegacyVariant(
                         "metaitem.99",
                         prefix.getName(),
-                        tMaterial.mName,
+                        MU.internalName(material),
                         offset + i));
             }
-            if (MetaGeneratedItemX32.DUMP_MODE || !MU.isCutOver(prefix, tMaterial)) {
+            if (MetaGeneratedItemX32.DUMP_MODE || !MU.isCutOver(prefix, material)) {
                 ItemStack tStack = new ItemStack(this, 1, offset + i);
                 enabled.set(offset + i);
 
                 if (prefix.isUnifiable()) {
-                    GTOreDictUnificator.set(prefix, tMaterial, tStack);
+                    GTOreDictUnificator.set(prefix, material, tStack);
                 } else {
-                    GTOreDictUnificator.registerOre(prefix.oreDictName(tMaterial), tStack);
+                    GTOreDictUnificator.registerOre(prefix.oreDictName(material), tStack);
                 }
             }
 
@@ -147,24 +153,22 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     @Override
     public short[] getRGBa(ItemStack aStack) {
         OrePrefixes prefix = getOrePrefix(aStack.getItemDamage());
-        Materials material = getMaterial(aStack.getItemDamage());
-        if (material == null) {
-            material = Materials._NULL;
-        }
-
+        Material material = getMaterial(aStack.getItemDamage());
         if (prefix == cellMolten) {
-            return material.mMoltenRGBa;
-        } else {
-            return material.mRGBa;
+            // Molten RGBa has no MaterialLib accessor; read the legacy field, which retires with the facade.
+            Materials legacy = MU.materialOf(material);
+            return (legacy != null ? legacy : Materials._NULL).mMoltenRGBa;
         }
+        short[] rgba = MU.rgba(material);
+        return rgba != null ? rgba : MU.rgba(Materials2Materials.NULL);
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
         final int damage = aStack.getItemDamage();
         final OrePrefixes prefix = getOrePrefix(damage);
-        final Materials material = getMaterial(damage);
-        if (prefix != null && material != null) return prefix.getLocalizedNameForItem(material.getInternalName());
+        final Material material = getMaterial(damage);
+        if (prefix != null && material != null) return prefix.getLocalizedNameForItem(MU.internalName(material));
         return super.getItemStackDisplayName(aStack);
     }
 
@@ -196,10 +200,10 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
     @Override
     public IIconContainer getIconContainer(int aMetaData) {
-        Materials material = getMaterial(aMetaData);
+        Material material = getMaterial(aMetaData);
         OrePrefixes prefix = getOrePrefix(aMetaData);
         if (material != null && prefix != null) {
-            return material.mIconSet.mTextures[prefix.getTextureIndex()];
+            return MU.iconSet(material).mTextures[prefix.getTextureIndex()];
         }
         return null;
     }
@@ -218,9 +222,11 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         if (!isMaterialItem(aStack)) return;
         final int damage = aStack.getItemDamage();
-        final Materials material = getMaterial(damage);
+        final Material material = getMaterial(damage);
         final OrePrefixes prefix = getOrePrefix(damage);
         if (material == null || prefix == null) return;
-        material.addTooltips(aList, prefix.getMaterialAmount() / M);
+        // Tooltip-with-amount has no MaterialLib accessor; use the legacy call, which retires with the facade.
+        Materials legacy = MU.materialOf(material);
+        if (legacy != null) legacy.addTooltips(aList, prefix.getMaterialAmount() / M);
     }
 }

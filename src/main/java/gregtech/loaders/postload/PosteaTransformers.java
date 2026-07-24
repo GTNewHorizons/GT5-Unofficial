@@ -28,7 +28,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
@@ -334,7 +333,7 @@ public class PosteaTransformers implements Runnable {
             int damage = tag.getInteger("Damage");
             if (damage >= 32000) return false;
             OrePrefixes prefix = item.getOrePrefix(damage);
-            Materials material = item.getMaterial(damage);
+            Material material = item.getMaterial(damage);
             ItemStack cutover = MU.stack(prefix, material, 1);
             if (cutover == null) return false;
             IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
@@ -348,7 +347,7 @@ public class PosteaTransformers implements Runnable {
         ItemStackReplacementManager.addTransformationHandler("gregtech:gt.metaitem.99", (originalId, tag) -> {
             int damage = tag.getInteger("Damage");
             OrePrefixes prefix = item.getOrePrefix(damage);
-            Materials material = item.getMaterial(damage);
+            Material material = item.getMaterial(damage);
             ItemStack cutover = MU.stack(prefix, material, 1);
             if (cutover == null) return false;
             IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));

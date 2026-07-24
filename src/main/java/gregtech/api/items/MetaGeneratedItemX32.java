@@ -162,8 +162,8 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     public String getItemStackDisplayName(ItemStack aStack) {
         final int damage = aStack.getItemDamage();
         final OrePrefixes prefix = getOrePrefix(damage);
-        final Materials material = getMaterial(damage);
-        if (prefix != null && material != null) return prefix.getLocalizedNameForItem(material.getInternalName());
+        final Material material = getMaterial(damage);
+        if (prefix != null && material != null) return prefix.getLocalizedNameForItem(MU.internalName(material));
         return super.getItemStackDisplayName(aStack);
     }
 
@@ -190,8 +190,8 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     @Override
     public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
         if (!isMaterialItem(aMetaData)) return null;
-        final Materials materials = getMaterial(aMetaData);
-        return materials == null ? null : materials.renderer;
+        final Material material = getMaterial(aMetaData);
+        return material == null ? null : MU.rendererOf(material);
     }
 
     @Override
@@ -241,10 +241,12 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         if (!isMaterialItem(getDamage(aStack))) return;
         final int damage = aStack.getItemDamage();
-        final Materials material = getMaterial(damage);
+        final Material material = getMaterial(damage);
         final OrePrefixes prefix = getOrePrefix(damage);
         if (material == null || prefix == null) return;
-        material.addTooltips(aList, prefix.getMaterialAmount() / M);
+        // Tooltip-with-amount has no MaterialLib accessor; use the legacy call, which retires with the facade.
+        Materials legacy = MU.materialOf(material);
+        if (legacy != null) legacy.addTooltips(aList, prefix.getMaterialAmount() / M);
     }
 
     public @Nullable OrePrefixes getOrePrefix(int damage) {

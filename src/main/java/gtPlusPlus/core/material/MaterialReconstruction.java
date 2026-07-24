@@ -32,9 +32,9 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 /// `MaterialsFluorides`, `MaterialsNuclides`) initialize every `new Material(...)`-declared field via [#byName],
 /// building each material (and its composition dependencies) on first request.
 ///
-/// Fields sourced from a `MaterialUtils#generateMaterialFromGtENUM(Materials.X)`-declared pool field are
-/// **not** reconstructed here -- that legacy factory already passes fully concrete values (the live gregtech
-/// `Materials` constant's own rgba/melting/boiling/protons/neutrons/durability/texture set) into the ordinary
+/// Fields sourced from a `MaterialUtils#generateMaterialFromGtENUM(Materials2Materials.X)`-declared pool field
+/// are **not** reconstructed here -- that factory already passes fully concrete values (the material's own
+/// rgba/melting/boiling/protons/neutrons/durability/texture set) into the ordinary
 /// constructor, never the `-1`/`null` sentinels that trigger a heuristic, so it is already exactly as
 /// pinned-data-driven as reconstruction would be; leaving those declarations untouched is equivalent, not a
 /// gap.
@@ -201,8 +201,8 @@ public final class MaterialReconstruction {
         Material already = built.get(name);
         if (already != null) return already;
         if (!RECONSTRUCTED_NAMES.contains(name)) {
-            Materials gt = Materials.get(name);
-            if (gt == null || gt == Materials._NULL) {
+            com.ruling_0.materiallib.api.Material gt = MU.byLegacyName(name);
+            if (gt == null) {
                 throw new IllegalStateException("gtPlusPlus material composition references unknown material " + name);
             }
             return generateGtEnum(name, gt);
@@ -216,7 +216,7 @@ public final class MaterialReconstruction {
     /// overrides or the pool field would silently receive a default-textured instance (legacy never had this
     /// hazard -- its `MaterialStack` declarations referenced the pool fields directly, class-loading
     /// `MaterialsElements` first).
-    private static Material generateGtEnum(String name, Materials gt) {
+    private static Material generateGtEnum(String name, com.ruling_0.materiallib.api.Material gt) {
         return switch (name) {
             case "InfusedAir", "InfusedFire", "InfusedEarth", "InfusedWater", "InfusedEntropy", "InfusedOrder" -> MaterialUtils
                 .generateMaterialFromGtENUM(gt, TextureSet.SET_GEM_A);
@@ -287,7 +287,7 @@ public final class MaterialReconstruction {
             gtEquivalent = Materials.get(name);
         }
         if (gtEquivalent != null && gtEquivalent != Materials._NULL) {
-            MaterialUtils.seedGeneratedMaterial(gtEquivalent, material);
+            MaterialUtils.seedGeneratedMaterial(MU.material(gtEquivalent), material);
         } else {
             // Runs where the retired gtpp bridge facade used to be minted, recording the two facade fields
             // recipe generation still keys on. The molten record keeps the facade's own gate, including its

@@ -490,32 +490,9 @@ public class GTPostLoad {
         OrePrefixes[] washablePrefixes = { OrePrefixes.dustImpure, OrePrefixes.dustPure, OrePrefixes.crushed,
             OrePrefixes.dust };
 
-        for (Materials material : Materials.getAll()) {
-            for (OrePrefixes prefix : washablePrefixes) {
-                ItemStack input = GTOreDictUnificator.get(prefix, material, 1);
-                ItemStack output = MetaGeneratedItem01.getCauldronWashingResult(prefix, MU.material(material), 1);
-
-                if (input == null || output == null) {
-                    continue;
-                }
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(input)
-                    .fluidInputs(GTUtility.getWater(333))
-                    .itemOutputs(output)
-                    .duration(0)
-                    .eut(0)
-                    .fake()
-                    .addTo(RecipeMaps.cauldronRecipe);
-            }
-        }
-
-        // Materials.getAll() no longer contains reconstructed werkstoff/gtpp materials once minting is
-        // retired; their washing recipes come from the MaterialLib registry instead, through the same
-        // lookups the facades used to route (a material without washable entries contributes nothing,
-        // exactly as its facade did).
+        // The washing recipes come from the MaterialLib registry, through the same lookups the legacy facades
+        // used to route (a material without washable entries contributes nothing, exactly as its facade did).
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (MU.isLegacyNamed(material)) continue;
             for (OrePrefixes prefix : washablePrefixes) {
                 ItemStack input = GTOreDictUnificator.get(prefix, material, 1);
                 ItemStack output = MetaGeneratedItem01.getCauldronWashingResult(prefix, material, 1);

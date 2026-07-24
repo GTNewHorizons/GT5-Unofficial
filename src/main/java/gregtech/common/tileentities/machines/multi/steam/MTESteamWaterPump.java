@@ -45,10 +45,10 @@ import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.blocks.BlockCasings9;
@@ -94,8 +94,7 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
     private float currentHumidity;
 
     private FluidStack[] getWater() {
-        return new FluidStack[] { MU.fluid(
-            Materials2Materials.Water,
+        return new FluidStack[] { GTUtility.getWater(
             calculateFinalWaterOutput() <= 250 && isMinWaterAllowedDim() ? 250 : calculateFinalWaterOutput()) };
     }
 

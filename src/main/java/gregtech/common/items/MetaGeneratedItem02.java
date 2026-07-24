@@ -271,7 +271,6 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
@@ -279,6 +278,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.items.MetaGeneratedItemX32;
+import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTFoodStat;
@@ -3115,14 +3115,14 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     @Override
     public boolean isItemStackUsable(ItemStack aStack) {
         int aDamage = aStack.getItemDamage();
-        Materials aMaterial = getMaterial(aDamage);
-        if ((aDamage >= 25000) && (aDamage < 27000) && (aMaterial != null) && (aMaterial.mToolEnchantment != null)) {
-            Enchantment tEnchant = aMaterial.mToolEnchantment == Enchantment.fortune ? Enchantment.looting
-                : aMaterial.mToolEnchantment;
+        Material aMaterial = getMaterial(aDamage);
+        Enchantment enchantment = MU.getToolEnchantment(aMaterial);
+        if ((aDamage >= 25000) && (aDamage < 27000) && (enchantment != null)) {
+            Enchantment tEnchant = enchantment == Enchantment.fortune ? Enchantment.looting : enchantment;
             if (tEnchant.type == EnumEnchantmentType.weapon) {
                 if (!ItemStackNBT.getBoolean(aStack, "GT.HasBeenUpdated")) {
                     ItemStackNBT.setBoolean(aStack, "GT.HasBeenUpdated", true);
-                    GTUtility.ItemNBT.addEnchantment(aStack, tEnchant, aMaterial.mToolEnchantmentLevel);
+                    GTUtility.ItemNBT.addEnchantment(aStack, tEnchant, MU.getToolEnchantmentLevel(aMaterial));
                 }
             }
         }

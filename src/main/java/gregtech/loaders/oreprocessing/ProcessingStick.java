@@ -76,8 +76,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, material, 4L))
                     .fluidInputs(
-                        MU.fluid(
-                            Materials2Materials.Water,
+                        GTUtility.getWater(
                             Math.max(
                                 4,
                                 Math.min(
