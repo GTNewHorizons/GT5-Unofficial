@@ -215,7 +215,7 @@ public class TTRecipeAdder extends RecipeAdder {
             tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(tFluidInput, true, false);
         }
         researchAmperage = GTUtility.clamp(researchAmperage, 1, Short.MAX_VALUE);
-        computationRequiredPerSec = GTUtility.clamp(computationRequiredPerSec, 1, Long.MAX_VALUE >>> 16);
+        computationRequiredPerSec = GTUtility.clamp(computationRequiredPerSec, 1, (~0L) >>> 16);
         tPersistentHash = GTUtility.safeInt(tPersistentHash * 31L + totalComputationRequired);
         tPersistentHash = GTUtility.safeInt(tPersistentHash * 31L + computationRequiredPerSec);
         tPersistentHash = tPersistentHash * 31 + researchAmperage;
