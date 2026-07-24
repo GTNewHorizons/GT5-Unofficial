@@ -21,6 +21,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.StringUtils;
+import gregtech.loaders.materials.LegacyNameDomain;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
@@ -252,8 +253,9 @@ public class MaterialUtils {
     }
 
     public static Materials getMaterial(String aMaterialName) {
-        Materials m = Materials.get(aMaterialName);
-        if (m == Materials._NULL) {
+        com.ruling_0.materiallib.api.Material ml = LegacyNameDomain.lookup(aMaterialName);
+        Materials m = ml == null ? null : MU.materialOf(ml);
+        if (m == null) {
             m = getMaterialByName(aMaterialName);
         }
         if (m == null) {

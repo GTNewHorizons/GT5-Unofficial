@@ -35,6 +35,7 @@ import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
+import gregtech.loaders.materials.LegacyNameDomain;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -1739,13 +1740,13 @@ public class Material {
 
     public static Materials tryFindGregtechMaterialEquivalent(Material aMaterial) {
         String aMaterialName = aMaterial.getDefaultLocalName();
-        Materials aGregtechMaterial = Materials.get(aMaterialName);
+        Materials aGregtechMaterial = legacyDomainLookup(aMaterialName);
         if (MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
             aMaterialName = aMaterialName.replace(" ", "_");
-            aGregtechMaterial = Materials.get(aMaterialName);
+            aGregtechMaterial = legacyDomainLookup(aMaterialName);
             if (MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
                 aMaterialName = aMaterialName.replace(" ", "");
-                aGregtechMaterial = Materials.get(aMaterialName);
+                aGregtechMaterial = legacyDomainLookup(aMaterialName);
                 if (MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
                     return null;
                 } else {
@@ -1757,6 +1758,14 @@ public class Material {
         } else {
             return aGregtechMaterial;
         }
+    }
+
+    /// `Materials.get` through [LegacyNameDomain]: a domain hit converted back to its facade, a miss the
+    /// `_NULL` sentinel [MaterialUtils#isNullGregtechMaterial] treats as one.
+    private static Materials legacyDomainLookup(String name) {
+        com.ruling_0.materiallib.api.Material ml = LegacyNameDomain.lookup(name);
+        Materials legacy = ml == null ? null : MU.materialOf(ml);
+        return legacy == null ? Materials._NULL : legacy;
     }
 
     public void setWerkstoffID(short werkstoffID) {

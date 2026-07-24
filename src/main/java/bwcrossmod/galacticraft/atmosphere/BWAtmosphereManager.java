@@ -27,9 +27,8 @@ import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.WerkstoffReconstruction;
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.loaders.materials.LegacyNameDomain;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
@@ -96,10 +95,7 @@ public final class BWAtmosphereManager {
         String name = gas.toString();
         name = name.charAt(0) + name.substring(1)
             .toLowerCase(Locale.US);
-        // Interim name seam: the gas name resolves through the facade's legacy name domain (Materials.get);
-        // only the resolved facade's MaterialLib material enters the gas list.
-        Materials legacyLookup = Materials.get(name);
-        Material mat = legacyLookup == Materials._NULL ? null : MU.material(legacyLookup);
+        Material mat = LegacyNameDomain.lookup(name);
         if (mat == null) {
             Werkstoff werkstoff = WerkstoffLoader.getWerkstoff(name);
             if (werkstoff == Werkstoff.default_null_Werkstoff || werkstoff == null) {

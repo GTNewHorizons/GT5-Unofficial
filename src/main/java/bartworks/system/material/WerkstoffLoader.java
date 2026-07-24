@@ -118,6 +118,7 @@ import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
+import gregtech.loaders.materials.LegacyNameDomain;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 
@@ -518,17 +519,19 @@ public class WerkstoffLoader {
                     WerkstoffLoader.molten.put(werkstoff, FluidRegistry.getFluid(werkstoff.getDefaultName()));
                 }
             }
-            for (OrePrefixes p : OrePrefixes.VALUES) if (Materials.get(werkstoff.getDefaultName()) != null
-                && Materials.get(werkstoff.getDefaultName()).mMetaItemSubID != -1
-                && (werkstoff.getGenerationFeatures().toGenerate & p.getMaterialGenerationBits()) != 0
-                && OreDictHandler.getItemStack(werkstoff.getDefaultName(), p, 1) != null) {
-                    DebugLog.log(
-                        "Found: " + p
-                            + werkstoff.getVarName()
-                            + " in GT material system, disable and reroute my Items to that, also add a Tooltip.");
-                    werkstoff.getGenerationFeatures()
-                        .removePrefix(p);
-                }
+            com.ruling_0.materiallib.api.Material werkstoffNamedMaterial = LegacyNameDomain
+                .lookup(werkstoff.getDefaultName());
+            for (OrePrefixes p : OrePrefixes.VALUES)
+                if (werkstoffNamedMaterial != null && MU.oldSubId(werkstoffNamedMaterial) != -1
+                    && (werkstoff.getGenerationFeatures().toGenerate & p.getMaterialGenerationBits()) != 0
+                    && OreDictHandler.getItemStack(werkstoff.getDefaultName(), p, 1) != null) {
+                        DebugLog.log(
+                            "Found: " + p
+                                + werkstoff.getVarName()
+                                + " in GT material system, disable and reroute my Items to that, also add a Tooltip.");
+                        werkstoff.getGenerationFeatures()
+                            .removePrefix(p);
+                    }
             WerkstoffLoader.toGenerateGlobal = WerkstoffLoader.toGenerateGlobal
                 | werkstoff.getGenerationFeatures().toGenerate;
         }

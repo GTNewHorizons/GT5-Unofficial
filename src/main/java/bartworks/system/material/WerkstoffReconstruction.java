@@ -25,6 +25,7 @@ import gregtech.api.material.MU;
 import gregtech.api.material.MaterialAtomics;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.loaders.materials.LegacyMaterials;
+import gregtech.loaders.materials.LegacyNameDomain;
 import gregtech.loaders.materials.RecognitionMaterials;
 import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 
@@ -387,9 +388,12 @@ public final class WerkstoffReconstruction {
     }
 
     private static ISubTagContainer requireMaterials(String ownName, String name) {
-        Materials material = Materials.get(name);
-        if (material != null && material != Materials._NULL) {
-            return material;
+        Material ml = LegacyNameDomain.lookup(name);
+        if (ml != null) {
+            Materials material = MU.materialOf(ml);
+            if (material != null) {
+                return material;
+            }
         }
         RecognitionMarker marker = RecognitionMaterials.getRecognitionMarker(name);
         if (marker != null) {

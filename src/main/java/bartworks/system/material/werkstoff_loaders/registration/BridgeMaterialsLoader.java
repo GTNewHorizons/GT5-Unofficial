@@ -30,6 +30,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.loaders.materials.LegacyNameDomain;
 
 public class BridgeMaterialsLoader implements IWerkstoffRunnable {
 
@@ -68,8 +69,9 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
             // mHandleMaterial field this loader used to overwrite in place; the record above is never
             // consulted for such names (the handle hybrid reads the live field), so the field write must
             // be reproduced directly.
-            Materials live = Materials.get(werkstoff.getVarName());
-            if (live != null && live != Materials._NULL) {
+            com.ruling_0.materiallib.api.Material liveMl = LegacyNameDomain.lookup(werkstoff.getVarName());
+            Materials live = liveMl == null ? null : MU.materialOf(liveMl);
+            if (live != null) {
                 live.mHandleMaterial = handle;
             }
             MU.recordBridgeRegistration(ml);
@@ -82,9 +84,10 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
 
         Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial();
         if (werkstoffBridgeMaterial == null) {
-            werkstoffBridgeMaterial = Materials.get(werkstoff.getVarName());
+            com.ruling_0.materiallib.api.Material named = LegacyNameDomain.lookup(werkstoff.getVarName());
+            werkstoffBridgeMaterial = named == null ? null : MU.materialOf(named);
 
-            if (werkstoffBridgeMaterial == Materials._NULL) {
+            if (werkstoffBridgeMaterial == null) {
                 werkstoffBridgeMaterial = new MaterialBuilder().setName(werkstoff.getVarName())
                     .setDefaultLocalName(werkstoff.getDefaultName())
                     .setIconSet(werkstoff.getTexSet())

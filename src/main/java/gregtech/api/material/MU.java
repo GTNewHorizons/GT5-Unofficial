@@ -762,6 +762,14 @@ public class MU {
         return chaseRef(material, GTMaterialProperties.MACERATE_INTO);
     }
 
+    /// The legacy `Materials#mMaterialInto` unification target for a material: the material itself.
+    /// `mMaterialInto` is a proven universal self-reference -- every `Materials` constructor assigns `this`
+    /// and the only later write (bartworks' `BridgeMaterialsLoader`) reassigns it to itself -- so no property
+    /// backs it and this returns its argument, preserving that self-reference default.
+    public static @Nullable Material materialInto(@Nullable Material material) {
+        return material;
+    }
+
     /// [#smeltInto(Material)], for [GTMaterialProperties#ARC_SMELT_INTO].
     public static @Nullable Material arcSmeltInto(@Nullable Material material) {
         return chaseRef(material, GTMaterialProperties.ARC_SMELT_INTO);
