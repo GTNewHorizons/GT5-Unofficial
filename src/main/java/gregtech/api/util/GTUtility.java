@@ -1985,14 +1985,11 @@ public class GTUtility {
     public static int getRadioactivityLevel(ItemStack aStack) {
         ItemData tData = GTOreDictUnificator.getItemData(aStack);
         if (tData != null && tData.hasValidMaterialData()) {
-            if (MU.materialOf(tData.mMaterial.mMaterial)
-                .getArmorEnchantment() instanceof EnchantmentRadioactivity)
-                return MU.materialOf(tData.mMaterial.mMaterial)
-                    .getArmorEnchantmentLevel();
-            if (MU.materialOf(tData.mMaterial.mMaterial)
-                .getToolEnchantment() instanceof EnchantmentRadioactivity)
-                return MU.materialOf(tData.mMaterial.mMaterial)
-                    .getToolEnchantmentLevel();
+            Material material = tData.mMaterial.mMaterial;
+            if (MU.getArmorEnchantment(material) instanceof EnchantmentRadioactivity)
+                return MU.getArmorEnchantmentLevel(material);
+            if (MU.getToolEnchantment(material) instanceof EnchantmentRadioactivity)
+                return MU.getToolEnchantmentLevel(material);
         }
         return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE.effectId, aStack);
     }

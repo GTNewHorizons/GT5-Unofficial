@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 import com.google.common.collect.ImmutableList;
+import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -59,7 +60,8 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         INSTANCE = this;
 
         for (int i = 0; i < 1000; i++) {
-            Materials tMaterial = MU.materialOf(generatedMaterial(i));
+            Material material = generatedMaterial(i);
+            Materials tMaterial = MU.materialOf(material);
             if (tMaterial == null || tMaterial.mMetaItemSubID < 0 || tMaterial.mMetaItemSubID >= 1_000) {
                 continue;
             }
@@ -77,7 +79,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                 }
             }
 
-            if (tMaterial.canBeCracked()) {
+            if (MU.canBeCracked(material)) {
                 registerCracked(tMaterial, tMaterial.mMetaItemSubID);
             }
         }

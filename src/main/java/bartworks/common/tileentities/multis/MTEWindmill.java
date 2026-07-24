@@ -303,7 +303,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         final OrePrefixes prefix = association == null ? null : association.mPrefix;
         final Material material = prefix == null || association.mMaterial == null
             || association.mMaterial.mMaterial == null ? null : association.mMaterial.mMaterial;
-        if (material == null || MU.materialOf(material) == null
+        if (material == null || !MU.isLegacyNamed(material)
             || GTOreDictUnificator.get(OrePrefixes.dust, material, 1) == null) {
             return new float[] { 1f, 1f };
         }

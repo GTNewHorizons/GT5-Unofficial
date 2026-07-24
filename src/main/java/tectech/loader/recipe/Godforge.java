@@ -80,7 +80,7 @@ public class Godforge implements Runnable {
             ItemData association = GTOreDictUnificator.getAssociation(itemStack);
             Material material = association == null || association.mMaterial == null
                 || association.mMaterial.mMaterial == null ? null : association.mMaterial.mMaterial;
-            if (material == null || MU.materialOf(material) == null) {
+            if (material == null || !MU.isLegacyNamed(material)) {
                 GTLog.err.println("Godforge.convertToFluid: no unification data for " + itemStack + ", skipping");
                 continue;
             }
@@ -1138,7 +1138,7 @@ public class Godforge implements Runnable {
         // if this is null it has to be a gt++ material
         ItemData data = GTOreDictUnificator.getAssociation(stack);
         Material mat = data != null ? data.mMaterial.mMaterial : null;
-        if (mat != null && MU.materialOf(mat) != null) {
+        if (mat != null && MU.isLegacyNamed(mat)) {
             if (MU.hasMolten(mat)) {
                 return MU.molten(mat, INGOTS * data.mMaterial.mAmount / GTValues.M);
             } else if (MU.fluidOf(mat) != null) {

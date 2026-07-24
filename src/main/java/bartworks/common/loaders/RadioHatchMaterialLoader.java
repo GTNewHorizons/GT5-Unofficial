@@ -110,7 +110,7 @@ public class RadioHatchMaterialLoader {
         }
 
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (MU.materialOf(material) == null || MU.element(material) == null) continue;
+            if (!MU.isLegacyNamed(material) || MU.element(material) == null) continue;
 
             boolean validProton = MU.protons(material) >= 83 && material != Materials2Materials.Tritanium // No
                                                                                                           // Tritanium

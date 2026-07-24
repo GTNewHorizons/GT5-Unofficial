@@ -261,7 +261,7 @@ public class GTPostLoad {
         // The cell-bearing ones -- the population whose facades CellLoader's element branch used to link
         // before this loop ran -- get the same recipes from the MaterialLib registry instead.
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (MU.materialOf(material) != null) continue;
+            if (MU.isLegacyNamed(material)) continue;
             List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
             if (werkstoffPrefixes == null || !werkstoffPrefixes.contains(OrePrefixes.cell.name())) continue;
 
@@ -515,7 +515,7 @@ public class GTPostLoad {
         // lookups the facades used to route (a material without washable entries contributes nothing,
         // exactly as its facade did).
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (MU.materialOf(material) != null) continue;
+            if (MU.isLegacyNamed(material)) continue;
             for (OrePrefixes prefix : washablePrefixes) {
                 ItemStack input = GTOreDictUnificator.get(prefix, material, 1);
                 ItemStack output = MetaGeneratedItem01.getCauldronWashingResult(prefix, material, 1);
