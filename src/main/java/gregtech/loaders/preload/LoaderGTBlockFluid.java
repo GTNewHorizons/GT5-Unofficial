@@ -24,7 +24,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -955,12 +957,14 @@ public class LoaderGTBlockFluid implements Runnable {
         GTLog.out.println("GTMod: Registering Fluids.");
         Materials.ConstructionFoam.mFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("CFCell", 1L), true)
             .getFluid();
-        Materials.UUMatter.mFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("uuMatterCell", 1L), true)
-            .getFluid();
         // UUMatter is GT-owned but its fluid is IC2's, resolved from the filled cell at runtime (no static
-        // LEGACY_FLUIDS name to port). Mirror the facade field write onto MU's slot store so
-        // MU.fluid(Materials2Materials.UUMatter, n) returns the same IC2 fluid the facade getFluid returned.
-        MU.recordSlotFluid(Materials2Materials.UUMatter, MU.FluidState.LIQUID, Materials.UUMatter.mFluid);
+        // LEGACY_FLUIDS name to port). Bind MU's slot store from the resolved IC2 fluid directly so the
+        // binding survives the facade deletion; the facade field write below only feeds GTProxy's autogen
+        // readers until they die with the facade.
+        Fluid uuMatterFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("uuMatterCell", 1L), true)
+            .getFluid();
+        Materials.UUMatter.mFluid = uuMatterFluid;
+        MU.recordSlotFluid(Materials2Materials.UUMatter, MU.FluidState.LIQUID, uuMatterFluid);
 
         GTFluidFactory.builder("Air")
             .withDefaultLocalName("Air")
@@ -1128,9 +1132,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L));
 
         // The dedicated Steam material carries no LEGACY_FLUIDS gas row (see Materials2Materials.Steam), so
-        // point MU's gas slot at the "steam" fluid just registered above -- the same fluid the Water facade
-        // holds. MU.gas(Materials2Materials.Steam, n) reads the slot store first.
-        MU.recordSlotFluid(Materials2Materials.Steam, MU.FluidState.GAS, Materials.Water.mGas);
+        // point MU's gas slot at the "steam" Forge fluid registered above -- the same fluid the Water facade
+        // holds -- read straight from the registry so the binding survives the facade deletion.
+        Fluid steamFluid = FluidRegistry.getFluid("steam");
+        MU.recordSlotFluid(Materials2Materials.Steam, MU.FluidState.GAS, steamFluid);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
@@ -1140,7 +1145,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .eut(1)
             .addTo(cannerRecipes);
 
-        Materials.Water.mGas.setTemperature(375)
+        steamFluid.setTemperature(375)
             .setGaseous(true);
 
         ItemList.sOilExtraHeavy = GTFluidFactory.builder("liquid_extra_heavy_oil")
