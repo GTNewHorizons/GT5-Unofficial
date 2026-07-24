@@ -385,7 +385,7 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .beginStructureBlock(5, 5, 4, false)
+            .beginStructureBlock(5, 4, 5, false)
             .addController("Front center, 2nd layer")
             .addSteamHatch("1", "Any normal casing", 1)
             .addMiscHatch("1+", "Steam Input Bus or Regular Input Hatch", "Any normal casing", 1)

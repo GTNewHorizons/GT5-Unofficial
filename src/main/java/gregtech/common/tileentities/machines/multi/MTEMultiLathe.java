@@ -178,7 +178,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             .addDynamicParallelInfo(8, TooltipTier.PIPE_CASING)
             .addStaticSpeedInfo(4f)
             .addStaticEuEffInfo(0.8f)
-            .beginStructureBlock(5, 7, 5, true)
+            .beginStructureBlock(7, 5, 5, true)
             .addController("Front bottom center")
             .addCasing("42-55", "Solid Steel Machine Casing", false)
             .addCasing("32", "Any Tiered Glass", false)

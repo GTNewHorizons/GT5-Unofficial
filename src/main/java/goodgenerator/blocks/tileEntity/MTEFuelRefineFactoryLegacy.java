@@ -157,7 +157,7 @@ public class MTEFuelRefineFactoryLegacy extends TTMultiblockBase implements ISur
             .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks")
             .addSupportAny()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(3, 15, 15, false)
+            .beginStructureBlock(15, 15, 3, false)
             .addController("Middle of the 3rd layer")
             .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 114, false)
             .addCasingInfoExactly("Field Restriction Coil", 32, true)

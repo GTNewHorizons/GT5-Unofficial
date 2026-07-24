@@ -155,7 +155,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.splitter.body.4", TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.splitter.flavor.1")))
-            .beginStructureBlock(7, 7, 5, false)
+            .beginStructureBlock(7, 5, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
             .addCasing("37", translateToLocal("gt.blockcasings12.2.name"), false)

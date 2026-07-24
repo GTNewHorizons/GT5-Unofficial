@@ -92,7 +92,7 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         tt.addMachineType("Extruder, IEM")
             .addBulkMachineInfo(6, 3.5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 4, 4, false)
+            .beginStructureBlock(4, 4, 9, false)
             .addController("Front right, 2nd layer")
             .addCasing("8-33", "Pressure Containment Casing", false)
             .addCasing("24", "Chemically Inert Machine Casing", false)

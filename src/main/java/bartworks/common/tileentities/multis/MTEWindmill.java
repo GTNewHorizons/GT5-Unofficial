@@ -243,7 +243,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .addInfo("Speed and output will be affected by wind speed, recipe and rotor")
             .addInfo("Please use the Primitive Rotor")
             .addInfo("Macerates 16 items at a time")
-            .beginStructureBlock(7, 7, 12, true)
+            .beginStructureBlock(7, 12, 7, true)
             .addController("Front bottom center")
             .addCasing("100", "Wood Planks (any type)", false)
             .addCasing("40-47", "Terracotta (plain)", false)

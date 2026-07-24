@@ -24,6 +24,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeDetectorHatch;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeHatch;
+import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import java.util.stream.Stream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -142,6 +144,11 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
         ArcFurnaceMode next() {
             return modes[(this.ordinal() + 1) % modes.length];
+        }
+
+        String getTransKey() {
+            return "kubatech.arcfurnace.mode." + this.name()
+                .toLowerCase();
         }
     }
 
@@ -409,7 +416,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             .addInfo("Outputs molten metals")
             .addInfo("Right-click with Screwdriver to change mode")
             .addSupportMultiAmp()
-            .beginStructureBlock(19, 17, 11, true)
+            .beginStructureBlock(17, 11, 19, true)
             .addController("Front center, 4th layer")
             .addCasing("175", "Steel Frame Box", false)
             .addCasing("10-172", "Solid Steel Machine Casing", false)
@@ -459,7 +466,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             return;
         }
         mode = mode.next();
-        GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mode.generic", mode.name());
+        GTUtility
+            .sendChatTrans(aPlayer, "kubatech.chat.mode.generic", new ChatComponentTranslation(mode.getTransKey()));
     }
 
     @SideOnly(Side.CLIENT)
@@ -560,7 +568,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
     @Override
     public String getMachineModeName() {
-        return mode.name();
+        return translateToLocal(mode.getTransKey());
     }
 
     @Override

@@ -3817,7 +3817,7 @@ item.BasicGenericChemItem.14.name=Твёрдо-кислотный катализ
 item.BasicGenericChemItem.15.name=Infinite Mutation Catalyst
 
 # Added 23/10/22
-miscutils.machines.QFTFluidMode=Квантовый силовой преобразователь - Режим вывода жидкости
+miscutils.machines.QFTFluidMode=Квантовый силовой преобразователь - Режим вывода жидкости: %s
 
 # Added 16/11/22
 item.BasicGenericChemItem.16.name=Катализатор платиновой группы

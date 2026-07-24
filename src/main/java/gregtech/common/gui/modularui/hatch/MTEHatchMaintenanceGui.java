@@ -20,7 +20,7 @@ import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 
@@ -44,10 +44,8 @@ public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance>
                 .topRel(0)
                 .rightRel(0)
                 .addTooltipStringLines(
-                    Arrays
-                        .stream(
-                            GTUtility.translateMultiline(
-                                mAuto ? "GT5U.gui.text.autorepair_info" : "GT5U.gui.text.repair_info"))
+                    Arrays.stream(
+                        GTSplit.splitLocalized(mAuto ? "GT5U.gui.text.autorepair_info" : "GT5U.gui.text.repair_info"))
                         .collect(Collectors.toList())));
 
         parent.childIf(

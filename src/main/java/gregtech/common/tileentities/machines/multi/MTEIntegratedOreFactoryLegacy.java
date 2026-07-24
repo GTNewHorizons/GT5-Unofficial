@@ -214,7 +214,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
             .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
-            .beginStructureBlock(6, 12, 11, false)
+            .beginStructureBlock(11, 12, 6, false)
             .addController("Front center, 3rd layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 128, false)
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 105, false)
@@ -459,9 +459,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
         ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             sVoidStone = !sVoidStone;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.oreprocessor.void", sVoidStone);
             return;
         }
         sMode = (sMode + 1) % 7;

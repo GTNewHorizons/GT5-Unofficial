@@ -114,7 +114,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             .addInfo("Outputs U-233 every 10 seconds, on average, while the reactor is running")
             .addInfo("Check NEI to see the other 3 outputs - they differ between fuels")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 7, 4, true)
+            .beginStructureBlock(7, 4, 7, true)
             .addController("Front bottom center")
             .addCasing("27-86", "Hastelloy-N Reactor Casing", false)
             .addCasing("26", "Reactor Shield Casing", false)

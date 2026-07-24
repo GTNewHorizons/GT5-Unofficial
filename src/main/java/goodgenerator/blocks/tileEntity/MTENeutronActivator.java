@@ -198,7 +198,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             .addInfo("Otherwise it will output trash")
             .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running")
             .addInfo("Inputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.")
-            .beginVariableStructureBlock(5, 5, 5, 5, 6, 256, false)
+            .beginVariableStructureBlock(5, 5, 6, 256, 5, 5, false)
             .addController("Front bottom center")
             .addMiscHatch("1+", "Neutron Accelerator", "Any bottom edge casing", 2)
             .addMiscHatch("0+", "Neutron Sensor", "Any bottom edge casing", 2)
@@ -365,8 +365,8 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             }
 
             for (MTENeutronAccelerator tHatch : mNeutronAccelerator) {
-                if (tHatch.getBaseMetaTileEntity()
-                    .isActive() && this.getRepairStatus() == this.getIdealStatus()) {
+                IGregTechTileEntity baseTile = tHatch.getBaseMetaTileEntity();
+                if (baseTile != null && baseTile.isActive() && this.getRepairStatus() == this.getIdealStatus()) {
                     anyWorking = true;
                     this.eV += Math.max(
                         (R.nextInt(tHatch.getMaxEUConsume() + 1) + tHatch.getMaxEUConsume()) * 10

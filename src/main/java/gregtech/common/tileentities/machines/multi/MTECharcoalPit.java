@@ -230,7 +230,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingT
             .addInfo("Converts Logs into Brittle Charcoal blocks")
             .addInfo("Automatically starts when formed")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(3, 13, 3, 13, 3, 7, false)
+            .beginVariableStructureBlock(3, 13, 3, 7, 3, 13, false)
             .addController("Top layer, centered and touching a log")
             .addCasing("1-605", "Any log", false)
             .addCasing("4-431", "Dirt or grass covering the logs", false)

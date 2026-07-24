@@ -418,7 +418,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 EnumChatFormatting.RED
                     + "Recipe tier is limited to hatch tier + 1. Will not perform overclocks above the hatch tier")
             .addInfo(EnumChatFormatting.RED + "Limited to one energy hatch if using a Multi-Amp or Laser hatch")
-            .beginStructureBlock(35, 33, 35, true)
+            .beginStructureBlock(33, 35, 35, true)
             .addController("Middle of structure, 6th layer")
             .addCasing("3667-3671", "Extreme Density Space-Bending Casing", false)
             .addCasing("950-985", "Background Radiation Absorbent Casing", false)

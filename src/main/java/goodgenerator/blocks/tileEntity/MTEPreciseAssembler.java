@@ -181,9 +181,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + machineMode));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + machineMode);
     }
 
     @Override
@@ -309,7 +307,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addSupportAny()
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 9, 5, true)
+            .beginStructureBlock(9, 5, 5, true)
             .addController("Front bottom center")
             .addCasing("42-81", "Precise Electronic Unit Casing", true)
             .addCasing("42", "EV+ Tiered Glass", false)

@@ -76,7 +76,7 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 5, 9, false)
+            .beginStructureBlock(5, 9, 5, false)
             .addController("Front center, 2nd layer")
             .addCasing("10-29", "Forge Casing", false)
             .addCasing("20", "Rebolted Black Steel Casing", false)

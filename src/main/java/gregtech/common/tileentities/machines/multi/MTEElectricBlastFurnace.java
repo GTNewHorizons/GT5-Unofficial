@@ -146,7 +146,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
                     + "Perfect Overclock")
             .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 4, true)
+            .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom center")
             .addCasing("16", "Heating Coil", true)
             .addCasing("0-12", "Heat Proof Machine Casing", false)

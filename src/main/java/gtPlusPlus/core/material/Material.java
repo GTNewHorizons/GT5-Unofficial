@@ -1644,7 +1644,8 @@ public class Material implements IOreMaterial {
             }
         }
         if (Client.tooltip.showRadioactiveText && this.isRadioactive) {
-            list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.radiationLevel));
+            list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
+            list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
         }
     }
 }

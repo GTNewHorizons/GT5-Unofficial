@@ -209,7 +209,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             .addInfo("Insert Absorption Filter in an input bus")
             .addInfo("  to double pollution cleaning amount (30 uses per item)")
             .addInfo("Each maintenance issue reduces cleaning amount by 10%")
-            .beginStructureBlock(3, 3, 4, true)
+            .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom center")
             .addCasing("9-22", getCasingString(), false)
             .addCasing("8", getPipeString(), false)

@@ -14,6 +14,7 @@ import static gregtech.api.util.GTRecipeConstants.NO_GAS_CIRCUIT_CONFIG;
 
 import net.minecraft.item.ItemStack;
 
+import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import gregtech.GTMod;
@@ -691,6 +692,52 @@ public class BlastFurnaceRecipes implements Runnable {
             .metadata(NO_GAS, true)
             .metadata(NO_GAS_CIRCUIT_CONFIG, 1)
             .addTo(BlastFurnaceWithGas);
+
+        // Borosilicate Clearing
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 6))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 1))
+            .fluidInputs(Materials.HydrofluoricAcid.getFluid(4_000))
+            .duration(5 * SECONDS)
+            .eut((int) TierEU.RECIPE_UV)
+            .metadata(COIL_HEAT, 9000)
+            .addTo(blastFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 7))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 2))
+            .fluidInputs(Materials.HydrofluoricAcid.getFluid(4_000))
+            .duration(5 * SECONDS)
+            .eut((int) TierEU.RECIPE_UHV)
+            .metadata(COIL_HEAT, 10000)
+            .addTo(blastFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 8))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 3))
+            .fluidInputs(Materials.HydrofluoricAcid.getFluid(4_000))
+            .duration(5 * SECONDS)
+            .eut((int) TierEU.RECIPE_UEV)
+            .metadata(COIL_HEAT, 11000)
+            .addTo(blastFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 9))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 4))
+            .fluidInputs(Materials.HydrofluoricAcid.getFluid(4_000))
+            .duration(5 * SECONDS)
+            .eut((int) TierEU.RECIPE_UIV)
+            .metadata(COIL_HEAT, 12000)
+            .addTo(blastFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 10))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 5))
+            .fluidInputs(Materials.HydrofluoricAcid.getFluid(4_000))
+            .duration(5 * SECONDS)
+            .eut((int) TierEU.RECIPE_UMV)
+            .metadata(COIL_HEAT, 13000)
+            .addTo(blastFurnaceRecipes);
     }
 
     public void registerPrimitiveBlastFurnaceRecipes() {

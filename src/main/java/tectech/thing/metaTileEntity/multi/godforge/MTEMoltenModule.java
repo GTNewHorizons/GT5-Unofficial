@@ -172,7 +172,7 @@ public class MTEMoltenModule extends MTEBaseModule {
             .addInfo("their liquid form. If an output material does not have a liquid form, it will be output")
             .addInfo("as a regular solid instead")
             .addInfo("This module is specialized towards parallel processing")
-            .beginStructureBlock(13, 7, 7, false)
+            .beginStructureBlock(7, 7, 13, false)
             .addController("Front center, 4th layer")
             .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
             .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)

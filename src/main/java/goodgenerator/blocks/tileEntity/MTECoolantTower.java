@@ -109,7 +109,7 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coolant Tower")
             .addInfo("Turn Steam back to Distilled Water")
-            .beginStructureBlock(11, 11, 13, true)
+            .beginStructureBlock(11, 13, 11, true)
             .addController("Front center, 2nd layer")
             .addCasing("252-277", "Light Concrete", false)
             .addCasing("28", "Tungstencarbide Frame Box", false)

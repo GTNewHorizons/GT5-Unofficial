@@ -166,6 +166,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                 // this casing references the same texture as the alloy blast smelter,
                 // and it has the perk of actually being registered in the atlas!
                 // if this ever gets split out for texture pack reasons, it should be updated here as well.
+                .exclusive()
                 .build())
         .build();
 
@@ -251,7 +252,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Never one...")
-            .beginStructureBlock(23, 23, 43, true)
+            .beginStructureBlock(23, 43, 23, true)
             .addController("Front center, 4th layer")
             .addCasing("1800-1918", "Hearth Casing", false)
             .addCasing("925", "Heat Proof Machine Casing", false)

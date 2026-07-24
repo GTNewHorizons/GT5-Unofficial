@@ -208,7 +208,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "purification processes, and this multiblock is the heart of the operation")
-            .beginStructureBlock(8, 7, 9, true)
+            .beginStructureBlock(7, 9, 8, true)
             .addController("Front center, 3rd layer")
             .addCasing("77", "Reinforced Sterile Water Plant Casing", false)
             .addCasing("71-72", "Sterile Water Plant Casing", false)

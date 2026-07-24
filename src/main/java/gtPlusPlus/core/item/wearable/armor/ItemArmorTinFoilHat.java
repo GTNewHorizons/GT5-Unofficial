@@ -28,7 +28,7 @@ import net.minecraftforge.common.util.EnumHelper;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
 import gtPlusPlus.core.item.wearable.base.BaseItemWearable;
 
 public class ItemArmorTinFoilHat extends BaseItemWearable {
@@ -73,7 +73,7 @@ public class ItemArmorTinFoilHat extends BaseItemWearable {
 
     @Override
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List<String> aList, boolean p_77624_4_) {
-        GTUtility.translateMultiline(aList, "GTPP.tooltip.tin_foil_hat");
+        GTSplit.splitLocalizedFormatted(aList, "GTPP.tooltip.tin_foil_hat");
     }
 
     @Override

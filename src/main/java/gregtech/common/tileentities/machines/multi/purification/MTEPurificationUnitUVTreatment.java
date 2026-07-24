@@ -260,7 +260,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "atoms themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
-            .beginStructureBlock(9, 13, 9, true)
+            .beginStructureBlock(13, 9, 9, true)
             .addController("Front bottom center")
             .addCasing("144-153", "Naquadria-Reinforced Water Plant Casing", false)
             .addCasing("144", "Electron-Permeable Neutronium Coated Glass", false)

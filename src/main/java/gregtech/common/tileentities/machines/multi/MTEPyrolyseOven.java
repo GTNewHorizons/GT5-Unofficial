@@ -106,7 +106,7 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
             .addInfo("EU/t is not affected by Coil tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 7, 6, true)
+            .beginStructureBlock(7, 6, 5, true)
             .addController("Front center, 2nd layer")
             .addCasing("60-68", "Pyrolyse Oven Casing", false)
             .addCasing("12", "Heating Coil", true)

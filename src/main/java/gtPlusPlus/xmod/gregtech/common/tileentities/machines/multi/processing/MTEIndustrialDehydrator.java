@@ -118,7 +118,7 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Perfect Overclock")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 5, true)
+            .beginStructureBlock(3, 5, 3, true)
             .addController("Front bottom center")
             .addCasing("5-12", mCasingName, false)
             .addCasing("24", "Heating Coil", true)

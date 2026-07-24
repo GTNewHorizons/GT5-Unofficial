@@ -279,7 +279,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                     HEATING_COIL_EU_MULTIPLIER,
                     EnumChatFormatting.GRAY))
             .addGlassEnergyLimitInfo()
-            .beginStructureBlock(5, 5, 9, false)
+            .beginStructureBlock(5, 9, 5, false)
             .addController("Front bottom center")
             .addCasing(BASE_CASING_COUNT - MAX_HATCHES_ALLOWED + "-53", "Robust Tungstensteel Machine Casing", false)
             .addCasing("36", "Any Tiered Glass", true)

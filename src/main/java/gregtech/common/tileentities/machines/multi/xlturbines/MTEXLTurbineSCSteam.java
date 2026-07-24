@@ -61,7 +61,7 @@ public class MTEXLTurbineSCSteam extends MTEXLTurbineBase {
             .addInfo("Loose fit increases flow in exchange for efficiency")
             .addInfo("Dense types of steam are so energy packed, they only require 1/1000th of the original flow")
             .addSupportAny()
-            .beginStructureBlock(29, 9, 9, true)
+            .beginStructureBlock(9, 9, 29, true)
             .addController("Front center, 5th layer")
             .addCasing(minCasingAmount() + "-440", "Reinforced SC Turbine Casing", false)
             .addCasing("100", "Black Plutonium Item Pipe Casing", false)

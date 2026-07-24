@@ -134,7 +134,7 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addDynamicSpeedBonusInfo(SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
             .addStaticEuEffInfo(EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 3, 3, false)
+            .beginStructureBlock(3, 3, 7, false)
             .addController("Front bottom center")
             .addCasing("14-35", "Wire Factory Casing", false)
             .addCasing("15", "Any Tiered Glass", false)

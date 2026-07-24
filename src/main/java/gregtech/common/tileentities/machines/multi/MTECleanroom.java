@@ -142,7 +142,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .addInfo("Below 100% efficiency machines inside have a chance to void outputs!")
             .addInfo("Each maintenance issue reduces maximum efficiency by 10%")
             .addInfo("Generating any pollution inside causes the cleanroom to shut down")
-            .beginVariableStructureBlock(3, MAX_WIDTH, 3, MAX_WIDTH, 4, MAX_HEIGHT, true)
+            .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
             .addController("Top center")
             .addCasing(MachineStats.cleanroom.minCasingCount + "-1007", "Plascrete Block", false)
             .addCasing("0-168", "Filter Machine Casing", false)

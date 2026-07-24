@@ -215,7 +215,7 @@ public class MTESmeltingModule extends MTEBaseModule {
             .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace")
             .addInfo("The desired method of processing can be selected in the gui")
             .addInfo("This module is specialized towards speed and high heat levels")
-            .beginStructureBlock(13, 7, 7, false)
+            .beginStructureBlock(7, 7, 13, false)
             .addController("Front center, 4th layer")
             .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
             .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)

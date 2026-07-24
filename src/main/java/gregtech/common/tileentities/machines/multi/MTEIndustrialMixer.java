@@ -188,7 +188,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
                     + "glass allows for single multi-amp energy hatch")
             .addSupportMultiAmp()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 5, 7, false)
+            .beginStructureBlock(5, 7, 5, false)
             .addController("Front center, 2nd layer")
             .addCasing("5-45", "Mixer Casing", false)
             .addCasing("30", "Any Tiered Glass", false)
