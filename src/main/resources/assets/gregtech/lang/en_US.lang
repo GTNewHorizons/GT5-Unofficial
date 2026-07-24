@@ -9124,6 +9124,10 @@ GT5U.tooltip.godforge-exotic-module.front-shielding-casing=Any front shielding c
 GT5U.tooltip.godforge-molten-module.controller-pos=Front center, 4th layer
 GT5U.tooltip.godforge-molten-module.hatch-pos=Any front shielding casing
 
+# Godforge Smelting Module Structure Hints
+GT5U.tooltip.godforge-smelting-module.controller-pos=Front center, 4th layer
+GT5U.tooltip.godforge-smelting-module.hatch-pos=Any front shielding casing
+
 # BEC Generator Structure Hints
 GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
 GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing around controller
