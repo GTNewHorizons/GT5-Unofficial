@@ -623,7 +623,7 @@ public class CentrifugeRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Magnesia, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (1)),
-                Materials.Gold.getNuggets(4),
+                GTOreDictUnificator.get(OrePrefixes.nugget, Materials2Materials.Gold, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Sapphire, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Tantalite, Materials2Shapes.dust, (int) (1)))
             .outputChances(5000, 1000, 1000, 250, 1250, 500)
@@ -638,7 +638,7 @@ public class CentrifugeRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.dust, (int) (5)),
                 MaterialLibAPI.getStack(Materials2Materials.Magnesia, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (1)),
-                Materials.Gold.getIngots(1),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Gold, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Sapphire, Materials2Shapes.dust, (int) (3)),
                 MaterialLibAPI.getStack(Materials2Materials.Tantalite, Materials2Shapes.dust, (int) (1)))
             .outputChances(9000, 9000, 9000, 1000, 3750, 4500)

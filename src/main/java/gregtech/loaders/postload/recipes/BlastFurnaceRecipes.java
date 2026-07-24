@@ -21,7 +21,6 @@ import goodgenerator.items.GGMaterial;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -95,7 +94,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.RoastedIron, Materials2Shapes.dust, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)))
             .itemOutputs(
-                Materials.Iron.getIngots(outputIngotAmount),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, outputIngotAmount),
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1)))
             .outputChances(10000, 2222)
             .fluidOutputs(
@@ -207,7 +206,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.BandedIron, Materials2Shapes.dust, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)))
             .itemOutputs(
-                Materials.Iron.getIngots(outputIngotAmount),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, outputIngotAmount),
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1)))
             .outputChances(10000, 2222)
             .fluidOutputs(
@@ -239,7 +238,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Magnetite, Materials2Shapes.dust, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)))
             .itemOutputs(
-                Materials.Iron.getIngots(outputIngotAmount),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, outputIngotAmount),
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1)))
             .outputChances(10000, 2222)
             .fluidOutputs(
@@ -255,7 +254,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.YellowLimonite, Materials2Shapes.dust, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)))
             .itemOutputs(
-                Materials.Iron.getIngots(outputIngotAmount),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, outputIngotAmount),
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1)))
             .outputChances(10000, 2222)
             .fluidOutputs(
@@ -271,7 +270,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.BrownLimonite, Materials2Shapes.dust, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)))
             .itemOutputs(
-                Materials.Iron.getIngots(outputIngotAmount),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, outputIngotAmount),
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1)))
             .outputChances(10000, 2222)
             .fluidOutputs(
@@ -287,7 +286,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.BasalticMineralSand, Materials2Shapes.dust, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)))
             .itemOutputs(
-                Materials.Iron.getIngots(outputIngotAmount),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, outputIngotAmount),
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1)))
             .outputChances(10000, 2222)
             .fluidOutputs(
@@ -303,7 +302,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.GraniticMineralSand, Materials2Shapes.dust, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)))
             .itemOutputs(
-                Materials.Iron.getIngots(outputIngotAmount),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, outputIngotAmount),
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1)))
             .outputChances(10000, 2222)
             .fluidOutputs(
@@ -423,7 +422,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.BandedIron, Materials2Shapes.dust, (int) (5)),
                     MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dustSmall, (int) (4)))
                 .itemOutputs(
-                    Materials.Iron.getIngots(2),
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, 2),
                     MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1)))
                 .outputChances(10000, 2222)
                 .fluidOutputs(
@@ -441,7 +440,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.Magnetite, Materials2Shapes.dust, (int) (2)),
                     MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dustSmall, (int) (4)))
                 .itemOutputs(
-                    Materials.Iron.getIngots(outputIngotAmount),
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, outputIngotAmount),
                     MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1)))
                 .outputChances(10000, 2222)
                 .fluidOutputs(
@@ -459,7 +458,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.YellowLimonite, Materials2Shapes.dust, (int) (2)),
                     MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dustSmall, (int) (4)))
                 .itemOutputs(
-                    Materials.Iron.getIngots(outputIngotAmount),
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, outputIngotAmount),
                     MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1)))
                 .outputChances(10000, 2222)
                 .fluidOutputs(
@@ -477,7 +476,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.BrownLimonite, Materials2Shapes.dust, (int) (2)),
                     MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dustSmall, (int) (4)))
                 .itemOutputs(
-                    Materials.Iron.getIngots(outputIngotAmount),
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, outputIngotAmount),
                     MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1)))
                 .outputChances(10000, 2222)
                 .fluidOutputs(
@@ -495,7 +494,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.BasalticMineralSand, Materials2Shapes.dust, (int) (2)),
                     MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dustSmall, (int) (4)))
                 .itemOutputs(
-                    Materials.Iron.getIngots(outputIngotAmount),
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, outputIngotAmount),
                     MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1)))
                 .outputChances(10000, 2222)
                 .fluidOutputs(
@@ -513,7 +512,7 @@ public class BlastFurnaceRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.GraniticMineralSand, Materials2Shapes.dust, (int) (2)),
                     MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dustSmall, (int) (4)))
                 .itemOutputs(
-                    Materials.Iron.getIngots(outputIngotAmount),
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, outputIngotAmount),
                     MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1)))
                 .outputChances(10000, 2222)
                 .fluidOutputs(
@@ -953,7 +952,7 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Phononic_Seed_Crystal.get(1),
-                Materials.SixPhasedCopper.getNanite(1),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.SixPhasedCopper, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Dilithium, Materials2Shapes.dust, (int) (16)))
             .circuit(2)
             .fluidInputs(
@@ -1027,7 +1026,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
     public void registerPrimitiveBlastFurnaceRecipes() {
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Iron.getIngots(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Iron, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.ingot, (int) (1)))
             .duration(6 * MINUTES)
             .metadata(ADDITIVE_AMOUNT, 4)

@@ -8,7 +8,6 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.recipe.RecipeMaps;
@@ -51,9 +50,10 @@ public class FoundryFakeModuleCostLoader {
                 ItemList.Universal_Collapser_ExoFoundry.get(4),
                 GTUtility.copyAmountUnsafe(72, CustomItemList.EOH_Reinforced_Spatial_Casing.get(1)),
                 CustomItemList.EOH_Reinforced_Temporal_Casing.get(48),
-                Materials.WhiteDwarfMatter.getBlocks(28),
-                Materials.BlackDwarfMatter.getBlocks(28),
-                Materials.MHDCSM.getBlocks(4),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.WhiteDwarfMatter, 28),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.BlackDwarfMatter, 28),
+                GTOreDictUnificator
+                    .get(OrePrefixes.block, Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 4),
                 GTOreDictUnificator
                     .get(OrePrefixes.frameGt, Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 40),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Universium, 16),

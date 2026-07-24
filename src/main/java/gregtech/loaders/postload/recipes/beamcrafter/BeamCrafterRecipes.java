@@ -32,10 +32,11 @@ import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -403,7 +404,9 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.PseudoStar.get(64L), Materials.TranscendentMetal.getNanite(2))
+            .itemInputs(
+                ItemList.PseudoStar.get(64L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.TranscendentMetal, 2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.InactiveCosmicSolder,
@@ -413,7 +416,7 @@ public class BeamCrafterRecipes implements Runnable {
                     Materials2Materials.SpaceTime,
                     Materials2FluidShapes.fluidMolten,
                     (int) (16 * INGOTS)))
-            .itemOutputs(Materials.TranscendentMetal.getNanite(2))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.TranscendentMetal, 2))
             .outputChances(8000)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(

@@ -17,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
@@ -38,8 +37,8 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator.set(OrePrefixes.cell, MU.materialOf(Materials2Materials.Lava), ItemList.Cell_Lava.get(1L));
         GTOreDictUnificator
             .set(OrePrefixes.cell, MU.materialOf(Materials2Materials.Lava), GTModHandler.getIC2Item("lavaCell", 1L));
-        GTOreDictUnificator.set(OrePrefixes.cell, Materials.Water, ItemList.Cell_Water.get(1L));
-        GTOreDictUnificator.set(OrePrefixes.cell, Materials.Water, GTModHandler.getIC2Item("waterCell", 1L));
+        GTOreDictUnificator.set(OrePrefixes.cell, Materials2Materials.Water, ItemList.Cell_Water.get(1L));
+        GTOreDictUnificator.set(OrePrefixes.cell, Materials2Materials.Water, GTModHandler.getIC2Item("waterCell", 1L));
         GTOreDictUnificator.set(
             OrePrefixes.cell,
             MU.materialOf(Materials2Materials.Creosote),
@@ -56,7 +55,7 @@ public class LoaderGTOreDictionary implements Runnable {
 
         GTOreDictUnificator
             .set(OrePrefixes.bucket, MU.materialOf(Materials2Materials.Empty), new ItemStack(Items.bucket, 1, 0));
-        GTOreDictUnificator.set(OrePrefixes.bucket, Materials.Water, new ItemStack(Items.water_bucket, 1, 0));
+        GTOreDictUnificator.set(OrePrefixes.bucket, Materials2Materials.Water, new ItemStack(Items.water_bucket, 1, 0));
         GTOreDictUnificator
             .set(OrePrefixes.bucket, MU.materialOf(Materials2Materials.Lava), new ItemStack(Items.lava_bucket, 1, 0));
         GTOreDictUnificator
@@ -66,7 +65,7 @@ public class LoaderGTOreDictionary implements Runnable {
 
         GTOreDictUnificator
             .set(OrePrefixes.bottle, MU.materialOf(Materials2Materials.Empty), new ItemStack(Items.glass_bottle, 1, 0));
-        GTOreDictUnificator.set(OrePrefixes.bottle, Materials.Water, new ItemStack(Items.potionitem, 1, 0));
+        GTOreDictUnificator.set(OrePrefixes.bottle, Materials2Materials.Water, new ItemStack(Items.potionitem, 1, 0));
 
         GTOreDictUnificator.set(
             OrePrefixes.plateAlloy,
