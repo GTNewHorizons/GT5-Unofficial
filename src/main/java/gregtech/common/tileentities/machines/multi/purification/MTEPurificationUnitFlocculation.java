@@ -36,9 +36,9 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -49,6 +49,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
@@ -86,12 +87,12 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     /**
      * Fluid that needs to be supplied to boost success chance
      */
-    private static final Materials INPUT_CHEMICAL = Materials.PolyAluminiumChloride;
+    private static final Material INPUT_CHEMICAL = Materials2Materials.PolyaluminiumChloride;
     /**
      * Output fluid to be produced as waste. The intended behaviour is that this output fluid can be cycled
      * semi-perfectly into the input fluid.
      */
-    private static final Materials OUTPUT_WASTE = Materials.FlocculationWasteLiquid;
+    private static final Material OUTPUT_WASTE = Materials2Materials.FlocculationWasteLiquid;
 
     /**
      * Total amount of input fluid consumed during this recipe cycle.
@@ -277,18 +278,18 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addSeparator()
             .addInfo(
                 "Supply with " + EnumChatFormatting.WHITE
-                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
+                    + addFormattedString(MU.localizedNameOf(INPUT_CHEMICAL))
                     + EnumChatFormatting.GRAY
                     + " to operate")
             .addInfo(
                 "Outputs " + EnumChatFormatting.WHITE
-                    + addFormattedString(OUTPUT_WASTE.getLocalizedName())
+                    + addFormattedString(MU.localizedNameOf(OUTPUT_WASTE))
                     + EnumChatFormatting.GRAY
                     + " that can be recycled")
             .addSeparator()
             .addInfo(
                 "During operation, will consume ALL " + EnumChatFormatting.WHITE
-                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
+                    + addFormattedString(MU.localizedNameOf(INPUT_CHEMICAL))
                     + EnumChatFormatting.GRAY
                     + " in the input hatch")
             .addInfo(
@@ -298,7 +299,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + "of "
                     + EnumChatFormatting.WHITE
-                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
+                    + addFormattedString(MU.localizedNameOf(INPUT_CHEMICAL))
                     + EnumChatFormatting.GRAY
                     + " consumed")
             .addInfo(
@@ -360,7 +361,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         // NOTE: If this process ever PRODUCES excess chlorine, there is a recipe bug.
         int levels = calculateBoostLevels();
         long amount = levels * WASTE_WATER_PER_LEVEL;
-        this.addFluidOutputs(new FluidStack[] { OUTPUT_WASTE.getFluid(amount) });
+        this.addFluidOutputs(new FluidStack[] { MU.fluid(OUTPUT_WASTE, amount) });
         // Make sure to reset consumed fluid (again)
         this.inputFluidConsumed = 0;
     }
@@ -376,7 +377,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             for (FluidStack fluid : fluids) {
                 // If this FluidStack is the input chemical, consume it all
                 if (fluid.getFluid()
-                    .equals(INPUT_CHEMICAL.mFluid)) {
+                    .equals(MU.fluidOf(INPUT_CHEMICAL))) {
                     this.inputFluidConsumed += fluid.amount;
                     if (!this.depleteInput(fluid)) {
                         stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
@@ -432,7 +433,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         infoData.add(
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_flocculation.consumed",
-                INPUT_CHEMICAL.getLocalizedName(),
+                MU.localizedNameOf(INPUT_CHEMICAL),
                 "" + EnumChatFormatting.RED + inputFluidConsumed));
         return infoData.toArray(new String[] {});
     }

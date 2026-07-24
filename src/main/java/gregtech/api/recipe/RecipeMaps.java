@@ -54,7 +54,6 @@ import bartworks.common.loaders.BioCultureLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -1262,7 +1261,7 @@ public final class RecipeMaps {
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
         .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STEAM)
         .recipeEmitter(b -> {
-            if (Materials.Graphite.contains(b.getItemInputBasic(0))) return Collections.emptyList();
+            if (MU.isPartOf(b.getItemInputBasic(0), Materials2Materials.Graphite)) return Collections.emptyList();
             if (GTUtility.isArrayOfLength(b.getItemInputsBasic(), 1)) {
                 ItemStack aInput1 = b.getItemInputBasic(0);
                 if (((OrePrefixes.ingot.contains(aInput1)) || (OrePrefixes.dust.contains(aInput1))

@@ -34,9 +34,10 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -47,12 +48,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -116,12 +119,12 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     /**
      * Alkaline catalyst material
      */
-    public static final Materials ALKALINE_MATERIAL = Materials.SodiumHydroxide;
+    public static final Material ALKALINE_MATERIAL = Materials2Materials.SodiumHydroxideGT5U;
 
     /**
      * Acidic catalyst material
      */
-    public static final Materials ACIDIC_MATERIAL = Materials.HydrochloricAcid;
+    public static final Material ACIDIC_MATERIAL = Materials2Materials.HydrochloricAcidGT5U;
 
     /**
      * The input hatch for the acidic material
@@ -182,7 +185,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .cacheHint(
                         () -> StatCollector.translateToLocalFormatted(
                             "GT5U.MBTT.InputBus.WithFormat",
-                            ALKALINE_MATERIAL.getLocalizedName()))
+                            MU.localizedNameOf(ALKALINE_MATERIAL)))
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -196,7 +199,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .cacheHint(
                         () -> StatCollector.translateToLocalFormatted(
                             "GT5U.MBTT.InputHatch.WithFormat",
-                            ACIDIC_MATERIAL.getLocalizedName()))
+                            MU.localizedNameOf(ACIDIC_MATERIAL)))
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -345,11 +348,11 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + " ticks, consumes ALL "
                     + EnumChatFormatting.WHITE
-                    + addFormattedString(ALKALINE_MATERIAL.getLocalizedName())
+                    + addFormattedString(MU.localizedNameOf(ALKALINE_MATERIAL))
                     + EnumChatFormatting.GRAY
                     + " and "
                     + EnumChatFormatting.WHITE
-                    + addFormattedString(ACIDIC_MATERIAL.getLocalizedName())
+                    + addFormattedString(MU.localizedNameOf(ACIDIC_MATERIAL))
                     + EnumChatFormatting.GRAY
                     + " in the special hatches")
             .addInfo(
@@ -362,7 +365,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + "per piece of "
                     + EnumChatFormatting.WHITE
-                    + ALKALINE_MATERIAL.getDust(1)
+                    + GTOreDictUnificator.get(OrePrefixes.dust, ALKALINE_MATERIAL, 1)
                         .getDisplayName())
             .addInfo(
                 EnumChatFormatting.RED + "Lowers "
@@ -378,7 +381,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + "of "
                     + EnumChatFormatting.WHITE
-                    + ACIDIC_MATERIAL.getFluid(1L)
+                    + MU.fluid(ACIDIC_MATERIAL, 1L)
                         .getLocalizedName())
             .addSeparator()
             .addInfo(
@@ -441,7 +444,8 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             for (int i = alkalineInputBus.getSizeInventory() - 1; i >= 0; --i) {
                 ItemStack stack = alkalineInputBus.getStackInSlot(i);
                 // If this ItemStack is the alkaline material, drain it entirely and record the amount drained
-                if (stack != null && stack.isItemEqual(ALKALINE_MATERIAL.getDust(1))) {
+                if (stack != null
+                    && stack.isItemEqual(GTOreDictUnificator.get(OrePrefixes.dust, ALKALINE_MATERIAL, 1))) {
                     totalAlkalineDrained += stack.stackSize;
                     alkalineInputBus.decrStackSize(i, stack.stackSize);
                 }
@@ -450,7 +454,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             // Now do fluid, this is simpler since we only need to bother with one slot
             FluidStack stack = acidInputHatch.getDrainableStack();
             int numMultiples = 0;
-            if (stack != null && stack.isFluidEqual(ACIDIC_MATERIAL.getFluid(1))) {
+            if (stack != null && stack.isFluidEqual(MU.fluid(ACIDIC_MATERIAL, 1))) {
                 int acidAvailable = stack.amount;
                 // We only care about multiples of 10, but we still drain all.
                 numMultiples = Math.floorDiv(acidAvailable, 10);

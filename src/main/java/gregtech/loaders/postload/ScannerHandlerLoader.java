@@ -158,14 +158,13 @@ public class ScannerHandlerLoader {
         // must be a dust or a cell
         if (tData.mPrefix != OrePrefixes.dust && tData.mPrefix != OrePrefixes.cell) return null;
         // must be a scannable element
-        Materials material = MU.materialOf(tData.mMaterial.mMaterial);
-        if (material != null) return getElementScanResult(material);
+        Material material = tData.mMaterial.mMaterial;
+        if (MU.isLegacyNamed(material)) return getElementScanResult(material);
         // A reconstructed werkstoff element has no legacy counterpart left; the cell-bearing ones are exactly
         // the population whose retired facades carried mElement (CellLoader's element branch).
-        Material ml = tData.mMaterial.mMaterial;
-        List<String> werkstoffPrefixes = ml.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
+        List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
         if (werkstoffPrefixes == null || !werkstoffPrefixes.contains(OrePrefixes.cell.name())) return null;
-        return getElementScanResult(ml);
+        return getElementScanResult(material);
     }
 
     public static @Nullable GTScannerResult getElementScanResult(Materials aMaterial) {
