@@ -41,7 +41,6 @@ import bartworks.util.BWUtil;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
@@ -272,23 +271,10 @@ public class CellLoader implements IWerkstoffRunnable {
         }
 
         if (Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
-            boolean reconstructed = WerkstoffReconstruction.isReconstructed(werkstoff);
             boolean ElementSet = false;
             for (Element e : Element.values()) {
                 if (e.toString()
                     .equals(werkstoff.getFormulaTooltip())) {
-                    if (!reconstructed) {
-                        Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null
-                            ? werkstoff.getBridgeMaterial()
-                            : new MaterialBuilder().setName(werkstoff.getDefaultName())
-                                .setDefaultLocalName(werkstoff.getDefaultName())
-                                .setUnifiable(false)
-                                .setIconSet(werkstoff.getTexSet())
-                                .constructMaterial();
-                        werkstoffBridgeMaterial.mElement = e;
-                        e.mLinkedMaterials.add(werkstoffBridgeMaterial);
-                        werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
-                    }
                     ElementSet = true;
                     break;
                 }

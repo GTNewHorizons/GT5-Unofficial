@@ -339,8 +339,9 @@ public class PlatinumSludgeOverHaul {
 
         // base solution
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
-            if (werkstoff.containsStuff(Materials.Sulfur)
-                && (werkstoff.containsStuff(Materials.Copper) || werkstoff.containsStuff(Materials.Nickel))) {
+            if (werkstoff.containsStuff(Materials2Materials.Sulfur)
+                && (werkstoff.containsStuff(Materials2Materials.Copper)
+                    || werkstoff.containsStuff(Materials2Materials.Nickel))) {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(crushedPurified))

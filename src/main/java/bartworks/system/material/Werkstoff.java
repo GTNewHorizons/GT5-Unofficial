@@ -115,18 +115,26 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     private final Werkstoff.GenerationFeatures generationFeatures;
     private final short mID;
     private final TextureSet texSet;
-    private Materials bridgeMaterial;
+    private Material bridgeMaterial;
     private final String owner;
 
-    public Materials getBridgeMaterial() {
+    /// The MaterialLib material this werkstoff's retired gregtech-side bridge pointed at: null for a
+    /// reconstructed werkstoff (its identity lives in [WerkstoffReconstruction]'s registry map, not the field),
+    /// the wrapped GT material for a [BWGTMaterialReference] proxy (set at construction). Prefer
+    /// [WerkstoffReconstruction#materialLibOf] to resolve a werkstoff to its MaterialLib material -- it covers
+    /// both populations.
+    public Material getBridgeMaterial() {
         return this.bridgeMaterial;
     }
 
+    /// The legacy [Materials] the retired bridge resolved to (null for a reconstructed or werkstoff-own
+    /// material, the wrapped GT constant for a proxy). Retained for [MU#gtMaterialOf], whose render/vein-stat
+    /// consumers still read a [Materials].
     public @Nullable Materials getGTMaterial() {
-        return bridgeMaterial;
+        return MU.materialOf(this.bridgeMaterial);
     }
 
-    public void setBridgeMaterial(Materials bridgeMaterial) {
+    public void setBridgeMaterial(Material bridgeMaterial) {
         this.bridgeMaterial = bridgeMaterial;
     }
 
@@ -140,47 +148,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             Werkstoff.DEFAULT_NULL_GENERATION_FEATURES,
             -1,
             TextureSet.SET_NONE);
-    }
-
-    /**
-     * GT Materials Bridge Constructor
-     *
-     * @param materials          a GT Materials
-     * @param generationFeatures the new Types you want to add
-     * @param type               - self explainatory
-     * @param mID                > 31_766 && <= 32_767
-     */
-    public Werkstoff(Materials materials, Werkstoff.GenerationFeatures generationFeatures, Types type, int mID) {
-        this(
-            materials.mRGBa,
-            materials.mDefaultLocalName,
-            materials.getChemicalTooltip(),
-            type == null ? materials.mElement != null ? Types.ELEMENT : Types.UNDEFINED : type,
-            generationFeatures,
-            mID,
-            materials.mIconSet,
-            materials.mOreByProducts,
-            Pair.of(materials, 1));
-        if (mID <= 31_766 || mID > 32_767) throw new IllegalArgumentException();
-        this.stats.mass = materials.getMass();
-        this.stats.protons = materials.getProtons();
-        this.stats.meltingPoint = materials.mMeltingPoint;
-        this.stats.neutrons = materials.getNeutrons();
-        this.stats.speedOverride = materials.mToolSpeed;
-        this.stats.durOverride = materials.mDurability;
-        this.stats.qualityOverride = materials.mToolQuality;
-        this.stats.setGas(materials.mHasGas);
-        this.stats.setRadioactive(false);
-        this.stats.setBlastFurnace(materials.mBlastFurnaceRequired);
-        this.stats.setMeltingVoltage(120);
-        this.stats.isProxy = true;
-        if (type == Types.COMPOUND) {
-            this.stats.setElektrolysis(true);
-            this.generationFeatures.addChemicalRecipes();
-        } else if (type == Types.MIXTURE) {
-            this.stats.setCentrifuge(true);
-            this.generationFeatures.addMixerRecipes();
-        }
     }
 
     /// GT bridge constructor keyed on the MaterialLib material -- reproduces the `Materials`-typed bridge
@@ -201,6 +168,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             toLegacyByProducts(material),
             Pair.of(MU.materialOf(material), 1));
         if (mID <= 31_766 || mID > 32_767) throw new IllegalArgumentException();
+        this.bridgeMaterial = material;
         this.stats.mass = MU.mass(material);
         this.stats.protons = MU.protons(material);
         this.stats.meltingPoint = MU.meltingPoint(material);
@@ -568,6 +536,12 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 .equals(stuff)) return true;
         }
         return false;
+    }
+
+    /// MaterialLib-keyed [#containsStuff]: resolves `stuff` to its legacy [Materials] counterpart (the identity
+    /// the [ISubTagContainer]-typed `CONTENTS` still hold for a canonical constituent) before scanning.
+    public boolean containsStuff(Material stuff) {
+        return containsStuff(MU.materialOf(stuff));
     }
 
     public Pair<Integer, LinkedHashSet<Pair<ISubTagContainer, Integer>>> getContents() {
