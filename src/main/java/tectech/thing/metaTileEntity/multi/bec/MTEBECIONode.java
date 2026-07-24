@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTDataUtils.oneshot;
 import static gregtech.api.util.GTDataUtils.zip;
+import static gregtech.api.util.GTUtility.mulSafe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,8 +94,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     private @Nullable CondensateList requiredCondensate, consumedCondensate;
     private List<RecipeStep> recipeSteps;
 
-    private @Nullable NaniteTier providedTier, requiredTier;
-    private int availableNanites;
+    private @Nullable NaniteTier requiredTier;
     private int subtickCounter, slowdowns, parallelRecipesInProgress;
     private long assemblerEUt;
     private boolean powered;
@@ -136,20 +136,12 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         super(prototype);
     }
 
-    public void setAvailableNanites(int availableNanites) {
-        this.availableNanites = availableNanites;
-    }
-
     public NodeState getStateEnum() {
         return state;
     }
 
     public void setState(NodeState state) {
         this.state = state;
-    }
-
-    public void setProvidedTier(@Nullable NaniteTier providedTier) {
-        this.providedTier = providedTier;
     }
 
     public @Nullable CondensateList getRequiredCondensateSimple() {
@@ -418,11 +410,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         this.powered = powered;
     }
 
-    public void setNaniteShare(NaniteTier providedTier, int nanites) {
-        this.providedTier = providedTier;
-        this.availableNanites = nanites;
-    }
-
     public void setRequiredTier(NaniteTier tier) {
         this.requiredTier = tier;
 
@@ -470,14 +457,14 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         return null;
     }
 
-    private RecipeStep getNextProgressGate() {
+    private RecipeStep getNextProgressGate(NaniteTier providedTier) {
         RecipeStep step = getCurrentStep();
 
-        if (step == null || this.providedTier == null) return null;
+        if (step == null || providedTier == null) return null;
 
         int index = step.index;
 
-        while (this.recipeSteps.get(index).nanite.tier <= this.providedTier.tier) {
+        while (this.recipeSteps.get(index).nanite.tier <= providedTier.tier) {
             index++;
 
             if (index >= this.recipeSteps.size()) return null;
@@ -521,7 +508,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         // Assembler is missing or not running
         if (assembler == null || assembler.mMaxProgresstime <= 0) {
             state = NodeState.AssemblerOffline;
-            setNaniteShare(null, 0);
             return;
         }
 
@@ -531,8 +517,11 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             return;
         }
 
+        NaniteTier providedTier = assembler.getCurrentNaniteTier();
+        int availableNanites = assembler.getAvailableNanites();
+
         // if the provided tier is insufficient; do nothing
-        if (this.providedTier == null || this.providedTier.tier < this.requiredTier.tier) {
+        if (providedTier == null || providedTier.tier < this.requiredTier.tier) {
             state = NodeState.NaniteTierTooLow;
             return;
         }
@@ -554,8 +543,11 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             return;
         }
 
-        int divisor = this.parallelRecipesInProgress
-            * Math.max(this.slowdowns + 1, this.speedDivisorParameter.getValue());
+        int parallelsDivisor = this.parallelRecipesInProgress;
+        int aboveTierDivisor = 1 << Math.abs(this.requiredTier.tier - providedTier.tier);
+        int slowdownDivisor = Math.max(this.slowdowns + 1, this.speedDivisorParameter.getValue());
+
+        int divisor = mulSafe(mulSafe(parallelsDivisor, aboveTierDivisor), slowdownDivisor);
 
         this.subtickCounter += availableNanites;
 
@@ -567,7 +559,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         // prevent that. It just means the process will be slower by a tick or two if it gets paused.
         int nextProgress = this.mProgresstime + fullTicks;
 
-        RecipeStep nextGate = getNextProgressGate();
+        RecipeStep nextGate = getNextProgressGate(providedTier);
 
         // if one of the succeeding steps cannot run with the current nanite tier, the multi cannot proceed past it
         if (nextGate != null) {
@@ -667,7 +659,17 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     private float getProcessingSpeed() {
         if (parallelRecipesInProgress == 0) return 0;
 
-        return availableNanites / (float) parallelRecipesInProgress / (1f + slowdowns);
+        MTEBECAssembler assembler = getAssembler();
+
+        NaniteTier providedTier = assembler == null ? null : assembler.getCurrentNaniteTier();
+        int availableNanites = assembler == null ? 0 : assembler.getAvailableNanites();
+
+        int parallelsDivisor = this.parallelRecipesInProgress;
+        int aboveTierDivisor = this.requiredTier == null || providedTier == null ? 1
+            : (1 << Math.abs(this.requiredTier.tier - providedTier.tier));
+        int slowdownDivisor = Math.max(this.slowdowns + 1, this.speedDivisorParameter.getValue());
+
+        return availableNanites / (float) parallelsDivisor / (float) aboveTierDivisor / (float) slowdownDivisor;
     }
 
     @OCMethod
@@ -682,7 +684,9 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     @OCMethod
     public @Nullable NaniteTier getProvidedTier() {
-        return providedTier;
+        MTEBECAssembler assembler = getAssembler();
+
+        return assembler == null ? null : assembler.getCurrentNaniteTier();
     }
 
     @OCMethod
@@ -692,7 +696,9 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     @OCMethod
     public int getAvailableNanites() {
-        return availableNanites;
+        MTEBECAssembler assembler = getAssembler();
+
+        return assembler == null ? 0 : assembler.getAvailableNanites();
     }
 
     @OCMethod
@@ -814,8 +820,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         NBTTagCompound tag = accessor.getNBTData();
 
-        currenttip
-            .add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-processing-speed", tag.getFloat("speed")));
+        currenttip.add(
+            StatCollector.translateToLocalFormatted("GT5U.chat.bec-processing-speed", 20f * tag.getFloat("speed")));
         currenttip.add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-slowdowns", tag.getInteger("slowdowns")));
     }
 
