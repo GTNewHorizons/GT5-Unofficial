@@ -3,20 +3,22 @@ package gregtech.common.blocks;
 import static gregtech.api.enums.Mods.NotEnoughItems;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
 
-/// One of 13 hand-curated batches of up to 16 [Materials] (metadata = array index), instantiated unconditionally
+/// One of 13 hand-curated batches of up to 16 [Material]s (metadata = array index), instantiated unconditionally
 /// in `LoaderGTBlockFluid` regardless of whether any of its materials cut over to the MaterialLib `block` shape
 /// (see [gregtech.api.enums.materials2.Materials2BlockShapes]) -- unlike the item cutover, which skips
 /// constructing a legacy slot entirely, several of these 13 instances are hard-referenced by `Block` identity
@@ -27,28 +29,28 @@ import gregtech.api.util.GTOreDictUnificator;
 /// slot (and that slot is hidden from NEI); the legacy item and block remain fully functional at every slot.
 public class BlockMetal extends BlockStorage {
 
-    public Materials[] mMats;
+    public Material[] mMats;
     public OrePrefixes mPrefix;
     public IIconContainer[] mBlockIcons;
     public boolean mHideBlocks;
     public static boolean mNEIisLoaded = NotEnoughItems.isModLoaded();
 
-    public BlockMetal(String aName, Materials[] aMats, OrePrefixes aPrefix, IIconContainer[] aBlockIcons) {
-        super(ItemStorage.class, aName, Material.iron);
+    public BlockMetal(String aName, Material[] aMats, OrePrefixes aPrefix, IIconContainer[] aBlockIcons) {
+        super(ItemStorage.class, aName, net.minecraft.block.material.Material.iron);
         mMats = aMats;
         mPrefix = aPrefix;
         mBlockIcons = aBlockIcons;
         mHideBlocks = mNEIisLoaded;
 
         for (int i = 0; i < aMats.length; i++) {
-            if (aMats[i].mMetaItemSubID > 0 && aMats[i].mHasParentMod) {
-                Materials materials = aMats[i];
-                boolean cutOver = MU.isCutOver(aPrefix, materials);
-                ItemStack canonicalStack = cutOver ? MU.stack(aPrefix, materials, 1) : new ItemStack(this, 1, i);
+            if (MU.oldSubId(aMats[i]) > 0 && Materials2ParentMods.hasParentMod(aMats[i])) {
+                Material material = aMats[i];
+                boolean cutOver = MU.isCutOver(aPrefix, material);
+                ItemStack canonicalStack = cutOver ? MU.stack(aPrefix, material, 1) : new ItemStack(this, 1, i);
                 if (aPrefix.isUnifiable()) {
-                    GTOreDictUnificator.set(aPrefix, materials, canonicalStack);
+                    GTOreDictUnificator.set(aPrefix, material, canonicalStack);
                 } else {
-                    GTOreDictUnificator.registerOre(aPrefix.oreDictName(materials), canonicalStack);
+                    GTOreDictUnificator.registerOre(aPrefix, material, canonicalStack);
                 }
                 if (cutOver && mNEIisLoaded) {
                     codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i));
@@ -62,11 +64,11 @@ public class BlockMetal extends BlockStorage {
 
     @Override
     public String getLocalizedName(int meta) {
-        Materials material = GTDataUtils.getIndexSafe(mMats, meta);
+        Material material = GTDataUtils.getIndexSafe(mMats, meta);
 
-        if (material == null) material = Materials._NULL;
+        if (material == null) material = Materials2Materials.NULL;
 
-        return OrePrefixes.block.getLocalizedNameForItem(material.getInternalName());
+        return OrePrefixes.block.getLocalizedNameForItem(MU.internalName(material));
     }
 
     @Override

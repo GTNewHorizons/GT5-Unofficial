@@ -27,6 +27,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.Werkstoff;
@@ -777,114 +778,136 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockMetal1 = new BlockMetal(
             "gt.blockmetal1",
-            new Materials[] { Materials.Adamantium, Materials.Aluminium, Materials.Americium, Materials.AnnealedCopper,
-                Materials.Antimony, Materials.Arsenic, Materials.AstralSilver, Materials.BatteryAlloy,
-                Materials.Beryllium, Materials.Bismuth, Materials.BismuthBronze, Materials.BlackBronze,
-                Materials.BlackSteel, Materials.BlueAlloy, Materials.BlueSteel, Materials.Brass },
+            new Material[] { Materials2Materials.Adamantium, Materials2Materials.Aluminium,
+                Materials2Materials.Americium, Materials2Materials.AnnealedCopper, Materials2Materials.Antimony,
+                Materials2Materials.Arsenic, Materials2Materials.AstralSilver, Materials2Materials.BatteryAlloy,
+                Materials2Materials.Beryllium, Materials2Materials.Bismuth, Materials2Materials.BismuthBronze,
+                Materials2Materials.BlackBronze, Materials2Materials.BlackSteel, Materials2Materials.BlueAlloy,
+                Materials2Materials.BlueSteel, Materials2Materials.Brass },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS1);
 
         GregTechAPI.sBlockMetal2 = new BlockMetal(
             "gt.blockmetal2",
-            new Materials[] { Materials.Bronze, Materials.Caesium, Materials.Cerium, Materials.Chrome,
-                Materials.ChromiumDioxide, Materials.Cobalt, Materials.CobaltBrass, Materials.Copper,
-                Materials.Cupronickel, Materials.DamascusSteel, Materials.DarkIron, Materials.DeepIron, Materials.Desh,
-                Materials.Duranium, Materials.Dysprosium, Materials.Electrum },
+            new Material[] { Materials2Materials.Bronze, Materials2Materials.Caesium, Materials2Materials.Cerium,
+                Materials2Materials.Chrome, Materials2Materials.ChromiumDioxide, Materials2Materials.Cobalt,
+                Materials2Materials.CobaltBrass, Materials2Materials.Copper, Materials2Materials.Cupronickel,
+                Materials2Materials.DamascusSteel, Materials2Materials.DarkIron, Materials2Materials.DeepIron,
+                Materials2Materials.Desh, Materials2Materials.Duranium, Materials2Materials.Dysprosium,
+                Materials2Materials.Electrum },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS2);
 
         GregTechAPI.sBlockMetal3 = new BlockMetal(
             "gt.blockmetal3",
-            new Materials[] { Materials.ElectrumFlux, Materials.Enderium, Materials.Erbium, Materials.Europium,
-                Materials.FierySteel, Materials.Gadolinium, Materials.Gallium, Materials.Holmium, Materials.HSLA,
-                Materials.Indium, Materials.InfusedGold, Materials.Invar, Materials.Iridium, Materials.IronMagnetic,
-                Materials.IronWood, Materials.Kanthal },
+            new Material[] { Materials2Materials.ElectrumFlux, Materials2Materials.Enderium, Materials2Materials.Erbium,
+                Materials2Materials.Europium, Materials2Materials.FierySteel, Materials2Materials.Gadolinium,
+                Materials2Materials.Gallium, Materials2Materials.Holmium, Materials2Materials.HSLA,
+                Materials2Materials.Indium, Materials2Materials.InfusedGold, Materials2Materials.Invar,
+                Materials2Materials.Iridium, Materials2Materials.IronMagnetic, Materials2Materials.IronWood,
+                Materials2Materials.Kanthal },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS3);
 
         GregTechAPI.sBlockMetal4 = new BlockMetal(
             "gt.blockmetal4",
-            new Materials[] { Materials.Knightmetal, Materials.Lanthanum, Materials.Lead, Materials.Lutetium,
-                Materials.Magnalium, Materials.Magnesium, Materials.Manganese, Materials.MeteoricIron,
-                Materials.MeteoricSteel, Materials.Trinium, Materials.Mithril, Materials.Molybdenum, Materials.Naquadah,
-                Materials.NaquadahAlloy, Materials.NaquadahEnriched, Materials.Naquadria },
+            new Material[] { Materials2Materials.Knightmetal, Materials2Materials.Lanthanum, Materials2Materials.Lead,
+                Materials2Materials.Lutetium, Materials2Materials.Magnalium, Materials2Materials.Magnesium,
+                Materials2Materials.Manganese, Materials2Materials.MeteoricIron, Materials2Materials.MeteoricSteel,
+                Materials2Materials.Trinium, Materials2Materials.Mithril, Materials2Materials.Molybdenum,
+                Materials2Materials.Naquadah, Materials2Materials.NaquadahAlloy, Materials2Materials.NaquadahEnriched,
+                Materials2Materials.Naquadria },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS4);
 
         GregTechAPI.sBlockMetal5 = new BlockMetal(
             "gt.blockmetal5",
-            new Materials[] { Materials.Neodymium, Materials.NeodymiumMagnetic, Materials.Neutronium,
-                Materials.Nichrome, Materials.Nickel, Materials.Niobium, Materials.NiobiumNitride,
-                Materials.NiobiumTitanium, Materials.Osmiridium, Materials.Osmium, Materials.Palladium,
-                Materials.PigIron, Materials.Platinum, Materials.Plutonium, Materials.Plutonium241,
-                Materials.Praseodymium },
+            new Material[] { Materials2Materials.Neodymium, Materials2Materials.NeodymiumMagnetic,
+                Materials2Materials.Neutronium, Materials2Materials.Nichrome, Materials2Materials.Nickel,
+                Materials2Materials.Niobium, Materials2Materials.NiobiumNitride, Materials2Materials.NiobiumTitanium,
+                Materials2Materials.Osmiridium, Materials2Materials.Osmium, Materials2Materials.Palladium,
+                Materials2Materials.PigIron, Materials2Materials.Platinum, Materials2Materials.Plutonium,
+                Materials2Materials.Plutonium241, Materials2Materials.Praseodymium },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS5);
 
         GregTechAPI.sBlockMetal6 = new BlockMetal(
             "gt.blockmetal6",
-            new Materials[] { Materials.Promethium, Materials.RedAlloy, Materials.RedSteel, Materials.RoseGold,
-                Materials.Rubidium, Materials.Samarium, Materials.Scandium, Materials.ShadowIron, Materials.ShadowSteel,
-                Materials.Silicon, Materials.Silver, Materials.SolderingAlloy, Materials.StainlessSteel,
-                Materials.Steel, Materials.SteelMagnetic, Materials.SterlingSilver },
+            new Material[] { Materials2Materials.Promethium, Materials2Materials.RedAlloy, Materials2Materials.RedSteel,
+                Materials2Materials.RoseGold, Materials2Materials.Rubidium, Materials2Materials.Samarium,
+                Materials2Materials.Scandium, Materials2Materials.ShadowIron, Materials2Materials.ShadowSteel,
+                Materials2Materials.Silicon, Materials2Materials.Silver, Materials2Materials.SolderingAlloy,
+                Materials2Materials.StainlessSteel, Materials2Materials.Steel, Materials2Materials.SteelMagnetic,
+                Materials2Materials.SterlingSilver },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS6);
 
         GregTechAPI.sBlockMetal7 = new BlockMetal(
             "gt.blockmetal7",
-            new Materials[] { Materials.Sunnarium, Materials.Tantalum, Materials.Tellurium, Materials.Terbium,
-                Materials.Thaumium, Materials.Thorium, Materials.Thulium, Materials.Tin, Materials.TinAlloy,
-                Materials.Titanium, Materials.Tritanium, Materials.Tungsten, Materials.TungstenSteel, Materials.Ultimet,
-                Materials.Uranium, Materials.Uranium235 },
+            new Material[] { Materials2Materials.Sunnarium, Materials2Materials.Tantalum, Materials2Materials.Tellurium,
+                Materials2Materials.Terbium, Materials2Materials.Thaumium, Materials2Materials.Thorium,
+                Materials2Materials.Thulium, Materials2Materials.Tin, Materials2Materials.TinAlloy,
+                Materials2Materials.Titanium, Materials2Materials.Tritanium, Materials2Materials.Tungsten,
+                Materials2Materials.TungstenSteel, Materials2Materials.Ultimet, Materials2Materials.Uranium,
+                Materials2Materials.Uranium235 },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS7);
 
         GregTechAPI.sBlockMetal8 = new BlockMetal(
             "gt.blockmetal8",
-            new Materials[] { Materials.Vanadium, Materials.VanadiumGallium, Materials.CastIron, Materials.Ytterbium,
-                Materials.Yttrium, Materials.YttriumBariumCuprate, Materials.Zinc, Materials.TungstenCarbide,
-                Materials.VanadiumSteel, Materials.HSSG, Materials.HSSE, Materials.HSSS, Materials.Steeleaf,
-                Materials.Ichorium, Materials.Firestone, Materials.Shadow },
+            new Material[] { Materials2Materials.Vanadium, Materials2Materials.VanadiumGallium,
+                Materials2Materials.CastIron, Materials2Materials.Ytterbium, Materials2Materials.Yttrium,
+                Materials2Materials.YttriumBariumCuprate, Materials2Materials.Zinc, Materials2Materials.TungstenCarbide,
+                Materials2Materials.VanadiumSteel, Materials2Materials.HSSG, Materials2Materials.HSSE,
+                Materials2Materials.HSSS, Materials2Materials.Steeleaf, Materials2Materials.Ichorium,
+                Materials2Materials.Firestone, Materials2Materials.Shadow },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS8);
 
         GregTechAPI.sBlockGem1 = new BlockMetal(
             "gt.blockgem1",
-            new Materials[] { Materials.InfusedAir, Materials.Amber, Materials.Amethyst, Materials.InfusedWater,
-                Materials.BlueTopaz, Materials.CertusQuartz, Materials.Dilithium, Materials.EnderEye,
-                Materials.EnderPearl, Materials.Spinel, Materials.Force, Materials.Forcicium, Materials.Forcillium,
-                Materials.GreenSapphire, Materials.InfusedFire, Materials.Jasper },
+            new Material[] { Materials2Materials.InfusedAir, Materials2Materials.Amber, Materials2Materials.Amethyst,
+                Materials2Materials.InfusedWater, Materials2Materials.BlueTopaz, Materials2Materials.CertusQuartz,
+                Materials2Materials.Dilithium, Materials2Materials.EnderEye, Materials2Materials.EnderPearl,
+                Materials2Materials.FoolsRuby, Materials2Materials.Force, Materials2Materials.Forcicium,
+                Materials2Materials.Forcillium, Materials2Materials.GreenSapphire, Materials2Materials.InfusedFire,
+                Materials2Materials.Jasper },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS9);
 
         GregTechAPI.sBlockGem2 = new BlockMetal(
             "gt.blockgem2",
-            new Materials[] { Materials.Lazurite, Materials.Lignite, Materials.Monazite, Materials.Niter,
-                Materials.Olivine, Materials.Opal, Materials.InfusedOrder, Materials.InfusedEntropy,
-                Materials.TricalciumPhosphate, Materials.Quartzite, Materials.GarnetRed, Materials.Ruby,
-                Materials.Sapphire, Materials.Sodalite, Materials.Tanzanite, Materials.InfusedEarth },
+            new Material[] { Materials2Materials.Lazurite, Materials2Materials.Lignite, Materials2Materials.Monazite,
+                Materials2Materials.Niter, Materials2Materials.Olivine, Materials2Materials.Opal,
+                Materials2Materials.InfusedOrder, Materials2Materials.InfusedEntropy,
+                Materials2Materials.TricalciumPhosphate, Materials2Materials.Quartzite, Materials2Materials.GarnetRed,
+                Materials2Materials.Ruby, Materials2Materials.Sapphire, Materials2Materials.Sodalite,
+                Materials2Materials.Tanzanite, Materials2Materials.InfusedEarth },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS10);
 
         GregTechAPI.sBlockGem3 = new BlockMetal(
             "gt.blockgem3",
-            new Materials[] { Materials.Topaz, Materials.Vinteum, Materials.GarnetYellow, Materials.NetherStar,
-                Materials.Charcoal, Materials.Blaze },
+            new Material[] { Materials2Materials.Topaz, Materials2Materials.Vinteum, Materials2Materials.GarnetYellow,
+                Materials2Materials.NetherStar, Materials2Materials.Charcoal, Materials2Materials.Blaze },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS11);
 
         GregTechAPI.sBlockMetal9 = new BlockMetal(
             "gt.blockmetal9",
-            new Materials[] { Materials.Cryolite, Materials.SiliconSG, Materials.NickelAluminide, Materials.SpaceTime,
-                Materials.TranscendentMetal, Materials.Oriharukon, Materials.WhiteDwarfMatter,
-                Materials.BlackDwarfMatter, Materials.Universium, Materials.Eternity, Materials.MagMatter,
-                Materials.SixPhasedCopper, Materials.HellishMetal, Materials.MHDCSM, Materials.Hexanite },
+            new Material[] { Materials2Materials.Cryolite, Materials2Materials.SiliconSolarGrade,
+                Materials2Materials.NickelAluminide, Materials2Materials.SpaceTime,
+                Materials2Materials.TranscendentMetal, Materials2Materials.Oriharukon,
+                Materials2Materials.WhiteDwarfMatter, Materials2Materials.BlackDwarfMatter,
+                Materials2Materials.Universium, Materials2Materials.Eternity, Materials2Materials.Magmatter,
+                Materials2Materials.SixPhasedCopper, Materials2Materials.HellishMetal,
+                Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, Materials2Materials.Hexanite },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
         GregTechAPI.sBlockMetal10 = new BlockMetal(
             "gt.blockmetal10",
-            new Materials[] { Materials.Shijima, Materials.Churitsu },
+            new Material[] { Materials2Materials.Shijima, Materials2Materials.Churitsu },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS13);
 

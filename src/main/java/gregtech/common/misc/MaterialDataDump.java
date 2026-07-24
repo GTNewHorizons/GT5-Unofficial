@@ -1036,7 +1036,7 @@ public final class MaterialDataDump {
     /// construction-time drift to guard against, unlike [MetaGeneratedItemX32]'s capability-bit-driven item
     /// shapes. `iconName` is each material's legacy per-material art (e.g. `gregtech:iconsets/BLOCK_ADAMANTIUM`),
     /// captured positionally off the same `mBlockIcons` array `BlockMetal#getIcon` reads rather than derived from
-    /// `material` by a naming rule, because the two hand-curated arrays (`Materials[]` in `LoaderGTBlockFluid`,
+    /// `material` by a naming rule, because the two hand-curated arrays (`Material[]` in `LoaderGTBlockFluid`,
     /// `IIconContainer[]` in `Textures.BlockIcons`) drift out of alphabetical/token sync in dozens of entries
     /// (e.g. `Spinel` renders `BLOCK_FOOLSRUBY`, `GarnetRed` renders `BLOCK_REDGARNET`).
     private static List<Map<String, Object>> dumpLegacyBlocks() {
@@ -1064,7 +1064,7 @@ public final class MaterialDataDump {
             Map<String, Object> json = new LinkedHashMap<>();
             json.put("blockField", blockField);
             json.put("meta", meta);
-            json.put("material", metal.mMats[meta].mName);
+            json.put("material", MU.internalName(metal.mMats[meta]));
             json.put(
                 "iconName",
                 metal.mBlockIcons[meta] instanceof GTBlockIconContainer gtIcon ? gtIcon.getIconName() : null);
