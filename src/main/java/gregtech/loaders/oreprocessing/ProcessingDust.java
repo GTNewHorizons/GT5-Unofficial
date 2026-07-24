@@ -29,7 +29,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -63,8 +62,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-
         switch (prefix.getName()) {
             case "dust" -> {
                 if (GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 1L) != null) {
@@ -131,7 +128,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTModHandler.addSmeltingRecipe(stack, tDustStack);
                     }
                 } else if (!MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
-                    if ((!OrePrefixes.block.isIgnored(legacyMaterial))
+                    if ((!OrePrefixes.block.isIgnored(material))
                         && (null == GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
                         && GTOreDictUnificator.get(OrePrefixes.block, material, 1L) != null
                         && (material != Materials2Materials.Clay)
@@ -144,7 +141,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .eut(2)
                             .addTo(compressorRecipes);
                     }
-                    if (((OrePrefixes.block.isIgnored(legacyMaterial))
+                    if (((OrePrefixes.block.isIgnored(material))
                         || (null == GTOreDictUnificator.get(OrePrefixes.block, material, 1L)))
                         && (material != Materials2Materials.GraniteRed)
                         && (material != Materials2Materials.GraniteBlack)

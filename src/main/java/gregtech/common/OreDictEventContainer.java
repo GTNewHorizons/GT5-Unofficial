@@ -39,7 +39,7 @@ public class OreDictEventContainer {
         if ((ore.mEvent.Ore == null) || (ore.mEvent.Ore.getItem() == null)
             || (ore.mPrefix == null)
             || (ore.mRecognitionMarker != null ? ore.mPrefix.isIgnored(ore.mRecognitionMarker)
-                : ore.mPrefix.isIgnored(MU.materialOf(ore.mMaterial)))
+                : ore.mPrefix.isIgnored(ore.mMaterial))
             || isMaterialLibItem(ore.mEvent.Ore)) {
             return;
         }

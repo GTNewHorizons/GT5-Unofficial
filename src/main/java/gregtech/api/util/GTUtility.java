@@ -1985,8 +1985,7 @@ public class GTUtility {
         ItemData tData = GTOreDictUnificator.getItemData(aStack);
         return tData == null ? 0
             : (tData.mPrefix == null ? 0 : tData.mPrefix.mHeatDamage)
-                + (tData.hasValidMaterialData() ? MU.materialOf(tData.mMaterial.mMaterial)
-                    .getHeatDamage() : 0);
+                + (tData.hasValidMaterialData() ? MU.heatDamage(tData.mMaterial.mMaterial) : 0);
     }
 
     public static int getRadioactivityLevel(ItemStack aStack) {

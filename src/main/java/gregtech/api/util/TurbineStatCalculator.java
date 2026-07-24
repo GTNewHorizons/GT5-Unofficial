@@ -2,23 +2,26 @@ package gregtech.api.util;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 
 public class TurbineStatCalculator {
 
     public MetaGeneratedTool turbine;
     public ItemStack item;
     public long tMaxDamage;
-    public Materials tMaterial;
+    public Material tMaterial;
     public IToolStats tStats;
 
     public TurbineStatCalculator(MetaGeneratedTool turbineItem, ItemStack aStack) {
         turbine = turbineItem;
         item = aStack;
         tMaxDamage = MetaGeneratedTool.getToolMaxDamage(aStack);
-        tMaterial = MetaGeneratedTool.getPrimaryMaterial(aStack);
+        tMaterial = MetaGeneratedTool.getPrimaryMaterialML(aStack);
         tStats = turbine.getToolStats(aStack);
     }
 
@@ -69,20 +72,23 @@ public class TurbineStatCalculator {
     // Base optimal flows
 
     public float getOptimalFlow() {
-        return tStats.getSpeedMultiplier() * tMaterial.mToolSpeed * 50F;
+        return tStats.getSpeedMultiplier() * MU.toolSpeed(tMaterial) * 50F;
     }
 
     // All values are in EU/t before efficiency
     public float getOptimalSteamFlow() {
-        return getOptimalFlow() * tMaterial.mSteamMultiplier;
+        Float steam = tMaterial.getProperty(GTMaterialProperties.STEAM_MULTIPLIER);
+        return getOptimalFlow() * (steam == null ? 1.0f : steam);
     }
 
     public float getOptimalGasFlow() {
-        return getOptimalFlow() * tMaterial.mGasMultiplier;
+        Float gas = tMaterial.getProperty(GTMaterialProperties.GAS_MULTIPLIER);
+        return getOptimalFlow() * (gas == null ? 1.0f : gas);
     }
 
     public float getOptimalPlasmaFlow() {
-        return getOptimalFlow() * tMaterial.mPlasmaMultiplier * 42;
+        Float plasma = tMaterial.getProperty(GTMaterialProperties.PLASMA_MULTIPLIER);
+        return getOptimalFlow() * (plasma == null ? 1.0f : plasma) * 42;
     }
 
     // Loose optimal flows
@@ -131,7 +137,7 @@ public class TurbineStatCalculator {
     }
 
     public int getOverflowEfficiency() {
-        return (int) (1 + Math.min(2.0, tMaterial.mToolQuality / 3));
+        return (int) (1 + Math.min(2.0, MU.toolQuality(tMaterial) / 3));
     }
 
 }

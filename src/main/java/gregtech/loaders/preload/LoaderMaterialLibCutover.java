@@ -8,7 +8,6 @@ import com.ruling_0.materiallib.api.Shape;
 import com.ruling_0.materiallib.api.ShapeBlock;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -40,7 +39,7 @@ public class LoaderMaterialLibCutover implements Runnable {
             Shape shape = MU.shape(prefix);
             if (shape == null) continue;
             for (int id = 0; id < 1000; id++) {
-                Materials material = MU.materialOf(MU.byId(id));
+                Material material = MU.byId(id);
                 if (material == null || !prefix.doGenerateItem(material)) continue;
                 ItemStack stack = MU.stack(prefix, material, 1);
                 if (stack == null) continue;
@@ -50,8 +49,8 @@ public class LoaderMaterialLibCutover implements Runnable {
                     GTOreDictUnificator.registerOre(prefix.oreDictName(material), stack);
                 }
                 if ((prefix == OrePrefixes.stick || prefix == OrePrefixes.wireFine || prefix == OrePrefixes.ingot)
-                    && (material == Materials.Lead || material == Materials.Tin
-                        || material == Materials.SolderingAlloy)) {
+                    && (material == Materials2Materials.Lead || material == Materials2Materials.Tin
+                        || material == Materials2Materials.SolderingAlloy)) {
                     GregTechAPI.sSolderingMetalList.add(stack);
                     GTModHandler.registerBoxableItemToToolBox(stack);
                 }

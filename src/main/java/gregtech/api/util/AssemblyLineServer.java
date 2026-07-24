@@ -13,8 +13,8 @@ import org.jetbrains.annotations.Nullable;
 import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.material.MU;
 
 public class AssemblyLineServer {
@@ -29,8 +29,7 @@ public class AssemblyLineServer {
     private static @Nullable String generatedMaterialName(int id) {
         Material material = MU.byId(id);
         if (material == null) return null;
-        Materials legacy = MU.materialOf(material);
-        if (legacy != null && !legacy.mHasParentMod) return null;
+        if (!Materials2ParentMods.hasParentMod(material)) return null;
         return MU.legacyName(material);
     }
 
