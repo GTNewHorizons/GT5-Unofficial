@@ -31,6 +31,7 @@ import gregtech.api.enums.Element;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.Materials2ArcSmelting;
@@ -47,6 +48,7 @@ import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.config.Client;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 import gtPlusPlus.core.material.MaterialReconstruction;
@@ -237,9 +239,13 @@ public class MU {
 
     /// Whether a material carries a legacy `Materials#mStandardMoltenFluid` (see [#molten]) -- for callers that
     /// need the presence check independent of a specific fluid amount, such as one gate guarding several
-    /// [#molten] calls of different amounts. HYBRID: while a material still has a live legacy [Materials]
-    /// counterpart ([#materialOf] non-null), delegates to that facade's field. A material without one answers
-    /// per reconstructed population, reproducing the field the retired bridge facade carried:
+    /// [#molten] calls of different amounts. An [#isLegacyNamed] material (one with a live legacy [Materials]
+    /// counterpart) answers whether it carries the [Materials2FluidShapes#fluidMolten] shape or a
+    /// [#recordSlotFluid]-stored MOLTEN fluid -- byte-equal to that counterpart's `mStandardMoltenFluid != null`:
+    /// the field is wired from the [GTMaterialProperties#LEGACY_FLUIDS] `molten` slot (`LegacyMaterials#wireFluids`),
+    /// whose presence is exactly the `fluidMolten` shape's membership, or from a `GTFluid#configureMaterials`
+    /// direct write, which the stored MOLTEN fluid mirrors. A material without a counterpart answers per
+    /// reconstructed population, reproducing the field the retired bridge facade carried:
     ///
     /// - Werkstoff-reconstructed ([GTMaterialProperties#WERKSTOFF_PREFIXES] present): whether the prefix list
     /// contains `cellMolten` -- the `Werkstoff#hasItemType(cellMolten)` ground truth the bartworks bridge
@@ -252,20 +258,21 @@ public class MU {
     /// (materials constructed before gtpp's `Material#registerAllPending` gate opened deferred their fluid,
     /// so their facades stayed molten-less even with a `cellMolten` cutover). A dual werkstoff+gtpp material
     /// answers true when either side's writer fired, matching the facade both loaders mutated in turn.
-    /// - Otherwise: [#isCutOver] of [OrePrefixes#cellMolten]. Merely having a
-    /// [Materials2FluidShapes#fluidMolten] shape, without the container shape, would be wider than any
-    /// population's gate -- [#isCutOver] checks the container, not the bare fluid.
+    /// - Otherwise: false -- a pure MaterialLib material with neither a legacy counterpart nor a
+    /// reconstruction carried no `mStandardMoltenFluid`.
     public static boolean hasMolten(@Nullable Material material) {
-        Materials legacy = materialOf(material);
-        if (legacy != null) return legacy.mStandardMoltenFluid != null;
         if (material == null) return false;
+        if (isLegacyNamed(material)) {
+            return material.hasShape(Materials2FluidShapes.fluidMolten)
+                || storedFluid(material, FluidState.MOLTEN) != null;
+        }
         List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
         boolean gtpp = material.getProperty(GTMaterialProperties.GTPP_STATE) != null;
         if (werkstoffPrefixes != null || gtpp) {
             return (werkstoffPrefixes != null && werkstoffPrefixes.contains(OrePrefixes.cellMolten.name()))
                 || reconstructedLegacyMolten.contains(material);
         }
-        return isCutOver(OrePrefixes.cellMolten, material);
+        return false;
     }
 
     private static final java.util.Set<Material> reconstructedLegacyMolten = new java.util.HashSet<>();
@@ -1227,7 +1234,10 @@ public class MU {
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getLocalizedNameKey();
         if (material instanceof Materials legacy) return legacy.getLocalizedNameKey();
         if (material instanceof RecognitionMarker marker) return marker.getLocalizedNameKey();
-        if (material instanceof Material ml) return localizedNameKeyOf(legacyMaterialOf(ml));
+        if (material instanceof Material ml) {
+            Object legacy = legacyMaterialOf(ml);
+            return legacy != null ? localizedNameKeyOf(legacy) : "Material." + internalName(ml).toLowerCase();
+        }
         return null;
     }
 
@@ -1236,7 +1246,11 @@ public class MU {
         if (material instanceof Werkstoff w) return w.getLocalizedName();
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getLocalizedName();
         if (material instanceof Materials legacy) return legacy.getLocalizedName();
-        if (material instanceof Material ml) return localizedNameOf(legacyMaterialOf(ml));
+        if (material instanceof Material ml) {
+            Object legacy = legacyMaterialOf(ml);
+            return legacy != null ? localizedNameOf(legacy)
+                : StatCollector.translateToLocal("Material." + internalName(ml).toLowerCase());
+        }
         return null;
     }
 
@@ -1254,7 +1268,10 @@ public class MU {
         if (material instanceof Werkstoff w) return w.getTextureSet();
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getTextureSet();
         if (material instanceof Materials legacy) return legacy.getTextureSet();
-        if (material instanceof Material ml) return textureSetOf(legacyMaterialOf(ml));
+        if (material instanceof Material ml) {
+            Object legacy = legacyMaterialOf(ml);
+            return legacy != null ? textureSetOf(legacy) : iconSet(ml);
+        }
         return null;
     }
 
@@ -1264,7 +1281,10 @@ public class MU {
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getRGBA();
         if (material instanceof Materials legacy) return legacy.getRGBA();
         if (material instanceof RecognitionMarker marker) return marker.getRGBA();
-        if (material instanceof Material ml) return rgbaOf(legacyMaterialOf(ml));
+        if (material instanceof Material ml) {
+            Object legacy = legacyMaterialOf(ml);
+            return legacy != null ? rgbaOf(legacy) : rgba(ml);
+        }
         return null;
     }
 
@@ -1273,7 +1293,11 @@ public class MU {
         if (material instanceof Werkstoff w) return w.getValidStones();
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getValidStones();
         if (material instanceof Materials legacy) return legacy.getValidStones();
-        if (material instanceof Material ml) return validStonesOf(legacyMaterialOf(ml));
+        if (material instanceof Material ml) {
+            Object legacy = legacyMaterialOf(ml);
+            if (legacy != null) return validStonesOf(legacy);
+            return hasFlag(ml, GTMaterialFlag.ICE_ORE) ? StoneType.ICES : StoneType.STONES;
+        }
         return Collections.emptyList();
     }
 
@@ -1292,7 +1316,12 @@ public class MU {
         if (material instanceof Werkstoff w) return w.contains(subTag);
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.contains(subTag);
         if (material instanceof Materials legacy) return legacy.contains(subTag);
-        if (material instanceof Material ml) return hasSubTag(legacyMaterialOf(ml), subTag);
+        if (material instanceof Material ml) {
+            Object legacy = legacyMaterialOf(ml);
+            if (legacy != null) return hasSubTag(legacy, subTag);
+            GTMaterialFlag flag = flagForSubTag(subTag);
+            return flag != null && hasFlag(ml, flag);
+        }
         return false;
     }
 
@@ -1307,7 +1336,10 @@ public class MU {
             return GTOreDictUnificator.get(prefix.oreDictName(gtpp.getInternalName()), amount);
         }
         if (material instanceof Materials legacy) return legacy.getPart(prefix, amount);
-        if (material instanceof Material ml) return partOf(legacyMaterialOf(ml), prefix, amount);
+        if (material instanceof Material ml) {
+            Object legacy = legacyMaterialOf(ml);
+            return legacy != null ? partOf(legacy, prefix, amount) : GTOreDictUnificator.get(prefix, ml, amount);
+        }
         return null;
     }
 
@@ -1345,7 +1377,10 @@ public class MU {
         if (material instanceof Werkstoff w) return w.getId();
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getId();
         if (material instanceof Materials legacy) return legacy.getId();
-        if (material instanceof Material ml) return idOf(legacyMaterialOf(ml));
+        if (material instanceof Material ml) {
+            Object legacy = legacyMaterialOf(ml);
+            return legacy != null ? idOf(legacy) : oldSubId(ml);
+        }
         return 0;
     }
 
@@ -1354,7 +1389,25 @@ public class MU {
         if (material instanceof Werkstoff w) w.addTooltips(list);
         else if (material instanceof gtPlusPlus.core.material.Material gtpp) gtpp.addTooltips(list);
         else if (material instanceof Materials legacy) legacy.addTooltips(list);
-        else if (material instanceof Material ml) addTooltipsOf(legacyMaterialOf(ml), list);
+        else if (material instanceof Material ml) {
+            Object legacy = legacyMaterialOf(ml);
+            if (legacy != null) addTooltipsOf(legacy, list);
+            else if (Client.tooltip.showFormula) {
+                String tooltip = chemicalTooltip(ml, false);
+                if (tooltip != null && !tooltip.isEmpty()) list.add(tooltip);
+            }
+        }
+    }
+
+    /// The [GTMaterialFlag] whose enum-constant name equals `subTag`'s name, or null when none does -- the
+    /// [Material]-side lookup [#hasSubTag] uses to translate a legacy [SubTag] query into the flag its [Material]
+    /// carries.
+    private static @Nullable GTMaterialFlag flagForSubTag(SubTag subTag) {
+        try {
+            return GTMaterialFlag.valueOf(subTag.mName);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     private static Map<String, List<Shape>> prefixShapes() {
