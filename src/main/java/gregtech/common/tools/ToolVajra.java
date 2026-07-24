@@ -147,9 +147,8 @@ public class ToolVajra extends ItemTool implements IElectricItem {
 
     @Override
     public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
-        // When sneaking, skip block activation so onItemUse is called directly by the pipeline.
-        // This prevents the wrong C08 packet format (air-click) that would occur if we mined
-        // the block inside onItemUseFirst (which sends face=255 to the server when returning true).
+        // By default GTItemTool sneaking will skip the item use. We don't want that since shift-right click
+        // of vajra should be handled by the vajra.
         return false;
     }
 
@@ -171,20 +170,24 @@ public class ToolVajra extends ItemTool implements IElectricItem {
             Minecraft.getMinecraft().playerController.onPlayerDestroyBlock(x, y, z, side);
             player.swingItem();
         } else {
+            // return false causes packet to not sent on server but changes are still applied.
+            // disable capture snapshot so that forge does not suppress the notification, even though
+            // changes are applied on the server.
+            boolean capturingSnapshots = world.captureBlockSnapshots;
+            world.captureBlockSnapshots = false;
             target.onBlockHarvested(world, x, y, z, metaData, player);
             if (target.removedByPlayer(world, player, x, y, z, true)) {
                 target.onBlockDestroyedByPlayer(world, x, y, z, metaData);
                 target.harvestBlock(world, player, x, y, z, metaData);
                 world.notifyBlocksOfNeighborChange(x, y, z, target);
             }
+            world.captureBlockSnapshots = capturingSnapshots;
         }
         stack.getTagCompound()
             .setBoolean("harvested", true); // prevent onItemRightClick from going through
         ElectricItem.manager.use(stack, baseCost, player);
-        // Return true so Forge sends C08 with real block coordinates (not the air-click face=255
-        // format that would be used if we returned true from onItemUseFirst). This ensures the
-        // server processes the packet via activateBlockOrUseItem → onItemUse, not onItemRightClick.
-        return true;
+        // This allows offhand to be used, since returning false will continue to try to process offhand
+        return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
     }
 
     private boolean isHarvestableOwned(TileEntity tileEntity, EntityPlayer player) {
