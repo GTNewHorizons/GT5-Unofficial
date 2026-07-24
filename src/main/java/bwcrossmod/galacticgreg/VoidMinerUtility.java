@@ -23,8 +23,8 @@ import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.MU;
 import gregtech.api.objects.DiscreteDistribution;
@@ -218,7 +218,7 @@ public class VoidMinerUtility {
     // Adds tellurium to OW to ensure a way to get it, as it's used in Magneto Resonatic
     // Dust and Circuit Compound MK3 Dust
     static {
-        addMaterialToDimensionList(DimNames.OW, Materials.Tellurium, 8.0f);
+        addMaterialToDimensionList(DimNames.OW, Materials2Materials.Tellurium, 8.0f);
     }
 
     /**
