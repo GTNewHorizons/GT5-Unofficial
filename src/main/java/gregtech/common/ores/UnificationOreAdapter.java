@@ -21,6 +21,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
+import com.ruling_0.materiallib.api.Material;
 
 import bartworks.system.material.BWMetaGeneratedOres;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -29,8 +30,10 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
+import gregtech.api.material.MU;
 import gregtech.common.GTMockWorld;
 import gregtech.common.blocks.GTBlockOre;
+import gregtech.loaders.materials.LegacyNameDomain;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -101,9 +104,13 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
                 ore.getName()
                     .length());
 
-            Materials mat = Materials.get(matName);
+            Material ml = LegacyNameDomain.lookup(matName);
 
-            if (mat == Materials._NULL) continue;
+            if (ml == null) continue;
+
+            // The tables stay facade-keyed: OreInfo<Materials> is this adapter's IOreAdapter contract, so
+            // only the name lookup runs through the domain seam.
+            Materials mat = MU.materialOf(ml);
 
             BLOCK_TABLE.put(ore, mat, bm);
             MAT_BLOCK_TABLE.put(bm, Pair.of(ore, mat));
@@ -130,9 +137,11 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
                     prefix.getName()
                         .length());
 
-                Materials mat = Materials.get(matName);
+                Material ml = LegacyNameDomain.lookup(matName);
 
-                if (mat == Materials._NULL) continue;
+                if (ml == null) continue;
+
+                Materials mat = MU.materialOf(ml);
 
                 for (ItemStack ore : OreDictionary.getOres(name)) {
                     if (!(ore.getItem() instanceof ItemBlock itemBlock)) return;

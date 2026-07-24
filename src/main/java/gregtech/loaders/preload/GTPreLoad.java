@@ -52,6 +52,7 @@ import gregtech.common.config.Worldgen;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineBase;
 import gregtech.loaders.materials.LegacyMarkerMaterials;
+import gregtech.loaders.materials.LegacyNameDomain;
 
 public class GTPreLoad {
 
@@ -326,7 +327,11 @@ public class GTPreLoad {
             final String reEnable = mMTTags.get(i);
             OrePrefixes tPrefix = OrePrefixes.getOrePrefix(reEnable);
             if (tPrefix != null) {
-                Materials tName = Materials.get(reEnable.replaceFirst(tPrefix.toString(), ""));
+                // The generated-item sets stay legacy-keyed, so the domain lookup converts back to the
+                // facade; an unresolved tag falls back to the _NULL placeholder the sets always received
+                // for one (harmless membership -- doGenerateItem gates on _NULL first).
+                Material ml = LegacyNameDomain.lookup(reEnable.replaceFirst(tPrefix.toString(), ""));
+                Materials tName = ml == null ? Materials._NULL : MU.materialOf(ml);
                 tPrefix.mDisabledItems.remove(tName);
                 tPrefix.mGeneratedItems.add(tName);
                 if (tPrefix == OrePrefixes.screw) {

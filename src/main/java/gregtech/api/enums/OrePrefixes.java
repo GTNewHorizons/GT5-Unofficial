@@ -2627,15 +2627,15 @@ public class OrePrefixes {
         cellPlasma.mHeatDamage = 6.0F;
 
         block.ignoreMaterials(
-            Materials.Ice,
-            Materials.Snow,
-            Materials.Concrete,
-            Materials.Glass,
-            Materials.Glowstone,
-            Materials.DarkIron,
-            Materials.Marble,
-            Materials.CertusQuartz);
-        ingot.ignoreMaterials(Materials.Brick, Materials.NetherBrick);
+            Materials2Materials.Ice,
+            Materials2Materials.Snow,
+            Materials2Materials.Concrete,
+            Materials2Materials.Glass,
+            Materials2Materials.Glowstone,
+            Materials2Materials.DarkIron,
+            Materials2Materials.Marble,
+            Materials2Materials.CertusQuartz);
+        ingot.ignoreMaterials(Materials2Materials.Brick, Materials2Materials.NetherBrick);
 
         dust.addFamiliarPrefix(dustTiny);
         dust.addFamiliarPrefix(dustSmall);
@@ -2657,7 +2657,7 @@ public class OrePrefixes {
             }
         }
 
-        cell.disableComponent(Materials.GravitonShard);
+        cell.disableComponent(Materials2Materials.GravitonShard);
 
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
         dust.mGeneratedItems.addAll(dustImpure.mGeneratedItems);
@@ -2786,7 +2786,8 @@ public class OrePrefixes {
     public final Collection<OrePrefixes> mFamiliarPrefixes = new HashSet<>();
 
     public final Collection<Materials> mDisabledItems = new HashSet<>(), mNotGeneratedItems = new HashSet<>(),
-        mIgnoredMaterials = new HashSet<>(), mGeneratedItems = new HashSet<>();
+        mGeneratedItems = new HashSet<>();
+    public final Collection<Material> mIgnoredMaterials = new HashSet<>();
     private final ArrayList<IOreRecipeRegistrator> mOreProcessing = new ArrayList<>();
     public ItemStack mContainerItem = null;
     public ICondition<ISubTagContainer> mCondition = null;
@@ -2843,6 +2844,14 @@ public class OrePrefixes {
 
     public void disableComponent(Materials material) {
         if (!this.mDisabledItems.contains(material)) this.mDisabledItems.add(material);
+    }
+
+    /// [#disableComponent(Materials)] for a MaterialLib [Material], keyed through its legacy counterpart
+    /// ([#mDisabledItems] stays legacy-keyed while `Materials`-side writers remain); a material without one
+    /// never had a disable entry to add.
+    public void disableComponent(Material material) {
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial != null) disableComponent(legacyMaterial);
     }
 
     public static OrePrefixes getOrePrefix(String oreName) {
@@ -3055,14 +3064,32 @@ public class OrePrefixes {
         return mCondition == null || mCondition.isTrue(material);
     }
 
-    public boolean ignoreMaterials(Materials... materials) {
-        for (Materials tMaterial : materials) if (tMaterial != null) mIgnoredMaterials.add(tMaterial);
+    public boolean ignoreMaterials(Material... materials) {
+        for (Material tMaterial : materials) if (tMaterial != null) mIgnoredMaterials.add(tMaterial);
         return true;
+    }
+
+    /// [#ignoreMaterials(Material...)] for legacy [Materials] constants, keyed through their MaterialLib
+    /// counterparts ([#mIgnoredMaterials] is ML-keyed); a facade without one has no key to add.
+    public boolean ignoreMaterials(Materials... materials) {
+        for (Materials tMaterial : materials) {
+            Material ml = MU.material(tMaterial);
+            if (ml != null) mIgnoredMaterials.add(ml);
+        }
+        return true;
+    }
+
+    /// Whether unification ignores this (prefix, material) pair: an explicitly ignored material
+    /// ([#ignoreMaterials]), or one that is not unifiable at all. Mirrors the legacy overload below, whose
+    /// `mMaterialInto` redirect clause is a proven universal no-op (see [MU#materialInto]).
+    public boolean isIgnored(@Nullable Material material) {
+        if (material != null && !MU.unifiable(material)) return true;
+        return mIgnoredMaterials.contains(material);
     }
 
     public boolean isIgnored(Materials material) {
         if (material != null && (!material.mUnifiable || material != material.mMaterialInto)) return true;
-        return mIgnoredMaterials.contains(material);
+        return mIgnoredMaterials.contains(MU.material(material));
     }
 
     /// [#isIgnored(Materials)] for a recognition marker. Markers carry no unification redirects of their own,

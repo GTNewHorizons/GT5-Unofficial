@@ -71,7 +71,7 @@ public class GTRecipeRegistrator {
      * List of Materials, which are used in the Creation of Sticks. All Rod Materials are automatically added to this
      * List.
      */
-    public static final List<Materials> sRodMaterialList = new ArrayList<>();
+    public static final List<Material> sRodMaterialList = new ArrayList<>();
 
     private static final ItemStack sMt1 = new ItemStack(Blocks.dirt, 1, 0), sMt2 = new ItemStack(Blocks.dirt, 1, 0);
     private static final String s_H = "h", s_F = "f", s_I = "I", s_P = "P", s_R = "R";
@@ -762,7 +762,7 @@ public class GTRecipeRegistrator {
     private static synchronized void registerStickStuff(String plate, ItemData itemData, boolean recipeReplacing) {
         IdentityHashMap<IRecipe, Boolean> tKnownMatches = recipeReplacing && plate != null ? new IdentityHashMap<>()
             : null;
-        for (Materials tMaterial : sRodMaterialList) {
+        for (Material tMaterial : sRodMaterialList) {
             ItemStack tMt2 = GTOreDictUnificator.get(OrePrefixes.stick, tMaterial, 1);
             if (tMt2 == null) {
                 continue;
