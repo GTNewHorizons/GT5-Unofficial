@@ -9116,6 +9116,10 @@ GT5U.tooltip.eye-of-harmony.any-boundary-casing=Any boundary casing
 # Research Station Structure Hints
 GT5U.tooltip.research-station.footer=Data Sticks go in the controller
 
+# Godforge Exotic Module Structure Hints
+GT5U.tooltip.godforge-exotic-module.controller-pos=Front center, 4th layer
+GT5U.tooltip.godforge-exotic-module.front-shielding-casing=Any front shielding casing
+
 # BEC Generator Structure Hints
 GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
 GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing around controller

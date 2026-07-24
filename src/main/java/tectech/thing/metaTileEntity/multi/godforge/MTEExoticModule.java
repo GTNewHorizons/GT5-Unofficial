@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -53,6 +54,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEExoticModuleGui;
 import tectech.recipe.TecTechRecipeMaps;
+import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -513,16 +515,48 @@ public class MTEExoticModule extends MTEBaseModule {
         tt.addMachineType("Exotic Matter Producer")
             .addMarkdown(new ResourceLocation("gregtech", "godforge-exotic-module"))
             .beginStructureBlock(7, 7, 13, false)
-            .addController("Front center, 4th layer")
-            .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
-            .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
-            .addCasing("5", "Celestial Matter Guidance Casing", false)
-            .addCasing("5", "Harmonic Phonon Transmission Conduit", false)
-            .addCasing("1", "Stellar Energy Siphon Casing", false)
-            .addInputBus("0+", "Any front shielding casing", 1)
-            .addInputHatch("0+", "Any front shielding casing", 1)
-            .addOutputBus("1+", "Any front shielding casing", 1)
-            .addOutputHatch("1+", "Any front shielding casing", 1)
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.godforge-exotic-module.controller-pos"))
+            .addCasing(
+                "0-20",
+                CustomItemList.Godforge_SingularityShieldingCasing.get(1)
+                    .getDisplayName(),
+                false)
+            .addCasing(
+                "20",
+                CustomItemList.Godforge_BoundlessStructureCasing.get(1)
+                    .getDisplayName(),
+                false)
+            .addCasing(
+                "5",
+                CustomItemList.Godforge_GuidanceCasing.get(1)
+                    .getDisplayName(),
+                false)
+            .addCasing(
+                "5",
+                CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(1)
+                    .getDisplayName(),
+                false)
+            .addCasing(
+                "1",
+                CustomItemList.Godforge_StellarEnergySiphonCasing.get(1)
+                    .getDisplayName(),
+                false)
+            .addInputBus(
+                "0+",
+                StatCollector.translateToLocal("GT5U.tooltip.godforge-exotic-module.front-shielding-casing"),
+                1)
+            .addInputHatch(
+                "0+",
+                StatCollector.translateToLocal("GT5U.tooltip.godforge-exotic-module.front-shielding-casing"),
+                1)
+            .addOutputBus(
+                "1+",
+                StatCollector.translateToLocal("GT5U.tooltip.godforge-exotic-module.front-shielding-casing"),
+                1)
+            .addOutputHatch(
+                "1+",
+                StatCollector.translateToLocal("GT5U.tooltip.godforge-exotic-module.front-shielding-casing"),
+                1)
             .toolTipFinisher();
         return tt;
     }
