@@ -332,7 +332,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addSeparator(EnumChatFormatting.GOLD, 67)
             .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc10"))
             .addSupportAny()
-            .beginVariableStructureBlock(3, 3, 5, 16, 4, 4, false)
+            .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addController(StatCollector.translateToLocal("ggfab.tt.advassline.structure.controller"))
             .addMiscHatch(
                 "1",

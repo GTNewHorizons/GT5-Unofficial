@@ -101,7 +101,10 @@ public interface IGregTechDeviceInformation {
         String[] parts = encoded.split("\\\\\\\\");
         parts[0] = parts[0].replaceAll("%", "%%");
         if (parts.length == 1) return new ChatComponentTranslation(parts[0]);
-        Object[] args = Arrays.copyOfRange(parts, 1, parts.length);
+        Object[] args = new Object[parts.length - 1];
+        // we have to rely on the native array copy here, as Arrays.copyOfRange(String[],...) results in a String[]
+        // and ChatComponentTranslation can't be assigned to a String
+        System.arraycopy(parts, 1, args, 0, parts.length - 1);
         for (int i = 0; i < args.length; i++) {
             String arg = (String) args[i];
             if (arg != null && !arg.isEmpty() && arg.charAt(0) == TRANSLATABLE_MARKER) {

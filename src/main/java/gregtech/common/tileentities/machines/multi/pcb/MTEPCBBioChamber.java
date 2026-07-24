@@ -107,7 +107,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
             .addInfo(EnumChatFormatting.GRAY + "Left click the PCB Factory controller with a data stick,")
             .addInfo(EnumChatFormatting.GRAY + "then right click this controller to link.")
             .addInfo(EnumChatFormatting.GRAY + "Can connect to many PCB Factories!")
-            .beginStructureBlock(12, 5, 7, true)
+            .beginStructureBlock(5, 7, 12, true)
             .addController("Front bottom center")
             .addCasing("72", "Any Tiered Glass", false)
             .addCasing("67", "Clean Stainless Steel Machine Casing", false)

@@ -156,7 +156,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
             .addInfo(
                 StatCollector
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip2"))
-            .beginStructureBlock(9, 9, 3, false)
+            .beginStructureBlock(9, 3, 9, false)
             .addController("Front bottom center")
             .addCasing(
                 "42",

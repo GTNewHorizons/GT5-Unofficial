@@ -203,7 +203,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
                     + "without outputting energy")
             .addInfo("The efficiency is up to 150%")
             .addSupportAny()
-            .beginStructureBlock(13, 7, 7, true)
+            .beginStructureBlock(7, 7, 13, true)
             .addController("Front center, 3rd layer")
             .addCasing("100-115", "Stable Titanium Machine Casing", false)
             .addCasing("72", "PTFE Frame Box", false)
