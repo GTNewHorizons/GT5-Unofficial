@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.SolidifierHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MASS_SOLIDIFIER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE_GLOW;
@@ -96,7 +97,8 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
         .addElement('a', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'b',
-            buildHatchAdder(MTEMassSolidifier.class).atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy)
+            buildHatchAdder(MTEMassSolidifier.class)
+                .atLeast(InputBus, OutputBus, InputHatch, SolidifierHatch, Maintenance, Energy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13))
                 .hint(1)
                 .buildAndChain(

@@ -26,6 +26,7 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchExtrusion;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
@@ -66,6 +67,11 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return ImmutableList
                 .of(MTEHatchInput.class, MTEHatchCraftingInputME.class, MTEHatchCraftingInputSlave.class);
+        }
+
+        @Override
+        public List<Class<? extends IMetaTileEntity>> mteBlacklist() {
+            return ImmutableList.of(MTEHatchSolidifier.class);
         }
     },
     InputBus("GT5U.MBTT.InputBus", MTEMultiBlockBase::addInputBusToMachineList, MTEHatchInputBus.class) {
@@ -210,6 +216,35 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
         public long count(MTEMultiBlockBase t) {
             return t.getFocusInputBuses()
                 .size();
+        }
+    },
+    SolidifierHatch("GT5U.MBTT.SolidiferHatch", MTEMultiBlockBase::addInputHatchToMachineList,
+        MTEHatchSolidifier.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.mInputHatches.stream()
+                .filter(it -> it instanceof MTEHatchSolidifier)
+                .count();
+        }
+    },
+    PatternProvider("GT5U.MBTT.PatternProviderBus", MTEMultiBlockBase::addInputBusToMachineList,
+        MTEHatchPatternProvider.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.mInputBusses.stream()
+                .filter(it -> it instanceof MTEHatchPatternProvider)
+                .count();
+        }
+    },
+    ExtrusionBus("GT5U.MBTT.ExtrusionBus", MTEMultiBlockBase::addInputBusToMachineList, MTEHatchExtrusion.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.mInputBusses.stream()
+                .filter(it -> it instanceof MTEHatchExtrusion)
+                .count();
         }
     };
 
