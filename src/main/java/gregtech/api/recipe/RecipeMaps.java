@@ -56,7 +56,6 @@ import bartworks.common.loaders.BioCultureLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -1287,7 +1286,7 @@ public final class RecipeMaps {
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
         .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STEAM)
         .recipeEmitter(b -> {
-            if (Materials.Graphite.contains(b.getItemInputBasic(0))) return Collections.emptyList();
+            if (MU.isPartOf(b.getItemInputBasic(0), Materials2Materials.Graphite)) return Collections.emptyList();
             if (GTUtility.isArrayOfLength(b.getItemInputsBasic(), 1)) {
                 ItemStack aInput1 = b.getItemInputBasic(0);
                 if (((OrePrefixes.ingot.contains(aInput1)) || (OrePrefixes.dust.contains(aInput1))
@@ -2266,7 +2265,7 @@ public final class RecipeMaps {
         .of("gt.recipe.multiblockrockbreaker")
         .maxIO(3, 3, 2, 0)
         .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
-        .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
+        .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { GTUtility.getWater(0), GTUtility.getLava(0) })
         .build();
 
     private static void addElectricImplosionRecipe(GTRecipeBuilder sourceBuilder) {
