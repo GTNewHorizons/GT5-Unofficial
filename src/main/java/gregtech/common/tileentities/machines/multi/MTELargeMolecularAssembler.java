@@ -11,6 +11,8 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +74,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -83,6 +86,7 @@ import gregtech.api.net.GTPacketLMACraftingFX;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTELargeMolecularAssemblerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -120,7 +124,8 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'C',
             ofChain(
-                buildHatchAdder(MTELargeMolecularAssembler.class).atLeast(Energy, InputBus, Maintenance)
+                buildHatchAdder(MTELargeMolecularAssembler.class)
+                    .atLeast(Energy, InputBus, LMAHatchElement.PatternProvider, Maintenance)
                     .casingIndex(CASING_INDEX)
                     .hint(1)
                     .build(),
@@ -819,6 +824,39 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
 
     public void setHiddenCraftingFX(boolean hiddenCraftingFX) {
         this.hiddenCraftingFX = hiddenCraftingFX;
+    }
+
+    private enum LMAHatchElement implements IHatchElement<MTELargeMolecularAssembler> {
+
+        PatternProvider(MTELargeMolecularAssembler::addInputBusToMachineList, MTEHatchPatternProvider.class) {
+
+            @Override
+            public long count(MTELargeMolecularAssembler t) {
+                return t.mInputBusses.stream()
+                    .filter(it -> it instanceof MTEHatchPatternProvider)
+                    .count();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTELargeMolecularAssembler> adder;
+
+        @SafeVarargs
+        LMAHatchElement(IGTHatchAdder<MTELargeMolecularAssembler> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTELargeMolecularAssembler> adder() {
+            return adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
     }
 
 }
