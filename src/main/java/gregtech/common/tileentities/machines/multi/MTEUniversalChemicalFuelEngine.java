@@ -44,9 +44,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -90,19 +88,6 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     public MTEUniversalChemicalFuelEngine(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
         super.useLongPower = true;
-    }
-
-    public final boolean addInputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchInput) {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mInputHatches.add((MTEHatchInput) aMetaTileEntity);
-            }
-        }
-        return false;
     }
 
     @Override
