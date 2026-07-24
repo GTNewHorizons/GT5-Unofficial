@@ -520,7 +520,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                     : formatNumber(baseCycleTime / 20.0) + " seconds"))
             .beginStructureBlock(3, 3, 7, false)
             .addController("Front bottom center")
-            .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
+            .addCasing("15", MU.legacyName(getFrameMaterial()) + " Frame Box", false)
             .addCasing("5-7", casings, false)
             .addEnergyHatch("1-2", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
             .addMaintenanceHatch("1", "Any bottom casing", 1)

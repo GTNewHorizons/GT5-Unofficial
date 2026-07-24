@@ -30,7 +30,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import goodgenerator.loader.Loaders;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
@@ -199,7 +198,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
             // Nanochip Mesh Interface Casing
             .addCasing("8", translateToLocal("gt.blockcasings12.1.name"), false)
             // Naquadah Alloy Sheetmetal
-            .addCasing("3", OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.NaquadahAlloy), false)
+            .addCasing("3", OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials2Materials.NaquadahAlloy), false)
             .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
             .addMiscHatch(
                 "0+",

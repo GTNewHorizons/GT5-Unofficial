@@ -1,7 +1,9 @@
 package gregtech.common.tileentities.machines.multi;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
@@ -26,8 +28,8 @@ public class MTEOilDrill1 extends MTEOilDrillBase {
     }
 
     @Override
-    protected Materials getFrameMaterial() {
-        return Materials.Steel;
+    protected Material getFrameMaterial() {
+        return Materials2Materials.Steel;
     }
 
     @Override

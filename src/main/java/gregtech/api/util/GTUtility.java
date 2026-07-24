@@ -2712,8 +2712,8 @@ public class GTUtility {
      * Check if stack has enough items of given gregtech material (will be oredicted) and subtract from stack, if
      * there's no creative or 111 stack.
      */
-    public static boolean consumeItems(EntityPlayer player, ItemStack stack, Materials mat, int count) {
-        if (stack != null && GTOreDictUnificator.getItemData(stack).mMaterial.mMaterial == MU.material(mat)
+    public static boolean consumeItems(EntityPlayer player, ItemStack stack, Material mat, int count) {
+        if (stack != null && GTOreDictUnificator.getItemData(stack).mMaterial.mMaterial == mat
             && stack.stackSize >= count) {
             if ((!player.capabilities.isCreativeMode) && (stack.stackSize != 111)) stack.stackSize -= count;
             return true;

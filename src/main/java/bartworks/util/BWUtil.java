@@ -46,7 +46,6 @@ import com.ruling_0.materiallib.api.Material;
 import bartworks.API.BorosilicateGlass;
 import bartworks.MainMod;
 import bartworks.system.material.Werkstoff;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -79,8 +78,10 @@ public class BWUtil {
         if (!ret.contains("%material")) return ret;
         String matname = "";
         if (BWUtil.checkStackAndPrefix(itemStack)) {
-            Materials legacyMaterial = MU.materialOf(GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial);
-            if (legacyMaterial != null) matname = legacyMaterial.getDefaultLocalName();
+            Material material = GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial;
+            // The materialOf gate keeps non-facade associations (werkstoff/gtpp reconstructions) rendering an
+            // empty material name, matching the legacy Materials lookup's miss for them.
+            if (MU.materialOf(material) != null) matname = MU.localName(material);
         }
         return ret.replace("%material", matname);
     }

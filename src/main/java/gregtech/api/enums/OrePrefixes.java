@@ -3196,6 +3196,18 @@ public class OrePrefixes {
         return material.getDefaultLocalizedNameForItem(getDefaultLocalNameFormatForItem(material.getInternalName()));
     }
 
+    /// [#getDefaultLocalNameForItem(Materials)] for a MaterialLib material: resolves the format by the legacy
+    /// internal name ([MU#internalName]) and substitutes the legacy default local name ([MU#localName]), the
+    /// same two strings the legacy overload reads from `mName`/`mDefaultLocalName`.
+    public String getDefaultLocalNameForItem(Material material) {
+        String format = getDefaultLocalNameFormatForItem(MU.internalName(material));
+        return GTUtility.formatStringSafe(
+            format.replace("%s", "%temp")
+                .replace("%material", "%s"),
+            MU.localName(material))
+            .replace("%temp", "%s");
+    }
+
     @SuppressWarnings("incomplete-switch")
     public String getDefaultLocalNameFormatForItem(String materialName) {
         // Certain Materials have slightly different Localizations.

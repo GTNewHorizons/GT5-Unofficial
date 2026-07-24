@@ -14,8 +14,8 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -70,14 +70,14 @@ public class GregtechHiAmpTransformer {
             GregtechItemList.Transformer_HA_MV_LV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { " BB", "CM ", " BB", 'M', ItemList.Transformer_MV_LV, 'C',
-                OrePrefixes.wireGt04.ingredient(Materials.AnyCopper), 'B',
+                OrePrefixes.wireGt04.ingredient(Materials2Markers.AnyCopper), 'B',
                 OrePrefixes.wireGt04.ingredient(Materials2Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_HV_MV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { " BB", "CM ", " BB", 'M', ItemList.Transformer_HV_MV, 'C',
                 OrePrefixes.wireGt04.ingredient(Materials2Materials.Gold), 'B',
-                OrePrefixes.wireGt04.ingredient(Materials.AnyCopper) });
+                OrePrefixes.wireGt04.ingredient(Materials2Markers.AnyCopper) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_EV_HV.get(1L),
             GTModHandler.RecipeBits.BITS,

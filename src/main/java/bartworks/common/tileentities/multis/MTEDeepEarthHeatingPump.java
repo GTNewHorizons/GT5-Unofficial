@@ -29,10 +29,11 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -135,8 +136,8 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    protected Materials getFrameMaterial() {
-        return Materials.Tungsten;
+    protected Material getFrameMaterial() {
+        return Materials2Materials.Tungsten;
     }
 
     @Override

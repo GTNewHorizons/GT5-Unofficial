@@ -5,10 +5,13 @@ import static gregtech.api.enums.GTValues.VN;
 
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -44,8 +47,8 @@ public class MTEOilDrillInfiniteLegacy extends MTEOilDrillBase {
     }
 
     @Override
-    protected Materials getFrameMaterial() {
-        return Materials.Neutronium;
+    protected Material getFrameMaterial() {
+        return Materials2Materials.Neutronium;
     }
 
     @Override
@@ -91,7 +94,9 @@ public class MTEOilDrillInfiniteLegacy extends MTEOilDrillBase {
             .addController("Front bottom center")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base")
-            .addOtherStructurePart(getFrameMaterial().mName + " Frame Box", "Each pillar's side and 1x3x1 on top")
+            .addOtherStructurePart(
+                MU.legacyName(getFrameMaterial()) + " Frame Box",
+                "Each pillar's side and 1x3x1 on top")
             .addEnergyHatch("1x " + VN[getMinTier()] + "+, any base Casing", 1)
             .addMaintenanceHatch("Any base Casing", 1)
             .addInputBus("Mining Pipes or Circuits, optional, any base Casing", 1)
