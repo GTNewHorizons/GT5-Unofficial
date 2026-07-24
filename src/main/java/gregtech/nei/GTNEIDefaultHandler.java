@@ -71,7 +71,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
 
 public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
@@ -250,7 +249,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             }
         }
         if (aResult != null) {
-            List<ItemStack> ccRepresentations = CCNEIRepresentation.NEI_RECIPE_ASSOCIATIONS.get(aResult);
+            List<ItemStack> ccRepresentations = GTNEIAssociations.NEI_RECIPE_ASSOCIATIONS.get(aResult);
             if (ccRepresentations != null) {
                 tResults.addAll(ccRepresentations);
             }
@@ -261,27 +260,31 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 tResults.add(new ItemStack(aResult.getItem(), 1, aResult.getItemDamage() % 1000 + i * 1000));
             }
         }
-        addFluidStacks(aResult, tResults);
+        tResults.addAll(getFluidStacksFromItems(aResult));
         for (CachedDefaultRecipe recipe : getCache()) {
             if (tResults.stream()
                 .anyMatch(stack -> recipe.contains(recipe.mOutputs, stack))) arecipes.add(recipe);
         }
     }
 
-    private void addFluidStacks(ItemStack aStack, ArrayList<ItemStack> tResults) {
+    private List<ItemStack> getFluidStacksFromItems(ItemStack aStack) {
         FluidStack tFluid = GTUtility.getFluidForFilledItem(aStack, true);
         FluidStack tFluidStack;
 
+        List<ItemStack> result = new ArrayList<>();
+
         if (tFluid != null) {
             tFluidStack = tFluid;
-            tResults.add(GTUtility.getFluidDisplayStack(tFluid, FluidDisplayStackMode.HIDDEN));
+            result.add(GTUtility.getFluidDisplayStack(tFluid, FluidDisplayStackMode.HIDDEN));
         } else {
             tFluidStack = GTUtility.getFluidFromDisplayStack(aStack);
         }
 
         if (tFluidStack != null) {
-            tResults.addAll(GTUtility.getContainersFromFluid(tFluidStack));
+            result.addAll(GTUtility.getContainersFromFluid(tFluidStack));
         }
+
+        return result;
     }
 
     private void loadTieredRecipesWithCustomFilter(OverclockDescriber overclockDescriber) {
@@ -323,12 +326,17 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             }
         }
         if (aInput != null) {
-            List<ItemStack> ccRepresentations = CCNEIRepresentation.NEI_USAGE_ASSOCIATIONS.get(aInput);
+            List<ItemStack> ccRepresentations = GTNEIAssociations.NEI_USAGE_ASSOCIATIONS.get(aInput);
             if (ccRepresentations != null) {
                 tInputs.addAll(ccRepresentations);
             }
         }
-        addFluidStacks(aInput, tInputs);
+        List<ItemStack> fluidStacks = getFluidStacksFromItems(aInput);
+        tInputs.addAll(fluidStacks);
+        for (ItemStack expanded : fluidStacks) {
+            List<ItemStack> assoc = GTNEIAssociations.NEI_USAGE_ASSOCIATIONS.get(expanded);
+            if (assoc != null) tInputs.addAll(assoc);
+        }
         for (CachedDefaultRecipe recipe : getCache()) {
             if (tInputs.stream()
                 .anyMatch(stack -> recipe.contains(recipe.mInputs, stack))) arecipes.add(recipe);
