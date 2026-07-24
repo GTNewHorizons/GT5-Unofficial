@@ -111,7 +111,11 @@ public final class OreManager {
         if (material instanceof Material ml) material = MU.legacyMaterialOf(ml);
 
         try (OreInfo<?> info = getOreInfo(world, x, y, z)) {
-            return info != null && info.isNatural && info.isSmall == small && info.material == material;
+            if (info == null || !info.isNatural || info.isSmall != small) return false;
+            // The GT family's OreInfo material is a MaterialLib Material; map it back to the same legacy family
+            // object the requested material was normalized to (above) so the identity comparison holds.
+            Object placed = info.material instanceof Material ml ? MU.legacyMaterialOf(ml) : info.material;
+            return placed == material;
         }
     }
 
@@ -218,9 +222,15 @@ public final class OreManager {
         return getMaterial(itemBlock.field_150939_a, Items.feather.getDamage(stack));
     }
 
+    /// The legacy-family material object (`Materials`, `Werkstoff`, or gtPlusPlus `Material`) that owns the ore
+    /// at this block+meta, or null. The GT family's [OreInfo#material] is a MaterialLib [Material], so it is
+    /// mapped back to its legacy family object via [MU#legacyMaterialOf]; callers that compare this against the
+    /// worldgen spine's own [MU#legacyMaterialOf]-derived values (the NEI ore-vein tables, prospecting) keep
+    /// matching by identity.
     public static Object getMaterial(Block block, int meta) {
         try (OreInfo<?> info = getOreInfo(block, meta)) {
-            return info == null ? null : info.material;
+            if (info == null) return null;
+            return info.material instanceof Material ml ? MU.legacyMaterialOf(ml) : info.material;
         }
     }
 

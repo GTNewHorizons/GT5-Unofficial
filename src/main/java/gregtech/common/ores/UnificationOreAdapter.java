@@ -26,11 +26,10 @@ import com.ruling_0.materiallib.api.Material;
 import bartworks.system.material.BWMetaGeneratedOres;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.GTLoggers;
-import gregtech.api.enums.Materials;
+import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
-import gregtech.api.material.MU;
 import gregtech.common.GTMockWorld;
 import gregtech.common.blocks.GTBlockOre;
 import gregtech.loaders.materials.LegacyNameDomain;
@@ -38,7 +37,7 @@ import gtPlusPlus.core.block.base.BlockBaseOre;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
-public class UnificationOreAdapter implements IOreAdapter<Materials> {
+public class UnificationOreAdapter implements IOreAdapter<Material> {
 
     private static final ImmutableList<OrePrefixes> ORE_ORE_PREFIXES = Arrays.stream(OrePrefixes.VALUES)
         .filter(
@@ -49,9 +48,9 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
 
     public static final UnificationOreAdapter INSTANCE = new UnificationOreAdapter();
 
-    private static final Table<OrePrefixes, Materials, ImmutableBlockMeta> BLOCK_TABLE = HashBasedTable.create();
+    private static final Table<OrePrefixes, Material, ImmutableBlockMeta> BLOCK_TABLE = HashBasedTable.create();
 
-    private static final Object2ObjectOpenHashMap<ImmutableBlockMeta, Pair<OrePrefixes, Materials>> MAT_BLOCK_TABLE = new Object2ObjectOpenHashMap<>();
+    private static final Object2ObjectOpenHashMap<ImmutableBlockMeta, Pair<OrePrefixes, Material>> MAT_BLOCK_TABLE = new Object2ObjectOpenHashMap<>();
 
     private static boolean initialized = false;
 
@@ -60,8 +59,8 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
     }
 
     /// Runs the {@link #init()} full-oredict scan directly, for ores registered before
-    /// {@link GTMod#sMaterialsReady} was set (when {@link #onOreRegistered} ignored their event because
-    /// touching {@link Materials} was not yet safe). Called once from GT's preInit, right after that flag
+    /// {@link GTMod#sMaterialsReady} was set (when {@link #onOreRegistered} ignored their event because the
+    /// legacy material facade was not yet safe to touch). Called once from GT's preInit, right after that flag
     /// flips; a no-op if {@link #onOreRegistered} already ran {@link #init()} for a later event by then.
     public static void catchUp() {
         if (!initialized) {
@@ -108,12 +107,10 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
 
             if (ml == null) continue;
 
-            // The tables stay facade-keyed: OreInfo<Materials> is this adapter's IOreAdapter contract, so
-            // only the name lookup runs through the domain seam.
-            Materials mat = MU.materialOf(ml);
-
-            BLOCK_TABLE.put(ore, mat, bm);
-            MAT_BLOCK_TABLE.put(bm, Pair.of(ore, mat));
+            // The name lookup runs through the LegacyNameDomain seam; the tables key on the MaterialLib
+            // material directly, matching this adapter's OreInfo<Material> contract.
+            BLOCK_TABLE.put(ore, ml, bm);
+            MAT_BLOCK_TABLE.put(bm, Pair.of(ore, ml));
         }
     }
 
@@ -141,8 +138,6 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
 
                 if (ml == null) continue;
 
-                Materials mat = MU.materialOf(ml);
-
                 for (ItemStack ore : OreDictionary.getOres(name)) {
                     if (!(ore.getItem() instanceof ItemBlock itemBlock)) return;
 
@@ -152,8 +147,8 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
 
                     ImmutableBlockMeta bm = new BlockMeta(block, itemBlock.getMetadata(ore.getItemDamage()));
 
-                    BLOCK_TABLE.put(prefix, mat, bm);
-                    MAT_BLOCK_TABLE.put(bm, Pair.of(prefix, mat));
+                    BLOCK_TABLE.put(prefix, ml, bm);
+                    MAT_BLOCK_TABLE.put(bm, Pair.of(prefix, ml));
                 }
             }
         }
@@ -178,15 +173,15 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
     }
 
     @Override
-    public OreInfo<Materials> getOreInfo(Block block, int meta) {
+    public OreInfo<Material> getOreInfo(Block block, int meta) {
         pooled.setBlock(block);
         pooled.setBlockMeta(meta);
 
-        Pair<OrePrefixes, Materials> pair = MAT_BLOCK_TABLE.get(pooled);
+        Pair<OrePrefixes, Material> pair = MAT_BLOCK_TABLE.get(pooled);
 
         if (pair == null) return null;
 
-        OreInfo<Materials> info = OreInfo.getNewInfo();
+        OreInfo<Material> info = OreInfo.getNewInfo();
 
         info.stoneType = StoneType.findStoneTypeByPrefix(pair.left());
         if (info.stoneType == null) info.stoneType = StoneType.Stone;

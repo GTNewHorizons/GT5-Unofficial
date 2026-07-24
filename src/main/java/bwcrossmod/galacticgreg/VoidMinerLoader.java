@@ -7,6 +7,7 @@ import bartworks.system.material.Werkstoff;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.StoneType;
+import gregtech.api.material.MU;
 import gregtech.common.config.Gregtech;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
@@ -27,13 +28,18 @@ public class VoidMinerLoader {
     }
 
     private static void initGT() {
-        OreInfo<Materials> info = OreInfo.getNewInfo();
+        OreInfo<com.ruling_0.materiallib.api.Material> info = OreInfo.getNewInfo();
         info.stoneType = StoneType.Stone;
         info.isSmall = false;
 
         var weights = parseWeights(Gregtech.voidMiners.gregtechWeightsDD);
 
-        for (Materials mat : Materials.getAll()) {
+        // Materials.getAll() stays as the interim enumeration seam; the drop map and the GT ore adapter both key
+        // on the MaterialLib material, so the descriptor and the entry added are ML-typed.
+        for (Materials legacy : Materials.getAll()) {
+            com.ruling_0.materiallib.api.Material mat = MU.material(legacy);
+            if (mat == null) continue;
+
             info.material = mat;
 
             if (!GTOreAdapter.INSTANCE.supports(info)) continue;
@@ -41,7 +47,7 @@ public class VoidMinerLoader {
             VoidMinerUtility.addMaterialToDimensionList(
                 DimensionDef.DimNames.DEEPDARK,
                 mat,
-                weights.getFloat(mat.getInternalName()));
+                weights.getFloat(legacy.getInternalName()));
         }
 
         info.release();
