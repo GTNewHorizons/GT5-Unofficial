@@ -354,7 +354,7 @@ public class MTEExoticModule extends MTEBaseModule {
             ItemData association = GTOreDictUnificator.getAssociation(itemStack);
             Material material = association == null || association.mMaterial == null
                 || association.mMaterial.mMaterial == null ? null : association.mMaterial.mMaterial;
-            if (material == null || MU.materialOf(material) == null) {
+            if (material == null || !MU.isLegacyNamed(material)) {
                 GTLog.err.println("MTEExoticModule.convertItemToPlasma: no unification data for " + itemStack);
                 continue;
             }

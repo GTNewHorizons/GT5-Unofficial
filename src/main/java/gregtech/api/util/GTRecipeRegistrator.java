@@ -177,8 +177,7 @@ public class GTRecipeRegistrator {
             || GTUtility.areStacksEqual(new ItemStack(Blocks.obsidian), stack)
             || data == null
             || !data.hasValidMaterialData()
-            || (MU.materialOf(data.mMaterial.mMaterial) instanceof Materials primary
-                && !primary.mAutoGenerateRecycleRecipes)
+            || !MU.autoGenerateRecycleRecipes(data.mMaterial.mMaterial)
             || data.mMaterial.mAmount <= 0
             || GTUtility.getFluidForFilledItem(stack, false) != null) return;
         registerReverseMacerating(GTUtility.copyAmount(1, stack), data, data.mPrefix == null, true);
@@ -347,14 +346,13 @@ public class GTRecipeRegistrator {
         if (!data.hasValidMaterialData()) return;
 
         Material primary = data.mMaterial.mMaterial;
-        if ((MU.materialOf(primary) != null || !primary.getShapes()
+        if ((MU.isLegacyNamed(primary) || !primary.getShapes()
             .isEmpty()) && MU.hasFlag(primary, GTMaterialFlag.NO_RECYCLING_RECIPES)) return;
 
         boolean isRecycle = true;
 
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            Materials material = MU.materialOf(tMaterial.mMaterial);
-            if (material == null && tMaterial.mMaterial.getShapes()
+            if (!MU.isLegacyNamed(tMaterial.mMaterial) && tMaterial.mMaterial.getShapes()
                 .isEmpty()) {
                 // An unbacked RecognitionMaterials/LegacyMarkerMaterials marker's shapeless wildcard backing
                 // never defaults to smelting into itself: unlike a shaped material, it only has an arc-smelting
@@ -420,7 +418,7 @@ public class GTRecipeRegistrator {
 
         long tAmount = 0;
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            boolean shapeless = MU.materialOf(tMaterial.mMaterial) == null && tMaterial.mMaterial.getShapes()
+            boolean shapeless = !MU.isLegacyNamed(tMaterial.mMaterial) && tMaterial.mMaterial.getShapes()
                 .isEmpty();
             tAmount += tMaterial.mAmount * (shapeless ? 0 : MU.mass(tMaterial.mMaterial));
         }
@@ -542,7 +540,7 @@ public class GTRecipeRegistrator {
         if (!data.hasValidMaterialData()) return;
 
         for (MaterialStack tMaterial : data.getAllMaterialStacks())
-            if (MU.materialOf(tMaterial.mMaterial) != null) tMaterial.mMaterial = MU.macerateInto(tMaterial.mMaterial);
+            if (MU.isLegacyNamed(tMaterial.mMaterial)) tMaterial.mMaterial = MU.macerateInto(tMaterial.mMaterial);
 
         data = new ItemData(data);
 
@@ -550,8 +548,7 @@ public class GTRecipeRegistrator {
 
         long tAmount = 0;
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            if (MU.materialOf(tMaterial.mMaterial) instanceof Materials material)
-                tAmount += tMaterial.mAmount * material.getMass();
+            if (MU.isLegacyNamed(tMaterial.mMaterial)) tAmount += tMaterial.mAmount * MU.mass(tMaterial.mMaterial);
         }
 
         {
@@ -583,9 +580,8 @@ public class GTRecipeRegistrator {
         }
 
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            if (MU.materialOf(tMaterial.mMaterial) instanceof Materials material
-                && MU.hasFlag(material, GTMaterialFlag.CRYSTAL)
-                && !MU.hasFlag(material, GTMaterialFlag.METAL)
+            if (MU.isLegacyNamed(tMaterial.mMaterial) && MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.CRYSTAL)
+                && !MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.METAL)
                 && tMaterial.mMaterial != Materials2Materials.Glass
                 && GTOreDictUnificator.getDust(data.mMaterial) != null) {
                 GTValues.RA.stdBuilder()

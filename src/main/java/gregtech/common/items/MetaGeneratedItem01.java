@@ -496,7 +496,6 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
@@ -4098,8 +4097,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         // Materials has a plasma fluid
         FluidStack plasma = MU.plasma(aMaterial, 1L);
         if (aPrefix == OrePrefixes.cellPlasma && plasma != null) {
-            Materials legacy = MU.materialOf(aMaterial);
-            if (legacy != null && legacy.hasPlasma()) return true;
+            if (MU.hasPlasma(aMaterial)) return true;
             // Loop through fusion recipes
             for (GTRecipe recipe : RecipeMaps.fusionRecipes.getAllRecipes()) {
                 // Make sure fluid output can't be null (not sure if possible)

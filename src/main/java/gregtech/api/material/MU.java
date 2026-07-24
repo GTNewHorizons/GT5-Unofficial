@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
@@ -322,6 +323,16 @@ public class MU {
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
+    /// The legacy `Materials#hasPlasma()`/`mGeneratePlasma` flag for a material -- whether
+    /// [GTMaterialProperties#GENERATION_FLAGS] carries [GTMaterialGenerationFlag#PLASMA], the exact flag
+    /// `LegacyMaterials#build` feeds `MaterialBuilder#addPlasma` (which sets `mGeneratePlasma`) from. Absent
+    /// flags mirror `mGeneratePlasma`'s own `false` default.
+    public static boolean hasPlasma(@Nullable Material material) {
+        if (material == null) return false;
+        EnumSet<GTMaterialGenerationFlag> flags = material.getProperty(GTMaterialProperties.GENERATION_FLAGS);
+        return flags != null && flags.contains(GTMaterialGenerationFlag.PLASMA);
+    }
+
     /// [#fluid], for `Materials#mSolid`/`Materials#getSolid` -- the `solid()` slot.
     public static @Nullable FluidStack solid(@Nullable Material material, long amount) {
         Fluid fluid = resolveSlotFluid(material, FluidState.SOLID, FluidNames::solid);
@@ -392,6 +403,16 @@ public class MU {
         if (material == null) return null;
         return Materials.getMaterialsMap()
             .get(internalName(material));
+    }
+
+    /// Whether `material` belongs to the legacy name domain -- the [Material]-side existence predicate the
+    /// control-flow gates use when they only need to know whether a material has a legacy [Materials]
+    /// counterpart, not the counterpart object itself (the reverse-recipe, element-scan, and
+    /// plasma/molten conversion loops that must skip reconstructed werkstoff/gtpp materials). Backed today by
+    /// [#materialOf] being non-null; its backing freezes to [gregtech.loaders.materials.LegacyNameDomain]'s
+    /// frozen table once the legacy facade is deleted, the same pattern that class uses.
+    public static boolean isLegacyNamed(@Nullable Material material) {
+        return materialOf(material) != null;
     }
 
     /// The crafting-table ingredient a legacy `OrePrefixes.get(Materials)` call produced, built directly from the
@@ -523,6 +544,14 @@ public class MU {
             && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE));
     }
 
+    /// The legacy `Materials#canBeCracked()`/`mCanBeCracked` flag for a material, from
+    /// [GTMaterialProperties#CAN_BE_CRACKED] -- absent mirrors `mCanBeCracked`'s own `false` default.
+    /// `LegacyMaterials#build` feeds this exact property through `MaterialBuilder#addCrackingRecipes` (which
+    /// sets `mCanBeCracked`) when present.
+    public static boolean canBeCracked(@Nullable Material material) {
+        return material != null && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.CAN_BE_CRACKED));
+    }
+
     /// The legacy `Materials#mColor` [Dyes] for a material, from [GTMaterialProperties#DYE] -- or [Dyes#_NULL]
     /// when absent, mirroring `mColor`'s own default (and, since [Dyes#_NULL]'s name never matches a real lens
     /// ore-dict suffix, its practical never-generates behavior).
@@ -546,6 +575,19 @@ public class MU {
     public static boolean autoGenerateVacuumFreezerRecipes(@Nullable Material material) {
         if (material == null) return true;
         Boolean value = material.getProperty(GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES);
+        return value == null || value;
+    }
+
+    /// The legacy `Materials#mAutoGenerateRecycleRecipes` flag for a material, from
+    /// [GTMaterialProperties#AUTO_RECYCLE_RECIPES] -- `true` when absent, mirroring the field's own default
+    /// (`LegacyMaterials#build` only overrides it when the property is present).
+    /// [GTMaterialProperties#AUTO_RECYCLE_RECIPES] is a gregtech-dump-only property, so any material carrying
+    /// it also has a legacy [Materials] counterpart;
+    /// a reverse-recipe gate that skipped only counterpart-bearing materials with the flag unset therefore
+    /// stays byte-identical when it reads this predicate directly.
+    public static boolean autoGenerateRecycleRecipes(@Nullable Material material) {
+        if (material == null) return true;
+        Boolean value = material.getProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES);
         return value == null || value;
     }
 
@@ -631,6 +673,50 @@ public class MU {
         if (material == null) return 1.0f;
         Float toolSpeed = material.getProperty(GTMaterialProperties.TOOL_SPEED);
         return toolSpeed == null ? 1.0f : toolSpeed;
+    }
+
+    /// The legacy `Materials#getToolEnchantment()`/`mToolEnchantment` for a material -- the [Enchantment]
+    /// named by [GTMaterialProperties#TOOL_ENCHANTMENT], resolved by the same unlocalized-name lookup
+    /// `LegacyMaterials#findEnchantment` performs against `Enchantment#enchantmentsList` (the property stores
+    /// the `Enchantment#getName` string `MaterialDataDump` captured). Null when the material has no tool
+    /// enchantment, mirroring `mToolEnchantment`'s own null default.
+    public static @Nullable Enchantment getToolEnchantment(@Nullable Material material) {
+        if (material == null) return null;
+        return findEnchantment(material.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT));
+    }
+
+    /// The legacy `Materials#getToolEnchantmentLevel()`/`mToolEnchantmentLevel` for a material, from
+    /// [GTMaterialProperties#TOOL_ENCHANTMENT_LEVEL]. `LegacyMaterials#build` reads the level only alongside a
+    /// [GTMaterialProperties#TOOL_ENCHANTMENT] name (defaulting `1` there), leaving `MaterialBuilder`'s own
+    /// `1` default when no enchantment is set -- so this returns `1` whenever the name is absent, matching the
+    /// field every material carries.
+    public static int getToolEnchantmentLevel(@Nullable Material material) {
+        if (material == null || material.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT) == null) return 1;
+        Integer level = material.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT_LEVEL);
+        return level == null ? 1 : level;
+    }
+
+    /// [#getToolEnchantment], for `Materials#getArmorEnchantment()`/`mArmorEnchantment` /
+    /// [GTMaterialProperties#ARMOR_ENCHANTMENT].
+    public static @Nullable Enchantment getArmorEnchantment(@Nullable Material material) {
+        if (material == null) return null;
+        return findEnchantment(material.getProperty(GTMaterialProperties.ARMOR_ENCHANTMENT));
+    }
+
+    /// [#getToolEnchantmentLevel], for `Materials#getArmorEnchantmentLevel()`/`mArmorEnchantmentLevel` /
+    /// [GTMaterialProperties#ARMOR_ENCHANTMENT_LEVEL].
+    public static int getArmorEnchantmentLevel(@Nullable Material material) {
+        if (material == null || material.getProperty(GTMaterialProperties.ARMOR_ENCHANTMENT) == null) return 1;
+        Integer level = material.getProperty(GTMaterialProperties.ARMOR_ENCHANTMENT_LEVEL);
+        return level == null ? 1 : level;
+    }
+
+    private static @Nullable Enchantment findEnchantment(@Nullable String unlocalizedName) {
+        if (unlocalizedName == null) return null;
+        for (Enchantment enchantment : Enchantment.enchantmentsList) {
+            if (enchantment != null && unlocalizedName.equals(enchantment.getName())) return enchantment;
+        }
+        return null;
     }
 
     /// The legacy `Materials#mHeatDamage` for a material, or `0` if unset -- mirrors `MaterialBuilder`'s own
