@@ -9097,6 +9097,13 @@ GT5U.tooltip.bec-assembler.hatch-pos=Any electromagnetically-isolated casing
 GT5U.tooltip.bec-assembler.bec-hatch-pos=Center left or right casing
 GT5U.tooltip.bec-assembler.los-hatch-pos=Center side casing of each ring
 
+# Large Essentia Smeltery Structure Hints
+GT5U.tooltip.large-essentia-smeltery.machine-type=Essentia Smeltery, LES
+GT5U.tooltip.large-essentia-smeltery.controller-pos=Front center, 3rd layer
+GT5U.tooltip.large-essentia-smeltery.hatch-pos=Any magic casing
+GT5U.tooltip.large-essentia-smeltery.muffler-pos=Top center casings
+GT5U.tooltip.large-essentia-smeltery.output-hatch-name=Essentia Output Hatch
+
 # BEC Settings
 GT5U.gui.text.bec-filter=Filter
 GT5U.gui.text.bec-operation=Operation

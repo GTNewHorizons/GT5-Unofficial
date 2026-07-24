@@ -232,23 +232,39 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Essentia Smeltery, LES")
+        tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.large-essentia-smeltery.machine-type"))
             .addMarkdown(new ResourceLocation("gregtech", "large-essentia-smeltery"))
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(5, 5, 5, 5, 5, 9, true)
-            .addController("Front center, 3rd layer")
-            .addCasing("24-84", "Magic Casing", false)
-            .addCasing("12-28", "Essentia Diffusion Cell", true)
-            .addCasing("6-14", "Warded Glass", false)
-            .addCasing("3-7", "Thaumium Alchemical Furnace", false)
-            .addCasing("3-7", "Essentia Filter Casing", false)
-            .addEnergyHatch("1+", "Any magic casing", 1)
-            .addMaintenanceHatch("1", "Any magic casing", 1)
-            .addMufflerHatch("3-7", "Top center casings", 2)
-            .addInputAny("1+", "Any magic casing", 1)
-            .addMiscHatch("1+", "Essentia Output Hatch", "Any magic casing", 1)
-            .addAir("Interior of the structure")
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.large-essentia-smeltery.controller-pos"))
+            .addCasing("24-84", Loaders.magicCasing.getLocalizedName(), false)
+            .addCasing("12-28", Loaders.essentiaCell.getLocalizedName(), true)
+            .addCasing("6-14", new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 2).getDisplayName(), false)
+            .addCasing(
+                "3-7",
+                ThaumicBases.isModLoaded()
+                    ? new ItemStack(Objects.requireNonNull(Block.getBlockFromName("thaumicbases:advAlchFurnace")), 1, 0)
+                        .getDisplayName()
+                    : new ItemStack(ConfigBlocks.blockStoneDevice, 1, 0).getDisplayName(),
+                false)
+            .addCasing("3-7", Loaders.essentiaFilterCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.large-essentia-smeltery.hatch-pos"), 1)
+            .addMaintenanceHatch(
+                "1",
+                StatCollector.translateToLocal("GT5U.tooltip.large-essentia-smeltery.hatch-pos"),
+                1)
+            .addMufflerHatch(
+                "3-7",
+                StatCollector.translateToLocal("GT5U.tooltip.large-essentia-smeltery.muffler-pos"),
+                2)
+            .addInputAny("1+", StatCollector.translateToLocal("GT5U.tooltip.large-essentia-smeltery.hatch-pos"), 1)
+            .addMiscHatch(
+                "1+",
+                StatCollector.translateToLocal("GT5U.tooltip.large-essentia-smeltery.output-hatch-name"),
+                StatCollector.translateToLocal("GT5U.tooltip.large-essentia-smeltery.hatch-pos"),
+                1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();

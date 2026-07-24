@@ -7274,6 +7274,9 @@ GT5U.tooltip.drone_remote_disconnected=Shift-right-click an active Drone Centre 
 GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
 GT5U.tooltip.drone_remote_not_found=Дрон-станция: x: %s y: %s z: %s в dim%s не найдена!
 
+GT5U.tooltip.large-essentia-smeltery.machine-type=Плавильня эссенции, LES
+GT5U.tooltip.large-essentia-smeltery.output-hatch-name=Выходной шлюз эссенции
+
 # info data
 GT5U.infodata.no_network=Нет сети
 GT5U.infodata.battery_buffer.stored_items=Stored Items: %s EU / %s EU
