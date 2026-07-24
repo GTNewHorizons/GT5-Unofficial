@@ -3,9 +3,7 @@ package gregtech.loaders.materials;
 import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
-
-import gregtech.api.enums.Materials;
-import gregtech.api.material.MU;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 /// The legacy material name domain: the single by-name resolution seam for every consumer that used to call
 /// `Materials.get(name)` and branch on its `_NULL` sentinel (`GTProxy`'s ore-dictionary dispatch, the
@@ -14,23 +12,21 @@ import gregtech.api.material.MU;
 /// backings, sanitized MaterialLib registration names), which would reroute the callers' miss paths -- most
 /// critically the recognition-marker fallback in `GTProxy#registerOre`.
 ///
-/// Implemented today as the exact composition of `Materials.get(name)` with [MU#material]: a
-/// `Materials.getMaterialsMap()` hit resolves to its MaterialLib counterpart, and a miss -- `_NULL`,
-/// including a literal `"NULL"` lookup, which every `Materials.get` caller likewise treated as a miss -- maps
-/// to null. The deletion step swaps this backing to a frozen generated name -> material table with the
-/// identical domain (the exact facade `mName` strings, including the `LEGACY_NAME` divergents). A facade
-/// registered at runtime without a MaterialLib counterpart (a third-party `MaterialBuilder` construction)
-/// resolves to a miss here; the frozen table draws the same GT-owned boundary.
+/// Backed by [LegacyNameDomainTable], a frozen generated name -> MaterialLib-name table with the exact domain
+/// the former `Materials.getMaterialsMap()` carried (every facade `mName`, including the `LEGACY_NAME`
+/// divergents). A name in the domain resolves to its MaterialLib counterpart; every other name -- what
+/// `Materials.get` returned its `_NULL` miss sentinel for, including a literal `"NULL"` and any third-party
+/// `MaterialBuilder` construction with no MaterialLib counterpart -- resolves to null, drawing the same
+/// GT-owned boundary the composition of `Materials.get` with [MU#material] drew.
 public final class LegacyNameDomain {
 
     private LegacyNameDomain() {}
 
-    /// The MaterialLib material `name` resolves to in the legacy name domain, or null exactly when
-    /// `Materials.get(name)` yields its `_NULL` miss sentinel.
+    /// The MaterialLib material `name` resolves to in the legacy name domain, or null when `name` is outside
+    /// the frozen domain (the former `Materials.get` `_NULL` miss).
     public static @Nullable Material lookup(@Nullable String name) {
         if (name == null) return null;
-        Materials legacy = Materials.get(name);
-        if (legacy == Materials._NULL) return null;
-        return MU.material(legacy);
+        String mlName = LegacyNameDomainTable.DOMAIN.get(name);
+        return mlName == null ? null : MaterialLibAPI.getMaterial("gregtech", mlName);
     }
 }
