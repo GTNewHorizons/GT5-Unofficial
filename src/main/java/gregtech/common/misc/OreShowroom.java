@@ -44,7 +44,7 @@ final class OreShowroom {
 
     private OreShowroom() {}
 
-    static void process(EntityPlayerMP player, String[] args) {
+    static void process(EntityPlayerMP player, boolean confirm) {
         List<Aisle> aisles = collectAisles();
         if (aisles.isEmpty()) {
             tell(player, EnumChatFormatting.RED + "No registered ore showroom displays were found.");
@@ -57,7 +57,7 @@ final class OreShowroom {
             return;
         }
 
-        if (args.length != 2 || !"confirm".equalsIgnoreCase(args[1])) {
+        if (!confirm) {
             int displayCount = aisles.stream()
                 .map(Aisle::materials)
                 .mapToInt(List::size)
@@ -92,7 +92,7 @@ final class OreShowroom {
                     + ", "
                     + originZ
                     + "; the aisles are centered around your Z position and build toward +X. The StoneType pads will be replaced and the entire four-block-high footprint cleared.");
-            tell(player, EnumChatFormatting.GOLD + "Run /gt ore-showroom confirm without moving to generate it.");
+            tell(player, EnumChatFormatting.GOLD + "Run /gtdebug ore-showroom confirm without moving to generate it.");
             return;
         }
 
