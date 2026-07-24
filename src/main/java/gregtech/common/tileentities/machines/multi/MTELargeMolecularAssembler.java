@@ -122,7 +122,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             'C',
             ofChain(
                 buildHatchAdder(MTELargeMolecularAssembler.class)
-                    .atLeast(Energy, InputBus, PatternProvider, Maintenance)
+                    .atLeast(Energy, PatternProvider.or(InputBus), Maintenance)
                     .casingIndex(CASING_INDEX)
                     .hint(1)
                     .build(),

@@ -98,7 +98,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
         .addElement(
             'b',
             buildHatchAdder(MTEMassSolidifier.class)
-                .atLeast(InputBus, OutputBus, InputHatch, SolidifierHatch, Maintenance, Energy)
+                .atLeast(InputBus, OutputBus, InputHatch.or(SolidifierHatch), Maintenance, Energy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13))
                 .hint(1)
                 .buildAndChain(

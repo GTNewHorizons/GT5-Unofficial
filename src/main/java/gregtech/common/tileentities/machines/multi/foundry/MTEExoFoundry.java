@@ -214,7 +214,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement(
             'H',
-            buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch, SolidifierHatch, OutputBus, InputBus, Energy.or(ExoticEnergy))
+            buildHatchAdder(MTEExoFoundry.class).atLeast(SolidifierHatch.or(InputHatch), OutputBus, InputBus, Energy.or(ExoticEnergy))
                 .hint(1)
                 .casingIndex(((BlockCasingsFoundry) GregTechAPI.sBlockCasingsFoundry).getTextureIndex(0))
                 .buildAndChain(

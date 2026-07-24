@@ -117,7 +117,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
         .addElement(
             'B',
             buildHatchAdder(MTEFluidShaper.class)
-                .atLeast(InputBus, InputHatch, SolidifierHatch, OutputBus, Maintenance, Energy)
+                .atLeast(InputBus, InputHatch.or(SolidifierHatch), OutputBus, Maintenance, Energy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13))
                 .hint(1)
                 .buildAndChain(onElementPass(MTEFluidShaper::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
