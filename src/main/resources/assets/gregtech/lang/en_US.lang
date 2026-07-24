@@ -1710,6 +1710,7 @@ gt.mbtt.structure.min_tiered_glass=%s+ Tiered Glass
 gt.mbtt.structure.any_bottom_casing=Any bottom casing
 gt.mbtt.structure.back_center_casing=Back center casing
 gt.mbtt.structure.front_center_9th_layer=Front center, 9th layer
+gt.mbtt.structure.any_back_center_casing=Any back center casing
 gt.mbtt.structure.any_bottom_edge_casing=Any bottom edge casing
 gt.mbtt.structure.any_top_edge_casing=Any top edge casing
 GT5U.tooltip.neutron-activator.machine-type=Neutron Activator, NA
@@ -9111,6 +9112,9 @@ GT5U.tooltip.eye-of-harmony.controller-pos=Front center, 17th layer
 GT5U.tooltip.eye-of-harmony.boundary-no-stocking-bus=Any boundary casing (no stocking bus)
 GT5U.tooltip.eye-of-harmony.boundary-no-stocking-hatch=Any boundary casing (no stocking hatch)
 GT5U.tooltip.eye-of-harmony.any-boundary-casing=Any boundary casing
+
+# Research Station Structure Hints
+GT5U.tooltip.research-station.footer=Data Sticks go in the controller
 
 # BEC Generator Structure Hints
 GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer

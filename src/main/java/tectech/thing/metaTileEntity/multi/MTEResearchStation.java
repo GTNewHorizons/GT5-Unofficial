@@ -244,10 +244,10 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addMarkdown(new ResourceLocation("gregtech", "research-station"))
             .addSupportAny()
             .beginStructureBlock(3, 7, 7, false)
-            .addController("Front center")
-            .addCasing("52-58", "Computer Casing", false)
-            .addCasing("23", "Advanced Computer Casing", false)
-            .addCasing("14", "Computer Heat Vent", false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
+            .addCasing("52-58", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 1).getDisplayName(), false)
+            .addCasing("23", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 3).getDisplayName(), false)
+            .addCasing("14", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 2).getDisplayName(), false)
             .addMiscHatch(
                 "1",
                 StatCollector.translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
@@ -256,13 +256,14 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addMiscHatch(
                 "1+",
                 StatCollector.translateToLocal("tt.keyword.Structure.DataInput"),
-                "Any back center casing",
+                StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"),
                 1)
-            .addEnergyHatch("1+", "Any back center casing", 1)
-            .addMaintenanceHatch("1", "Any back center casing", 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(
-                EnumChatFormatting.GREEN + "Data Sticks " + EnumChatFormatting.RESET + "go in the controller")
+                EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.tooltip.research-station.footer")
+                    + EnumChatFormatting.RESET)
             .toolTipFinisher();
         return tt;
     }
