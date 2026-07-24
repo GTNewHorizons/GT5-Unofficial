@@ -35,12 +35,11 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
@@ -241,12 +240,13 @@ public abstract class MetaBaseItem extends GTGenericItem
         return aStack;
     }
 
-    /** Returns null for item damage out of bounds. */
-    public Materials getMaterial(int damage) {
+    /// The MaterialLib material generated into the given item damage's slot, or null for item damage out of
+    /// bounds.
+    public Material getMaterial(int damage) {
         if (!MetaGeneratedItem.isMaterialItem(damage)) {
             return null;
         }
-        return MU.materialOf(MetaGeneratedItem.generatedMaterial(damage % 1_000));
+        return MetaGeneratedItem.generatedMaterial(damage % 1_000);
     }
 
     @Override

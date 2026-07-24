@@ -15014,8 +15014,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.BOILING_POINT, 409)
             .setProperty(GTMaterialProperties.DURABILITY, 34000)
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
-            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true)
-            .setProperty(GTMaterialProperties.LEGACY_FLUIDS, new FluidNames(null, new FluidRef("water", 300, null), null, null, null));
+            .setProperty(GTMaterialProperties.GTPP_GENERATES_FLUID, true);
         Materials2Materials.Ice = MaterialLibAPI.newMaterial("gregtech", "Ice", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC8C8FF)
             .addToFamily(Materials2Families.all)

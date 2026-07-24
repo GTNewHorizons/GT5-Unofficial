@@ -133,7 +133,9 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
         String aName = super.getItemStackDisplayName(aStack);
         int aDamage = aStack.getItemDamage();
         if (isMaterialItem(aDamage)) {
-            Materials aMaterial = getMaterial(aDamage);
+            // getLocalizedNameForItem has no MaterialLib accessor; use the legacy call, which retires with the
+            // facade.
+            Materials aMaterial = MU.materialOf(getMaterial(aDamage));
             if (aMaterial != null) return aMaterial.getLocalizedNameForItem(aName);
         }
         return aName;

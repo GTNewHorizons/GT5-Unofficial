@@ -54,8 +54,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 9L))
                     .fluidInputs(
-                        MU.fluid(
-                            Materials2Materials.Water,
+                        GTUtility.getWater(
                             Math.max(
                                 4,
                                 Math.min(1000, ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS * 30 / 320))))
@@ -114,8 +113,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 9L))
                         .fluidInputs(
-                            MU.fluid(
-                                Materials2Materials.Water,
+                            GTUtility.getWater(
                                 Math.max(
                                     4,
                                     Math.min(1000, ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS * 30 / 320))))

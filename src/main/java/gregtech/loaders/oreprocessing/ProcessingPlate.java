@@ -466,8 +466,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, material, 2L))
                 .fluidInputs(
-                    MU.fluid(
-                        Materials2Materials.Water,
+                    GTUtility.getWater(
                         Math.max(
                             4,
                             Math.min(

@@ -2,6 +2,7 @@ package gtPlusPlus.core.material;
 
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class MaterialsOther {
@@ -29,11 +30,11 @@ public class MaterialsOther {
 
     // PTFE
     public static final Material PTFE = MaterialUtils
-        .generateMaterialFromGtENUM(MaterialUtils.getMaterial("Polytetrafluoroethylene", "Plastic"));
+        .generateMaterialFromGtENUM(MU.material(MaterialUtils.getMaterial("Polytetrafluoroethylene", "Plastic")));
 
     // Plastic
     public static final Material PLASTIC = MaterialUtils
-        .generateMaterialFromGtENUM(MaterialUtils.getMaterial("Plastic", "Rubber"));
+        .generateMaterialFromGtENUM(MU.material(MaterialUtils.getMaterial("Plastic", "Rubber")));
 
     static {
         MEAT.setTextureSet(TextureSet.SET_ROUGH);

@@ -10,11 +10,9 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import gregtech.api.covers.CoverContext;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 
 public class CoverDrain extends CoverLegacyData {
@@ -51,8 +49,7 @@ public class CoverDrain extends CoverLegacyData {
                     if (tAmount > 0) {
                         ((IFluidHandler) coverable).fill(
                             coverSide,
-                            MU.fluid(
-                                Materials2Materials.Water,
+                            GTUtility.getWater(
                                 coverable.getWorld()
                                     .isThundering() ? tAmount * 2L : tAmount),
                             true);

@@ -52,8 +52,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, material, 2L))
                     .fluidInputs(
-                        MU.fluid(
-                            Materials2Materials.Water,
+                        GTUtility.getWater(
                             Math.max(
                                 4,
                                 Math.min(

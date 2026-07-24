@@ -42,42 +42,25 @@ public class MaterialUtils {
     /// same argument returns it instead of constructing a second, separate `Material`. `MaterialReconstruction`
     /// calls this for every reconstructed material with a live gregtech equivalent, since reconstruction builds
     /// those materials directly rather than through `generateMaterialFromGtENUM` itself.
-    public static void seedGeneratedMaterial(Materials material, Material generated) {
+    public static void seedGeneratedMaterial(com.ruling_0.materiallib.api.Material material, Material generated) {
         mGeneratedMaterialMap.put(getMaterialName(material).toLowerCase(), generated);
     }
 
     public static Material generateMaterialFromGtENUM(com.ruling_0.materiallib.api.Material material) {
-        return generateMaterialFromGtENUM(MU.materialOf(material), null, null);
+        return generateMaterialFromGtENUM(material, null, null);
     }
 
     public static Material generateMaterialFromGtENUM(com.ruling_0.materiallib.api.Material material,
         TextureSet aCustomTextures) {
-        return generateMaterialFromGtENUM(MU.materialOf(material), null, aCustomTextures);
+        return generateMaterialFromGtENUM(material, null, aCustomTextures);
     }
 
     public static Material generateMaterialFromGtENUM(com.ruling_0.materiallib.api.Material material,
         short[] customRGB) {
-        return generateMaterialFromGtENUM(MU.materialOf(material), customRGB, null);
-    }
-
-    public static Material generateMaterialFromGtENUM(com.ruling_0.materiallib.api.Material material, short[] customRGB,
-        TextureSet aCustomTextures) {
-        return generateMaterialFromGtENUM(MU.materialOf(material), customRGB, aCustomTextures);
-    }
-
-    public static Material generateMaterialFromGtENUM(final Materials material) {
-        return generateMaterialFromGtENUM(material, null, null);
-    }
-
-    public static Material generateMaterialFromGtENUM(final Materials material, TextureSet aCustomTextures) {
-        return generateMaterialFromGtENUM(material, null, aCustomTextures);
-    }
-
-    public static Material generateMaterialFromGtENUM(final Materials material, short[] customRGB) {
         return generateMaterialFromGtENUM(material, customRGB, null);
     }
 
-    public static Material generateMaterialFromGtENUM(final Materials material, short[] customRGB,
+    public static Material generateMaterialFromGtENUM(com.ruling_0.materiallib.api.Material material, short[] customRGB,
         TextureSet aCustomTextures) {
         String aMaterialKey = getMaterialName(material).toLowerCase();
         if (mGeneratedMaterialMap.containsKey(aMaterialKey)) {
@@ -85,18 +68,18 @@ public class MaterialUtils {
         }
 
         try {
-            String name = material.mName;
-            final String defaultLocalName = material.mDefaultLocalName;
-            final short[] rgba = (customRGB == null ? material.mRGBa : customRGB);
+            String name = MU.internalName(material);
+            final String defaultLocalName = MU.localName(material);
+            final short[] rgba = (customRGB == null ? MU.rgba(material) : customRGB);
             final int melting = MU.meltingPoint(material);
             final int boiling = MU.blastFurnaceTemp(material);
-            final long protons = material.getProtons();
-            final long neutrons = material.getNeutrons();
-            final boolean blastFurnace = material.mBlastFurnaceRequired;
+            final long protons = MU.protons(material);
+            final long neutrons = MU.neutrons(material);
+            final boolean blastFurnace = MU.blastFurnaceRequired(material);
             int radioactivity = 0;
             TextureSet iconSet;
             if (aCustomTextures == null) {
-                iconSet = material.mIconSet;
+                iconSet = MU.iconSet(material);
             } else {
                 iconSet = aCustomTextures;
             }
@@ -105,29 +88,30 @@ public class MaterialUtils {
                 iconSet = TextureSet.SET_METALLIC;
             }
 
-            final int durability = material.mDurability;
+            final int durability = MU.durability(material);
             boolean mGenerateCell = false;
             boolean mGenerateFluid = true;
             MaterialState materialState;
-            String chemicalFormula = StringUtils.subscript(StringUtils.sanitizeString(material.getChemicalTooltip()));
-            final Element element = material.mElement;
+            String chemicalFormula = StringUtils
+                .subscript(StringUtils.sanitizeString(MU.chemicalTooltip(material, false)));
+            final Element element = MU.element(material);
 
             // Weird Blacklist of Bad Chemical Strings
-            if (material.mElement == Element.Pb || material.mElement == Element.Na || material.mElement == Element.Ar) {
-                chemicalFormula = StringUtils.subscript(StringUtils.sanitizeString(material.mElement.name()));
+            if (element == Element.Pb || element == Element.Na || element == Element.Ar) {
+                chemicalFormula = StringUtils.subscript(StringUtils.sanitizeString(element.name()));
             }
 
             // Determine default state
-            if (material.getMolten(1) != null || material.getSolid(1) != null) {
+            if (MU.molten(material, 1) != null || MU.solid(material, 1) != null) {
                 materialState = MaterialState.SOLID;
-                if (material.getMolten(1) == null && material.getSolid(1) != null) {
+                if (MU.molten(material, 1) == null && MU.solid(material, 1) != null) {
                     mGenerateCell = true;
-                } else if (material.getMolten(1) != null && material.getSolid(1) == null) {
+                } else if (MU.molten(material, 1) != null && MU.solid(material, 1) == null) {
                     // mGenerateCell = true;
                 }
-            } else if (material.getFluid(1) != null) {
+            } else if (MU.fluid(material, 1) != null) {
                 materialState = MaterialState.LIQUID;
-            } else if (material.getGas(1) != null) {
+            } else if (MU.gas(material, 1) != null) {
                 materialState = MaterialState.GAS;
             } else {
                 materialState = MaterialState.SOLID;
@@ -140,9 +124,9 @@ public class MaterialUtils {
                 name = "Infused " + tempname;
             }
             if (hasValidRGBA(rgba) || (element == Element.H)
-                || ((material == Materials.InfusedAir) || (material == Materials.InfusedFire)
-                    || (material == Materials.InfusedEarth)
-                    || (material == Materials.InfusedWater))) {
+                || ((material == Materials2Materials.InfusedAir) || (material == Materials2Materials.InfusedFire)
+                    || (material == Materials2Materials.InfusedEarth)
+                    || (material == Materials2Materials.InfusedWater))) {
                 Material M = new Material(
                     name,
                     defaultLocalName,
@@ -219,6 +203,14 @@ public class MaterialUtils {
         String mName = mat.mDefaultLocalName;
         if (mName == null || mName.isEmpty()) {
             mName = mat.mName;
+        }
+        return mName;
+    }
+
+    public static String getMaterialName(com.ruling_0.materiallib.api.Material mat) {
+        String mName = MU.localName(mat);
+        if (mName == null || mName.isEmpty()) {
+            mName = MU.internalName(mat);
         }
         return mName;
     }
