@@ -9093,6 +9093,9 @@ GT5U.tooltip.eye-of-harmony.boundary-no-stocking-bus=Any boundary casing (no sto
 GT5U.tooltip.eye-of-harmony.boundary-no-stocking-hatch=Any boundary casing (no stocking hatch)
 GT5U.tooltip.eye-of-harmony.any-boundary-casing=Any boundary casing
 
+# Research Station Structure Hints
+GT5U.tooltip.research-station.footer=Data Sticks go in the controller
+
 # BEC Generator Structure Hints
 GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
 GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing around controller
