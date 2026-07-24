@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -373,7 +374,7 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
         ttVars.put("excited3", ExcitedLiquidCoe[3]);
         ttVars.put("excited4", ExcitedLiquidCoe[4]);
 
-        tt.addMachineType("Naquadah Reactor, LNR")
+        tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.large-naquadah-reactor.machine-type"))
             .addMarkdown(new ResourceLocation("gregtech", "large-naquadah-reactor-1"), ttVars)
             .addSeparator()
             .addMarkdown(new ResourceLocation("gregtech", "large-naquadah-reactor-2"), ttVars)
@@ -381,14 +382,17 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
             .addMarkdown(new ResourceLocation("gregtech", "large-naquadah-reactor-3"), ttVars)
             .addSupportAny()
             .beginStructureBlock(7, 11, 7, false)
-            .addController("Front bottom center")
-            .addCasing("130-141", "Naquadah Reactor Casing", false)
-            .addCasing("81", "Field Restriction Casing", false)
-            .addCasing("32", "Radiation Proof Steel Frame Box", false)
-            .addDynamoHatch("1", "Any reactor casing", 1)
-            .addMaintenanceHatch("1", "Any reactor casing", 1)
-            .addInputHatch("1+", "Any reactor casing", 1)
-            .addOutputHatch("1+", "Any reactor casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("130-141", Casings.NaquadahReactorCasing.getLocalizedName(), false)
+            .addCasing("81", Casings.FieldRestrictionCasing.getLocalizedName(), false)
+            .addCasing("32", Casings.RadiantProofSteelFrameBox.getLocalizedName(), false)
+            .addDynamoHatch("1", StatCollector.translateToLocal("GT5U.tooltip.large-naquadah-reactor.hatch-pos"), 1)
+            .addMaintenanceHatch(
+                "1",
+                StatCollector.translateToLocal("GT5U.tooltip.large-naquadah-reactor.hatch-pos"),
+                1)
+            .addInputHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.large-naquadah-reactor.hatch-pos"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.large-naquadah-reactor.hatch-pos"), 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
             .toolTipFinisher();
         return tt;

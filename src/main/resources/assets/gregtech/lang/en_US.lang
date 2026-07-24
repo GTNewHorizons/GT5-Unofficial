@@ -9101,6 +9101,10 @@ GT5U.tooltip.yottank.output-hatch-pos=Any bottom center casing
 GT5U.tooltip.yottank.fluid-cell-block=Fluid Cell Block
 GT5U.tooltip.yottank.structure-footer=No air gaps allowed, but the fluid cell blocks can be different tiers
 
+# Large Naquadah Reactor Structure Hints
+GT5U.tooltip.large-naquadah-reactor.machine-type=Naquadah Reactor, LNR
+GT5U.tooltip.large-naquadah-reactor.hatch-pos=Any reactor casing
+
 # BEC Generator Structure Hints
 GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
 GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing around controller
