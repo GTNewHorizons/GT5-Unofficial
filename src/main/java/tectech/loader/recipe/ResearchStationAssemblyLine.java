@@ -274,28 +274,6 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.Hatch_Energy_UMV.get(1L),
                     1000,
                     (int) TierEU.RECIPE_UMV);
-
-                // Energy Hatch UXV
-                TTRecipeAdder.addResearchableAssemblylineRecipe(
-                    ItemList.Hatch_Energy_UMV.get(1L),
-                    384000,
-                    256,
-                    800000,
-                    32,
-                    new Object[] { ItemList.Hull_UXV.get(1L),
-                        GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUMV, 4L),
-                        ItemList.Circuit_Chip_YPIC.get(2L), new Object[] { OrePrefixes.circuit.get(Materials.UXV), 2L },
-                        ItemList.UXV_Coil.get(2L), ItemList.Reactor_Coolant_Sp_6.get(1L),
-                        ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
-                        ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
-                        ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
-                        ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Electric_Pump_UXV.get(1L) },
-                    new FluidStack[] { Materials.SuperCoolant.getFluid(64_000),
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1 * STACKS + 16 * INGOTS),
-                        Materials.UUMatter.getFluid(64_000) },
-                    ItemList.Hatch_Energy_UXV.get(1L),
-                    1000,
-                    (int) TierEU.RECIPE_UXV);
             }
 
             // Dynamo Hatch
@@ -2678,7 +2656,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             ItemList.Hatch_Energy_MV.get(1), ItemList.Hatch_Energy_HV.get(1), ItemList.Hatch_Energy_EV.get(1),
             ItemList.Hatch_Energy_IV.get(1), ItemList.Hatch_Energy_LuV.get(1), ItemList.Hatch_Energy_ZPM.get(1),
             ItemList.Hatch_Energy_UV.get(1), ItemList.Hatch_Energy_UHV.get(1), ItemList.Hatch_Energy_UEV.get(1L),
-            ItemList.Hatch_Energy_UIV.get(1L), ItemList.Hatch_Energy_UMV.get(1L), ItemList.Hatch_Energy_UXV.get(1L) };
+            ItemList.Hatch_Energy_UIV.get(1L), ItemList.Hatch_Energy_UMV.get(1L) };
 
         ItemStack[] energyHatches_4A = { CustomItemList.eM_energyMulti4_EV.get(1),
             CustomItemList.eM_energyMulti4_IV.get(1), CustomItemList.eM_energyMulti4_LuV.get(1),
@@ -2728,8 +2706,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             ItemList.Wireless_Hatch_Energy_IV.get(1), ItemList.Wireless_Hatch_Energy_LuV.get(1),
             ItemList.Wireless_Hatch_Energy_ZPM.get(1), ItemList.Wireless_Hatch_Energy_UV.get(1),
             ItemList.Wireless_Hatch_Energy_UHV.get(1), ItemList.Wireless_Hatch_Energy_UEV.get(1),
-            ItemList.Wireless_Hatch_Energy_UIV.get(1), ItemList.Wireless_Hatch_Energy_UMV.get(1),
-            ItemList.Wireless_Hatch_Energy_UXV.get(1) };
+            ItemList.Wireless_Hatch_Energy_UIV.get(1), ItemList.Wireless_Hatch_Energy_UMV.get(1) };
 
         ItemStack[] wirelessHatches_4A = { CustomItemList.eM_energyWirelessMulti4_EV.get(1),
             CustomItemList.eM_energyWirelessMulti4_IV.get(1), CustomItemList.eM_energyWirelessMulti4_LuV.get(1),
