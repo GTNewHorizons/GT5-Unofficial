@@ -188,7 +188,7 @@ public class ScannerHandlerLoader {
         // must not be an isotope
         if (aMaterial.mElement.mIsIsotope) return false;
         // must not be magical
-        if (aMaterial == Materials.Magic) return false;
+        if (MU.material(aMaterial) == Materials2Materials.Magic) return false;
         // must have mass > 1
         return aMaterial.getMass() > 0L;
     }

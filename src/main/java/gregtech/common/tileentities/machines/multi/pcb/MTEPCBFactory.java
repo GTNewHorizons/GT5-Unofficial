@@ -50,12 +50,12 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -391,7 +391,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 // Here we check the dynamic parallels, which depend on the recipe
                 int numberOfNanites = 0;
-                Materials naniteMaterial = recipe.getMetadata(GTRecipeConstants.PCB_NANITE_MATERIAL);
+                Material naniteMaterial = recipe.getMetadata(GTRecipeConstants.PCB_NANITE_MATERIAL);
                 if (naniteMaterial != null) {
                     if (naniteBuses.isEmpty()) {
                         return SimpleCheckRecipeResult.ofFailure("nanites_missing");
@@ -399,7 +399,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     boolean nanitesFound = false;
                     for (MTEHatchNanite naniteBus : naniteBuses) {
                         ItemStack storedNanites = naniteBus.getItemStack();
-                        Materials storedNaniteMaterial = naniteBus.getStoredNaniteMaterial();
+                        Material storedNaniteMaterial = naniteBus.getStoredNaniteMaterial();
                         if (storedNanites == null || storedNaniteMaterial != naniteMaterial) {
                             continue;
                         }

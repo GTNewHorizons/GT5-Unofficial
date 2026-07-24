@@ -23,11 +23,11 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FishPondRecipes;
 import gregtech.api.util.SemiFluidFuelHandler;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.handler.BookHandler;
@@ -41,7 +41,7 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
 @Mod(
-    modid = Mods.ModIDs.G_T_PLUS_PLUS,
+    modid = "miscutils",
     name = GTPPCore.name,
     version = GTPPCore.VERSION,
     guiFactory = "gtPlusPlus.core.gui.config.GTPPGuiFactory",
@@ -76,7 +76,7 @@ public class GTplusplus {
 
     public static final Logger logger = LogManager.getLogger("GT++");
 
-    @Mod.Instance(Mods.ModIDs.G_T_PLUS_PLUS)
+    @Mod.Instance("miscutils")
     public static GTplusplus instance;
 
     @SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.common.CommonProxy")
@@ -148,41 +148,42 @@ public class GTplusplus {
         SemiFluidFuelHandler.generateFuels();
 
         RecipeGenMultisUsingFluidInsteadOfCells
-            .generateRecipesNotUsingCells(RecipeMaps.centrifugeRecipes, RecipeMaps.centrifugeNonCellRecipes);
+            .generateRecipesNotUsingCells(RecipeMaps.centrifugeRecipes, GTPPRecipeMaps.centrifugeNonCellRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells
-            .generateRecipesNotUsingCells(RecipeMaps.electrolyzerRecipes, RecipeMaps.electrolyzerNonCellRecipes);
+            .generateRecipesNotUsingCells(RecipeMaps.electrolyzerRecipes, GTPPRecipeMaps.electrolyzerNonCellRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells
-            .generateRecipesNotUsingCells(RecipeMaps.mixerRecipes, RecipeMaps.mixerNonCellRecipes);
+            .generateRecipesNotUsingCells(RecipeMaps.mixerRecipes, GTPPRecipeMaps.mixerNonCellRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-            RecipeMaps.chemicalDehydratorRecipes,
-            RecipeMaps.chemicalDehydratorNonCellRecipes);
-        RecipeGenMultisUsingFluidInsteadOfCells
-            .generateRecipesNotUsingCells(RecipeMaps.coldTrapRecipes, RecipeMaps.nuclearSaltProcessingPlantRecipes);
+            GTPPRecipeMaps.chemicalDehydratorRecipes,
+            GTPPRecipeMaps.chemicalDehydratorNonCellRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-            RecipeMaps.reactorProcessingUnitRecipes,
-            RecipeMaps.nuclearSaltProcessingPlantRecipes);
+            GTPPRecipeMaps.coldTrapRecipes,
+            GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
+        RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+            GTPPRecipeMaps.reactorProcessingUnitRecipes,
+            GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
     }
 
     private static void setupMaterialBlacklist() {
-        Material.invalidMaterials.add(Materials._NULL);
-        Material.invalidMaterials.add(Materials.Clay);
-        Material.invalidMaterials.add(Materials.Phosphorus);
-        Material.invalidMaterials.add(Materials.Steel);
-        Material.invalidMaterials.add(Materials.Bronze);
-        Material.invalidMaterials.add(Materials.Hydrogen);
+        Material.invalidMaterials.add(Materials2Materials.NULL);
+        Material.invalidMaterials.add(Materials2Materials.Clay);
+        Material.invalidMaterials.add(Materials2Materials.Phosphorus);
+        Material.invalidMaterials.add(Materials2Materials.Steel);
+        Material.invalidMaterials.add(Materials2Materials.Bronze);
+        Material.invalidMaterials.add(Materials2Materials.Hydrogen);
         // Infused TC stuff
-        Material.invalidMaterials.add(Materials.InfusedAir);
-        Material.invalidMaterials.add(Materials.InfusedEarth);
-        Material.invalidMaterials.add(Materials.InfusedFire);
-        Material.invalidMaterials.add(Materials.InfusedWater);
+        Material.invalidMaterials.add(Materials2Materials.InfusedAir);
+        Material.invalidMaterials.add(Materials2Materials.InfusedEarth);
+        Material.invalidMaterials.add(Materials2Materials.InfusedFire);
+        Material.invalidMaterials.add(Materials2Materials.InfusedWater);
         // EIO Materials
-        Material.invalidMaterials.add(Materials.SoulSand);
-        Material.invalidMaterials.add(Materials.EnderPearl);
-        Material.invalidMaterials.add(Materials.EnderEye);
-        Material.invalidMaterials.add(Materials.Redstone);
-        Material.invalidMaterials.add(Materials.Glowstone);
-        Material.invalidMaterials.add(Materials.Soularium);
-        Material.invalidMaterials.add(Materials.PhasedIron);
+        Material.invalidMaterials.add(Materials2Materials.SoulSand);
+        Material.invalidMaterials.add(Materials2Materials.EnderPearl);
+        Material.invalidMaterials.add(Materials2Materials.EnderEye);
+        Material.invalidMaterials.add(Materials2Materials.Redstone);
+        Material.invalidMaterials.add(Materials2Materials.Glowstone);
+        Material.invalidMaterials.add(Materials2Materials.Soularium);
+        Material.invalidMaterials.add(Materials2Materials.PhasedIron);
 
     }
 

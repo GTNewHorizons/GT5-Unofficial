@@ -101,7 +101,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         .addElement('E', ofFrame(Materials2Materials.NaquadahAlloy))
         // Nanochip Glass
         .addElement('F', Casings.NanochipComplexGlass.asElement())
-        .addElement('G', ofSheetMetal(Materials.NaquadahAlloy))
+        .addElement('G', ofSheetMetal(Materials2Materials.NaquadahAlloy))
 
         .build();
 

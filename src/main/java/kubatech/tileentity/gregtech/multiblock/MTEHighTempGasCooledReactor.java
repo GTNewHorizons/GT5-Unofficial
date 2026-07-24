@@ -52,6 +52,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.items.SimpleSubItemClass;
@@ -74,6 +75,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
@@ -204,8 +206,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
     private int heliumSupply;
     private double fuelsupply = 0;
-    private final HashMap<Materials, Double> mStoredFuels = new HashMap<>();
-    private final HashMap<Materials, Double> mStoredBurnedFuels = new HashMap<>();
+    private final HashMap<Material, Double> mStoredFuels = new HashMap<>();
+    private final HashMap<Material, Double> mStoredBurnedFuels = new HashMap<>();
     private boolean empty;
     private int emptyticksnodiff = 0;
     private int coolanttaking = 0;
@@ -545,7 +547,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         for (int i = 0; i < fuels; i++) {
             String name = aNBT.getString("fuels" + i);
             double amount = aNBT.getDouble("fuelsamount" + i);
-            Materials m = Materials.get(name);
+            Material m = MU.byLegacyName(name);
             if (m != null) {
                 this.mStoredFuels.put(m, amount);
             }
@@ -553,7 +555,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         for (int i = 0; i < burnedfuels; i++) {
             String name = aNBT.getString("burnedfuels" + i);
             double amount = aNBT.getDouble("burnedfuelsamount" + i);
-            Materials m = Materials.get(name);
+            Material m = MU.byLegacyName(name);
             if (m != null) {
                 this.mStoredBurnedFuels.put(m, amount);
             }
@@ -571,14 +573,14 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         aNBT.setInteger("fuels", this.mStoredFuels.size());
         aNBT.setInteger("burnedfuels", this.mStoredBurnedFuels.size());
         int i = 0;
-        for (Map.Entry<Materials, Double> entry : this.mStoredFuels.entrySet()) {
-            aNBT.setString("fuels" + i, entry.getKey().mName);
+        for (Map.Entry<Material, Double> entry : this.mStoredFuels.entrySet()) {
+            aNBT.setString("fuels" + i, MU.legacyName(entry.getKey()));
             aNBT.setDouble("fuelsamount" + i, entry.getValue());
             i++;
         }
         i = 0;
-        for (Map.Entry<Materials, Double> entry : this.mStoredBurnedFuels.entrySet()) {
-            aNBT.setString("burnedfuels" + i, entry.getKey().mName);
+        for (Map.Entry<Material, Double> entry : this.mStoredBurnedFuels.entrySet()) {
+            aNBT.setString("burnedfuels" + i, MU.legacyName(entry.getKey()));
             aNBT.setDouble("burnedfuelsamount" + i, entry.getValue());
             i++;
         }
@@ -608,7 +610,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 this.startRecipeProcessing();
                 for (ItemStack itemStack : this.getStoredInputs()) {
                     if (itemStack == null || itemStack.getItem() != HTGRItem.TRISO) continue;
-                    Materials m = HTGRItem.getItemMaterial(itemStack);
+                    Material m = HTGRItem.getItemMaterial(itemStack);
                     int toget = (int) Math.min(MAX_CAPACITY - this.fuelsupply, itemStack.stackSize);
                     this.fuelsupply += toget;
                     itemStack.stackSize -= toget;
@@ -659,8 +661,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         fuelMultiplier = 1d;
         fuelExponent = 1d;
 
-        for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
-            Materials m = entry.getKey();
+        for (Map.Entry<Material, Double> entry : mStoredFuels.entrySet()) {
+            Material m = entry.getKey();
             double amount = entry.getValue();
             if (amount > 0) {
                 sum += amount;
@@ -682,9 +684,9 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         ArrayList<ItemStack> toOutput = new ArrayList<>();
 
-        for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
+        for (Map.Entry<Material, Double> entry : mStoredBurnedFuels.entrySet()) {
             if (entry.getValue() >= 1.d) {
-                Materials m = entry.getKey();
+                Material m = entry.getKey();
                 double output = Math.floor(entry.getValue());
                 ItemStack stack = HTGRItem.createBurnedTRISOFuel(m);
                 stack.stackSize = (int) output;
@@ -694,7 +696,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         if (this.canOutputAll(toOutput.toArray(new ItemStack[0]))) {
             for (ItemStack itemStack : toOutput) {
-                Materials m = HTGRItem.getItemMaterial(itemStack);
+                Material m = HTGRItem.getItemMaterial(itemStack);
                 if (m != null) {
                     mStoredBurnedFuels.merge(m, (double) -itemStack.stackSize, Double::sum);
                 }
@@ -753,7 +755,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 return true;
             }
             if (this.fuelsupply >= 1d) {
-                for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
+                for (Map.Entry<Material, Double> entry : mStoredFuels.entrySet()) {
                     if (entry.getValue() >= 1d) {
                         ItemStack fuelStack = HTGRItem.createTRISOFuel(entry.getKey());
                         int toOutput = (int) Math.floor(entry.getValue());
@@ -834,13 +836,12 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         StringBuilder sb = new StringBuilder();
         sb.append("kubatech.infodata.htgr.stored_fuel")
             .append("\n");
-        for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
+        for (Map.Entry<Material, Double> entry : mStoredFuels.entrySet()) {
             Triple<Double, Double, Double> prop = HTGRItem.getFuelProperties(entry.getKey());
             sb.append(
                 IGregTechDeviceInformation.encode(
                     "kubatech.infodata.htgr.stored_fuel_entry",
-                    entry.getKey()
-                        .getLocalizedNameForItem("%material"),
+                    MU.localizedNameOf(entry.getKey()),
                     formatNumber(entry.getValue()),
                     formatNumber(prop.getLeft()),
                     formatNumber(prop.getMiddle()),
@@ -862,12 +863,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .append("\n");
         sb.append("kubatech.infodata.htgr.burned_fuel")
             .append("\n");
-        for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
+        for (Map.Entry<Material, Double> entry : mStoredBurnedFuels.entrySet()) {
             sb.append(
                 IGregTechDeviceInformation.encode(
                     "kubatech.infodata.htgr.burned_fuel_entry",
-                    entry.getKey()
-                        .getLocalizedNameForItem("%material"),
+                    MU.localizedNameOf(entry.getKey()),
                     formatNumber(entry.getValue() * 100d)))
                 .append("\n");
         }

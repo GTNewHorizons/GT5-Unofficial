@@ -84,7 +84,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
                 .addElement('D', Casings.PBIPipeCasing.asElement())
                 .addElement('F', Casings.AdvancedComputerCasing.asElement())
                 .addElement('G', ofFrame(Materials2Materials.Neutronium))
-                .addElement('H', ofSheetMetal(Materials.Infinity))
+                .addElement('H', ofSheetMetal(Materials2Materials.Infinity))
                 .build();
         }
         return (IStructureDefinition<MTEDrillerBase>) (IStructureDefinition<?>) STRUCTURE_DEFINITION;

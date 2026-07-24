@@ -221,6 +221,21 @@ public class GTStructureUtility {
         };
     }
 
+    /// [#ofSheetMetal(Materials)] for callers holding a MaterialLib material instead of a legacy [Materials]
+    /// constant; keys on the same legacy sheet-metal block metadata via [MU#oldSubId].
+    public static <T> IStructureElement<T> ofSheetMetal(com.ruling_0.materiallib.api.Material material) {
+        if (material == null) throw new IllegalArgumentException("material for sheet metal can not be null!");
+        int meta = MU.oldSubId(material);
+        return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalGT, meta)) {
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI.hintParticleTinted(world, x, y, z, sBlockSheetmetalGT, meta, MU.rgba(material));
+                return true;
+            }
+        };
+    }
+
     public static <T> IStructureElement<T> ofSheetMetal(Werkstoff werkstoff) {
         if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal can not be null!");
         return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalBW, werkstoff.getmID())) {

@@ -44,10 +44,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -207,7 +207,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                         { "  DBBBBB ", " DDAAAADB", " DDAAAADB", " DDDDDDDB" } })
                 .addElement('A', chainAllGlasses())
                 .addElement('B', ofFrame(MaterialsAlloy.TANTALUM_CARBIDE))
-                .addElement('C', ofSheetMetal(Materials.BlackSteel))
+                .addElement('C', ofSheetMetal(Materials2Materials.BlackSteel))
                 .addElement(
                     'D',
                     buildHatchAdder(MTEIndustrialCuttingMachine.class)

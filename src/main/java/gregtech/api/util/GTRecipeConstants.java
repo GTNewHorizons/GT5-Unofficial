@@ -22,7 +22,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -135,8 +134,8 @@ public class GTRecipeConstants {
     /**
      * PCB Factory nanite material
      */
-    public static final RecipeMetadataKey<Materials> PCB_NANITE_MATERIAL = SimpleRecipeMetadataKey
-        .create(Materials.class, "pcb_nanite_material");
+    public static final RecipeMetadataKey<Material> PCB_NANITE_MATERIAL = SimpleRecipeMetadataKey
+        .create(Material.class, "pcb_nanite_material");
 
     /**
      * FOG Exotic recipe tier.
