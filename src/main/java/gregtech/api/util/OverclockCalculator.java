@@ -445,8 +445,9 @@ public class OverclockCalculator {
             final int extraOC = Math.max(overclocks - neededOverclocks, 0);
             final double regularMultiplier = GTUtility.powInt(durationDecreasePerOC, extraOC);
             final double correctionMultiplier;
-            if (overclocks >= neededOverclocks)
+            if (overclocks >= neededOverclocks) {
                 correctionMultiplier = GTUtility.powInt(durationDecreasePerOC, neededOverclocks) / duration;
+            }
             else return 1.0;
 
             return Math.ceil(correctionMultiplier * regularMultiplier);
