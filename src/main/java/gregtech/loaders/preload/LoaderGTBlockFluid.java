@@ -25,7 +25,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -122,10 +121,6 @@ public class LoaderGTBlockFluid implements Runnable {
 
     @Override
     public void run() {
-        Materials.Water.mFluid = FluidRegistry.getFluid("water");
-        Materials.Ice.mFluid = FluidRegistry.getFluid("water");
-        Materials.Lava.mFluid = FluidRegistry.getFluid("lava");
-
         GTLog.out.println("GTMod: Register Books.");
 
         GTUtility.getWrittenBook(
@@ -972,15 +967,15 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Air")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Air)
-            .addLocalizedName(Materials.Air)
+            .configureMaterials(Materials2Materials.Air)
+            .addLocalizedName(Materials2Materials.Air)
             .registerContainers(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L), 2000);
         GTFluidFactory.builder("LiquidOxygen")
             .withDefaultLocalName("Liquid Oxygen")
             .withStateAndTemperature(GAS, 60)
             .buildAndRegister()
-            .configureMaterials(Materials.LiquidOxygen)
-            .addLocalizedName(Materials.LiquidOxygen)
+            .configureMaterials(Materials2Materials.LiquidOxygen)
+            .addLocalizedName(Materials2Materials.LiquidOxygen)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.LiquidOxygen, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -988,8 +983,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Liquid Nitrogen")
             .withStateAndTemperature(GAS, 77)
             .buildAndRegister()
-            .configureMaterials(Materials.LiquidNitrogen)
-            .addLocalizedName(Materials.LiquidNitrogen)
+            .configureMaterials(Materials2Materials.LiquidNitrogen)
+            .addLocalizedName(Materials2Materials.LiquidNitrogen)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.LiquidNitrogen, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -997,8 +992,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Liquid Air")
             .withStateAndTemperature(LIQUID, 77)
             .buildAndRegister()
-            .configureMaterials(Materials.LiquidAir)
-            .addLocalizedName(Materials.LiquidAir)
+            .configureMaterials(Materials2Materials.LiquidAir)
+            .addLocalizedName(Materials2Materials.LiquidAir)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.LiquidAir, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1006,8 +1001,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Oxygen")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Oxygen)
-            .addLocalizedName(Materials.Oxygen)
+            .configureMaterials(Materials2Materials.Oxygen)
+            .addLocalizedName(Materials2Materials.Oxygen)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Oxygen, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1015,8 +1010,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Hydrogen")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Hydrogen)
-            .addLocalizedName(Materials.Hydrogen)
+            .configureMaterials(Materials2Materials.Hydrogen)
+            .addLocalizedName(Materials2Materials.Hydrogen)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Hydrogen, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1024,8 +1019,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Deuterium")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Deuterium)
-            .addLocalizedName(Materials.Deuterium)
+            .configureMaterials(Materials2Materials.Deuterium)
+            .addLocalizedName(Materials2Materials.Deuterium)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Deuterium, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1033,8 +1028,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Tritium")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Tritium)
-            .addLocalizedName(Materials.Tritium)
+            .configureMaterials(Materials2Materials.Tritium)
+            .addLocalizedName(Materials2Materials.Tritium)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Tritium, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1042,8 +1037,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Helium")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Helium)
-            .addLocalizedName(Materials.Helium)
+            .configureMaterials(Materials2Materials.Helium)
+            .addLocalizedName(Materials2Materials.Helium)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Helium, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1051,8 +1046,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Argon")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Argon)
-            .addLocalizedName(Materials.Argon)
+            .configureMaterials(Materials2Materials.Argon)
+            .addLocalizedName(Materials2Materials.Argon)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Argon, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1060,8 +1055,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Radon")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Radon)
-            .addLocalizedName(Materials.Radon)
+            .configureMaterials(Materials2Materials.Radon)
+            .addLocalizedName(Materials2Materials.Radon)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Radon, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1070,8 +1065,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Fluorine")
             .withStateAndTemperature(GAS, 53)
             .buildAndRegister()
-            .configureMaterials(Materials.Fluorine)
-            .addLocalizedName(Materials.Fluorine)
+            .configureMaterials(Materials2Materials.Fluorine)
+            .addLocalizedName(Materials2Materials.Fluorine)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Fluorine, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1079,8 +1074,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Titaniumtetrachloride")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Titaniumtetrachloride)
-            .addLocalizedName(Materials.Titaniumtetrachloride)
+            .configureMaterials(Materials2Materials.Titaniumtetrachloride)
+            .addLocalizedName(Materials2Materials.Titaniumtetrachloride)
             .registerBContainers(
                 MaterialLibAPI
                     .getStack(Materials2Materials.Titaniumtetrachloride, Materials2CellShapes.cell, (int) (1)),
@@ -1089,8 +1084,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Helium-3")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Helium3)
-            .addLocalizedName(Materials.Helium3)
+            .configureMaterials(Materials2Materials.Helium3)
+            .addLocalizedName(Materials2Materials.Helium3)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Helium3, 1L),
                 ItemList.Cell_Empty.get(1L));
@@ -1099,8 +1094,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Methane")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Methane)
-            .addLocalizedName(Materials.Methane)
+            .configureMaterials(Materials2Materials.Methane)
+            .addLocalizedName(Materials2Materials.Methane)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Methane, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1108,8 +1103,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Nitrogen")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Nitrogen)
-            .addLocalizedName(Materials.Nitrogen)
+            .configureMaterials(Materials2Materials.Nitrogen)
+            .addLocalizedName(Materials2Materials.Nitrogen)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Nitrogen, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1117,9 +1112,9 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Nitrogen Dioxide")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.NitrogenDioxide)
-            .addLocalizedName(Materials.NitrogenDioxide)
-            .addLocalizedName(Materials.NitrogenDioxide)
+            .configureMaterials(Materials2Materials.NitrogenDioxide)
+            .addLocalizedName(Materials2Materials.NitrogenDioxide)
+            .addLocalizedName(Materials2Materials.NitrogenDioxide)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.NitrogenDioxide, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1127,16 +1122,15 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Steam")
             .withStateAndTemperature(GAS, 375)
             .buildAndRegister()
-            .configureMaterials(Materials.Water)
-            .addLocalizedName(Materials.Water)
+            .configureMaterials(Materials2Materials.Water)
+            .addLocalizedName(Materials2Materials.Water)
             .registerBContainers(
                 GTModHandler.getIC2Item("steamCell", 1),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L));
 
         // The dedicated Steam material carries no LEGACY_FLUIDS gas row (see Materials2Materials.Steam), so
-        // point its facade gas field and MU's gas slot at the "steam" fluid just registered above -- the same
-        // fluid the Water facade holds. MU.gas(Materials2Materials.Steam, n) reads the slot store first.
-        Materials.Steam.mGas = Materials.Water.mGas;
+        // point MU's gas slot at the "steam" fluid just registered above -- the same fluid the Water facade
+        // holds. MU.gas(Materials2Materials.Steam, n) reads the slot store first.
         MU.recordSlotFluid(Materials2Materials.Steam, MU.FluidState.GAS, Materials.Water.mGas);
 
         GTValues.RA.stdBuilder()
@@ -1147,7 +1141,6 @@ public class LoaderGTBlockFluid implements Runnable {
             .eut(1)
             .addTo(cannerRecipes);
 
-        Materials.Ice.mGas = Materials.Water.mGas;
         Materials.Water.mGas.setTemperature(375)
             .setGaseous(true);
 
@@ -1155,8 +1148,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Very Heavy Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.OilExtraHeavy)
-            .addLocalizedName(Materials.OilExtraHeavy)
+            .configureMaterials(Materials2Materials.OilExtraHeavy)
+            .addLocalizedName(Materials2Materials.OilExtraHeavy)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.OilExtraHeavy, Materials2CellShapes.cell, (int) (1)),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
@@ -1165,8 +1158,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Epichlorohydrin")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Epichlorohydrin)
-            .addLocalizedName(Materials.Epichlorohydrin)
+            .configureMaterials(Materials2Materials.Epichlorohydrin)
+            .addLocalizedName(Materials2Materials.Epichlorohydrin)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Epichlorohydrin, Materials2CellShapes.cell, (int) (1)),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
@@ -1176,8 +1169,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Toluene")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Toluene)
-            .addLocalizedName(Materials.Toluene)
+            .configureMaterials(Materials2Materials.Toluene)
+            .addLocalizedName(Materials2Materials.Toluene)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Toluene, Materials2CellShapes.cell, (int) (1)),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
@@ -1186,8 +1179,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Nitration Mixture")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.NitrationMixture)
-            .addLocalizedName(Materials.NitrationMixture)
+            .configureMaterials(Materials2Materials.NitrationMixture)
+            .addLocalizedName(Materials2Materials.NitrationMixture)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.NitrationMixture, Materials2CellShapes.cell, (int) (1)),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
@@ -1197,8 +1190,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Heavy Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.OilHeavy)
-            .addLocalizedName(Materials.OilHeavy)
+            .configureMaterials(Materials2Materials.OilHeavy)
+            .addLocalizedName(Materials2Materials.OilHeavy)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.OilHeavy, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1206,8 +1199,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Raw Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.OilMedium)
-            .addLocalizedName(Materials.OilMedium)
+            .configureMaterials(Materials2Materials.OilMedium)
+            .addLocalizedName(Materials2Materials.OilMedium)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.OilMedium, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1215,8 +1208,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Light Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.OilLight)
-            .addLocalizedName(Materials.OilLight)
+            .configureMaterials(Materials2Materials.OilLight)
+            .addLocalizedName(Materials2Materials.OilLight)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.OilLight, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1224,8 +1217,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Natural Gas")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.NaturalGas)
-            .addLocalizedName(Materials.NaturalGas)
+            .configureMaterials(Materials2Materials.NatruralGas)
+            .addLocalizedName(Materials2Materials.NatruralGas)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.NatruralGas, 1L),
                 ItemList.Cell_Empty.get(1L));
@@ -1233,8 +1226,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Hydrogen Sulfide")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.HydricSulfide)
-            .addLocalizedName(Materials.HydricSulfide)
+            .configureMaterials(Materials2Materials.HydricSulfide)
+            .addLocalizedName(Materials2Materials.HydricSulfide)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.HydricSulfide, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L))
@@ -1243,8 +1236,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Sulfuric Gas")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.SulfuricGas)
-            .addLocalizedName(Materials.SulfuricGas)
+            .configureMaterials(Materials2Materials.SulfuricGas)
+            .addLocalizedName(Materials2Materials.SulfuricGas)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.SulfuricGas, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1252,8 +1245,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Refinery Gas")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Gas)
-            .addLocalizedName(Materials.Gas)
+            .configureMaterials(Materials2Materials.Gas)
+            .addLocalizedName(Materials2Materials.Gas)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Gas, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1261,8 +1254,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Sulfuric Naphtha")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.SulfuricNaphtha)
-            .addLocalizedName(Materials.SulfuricNaphtha)
+            .configureMaterials(Materials2Materials.SulfuricNaphtha)
+            .addLocalizedName(Materials2Materials.SulfuricNaphtha)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.SulfuricNaphtha, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1270,8 +1263,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Sulfuric Light Fuel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.SulfuricLightFuel)
-            .addLocalizedName(Materials.SulfuricLightFuel)
+            .configureMaterials(Materials2Materials.SulfuricLightFuel)
+            .addLocalizedName(Materials2Materials.SulfuricLightFuel)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.SulfuricLightFuel, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1279,8 +1272,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Sulfuric Heavy Fuel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.SulfuricHeavyFuel)
-            .addLocalizedName(Materials.SulfuricHeavyFuel)
+            .configureMaterials(Materials2Materials.SulfuricHeavyFuel)
+            .addLocalizedName(Materials2Materials.SulfuricHeavyFuel)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.SulfuricHeavyFuel, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1288,8 +1281,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Naphtha")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Naphtha)
-            .addLocalizedName(Materials.Naphtha)
+            .configureMaterials(Materials2Materials.Naphtha)
+            .addLocalizedName(Materials2Materials.Naphtha)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Naphtha, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1297,8 +1290,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Light Fuel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.LightFuel)
-            .addLocalizedName(Materials.LightFuel)
+            .configureMaterials(Materials2Materials.LightFuel)
+            .addLocalizedName(Materials2Materials.LightFuel)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.LightFuel, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1306,8 +1299,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Heavy Fuel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.HeavyFuel)
-            .addLocalizedName(Materials.HeavyFuel)
+            .configureMaterials(Materials2Materials.HeavyFuel)
+            .addLocalizedName(Materials2Materials.HeavyFuel)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.HeavyFuel, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1315,8 +1308,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("LPG")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.LPG)
-            .addLocalizedName(Materials.LPG)
+            .configureMaterials(Materials2Materials.LPG)
+            .addLocalizedName(Materials2Materials.LPG)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.LPG, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1326,8 +1319,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withColorRGBA(MU.rgba(Materials2Materials.CharcoalByproducts))
             .withStateAndTemperature(GAS, 775)
             .buildAndRegister()
-            .configureMaterials(Materials.CharcoalByproducts)
-            .addLocalizedName(Materials.CharcoalByproducts)
+            .configureMaterials(Materials2Materials.CharcoalByproducts)
+            .addLocalizedName(Materials2Materials.CharcoalByproducts)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.CharcoalByproducts, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1337,8 +1330,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withColorRGBA(MU.rgba(Materials2Materials.BisphenolA))
             .withStateAndTemperature(LIQUID, 432)
             .buildAndRegister()
-            .configureMaterials(Materials.BisphenolA)
-            .addLocalizedName(Materials.BisphenolA)
+            .configureMaterials(Materials2Materials.BisphenolA)
+            .addLocalizedName(Materials2Materials.BisphenolA)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.BisphenolA, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1347,8 +1340,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("UU Amplifier")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.UUAmplifier)
-            .addLocalizedName(Materials.UUAmplifier)
+            .configureMaterials(Materials2Materials.UUAmplifier)
+            .addLocalizedName(Materials2Materials.UUAmplifier)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.UUAmplifier, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1356,8 +1349,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Chlorine")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Chlorine)
-            .addLocalizedName(Materials.Chlorine)
+            .configureMaterials(Materials2Materials.Chlorine)
+            .addLocalizedName(Materials2Materials.Chlorine)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Chlorine, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1365,8 +1358,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Mercury")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Mercury)
-            .addLocalizedName(Materials.Mercury)
+            .configureMaterials(Materials2Materials.Mercury)
+            .addLocalizedName(Materials2Materials.Mercury)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Mercury, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1374,8 +1367,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Cetane-Boosted Diesel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.NitroFuel)
-            .addLocalizedName(Materials.NitroFuel)
+            .configureMaterials(Materials2Materials.NitroFuel)
+            .addLocalizedName(Materials2Materials.NitroFuel)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.NitroFuel, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1383,8 +1376,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Sodium Persulfate")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.SodiumPersulfate)
-            .addLocalizedName(Materials.SodiumPersulfate)
+            .configureMaterials(Materials2Materials.SodiumPersulfate)
+            .addLocalizedName(Materials2Materials.SodiumPersulfate)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.SodiumPersulfate, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1392,8 +1385,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Glyceryl Trinitrate")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Glyceryl)
-            .addLocalizedName(Materials.Glyceryl)
+            .configureMaterials(Materials2Materials.Glyceryl)
+            .addLocalizedName(Materials2Materials.Glyceryl)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Glyceryl, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1402,8 +1395,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Lubricant")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Lubricant)
-            .addLocalizedName(Materials.Lubricant)
+            .configureMaterials(Materials2Materials.Lubricant)
+            .addLocalizedName(Materials2Materials.Lubricant)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Lubricant, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1411,8 +1404,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Creosote Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Creosote)
-            .addLocalizedName(Materials.Creosote)
+            .configureMaterials(Materials2Materials.Creosote)
+            .addLocalizedName(Materials2Materials.Creosote)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Creosote, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1420,8 +1413,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Seed Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.SeedOil)
-            .addLocalizedName(Materials.SeedOil)
+            .configureMaterials(Materials2Materials.SeedOil)
+            .addLocalizedName(Materials2Materials.SeedOil)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.SeedOil, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1429,8 +1422,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Fish Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.FishOil)
-            .addLocalizedName(Materials.FishOil)
+            .configureMaterials(Materials2Materials.FishOil)
+            .addLocalizedName(Materials2Materials.FishOil)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.FishOil, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1438,8 +1431,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Oil)
-            .addLocalizedName(Materials.Oil)
+            .configureMaterials(Materials2Materials.Oil)
+            .addLocalizedName(Materials2Materials.Oil)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Oil, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1447,8 +1440,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Diesel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Diesel)
-            .addLocalizedName(Materials.Diesel)
+            .configureMaterials(Materials2Materials.Fuel)
+            .addLocalizedName(Materials2Materials.Fuel)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Fuel, 1L),
                 ItemList.Cell_Empty.get(1L));
@@ -1456,8 +1449,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Honey")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Honey)
-            .addLocalizedName(Materials.Honey)
+            .configureMaterials(Materials2Materials.Honey)
+            .addLocalizedName(Materials2Materials.Honey)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Honey, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1465,8 +1458,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Biomass")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Biomass)
-            .addLocalizedName(Materials.Biomass)
+            .configureMaterials(Materials2Materials.Biomass)
+            .addLocalizedName(Materials2Materials.Biomass)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Biomass, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1474,8 +1467,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Bio Ethanol")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Ethanol)
-            .addLocalizedName(Materials.Ethanol)
+            .configureMaterials(Materials2Materials.Ethanol)
+            .addLocalizedName(Materials2Materials.Ethanol)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Ethanol, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1483,8 +1476,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Sulfuric Acid")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.SulfuricAcid)
-            .addLocalizedName(Materials.SulfuricAcid)
+            .configureMaterials(Materials2Materials.SulfuricAcid)
+            .addLocalizedName(Materials2Materials.SulfuricAcid)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.SulfuricAcid, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1492,8 +1485,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Milk")
             .withStateAndTemperature(LIQUID, 290)
             .buildAndRegister()
-            .configureMaterials(Materials.Milk)
-            .addLocalizedName(Materials.Milk)
+            .configureMaterials(Materials2Materials.Milk)
+            .addLocalizedName(Materials2Materials.Milk)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Milk, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1501,8 +1494,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Mc Guffium 239")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.McGuffium239)
-            .addLocalizedName(Materials.McGuffium239)
+            .configureMaterials(Materials2Materials.McGuffium239)
+            .addLocalizedName(Materials2Materials.McGuffium239)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.McGuffium239, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1510,8 +1503,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Refined Glue")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Glue)
-            .addLocalizedName(Materials.Glue)
+            .configureMaterials(Materials2Materials.Glue)
+            .addLocalizedName(Materials2Materials.Glue)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Glue, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1519,8 +1512,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Hot Frying Oil")
             .withStateAndTemperature(LIQUID, 400)
             .buildAndRegister()
-            .configureMaterials(Materials.FryingOilHot)
-            .addLocalizedName(Materials.FryingOilHot)
+            .configureMaterials(Materials2Materials.FryingOilHot)
+            .addLocalizedName(Materials2Materials.FryingOilHot)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.FryingOilHot, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1532,8 +1525,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Sodium Potassium")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.SodiumPotassium)
-            .addLocalizedName(Materials.SodiumPotassium)
+            .configureMaterials(Materials2Materials.SodiumPotassium)
+            .addLocalizedName(Materials2Materials.SodiumPotassium)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.SodiumPotassium, 1L),
                 ItemList.Cell_Empty.get(1L));
@@ -1541,8 +1534,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Pollution")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Pollution)
-            .addLocalizedName(Materials.Pollution)
+            .configureMaterials(Materials2Materials.Pollution)
+            .addLocalizedName(Materials2Materials.Pollution)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Pollution, 1L),
                 ItemList.Cell_Empty.get(1L));
@@ -1550,8 +1543,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Enriched Bacterial Sludge")
             .withStateAndTemperature(LIQUID, 300)
             .buildAndRegister()
-            .configureMaterials(Materials.EnrichedBacterialSludge)
-            .addLocalizedName(Materials.EnrichedBacterialSludge)
+            .configureMaterials(Materials2Materials.EnrichedBacterialSludge)
+            .addLocalizedName(Materials2Materials.EnrichedBacterialSludge)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.EnrichedBacterialSludge, 1L),
                 ItemList.Cell_Empty.get(1L))
@@ -1561,8 +1554,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Fermented Bacterial Sludge")
             .withStateAndTemperature(LIQUID, 300)
             .buildAndRegister()
-            .configureMaterials(Materials.FermentedBacterialSludge)
-            .addLocalizedName(Materials.FermentedBacterialSludge)
+            .configureMaterials(Materials2Materials.FermentedBacterialSludge)
+            .addLocalizedName(Materials2Materials.FermentedBacterialSludge)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.FermentedBacterialSludge, 1L),
                 ItemList.Cell_Empty.get(1L))
@@ -1574,8 +1567,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Dimensionally Transcendent Residue")
             .withStateAndTemperature(LIQUID, 2000000000)
             .buildAndRegister()
-            .configureMaterials(Materials.DTR)
-            .addLocalizedName(Materials.DTR)
+            .configureMaterials(Materials2Materials.DimensionallyTranscendentResidue)
+            .addLocalizedName(Materials2Materials.DimensionallyTranscendentResidue)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.DimensionallyTranscendentResidue, 1L),
                 ItemList.Cell_Empty.get(1L));
@@ -1583,8 +1576,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Excited Dimensionally Transcendent Crude Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(Materials.ExcitedDTCC)
-            .addLocalizedName(Materials.ExcitedDTCC)
+            .configureMaterials(Materials2Materials.ExcitedDTCC)
+            .addLocalizedName(Materials2Materials.ExcitedDTCC)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.ExcitedDTCC, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1592,8 +1585,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Excited Dimensionally Transcendent Prosaic Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(Materials.ExcitedDTPC)
-            .addLocalizedName(Materials.ExcitedDTPC)
+            .configureMaterials(Materials2Materials.ExcitedDTPC)
+            .addLocalizedName(Materials2Materials.ExcitedDTPC)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.ExcitedDTPC, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1601,8 +1594,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Excited Dimensionally Transcendent Resplendent Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(Materials.ExcitedDTRC)
-            .addLocalizedName(Materials.ExcitedDTRC)
+            .configureMaterials(Materials2Materials.ExcitedDTRC)
+            .addLocalizedName(Materials2Materials.ExcitedDTRC)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.ExcitedDTRC, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1610,8 +1603,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Excited Dimensionally Transcendent Exotic Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(Materials.ExcitedDTEC)
-            .addLocalizedName(Materials.ExcitedDTEC)
+            .configureMaterials(Materials2Materials.ExcitedDTEC)
+            .addLocalizedName(Materials2Materials.ExcitedDTEC)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.ExcitedDTEC, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1619,8 +1612,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Excited Dimensionally Transcendent Stellar Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(Materials.ExcitedDTSC)
-            .addLocalizedName(Materials.ExcitedDTSC)
+            .configureMaterials(Materials2Materials.ExcitedDTSC)
+            .addLocalizedName(Materials2Materials.ExcitedDTSC)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.ExcitedDTSC, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1629,8 +1622,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName(MU.localName(Materials2Materials.RawStarMatter))
             .withStateAndTemperature(LIQUID, 10_000_000)
             .buildAndRegister()
-            .configureMaterials(Materials.RawStarMatter)
-            .addLocalizedName(Materials.RawStarMatter)
+            .configureMaterials(Materials2Materials.RawStarMatter)
+            .addLocalizedName(Materials2Materials.RawStarMatter)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.RawStarMatter, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1639,8 +1632,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName(MU.localName(Materials2Materials.spatialFluid))
             .withStateAndTemperature(MOLTEN, 0)
             .buildAndRegister()
-            .configureMaterials(Materials.Space)
-            .addLocalizedName(Materials.Space)
+            .configureMaterials(Materials2Materials.spatialFluid)
+            .addLocalizedName(Materials2Materials.spatialFluid)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.spatialFluid, 1L),
                 ItemList.Cell_Empty.get(1L));
@@ -1649,8 +1642,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName(MU.localName(Materials2Materials.temporalFluid))
             .withStateAndTemperature(MOLTEN, 0)
             .buildAndRegister()
-            .configureMaterials(Materials.Time)
-            .addLocalizedName(Materials.Time)
+            .configureMaterials(Materials2Materials.temporalFluid)
+            .addLocalizedName(Materials2Materials.temporalFluid)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.temporalFluid, 1L),
                 ItemList.Cell_Empty.get(1L));
@@ -1659,8 +1652,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName(MU.localName(Materials2Materials.PrimordialMatter))
             .withStateAndTemperature(LIQUID, 2_000_000_000)
             .buildAndRegister()
-            .configureMaterials(Materials.PrimordialMatter)
-            .addLocalizedName(Materials.PrimordialMatter)
+            .configureMaterials(Materials2Materials.PrimordialMatter)
+            .addLocalizedName(Materials2Materials.PrimordialMatter)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.PrimordialMatter, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1669,8 +1662,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName(MU.localName(Materials2Materials.QuarkGluonPlasma))
             .withStateAndTemperature(LIQUID, 2_000_000_000)
             .buildAndRegister()
-            .configureMaterials(Materials.QuarkGluonPlasma)
-            .addLocalizedName(Materials.QuarkGluonPlasma)
+            .configureMaterials(Materials2Materials.QuarkGluonPlasma)
+            .addLocalizedName(Materials2Materials.QuarkGluonPlasma)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.QuarkGluonPlasma, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1679,8 +1672,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName(MU.localName(Materials2Materials.PhononMedium))
             .withStateAndTemperature(LIQUID, 500)
             .buildAndRegister()
-            .configureMaterials(Materials.PhononMedium)
-            .addLocalizedName(Materials.PhononMedium)
+            .configureMaterials(Materials2Materials.PhononMedium)
+            .addLocalizedName(Materials2Materials.PhononMedium)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.PhononMedium, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1689,8 +1682,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName(MU.localName(Materials2Materials.PhononCrystalSolution))
             .withStateAndTemperature(LIQUID, 500)
             .buildAndRegister()
-            .configureMaterials(Materials.PhononCrystalSolution)
-            .addLocalizedName(Materials.PhononCrystalSolution)
+            .configureMaterials(Materials2Materials.PhononCrystalSolution)
+            .addLocalizedName(Materials2Materials.PhononCrystalSolution)
             .registerBContainers(
                 MaterialLibAPI
                     .getStack(Materials2Materials.PhononCrystalSolution, Materials2CellShapes.cell, (int) (1)),
@@ -1700,8 +1693,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName(MU.localName(Materials2Materials.Antimatter))
             .withStateAndTemperature(LIQUID, 1000000)
             .buildAndRegister()
-            .configureMaterials(Materials.Antimatter)
-            .addLocalizedName(Materials.Antimatter)
+            .configureMaterials(Materials2Materials.Antimatter)
+            .addLocalizedName(Materials2Materials.Antimatter)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Antimatter, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1710,8 +1703,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName(MU.localName(Materials2Materials.Protomatter))
             .withStateAndTemperature(LIQUID, 1)
             .buildAndRegister()
-            .configureMaterials(Materials.Protomatter)
-            .addLocalizedName(Materials.Protomatter)
+            .configureMaterials(Materials2Materials.Protomatter)
+            .addLocalizedName(Materials2Materials.Protomatter)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Protomatter, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1720,8 +1713,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Infinity Plasma")
             .withStateAndTemperature(PLASMA, 10000)
             .buildAndRegister()
-            .configureMaterials(Materials.Infinity)
-            .addLocalizedName(Materials.Infinity)
+            .configureMaterials(Materials2Materials.Infinity)
+            .addLocalizedName(Materials2Materials.Infinity)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2CellShapes.cellPlasma, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1730,8 +1723,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Bedrockium Plasma")
             .withStateAndTemperature(PLASMA, 10000)
             .buildAndRegister()
-            .configureMaterials(Materials.Bedrockium)
-            .addLocalizedName(Materials.Bedrockium)
+            .configureMaterials(Materials2Materials.Bedrockium)
+            .addLocalizedName(Materials2Materials.Bedrockium)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Bedrockium, Materials2CellShapes.cellPlasma, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1740,8 +1733,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Cosmic Neutronium Plasma")
             .withStateAndTemperature(PLASMA, 10000)
             .buildAndRegister()
-            .configureMaterials(Materials.CosmicNeutronium)
-            .addLocalizedName(Materials.CosmicNeutronium)
+            .configureMaterials(Materials2Materials.CosmicNeutronium)
+            .addLocalizedName(Materials2Materials.CosmicNeutronium)
             .registerBContainers(
                 MaterialLibAPI
                     .getStack(Materials2Materials.CosmicNeutronium, Materials2CellShapes.cellPlasma, (int) (1)),
@@ -1751,8 +1744,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Molten Cosmic Neutronium")
             .withStateAndTemperature(MOLTEN, 9900)
             .buildAndRegister()
-            .configureMaterials(Materials.CosmicNeutronium)
-            .addLocalizedName(Materials.CosmicNeutronium)
+            .configureMaterials(Materials2Materials.CosmicNeutronium)
+            .addLocalizedName(Materials2Materials.CosmicNeutronium)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.CosmicNeutronium, 1L),
                 ItemList.Cell_Empty.get(1L));
@@ -1761,8 +1754,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Ichorium Plasma")
             .withStateAndTemperature(PLASMA, 9000)
             .buildAndRegister()
-            .configureMaterials(Materials.Ichorium)
-            .addLocalizedName(Materials.Ichorium)
+            .configureMaterials(Materials2Materials.Ichorium)
+            .addLocalizedName(Materials2Materials.Ichorium)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Ichorium, Materials2CellShapes.cellPlasma, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1771,8 +1764,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Molten Ichorium")
             .withStateAndTemperature(MOLTEN, 9000)
             .buildAndRegister()
-            .configureMaterials(Materials.Ichorium)
-            .addLocalizedName(Materials.Ichorium)
+            .configureMaterials(Materials2Materials.Ichorium)
+            .addLocalizedName(Materials2Materials.Ichorium)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.Ichorium, 1L),
                 ItemList.Cell_Empty.get(1L));
@@ -1781,8 +1774,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName(MU.localName(Materials2Materials.InactiveCosmicSolder))
             .withStateAndTemperature(LIQUID, 1_000_000)
             .buildAndRegister()
-            .configureMaterials(Materials.InactiveCosmicSolder)
-            .addLocalizedName(Materials.InactiveCosmicSolder)
+            .configureMaterials(Materials2Materials.InactiveCosmicSolder)
+            .addLocalizedName(Materials2Materials.InactiveCosmicSolder)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.InactiveCosmicSolder, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1791,8 +1784,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName(MU.localName(Materials2Materials.BoundlessCosmicSolder))
             .withStateAndTemperature(LIQUID, 1_000_000)
             .buildAndRegister()
-            .configureMaterials(Materials.BoundlessCosmicSolder)
-            .addLocalizedName(Materials.BoundlessCosmicSolder)
+            .configureMaterials(Materials2Materials.BoundlessCosmicSolder)
+            .addLocalizedName(Materials2Materials.BoundlessCosmicSolder)
             .registerBContainers(
                 MaterialLibAPI
                     .getStack(Materials2Materials.BoundlessCosmicSolder, Materials2CellShapes.cell, (int) (1)),
@@ -1802,8 +1795,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName(MU.localName(Materials2Materials.ComputationBase))
             .withStateAndTemperature(MOLTEN, 100_000_000)
             .buildAndRegister()
-            .configureMaterials(Materials.ComputationBase)
-            .addLocalizedName(Materials.ComputationBase)
+            .configureMaterials(Materials2Materials.ComputationBase)
+            .addLocalizedName(Materials2Materials.ComputationBase)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.ComputationBase, 1L),
                 ItemList.Cell_Empty.get(1L));
@@ -1812,8 +1805,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
             .buildAndRegister()
-            .configureMaterials(Materials.FierySteel)
-            .addLocalizedName(Materials.FierySteel)
+            .configureMaterials(Materials2Materials.FierySteel)
+            .addLocalizedName(Materials2Materials.FierySteel)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.FierySteel, 1L),
                 ItemList.Cell_Empty.get(1L));
@@ -1822,8 +1815,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Holy Water")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.HolyWater)
-            .addLocalizedName(Materials.HolyWater)
+            .configureMaterials(Materials2Materials.HolyWater)
+            .addLocalizedName(Materials2Materials.HolyWater)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.HolyWater, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -1902,19 +1895,18 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Crushed Ice")
             .withStateAndTemperature(SLURRY, 270)
             .buildAndRegister()
-            .configureMaterials(Materials.Ice)
-            .addLocalizedName(Materials.Ice)
+            .configureMaterials(Materials2Materials.Ice)
+            .addLocalizedName(Materials2Materials.Ice)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Ice, 1L),
                 ItemList.Cell_Empty.get(1L));
-        Materials.Water.mSolid = Materials.Ice.mSolid;
 
         GTFluidFactory.builder("molten.glass")
             .withDefaultLocalName("Molten Glass")
             .withStateAndTemperature(MOLTEN, 1500)
             .buildAndRegister()
-            .configureMaterials(Materials.Glass)
-            .addLocalizedName(Materials.Glass)
+            .configureMaterials(Materials2Materials.Glass)
+            .addLocalizedName(Materials2Materials.Glass)
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.Glass, 1L),
                 ItemList.Cell_Empty.get(1L),
@@ -1923,8 +1915,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Molten Redstone")
             .withStateAndTemperature(MOLTEN, 500)
             .buildAndRegister()
-            .configureMaterials(Materials.Redstone)
-            .addLocalizedName(Materials.Redstone)
+            .configureMaterials(Materials2Materials.Redstone)
+            .addLocalizedName(Materials2Materials.Redstone)
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.Redstone, 1L),
                 ItemList.Cell_Empty.get(1L),
@@ -1933,8 +1925,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Molten Blaze")
             .withStateAndTemperature(MOLTEN, 6400)
             .buildAndRegister()
-            .configureMaterials(Materials.Blaze)
-            .addLocalizedName(Materials.Blaze)
+            .configureMaterials(Materials2Materials.Blaze)
+            .addLocalizedName(Materials2Materials.Blaze)
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.Blaze, 1L),
                 ItemList.Cell_Empty.get(1L),
@@ -1943,8 +1935,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Wet Concrete")
             .withStateAndTemperature(MOLTEN, 300)
             .buildAndRegister()
-            .configureMaterials(Materials.Concrete)
-            .addLocalizedName(Materials.Concrete)
+            .configureMaterials(Materials2Materials.Concrete)
+            .addLocalizedName(Materials2Materials.Concrete)
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.Concrete, 1L),
                 ItemList.Cell_Empty.get(1L),
@@ -1955,8 +1947,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withColorRGBA(MU.rgba(Materials2Materials.GraniteRed))
             .withStateAndTemperature(MOLTEN, 1520)
             .buildAndRegister()
-            .configureMaterials(Materials.GraniteRed)
-            .addLocalizedName(Materials.GraniteRed)
+            .configureMaterials(Materials2Materials.GraniteRed)
+            .addLocalizedName(Materials2Materials.GraniteRed)
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.GraniteRed, 1L),
                 ItemList.Cell_Empty.get(1L),
@@ -1967,8 +1959,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withColorRGBA(MU.rgba(Materials2Materials.GraniteBlack))
             .withStateAndTemperature(MOLTEN, 1520)
             .buildAndRegister()
-            .configureMaterials(Materials.GraniteBlack)
-            .addLocalizedName(Materials.GraniteBlack)
+            .configureMaterials(Materials2Materials.GraniteBlack)
+            .addLocalizedName(Materials2Materials.GraniteBlack)
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.GraniteBlack, 1L),
                 ItemList.Cell_Empty.get(1L),
@@ -1980,8 +1972,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withColorRGBA(MU.rgba(Materials2Materials.activatednetherite))
             .withStateAndTemperature(MOLTEN, 50_000_000)
             .buildAndRegister()
-            .configureMaterials(Materials.ActivatedNetherite)
-            .addLocalizedName(Materials.ActivatedNetherite)
+            .configureMaterials(Materials2Materials.activatednetherite)
+            .addLocalizedName(Materials2Materials.activatednetherite)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.activatednetherite, 1L),
                 ItemList.Cell_Empty.get(1L));
@@ -1991,10 +1983,10 @@ public class LoaderGTBlockFluid implements Runnable {
                 .toLowerCase(Locale.ENGLISH))
             .withDefaultLocalName(MU.localName(Materials2Materials.CarbonDioxide))
             .withTextureName("carbondioxide")
-            .withStateAndTemperature(GAS, Materials.CarbonDioxide.getGasTemperature())
+            .withStateAndTemperature(GAS, MU.gasTemperature(Materials2Materials.CarbonDioxide))
             .buildAndRegister()
-            .configureMaterials(Materials.CarbonDioxide)
-            .addLocalizedName(Materials.CarbonDioxide)
+            .configureMaterials(Materials2Materials.CarbonDioxide)
+            .addLocalizedName(Materials2Materials.CarbonDioxide)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.CarbonDioxide, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
@@ -2007,15 +1999,25 @@ public class LoaderGTBlockFluid implements Runnable {
                 .toLowerCase(Locale.ENGLISH))
             .withDefaultLocalName(MU.localName(Materials2Materials.Ammonia))
             .withTextures(stillTexture, flowTexture)
-            .withStateAndTemperature(GAS, Materials.Ammonia.getGasTemperature())
+            .withStateAndTemperature(GAS, MU.gasTemperature(Materials2Materials.Ammonia))
             .buildAndRegister()
-            .configureMaterials(Materials.Ammonia)
-            .addLocalizedName(Materials.Ammonia)
+            .configureMaterials(Materials2Materials.Ammonia)
+            .addLocalizedName(Materials2Materials.Ammonia)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Ammonia, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
-        for (Materials tMaterial : Materials.values()) {
+        // Autogenerate fluids for the legacy facade material set, iterated through the MaterialLib registry and
+        // recovered to its Materials counterpart. MU.materialOf reproduces Materials.values() exactly (the
+        // facade<->ML name bijection over MATERIALS_MAP, markers/superconductors excluded on both sides), so a
+        // registry material with no facade twin -- a werkstoff or gtpp reconstruction -- is skipped rather than
+        // gaining an autogenerated fluid it never had (a naive getMaterials() swap would triple the loop).
+        // GTProxy's addAutogenerated* methods stay Materials-typed: they read and mutate facade-only state (the
+        // mIconSet custom-texture strings, mMoltenRGBa, and the hydro/steam-cracked fluid arrays) and die with
+        // the facade in the deletion step.
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            Materials tMaterial = MU.materialOf(material);
+            if (tMaterial == null) continue;
             // GTFluid.DUMP_MODE bypasses these mStandardMoltenFluid-wired checks (in addition to the skip
             // inside addAutogeneratedMoltenFluid itself) so the legacy builder actually runs and captures its
             // texture into GTFluid.DUMP_TEXTURES, even for materials MaterialLib already wired.
@@ -2422,8 +2424,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Vinegar")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials.Vinegar)
-            .addLocalizedName(Materials.Vinegar)
+            .configureMaterials(Materials2Materials.Vinegar)
+            .addLocalizedName(Materials2Materials.Vinegar)
             .registerPContainers(ItemList.Bottle_Vinegar.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.potatojuice")
             .withDefaultLocalName("Potato Juice")
@@ -2682,8 +2684,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Liquid Sodium")
             .withStateAndTemperature(LIQUID, 495)
             .buildAndRegister()
-            .configureMaterials(Materials.Sodium)
-            .addLocalizedName(Materials.Sodium)
+            .configureMaterials(Materials2Materials.Sodium)
+            .addLocalizedName(Materials2Materials.Sodium)
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
