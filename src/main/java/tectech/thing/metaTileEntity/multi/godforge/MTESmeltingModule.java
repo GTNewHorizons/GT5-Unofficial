@@ -1,6 +1,11 @@
 package tectech.thing.metaTileEntity.multi.godforge;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.casing.Casings.BoundlessGravitationallySeveredStructureCasing;
+import static gregtech.api.casing.Casings.CelestialMatterGuidanceCasing;
+import static gregtech.api.casing.Casings.HypogenCoilBlock;
+import static gregtech.api.casing.Casings.SingularityReinforcedStellarShieldingCasing;
+import static gregtech.api.casing.Casings.StellarEnergySiphonCasing;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
@@ -15,6 +20,7 @@ import java.util.Collection;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -210,16 +216,16 @@ public class MTESmeltingModule extends MTEBaseModule {
         tt.addMachineType("Blast Furnace, Furnace")
             .addMarkdown(new ResourceLocation("gregtech", "godforge-smelting-module"))
             .beginStructureBlock(7, 7, 13, false)
-            .addController("Front center, 4th layer")
-            .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
-            .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
-            .addCasing("5", "Celestial Matter Guidance Casing", false)
-            .addCasing("5", "Hypogen Coil Block", false)
-            .addCasing("1", "Stellar Energy Siphon Casing", false)
-            .addInputBus("0+", "Any front shielding casing", 1)
-            .addInputHatch("0+", "Any front shielding casing", 1)
-            .addOutputBus("0+", "Any front shielding casing", 1)
-            .addOutputHatch("0+", "Any front shielding casing", 1)
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.godforge-smelting-module.controller-pos"))
+            .addCasing("0-20", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
+            .addCasing("20", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
+            .addCasing("5", CelestialMatterGuidanceCasing.getLocalizedName(), false)
+            .addCasing("5", HypogenCoilBlock.getLocalizedName(), false)
+            .addCasing("1", StellarEnergySiphonCasing.getLocalizedName(), false)
+            .addInputBus("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-smelting-module.hatch-pos"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-smelting-module.hatch-pos"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-smelting-module.hatch-pos"), 1)
+            .addOutputHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-smelting-module.hatch-pos"), 1)
             .toolTipFinisher();
         return tt;
     }
