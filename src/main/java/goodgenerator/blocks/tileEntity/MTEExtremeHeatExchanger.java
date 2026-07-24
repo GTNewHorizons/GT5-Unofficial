@@ -333,7 +333,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
                 } else {
                     steamToOutput = waterAmount * 160;
                 }
-                addOutput(new FluidStack(tReadySteam, steamToOutput));
+                addOutputPartial(new FluidStack(tReadySteam, steamToOutput));
             } else {
                 IGregTechTileEntity hotFluidHatchBMTE = mHotFluidHatch.getBaseMetaTileEntity();
                 if (hotFluidHatchBMTE != null) {

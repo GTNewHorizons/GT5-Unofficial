@@ -679,8 +679,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         if (Objects.isNull(fluidOutput)) return CheckRecipeResultRegistry.NO_RECIPE;
 
         fluidCoolant.amount -= CONSUMED_FLUID;
-        FluidStack fluidOutputStack = new FluidStack(fluidOutput, CONSUMED_FLUID);
-        this.addFluidOutputs(new FluidStack[] { fluidOutputStack });
+        addPendingOutput(new FluidStack(fluidOutput, CONSUMED_FLUID));
 
         outputPacketAfterRecipe();
         return CheckRecipeResultRegistry.SUCCESSFUL;
