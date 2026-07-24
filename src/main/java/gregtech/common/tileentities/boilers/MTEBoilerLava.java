@@ -35,7 +35,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TieredVariant;
@@ -270,8 +269,7 @@ public class MTEBoilerLava extends MTEBoiler {
         int toDrain = Math.min(
             this.lavaTank.getCapacity() - (this.lavaTank.getFluid() != null ? this.lavaTank.getFluid().amount : 0),
             1_000);
-        final FluidStack drainableLavaStack = upTank
-            .drain(ForgeDirection.DOWN, Materials.Lava.getFluid(toDrain), false);
+        final FluidStack drainableLavaStack = upTank.drain(ForgeDirection.DOWN, GTUtility.getLava(toDrain), false);
         if (!GTModHandler.isLava(drainableLavaStack) || drainableLavaStack.amount <= 0) return;
         // Performs actual drain up and fill internal tank
         this.lavaTank.fill(upTank.drain(ForgeDirection.DOWN, drainableLavaStack, true), true);

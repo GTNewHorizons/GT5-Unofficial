@@ -30,7 +30,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -105,7 +105,7 @@ public class AcidRecipes {
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.FranciumHydroxide, Materials2Shapes.dust, (int) (3)))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 1000L))
+            .fluidInputs(GTUtility.getWater(1000L))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (1000)))
@@ -122,7 +122,7 @@ public class AcidRecipes {
                     Materials2Materials.PhosphorusChlorineMixture,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (2000)),
-                MU.fluid(Materials2Materials.Water, 5000L))
+                GTUtility.getWater(5000L))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);

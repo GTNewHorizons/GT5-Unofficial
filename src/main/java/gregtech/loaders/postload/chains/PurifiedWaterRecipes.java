@@ -39,7 +39,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GTOreDictUnificator;
@@ -60,7 +59,7 @@ public class PurifiedWaterRecipes {
         // Grade 1 - Clarifier
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.ActivatedCarbonFilterMesh.get(1))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Grade1PurifiedWater,
@@ -97,7 +96,7 @@ public class PurifiedWaterRecipes {
             .addTo(blastFurnaceRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.carbonactivateddirty, Materials2Shapes.dust, 1))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidInputs(GTUtility.getWater(1_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.ActivatedCarbon, Materials2Shapes.dust, (int) (1)))
             .fluidOutputs(
                 MaterialLibAPI
@@ -222,7 +221,7 @@ public class PurifiedWaterRecipes {
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.PolyaluminiumChloride, Materials2FluidShapes.fluidLiquid, 1_000),
-                MU.fluid(Materials2Materials.Water, 3_000))
+                GTUtility.getWater(3_000))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);

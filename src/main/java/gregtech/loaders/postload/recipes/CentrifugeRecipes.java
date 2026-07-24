@@ -26,7 +26,6 @@ import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -34,10 +33,10 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -124,7 +123,7 @@ public class CentrifugeRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SluiceJuice, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 500))
+            .fluidOutputs(GTUtility.getWater(500))
             .duration(2 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
@@ -627,7 +626,7 @@ public class CentrifugeRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Sapphire, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Tantalite, Materials2Shapes.dust, (int) (1)))
             .outputChances(5000, 1000, 1000, 250, 1250, 500)
-            .fluidInputs(Materials.Lava.getFluid(400))
+            .fluidInputs(GTUtility.getLava(400))
             .duration(16 * SECONDS)
             .eut(80)
             .addTo(centrifugeRecipes);
@@ -642,7 +641,7 @@ public class CentrifugeRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Sapphire, Materials2Shapes.dust, (int) (3)),
                 MaterialLibAPI.getStack(Materials2Materials.Tantalite, Materials2Shapes.dust, (int) (1)))
             .outputChances(9000, 9000, 9000, 1000, 3750, 4500)
-            .fluidInputs(Materials.Lava.getFluid(3_600))
+            .fluidInputs(GTUtility.getLava(3_600))
             .duration(2 * MINUTES + 24 * SECONDS)
             .eut(80)
             .addTo(centrifugeRecipes);

@@ -990,7 +990,10 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         recipeBuilder.itemInputs(GTUtility.copyAmount(9, getStackForType(comb)))
             .circuit(circuitNumber)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
-            .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + volt.getUUAmplifier()) / 10))))
+            .fluidInputs(
+                MU.fluid(
+                    Materials2Materials.UUMatter,
+                    Math.max(1, ((aMaterial.getMass() + volt.getUUAmplifier()) / 10))))
             .duration(((int) (aMaterial.getMass() * 128)) * TICKS)
             .eut(volt.getAutoClaveEnergy());
         if (volt.compareTo(Voltage.HV) > 0) {
@@ -1338,7 +1341,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             return switch (this.getVoltageFromEU()) {
                 case 0 ->
                     /* ULV */
-                    MU.fluid(Materials2Materials.Water, fluidAmount);
+                    GTUtility.getWater(fluidAmount);
                 case 1 ->
                     /* LV */
                     MaterialLibAPI.getFluidStack(

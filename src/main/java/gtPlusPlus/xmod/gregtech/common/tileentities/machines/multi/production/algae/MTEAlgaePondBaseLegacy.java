@@ -37,12 +37,10 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -271,7 +269,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
 
                 // trying to fill with water
                 for (FluidStack stored : this.getStoredFluids()) {
-                    if (!stored.isFluidEqual(MU.fluid(Materials2Materials.Water, 1))) continue;
+                    if (!stored.isFluidEqual(GTUtility.getWater(1))) continue;
 
                     if (stored.amount < 1000) continue;
 

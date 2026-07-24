@@ -22,10 +22,10 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 public class BreweryRecipes implements Runnable {
 
@@ -492,7 +492,7 @@ public class BreweryRecipes implements Runnable {
         {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Forestry.ID, "fertilizerBio", 4L, 0))
-                .fluidInputs(MU.fluid(Materials2Materials.Water, 750))
+                .fluidInputs(GTUtility.getWater(750))
                 .fluidOutputs(
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Biomass, Materials2FluidShapes.fluidLiquid, (int) (750)))
@@ -525,7 +525,7 @@ public class BreweryRecipes implements Runnable {
         {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTModHandler.getIC2Item("biochaff", 1))
-                .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
+                .fluidInputs(GTUtility.getWater(1_000))
                 .fluidOutputs(getFluidStack("ic2biomass", 1_000))
                 .duration(8 * SECONDS + 10 * TICKS)
                 .eut(4)

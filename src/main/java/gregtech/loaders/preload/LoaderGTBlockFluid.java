@@ -962,6 +962,10 @@ public class LoaderGTBlockFluid implements Runnable {
             .getFluid();
         Materials.UUMatter.mFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("uuMatterCell", 1L), true)
             .getFluid();
+        // UUMatter is GT-owned but its fluid is IC2's, resolved from the filled cell at runtime (no static
+        // LEGACY_FLUIDS name to port). Mirror the facade field write onto MU's slot store so
+        // MU.fluid(Materials2Materials.UUMatter, n) returns the same IC2 fluid the facade getFluid returned.
+        MU.recordSlotFluid(Materials2Materials.UUMatter, MU.FluidState.LIQUID, Materials.UUMatter.mFluid);
 
         GTFluidFactory.builder("Air")
             .withDefaultLocalName("Air")
@@ -1137,7 +1141,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
             .itemOutputs(GTModHandler.getIC2Item("steamCell", 1))
-            .fluidInputs(Materials.Steam.getGas(1_000))
+            .fluidInputs(MU.gas(Materials2Materials.Steam, 1_000))
             .duration(16 * TICKS)
             .eut(1)
             .addTo(cannerRecipes);

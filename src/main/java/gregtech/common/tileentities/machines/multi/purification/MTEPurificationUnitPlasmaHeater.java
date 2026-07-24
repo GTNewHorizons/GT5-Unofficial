@@ -38,7 +38,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -395,7 +394,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             FluidStack insertedWater = currentRecipe.mFluidInputs[0];
             // Multiply by 60 since that's the water:steam ratio in GTNH
             long steamAmount = insertedWater.amount * 60L;
-            addOutputPartial(Materials.Steam.getGas(steamAmount));
+            addOutputPartial(MU.gas(Materials2Materials.Steam, steamAmount));
         }
     }
 

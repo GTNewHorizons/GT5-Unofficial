@@ -10,7 +10,6 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import gregtech.api.covers.CoverContext;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -63,10 +62,10 @@ public class CoverDrain extends CoverLegacyData {
                 if (tBlock != null) {
                     if (((tBlock == Blocks.water) || (tBlock == Blocks.flowing_water))
                         && (coverable.getMetaIDAtSide(coverSide) == 0)) {
-                        tLiquid = MU.fluid(Materials2Materials.Water, 1_000);
+                        tLiquid = GTUtility.getWater(1_000);
                     } else if (((tBlock == Blocks.lava) || (tBlock == Blocks.flowing_lava))
                         && (coverable.getMetaIDAtSide(coverSide) == 0)) {
-                            tLiquid = Materials.Lava.getFluid(1_000);
+                            tLiquid = GTUtility.getLava(1_000);
                         } else if ((tBlock instanceof IFluidBlock)) {
                             tLiquid = ((IFluidBlock) tBlock).drain(
                                 coverable.getWorld(),

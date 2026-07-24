@@ -61,7 +61,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -804,7 +803,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             }
 
             if (drainedamount > 0) {
-                addOutputToHatch(steamOutputHatch, Materials.Steam.getGas(drainedamount * 160L));
+                addOutputToHatch(steamOutputHatch, MU.gas(Materials2Materials.Steam, drainedamount * 160L));
 
                 double eff = drainedamount / ((double) this.watertaking);
                 double addedTime = (int) (this.mMaxProgresstime * WATER_SPEEDUP

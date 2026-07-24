@@ -1424,7 +1424,7 @@ public final class RecipeMaps {
             int aDuration = b.getDuration(), aEUt = b.getEUt();
             Collection<GTRecipe> ret = new ArrayList<>();
             b.copy()
-                .fluidInputs(MU.fluid(Materials2Materials.Water, clamp(aDuration * aEUt / 320, 4, 1000)))
+                .fluidInputs(GTUtility.getWater(clamp(aDuration * aEUt / 320, 4, 1000)))
                 .duration(aDuration * 2)
                 .build()
                 .ifPresent(ret::add);

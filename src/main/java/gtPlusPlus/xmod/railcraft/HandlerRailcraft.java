@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -139,7 +138,7 @@ public class HandlerRailcraft {
             .itemInputs(coke)
             .circuit(5)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dustSmall, (int) (1)))
-            .fluidInputs(Materials.Steam.getGas(100))
+            .fluidInputs(MU.gas(Materials2Materials.Steam, 100))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.WoodTar, Materials2FluidShapes.fluidLiquid, (int) (200)))
@@ -151,7 +150,7 @@ public class HandlerRailcraft {
             .itemInputs(coke)
             .circuit(6)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dustSmall, (int) (1)))
-            .fluidInputs(Materials.Steam.getGas(100))
+            .fluidInputs(MU.gas(Materials2Materials.Steam, 100))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.WoodGas, Materials2FluidShapes.fluidGas, (int) (300)))
             .eut(TierEU.RECIPE_HV / 2)

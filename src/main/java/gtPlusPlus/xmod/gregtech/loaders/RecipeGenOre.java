@@ -29,8 +29,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
@@ -202,7 +202,7 @@ public class RecipeGenOre extends RecipeGenBase {
             .itemInputs(material.getCrushed(1))
             .itemOutputs(material.getCrushedPurified(1), matDustA, dustStone)
             .outputChances(100_00, 11_11, 100_00)
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidInputs(GTUtility.getWater(1_000))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(oreWasherRecipes);

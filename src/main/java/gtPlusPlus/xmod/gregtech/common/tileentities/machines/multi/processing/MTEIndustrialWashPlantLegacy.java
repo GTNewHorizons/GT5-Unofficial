@@ -48,13 +48,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MU;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -332,7 +330,7 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
                     boolean waterSourceProcessed = false;
 
                     for (FluidStack stored : storedFluids) {
-                        if (!stored.isFluidEqual(MU.fluid(Materials2Materials.Water, 1))) continue;
+                        if (!stored.isFluidEqual(GTUtility.getWater(1))) continue;
 
                         if (stored.amount < 1000) continue;
 

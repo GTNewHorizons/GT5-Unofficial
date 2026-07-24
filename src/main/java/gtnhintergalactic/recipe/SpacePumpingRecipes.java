@@ -11,12 +11,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.WerkstoffLoader;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 
 /**
  * Available fluids for space pumping are defined here
@@ -48,7 +48,7 @@ public class SpacePumpingRecipes {
                 Materials2Materials.OilExtraHeavy,
                 Materials2FluidShapes.fluidLiquid,
                 (int) (1_400_000)));
-        RECIPES.put(Pair.of(3, 3), Materials.Lava.getFluid(1_800_000));
+        RECIPES.put(Pair.of(3, 3), GTUtility.getLava(1_800_000));
         RECIPES.put(Pair.of(3, 4), MU.gas(Materials2Materials.NatruralGas, 1_400_000));
 
         // T4

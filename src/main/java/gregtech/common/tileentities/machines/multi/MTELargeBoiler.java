@@ -38,7 +38,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -389,7 +388,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 if (isSuperheated()) {
                     // Consumes only one third of the water if producing Superheated Steam, to maintain water in the
                     // chain.
-                    if (depleteInput(MU.fluid(Materials2Materials.Water, amount / superToNormalSteam))
+                    if (depleteInput(GTUtility.getWater(amount / superToNormalSteam))
                         || depleteInput(GTModHandler.getDistilledWater(amount / superToNormalSteam))) {
                         // Outputs Superheated Steam instead of Steam, at one third of the amount (equivalent in power
                         // output to the normal Steam amount).
@@ -400,9 +399,9 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                         explodeMultiblock();
                     }
                 } else {
-                    if (depleteInput(MU.fluid(Materials2Materials.Water, amount))
+                    if (depleteInput(GTUtility.getWater(amount))
                         || depleteInput(GTModHandler.getDistilledWater(amount))) {
-                        addOutputPartial(Materials.Steam.getGas(tGeneratedEU));
+                        addOutputPartial(MU.gas(Materials2Materials.Steam, tGeneratedEU));
                     } else {
                         GTLog.writeExplosionLog(this, "Boiler had no water");
                         explodeMultiblock();

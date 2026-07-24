@@ -63,7 +63,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
@@ -185,7 +184,7 @@ public class GTModHandler {
      */
     public static boolean isWater(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(MU.fluid(Materials2Materials.Water, 1)) || aFluid.isFluidEqual(getDistilledWater(1));
+        return aFluid.isFluidEqual(GTUtility.getWater(1)) || aFluid.isFluidEqual(getDistilledWater(1));
     }
 
     /**
@@ -195,7 +194,7 @@ public class GTModHandler {
      */
     @Deprecated
     public static FluidStack getWater(long aAmount) {
-        return MU.fluid(Materials2Materials.Water, aAmount);
+        return GTUtility.getWater(aAmount);
     }
 
     /**
@@ -203,7 +202,7 @@ public class GTModHandler {
      */
     public static FluidStack getDistilledWater(long aAmount) {
         FluidStack tFluid = FluidRegistry.getFluidStack("ic2distilledwater", (int) aAmount);
-        if (tFluid == null) tFluid = MU.fluid(Materials2Materials.Water, aAmount);
+        if (tFluid == null) tFluid = GTUtility.getWater(aAmount);
         return tFluid;
     }
 
@@ -212,7 +211,7 @@ public class GTModHandler {
      */
     public static FluidStack getIC2Coolant(long aAmount) {
         if (IndustrialCraft2.isModLoaded()) return FluidRegistry.getFluidStack("ic2coolant", (int) aAmount);
-        else return MU.fluid(Materials2Materials.Water, aAmount);
+        else return GTUtility.getWater(aAmount);
     }
 
     /**
@@ -229,7 +228,7 @@ public class GTModHandler {
      */
     public static boolean isLava(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(Materials.Lava.getFluid(1));
+        return aFluid.isFluidEqual(GTUtility.getLava(1));
     }
 
     /**
@@ -239,7 +238,7 @@ public class GTModHandler {
      */
     @Deprecated
     public static FluidStack getLava(long aAmount) {
-        return Materials.Lava.getFluid(aAmount);
+        return GTUtility.getLava(aAmount);
     }
 
     /**
@@ -247,7 +246,7 @@ public class GTModHandler {
      */
     public static boolean isSteam(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(Materials.Steam.getGas(1));
+        return aFluid.isFluidEqual(MU.gas(Materials2Materials.Steam, 1));
     }
 
     /**
@@ -271,7 +270,7 @@ public class GTModHandler {
      */
     @Deprecated
     public static FluidStack getSteam(long aAmount) {
-        return Materials.Steam.getGas(aAmount);
+        return MU.gas(Materials2Materials.Steam, aAmount);
     }
 
     /**

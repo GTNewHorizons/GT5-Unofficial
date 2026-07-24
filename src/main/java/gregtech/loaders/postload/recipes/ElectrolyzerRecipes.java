@@ -20,9 +20,9 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ElectrolyzerRecipes implements Runnable {
@@ -35,7 +35,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemInputs(ItemList.Cell_Empty.get(1L))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Oxygen, Materials2CellShapes.cell, (int) (1)))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (2_000)))
@@ -59,7 +59,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemInputs(ItemList.Cell_Empty.get(2L))
             .circuit(3)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Hydrogen, Materials2CellShapes.cell, (int) (2)))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (1_000)))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -374,7 +374,7 @@ public class ElectrolyzerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Zinc, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Sulfur, Materials2Shapes.dust, (int) (4)))
             .fluidInputs(new FluidStack(ItemList.sLeadZincSolution, 8000))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 2_000))
+            .fluidOutputs(GTUtility.getWater(2_000))
             .duration(15 * SECONDS)
             .eut(192)
             .addTo(electrolyzerRecipes);

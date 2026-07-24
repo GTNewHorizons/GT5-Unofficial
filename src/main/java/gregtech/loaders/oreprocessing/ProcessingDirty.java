@@ -84,7 +84,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     1L),
                 MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dust, (int) (1)))
             .outputChances(100_00, 11_11, 100_00)
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidInputs(GTUtility.getWater(1_000))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(oreWasherRecipes);

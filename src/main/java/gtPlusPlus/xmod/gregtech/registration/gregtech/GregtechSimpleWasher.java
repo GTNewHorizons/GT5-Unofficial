@@ -26,6 +26,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
@@ -197,7 +198,7 @@ public class GregtechSimpleWasher {
             GTValues.RA.stdBuilder()
                 .itemInputs(aInput)
                 .itemOutputs(aOutput)
-                .fluidInputs(MU.fluid(Materials2Materials.Water, 100))
+                .fluidInputs(GTUtility.getWater(100))
                 .duration(5 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(simpleWasherRecipes);

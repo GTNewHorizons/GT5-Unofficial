@@ -51,7 +51,6 @@ import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
@@ -59,7 +58,6 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -945,7 +943,7 @@ public class RecipeLoader2 {
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Ethanol, Materials2FluidShapes.fluidLiquid, 2_000))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 2_000))
+            .fluidOutputs(GTUtility.getWater(2_000))
             .itemOutputs(GGMaterial.diethylamine.get(OrePrefixes.cell, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -957,7 +955,7 @@ public class RecipeLoader2 {
                 GGMaterial.cyclopentadiene.getFluidOrGas(2_000),
                 GGMaterial.ferrousChloride.getFluidOrGas(1_000),
                 GGMaterial.diethylamine.getFluidOrGas(8_000),
-                Materials.Ice.getSolid(4_000))
+                GTUtility.getIceSolid(4_000))
             .fluidOutputs(GGMaterial.impureFerroceneMixture.getFluidOrGas(15_000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
@@ -973,14 +971,14 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
-        CrackRecipeAdder.addUniversalDistillationRecipe(
-            GGMaterial.ferroceneWaste.getFluidOrGas(1_000),
-            new FluidStack[] { MU.fluid(Materials2Materials.Water, 400), GGMaterial.diethylamine.getFluidOrGas(800),
-                MaterialLibAPI
+        CrackRecipeAdder
+            .addUniversalDistillationRecipe(
+                GGMaterial.ferroceneWaste.getFluidOrGas(1_000),
+                new FluidStack[] { GTUtility.getWater(400), GGMaterial.diethylamine.getFluidOrGas(800), MaterialLibAPI
                     .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 200) },
-            GTValues.NI,
-            30 * SECONDS,
-            TierEU.RECIPE_MV);
+                GTValues.NI,
+                30 * SECONDS,
+                TierEU.RECIPE_MV);
 
         CrackRecipeAdder.addUniversalDistillationRecipe(
             GGMaterial.ferroceneSolution.getFluidOrGas(2_000),
@@ -1033,7 +1031,7 @@ public class RecipeLoader2 {
                 'P', ItemList.Electric_Piston_IV, 'H', ItemList.Hull_IV, 'M', ItemList.Electric_Motor_IV });
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
-            Materials.Lava.getFluid(160_000),
+            GTUtility.getLava(160_000),
             FluidRegistry.getFluidStack("ic2pahoehoelava", 160_000),
             GTModHandler.getDistilledWater(80_000),
             FluidRegistry.getFluidStack("ic2superheatedsteam", 12_800_000),
@@ -1575,7 +1573,7 @@ public class RecipeLoader2 {
             .fluidInputs(
                 GGMaterial.ether.getFluidOrGas(1_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.fluidGas, 40_000),
-                Materials.Ice.getSolid(8_000))
+                GTUtility.getIceSolid(8_000))
             .fluidOutputs(GGMaterial.antimonyPentafluorideSolution.getFluidOrGas(8_000))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)

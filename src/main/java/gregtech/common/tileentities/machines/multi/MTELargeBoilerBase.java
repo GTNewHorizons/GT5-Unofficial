@@ -43,7 +43,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -418,7 +417,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 } else {
                     if (consumeWater(waterToConsume)) {
                         tickBurnTime();
-                        addOutputPartial(Materials.Steam.getGas(tGeneratedEU));
+                        addOutputPartial(MU.gas(Materials2Materials.Steam, tGeneratedEU));
                     } else {
                         GTLog.writeExplosionLog(this, "Boiler had no water");
                         explodeMultiblock();
@@ -454,10 +453,9 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     }
 
     private boolean consumeWater(int amount) {
-        if (amount <= 0) return depleteInput(MU.fluid(Materials2Materials.Water, 1), true)
-            || depleteInput(GTModHandler.getDistilledWater(1), true);
-        return depleteInput(MU.fluid(Materials2Materials.Water, amount))
-            || depleteInput(GTModHandler.getDistilledWater(amount));
+        if (amount <= 0)
+            return depleteInput(GTUtility.getWater(1), true) || depleteInput(GTModHandler.getDistilledWater(1), true);
+        return depleteInput(GTUtility.getWater(amount)) || depleteInput(GTModHandler.getDistilledWater(amount));
     }
 
     private int getSuperheatedSteam(long steamEquivalent) {

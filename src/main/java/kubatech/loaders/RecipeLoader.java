@@ -97,8 +97,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import kubatech.api.enums.ItemList;
@@ -243,7 +243,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(TeaLeafDehydrated.get(1))
                 .itemOutputs(SteamedTeaLeaf.get(1))
-                .fluidInputs(MU.fluid(Materials2Materials.Water, 50))
+                .fluidInputs(GTUtility.getWater(50))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -357,7 +357,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(GameRegistry.findItemStack("harvestcraft", "peppermintItem", 1))
                 .itemOutputs(PeppermintTea.get(1))
-                .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
+                .fluidInputs(GTUtility.getWater(1_000))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);

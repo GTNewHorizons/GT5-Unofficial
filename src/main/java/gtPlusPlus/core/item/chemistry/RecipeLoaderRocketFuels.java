@@ -24,6 +24,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -148,7 +149,7 @@ public class RecipeLoaderRocketFuels {
             .circuit(8)
             .itemOutputs(GregtechItemList.AmmoniumNitrateDust.get(8))
             .fluidInputs(new FluidStack(GTPPFluids.HydratedAmmoniumNitrateSlurry, 8 * INGOTS))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 2_000))
+            .fluidOutputs(GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_HV)
             .duration(1 * MINUTES + 30 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
@@ -192,9 +193,7 @@ public class RecipeLoaderRocketFuels {
                 new FluidStack(GTPPFluids.Formaldehyde, 2_000),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (4_000)))
-            .fluidOutputs(
-                MU.fluid(Materials2Materials._11Dimethylhydrazine, 2_000),
-                MU.fluid(Materials2Materials.Water, 2_000))
+            .fluidOutputs(MU.fluid(Materials2Materials._11Dimethylhydrazine, 2_000), GTUtility.getWater(2_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 3)

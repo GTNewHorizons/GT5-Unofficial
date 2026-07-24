@@ -30,12 +30,13 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
@@ -300,7 +301,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                         // superheated
                         // steam
                     } else {
-                        addOutputPartial(Materials.Steam.getGas(tGeneratedEU)); // Generate regular steam
+                        addOutputPartial(MU.gas(Materials2Materials.Steam, tGeneratedEU)); // Generate regular steam
                     }
                 } else {
                     GTLog.writeExplosionLog(this, "had no more Distilled water!");

@@ -27,14 +27,11 @@ import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -755,9 +752,8 @@ public class MTEPump extends MTEBasicMachine {
 
             } else if (getDrainableStack() == null) {
                 // The pump has no internal fluid
-                if (this.mPrimaryPumpedBlock == Blocks.water)
-                    setDrainableStack(MU.fluid(Materials2Materials.Water, 1_000));
-                else if (this.mPrimaryPumpedBlock == Blocks.lava) setDrainableStack(Materials.Lava.getFluid(1_000));
+                if (this.mPrimaryPumpedBlock == Blocks.water) setDrainableStack(GTUtility.getWater(1_000));
+                else if (this.mPrimaryPumpedBlock == Blocks.lava) setDrainableStack(GTUtility.getLava(1_000));
                 else {
                     // Not water or lava; try to drain and set to air
                     setDrainableStack(

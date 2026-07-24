@@ -32,7 +32,6 @@ import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -40,10 +39,10 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.loaders.materials.RecognitionMaterials;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -508,7 +507,7 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Wheat, Materials2Shapes.dust, 1))
             .itemOutputs(ItemList.Food_Dough.get(2))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidInputs(GTUtility.getWater(1_000))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -576,7 +575,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.NetherQuartz, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, RecognitionMaterials.Fluix, 2))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 500))
+            .fluidInputs(GTUtility.getWater(500))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
@@ -664,7 +663,7 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Lapis, Materials2Shapes.dust, 1))
             .circuit(4)
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 125))
+            .fluidInputs(GTUtility.getWater(125))
             .fluidOutputs(GTModHandler.getIC2Coolant(125))
             .duration(12 * SECONDS + 16 * TICKS)
             .eut(48)
@@ -764,7 +763,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.dust, 1))
-            .fluidInputs(Materials.Lava.getFluid(125L))
+            .fluidInputs(GTUtility.getLava(125L))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.GraniteRed, Materials2FluidShapes.fluidMolten, 1 * INGOTS))
@@ -776,7 +775,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, 1))
-            .fluidInputs(Materials.Lava.getFluid(125L))
+            .fluidInputs(GTUtility.getLava(125L))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.GraniteBlack, Materials2FluidShapes.fluidMolten, 1 * INGOTS))
@@ -1220,7 +1219,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.dirt, 1, 32767), new ItemStack(Items.wheat, 4, 32767))
             .circuit(2)
             .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 100))
+            .fluidInputs(GTUtility.getWater(100))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
@@ -1229,7 +1228,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.dirt, 1, 32767), getModItem(BiomesOPlenty.ID, "plants", 4, 6))
             .circuit(2)
             .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 100))
+            .fluidInputs(GTUtility.getWater(100))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
@@ -1238,7 +1237,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.dirt, 1, 32767), getModItem(PamsHarvestCraft.ID, "oatsItem", 4))
             .circuit(2)
             .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 100))
+            .fluidInputs(GTUtility.getWater(100))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
@@ -1247,7 +1246,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.dirt, 1, 32767), getModItem(PamsHarvestCraft.ID, "ryeItem", 4))
             .circuit(2)
             .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 100))
+            .fluidInputs(GTUtility.getWater(100))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
@@ -1256,7 +1255,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.dirt, 1, 32767), getModItem(PamsHarvestCraft.ID, "barleyItem", 4))
             .circuit(2)
             .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 100))
+            .fluidInputs(GTUtility.getWater(100))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
@@ -1265,7 +1264,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.dirt, 1, 32767), getModItem(Natura.ID, "barleyFood", 4))
             .circuit(2)
             .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 100))
+            .fluidInputs(GTUtility.getWater(100))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
@@ -1276,7 +1275,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, 4))
             .circuit(3)
             .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 100))
+            .fluidInputs(GTUtility.getWater(100))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
@@ -1285,7 +1284,7 @@ public class MixerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SluiceSand, Materials2Shapes.dust, 1))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 500))
+            .fluidInputs(GTUtility.getWater(500))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.SluiceJuice, Materials2FluidShapes.fluidLiquid, 1_000))
             .duration(5 * SECONDS)
@@ -1297,7 +1296,7 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Salt, Materials2Shapes.dust, 2))
             .circuit(3)
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.SaltWater, Materials2FluidShapes.fluidLiquid, 1_000))
             .duration(5 * SECONDS)
@@ -1335,7 +1334,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.CarbonDioxide, Materials2CellShapes.cell, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, 2_000))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidOutputs(GTUtility.getWater(1_000))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
@@ -1450,7 +1449,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.CalciumAcetateSolution, Materials2CellShapes.cell, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, 2_000))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidOutputs(GTUtility.getWater(1_000))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);

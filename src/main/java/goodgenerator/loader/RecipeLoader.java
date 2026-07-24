@@ -57,11 +57,11 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -1129,7 +1129,7 @@ public class RecipeLoader {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Quartzite, Materials2Shapes.plate, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, 4))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidInputs(GTUtility.getWater(1_000))
             .itemOutputs(ItemRefer.Quartz_Wafer.get(1))
             .outputChances(3333)
             .requiresCleanRoom()
