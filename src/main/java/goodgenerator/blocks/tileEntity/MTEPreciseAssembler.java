@@ -50,6 +50,7 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -71,6 +72,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -279,7 +281,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Precise Assembler, Assembler, PrAss")
+        tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.precise-assembler.machine-type"))
             .addMarkdown(new ResourceLocation("gregtech", "precise-assembler"))
             .addStaticSpeedInfo(2f)
             .addSeparator()
@@ -293,17 +295,21 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 5, true)
-            .addController("Front bottom center")
-            .addCasing("42-81", "Precise Electronic Unit Casing", true)
-            .addCasing("42", "EV+ Tiered Glass", false)
-            .addCasing("21", "Machine Casing", true)
-            .addCasing("12", "Tungstensteel Frame Box", false)
-            .addEnergyHatch("1+", "Any unit casing", 1)
-            .addMaintenanceHatch("1", "Any unit casing", 1)
-            .addMufflerHatch("1", "Any unit casing", 1)
-            .addInputBus("1+", "Any unit casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("42-81", StatCollector.translateToLocal("GT5U.tooltip.precise-assembler.unit-casing"), true)
+            .addCasing("42", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", "EV"), false)
+            .addCasing("21", StatCollector.translateToLocal("GT5U.MBTT.Tiers.MachineCasing"), true)
+            .addCasing(
+                "12",
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L)
+                    .getDisplayName(),
+                false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addInputHatch("0+", "Any unit casing", 1)
-            .addOutputBus("1+", "Any unit casing", 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.PRASS_UNIT_CASING)
             .addSubChannel(GTStructureChannels.BOROGLASS)

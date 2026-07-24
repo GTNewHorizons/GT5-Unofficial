@@ -9081,6 +9081,10 @@ GT5U.tooltip.bec-ionode.controller-pos=Front center, 12th layer
 GT5U.tooltip.bec-ionode.hatch-pos=Any electromagnetically-isolated casing
 GT5U.tooltip.bec-ionode.los-hatch-pos=Back center casing
 
+# Precise Assembler Structure Hints
+GT5U.tooltip.precise-assembler.machine-type=Precise Assembler, Assembler, PrAss
+GT5U.tooltip.precise-assembler.unit-casing=Precise Electronic Unit Casing
+
 # BEC Generator Structure Hints
 GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
 GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing around controller

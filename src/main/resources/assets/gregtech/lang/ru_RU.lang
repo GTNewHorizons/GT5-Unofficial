@@ -7277,6 +7277,9 @@ GT5U.tooltip.drone_remote_not_found=Дрон-станция: x: %s y: %s z: %s �
 GT5U.tooltip.large-essentia-smeltery.machine-type=Плавильня эссенции, LES
 GT5U.tooltip.large-essentia-smeltery.output-hatch-name=Выходной шлюз эссенции
 
+GT5U.tooltip.precise-assembler.machine-type=Прецизионный авто-сборщик/Сборочная машина, PrAss
+GT5U.tooltip.precise-assembler.unit-casing=Прецизионный корпус электронного блока
+
 # info data
 GT5U.infodata.no_network=Нет сети
 GT5U.infodata.battery_buffer.stored_items=Stored Items: %s EU / %s EU
