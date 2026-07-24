@@ -39,6 +39,7 @@ import goodgenerator.loader.Loaders;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -55,6 +56,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -190,27 +192,43 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Neutron Activator, NA")
+        tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.neutron-activator.machine-type"))
             .addMarkdown(new ResourceLocation("gregtech", "neutron-activator"))
             .beginVariableStructureBlock(5, 5, 6, 256, 5, 5, false)
-            .addController("Front bottom center")
-            .addMiscHatch("1+", "Neutron Accelerator", "Any bottom edge casing", 2)
-            .addMiscHatch("0+", "Neutron Sensor", "Any bottom edge casing", 2)
-            .addMaintenanceHatch("1", "Any bottom edge casing", 2)
-            .addInputAny("1+", "Any top edge casing", 1)
-            .addOutputAny("1+", "Any bottom edge casing", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addMiscHatch(
+                "1+",
+                StatCollector.translateToLocal("GT5U.tooltip.neutron-activator.neutron-accelerator"),
+                StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_casing"),
+                2)
+            .addMiscHatch(
+                "0+",
+                StatCollector.translateToLocal("GT5U.tooltip.neutron-activator.neutron-sensor"),
+                StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_casing"),
+                2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_casing"), 2)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_edge_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_casing"), 2)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("32", "Any Tiered Glass", false)
-            .addCasing("7-27", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("18", "Processor Machine Casing", false)
-            .addCasing("16", "Steel Frame Box", false)
-            .addCasing("4", "Speeding Pipe Casing", false)
+            .addCasing("32", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("7-27", new ItemStack(GregTechAPI.sBlockCasings4, 1, 1).getDisplayName(), false)
+            .addCasing("18", new ItemStack(GregTechAPI.sBlockCasings2, 1, 6).getDisplayName(), false)
+            .addCasing(
+                "16",
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1)
+                    .getDisplayName(),
+                false)
+            .addCasing("4", new ItemStack(Loaders.speedingPipe, 1, 0).getDisplayName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
-            .addCasing("8", "Any Tiered Glass", false)
-            .addCasing("4", "Steel Frame Box", false)
-            .addCasing("1", "Speeding Pipe Casing", false)
+            .addCasing("8", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing(
+                "4",
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1)
+                    .getDisplayName(),
+                false)
+            .addCasing("1", new ItemStack(Loaders.speedingPipe, 1, 0).getDisplayName(), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.height"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
