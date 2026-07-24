@@ -64,7 +64,7 @@ public class TTRecipeAdder extends RecipeAdder {
             }
         }
         researchAmperage = GTUtility.clamp(researchAmperage, 1, Short.MAX_VALUE);
-        computationRequiredPerSec = GTUtility.clamp(computationRequiredPerSec, 1, Long.MAX_VALUE >>> 16);
+        computationRequiredPerSec = GTUtility.clamp(computationRequiredPerSec, 1, (~0L) >>> 16);
 
         GTRecipe.RecipeAssemblyLine recipeGT = new GTRecipe.RecipeAssemblyLine(
             CustomItemList.UnusedStuff.get(1),
