@@ -362,7 +362,7 @@ public class ElectrolyzerRecipes implements Runnable {
                 .itemOutputs(Materials.Carbon.getDust(8))
                 .fluidInputs(dimethylbenzene.getFluid(1_000))
                 .fluidOutputs(Materials.Hydrogen.getGas(10_000))
-                .duration(6 * MINUTES + 57 * SECONDS + 12 * TICKS)
+                .duration(21 * SECONDS + 12 * TICKS)
                 .eut(60)
                 .addTo(electrolyzerRecipes);
         }
