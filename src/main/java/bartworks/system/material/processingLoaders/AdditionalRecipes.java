@@ -224,7 +224,7 @@ public class AdditionalRecipes {
             .fake()
             .addTo(bioLabRecipes);
 
-        FluidStack[] easyFluids = { MU.fluid(Materials2Materials.Water, 1_000), GTModHandler.getDistilledWater(1_000) };
+        FluidStack[] easyFluids = { GTUtility.getWater(1_000), GTModHandler.getDistilledWater(1_000) };
         for (FluidStack fluidStack : easyFluids) {
             for (BioCulture bioCulture : BioCultureEnum.BIO_CULTURES) {
                 if (bioCulture.isBreedable() && bioCulture.getTier() == 0) {
@@ -242,7 +242,7 @@ public class AdditionalRecipes {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             ItemList.EmptyPetriDish.get(1),
-                            fluidStack.equals(MU.fluid(Materials2Materials.Water, 1_000))
+                            fluidStack.equals(GTUtility.getWater(1_000))
                                 ? GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Water, 1)
                                 : GTUtility.getContainersFromFluid(GTModHandler.getDistilledWater(1_000))
                                     .get(0))
@@ -501,7 +501,7 @@ public class AdditionalRecipes {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (10_000)))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 8_832))
+            .fluidOutputs(GTUtility.getWater(8_832))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);

@@ -37,13 +37,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
@@ -155,7 +155,10 @@ public class MTEMassfabricator extends MTEBasicMachine {
         sUUAperUUM = MachineStats.massFabricator.UUAPerUUM;
         sUUASpeedBonus = MachineStats.massFabricator.UUASpeedBonus;
         sRequiresUUA = MachineStats.massFabricator.requiresUUA;
-        Materials.UUAmplifier.setChemicalFormula("Mass Fabricator Eff/Speed Bonus: x" + sUUASpeedBonus, true);
+        // The UU-Amplifier cell/fluid is a MaterialLib item (Materials2Materials.UUAmplifier); its NEI tooltip
+        // formula comes from that material's static FORMULA property ("Accelerates the Mass Fabricator", set in
+        // Materials2Formulas). The former per-config dynamic formula written onto the legacy Materials facade
+        // had no MaterialLib reader, so it is not carried over.
     }
 
     @Override
@@ -172,7 +175,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
     public int checkRecipe() {
         FluidStack tFluid = getDrainableStack();
         if ((tFluid == null) || (tFluid.amount < getCapacity())) {
-            this.mOutputFluid = Materials.UUMatter.getFluid(1L);
+            this.mOutputFluid = MU.fluid(Materials2Materials.UUMatter, 1L);
             calculateCustomOverclock(containsUUA(getFillableStack()) ? uuaRecipe : nonUUARecipe);
             // In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)

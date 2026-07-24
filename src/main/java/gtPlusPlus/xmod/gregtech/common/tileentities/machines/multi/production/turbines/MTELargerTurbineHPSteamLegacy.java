@@ -8,11 +8,11 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -132,7 +132,7 @@ public class MTELargerTurbineHPSteamLegacy extends MTELargerTurbineBaseLegacy {
                     Materials2FluidShapes.fluidGas,
                     (int) ((long) steamFlowForNextSteam)));
         } else {
-            addOutputPartial(Materials.Steam.getGas(totalFlow));
+            addOutputPartial(MU.gas(Materials2Materials.Steam, totalFlow));
         }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);

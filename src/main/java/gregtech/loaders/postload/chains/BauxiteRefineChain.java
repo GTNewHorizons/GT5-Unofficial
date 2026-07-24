@@ -19,8 +19,8 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 public class BauxiteRefineChain {
 
@@ -32,7 +32,7 @@ public class BauxiteRefineChain {
                 MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (4)))
             .circuit(8)
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 5_000))
+            .fluidInputs(GTUtility.getWater(5_000))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.BauxiteSlurry, Materials2FluidShapes.fluidLiquid, (int) (8_000)))
@@ -46,7 +46,7 @@ public class BauxiteRefineChain {
                 MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (4)))
             .circuit(8)
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 5_000))
+            .fluidInputs(GTUtility.getWater(5_000))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.BauxiteSlurry, Materials2FluidShapes.fluidLiquid, (int) (8_000)))

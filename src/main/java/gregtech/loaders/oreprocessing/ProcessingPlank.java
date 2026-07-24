@@ -204,7 +204,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, plankInput))
             .itemOutputs(slabOutput)
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 4))
+            .fluidInputs(GTUtility.getWater(4))
             .duration(2 * 25 * TICKS)
             .eut(4)
             .addTo(cutterRecipes);

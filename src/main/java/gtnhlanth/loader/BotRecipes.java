@@ -22,7 +22,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
@@ -31,6 +30,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 
 /*
@@ -52,7 +52,7 @@ public class BotRecipes {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 2_000))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidOutputs(GTUtility.getWater(1_000))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
@@ -67,7 +67,7 @@ public class BotRecipes {
                 MaterialLibAPI.getStack(Materials2Materials.Tungstate, Materials2Shapes.dust, 7),
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, 2))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.dust, 2))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 4_000))
+            .fluidInputs(GTUtility.getWater(4_000))
             .fluidOutputs(sodiumTungsten)
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -79,7 +79,7 @@ public class BotRecipes {
                 WerkstoffLoader.Huebnerit.get(dust, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, 2))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Manganese, Materials2Shapes.dust, 1))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 4_000))
+            .fluidInputs(GTUtility.getWater(4_000))
             .fluidOutputs(sodiumTungsten)
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -91,7 +91,7 @@ public class BotRecipes {
                 WerkstoffLoader.Ferberite.get(dust, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, 2))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dust, 1))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 4_000))
+            .fluidInputs(GTUtility.getWater(4_000))
             .fluidOutputs(sodiumTungsten)
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -136,7 +136,7 @@ public class BotRecipes {
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, 6_000))
-            .fluidOutputs(Materials.Steam.getGas(3_000))
+            .fluidOutputs(MU.gas(Materials2Materials.Steam, 3_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 1000)
@@ -203,7 +203,7 @@ public class BotRecipes {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.PhosphoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 500))
+            .fluidOutputs(GTUtility.getWater(500))
             .eut(TierEU.RECIPE_HV)
             .duration(1 * SECONDS)
             .addTo(distilleryRecipes);
@@ -242,7 +242,7 @@ public class BotRecipes {
             .itemOutputs(WerkstoffLoader.SodiumNitrate.get(dust, 5))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Ammonia, Materials2FluidShapes.fluidGas, 1_000),
-                MU.fluid(Materials2Materials.Water, 1_000))
+                GTUtility.getWater(1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);

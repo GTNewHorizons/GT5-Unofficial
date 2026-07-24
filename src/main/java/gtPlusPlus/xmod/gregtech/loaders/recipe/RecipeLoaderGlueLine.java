@@ -104,7 +104,7 @@ public class RecipeLoaderGlueLine {
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)),
-                MU.fluid(Materials2Materials.Water, 1_000))
+                GTUtility.getWater(1_000))
             .duration(20 * SECONDS)
             .eut(1000)
             .metadata(CHEMPLANT_CASING_TIER, 4)
@@ -144,9 +144,7 @@ public class RecipeLoaderGlueLine {
             .fluidInputs(
                 MaterialMisc.ETHYL_CYANOACETATE.getFluidStack(100),
                 new FluidStack(GTPPFluids.Formaldehyde, 100))
-            .fluidOutputs(
-                MaterialMisc.CYANOACRYLATE_POLYMER.getFluidStack(100),
-                MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidOutputs(MaterialMisc.CYANOACRYLATE_POLYMER.getFluidStack(100), GTUtility.getWater(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -161,9 +159,7 @@ public class RecipeLoaderGlueLine {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Ammonia, Materials2FluidShapes.fluidGas, (int) (2_000)),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (6_000)))
-            .fluidOutputs(
-                MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(2_000),
-                MU.fluid(Materials2Materials.Water, 6_000))
+            .fluidOutputs(MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(2_000), GTUtility.getWater(6_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -178,7 +174,7 @@ public class RecipeLoaderGlueLine {
             .circuit(17)
             .itemOutputs(MaterialMisc.SODIUM_CYANIDE.getDust(3))
             .fluidInputs(MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(1_000))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidOutputs(GTUtility.getWater(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
@@ -189,7 +185,7 @@ public class RecipeLoaderGlueLine {
             .circuit(17)
             .itemOutputs(MaterialMisc.SODIUM_CYANIDE.getDust(3))
             .fluidInputs(MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(1_000))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidOutputs(GTUtility.getWater(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -247,7 +243,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialMisc.COPPER_SULFATE_HYDRATED.getDust(11))
             .itemOutputs(MaterialMisc.COPPER_SULFATE.getDust(6))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 5_000))
+            .fluidOutputs(GTUtility.getWater(5_000))
             .eut(10)
             .duration(5 * MINUTES)
             .addTo(chemicalDehydratorRecipes);

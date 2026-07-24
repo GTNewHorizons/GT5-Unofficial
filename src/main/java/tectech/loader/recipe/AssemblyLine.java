@@ -14,7 +14,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -109,7 +108,7 @@ public class AssemblyLine implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.wireFine, 16) },
                 CustomItemList.DATApipe.get(2))
             .fluidInputs(
-                Materials.UUMatter.getFluid(500),
+                MU.fluid(Materials2Materials.UUMatter, 500),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Iridium, Materials2FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(1_000))
@@ -133,7 +132,7 @@ public class AssemblyLine implements Runnable {
                 new ItemStack[] { MaterialLibAPI
                     .getStack(Materials2Materials.Polybenzimidazole, Materials2Shapes.plateSuperdense, 2) })
             .fluidInputs(
-                Materials.UUMatter.getFluid(1_000),
+                MU.fluid(Materials2Materials.UUMatter, 1_000),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Iridium, Materials2FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(2_000),
@@ -158,7 +157,7 @@ public class AssemblyLine implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.wireFine, 32) },
                 CustomItemList.DATApipe.get(16))
             .fluidInputs(
-                Materials.UUMatter.getFluid(1_000),
+                MU.fluid(Materials2Materials.UUMatter, 1_000),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Iridium, Materials2FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(2_000),

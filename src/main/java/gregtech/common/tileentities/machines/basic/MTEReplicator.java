@@ -13,12 +13,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.recipe.RecipeMap;
@@ -131,7 +132,7 @@ public class MTEReplicator extends MTEBasicMachine {
 
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return aFluid.isFluidEqual(Materials.UUMatter.getFluid(1L));
+        return aFluid.isFluidEqual(MU.fluid(Materials2Materials.UUMatter, 1L));
     }
 
     @Override

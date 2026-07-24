@@ -278,7 +278,7 @@ public class GTPostLoad {
         if (!MTEMassfabricator.sRequiresUUA) {
 
             MTEMassfabricator.nonUUARecipe = GTValues.RA.stdBuilder()
-                .fluidOutputs(Materials.UUMatter.getFluid(1L))
+                .fluidOutputs(MU.fluid(Materials2Materials.UUMatter, 1L))
                 .duration(MTEMassfabricator.sDurationMultiplier)
                 .eut(MTEMassfabricator.BASE_EUT)
                 .ignoreCollision()
@@ -297,7 +297,7 @@ public class GTPostLoad {
                     Materials2Materials.UUAmplifier,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (MTEMassfabricator.sUUAperUUM)))
-            .fluidOutputs(Materials.UUMatter.getFluid(1L))
+            .fluidOutputs(MU.fluid(Materials2Materials.UUMatter, 1L))
             .duration(MTEMassfabricator.sDurationMultiplier / MTEMassfabricator.sUUASpeedBonus)
             .eut(MTEMassfabricator.BASE_EUT)
             .ignoreCollision()
@@ -501,7 +501,7 @@ public class GTPostLoad {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(input)
-                    .fluidInputs(MU.fluid(Materials2Materials.Water, 333))
+                    .fluidInputs(GTUtility.getWater(333))
                     .itemOutputs(output)
                     .duration(0)
                     .eut(0)
@@ -526,7 +526,7 @@ public class GTPostLoad {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(input)
-                    .fluidInputs(MU.fluid(Materials2Materials.Water, 333))
+                    .fluidInputs(GTUtility.getWater(333))
                     .itemOutputs(output)
                     .duration(0)
                     .eut(0)

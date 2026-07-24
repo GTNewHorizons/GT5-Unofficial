@@ -35,7 +35,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
@@ -78,7 +77,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
     private static final Fluid fluidWater = FluidRegistry.WATER;
     private static final Fluid fluidDistilledWater = GTModHandler.getDistilledWater(1)
         .getFluid();
-    private static final Fluid fluidSteam = Materials.Steam.getGas(1)
+    private static final Fluid fluidSteam = MU.gas(Materials2Materials.Steam, 1)
         .getFluid();
     private static final Fluid fluidSHSteam = GTModHandler.getSuperHeatedSteam(1)
         .getFluid();
@@ -231,7 +230,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
 
     private boolean useWater(int steamAmount) {
         int waterAmount = Math.floorDiv(steamAmount + GTValues.STEAM_PER_WATER - 1, GTValues.STEAM_PER_WATER);
-        if (depleteInput(MU.fluid(Materials2Materials.Water, waterAmount))
+        if (depleteInput(GTUtility.getWater(waterAmount))
             || depleteInput(GTModHandler.getDistilledWater(waterAmount))) {
             dryHeatCounter = 0;
             return true;

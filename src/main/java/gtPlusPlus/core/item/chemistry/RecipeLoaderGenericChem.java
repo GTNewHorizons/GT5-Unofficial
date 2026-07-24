@@ -27,10 +27,10 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -123,7 +123,7 @@ public class RecipeLoaderGenericChem {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Ethanol, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
                 new FluidStack(GTPPFluids.CarbonDisulfide, 1_000))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidOutputs(GTUtility.getWater(1_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 4)

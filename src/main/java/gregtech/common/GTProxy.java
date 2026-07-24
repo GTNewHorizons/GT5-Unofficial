@@ -2608,7 +2608,7 @@ public class GTProxy implements IFuelHandler {
 
             GTValues.RA.stdBuilder()
                 .circuit(i + 1)
-                .fluidInputs(new FluidStack(uncrackedFluid, 1_000), Materials.Steam.getGas(1_000))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1_000), MU.gas(Materials2Materials.Steam, 1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 1_200))
                 .duration((1 + i) * SECONDS)
                 .eut(TierEU.RECIPE_HV / 2)
@@ -2628,7 +2628,7 @@ public class GTProxy implements IFuelHandler {
                 .itemInputs(aMaterial.getCells(1))
                 .circuit(i + 1)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
-                .fluidInputs(Materials.Steam.getGas(1_000))
+                .fluidInputs(MU.gas(Materials2Materials.Steam, 1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -2646,7 +2646,7 @@ public class GTProxy implements IFuelHandler {
 
             GTValues.RA.stdBuilder()
                 .circuit(i + 1)
-                .fluidInputs(new FluidStack(uncrackedFluid, 1_000), Materials.Steam.getGas(1_000))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1_000), MU.gas(Materials2Materials.Steam, 1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((4 + 2 * i) * SECONDS)
                 .eut(TierEU.RECIPE_HV)

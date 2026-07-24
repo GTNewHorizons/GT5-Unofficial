@@ -29,10 +29,10 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ChemicalBathRecipes implements Runnable {
@@ -83,7 +83,7 @@ public class ChemicalBathRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.dust, (int) (1)))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.HydratedCoal, Materials2Shapes.dust, (int) (1)))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 125))
+            .fluidInputs(GTUtility.getWater(125))
             .duration(12 * TICKS)
             .eut(4)
             .addTo(chemicalBathRecipes);
@@ -97,7 +97,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(paperSource)
                 .itemOutputs(new ItemStack(Items.paper, 1, 0))
-                .fluidInputs(MU.fluid(Materials2Materials.Water, 100))
+                .fluidInputs(GTUtility.getWater(100))
                 .duration(10 * SECONDS)
                 .eut(4)
                 .addTo(chemicalBathRecipes);
@@ -178,7 +178,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(GregTechAPI.sBlockConcretes, 1, i + 8))
                 .itemOutputs(new ItemStack(GregTechAPI.sBlockConcretes, 1, i))
-                .fluidInputs(MU.fluid(Materials2Materials.Water, 250))
+                .fluidInputs(GTUtility.getWater(250))
                 .duration(10 * SECONDS)
                 .eut(4)
                 .addTo(chemicalBathRecipes);
@@ -404,7 +404,7 @@ public class ChemicalBathRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, (int) (1)))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 3))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (1_000)))

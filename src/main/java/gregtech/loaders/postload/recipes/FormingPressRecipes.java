@@ -18,7 +18,6 @@ import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -215,7 +214,7 @@ public class FormingPressRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.SixPhasedCopper, 4L),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Eternity, 4L),
                 MaterialLibAPI.getStack(Materials2Materials.BlackDwarfMatter, Materials2Shapes.plate, (int) (1)))
-            .fluidInputs(Materials.UUMatter.getFluid(4_096_000L))
+            .fluidInputs(MU.fluid(Materials2Materials.UUMatter, 4_096_000L))
             .itemOutputs(ItemList.NaniteFramework.get(1))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UXV)

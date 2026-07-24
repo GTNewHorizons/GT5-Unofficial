@@ -11,10 +11,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 
@@ -107,7 +108,7 @@ public class MTEHatchCustomFluidBaseDebug extends MTEHatchCustomFluidBase {
             aFluidTemp = mLockedFluid.getTemperature();
             mTempMod = mLockedFluid.getName();
         }
-        if (mLockedStack.isFluidEqual(Materials.Steam.getGas(1))) {
+        if (mLockedStack.isFluidEqual(MU.gas(Materials2Materials.Steam, 1))) {
             isSteam = true;
         }
 

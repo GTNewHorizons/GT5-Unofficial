@@ -32,7 +32,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TieredVariant;
@@ -136,9 +135,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         }
         if (aPlayer != null) {
             if (GTUtility.areStacksEqual(aPlayer.getCurrentEquippedItem(), new ItemStack(Items.water_bucket, 1))) {
-                fill(
-                    MU.fluid(Materials2Materials.Water, 1000L * (long) aPlayer.getCurrentEquippedItem().stackSize),
-                    true);
+                fill(GTUtility.getWater(1000L * (long) aPlayer.getCurrentEquippedItem().stackSize), true);
 
                 if (!aPlayer.capabilities.isCreativeMode) {
                     aPlayer.getCurrentEquippedItem()
@@ -236,7 +233,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         if (GTModHandler.isSteam(this.mSteam)) {
             this.mSteam.amount += aAmount;
         } else {
-            this.mSteam = Materials.Steam.getGas(aAmount);
+            this.mSteam = MU.gas(Materials2Materials.Steam, aAmount);
         }
     }
 
@@ -527,8 +524,8 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     public boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
-        return GTUtility.fillFluidContainer(Materials.Steam.getGas(getSteamCapacity()), stack, false, true) != null
-            || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
+        return GTUtility.fillFluidContainer(MU.gas(Materials2Materials.Steam, getSteamCapacity()), stack, false, true)
+            != null || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
     }
 
     protected boolean isItemValidFuel(@NotNull ItemStack stack) {

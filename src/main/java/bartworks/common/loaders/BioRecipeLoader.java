@@ -34,7 +34,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -48,7 +47,7 @@ public class BioRecipeLoader {
     }
 
     public static void registerWaterBasedBioLabIncubations() {
-        FluidStack[] easyFluids = { MU.fluid(Materials2Materials.Water, 1_000), GTModHandler.getDistilledWater(1_000) };
+        FluidStack[] easyFluids = { GTUtility.getWater(1_000), GTModHandler.getDistilledWater(1_000) };
         for (FluidStack fluidStack : easyFluids) {
 
             GTValues.RA.stdBuilder()
@@ -127,7 +126,7 @@ public class BioRecipeLoader {
 
     @SuppressWarnings({ "PointlessArithmeticExpression", "RedundantSuppression" })
     public static void registerWaterBasedBacterialVatRecipes() {
-        FluidStack[] easyFluids = { MU.fluid(Materials2Materials.Water, 1_000), GTModHandler.getDistilledWater(1_000) };
+        FluidStack[] easyFluids = { GTUtility.getWater(1_000), GTModHandler.getDistilledWater(1_000) };
         for (ItemStack grape : GTOreDictUnificator.getOres("cropGrape")) {
             for (FluidStack fluidStack : easyFluids) {
                 GTValues.RA.stdBuilder()

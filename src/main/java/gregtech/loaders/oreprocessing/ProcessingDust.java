@@ -277,7 +277,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .circuit(1)
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
                         .outputChances(7000)
-                        .fluidInputs(MU.fluid(Materials2Materials.Water, 200L))
+                        .fluidInputs(GTUtility.getWater(200L))
                         .duration(1 * MINUTES + 40 * SECONDS)
                         .eut(24)
                         .addTo(autoclaveRecipes);
@@ -464,7 +464,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .circuit(1)
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
                         .outputChances(prefix == OrePrefixes.dustPure ? 9500 : 9000)
-                        .fluidInputs(MU.fluid(Materials2Materials.Water, 200L))
+                        .fluidInputs(GTUtility.getWater(200L))
                         .duration(1 * MINUTES + 40 * SECONDS)
                         .eut(24)
                         .addTo(autoclaveRecipes);
@@ -635,7 +635,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 .circuit(1)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
                 .outputChances(7000)
-                .fluidInputs(MU.fluid(Materials2Materials.Water, 200L))
+                .fluidInputs(GTUtility.getWater(200L))
                 .duration(1 * MINUTES + 40 * SECONDS)
                 .eut(24)
                 .addTo(autoclaveRecipes);

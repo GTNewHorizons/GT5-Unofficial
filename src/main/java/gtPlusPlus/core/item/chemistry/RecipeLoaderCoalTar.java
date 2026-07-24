@@ -29,6 +29,7 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -62,7 +63,7 @@ public class RecipeLoaderCoalTar {
                 .itemOutputs(
                     MaterialLibAPI.getStack(Materials2Materials.Ethylene, Materials2CellShapes.cell, (int) (1)))
                 .fluidInputs(bioEth1)
-                .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
+                .fluidOutputs(GTUtility.getWater(1_000))
                 .eut(80)
                 .duration(2 * MINUTES)
                 .addTo(chemicalDehydratorRecipes);
@@ -74,7 +75,7 @@ public class RecipeLoaderCoalTar {
                 .itemOutputs(
                     MaterialLibAPI.getStack(Materials2Materials.Ethylene, Materials2CellShapes.cell, (int) (1)))
                 .fluidInputs(bioEth2)
-                .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
+                .fluidOutputs(GTUtility.getWater(1_000))
                 .eut(80)
                 .duration(2 * MINUTES)
                 .addTo(chemicalDehydratorRecipes);

@@ -22,16 +22,15 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FluidExtractorRecipes implements Runnable {
@@ -139,7 +138,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.HydratedCoal, Materials2Shapes.dust, (int) (1L)))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.dust, (int) (1L)))
             .outputChances(10000)
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 100L))
+            .fluidOutputs(GTUtility.getWater(100L))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
@@ -606,21 +605,21 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.snowball, 1, 0))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 250))
+            .fluidOutputs(GTUtility.getWater(250))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.snow, 1, 0))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidOutputs(GTUtility.getWater(1_000))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Ice, Materials2Shapes.dust, (int) (1L)))
-            .fluidOutputs(Materials.Ice.getSolid(1000L))
+            .fluidOutputs(GTUtility.getIceSolid(1000L))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
@@ -629,7 +628,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Forestry.ID, "phosphor", 1L))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Phosphorus, Materials2Shapes.dust, (int) (1L)))
             .outputChances(1000)
-            .fluidOutputs(Materials.Lava.getFluid(800L))
+            .fluidOutputs(GTUtility.getLava(800L))
             .duration(12 * SECONDS + 16 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);

@@ -83,7 +83,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
@@ -92,6 +91,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
@@ -141,7 +141,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public static final int EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT = 1000;
     public static final int EIG_BALANCE_WATER_USAGE_PER_SEED = 1000;
 
-    private static final Fluid WEEDEX_FLUID = Materials.WeedEX9000.mFluid;
+    private static final Fluid WEEDEX_FLUID = MU.fluidOf(Materials2Materials.WeedEX9000);
     private static final LinkedList<ItemStack> FERTILIZER_ITEM_LIST = new LinkedList<>();
 
     public static void addFertilizerItem(ItemStack fertilizer) {

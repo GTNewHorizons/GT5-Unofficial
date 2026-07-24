@@ -15,12 +15,12 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -35,7 +35,7 @@ public class CokeAndPyrolyseOven {
             .itemInputs(new OreDictItemStack("logWood", 20))
             .circuit(20)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Charcoal, 24))
-            .fluidInputs(Materials.Steam.getGas(1_000))
+            .fluidInputs(MU.gas(Materials2Materials.Steam, 1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 1440))
             .duration(72 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -46,7 +46,7 @@ public class CokeAndPyrolyseOven {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Coal, 16))
             .circuit(22)
             .itemOutputs(GTOreDictUnificator.get("fuelCoke", 10))
-            .fluidInputs(Materials.Steam.getGas(1_000))
+            .fluidInputs(MU.gas(Materials2Materials.Steam, 1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 20 * INGOTS))
             .duration(36 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -69,7 +69,7 @@ public class CokeAndPyrolyseOven {
                 GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Coal, 12),
                 GTOreDictUnificator.get("fuelCoke", 6))
             .itemOutputs(GTOreDictUnificator.get("fuelCoke", 14))
-            .fluidInputs(Materials.Steam.getGas(2_000))
+            .fluidInputs(MU.gas(Materials2Materials.Steam, 2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 5040))
             .eut(TierEU.RECIPE_HV / 2)
             .duration(1 * MINUTES)
@@ -138,7 +138,7 @@ public class CokeAndPyrolyseOven {
             .itemInputs(coke)
             .circuit(5)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (5)))
-            .fluidInputs(Materials.Steam.getGas(2_000))
+            .fluidInputs(MU.gas(Materials2Materials.Steam, 2_000))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.WoodTar, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
@@ -150,7 +150,7 @@ public class CokeAndPyrolyseOven {
             .itemInputs(coke)
             .circuit(6)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (5)))
-            .fluidInputs(Materials.Steam.getGas(2_000))
+            .fluidInputs(MU.gas(Materials2Materials.Steam, 2_000))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.WoodGas, Materials2FluidShapes.fluidGas, (int) (6_000)))

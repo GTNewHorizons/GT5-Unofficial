@@ -36,7 +36,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -44,6 +43,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -187,7 +187,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
                         super.mMaxProgresstime = 20;
                         super.mEfficiencyIncrease = 40;
                         if (super.mEfficiency == getMaxEfficiency(null)) {
-                            super.addOutputPartial(Materials.Steam.getGas(STEAM_PER_SEC));
+                            super.addOutputPartial(MU.gas(Materials2Materials.Steam, STEAM_PER_SEC));
                         }
                         return CheckRecipeResultRegistry.GENERATING;
                     }

@@ -17,8 +17,8 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.GTMod;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
@@ -121,7 +121,7 @@ public class ReplicatorBackend extends RecipeMapBackend {
             .map(Element::getMass)
             .map(ReplicatorBackend::getUUMAmountFromMass)
             .flatMap(
-                uum -> builder.fluidInputs(Materials.UUMatter.getFluid(uum))
+                uum -> builder.fluidInputs(MU.fluid(Materials2Materials.UUMatter, uum))
                     .duration(GTUtility.safeInt(uum * 512L, 1))
                     .eut(TierEU.RECIPE_LV)
                     .ignoreCollision()

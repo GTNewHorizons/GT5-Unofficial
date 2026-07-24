@@ -25,15 +25,14 @@ import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FluidSolidifierRecipes implements Runnable {
@@ -66,7 +65,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0L))
             .itemOutputs(new ItemStack(Items.snowball, 1, 0))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 250))
+            .fluidInputs(GTUtility.getWater(250))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);
@@ -82,7 +81,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
             .itemOutputs(new ItemStack(Blocks.snow, 1, 0))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidInputs(GTUtility.getWater(1_000))
             .duration(25 * SECONDS + 12 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);
@@ -98,7 +97,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
             .itemOutputs(new ItemStack(Blocks.obsidian, 1, 0))
-            .fluidInputs(Materials.Lava.getFluid(1_000))
+            .fluidInputs(GTUtility.getLava(1_000))
             .duration(51 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);

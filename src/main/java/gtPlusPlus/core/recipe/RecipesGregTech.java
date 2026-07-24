@@ -161,7 +161,7 @@ public class RecipesGregTech {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.NitrogenDioxide, Materials2FluidShapes.fluidGas, (int) (4_000)),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Air, Materials2FluidShapes.fluidGas, (int) (4_000)),
-                MU.fluid(Materials2Materials.Water, 2_000))
+                GTUtility.getWater(2_000))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
@@ -231,7 +231,7 @@ public class RecipesGregTech {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 2_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.BoricAcid, 4_000), MU.fluid(Materials2Materials.Water, 5_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.BoricAcid, 4_000), GTUtility.getWater(5_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -318,7 +318,7 @@ public class RecipesGregTech {
     private static void fluidHeaterRecipes() {
         GTValues.RA.stdBuilder()
             .circuit(20)
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(GTModHandler.getHotWater(1_000))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
@@ -902,7 +902,7 @@ public class RecipesGregTech {
         // Sapling compatibility recipes
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(BOPBlockRegistrator.sapling_Rainforest))
-            .fluidInputs(MU.fluid(Materials2Materials.Water, 100))
+            .fluidInputs(GTUtility.getWater(100))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Biomass, Materials2FluidShapes.fluidLiquid, (int) (100)))
@@ -1584,7 +1584,7 @@ public class RecipesGregTech {
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SulfurDioxide, Materials2FluidShapes.fluidGas, (int) (500)),
-                MU.fluid(Materials2Materials.Water, 500))
+                GTUtility.getWater(500))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(distillationTowerRecipes);
@@ -1600,10 +1600,8 @@ public class RecipesGregTech {
     private static void thermalBoilerRecipes() {
         // Lava
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                Materials.Lava.getFluid(1_000),
-                MU.fluid(Materials2Materials.Water, 16_000 / GTValues.STEAM_PER_WATER))
-            .fluidOutputs(GTModHandler.getPahoehoeLava(1_000), Materials.Steam.getGas(16_000))
+            .fluidInputs(GTUtility.getLava(1_000), GTUtility.getWater(16_000 / GTValues.STEAM_PER_WATER))
+            .fluidOutputs(GTModHandler.getPahoehoeLava(1_000), MU.gas(Materials2Materials.Steam, 16_000))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.ingot, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.ingot, (int) (1)),
@@ -1619,10 +1617,8 @@ public class RecipesGregTech {
 
         // Pahoehoe Lava
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                GTModHandler.getPahoehoeLava(1_000),
-                MU.fluid(Materials2Materials.Water, 16_000 / GTValues.STEAM_PER_WATER))
-            .fluidOutputs(Materials.Steam.getGas(16_000))
+            .fluidInputs(GTModHandler.getPahoehoeLava(1_000), GTUtility.getWater(16_000 / GTValues.STEAM_PER_WATER))
+            .fluidOutputs(MU.gas(Materials2Materials.Steam, 16_000))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.ingot, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Electrum, Materials2Shapes.ingot, (int) (1)),
@@ -1636,9 +1632,7 @@ public class RecipesGregTech {
 
         // Hot Coolant
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                GTModHandler.getHotCoolant(500),
-                MU.fluid(Materials2Materials.Water, 100_000 / GTValues.STEAM_PER_WATER))
+            .fluidInputs(GTModHandler.getHotCoolant(500), GTUtility.getWater(100_000 / GTValues.STEAM_PER_WATER))
             .fluidOutputs(GTModHandler.getIC2Coolant(500), GTModHandler.getSuperHeatedSteam(100_000))
             .duration(1 * SECONDS)
             .eut(0)
@@ -1648,7 +1642,7 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialMisc.SOLAR_SALT_HOT.getFluidStack(100),
-                MU.fluid(Materials2Materials.Water, 100_000 / GTValues.STEAM_PER_WATER))
+                GTUtility.getWater(100_000 / GTValues.STEAM_PER_WATER))
             .fluidOutputs(MaterialMisc.SOLAR_SALT_COLD.getFluidStack(100), GTModHandler.getSuperHeatedSteam(100_000))
             .duration(1 * SECONDS)
             .eut(0)
@@ -1815,7 +1809,7 @@ public class RecipesGregTech {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
-            .fluidOutputs(MU.fluid(Materials2Materials.Water, 1_000))
+            .fluidOutputs(GTUtility.getWater(1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
