@@ -335,9 +335,11 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
                 }
                 addOutput(new FluidStack(tReadySteam, steamToOutput));
             } else {
-                GTLog.writeExplosionLog(this, "had no more distilled water!");
-                mHotFluidHatch.getBaseMetaTileEntity()
-                    .doExplosion(V[8]);
+                IGregTechTileEntity hotFluidHatchBMTE = mHotFluidHatch.getBaseMetaTileEntity();
+                if (hotFluidHatchBMTE != null) {
+                    GTLog.writeExplosionLog(this, "had no more distilled water!");
+                    hotFluidHatchBMTE.doExplosion(V[8]);
+                }
                 return false;
             }
         }

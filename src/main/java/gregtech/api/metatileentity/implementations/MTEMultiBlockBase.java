@@ -239,6 +239,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public ArrayList<MTEHatchMuffler> mMufflerHatches = new ArrayList<>();
     public ArrayList<MTEHatchEnergy> mEnergyHatches = new ArrayList<>();
     public ArrayList<MTEHatchMaintenance> mMaintenanceHatches = new ArrayList<>();
+    private boolean doPeriodicChecks = false;
 
     /**
      * The list of coils in this multi's structure. Use
@@ -250,6 +251,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected List<MTEHatch> mExoticEnergyHatches = new ArrayList<>();
     protected List<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
     protected List<MTEHatch> mCryotheumHatches = new ArrayList<>();
+    protected List<MTEHatch> mPyrotheumHatches = new ArrayList<>();
 
     protected final List<MTEHatchInputBeamline> mBeamlineInputHatches = new ArrayList<>();
     protected final List<MTEHatchOutputBeamline> mBeamlineOutputHatches = new ArrayList<>();
@@ -260,6 +262,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected GTSoundLoop activitySoundLoop;
 
     protected long mLastWorkingTick = 0, mTotalRunTime = 0;
+    private static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
+    private final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
 
     /**
      * A list of structure errors. Private so that multis have to use the parameters (to make it easier to
@@ -546,9 +550,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         mSmartInputHatches.clear();
         mCryotheumHatches.clear();
+        mPyrotheumHatches.clear();
         mBeamlineInputHatches.clear();
         mBeamlineOutputHatches.clear();
         mFocusInputBuses.clear();
+        doPeriodicChecks = false;
 
         mCoils.clear();
         deactivateCoilLease();
@@ -756,6 +762,22 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             // A throttleable push (ME restock, power trickle) runs once the post-failure cooldown has expired.
             recipeCheckThrottled = false;
             return true;
+        }
+        if (doPeriodicChecks) {
+            // Perform more frequent recipe change after the machine just shuts down.
+            long timeElapsed = mTotalRunTime - mLastWorkingTick;
+
+            if (timeElapsed >= CHECK_INTERVAL) return (mTotalRunTime + randomTickOffset) % CHECK_INTERVAL == 0;
+            // Batch mode should be a lot less aggressive at recipe checking
+            if (!isBatchModeEnabled()) {
+                return timeElapsed == 5 || timeElapsed == 12
+                    || timeElapsed == 20
+                    || timeElapsed == 30
+                    || timeElapsed == 40
+                    || timeElapsed == 55
+                    || timeElapsed == 70
+                    || timeElapsed == 85;
+            }
         }
         return false;
     }
@@ -2118,6 +2140,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (mte instanceof ISmartInputHatch hatch) {
             mSmartInputHatches.add(hatch);
             hatch.addWatcher(this);
+            doPeriodicChecks |= hatch.needsPeriodicChecks();
         }
     }
 
@@ -2262,6 +2285,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             mteHatchCryotheum.updateTexture(aBaseCasingIndex);
             mteHatchCryotheum.updateCraftingIcon(this.getMachineCraftingIcon());
             return mCryotheumHatches.add(mteHatchCryotheum);
+        }
+        return false;
+    }
+
+    public boolean addPyrotheumHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchCustomFluidBase mteHatchPyrotheum
+            && mteHatchPyrotheum.mLockedFluid == TFFluids.fluidPyrotheum) {
+            mteHatchPyrotheum.updateTexture(aBaseCasingIndex);
+            mteHatchPyrotheum.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mPyrotheumHatches.add(mteHatchPyrotheum);
         }
         return false;
     }
@@ -2847,6 +2883,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public List<MTEHatch> getCryotheumHatches() {
         return mCryotheumHatches;
+    }
+
+    public List<MTEHatch> getPyrotheumHatches() {
+        return mPyrotheumHatches;
     }
 
     public List<MTEHatchInputBeamline> getBeamlineInputHatches() {

@@ -32,6 +32,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.singleblock.MTEMicrowaveEnergyTransmitterGui;
@@ -66,7 +67,7 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
     }
 
     public String[] getDescription() {
-        return GTUtility.translateMultiline("gt.blockmachines.basicmachine.microtransmitter.tooltip");
+        return GTSplit.splitLocalized("gt.blockmachines.basicmachine.microtransmitter.tooltip");
 
     }
 
