@@ -495,7 +495,7 @@ public class GTModHandler {
         ItemStack input2 = OrePrefixes.ingot.contains(aOutput) ? ItemList.Shape_Mold_Ingot.get(0)
             : OrePrefixes.block.contains(aOutput) ? ItemList.Shape_Mold_Block.get(0)
                 : OrePrefixes.nugget.contains(aOutput) ? ItemList.Shape_Mold_Nugget.get(0) : null;
-        if (Materials.Graphite.contains(aInput)) {
+        if (MU.isPartOf(aInput, Materials2Materials.Graphite)) {
             return false;
         }
         if ((input2 == null) && ((OrePrefixes.ingot.contains(aInput)) || (OrePrefixes.dust.contains(aInput))
@@ -701,7 +701,7 @@ public class GTModHandler {
                 case WIRE -> switch (machineTier) {
                     case  0 -> MU.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.Lead);
                     case  1 -> MU.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.Tin);
-                    case  2 -> OrePrefixes.cableGt01.ingredient(Materials.AnyCopper);
+                    case  2 -> OrePrefixes.cableGt01.ingredient(Materials2Markers.AnyCopper);
                     case  3 -> MU.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.Gold);
                     case  4 -> MU.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.Aluminium);
                     case  5 -> MU.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.Platinum);
@@ -714,7 +714,7 @@ public class GTModHandler {
                 case WIRE4 -> switch (machineTier) {
                     case  0 -> MU.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Lead);
                     case  1 -> MU.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Tin);
-                    case  2 -> OrePrefixes.cableGt04.ingredient(Materials.AnyCopper);
+                    case  2 -> OrePrefixes.cableGt04.ingredient(Materials2Markers.AnyCopper);
                     case  3 -> MU.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Gold);
                     case  4 -> MU.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Aluminium);
                     case  5 -> MU.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Platinum);
@@ -756,7 +756,7 @@ public class GTModHandler {
                 };
 
                 case COIL_HEATING -> switch (machineTier) {
-                    case 0, 1 -> OrePrefixes.wireGt02.ingredient(Materials.AnyCopper);
+                    case 0, 1 -> OrePrefixes.wireGt02.ingredient(Materials2Markers.AnyCopper);
                     case 2    -> MU.craftIngredient(OrePrefixes.wireGt02, Materials2Materials.Cupronickel);
                     case 3    -> MU.craftIngredient(OrePrefixes.wireGt02, Materials2Materials.Kanthal);
                     case 4    -> MU.craftIngredient(OrePrefixes.wireGt02, Materials2Materials.Nichrome);
@@ -769,7 +769,7 @@ public class GTModHandler {
                 };
 
                 case COIL_HEATING_DOUBLE -> switch (machineTier) {
-                    case 0, 1 -> OrePrefixes.wireGt04.ingredient(Materials.AnyCopper);
+                    case 0, 1 -> OrePrefixes.wireGt04.ingredient(Materials2Markers.AnyCopper);
                     case 2    -> MU.craftIngredient(OrePrefixes.wireGt04, Materials2Materials.Cupronickel);
                     case 3    -> MU.craftIngredient(OrePrefixes.wireGt04, Materials2Materials.Kanthal);
                     case 4    -> MU.craftIngredient(OrePrefixes.wireGt04, Materials2Materials.Nichrome);
@@ -790,7 +790,7 @@ public class GTModHandler {
                 };
 
                 case STICK_ELECTROMAGNETIC -> switch (machineTier) {
-                    case 0, 1 -> OrePrefixes.stick.ingredient(Materials.AnyIron);
+                    case 0, 1 -> OrePrefixes.stick.ingredient(Materials2Markers.AnyIron);
                     case 2, 3 -> MU.craftIngredient(OrePrefixes.stick, Materials2Materials.Steel);
                     case 4    -> MU.craftIngredient(OrePrefixes.stick, Materials2Materials.Neodymium);
                     default   -> MU.craftIngredient(OrePrefixes.stick, Materials2Materials.VanadiumGallium);
@@ -799,8 +799,8 @@ public class GTModHandler {
                 case COIL_ELECTRIC -> switch (machineTier) {
                     case 0  -> MU.craftIngredient(OrePrefixes.wireGt01, Materials2Materials.Lead);
                     case 1  -> MU.craftIngredient(OrePrefixes.wireGt02, Materials2Materials.Tin);
-                    case 2  -> OrePrefixes.wireGt02.ingredient(Materials.AnyCopper);
-                    case 3  -> OrePrefixes.wireGt04.ingredient(Materials.AnyCopper);
+                    case 2  -> OrePrefixes.wireGt02.ingredient(Materials2Markers.AnyCopper);
+                    case 3  -> OrePrefixes.wireGt04.ingredient(Materials2Markers.AnyCopper);
                     case 4  -> MU.craftIngredient(OrePrefixes.wireGt08, Materials2Materials.AnnealedCopper);
                     case 5  -> MU.craftIngredient(OrePrefixes.wireGt16, Materials2Materials.AnnealedCopper);
                     case 6  -> MU.craftIngredient(OrePrefixes.wireGt04, Materials2Materials.YttriumBariumCuprate);

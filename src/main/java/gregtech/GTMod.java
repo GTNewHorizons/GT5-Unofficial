@@ -501,7 +501,7 @@ public class GTMod {
                 null,
                 null,
                 null),
-            new ItemData(Materials.Tin, 10886400L));
+            new ItemData(Materials2Materials.Tin, 10886400L));
         GTModHandler.removeRecipe(
             new ItemStack(Items.glowstone_dust, 1),
             new ItemStack(Items.glowstone_dust, 1),
@@ -551,7 +551,7 @@ public class GTMod {
             GTModHandler.getIC2Item("machine", 1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "RRR", "RwR", "RRR", 'R', OrePrefixes.plate.ingredient(Materials.Iron) });
+            new Object[] { "RRR", "RwR", "RRR", 'R', OrePrefixes.plate.ingredient(Materials2Materials.Iron) });
 
         GTPostLoad.registerFluidCannerRecipes();
 
