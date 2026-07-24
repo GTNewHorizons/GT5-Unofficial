@@ -6,14 +6,11 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_ACTI
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -23,8 +20,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
@@ -32,7 +29,6 @@ import tectech.util.CommonValues;
 public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConnectsToDataPipe {
 
     public boolean delDelay = true;
-    private List<RecipeAssemblyLine> recipes;
 
     public MTEHatchDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -115,72 +111,35 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     public void setContents(ALRecipeDataPacket iIn) {
-        List<RecipeAssemblyLine> oldRecipes = recipes;
+        ObjectOpenHashSet<RecipeAssemblyLine> oldRecipes = cachedRecipes;
         if (iIn == null) {
-            recipes = null;
+            cachedRecipes = null;
         } else {
             if (iIn.getContent().length > 0) {
-                recipes = new ArrayList<>(Arrays.asList(iIn.getContent()));
+                cachedRecipes = new ObjectOpenHashSet<>(iIn.getContent());
                 delDelay = true;
             } else {
-                recipes = null;
+                cachedRecipes = null;
             }
         }
         // The upstream re-pushes the packet every cycle as a keep-alive, so only notify when the available recipe set
         // actually changed - compared by content (not just count) so a same-size data-stick swap still fires.
-        if (recipesChanged(oldRecipes, recipes)) notifyWatchers();
+        if (recipesChanged(oldRecipes, cachedRecipes)) notifyWatchers();
     }
 
     @Override
     public List<RecipeAssemblyLine> getAssemblyLineRecipes() {
-        if (recipes == null) return Collections.emptyList();
+        if (cachedRecipes == null) return Collections.emptyList();
 
-        return recipes;
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        NBTTagCompound stacksTag = new NBTTagCompound();
-        if (recipes != null) {
-            stacksTag.setInteger("count", recipes.size());
-            for (int i = 0; i < recipes.size(); i++) {
-                stacksTag.setTag(Integer.toString(i), AssemblyLineUtils.saveRecipe(recipes.get(i)));
-            }
-        }
-        aNBT.setTag("data_stacks", stacksTag);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        NBTTagCompound stacksTag = aNBT.getCompoundTag("data_stacks");
-        int count = stacksTag.getInteger("count");
-        if (count > 0) {
-            recipes = new ArrayList<>();
-
-            for (int i = 0; i < count; i++) {
-                recipes.addAll(AssemblyLineUtils.loadRecipe(stacksTag.getCompoundTag(Integer.toString(i))));
-            }
-
-            if (recipes.isEmpty()) recipes = null;
-        }
+        return cachedRecipes.stream()
+            .toList();
     }
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (CommonValues.MOVE_AT == aTick % 20) {
-            if (recipes == null) {
-                getBaseMetaTileEntity().setActive(false);
-            } else {
-                getBaseMetaTileEntity().setActive(true);
-                if (delDelay) {
-                    delDelay = false;
-                } else {
-                    setContents(null);
-                }
-            }
+            getBaseMetaTileEntity().setActive(cachedRecipes != null);
         }
     }
 
@@ -194,6 +153,11 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     @Override
     public byte getColorization() {
         return getBaseMetaTileEntity().getColorization();
+    }
+
+    @Override
+    public boolean canClear() {
+        return true;
     }
 
     @Override

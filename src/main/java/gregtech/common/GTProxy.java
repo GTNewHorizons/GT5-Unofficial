@@ -172,6 +172,7 @@ import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.WirelessChargerManager;
+import gregtech.common.misc.WirelessTeamData;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.networkanalyzer.events.NetworkAnalyzerPlayerTracker;
 import gregtech.common.pollution.Pollution;
@@ -1074,6 +1075,7 @@ public class GTProxy implements IFuelHandler {
 
         ArmorEventHandlers armorEvents = new ArmorEventHandlers();
 
+        TeamDataRegistry.register(WirelessTeamData.DATA_KEY, WirelessTeamData::new);
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GTWorldgenerator.OregenPatternSavedData(""));

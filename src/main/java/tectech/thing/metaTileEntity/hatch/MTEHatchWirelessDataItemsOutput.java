@@ -6,17 +6,17 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
@@ -26,7 +26,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
-import gregtech.common.WirelessDataStore;
+import gregtech.api.util.GTUtility;
+import gregtech.common.misc.WirelessNetworkManager;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
@@ -35,6 +36,7 @@ import tectech.util.CommonValues;
 public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
 
     public ALRecipeDataPacket dataPacket = null;
+    public boolean dirty = false;
 
     public MTEHatchWirelessDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -101,17 +103,12 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            // Upload data packet and mark it as uploaded, so it will not be uploaded again
-            // until the data bank resets the wireless network
-            aTick = MinecraftServer.getServer()
-                .getTickCounter();
-            if (dataPacket != null && aTick % WirelessDataStore.IO_TICK_RATE == 0) {
-                WirelessDataStore wirelessDataStore = WirelessDataStore
-                    .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
-                wirelessDataStore.uploadData(Arrays.asList(dataPacket.getContent()), aTick);
-            }
+    public void onPostTick(IGregTechTileEntity baseMetaTE, long aTick) {
+        if (baseMetaTE.isServerSide() && this.dirty) {
+            long coord = CoordinatePacker.pack(baseMetaTE.getXCoord(), baseMetaTE.getYCoord(), baseMetaTE.getZCoord());
+
+            WirelessNetworkManager.uploadDataSticks(coord, dataPacket, baseMetaTE.getOwnerUuid());
+            this.dirty = false;
         }
     }
 

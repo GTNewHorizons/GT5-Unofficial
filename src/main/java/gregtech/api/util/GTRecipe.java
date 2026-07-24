@@ -1189,6 +1189,20 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 + '}';
         }
 
+        @Override
+        public boolean equals(Object other) {
+            if (!(other instanceof RecipeAssemblyLine recipeAssemblyLine)) return false;
+            return other == this || recipeAssemblyLine.hashCode() == hashCode();
+        }
+
+        @Override
+        public int hashCode() {
+            // I'm doing the strong assertion that the persistent hash has been set
+            // and that this code never falls back to the supers' hashCode impl.
+            if (mPersistentHash != 0) return mPersistentHash;
+            return super.hashCode();
+        }
+
         /**
          * @param aPersistentHash the persistent hash. it should reflect the exact input used to generate this recipe If
          *                        0 is passed in, the actual persistent hash will be automatically remapped to 1
