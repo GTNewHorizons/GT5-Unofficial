@@ -386,7 +386,8 @@ public class GTPostLoad {
                     replicatorRecipeBuilder.fluidOutputs(fluidStack);
                 } else {
                     // if there is no fluid for some reason, add a cell recipe, with cell input.
-                    replicatorRecipeBuilder.itemInputs(Materials.Empty.getCells(1))
+                    replicatorRecipeBuilder
+                        .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1))
                         .itemOutputs(cellItem);
                 }
                 replicatorRecipeBuilder.special(scannerResult.output)

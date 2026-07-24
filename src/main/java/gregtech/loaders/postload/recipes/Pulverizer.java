@@ -21,7 +21,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -717,7 +716,7 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Brick.getIngots(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials2Materials.Brick, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Brick, Materials2Shapes.dustSmall, (int) (1)))
             .duration(20 * SECONDS)
             .eut(2)
