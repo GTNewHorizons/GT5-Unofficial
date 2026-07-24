@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -146,12 +147,14 @@ public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegac
             .addStructureDeprecatedLine()
             .addMarkdown(new ResourceLocation("gregtech", "supercritical-fluid-turbine"))
             .beginStructureBlock(3, 3, 4, true)
-            .addController("Front center")
-            .addCasingInfoMin("SC Turbine Casing", 24, false)
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Side centered", 2)
-            .addInputHatch("Supercritical Fluid, Side centered", 2)
-            .addOutputHatch("Superheated Steam, Side centered", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
+            .addCasingInfoMin(Loaders.supercriticalFluidTurbineCasing.getLocalizedName(), 24, false)
+            .addDynamoHatch(StatCollector.translateToLocal("gt.mbtt.structure.back_center"), 1)
+            .addMaintenanceHatch(
+                StatCollector.translateToLocal("GT5U.tooltip.supercritical-fluid-turbine.hatch-pos"),
+                2)
+            .addInputHatch(StatCollector.translateToLocal("GT5U.tooltip.supercritical-fluid-turbine.input-hatch"), 2)
+            .addOutputHatch(StatCollector.translateToLocal("GT5U.tooltip.supercritical-fluid-turbine.output-hatch"), 2)
             .toolTipFinisher();
         return tt;
     }

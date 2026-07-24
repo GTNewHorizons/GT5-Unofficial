@@ -9085,6 +9085,11 @@ GT5U.tooltip.bec-ionode.los-hatch-pos=Back center casing
 GT5U.tooltip.precise-assembler.machine-type=Precise Assembler, Assembler, PrAss
 GT5U.tooltip.precise-assembler.unit-casing=Precise Electronic Unit Casing
 
+# Supercritical Fluid Turbine Structure Hints
+GT5U.tooltip.supercritical-fluid-turbine.hatch-pos=Side centered
+GT5U.tooltip.supercritical-fluid-turbine.input-hatch=Supercritical Fluid, Side centered
+GT5U.tooltip.supercritical-fluid-turbine.output-hatch=Superheated Steam, Side centered
+
 # BEC Generator Structure Hints
 GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
 GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing around controller

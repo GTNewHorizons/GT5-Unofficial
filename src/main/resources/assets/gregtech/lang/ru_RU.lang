@@ -7280,6 +7280,10 @@ GT5U.tooltip.large-essentia-smeltery.output-hatch-name=Выходной шлюз
 GT5U.tooltip.precise-assembler.machine-type=Прецизионный авто-сборщик/Сборочная машина, PrAss
 GT5U.tooltip.precise-assembler.unit-casing=Прецизионный корпус электронного блока
 
+GT5U.tooltip.supercritical-fluid-turbine.hatch-pos=Сбоку в центре
+GT5U.tooltip.supercritical-fluid-turbine.input-hatch=Перегретая жидкость, сбоку в центре
+GT5U.tooltip.supercritical-fluid-turbine.output-hatch=Перегретый пар, сбоку в центре
+
 # info data
 GT5U.infodata.no_network=Нет сети
 GT5U.infodata.battery_buffer.stored_items=Stored Items: %s EU / %s EU
