@@ -25,7 +25,6 @@ import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffReconstruction;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enchants.EnchantmentRadioactivity;
-import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.material.MU;
@@ -78,26 +77,19 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
             return;
         }
 
-        final short[] rgba = werkstoff.getRGBA();
-        final int argb = (rgba[3] & 0xff) << 24 | (rgba[0] & 0xff) << 16 | (rgba[1] & 0xff) << 8 | rgba[2] & 0xff;
         final Werkstoff.Stats stats = werkstoff.getStats();
 
-        Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial();
+        // Proxies carry their wrapped MaterialLib material (set at construction); an external adder resolves by
+        // name. Either way the retired facade mutations below land on the live GT constant the material maps to.
+        com.ruling_0.materiallib.api.Material ml = werkstoff.getBridgeMaterial();
+        if (ml == null) {
+            ml = LegacyNameDomain.lookup(werkstoff.getVarName());
+        }
+        Materials werkstoffBridgeMaterial = MU.materialOf(ml);
         if (werkstoffBridgeMaterial == null) {
-            com.ruling_0.materiallib.api.Material named = LegacyNameDomain.lookup(werkstoff.getVarName());
-            werkstoffBridgeMaterial = named == null ? null : MU.materialOf(named);
-
-            if (werkstoffBridgeMaterial == null) {
-                werkstoffBridgeMaterial = new MaterialBuilder().setName(werkstoff.getVarName())
-                    .setDefaultLocalName(werkstoff.getDefaultName())
-                    .setIconSet(werkstoff.getTexSet())
-                    .setARGB(argb)
-                    .setTool(werkstoff.getDurability(), werkstoff.getToolQuality(), werkstoff.getToolSpeed())
-                    .setMeltingPoint(stats.getMeltingPoint())
-                    .setBlastFurnaceTemp(stats.getMeltingPoint())
-                    .setBlastFurnaceRequired(stats.isBlastFurnace())
-                    .constructMaterial();
-            }
+            // A third-party WerkstoffAdder with no MaterialLib/live counterpart: the retired MaterialBuilder
+            // bridge is the accepted API break, so there is nothing to mint here.
+            return;
         }
 
         if (werkstoff.hasItemType(cell)) {
@@ -130,7 +122,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                 .setEnchantmentForTools(EnchantmentRadioactivity.INSTANCE, stats.getEnchantmentlvl());
         }
 
-        werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
+        werkstoff.setBridgeMaterial(ml);
     }
 
     private static Materials getHandleMaterial(Werkstoff werkstoff, int durability) {

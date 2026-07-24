@@ -132,15 +132,15 @@ public final class WerkstoffReconstruction {
     }
 
     /// The MaterialLib material backing `werkstoff`: the ML material it was reconstructed from when
-    /// [#isReconstructed] is true. For a non-reconstructed werkstoff (a `BWGTMaterialReference` proxy or a
-    /// third-party WerkstoffAdder's), falls back to resolving [Werkstoff#getBridgeMaterial] through [MU] --
-    /// this recovers the wrapped canonical material for a proxy, and is null both for a bridgeless werkstoff
-    /// and for a third party's. TRANSITIONAL: the fallback goes away once the bridge is retired.
+    /// [#isReconstructed] is true. For a non-reconstructed werkstoff, falls back to the wrapped
+    /// [Werkstoff#getBridgeMaterial] -- the `Materials2Materials` constant a `BWGTMaterialReference` proxy was
+    /// built from, and null for a third-party WerkstoffAdder's werkstoff (its retired `Materials` bridge is the
+    /// accepted API break).
     public static @Nullable Material materialLibOf(Werkstoff werkstoff) {
         ensureBuilt();
         Material material = materialLib.get(werkstoff);
         if (material != null) return material;
-        return MU.material(werkstoff.getBridgeMaterial());
+        return werkstoff.getBridgeMaterial();
     }
 
     /// See the class javadoc; called from `WerkstoffLoader#setUp` after `initPrefixLogic`.

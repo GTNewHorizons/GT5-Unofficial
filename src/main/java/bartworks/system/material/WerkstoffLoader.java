@@ -463,7 +463,8 @@ public class WerkstoffLoader {
     private static void addBridgeSubTags() {
         // add specific GT materials subtags to various werkstoff bridgematerials
         if (!WerkstoffReconstruction.isReconstructed(RhodiumPlatedPalladium)) {
-            SubTag.METAL.addTo(RhodiumPlatedPalladium.getBridgeMaterial());
+            Materials bridge = MU.materialOf(RhodiumPlatedPalladium.getBridgeMaterial());
+            if (bridge != null) SubTag.METAL.addTo(bridge);
         }
     }
 
@@ -679,18 +680,21 @@ public class WerkstoffLoader {
     private static void addOreByProductsForBridgeMaterials() {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             if (WerkstoffReconstruction.isReconstructed(werkstoff)) continue;
-            Materials bridgeMaterial = werkstoff.getBridgeMaterial();
+            Materials bridgeMaterial = MU.materialOf(werkstoff.getBridgeMaterial());
+            if (bridgeMaterial == null) continue;
             List<Materials> mOreByProducts = bridgeMaterial.mOreByProducts;
             if (mOreByProducts.size() > 0) continue; // Not to add if there're already oreByProducts.
 
             int size = werkstoff.getNoOfByProducts();
             for (int i = 0; i < size; i++) {
                 ISubTagContainer material = werkstoff.getOreByProductRaw(i); // At least not duplicate now.
-                if (material instanceof Materials) mOreByProducts.add(((Materials) material));
-                else if (material instanceof Werkstoff) mOreByProducts.add(((Werkstoff) material).getBridgeMaterial());
-                else throw new ClassCastException();
+                if (material instanceof Materials) mOreByProducts.add((Materials) material);
+                else if (material instanceof Werkstoff w) {
+                    Materials byProduct = MU.materialOf(w.getBridgeMaterial());
+                    if (byProduct != null) mOreByProducts.add(byProduct);
+                } else throw new ClassCastException();
             }
-            if (size < 3) mOreByProducts.add(werkstoff.getBridgeMaterial());
+            if (size < 3) mOreByProducts.add(bridgeMaterial);
             // So it should be the same to Materials' mOreByProducts.
         }
     }

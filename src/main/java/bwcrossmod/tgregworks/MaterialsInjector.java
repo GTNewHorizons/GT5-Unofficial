@@ -2,13 +2,17 @@ package bwcrossmod.tgregworks;
 
 import static gregtech.api.enums.Mods.TinkersGregworks;
 
+import java.util.Objects;
+
 import bartworks.MainMod;
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffReconstruction;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import gregtech.GT_Version;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MU;
 import vexatos.tgregworks.TGregworks;
 import vexatos.tgregworks.item.ItemTGregPart;
 import vexatos.tgregworks.reference.Config;
@@ -38,11 +42,17 @@ public class MaterialsInjector {
 
     public static void run() {
         MainMod.LOGGER.info("Registering TGregworks - BartWorks tool parts.");
+        // TGregworks' registry is keyed on the legacy `Materials`, so a werkstoff joins it only through a live
+        // GT counterpart: the retired MaterialBuilder bridge that once synthesized one for a werkstoff-own
+        // material is gone (accepted API break), leaving the proxy/dual-nature materials that still resolve.
         Werkstoff.werkstoffHashSet.stream()
             .filter(x -> x.hasItemType(OrePrefixes.gem) || x.hasItemType(OrePrefixes.plate))
-            .map(Werkstoff::getBridgeMaterial)
-            .filter(x -> x.mMetaItemSubID == -1)
-            .filter(x -> x.mDurability != 0)
+            .map(WerkstoffReconstruction::materialLibOf)
+            .filter(Objects::nonNull)
+            .filter(ml -> MU.oldSubId(ml) == -1)
+            .filter(ml -> MU.durability(ml) != 0)
+            .map(MU::materialOf)
+            .filter(Objects::nonNull)
             .forEach(MaterialsInjector::registerParts);
 
         ItemTGregPart.toolMaterialNames = TGregworks.registry.toolMaterialNames;
