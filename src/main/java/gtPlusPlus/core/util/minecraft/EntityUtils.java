@@ -39,4 +39,16 @@ public class EntityUtils {
     public static void registerDropsForMob(Class<?> aMobClass, ItemStack aStack, int aMaxAmount, int aChance) {
         EntityDeathHandler.registerDropsForMob(aMobClass, aStack, aMaxAmount, aChance);
     }
+
+    /**
+     * Provides the ability to provide custom drops upon the death of burning EntityLivingBase objects.
+     *
+     * @param aMobClass  - The Base Class you want to drop this item.
+     * @param aStack     - The ItemStack, stack size is not respected.
+     * @param aMaxAmount - The maximum size of the ItemStack which drops.
+     * @param aChance    - Chance out of 10000, where 100 is 1%. (1 = 0.01% - this is ok)
+     */
+    public static void registerDropsForBurningMob(Class<?> aMobClass, ItemStack aStack, int aMaxAmount, int aChance) {
+        EntityDeathHandler.registerDropsForBurningMob(aMobClass, aStack, aMaxAmount, aChance);
+    }
 }
