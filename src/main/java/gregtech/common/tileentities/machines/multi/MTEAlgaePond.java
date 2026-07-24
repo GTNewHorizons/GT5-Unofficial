@@ -46,6 +46,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
@@ -58,7 +59,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -111,15 +111,17 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 10, false)
             .addController("Front center, 3rd layer")
-            .addCasingInfoMin("Algae Casing", 20, false)
-            .addCasingInfoExactly("Stainless Steel Frame Box", 6, false)
-            .addCasingInfoExactly("Any Tiered Glass", 64, true)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("64", "Any Tiered Glass", true)
+            .addCasing("20-25", "Algae Casing", false)
+            .addCasing("6", "Stainless Steel Frame Box", false)
+            .addCasing("5", "Filter Machine Casing", false)
+            .addEnergyHatch("1", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("0+", "Any casing", 1)
+            .addInputHatch("0+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "IX")
             .toolTipFinisher();
         return tt;
@@ -184,9 +186,9 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
             return;
         }
         checkCasingMin(errors, casingAmount, 20);
-        checkHasOutputBus(errors);
         checkHatchExact(errors, HatchElement.Energy, 1);
         checkHasMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
 
         if (!mEnergyHatches.isEmpty()) {
             int inputTier = (int) getInputVoltageTier();
@@ -294,7 +296,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
     }
 
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.algaePondRecipes;
+        return RecipeMaps.algaePondRecipes;
     }
 
     @SideOnly(Side.CLIENT)
@@ -324,7 +326,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
             inputs = GTValues.emptyItemStackArray;
         }
 
-        for (GTRecipe recipe : GTPPRecipeMaps.algaePondRecipes.getAllRecipes()) {
+        for (GTRecipe recipe : RecipeMaps.algaePondRecipes.getAllRecipes()) {
             // We assume the unicity of tiered recipes
             if (recipe.mSpecialValue == tier) {
                 matchingRecipe = recipe.copyShallow();

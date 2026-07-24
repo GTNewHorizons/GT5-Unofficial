@@ -210,6 +210,8 @@ public enum DimensionDef {
     ;
     // spotless:on
 
+    public static final DimensionDef[] VALUES = values();
+
     public final ModDimensionDef modDimensionDef;
 
     DimensionDef(ModDimensionDef modDimDef) {

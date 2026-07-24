@@ -43,6 +43,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -54,7 +55,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -113,7 +113,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.TIER_CASING)
+            .addSubChannel(GTStructureChannels.TIER_CASING)
             .toolTipFinisher();
         return tt;
     }
@@ -360,7 +360,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
     }
 
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.algaePondRecipes;
+        return RecipeMaps.algaePondRecipes;
     }
 
     @Override
@@ -388,7 +388,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
             inputs = GTValues.emptyItemStackArray;
         }
 
-        for (GTRecipe recipe : GTPPRecipeMaps.algaePondRecipes.getAllRecipes()) {
+        for (GTRecipe recipe : RecipeMaps.algaePondRecipes.getAllRecipes()) {
             // We assume the unicity of tiered recipes
             if (recipe.mSpecialValue == tier) {
                 matchingRecipe = recipe.copyShallow();

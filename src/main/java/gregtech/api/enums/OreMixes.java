@@ -1,6 +1,14 @@
 package gregtech.api.enums;
 
-import static galacticgreg.api.enums.DimensionDef.*;
+import static galacticgreg.api.enums.DimensionDef.Anubis;
+import static galacticgreg.api.enums.DimensionDef.Asteroids;
+import static galacticgreg.api.enums.DimensionDef.BarnardC;
+import static galacticgreg.api.enums.DimensionDef.BarnardE;
+import static galacticgreg.api.enums.DimensionDef.BarnardF;
+import static galacticgreg.api.enums.DimensionDef.Callisto;
+import static galacticgreg.api.enums.DimensionDef.CentauriBb;
+import static galacticgreg.api.enums.DimensionDef.Ceres;
+import static galacticgreg.api.enums.DimensionDef.Deimos;
 import static galacticgreg.api.enums.DimensionDef.DimNames.ASTEROIDS;
 import static galacticgreg.api.enums.DimensionDef.DimNames.EVERGLADES;
 import static galacticgreg.api.enums.DimensionDef.DimNames.KUIPERBELT;
@@ -10,14 +18,52 @@ import static galacticgreg.api.enums.DimensionDef.DimNames.ROSS128B;
 import static galacticgreg.api.enums.DimensionDef.DimNames.ROSS128BA;
 import static galacticgreg.api.enums.DimensionDef.DimNames.THE_END;
 import static galacticgreg.api.enums.DimensionDef.DimNames.TWILIGHT_FOREST;
+import static galacticgreg.api.enums.DimensionDef.Enceladus;
+import static galacticgreg.api.enums.DimensionDef.EndAsteroids;
+import static galacticgreg.api.enums.DimensionDef.Ganymede;
+import static galacticgreg.api.enums.DimensionDef.Haumea;
+import static galacticgreg.api.enums.DimensionDef.Horus;
+import static galacticgreg.api.enums.DimensionDef.Io;
+import static galacticgreg.api.enums.DimensionDef.KuiperBelt;
+import static galacticgreg.api.enums.DimensionDef.Maahes;
+import static galacticgreg.api.enums.DimensionDef.MakeMake;
+import static galacticgreg.api.enums.DimensionDef.Mars;
+import static galacticgreg.api.enums.DimensionDef.MehenBelt;
+import static galacticgreg.api.enums.DimensionDef.Mercury;
+import static galacticgreg.api.enums.DimensionDef.Miranda;
+import static galacticgreg.api.enums.DimensionDef.Moon;
+import static galacticgreg.api.enums.DimensionDef.Neper;
+import static galacticgreg.api.enums.DimensionDef.Oberon;
+import static galacticgreg.api.enums.DimensionDef.Phobos;
+import static galacticgreg.api.enums.DimensionDef.Pluto;
+import static galacticgreg.api.enums.DimensionDef.Proteus;
+import static galacticgreg.api.enums.DimensionDef.Seth;
+import static galacticgreg.api.enums.DimensionDef.TcetiE;
+import static galacticgreg.api.enums.DimensionDef.Titan;
+import static galacticgreg.api.enums.DimensionDef.Triton;
+import static galacticgreg.api.enums.DimensionDef.TwilightForest;
+import static galacticgreg.api.enums.DimensionDef.VegaB;
+import static galacticgreg.api.enums.DimensionDef.Venus;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import net.minecraft.item.ItemStack;
 
 import bartworks.system.material.WerkstoffLoader;
 import galacticgreg.api.enums.DimensionDef;
+import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.interfaces.IStoneType;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.common.OreMixBuilder;
 import gregtech.common.WorldgenGTOreLayer;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
+import gtneioreplugin.util.DimensionHelper;
 
 public enum OreMixes {
 
@@ -1499,8 +1545,9 @@ public enum OreMixes {
         .secondary(Materials.Sphalerite)
         .inBetween(WerkstoffLoader.Fluorspar)
         .sporadic(Materials.Barite));
-
     // spotless : on
+
+    public static final OreMixes[] VALUES = values();
 
     public final OreMixBuilder oreMixBuilder;
 
@@ -1510,5 +1557,117 @@ public enum OreMixes {
 
     public WorldgenGTOreLayer addGTOreLayer() {
         return new WorldgenGTOreLayer(this.oreMixBuilder);
+    }
+
+    // used in the coremod, for the shuttle schematic recipe
+    /**
+     * Give all the stone variants of an ore, with the specified stack size.
+     *
+     * @param material  The material of the ore
+     * @param stackSize The stacksize of the variants
+     * @return The array containing all the stone variants of the given ore, with the given stack size
+     */
+    public static ItemStack[] getOreVariants(IOreMaterial material, int stackSize) {
+        List<ItemStack> variants = new ArrayList<>();
+        Set<StoneType> stoneTypes = getStoneTypesFromMixes(material);
+        for (StoneType stoneType : stoneTypes) {
+            OrePrefixes prefix = stoneType.getPrefix();
+            ItemStack ore = GTOreDictUnificator.get(prefix, material, 1L);
+            if (!GTUtility.isStackValid(ore)) {
+                continue;
+            }
+            for (ItemStack variant : GTOreDictUnificator.getNonUnifiedStacks(ore)) {
+                ItemStack sizedVariant = GTUtility.copyAmount(stackSize, variant);
+                if (!GTUtility.isStackValid(sizedVariant) || containsStack(variants, sizedVariant)) {
+                    continue;
+                }
+                variants.add(sizedVariant);
+            }
+        }
+
+        return variants.toArray(new ItemStack[0]);
+    }
+
+    public static boolean containsStack(List<ItemStack> stacks, ItemStack candidate) {
+        for (ItemStack stack : stacks) {
+            if (GTUtility.areStacksEqual(stack, candidate, true)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static List<OreMixes> getOreMixes(IOreMaterial material) {
+        List<OreMixes> mixes = new ArrayList<>();
+        for (OreMixes mix : OreMixes.VALUES) {
+            if (mix.containMaterial(material)) {
+                mixes.add(mix);
+            }
+        }
+
+        return mixes;
+    }
+
+    public static Set<StoneType> getStoneTypesFromMixes(IOreMaterial material) {
+        List<OreMixes> mixes = getOreMixes(material);
+        Set<StoneType> stoneTypes = new HashSet<>();
+        for (OreMixes mix : mixes) {
+            for (String dim : mix.oreMixBuilder.dimsEnabled) {
+                for (StoneType stoneType : getStoneTypesForDim(dim)) {
+                    if (mix.oreMixBuilder.stoneCategories.contains(stoneType.getCategory())) {
+                        stoneTypes.add(stoneType);
+                    }
+                }
+            }
+        }
+
+        return stoneTypes;
+    }
+
+    private static Set<StoneType> getStoneTypesForDim(String dim) {
+        Set<StoneType> stoneTypes = new HashSet<>();
+        String fullName = DimensionHelper.getDimFullName(dim);
+        stoneTypes.addAll(
+            DimensionHelper.REGISTRY.get(fullName)
+                .stoneTypes());
+        addGTStoneTypes(stoneTypes, dim);
+        addAsteroidStoneTypes(stoneTypes, dim);
+        return stoneTypes;
+    }
+
+    private static void addGTStoneTypes(Set<StoneType> stoneTypes, String dim) {
+        // To account for all the GTStones entries, which apply only either in OW or Nether
+        Integer dimensionId = switch (dim) {
+            case OW -> 0;
+            case NETHER -> -1;
+            default -> null;
+        };
+
+        if (dimensionId == null) return;
+
+        for (GTStones gtStone : GTStones.VALUES) {
+            if (gtStone.stone.enabledByDefault && gtStone.stone.dimension == dimensionId) {
+                StoneType stoneType = StoneType.findStoneType(gtStone.stone.block, gtStone.stone.blockMeta);
+                if (stoneType != null) stoneTypes.add(stoneType);
+            }
+        }
+    }
+
+    private static void addAsteroidStoneTypes(Set<StoneType> stoneTypes, String dim) {
+        for (DimensionDef def : DimensionDef.VALUES) {
+            if (!def.modDimensionDef.getDimensionName()
+                .equals(dim)) continue;
+
+            for (IStoneType stoneType : def.modDimensionDef.getAsteroidMaterials()) {
+                if (stoneType instanceof StoneType gtStoneType) stoneTypes.add(gtStoneType);
+            }
+            return;
+        }
+    }
+
+    public boolean containMaterial(IOreMaterial material) {
+        return oreMixBuilder.primary == material || oreMixBuilder.secondary == material
+            || oreMixBuilder.sporadic == material
+            || oreMixBuilder.between == material;
     }
 }

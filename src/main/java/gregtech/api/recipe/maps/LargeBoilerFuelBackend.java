@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -63,10 +64,14 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
     }
 
     public GTRecipe addDenseLiquidRecipe(GTRecipe recipe) {
-        return addRecipe(recipe, ((double) recipe.mSpecialValue) / 10, true, false);
+        return addRecipe(
+            recipe,
+            ((double) recipe.mSpecialValue) / 10,
+            true,
+            (recipe.mSpecialValue > HIGH_TIER_FLUID_THRESHOLD));
     }
 
-    public GTRecipe addDieselRecipe(GTRecipe recipe) {
+    public GTRecipe addDieselGasRecipe(GTRecipe recipe) {
         return addRecipe(
             recipe,
             ((double) recipe.mSpecialValue) / 20,
@@ -78,6 +83,12 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
         for (ItemStack itemStack : itemStacks) {
             addSolidRecipe(itemStack);
         }
+    }
+
+    @Override
+    public boolean containsInput(ItemStack itemInput) {
+        // Function for recipe collision in RecipeMaps when the same fluid is used in different generators
+        return RecipeMaps.largeBoilerFakeFuels.containsInput(GTUtility.getFluidForFilledItem(itemInput, true));
     }
 
     @Nullable
@@ -127,11 +138,9 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
             .orElse(null);
     }
 
-    public static double getBurntimeRatio(double fuelValue, int dividerMult) {
+    public static double getBurntimeRatio(double fuelValue) {
         // 10 in this formula is 10 seconds of burn time in steel boiler, or 16000 Burn Time value
-        // dividerMult is used in main class calls because fuel values there are calculated in ticks, rather than
-        // seconds like here.
-        return fuelValue * Math.max(1, 1 + Math.log(fuelValue / dividerMult / 10) * 0.025);
+        return fuelValue * Math.max(1, 1 + Math.log(fuelValue / 10) * 0.025);
     }
 
     private GTRecipe addRecipe(GTRecipe recipe, double baseBurnTime, boolean isAllowedInSteelBoiler,
@@ -139,15 +148,22 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
         // Some recipes will have a burn time like 15.9999999 and % always rounds down
         double floatErrorCorrection = 0.0001;
 
-        double bronzeBurnTime = getBurntimeRatio(baseBurnTime, 1) * 2 + floatErrorCorrection;
+        double bronzeBurnTime = getBurntimeRatio(baseBurnTime) * 2 + floatErrorCorrection;
         bronzeBurnTime -= bronzeBurnTime % 0.05;
-        double steelBurnTime = getBurntimeRatio(baseBurnTime, 1) + floatErrorCorrection;
+        double steelBurnTime = getBurntimeRatio(baseBurnTime) + floatErrorCorrection;
         steelBurnTime -= steelBurnTime % 0.05;
-        double titaniumBurnTime = getBurntimeRatio(baseBurnTime, 1) * 0.3 + floatErrorCorrection;
+        double titaniumBurnTime = getBurntimeRatio(baseBurnTime) * 0.3 + floatErrorCorrection;
         titaniumBurnTime -= titaniumBurnTime % 0.05;
-        double tungstensteelBurnTime = getBurntimeRatio(baseBurnTime, 1) * 0.15 + floatErrorCorrection;
+        double tungstensteelBurnTime = getBurntimeRatio(baseBurnTime) * 0.15 + floatErrorCorrection;
         tungstensteelBurnTime -= tungstensteelBurnTime % 0.05;
 
+        FluidStack foundFluid = GTUtility.getFluidForFilledItem(recipe.getRepresentativeInput(0), true);
+        if (foundFluid != null) {
+            // Removes item, adds fluid for NEI and sets mDuration in ticks for usage in LargeBoilerBase
+            recipe.setFluidInputs(foundFluid);
+            recipe.mInputs = new ItemStack[0];
+            recipe.mDuration = (int) (steelBurnTime * 20);
+        }
         recipe.setNeiDesc(
             StatCollector.translateToLocal("GT5U.nei.large_boiler.burn_time"),
             StatCollector

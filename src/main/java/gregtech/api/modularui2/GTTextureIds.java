@@ -74,6 +74,7 @@ public final class GTTextureIds {
     public static final String BUTTON_STEAM_PRESSED = "gregtech:button_%s_pressed";
     public static final String BUTTON_FOUNDRY_PRESSED = "gregtech:button_foundry_pressed";
     public static final String BUTTON_NANOCHIP_PRESSED = "gregtech:button_nanochip_pressed";
+    public static final String BUTTON_GORGE = "gregtech:button_gorge";
 
     public static final String BUTTON_COVER_TAB_NORMAL_STANDARD = "gregtech:button_cover_tab_normal_standard";
     public static final String BUTTON_COVER_TAB_NORMAL_STEAM = "gregtech:button_cover_tab_normal_%s";
@@ -96,4 +97,6 @@ public final class GTTextureIds {
 
     public static final String PICTURE_ERROR = "gregtech:picture_error";
     public static final String PICTURE_ERROR_STEAM = "gregtech:picture_error_steam";
+
+    public static final String PICTURE_BW_LOGO_STANDARD = "bartworks:picture_bw_logo";
 }

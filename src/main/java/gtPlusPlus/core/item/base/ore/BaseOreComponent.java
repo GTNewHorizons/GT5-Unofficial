@@ -120,7 +120,7 @@ public class BaseOreComponent extends Item {
         if (this.componentMaterial != null) {
             EntityUtils.applyRadiationDamageToEntity(
                 iStack.stackSize,
-                this.componentMaterial.vRadiationLevel,
+                this.componentMaterial.radiationLevel,
                 world,
                 entityHolding);
         }

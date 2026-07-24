@@ -46,10 +46,10 @@ tile.kekztech_tfftstoragefield_block.8.name=TFFT Storage Field Block (Tier VIII)
 tile.kekztech_tfftstoragefield_block.9.name=TFFT Storage Field Block (Tier IX)
 tile.kekztech_tfftstoragefield_block.10.name=TFFT Storage Field Block (Tier X)
 tile.kekztech_tfftstoragefield_block.desc=This is not a fluid tank
-tile.kekztech_tfftstoragefield_block.hint.1=Hint 1 Dot: TFFT Casing
-tile.kekztech_tfftstoragefield_block.hint.2=Hint 2 Dot: TFFT Casing, Maintenance Hatch, TFFT Multi I/O Hatch, Input/Output Hatch, Energy Hatch
-tile.kekztech_tfftstoragefield_block.hint.3=Hint 3 Dot: EV+ Tier Glass, TFFT Multi I/O Hatch, Input/Output Hatch
-tile.kekztech_tfftstoragefield_block.hint.4=Hint 4 Dot: EV+ Tier Glass
+tile.kekztech_tfftstoragefield_block.hint.1=Hint 1 Dot: TFFT Casing, Energy Hatch, Maintenance Hatch
+tile.kekztech_tfftstoragefield_block.hint.2=Hint 2 Dot: TFFT Casing, Energy Hatch, Maintenance Hatch, TFFT Multi I/O Hatch, Input/Output Hatch
+tile.kekztech_tfftstoragefield_block.hint.3=Hint 3 Dot: EV+ Tiered Glass, TFFT Multi I/O Hatch, Input/Output Hatch
+tile.kekztech_tfftstoragefield_block.hint.4=Hint 4 Dot: EV+ Tiered Glass
 
 # -------- Lapotronic Super Capacitor: Structure Blocks
 tile.kekztech_lapotronicenergyunit_block.name=Lapotronic Casing/Capacitor
@@ -164,3 +164,49 @@ kekztech.infodata.tank.tfft.running_cost=Running Cost: %dEU/t
 kekztech.infodata.tank.tfft.auto_voiding=Auto-voiding: %b
 
 kekztech.structure.glass_incompatible=§cGlass configuration is incompatible
+
+kekztech.multiblock.LapotronicSuperCapacitor.machine_type=Energy Storage, LSC
+kekztech.multiblock.LapotronicSuperCapacitor.desc1=Loses energy equal to 1% of the total capacity every 24 hours
+kekztech.multiblock.LapotronicSuperCapacitor.desc2=Capped at §c%s§7 EU/t passive loss per %s§7 capacitor
+kekztech.multiblock.LapotronicSuperCapacitor.desc3=The passive loss increases §4100§7-fold for every capacitor tier above
+kekztech.multiblock.LapotronicSuperCapacitor.desc4=Passive loss is multiplied by the number of maintenance issues present
+kekztech.multiblock.LapotronicSuperCapacitor.desc5=Glass shell has to be Tier - 3 of the highest capacitor tier
+kekztech.multiblock.LapotronicSuperCapacitor.desc6=Add more or better capacitors to increase capacity
+kekztech.multiblock.LapotronicSuperCapacitor.desc7=Wireless mode can be enabled by right clicking with a screwdriver
+kekztech.multiblock.LapotronicSuperCapacitor.desc8=This mode can only be enabled if you have a %s§7+ capacitor in the multiblock.
+kekztech.multiblock.LapotronicSuperCapacitor.desc9=When enabled every §9%s§7 ticks the LSC will attempt to re-balance against your
+kekztech.multiblock.LapotronicSuperCapacitor.desc10=wireless EU network.
+kekztech.multiblock.LapotronicSuperCapacitor.desc11=If there is less than §c%s§7(%s§7) EU in the LSC
+kekztech.multiblock.LapotronicSuperCapacitor.desc12=it will withdraw from the network and add to the LSC.
+kekztech.multiblock.LapotronicSuperCapacitor.desc13=If there is more it will add §4§l§nall excess§r§7 EU to the network, removing it from the LSC
+kekztech.multiblock.LapotronicSuperCapacitor.desc14=This can potentially brick your base, be careful
+kekztech.multiblock.LapotronicSuperCapacitor.desc15=The threshold increases §4100§7-fold for every capacitor tier above
+kekztech.multiblock.LapotronicSuperCapacitor.casing=Lapotronic Supercapacitor Casing
+kekztech.multiblock.LapotronicSuperCapacitor.capacitor=Lapotronic Capacitor
+kekztech.multiblock.LapotronicSuperCapacitor.structure_footer=Only 50% or more of the capacitors need to be non-empty
+
+kekztech.multiblock.SOFuelCell.machine_type=Gas Turbine, SOFC
+kekztech.multiblock.SOFuelCell.desc1=Oxidizes gas fuels to generate electricity without polluting the environment
+kekztech.multiblock.SOFuelCell.desc2=Consumes up to %sEU worth of fuel with up to 100% efficiency each second
+kekztech.multiblock.SOFuelCell.desc5=Additionally, requires %sL/s Oxygen gas
+kekztech.multiblock.SOFuelCellMK1.desc3=Steam production requires the SOFC to heat up completely first
+kekztech.multiblock.SOFuelCellMK1.desc4=Outputs %sEU/t and %sL/s Steam
+kekztech.multiblock.SOFuelCellMK1.electrolyte_unit=YSZ Ceramic Electrolyte Unit
+kekztech.multiblock.SOFuelCellMK2.desc3=Nitrobenzene and other gas fuels above 1,000 EU/L are more efficient
+kekztech.multiblock.SOFuelCellMK2.desc3b=Superheated (SH) Steam production requires the SOFC to heat up completely first
+kekztech.multiblock.SOFuelCellMK2.desc4=Outputs %sEU/t and %sL/s SH Steam
+kekztech.multiblock.SOFuelCellMK2.electrolyte_unit=GDC Ceramic Electrolyte Unit
+
+kekztech.multiblock.TankTFFT.machine_type=Fluid Tank
+kekztech.multiblock.TankTFFT.desc1=High-Tech fluid tank that can hold up to 25 different fluids!
+kekztech.multiblock.TankTFFT.desc2=Partitions 1/25th of the total capacity for each fluid, no overflowing allowed
+kekztech.multiblock.TankTFFT.desc3=Right clicking the controller with a screwdriver enables excess voiding
+kekztech.multiblock.TankTFFT.desc4=Fluid storage amount and running cost depends on the Storage Field Block used
+kekztech.multiblock.TankTFFT.desc5=Note on hatch locking:
+kekztech.multiblock.TankTFFT.desc6=Use an Integrated Circuit in the GUI slot to limit which fluid is output
+kekztech.multiblock.TankTFFT.desc7=The index of a stored fluid can be obtained through the Tricorder
+kekztech.multiblock.TankTFFT.multi_io_hatch=TFFT Multi I/O Hatch
+kekztech.multiblock.TankTFFT.any_casing_glass_adjacent=Any casing/glass adjacent to a field storage block
+kekztech.multiblock.TankTFFT.field_storage_block=Field Storage Block
+kekztech.multiblock.TankTFFT.footer1=No air gaps allowed, but the field storage blocks can be different tiers
+kekztech.multiblock.TankTFFT.footer2=Place a fluid storage bus on the Multi I/O Hatch to interact with all fluids directly

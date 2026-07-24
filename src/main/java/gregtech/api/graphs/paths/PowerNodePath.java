@@ -89,12 +89,20 @@ public class PowerNodePath extends NodePath {
         return avgAmperageCounter.getLast();
     }
 
+    public long getMaxAmperage() {
+        return mMaxAmps;
+    }
+
     public double getAvgAmperage() {
         return avgAmperageCounter.getAverage();
     }
 
     public long getVoltage() {
         return avgVoltageCounter.getLast();
+    }
+
+    public long getMaxVoltage() {
+        return mMaxVoltage;
     }
 
     public double getAvgVoltage() {

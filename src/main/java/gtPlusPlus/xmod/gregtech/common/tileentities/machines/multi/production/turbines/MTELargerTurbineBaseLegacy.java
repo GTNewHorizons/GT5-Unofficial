@@ -157,7 +157,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
         } else if (getTurbineType().contains("Steam")) {
             tt.addInfo("Dense types of steam are so energy packed, they only require 1/1000th of the original flow");
         }
-        tt.addTecTechHatchInfo();
+        tt.addSupportAny();
         tt.addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, false)
             .addController("Top center")

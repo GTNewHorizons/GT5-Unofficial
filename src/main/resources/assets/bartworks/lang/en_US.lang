@@ -235,8 +235,8 @@ item.BurnedOutTRISOPellet.name=Burned Out TRISO pebble
 
 item.CircuitParts.Imprint.name=Circuit Imprint
 item.CircuitParts.Sliced.name=Sliced Circuit
-item.CircuitParts.RawImprintBoard.name=Raw Imprint supporting Board
-item.CircuitParts.ImprintBoard.name=Imprint supporting Board
+item.CircuitParts.RawImprintBoard.name=Raw Imprint Supporting Board
+item.CircuitParts.ImprintBoard.name=Imprint Supporting Board
 item.CircuitParts.Wrap.name=Wrap of %s
 
 itemGroup.bartworksMetaMaterials=BartWorks' Meta Materials

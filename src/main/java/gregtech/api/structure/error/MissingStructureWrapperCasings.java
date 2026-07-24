@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -17,7 +18,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @Desugar
@@ -57,12 +57,13 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
                 tag.getInteger("casingMeta"));
             column.child(
                 IKey.str(
-                    GTUtility.translate(
+                    StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.structure_error.missing_casings_specific",
                         stack.getDisplayName(),
                         tag.getInteger("req"),
                         tag.getInteger("pres")))
                     .color(TEXT_COLOR)
+                    .alignment(Alignment.CenterLeft)
                     .asWidget());
         }
         return column;
@@ -79,7 +80,7 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
                 tag.getInteger("casingMeta"));
             if (sb.length() > 0) sb.append('\n');
             sb.append(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.structure_error.missing_casings_specific",
                     stack.getDisplayName(),
                     tag.getInteger("req"),

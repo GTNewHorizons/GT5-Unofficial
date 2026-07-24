@@ -158,7 +158,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Tin.getPlasma(1_000),
                 Materials.Antimony.getPlasma(1_000),
                 Materials.Lead.getPlasma(1_000),
-                Materials.RawStarMatter.getFluid(1_000))
+                Materials.RawStarMatter.getFluid(25))
             .fluidOutputs(Materials.InactiveCosmicSolder.getFluid(4_000))
             .duration(100)
             .eut(INACTIVE_COSMIC_SOLDER)

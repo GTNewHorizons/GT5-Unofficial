@@ -64,8 +64,8 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
     Parameters.Group.ParameterOut energyDisplay;
 
     /** Name of the stored energy display */
-    private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> GTUtility
-        .translate("gt.blockmachines.multimachine.project.ig.cfgo.0"); // Stored Energy
+    private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> StatCollector
+        .translateToLocal("gt.blockmachines.multimachine.project.ig.cfgo.0"); // Stored Energy
     /** Status of the stored energy display */
     private static final IStatusFunction<TileEntityModuleBase> ENERGY_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(
@@ -109,7 +109,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
         this.tMinMotorTier = tMinMotorTier;
-        euBufferSize = EU_BUFFER_BASE_SIZE * (1L << (tTier - 7));
+        euBufferSize = EU_BUFFER_BASE_SIZE * (2L << (tTier - 7));
         useLongPower = true;
     }
 
@@ -129,7 +129,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
         this.tMinMotorTier = tMinMotorTier;
-        euBufferSize = EU_BUFFER_BASE_SIZE * (1L << (tTier - 7)) * bufferSizeMultiplier;
+        euBufferSize = EU_BUFFER_BASE_SIZE * (2L << (tTier - 7)) * bufferSizeMultiplier;
         useLongPower = true;
     }
 
@@ -145,7 +145,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
         this.tMinMotorTier = tMinMotorTier;
-        euBufferSize = EU_BUFFER_BASE_SIZE * (1L << (tTier - 7));
+        euBufferSize = EU_BUFFER_BASE_SIZE * (2L << (tTier - 7));
         useLongPower = true;
     }
 
@@ -163,7 +163,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
         this.tMinMotorTier = tMinMotorTier;
-        euBufferSize = EU_BUFFER_BASE_SIZE * (1L << (tTier - 7)) * bufferSizeMultiplier;
+        euBufferSize = EU_BUFFER_BASE_SIZE * (2L << (tTier - 7)) * bufferSizeMultiplier;
         useLongPower = true;
     }
 
@@ -370,7 +370,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.INTERGALACTIC_STANDARD;
     }
 

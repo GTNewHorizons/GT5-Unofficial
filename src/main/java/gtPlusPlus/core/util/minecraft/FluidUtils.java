@@ -153,7 +153,7 @@ public class FluidUtils {
                 .contains("cast")) {
             return null;
         }
-        if (aMaterial.vComponentCount != 1) {
+        if (aMaterial.componentCount != 1) {
             return null;
         }
 

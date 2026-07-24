@@ -3,6 +3,9 @@ package gregtech.common.gui.modularui.multiblock.godforge;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -12,6 +15,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
@@ -22,7 +26,6 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.common.CommonButtons;
@@ -73,20 +76,15 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
             .childPadding(2)
             .mainAxisAlignment(MainAxis.END)
             .reverseLayout(true)
-            .child(
-                new ItemSlot()
-                    .slot(
-                        new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
-                            .slotGroup("item_inv"))
-                    .backgroundOverlay(GTGuiTextures.TT_OVERLAY_SLOT_MESH)
-                    .overlay(
-                        GTGuiTextures.TT_CONTROLLER_SLOT_HEAT_SINK.asIcon()
-                            .size(18, 6)
-                            .marginTop(22))
-                    .marginTop(2))
+            .child(createControllerSlot())
             .child(createPowerSwitchButton())
             .child(createStructureUpdateButton(syncManager))
             .child(createVoltageConfigButton());
+    }
+
+    @Override
+    protected ItemSlot createControllerSlot() {
+        return super.createControllerSlot().marginTop(2);
     }
 
     @Override
@@ -138,7 +136,6 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     @Override
     protected ToggleButton createPowerSwitchButton() {
         return super.createPowerSwitchButton().size(16)
-            .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .selectedBackground(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .overlay(new DynamicDrawable(() -> {
                 if (multiblock.isAllowedToWork()) {
@@ -155,7 +152,6 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     @Override
     protected IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
         return ((ToggleButton) super.createStructureUpdateButton(syncManager)).size(16)
-            .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .selectedBackground(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .overlay(new DynamicDrawable(() -> {
                 if (multiblock.getStructureUpdateTime() > -20) {
@@ -170,7 +166,6 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     protected ButtonWidget<?> createVoltageConfigButton() {
         IPanelHandler voltageConfigPanel = Panels.VOLTAGE_CONFIG.getFrom(getModuleType(), getMainPanel(), hypervisor);
         return new ButtonWidget<>().size(16)
-            .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_POWER_PANEL)
             .onMousePressed(d -> {
                 if (!voltageConfigPanel.isPanelOpen()) {
@@ -186,9 +181,8 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     }
 
     @Override
-    protected IWidget createVoidExcessButton(PanelSyncManager syncManager) {
-        return ((ButtonWidget<?>) super.createVoidExcessButton(syncManager)).size(16)
-            .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
+    protected ButtonWidget<?> createVoidExcessButton(PanelSyncManager syncManager) {
+        return super.createVoidExcessButton(syncManager).size(16)
             // spotless:off
             .overlay(new DynamicDrawable(() ->
                 switch (multiblock.getVoidingMode()) {
@@ -198,57 +192,35 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
                     case VOID_ALL -> GTGuiTextures.TT_OVERLAY_BUTTON_VOIDING_BOTH;
                 }))
             // spotless:on
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
             .clickSound(ForgeOfGodsGuiUtil.getButtonSound());
     }
 
     @Override
-    protected IWidget createInputSeparationButton(PanelSyncManager syncManager) {
-        return ((ToggleButton) super.createInputSeparationButton(syncManager)).size(16)
-            .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
-            .selectedBackground(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
-            .overlay(new DynamicDrawable(() -> {
-                if (multiblock.isInputSeparationEnabled()) {
-                    return GTGuiTextures.TT_OVERLAY_BUTTON_INPUT_SEPARATION;
-                }
-                return GTGuiTextures.TT_OVERLAY_BUTTON_INPUT_SEPARATION_OFF;
-            }))
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
+    protected ToggleButton createDisableableToggleButton(BooleanSyncValue syncValue, BooleanSupplier condition,
+        IDrawable offOverlay, IDrawable onOverlay, Consumer<RichTooltip> tooltipBuilder) {
+        return super.createDisableableToggleButton(syncValue, condition, offOverlay, onOverlay, tooltipBuilder)
             .clickSound(ForgeOfGodsGuiUtil.getButtonSound());
     }
 
     @Override
-    protected IWidget createBatchModeButton(PanelSyncManager syncManager) {
-        return ((ToggleButton) super.createBatchModeButton(syncManager)).size(16)
-            .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
-            .selectedBackground(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
-            .overlay(new DynamicDrawable(() -> {
-                if (multiblock.isBatchModeEnabled()) {
-                    return GTGuiTextures.TT_OVERLAY_BUTTON_BATCH_MODE;
-                }
-                return GTGuiTextures.TT_OVERLAY_BUTTON_BATCH_MODE_OFF;
-            }))
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .clickSound(ForgeOfGodsGuiUtil.getButtonSound());
+    protected ToggleButton createInputSeparationButton(PanelSyncManager syncManager) {
+        return super.createInputSeparationButton(syncManager).size(16)
+            .overlay(false, GTGuiTextures.TT_OVERLAY_BUTTON_INPUT_SEPARATION_OFF)
+            .overlay(true, GTGuiTextures.TT_OVERLAY_BUTTON_INPUT_SEPARATION);
     }
 
     @Override
-    protected IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
-        if (!usesLockToSingleRecipeButton()) {
-            return new Widget<>();
-        }
+    protected ToggleButton createBatchModeButton(PanelSyncManager syncManager) {
+        return super.createBatchModeButton(syncManager).size(16)
+            .overlay(false, GTGuiTextures.TT_OVERLAY_BUTTON_BATCH_MODE_OFF)
+            .overlay(true, GTGuiTextures.TT_OVERLAY_BUTTON_BATCH_MODE);
+    }
 
-        return ((ToggleButton) super.createLockToSingleRecipeButton(syncManager)).size(16)
-            .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
-            .selectedBackground(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
-            .overlay(new DynamicDrawable(() -> {
-                if (multiblock.isRecipeLockingEnabled()) {
-                    return GTGuiTextures.TT_OVERLAY_BUTTON_RECIPE_LOCKED;
-                }
-                return GTGuiTextures.TT_OVERLAY_BUTTON_RECIPE_UNLOCKED;
-            }))
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .clickSound(ForgeOfGodsGuiUtil.getButtonSound());
+    @Override
+    protected ToggleButton createLockToSingleRecipeButton(PanelSyncManager syncManager) {
+        return super.createLockToSingleRecipeButton(syncManager).size(16)
+            .overlay(false, GTGuiTextures.TT_OVERLAY_BUTTON_RECIPE_UNLOCKED)
+            .overlay(true, GTGuiTextures.TT_OVERLAY_BUTTON_RECIPE_LOCKED);
     }
 
     protected IWidget createConnectionStatus() {

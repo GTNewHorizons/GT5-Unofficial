@@ -11,7 +11,8 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import gregtech.api.metatileentity.implementations.MTEFilterBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.common.CommonButtons;
-import xyz.wagyourtail.jvmdg.util.Pair;
+import it.unimi.dsi.fastutil.booleans.BooleanObjectImmutablePair;
+import it.unimi.dsi.fastutil.booleans.BooleanObjectPair;
 
 public class MTEFilterBaseGui<T extends MTEFilterBase> extends MTEBufferBaseGui<T> {
 
@@ -24,14 +25,14 @@ public class MTEFilterBaseGui<T extends MTEFilterBase> extends MTEBufferBaseGui<
     }
 
     @Override
-    protected List<Pair<Boolean, Supplier<IWidget>>> createButtonList(ModularPanel panel,
+    protected List<BooleanObjectPair<Supplier<IWidget>>> createButtonList(ModularPanel panel,
         PanelSyncManager syncManager) {
-        List<Pair<Boolean, Supplier<IWidget>>> buttons = super.createButtonList(panel, syncManager);
+        List<BooleanObjectPair<Supplier<IWidget>>> buttons = super.createButtonList(panel, syncManager);
 
         // change emit redstone button
         buttons.set(
             EMIT_REDSTONE_BUTTON_INDEX,
-            new Pair<>(
+            new BooleanObjectImmutablePair<>(
                 supportsEmitRedstone(),
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
                     new BooleanSyncValue(machine::isRedstoneIfFull, machine::setRedstoneIfFull).allowC2S(),
@@ -43,7 +44,7 @@ public class MTEFilterBaseGui<T extends MTEFilterBase> extends MTEBufferBaseGui<
 
         // invert filter button
         buttons.add(
-            new Pair<>(
+            new BooleanObjectImmutablePair<>(
                 supportsInvertFilter(),
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
                     new BooleanSyncValue(machine::isInvertFilter, machine::setInvertFilter).allowC2S(),

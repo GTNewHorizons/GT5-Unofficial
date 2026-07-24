@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import net.minecraft.enchantment.Enchantment;
@@ -1208,6 +1209,14 @@ public class GTModHandler {
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
     public static boolean addShapelessCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
+        return addShapelessCraftingRecipe(aResult, aBitMask, grid -> true, aRecipe);
+    }
+
+    /**
+     * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
+     */
+    public static boolean addShapelessCraftingRecipe(ItemStack aResult, long aBitMask,
+        Predicate<InventoryCrafting> inputValidator, Object[] aRecipe) {
         return addShapelessCraftingRecipe(
             aResult,
             null,
@@ -1216,6 +1225,7 @@ public class GTModHandler {
             (aBitMask & RecipeBits.KEEPNBT) != 0,
             (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
             (aBitMask & RecipeBits.OVERWRITE_NBT) != 0,
+            inputValidator,
             aRecipe);
     }
 
@@ -1224,7 +1234,7 @@ public class GTModHandler {
      */
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
         int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aRemovable, boolean overwriteNBT,
-        Object[] aRecipe) {
+        Predicate<InventoryCrafting> inputValidator, Object[] aRecipe) {
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
@@ -1271,6 +1281,7 @@ public class GTModHandler {
                 overwriteNBT,
                 aEnchantmentsAdded,
                 aEnchantmentLevelsAdded,
+                inputValidator,
                 aRecipe));
         else GameRegistry.addRecipe(
             new GTShapelessRecipe(
@@ -1280,6 +1291,7 @@ public class GTModHandler {
                 overwriteNBT,
                 aEnchantmentsAdded,
                 aEnchantmentLevelsAdded,
+                inputValidator,
                 aRecipe));
         return true;
     }

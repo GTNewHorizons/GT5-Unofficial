@@ -193,6 +193,7 @@ ig.button.projects=Projects
 # Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.name=Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.type=Pump, PGS
+gt.blockmachines.multimachine.ig.siphon.desc0=Every coil tier gives a §a+%s%%§7 speed bonus per coil tier
 gt.blockmachines.multimachine.ig.siphon.desc1=Build on a Space Station orbiting a Gas Planet
 gt.blockmachines.multimachine.ig.siphon.desc2=Requires a Programmed Circuit set to the depth you want to pump from (1 - 4)
 gt.blockmachines.multimachine.ig.siphon.desc3=Requires 64x depth Mining Pipes
@@ -258,9 +259,9 @@ gt.blockmachines.multimachine.project.ig.assembler.desc0=Module that adds the Sp
 gt.blockmachines.multimachine.project.ig.assembler.t1.desc1=Why do I need to assemble stuff in space again?
 gt.blockmachines.multimachine.project.ig.assembler.t2.desc1=Is this really necessary?
 gt.blockmachines.multimachine.project.ig.assembler.t3.desc1=I guess we'll never know.
-gt.blockmachines.multimachine.project.ig.assembler.t1.desc2=Runs at UHV with up to §a4 §7parallels
-gt.blockmachines.multimachine.project.ig.assembler.t2.desc2=Runs at UIV with up to §a16 §7parallels
-gt.blockmachines.multimachine.project.ig.assembler.t3.desc2=Runs at UXV with up to §a64 §7parallels
+gt.blockmachines.multimachine.project.ig.assembler.t1.desc2=Runs at UHV with up to §64§7 parallels
+gt.blockmachines.multimachine.project.ig.assembler.t2.desc2=Runs at UIV at §a150%§7 speed with up to §616§7 parallels
+gt.blockmachines.multimachine.project.ig.assembler.t3.desc2=Runs at UXV at §a200%§7 speed with up to §664§7 parallels
 gt.blockmachines.multimachine.project.ig.assembler.cfgi.0=Max parallels
 
 # Module Miner
@@ -351,10 +352,10 @@ ig.nei.siphon.planet=Planet
 ig.nei.siphon.depth=Depth
 
 # Structure and Tooltip
-ig.siphon.structure.ControllerPos=Front center of the middle structure
+ig.siphon.structure.ControllerPos=Front center of the main body, 16th layer
 ig.siphon.structure.ControllerPos2=Front bottom center
 ig.siphon.structure.HatchRequirement=Must have exactly §61§7 of each hatch!
-ig.siphon.structure.AnySiphonCasing=Any Planetary Siphon Casing
+ig.siphon.structure.AnySiphonCasing=Any siphon casing
 ig.siphon.structure.PillarMiddle=1x4x1 pillar in the middle
 ig.siphon.structure.Sides=Each pillar's side and 1x3x1 on top
 ig.siphon.structure.Base=3x1x3 base (hollow), needs §63§7
@@ -365,11 +366,12 @@ ig.elevator.structure.ProjectModule=Project Modules
 ig.elevator.structure.Motor=Space Elevator Motor
 ig.elevator.structure.FrameNeutronium=Neutronium Frame Box
 ig.elevator.structure.Parametrizer=Parametrizer
-ig.elevator.structure.DataInputHatch=Data Input Hatch
-ig.elevator.structure.OpticalConnector=Optical Connector
+ig.elevator.structure.DataInputHatch=Optical Reception Connector
 ig.elevator.structure.AnyBaseCasingWithHintNumber1=Any Space Elevator Base Casing With Hint Number 1
 ig.elevator.structure.AnyBaseCasingWithHintNumber2=Any Space Elevator Base Casing With Hint Number 2
 ig.elevator.structure.AnyBaseCasingWithHintNumber3=Any Space Elevator Base Casing With Hint Number 3
+ig.elevator.structure.SharedPower=Receives power from the base structure
+ig.elevator.structure.SharedResources=Receives power, plasma, and computation from the base structure
 ig.structure.contributors=Contributors
 ig.structure.programming=Programming
 ig.structure.design=Design
@@ -377,6 +379,11 @@ ig.structure.specialThanks=Special Thanks to
 ig.structure.author=Added by
 ig.structure.and= and
 
+ig.dyson.structure.controller=Front bottom center of receiver, 2nd layer
+ig.dyson.structure.control.any_casing=Any center side casing on control center
+ig.dyson.structure.receiver.any_casing=Any center side casing on receiver
+ig.dyson.structure.deployment.any_casing=Any center side casing on deployment unit
+ig.dyson.structure.air=All eight layers above the receiver dish
 ig.dyson.structure.dynamo=Can use Single- and/or Multi-Amp Dynamo Hatches and/or Laser Source Hatches (1 - 12)
 ig.dyson.structure.optical=Optical Reception Connector
 ig.dyson.structure.additionally=Additionally needed:

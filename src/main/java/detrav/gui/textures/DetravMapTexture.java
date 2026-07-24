@@ -28,6 +28,8 @@ public class DetravMapTexture extends AbstractTexture {
     public int width = -1;
     public int height = -1;
     public boolean invert = false;
+    private short[] topId = null;
+    private int[] topY = null;
 
     public DetravMapTexture(ProspectingPacket aPacket) {
         packet = aPacket;
@@ -37,6 +39,8 @@ public class DetravMapTexture extends AbstractTexture {
         final int backgroundColor = invert ? Color.GRAY.getRGB() : Color.WHITE.getRGB();
         final int blockSize = (packet.size * 2 + 1) * 16;
         final int chunkSize = packet.size * 2 + 1;
+        topId = null;
+        topY = null;
 
         BufferedImage image = new BufferedImage(blockSize, blockSize, BufferedImage.TYPE_INT_ARGB);
         WritableRaster raster = image.getRaster();
@@ -55,6 +59,10 @@ public class DetravMapTexture extends AbstractTexture {
 
                 short[] depth = new short[blockSize * blockSize];
                 Arrays.fill(depth, (short) 0);
+
+                topId = new short[blockSize * blockSize];
+                Arrays.fill(topId, (short) -1);
+                topY = new int[blockSize * blockSize];
 
                 short selectedId = -1;
 
@@ -78,35 +86,47 @@ public class DetravMapTexture extends AbstractTexture {
                     int y = CoordinatePacker.unpackY(coord);
                     int z = CoordinatePacker.unpackZ(coord);
 
-                    if (y < depth[x + z * blockSize]) continue;
-                    depth[x + z * blockSize] = (short) y;
+                    int idx = x + z * blockSize;
+                    if (y < depth[idx]) continue;
+                    depth[idx] = (short) y;
 
                     var object = packet.objects.get(e.getShortValue());
 
                     if (object == null) continue;
 
+                    topId[idx] = e.getShortValue();
+                    topY[idx] = y;
                     image.setRGB(x, z, object.rightInt());
                 }
             }
             case DetravMetaGeneratedTool01.MODE_FLUIDS -> {
+                // Tank-fill: each chunk is filled bottom-up to a level proportional to its amount on one
+                // shared linear scale (richest chunk in the scan = full).
+                int maxAmount = 1;
                 for (int cZ = 0; cZ < chunkSize; cZ++) {
                     for (int cX = 0; cX < chunkSize; cX++) {
+                        var object = packet.objects.get(packet.map.get(CoordinatePacker.pack(cX, 0, cZ)));
+                        int amount = packet.getAmount(cX, cZ);
+                        if (object == null || amount <= 0) continue;
+                        if (!selected.equals("All") && !selected.equals(object.left())) continue;
+                        maxAmount = Math.max(maxAmount, amount);
+                    }
+                }
+
+                for (int cZ = 0; cZ < chunkSize; cZ++) {
+                    for (int cX = 0; cX < chunkSize; cX++) {
+                        var object = packet.objects.get(packet.map.get(CoordinatePacker.pack(cX, 0, cZ)));
                         int amount = packet.getAmount(cX, cZ);
 
-                        var object = packet.objects.get(packet.map.get(CoordinatePacker.pack(cX, 0, cZ)));
+                        if (object == null || amount <= 0) continue;
+                        if (!selected.equals("All") && !selected.equals(object.left())) continue;
 
-                        if (object == null) continue;
-
-                        String name = object.left();
                         int rgba = object.rightInt();
+                        int fill = Math.max(1, Math.round(16F * amount / maxAmount)); // bottom-up rows, 1..16
 
-                        if (!selected.equals("All") && !selected.equals(name)) continue;
-
-                        for (int x = 0; x < 16; x++) {
-                            for (int y = 0; y < 16; y++) {
-                                if ((x + y * 16) * 3 < amount + 48) {
-                                    image.setRGB(cX * 16 + x, cZ * 16 + y, rgba);
-                                }
+                        for (int y = 16 - fill; y < 16; y++) {
+                            for (int x = 0; x < 16; x++) {
+                                image.setRGB(cX * 16 + x, cZ * 16 + y, rgba);
                             }
                         }
                     }
@@ -161,6 +181,42 @@ public class DetravMapTexture extends AbstractTexture {
         return image;
     }
 
+    /** Display name of the topmost ore drawn at the given block column. */
+    public String getTopOreName(int x, int z) {
+        int bs = packet.getSize();
+        if (topId == null || x < 0 || z < 0 || x >= bs || z >= bs) return null;
+        short id = topId[x + z * bs];
+        if (id < 0) return null;
+        var object = packet.objects.get(id);
+        return object == null ? null : object.left();
+    }
+
+    /** World Y of the topmost ore drawn at the given block column. */
+    public int getTopOreY(int x, int z) {
+        int bs = packet.getSize();
+        if (topY == null || x < 0 || z < 0 || x >= bs || z >= bs) return 0;
+        return topY[x + z * bs];
+    }
+
+    /** ARGB colour of the topmost ore drawn at the given block column, or 0 if none. */
+    public int getTopOreColor(int x, int z) {
+        int bs = packet.getSize();
+        if (topId == null || x < 0 || z < 0 || x >= bs || z >= bs) return 0;
+        short id = topId[x + z * bs];
+        if (id < 0) return 0;
+        var object = packet.objects.get(id);
+        return object == null ? 0 : object.rightInt();
+    }
+
+    /** Ore material internal name of the topmost ore at the given block column, or empty string. */
+    public String getTopOreMaterialName(int x, int z) {
+        int bs = packet.getSize();
+        if (topId == null || x < 0 || z < 0 || x >= bs || z >= bs) return "";
+        short id = topId[x + z * bs];
+        if (id < 0) return "";
+        return packet.oreMaterialNames.getOrDefault(id, "");
+    }
+
     @Override
     public void loadTexture(IResourceManager resourceManager) {
         this.deleteGlTexture();
@@ -190,15 +246,12 @@ public class DetravMapTexture extends AbstractTexture {
     }
 
     public void draw(int x, int y) {
-        float f = 1F / (float) width;
-        float f1 = 1F / (float) height;
-        int u = 0, v = 0;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(x, y + height, 0, (float) (u) * f, (float) (v + height) * f1);
-        tessellator.addVertexWithUV(x + width, y + height, 0, (float) (u + width) * f, (float) (v + height) * f1);
-        tessellator.addVertexWithUV(x + width, y, 0, (float) (u + width) * f, (float) (v) * f1);
-        tessellator.addVertexWithUV(x, y, 0, (float) (u) * f, (float) (v) * f1);
+        tessellator.addVertexWithUV(x, y + height, 0, 0F, 1F);
+        tessellator.addVertexWithUV(x + width, y + height, 0, 1F, 1F);
+        tessellator.addVertexWithUV(x + width, y, 0, 1F, 0F);
+        tessellator.addVertexWithUV(x, y, 0, 0F, 0F);
         tessellator.draw();
     }
 

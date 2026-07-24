@@ -1,11 +1,17 @@
 package tectech.thing.metaTileEntity.multi.base.parameter;
 
+import java.util.function.Function;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
+
+import gregtech.common.gui.modularui.widget.WidgetConfigurator;
+import gregtech.common.gui.modularui.widget.settings.SettingsPanelBuilder;
 
 public abstract class Parameter<T, S extends SyncHandler<?>> {
 
@@ -82,4 +88,7 @@ public abstract class Parameter<T, S extends SyncHandler<?>> {
         if (syncHandler == null) syncHandler = createSyncHandler();
         return syncHandler;
     }
+
+    public abstract void addToSettingsPanel(SettingsPanelBuilder builder, IKey label, WidgetConfigurator<?> configure,
+        String prefix, Function<Parameter<?, ?>, WidgetConfigurator<?>> configurator);
 }

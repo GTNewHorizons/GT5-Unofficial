@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.hatch;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -11,7 +13,6 @@ import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChiselBus;
@@ -63,7 +64,7 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
             .childIf(
                 gridSize == 1,
                 () -> new PhantomItemSlot().slot(new ModularSlot(machine.ghostTargets, 0))
-                    .addTooltipLine(GTUtility.translate("GT5U.hatch.chisel.configure.singleton")))
+                    .addTooltipLine(StatCollector.translateToLocal("GT5U.hatch.chisel.configure.singleton")))
             .childIf(gridSize > 1, () -> createTemplatePanelButton(templatePanel));
     }
 
@@ -74,7 +75,7 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
             return true;
         })
             .overlay(GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
-            .addTooltipLine(GTUtility.translate("GT5U.hatch.chisel.configure.grid"));
+            .addTooltipLine(StatCollector.translateToLocal("GT5U.hatch.chisel.configure.grid"));
     }
 
     private ModularPanel createTemplatePanel(ModularPanel panel, PanelSyncManager syncManager) {

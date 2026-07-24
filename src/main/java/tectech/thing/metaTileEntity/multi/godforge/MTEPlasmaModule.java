@@ -188,21 +188,16 @@ public class MTEPlasmaModule extends MTEBaseModule {
             .addInfo("right away, some of them require certain upgrades to be unlocked")
             .addInfo("This module is specialized towards energy and overclock efficiency")
             .beginStructureBlock(7, 7, 13, false)
-            .addController("Front center")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Harmonic Phonon Transmission Conduit")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
+            .addController("Front center, 4th layer")
+            .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
+            .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
+            .addCasing("5", "Celestial Matter Guidance Casing", false)
+            .addCasing("5", "Harmonic Phonon Transmission Conduit", false)
+            .addCasing("1", "Stellar Energy Siphon Casing", false)
+            .addInputBus("0+", "Any front shielding casing", 1)
+            .addInputHatch("0+", "Any front shielding casing", 1)
+            .addOutputHatch("0+", "Any front shielding casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 

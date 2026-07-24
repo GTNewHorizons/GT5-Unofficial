@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
@@ -45,13 +46,18 @@ import gregtech.common.config.Gregtech;
 public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     implements IGregTechTileEntity, IInterfaceNameProvider {
 
-    protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false,
-        mInventoryChanged = false, mTickDisabled = false;
+    // mNeedsUpdate: Client only, mark the block for rerender
+    // mNeedsTileUpdate: Server only, mark the block for sync using `S35PacketUpdateTileEntity`
+    // mInventoryChanged: whether the inventory had changed in the previous tick, currently not all code set this
+    // mTickDisabled: whether this block is currently or pending to be unregistered from loaded tile entity list.
+    protected boolean mNeedsUpdate = true, mNeedsTileUpdate = false, mInventoryChanged = false, mTickDisabled = false;
 
     private boolean mIgnoreNextUnload = false;
 
     protected int oldX = 0, oldY = 0, oldZ = 0;
-    protected byte oldStrongRedstone = 0, oldRedstoneData = 63, oldUpdateData = 0;
+    // oldRedstoneData: bitmask of redstone output for all 6 sides, apparently used for client rendering
+    // oldUpdateData: One byte of data that is supplied by MTE and synced with client
+    protected byte oldRedstoneData = 63, oldUpdateData = 0;
 
     private byte mColor = 0;
 
@@ -75,7 +81,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         return false;
     }
 
-    public boolean isTickDisabled() {
+    @Override
+    public final boolean isTickDisabled() {
         return mTickDisabled;
     }
 
@@ -215,7 +222,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         if (mColor == color) return;
         mColor = color;
         if (isClientSide()) {
-            getMetaTileEntity().onColorChangeClient(mColor);
+            if (hasValidMetaTileEntity()) {
+                getMetaTileEntity().onColorChangeClient(mColor);
+            }
             issueTextureUpdate();
         } else {
             getMetaTileEntity().onColorChangeServer(mColor);
@@ -361,7 +370,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     protected void addProfilingInformation(List<String> tList) {
         if (mTickDisabled) {
-            tList.add(GTUtility.translate("GT5U.scanner.debug.tick_disabled"));
+            tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.tick_disabled"));
         } else if (hasTimeStatisticsStarted) {
             double tAverageTime = 0;
             double tWorstTime = 0;
@@ -381,7 +390,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             int samples = mTimeStatistics.length - amountOfZero;
             if (samples > 0) {
                 tList.add(
-                    GTUtility.translate(
+                    StatCollector.translateToLocalFormatted(
                         "GT5U.scanner.debug.tick_stats",
                         formatNumber(tAverageTime / samples),
                         formatNumber(samples),
@@ -389,11 +398,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             }
         } else {
             startTimeStatistics();
-            tList.add(GTUtility.translate("GT5U.scanner.debug.tick_stats_started"));
+            tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.tick_stats_started"));
         }
         if (mLagWarningCount > 0) {
             tList.add(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     mLagWarningCount >= 10 ? "GT5U.scanner.debug.lag_warnings_many" : "GT5U.scanner.debug.lag_warnings",
                     mLagWarningCount >= 10 ? GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING : mLagWarningCount,
                     GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING));
@@ -469,20 +478,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     @Override
     public void issueTextureUpdate() {
         mNeedsUpdate = true;
-    }
-
-    @Override
-    public void issueBlockUpdate() {
-        mNeedsBlockUpdate = true;
-        if (mTickDisabled) {
-            doBlockUpdateServer();
-        }
-    }
-
-    public final void doBlockUpdateServer() {
-        updateNeighbours(mStrongRedstone, oldStrongRedstone);
-        oldStrongRedstone = mStrongRedstone;
-        mNeedsBlockUpdate = false;
     }
 
     @Override

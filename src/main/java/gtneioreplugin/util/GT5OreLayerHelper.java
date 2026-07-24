@@ -36,7 +36,7 @@ public class GT5OreLayerHelper {
         HashMap<String, OreLayerWrapper> byName = new HashMap<>();
         HashMap<String, NormalOreDimensionWrapper> byDim = new HashMap<>();
 
-        for (OreMixes mix : OreMixes.values()) {
+        for (OreMixes mix : OreMixes.VALUES) {
             OreLayerWrapper wrapper = new OreLayerWrapper(mix.oreMixBuilder);
             byName.put(mix.oreMixBuilder.oreMixName, wrapper);
 

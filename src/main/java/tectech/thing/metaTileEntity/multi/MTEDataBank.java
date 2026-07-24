@@ -21,7 +21,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -65,16 +64,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     private boolean slave = false;
     private boolean wirelessModeEnabled = false;
     // endregion
-
-    // region structure
-    private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal("gt.blockmachines.multimachine.em.databank.hint.0"), // 1 - Classic Hatches or high power
-                                                                              // casing
-        translateToLocal("gt.blockmachines.multimachine.em.databank.hint.1"), // 2 - Data Access/Data Bank Master
-                                                                              // Hatches or
-        // computer casing
-    };
 
     private static final IStructureDefinition<MTEDataBank> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEDataBank>builder()
@@ -136,27 +125,27 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to
                                                                                            // toggle
                                                                                            // wireless mode
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .beginStructureBlock(5, 3, 3, false)
-            .addController("Front center")
-            .addCasingInfoExactly("Computer Heat Vent", 18, false)
-            .addCasingInfoExactly("High Power Casing", 7, false)
-            .addCasingInfoMin("Computer Casing", 3, false)
-            .addOtherStructurePart(
-                translateToLocal("tt.keyword.Structure.DataAccessHatch"),
-                translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                2) // Data Access Hatch: Any Computer Casing
-            .addOtherStructurePart(
+            .addController("Front center, 2nd layer")
+            .addCasing("18", "Computer Heat Vent", false)
+            .addCasing("3-16", "Computer Casing", false)
+            .addCasing("0-6", "High Power Casing", false)
+            .addEnergyHatch("1+", "Any high power casing", 1)
+            .addMaintenanceHatch("1", "Any high power casing", 1)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataAccessHatch"), "Any computer casing", 2)
+            .addMiscHatch(
+                "1+",
                 translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"),
-                translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                2) // Data Bank Master Connector: Any Computer Casing
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
-                                                                                            // High Power Casing
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance
-                                                                                                 // Hatch: Any High
-                                                                                                 // Power Casing
-            .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Dynamo Hatch: Any High
-                                                                                            // Power Casing
+                "Any computer casing",
+                2)
+            .addMiscHatch(
+                "0+",
+                translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"),
+                "Any computer casing",
+                2)
+            .addStructureInfo("")
+            .addStructureFooter("Use an assembly line reception connector to daisy-chain machines")
             .toolTipFinisher();
         return tt;
     }
@@ -169,14 +158,14 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         eWirelessStacksDataOutputs.clear();
         slave = false;
         if (!checkPiece("main", 2, 1, 0, errors)) return;
-        checkHasAnyEnergy(errors);
-        checkHasMaintenanceHatch(errors);
         if (eDataAccessHatches.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.databank_missing_data_access"));
         }
         if (eStacksDataOutputs.isEmpty() && eWirelessStacksDataOutputs.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.databank_missing_data_output"));
         }
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override
@@ -319,11 +308,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public IStructureDefinition<MTEDataBank> getStructure_EM() {
         return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
     }
 
     private enum DataBankHatches implements IHatchElement<MTEDataBank> {

@@ -1,5 +1,7 @@
 package gregtech.api.covers;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -9,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.interfaces.ITexture;
@@ -113,7 +116,13 @@ public final class CoverRegistry {
         CoverRegistration registration = getRegistration(coverItem);
         Cover cover = registration.getFactory()
             .buildCover(new CoverContext(coverItem, side, coverable));
-        cover.readFromNbt(nbt);
+        try {
+            cover.readFromNbt(nbt);
+        } catch (Exception e) {
+            GT_FML_LOGGER.error("Encountered Exception while loading cover.");
+            GTMod.logStackTrace(e);
+            cover = NO_COVER;
+        }
         return cover;
     }
 

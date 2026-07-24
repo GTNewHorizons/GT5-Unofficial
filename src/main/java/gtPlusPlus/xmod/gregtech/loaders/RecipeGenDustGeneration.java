@@ -79,7 +79,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         final ItemStack[] inputStacks = material.getMaterialComposites();
         final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
 
-        if (smallDust != null && tinyDust != null) {
+        if (smallDust != null) {
             generatePackagerRecipes(material);
         }
 
@@ -97,7 +97,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         if (!((inputStacks.length != 0) && (inputStacks.length <= 4))) {
             return;
         }
-        final long[] inputStackSize = material.vSmallestRatio;
+        final long[] inputStackSize = material.smallestRatio;
         // Is smallest ratio invalid?
         if (inputStackSize == null) {
             return;
@@ -168,7 +168,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             builder.circuit(circuitNumber);
         }
         builder.duration((int) Math.max(material.getMass() * 2L, 1))
-            .eut(material.vVoltageMultiplier)
+            .eut(material.voltageMultiplier)
             .addTo(mixerRecipes);
     }
 
@@ -184,7 +184,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         if (!((inputStacks.length >= 1) && (inputStacks.length <= 4))) {
             return;
         }
-        final long[] inputStackSize = material.vSmallestRatio;
+        final long[] inputStackSize = material.smallestRatio;
 
         // Is smallest ratio invalid?
         if (inputStackSize == null) {
@@ -237,7 +237,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
                     || f == MaterialState.PURE_LIQUID
                     || f == MaterialState.PURE_GAS) {
                     oxygen = x.getStackMaterial()
-                        .getFluidStack((int) (material.vSmallestRatio[compSlot] * 1000));
+                        .getFluidStack((int) (material.smallestRatio[compSlot] * 1000));
                 }
                 compSlot++;
             }
@@ -254,12 +254,12 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             builder.circuit(20);
         }
         builder.duration((int) Math.max(material.getMass() * 2L, 1))
-            .eut(material.vVoltageMultiplier)
+            .eut(material.voltageMultiplier)
             .addTo(mixerRecipes);
     }
 
     public static boolean generatePackagerRecipes(Material aMatInfo) {
-        // Small Dust
+        // Small Dust → Normal Dust
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(4, aMatInfo.getSmallDust(4)), ItemList.Schematic_Dust.get(0))
             .itemOutputs(aMatInfo.getDust(1))
@@ -267,21 +267,34 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             .eut(4)
             .addTo(packagerRecipes);
 
-        // Tiny Dust
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(9, aMatInfo.getTinyDust(9)), ItemList.Schematic_Dust.get(0))
-            .itemOutputs(aMatInfo.getDust(1))
-            .duration(5 * SECONDS)
-            .eut(4)
-            .addTo(packagerRecipes);
+        // Tiny Dust → Normal Dust
+        if (aMatInfo.getTinyDust(1) != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(9, aMatInfo.getTinyDust(9)), ItemList.Schematic_Dust.get(0))
+                .itemOutputs(aMatInfo.getDust(1))
+                .duration(5 * SECONDS)
+                .eut(4)
+                .addTo(packagerRecipes);
+        }
 
-        // Normal Dust
+        // Normal Dust → Small Dust
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, aMatInfo.getDust(1)), ItemList.Schematic_Dust_Small.get(0))
             .itemOutputs(aMatInfo.getSmallDust(4))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(packagerRecipes);
+
+        // Normal Dust → Tiny Dust
+        if (aMatInfo.getTinyDust(1) != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, aMatInfo.getDust(1)), ItemList.Schematic_Dust.get(0))
+                .itemOutputs(aMatInfo.getTinyDust(9))
+                .duration(5 * SECONDS)
+                .eut(4)
+                .addTo(packagerRecipes);
+        }
+
         return true;
     }
 
@@ -305,13 +318,13 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         final int tempRequired) {
 
         int timeTaken;
-        if (aMatInfo.vTier <= 4) {
-            timeTaken = 25 * aMatInfo.vTier * 10;
+        if (aMatInfo.tier <= 4) {
+            timeTaken = 25 * aMatInfo.tier * 10;
         } else {
-            timeTaken = 125 * aMatInfo.vTier * 10;
+            timeTaken = 125 * aMatInfo.tier * 10;
         }
 
-        long aVoltage = aMatInfo.vVoltageMultiplier;
+        long aVoltage = aMatInfo.voltageMultiplier;
 
         GTValues.RA.stdBuilder()
             .itemInputs(input1)

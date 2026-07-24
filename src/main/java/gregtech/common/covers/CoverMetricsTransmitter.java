@@ -1,5 +1,6 @@
 package gregtech.common.covers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -100,7 +101,16 @@ public class CoverMetricsTransmitter extends Cover {
             if (baseMTE.getMetaTileEntity() instanceof final IMetricsExporter metricsExporter) {
                 payload = metricsExporter.reportMetrics();
             } else {
-                payload = ImmutableList.copyOf(baseMTE.getInfoData());
+                final List<String> infoList = new ArrayList<>();
+                for (String info : baseMTE.getInfoData()) {
+                    infoList.add(info);
+                }
+                baseMTE.getExtraInfoData(infoList);
+                final ImmutableList.Builder<String> builder = ImmutableList.builder();
+                for (String info : infoList) {
+                    builder.add(IGregTechDeviceInformation.decode(info));
+                }
+                payload = builder.build();
             }
 
             MinecraftForge.EVENT_BUS.post(new MetricsCoverDataEvent(

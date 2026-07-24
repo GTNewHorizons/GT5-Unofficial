@@ -123,7 +123,7 @@ public class ItemBlockGtBlock extends ItemBlock {
                     mMaterial = ((BlockBaseModular) b).getMaterialEx();
                 }
                 if (mMaterial != null) {
-                    this.sRadiation = mMaterial.vRadiationLevel;
+                    this.sRadiation = mMaterial.radiationLevel;
                 } else {
                     this.sRadiation = 0;
                 }

@@ -1,7 +1,6 @@
 package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.util.GTUtility.translate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -37,6 +36,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
+import appeng.me.helpers.AENetworkProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -51,6 +51,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
@@ -98,19 +99,19 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     if (!(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
                         if (gtTileEntity.getInputVoltage() > 0L) {
                             aList.add(
-                                translate(
+                                StatCollector.translateToLocalFormatted(
                                     "gt.tileentity.eup_in",
                                     TooltipHelper.voltageText(gtTileEntity.getInputVoltage())));
                         }
                         if (gtTileEntity.getOutputVoltage() > 0L) {
                             aList.add(
-                                translate(
+                                StatCollector.translateToLocalFormatted(
                                     "gt.tileentity.eup_out",
                                     TooltipHelper.voltageText(gtTileEntity.getOutputVoltage())));
                         }
                         if (gtTileEntity.getOutputAmperage() > 1L) {
                             aList.add(
-                                translate(
+                                StatCollector.translateToLocalFormatted(
                                     "gt.tileentity.amperage",
                                     TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
                         }
@@ -269,6 +270,12 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 if (aPlayer != null) {
                     tTileEntity.setOwnerName(aPlayer.getDisplayName());
                     tTileEntity.setOwnerUuid(aPlayer.getUniqueID());
+                }
+                if (tTileEntity.getMetaTileEntity() instanceof MetaTileEntity mte) {
+                    AENetworkProxy proxy = mte.getProxy();
+                    if (proxy != null) {
+                        proxy.setOwner(aPlayer);
+                    }
                 }
                 tTileEntity.setFrontFacing(
                     BaseTileEntity.getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, tTileEntity.getValidFacings()));

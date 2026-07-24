@@ -1,7 +1,5 @@
 package gregtech.common.modularui2.widget;
 
-import java.util.Arrays;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -107,7 +105,7 @@ public class GhostMoldSlotWidget extends PhantomItemSlot {
     private IPanelHandler buildSelectorPanel() {
         return syncManager.syncedPanel("moldSlotPanel", true, (mainPanel, player) -> {
             ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID);
-            return new SelectItemGuiBuilder(panel, Arrays.asList(MTEHatchSolidifier.solidifierMolds))
+            return new SelectItemGuiBuilder(panel, MTEHatchSolidifier.solidifierMolds)
                 .setHeaderItem(hatch.getStackForm(1))
                 .setTitle(IKey.lang("GT5U.machines.select_mold"))
                 .setSelectedSyncHandler(moldSyncHandler.getIndexSync())

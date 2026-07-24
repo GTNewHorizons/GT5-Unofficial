@@ -8,6 +8,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.GuiTextures;
@@ -172,7 +173,7 @@ public class MTEDebugPowerGeneratorGui extends MTETieredMachineBlockBaseGui<MTED
         // add the changing tier description widget
         voltageTextRow.child(
             IKey.dynamic(
-                () -> GTUtility.translate("GT5U.gui.text.voltagetier") + " ("
+                () -> StatCollector.translateToLocal("GT5U.gui.text.voltagetier") + " ("
                     + getColoredTierNameFromTier(voltageTierSyncer.getByteValue())
                     + ")")
                 .asWidget()

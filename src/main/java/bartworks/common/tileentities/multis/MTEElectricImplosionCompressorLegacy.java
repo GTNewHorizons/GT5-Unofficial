@@ -233,7 +233,7 @@ public class MTEElectricImplosionCompressorLegacy
             .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
             .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
             .addMaxTierSkips(1)
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .beginStructureBlock(3, 9, 3, false)
             .addController("Front center, 3rd layer")
             .addCasingInfoMin("Solid Steel Machine Casing", 8, false)
@@ -246,7 +246,7 @@ public class MTEElectricImplosionCompressorLegacy
             .addInputHatch("Any Solid Steel Machine Casing", 1)
             .addOutputBus("Any Solid Steel Machine Casing", 1)
             .addEnergyHatch("Bottom middle and/or top middle", 2)
-            .addSubChannelUsage(GTStructureChannels.EIC_PISTON)
+            .addSubChannel(GTStructureChannels.EIC_PISTON)
             .toolTipFinisher();
         return tt;
     }

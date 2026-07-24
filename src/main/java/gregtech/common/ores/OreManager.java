@@ -86,7 +86,32 @@ public final class OreManager {
 
     public static boolean setOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone,
         IOreMaterial material, boolean small) {
-        if (y < 0 || y >= world.getActualHeight()) return false;
+        ImmutableBlockMeta oreBlock = getOreBlockForWorldGen(world, x, y, z, defaultStone, material, small);
+
+        if (oreBlock == null) return false;
+
+        world.setBlock(x, y, z, oreBlock.getBlock(), oreBlock.getBlockMeta(), 3);
+
+        return true;
+    }
+
+    public static boolean canSetOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone,
+        IOreMaterial material, boolean small) {
+        return getOreBlockForWorldGen(world, x, y, z, defaultStone, material, small) != null;
+    }
+
+    public static boolean canSetOreForWorldGenOrAlreadySet(World world, int x, int y, int z, IStoneType defaultStone,
+        IOreMaterial material, boolean small) {
+        if (canSetOreForWorldGen(world, x, y, z, defaultStone, material, small)) return true;
+
+        try (OreInfo<IOreMaterial> info = getOreInfo(world, x, y, z)) {
+            return info != null && info.isNatural && info.isSmall == small && info.material == material;
+        }
+    }
+
+    private static ImmutableBlockMeta getOreBlockForWorldGen(World world, int x, int y, int z, IStoneType defaultStone,
+        IOreMaterial material, boolean small) {
+        if (y < 0 || y >= world.getActualHeight()) return null;
 
         IStoneType existingStone = StoneType.findStoneType(world, x, y, z);
 
@@ -94,7 +119,7 @@ public final class OreManager {
             if (defaultStone != null) {
                 existingStone = defaultStone;
             } else {
-                return false;
+                return null;
             }
         }
 
@@ -112,13 +137,11 @@ public final class OreManager {
                 ImmutableBlockMeta oreBlock = oreAdapter.getBlock(info);
 
                 if (oreBlock != null) {
-                    world.setBlock(x, y, z, oreBlock.getBlock(), oreBlock.getBlockMeta(), 3);
-
-                    return true;
+                    return oreBlock;
                 }
             }
 
-            return false;
+            return null;
         }
     }
 

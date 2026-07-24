@@ -203,20 +203,17 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
             .addInfo("Efficiency peaks at " + EnumChatFormatting.LIGHT_PURPLE + "50%")
             .beginStructureBlock(5, 4, 5, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Clean Stainless Steel Casing", 19, false)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("tooltip.bw.structure.glass"),
-                "Hollow two middle layers")
-            .addCasingInfoExactly("Any Tiered Glass", 32, true)
-            .addStructureInfo("Some Recipes need more advanced Glass Types")
-            .addMaintenanceHatch("Any Casing", 1)
-            .addOtherStructurePart(StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any Casing", 1)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("19-45", "Stainless Steel Machine Casing", false)
+            .addCasing("32", "Any Tiered Glass", true)
+            .addMiscHatch("0-1", StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any casing", 1)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("0+", "Any casing", 1)
+            .addInputHatch("1+", "Any casing", 1)
+            .addOutputBus("0+", "Any casing", 1)
+            .addOutputHatch("1", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -369,8 +366,8 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
 
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
-        checkOneOutputHatch(errors);
         checkHasInputHatch(errors);
+        checkOneOutputHatch(errors);
     }
 
     private void sendAllRequiredRendererPackets(int offsetX_L, int offsetY_L, int offsetZ_L, int offsetX_U,
@@ -588,8 +585,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                     // TODO check if BioVat still renders correctly, because of the missing ID in culture tag
                     if (this.mCulture == null || aStack == null
                         || aStack.getTagCompound() == null
-                        || this.mCulture.getID() != aStack.getTagCompound()
-                            .getInteger("ID")) {
+                        || this.mCulture != BioCulture.getBioCultureFromNBTTag(aStack.getTagCompound())) {
                         lCulture = (aStack == null) ? null
                             : BioCulture.getBioCultureFromNBTTag(aStack.getTagCompound());
                     }

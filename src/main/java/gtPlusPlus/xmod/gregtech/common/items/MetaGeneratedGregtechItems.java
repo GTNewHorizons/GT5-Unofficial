@@ -1,9 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.items;
 
+import static gregtech.api.recipe.RecipeMaps.rtgFuels;
 import static gregtech.api.util.GTRecipeConstants.RTG_DURATION_IN_DAYS;
 import static gregtech.client.GTTooltipHandler.Tier.EV;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.rtgFuels;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Casing_Gem_1;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Casing_Gem_2;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Casing_Gem_3;

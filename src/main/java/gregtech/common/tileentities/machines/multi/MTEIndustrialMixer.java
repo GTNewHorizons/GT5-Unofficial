@@ -39,6 +39,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
@@ -47,7 +48,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMixer>
@@ -186,23 +186,23 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
                 TIER_COLORS[VoltageIndex.UIV] + "UIV+ "
                     + EnumChatFormatting.GRAY
                     + "glass allows for single multi-amp energy hatch")
-            .addMultiAmpHatchInfo()
+            .addSupportMultiAmp()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Mixer Casing", 5, false)
-            .addCasingInfoExactly("Titanium Turbine Casing", 5, false)
-            .addCasingInfoExactly("Any Tiered Glass", 30, false)
-            .addCasingInfoExactly("Tungsten Sheetmetal", 24, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
+            .addCasing("5-45", "Mixer Casing", false)
+            .addCasing("30", "Any Tiered Glass", false)
+            .addCasing("24", "Tungsten Sheetmetal", false)
+            .addCasing("10", "Item Pipe Casing", true)
+            .addCasing("5", "Titanium Turbine Casing", false)
+            .addEnergyHatch("1+", "Any mixer casing", 1)
+            .addMaintenanceHatch("1", "Any mixer casing", 1)
+            .addMufflerHatch("1", "Any mixer casing", 1)
+            .addInputAny("1+", "Any mixer casing", 1)
+            .addOutputAny("1+", "Any mixer casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Shiray")
             .toolTipFinisher();
         return tt;
@@ -288,7 +288,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.mixerNonCellRecipes;
+        return RecipeMaps.mixerNonCellRecipes;
     }
 
     @Override

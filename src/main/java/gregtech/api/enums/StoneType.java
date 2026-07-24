@@ -194,7 +194,7 @@ public enum StoneType implements IStoneType {
             .toArray(StoneType[]::new));
 
     public static final ImmutableMap<OrePrefixes, List<StoneType>> STONE_TYPES_BY_PREFIX;
-
+    public static final StoneType[] VALUES = StoneType.values();
     static {
         STONE_TYPES_BY_PREFIX = ImmutableMap.copyOf(
             StoneType.STONE_TYPES.stream()

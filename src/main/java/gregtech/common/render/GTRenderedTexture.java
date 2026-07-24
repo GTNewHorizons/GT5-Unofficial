@@ -4,6 +4,8 @@ import static gregtech.api.enums.Mods.Angelica;
 import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
 import static gregtech.api.render.ISBRWorldContext.MAX_BRIGHTNESS;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -25,7 +27,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.ISBRContext;
 import gregtech.api.render.ISBRWorldContext;
 
-public class GTRenderedTexture extends GTTextureBase implements IColorModulationContainer {
+public class GTRenderedTexture extends GTTextureBase implements IColorModulationContainer, IIconTexture {
 
     protected final IIconContainer mIconContainer;
     private final short[] mRGBa;
@@ -40,7 +42,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         this.useExtFacing = extFacing;
     }
 
-    public IIcon getIcon(ForgeDirection facing, boolean overlay, ISBRContext ctx) {
+    @Override
+    public IIcon getIcon(int ordinalSide, @Nullable ISBRContext ctx) {
+        return getIcon(ForgeDirection.values()[ordinalSide], false, ctx);
+    }
+
+    public IIcon getIcon(ForgeDirection facing, boolean overlay, @Nullable ISBRContext ctx) {
         final IIcon icon = overlay ? mIconContainer.getOverlayIcon() : mIconContainer.getIcon();
         if (icon == null || !Angelica.isModLoaded()) return icon;
         else return ctx instanceof ISBRWorldContext ctxW ? CTMUtils.getBlockIcon(

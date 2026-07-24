@@ -29,6 +29,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -781,11 +782,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         final ArrayList<String> tList = new ArrayList<>();
         if (aLogLevel > 2) {
             tList.add(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.scanner.debug.meta_id",
                     mID,
-                    canAccessData() ? GTUtility.translate("GT5U.multiblock.scanner.valid")
-                        : GTUtility.translate("GT5U.multiblock.scanner.invalid"))
+                    canAccessData() ? StatCollector.translateToLocal("GT5U.multiblock.scanner.valid")
+                        : StatCollector.translateToLocal("GT5U.multiblock.scanner.invalid"))
                     + (mMetaTileEntity == null
                         ? EnumChatFormatting.RED + " MetaTileEntity == null!" + EnumChatFormatting.RESET
                         : ""));
@@ -793,11 +794,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         if (aLogLevel > 1 && mMetaTileEntity != null) {
             addProfilingInformation(tList);
             tList.add(
-                GTUtility.translate(
+                StatCollector.translateToLocal(
                     mMetaTileEntity.isAccessAllowed(aPlayer) ? "GT5U.scanner.debug.accessible"
                         : "GT5U.scanner.debug.not_accessible"));
             tList.add(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.scanner.debug.sound_requests",
                     formatNumber(mMetaTileEntity.mSoundRequests),
                     formatNumber(mTickTimer - mLastCheckTick)));
@@ -806,11 +807,15 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         }
         if (aLogLevel > 0) {
             tList.add(
-                GTUtility
-                    .translate(mActive ? "GT5U.scanner.debug.machine_active" : "GT5U.scanner.debug.machine_inactive"));
-            if (!mHasEnoughEnergy) tList.add(GTUtility.translate("GT5U.scanner.debug.needs_power"));
+                StatCollector.translateToLocal(
+                    mActive ? "GT5U.scanner.debug.machine_active" : "GT5U.scanner.debug.machine_inactive"));
+            tList.add(
+                StatCollector.translateToLocal(
+                    isAllowedToWork() ? "GT5U.scanner.debug.machine_allowed_to_work"
+                        : "GT5U.scanner.debug.machine_not_allowed_to_work"));
+            if (!mHasEnoughEnergy) tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.needs_power"));
         }
-        if (joinedIc2Enet) tList.add(GTUtility.translate("GT5U.scanner.debug.ic2_enet"));
+        if (joinedIc2Enet) tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.ic2_enet"));
         return mMetaTileEntity.getSpecialDebugInfo(this, aPlayer, aLogLevel, tList);
     }
 
@@ -1008,6 +1013,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         mWorks = true;
         scheduleTexturePacket();
         setShutdownStatus(false);
+        setShutDownReason(ShutDownReasonRegistry.NONE);
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onEnableWorking();
         }
@@ -1547,15 +1553,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                             // logic handled internally
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 1.0F, -1);
                         } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
-                            mStrongRedstone ^= wrenchingSide.flag;
                             GTUtility.sendChatTrans(
                                 aPlayer,
-                                (mStrongRedstone & wrenchingSide.flag) != 0
-                                    ? "GT5U.chat.machine.redstone_output_set.strong"
+                                toggleStrongRedstone(wrenchingSide) ? "GT5U.chat.machine.redstone_output_set.strong"
                                     : "GT5U.chat.machine.redstone_output_set.weak",
                                 new ChatComponentTranslation(GTUtility.getUnlocalizedSideName(wrenchingSide)));
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1);
-                            issueBlockUpdate();
                         }
                         if (tCurrentItem.stackSize == 0) ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         doEnetUpdate();
@@ -1945,10 +1948,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
-        if (canAccessData() && (side == ForgeDirection.UNKNOWN
-            || (mMetaTileEntity.isLiquidInput(side) && getCoverAtSide(side).letsFluidIn(null))
-            || (mMetaTileEntity.isLiquidOutput(side) && getCoverAtSide(side).letsFluidOut(null))))
-            return mMetaTileEntity.getTankInfo(side);
+        if (canAccessData()) return mMetaTileEntity.getTankInfo(side);
         return GTValues.emptyFluidTankInfo;
     }
 
@@ -2313,8 +2313,14 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return mMetaTileEntity instanceof IMTERenderer mteRenderer
+        return getMetaTileEntity() instanceof IMTERenderer mteRenderer
             ? mteRenderer.getRenderBoundingBox(xCoord, yCoord, zCoord)
             : super.getRenderBoundingBox();
+    }
+
+    @Override
+    public double getMaxRenderDistanceSquared() {
+        return getMetaTileEntity() instanceof IMTERenderer mteRenderer ? mteRenderer.getMaxRenderDistanceSquared()
+            : super.getMaxRenderDistanceSquared();
     }
 }

@@ -31,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -84,6 +85,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELapotronicSuperCapacitor>
     implements ISurvivalConstructable {
 
@@ -389,107 +391,69 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Energy Storage, LSC")
-            .addInfo("Loses energy equal to 1% of the total capacity every 24 hours")
+        tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.machine_type"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc1"))
             .addInfo(
-                "Capped at " + EnumChatFormatting.RED
-                    + formatNumber(max_passive_drain_eu_per_tick_per_uhv_cap)
-                    + EnumChatFormatting.GRAY
-                    + " EU/t passive loss per "
-                    + GTValues.TIER_COLORS[9]
-                    + GTValues.VN[9]
-                    + EnumChatFormatting.GRAY
-                    + " capacitor")
-            .addInfo(
-                "The passive loss increases " + EnumChatFormatting.DARK_RED
-                    + "100"
-                    + EnumChatFormatting.GRAY
-                    + "-fold"
-                    + " for every capacitor tier above")
-            .addInfo("Passive loss is multiplied by the number of maintenance issues present")
+                StatCollector.translateToLocalFormatted(
+                    "kekztech.multiblock.LapotronicSuperCapacitor.desc2",
+                    formatNumber(max_passive_drain_eu_per_tick_per_uhv_cap),
+                    GTValues.TIER_COLORS[9] + GTValues.VN[9]))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc3"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc4"))
             .addSeparator()
-            .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier")
-            .addTecTechHatchInfo()
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc5"))
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addInfo("Add more or better capacitors to increase capacity")
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc6"))
             .addSeparator()
-            .addInfo("Wireless mode can be enabled by right clicking with a screwdriver")
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc7"))
             .addInfo(
-                "This mode can only be enabled if you have a " + GTValues.TIER_COLORS[9]
-                    + GTValues.VN[9]
-                    + EnumChatFormatting.GRAY
-                    + "+ capacitor in the multiblock.")
+                StatCollector.translateToLocalFormatted(
+                    "kekztech.multiblock.LapotronicSuperCapacitor.desc8",
+                    GTValues.TIER_COLORS[9] + GTValues.VN[9]))
             .addInfo(
-                "When enabled every " + EnumChatFormatting.BLUE
-                    + formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)
-                    + EnumChatFormatting.GRAY
-                    + " ticks the LSC will attempt to re-balance against your")
-            .addInfo("wireless EU network.")
+                StatCollector.translateToLocalFormatted(
+                    "kekztech.multiblock.LapotronicSuperCapacitor.desc9",
+                    formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc10"))
             .addInfo(
-                "If there is less than " + EnumChatFormatting.RED
-                    + formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap)
-                    + EnumChatFormatting.GRAY
-                    + "("
-                    + GTValues.TIER_COLORS[9]
-                    + GTValues.VN[9]
-                    + EnumChatFormatting.GRAY
-                    + ") EU in the LSC")
-            .addInfo("it will withdraw from the network and add to the LSC.")
-            .addInfo(
-                "If there is more it will add " + EnumChatFormatting.DARK_RED
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE
-                    + "all excess"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + " EU to the network, removing it from the LSC")
-            .addInfo("This can potentially brick your base, be careful")
-            .addInfo(
-                "The threshold increases " + EnumChatFormatting.DARK_RED
-                    + "100"
-                    + EnumChatFormatting.GRAY
-                    + "-fold"
-                    + " for every capacitor tier above")
+                StatCollector.translateToLocalFormatted(
+                    "kekztech.multiblock.LapotronicSuperCapacitor.desc11",
+                    formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap),
+                    GTValues.TIER_COLORS[9] + GTValues.VN[9]))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc12"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc13"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc14"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc15"))
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
-            .addStructureInfo("Modular height of 4-50 blocks.")
-            .addController("Front bottom center")
-            .addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")
-            .addOtherStructurePart(
-                "Lapotronic Capacitor (" + GTValues.TIER_COLORS[4]
-                    + GTValues.VN[4]
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + GTValues.TIER_COLORS[8]
-                    + GTValues.VN[8]
-                    + EnumChatFormatting.GRAY
-                    + "), Ultimate Capacitor ("
-                    + GTValues.TIER_COLORS[9]
-                    + GTValues.VN[9]
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + GTValues.TIER_COLORS[12]
-                    + GTValues.VN[12]
-                    + EnumChatFormatting.GRAY
-                    + ")",
-                "Center 3x(1-47)x3 above base (9-423 blocks)")
-            .addStructureInfo(
-                "You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
-            .addCasingInfoRange("Any Tiered Glass", 41, 777, true)
-            .addEnergyHatch("Any Casing")
-            .addDynamoHatch("Any Casing")
-            .addOtherStructurePart(
-                "Laser Target/Source Hatches",
-                "Any Casing, must be using " + GTValues.TIER_COLORS[8]
-                    + GTValues.VN[8]
-                    + EnumChatFormatting.GRAY
-                    + "-tier glass")
-            .addStructureInfo("You can have several I/O Hatches")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(
-                GTStructureChannels.LSC_CAPACITOR,
-                "Capacitor Tier if specified. Otherwise pick any acceptable capacitor.")
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
-            .addMaintenanceHatch("Any Casing")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addEnergyHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addDynamoHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing(
+                "17-48",
+                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.casing"),
+                false)
+            .addCasing("41", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing(
+                "9",
+                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.capacitor"),
+                true)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
+            .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing(
+                "9",
+                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.capacitor"),
+                true)
+            .addStructureInfo("")
+            .addStructureFooter(
+                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.structure_footer"))
+            .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.LSC_CAPACITOR)
             .toolTipFinisher();
         return tt;
     }
@@ -1098,6 +1062,16 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     @Override
     public boolean isEnetOutput() {
         return true;
+    }
+
+    @Override
+    public List<MTEHatch> getExoticEnergyHatches() {
+        return new ArrayList<>(mEnergyHatchesTT);
+    }
+
+    @Override
+    public List<MTEHatch> getExoticDynamoHatches() {
+        return new ArrayList<>(mDynamoHatchesTT);
     }
 
     public boolean canUseWireless() {

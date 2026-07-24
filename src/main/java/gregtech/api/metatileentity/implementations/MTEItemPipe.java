@@ -15,6 +15,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityHopper;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -38,6 +43,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.ItemMachines;
 import gregtech.common.covers.Cover;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -256,6 +262,153 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        // Only trigger if the player is sneaking
+        if (!aPlayer.isSneaking()) {
+            return;
+        }
+
+        // Retrieve the item's MetaTileEntity
+        final ItemStack handItem = aPlayer.inventory.getCurrentItem();
+        if (handItem == null) return;
+
+        IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
+        if (!(meta instanceof MTEItemPipe handPipe)) return;
+
+        // Preserve old connections and meta ID
+        byte oldConnections = this.mConnections;
+        short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
+
+        // Nothing to do if the pipe in hand is the very same type
+        if (oldMetaID == (short) handItem.getItemDamage()) return;
+
+        // Create the new item pipe
+        MTEItemPipe newPipe = (MTEItemPipe) handPipe.newMetaEntity(aBaseMetaTileEntity);
+        if (newPipe == null) return;
+
+        // Preserve old connections
+        newPipe.mConnections = oldConnections;
+
+        // Record old pipe parameters
+        int oldCapacity = this.getMaxPipeCapacity();
+        int oldStepSize = this.mStepSize;
+        boolean oldRestrictive = this.mIsRestrictive;
+
+        // Preserve in-flight routing state
+        newPipe.mLastReceivedFrom = this.mLastReceivedFrom;
+        newPipe.oLastReceivedFrom = this.oLastReceivedFrom;
+        newPipe.mTransferredItems = this.mTransferredItems;
+        newPipe.mCurrentTransferStartTick = this.mCurrentTransferStartTick;
+
+        // Move items that are currently in transit into the new pipe.
+        // If the new pipe holds fewer stacks, drop the overflow so nothing is voided.
+        int copyCount = Math.min(this.mInventory.length, newPipe.mInventory.length);
+        for (int i = 0; i < copyCount; i++) {
+            newPipe.mInventory[i] = this.mInventory[i];
+        }
+        for (int i = copyCount; i < this.mInventory.length; i++) {
+            if (this.mInventory[i] != null) {
+                aPlayer.dropPlayerItemWithRandomChoice(this.mInventory[i], false);
+            }
+        }
+
+        // Update to the new pipe
+        aBaseMetaTileEntity.setMetaTileID((short) handItem.getItemDamage());
+        newPipe.setBaseMetaTileEntity(aBaseMetaTileEntity);
+
+        // Construct a change message if needed
+        IChatComponent message = new ChatComponentText("");
+        boolean hasContent = false;
+
+        // Compare item throughput
+        if (oldCapacity != newPipe.getMaxPipeCapacity()) {
+            int newCapacity = newPipe.getMaxPipeCapacity();
+            EnumChatFormatting capacityColor = newCapacity > oldCapacity ? EnumChatFormatting.GREEN
+                : EnumChatFormatting.RED;
+            message.appendText(formatNumber(oldCapacity) + " → ");
+            message.appendSibling(
+                new ChatComponentText(formatNumber(newCapacity) + " ")
+                    .setChatStyle(new ChatStyle().setColor(capacityColor)));
+            message.appendSibling(
+                new ChatComponentTranslation("GT5U.item.pipe.swap.items")
+                    .setChatStyle(new ChatStyle().setColor(capacityColor)));
+            hasContent = true;
+        }
+
+        // Compare routing value (step size)
+        if (oldStepSize != newPipe.mStepSize) {
+            if (hasContent) message.appendText(" | ");
+            EnumChatFormatting stepSizeColor = newPipe.mStepSize > oldStepSize ? EnumChatFormatting.GREEN
+                : EnumChatFormatting.RED;
+            message.appendText(formatNumber(oldStepSize) + " → ");
+            message.appendSibling(
+                new ChatComponentText(formatNumber(newPipe.mStepSize) + " ")
+                    .setChatStyle(new ChatStyle().setColor(stepSizeColor)));
+            message.appendSibling(
+                new ChatComponentTranslation("GT5U.item.pipe.swap.routing")
+                    .setChatStyle(new ChatStyle().setColor(stepSizeColor)));
+            hasContent = true;
+        }
+
+        // Compare restrictive flag
+        if (oldRestrictive != newPipe.mIsRestrictive) {
+            if (hasContent) message.appendText(" | ");
+            EnumChatFormatting restrictiveColor = newPipe.mIsRestrictive ? EnumChatFormatting.RED
+                : EnumChatFormatting.GREEN;
+            message.appendSibling(
+                new ChatComponentTranslation(
+                    newPipe.mIsRestrictive ? "GT5U.item.pipe.swap.now_restrictive"
+                        : "GT5U.item.pipe.swap.no_longer_restrictive")
+                            .setChatStyle(new ChatStyle().setColor(restrictiveColor)));
+            hasContent = true;
+        }
+
+        // Send a chat message if anything changed. Only send server-side, since this method also runs
+        // client-side for responsive placement and would otherwise send the message twice.
+        if (hasContent && aBaseMetaTileEntity.isServerSide()) {
+            GTUtility.sendChatTrans(aPlayer, "GT5U.item.pipe.swap.s", message);
+        }
+
+        // Force updates to sync changes
+        aBaseMetaTileEntity.markDirty();
+        aBaseMetaTileEntity.issueTextureUpdate();
+        aBaseMetaTileEntity.issueBlockUpdate();
+        aBaseMetaTileEntity.issueTileUpdate();
+
+        // Handle inventory operations unless in creative mode
+        if (!aPlayer.capabilities.isCreativeMode) {
+            ItemStack oldPipe = new ItemStack(handItem.getItem(), 1, oldMetaID);
+            boolean addedToInventory = false;
+
+            // Attempt to stack with existing items
+            for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
+                ItemStack slot = aPlayer.inventory.mainInventory[i];
+                if (slot != null && slot.getItem() == oldPipe.getItem()
+                    && slot.getItemDamage() == oldPipe.getItemDamage()
+                    && slot.stackSize < slot.getMaxStackSize()) {
+                    slot.stackSize++;
+                    addedToInventory = true;
+                    break;
+                }
+            }
+            // Add new stack if stacking failed
+            if (!addedToInventory) {
+                addedToInventory = aPlayer.inventory.addItemStackToInventory(oldPipe);
+            }
+            // If still unsuccessful, drop the item
+            if (!addedToInventory) {
+                aPlayer.dropPlayerItemWithRandomChoice(oldPipe, false);
+            }
+
+            // Decrement the placed pipe from the player's hand
+            handItem.stackSize--;
+            if (handItem.stackSize <= 0) {
+                aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
+            }
+        }
     }
 
     @Override

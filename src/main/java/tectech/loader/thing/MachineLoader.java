@@ -27,6 +27,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.CloudComputationServerHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ComputerRack;
 import static gregtech.api.enums.MetaTileEntityIDs.DataBank;
 import static gregtech.api.enums.MetaTileEntityIDs.DataBankMasterConnector;
+import static gregtech.api.enums.MetaTileEntityIDs.DebugDataAccessHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.DebugDataHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.DebugPollutionGenerator;
 import static gregtech.api.enums.MetaTileEntityIDs.DebugPowerGenerator;
@@ -560,6 +561,7 @@ import static tectech.thing.CustomItemList.eM_energyWirelessTunnel9_UXV;
 import static tectech.thing.CustomItemList.hatch_CreativeData;
 import static tectech.thing.CustomItemList.hatch_CreativeMaintenance;
 import static tectech.thing.CustomItemList.hatch_CreativeUncertainty;
+import static tectech.thing.CustomItemList.hatch_DebugDataAccess;
 import static tectech.thing.CustomItemList.holder_Hatch;
 import static tectech.thing.CustomItemList.rack_Hatch;
 
@@ -580,6 +582,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDebugDataAccess;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
@@ -2277,6 +2280,9 @@ public class MachineLoader implements Runnable {
         hatch_CreativeUncertainty.set(
             new MTEHatchCreativeUncertainty(UncertaintyResolution.ID, "debug.tt.certain", "Uncertainty Resolution", 11)
                 .getStackForm(1));
+        hatch_DebugDataAccess.set(
+            new MTEHatchDebugDataAccess(DebugDataAccessHatch.ID, "debug.tt.dataaccess", "Debug Data Access Hatch", 14)
+                .getStackForm(1));
 
         // ===================================================================================================
         // MetaTE init
@@ -2292,7 +2298,8 @@ public class MachineLoader implements Runnable {
 
         Pipe_BEC_Block.set(new MTEPipeBECBlock(BoseEinsteinCondensatePipeBlock.ID, "pipe.bec.block").getStackForm(1L));
 
-        Hatch_BEC_Connector.set(new MTEHatchBEC(BoseEinsteinCondensateHatch.ID, "hatch.bec", 10).getStackForm(1L));
+        Hatch_BEC_Connector
+            .set(new MTEHatchBEC(BoseEinsteinCondensateHatch.ID, "hatch.bec", VoltageIndex.UIV).getStackForm(1L));
         Hatch_BEC_Nanites
             .set(new MTEHatchNaniteDetector(HatchNaniteDetector.ID, "hatch.nanite-detector").getStackForm(1L));
         Hatch_BEC_IOController
@@ -2300,7 +2307,7 @@ public class MachineLoader implements Runnable {
         Hatch_BEC_CondensateDetector.set(
             new MTEHatchCondensateDetector(HatchCondensateDetector.ID, "hatch.condensate-detector").getStackForm(1L));
         Hatch_LineOfSight_Connector.set(
-            new MTEHatchLoS(LineOfSightConnectorHatch.ID, "hatch.line-of-sight-connector", VoltageIndex.UEV)
+            new MTEHatchLoS(LineOfSightConnectorHatch.ID, "hatch.line-of-sight-connector", VoltageIndex.UIV)
                 .getStackForm(1));
 
         Machine_Multi_BECGenerator

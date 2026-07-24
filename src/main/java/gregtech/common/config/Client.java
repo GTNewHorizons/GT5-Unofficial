@@ -265,6 +265,12 @@ public class Client {
         @Config.Name("Powerfail Notification Timeout")
         public int powerfailNotificationTimeout;
 
+        @Config.Comment("Detrav scanner ore markers (right-click an ore in the scan) disappear after this many seconds. 0 = never.")
+        @Config.DefaultInt(120)
+        @Config.Name("Detrav Ore Marker Timeout")
+        @Config.RangeInt(min = 0, max = 3600)
+        public int detravOreMarkerTimeout;
+
         @Config.Comment("Enables or disables Trans Metal rendering, also impacts motors, pistons etc with same rendering. Accessibility option.")
         @Config.DefaultBoolean(true)
         public boolean renderTransMetalFancy;
@@ -382,7 +388,7 @@ public class Client {
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting ticBoltMolding = ENABLE;
 
-            @Config.LangKey("gtpp.recipe.category.abs_non_alloy_recipes")
+            @Config.LangKey("gt.recipe.category.abs_non_alloy_recipes")
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting absNonAlloyRecipes = ENABLE;
         }
@@ -430,15 +436,20 @@ public class Client {
         @Config.Name("Show Fluid State")
         public boolean showFluidState;
 
-        @Config.Comment("Enabled show GT++ Radioactive Text")
+        @Config.Comment("Enabled show Radioactive Text")
         @Config.DefaultBoolean(true)
-        @Config.Name("Show GT++ Radioactive Text")
+        @Config.Name("Show Radioactive Text")
         public boolean showRadioactiveText;
 
-        @Config.Comment("Enabled show GT++ Hot Ingot Text")
+        @Config.Comment("Enabled show Hot Ingot Text")
         @Config.DefaultBoolean(true)
-        @Config.Name("Show GT++ Hot Ingot Text")
+        @Config.Name("Show Hot Ingot Text")
         public boolean showHotIngotText;
+
+        @Config.Comment("Enabled show Toxic Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Toxic Text")
+        public boolean showToxicText;
 
         @Config.Comment("Enabled show GT++ Ctrl Text")
         @Config.DefaultBoolean(true)

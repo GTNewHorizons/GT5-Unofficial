@@ -32,7 +32,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -125,7 +124,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
     private long energyCapacity = 0; // Total energy storage limited by capacitors
     private long outputVoltageMax = 0; // Tesla voltage output limited by capacitors
-    private int vTier = -1; // Tesla voltage tier limited by capacitors
+    private int tier = -1; // Tesla voltage tier limited by capacitors
     private long outputCurrentMax = 0; // Tesla current output limited by capacitors
 
     private long outputCurrentLastTick;
@@ -143,13 +142,6 @@ public class MTETeslaTower extends TTMultiblockBase
     // endregion
 
     // region structure
-    private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.0"), // 1 - Classic Hatches, Capacitor
-                                                                               // Hatches or Tesla
-        // Base Casing
-        translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.1"), // 2 - ""Titanium frames""
-    };
 
     private static final IStructureDefinition<MTETeslaTower> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTETeslaTower>builder()
@@ -385,7 +377,7 @@ public class MTETeslaTower extends TTMultiblockBase
         super(aName);
     }
 
-    private float getRangeMulti(int mTier, int vTier) {
+    private float getRangeMulti(int mTier, int tier) {
         // By Default:
         // Helium and Nitrogen Plasmas will double the range
         // Radon will quadruple the range
@@ -402,7 +394,7 @@ public class MTETeslaTower extends TTMultiblockBase
         }
 
         // Over-tiered coils will add +25% range
-        if (vTier > mTier) {
+        if (tier > mTier) {
             return 1.25F * plasmaBoost;
         }
         return 1F * plasmaBoost;
@@ -466,8 +458,8 @@ public class MTETeslaTower extends TTMultiblockBase
             cap.getBaseMetaTileEntity()
                 .setActive(iGregTechTileEntity.isActive());
         }
-        checkHasMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
 
         // Only recalculate offsets on orientation or rotation change
         if (oldRotation != getExtendedFacing().ordinal() || oldOrientation != iGregTechTileEntity.getFrontFacing()) {
@@ -514,31 +506,31 @@ public class MTETeslaTower extends TTMultiblockBase
 
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = 20;
-        vTier = -1;
+        tier = -1;
         long[] capacitorData;
         for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
-            if (cap.getCapacitors()[0] > vTier) {
-                vTier = (int) cap.getCapacitors()[0];
+            if (cap.getCapacitors()[0] > tier) {
+                tier = (int) cap.getCapacitors()[0];
             }
         }
 
         energyCapacity = 0;
         outputCurrentMax = 0;
 
-        if (vTier < 0) {
+        if (tier < 0) {
             // Returning true to allow for 'passive running'
             outputVoltageMax = 0;
             return SimpleCheckRecipeResult.ofSuccess("routing");
-        } else if (vTier > mTier && getEUVar() > 0) {
+        } else if (tier > mTier && getEUVar() > 0) {
             return SimpleCheckRecipeResult.ofFailure("invalid_primary_winding");
         }
 
-        outputVoltageMax = V[vTier + 1];
+        outputVoltageMax = V[tier + 1];
         for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
             cap.getBaseMetaTileEntity()
                 .setActive(true);
             capacitorData = cap.getCapacitors();
-            if (capacitorData[0] < vTier) {
+            if (capacitorData[0] < tier) {
                 if (getEUVar() > 0 && capacitorData[0] != 0) {
                     cap.getBaseMetaTileEntity()
                         .setToFire();
@@ -573,29 +565,18 @@ public class MTETeslaTower extends TTMultiblockBase
                                                                                             // Windings need to
             // be at least the same tier as
             // the Tesla Capacitor
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .beginStructureBlock(7, 17, 7, false)
             .addController("Front bottom center")
-            .addOtherStructurePart(
-                translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"),
-                translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"),
-                1) // Capacitor Hatch: Any outer Tesla Base Casing
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Energy Hatch:
-                                                                                                 // Any outer Tesla
-                                                                                                 // Base Casing
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Maintenance
-                                                                                                      // Hatch: Any
-                                                                                                      // outer Tesla
-                                                                                                      // Base Casing
-            .addInputHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Input Hatch: Any
-                                                                                                // outer Tesla Base
-                                                                                                // Casing
-            .addOutputHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Output Hatch: Any
-                                                                                                 // outer Tesla Base
-                                                                                                 // Casing
-            .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Dynamo Hatch: Any
-                                                                                                 // outer Tesla Base
-                                                                                                 // Casing
+            .addCasing("128", "Tesla Toroid Casing", false)
+            .addCasing("17-33", "Tesla Base Casing", false)
+            .addCasing("20", "Primary Tesla Windings", true)
+            .addCasing("16", "Titanium Frame Box", false)
+            .addCasing("12", "Secondary Tesla Windings", false)
+            .addMiscHatch("1+", "Capacitor Hatch", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addInputHatch("0+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .toolTipFinisher();
         return tt;
     }
@@ -920,11 +901,6 @@ public class MTETeslaTower extends TTMultiblockBase
     }
 
     @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
-    }
-
-    @Override
     public byte getTeslaReceptionCapability() {
         return 0;
     }
@@ -951,7 +927,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
     @Override
     public int getTeslaTransmissionRange() {
-        return (int) (transferRadiusParameter.getValue() * getRangeMulti(mTier, vTier));
+        return (int) (transferRadiusParameter.getValue() * getRangeMulti(mTier, tier));
     }
 
     @Override

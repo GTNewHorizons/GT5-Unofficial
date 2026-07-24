@@ -28,6 +28,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
@@ -85,6 +86,7 @@ import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements IParametrized {
 
     private @Nullable NaniteTier[] requiredNanites;
@@ -213,11 +215,34 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         tt.addMachineType("BEC I/O Node, Input Bus, Output Bus")
             .addMarkdown(new ResourceLocation("gregtech", "bec-ionode"));
 
-        tt.beginStructureBlock();
-        tt.addAllCasingInfo();
-
-        tt.toolTipFinisher(GTAuthors.AuthorPineapple);
-
+        tt.beginStructureBlock(7, 23, 13, false)
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.controller-pos"))
+            .addCasing("94", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
+            .addCasing("88", ConflictInducementCasing.getLocalizedName(), false)
+            .addCasing("56", ElectromagneticWaveguide.getLocalizedName(), false)
+            .addCasing("0-48", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("44", FineStructureConstantManipulator.getLocalizedName(), false)
+            .addCasing("44", CondensateTransformativeCoil.getLocalizedName(), false)
+            .addCasing("32", PeaceEnforcementCasing.getLocalizedName(), false)
+            .addCasing("20", CondensateGuidanceCoil.getLocalizedName(), false)
+            .addMiscHatch(
+                "0+",
+                "Nanite Detector Hatch",
+                StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"),
+                1)
+            .addMiscHatch(
+                "0+",
+                "Teleportation Node Controller Hatch",
+                StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"),
+                1)
+            .addInputBus("0+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
+            .addMiscHatch(
+                "1",
+                "Line-of-Sight Connector Hatch",
+                StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.los-hatch-pos"),
+                2)
+            .toolTipFinisher(GTAuthors.AuthorPineapple);
         return tt;
     }
 
@@ -285,7 +310,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         logic.setAmperageOC(false);
         logic.setAvailableVoltage(GTUtility.roundUpVoltage(assembler == null ? 0 : assembler.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1);
+        logic.setAvailableAmperage(this.maxParallel);
         logic.setMaxParallel(this.maxParallel);
     }
 
@@ -746,7 +771,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     @Override
     public String generateCurrentRecipeInfoString() {
-        StringBuffer ret = new StringBuffer(GTUtility.translate("GT5U.gui.text.progress"));
+        StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
         ret.append(" ");
         ret.append(mProgresstime);
         ret.append(" / ");
@@ -789,8 +814,9 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         NBTTagCompound tag = accessor.getNBTData();
 
-        currenttip.add(GTUtility.translate("GT5U.chat.bec-processing-speed", tag.getFloat("speed")));
-        currenttip.add(GTUtility.translate("GT5U.chat.bec-slowdowns", tag.getInteger("slowdowns")));
+        currenttip
+            .add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-processing-speed", tag.getFloat("speed")));
+        currenttip.add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-slowdowns", tag.getInteger("slowdowns")));
     }
 
     @Override

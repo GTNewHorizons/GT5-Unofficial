@@ -275,7 +275,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 case 0 -> {
                     RecipeMaps.dieselFuels.addRecipe(this);
                     RecipeMaps.largeBoilerFakeFuels.getBackend()
-                        .addDieselRecipe(this);
+                        .addDieselGasRecipe(this);
                 }
                 // Gas Turbine
                 case 1 -> RecipeMaps.gasTurbineFuels.addRecipe(this);

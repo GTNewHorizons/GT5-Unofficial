@@ -348,7 +348,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
     void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {
         if (value < 0) {
             aPlayer.addChatMessage(
-                new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6") + name));
+                new ChatComponentText(StatCollector.translateToLocalFormatted("detrav.scanner.found.texts.6", name)));
         } else if (value < 1) {
             aPlayer
                 .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.0")));
@@ -368,8 +368,8 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
     void appendChatMessageByValue(List<ChatComponentText> chatMessageList, EntityPlayer aPlayer, int value,
         String name) {
         if (value < 0) {
-            chatMessageList
-                .add(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6") + name));
+            chatMessageList.add(
+                new ChatComponentText(StatCollector.translateToLocalFormatted("detrav.scanner.found.texts.6", name)));
         } else if (value < 1) {
             chatMessageList.add(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.0")));
         } else if (value < 10) chatMessageList

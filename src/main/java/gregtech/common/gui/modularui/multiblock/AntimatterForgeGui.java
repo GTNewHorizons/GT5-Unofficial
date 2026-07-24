@@ -54,8 +54,7 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
                             "gui.AntimatterForge.0.s",
-                            standardFormat.format(containedSync.getLongValue()))))
-                                .setEnabledIf(w -> multiblock.mMachine))
+                            numberFormat.format(containedSync.getLongValue())))).setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
@@ -75,8 +74,7 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
                             "gui.AntimatterForge.3.s",
-                            standardFormat.format(amChangeSync.getLongValue()))))
-                                .setEnabledIf(w -> multiblock.mMachine));
+                            numberFormat.format(amChangeSync.getLongValue())))).setEnabledIf(w -> multiblock.mMachine));
 
     }
 }

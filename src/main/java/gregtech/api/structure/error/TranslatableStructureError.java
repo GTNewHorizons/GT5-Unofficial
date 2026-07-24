@@ -5,6 +5,7 @@ import java.io.IOException;
 import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
@@ -34,6 +35,7 @@ public record TranslatableStructureError(TranslatableText message) implements St
     public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
         return message.toIKey()
             .color(TEXT_COLOR)
+            .alignment(Alignment.CenterLeft)
             .asWidget();
     }
 

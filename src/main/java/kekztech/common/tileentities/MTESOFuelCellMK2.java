@@ -23,6 +23,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -44,13 +45,12 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kekztech.common.Blocks;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -108,25 +108,28 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Turbine, SOFC")
-            .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
+        tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.machine_type"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.desc1"))
             .addInfo(
-                "Consumes up to " + formatNumber(EU_PER_TICK * 20)
-                    + "EU worth of fuel with up to 100% efficiency each second")
-            .addInfo("Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient")
-            .addInfo("Steam production requires the SOFC to heat up completely first")
-            .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Superheated Steam")
-            .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
+                StatCollector
+                    .translateToLocalFormatted("kekztech.multiblock.SOFuelCell.desc2", formatNumber(EU_PER_TICK * 20)))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK2.desc3"))
+            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK2.desc3b"))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("kekztech.multiblock.SOFuelCellMK2.desc4", EU_PER_TICK, STEAM_PER_SEC))
+            .addInfo(StatCollector.translateToLocalFormatted("kekztech.multiblock.SOFuelCell.desc5", OXYGEN_PER_SEC))
             .beginStructureBlock(3, 3, 5, false)
-            .addController("Front center")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", 12, false)
-            .addOtherStructurePart("GDC Ceramic Electrolyte Unit", "3x, Center 1x1x3")
-            .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
-            .addDynamoHatch("Back center", 2)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addInputHatch("Fuel, any Casing", 1)
-            .addInputHatch("Oxygen, any Casing", 1)
-            .addOutputHatch("Superheated Steam, any Casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("12-31", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("6", Casings.ReinforcedGlass.getLocalizedName(), false)
+            .addCasing("3", StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK2.electrolyte_unit"), false)
+            .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
         return tt;
     }
@@ -196,12 +199,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
         checkCasingMin(errors, this.mCasing, 12);
         checkHasMaintenanceHatch(errors);
-        if (mInputHatches.size() < 2) {
-            errors.add(
-                StructureErrors.of(
-                    "GT5U.gui.text.structure_error.sofc_missing_input_hatches",
-                    TranslatableText.literal(mInputHatches.size())));
-        }
+        checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
     }
 

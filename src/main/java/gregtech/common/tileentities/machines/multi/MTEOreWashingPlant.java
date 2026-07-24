@@ -58,7 +58,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -115,16 +114,16 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             .addInfo("Can be configured with a screwdriver to also be used as Simple Washer")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 9, false)
-            .addController("Front center")
-            .addCasingInfoMin("Wash Plant Casing", 70, false)
-            .addCasingInfoExactly("Steel Gear Box Casing", 7, false)
-            .addCasingInfoExactly("Steel Frame Box", 15, false)
-            .addInputBus("Any Wash Plant Casing", 1)
-            .addOutputBus("Any Wash Plant Casing", 1)
-            .addInputHatch("Any Wash Plant Casing", 1)
-            .addEnergyHatch("Any Wash Plant Casing", 1)
-            .addMaintenanceHatch("Any Wash Plant Casing", 1)
-            .addMufflerHatch("Any Wash Plant Casing", 1)
+            .addController("Front center, 2nd layer")
+            .addCasing("70-85", "Wash Plant Casing", false)
+            .addCasing("15", "Steel Frame Box", false)
+            .addCasing("7", "Steel Gear Box Casing", false)
+            .addEnergyHatch("1+", "Any wash plant casing", 1)
+            .addMaintenanceHatch("1", "Any wash plant casing", 1)
+            .addMufflerHatch("1", "Any wash plant casing", 1)
+            .addInputBus("1+", "Any wash plant casing", 1)
+            .addInputHatch("1+", "Any wash plant casing", 1)
+            .addOutputBus("1+", "Any wash plant casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "ya9yu")
             .toolTipFinisher();
         return tt;
@@ -171,12 +170,13 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             return;
         }
         checkCasingMin(errors, casingAmount, 70);
-        checkHasMufflerHatch(errors);
-        checkHasInputHatch(errors);
-        checkHasOutputBus(errors);
-        checkHasInputBus(errors);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+
         if (!errors.isEmpty()) return;
         needsWaterFill = true;
     }
@@ -213,7 +213,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
                 return RecipeMaps.oreWasherRecipes;
             }
             default -> {
-                return GTPPRecipeMaps.simpleWasherRecipes;
+                return RecipeMaps.simpleWasherRecipes;
             }
         }
     }
@@ -221,7 +221,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.oreWasherRecipes, GTPPRecipeMaps.simpleWasherRecipes);
+        return Arrays.asList(RecipeMaps.oreWasherRecipes, RecipeMaps.simpleWasherRecipes);
     }
 
     @Override

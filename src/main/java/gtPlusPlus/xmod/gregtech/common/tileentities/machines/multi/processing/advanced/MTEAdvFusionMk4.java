@@ -50,14 +50,12 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
             .addInfo("number of energy hatches * cap, you can't do it")
             .addInfo("Performs 4/4 overclocks")
             .beginStructureBlock(15, 3, 15, false)
-            .addController("See diagram when placed")
-            .addCasingInfoMin("Fusion Machine Casing MK III", 79, false)
-            .addStructureInfo("Cover the coils with casing")
-            .addOtherStructurePart("Advanced Fusion Coil", "Center part of the ring")
-            .addEnergyHatch("1-16, Specified Casing", 2)
-            .addInputHatch("2-16, Specified Casing", 1)
-            .addOutputHatch("1-16, Specified Casing", 3)
-            .addStructureInfo("ALL Hatches must be UHV or better")
+            .addController("Middle center, 2nd layer")
+            .addCasing("79-123", "Fusion Machine Casing Mk-III", false)
+            .addCasing("32", "Advanced Fusion Coil", false)
+            .addEnergyHatch("1-16", "Specific middle casings on each curve (UHV+)", 2)
+            .addInputHatch("1+", "Specific top or bottom casings on each side", 1)
+            .addOutputHatch("1+", "Specific middle casings on each side", 3)
             .toolTipFinisher();
         return tt;
     }

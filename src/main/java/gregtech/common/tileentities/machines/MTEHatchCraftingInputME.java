@@ -456,7 +456,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
     private final List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
-    private final List<IHatchWatcher> watchers = new ArrayList<>();
 
     // holds all internal inventories
     @SuppressWarnings("unchecked") // Java doesn't allow to create an array of a generic type.
@@ -643,9 +642,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             gridProxy = new AENetworkProxy(this, "proxy", ItemList.Hatch_CraftingInput_Bus_ME.get(1), true);
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
             updateValidGridProxySides();
-            if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
-                getBaseMetaTileEntity().getWorld()
-                    .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
         }
 
         return this.gridProxy;
@@ -840,7 +836,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         disablePatternOptimization = aNBT.getBoolean("disablePatternOptimization");
         if (aNBT.hasKey("showPattern")) showPattern = aNBT.getBoolean("showPattern");
 
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
         // Sync inventories to ensure that the real inventory matches what AE2 is seeing.
@@ -1440,5 +1436,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                 && super.isItemValidForSlot(index, itemStack);
         }
         return super.isItemValidForSlot(index, itemStack);
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 1;
     }
 }

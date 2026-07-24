@@ -18,7 +18,7 @@ detrav.scanner.found.texts.2= §7少量(10-29)§r.
 detrav.scanner.found.texts.3= §2中等(30-59)§r.
 detrav.scanner.found.texts.4= §e较多(60-99)§r.
 detrav.scanner.found.texts.5= §d极多(100+)§r.
-detrav.scanner.found.texts.6=发现
+detrav.scanner.found.texts.6=发现%s
 
 # Don't translate "%badluck"
 detrav.scanner.success=全部区块勘探成功!
@@ -40,6 +40,11 @@ tooltip.detrav.scanner.distance.1=中等距离(3-5), 长距离(6-8), 很远(9+)
 gui.detrav.scanner.pollution=污染
 gui.detrav.scanner.unknown_fluid=未知流体!
 
-gui.detrav.scanner.tooltip.fluid_name=流体名：
-gui.detrav.scanner.tooltip.fluid_amount=流体储量：
+gui.detrav.scanner.tooltip.fluid_name=流体名：%s
+gui.detrav.scanner.tooltip.fluid_amount=流体储量：%s L
 gui.detrav.scanner.tooltip.no_fluid=空
+gui.detrav.scanner.tooltip.ore_pos=X: %d, Z: %d
+gui.detrav.scanner.tooltip.ore_depth=Y: %d
+gui.detrav.scanner.tooltip.mark_hint=右键标记
+gui.detrav.scanner.search.hint=搜索...
+gui.detrav.scanner.hint.invert=双击反转背景

@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -75,6 +76,14 @@ public class BlockGodforgeGlass extends Block {
     @Override
     public int getRenderType() {
         return renderID;
+    }
+
+    @Override
+    public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side) {
+        ForgeDirection dir = ForgeDirection.values()[side];
+        return shouldSideBeRendered(worldIn, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, side)
+            ? super.getIcon(worldIn, x, y, z, side)
+            : null;
     }
 
     @Override

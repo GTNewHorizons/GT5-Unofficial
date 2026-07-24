@@ -33,10 +33,10 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.recipe.RecipeCategories;
@@ -123,16 +123,18 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(fluidSolidifierRecipes);
         }
 
-        GTModHandler.addCraftingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 2L),
-            BITS_STD,
-            new Object[] { "hX", 'X', OrePrefixes.plate.get(aMaterial) });
-
-        if (aMaterial == Materials.Paper) {
+        if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
-                GTUtility.copyAmount(2, aStack),
-                BUFFERED,
-                new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
+                GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 2L),
+                BITS_STD,
+                new Object[] { "hX", 'X', OrePrefixes.plate.get(aMaterial) });
+
+            if (aMaterial == Materials.Paper) {
+                GTModHandler.addCraftingRecipe(
+                    GTUtility.copyAmount(2, aStack),
+                    BUFFERED,
+                    new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
+            }
         }
 
         if (aMaterial.mUnifiable && aMaterial.mMaterialInto == aMaterial) {
@@ -558,7 +560,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             tStack == NI ?
             // Use Materials mRGBa dyed blocs/materialicons/MATERIALSET/block1 icons
                 TextureFactory.builder()
-                    .addIcon(aMaterial.mIconSet.mTextures[TextureSet.INDEX_block1])
+                    .addIcon(aMaterial.mIconSet.mTextures[MaterialIconRegistry.IconType.BLOCK1.ordinal()])
                     .setRGBA(aMaterial.mRGBa)
                     .stdOrient()
                     .build()

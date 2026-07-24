@@ -1,8 +1,6 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Optional;
 import java.util.UUID;
 
 import net.minecraft.item.ItemStack;
@@ -13,6 +11,8 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+
+import com.cleanroommc.modularui.network.NetworkUtils;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
@@ -30,18 +30,18 @@ public class DroneConnection {
     private final ChunkCoordinates centreCoord;
     private final int centreWorld;
     private final int machineWorld;
+    private final int machineFacing;
 
     private String customName;
     private boolean machineStatus;
     private String shutdownReason;
     private boolean isSelected;
-    private int group;
+    private long groupMask;
 
     private final MTEMultiBlockBase cachedCentre;
     private final MTEMultiBlockBase cachedMachine;
 
-    public DroneConnection(MTEMultiBlockBase machine, MTEDroneCentre centre, HashMap<String, String> tempNameList,
-        HashMap<String, Integer> tempGroupList) {
+    public DroneConnection(MTEMultiBlockBase machine, MTEDroneCentre centre) {
         this.machineItem = machine.getStackForm(1);
         this.machineCoord = machine.getBaseMetaTileEntity()
             .getCoords();
@@ -53,12 +53,13 @@ public class DroneConnection {
             .getWorld().provider.dimensionId;
         this.machineWorld = machine.getBaseMetaTileEntity()
             .getWorld().provider.dimensionId;
+        this.machineFacing = machine.getBaseMetaTileEntity()
+            .getFrontFacing()
+            .ordinal();
         this.uuid = UUID.nameUUIDFromBytes((machineCoord.toString() + machineWorld).getBytes());
         this.unlocalizedName = machine.mName;
-        this.customName = Optional.ofNullable(tempNameList.remove(uuid.toString()))
-            .orElse(machine.getLocalName());
-        this.group = Optional.ofNullable(tempGroupList.remove(uuid.toString()))
-            .orElse(0);
+        this.customName = centre.getConnectionName(uuid, machine.getLocalName());
+        this.groupMask = centre.getConnectionGroups(uuid);
         this.machineStatus = machine.isAllowedToWork();
         this.shutdownReason = machine.getBaseMetaTileEntity()
             .getLastShutDownReason()
@@ -70,6 +71,7 @@ public class DroneConnection {
         NBTTagCompound centreTag = aNBT.getCompoundTag("centre");
         this.centreWorld = aNBT.getInteger("centreWorld");
         this.machineWorld = aNBT.getInteger("machineWorld");
+        this.machineFacing = aNBT.getInteger("machineFacing");
         machineItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("item"));
         machineCoord = new ChunkCoordinates(
             machineTag.getInteger("x"),
@@ -85,9 +87,14 @@ public class DroneConnection {
         this.machineStatus = aNBT.getBoolean("machineStatus");
         this.shutdownReason = aNBT.getString("shutdownReason");
         this.isSelected = aNBT.getBoolean("isSelected");
-        this.group = aNBT.getInteger("group");
-        this.cachedCentre = getLoadedGTBaseMachineAt(centreCoord, DimensionManager.getWorld(centreWorld), false);
-        this.cachedMachine = getLoadedGTBaseMachineAt(machineCoord, DimensionManager.getWorld(machineWorld), false);
+        this.groupMask = aNBT.getLong("groupMask");
+        if (!NetworkUtils.isClient()) {
+            this.cachedCentre = getLoadedGTBaseMachineAt(centreCoord, DimensionManager.getWorld(centreWorld), false);
+            this.cachedMachine = getLoadedGTBaseMachineAt(machineCoord, DimensionManager.getWorld(machineWorld), false);
+        } else {
+            this.cachedCentre = null;
+            this.cachedMachine = null;
+        }
     }
 
     public MTEMultiBlockBase getLinkedMachine() {
@@ -124,6 +131,9 @@ public class DroneConnection {
 
     public void setCustomName(String name) {
         customName = name;
+        if (cachedCentre instanceof MTEDroneCentre dc) {
+            dc.setConnectionName(uuid, name);
+        }
     }
 
     public boolean isMachineShutdown() {
@@ -141,13 +151,14 @@ public class DroneConnection {
         aNBT.setTag("item", machineItem.writeToNBT(new NBTTagCompound()));
         aNBT.setInteger("centreWorld", centreWorld);
         aNBT.setInteger("machineWorld", machineWorld);
+        aNBT.setInteger("machineFacing", machineFacing);
         aNBT.setString("name", getCustomName());
         aNBT.setString("unlocalizedName", unlocalizedName);
         aNBT.setString("uuid", this.uuid.toString());
         aNBT.setBoolean("machineStatus", machineStatus);
         aNBT.setString("shutdownReason", shutdownReason);
         aNBT.setBoolean("isSelected", isSelected);
-        aNBT.setInteger("group", group);
+        aNBT.setLong("groupMask", groupMask);
         return aNBT;
     }
 
@@ -189,7 +200,7 @@ public class DroneConnection {
         return a.customName.equals(b.customName) && a.isSelected == b.isSelected
             && a.machineStatus == b.machineStatus
             && a.shutdownReason.equals(b.shutdownReason)
-            && a.group == b.group;
+            && a.groupMask == b.groupMask;
     }
 
     public boolean isActive() {
@@ -208,15 +219,22 @@ public class DroneConnection {
         return isSelected;
     }
 
-    public int getGroup() {
-        return group;
+    public long getGroupMask() {
+        return groupMask;
     }
 
-    public void setGroup(int group) {
-        this.group = group;
+    public void setGroupMask(long groupMask) {
+        this.groupMask = groupMask;
+        if (cachedCentre instanceof MTEDroneCentre dc) {
+            dc.setConnectionGroups(uuid, groupMask);
+        }
     }
 
     public int getMachineWorld() {
         return machineWorld;
+    }
+
+    public int getMachineFacing() {
+        return machineFacing;
     }
 }

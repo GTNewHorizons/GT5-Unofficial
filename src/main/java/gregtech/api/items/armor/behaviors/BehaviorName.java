@@ -3,8 +3,6 @@ package gregtech.api.items.armor.behaviors;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTUtility;
-
 /// Represents a category of [IArmorBehavior]. Primarily used to check behavior equality and presence. Behaviors have a
 /// separate set of rarities from augments because they're completely decoupled from augments. Any part can provide a
 /// behavior, so they need to have their own rarities defined.
@@ -53,6 +51,6 @@ public enum BehaviorName {
     }
 
     public String getDisplayName() {
-        return "§s" + rarity.rarityColor + GTUtility.translate("GT5U.armor.behavior." + name()) + "§t";
+        return "§s" + rarity.rarityColor + StatCollector.translateToLocal("GT5U.armor.behavior." + name()) + "§t";
     }
 }
