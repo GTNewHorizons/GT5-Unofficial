@@ -91,7 +91,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addInfo(EnumChatFormatting.GREEN + "It'sa mill!")
-            .beginStructureBlock(7, 3, 3, false)
+            .beginStructureBlock(3, 3, 7, false)
             .addController("Front center, 2nd layer")
             .addCasing("40-43", "IsaMill Exterior Casing", false)
             .addCasing("8", "IsaMill Piping", false)

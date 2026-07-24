@@ -84,7 +84,7 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
         tt.addMachineType("Bending Machine, IBM")
             .addBulkMachineInfo(6, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 6, 3, false)
+            .beginStructureBlock(6, 3, 3, false)
             .addController("Front left, 2nd layer")
             .addCasing("4-15", "Metalworking Machine Casing", false)
             .addCasing("9", "Forming Core", false)

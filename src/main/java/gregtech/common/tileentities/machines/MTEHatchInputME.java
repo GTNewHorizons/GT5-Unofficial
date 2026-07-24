@@ -387,6 +387,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             // Outside of processing a recipe, we need to extract everything manually
             Slot slot = getMatchingSlot(fluid, false);
             if (slot == null) return null;
+            // AE can't use 0 for exist check, just assume exist
+            // Other hatch also don't have existence check
+            if (amount == 0) return new FluidStack(fluid, 0);
 
             IAEFluidStack request = AEFluidStack.create(fluid);
             request.setStackSize(amount);

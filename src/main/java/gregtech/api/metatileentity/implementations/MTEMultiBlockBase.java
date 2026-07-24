@@ -251,6 +251,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected List<MTEHatch> mExoticEnergyHatches = new ArrayList<>();
     protected List<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
     protected List<MTEHatch> mCryotheumHatches = new ArrayList<>();
+    protected List<MTEHatch> mPyrotheumHatches = new ArrayList<>();
 
     protected final List<MTEHatchInputBeamline> mBeamlineInputHatches = new ArrayList<>();
     protected final List<MTEHatchOutputBeamline> mBeamlineOutputHatches = new ArrayList<>();
@@ -549,6 +550,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         mSmartInputHatches.clear();
         mCryotheumHatches.clear();
+        mPyrotheumHatches.clear();
         mBeamlineInputHatches.clear();
         mBeamlineOutputHatches.clear();
         mFocusInputBuses.clear();
@@ -2287,6 +2289,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return false;
     }
 
+    public boolean addPyrotheumHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchCustomFluidBase mteHatchPyrotheum
+            && mteHatchPyrotheum.mLockedFluid == TFFluids.fluidPyrotheum) {
+            mteHatchPyrotheum.updateTexture(aBaseCasingIndex);
+            mteHatchPyrotheum.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mPyrotheumHatches.add(mteHatchPyrotheum);
+        }
+        return false;
+    }
+
     public boolean addBeamlineInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
@@ -2527,7 +2542,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         if (recipesDone > 0) {
-            info.add(StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone", formatNumber(recipesDone)));
+            info.add(
+                StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)));
         }
 
         info.add(StatCollector.translateToLocalFormatted(timeKey, timeValue));
@@ -2867,6 +2883,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public List<MTEHatch> getCryotheumHatches() {
         return mCryotheumHatches;
+    }
+
+    public List<MTEHatch> getPyrotheumHatches() {
+        return mPyrotheumHatches;
     }
 
     public List<MTEHatchInputBeamline> getBeamlineInputHatches() {

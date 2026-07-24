@@ -250,7 +250,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
             .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.throttle1"))
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.multiblock.ExtremeHeatExchanger.throttle2", getFluidUnit()))
-            .beginStructureBlock(11, 5, 6, false)
+            .beginStructureBlock(5, 6, 11, false)
             .addController("Front bottom center")
             .addCasing("25-120", "Robust Tungstensteel Machine Casing", false)
             .addCasing("72", "EV+ Tiered Glass", false)
@@ -335,9 +335,11 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
                 }
                 addOutput(new FluidStack(tReadySteam, steamToOutput));
             } else {
-                GTLog.writeExplosionLog(this, "had no more distilled water!");
-                mHotFluidHatch.getBaseMetaTileEntity()
-                    .doExplosion(V[8]);
+                IGregTechTileEntity hotFluidHatchBMTE = mHotFluidHatch.getBaseMetaTileEntity();
+                if (hotFluidHatchBMTE != null) {
+                    GTLog.writeExplosionLog(this, "had no more distilled water!");
+                    hotFluidHatchBMTE.doExplosion(V[8]);
+                }
                 return false;
             }
         }
