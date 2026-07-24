@@ -4,6 +4,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
 
@@ -52,6 +54,13 @@ public interface IGTRegisteredFluid {
      */
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
     IGTRegisteredFluid configureMaterials(final Materials material);
+
+    /// Configures a MaterialLib [Material]'s fluids from this fluid's state, the [Material]-typed twin of
+    /// [#configureMaterials(Materials)]. Records the fluid into `MU`'s slot store (so
+    /// `MU.fluid`/`gas`/`molten`/`solid`/`plasma` resolve it post-loader) and the `Fluid`->`Material` twin map,
+    /// and mirrors the legacy facade field write onto the material's [Materials] counterpart when it has one.
+    @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
+    IGTRegisteredFluid configureMaterials(final Material material);
 
     IGTRegisteredFluid addLocalizedName();
 
