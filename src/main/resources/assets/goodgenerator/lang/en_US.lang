@@ -392,6 +392,9 @@ gg.recipe.neutron_activator=Neutron Activator
 gg.recipe.extreme_heat_exchanger=Extreme Heat Exchanger
 gg.recipe.precise_assembler=Precise Assembler
 gg.recipe.componentassemblyline=Component Assembly Line
+gg.recipe.antimatter_forge=Semi-Stable Antimatter Stabilization Sequencer
+gg.recipe.antimatter_forge.info.0=Protomatter -> Antimatter (1:1)
+gg.recipe.antimatter_forge.info.1=1s cycle, base draw 10e9 EU/t
 
 #NEI Info
 value.naquadah_reactor=Basic Output Voltage: %s EU/t

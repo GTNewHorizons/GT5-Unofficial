@@ -48,6 +48,17 @@ public class GoodGeneratorRecipeMaps {
                 formatNumber(maxNKE) + StatCollector.translateToLocal("value.neutron_activator.2"));
         })
         .build();
+    public static final RecipeMap<RecipeMapBackend> antimatterForgeRecipes = RecipeMapBuilder
+        .of("gg.recipe.antimatter_forge")
+        .maxIO(0, 0, 1, 1)
+        .minInputs(0, 1)
+        .dontUseProgressBar()
+        .neiRecipeBackgroundSize(170, 75)
+        .neiSpecialInfoFormatter(recipeInfo -> Arrays.asList(
+            StatCollector.translateToLocal("gg.recipe.antimatter_forge.info.0"),
+            StatCollector.translateToLocal("gg.recipe.antimatter_forge.info.1")))
+        .neiRecipeBackgroundSize(170, 100)
+        .build();
     public static final RecipeMap<ExtremeHeatExchangerBackend> extremeHeatExchangerFuels = RecipeMapBuilder
         .of("gg.recipe.extreme_heat_exchanger", ExtremeHeatExchangerBackend::new)
         .maxIO(0, 0, 2, 3)
