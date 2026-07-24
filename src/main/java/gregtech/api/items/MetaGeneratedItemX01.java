@@ -60,7 +60,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
         for (int i = 0; i < 1000; i++) {
             OrePrefixes tPrefix = mPrefix;
             if (tPrefix == null) continue;
-            Materials tMaterial = generatedMaterial(i);
+            Material tMaterial = generatedMaterial(i);
             if (tMaterial == null) continue;
             if (mPrefix.doGenerateItem(tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
@@ -70,7 +70,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
                         : getDefaultLocalization(tPrefix, tMaterial, i));
                 GTLanguageManager.addStringLocalization(
                     getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / M));
+                    MU.chemicalTooltip(tMaterial, tPrefix.getMaterialAmount() / M, false));
                 String tOreName = getOreDictString(tPrefix, tMaterial);
                 tPrefix = OrePrefixes.getOrePrefix(tOreName);
                 if (tPrefix != null && tPrefix.isUnifiable()) {
@@ -90,7 +90,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
      * @param aMetaData a Index from [0 - 31999]
      * @return the Localized Name when default LangFiles are used.
      */
-    public String getDefaultLocalization(OrePrefixes aPrefix, Materials aMaterial, int aMetaData) {
+    public String getDefaultLocalization(OrePrefixes aPrefix, Material aMaterial, int aMetaData) {
         return aPrefix.getDefaultLocalNameForItem(aMaterial);
     }
 
@@ -100,8 +100,8 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
      * @param aMetaData a Index from [0 - 31999]
      * @return the Localized Name Format when default LangFiles are used.
      */
-    public String getDefaultLocalizationFormat(OrePrefixes aPrefix, Materials aMaterial, int aMetaData) {
-        return aPrefix.getDefaultLocalNameFormatForItem(aMaterial.getInternalName());
+    public String getDefaultLocalizationFormat(OrePrefixes aPrefix, Material aMaterial, int aMetaData) {
+        return aPrefix.getDefaultLocalNameFormatForItem(MU.internalName(aMaterial));
     }
 
     /**
@@ -111,19 +111,19 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
      *                        Dusts or Crushed Ores as well.
      * @return if this Item should be visible in NEI or Creative
      */
-    public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
+    public boolean doesShowInCreative(OrePrefixes aPrefix, Material aMaterial, boolean aDoShowAllItems) {
         return true;
     }
 
     /**
      * @return the name of the Item to be registered at the OreDict.
      */
-    public String getOreDictString(OrePrefixes prefix, Materials material) {
+    public String getOreDictString(OrePrefixes prefix, Material material) {
         return prefix.oreDictName(material);
     }
 
-    public IIconContainer getIconContainer(int aMetaData, Materials aMaterial) {
-        return aMaterial.mIconSet.mTextures[mIconSetIndex];
+    public IIconContainer getIconContainer(int aMetaData, Material aMaterial) {
+        return MU.iconSet(aMaterial).mTextures[mIconSetIndex];
     }
 
     /* ---------- INTERNAL OVERRIDES ---------- */
@@ -133,7 +133,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
         String aName = super.getItemStackDisplayName(aStack);
         int aDamage = aStack.getItemDamage();
         if (isMaterialItem(aDamage)) {
-            Materials aMaterial = generatedMaterial(aDamage % 1000);
+            Materials aMaterial = getMaterial(aDamage);
             if (aMaterial != null) return aMaterial.getLocalizedNameForItem(aName);
         }
         return aName;
@@ -157,7 +157,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
 
     @Override
     public final IIconContainer getIconContainer(int aMetaData) {
-        Materials aMaterial = generatedMaterial(aMetaData);
+        Material aMaterial = generatedMaterial(aMetaData);
         return aMaterial != null ? getIconContainer(aMetaData, aMaterial) : null;
     }
 
@@ -165,7 +165,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
     @SideOnly(Side.CLIENT)
     public final void getSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (int i = 0; i < 1000; i++) {
-            Materials tMaterial = generatedMaterial(i);
+            Material tMaterial = generatedMaterial(i);
             if (mPrefix.doGenerateItem(tMaterial)
                 && doesShowInCreative(mPrefix, tMaterial, GregTechAPI.sDoShowAllItemsInCreative)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
@@ -180,7 +180,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
     public final IIcon getIconFromDamage(int aMetaData) {
         if (aMetaData < 0) return null;
         if (aMetaData < 1000) {
-            Materials tMaterial = generatedMaterial(aMetaData);
+            Material tMaterial = generatedMaterial(aMetaData);
             if (tMaterial == null) return null;
             IIconContainer tIcon = getIconContainer(aMetaData, tMaterial);
             if (tIcon != null) return tIcon.getIcon();

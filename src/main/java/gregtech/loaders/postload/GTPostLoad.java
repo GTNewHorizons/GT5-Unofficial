@@ -493,7 +493,7 @@ public class GTPostLoad {
         for (Materials material : Materials.getAll()) {
             for (OrePrefixes prefix : washablePrefixes) {
                 ItemStack input = GTOreDictUnificator.get(prefix, material, 1);
-                ItemStack output = MetaGeneratedItem01.getCauldronWashingResult(prefix, material, 1);
+                ItemStack output = MetaGeneratedItem01.getCauldronWashingResult(prefix, MU.material(material), 1);
 
                 if (input == null || output == null) {
                     continue;

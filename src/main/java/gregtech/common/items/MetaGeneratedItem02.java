@@ -195,6 +195,7 @@ import net.minecraft.potion.Potion;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
@@ -2875,7 +2876,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     }
 
     @Override
-    public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
+    public boolean doesShowInCreative(OrePrefixes aPrefix, Material aMaterial, boolean aDoShowAllItems) {
         return (aDoShowAllItems) || (!aPrefix.getName()
             .startsWith("toolHead"));
     }

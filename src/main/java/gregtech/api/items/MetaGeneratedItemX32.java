@@ -81,12 +81,13 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
             OrePrefixes tPrefix = mGeneratedPrefixList[i / 1000];
             if (tPrefix == null) continue;
             if (tPrefix == OrePrefixes.___placeholder___) continue;
-            Materials tMaterial = generatedMaterial(i % 1000);
+            Material tMaterial = generatedMaterial(i % 1000);
             if (tMaterial == null) continue;
             if (!DUMP_MODE && MU.isCutOver(tPrefix, tMaterial)) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 if (DUMP_MODE) {
-                    DUMP_VARIANTS.add(new LegacyVariant(aUnlocalized, tPrefix.getName(), tMaterial.mName, i));
+                    DUMP_VARIANTS
+                        .add(new LegacyVariant(aUnlocalized, tPrefix.getName(), MU.internalName(tMaterial), i));
                 }
                 ItemStack tStack = new ItemStack(this, 1, i);
                 if (tPrefix.isUnifiable()) {
@@ -95,8 +96,8 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
                     GTOreDictUnificator.registerOre(tPrefix.oreDictName(tMaterial), tStack);
                 }
                 if ((tPrefix == OrePrefixes.stick || tPrefix == OrePrefixes.wireFine || tPrefix == OrePrefixes.ingot)
-                    && (tMaterial == Materials.Lead || tMaterial == Materials.Tin
-                        || tMaterial == Materials.SolderingAlloy)) {
+                    && (tMaterial == Materials2Materials.Lead || tMaterial == Materials2Materials.Tin
+                        || tMaterial == Materials2Materials.SolderingAlloy)) {
                     GregTechAPI.sSolderingMetalList.add(tStack);
                     GTModHandler.registerBoxableItemToToolBox(tStack);
                 }
@@ -124,7 +125,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
      * @param aMaterial this can be null, you have to return false in that case
      * @return if this Item should be generated and visible.
      */
-    public boolean doesMaterialAllowGeneration(OrePrefixes aPrefix, Materials aMaterial) {
+    public boolean doesMaterialAllowGeneration(OrePrefixes aPrefix, Material aMaterial) {
         // You have to check for at least these Conditions in every Case! So add a super Call like the following for
         // this before executing your Code:
         // if (!super.doesMaterialAllowGeneration(aPrefix, aMaterial)) return false;
@@ -137,10 +138,10 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
      * @param aMaterial the Material
      * @return an Icon Container for the Item Display.
      */
-    public final IIconContainer getIconContainer(int aMetaData, Materials aMaterial) {
+    public final IIconContainer getIconContainer(int aMetaData, Material aMaterial) {
         final OrePrefixes prefixes = getOrePrefix(aMetaData);
         return prefixes != null && prefixes.getTextureIndex() >= 0
-            ? aMaterial.mIconSet.mTextures[prefixes.getTextureIndex()]
+            ? MU.iconSet(aMaterial).mTextures[prefixes.getTextureIndex()]
             : null;
     }
 
@@ -151,7 +152,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
      *                        Dusts or Crushed Ores as well.
      * @return if this Item should be visible in NEI or Creative
      */
-    public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
+    public boolean doesShowInCreative(OrePrefixes aPrefix, Material aMaterial, boolean aDoShowAllItems) {
         return true;
     }
 
@@ -182,8 +183,8 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     @Override
     public final IIconContainer getIconContainer(int aMetaData) {
         if (!isMaterialItem(aMetaData)) return null;
-        final Materials materials = getMaterial(aMetaData);
-        return materials == null ? null : getIconContainer(aMetaData, materials);
+        final Material material = generatedMaterial(aMetaData % 1000);
+        return material == null ? null : getIconContainer(aMetaData, material);
     }
 
     @Override
@@ -198,7 +199,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     public final void getSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (int i = 0; i < 32000; i++) {
             OrePrefixes aPrefix = getOrePrefix(i);
-            Materials aMaterial = getMaterial(i);
+            Material aMaterial = generatedMaterial(i % 1000);
             if (aPrefix != null && aMaterial != null && !MU.isCutOver(aPrefix, aMaterial)) {
                 if (doesMaterialAllowGeneration(aPrefix, aMaterial)
                     && doesShowInCreative(aPrefix, aMaterial, GregTechAPI.sDoShowAllItemsInCreative)) {
@@ -215,7 +216,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     public final IIcon getIconFromDamage(int aMetaData) {
         if (aMetaData < 0) return null;
         if (aMetaData < 32000) {
-            Materials tMaterial = getMaterial(aMetaData);
+            Material tMaterial = generatedMaterial(aMetaData % 1000);
             if (tMaterial == null) return null;
             IIconContainer tIcon = getIconContainer(aMetaData, tMaterial);
             if (tIcon != null) return tIcon.getIcon();

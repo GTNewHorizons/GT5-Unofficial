@@ -484,6 +484,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -3941,19 +3942,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         craftingShapelessRecipes();
     }
 
-    private static final Map<Materials, Material> cauldronRemap = new HashMap<>();
+    private static final Map<Material, Material> cauldronRemap = new HashMap<>();
 
-    /// Registers `out` as the cauldron-washing replacement dust for `in`'s `dustImpure`/`dustPure` items, held
-    /// as a MaterialLib [Material] so a replacement without a legacy [Materials] counterpart (e.g. a
-    /// reconstructed werkstoff) still survives -- converts through [MU#material], a no-op when `out` has none.
-    public static void registerCauldronCleaningFor(Materials in, Materials out) {
-        Material material = MU.material(out);
-        if (material != null) cauldronRemap.put(in, material);
-    }
-
-    /// [#registerCauldronCleaningFor(Materials, Materials)] for a replacement material held as its MaterialLib
-    /// counterpart directly, e.g. a reconstructed werkstoff's bridge material.
-    public static void registerCauldronCleaningFor(Materials in, Material out) {
+    /// Registers `out` as the cauldron-washing replacement dust for `in`'s `dustImpure`/`dustPure` items.
+    public static void registerCauldronCleaningFor(Material in, Material out) {
         cauldronRemap.put(in, out);
     }
 
@@ -3977,7 +3969,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                         aItemEntity.setEntityItemStack(
                             GTOreDictUnificator.get(
                                 OrePrefixes.dust,
-                                cauldronRemap.getOrDefault(MU.materialOf(aMaterial), aMaterial),
+                                cauldronRemap.getOrDefault(aMaterial, aMaterial),
                                 aItemEntity.getEntityItem().stackSize));
                         aItemEntity.delayBeforeCanPickup = 0;
                         cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
@@ -4022,7 +4014,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             final int damage = oldItemStack.getItemDamage();
 
             if (isMaterialItem(damage)) {
-                final Materials oldMaterial = MU.materialOf(MU.byId(damage % 1000));
+                final Material oldMaterial = MU.byId(damage % 1000);
                 final OrePrefixes oldPrefix = this.mGeneratedPrefixList[(damage / 1000)];
                 final ItemStack newItemStack = getCauldronWashingResult(oldPrefix, oldMaterial, oldItemStack.stackSize);
 
@@ -4045,39 +4037,25 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
      * @param stackSize   The stack size to be returned
      * @return the new ItemStack after washing, or null if the material/prefix was invalid
      */
-    public static ItemStack getCauldronWashingResult(final OrePrefixes oldPrefix, final Materials oldMaterial,
+    public static ItemStack getCauldronWashingResult(final OrePrefixes oldPrefix, final Material oldMaterial,
         final int stackSize) {
-        if ((oldMaterial != null) && (oldMaterial != Materials.Empty) && (oldMaterial != Materials._NULL)) {
+        if ((oldMaterial != null) && (oldMaterial != Materials2Materials.Empty)
+            && (oldMaterial != Materials2Materials.NULL)) {
             switch (oldPrefix.getName()) {
                 case "dustImpure":
                 case "dustPure":
-                    return GTOreDictUnificator.get(
-                        OrePrefixes.dust,
-                        cauldronRemap.getOrDefault(oldMaterial, MU.material(oldMaterial)),
-                        stackSize);
+                    return GTOreDictUnificator
+                        .get(OrePrefixes.dust, cauldronRemap.getOrDefault(oldMaterial, oldMaterial), stackSize);
                 case "crushed":
                     return GTOreDictUnificator.get(OrePrefixes.crushedPurified, oldMaterial, stackSize);
                 case "dust":
-                    if (oldMaterial == Materials.Wheat) {
+                    if (oldMaterial == Materials2Materials.Wheat) {
                         return ItemList.Food_Dough.get(stackSize);
                     }
             }
         }
 
         return null;
-    }
-
-    /// [#getCauldronWashingResult(OrePrefixes, Materials, int)] for a MaterialLib material with no legacy
-    /// [Materials] counterpart. The remap table and the `dust` (Wheat) case key on legacy constants, which
-    /// such a material can never match, so both collapse to plain per-prefix lookups.
-    public static ItemStack getCauldronWashingResult(final OrePrefixes oldPrefix, final Material oldMaterial,
-        final int stackSize) {
-        if (oldMaterial == null) return null;
-        return switch (oldPrefix.getName()) {
-            case "dustImpure", "dustPure" -> GTOreDictUnificator.get(OrePrefixes.dust, oldMaterial, stackSize);
-            case "crushed" -> GTOreDictUnificator.get(OrePrefixes.crushedPurified, oldMaterial, stackSize);
-            default -> null;
-        };
     }
 
     /**
@@ -4116,17 +4094,19 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         }
     }
 
-    public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Materials aMaterial) {
+    public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Material aMaterial) {
         // Materials has a plasma fluid
-        if (aPrefix == OrePrefixes.cellPlasma && aMaterial.getPlasma(1L) != null) {
-            if (aMaterial.hasPlasma()) return true;
+        FluidStack plasma = MU.plasma(aMaterial, 1L);
+        if (aPrefix == OrePrefixes.cellPlasma && plasma != null) {
+            Materials legacy = MU.materialOf(aMaterial);
+            if (legacy != null && legacy.hasPlasma()) return true;
             // Loop through fusion recipes
             for (GTRecipe recipe : RecipeMaps.fusionRecipes.getAllRecipes()) {
                 // Make sure fluid output can't be null (not sure if possible)
                 if (recipe.getFluidOutput(0) != null) {
                     // Fusion recipe output matches current plasma cell fluid
                     if (recipe.getFluidOutput(0)
-                        .isFluidEqual(aMaterial.getPlasma(1L))) return true;
+                        .isFluidEqual(plasma)) return true;
                 }
             }
         }
@@ -4134,9 +4114,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     @Override
-    public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
-        return (aDoShowAllItems) || (((aPrefix != OrePrefixes.gem) || (!aMaterial.mName.startsWith("Infused")))
-            && (aPrefix != OrePrefixes.dustTiny)
+    public boolean doesShowInCreative(OrePrefixes aPrefix, Material aMaterial, boolean aDoShowAllItems) {
+        return (aDoShowAllItems) || (((aPrefix != OrePrefixes.gem) || (!MU.internalName(aMaterial)
+            .startsWith("Infused"))) && (aPrefix != OrePrefixes.dustTiny)
             && (aPrefix != OrePrefixes.dustSmall)
             && (aPrefix != OrePrefixes.dustImpure)
             && (aPrefix != OrePrefixes.dustPure)
