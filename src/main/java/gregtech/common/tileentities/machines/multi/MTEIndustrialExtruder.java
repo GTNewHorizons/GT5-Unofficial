@@ -220,12 +220,17 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         return true;
     }
 
-    private enum ExtruderHatchElement implements IHatchElement<MTEIndustrialExtruder> {
+    /**
+     * Can implement {@literal IHatchElement<MTEIndustrialExtruder>} & be private after the removal of
+     * {@link gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialExtruderLegacy}.
+     * Ugly until the big pretty cleanup :)
+     */
+    public enum ExtruderHatchElement implements IHatchElement<MTEMultiBlockBase> {
 
         ExtrusionBus("GT5U.MBTT.ExtrusionBus", MTEMultiBlockBase::addInputBusToMachineList, MTEHatchExtrusion.class) {
 
             @Override
-            public long count(MTEIndustrialExtruder t) {
+            public long count(MTEMultiBlockBase t) {
                 return t.mInputBusses.stream()
                     .filter(it -> it instanceof MTEHatchExtrusion)
                     .count();
@@ -234,10 +239,10 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
 
         private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGTHatchAdder<MTEIndustrialExtruder> adder;
+        private final IGTHatchAdder<MTEMultiBlockBase> adder;
 
         @SafeVarargs
-        ExtruderHatchElement(String name, IGTHatchAdder<MTEIndustrialExtruder> adder,
+        ExtruderHatchElement(String name, IGTHatchAdder<MTEMultiBlockBase> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
             this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
@@ -250,7 +255,7 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         }
 
         @Override
-        public IGTHatchAdder<? super MTEIndustrialExtruder> adder() {
+        public IGTHatchAdder<? super MTEMultiBlockBase> adder() {
             return adder;
         }
 

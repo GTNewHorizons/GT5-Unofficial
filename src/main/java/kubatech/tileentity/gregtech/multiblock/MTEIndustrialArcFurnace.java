@@ -205,9 +205,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             'A',
             buildHatchAdder(MTEIndustrialArcFurnace.class)
                 .atLeast(
-                    ElectrodeHatch,
                     ElectrodeDetectorHatch,
-                    InputBus,
+                    InputBus.or(ElectrodeHatch),
                     OutputBus,
                     InputHatch,
                     OutputHatch,
