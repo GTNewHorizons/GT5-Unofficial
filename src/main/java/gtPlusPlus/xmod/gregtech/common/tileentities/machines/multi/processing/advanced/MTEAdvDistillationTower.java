@@ -203,7 +203,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addStaticSpeedInfo(3.5f)
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(3, 3, 3, 3, 3, 12, true)
+            .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
             .addController("Front bottom center")
             .addCasing("7-82", "Clean Stainless Steel Machine Casing", false)
             .addEnergyHatch("1+", "Any casing", 1, 2)
