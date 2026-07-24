@@ -86,6 +86,7 @@ import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements IParametrized {
 
     private @Nullable NaniteTier[] requiredNanites;

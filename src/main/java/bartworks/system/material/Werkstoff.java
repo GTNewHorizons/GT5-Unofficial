@@ -543,6 +543,17 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
 
     @Override
     public void addTooltips(List<String> list) {
+        boolean showsRadioactiveWarning = Client.tooltip.showRadioactiveText && getStats().isRadioactive();
+        boolean showsToxicWarning = Client.tooltip.showToxicText && getStats().isToxic();
+        if (showsRadioactiveWarning) {
+            list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
+        }
+        if (showsToxicWarning) {
+            list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Toxic"));
+        }
+        if (showsRadioactiveWarning || showsToxicWarning) {
+            list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
+        }
         if (!Client.tooltip.showFormula) {
             return;
         }

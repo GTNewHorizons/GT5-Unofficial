@@ -202,6 +202,9 @@ kubatech.tooltip.tea_ingredient.0=Это ингредиент чая
 
 kubatech.tooltip.structure.flowers=Цветы
 
+kubatech.arcfurnace.mode.normal=Обычный
+kubatech.arcfurnace.mode.blast=Доменный
+kubatech.arcfurnace.mode.ore=Рудный
 kubatech.multiblock.DEFusionCrafter.machine_type=Термоядерный крафтер, DEFC
 kubatech.multiblock.DEFusionCrafter.desc1=Даёт 1 §dидеальный разгон§7 за каждый тир корпуса выше тира рецепта
 kubatech.multiblock.DEFusionCrafter.desc2=Обычный EU разгон остается в силе!

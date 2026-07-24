@@ -26,6 +26,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -437,12 +438,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         RecipeAssemblyLine recipe = null;
 
         if (aNBT.hasKey(TAG_KEY_CURRENT_RECIPE, Constants.NBT.TAG_COMPOUND)) {
-            recipe = AssemblyLineUtils
-                .assertSingleRecipe(AssemblyLineUtils.loadRecipe(aNBT.getCompoundTag(TAG_KEY_CURRENT_RECIPE)));
+            recipe = selectRecipe(AssemblyLineUtils.loadRecipe(aNBT.getCompoundTag(TAG_KEY_CURRENT_RECIPE)), aNBT);
         } else if (aNBT.hasKey(TAG_KEY_CURRENT_STICK, Constants.NBT.TAG_COMPOUND)) {
-            recipe = AssemblyLineUtils.assertSingleRecipe(
+            recipe = selectRecipe(
                 AssemblyLineUtils.findALRecipeFromDataStick(
-                    ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(TAG_KEY_CURRENT_STICK))));
+                    ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(TAG_KEY_CURRENT_STICK))),
+                aNBT);
         }
 
         if (recipe != null) {
@@ -468,6 +469,20 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         } else {
             setCurrentRecipe(recipe);
         }
+    }
+
+    // Outputs aren't unique so pick by hash; on a miss return the first candidate so the
+    // caller's hash check fails loudly instead of null silently clearing the recipe.
+    private static RecipeAssemblyLine selectRecipe(Collection<RecipeAssemblyLine> candidates, NBTTagCompound aNBT) {
+        if (candidates.isEmpty()) return null;
+        if (aNBT.hasKey(TAG_KEY_RECIPE_HASH, Constants.NBT.TAG_INT)) {
+            int hash = aNBT.getInteger(TAG_KEY_RECIPE_HASH);
+            for (RecipeAssemblyLine candidate : candidates) {
+                if (candidate.getPersistentHash() == hash) return candidate;
+            }
+        }
+        return candidates.iterator()
+            .next();
     }
 
     /**
