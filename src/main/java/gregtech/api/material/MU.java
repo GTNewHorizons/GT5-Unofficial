@@ -42,12 +42,12 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Materials2Textures;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
-import gregtech.loaders.materials.LegacyMaterials;
 import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 import gtPlusPlus.core.material.MaterialReconstruction;
 
@@ -463,14 +463,14 @@ public class MU {
     }
 
     /// The legacy `Materials#mIconSet` texture set for a material, resolved by the same TEXTURE_SET-name lookup
-    /// [LegacyMaterials#iconSetOf] performs -- byte-identical for every population that reaches a MaterialLib
-    /// [Material]: `LegacyMaterials#build` calls it directly to set `mIconSet`; `BridgeMaterialsLoader` sets a
+    /// [Materials2Textures#iconSetOf] performs -- byte-identical for every population that reaches a MaterialLib
+    /// [Material]: `LegacyMaterials#build` resolves `mIconSet` through it; `BridgeMaterialsLoader` sets a
     /// werkstoff bridge's `mIconSet` from `Werkstoff#getTexSet`, which the werkstoff's own constructor was built
-    /// with [LegacyMaterials#iconSetOf]'s result (`WerkstoffReconstruction`); and `GtppBridgeMaterialsLoader`
-    /// sets a gtpp bridge's `mIconSet` from the same [LegacyMaterials#iconSetOf] call made directly in
+    /// with [Materials2Textures#iconSetOf]'s result (`WerkstoffReconstruction`); and `GtppBridgeMaterialsLoader`
+    /// sets a gtpp bridge's `mIconSet` from the same [Materials2Textures#iconSetOf] call made directly in
     /// `MaterialReconstruction#build`. Null when `material` is null.
     public static @Nullable TextureSet iconSet(@Nullable Material material) {
-        return material == null ? null : LegacyMaterials.iconSetOf(material);
+        return material == null ? null : Materials2Textures.iconSetOf(material);
     }
 
     /// The legacy `Materials#mBlastFurnaceRequired` flag for a material, mirroring its own `= false` default.

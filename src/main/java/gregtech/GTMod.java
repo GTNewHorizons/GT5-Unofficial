@@ -65,11 +65,14 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Materials2;
+import gregtech.api.enums.MaterialsIDMap;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.materials2.Materials2ArcSmelting;
 import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -639,6 +642,9 @@ public class GTMod {
         GregTechAPI.sFullLoadFinished = true;
 
         if (Boolean.getBoolean("gt.dumpMaterialData")) {
+            Materials2ArcSmelting.verifyAgainstLegacy();
+            Materials2ParentMods.verifyAgainstLegacy();
+            MaterialsIDMap.verifyAgainstLegacy();
             MaterialDataDump.writeAll(new File(Launch.minecraftHome, "material-dump"));
         }
     }

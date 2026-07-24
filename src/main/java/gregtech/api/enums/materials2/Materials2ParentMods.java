@@ -49,22 +49,27 @@ public class Materials2ParentMods {
     /// the 13 [BlockMetal] storage-block arrays. Throws [IllegalStateException] on any mismatch. Requires
     /// the blocks to be constructed and the legacy facade to be fully initialized, so it can only run at
     /// boot.
-    static void verifyAgainstLegacy() {
+    public static void verifyAgainstLegacy() {
         List<String> mismatches = new ArrayList<>();
         Block[] blocks = { GregTechAPI.sBlockMetal1, GregTechAPI.sBlockMetal2, GregTechAPI.sBlockMetal3,
             GregTechAPI.sBlockMetal4, GregTechAPI.sBlockMetal5, GregTechAPI.sBlockMetal6, GregTechAPI.sBlockMetal7,
             GregTechAPI.sBlockMetal8, GregTechAPI.sBlockMetal9, GregTechAPI.sBlockMetal10, GregTechAPI.sBlockGem1,
             GregTechAPI.sBlockGem2, GregTechAPI.sBlockGem3 };
+        int checked = 0;
         for (Block block : blocks) {
             for (Material material : ((BlockMetal) block).mMats) {
                 Materials legacy = MU.materialOf(material);
                 boolean live = legacy != null && legacy.mHasParentMod;
                 if (hasParentMod(material) != live) mismatches.add(MU.internalName(material));
+                checked++;
             }
         }
         if (!mismatches.isEmpty()) {
             throw new IllegalStateException(
                 "Declared parent-mod gate disagrees with live mHasParentMod for: " + mismatches);
         }
+        GTMod.GT_FML_LOGGER.info(
+            "Materials2ParentMods.verifyAgainstLegacy: parent-mod gate matches live mHasParentMod ({} materials)",
+            checked);
     }
 }

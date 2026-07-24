@@ -315,10 +315,12 @@ public class MaterialsLegacyBridge {
 
     public static void load() {
         LegacyMarkerMaterials.loadMarkers();
-        RecognitionMaterials.load();
-        // A bare JUnit run never fires MaterialLib's MaterialRegistrationEvent, so
-        // Materials2Materials fields stay null outside a real FML mod-loading lifecycle.
+        // A bare JUnit run never fires MaterialLib's MaterialRegistrationEvent, so Materials2.init -- which
+        // registers the recognition markers -- never runs; register them here in that fallback so
+        // Materials.get(name) still resolves them. Materials2Materials fields likewise stay null outside a
+        // real FML mod-loading lifecycle.
         if (Materials2Materials.Iron == null) {
+            RecognitionMaterials.load();
             loadStubs();
             return;
         }

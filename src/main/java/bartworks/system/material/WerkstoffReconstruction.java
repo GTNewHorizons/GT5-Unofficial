@@ -19,12 +19,12 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.materials2.Materials2Textures;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.material.MaterialAtomics;
 import gregtech.api.material.MaterialRefStack;
-import gregtech.loaders.materials.LegacyMaterials;
 import gregtech.loaders.materials.LegacyNameDomain;
 import gregtech.loaders.materials.RecognitionMaterials;
 import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
@@ -299,7 +299,7 @@ public final class WerkstoffReconstruction {
             Werkstoff.Types.valueOf(ml.getProperty(GTMaterialProperties.WERKSTOFF_TYPE)),
             features,
             ids.get(0),
-            LegacyMaterials.iconSetOf(ml),
+            Materials2Textures.iconSetOf(ml),
             new ArrayList<>(),
             contents,
             subTags,

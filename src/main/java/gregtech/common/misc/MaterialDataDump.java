@@ -101,7 +101,27 @@ public final class MaterialDataDump {
         write(new File(directory, "legacy-blocks.json"), dumpLegacyBlocks());
         write(new File(directory, "gtpp-ores.json"), dumpGtppOres());
         write(new File(directory, "werkstoff-fields.json"), dumpWerkstoffFields());
+        write(new File(directory, "legacy-name-domain.json"), dumpLegacyNameDomain());
         write(new File(directory, "recipe-census.json"), dumpRecipeCensus(), COMPACT_GSON);
+    }
+
+    /// The legacy name domain `Materials.get(name)` reads: every key of `Materials#getMaterialsMap` mapped to
+    /// the name of the MaterialLib material its facade value resolves to (via `MU#material`). The `_NULL`
+    /// sentinel is skipped exactly as `Materials.get` treats a miss. This is the ground truth the frozen
+    /// `LegacyNameDomain` backing is checked against.
+    private static Map<String, String> dumpLegacyNameDomain() {
+        Map<String, String> domain = new TreeMap<>();
+        for (Map.Entry<String, Materials> entry : Materials.getMaterialsMap()
+            .entrySet()) {
+            Materials facade = entry.getValue();
+            if (facade == Materials._NULL) continue;
+            com.ruling_0.materiallib.api.Material ml = MU.material(facade);
+            if (ml == null) {
+                throw new IllegalStateException("No MaterialLib material for legacy name-domain key " + entry.getKey());
+            }
+            domain.put(entry.getKey(), ml.getName());
+        }
+        return domain;
     }
 
     /// Maps every public static `Werkstoff` field of the pool declaration classes to its werkstoff id -- the

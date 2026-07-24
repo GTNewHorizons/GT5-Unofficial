@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 
+import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.material.MU;
 
@@ -52,7 +53,7 @@ public class Materials2ArcSmelting {
     /// carrying a non-empty map must match a declared row pair-for-pair, and no declared row may lack a live
     /// counterpart. Throws [IllegalStateException] on any mismatch. Requires both the MaterialLib registry and
     /// the legacy facade to be fully built, so it can only run at boot.
-    static void verifyAgainstLegacy() {
+    public static void verifyAgainstLegacy() {
         Map<Material, Map<Material, Material>> live = new LinkedHashMap<>();
         for (Materials facade : Materials.getAll()) {
             if (facade.mArcSmeltIntoWithGas.isEmpty()) continue;
@@ -68,6 +69,9 @@ public class Materials2ArcSmelting {
                     + ", live "
                     + describe(live));
         }
+        GTMod.GT_FML_LOGGER.info(
+            "Materials2ArcSmelting.verifyAgainstLegacy: gas-arc table matches live legacy maps ({} rows)",
+            table().size());
     }
 
     private static String describe(Map<Material, Map<Material, Material>> rows) {
