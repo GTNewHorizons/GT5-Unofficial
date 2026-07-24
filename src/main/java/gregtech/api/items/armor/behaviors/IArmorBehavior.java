@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
@@ -20,6 +21,7 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import gregtech.GTMod;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.items.armor.ArmorContext;
+import gregtech.api.items.armor.ArmorState;
 
 public interface IArmorBehavior {
     /*
@@ -158,4 +160,8 @@ public interface IArmorBehavior {
     default boolean hasDisplayName() {
         return getName().hasDisplayName();
     }
+
+    default void onAugmentAdded(@NotNull ArmorState state, ItemStack armor, ItemStack augment) {}
+
+    default void onAugmentRemoved(@NotNull ArmorState state, ItemStack armor, @Nullable ItemStack augment) {}
 }
