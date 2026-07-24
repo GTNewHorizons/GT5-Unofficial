@@ -9094,6 +9094,13 @@ GT5U.tooltip.supercritical-fluid-turbine.output-hatch=Superheated Steam, Side ce
 GT5U.tooltip.universal-chemical-fuel-engine.controller-pos=Front center, 3rd layer
 GT5U.tooltip.universal-chemical-fuel-engine.hatch-casing=Back center machine casing
 
+# YOTTank Structure Hints
+GT5U.tooltip.yottank.misc-hatch-pos=Any bottom center casing (replaces other hatches)
+GT5U.tooltip.yottank.input-hatch-pos=Any top center casing
+GT5U.tooltip.yottank.output-hatch-pos=Any bottom center casing
+GT5U.tooltip.yottank.fluid-cell-block=Fluid Cell Block
+GT5U.tooltip.yottank.structure-footer=No air gaps allowed, but the fluid cell blocks can be different tiers
+
 # BEC Generator Structure Hints
 GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
 GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing around controller

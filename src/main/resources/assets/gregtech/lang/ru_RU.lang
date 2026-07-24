@@ -7287,6 +7287,9 @@ GT5U.tooltip.supercritical-fluid-turbine.output-hatch=Перегретый па�
 GT5U.tooltip.universal-chemical-fuel-engine.controller-pos=Спереди в центре
 GT5U.tooltip.universal-chemical-fuel-engine.hatch-casing=Любой стабильный титановый корпус
 
+# YOTTank Structure Hints
+GT5U.tooltip.yottank.fluid-cell-block=Блок жидкостных ячеек
+
 # info data
 GT5U.infodata.no_network=Нет сети
 GT5U.infodata.battery_buffer.stored_items=Stored Items: %s EU / %s EU
