@@ -161,7 +161,13 @@ public class ItemRegistry {
 
     public static final Block bw_realglas2 = new BWBlocksGlass2(
         "BW_ExtraGlass",
-        new String[] { MainMod.MOD_ID + ":ThoriumYttriumGlass" },
+        new String[] { MainMod.MOD_ID + ":ThoriumYttriumGlass",
+            MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlockTransparent",
+            MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlockTransparent",
+            MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlockTransparent",
+            MainMod.MOD_ID + ":HexaniteReinforcedBoronSilicateGlassBlockTransparent",
+            MainMod.MOD_ID + ":UniversiumReinforcedBoronSilicateGlassBlockTransparent", },
+
         MainMod.BIO_TAB);
 
     public static final Block bw_deprecatedglass = new BWBlocksGlass(

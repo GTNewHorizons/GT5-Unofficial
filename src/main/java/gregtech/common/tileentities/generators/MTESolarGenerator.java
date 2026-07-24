@@ -29,7 +29,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.MTESolarGeneratorGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -43,7 +43,7 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.solarpanel.tooltip");
+        return GTSplit.splitLocalized("gt.blockmachines.basicgenerator.solarpanel.tooltip");
     }
 
     public MTESolarGenerator(String aName, int aTier, int aInvSlotCount, String[] aDescription,

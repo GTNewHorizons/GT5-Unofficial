@@ -52,6 +52,7 @@ import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
     private final List<MTEHatchLoS> losHatches = new ArrayList<>();

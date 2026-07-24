@@ -41,6 +41,7 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
@@ -78,7 +79,7 @@ public class MTEPump extends MTEBasicMachine {
 
     @Override
     public String[] getDescription() {
-        return GTUtility.translateMultiline(
+        return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.basicmachine.pump.tooltip",
             TooltipHelper.euText(getEuUsagePerTier(mTier)),
             NumberFormatUtil.formatNumber(Math.max(1, 160 >> mTier) / 20d),
