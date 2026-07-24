@@ -64,6 +64,7 @@ import tectech.thing.metaTileEntity.multi.base.parameter.LongParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implements BECInventory, IParametrized {
 
     private final CondensateList storedCondensate = new CondensateList();

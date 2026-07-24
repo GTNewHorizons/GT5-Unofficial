@@ -98,14 +98,14 @@ public final class CommonWidgets {
                     new ParentWidget<>().size(swatchOuterSize, swatchOuterSize)
                         .marginTop(swatchMarginTop)
                         .widgetTheme(GTWidgetThemes.BACKGROUND_COLOR_SWATCH)
-                        .tooltip(
-                            tooltip -> tooltip.add(
-                                Dyes.get(colorization)
-                                    .getLocalizedDyeName()))
                         .child(
                             new Widget<>().size(swatchSize, swatchSize)
                                 .pos(1, 1)
-                                .background(new Rectangle().color(Color.withAlpha(mte.getGUIColorization(), 255)))));
+                                .background(new Rectangle().color(Color.withAlpha(mte.getGUIColorization(), 255)))
+                                .tooltip(
+                                    tooltip -> tooltip.add(
+                                        Dyes.get(colorization)
+                                            .getLocalizedDyeName()))));
             }
 
             int textMarginTop = (rowContentHeight - height) / 2;
