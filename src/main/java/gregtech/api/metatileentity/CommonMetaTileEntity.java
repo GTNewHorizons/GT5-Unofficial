@@ -159,6 +159,14 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {}
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
+    public void onClientSoundStateChanged() {}
+
+    @Override
     public void onPreTick(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
     @Override

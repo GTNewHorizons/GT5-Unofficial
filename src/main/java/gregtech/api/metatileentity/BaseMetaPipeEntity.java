@@ -171,6 +171,13 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             }
             if (!isServerSide) {
                 handleBlockUpdateClient();
+
+                if (!mNeedsClientTick) {
+                    if (GregTechAPI.sTextureRefreshPulse) issueTextureUpdate();
+                    mWorkUpdate = mInventoryChanged = false;
+                    tryDisableTicking();
+                    return;
+                }
             } else {
                 if (mTickTimer > 10) {
                     if (!doCoverThings()) {
@@ -685,8 +692,9 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    protected final boolean hasValidMetaTileEntity() {
-        return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
+    void refreshMetaTileEntityValidity() {
+        mMetaTileEntityValid = mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
+        mNeedsClientTick = mMetaTileEntity == null || mMetaTileEntity.needsClientTick();
     }
 
     @Override
@@ -937,8 +945,9 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public void setMetaTileEntity(IMetaTileEntity aMetaTileEntity) {
+    public final void setMetaTileEntity(IMetaTileEntity aMetaTileEntity) {
         mMetaTileEntity = (MetaPipeEntity) aMetaTileEntity;
+        refreshMetaTileEntityValidity();
     }
 
     @Override

@@ -162,6 +162,8 @@ public class GregTechAPI {
     public static IIconRegister sBlockIcons, sItemIcons;
 
     public static int TICKS_FOR_LAG_AVERAGING = 25, MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = 100;
+
+    public static boolean sTextureRefreshPulse = false;
     /**
      * Initialized by the Block creation.
      */

@@ -228,11 +228,18 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            updateSoundLoops(playBoiling);
+    public void onClientSoundStateChanged() {
+        if (mBoilingSound != null && mBoilingSound.isDonePlaying()) {
+            mBoilingSound = null;
         }
+        if (mHeatingSound != null && mHeatingSound.isDonePlaying()) {
+            mHeatingSound = null;
+        }
+        updateSoundLoops(playBoiling);
+    }
 
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         pollute(aTick);
 
         if (isNotAllowedToWork(aBaseMetaTileEntity, aTick)) return;

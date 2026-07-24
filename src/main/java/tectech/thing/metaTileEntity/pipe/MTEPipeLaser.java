@@ -158,6 +158,11 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     }
 
     @Override
+    public boolean needsClientTick() {
+        return false;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {

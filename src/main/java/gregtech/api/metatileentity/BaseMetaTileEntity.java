@@ -103,8 +103,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     protected long mStoredEnergy = 0, mStoredSteam = 0;
     protected int mAverageEUInputIndex = 0, mAverageEUOutputIndex = 0;
     protected boolean mReleaseEnergy = false;
-    protected final long[] mAverageEUInput = new long[] { 0, 0, 0, 0, 0 };
-    protected final long[] mAverageEUOutput = new long[] { 0, 0, 0, 0, 0 };
+    protected long[] mAverageEUInput;
+    protected long[] mAverageEUOutput;
     private boolean mTexturePacketScheduled = false;
     private boolean mHasEnoughEnergy = true, mRunningThroughTick = false, mInputDisabled = false,
         mOutputDisabled = false;
@@ -208,14 +208,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     /**
-     * Used for ticking special BaseMetaTileEntities, which need that for Energy Conversion It's called right before
-     * onPostTick()
-     */
-    public void updateStatus() {
-        //
-    }
-
-    /**
      * Called when trying to charge Items
      */
     public void chargeItem(ItemStack aStack) {
@@ -288,13 +280,16 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 }
             }
             if (!isServerSide) {
-                if (mLightValue != oldLightValueClient) {
-                    updateLightValue();
-                    oldLightValueClient = mLightValue;
-                    issueTextureUpdate();
-                }
+                applyClientLightValue();
 
                 handleBlockUpdateClient();
+
+                if (!mNeedsClientTick) {
+                    if (GregTechAPI.sTextureRefreshPulse) issueTextureUpdate();
+                    mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
+                    tryDisableTicking();
+                    return;
+                }
             } else {
                 if (mTickTimer > 10 && !doCoverThings()) {
                     mRunningThroughTick = false;
@@ -330,11 +325,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 handleInventoryDechargingServer();
                 handleInventoryChargingServer();
             }
-            updateStatus();
-            if (!hasValidMetaTileEntity()) {
-                mRunningThroughTick = false;
-                return;
-            }
             doPostTick();
             if (!hasValidMetaTileEntity()) {
                 mRunningThroughTick = false;
@@ -364,6 +354,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
     }
 
+    private void applyClientLightValue() {
+        if (mLightValue == oldLightValueClient) return;
+        updateLightValue();
+        oldLightValueClient = mLightValue;
+        issueTextureUpdate();
+    }
+
     private void doPreTick() {
         mMetaTileEntity.onPreTick(this, mTickTimer);
     }
@@ -390,6 +387,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
      * Updates the average EU I/O
      */
     private void updateAvgEUIO() {
+        ensureAverageEUArrays();
         if (++mAverageEUInputIndex >= mAverageEUInput.length) {
             mAverageEUInputIndex = 0;
         }
@@ -398,6 +396,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         }
         mAverageEUInput[mAverageEUInputIndex] = 0;
         mAverageEUOutput[mAverageEUOutputIndex] = 0;
+    }
+
+    private void ensureAverageEUArrays() {
+        if (mAverageEUInput == null) {
+            mAverageEUInput = new long[5];
+            mAverageEUOutput = new long[5];
+        }
     }
 
     /**
@@ -458,6 +463,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             return;
         }
         final long eu = outputVoltage * Util.emitEnergyToNetwork(oldOutput, usableAmperage, this);
+        ensureAverageEUArrays();
         mAverageEUOutput[mAverageEUOutputIndex] += eu;
         decreaseStoredEU(eu, true);
     }
@@ -771,7 +777,14 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                     if (hasValidMetaTileEntity() && mTickTimer > 20)
                         mMetaTileEntity.stopSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
-                case GregTechTileClientEvents.CHANGE_LIGHT -> mLightValue = (byte) aValue;
+                case GregTechTileClientEvents.CHANGE_LIGHT -> {
+                    mLightValue = (byte) aValue;
+                    if (mTickDisabled) applyClientLightValue();
+                }
+            }
+            if ((aEventID == GregTechTileClientEvents.CHANGE_COMMON_DATA
+                || aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA) && hasValidMetaTileEntity()) {
+                mMetaTileEntity.onClientSoundStateChanged();
             }
         }
         return true;
@@ -1275,8 +1288,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    protected final boolean hasValidMetaTileEntity() {
-        return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
+    void refreshMetaTileEntityValidity() {
+        mMetaTileEntityValid = mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
+        mNeedsClientTick = mMetaTileEntity == null || mMetaTileEntity.needsClientTick();
     }
 
     public boolean setStoredEU(long aEnergy) {
@@ -1782,7 +1796,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    public void setMetaTileEntity(IMetaTileEntity aMetaTileEntity) {
+    public final void setMetaTileEntity(IMetaTileEntity aMetaTileEntity) {
         if (aMetaTileEntity instanceof MetaTileEntity || aMetaTileEntity == null)
             mMetaTileEntity = (MetaTileEntity) aMetaTileEntity;
         else {
@@ -1791,6 +1805,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 aMetaTileEntity.getClass(),
                 aMetaTileEntity.getInventoryName());
         }
+        refreshMetaTileEntityValidity();
     }
 
     public byte getLightValue() {
@@ -1804,6 +1819,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public long getAverageElectricInput() {
+        if (mAverageEUInput == null) return 0;
         long rEU = 0;
         for (int i = 0; i < mAverageEUInput.length; ++i) if (i != mAverageEUInputIndex) rEU += mAverageEUInput[i];
         return rEU / (mAverageEUInput.length - 1);
@@ -1811,6 +1827,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public long getAverageElectricOutput() {
+        if (mAverageEUOutput == null) return 0;
         long rEU = 0;
         for (int i = 0; i < mAverageEUOutput.length; ++i) if (i != mAverageEUOutputIndex) rEU += mAverageEUOutput[i];
         return rEU / (mAverageEUOutput.length - 1);
@@ -1874,6 +1891,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                     mMetaTileEntity.maxAmperesIn() - mAcceptedAmperes,
                     1 + ((getEUCapacity() - getStoredEU()) / aVoltage)))),
             true)) {
+            ensureAverageEUArrays();
             mAverageEUInput[mAverageEUInputIndex] += aVoltage * aAmperage;
             mAcceptedAmperes += aAmperage;
             return aAmperage;
@@ -1887,6 +1905,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             || !outputsEnergyTo(side)
             || getStoredEU() - (aVoltage * aAmperage) < mMetaTileEntity.getMinimumStoredEU()) return false;
         if (decreaseStoredEU(aVoltage * aAmperage, false)) {
+            ensureAverageEUArrays();
             mAverageEUOutput[mAverageEUOutputIndex] += aVoltage * aAmperage;
             return true;
         }
@@ -1984,6 +2003,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     public void drawEnergy(double amount) {
+        ensureAverageEUArrays();
         mAverageEUOutput[mAverageEUOutputIndex] += amount;
         decreaseStoredEU((int) amount, true);
     }

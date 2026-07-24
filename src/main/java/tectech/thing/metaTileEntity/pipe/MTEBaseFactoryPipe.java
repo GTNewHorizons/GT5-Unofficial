@@ -137,6 +137,11 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
     }
 
     @Override
+    public boolean needsClientTick() {
+        return false;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity base, long aTick) {
         super.onPostTick(base, aTick);
 

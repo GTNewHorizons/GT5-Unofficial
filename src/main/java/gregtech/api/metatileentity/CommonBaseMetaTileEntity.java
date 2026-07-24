@@ -61,8 +61,12 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     private byte mColor = 0;
 
+    protected boolean mMetaTileEntityValid;
+
+    protected boolean mNeedsClientTick = true;
+
     // Profiling
-    private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
+    private int[] mTimeStatistics;
     private boolean hasTimeStatisticsStarted;
     private int mTimeStatisticsIndex = 0;
     private int mLagWarningCount = 0;
@@ -106,7 +110,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         getWorld().func_147457_a(this);
         mIgnoreNextUnload = true;
         hasTimeStatisticsStarted = false;
-        Arrays.fill(mTimeStatistics, 0);
+        if (mTimeStatistics != null) Arrays.fill(mTimeStatistics, 0);
         mTickDisabled = true;
     }
 
@@ -365,6 +369,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     @Override
     public void startTimeStatistics() {
+        if (mTimeStatistics == null) {
+            mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
+        }
         hasTimeStatisticsStarted = true;
     }
 
@@ -411,7 +418,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     @Override
     public int[] getTimeStatistics() {
-        return mTimeStatistics;
+        return mTimeStatistics == null ? GTValues.emptyIntArray : mTimeStatistics;
     }
 
     @Override
@@ -469,15 +476,19 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         // The mte sent from server is invalid
         if (mte == null) return;
 
-        if (!nbt.hasKey("mte")) return;
-        NBTTagCompound data = nbt.getCompoundTag("mte");
+        if (nbt.hasKey("mte")) {
+            mte.onDescriptionPacket(nbt.getCompoundTag("mte"));
+        }
 
-        mte.onDescriptionPacket(data);
+        mte.onClientSoundStateChanged();
     }
 
     @Override
     public void issueTextureUpdate() {
         mNeedsUpdate = true;
+        if (mTickDisabled && isClientSide()) {
+            handleBlockUpdateClient();
+        }
     }
 
     @Override
@@ -500,7 +511,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         return !isDead && hasValidMetaTileEntity();
     }
 
-    protected abstract boolean hasValidMetaTileEntity();
+    protected final boolean hasValidMetaTileEntity() {
+        return mMetaTileEntityValid;
+    }
+
+    abstract void refreshMetaTileEntityValidity();
 
     @Override
     public String[] getDescription() {
