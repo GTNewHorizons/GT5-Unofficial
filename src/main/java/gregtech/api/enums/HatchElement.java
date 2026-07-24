@@ -227,25 +227,6 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
                 .filter(it -> it instanceof MTEHatchSolidifier)
                 .count();
         }
-    },
-    PatternProvider("GT5U.MBTT.PatternProviderBus", MTEMultiBlockBase::addInputBusToMachineList,
-        MTEHatchPatternProvider.class) {
-
-        @Override
-        public long count(MTEMultiBlockBase t) {
-            return t.mInputBusses.stream()
-                .filter(it -> it instanceof MTEHatchPatternProvider)
-                .count();
-        }
-    },
-    ExtrusionBus("GT5U.MBTT.ExtrusionBus", MTEMultiBlockBase::addInputBusToMachineList, MTEHatchExtrusion.class) {
-
-        @Override
-        public long count(MTEMultiBlockBase t) {
-            return t.mInputBusses.stream()
-                .filter(it -> it instanceof MTEHatchExtrusion)
-                .count();
-        }
     };
 
     private final String name;
