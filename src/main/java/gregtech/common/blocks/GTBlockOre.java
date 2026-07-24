@@ -441,7 +441,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
     @Nullable
     public Materials getMaterial(int meta) {
-        return GTDataUtils.getIndexSafe(GregTechAPI.sGeneratedMaterials, getMaterialIndex(meta));
+        return MU.materialOf(MU.byId(getMaterialIndex(meta)));
     }
 
     @Nullable

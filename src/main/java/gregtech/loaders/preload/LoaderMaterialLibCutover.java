@@ -39,7 +39,8 @@ public class LoaderMaterialLibCutover implements Runnable {
         for (OrePrefixes prefix : OrePrefixes.VALUES) {
             Shape shape = MU.shape(prefix);
             if (shape == null) continue;
-            for (Materials material : GregTechAPI.sGeneratedMaterials) {
+            for (int id = 0; id < 1000; id++) {
+                Materials material = MU.materialOf(MU.byId(id));
                 if (material == null || !prefix.doGenerateItem(material)) continue;
                 ItemStack stack = MU.stack(prefix, material, 1);
                 if (stack == null) continue;
