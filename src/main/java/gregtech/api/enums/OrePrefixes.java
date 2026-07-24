@@ -6,6 +6,7 @@ import static gregtech.api.enums.GTValues.M;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,10 +26,13 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialGenerationFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.objects.GTArrayList;
 import gregtech.api.objects.GTItemStack;
@@ -3026,16 +3030,44 @@ public class OrePrefixes {
         return false;
     }
 
-    /// Twin of [#doGenerateItem(Materials)] for a MaterialLib [Material]. The legacy method's clauses past the
-    /// sub-ID check are all keyed on legacy `Materials`-only state (the `mGeneratedItems`/`mNotGeneratedItems`/
-    /// `mDisabledItems` sets, `mHasParentMod`, `mCondition`'s `ISubTagContainer` reads) with no MaterialLib
-    /// equivalent, so this resolves the legacy counterpart and delegates -- matching the legacy method's own
-    /// `false` for a material with no `Materials` counterpart (its null gate).
+    /// Twin of [#doGenerateItem(Materials)] for a MaterialLib [Material]. The sub-ID, parent-mod, and
+    /// generation-bit-overlap clauses are computed natively from MaterialLib state:
+    /// [MU#oldSubId] for `mMetaItemSubID`, [Materials2ParentMods#hasParentMod] for `mHasParentMod`, and
+    /// [GTMaterialProperties#GENERATION_FLAGS] membership for each `has*Items()` category flag (the exact
+    /// flag `LegacyMaterials#build` feeds the matching `MaterialBuilder#add*` from, so byte-identical to the
+    /// legacy `mGenerate*` fields). The remaining clauses ([#mGeneratedItems]/[#mNotGeneratedItems]/
+    /// [#mDisabledItems] membership and [#mCondition]) stay keyed on the legacy `Materials` counterpart while
+    /// the facade exists: those collections are `Materials`-keyed and `mCondition` reads an
+    /// [ISubTagContainer], so testing them through [MU#materialOf] is identical to the legacy path by
+    /// construction. A material with no `Materials` counterpart matches the legacy method's own null gate and
+    /// returns false.
     public boolean doGenerateItem(@Nullable Material material) {
         if (MU.oldSubId(material) == -1) return false;
+        if (!Materials2ParentMods.hasParentMod(material)) return false;
         Materials legacyMaterial = MU.materialOf(material);
         if (legacyMaterial == null) return false;
-        return doGenerateItem(legacyMaterial);
+
+        EnumSet<GTMaterialGenerationFlag> flags = material.getProperty(GTMaterialProperties.GENERATION_FLAGS);
+        if (flags == null) flags = EnumSet.noneOf(GTMaterialGenerationFlag.class);
+
+        // This only falls through, returning false, when the material has no overlap with `mMaterialGenerationBits`.
+        // spotless:off
+        if (!mGeneratedItems.contains(legacyMaterial))
+            if ((materialGenerationBits & DUST) == 0 || !flags.contains(GTMaterialGenerationFlag.DUST))
+                if ((materialGenerationBits & METAL) == 0 || !flags.contains(GTMaterialGenerationFlag.METAL))
+                    if ((materialGenerationBits & GEM) == 0 || !flags.contains(GTMaterialGenerationFlag.GEM))
+                        if ((materialGenerationBits & ORE) == 0 || !flags.contains(GTMaterialGenerationFlag.ORE))
+                            if ((materialGenerationBits & CELL) == 0 || !flags.contains(GTMaterialGenerationFlag.CELL))
+                                if ((materialGenerationBits & PLASMA) == 0 || !flags.contains(GTMaterialGenerationFlag.PLASMA))
+                                    if ((materialGenerationBits & TOOL) == 0 || !flags.contains(GTMaterialGenerationFlag.TOOL_HEAD))
+                                        if ((materialGenerationBits & GEAR) == 0 || !flags.contains(GTMaterialGenerationFlag.GEAR))
+                                            if ((materialGenerationBits & EMPTY) == 0 || !flags.contains(GTMaterialGenerationFlag.EMPTY))
+                                                return false;
+        // spotless:on
+
+        if (mNotGeneratedItems.contains(legacyMaterial)) return false;
+        if (mDisabledItems.contains(legacyMaterial)) return false;
+        return mCondition == null || mCondition.isTrue(legacyMaterial);
     }
 
     public boolean doGenerateItem(Materials material) {
