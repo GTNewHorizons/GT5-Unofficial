@@ -176,7 +176,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             NBTTagList fluidInv = nbt.getTagList("fluidInventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < fluidInv.tagCount(); i++) {
                 NBTTagCompound tagFluidStack = fluidInv.getCompoundTagAt(i);
-                FluidStack fluid = FluidStack.loadFluidStackFromNBT(tagFluidStack);
+                FluidStack fluid = GTUtility.loadFluid(tagFluidStack);
                 if (fluid != null) {
                     if (fluid.amount > 0) {
                         fluidInventory.add(fluid);
@@ -321,9 +321,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                     fsg,
                     AEApi.instance()
                         .storage()
-                        .createFluidStack(fluidStack),
+                        .createFluidStack(fluidStack)
+                        .setStackSize(GTUtility.getFluidAmount(fluidStack)),
                     src);
-                fluidStack.amount = rest != null && rest.getStackSize() > 0 ? (int) rest.getStackSize() : 0;
+                GTUtility.setFluidAmount(fluidStack, rest != null && rest.getStackSize() > 0 ? rest.getStackSize() : 0);
 
                 if (Gregtech.machines.allowCribDropItems && shouldDrop && fluidStack.amount > 0) {
                     World world = parentMTE.getBaseMetaTileEntity()
@@ -385,32 +386,24 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         }
 
         private void insertFluid(IAEFluidStack inserted) {
-            final List<FluidStack> temp = new ArrayList<>();
-            final FluidStack compareStack = inserted.getFluidStack();
+            final FluidStack compareStack = GTUtility
+                .createFluidStack(inserted.getFluidStack(), inserted.getStackSize());
+
+            // BigInt fluid mayhaps:tm:
             for (FluidStack fluidStack : fluidInventory) {
-                if (fluidStack.amount == Integer.MAX_VALUE) continue;
+                if (GTUtility.getFluidAmount(fluidStack) == Long.MAX_VALUE) continue;
                 if (GTUtility.areFluidsEqual(compareStack, fluidStack)) {
-                    if (inserted.getStackSize() > Integer.MAX_VALUE
-                        || fluidStack.amount > Integer.MAX_VALUE - inserted.getStackSize()) {
-                        inserted.decStackSize(Integer.MAX_VALUE - fluidStack.amount);
-                        fluidStack.amount = Integer.MAX_VALUE;
-                    } else {
-                        fluidStack.amount += (int) inserted.getStackSize();
-                        return;
-                    }
+                    long maxInsertAmount = Long.MAX_VALUE - GTUtility.getFluidAmount(fluidStack);
+                    long insertAmount = Math.min(maxInsertAmount, inserted.getStackSize());
+
+                    GTUtility.setFluidAmount(fluidStack, GTUtility.getFluidAmount(fluidStack) + insertAmount);
+                    inserted.decStackSize(insertAmount);
                 }
             }
 
-            while (inserted.getStackSize() > Integer.MAX_VALUE) {
-                temp.add(inserted.getFluidStack());
-                inserted.decStackSize(Integer.MAX_VALUE);
-            }
-
             if (inserted.getStackSize() > 0) {
-                fluidInventory.add(inserted.getFluidStack());
+                fluidInventory.add(GTUtility.createFluidStack(inserted.getFluid(), inserted.getStackSize()));
             }
-
-            if (!temp.isEmpty()) fluidInventory.addAll(temp);
         }
 
         public boolean insertItemsAndFluids(MEInventoryCrafting inventoryCrafting) {
@@ -1138,7 +1131,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             for (FluidStack fluid : i.fluidInventory) {
                 if (fluid != null && fluid.amount > 0) {
                     String name = fluid.getLocalizedName();
-                    nameToAmount.merge(name, (long) fluid.amount, Long::sum);
+                    nameToAmount.merge(name, GTUtility.getFluidAmount(fluid), Long::sum);
                 }
             }
         }

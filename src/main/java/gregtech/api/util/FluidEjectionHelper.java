@@ -59,12 +59,12 @@ public class FluidEjectionHelper {
      * @param stack The stack to eject. Ejected fluids are subtracted from this stack.
      * @return The number of fluids that were ejected.
      */
-    public int ejectStack(FluidStack stack) {
+    public long ejectStack(FluidStack stack) {
         List<FluidStack> list = Collections.singletonList(GTUtility.copyAmount(1, stack));
 
-        int ejected = ejectFluids(list, stack.amount);
+        long ejected = ejectFluids(list, GTUtility.getFluidAmount(stack));
 
-        stack.amount -= ejected;
+        GTUtility.decFluidAmount(stack, ejected);
         return ejected;
     }
 
@@ -77,7 +77,7 @@ public class FluidEjectionHelper {
      * @param startingParallels The number of parallels to calculate. Must be an integer >= 0.
      * @return The number of parallels that can be safely ran without voiding fluids.
      */
-    public int ejectFluids(List<FluidStack> outputs, int startingParallels) {
+    public long ejectFluids(List<FluidStack> outputs, long startingParallels) {
         if (outputs == null || outputs.isEmpty()) return 0;
         if (!active)
             throw new IllegalStateException("Cannot eject additional fluids after committing an FluidEjectionHelper");
@@ -158,11 +158,15 @@ public class FluidEjectionHelper {
             for (FluidParallelData parallelData : outputParallels) {
                 long ejected = parallelData.initialAmount - parallelData.remainingAmount;
 
-                startingParallels = (int) Math.min(startingParallels, ejected / parallelData.perParallel);
+                startingParallels = Math.min(startingParallels, ejected / parallelData.perParallel);
             }
         }
 
         return startingParallels;
+    }
+
+    public int ejectFluids(List<FluidStack> outputs, int startingParallels) {
+        return GTUtility.longToInt(ejectFluids(outputs, (long) startingParallels));
     }
 
     public void commit() {
@@ -194,10 +198,9 @@ public class FluidEjectionHelper {
             if (isSharedOutput) {
                 targetAmount = Math.min(remainingAmount, perParallel);
             }
-            int amount = (int) Math.min(targetAmount, Integer.MAX_VALUE);
-            tmpStack.amount = amount;
+            GTUtility.setFluidAmount(tmpStack, targetAmount);
             transaction.storePartial(id, tmpStack);
-            long actuallyInsert = amount - tmpStack.amount;
+            long actuallyInsert = targetAmount - GTUtility.getFluidAmount(tmpStack);
             remainingAmount -= actuallyInsert;
             return actuallyInsert > 0;
         }

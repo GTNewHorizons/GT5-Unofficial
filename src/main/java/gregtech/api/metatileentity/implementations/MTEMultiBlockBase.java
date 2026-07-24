@@ -1691,17 +1691,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean addOutputAtomic(FluidStack stack) {
         if (!GTUtility.isStackValid(stack)) return false;
 
-        int initial = stack.amount;
+        long initial = GTUtility.getFluidAmount(stack);
 
         FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(this);
         ejectionHelper.ejectStack(stack);
 
-        if (stack.amount == 0) {
+        if (GTUtility.getFluidAmount(stack) == 0) {
             ejectionHelper.commit();
             return true;
         } else {
             // Restore the original stack size because we didn't end up doing anything.
-            stack.amount = initial;
+            GTUtility.setFluidAmount(stack, initial);
             return false;
         }
     }
@@ -1752,28 +1752,28 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public boolean depleteInput(FluidStack aLiquid, boolean simulate) {
         if (aLiquid == null) return false;
-        int fluidCost = aLiquid.amount;
+        long fluidCost = GTUtility.getFluidAmount(aLiquid);
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             setHatchRecipeMap(tHatch);
             FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, false);
             if (tLiquid == null) continue;
-            if (tLiquid.amount >= aLiquid.amount) {
+            if (GTUtility.getFluidAmount(tLiquid) >= GTUtility.getFluidAmount(aLiquid)) {
                 if (simulate) {
                     return true;
                 }
                 tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, true);
-                return tLiquid.amount >= aLiquid.amount;
+                return GTUtility.getFluidAmount(tLiquid) >= GTUtility.getFluidAmount(aLiquid);
             }
-            fluidCost -= tLiquid.amount;
+            fluidCost -= GTUtility.getFluidAmount(tLiquid);
         }
         // Enough fluid is present spread through multiple hatches. Drain requested amount
         if (fluidCost <= 0) {
             if (simulate) return true;
-            fluidCost = aLiquid.amount;
+            fluidCost = GTUtility.getFluidAmount(aLiquid);
             for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
                 FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, fluidCost, true);
                 if (tLiquid == null) continue;
-                fluidCost -= tLiquid.amount;
+                fluidCost -= GTUtility.getFluidAmount(tLiquid);
                 if (fluidCost == 0) return true;
             }
         }
@@ -1897,9 +1897,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             } else if (tHatch instanceof MTEHatchInputDebug debugHatch) {
                 for (FluidStack fluid : debugHatch.getFluidList()) {
                     if (fluid != null) {
-                        FluidStack stack = fluid.copy();
-                        stack.amount = Integer.MAX_VALUE;
-                        rList.add(stack);
+                        rList.add(GTUtility.copyAmount(Long.MAX_VALUE, fluid));
                     }
                 }
             } else {
@@ -1934,8 +1932,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     inventory.get()
                         .getFluidInputs())) {
                     if (fluid.isFluidEqual(storedFluid)) {
-                        if (doDrain) storedFluid.amount = Math.max(storedFluid.amount - fluid.amount, 0);
-                        return storedFluid.amount >= fluid.amount;
+                        if (doDrain) {
+                            long storedFluidAmount = GTUtility.getFluidAmount(storedFluid);
+                            long fluidAmount = GTUtility.getFluidAmount(fluid);
+                            GTUtility.setFluidAmount(storedFluid, Math.max(storedFluidAmount - fluidAmount, 0));
+                        }
+                        return GTUtility.getFluidAmount(storedFluid) >= GTUtility.getFluidAmount(fluid);
                     }
                 }
             }
@@ -1943,7 +1945,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         if (hatch instanceof MTEHatchInput tHatch && tHatch.isValid()) {
             FluidStack tFluid = tHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
-            return tFluid != null && tFluid.amount >= fluid.amount;
+            return tFluid != null && GTUtility.getFluidAmount(tFluid) >= GTUtility.getFluidAmount(fluid);
         }
 
         return false;
@@ -2668,7 +2670,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             + EnumChatFormatting.RESET
                             + " x "
                             + EnumChatFormatting.GOLD
-                            + formatNumber(tag.getInteger("outputFluidCount" + i))
+                            + formatNumber(tag.getLong("outputFluidCount" + i))
                             + "L");
                 }
                 if (totalOutputs > 3) {
@@ -2758,7 +2760,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     "outputFluidName" + index,
                     stack.getFluid()
                         .getName());
-                tag.setInteger("outputFluidCount" + index, stack.amount);
+                tag.setLong("outputFluidCount" + index, GTUtility.getFluidAmount(stack));
                 index++;
             }
             if (index != 0) tag.setInteger("outputFluidLength", index);
@@ -3582,7 +3584,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
             for (FluidStack fluid : mOutputFluids) {
                 if (fluid == null || fluid.amount <= 0) continue;
-                nameToAmount.merge(fluid, (long) fluid.amount, Long::sum);
+                nameToAmount.merge(fluid, (long) GTUtility.getFluidAmount(fluid), Long::sum);
             }
 
             final List<Map.Entry<FluidStack, Long>> sortedMap = nameToAmount.entrySet()
@@ -3865,13 +3867,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
                         .map(fluidStack -> {
                             if (fluidStack == null) return null;
-                            return new FluidStack(fluidStack, fluidStack.amount) {
-
-                                @Override
-                                public boolean isFluidEqual(FluidStack other) {
-                                    return super.isFluidEqual(other) && amount == other.amount;
-                                }
-                            };
+                            return GTUtility.createFluidStackWithAmountComparison(fluidStack);
                         })
                         .collect(Collectors.toList()) : Collections.emptyList(),
                     val -> {

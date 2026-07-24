@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
+import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -39,6 +40,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.client.volumetric.ISoundPosition;
 import gregtech.client.volumetric.LinearSound;
@@ -134,7 +136,8 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         if (network != null) {
             boolean succeed = true;
             for (FluidStack output : outputFluids) {
-                AEFluidStack stack = AEFluidStack.create(output);
+                IAEFluidStack stack = AEFluidStack.create(output)
+                    .setStackSize(GTUtility.getFluidAmount(output));
                 network.injectCondensate(this, stack);
                 if (stack.getStackSize() > 0) succeed = false;
             }
@@ -215,15 +218,18 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         }
 
         FluidStack toDrain = fluidStack.copy();
-        toDrain.amount = parallels * recipe.mFluidInputs[0].amount;
+        GTUtility.setFluidAmount(toDrain, parallels * GTUtility.getFluidAmount(recipe.mFluidInputs[0]));
 
         if (!depleteInput(toDrain)) {
             return;
         }
 
-        euQuota.subtract(toDrain.amount / recipe.mFluidInputs[0].amount * (long) recipe.mEUt);
+        euQuota.subtract(
+            GTUtility.getFluidAmount(toDrain) / GTUtility.getFluidAmount(recipe.mFluidInputs[0]) * (long) recipe.mEUt);
 
-        outputs.addTo(recipe.mFluidOutputs[0].getFluid(), recipe.mFluidOutputs[0].amount * (long) parallels);
+        outputs.addTo(
+            recipe.mFluidOutputs[0].getFluid(),
+            GTUtility.getFluidAmount(recipe.mFluidInputs[0]) * (long) parallels);
 
         this.mMaxProgresstime = Math.max(this.mMaxProgresstime, recipe.mDuration);
     }
