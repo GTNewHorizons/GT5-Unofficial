@@ -45,7 +45,6 @@ import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -1137,13 +1136,13 @@ public class NaquadahReworkRecipeLoader {
 
         // For Cauldron Wash
         registerCauldronCleaningFor(
-            Materials.Naquadah,
+            Materials2Materials.Naquadah,
             WerkstoffReconstruction.materialLibOf(GGMaterial.naquadahEarth));
         registerCauldronCleaningFor(
-            Materials.NaquadahEnriched,
+            Materials2Materials.NaquadahEnriched,
             WerkstoffReconstruction.materialLibOf(GGMaterial.enrichedNaquadahEarth));
         registerCauldronCleaningFor(
-            Materials.Naquadria,
+            Materials2Materials.Naquadria,
             WerkstoffReconstruction.materialLibOf(GGMaterial.naquadriaEarth));
         GTLog.out.print(GoodGenerator.MOD_ID + ": Replace 3! ");
         GTLog.out.print("Cauldron Wash done!\n");

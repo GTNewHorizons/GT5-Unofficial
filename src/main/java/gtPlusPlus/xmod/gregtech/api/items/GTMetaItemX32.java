@@ -14,7 +14,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
@@ -58,7 +57,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
             if (tPrefix == null) {
                 continue;
             }
-            final Materials tMaterial = MetaGeneratedItem.generatedMaterial(i % 1000);
+            final Material tMaterial = MetaGeneratedItem.generatedMaterial(i % 1000);
             if (tMaterial == null) {
                 continue;
             }
@@ -69,15 +68,15 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
                     this.getDefaultLocalization(tPrefix, tMaterial, i));
                 GTLanguageManager.addStringLocalization(
                     this.getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / GTValues.M));
+                    MU.chemicalTooltip(tMaterial, tPrefix.getMaterialAmount() / GTValues.M, false));
                 if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
                     GTOreDictUnificator.registerOre(tPrefix.oreDictName(tMaterial), tStack);
                 }
                 if (((tPrefix == OrePrefixes.stick) || (tPrefix == OrePrefixes.wireFine))
-                    && ((tMaterial == Materials.Lead) || (tMaterial == Materials.Tin)
-                        || (tMaterial == Materials.SolderingAlloy))) {
+                    && ((tMaterial == Materials2Materials.Lead) || (tMaterial == Materials2Materials.Tin)
+                        || (tMaterial == Materials2Materials.SolderingAlloy))) {
                     GregTechAPI.sSolderingMetalList.add(tStack);
                 }
             }
@@ -91,7 +90,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
      * @param aMaterial this can be null, you have to return false in that case
      * @return if this Item should be generated and visible.
      */
-    public boolean doesMaterialAllowGeneration(final OrePrefixes aPrefix, final Materials aMaterial) {
+    public boolean doesMaterialAllowGeneration(final OrePrefixes aPrefix, final Material aMaterial) {
         // You have to check for at least these Conditions in every Case! So add a super Call like the following for
         // this before executing your Code:
         // if (!super.doesMaterialAllowGeneration(aPrefix, aMaterial)) return false;
@@ -106,7 +105,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
      * @param aMetaData a Index from [0 - 31999]
      * @return the Localized Name when default LangFiles are used.
      */
-    public String getDefaultLocalization(final OrePrefixes aPrefix, final Materials aMaterial, final int aMetaData) {
+    public String getDefaultLocalization(final OrePrefixes aPrefix, final Material aMaterial, final int aMetaData) {
         return aPrefix.getDefaultLocalNameForItem(aMaterial);
     }
 
@@ -115,10 +114,10 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
      * @param aMaterial the Material
      * @return an Icon Container for the Item Display.
      */
-    public final IIconContainer getIconContainer(final int aMetaData, final Materials aMaterial) {
+    public final IIconContainer getIconContainer(final int aMetaData, final Material aMaterial) {
         return (this.mGeneratedPrefixList[aMetaData / 1000] != null)
             && (this.mGeneratedPrefixList[aMetaData / 1000].getTextureIndex() >= 0)
-                ? aMaterial.mIconSet.mTextures[this.mGeneratedPrefixList[aMetaData / 1000].getTextureIndex()]
+                ? MU.iconSet(aMaterial).mTextures[this.mGeneratedPrefixList[aMetaData / 1000].getTextureIndex()]
                 : null;
     }
 
@@ -161,7 +160,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
             return null;
         }
         if (aMetaData < 32000) {
-            final Materials tMaterial = MetaGeneratedItem.generatedMaterial(aMetaData % 1000);
+            final Material tMaterial = MetaGeneratedItem.generatedMaterial(aMetaData % 1000);
             if (tMaterial == null) {
                 return null;
             }

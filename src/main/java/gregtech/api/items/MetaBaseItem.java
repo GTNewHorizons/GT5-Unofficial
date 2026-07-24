@@ -40,6 +40,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
@@ -245,7 +246,7 @@ public abstract class MetaBaseItem extends GTGenericItem
         if (!MetaGeneratedItem.isMaterialItem(damage)) {
             return null;
         }
-        return MetaGeneratedItem.generatedMaterial(damage % 1_000);
+        return MU.materialOf(MetaGeneratedItem.generatedMaterial(damage % 1_000));
     }
 
     @Override

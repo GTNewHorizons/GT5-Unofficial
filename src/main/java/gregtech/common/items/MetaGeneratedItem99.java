@@ -59,7 +59,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         INSTANCE = this;
 
         for (int i = 0; i < 1000; i++) {
-            Materials tMaterial = generatedMaterial(i);
+            Materials tMaterial = MU.materialOf(generatedMaterial(i));
             if (tMaterial == null || tMaterial.mMetaItemSubID < 0 || tMaterial.mMetaItemSubID >= 1_000) {
                 continue;
             }

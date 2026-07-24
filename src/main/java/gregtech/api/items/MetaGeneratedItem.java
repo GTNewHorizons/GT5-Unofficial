@@ -27,17 +27,19 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.interfaces.IIconContainer;
@@ -123,14 +125,13 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         return isMaterialItem(stack.getItemDamage());
     }
 
-    /// The legacy [Materials] whose generated items occupy a material id slot, or null when the slot is empty
-    /// or the material's parent mod is absent (`Materials#mHasParentMod`): an absent-parent material never
+    /// The [Material] whose generated items occupy a material id slot, or null when the slot is empty or the
+    /// material's parent mod is absent ([Materials2ParentMods#hasParentMod]): an absent-parent material never
     /// generates items, so item-facing readers treat its slot as vacant even though
-    /// [gregtech.api.enums.materials2.Materials2IDIndex] lists the material. TRANSITIONAL -- dies with
-    /// [Materials].
-    public static @Nullable Materials generatedMaterial(int id) {
-        Materials material = MU.materialOf(MU.byId(id));
-        return material != null && material.mHasParentMod ? material : null;
+    /// [gregtech.api.enums.materials2.Materials2IDIndex] lists the material.
+    public static @Nullable Material generatedMaterial(int id) {
+        Material material = MU.byId(id);
+        return material != null && Materials2ParentMods.hasParentMod(material) ? material : null;
     }
 
     /**

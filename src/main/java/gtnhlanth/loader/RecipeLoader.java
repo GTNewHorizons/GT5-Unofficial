@@ -142,7 +142,6 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
@@ -4377,10 +4376,10 @@ public class RecipeLoader {
         // For Cauldron Wash
         GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes to replace cerium sources");
         registerCauldronCleaningFor(
-            Materials.Cerium,
+            Materials2Materials.Cerium,
             WerkstoffReconstruction.materialLibOf(WerkstoffMaterialPool.CeriumRichMixture));
         registerCauldronCleaningFor(
-            Materials.Samarium,
+            Materials2Materials.Samarium,
             WerkstoffReconstruction.materialLibOf(WerkstoffMaterialPool.SamariumOreConcentrate));
         GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes done!");
 
