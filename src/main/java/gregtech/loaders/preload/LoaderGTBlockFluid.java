@@ -1129,6 +1129,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTModHandler.getIC2Item("steamCell", 1),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L));
 
+        // The dedicated Steam material carries no LEGACY_FLUIDS gas row (see Materials2Materials.Steam), so
+        // point its facade gas field and MU's gas slot at the "steam" fluid just registered above -- the same
+        // fluid the Water facade holds. MU.gas(Materials2Materials.Steam, n) reads the slot store first.
+        Materials.Steam.mGas = Materials.Water.mGas;
+        MU.recordSlotFluid(Materials2Materials.Steam, MU.FluidState.GAS, Materials.Water.mGas);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
             .itemOutputs(GTModHandler.getIC2Item("steamCell", 1))

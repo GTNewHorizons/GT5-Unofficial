@@ -47,8 +47,7 @@ public class MaterialsLegacyBridge {
     }
 
     /// ML material names that do not match the legacy `Materials` field they fill: sanitized identifiers
-    /// (`Helium_3` -> `Helium3`), GT5U disambiguation suffixes (`Francium_GT5U` -> `Francium`), and legacy
-    /// aliases (`Water` -> `Steam`, matching the fluid's field name rather than its own).
+    /// (`Helium_3` -> `Helium3`) and GT5U disambiguation suffixes (`Francium_GT5U` -> `Francium`).
     // spotless:off
     private static final Map<String, String> ML_NAME_TO_FIELD_OVERRIDES = Map.ofEntries(
         Map.entry("1,1Dimethylhydrazine", "Dimethylhydrazine"),
@@ -135,7 +134,6 @@ public class MaterialsLegacyBridge {
         Map.entry("Titaniumonabariumdecacoppereikosaoxid", "SuperconductorHVBase"),
         Map.entry("Uraniumtriplatinid", "SuperconductorEVBase"),
         Map.entry("Vanadiumtriindinid", "SuperconductorIVBase"),
-        Map.entry("Water", "Steam"),
         Map.entry("activatednetherite", "ActivatedNetherite"),
         Map.entry("carbonactivateddirty", "DirtyActivatedCarbon"),
         Map.entry("dimensionallyshiftedsuperfluid", "DimensionallyShiftedSuperfluid"),
@@ -193,7 +191,7 @@ public class MaterialsLegacyBridge {
         "Arsenic", "ArsenicTrioxide", "Asbestos", "Ash", "AshDark", "Silver", "Magic", "Thaumium", "AstralSilver",
         "BandedIron", "Barium", "Sulfur", "Barite", "Calcite", "Flint", "Olivine", "Basalt", "Magnetite",
         "BasalticMineralSand", "Cerium", "Bastnasite", "Lead", "BatteryAlloy", "Titanium", "Rutile", "Bauxite",
-        "BauxiteSlag", "BauxiteSlurry", "Diamond", "Bedrockium", "Sodium", "Steam", "Bentonite", "Benzene",
+        "BauxiteSlag", "BauxiteSlurry", "Diamond", "Bedrockium", "Sodium", "Water", "Steam", "Bentonite", "Benzene",
         "Beryllium", "BioDiesel", "BioMediumRaw", "BioMediumSterilized", "BiocatalyzedPropulsionFluid", "Biomass",
         "Biotite", "Bismuth", "BismuthBronze", "BismuthIIIOxide", "BisphenolA", "Gold", "BlackBronze",
         "BlackDwarfMatter", "BlackPlutonium", "Nickel", "BlackSteel", "Blaze", "Blizz", "BloodInfusedIron",
@@ -333,7 +331,6 @@ public class MaterialsLegacyBridge {
             }
             setField(FIELDS_BY_NAME.get(fieldName), LegacyMaterials.build(material));
         }
-        Materials.Water = Materials.Steam;
         Materials.WroughtIron = Materials.CastIron;
     }
 
@@ -343,7 +340,6 @@ public class MaterialsLegacyBridge {
             String stubName = STUB_NAME_OVERRIDES.getOrDefault(mlName, mlName);
             setField(FIELDS_BY_NAME.get(fieldName), LegacyMaterials.stub(stubName));
         }
-        Materials.Water = Materials.Steam;
         Materials.WroughtIron = Materials.CastIron;
     }
 

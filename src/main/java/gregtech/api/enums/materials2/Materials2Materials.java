@@ -528,6 +528,7 @@ public class Materials2Materials {
     public static Material AluminiumHydroxide;
     public static Material Cryolite;
     public static Material Lava;
+    public static Material Steam;
     public static Material Water;
     public static Material Ice;
     public static Material UUMatter;
@@ -14981,6 +14982,17 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
             .setProperty(GTMaterialProperties.REMOVED_PREFIXES, List.of("cell", "bucket", "bucketClay"))
             .setProperty(GTMaterialProperties.DYE, "dyeOrange")
+            .build();
+        // Steam carries no item/block/fluid shapes and no OLD_SUB_ID: it never existed as a legacy material
+        // (the facade aliased Materials.Steam to Water), so its only backing is the "steam" Forge fluid GT
+        // hand-registers in LoaderGTBlockFluid. That fluid is wired onto the facade and MU's slot store there
+        // (after it registers), not through a LEGACY_FLUIDS gas row -- LegacyMaterials.wireFluids resolves
+        // LEGACY_FLUIDS eagerly at Materials.init(), which runs before LoaderGTBlockFluid registers "steam".
+        Materials2Materials.Steam = MaterialLibAPI.newMaterial("gregtech", "Steam", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFFFFFFFF)
+            .addToFamily(Materials2Families.all)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Steam")
+            .setProperty(GTMaterialProperties.ARGB, 0xFFFFFF)
             .build();
         Materials2Materials.Water = MaterialLibAPI.newMaterial("gregtech", "Water", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF0000FF)
