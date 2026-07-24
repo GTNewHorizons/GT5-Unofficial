@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
@@ -50,6 +52,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -184,17 +187,24 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
             .addMarkdown(new ResourceLocation("gregtech", "universal-chemical-fuel-engine"))
             .addSupportAny()
             .beginStructureBlock(7, 7, 13, true)
-            .addController("Front center, 3rd layer")
-            .addCasing("100-115", "Stable Titanium Machine Casing", false)
-            .addCasing("72", "PTFE Frame Box", false)
-            .addCasing("39", "Chemically Inert Machine Casing", false)
-            .addCasing("20", "Engine Intake Casing", false)
-            .addCasing("12", "Titanium Pipe Casing", false)
-            .addCasing("10", "Titanium Firebox Casing", false)
-            .addDynamoHatch("1", "Back center machine casing", 2)
-            .addMaintenanceHatch("1", "Any machine casing", 1)
-            .addMufflerHatch("1", "Any machine casing", 1)
-            .addInputHatch("1+", "Any machine casing", 1)
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.universal-chemical-fuel-engine.controller-pos"))
+            .addCasing("100-115", Casings.StableTitaniumMachineCasing.getLocalizedName(), false)
+            .addCasing(
+                "72",
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Polytetrafluoroethylene, 1)
+                    .getDisplayName(),
+                false)
+            .addCasing("39", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
+            .addCasing("20", Casings.EngineIntakeCasing.getLocalizedName(), false)
+            .addCasing("12", Casings.TitaniumPipeCasing.getLocalizedName(), false)
+            .addCasing("10", Casings.TitaniumFireboxCasing.getLocalizedName(), false)
+            .addDynamoHatch(
+                "1",
+                StatCollector.translateToLocal("GT5U.tooltip.universal-chemical-fuel-engine.hatch-casing"),
+                2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "TimTems")
             .toolTipFinisher();
         return tt;

@@ -7284,6 +7284,9 @@ GT5U.tooltip.supercritical-fluid-turbine.hatch-pos=Сбоку в центре
 GT5U.tooltip.supercritical-fluid-turbine.input-hatch=Перегретая жидкость, сбоку в центре
 GT5U.tooltip.supercritical-fluid-turbine.output-hatch=Перегретый пар, сбоку в центре
 
+GT5U.tooltip.universal-chemical-fuel-engine.controller-pos=Спереди в центре
+GT5U.tooltip.universal-chemical-fuel-engine.hatch-casing=Любой стабильный титановый корпус
+
 # info data
 GT5U.infodata.no_network=Нет сети
 GT5U.infodata.battery_buffer.stored_items=Stored Items: %s EU / %s EU

@@ -9090,6 +9090,10 @@ GT5U.tooltip.supercritical-fluid-turbine.hatch-pos=Side centered
 GT5U.tooltip.supercritical-fluid-turbine.input-hatch=Supercritical Fluid, Side centered
 GT5U.tooltip.supercritical-fluid-turbine.output-hatch=Superheated Steam, Side centered
 
+# Universal Chemical Fuel Engine Structure Hints
+GT5U.tooltip.universal-chemical-fuel-engine.controller-pos=Front center, 3rd layer
+GT5U.tooltip.universal-chemical-fuel-engine.hatch-casing=Back center machine casing
+
 # BEC Generator Structure Hints
 GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
 GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing around controller
