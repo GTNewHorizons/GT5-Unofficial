@@ -4,7 +4,7 @@ import static com.google.common.math.IntMath.pow;
 import static gregtech.api.GregTechAPI.getUnificatedOreDictStack;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTUtility.getPlasmaFuelValueInEUPerLiterFromMaterial;
+import static gregtech.api.util.GTUtility.getPlasmaFuelValueInEUPerLiterFromFluid;
 import static java.lang.Math.min;
 
 import java.util.ArrayList;
@@ -197,8 +197,8 @@ public class EyeOfHarmonyRecipe {
 
         // If DeepDark then it should output all plasmas involved in making exotic catalyst.
         if (rocketTier == 9) {
-            for (Materials material : VALID_PLASMAS) {
-                fluidStackLongArrayList.add(new FluidStackLong(material.getPlasma(plasmaAmount), plasmaAmount));
+            for (com.ruling_0.materiallib.api.Material material : VALID_PLASMAS) {
+                fluidStackLongArrayList.add(new FluidStackLong(MU.plasma(material, plasmaAmount), plasmaAmount));
             }
         } else {
             // --- Output and process fluids of the recipe.
@@ -368,10 +368,10 @@ public class EyeOfHarmonyRecipe {
 
     private static final double[] ORE_MULTIPLIER = { PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER };
 
-    /// Accumulates output quantities keyed by material. Keys are the legacy [Materials] constant when one
-    /// exists (so canonical contributions from every source merge, exactly as they did when each source was
-    /// legacy-typed), the MaterialLib [Material] for a reconstructed material with no legacy counterpart, or
-    /// the gtPlusPlus [Material] for gtpp-typed sources with no legacy equivalent.
+    /// Accumulates output quantities keyed by material. Keys are the MaterialLib [Material] when the source
+    /// resolves to one (so canonical contributions from every source merge -- the facade<->MaterialLib name
+    /// bijection makes this the same merge partition the legacy-keyed map produced), or the gtPlusPlus
+    /// [Material] for a gtpp-typed source with no gregtech counterpart.
     public static class HashMapHelper extends HashMap<Object, Double> {
 
         private static final long serialVersionUID = 2297018142561480614L;
@@ -389,25 +389,19 @@ public class EyeOfHarmonyRecipe {
             this.put(material, value);
         }
 
-        void add(Materials material, double value) {
+        void add(com.ruling_0.materiallib.api.Material material, double value) {
             addRaw(material, value);
         }
 
-        void add(com.ruling_0.materiallib.api.Material material, double value) {
-            Materials legacy = MU.materialOf(material);
-            addRaw(legacy != null ? legacy : material, value);
-        }
-
         void addGTpp(Material mat, double value) {
-            addRaw(mat.getGTMaterial() != null ? mat.getGTMaterial() : mat, value);
+            com.ruling_0.materiallib.api.Material canonical = MU.material(mat.getGTMaterial());
+            addRaw(canonical != null ? canonical : mat, value);
         }
     }
 
     /// Native [Material]-typed body: reads every legacy field through [MU]/[MUOre] property accessors instead
     /// of a single upfront [MU#materialOf] snapshot, so each read resolves independently against the live
-    /// facade. A resolved byproduct/smelt target is converted to its legacy [Materials] counterpart via
-    /// [MU#materialOf] only at the point it is written into `outputMap`, which still keys on [Materials] (see
-    /// [HashMapHelper#add]). [MU#directSmelting(Material)] and [MU#directSmelting(Materials)] are documented
+    /// facade. [MU#directSmelting(Material)] and [MU#directSmelting(Materials)] are documented
     /// byte-identical for any material with a MaterialLib counterpart, and neither the bartworks nor gtpp
     /// bridge loader ever writes `mOreMultiplier`/`mByProductMultiplier`/`mSmeltingMultiplier` independently of
     /// [GTMaterialProperties], so this reads the same single source of truth as the legacy-typed overload does
@@ -418,11 +412,11 @@ public class EyeOfHarmonyRecipe {
         outputMap.add(MU.directSmelting(material), (MUOre.oreMultiplier(material) * 2) * mainMultiplier * probability);
 
         if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_GOLD))
-            outputMap.add(Materials.Gold, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
+            outputMap.add(Materials2Materials.Gold, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
         if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_IRON))
-            outputMap.add(Materials.Iron, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
-        if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM))
-            outputMap.add(Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
+            outputMap.add(Materials2Materials.Iron, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
+        if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)) outputMap
+            .add(Materials2Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
 
         List<com.ruling_0.materiallib.api.Material> byProducts = MU.oreByProducts(material);
 
@@ -552,10 +546,10 @@ public class EyeOfHarmonyRecipe {
         // Need two valid outputs
         if (bonusA != null && bonusA.hasSolidForm()) {
             outputMap.addGTpp(bonusA, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
-        } else outputMap.add(Materials.Stone, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
+        } else outputMap.add(Materials2Materials.Stone, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
         if (bonusB != null && bonusB.hasSolidForm()) {
             outputMap.addGTpp(bonusB, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
-        } else outputMap.add(Materials.Stone, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
+        } else outputMap.add(Materials2Materials.Stone, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
     }
 
     public static void processHelperIfPossible(HashMapHelper outputMap, Object material, double mainMultiplier,
@@ -605,9 +599,9 @@ public class EyeOfHarmonyRecipe {
         ArrayList<FluidStack> plasmaList = new ArrayList<>();
 
         for (Pair<Object, Long> pair : planetList) {
-            if (!(pair.getLeft() instanceof Materials left)) continue;
+            if (!(pair.getLeft() instanceof com.ruling_0.materiallib.api.Material left)) continue;
             if (VALID_PLASMAS.contains(left)) {
-                plasmaList.add(left.getPlasma(1));
+                plasmaList.add(MU.plasma(left, 1));
             }
         }
 
@@ -620,8 +614,7 @@ public class EyeOfHarmonyRecipe {
         for (Pair<Object, Long> pair : planetList) {
             final Object mat = pair.getLeft();
             final ItemStack dust;
-            if (mat instanceof Materials) dust = getUnificatedOreDictStack(((Materials) mat).getDust(1));
-            else if (mat instanceof com.ruling_0.materiallib.api.Material ml)
+            if (mat instanceof com.ruling_0.materiallib.api.Material ml)
                 dust = getUnificatedOreDictStack(GTOreDictUnificator.get(OrePrefixes.dust, ml, 1L));
             else if (mat instanceof Material) dust = ((Material) mat).getDust(1);
             else dust = null;
@@ -654,24 +647,24 @@ public class EyeOfHarmonyRecipe {
         return 3.85;
     }
 
-    private static final List<Materials> VALID_PLASMAS = Stream
+    private static final List<com.ruling_0.materiallib.api.Material> VALID_PLASMAS = Stream
         .of(
-            Materials.Helium,
-            Materials.Iron,
-            Materials.Calcium,
-            Materials.Niobium,
-            Materials.Nitrogen,
-            Materials.Zinc,
-            Materials.Silver,
-            Materials.Titanium,
-            Materials.Radon,
-            Materials.Nickel,
-            Materials.Boron,
-            Materials.Sulfur,
-            Materials.Americium,
-            Materials.Bismuth,
-            Materials.Oxygen,
-            Materials.Tin)
+            Materials2Materials.Helium,
+            Materials2Materials.Iron,
+            Materials2Materials.Calcium,
+            Materials2Materials.Niobium,
+            Materials2Materials.Nitrogen,
+            Materials2Materials.Zinc,
+            Materials2Materials.Silver,
+            Materials2Materials.Titanium,
+            Materials2Materials.Radon,
+            Materials2Materials.Nickel,
+            Materials2Materials.Boron,
+            Materials2Materials.Sulfur,
+            Materials2Materials.Americium,
+            Materials2Materials.Bismuth,
+            Materials2Materials.Oxygen,
+            Materials2Materials.Tin)
         .collect(Collectors.toList());
 
     private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<>() {
@@ -681,10 +674,11 @@ public class EyeOfHarmonyRecipe {
         {
             VALID_PLASMAS.forEach(
                 (material -> put(
-                    material.getPlasma(1)
+                    MU.plasma(material, 1)
                         .getFluid()
                         .getUnlocalizedName(),
-                    (long) (getPlasmaFuelValueInEUPerLiterFromMaterial(material) * getMaxPlasmaTurbineEfficiency()))));
+                    (long) (getPlasmaFuelValueInEUPerLiterFromFluid(MU.plasma(material, 1))
+                        * getMaxPlasmaTurbineEfficiency()))));
         }
     };
 }

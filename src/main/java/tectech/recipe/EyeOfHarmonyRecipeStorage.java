@@ -22,7 +22,6 @@ import bartworks.system.material.WerkstoffReconstruction;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -150,18 +149,20 @@ public class EyeOfHarmonyRecipeStorage {
         final BlockDimensionDisplay planetItem) {
 
         final HashSet<com.ruling_0.materiallib.api.Material> validMaterialSet = new HashSet<>();
-        for (Materials material : Materials.values()) {
+        for (int id = 0; id < 1000; id++) {
+            com.ruling_0.materiallib.api.Material material = MU.byId(id);
+            if (material == null) continue;
 
             ItemStack normalOre = GTOreDictUnificator.get(OrePrefixes.ore, material, 1);
 
             if ((normalOre != null)) {
-                validMaterialSet.add(MU.material(material));
+                validMaterialSet.add(material);
             }
 
             ItemStack smallOre = GTOreDictUnificator.get(OrePrefixes.oreSmall, material, 1);
 
             if ((smallOre != null)) {
-                validMaterialSet.add(MU.material(material));
+                validMaterialSet.add(material);
             }
         }
 

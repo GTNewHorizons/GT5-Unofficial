@@ -20,13 +20,16 @@ import java.util.Locale;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.ruling_0.materiallib.api.Material;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.WerkstoffReconstruction;
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
@@ -49,15 +52,15 @@ public final class BWAtmosphereManager {
 
     public static final BWAtmosphereManager INSTANCE = new BWAtmosphereManager();
 
-    private static final ArrayListMultimap<Integer, Pair<ISubTagContainer, Integer>> gasConcentration = ArrayListMultimap
+    private static final ArrayListMultimap<Integer, Pair<Material, Integer>> gasConcentration = ArrayListMultimap
         .create();
 
-    public static List<Pair<ISubTagContainer, Integer>> getGasFromWorldID(int worldID) {
+    public static List<Pair<Material, Integer>> getGasFromWorldID(int worldID) {
         return BWAtmosphereManager.gasConcentration.get(worldID);
     }
 
-    public static void removeGasFromWorld(int worldID, ISubTagContainer gas) {
-        for (Pair<ISubTagContainer, Integer> pair : BWAtmosphereManager.gasConcentration.get(worldID)) {
+    public static void removeGasFromWorld(int worldID, Material gas) {
+        for (Pair<Material, Integer> pair : BWAtmosphereManager.gasConcentration.get(worldID)) {
             if (pair.getKey()
                 .equals(gas)) {
                 BWAtmosphereManager.gasConcentration.get(worldID)
@@ -67,17 +70,17 @@ public final class BWAtmosphereManager {
         }
     }
 
-    public static void addGasToWorld(int worldID, ISubTagContainer gas, int amount) {
-        Pair<ISubTagContainer, Integer> toadd = Pair.of(gas, amount);
+    public static void addGasToWorld(int worldID, Material gas, int amount) {
+        Pair<Material, Integer> toadd = Pair.of(gas, amount);
         BWAtmosphereManager.gasConcentration.put(worldID, toadd);
     }
 
-    public static void addGasToWorld(int worldID, Pair<ISubTagContainer, Integer> toPut) {
+    public static void addGasToWorld(int worldID, Pair<Material, Integer> toPut) {
         BWAtmosphereManager.gasConcentration.put(worldID, toPut);
     }
 
     @SafeVarargs
-    public static void addGasToWorld(int worldID, Pair<ISubTagContainer, Integer>... toPut) {
+    public static void addGasToWorld(int worldID, Pair<Material, Integer>... toPut) {
         Arrays.stream(toPut)
             .forEach(toadd -> BWAtmosphereManager.gasConcentration.put(worldID, toadd));
     }
@@ -86,19 +89,23 @@ public final class BWAtmosphereManager {
         if (IAtmosphericGas.CO2.equals(gas)) {
             BWAtmosphereManager.addGasToWorld(
                 worldID,
-                Materials.CarbonDioxide,
+                Materials2Materials.CarbonDioxide,
                 BWAtmosphereManager.COEFFICIENT_ARRAY[aMaxNumber - 1][aNumber]);
             return true;
         }
         String name = gas.toString();
         name = name.charAt(0) + name.substring(1)
             .toLowerCase(Locale.US);
-        ISubTagContainer mat = Materials.get(name);
-        if (mat == Materials._NULL) {
-            mat = WerkstoffLoader.getWerkstoff(name);
-        }
-        if (mat == Werkstoff.default_null_Werkstoff) {
-            return false;
+        // Interim name seam: the gas name resolves through the facade's legacy name domain (Materials.get);
+        // only the resolved facade's MaterialLib material enters the gas list.
+        Materials legacyLookup = Materials.get(name);
+        Material mat = legacyLookup == Materials._NULL ? null : MU.material(legacyLookup);
+        if (mat == null) {
+            Werkstoff werkstoff = WerkstoffLoader.getWerkstoff(name);
+            if (werkstoff == Werkstoff.default_null_Werkstoff || werkstoff == null) {
+                return false;
+            }
+            mat = WerkstoffReconstruction.materialLibOf(werkstoff);
         }
         BWAtmosphereManager.addGasToWorld(worldID, mat, BWAtmosphereManager.COEFFICIENT_ARRAY[aMaxNumber - 1][aNumber]);
         return true;

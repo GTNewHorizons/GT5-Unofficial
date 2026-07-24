@@ -306,16 +306,16 @@ public class GTRecipeRegistrator {
     }
 
     /// [#hasReverseArcSmeltingRecipe(Materials)] for callers holding a [Material] directly -- the native ML body;
-    /// the [Materials]-typed overload now delegates into this one. The gas-conditional arc-smelting recipe
-    /// (`Materials#mArcSmeltIntoWithGas`) has no MaterialLib property equivalent -- see [LegacyMaterials]'s
-    /// javadoc, only `Copper`'s canonical port and the unbacked `AnyCopper` marker ever carry one -- so this
-    /// keeps a [MU#materialOf] guard for that residual read alone, matching the legacy interface default of no
-    /// gas-arc recipe when the material has no legacy counterpart to read it from.
+    /// the [Materials]-typed overload now delegates into this one. The gas-conditional arc-smelting recipe is
+    /// consulted through [MU#arcSmeltIntoWithGas]'s declared table
+    /// ([gregtech.api.enums.materials2.Materials2ArcSmelting]), which carries exactly the rows the legacy
+    /// `Materials#mArcSmeltIntoWithGas` maps ever held.
     public static boolean hasReverseArcSmeltingRecipe(Material material) {
         if (material == null) return false;
         Material arcSmeltingMaterial = MU.arcSmeltInto(MU.smeltInto(material));
         if (arcSmeltingMaterial != material) return true;
-        return MU.materialOf(arcSmeltingMaterial) instanceof Materials legacy && !legacy.mArcSmeltIntoWithGas.isEmpty();
+        return !MU.arcSmeltIntoWithGas(arcSmeltingMaterial)
+            .isEmpty();
     }
 
     public static boolean hasReverseArcSmeltingRecipe(Materials material) {
@@ -336,11 +336,11 @@ public class GTRecipeRegistrator {
 
     static void registerReverseArcSmelting(ItemStack stack, ItemData data, IRecipeMap universalArcFurnace,
         IRecipeMap arcFurnaceRecipes) {
-        registerReverseArcSmelting(stack, data, universalArcFurnace, arcFurnaceRecipes, Materials::getGas);
+        registerReverseArcSmelting(stack, data, universalArcFurnace, arcFurnaceRecipes, MU::gas);
     }
 
     static void registerReverseArcSmelting(ItemStack stack, ItemData data, IRecipeMap universalArcFurnace,
-        IRecipeMap arcFurnaceRecipes, BiFunction<Materials, Long, FluidStack> gasStackSupplier) {
+        IRecipeMap arcFurnaceRecipes, BiFunction<Material, Long, FluidStack> gasStackSupplier) {
         if (stack == null || data == null) return;
         data = new ItemData(data);
 
@@ -446,7 +446,7 @@ public class GTRecipeRegistrator {
             }
 
             int gasAmount = (int) Math.max(16L, tAmount / M);
-            for (Materials gas : getArcSmeltingGases(outputs)) {
+            for (Material gas : getArcSmeltingGases(outputs)) {
                 ItemStack[] gasOutputs = getArcSmeltingOutputsWithGas(outputs, gas);
                 FluidStack gasStack = gasStackSupplier.apply(gas, (long) gasAmount);
                 if (gasOutputs == null || gasStack == null) continue;
@@ -469,29 +469,27 @@ public class GTRecipeRegistrator {
             && input.stackSize == outputs.get(0).stackSize;
     }
 
-    private static Set<Materials> getArcSmeltingGases(List<ItemStack> outputs) {
-        Set<Materials> gases = new LinkedHashSet<>();
+    private static Set<Material> getArcSmeltingGases(List<ItemStack> outputs) {
+        Set<Material> gases = new LinkedHashSet<>();
         for (ItemStack output : outputs) {
             ItemData outputData = GTOreDictUnificator.getAssociation(output);
-            Materials outputMaterial = outputData == null ? null : MU.materialOf(outputData.mMaterial.mMaterial);
-            if (outputMaterial != null) gases.addAll(
-                outputMaterial.getArcSmeltIntoWithGas()
+            if (outputData != null) gases.addAll(
+                MU.arcSmeltIntoWithGas(outputData.mMaterial.mMaterial)
                     .keySet());
         }
         return gases;
     }
 
-    private static ItemStack[] getArcSmeltingOutputsWithGas(List<ItemStack> outputs, Materials gas) {
+    private static ItemStack[] getArcSmeltingOutputsWithGas(List<ItemStack> outputs, Material gas) {
         ItemStack[] gasOutputs = new ItemStack[outputs.size()];
         boolean replacedOutput = false;
         for (int i = 0; i < outputs.size(); i++) {
             ItemStack output = outputs.get(i);
             ItemData outputData = GTOreDictUnificator.getAssociation(output);
-            Materials outputMaterial = outputData == null ? null : MU.materialOf(outputData.mMaterial.mMaterial);
-            if (outputMaterial != null && outputMaterial.getArcSmeltIntoWithGas()
-                .containsKey(gas)) {
-                Materials gasSmeltingMaterial = outputMaterial.getArcSmeltIntoWithGas()
+            Material gasSmeltingMaterial = outputData == null ? null
+                : MU.arcSmeltIntoWithGas(outputData.mMaterial.mMaterial)
                     .get(gas);
+            if (gasSmeltingMaterial != null) {
                 long materialAmount = outputData.mMaterial.mAmount * output.stackSize;
                 gasOutputs[i] = GTOreDictUnificator.getIngotOrDust(gasSmeltingMaterial, materialAmount);
                 if (gasOutputs[i] == null) return null;
