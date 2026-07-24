@@ -8,6 +8,8 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -22,6 +24,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -32,8 +35,10 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchExtrusion;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEIndustrialExtruder>
@@ -56,7 +61,8 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
                 { "A ABBBBBA", "AAA     A", "A ABBBBBA", "DDDDDDDDA" } })
         .addElement(
             'A',
-            buildHatchAdder(MTEIndustrialExtruder.class).atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+            buildHatchAdder(MTEIndustrialExtruder.class)
+                .atLeast(InputBus, ExtruderHatchElement.ExtrusionBus, OutputBus, Maintenance, Energy, Muffler)
                 .casingIndex(Casings.PressureContainmentCasing.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.PressureContainmentCasing.asElement())))
@@ -215,5 +221,38 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    private enum ExtruderHatchElement implements IHatchElement<MTEIndustrialExtruder> {
+
+        ExtrusionBus(MTEIndustrialExtruder::addInputBusToMachineList, MTEHatchExtrusion.class) {
+
+            @Override
+            public long count(MTEIndustrialExtruder t) {
+                return t.mInputBusses.stream()
+                    .filter(it -> it instanceof MTEHatchExtrusion)
+                    .count();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTEIndustrialExtruder> adder;
+
+        @SafeVarargs
+        ExtruderHatchElement(IGTHatchAdder<MTEIndustrialExtruder> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTEIndustrialExtruder> adder() {
+            return adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
     }
 }
