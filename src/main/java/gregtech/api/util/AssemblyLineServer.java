@@ -8,16 +8,31 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
 
 public class AssemblyLineServer {
 
     public static LinkedHashMap<String, String> lServerNames = new LinkedHashMap<>();
+
+    /// The material-name token substituted into a generated item or ore block's server-side name, or null
+    /// when the id slot never yielded items -- empty, or its material's parent mod absent
+    /// (`Materials#mHasParentMod`), which left the slot without items or names. These tokens feed
+    /// assembly-line data packets, so they must be byte-identical to the legacy `Materials#mName`;
+    /// [MU#legacyName] resolves exactly that string, including the LEGACY_NAME divergents.
+    private static @Nullable String generatedMaterialName(int id) {
+        Material material = MU.byId(id);
+        if (material == null) return null;
+        Materials legacy = MU.materialOf(material);
+        if (legacy != null && !legacy.mHasParentMod) return null;
+        return MU.legacyName(material);
+    }
 
     public static void fillMap(FMLPreInitializationEvent aEvent) {
         final Configuration conf = GTLanguageManager.sEnglishFile;
@@ -57,10 +72,11 @@ public class AssemblyLineServer {
                                 entry.getKey()
                                     .length() - ".name".length()));
                     i = i % 1000;
-                    if (GregTechAPI.sGeneratedMaterials[i] != null) lServerNames.put(
+                    String materialName = generatedMaterialName(i);
+                    if (materialName != null) lServerNames.put(
                         entry.getKey(),
                         entry.getValue()
-                            .replace("material", GregTechAPI.sGeneratedMaterials[i].toString()));
+                            .replace("material", materialName));
                     else lServerNames.put(entry.getKey(), null);
                 }
             } catch (Exception ignored) {}
@@ -193,10 +209,11 @@ public class AssemblyLineServer {
                                 entry.getKey()
                                     .length() - ".name".length()));
                     i = i % 1000;
-                    if (GregTechAPI.sGeneratedMaterials[i] != null) lServerNames.put(
+                    String materialName = generatedMaterialName(i);
+                    if (materialName != null) lServerNames.put(
                         entry.getKey(),
                         entry.getValue()
-                            .replace("material", GregTechAPI.sGeneratedMaterials[i].toString()));
+                            .replace("material", materialName));
                     else lServerNames.put(entry.getKey(), null);
                 } else if (entry.getKey()
                     .contains("blockmetal")) {

@@ -16,6 +16,7 @@ import net.minecraft.util.IIcon;
 import org.jetbrains.annotations.Nullable;
 
 import com.github.bsideup.jabel.Desugar;
+import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -80,7 +81,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
             OrePrefixes tPrefix = mGeneratedPrefixList[i / 1000];
             if (tPrefix == null) continue;
             if (tPrefix == OrePrefixes.___placeholder___) continue;
-            Materials tMaterial = GregTechAPI.sGeneratedMaterials[i % 1000];
+            Materials tMaterial = generatedMaterial(i % 1000);
             if (tMaterial == null) continue;
             if (!DUMP_MODE && MU.isCutOver(tPrefix, tMaterial)) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
@@ -110,14 +111,12 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
      */
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        if (!Materials.isMaterialItem(getDamage(aStack))) {
+        if (!isMaterialItem(getDamage(aStack))) {
             return MU.rgba(Materials2Materials.NULL);
         }
-        Materials tMaterial = GregTechAPI.sGeneratedMaterials[getDamage(aStack) % 1000];
-        if (tMaterial == null) {
-            return MU.rgba(Materials2Materials.NULL);
-        }
-        return tMaterial.mRGBa;
+        Material tMaterial = MU.byId(getDamage(aStack) % 1000);
+        short[] rgba = MU.rgba(tMaterial);
+        return rgba != null ? rgba : MU.rgba(Materials2Materials.NULL);
     }
 
     /**
@@ -170,9 +169,9 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     @Override
     public ItemStack getContainerItem(ItemStack aStack) {
         int aDamage = aStack.getItemDamage();
-        if (Materials.isMaterialItem(aDamage)) {
-            Materials aMaterial = getMaterial(aDamage);
-            if (aMaterial != null && aMaterial != Materials.Empty && aMaterial != Materials._NULL) {
+        if (isMaterialItem(aDamage)) {
+            Material aMaterial = MU.byId(aDamage % 1000);
+            if (aMaterial != null && aMaterial != Materials2Materials.Empty && aMaterial != Materials2Materials.NULL) {
                 OrePrefixes aPrefix = getOrePrefix(aDamage);
                 if (aPrefix != null) return GTUtility.copyAmount(1, aPrefix.mContainerItem);
             }
@@ -182,14 +181,14 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
 
     @Override
     public final IIconContainer getIconContainer(int aMetaData) {
-        if (!Materials.isMaterialItem(aMetaData)) return null;
+        if (!isMaterialItem(aMetaData)) return null;
         final Materials materials = getMaterial(aMetaData);
         return materials == null ? null : getIconContainer(aMetaData, materials);
     }
 
     @Override
     public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
-        if (!Materials.isMaterialItem(aMetaData)) return null;
+        if (!isMaterialItem(aMetaData)) return null;
         final Materials materials = getMaterial(aMetaData);
         return materials == null ? null : materials.renderer;
     }
@@ -239,7 +238,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        if (!Materials.isMaterialItem(getDamage(aStack))) return;
+        if (!isMaterialItem(getDamage(aStack))) return;
         final int damage = aStack.getItemDamage();
         final Materials material = getMaterial(damage);
         final OrePrefixes prefix = getOrePrefix(damage);
@@ -248,7 +247,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     }
 
     public @Nullable OrePrefixes getOrePrefix(int damage) {
-        if (!Materials.isMaterialItem(damage)) return null;
+        if (!isMaterialItem(damage)) return null;
         final int i = damage / 1000;
         if (i >= mGeneratedPrefixList.length) return null;
         return mGeneratedPrefixList[i];

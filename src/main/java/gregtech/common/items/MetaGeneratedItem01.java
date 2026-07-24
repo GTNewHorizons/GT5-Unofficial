@@ -489,7 +489,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.Optional;
-import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Circuits;
@@ -3962,9 +3961,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
         int aDamage = aItemEntity.getEntityItem()
             .getItemDamage();
-        if (Materials.isMaterialItem(aDamage) && (!aItemEntity.worldObj.isRemote)) {
-            Materials aMaterial = GregTechAPI.sGeneratedMaterials[(aDamage % 1000)];
-            if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
+        if (isMaterialItem(aDamage) && (!aItemEntity.worldObj.isRemote)) {
+            Material aMaterial = MU.byId(aDamage % 1000);
+            if ((aMaterial != null) && (aMaterial != Materials2Materials.Empty)
+                && (aMaterial != Materials2Materials.NULL)) {
                 int tX = MathHelper.floor_double(aItemEntity.posX);
                 int tY = MathHelper.floor_double(aItemEntity.posY);
                 int tZ = MathHelper.floor_double(aItemEntity.posZ);
@@ -3977,7 +3977,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                         aItemEntity.setEntityItemStack(
                             GTOreDictUnificator.get(
                                 OrePrefixes.dust,
-                                cauldronRemap.getOrDefault(aMaterial, MU.material(aMaterial)),
+                                cauldronRemap.getOrDefault(MU.materialOf(aMaterial), aMaterial),
                                 aItemEntity.getEntityItem().stackSize));
                         aItemEntity.delayBeforeCanPickup = 0;
                         cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
@@ -3996,7 +3996,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
-                } else if (aPrefix == OrePrefixes.dust && aMaterial == Materials.Wheat) {
+                } else if (aPrefix == OrePrefixes.dust && aMaterial == Materials2Materials.Wheat) {
                     Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
                     int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
@@ -4021,8 +4021,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         if (blockClicked == Blocks.cauldron && metadata > 0) {
             final int damage = oldItemStack.getItemDamage();
 
-            if (Materials.isMaterialItem(damage)) {
-                final Materials oldMaterial = GregTechAPI.sGeneratedMaterials[(damage % 1000)];
+            if (isMaterialItem(damage)) {
+                final Materials oldMaterial = MU.materialOf(MU.byId(damage % 1000));
                 final OrePrefixes oldPrefix = this.mGeneratedPrefixList[(damage / 1000)];
                 final ItemStack newItemStack = getCauldronWashingResult(oldPrefix, oldMaterial, oldItemStack.stackSize);
 
@@ -4101,14 +4101,15 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         int aDamage = aStack.getItemDamage();
-        if (Materials.isMaterialItem(aDamage)) {
-            Materials aMaterial = GregTechAPI.sGeneratedMaterials[(aDamage % 1000)];
-            if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
+        if (isMaterialItem(aDamage)) {
+            Material aMaterial = MU.byId(aDamage % 1000);
+            if ((aMaterial != null) && (aMaterial != Materials2Materials.Empty)
+                && (aMaterial != Materials2Materials.NULL)) {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
                 if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
                     aList.add(GTUtility.translate("GT5U.tooltip.purify.1"));
                 }
-                if (aPrefix == OrePrefixes.dust && aMaterial == Materials.Wheat) {
+                if (aPrefix == OrePrefixes.dust && aMaterial == Materials2Materials.Wheat) {
                     aList.add(GTUtility.translate("GT5U.tooltip.flour.cauldron"));
                 }
             }

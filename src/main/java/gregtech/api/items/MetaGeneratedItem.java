@@ -24,12 +24,16 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
@@ -107,6 +111,26 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         mIconList = new IIcon[aItemAmount][1];
 
         sInstances.put(getUnlocalizedName(), this);
+    }
+
+    /// Whether a meta-item damage value addresses the generated-material range -- 32 prefix blocks of 1000
+    /// material id slots -- rather than the custom-item range at `mOffset` and beyond.
+    public static boolean isMaterialItem(int meta) {
+        return meta >= 0 && meta < 32000;
+    }
+
+    public static boolean isMaterialItem(@NotNull ItemStack stack) {
+        return isMaterialItem(stack.getItemDamage());
+    }
+
+    /// The legacy [Materials] whose generated items occupy a material id slot, or null when the slot is empty
+    /// or the material's parent mod is absent (`Materials#mHasParentMod`): an absent-parent material never
+    /// generates items, so item-facing readers treat its slot as vacant even though
+    /// [gregtech.api.enums.materials2.Materials2IDIndex] lists the material. TRANSITIONAL -- dies with
+    /// [Materials].
+    public static @Nullable Materials generatedMaterial(int id) {
+        Materials material = MU.materialOf(MU.byId(id));
+        return material != null && material.mHasParentMod ? material : null;
     }
 
     /**

@@ -17,7 +17,6 @@ import com.google.common.collect.ImmutableList;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
@@ -59,7 +58,8 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
         INSTANCE = this;
 
-        for (Materials tMaterial : GregTechAPI.sGeneratedMaterials) {
+        for (int i = 0; i < 1000; i++) {
+            Materials tMaterial = generatedMaterial(i);
             if (tMaterial == null || tMaterial.mMetaItemSubID < 0 || tMaterial.mMetaItemSubID >= 1_000) {
                 continue;
             }
@@ -214,7 +214,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        if (!Materials.isMaterialItem(aStack)) return;
+        if (!isMaterialItem(aStack)) return;
         final int damage = aStack.getItemDamage();
         final Materials material = getMaterial(damage);
         final OrePrefixes prefix = getOrePrefix(damage);

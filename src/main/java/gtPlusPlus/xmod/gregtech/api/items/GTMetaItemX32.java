@@ -8,13 +8,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.MetaGeneratedItem;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -53,7 +58,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
             if (tPrefix == null) {
                 continue;
             }
-            final Materials tMaterial = GregTechAPI.sGeneratedMaterials[i % 1000];
+            final Materials tMaterial = MetaGeneratedItem.generatedMaterial(i % 1000);
             if (tMaterial == null) {
                 continue;
             }
@@ -122,9 +127,10 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     @Override
     public ItemStack getContainerItem(final ItemStack aStack) {
         final int aDamage = aStack.getItemDamage();
-        if (Materials.isMaterialItem(aDamage)) {
-            final Materials aMaterial = GregTechAPI.sGeneratedMaterials[aDamage % 1000];
-            if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
+        if (MetaGeneratedItem.isMaterialItem(aDamage)) {
+            final Material aMaterial = MU.byId(aDamage % 1000);
+            if ((aMaterial != null) && (aMaterial != Materials2Materials.Empty)
+                && (aMaterial != Materials2Materials.NULL)) {
                 final OrePrefixes aPrefix = this.mGeneratedPrefixList[aDamage / 1000];
                 if (aPrefix != null) {
                     return GTUtility.copyAmount(1, aPrefix.mContainerItem);
@@ -140,7 +146,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
         for (int i = 0; i < 32000; i++) {
             if (this.doesMaterialAllowGeneration(
                 this.mGeneratedPrefixList[i / 1000],
-                GregTechAPI.sGeneratedMaterials[i % 1000])) {
+                MetaGeneratedItem.generatedMaterial(i % 1000))) {
                 final ItemStack tStack = new ItemStack(this, 1, i);
                 this.isItemStackUsable(tStack);
                 list.add(tStack);
@@ -155,7 +161,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
             return null;
         }
         if (aMetaData < 32000) {
-            final Materials tMaterial = GregTechAPI.sGeneratedMaterials[aMetaData % 1000];
+            final Materials tMaterial = MetaGeneratedItem.generatedMaterial(aMetaData % 1000);
             if (tMaterial == null) {
                 return null;
             }
@@ -171,7 +177,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     @Override
     public int getItemStackLimit(final ItemStack aStack) {
         final int tDamage = this.getDamage(aStack);
-        if (Materials.isMaterialItem(tDamage) && (this.mGeneratedPrefixList[tDamage / 1000] != null)) {
+        if (MetaGeneratedItem.isMaterialItem(tDamage) && (this.mGeneratedPrefixList[tDamage / 1000] != null)) {
             return Math
                 .min(super.getItemStackLimit(aStack), this.mGeneratedPrefixList[tDamage / 1000].getDefaultStackSize());
         }
