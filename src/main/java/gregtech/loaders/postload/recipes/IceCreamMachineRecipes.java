@@ -37,16 +37,22 @@ public class IceCreamMachineRecipes implements Runnable {
             .fake()
             .addTo(iceCreamMachineRecipes);
 
+        addRecipe(ItemList.Ice_Cream_Acid);
         addRecipe(ItemList.Ice_Cream_Banana);
         addRecipe(ItemList.Ice_Cream_Benzene);
         addRecipe(ItemList.Ice_Cream_Blueberry);
         addRecipe(ItemList.Ice_Cream_Brownie);
+        addRecipe(ItemList.Ice_Cream_ButterPecan);
+        addRecipe(ItemList.Ice_Cream_Caramel);
+        addRecipe(ItemList.Ice_Cream_ChocolateChip);
         addRecipe(ItemList.Ice_Cream_Chocolate);
         addRecipe(ItemList.Ice_Cream_Coffee);
         addRecipe(ItemList.Ice_Cream_CookieDough);
         addRecipe(ItemList.Ice_Cream_CookiesAndCream);
         addRecipe(ItemList.Ice_Cream_CottonCandy);
+        addRecipe(ItemList.Ice_Cream_HotFudge);
         addRecipe(ItemList.Ice_Cream_JustCone);
+        addRecipe(ItemList.Ice_Cream_MhCSM);
         addRecipe(ItemList.Ice_Cream_Mango);
         addRecipe(ItemList.Ice_Cream_Meat);
         addRecipe(ItemList.Ice_Cream_MintChip);
@@ -55,7 +61,9 @@ public class IceCreamMachineRecipes implements Runnable {
         addRecipe(ItemList.Ice_Cream_PeanutButter);
         addRecipe(ItemList.Ice_Cream_Pistachio);
         addRecipe(ItemList.Ice_Cream_SaltedCaramel);
+        addRecipe(ItemList.Ice_Cream_Sprinkles);
         addRecipe(ItemList.Ice_Cream_Strawberry);
+        addRecipe(ItemList.Ice_Cream_ToffeeButter);
         addRecipe(ItemList.Ice_Cream_Vanilla);
     }
 
