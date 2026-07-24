@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
@@ -154,11 +153,14 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     @Override
     @SuppressWarnings("unchecked")
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        if (!structure.checkStructure((TSelf) this, errors)) return;
+        if (!structure.checkStructure((TSelf) this, errors)) {
+            if (connectsToNetwork()) BECFactoryGrid.INSTANCE.updateElement(this);
+            return;
+        }
         structureInstanceInfo.validate(errors);
         structureInstanceInfo.onPostCheck((TSelf) this);
 
-        if (!Objects.equals(mPreviousBECHatches, mBECHatches)) {
+        if (!new HashSet<>(mPreviousBECHatches).equals(new HashSet<>(mBECHatches))) {
             BECFactoryGrid.INSTANCE.updateElement(this);
         }
     }
@@ -248,6 +250,17 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         if (GTUtility.isServer() && connectsToNetwork()) {
             BECFactoryGrid.INSTANCE.removeElement(this);
         }
+    }
+
+    @Override
+    public String[] getInfoData() {
+        List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
+
+        if (connectsToNetwork()) {
+            data.add("BEC Network: " + (network == null ? "None" : network.id));
+        }
+
+        return data.toArray(new String[0]);
     }
 
     public enum BECHatches implements IHatchElement<MTEBECMultiblockBase<?>> {

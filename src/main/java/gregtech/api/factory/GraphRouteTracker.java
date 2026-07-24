@@ -1,32 +1,34 @@
 package gregtech.api.factory;
 
-import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Predicate;
 
 import gregtech.api.factory.routing.NetworkStep;
 import gregtech.api.factory.routing.NetworkVisitor;
 import gregtech.api.factory.routing.StepQueue;
 import gregtech.api.factory.routing.VisitorResult;
-import it.unimi.dsi.fastutil.Pair;
 
 public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwork, TGrid>, TNetwork extends IFactoryNetwork<TNetwork, TElement, TGrid>, TGrid extends IFactoryGrid<TGrid, TElement, TNetwork>, TNotable extends INotableFactoryElement<TNotable, TRouteInfo>, TRouteInfo extends IRouteInfo<TRouteInfo>> {
 
     @SuppressWarnings("rawtypes")
     private static final RoutedNode[] EMPTY_NODE_ARRAY = new RoutedNode[0];
 
-    public final HashMap<TNotable, RoutedNode<TNotable, TRouteInfo>[]> edges = new HashMap<>();
-
+    private final HashMap<TNotable, RoutedNode<TNotable, TRouteInfo>[]> edges = new HashMap<>();
     private final Class<TNotable> notableType;
     private final Set<TNotable> notableElements = new HashSet<>();
 
     private final TRouteInfo zero;
 
+    private boolean networkChanged = false;
+
     public GraphRouteTracker(Class<TNotable> notableType, TRouteInfo zero) {
         this.notableType = notableType;
         this.zero = zero;
+    }
+
+    public void invalidateRoutes() {
+        networkChanged = true;
     }
 
     public void onElementAdded(TElement element) {
@@ -35,6 +37,8 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
         TNotable notableElement = notableType.cast(element);
 
         notableElements.add(notableElement);
+
+        invalidateRoutes();
     }
 
     public void onElementRemoved(TElement element) {
@@ -43,6 +47,16 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
         TNotable notableElement = notableType.cast(element);
 
         notableElements.remove(notableElement);
+
+        invalidateRoutes();
+    }
+
+    public void updateEdgesIfNeeded() {
+        if (networkChanged) {
+            networkChanged = false;
+
+            updateEdges();
+        }
     }
 
     public void updateEdges() {
@@ -55,6 +69,12 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
                 notableElement.getRoutedNeighbours()
                     .toArray(EMPTY_NODE_ARRAY));
         }
+    }
+
+    public RoutedNode<TNotable, TRouteInfo>[] getEdges(TNotable from) {
+        updateEdgesIfNeeded();
+
+        return edges.get(from);
     }
 
     public static class From<TNotable, TRouteInfo> {
@@ -74,6 +94,8 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
     }
 
     public void iterateNetworkBFS(TNotable start, NetworkVisitor<TNotable, TRouteInfo> visitor) {
+        updateEdgesIfNeeded();
+
         StepQueue<TNotable, TRouteInfo> queue = new StepQueue<>();
 
         queue.add(new NetworkStep<>(start, zero, null));
@@ -98,44 +120,5 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
                 }
             }
         }
-    }
-
-    public FactoryRoutes<TNotable, TRouteInfo> dijkstra(TNotable start) {
-        return dijkstra(start, null);
-    }
-
-    public FactoryRoutes<TNotable, TRouteInfo> dijkstra(TNotable start,
-        Predicate<RoutedNode<TNotable, TRouteInfo>> filter) {
-        ArrayDeque<Pair<TNotable, TRouteInfo>> queue = new ArrayDeque<>();
-        HashSet<TNotable> visited = new HashSet<>();
-        HashMap<TNotable, From<TNotable, TRouteInfo>> result = new HashMap<>();
-
-        queue.add(Pair.of(start, null));
-        result.put(start, new From<>(start, zero.copy()));
-
-        while (!queue.isEmpty()) {
-            var c = queue.pop();
-            TNotable current = c.left();
-            TRouteInfo route = c.right();
-
-            if (!visited.add(current)) continue;
-
-            for (var edge : edges.getOrDefault(current, emptyNodeArray())) {
-                if (filter != null && !filter.test(edge)) continue;
-
-                var totalRoute = route == null ? edge.routeInfo() : route.merge(edge.routeInfo());
-
-                From<TNotable, TRouteInfo> existing = result.get(edge.element());
-
-                if (existing != null) {
-                    if (existing.routeInfo.compareTo(totalRoute) <= 0) continue;
-                }
-
-                result.put(edge.element(), new From<>(current, totalRoute));
-                queue.add(Pair.of(edge.element(), totalRoute));
-            }
-        }
-
-        return new FactoryRoutes<>(start, result);
     }
 }
