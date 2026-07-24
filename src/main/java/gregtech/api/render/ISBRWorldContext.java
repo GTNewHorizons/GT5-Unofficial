@@ -26,4 +26,8 @@ public interface ISBRWorldContext extends ISBRContext {
     ISBRWorldContext setupColor(ForgeDirection side, int hexColor);
 
     ISBRWorldContext setupLighting(ForgeDirection facing);
+
+    ISBRWorldContext finishLighting();
+
+    boolean tryStartAngelicaLighting();
 }

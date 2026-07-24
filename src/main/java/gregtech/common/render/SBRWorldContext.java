@@ -25,7 +25,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
+import com.gtnewhorizons.angelica.api.ExtCeleritasRenderBlocks;
+import com.gtnewhorizons.angelica.rendering.StateAwareTessellator;
+
 import gregtech.GTMod;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.ISBRWorldContext;
 
@@ -83,6 +88,8 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      * Ambient occlusion values for all four corners of side.
      */
     private float aoTopLeft, aoBottomLeft, aoBottomRight, aoTopRight;
+
+    private boolean usingCeleritas;
 
     private SBRWorldContext() {}
 
@@ -220,6 +227,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
             layer.renderYNeg(this);
         }
         renderBlocks.renderMinY = origMinY;
+        finishLighting();
     }
 
     @Override
@@ -235,6 +243,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
             layer.renderYPos(this);
         }
         renderBlocks.renderMaxY = origMaxY;
+        finishLighting();
     }
 
     @Override
@@ -250,6 +259,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
             layer.renderZNeg(this);
         }
         renderBlocks.renderMinZ = origMinZ;
+        finishLighting();
     }
 
     @Override
@@ -265,6 +275,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
             layer.renderZPos(this);
         }
         renderBlocks.renderMaxZ = origMaxZ;
+        finishLighting();
     }
 
     @Override
@@ -280,6 +291,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
             layer.renderXNeg(this);
         }
         renderBlocks.renderMinX = origMinX;
+        finishLighting();
     }
 
     @Override
@@ -295,6 +307,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
             layer.renderXPos(this);
         }
         renderBlocks.renderMaxX = origMaxX;
+        finishLighting();
     }
 
     /**
@@ -305,7 +318,8 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      */
     @Override
     public ISBRWorldContext setupColor(ForgeDirection side, int hexColor) {
-        final float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
+        final float lightness = hasLightnessOverride ? lightnessOverride
+            : usingCeleritas ? 1f : LIGHTNESS[side.ordinal()];
         final int color = hasColorOverride ? colorOverride : hexColor;
 
         final float baseRed = (color >> 16 & 0xff) / 255.0F;
@@ -433,6 +447,9 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         // Use neighbor light if face is flush with neighbor, otherwise current block brightness
         final int iY = block.getBlockBoundsMinY() < FLUSH_MIN ? 0 : 1;
         final RenderBlocks renderBlocks = this.renderBlocks;
+        if (tryStartAngelicaLighting()) {
+            return this;
+        }
         if (renderBlocks.enableAO) {
             final float[][][] AOLV = this.AOLV;
             final double renderMinY = renderBlocks.renderMinY;
@@ -565,6 +582,9 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         // Use neighbor light if face is flush with neighbor, otherwise current block brightness
         final int iY = block.getBlockBoundsMaxY() > FLUSH_MAX ? 2 : 1;
         final RenderBlocks renderBlocks = this.renderBlocks;
+        if (tryStartAngelicaLighting()) {
+            return this;
+        }
         if (renderBlocks.enableAO) {
             final float[][][] AOLV = this.AOLV;
             final double renderMaxY = renderBlocks.renderMaxY;
@@ -698,6 +718,9 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         // Use neighbor light if face is flush with neighbor, otherwise current block brightness
         final int iZ = block.getBlockBoundsMinZ() < FLUSH_MIN ? 0 : 1;
         final RenderBlocks renderBlocks = this.renderBlocks;
+        if (tryStartAngelicaLighting()) {
+            return this;
+        }
         if (renderBlocks.enableAO) {
             final float[][][] AOLV = this.AOLV;
             final double renderMinY = renderBlocks.renderMinY;
@@ -830,6 +853,9 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         // Use neighbor light if face is flush with neighbor, otherwise current block brightness
         final int iZ = block.getBlockBoundsMaxZ() > FLUSH_MAX ? 2 : 1;
         final RenderBlocks renderBlocks = this.renderBlocks;
+        if (tryStartAngelicaLighting()) {
+            return this;
+        }
         if (renderBlocks.enableAO) {
             final float[][][] AOLV = this.AOLV;
             final double renderMinY = renderBlocks.renderMinY;
@@ -963,6 +989,9 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         // Use neighbor light if face is flush with neighbor, otherwise current block brightness
         final int iX = block.getBlockBoundsMinX() < FLUSH_MIN ? 0 : 1;
         final RenderBlocks renderBlocks = this.renderBlocks;
+        if (tryStartAngelicaLighting()) {
+            return this;
+        }
         if (renderBlocks.enableAO) {
             final float[][][] AOLV = this.AOLV;
             final double renderMinY = renderBlocks.renderMinY;
@@ -1095,6 +1124,9 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         // Use neighbor light if face is flush with neighbor, otherwise current block brightness
         final int iX = block.getBlockBoundsMaxX() > FLUSH_MAX ? 2 : 1;
         final RenderBlocks renderBlocks = this.renderBlocks;
+        if (tryStartAngelicaLighting()) {
+            return this;
+        }
         if (renderBlocks.enableAO) {
             final float[][][] AOLV = this.AOLV;
             final double renderMinY = renderBlocks.renderMinY;
@@ -1209,6 +1241,40 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         }
 
         return this;
+    }
+
+    @Override
+    public ISBRWorldContext finishLighting() {
+        if (Mods.Angelica.isModLoaded() && renderBlocks instanceof ExtCeleritasRenderBlocks ext) {
+            ext.angelica$setApplyingCeleritasAO(false);
+            Tessellator tessellator = TessellatorManager.get();
+            if (tessellator instanceof StateAwareTessellator stateAware) {
+                stateAware.angelica$setAppliedAo(false);
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public boolean tryStartAngelicaLighting() {
+        if (Mods.Angelica.isModLoaded() && renderBlocks instanceof ExtCeleritasRenderBlocks ext) {
+            if (ext.angelica$shouldApplyCeleritasAO()) {
+                ext.angelica$setApplyingCeleritasAO(true);
+                setLightnessOverride(1.0f);
+                aoBottomLeft = aoTopLeft = aoBottomRight = aoTopRight = 1.0f;
+                brightness = 15728880;
+                Tessellator tessellator = TessellatorManager.get();
+                if (tessellator instanceof StateAwareTessellator stateAware) {
+                    stateAware.angelica$setAppliedAo(true);
+                    tessellator.setBrightness(brightness);
+                    tessellator.setColorOpaque_F(1, 1, 1);
+                }
+                usingCeleritas = true;
+                return true;
+            }
+        }
+        usingCeleritas = false;
+        return false;
     }
 
 }
