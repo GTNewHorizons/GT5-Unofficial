@@ -56,7 +56,6 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -891,10 +890,7 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockReinforced = new BlockReinforced("gt.blockreinforced");
 
-        GregTechAPI.sBlockSheetmetalGT = new BlockSheetMetal(
-            "gt.sheetmetal",
-            meta -> GTDataUtils.getIndexSafe(GregTechAPI.sGeneratedMaterials, meta),
-            1000);
+        GregTechAPI.sBlockSheetmetalGT = new BlockSheetMetal("gt.sheetmetal", meta -> MU.byId(meta), 1000);
 
         GregTechAPI.sBlockSheetmetalBW = new BlockSheetMetal(
             "bw.sheetmetal",

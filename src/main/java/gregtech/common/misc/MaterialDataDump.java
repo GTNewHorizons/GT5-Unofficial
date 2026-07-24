@@ -148,8 +148,11 @@ public final class MaterialDataDump {
 
     private static List<Map<String, Object>> dumpGtMaterials() {
         LinkedHashSet<Materials> materials = new LinkedHashSet<>();
-        for (Materials material : GregTechAPI.sGeneratedMaterials) {
-            if (material != null) materials.add(material);
+        for (int id = 0; id < 1000; id++) {
+            Materials material = MU.materialOf(MU.byId(id));
+            // A slot whose material lost its parent mod is skipped, reproducing the mHasParentMod gate of
+            // Materials.fillGeneratedMaterialsMap.
+            if (material != null && material.mHasParentMod) materials.add(material);
         }
         materials.addAll(Materials.getAll());
 

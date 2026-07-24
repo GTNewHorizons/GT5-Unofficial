@@ -1,14 +1,9 @@
 package gregtech.loaders.preload;
 
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
-import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
-import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.metatileentity.implementations.MTEFrame;
@@ -19,7 +14,9 @@ import gregtech.common.blocks.PipeShapeBlock;
 /// Registers the canonical material-agnostic MTE instance behind each [Materials2PipeShapes] shape, one per
 /// shape at the id its block declares: wires and cables ([MTECable]), fluid pipes ([MTEFluidPipe]), item
 /// pipes ([MTEItemPipe]), and the frame box ([MTEFrame]). Each instance derives its material and stats from
-/// its host block's metadata instead of carrying them per registration.
+/// its host block's metadata instead of carrying them per registration. The material membership of each
+/// shape is declared at material registration; the frame set's authoritative source is
+/// [gregtech.api.enums.materials2.Materials2PipeMaterials#frameMaterials].
 public final class LoaderPipeShapeEntities implements Runnable {
 
     @Override
@@ -55,27 +52,6 @@ public final class LoaderPipeShapeEntities implements Runnable {
         itemPipe(Materials2PipeShapes.itemPipeRestrictiveHuge);
         FrameShapeBlock frame = (FrameShapeBlock) MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt);
         new MTEFrame(frame.getMteId(), "shape." + frame.getName(), frame);
-        verifyFrameMembership();
-    }
-
-    /// Checks the declared frame-shape membership ([Materials2PipeMaterials#frameMaterials]) against the live
-    /// legacy frame predicate (every generated material with metal items, plus Wood), which is unreadable at
-    /// material registration where membership had to be settled. Logs each divergence.
-    private static void verifyFrameMembership() {
-        for (int meta = 0; meta < GregTechAPI.sGeneratedMaterials.length; meta++) {
-            Materials legacy = GregTechAPI.sGeneratedMaterials[meta];
-            if (legacy == null) continue;
-            boolean legacyFrame = legacy.hasMetalItems() || legacy == Materials.Wood;
-            Material material = MU.material(legacy);
-            boolean shapeFrame = material != null && material.hasShape(Materials2PipeShapes.frameGt);
-            if (legacyFrame != shapeFrame) {
-                GTMod.GT_FML_LOGGER.error(
-                    "Frame shape membership for {} diverges from the legacy frame set (legacy {}, shape {})",
-                    legacy.mName,
-                    legacyFrame,
-                    shapeFrame);
-            }
-        }
     }
 
     private static void cable(Shape shape) {

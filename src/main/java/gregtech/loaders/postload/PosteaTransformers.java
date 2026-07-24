@@ -377,13 +377,9 @@ public class PosteaTransformers implements Runnable {
             int id = tag.getInteger("mID");
             // Legacy per-material framebox IDs start at 4096; the offset is the index in the material list
             int indexInMaterialList = id - 4096;
-            if (indexInMaterialList < 0 || indexInMaterialList >= GregTechAPI.sGeneratedMaterials.length) {
-                // Do not modify this TE, so return null
-                return null;
-            }
-
-            Material material = MU.material(GregTechAPI.sGeneratedMaterials[indexInMaterialList]);
+            Material material = MU.byId(indexInMaterialList);
             if (material == null) {
+                // Do not modify this TE, so return null
                 return null;
             }
             FrameShapeBlock frameBlock = (FrameShapeBlock) MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt);
@@ -405,16 +401,12 @@ public class PosteaTransformers implements Runnable {
             // Get item meta id and see if this is a frame box, this works pretty much identically to the TE transformer
             int id = tag.getInteger("Damage");
             int indexInMaterialList = id - 4096;
-            // Not a frame box
-            if (indexInMaterialList < 0 || indexInMaterialList >= GregTechAPI.sGeneratedMaterials.length) {
-                return false;
-            }
             // Not a frame box if the material for this id does not have a frame box associated with it.
             // Apparently the DEFC ID overlaps with the material ID for a Bastnasite frame box for example
-            if (!GregTechAPI.sGeneratedMaterials[indexInMaterialList].hasMetalItems()) {
+            if (!LegacyMetalItemsTable.contains(indexInMaterialList)) {
                 return false;
             }
-            Material material = MU.material(GregTechAPI.sGeneratedMaterials[indexInMaterialList]);
+            Material material = MU.byId(indexInMaterialList);
             if (material == null) {
                 return false;
             }
