@@ -23,7 +23,9 @@ import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
+import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchExtrusion;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
@@ -31,6 +33,7 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import gtnhlanth.common.hatch.MTEBusInputFocus;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
+import kubatech.tileentity.gregtech.hatch.MTEHatchElectrode;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
 public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
@@ -74,7 +77,12 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
 
         @Override
         public List<Class<? extends IMetaTileEntity>> mteBlacklist() {
-            return ImmutableList.of(MTEHatchLensHousing.class, MTEHatchSteamBusInput.class);
+            return ImmutableList.of(
+                MTEHatchLensHousing.class,
+                MTEHatchSteamBusInput.class,
+                MTEHatchExtrusion.class,
+                MTEHatchPatternProvider.class,
+                MTEHatchElectrode.class);
         }
     },
     OutputHatch("GT5U.MBTT.OutputHatch", MTEMultiBlockBase::addOutputHatchToMachineList, MTEHatchOutput.class) {
