@@ -274,12 +274,17 @@ public class GTPreLoad {
                                 if (mIt == 2) tags = prefixes2;
                                 if (mIt == 3) tags = prefixes3;
                                 if (tags == null) tags = GTValues.emptyStringArray;
-                                if (GregTechAPI.sGeneratedMaterials[material] != null) {
+                                final Material mlMaterial = MU.byId(material);
+                                final Materials legacyTwin = MU.materialOf(mlMaterial);
+                                // a parent-mod-gated material never generated items, so its id must keep
+                                // resolving as disabled (Materials.fillGeneratedMaterialsMap left its slot
+                                // empty) even though Materials2IDIndex lists it
+                                if (mlMaterial != null && (legacyTwin == null || legacyTwin.mHasParentMod)) {
                                     final String tag;
                                     if (tags.length > prefix) {
-                                        tag = tags[prefix] + GregTechAPI.sGeneratedMaterials[material].mName;;
+                                        tag = tags[prefix] + MU.legacyName(mlMaterial);
                                     } else {
-                                        tag = GregTechAPI.sGeneratedMaterials[material].mName;
+                                        tag = MU.legacyName(mlMaterial);
                                     }
                                     if (!oreTags.contains(tag)) oreTags.add(tag);
                                 } else if (material > 0) {

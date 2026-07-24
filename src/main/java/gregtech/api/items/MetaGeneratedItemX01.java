@@ -9,6 +9,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -55,10 +57,10 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
         mIconSetIndex = aIconSetIndex >= 0 ? aIconSetIndex
             : aGeneratedPrefix.getTextureIndex() >= 0 ? aGeneratedPrefix.getTextureIndex() : 0;
 
-        for (int i = 0; i < GregTechAPI.sGeneratedMaterials.length; i++) {
+        for (int i = 0; i < 1000; i++) {
             OrePrefixes tPrefix = mPrefix;
             if (tPrefix == null) continue;
-            Materials tMaterial = GregTechAPI.sGeneratedMaterials[i];
+            Materials tMaterial = generatedMaterial(i);
             if (tMaterial == null) continue;
             if (mPrefix.doGenerateItem(tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
@@ -130,55 +132,55 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
     public String getItemStackDisplayName(ItemStack aStack) {
         String aName = super.getItemStackDisplayName(aStack);
         int aDamage = aStack.getItemDamage();
-        if (Materials.isMaterialItem(aDamage)) return Materials.getLocalizedNameForItem(aName, aDamage % 1000);
+        if (isMaterialItem(aDamage)) {
+            Materials aMaterial = generatedMaterial(aDamage % 1000);
+            if (aMaterial != null) return aMaterial.getLocalizedNameForItem(aName);
+        }
         return aName;
     }
 
     @Override
     public ItemStack getContainerItem(ItemStack aStack) {
-        int aMetaData = aStack.getItemDamage();
-        if (aMetaData < GregTechAPI.sGeneratedMaterials.length && aMetaData >= 0) {
-            Materials aMaterial = GregTechAPI.sGeneratedMaterials[aMetaData];
-            if (aMaterial != null && aMaterial != Materials.Empty && aMaterial != Materials._NULL) {
-                return GTUtility.copyAmount(1, mPrefix.mContainerItem);
-            }
+        Material aMaterial = MU.byId(aStack.getItemDamage());
+        if (aMaterial != null && aMaterial != Materials2Materials.Empty && aMaterial != Materials2Materials.NULL) {
+            return GTUtility.copyAmount(1, mPrefix.mContainerItem);
         }
         return null;
     }
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        int aMetaData = getDamage(aStack);
-        return aMetaData < GregTechAPI.sGeneratedMaterials.length && GregTechAPI.sGeneratedMaterials[aMetaData] != null
-            ? GregTechAPI.sGeneratedMaterials[aMetaData].mRGBa
-            : MU.rgba(Materials2Materials.NULL);
+        Material aMaterial = MU.byId(getDamage(aStack));
+        short[] rgba = MU.rgba(aMaterial);
+        return rgba != null ? rgba : MU.rgba(Materials2Materials.NULL);
     }
 
     @Override
     public final IIconContainer getIconContainer(int aMetaData) {
-        return aMetaData < GregTechAPI.sGeneratedMaterials.length && GregTechAPI.sGeneratedMaterials[aMetaData] != null
-            ? getIconContainer(aMetaData, GregTechAPI.sGeneratedMaterials[aMetaData])
-            : null;
+        Materials aMaterial = generatedMaterial(aMetaData);
+        return aMaterial != null ? getIconContainer(aMetaData, aMaterial) : null;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public final void getSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
-        for (int i = 0; i < GregTechAPI.sGeneratedMaterials.length; i++) if (mPrefix
-            .doGenerateItem(GregTechAPI.sGeneratedMaterials[i])
-            && doesShowInCreative(mPrefix, GregTechAPI.sGeneratedMaterials[i], GregTechAPI.sDoShowAllItemsInCreative)) {
+        for (int i = 0; i < 1000; i++) {
+            Materials tMaterial = generatedMaterial(i);
+            if (mPrefix.doGenerateItem(tMaterial)
+                && doesShowInCreative(mPrefix, tMaterial, GregTechAPI.sDoShowAllItemsInCreative)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 isItemStackUsable(tStack);
                 aList.add(tStack);
             }
+        }
         super.getSubItems(aItem, aCreativeTab, aList);
     }
 
     @Override
     public final IIcon getIconFromDamage(int aMetaData) {
         if (aMetaData < 0) return null;
-        if (aMetaData < GregTechAPI.sGeneratedMaterials.length) {
-            Materials tMaterial = GregTechAPI.sGeneratedMaterials[aMetaData];
+        if (aMetaData < 1000) {
+            Materials tMaterial = generatedMaterial(aMetaData);
             if (tMaterial == null) return null;
             IIconContainer tIcon = getIconContainer(aMetaData, tMaterial);
             if (tIcon != null) return tIcon.getIcon();

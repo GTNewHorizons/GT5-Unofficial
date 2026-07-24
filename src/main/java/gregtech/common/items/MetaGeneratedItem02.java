@@ -2344,7 +2344,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     @Override
     public boolean isItemStackUsable(ItemStack aStack) {
         int aDamage = aStack.getItemDamage();
-        Materials aMaterial = GregTechAPI.sGeneratedMaterials[(aDamage % 1000)];
+        Materials aMaterial = getMaterial(aDamage);
         if ((aDamage >= 25000) && (aDamage < 27000) && (aMaterial != null) && (aMaterial.mToolEnchantment != null)) {
             Enchantment tEnchant = aMaterial.mToolEnchantment == Enchantment.fortune ? Enchantment.looting
                 : aMaterial.mToolEnchantment;
