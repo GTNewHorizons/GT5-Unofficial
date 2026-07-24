@@ -3,6 +3,7 @@ package gregtech.api.material;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -31,9 +32,11 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.Materials2ArcSmelting;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
@@ -155,6 +158,12 @@ public class MU {
         return MaterialLibAPI.getMaterial("gregtech", name);
     }
 
+    /// The material occupying a legacy generated-material id slot ([Materials2IDIndex]) -- the [Material]-side
+    /// read of `GregTechAPI.sGeneratedMaterials[id]`. Null for an empty slot or an out-of-range id.
+    public static @Nullable Material byId(int id) {
+        return Materials2IDIndex.get(id);
+    }
+
     /// The cutover MaterialLib stack for a legacy (prefix, material) pair, or null when either side has no
     /// cutover mapping. When a prefix maps to more than one candidate shape (`cellPlasma`), the first one
     /// `material` actually generates is used.
@@ -190,6 +199,15 @@ public class MU {
     /// [#isCutOver] for a MaterialLib [Material] held directly -- see [#stack]'s raw-[Material] overload.
     public static boolean isCutOver(OrePrefixes prefix, @Nullable Material material) {
         return stack(prefix, material, 1) != null;
+    }
+
+    /// Whether `stack`'s unification association ([GTOreDictUnificator#getAssociation]) names `material` as
+    /// its primary material, compared by identity -- the [Material]-side form of
+    /// `GTUtility#isPartOfMaterials`.
+    public static boolean isPartOf(@Nullable ItemStack stack, @Nullable Material material) {
+        if (material == null) return false;
+        ItemData association = GTOreDictUnificator.getAssociation(stack);
+        return association != null && association.mMaterial.mMaterial == material;
     }
 
     /// The dust [ItemStack] a [GTMaterialProperties#COMPOSITION] entry contributes to a recipe, sized by the
@@ -265,6 +283,8 @@ public class MU {
     /// `Material#getFluid` gated on this same shape), so once [#hasMolten] is true this is byte-identical to
     /// `getMolten`'s own stack.
     public static @Nullable FluidStack molten(@Nullable Material material, long amount) {
+        Fluid stored = storedFluid(material, FluidState.MOLTEN);
+        if (stored != null) return new FluidStack(stored, (int) amount);
         if (!hasMolten(material)) return null;
         return MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) amount);
     }
@@ -283,7 +303,7 @@ public class MU {
     /// [#fluid]'s raw [Fluid] -- the legacy `Materials#mFluid` field value itself, for presence gates and
     /// callers building their own stacks.
     public static @Nullable Fluid fluidOf(@Nullable Material material) {
-        return slotFluid(material, FluidNames::fluid);
+        return resolveSlotFluid(material, FluidState.LIQUID, FluidNames::fluid);
     }
 
     /// [#fluid], for `Materials#mGas`/`Materials#getGas` -- the `gas()` slot. Wherever the former
@@ -292,20 +312,55 @@ public class MU {
     /// registration otherwise), and the shape registers its Forge fluid under the slot's own name. The slot
     /// additionally covers materials whose legacy gas fluid never became an ML shape.
     public static @Nullable FluidStack gas(@Nullable Material material, long amount) {
-        Fluid fluid = slotFluid(material, FluidNames::gas);
+        Fluid fluid = resolveSlotFluid(material, FluidState.GAS, FluidNames::gas);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
     /// [#fluid], for `Materials#mPlasma`/`Materials#getPlasma` -- the `plasma()` slot.
     public static @Nullable FluidStack plasma(@Nullable Material material, long amount) {
-        Fluid fluid = slotFluid(material, FluidNames::plasma);
+        Fluid fluid = resolveSlotFluid(material, FluidState.PLASMA, FluidNames::plasma);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
     /// [#fluid], for `Materials#mSolid`/`Materials#getSolid` -- the `solid()` slot.
     public static @Nullable FluidStack solid(@Nullable Material material, long amount) {
-        Fluid fluid = slotFluid(material, FluidNames::solid);
+        Fluid fluid = resolveSlotFluid(material, FluidState.SOLID, FluidNames::solid);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
+    }
+
+    /// The five legacy fluid fields a material can carry, keying [#recordSlotFluid]'s store: `mFluid`
+    /// (LIQUID), `mGas`, `mStandardMoltenFluid` (MOLTEN), `mSolid`, and `mPlasma`.
+    public enum FluidState {
+        LIQUID,
+        GAS,
+        MOLTEN,
+        SOLID,
+        PLASMA
+    }
+
+    private static final Map<Material, EnumMap<FluidState, Fluid>> slotFluids = new HashMap<>();
+
+    /// Records the Forge fluid backing one of `material`'s legacy fluid states -- the [Material]-side twin of
+    /// the loader-time legacy field writes (`GTFluid#configureMaterials` and `gregtech.loaders.preload.
+    /// LoaderGTBlockFluid`'s direct `mFluid`/`mGas`/`mSolid` assignments), for materials whose fluids are
+    /// configured at registration time rather than ported as [GTMaterialProperties#LEGACY_FLUIDS] data. A
+    /// recorded fluid takes precedence over the property resolution in [#fluidOf]/[#gas]/[#molten]/[#solid]/
+    /// [#plasma].
+    public static void recordSlotFluid(Material material, FluidState state, Fluid fluid) {
+        slotFluids.computeIfAbsent(material, k -> new EnumMap<>(FluidState.class))
+            .put(state, fluid);
+    }
+
+    private static @Nullable Fluid storedFluid(@Nullable Material material, FluidState state) {
+        if (material == null) return null;
+        EnumMap<FluidState, Fluid> fluids = slotFluids.get(material);
+        return fluids == null ? null : fluids.get(state);
+    }
+
+    private static @Nullable Fluid resolveSlotFluid(@Nullable Material material, FluidState state,
+        Function<FluidNames, FluidRef> slot) {
+        Fluid stored = storedFluid(material, state);
+        return stored != null ? stored : slotFluid(material, slot);
     }
 
     private static @Nullable Fluid slotFluid(@Nullable Material material, Function<FluidNames, FluidRef> slot) {
@@ -513,6 +568,16 @@ public class MU {
         return ml != null ? meltingPoint(ml) : material.mMeltingPoint;
     }
 
+    /// The legacy `Materials#getGasTemperature()` value for a material: room temperature (295 K) when
+    /// [GTMaterialProperties#GAS_TEMP] is unset or zero, otherwise the material's [#meltingPoint] -- the
+    /// legacy accessor reads `mMeltingPoint`, not `mGasTemp`, whenever the gas temperature is set
+    /// (`Materials#getGasTemperature`), and the fluid registration temperatures built from it depend on that
+    /// exact value.
+    public static int gasTemperature(@Nullable Material material) {
+        Integer gasTemp = material == null ? null : material.getProperty(GTMaterialProperties.GAS_TEMP);
+        return gasTemp == null || gasTemp == 0 ? 295 : meltingPoint(material);
+    }
+
     /// The legacy `Materials#mBlastFurnaceTemp` Kelvin blast furnace temperature for a material, or `0` if
     /// unset. Ported byte-identically to [GTMaterialProperties#BLAST_TEMP]: `MaterialDataDump` captured the
     /// property already truncated to `mBlastFurnaceTemp`'s `short` range, so `LegacyMaterials.build`'s
@@ -702,6 +767,12 @@ public class MU {
         return chaseRef(material, GTMaterialProperties.ARC_SMELT_INTO);
     }
 
+    /// The legacy `Materials#mArcSmeltIntoWithGas` gas-conditional arc-smelting mapping for a material
+    /// (gas -> result), from [Materials2ArcSmelting]'s declared table; empty when the material has none.
+    public static Map<Material, Material> arcSmeltIntoWithGas(@Nullable Material material) {
+        return Materials2ArcSmelting.withGas(material);
+    }
+
     /// [#smeltInto(Material)], for [GTMaterialProperties#DIRECT_SMELTING].
     public static @Nullable Material directSmelting(@Nullable Material material) {
         return chaseRef(material, GTMaterialProperties.DIRECT_SMELTING);
@@ -825,6 +896,12 @@ public class MU {
     public static String internalName(Material material) {
         String legacyName = material.getProperty(GTMaterialProperties.LEGACY_NAME);
         return legacyName != null ? legacyName : material.getName();
+    }
+
+    /// The exact legacy `Materials#mName` string for a material -- an alias for [#internalName], which already
+    /// resolves the [GTMaterialProperties#LEGACY_NAME] override before the registration name.
+    public static String legacyName(Material material) {
+        return internalName(material);
     }
 
     /// The legacy `Materials#mDefaultLocalName` display name for a material --

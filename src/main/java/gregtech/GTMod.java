@@ -68,6 +68,7 @@ import gregtech.api.enums.Materials2;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -315,6 +316,8 @@ public class GTMod {
         for (Runnable tRunnable : GregTechAPI.sBeforeGTPreload) {
             tRunnable.run();
         }
+
+        Materials2IDIndex.init();
 
         GTPreLoad.getConfiguration(event.getModConfigurationDirectory());
         GTPreLoad.createLogFiles(
