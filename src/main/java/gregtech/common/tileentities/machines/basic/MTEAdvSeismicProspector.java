@@ -233,8 +233,7 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
             ItemStack is = new ItemStack(tBlock, 1, tMetaID);
             ItemData association = GTOreDictUnificator.getAssociation(is);
             if ((association != null) && (association.mPrefix.toString()
-                .startsWith("ore"))) return MU.materialOf(association.mMaterial.mMaterial)
-                    .getDefaultLocalName();
+                .startsWith("ore"))) return MU.localName(association.mMaterial.mMaterial);
             else if (GTUtility.isOre(tBlock, tMetaID)) return tBlock.getLocalizedName();
         }
         return null;

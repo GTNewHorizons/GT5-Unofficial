@@ -26,16 +26,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import com.ruling_0.materiallib.api.Material;
+
 import detrav.DetravScannerMod;
 import detrav.enums.DetravToolDictNames;
 import detrav.items.tools.DetravProspector;
 import detrav.items.tools.DetravToolElectricProspector;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -171,7 +173,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
     @Override
     public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         long tMaxDamage = getToolMaxDamage(aStack);
-        Materials tMaterial = getPrimaryMaterial(aStack);
+        Material tMaterial = getPrimaryMaterialML(aStack);
         IToolStats tStats = getToolStats(aStack);
         int tOffset = aList.size();
         if (tStats == null) return;
@@ -193,9 +195,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                     + " / "
                     + tMaxDamage
                     + EnumChatFormatting.GRAY);
-            aList.add(
-                tOffset + 1,
-                EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
+            aList.add(tOffset + 1, EnumChatFormatting.WHITE + MU.localizedNameOf(tMaterial) + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 2,
                 EnumChatFormatting.WHITE + StatCollector
@@ -234,9 +234,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                 + " / "
                 + tMaxDamage
                 + EnumChatFormatting.GRAY);
-        aList.add(
-            tOffset + 1,
-            EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
+        aList.add(tOffset + 1, EnumChatFormatting.WHITE + MU.localizedNameOf(tMaterial) + EnumChatFormatting.GRAY);
         aList.add(
             tOffset + 2,
             EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.range")

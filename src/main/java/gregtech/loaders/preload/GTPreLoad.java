@@ -36,6 +36,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
@@ -276,11 +277,10 @@ public class GTPreLoad {
                                 if (mIt == 3) tags = prefixes3;
                                 if (tags == null) tags = GTValues.emptyStringArray;
                                 final Material mlMaterial = MU.byId(material);
-                                final Materials legacyTwin = MU.materialOf(mlMaterial);
                                 // a parent-mod-gated material never generated items, so its id must keep
                                 // resolving as disabled (Materials.fillGeneratedMaterialsMap left its slot
                                 // empty) even though Materials2IDIndex lists it
-                                if (mlMaterial != null && (legacyTwin == null || legacyTwin.mHasParentMod)) {
+                                if (mlMaterial != null && Materials2ParentMods.hasParentMod(mlMaterial)) {
                                     final String tag;
                                     if (tags.length > prefix) {
                                         tag = tags[prefix] + MU.legacyName(mlMaterial);

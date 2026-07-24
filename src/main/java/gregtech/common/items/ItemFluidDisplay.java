@@ -143,7 +143,7 @@ public class ItemFluidDisplay extends GTGenericItem {
             if (material != null) return material;
         }
         if (fluid instanceof GTFluid gtFluid) {
-            return MU.materialOf(MU.materialOfFluid(gtFluid));
+            return MU.materialOfFluid(gtFluid);
         }
         return null;
     }

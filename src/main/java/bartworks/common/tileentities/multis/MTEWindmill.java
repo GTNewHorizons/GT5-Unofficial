@@ -69,7 +69,6 @@ import bartworks.common.tileentities.classic.TileEntityRotorBlock;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GUITextureSet;
@@ -302,12 +301,10 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         }
         final ItemData association = GTOreDictUnificator.getAssociation(itemStack);
         final OrePrefixes prefix = association == null ? null : association.mPrefix;
-        final Materials legacyMaterial = prefix == null || association.mMaterial == null
-            || association.mMaterial.mMaterial == null ? null : MU.materialOf(association.mMaterial.mMaterial);
-        if (prefix == null || association.mMaterial == null
-            || association.mMaterial.mMaterial == null
-            || legacyMaterial == null
-            || legacyMaterial.getDust(1) == null) {
+        final Material material = prefix == null || association.mMaterial == null
+            || association.mMaterial.mMaterial == null ? null : association.mMaterial.mMaterial;
+        if (material == null || MU.materialOf(material) == null
+            || GTOreDictUnificator.get(OrePrefixes.dust, material, 1) == null) {
             return new float[] { 1f, 1f };
         }
         if (OrePrefixes.ore == prefix || OrePrefixes.oreNetherrack == prefix

@@ -33,7 +33,6 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -79,13 +78,13 @@ public class Godforge implements Runnable {
 
         for (ItemStack itemStack : items) {
             ItemData association = GTOreDictUnificator.getAssociation(itemStack);
-            Materials legacyMaterial = association == null || association.mMaterial == null
-                || association.mMaterial.mMaterial == null ? null : MU.materialOf(association.mMaterial.mMaterial);
-            if (legacyMaterial == null) {
+            Material material = association == null || association.mMaterial == null
+                || association.mMaterial.mMaterial == null ? null : association.mMaterial.mMaterial;
+            if (material == null || MU.materialOf(material) == null) {
                 GTLog.err.println("Godforge.convertToFluid: no unification data for " + itemStack + ", skipping");
                 continue;
             }
-            molten.add(legacyMaterial.getMolten(1 * INGOTS));
+            molten.add(MU.molten(material, 1 * INGOTS));
         }
 
         return molten.toArray(new FluidStack[0]);
@@ -1138,12 +1137,12 @@ public class Godforge implements Runnable {
     private static FluidStack convertToMolten(ItemStack stack) {
         // if this is null it has to be a gt++ material
         ItemData data = GTOreDictUnificator.getAssociation(stack);
-        Materials mat = data != null ? MU.materialOf(data.mMaterial.mMaterial) : null;
-        if (mat != null) {
-            if (mat.mStandardMoltenFluid != null) {
-                return mat.getMolten(INGOTS * data.mMaterial.mAmount / GTValues.M);
-            } else if (mat.mFluid != null) {
-                return mat.getFluid(1_000);
+        Material mat = data != null ? data.mMaterial.mMaterial : null;
+        if (mat != null && MU.materialOf(mat) != null) {
+            if (MU.hasMolten(mat)) {
+                return MU.molten(mat, INGOTS * data.mMaterial.mAmount / GTValues.M);
+            } else if (MU.fluidOf(mat) != null) {
+                return MU.fluid(mat, 1_000);
             }
         }
         int[] oreIDs = OreDictionary.getOreIDs(stack);

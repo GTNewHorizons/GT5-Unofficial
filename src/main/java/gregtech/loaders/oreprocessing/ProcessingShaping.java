@@ -20,7 +20,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -46,8 +45,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-
         // Blacklist materials which are handled by Werkstoff loader
         if (material == Materials2Materials.Calcium || material == Materials2Materials.Magnesia) return;
 
@@ -68,7 +65,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         return;
                     }
 
-                if (!OrePrefixes.block.isIgnored(MU.smeltInto(legacyMaterial))
+                if (!OrePrefixes.block.isIgnored(MU.smeltInto(material))
                     && (GTOreDictUnificator.get(OrePrefixes.block, MU.smeltInto(material), 1L) != null)
                     && material != Materials2Materials.Ichorium
                     && material != Materials2Materials.Obsidian) {

@@ -20,7 +20,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -49,8 +48,6 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Materials legacyMaterial = MU.materialOf(material);
-
         long materialMass = MU.mass(material);
         boolean noSmashing = MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         boolean noWorking = MU.hasFlag(material, GTMaterialFlag.NO_WORKING);
@@ -75,7 +72,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
-                if (!OrePrefixes.block.isIgnored(legacyMaterial)
+                if (!OrePrefixes.block.isIgnored(material)
                     && GTOreDictUnificator.get(OrePrefixes.block, material, 1L) != null) {
                     // Compressor recipes
                     // need to avoid iridium exploit

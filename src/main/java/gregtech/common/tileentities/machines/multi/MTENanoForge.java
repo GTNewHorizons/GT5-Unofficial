@@ -41,9 +41,9 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -480,9 +480,9 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     if (renderActive) {
                         RenderingTileEntityNanoForge tile = getRenderer();
                         ItemData data = GTOreDictUnificator.getAssociation(outputNanite);
-                        Materials mat = data != null ? MU.materialOf(data.mMaterial.mMaterial) : null;
-                        if (mat != null) {
-                            short[] color = mat.mRGBa;
+                        Material mat = data != null ? data.mMaterial.mMaterial : null;
+                        short[] color = mat == null ? null : MU.rgba(mat);
+                        if (color != null) {
                             tile.setColor(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f);
                         } else {
                             tile.setColor(1, 1, 1);
