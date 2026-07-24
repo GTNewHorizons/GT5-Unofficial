@@ -29,6 +29,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
 /**
@@ -100,9 +101,9 @@ public class GTGenericItem extends Item implements IProjectileItem {
         if (mTooltip != null) {
             String key = mName + ".tooltip";
             if (StatCollector.canTranslate(key)) {
-                GTUtility.translateMultiline(aList, key);
+                GTSplit.splitLocalizedFormatted(aList, key);
             } else {
-                GTUtility.translateMultiline(aList, mTooltip);
+                GTSplit.splitLocalizedFormatted(aList, mTooltip);
             }
         }
         if (GTModHandler.isElectricItem(aStack))
