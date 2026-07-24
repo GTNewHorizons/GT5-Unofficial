@@ -16,13 +16,13 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Textures;
 import gregtech.api.material.FluidNames;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.material.MaterialAtomics;
 import gregtech.api.material.MaterialRefStack;
-import gregtech.loaders.materials.LegacyMaterials;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
@@ -241,7 +241,7 @@ public final class MaterialReconstruction {
         int argb = ml.getProperty(GTMaterialProperties.ARGB);
         short[] rgba = { (short) (argb >> 16 & 0xFF), (short) (argb >> 8 & 0xFF), (short) (argb & 0xFF), 0 };
         String localName = ml.getProperty(GTMaterialProperties.LOCAL_NAME);
-        TextureSet textureSet = LegacyMaterials.iconSetOf(ml);
+        TextureSet textureSet = Materials2Textures.iconSetOf(ml);
         MaterialState state = MaterialState.valueOf(gtppState);
 
         List<MaterialRefStack> composition = ml.getProperty(GTMaterialProperties.COMPOSITION);

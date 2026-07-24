@@ -1,11 +1,7 @@
 package gregtech.loaders.materials;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -15,17 +11,15 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.Property;
-import com.ruling_0.materiallib.api.StandardProperties;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.MaterialBuilder;
-import gregtech.api.enums.MaterialIconRegistry.IconType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
-import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.Materials2Textures;
 import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.FluidNames;
 import gregtech.api.material.FluidRef;
@@ -73,59 +67,6 @@ public class LegacyMaterials {
 
     private LegacyMaterials() {}
 
-    private static final Map<String, TextureSet> TEXTURE_SETS_BY_NAME = indexTextureSets();
-
-    private static Map<String, TextureSet> indexTextureSets() {
-        Map<String, TextureSet> byName = new HashMap<>();
-        for (Field field : TextureSet.class.getFields()) {
-            if (!Modifier.isStatic(field.getModifiers()) || field.getType() != TextureSet.class) continue;
-            try {
-                TextureSet set = (TextureSet) field.get(null);
-                byName.put(set.mSetName, set);
-            } catch (IllegalAccessException e) {
-                throw new IllegalStateException("Failed to index " + field, e);
-            }
-        }
-        return byName;
-    }
-
-    /// The five legacy materials whose icon set overlays a handful of icons onto a base set
-    /// ({@link TextureSet#withCustomTextures}) rather than reusing a plain named constant. MaterialLib's
-    /// texture dump only retains the resolved set name (`"CUSTOM/iron"`), not which icons were overridden or
-    /// what the base set was, so these five are reproduced directly from the original `MaterialsInit`
-    /// declarations rather than derived.
-    private static TextureSet customIconSet(String name) {
-        return switch (name) {
-            case "Copper" -> TextureSet.SET_DULL
-                .withCustomTextures("copper", IconType.ORE, IconType.ORE_SMALL, IconType.ORE_RAW);
-            case "Gold" -> TextureSet.SET_SHINY
-                .withCustomTextures("gold", IconType.ORE, IconType.ORE_SMALL, IconType.ORE_RAW);
-            case "Iron" -> TextureSet.SET_METALLIC
-                .withCustomTextures("iron", IconType.ORE, IconType.ORE_SMALL, IconType.ORE_RAW);
-            case "Diamond" -> TextureSet.SET_DIAMOND.withCustomTextures("diamond", IconType.ORE, IconType.ORE_SMALL);
-            case "Emerald" -> TextureSet.SET_EMERALD.withCustomTextures("emerald", IconType.ORE, IconType.ORE_SMALL);
-            default -> null;
-        };
-    }
-
-    /// Public form of [#resolveIconSet] for the werkstoff reconstruction
-    /// (`bartworks.system.material.WerkstoffReconstruction`), which needs the same
-    /// TEXTURE_SET-name-to-legacy-TextureSet resolution.
-    public static TextureSet iconSetOf(Material ml) {
-        return resolveIconSet(ml);
-    }
-
-    private static TextureSet resolveIconSet(Material ml) {
-        TextureSet custom = customIconSet(ml.getName());
-        if (custom != null) return custom;
-        String setName = ml.getProperty(StandardProperties.TEXTURE_SET)
-            .getName();
-        TextureSet resolved = TEXTURE_SETS_BY_NAME.get(setName);
-        if (resolved == null)
-            throw new IllegalStateException("No legacy TextureSet named " + setName + " for material " + ml.getName());
-        return resolved;
-    }
-
     private static Enchantment findEnchantment(String unlocalizedName) {
         for (Enchantment enchantment : Enchantment.enchantmentsList) {
             if (enchantment != null && unlocalizedName.equals(enchantment.getName())) return enchantment;
@@ -157,7 +98,7 @@ public class LegacyMaterials {
         String elementName = ml.getProperty(GTMaterialProperties.ELEMENT);
         if (elementName != null) builder.setElement(Element.valueOf(elementName));
 
-        builder.setIconSet(resolveIconSet(ml));
+        builder.setIconSet(Materials2Textures.iconSetOf(ml));
 
         String dye = ml.getProperty(GTMaterialProperties.DYE);
         if (dye != null) builder.setColor(Dyes.valueOf(dye));

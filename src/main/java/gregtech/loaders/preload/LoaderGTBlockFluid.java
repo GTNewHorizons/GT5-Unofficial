@@ -1137,6 +1137,11 @@ public class LoaderGTBlockFluid implements Runnable {
         Fluid steamFluid = FluidRegistry.getFluid("steam");
         MU.recordSlotFluid(Materials2Materials.Steam, MU.FluidState.GAS, steamFluid);
 
+        // Water's fluid->material record is otherwise made only through the Materials.Water LEGACY_FLUIDS row
+        // (LegacyMaterials.resolveFluid); record it here against the vanilla "water" fluid so the
+        // getFluidDisplayStack reverse lookup survives that row's removal.
+        MU.recordFluidMaterial(FluidRegistry.getFluid("water"), Materials2Materials.Water);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
             .itemOutputs(GTModHandler.getIC2Item("steamCell", 1))

@@ -36,6 +36,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTConfig;
@@ -52,7 +53,6 @@ import gregtech.common.config.OPStuff;
 import gregtech.common.config.Worldgen;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineBase;
-import gregtech.loaders.materials.LegacyMarkerMaterials;
 import gregtech.loaders.materials.LegacyNameDomain;
 
 public class GTPreLoad {
@@ -130,7 +130,7 @@ public class GTPreLoad {
                         .addStringLocalization(aMaterial.getLocalizedNameKey(), aMaterial.mDefaultLocalName);
                 });
 
-        for (Material superconductor : LegacyMarkerMaterials.getSuperconductorMarkers()) {
+        for (Material superconductor : Materials2Markers.getSuperconductorMarkers()) {
             GTLanguageManager.addStringLocalization(
                 "Material." + MU.internalName(superconductor)
                     .toLowerCase(),

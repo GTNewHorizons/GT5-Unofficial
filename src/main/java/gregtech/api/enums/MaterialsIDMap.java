@@ -1,6 +1,14 @@
 package gregtech.api.enums;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.GTMod;
+import gregtech.api.enums.materials2.Materials2IDIndex;
+import gregtech.api.material.MU;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
@@ -790,6 +798,44 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
 
     public void register() {
         forEach((ID, material) -> material.mMetaItemSubID = ID);
+    }
+
+    private static final int EXPECTED_ROWS = 778;
+
+    /// Verifies this legacy `id -> Materials` table row-for-row against [Materials2IDIndex], the same id spine
+    /// rebuilt over MaterialLib materials from [gregtech.api.material.GTMaterialProperties#OLD_SUB_ID]: every id
+    /// row's facade material must resolve (via `MU#material`) to the exact MaterialLib material the index holds
+    /// at that slot, and both must hold exactly [#EXPECTED_ROWS] rows. Fail-loud on any mismatch. Requires both
+    /// the facade and the resolved registry, so it can only run at boot.
+    public static void verifyAgainstLegacy() {
+        MaterialsIDMap map = new MaterialsIDMap();
+        List<String> mismatches = new ArrayList<>();
+        for (Int2ObjectMap.Entry<Materials> entry : map.int2ObjectEntrySet()) {
+            int id = entry.getIntKey();
+            Materials facade = entry.getValue();
+            Material expected = MU.material(facade);
+            Material actual = Materials2IDIndex.get(id);
+            if (expected == null || actual == null
+                || !expected.getName()
+                    .equals(actual.getName())) {
+                mismatches.add(
+                    id + " "
+                        + facade.mName
+                        + " -> facade="
+                        + (expected == null ? "null" : expected.getName())
+                        + " index="
+                        + (actual == null ? "null" : actual.getName()));
+            }
+        }
+        if (!mismatches.isEmpty()) {
+            throw new IllegalStateException("MaterialsIDMap rows disagree with Materials2IDIndex: " + mismatches);
+        }
+        if (map.size() != Materials2IDIndex.size() || map.size() != EXPECTED_ROWS) {
+            throw new IllegalStateException(
+                "MaterialsIDMap/Materials2IDIndex row count mismatch: idmap=" + map
+                    .size() + " index=" + Materials2IDIndex.size() + " expected=" + EXPECTED_ROWS);
+        }
+        GTMod.GT_FML_LOGGER.info("MaterialsIDMap.verifyAgainstLegacy: {} id rows match Materials2IDIndex", map.size());
     }
 
     private void r(int ID, Materials material) {
