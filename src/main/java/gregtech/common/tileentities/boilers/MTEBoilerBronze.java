@@ -27,17 +27,16 @@ import com.ruling_0.materiallib.api.Material;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.pollution.Pollution;
 
@@ -209,13 +208,12 @@ public class MTEBoilerBronze extends MTEBoiler {
     }
 
     private static boolean couldProduceDarkAshes(ItemStack fuel, String lowerCaseBlockName) {
-        return GTUtility.isPartOfMaterials(fuel, Materials.Coal) || GTUtility.isPartOfMaterials(fuel, Materials.Lignite)
+        return MU.isPartOf(fuel, Materials2Materials.Coal) || MU.isPartOf(fuel, Materials2Materials.Lignite)
             || lowerCaseBlockName.matches("tile\\..+compressedcoal");
     }
 
     private static boolean couldProduceRegularAshes(ItemStack fuel, String lowerCaseBlockName, int burnTime) {
-        return GTUtility.isPartOfMaterials(fuel, Materials.Charcoal)
-            || GTUtility.isPartOfMaterials(fuel, Materials.Diamond)
+        return MU.isPartOf(fuel, Materials2Materials.Charcoal) || MU.isPartOf(fuel, Materials2Materials.Diamond)
             || (Stream.of("^tile\\..+charcoal", "^tile\\..+coke", "^tile\\..+railcraft.cube")
                 .anyMatch(lowerCaseBlockName::matches))
             || Stream.of("fuelCoke", "fuelCactusCharcoal", "fuelCactusCoke", "fuelSugarCharcoal", "fuelSugarCoke")
