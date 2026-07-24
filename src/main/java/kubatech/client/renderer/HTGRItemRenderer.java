@@ -9,8 +9,9 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
+import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.Materials;
+import gregtech.api.material.MU;
 import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class HTGRItemRenderer implements IItemRenderer {
@@ -28,12 +29,12 @@ public class HTGRItemRenderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         if (item == null) return;
-        Materials material = HTGRItem.getItemMaterial(item);
+        Material material = HTGRItem.getItemMaterial(item);
         if (material == null) return;
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
         IIcon icon = item.getIconIndex();
 
-        int color = material.mColor.rgb;
+        int color = MU.dye(material).rgb;
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor3ub((byte) (color >>> 16), (byte) (color >>> 8), (byte) color);
         ItemRenderUtil.renderItem(type, icon);

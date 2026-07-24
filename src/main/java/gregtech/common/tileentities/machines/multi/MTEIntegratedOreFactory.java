@@ -46,7 +46,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -130,7 +129,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         .addElement('F', Casings.AdvancedIridiumPlatedMachineCasing.asElement())
 
         .addElement('G', ofFrame(Materials2Materials.StainlessSteel))
-        .addElement('J', ofSheetMetal(Materials.Iridium))
+        .addElement('J', ofSheetMetal(Materials2Materials.Iridium))
         .addElement('I', Casings.CentrifugeCasing.asElement())
         .addElement('H', Casings.LargeSieveGrate.asElement())
         .build();

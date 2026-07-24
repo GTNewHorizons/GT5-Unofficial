@@ -40,6 +40,8 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
+import com.ruling_0.materiallib.api.Material;
+
 import bartworks.MainMod;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.BWColorUtil;
@@ -59,6 +61,8 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -177,6 +181,53 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             this.stats.setCentrifuge(true);
             this.generationFeatures.addMixerRecipes();
         }
+    }
+
+    /// GT bridge constructor keyed on the MaterialLib material -- reproduces the `Materials`-typed bridge
+    /// constructor's field reads through the [MU] accessors (each documented byte-identical to the legacy
+    /// field it mirrors). The [ISubTagContainer]-typed slots (the single contents entry and the byproduct
+    /// list) have no MaterialLib representation, so they resolve to the facade constant via
+    /// [MU#materialOf], the same convention [WerkstoffReconstruction]'s content resolution uses; they die
+    /// with the `ISubTagContainer` surface.
+    public Werkstoff(Material material, Werkstoff.GenerationFeatures generationFeatures, Types type, int mID) {
+        this(
+            MU.rgba(material),
+            MU.localName(material),
+            MU.chemicalTooltip(material, false),
+            type == null ? MU.element(material) != null ? Types.ELEMENT : Types.UNDEFINED : type,
+            generationFeatures,
+            mID,
+            MU.iconSet(material),
+            toLegacyByProducts(material),
+            Pair.of(MU.materialOf(material), 1));
+        if (mID <= 31_766 || mID > 32_767) throw new IllegalArgumentException();
+        this.stats.mass = MU.mass(material);
+        this.stats.protons = MU.protons(material);
+        this.stats.meltingPoint = MU.meltingPoint(material);
+        this.stats.neutrons = MU.neutrons(material);
+        this.stats.speedOverride = MU.toolSpeed(material);
+        this.stats.durOverride = MU.durability(material);
+        this.stats.qualityOverride = (byte) MU.toolQuality(material);
+        this.stats.setGas(Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_GAS)));
+        this.stats.setRadioactive(false);
+        this.stats.setBlastFurnace(MU.blastFurnaceRequired(material));
+        this.stats.setMeltingVoltage(120);
+        this.stats.isProxy = true;
+        if (type == Types.COMPOUND) {
+            this.stats.setElektrolysis(true);
+            this.generationFeatures.addChemicalRecipes();
+        } else if (type == Types.MIXTURE) {
+            this.stats.setCentrifuge(true);
+            this.generationFeatures.addMixerRecipes();
+        }
+    }
+
+    private static List<ISubTagContainer> toLegacyByProducts(Material material) {
+        List<ISubTagContainer> byProducts = new ArrayList<>();
+        for (Material byProduct : MU.oreByProducts(material)) {
+            byProducts.add(MU.materialOf(byProduct));
+        }
+        return byProducts;
     }
 
     @SafeVarargs

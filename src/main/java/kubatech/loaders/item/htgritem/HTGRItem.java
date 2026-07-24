@@ -14,8 +14,10 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.apache.commons.lang3.tuple.Triple;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.Materials;
+import gregtech.api.material.MU;
 import kubatech.api.utils.ModUtils;
 import kubatech.client.renderer.HTGRItemRenderer;
 
@@ -24,9 +26,9 @@ public abstract class HTGRItem extends Item {
     public static final Triple<Double, Double, Double> DEFAULT_FUEL_PROPERTIES = Triple.of(1.0, 1.0, 1.0);
 
     private static int nextFreeItemID = 0;
-    private static final HashMap<Materials, Integer> knownMaterials = new HashMap<>();
-    private static final HashMap<Integer, Materials> metaToMaterialMap = new HashMap<>();
-    private static final HashMap<Materials, Triple<Double, Double, Double>> fuelProperties = new HashMap<>();
+    private static final HashMap<Material, Integer> knownMaterials = new HashMap<>();
+    private static final HashMap<Integer, Material> metaToMaterialMap = new HashMap<>();
+    private static final HashMap<Material, Triple<Double, Double, Double>> fuelProperties = new HashMap<>();
 
     public static TRISOMixture TRISO_MIX;
     public static IncompleteBISOFuel INCOMPLETE_BISO;
@@ -68,10 +70,9 @@ public abstract class HTGRItem extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        Materials material = getItemMaterial(stack);
-        return StatCollector.translateToLocalFormatted(
-            getNameKey(),
-            (material == null ? "NULL" : (material.getLocalizedNameForItem("%material"))));
+        Material material = getItemMaterial(stack);
+        return StatCollector
+            .translateToLocalFormatted(getNameKey(), (material == null ? "NULL" : MU.localizedNameOf(material)));
     }
 
     @Override
@@ -89,9 +90,9 @@ public abstract class HTGRItem extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {
         tooltipList.add(StatCollector.translateToLocal("kubatech.tooltip.htgr_material"));
-        Materials material = getItemMaterial(stack);
+        Material material = getItemMaterial(stack);
         if (material != null) {
-            tooltipList.add(" - " + material.getLocalizedNameForItem("%material"));
+            tooltipList.add(" - " + MU.localizedNameOf(material));
             Triple<Double, Double, Double> properties = fuelProperties.getOrDefault(material, DEFAULT_FUEL_PROPERTIES);
             tooltipList.add(
                 StatCollector.translateToLocalFormatted(
@@ -102,55 +103,55 @@ public abstract class HTGRItem extends Item {
         }
     }
 
-    private static ItemStack getItemWithMaterial(Materials material, HTGRItem item) {
+    private static ItemStack getItemWithMaterial(Material material, HTGRItem item) {
         return new ItemStack(item, 1, knownMaterials.get(material));
     }
 
-    public static Materials getItemMaterial(ItemStack stack) {
+    public static Material getItemMaterial(ItemStack stack) {
         int i = stack.getItemDamage();
         return metaToMaterialMap.getOrDefault(i, null);
     }
 
-    public static void addKnownMaterial(Materials material) {
+    public static void addKnownMaterial(Material material) {
         if (!knownMaterials.containsKey(material)) {
             knownMaterials.put(material, nextFreeItemID);
             metaToMaterialMap.put(nextFreeItemID++, material);
         }
     }
 
-    public static void setFuelProperties(Materials material, Triple<Double, Double, Double> properties) {
+    public static void setFuelProperties(Material material, Triple<Double, Double, Double> properties) {
         fuelProperties.put(material, properties);
     }
 
-    public static Triple<Double, Double, Double> getFuelProperties(Materials material) {
+    public static Triple<Double, Double, Double> getFuelProperties(Material material) {
         return fuelProperties.getOrDefault(material, DEFAULT_FUEL_PROPERTIES);
     }
 
-    public static ItemStack createTRISOMixture(Materials material) {
+    public static ItemStack createTRISOMixture(Material material) {
         addKnownMaterial(material);
         ItemStack stack = getItemWithMaterial(material, TRISO_MIX);
         return stack;
     }
 
-    public static ItemStack createIncompleteBISOFuel(Materials material) {
+    public static ItemStack createIncompleteBISOFuel(Material material) {
         addKnownMaterial(material);
         ItemStack stack = getItemWithMaterial(material, INCOMPLETE_BISO);
         return stack;
     }
 
-    public static ItemStack createIncompleteTRISOFuel(Materials material) {
+    public static ItemStack createIncompleteTRISOFuel(Material material) {
         addKnownMaterial(material);
         ItemStack stack = getItemWithMaterial(material, INCOMPLETE_TRISO);
         return stack;
     }
 
-    public static ItemStack createTRISOFuel(Materials material) {
+    public static ItemStack createTRISOFuel(Material material) {
         addKnownMaterial(material);
         ItemStack stack = getItemWithMaterial(material, TRISO);
         return stack;
     }
 
-    public static ItemStack createBurnedTRISOFuel(Materials material) {
+    public static ItemStack createBurnedTRISOFuel(Material material) {
         addKnownMaterial(material);
         ItemStack stack = getItemWithMaterial(material, BURNED_TRISO);
         return stack;

@@ -1648,13 +1648,13 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_ASSEMBLE)
         .neiItemInputsGetter(recipe -> {
-            Materials naniteMaterial = recipe.getMetadata(PCB_NANITE_MATERIAL);
+            Material naniteMaterial = recipe.getMetadata(PCB_NANITE_MATERIAL);
             if (naniteMaterial == null) {
                 return recipe.mInputs;
             }
             List<ItemStack> inputs = new ArrayList<>();
             inputs.add(recipe.mInputs[0]);
-            ItemStack naniteStack = naniteMaterial.getNanite(1);
+            ItemStack naniteStack = GTOreDictUnificator.get(OrePrefixes.nanite, naniteMaterial, 1);
             inputs.add(new ItemStack(naniteStack.getItem(), 0, naniteStack.getItemDamage()));
             inputs.addAll(Arrays.asList(Arrays.copyOfRange(recipe.mInputs, 1, recipe.mInputs.length)));
             return inputs.toArray(new ItemStack[0]);

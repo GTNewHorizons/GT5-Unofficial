@@ -28,10 +28,10 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -133,7 +133,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
                     'B',
                     chainItemPipeCasings(-1, MTEIndustrialMixer::setItemPipeTier, MTEIndustrialMixer::getItemPipeTier))
                 .addElement('C', Casings.TitaniumTurbineCasing.asElement())
-                .addElement('D', ofSheetMetal(Materials.Tungsten))
+                .addElement('D', ofSheetMetal(Materials2Materials.Tungsten))
                 .addElement(
                     'E',
                     buildHatchAdder(MTEIndustrialMixer.class)

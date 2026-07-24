@@ -66,7 +66,6 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -237,7 +236,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('I', ofFrame(Materials2Materials.Tritanium))
         .addElement('J', ofFrame(Materials2Materials.SuperconductorUEVBase))
         .addElement('K', ofBlock(GregTechAPI.sBlockCasingsFoundry,10))
-        .addElement('L', ofSheetMetal(Materials.SuperconductorUEVBase))
+        .addElement('L', ofSheetMetal(Materials2Materials.SuperconductorUEVBase))
         .addElement('M', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 3)) )
         .addElement('N', lazy(() -> ofBlock(ModBlocks.blockSpecialMultiCasings, 13)))
         .addShape(
@@ -258,7 +257,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('c', ofBlock(GregTechAPI.sBlockCasings10, 14))
         .addElement('d', ofFrame(Materials2Materials.Erbium))
         .addElement('e', ofBlock(GregTechAPI.sBlockCasingsFoundry,8))
-        .addElement('f', ofSheetMetal(Materials.Erbium))
+        .addElement('f', ofSheetMetal(Materials2Materials.Erbium))
         .addElement('g',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, GGMaterial.preciousMetalAlloy.getmID())))
         .addElement('h',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasings, GGMaterial.preciousMetalAlloy.getmID())))
         .addShape(
@@ -277,9 +276,9 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('j', ofBlock(GregTechAPI.sBlockCasings11, 5))
         .addElement('k', ofFrame(Materials2Materials.TengamAttuned))
         .addElement('l', ofBlock(GregTechAPI.sBlockCasingsFoundry,6))
-        .addElement('m', ofSheetMetal(Materials.Samarium))
-        .addElement('n', ofSheetMetal(Materials.TengamAttuned))
-        .addElement('o', ofSheetMetal(Materials.Quantium))
+        .addElement('m', ofSheetMetal(Materials2Materials.Samarium))
+        .addElement('n', ofSheetMetal(Materials2Materials.TengamAttuned))
+        .addElement('o', ofSheetMetal(Materials2Materials.Quantium))
         .addElement('p', lazy(() -> ofBlock(ModBlocks.blockCustomMachineCasings, 3)))
         .addShape(
             FoundryModule.HYPERCOOLER.structureID,
@@ -297,8 +296,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('r', ofFrame(Materials2Materials.InfinityCatalyst))
         .addElement('s', ofBlock(GregTechAPI.sBlockGlass1,3))
         .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry, 9))
-        .addElement('u', ofSheetMetal(Materials.CallistoIce))
-        .addElement('v', ofSheetMetal(Materials.SuperconductorUHVBase))
+        .addElement('u', ofSheetMetal(Materials2Materials.CallistoIce))
+        .addElement('v', ofSheetMetal(Materials2Materials.Longasssuperconductornameforuhvwire))
         .addElement(
             'w',
             lazy(
@@ -323,7 +322,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('4', ofFrame(Materials2Materials.SpaceTime))
         .addElement('5', ofBlock(GregTechAPI.sBlockCasingsFoundry,7))
         .addElement('6', lazy(() -> ofBlock(GodforgeCasings, 3)))
-        .addElement('7', ofSheetMetal(Materials.SpaceTime))
+        .addElement('7', ofSheetMetal(Materials2Materials.SpaceTime))
         .addElement('8',  lazy(() -> ofBlock(BlockGodforgeGlass.INSTANCE, 0)))
 
         .addShape(

@@ -23,7 +23,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FishPondRecipes;
 import gregtech.api.util.SemiFluidFuelHandler;
@@ -165,25 +165,25 @@ public class GTplusplus {
     }
 
     private static void setupMaterialBlacklist() {
-        Material.invalidMaterials.add(Materials._NULL);
-        Material.invalidMaterials.add(Materials.Clay);
-        Material.invalidMaterials.add(Materials.Phosphorus);
-        Material.invalidMaterials.add(Materials.Steel);
-        Material.invalidMaterials.add(Materials.Bronze);
-        Material.invalidMaterials.add(Materials.Hydrogen);
+        Material.invalidMaterials.add(Materials2Materials.NULL);
+        Material.invalidMaterials.add(Materials2Materials.Clay);
+        Material.invalidMaterials.add(Materials2Materials.Phosphorus);
+        Material.invalidMaterials.add(Materials2Materials.Steel);
+        Material.invalidMaterials.add(Materials2Materials.Bronze);
+        Material.invalidMaterials.add(Materials2Materials.Hydrogen);
         // Infused TC stuff
-        Material.invalidMaterials.add(Materials.InfusedAir);
-        Material.invalidMaterials.add(Materials.InfusedEarth);
-        Material.invalidMaterials.add(Materials.InfusedFire);
-        Material.invalidMaterials.add(Materials.InfusedWater);
+        Material.invalidMaterials.add(Materials2Materials.InfusedAir);
+        Material.invalidMaterials.add(Materials2Materials.InfusedEarth);
+        Material.invalidMaterials.add(Materials2Materials.InfusedFire);
+        Material.invalidMaterials.add(Materials2Materials.InfusedWater);
         // EIO Materials
-        Material.invalidMaterials.add(Materials.SoulSand);
-        Material.invalidMaterials.add(Materials.EnderPearl);
-        Material.invalidMaterials.add(Materials.EnderEye);
-        Material.invalidMaterials.add(Materials.Redstone);
-        Material.invalidMaterials.add(Materials.Glowstone);
-        Material.invalidMaterials.add(Materials.Soularium);
-        Material.invalidMaterials.add(Materials.PhasedIron);
+        Material.invalidMaterials.add(Materials2Materials.SoulSand);
+        Material.invalidMaterials.add(Materials2Materials.EnderPearl);
+        Material.invalidMaterials.add(Materials2Materials.EnderEye);
+        Material.invalidMaterials.add(Materials2Materials.Redstone);
+        Material.invalidMaterials.add(Materials2Materials.Glowstone);
+        Material.invalidMaterials.add(Materials2Materials.Soularium);
+        Material.invalidMaterials.add(Materials2Materials.PhasedIron);
 
     }
 

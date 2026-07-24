@@ -24,8 +24,9 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
@@ -394,16 +395,23 @@ public class GTRecipe implements Comparable<GTRecipe> {
         int tOutputAmount = GTModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(mOutputs);
 
         if (tInputAmount < tOutputAmount) {
-            if (!Materials.Tin.contains(mInputs)) {
+            if (!containsTin(mInputs)) {
                 GTLog.err.println("You get more Cells, than you put in? There must be something wrong.");
                 new Exception().printStackTrace(GTLog.err);
             }
         } else if (tInputAmount > tOutputAmount) {
-            if (!Materials.Tin.contains(mOutputs)) {
+            if (!containsTin(mOutputs)) {
                 GTLog.err.println("You get less Cells, than you put in? GT Machines usually don't destroy Cells.");
                 new Exception().printStackTrace(GTLog.err);
             }
         }
+    }
+
+    private static boolean containsTin(ItemStack[] stacks) {
+        for (ItemStack stack : stacks) {
+            if (MU.isPartOf(stack, Materials2Materials.Tin)) return true;
+        }
+        return false;
     }
 
     public GTRecipe copy() {

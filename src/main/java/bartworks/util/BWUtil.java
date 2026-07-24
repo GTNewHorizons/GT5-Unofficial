@@ -41,6 +41,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.ruling_0.materiallib.api.Material;
 
 import bartworks.API.BorosilicateGlass;
 import bartworks.MainMod;
@@ -161,14 +162,13 @@ public class BWUtil {
     }
 
     @SuppressWarnings("unused") // Used in NHCoreMod
-    public static int calculateSv(Materials materials) {
+    public static int calculateSv(Material materials) {
         // TODO: Implement this method properly by giving materials actual radiation values
         // TODO: instead of using the material's atomic number.
 
-        return (int) (materials.getProtons() == 43L
-            ? materials.equals(Materials.NaquadahEnriched) ? 140
-                : materials.equals(Materials.Naquadria) ? 150 : materials.equals(Materials.Naquadah) ? 130 : 43
-            : materials.getProtons());
+        return (int) (MU.protons(materials) == 43L ? materials == Materials2Materials.NaquadahEnriched ? 140
+            : materials == Materials2Materials.Naquadria ? 150 : materials == Materials2Materials.Naquadah ? 130 : 43
+            : MU.protons(materials));
     }
 
     public static ItemStack setStackSize(ItemStack stack, int size) {

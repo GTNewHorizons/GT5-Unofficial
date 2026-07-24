@@ -18,11 +18,11 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -61,7 +61,7 @@ public class HTGRLoader {
         .frontend(HighTemperatureGasCooledReactorRecipeMapFrontend::new)
         .builderTransformer(builder -> {
             ItemStack[] inputs = builder.getItemInputsBasic();
-            Materials material = MU.materialOf(GTOreDictUnificator.getAssociation(inputs[0]).mMaterial.mMaterial);
+            Material material = GTOreDictUnificator.getAssociation(inputs[0]).mMaterial.mMaterial;
             Pair<ItemStack, Integer>[] fuels = builder.getMetadata(FUEL);
             ItemStack[] shells = builder.getMetadataOrDefault(SHELL, new ItemStack[0]);
             Triple<Double, Double, Double> fuelModificator = builder.getMetadata(FUEL_MODIFICATOR);
@@ -160,15 +160,15 @@ public class HTGRLoader {
         HTGRItem.initItems();
 
         // DO NOT CHANGE THE ORDER OF ADDING KNOWN MATERIALS
-        HTGRItem.addKnownMaterial(Materials.Silver);
-        HTGRItem.addKnownMaterial(Materials.Uranium235);
-        HTGRItem.addKnownMaterial(Materials.Plutonium);
-        HTGRItem.addKnownMaterial(Materials.Thorium);
-        HTGRItem.addKnownMaterial(Materials.Tungsten);
-        HTGRItem.addKnownMaterial(Materials.Praseodymium);
-        HTGRItem.addKnownMaterial(Materials.Lanthanum);
-        HTGRItem.addKnownMaterial(Materials.Caesium);
-        HTGRItem.addKnownMaterial(Materials.Glowstone);
+        HTGRItem.addKnownMaterial(Materials2Materials.Silver);
+        HTGRItem.addKnownMaterial(Materials2Materials.Uranium235);
+        HTGRItem.addKnownMaterial(Materials2Materials.Plutonium);
+        HTGRItem.addKnownMaterial(Materials2Materials.Thorium);
+        HTGRItem.addKnownMaterial(Materials2Materials.Tungsten);
+        HTGRItem.addKnownMaterial(Materials2Materials.Praseodymium);
+        HTGRItem.addKnownMaterial(Materials2Materials.Lanthanum);
+        HTGRItem.addKnownMaterial(Materials2Materials.Caesium);
+        HTGRItem.addKnownMaterial(Materials2Materials.Glowstone);
 
         // silver to indium
 

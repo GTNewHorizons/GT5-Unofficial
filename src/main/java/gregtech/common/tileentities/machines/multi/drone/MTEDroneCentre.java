@@ -46,7 +46,6 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
@@ -198,7 +197,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                         Block hempcrete = GameRegistry.findBlock(Mods.Chisel.ID, "hempcrete");
                         return ofBlockAnyMeta(hempcrete, 15);
                     } else {
-                        return ofSheetMetal(Materials.Steel);
+                        return ofSheetMetal(Materials2Materials.Steel);
                     }
                 }))
                 .addElement(

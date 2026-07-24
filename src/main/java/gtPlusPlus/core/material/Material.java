@@ -104,7 +104,7 @@ public class Material {
 
     public short werkstoffID;
 
-    public static ArrayList<Materials> invalidMaterials = new ArrayList<>();
+    public static ArrayList<com.ruling_0.materiallib.api.Material> invalidMaterials = new ArrayList<>();
 
     /** A cache field for raw ores to prevent constant map lookups. */
     private ItemStack rawOre;
@@ -1513,8 +1513,9 @@ public class Material {
             return null;
         }
         if (isValid != null) {
-            for (Materials m : invalidMaterials) {
-                if (isValid == m) {
+            com.ruling_0.materiallib.api.Material isValidMl = MU.material(isValid);
+            for (com.ruling_0.materiallib.api.Material m : invalidMaterials) {
+                if (isValidMl == m) {
                     return null;
                 }
             }

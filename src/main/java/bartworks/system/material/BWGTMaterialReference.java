@@ -13,8 +13,8 @@
 package bartworks.system.material;
 
 import bartworks.MainMod;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 
 public class BWGTMaterialReference {
 
@@ -23,47 +23,47 @@ public class BWGTMaterialReference {
         .addPrefix(OrePrefixes.blockCasingAdvanced);
 
     public static Werkstoff Carbon = new Werkstoff(
-        Materials.Carbon,
+        Materials2Materials.Carbon,
         ADD_CASINGS_ONLY,
         Werkstoff.Types.ELEMENT,
         31_766 + 10);
     public static Werkstoff Silver = new Werkstoff(
-        Materials.Silver,
+        Materials2Materials.Silver,
         ADD_CASINGS_ONLY,
         Werkstoff.Types.ELEMENT,
         31_766 + 54);
     public static Werkstoff Iridium = new Werkstoff(
-        Materials.Iridium,
+        Materials2Materials.Iridium,
         ADD_CASINGS_ONLY,
         Werkstoff.Types.ELEMENT,
         31_766 + 84);
     public static Werkstoff Naquadah = new Werkstoff(
-        Materials.Naquadah,
+        Materials2Materials.Naquadah,
         ADD_CASINGS_ONLY,
         Werkstoff.Types.ELEMENT,
         31_766 + 324);
     public static Werkstoff NaquadahAlloy = new Werkstoff(
-        Materials.NaquadahAlloy,
+        Materials2Materials.NaquadahAlloy,
         ADD_CASINGS_ONLY,
         Werkstoff.Types.COMPOUND,
         31_766 + 325);
     public static Werkstoff Osmiridium = new Werkstoff(
-        Materials.Osmiridium,
+        Materials2Materials.Osmiridium,
         ADD_CASINGS_ONLY,
         Werkstoff.Types.MIXTURE,
         31_766 + 317);
     public static Werkstoff BlackSteel = new Werkstoff(
-        Materials.BlackSteel,
+        Materials2Materials.BlackSteel,
         ADD_CASINGS_ONLY,
         Werkstoff.Types.MIXTURE,
         31_766 + 334);
     public static Werkstoff Wood = new Werkstoff(
-        Materials.Wood,
+        Materials2Materials.Wood,
         ADD_CASINGS_ONLY,
         Werkstoff.Types.BIOLOGICAL,
         31_766 + 809);
     public static Werkstoff Magnesia = new Werkstoff(
-        Materials.Magnesia,
+        Materials2Materials.Magnesia,
         new Werkstoff.GenerationFeatures().disable()
             .addMetalItems()
             .addMolten(),
