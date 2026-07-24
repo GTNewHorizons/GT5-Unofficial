@@ -2,7 +2,7 @@ Creates a pocket of spacetime that is bigger on the inside using transdimensiona
 engineering. Certified Time Lord regulation compliant. This multi uses too much EU
 to be handled with conventional means. All EU requirements are handled directly by
 your wireless EU network
-{hr}
+{gold:{hr:87}}
 This multiblock will constantly consume hydrogen and helium when it is not running a
 recipe once per second. It will store this internally, you can see the totals by
 using a scanner. This multi also has three tiered blocks with {red}9{gray} tiers
@@ -20,26 +20,26 @@ each. They are as follows and have the associated effects on the multi:
   > Low tier stabilisation field generators have a power output penalty
      The power output penalty for using Crude Stabilisation Field Generators is {red}40%
      This penalty decreases by {red}5%{gray} per tier (additive)
-{hr}
+{gold:{hr:87}}
 Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance
 All stored hydrogen and helium is consumed during a craft. The associated formulas are:
 {green}Overflow ratio = (Stored fluid / Recipe requirement) - 1
 {green}Adjustment value = 1 - exp(-(30 * Overflow ratio)^2)
 The Adjustment value is then subtracted from the total yield and recipe chance
-{hr}
+{gold:{hr:87}}
 It should be noted that base recipe chance is determined per recipe and yield always starts
 at 1 and subtracts depending on penalties. All fluid/item outputs are multiplied by the
 yield. Failure fluid is exempt
-{hr}
+{gold:{hr:87}}
 This multiblock can only output to ME output buses/hatches
-{hr}
+{gold:{hr:87}}
 This multiblock can be overclocked by placing a programmed circuit into the input bus
 E.g. A circuit of 2 will provide 2 OCs, 16x EU input and 0.25x the time. EU output is unaffected
 All outputs are equal. All item and fluid output chances & amounts per recipe are unaffected
-{hr}
+{gold:{hr:87}}
 If a recipe fails the EOH will output {green}Success chance * 14,400 * (2.0)^(Recipe tier){gray}L of molten
 SpaceTime instead of fluid/item outputs and output as much EU as a successful recipe
-{hr}
+{gold:{hr:87}}
 This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus
 They are stored internally and can be retrieved via right-clicking the controller with a wire cutter
 The maximum amount of stored Astral Arrays is 8,637. Parallel amount is calculated via these formulas:
@@ -52,6 +52,6 @@ Furthermore, if parallel recipes are run, the recipes consume Condensed Raw Stel
 instead of helium and hydrogen. Overflow penalties still apply
 The required amount of fluid to start a recipe is {green}12.4 / 10^6 * Helium amount * Parallel
 The success or failure of each parallel is determined independently
-{hr}
+{gold:{hr:87}}
 Animations can be disabled by using a screwdriver on the multiblock
 Planet block can be inserted directly by right-clicking the controller with planet block
