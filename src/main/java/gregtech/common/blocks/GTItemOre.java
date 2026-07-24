@@ -50,22 +50,24 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        Materials mat = blockOre.getMaterial(stack.getItemDamage());
+        com.ruling_0.materiallib.api.Material mat = blockOre.getMaterial(stack.getItemDamage());
 
-        if (mat == null) mat = Materials._NULL;
+        String matName = mat == null ? Materials._NULL.getInternalName() : MU.internalName(mat);
 
         boolean small = blockOre.isSmallOre(stack.getItemDamage());
 
-        return (small ? OrePrefixes.oreSmall : OrePrefixes.ore).getLocalizedNameForItem(mat.getInternalName());
+        return (small ? OrePrefixes.oreSmall : OrePrefixes.ore).getLocalizedNameForItem(matName);
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> desc, boolean advancedTooltips) {
-        Materials mat = blockOre.getMaterial(stack.getItemDamage());
+        com.ruling_0.materiallib.api.Material mat = blockOre.getMaterial(stack.getItemDamage());
 
-        if (mat == null) mat = Materials._NULL;
-
-        mat.addTooltips(desc);
+        if (mat == null) {
+            Materials._NULL.addTooltips(desc);
+        } else {
+            MU.addTooltipsOf(mat, desc);
+        }
     }
 
     @Override

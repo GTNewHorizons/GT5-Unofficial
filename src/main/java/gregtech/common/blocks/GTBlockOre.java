@@ -43,6 +43,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
@@ -79,7 +80,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
             }
         }
 
-        OreInfo<Materials> info = new OreInfo<>();
+        OreInfo<com.ruling_0.materiallib.api.Material> info = new OreInfo<>();
 
         for (int matId = 0; matId < 1000; matId++) {
             info.material = getMaterial(matId);
@@ -118,7 +119,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         // meta = 0 is always hidden in the nei plugin
         list.add(new ItemStack(this, 1, 0));
 
-        OreInfo<Materials> info = new OreInfo<>();
+        OreInfo<com.ruling_0.materiallib.api.Material> info = new OreInfo<>();
 
         for (int matId = 0; matId < 1000; matId++) {
             info.material = getMaterial(matId);
@@ -193,7 +194,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
      */
     public ArrayList<ItemStack> getDropsForPlayer(World world, int x, int y, int z, int metadata, int fortune,
         EntityPlayer harvester) {
-        try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
+        try (OreInfo<com.ruling_0.materiallib.api.Material> info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
             if (info == null) return new ArrayList<>();
 
             boolean doFortune = GTUtility.isRealPlayer(harvester);
@@ -207,7 +208,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
     @Override
     public ITexture[][] getTextures(int metadata) {
         StoneType stoneType = getStoneType(metadata);
-        Materials mat = getMaterial(metadata);
+        com.ruling_0.materiallib.api.Material mat = getMaterial(metadata);
         boolean small = isSmallOre(metadata);
 
         final ITextureBuilder fgBuilder;
@@ -215,10 +216,10 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         if (mat != null) {
             fgBuilder = TextureFactory.builder()
                 .addIcon(
-                    mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.getTextureIndex()
+                    MU.iconSet(mat).mTextures[small ? OrePrefixes.oreSmall.getTextureIndex()
                         : OrePrefixes.ore.getTextureIndex()])
-                .setRGBA(mat.mRGBa)
-                .glow(mat.hasGlowingOre());
+                .setRGBA(MU.rgba(mat))
+                .glow(Boolean.TRUE.equals(mat.getProperty(GTMaterialProperties.HAS_GLOWING_ORE)));
         } else {
             fgBuilder = TextureFactory.builder()
                 .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.getTextureIndex()]);
@@ -304,7 +305,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
     @Override
     public int damageDropped(int meta) {
-        try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
+        try (OreInfo<com.ruling_0.materiallib.api.Material> info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
             if (info == null) return 0;
 
             info.isNatural = false;
@@ -316,14 +317,13 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
     @Override
     public int getHarvestLevel(int meta) {
-        try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
+        try (OreInfo<com.ruling_0.materiallib.api.Material> info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
             if (info == null) return 0;
 
             int smallOreBonus = info.isSmall ? -1 : 0;
 
-            int harvestLevel = GTMod.proxy.mChangeHarvestLevels
-                ? GTMod.proxy.mHarvestLevel[info.material.mMetaItemSubID]
-                : info.material.mToolQuality;
+            int harvestLevel = GTMod.proxy.mChangeHarvestLevels ? GTMod.proxy.mHarvestLevel[MU.oldSubId(info.material)]
+                : MU.toolQuality(info.material);
 
             return GTUtility.clamp(harvestLevel + smallOreBonus, 0, GTMod.proxy.mMaxHarvestLevel);
         }
@@ -366,7 +366,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         float subY, float subZ) {
         if (!world.isRemote) {
             if (player.capabilities.isCreativeMode && player.isSneaking() && player.getHeldItem() == null) {
-                try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z);) {
+                try (OreInfo<com.ruling_0.materiallib.api.Material> info = GTOreAdapter.INSTANCE
+                    .getOreInfo(world, x, y, z);) {
                     info.isNatural = !info.isNatural;
 
                     world.setBlockMetadataWithNotify(
@@ -442,8 +443,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
     }
 
     @Nullable
-    public Materials getMaterial(int meta) {
-        return MU.materialOf(MU.byId(getMaterialIndex(meta)));
+    public com.ruling_0.materiallib.api.Material getMaterial(int meta) {
+        return MU.byId(getMaterialIndex(meta));
     }
 
     @Nullable
