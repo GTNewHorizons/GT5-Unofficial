@@ -33,7 +33,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEGasTurbine extends MTEBasicGenerator {
@@ -74,7 +74,7 @@ public class MTEGasTurbine extends MTEBasicGenerator {
     protected String[] getTooltipLines() {
         int pollution = (int) (GTMod.proxy.mPollutionBaseGasTurbinePerSecond
             * GTMod.proxy.mPollutionGasTurbineReleasedByTier[mTier]);
-        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.gasturbine.tooltip", pollution);
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.basicgenerator.gasturbine.tooltip", pollution);
     }
 
     @Override
