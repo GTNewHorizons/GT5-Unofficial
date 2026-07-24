@@ -46,6 +46,7 @@ import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.loaders.materials.LegacyMaterials;
 import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 import gtPlusPlus.core.material.MaterialReconstruction;
@@ -1203,7 +1204,7 @@ public class MU {
     public static @Nullable ItemStack partOf(@Nullable Object material, OrePrefixes prefix, int amount) {
         if (material instanceof Werkstoff w) return w.getPart(prefix, amount);
         if (material instanceof gtPlusPlus.core.material.Material gtpp) {
-            Materials gt = gtpp.getGTMaterial();
+            Materials gt = gtpp.tryFindGregtechMaterialEquivalent();
             if (gt != null) return GTOreDictUnificator.get(prefix, gt, amount);
             return GTOreDictUnificator.get(prefix.oreDictName(gtpp.getInternalName()), amount);
         }
@@ -1212,14 +1213,33 @@ public class MU {
         return null;
     }
 
-    /// `getGTMaterial` across the union -- the bridge/equivalent [Materials] of a werkstoff or gtPlusPlus
-    /// material, a [Materials] itself, or null.
-    public static @Nullable Materials gtMaterialOf(@Nullable Object material) {
+    /// `getGTMaterial` across the union -- the MaterialLib [Material] a werkstoff or gtPlusPlus material maps
+    /// to, or a [Material] passed through unchanged; null for null or a foreign type. Callers that need the
+    /// legacy [Materials] counterpart (e.g. the vein-stat identity match against [#legacyMaterialOf] objects)
+    /// wrap the result in [#materialOf].
+    public static @Nullable Material gtMaterialOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getGTMaterial();
         if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getGTMaterial();
-        if (material instanceof Materials legacy) return legacy.getGTMaterial();
-        if (material instanceof Material ml) return gtMaterialOf(legacyMaterialOf(ml));
+        if (material instanceof Material ml) return ml;
         return null;
+    }
+
+    private static final Map<Material, GeneratedMaterialRenderer> materialRenderers = new HashMap<>();
+
+    /// Registers `renderer` as the special item renderer for `material`, keyed by the MaterialLib [Material].
+    /// Mirrors the client-side renderer assignments in `Materials#initClient`; populated once from the client
+    /// proxy (`GTClient#onPreInitialization`) after `initClient` has constructed the renderer instances, so the
+    /// GT-owned store, `MaterialLibClient`'s registry, and the legacy `Materials#renderer` field all hold the
+    /// same instances.
+    public static void recordRenderer(Material material, GeneratedMaterialRenderer renderer) {
+        materialRenderers.put(material, renderer);
+    }
+
+    /// The [GeneratedMaterialRenderer] [#recordRenderer] registered for `material`, or null when it has no
+    /// special renderer. The [Material]-keyed replacement for the legacy `Materials#getRenderer`/`renderer`
+    /// facade read that the generated-item, fluid-display, and electrode renderers used.
+    public static @Nullable GeneratedMaterialRenderer rendererOf(@Nullable Material material) {
+        return material == null ? null : materialRenderers.get(material);
     }
 
     /// `getId` across the union; `0` for null or a foreign type.

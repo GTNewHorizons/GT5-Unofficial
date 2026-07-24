@@ -67,7 +67,7 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
             if (mat != null) {
                 isMatItem |= loadMatchingVeins(mat);
                 if (!(mat instanceof Materials)) {
-                    isMatItem |= loadMatchingVeins(MU.gtMaterialOf(mat));
+                    isMatItem |= loadMatchingVeins(MU.materialOf(MU.gtMaterialOf(mat)));
                 }
             }
         }

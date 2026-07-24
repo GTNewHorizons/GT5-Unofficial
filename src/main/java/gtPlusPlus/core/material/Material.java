@@ -1729,8 +1729,8 @@ public class Material {
         return tryFindGregtechMaterialEquivalent(this);
     }
 
-    public @Nullable Materials getGTMaterial() {
-        return tryFindGregtechMaterialEquivalent();
+    public @Nullable com.ruling_0.materiallib.api.Material getGTMaterial() {
+        return MU.material(tryFindGregtechMaterialEquivalent());
     }
 
     public boolean generatesPrefix(OrePrefixes prefix) {

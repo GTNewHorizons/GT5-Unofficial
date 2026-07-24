@@ -67,6 +67,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolboxSlot;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.hazards.Hazard;
@@ -77,6 +78,7 @@ import gregtech.api.interfaces.IUpdatePlayerMovement;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
@@ -183,6 +185,7 @@ public class GTClient extends GTProxy {
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
         mPreference = new GTClientPreference();
         Materials.initClient();
+        registerMaterialItemRenderers();
 
         ClientCommandHandler.instance.registerCommand(new GTPowerfailCommandClient());
         ClientCommandHandler.instance.registerCommand(new PowerGogglesCommand());
@@ -196,6 +199,26 @@ public class GTClient extends GTProxy {
     @Optional.Method(modid = Mods.ModIDs.NAVIGATOR)
     private void registerMapLayers() {
         NavigatorApi.registerLayerManager(PowerfailLayerManager.INSTANCE);
+    }
+
+    /// Mirrors the special item-renderer assignments in `Materials#initClient` into [MU]'s [Material]-keyed
+    /// store, so the generated-item, fluid-display, and electrode renderers resolve them by MaterialLib
+    /// [Material] instead of through the legacy `Materials#renderer` facade. Runs immediately after
+    /// `initClient`, which constructs the renderer instances this reads.
+    private static void registerMaterialItemRenderers() {
+        MU.recordRenderer(Materials2Materials.TranscendentMetal, Materials.TranscendentMetal.getRenderer());
+        MU.recordRenderer(Materials2Materials.GaiaSpirit, Materials.GaiaSpirit.getRenderer());
+        MU.recordRenderer(Materials2Materials.Infinity, Materials.Infinity.getRenderer());
+        MU.recordRenderer(Materials2Materials.CosmicNeutronium, Materials.CosmicNeutronium.getRenderer());
+        MU.recordRenderer(Materials2Materials.Universium, Materials.Universium.getRenderer());
+        MU.recordRenderer(Materials2Materials.Eternity, Materials.Eternity.getRenderer());
+        MU.recordRenderer(Materials2Materials.Magmatter, Materials.MagMatter.getRenderer());
+        MU.recordRenderer(Materials2Materials.SixPhasedCopper, Materials.SixPhasedCopper.getRenderer());
+        MU.recordRenderer(Materials2Materials.GravitonShard, Materials.GravitonShard.getRenderer());
+        MU.recordRenderer(Materials2Materials.exohalkonite, Materials.ExoHalkonite.getRenderer());
+        MU.recordRenderer(Materials2Materials.hotexohalkonite, Materials.HotExoHalkonite.getRenderer());
+        MU.recordRenderer(Materials2Materials.prismaticnaquadah, Materials.PrismaticNaquadah.getRenderer());
+        MU.recordRenderer(Materials2Materials.Amalgatite, Materials.Amalgatite.getRenderer());
     }
 
     @Override

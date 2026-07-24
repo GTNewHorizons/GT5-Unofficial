@@ -61,7 +61,7 @@ public class RecipeGenRecycling implements Runnable {
     public static void generateRecipes(final Material material) {
         if (material == null) return;
 
-        final Materials gtMaterial = material.getGTMaterial();
+        final Materials gtMaterial = material.tryFindGregtechMaterialEquivalent();
         final com.ruling_0.materiallib.api.Material mlMaterial = gtMaterial != null ? MU.material(gtMaterial)
             : MaterialReconstruction.materialLibOf(material.getUnlocalizedName());
         if (MU.hasFlag(mlMaterial, GTMaterialFlag.NO_RECYCLING)

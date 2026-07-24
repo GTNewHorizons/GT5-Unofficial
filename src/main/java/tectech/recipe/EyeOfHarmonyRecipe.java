@@ -394,7 +394,7 @@ public class EyeOfHarmonyRecipe {
         }
 
         void addGTpp(Material mat, double value) {
-            com.ruling_0.materiallib.api.Material canonical = MU.material(mat.getGTMaterial());
+            com.ruling_0.materiallib.api.Material canonical = mat.getGTMaterial();
             addRaw(canonical != null ? canonical : mat, value);
         }
     }
