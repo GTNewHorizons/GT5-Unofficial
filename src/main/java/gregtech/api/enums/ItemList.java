@@ -3219,6 +3219,29 @@ public enum ItemList implements IItemContainer {
     MetaMaterial_FieldManipulator3,
     MetaMaterial_FieldManipulator4,
 
+    Ice_Cream_Machine,
+    Ice_Cream_Random,
+    Ice_Cream_Banana,
+    Ice_Cream_Benzene,
+    Ice_Cream_Blueberry,
+    Ice_Cream_Brownie,
+    Ice_Cream_Chocolate,
+    Ice_Cream_Coffee,
+    Ice_Cream_CookieDough,
+    Ice_Cream_CookiesAndCream,
+    Ice_Cream_CottonCandy,
+    Ice_Cream_JustCone,
+    Ice_Cream_Mango,
+    Ice_Cream_Meat,
+    Ice_Cream_MintChip,
+    Ice_Cream_Neapolitan,
+    Ice_Cream_NoFlavor,
+    Ice_Cream_PeanutButter,
+    Ice_Cream_Pistachio,
+    Ice_Cream_SaltedCaramel,
+    Ice_Cream_Strawberry,
+    Ice_Cream_Vanilla,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 
