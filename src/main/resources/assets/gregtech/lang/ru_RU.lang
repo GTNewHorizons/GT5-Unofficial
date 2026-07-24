@@ -7290,6 +7290,9 @@ GT5U.tooltip.universal-chemical-fuel-engine.hatch-casing=Любой стабил
 # YOTTank Structure Hints
 GT5U.tooltip.yottank.fluid-cell-block=Блок жидкостных ячеек
 
+GT5U.tooltip.eye-of-harmony.machine-type=Пространственно-временной манипулятор, EOH
+GT5U.tooltip.eye-of-harmony.controller-pos=Спереди в центре
+
 # info data
 GT5U.infodata.no_network=Нет сети
 GT5U.infodata.battery_buffer.stored_items=Stored Items: %s EU / %s EU

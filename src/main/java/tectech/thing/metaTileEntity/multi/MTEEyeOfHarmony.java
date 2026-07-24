@@ -952,20 +952,23 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Spacetime Manipulator, EOH")
+        tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.machine-type"))
             .addMarkdown(new ResourceLocation("gregtech", "eye-of-harmony"))
             .beginStructureBlock(33, 33, 33, false)
-            .addController("Front center, 17th layer")
-            .addCasing("896", "Reinforced Spatial Structure Casing", false)
-            .addCasing("534", "Reinforced Temporal Structure Casing", false)
-            .addCasing("168", "Time Dilation Field Generator", true)
-            .addCasing("138", "Spacetime Compression Field Generator", true)
-            .addCasing("48", "Stabilisation Field Generator", true)
-            .addCasing("31", "Infinite Spacetime Energy Boundary Casing", false)
-            .addInputBus("1", "Any boundary casing (no stocking bus)", 1)
-            .addInputHatch("2", "Any boundary casing (no stocking hatch)", 1)
-            .addOutputBus("1", "Any boundary casing", 1)
-            .addOutputHatch("1", "Any boundary casing", 1)
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.controller-pos"))
+            .addCasing("896", new ItemStack(TTCasingsContainer.sBlockCasingsBA0, 1, 11).getDisplayName(), false)
+            .addCasing("534", new ItemStack(TTCasingsContainer.sBlockCasingsBA0, 1, 10).getDisplayName(), false)
+            .addCasing("168", TTCasingsContainer.TimeAccelerationFieldGenerator.getLocalizedName(), true)
+            .addCasing("138", TTCasingsContainer.SpacetimeCompressionFieldGenerators.getLocalizedName(), true)
+            .addCasing("48", TTCasingsContainer.StabilisationFieldGenerators.getLocalizedName(), true)
+            .addCasing("31", Casings.InfiniteSpacetimeEnergyBoundaryCasing.getLocalizedName(), false)
+            .addInputBus("1", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.boundary-no-stocking-bus"), 1)
+            .addInputHatch(
+                "2",
+                StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.boundary-no-stocking-hatch"),
+                1)
+            .addOutputBus("1", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.any-boundary-casing"), 1)
+            .addOutputHatch("1", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.any-boundary-casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.EOH_STABILISATION)
             .addSubChannel(GTStructureChannels.EOH_DILATION)
