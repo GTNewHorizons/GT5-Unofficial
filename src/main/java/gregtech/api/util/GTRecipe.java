@@ -1169,6 +1169,18 @@ public class GTRecipe implements Comparable<GTRecipe> {
         }
 
         @Override
+        public int hashCode() {
+            return mPersistentHash != 0 ? mPersistentHash : super.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (!(obj instanceof RecipeAssemblyLine other)) return false;
+            return mPersistentHash != 0 && mPersistentHash == other.mPersistentHash;
+        }
+
+        @Override
         public String toString() {
             return "GTRecipe_AssemblyLine{" + "mResearchItem="
                 + mResearchItem
