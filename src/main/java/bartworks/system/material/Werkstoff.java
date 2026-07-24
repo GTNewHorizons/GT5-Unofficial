@@ -127,11 +127,12 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return this.bridgeMaterial;
     }
 
-    /// The legacy [Materials] the retired bridge resolved to (null for a reconstructed or werkstoff-own
-    /// material, the wrapped GT constant for a proxy). Retained for [MU#gtMaterialOf], whose render/vein-stat
-    /// consumers still read a [Materials].
-    public @Nullable Materials getGTMaterial() {
-        return MU.materialOf(this.bridgeMaterial);
+    /// The MaterialLib [Material] the retired gregtech-side bridge pointed at -- the bridge material itself
+    /// (null for a reconstructed or werkstoff-own material, the wrapped GT material for a proxy). Consumed
+    /// through [MU#gtMaterialOf], whose callers resolve the legacy [Materials] counterpart via [MU#materialOf]
+    /// only when they need it.
+    public @Nullable Material getGTMaterial() {
+        return this.bridgeMaterial;
     }
 
     public void setBridgeMaterial(Material bridgeMaterial) {

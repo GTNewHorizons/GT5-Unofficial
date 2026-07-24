@@ -12,14 +12,16 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import org.lwjgl.opengl.GL11;
 
+import com.ruling_0.materiallib.api.Material;
+
 import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.CondensateType;
-import gregtech.api.enums.Materials;
 import gregtech.api.material.MU;
 import gregtech.client.handler.CondensateAnimationTickHandler;
 import gregtech.common.items.ItemFluidDisplay;
+import gregtech.common.render.items.GeneratedMaterialRenderer;
 
 @SideOnly(Side.CLIENT)
 public class FluidDisplayStackRenderer implements IItemRenderer {
@@ -45,10 +47,9 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
         Fluid fluid = FluidRegistry.getFluid(item.getItemDamage());
-        Materials associatedFluidMaterial = MU
-            .materialOf(MU.byLegacyName(item.stackTagCompound.getString("mFluidMaterialName")));
-        if (associatedFluidMaterial == null || associatedFluidMaterial.renderer == null
-            || !associatedFluidMaterial.renderer.renderFluidDisplayItem(type, item, data)) {
+        Material associatedFluidMaterial = MU.byLegacyName(item.stackTagCompound.getString("mFluidMaterialName"));
+        GeneratedMaterialRenderer fluidRenderer = MU.rendererOf(associatedFluidMaterial);
+        if (fluidRenderer == null || !fluidRenderer.renderFluidDisplayItem(type, item, data)) {
             IIcon icon = item.getItem()
                 .getIconFromDamage(item.getItemDamage());
             int tint;

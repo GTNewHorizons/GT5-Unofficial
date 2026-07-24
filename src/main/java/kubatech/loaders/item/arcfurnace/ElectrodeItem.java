@@ -114,8 +114,7 @@ public class ElectrodeItem extends Item implements IGT_ItemWithMaterialRenderer 
     @Override
     public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
         ArcFurnaceElectrode electrode = ArcFurnaceElectrode.getById(aMetaData);
-        if (electrode != null && MU.gtMaterialOf(electrode.associatedMaterial) != null)
-            return MU.gtMaterialOf(electrode.associatedMaterial).renderer;
+        if (electrode != null) return MU.rendererOf(MU.gtMaterialOf(electrode.associatedMaterial));
         return null;
     }
 

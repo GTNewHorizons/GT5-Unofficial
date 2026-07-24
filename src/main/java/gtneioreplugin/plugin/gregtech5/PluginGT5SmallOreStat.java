@@ -64,7 +64,7 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
             if (mat != null) {
                 isMatItem |= loadSmallOre(mat);
                 if (!(mat instanceof Materials)) {
-                    isMatItem |= loadSmallOre(MU.gtMaterialOf(mat));
+                    isMatItem |= loadSmallOre(MU.materialOf(MU.gtMaterialOf(mat)));
                 }
             }
         }
