@@ -31,9 +31,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteam
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
-import gtnhlanth.common.hatch.MTEBusInputFocus;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
-import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import kubatech.tileentity.gregtech.hatch.MTEHatchElectrode;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
@@ -190,32 +187,6 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
                 .stream()
                 .filter(MTEHatchDynamoTunnel.class::isInstance)
                 .count();
-        }
-    },
-    BeamlineInput("GT5U.MBTT.BeamlineInputHatch", MTEMultiBlockBase::addBeamlineInputToMachineList,
-        MTEHatchInputBeamline.class) {
-
-        @Override
-        public long count(MTEMultiBlockBase t) {
-            return t.getBeamlineInputHatches()
-                .size();
-        }
-    },
-    BeamlineOutput("GT5U.MBTT.BeamlineOutputHatch", MTEMultiBlockBase::addBeamlineOutputToMachineList,
-        MTEHatchOutputBeamline.class) {
-
-        @Override
-        public long count(MTEMultiBlockBase t) {
-            return t.getBeamlineOutputHatches()
-                .size();
-        }
-    },
-    FocusInput("GT5U.MBTT.FocusInputBus", MTEMultiBlockBase::addFocusInputToMachineList, MTEBusInputFocus.class) {
-
-        @Override
-        public long count(MTEMultiBlockBase t) {
-            return t.getFocusInputBuses()
-                .size();
         }
     },
     SolidifierHatch("GT5U.MBTT.SolidiferHatch", MTEMultiBlockBase::addInputHatchToMachineList,

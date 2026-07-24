@@ -4,7 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.HatchElement.BeamlineInput;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -15,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase.BeamHatchElement.BeamlineInput;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
 
 import java.util.ArrayList;
@@ -45,7 +45,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
@@ -59,6 +58,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.Particle;
@@ -68,7 +68,7 @@ import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
 import gtnhlanth.util.DescTextLocalization;
 
-public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber>
+public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IStructureDefinition<MTETargetChamber> STRUCTURE_DEFINITION;
@@ -118,7 +118,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         return block == ItemRegistry.bw_glasses[0];
     }
 
-    // distinct bus registration in order to check masks only in one hatch
+    // distinct bus registration to check masks only in one hatch
     private boolean addMaskInputBus(IGregTechTileEntity te, int casingIndex) {
         if (te == null) return false;
         var mte = te.getMetaTileEntity();
@@ -150,10 +150,12 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
     public MTETargetChamber(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+        this.hasMaintenanceChecks = true;
     }
 
     public MTETargetChamber(String name) {
         super(name);
+        this.hasMaintenanceChecks = true;
     }
 
     @Override
@@ -368,7 +370,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
     @Nullable
     private BeamInformation getInputInformation() {
-        for (MTEHatchInputBeamline in : this.mBeamlineInputHatches) {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
             if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
             return in.dataPacket.getContent();
         }
