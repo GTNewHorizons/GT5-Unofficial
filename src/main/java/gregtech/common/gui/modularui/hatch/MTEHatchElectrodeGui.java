@@ -2,9 +2,9 @@ package gregtech.common.gui.modularui.hatch;
 
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 
-public class MTEElectrodeHatchGui extends MTEHatchInputBusGui {
+public class MTEHatchElectrodeGui extends MTEHatchInputBusGui {
 
-    public MTEElectrodeHatchGui(MTEHatchInputBus hatch) {
+    public MTEHatchElectrodeGui(MTEHatchInputBus hatch) {
         super(hatch);
     }
 
