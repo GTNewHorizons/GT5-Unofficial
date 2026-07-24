@@ -14,7 +14,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
@@ -120,7 +119,10 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
             // Superconductor Base UHV Frame Box
             .addCasing("20", "Superconductor Base UHV Frame Box", false)
             // Superconductor Base UEV Sheetmetal
-            .addCasing("1", OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.SuperconductorUEVBase), false)
+            .addCasing(
+                "1",
+                OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials2Materials.SuperconductorUEVBase),
+                false)
             .addMiscHatch(
                 "0+",
                 TOOLTIP_VCI_LONG,

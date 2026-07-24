@@ -21,10 +21,10 @@ import net.minecraftforge.fluids.FluidStack;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -203,8 +203,8 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
     }
 
     @Override
-    protected Materials getFrameMaterial() {
-        return Materials.Neutronium;
+    protected Material getFrameMaterial() {
+        return Materials2Materials.Neutronium;
     }
 
     @Override

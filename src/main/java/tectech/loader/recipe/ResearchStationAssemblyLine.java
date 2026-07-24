@@ -54,6 +54,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
@@ -463,7 +464,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get("wireGt01SuperconductorUEV", 8L),
                     GTOreDictUnificator.get("wireGt01SuperconductorUIV", 4L),
                     GTOreDictUnificator.get("wireGt01SuperconductorUMV", 2L) },
-                new Object[] { OrePrefixes.foil.ingredient(Materials.AnySyntheticRubber), 64L }, },
+                new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L }, },
             new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
                 GTModHandler.getIC2Coolant(10_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidGas, 2_500), },
@@ -488,7 +489,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new ItemStack[] { ItemList.Circuit_Parts_DiodeASMD.get(16L), ItemList.Circuit_Parts_DiodeXSMD.get(4L) },
                 ItemList.Circuit_Chip_NOR.get(32L), ItemList.Circuit_Chip_Ram.get(64L),
                 MaterialLibAPI.getStack(Materials2Materials.NiobiumTitanium, Materials2Shapes.wireFine, 32),
-                new Object[] { OrePrefixes.foil.ingredient(Materials.AnySyntheticRubber), 64L }, },
+                new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L }, },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.BiohMediumSterilized,
@@ -523,7 +524,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get("wireGt01SuperconductorUEV", 32L),
                     GTOreDictUnificator.get("wireGt01SuperconductorUIV", 16L),
                     GTOreDictUnificator.get("wireGt01SuperconductorUMV", 8L) },
-                new Object[] { OrePrefixes.foil.ingredient(Materials.AnySyntheticRubber), 64L },
+                new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L },
                 MaterialLibAPI.getStack(Materials2Materials.Polybenzimidazole, Materials2Shapes.foil, 64) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
                 MaterialLibAPI.getFluidStack(
@@ -550,7 +551,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.wireFine), 24, 10101), // Fine
                 // Lumiium
                 // Wire
-                new Object[] { OrePrefixes.foil.ingredient(Materials.AnySyntheticRubber), 64L }, },
+                new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L }, },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidPlasma, 10 * INGOTS),
                 MaterialLibAPI
@@ -574,7 +575,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.wireFine), 32, 10101), // Fine
                 // Lumiium
                 // Wire
-                new Object[] { OrePrefixes.foil.ingredient(Materials.AnySyntheticRubber), 64L },
+                new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L },
                 MaterialLibAPI.getStack(Materials2Materials.Polybenzimidazole, Materials2Shapes.foil, 64), },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidPlasma, 20 * INGOTS),
@@ -599,8 +600,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new ItemStack[] { GTOreDictUnificator.get("wireGt01SuperconductorUEV", 64L),
                     GTOreDictUnificator.get("wireGt01SuperconductorUIV", 32L),
                     GTOreDictUnificator.get("wireGt01SuperconductorUMV", 16L) },
-                new Object[] { OrePrefixes.foil.ingredient(Materials.AnySyntheticRubber), 64L },
-                new Object[] { OrePrefixes.foil.ingredient(Materials.AnySyntheticRubber), 64L },
+                new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L },
+                new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L },
                 MaterialLibAPI.getStack(Materials2Materials.Polybenzimidazole, Materials2Shapes.foil, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Polybenzimidazole, Materials2Shapes.foil, 64) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(40 * INGOTS),
@@ -1269,7 +1270,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { ItemList.Electric_Motor_UHV.get(1L), GTOreDictUnificator.get("pipeLargeNeutronium", 2L),
                 MaterialLibAPI.getStack(Materials2Materials.CosmicNeutronium, Materials2Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials2Materials.CosmicNeutronium, Materials2Shapes.screw, 16),
-                new Object[] { OrePrefixes.ring.ingredient(Materials.AnySyntheticRubber), 32L },
+                new Object[] { OrePrefixes.ring.ingredient(Materials2Markers.AnySyntheticRubber), 32L },
                 MaterialLibAPI.getStack(Materials2Materials.CosmicNeutronium, Materials2Shapes.rotor, 4),
                 GTOreDictUnificator.get("cableGt04Bedrockium", 2L) },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
@@ -1292,7 +1293,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.CosmicNeutronium, Materials2Shapes.ring, 8),
                 MaterialLibAPI.getStack(Materials2Materials.CosmicNeutronium, Materials2Shapes.round, 64),
                 GTOreDictUnificator.get("cableGt04Bedrockium", 2L),
-                new Object[] { OrePrefixes.plate.ingredient(Materials.AnySyntheticRubber), 40L } },
+                new Object[] { OrePrefixes.plate.ingredient(Materials2Markers.AnySyntheticRubber), 40L } },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
             ItemList.Conveyor_Module_UHV.get(1),
             crafting_time_in_ticks,
@@ -1477,7 +1478,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { ItemList.Electric_Motor_UEV.get(1L), GTOreDictUnificator.get("pipeLargeNetherStar", 2L),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.screw, 16),
-                new Object[] { OrePrefixes.ring.ingredient(Materials.AnySyntheticRubber), 64L },
+                new Object[] { OrePrefixes.ring.ingredient(Materials2Markers.AnySyntheticRubber), 64L },
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.rotor, 4),
                 GTOreDictUnificator.get("cableGt04Draconium", 2L) },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
@@ -1500,8 +1501,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.ring, 8),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.round, 64),
                 GTOreDictUnificator.get("cableGt04Draconium", 2L),
-                new Object[] { OrePrefixes.plate.ingredient(Materials.AnySyntheticRubber), 64L },
-                new Object[] { OrePrefixes.plate.ingredient(Materials.AnySyntheticRubber), 16L } },
+                new Object[] { OrePrefixes.plate.ingredient(Materials2Markers.AnySyntheticRubber), 64L },
+                new Object[] { OrePrefixes.plate.ingredient(Materials2Markers.AnySyntheticRubber), 16L } },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
             ItemList.Conveyor_Module_UEV.get(1),
             crafting_time_in_ticks,
@@ -1689,7 +1690,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get("pipeLargeDraconiumAwakened", 2L),
                 MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.screw, 16),
-                new Object[] { OrePrefixes.ring.ingredient(Materials.AnySyntheticRubber), 64L },
+                new Object[] { OrePrefixes.ring.ingredient(Materials2Markers.AnySyntheticRubber), 64L },
                 MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.rotor, 4),
                 GTOreDictUnificator.get("cableGt04NetherStar", 2L) },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
@@ -1712,8 +1713,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.ring, 8),
                 MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.round, 64),
                 GTOreDictUnificator.get("cableGt04NetherStar", 2L),
-                new Object[] { OrePrefixes.plate.ingredient(Materials.AnySyntheticRubber), 64L },
-                new Object[] { OrePrefixes.plate.ingredient(Materials.AnySyntheticRubber), 16L } },
+                new Object[] { OrePrefixes.plate.ingredient(Materials2Markers.AnySyntheticRubber), 64L },
+                new Object[] { OrePrefixes.plate.ingredient(Materials2Markers.AnySyntheticRubber), 16L } },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
             ItemList.Conveyor_Module_UIV.get(1),
             crafting_time_in_ticks,
@@ -1894,7 +1895,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { ItemList.Electric_Motor_UMV.get(1L), GTOreDictUnificator.get("pipeLargeInfinity", 2L),
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.screw, 16),
-                new Object[] { OrePrefixes.ring.ingredient(Materials.AnySyntheticRubber), 64L },
+                new Object[] { OrePrefixes.ring.ingredient(Materials2Markers.AnySyntheticRubber), 64L },
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.rotor, 4),
                 GTOreDictUnificator.get("cableGt04Quantium", 2L) },
             new FluidStack[] { fluid_0, fluid_1, fluid_2, fluid_3 },
@@ -1917,8 +1918,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.ring, 8),
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.round, 64),
                 GTOreDictUnificator.get("cableGt04Quantium", 2L),
-                new Object[] { OrePrefixes.plate.ingredient(Materials.AnySyntheticRubber), 64L },
-                new Object[] { OrePrefixes.plate.ingredient(Materials.AnySyntheticRubber), 16L } },
+                new Object[] { OrePrefixes.plate.ingredient(Materials2Markers.AnySyntheticRubber), 64L },
+                new Object[] { OrePrefixes.plate.ingredient(Materials2Markers.AnySyntheticRubber), 16L } },
             new FluidStack[] { fluid_0, fluid_1, fluid_2, fluid_3 },
             ItemList.Conveyor_Module_UMV.get(1),
             crafting_time_in_ticks,
