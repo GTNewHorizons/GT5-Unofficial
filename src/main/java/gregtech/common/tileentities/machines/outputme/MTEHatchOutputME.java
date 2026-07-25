@@ -166,7 +166,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public boolean isEmptyAndAcceptsAnyFluid() {
-        return !provider.isFiltered() && !provider.shouldCheck();
+        return !provider.isFiltered() && !shouldCheck();
     }
 
     BaseActionSource requestSource;
@@ -547,7 +547,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
         public void setRecipeCheck(boolean isRecipeCheck) {
             this.isRecipeCheck = isRecipeCheck;
-            if (isRecipeCheck && provider.shouldCheck()) {
+            if (isRecipeCheck && shouldCheck()) {
                 provider.flushCachedStack();
                 cell = AEApi.instance()
                     .registries()
@@ -564,8 +564,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
         private void updateFlags() {
             isDynamicCapacity = isRecipeCheck && isProtectOutput && shouldCheck() && !provider.isDistribution();
-            allowAnyInput = isRecipeCheck ? availableSpace > 0
-                : provider.getLastInputTick() == provider.getTickCounter();
+            allowAnyInput = !shouldCheck() && availableSpace > 0;
+            if (!isRecipeCheck)
+            {
+                allowAnyInput |= provider.getLastInputTick() == provider.getTickCounter();
+            }
         }
 
         public boolean isDynamicCapacity() {
@@ -586,7 +589,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
-            if (isRecipeCheck && provider.shouldCheck()) {
+            if (isRecipeCheck && shouldCheck()) {
                 IAEFluidStack input = AEFluidStack.create(stack);
                 IAEFluidStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
                 int inserted = (int) (stack.amount - (rejected == null ? 0 : rejected.getStackSize()));
