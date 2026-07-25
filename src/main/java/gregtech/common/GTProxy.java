@@ -1740,18 +1740,14 @@ public class GTProxy implements IFuelHandler {
                                     aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
                                 }
                                 if (aMaterial != null) {
-                                    // Facade reads without an MU twin hold on the legacy counterpart, which
-                                    // the domain lookup guarantees exists: mOreReRegistrations (populated only
-                                    // by Materials' wildcard wiring), the mMaterialItems add (still read by
-                                    // the legacy contains() gate in RecipeMaps), and mAspects (mutated live by
+                                    for (Material tReRegisteredMaterial : MU.oreReRegistrationsOf(aMaterial)) {
+                                        GTOreDictUnificator.registerOre(aPrefix, tReRegisteredMaterial, aEvent.Ore);
+                                    }
+                                    // Facade reads without an MU twin hold on the legacy counterpart, which the
+                                    // domain lookup guarantees exists: the mMaterialItems add (still read by the
+                                    // legacy contains() gate in RecipeMaps) and mAspects (mutated live by
                                     // bartworks' BridgeMaterialsLoader).
                                     Materials legacyMaterial = MU.materialOf(aMaterial);
-                                    Materials tReRegisteredMaterial;
-                                    for (Iterator<Materials> i$ = legacyMaterial.mOreReRegistrations.iterator(); i$
-                                        .hasNext(); GTOreDictUnificator
-                                            .registerOre(aPrefix, tReRegisteredMaterial, aEvent.Ore)) {
-                                        tReRegisteredMaterial = i$.next();
-                                    }
                                     legacyMaterial.add(GTUtility.copyAmount(1, aEvent.Ore));
 
                                     if (GregTechAPI.sThaumcraftCompat != null && aPrefix.doGenerateItem(aMaterial)

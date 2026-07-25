@@ -2,6 +2,7 @@ package gregtech.api.material;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
@@ -39,6 +40,7 @@ import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2IDIndex;
+import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
@@ -983,6 +985,42 @@ public class MU {
     /// (gas -> result), from [Materials2ArcSmelting]'s declared table; empty when the material has none.
     public static Map<Material, Material> arcSmeltIntoWithGas(@Nullable Material material) {
         return Materials2ArcSmelting.withGas(material);
+    }
+
+    private static Map<Material, List<Material>> oreReRegistrations;
+
+    /// The wildcard marker materials an ore registered for `material` is also re-registered under -- the
+    /// [Material]-side replacement for the legacy `Materials#mOreReRegistrations` wildcard wiring (an Iron ore
+    /// entry also registers as AnyIron, etc.), consulted by the ore-registration dispatch. Empty for a
+    /// material with no wildcard aliases.
+    public static List<Material> oreReRegistrationsOf(@Nullable Material material) {
+        if (material == null) return Collections.emptyList();
+        return oreReRegistrations().getOrDefault(material, Collections.emptyList());
+    }
+
+    private static Map<Material, List<Material>> oreReRegistrations() {
+        if (oreReRegistrations == null) {
+            Map<Material, List<Material>> m = new HashMap<>();
+            m.put(Materials2Materials.Iron, Collections.singletonList(Materials2Markers.AnyIron));
+            m.put(Materials2Materials.PigIron, Collections.singletonList(Materials2Markers.AnyIron));
+            m.put(Materials2Materials.CastIron, Collections.singletonList(Materials2Markers.AnyIron));
+            m.put(Materials2Materials.Copper, Collections.singletonList(Materials2Markers.AnyCopper));
+            m.put(Materials2Materials.AnnealedCopper, Collections.singletonList(Materials2Markers.AnyCopper));
+            m.put(Materials2Materials.Bronze, Collections.singletonList(Materials2Markers.AnyBronze));
+            m.put(Materials2Materials.Rubber, Collections.singletonList(Materials2Markers.AnyRubber));
+            m.put(
+                Materials2Materials.StyreneButadieneRubber,
+                Arrays.asList(Materials2Markers.AnyRubber, Materials2Markers.AnySyntheticRubber));
+            m.put(
+                Materials2Materials.Silicone,
+                Arrays.asList(Materials2Markers.AnyRubber, Materials2Markers.AnySyntheticRubber));
+            m.put(Materials2Materials.Carbon, Collections.singletonList(Materials2Markers.AnyCarbon));
+            m.put(Materials2Materials.Coal, Collections.singletonList(Materials2Markers.AnyCarbon));
+            m.put(Materials2Materials.Charcoal, Collections.singletonList(Materials2Markers.AnyCarbon));
+            m.put(Materials2Materials.Lignite, Collections.singletonList(Materials2Markers.AnyCarbon));
+            oreReRegistrations = m;
+        }
+        return oreReRegistrations;
     }
 
     /// [#smeltInto(Material)], for [GTMaterialProperties#DIRECT_SMELTING].
