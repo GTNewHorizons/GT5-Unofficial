@@ -688,7 +688,30 @@ public class MU {
     public static Dyes dye(@Nullable Material material) {
         if (material == null) return Dyes._NULL;
         String dye = material.getProperty(GTMaterialProperties.DYE);
-        return dye == null ? Dyes._NULL : Dyes.valueOf(dye);
+        return dye == null ? nearestDye(material) : Dyes.valueOf(dye);
+    }
+
+    /// The vanilla [Dyes] nearest a material's [GTMaterialProperties#ARGB] by squared RGB distance, or
+    /// [Dyes#_NULL] when it has no color. Used as the [#dye] fallback for gem materials carrying no explicit
+    /// `DYE` property (all werkstoff-derived gems reach GT this way) so their laser-engraver upgrade recipes and
+    /// lens-gem oredict registration -- both keyed on `craftingLens<Dye>` -- still resolve a color, reproducing
+    /// what bartworks classified from the werkstoff RGBA at recipe-registration time.
+    private static Dyes nearestDye(@Nullable Material material) {
+        short[] rgba = rgba(material);
+        if (rgba == null) return Dyes._NULL;
+        Dyes best = Dyes._NULL;
+        long bestDistance = Long.MAX_VALUE;
+        for (int i = 0; i <= 15; i++) {
+            Dyes candidate = Dyes.get(i);
+            short[] c = candidate.getRGBA();
+            long dr = rgba[0] - c[0], dg = rgba[1] - c[1], db = rgba[2] - c[2];
+            long distance = dr * dr + dg * dg + db * db;
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                best = candidate;
+            }
+        }
+        return best;
     }
 
     /// The legacy `Materials#mAutoGenerateBlastFurnaceRecipes` flag for a material, from
@@ -1135,6 +1158,15 @@ public class MU {
         if (flags != null && flags.contains(flag)) return true;
         List<String> subTags = material.getProperty(GTMaterialProperties.SUB_TAGS);
         return subTags != null && subTags.contains(flag.name());
+    }
+
+    /// Whether a material's [GTMaterialProperties#SUB_TAGS] names `subTag`. For the werkstoff SubTags that have
+    /// no [GTMaterialFlag] counterpart (`"NoBlast"`, `"AnaerobeSmelting"`, `"NobleGasSmelting"`) and so cannot be
+    /// reached through [#hasFlag].
+    public static boolean hasSubTag(@Nullable Material material, String subTag) {
+        if (material == null) return false;
+        List<String> subTags = material.getProperty(GTMaterialProperties.SUB_TAGS);
+        return subTags != null && subTags.contains(subTag);
     }
 
     /// [#hasFlag(Material, GTMaterialFlag)] for callers still holding the legacy [Materials] enum constant.

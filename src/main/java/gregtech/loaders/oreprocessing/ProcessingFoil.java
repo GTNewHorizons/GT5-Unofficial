@@ -10,7 +10,6 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.MU;
 import gregtech.api.render.TextureFactory;
@@ -29,9 +28,6 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        // Blacklist materials which are handled by Werkstoff loader
-        if (material == Materials2Materials.Calcium || material == Materials2Materials.Magnesia) return;
-
         registerBenderRecipe(material);
         registerCover(stack, material);
     }

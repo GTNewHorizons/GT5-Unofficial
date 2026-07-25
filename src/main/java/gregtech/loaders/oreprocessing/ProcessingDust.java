@@ -401,6 +401,23 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .metadata(ADDITIVE_AMOUNT, 16)
                             .addTo(implosionRecipes);
                     }
+                        break;
+                    default: {
+                        // Gem materials not special-cased above (every werkstoff-derived gem reaches GT here):
+                        // dust -> gem implosion, ported from the retired bartworks GemLoader, skipped for NoBlast.
+                        if (GTOreDictUnificator.get(OrePrefixes.gem, material, 1L) != null
+                            && !MU.hasSubTag(material, "NoBlast")) {
+                            GTValues.RA.stdBuilder()
+                                .itemInputs(GTUtility.copyAmount(4, stack))
+                                .itemOutputs(
+                                    GTOreDictUnificator.get(OrePrefixes.gem, material, 3L),
+                                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 8L))
+                                .duration(20 * TICKS)
+                                .eut(TierEU.RECIPE_LV)
+                                .metadata(ADDITIVE_AMOUNT, 24)
+                                .addTo(implosionRecipes);
+                        }
+                    }
                 }
             }
             case "dustPure", "dustImpure", "dustRefined" -> {

@@ -82,10 +82,8 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     break;
                 }
 
-                // Blacklist materials which are handled by Werkstoff loader and coal, which has an override
-                if (material == Materials2Materials.Salt || material == Materials2Materials.RockSalt
-                    || material == Materials2Materials.Spodumene
-                    || material == Materials2Materials.Coal) return;
+                // Coal has an override elsewhere.
+                if (material == Materials2Materials.Coal) return;
 
                 switch (MU.internalName(material)) {
                     case "Tanzanite", "Sapphire", "Olivine", "GreenSapphire", "Opal", "Amethyst", "Emerald", "Ruby", "Amber", "Diamond", "FoolsRuby", "BlueTopaz", "GarnetRed", "Topaz", "Jasper", "GarnetYellow" -> GTValues.RA

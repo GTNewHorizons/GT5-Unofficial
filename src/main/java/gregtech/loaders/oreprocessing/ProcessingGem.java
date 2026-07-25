@@ -56,10 +56,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean fuelPower = MU.fuelPower(material) > 0;
         boolean unifiable = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE));
 
-        // Blacklist materials which are handled by Werkstoff loader and nether quartz due to its 4:1 ratio
-        if (material == Materials2Materials.Salt || material == Materials2Materials.RockSalt
-            || material == Materials2Materials.Spodumene
-            || material == Materials2Materials.NetherQuartz) return;
+        // Nether quartz is skipped due to its 4:1 ratio.
+        if (material == Materials2Materials.NetherQuartz) return;
 
         switch (prefix.getName()) {
             case "gem" -> {
@@ -270,6 +268,16 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .metadata(FUEL_VALUE, MU.fuelPower(material) / 2)
                         .metadata(FUEL_TYPE, MU.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
+                }
+
+                // Forge-hammer the lowest gem tier straight to dust, ported from the retired bartworks GemLoader.
+                if (GTOreDictUnificator.get(OrePrefixes.dustTiny, material, 1L) != null) {
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(GTUtility.copyAmount(1, stack))
+                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, material, 1L))
+                        .duration(3 * SECONDS + 4 * TICKS)
+                        .eut(TierEU.RECIPE_LV / 2)
+                        .addTo(hammerRecipes);
                 }
 
                 if (!noWorking) {
