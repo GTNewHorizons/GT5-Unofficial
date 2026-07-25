@@ -162,11 +162,11 @@ public class LegacyMaterials {
 
         List<String> addedPrefixes = ml.getProperty(GTMaterialProperties.ADDED_PREFIXES);
         if (addedPrefixes != null) for (String prefixName : addedPrefixes) {
-            builder.addOrePrefix(requirePrefix(prefixName, ml));
+            requirePrefix(prefixName, ml).mGeneratedItems.add(ml);
         }
         List<String> removedPrefixes = ml.getProperty(GTMaterialProperties.REMOVED_PREFIXES);
         if (removedPrefixes != null) for (String prefixName : removedPrefixes) {
-            builder.removeOrePrefix(requirePrefix(prefixName, ml));
+            requirePrefix(prefixName, ml).mNotGeneratedItems.add(ml);
         }
 
         Integer meltingPoint = ml.getProperty(GTMaterialProperties.MELTING_POINT);

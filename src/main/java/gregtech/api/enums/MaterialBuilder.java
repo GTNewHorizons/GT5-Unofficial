@@ -88,8 +88,6 @@ public class MaterialBuilder {
     private final Map<Supplier<Materials>, Supplier<Materials>> pendingArcSmeltingIntoWithGas = new LinkedHashMap<>();
     private Supplier<Materials> pendingDirectSmelting;
     private final LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
-    private final List<OrePrefixes> orePrefixBlacklist = new ArrayList<>();
-    private final List<OrePrefixes> orePrefixWhitelist = new ArrayList<>();
     private boolean hasGlowingOre;
     private boolean registerInMaterialsMap = true;
 
@@ -148,8 +146,6 @@ public class MaterialBuilder {
         );
 
         for (SubTag subTag : subTags) subTag.addContainerToList(material);
-        for (OrePrefixes prefix : orePrefixBlacklist) prefix.mNotGeneratedItems.add(material);
-        for (OrePrefixes prefix : orePrefixWhitelist) prefix.mGeneratedItems.add(material);
 
         if (isFormulaNeededLocalized) material.setChemicalFormula(chemicalFormula, true);
 
@@ -559,18 +555,6 @@ public class MaterialBuilder {
     /** Adds the {@link SubTag} to the material and registers the material with the tag upon construction. */
     public MaterialBuilder addSubTag(SubTag subTag) {
         this.subTags.add(subTag);
-        return this;
-    }
-
-    /** Adds an {@link OrePrefixes} that should not be generated. */
-    public MaterialBuilder removeOrePrefix(OrePrefixes prefix) {
-        this.orePrefixBlacklist.add(prefix);
-        return this;
-    }
-
-    /** Adds an {@link OrePrefixes} that will be generated. */
-    public MaterialBuilder addOrePrefix(OrePrefixes prefix) {
-        this.orePrefixWhitelist.add(prefix);
         return this;
     }
 

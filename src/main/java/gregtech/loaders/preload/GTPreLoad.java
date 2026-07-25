@@ -327,40 +327,42 @@ public class GTPreLoad {
             final String reEnable = mMTTags.get(i);
             OrePrefixes tPrefix = OrePrefixes.getOrePrefix(reEnable);
             if (tPrefix != null) {
-                // The generated-item sets stay legacy-keyed, so the domain lookup converts back to the
-                // facade; an unresolved tag falls back to the _NULL placeholder the sets always received
-                // for one (harmless membership -- doGenerateItem gates on _NULL first).
+                // mGeneratedItems is ML-keyed, so the resolved Material adds directly; mDisabledItems stays
+                // legacy-keyed (see OrePrefixes#mDisabledItems), so its removals convert to the facade. An
+                // unresolved tag falls back to the _NULL placeholder on each side -- harmless membership,
+                // doGenerateItem gates on _NULL first.
                 Material ml = LegacyNameDomain.lookup(reEnable.replaceFirst(tPrefix.toString(), ""));
+                Material mlName = ml == null ? MU.material(Materials._NULL) : ml;
                 Materials tName = ml == null ? Materials._NULL : MU.materialOf(ml);
                 tPrefix.mDisabledItems.remove(tName);
-                tPrefix.mGeneratedItems.add(tName);
+                tPrefix.mGeneratedItems.add(mlName);
                 if (tPrefix == OrePrefixes.screw) {
                     OrePrefixes.bolt.mDisabledItems.remove(tName);
-                    OrePrefixes.bolt.mGeneratedItems.add(tName);
+                    OrePrefixes.bolt.mGeneratedItems.add(mlName);
                     OrePrefixes.stick.mDisabledItems.remove(tName);
-                    OrePrefixes.stick.mGeneratedItems.add(tName);
+                    OrePrefixes.stick.mGeneratedItems.add(mlName);
                 }
                 if (tPrefix == OrePrefixes.round) {
                     OrePrefixes.nugget.mDisabledItems.remove(tName);
-                    OrePrefixes.nugget.mGeneratedItems.add(tName);
+                    OrePrefixes.nugget.mGeneratedItems.add(mlName);
                 }
                 if (tPrefix == OrePrefixes.spring) {
                     OrePrefixes.stickLong.mDisabledItems.remove(tName);
-                    OrePrefixes.stickLong.mGeneratedItems.add(tName);
+                    OrePrefixes.stickLong.mGeneratedItems.add(mlName);
                     OrePrefixes.stick.mDisabledItems.remove(tName);
-                    OrePrefixes.stick.mGeneratedItems.add(tName);
+                    OrePrefixes.stick.mGeneratedItems.add(mlName);
                 }
                 if (tPrefix == OrePrefixes.springSmall) {
                     OrePrefixes.stick.mDisabledItems.remove(tName);
-                    OrePrefixes.stick.mGeneratedItems.add(tName);
+                    OrePrefixes.stick.mGeneratedItems.add(mlName);
                 }
                 if (tPrefix == OrePrefixes.stickLong) {
                     OrePrefixes.stick.mDisabledItems.remove(tName);
-                    OrePrefixes.stick.mGeneratedItems.add(tName);
+                    OrePrefixes.stick.mGeneratedItems.add(mlName);
                 }
                 if (tPrefix == OrePrefixes.rotor) {
                     OrePrefixes.ring.mDisabledItems.remove(tName);
-                    OrePrefixes.ring.mGeneratedItems.add(tName);
+                    OrePrefixes.ring.mGeneratedItems.add(mlName);
                 }
             } else {
                 GT_FML_LOGGER.info("noPrefix " + reEnable);

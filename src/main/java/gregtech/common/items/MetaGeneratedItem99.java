@@ -70,8 +70,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
             if (MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
                 && !MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)
                 && !MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)) {
-                // The molten cell blacklist is keyed on the legacy material; it retires with the facade.
-                if (!cellMolten.mNotGeneratedItems.contains(MU.materialOf(material))) {
+                if (!cellMolten.mNotGeneratedItems.contains(material)) {
                     registerMolten(material, subId);
                 }
                 Material smeltInto = MU.smeltInto(material);
