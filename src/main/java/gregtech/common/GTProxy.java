@@ -23,8 +23,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -189,6 +187,7 @@ import gregtech.common.recipes.MacerationStackConversionRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.worldgen.HEEIslandScanner;
 import gregtech.loaders.materials.LegacyNameDomain;
+import gregtech.loaders.materials.MaterialsDeclaredFieldsTable;
 import gregtech.loaders.materials.RecognitionMaterials;
 import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -2102,22 +2101,12 @@ public class GTProxy implements IFuelHandler {
         return MU.hasBridgeRegistration(ml) ? ml : null;
     }
 
-    private static Set<String> materialsFieldNames;
-
-    /// Whether `name` is a declared `public static Materials` field on [Materials], regardless of whether that
-    /// field has been assigned yet. See [#resolveCensusMaterial] for why the declaration itself, not the
-    /// current value, is the signal this needs.
+    /// Whether `name` was a declared `public static Materials` field on the `Materials` facade, regardless of
+    /// whether that field was ever assigned. See [#resolveCensusMaterial] for why the declaration itself, not
+    /// the current value, is the signal this needs. Backed by [MaterialsDeclaredFieldsTable], the frozen set
+    /// that former `Materials.class.getFields()` scan produced.
     private static boolean hasDeclaredMaterialsField(String name) {
-        if (materialsFieldNames == null) {
-            Set<String> names = new HashSet<>();
-            for (Field field : Materials.class.getFields()) {
-                if (Modifier.isStatic(field.getModifiers()) && field.getType() == Materials.class) {
-                    names.add(field.getName());
-                }
-            }
-            materialsFieldNames = names;
-        }
-        return materialsFieldNames.contains(name);
+        return MaterialsDeclaredFieldsTable.NAMES.contains(name);
     }
 
     /// Unifies a foreign ore-dictionary entry whose name resolves to a [RecognitionMarker] instead of a
