@@ -52,7 +52,7 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
             new TextFieldWidget().size(75, 14)
                 .formatAsInteger(true)
                 .value(prioritySyncer)
-                .numbersInt(1, Integer.MAX_VALUE)
+                .numbersInt(Integer.MIN_VALUE, Integer.MAX_VALUE)
                 .setMaxLength(10)
                 .tooltip(t -> t.addLine(GuiText.Priority.getLocal()))
                 .setEnabledIf(t -> isCaching.getBoolValue())

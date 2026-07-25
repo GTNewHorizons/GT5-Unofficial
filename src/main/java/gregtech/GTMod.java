@@ -94,6 +94,7 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
+import gregtech.common.misc.GTDebugCommand;
 import gregtech.common.misc.GTMiscCommand;
 import gregtech.common.misc.GTPowerfailCommand;
 import gregtech.common.misc.GTStructureChannels;
@@ -135,6 +136,7 @@ import gregtech.loaders.preload.LoaderGTOreDictionary;
 import gregtech.loaders.preload.LoaderMetaPipeEntities;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
 import gregtech.loaders.preload.LoaderOreProcessing;
+import gtnhlanth.loader.RecipeLoader;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
@@ -567,6 +569,7 @@ public class GTMod {
 
         GTPostLoad.addSolidFakeLargeBoilerFuels();
         NaquadahReworkRecipeLoader.Remover();
+        RecipeLoader.registerCauldronRemaps();
         GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
         GTPostLoad.processToolboxBans();
@@ -599,6 +602,7 @@ public class GTMod {
     @Mod.EventHandler
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
         proxy.onServerAboutToStart(event);
+        GTDebugCommand.register();
     }
 
     @Mod.EventHandler

@@ -137,7 +137,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.wait_power", waitPower))
             .addInfo(StatCollector.translateToLocal("gt.multiblock.DieselEngine.intake_warning"))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 8, 3, false)
+            .beginStructureBlock(8, 3, 3, false)
             .addController("Front left, 2nd layer")
             .addCasing("21", "PTFE Frame Box", false)
             .addCasing("19", "Chemically Inert Machine Casing", false)

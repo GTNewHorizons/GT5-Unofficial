@@ -1948,10 +1948,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
-        if (canAccessData() && (side == ForgeDirection.UNKNOWN
-            || (mMetaTileEntity.isLiquidInput(side) && getCoverAtSide(side).letsFluidIn(null))
-            || (mMetaTileEntity.isLiquidOutput(side) && getCoverAtSide(side).letsFluidOut(null))))
-            return mMetaTileEntity.getTankInfo(side);
+        if (canAccessData()) return mMetaTileEntity.getTankInfo(side);
         return GTValues.emptyFluidTankInfo;
     }
 

@@ -541,12 +541,12 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean machineThunderExplosions;
 
-        @Config.Comment("If true, enable the guis of the machines to get a tint and it will be of the color of the dye applied to the machine.")
+        @Config.Comment("If true, show the color of the dye applied to the machine as a swatch next to the GUI title.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean coloredGUI;
 
-        @Config.Comment("If true and if the machine tint is activated, the guis will have a uniform metallic tint no matter what color is applied to the machines.")
+        @Config.Comment("If true and if coloredGUI is enabled, hide the color swatch and show a uniform metallic tint no matter what color is applied to the machines.")
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
         public boolean machineMetalGUI;

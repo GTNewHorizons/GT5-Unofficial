@@ -36,7 +36,6 @@ import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.implementation.items.GTItemSink;
@@ -657,7 +656,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     /**
      * Specifies theme of this GUI. {@link GTGuiThemes} lists all the themes you can use.
      */
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.STANDARD;
     }
 
@@ -678,15 +677,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @SideOnly(Side.CLIENT)
     @Override
     public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return new GTModularScreen(mainPanel, getColoredTheme());
-    }
-
-    public final GTGuiTheme getColoredTheme() {
-        GTGuiTheme baseTheme = getGuiTheme();
-        if (baseTheme != GTGuiThemes.STANDARD) return baseTheme;
-        byte color = this.getBaseMetaTileEntity()
-            .getColorization();
-        Dyes dye = Dyes.get(color);
-        return dye.mui2Theme.get();
+        return new GTModularScreen(mainPanel, getGuiTheme());
     }
 }

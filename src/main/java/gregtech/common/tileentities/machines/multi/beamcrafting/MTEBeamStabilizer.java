@@ -243,7 +243,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
             .addInfo(
                 StatCollector
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip7"))
-            .beginStructureBlock(11, 7, 7, true)
+            .beginStructureBlock(7, 7, 11, true)
             .addController("Front center, 3rd layer")
             .addCasing(
                 "95",

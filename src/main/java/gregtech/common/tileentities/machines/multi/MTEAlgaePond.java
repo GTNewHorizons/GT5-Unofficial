@@ -109,7 +109,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
             .addGlassEnergyLimitInfo()
             .addInfo("Accepts exactly 1 Energy Hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(10, 3, 6, false)
+            .beginStructureBlock(3, 6, 10, false)
             .addController("Front center, 3rd layer")
             .addCasing("64", "Any Tiered Glass", true)
             .addCasing("20-25", "Algae Casing", false)
