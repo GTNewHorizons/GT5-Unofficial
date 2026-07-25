@@ -404,6 +404,13 @@ public class GTRecipeRegistrator {
                 tMaterial.mMaterial = MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial));
                 continue;
             }
+            // A reconstructed werkstoff/gtpp metal that generates an ingot but never carried the legacy METAL
+            // flag still recycles like a metal -- arc-smelt into its ingot, so its storage block (and other
+            // parts) recycle through GT's arc path instead of the retired bartworks/gtpp per-material loaders.
+            if (GTOreDictUnificator.get(OrePrefixes.ingot, tMaterial.mMaterial, 1L) != null) {
+                tMaterial.mMaterial = MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial));
+                continue;
+            }
             tMaterial.mAmount = 0;
         }
 
