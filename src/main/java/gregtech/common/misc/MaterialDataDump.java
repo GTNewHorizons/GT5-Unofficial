@@ -270,22 +270,22 @@ public final class MaterialDataDump {
         return out;
     }
 
-    /// `MaterialBuilder#addOrePrefix` exceptions: prefixes this material generates regardless of its
-    /// {@link #dumpGenerationFlags generation flags}, e.g. Iron's `nanite`.
+    /// `ADDED_PREFIXES` exceptions ([OrePrefixes#mGeneratedItems]): prefixes this material generates regardless
+    /// of its {@link #dumpGenerationFlags generation flags}, e.g. Iron's `nanite`.
     private static List<String> dumpAddedPrefixes(Materials material) {
         List<String> out = new ArrayList<>();
         for (OrePrefixes prefix : OrePrefixes.VALUES) {
-            if (prefix.mGeneratedItems.contains(material)) out.add(prefix.getName());
+            if (prefix.mGeneratedItems.contains(MU.material(material))) out.add(prefix.getName());
         }
         return out;
     }
 
-    /// `MaterialBuilder#removeOrePrefix` exceptions: prefixes this material never generates despite its
-    /// {@link #dumpGenerationFlags generation flags}, e.g. Iron's `ingot` (vanilla already supplies one).
+    /// `REMOVED_PREFIXES` exceptions ([OrePrefixes#mNotGeneratedItems]): prefixes this material never generates
+    /// despite its {@link #dumpGenerationFlags generation flags}, e.g. Iron's `ingot` (vanilla already supplies one).
     private static List<String> dumpRemovedPrefixes(Materials material) {
         List<String> out = new ArrayList<>();
         for (OrePrefixes prefix : OrePrefixes.VALUES) {
-            if (prefix.mNotGeneratedItems.contains(material)) out.add(prefix.getName());
+            if (prefix.mNotGeneratedItems.contains(MU.material(material))) out.add(prefix.getName());
         }
         return out;
     }

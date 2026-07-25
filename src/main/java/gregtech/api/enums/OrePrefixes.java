@@ -2791,8 +2791,11 @@ public class OrePrefixes {
     public final List<TC_AspectStack> mAspects = new ArrayList<>();
     public final Collection<OrePrefixes> mFamiliarPrefixes = new HashSet<>();
 
-    public final Collection<Materials> mDisabledItems = new HashSet<>(), mNotGeneratedItems = new HashSet<>(),
-        mGeneratedItems = new HashSet<>();
+    /// Stays `Materials`-keyed: its blast-furnace-driven population in `Materials#disableUnusedHotIngots`
+    /// (`ingotHot.mDisabledItems.addAll` of a `Materials` set) lives in the deletion-owned facade and cannot be
+    /// re-keyed without editing it, so the ML cutover of this one field waits for the facade's removal.
+    public final Collection<Materials> mDisabledItems = new HashSet<>();
+    public final Collection<Material> mNotGeneratedItems = new HashSet<>(), mGeneratedItems = new HashSet<>();
     public final Collection<Material> mIgnoredMaterials = new HashSet<>();
     private final ArrayList<IOreRecipeRegistrator> mOreProcessing = new ArrayList<>();
     public ItemStack mContainerItem = null;
@@ -3037,9 +3040,11 @@ public class OrePrefixes {
     /// [MU#oldSubId] for `mMetaItemSubID`, [Materials2ParentMods#hasParentMod] for `mHasParentMod`, and
     /// [GTMaterialProperties#GENERATION_FLAGS] membership for each `has*Items()` category flag (the exact
     /// flag `LegacyMaterials#build` feeds the matching `MaterialBuilder#add*` from, so byte-identical to the
-    /// legacy `mGenerate*` fields). The [#mGeneratedItems]/[#mNotGeneratedItems]/[#mDisabledItems] membership
-    /// checks stay keyed on the legacy `Materials` counterpart ([MU#materialOf]) while the facade exists --
-    /// those collections are `Materials`-keyed. [#mCondition] instead evaluates against a [MaterialSubTagView]
+    /// legacy `mGenerate*` fields). The [#mGeneratedItems]/[#mNotGeneratedItems] membership checks read the
+    /// [Material] directly (those collections are ML-keyed); [#mDisabledItems] stays keyed on the legacy
+    /// `Materials` counterpart ([MU#materialOf]) while the facade exists (its blast-furnace population lives in
+    /// `Materials#disableUnusedHotIngots`, which cannot be re-keyed without editing the facade). [#mCondition] instead
+    /// evaluates against a [MaterialSubTagView]
     /// over the [Material], so a prefix's [SubTag] condition reads the material's MaterialLib FLAGS directly
     /// rather than the facade's tag set. A material with no `Materials` counterpart matches the legacy method's
     /// own null gate and returns false.
@@ -3054,7 +3059,7 @@ public class OrePrefixes {
 
         // This only falls through, returning false, when the material has no overlap with `mMaterialGenerationBits`.
         // spotless:off
-        if (!mGeneratedItems.contains(legacyMaterial))
+        if (!mGeneratedItems.contains(material))
             if ((materialGenerationBits & DUST) == 0 || !flags.contains(GTMaterialGenerationFlag.DUST))
                 if ((materialGenerationBits & METAL) == 0 || !flags.contains(GTMaterialGenerationFlag.METAL))
                     if ((materialGenerationBits & GEM) == 0 || !flags.contains(GTMaterialGenerationFlag.GEM))
@@ -3067,7 +3072,7 @@ public class OrePrefixes {
                                                 return false;
         // spotless:on
 
-        if (mNotGeneratedItems.contains(legacyMaterial)) return false;
+        if (mNotGeneratedItems.contains(material)) return false;
         if (mDisabledItems.contains(legacyMaterial)) return false;
         return mCondition == null || mCondition.isTrue(new MaterialSubTagView(material));
     }
@@ -3080,7 +3085,7 @@ public class OrePrefixes {
 
         // This only falls through, returning false, when the material has no overlap with `mMaterialGenerationBits`.
         // spotless:off
-        if (!mGeneratedItems.contains(material))
+        if (!mGeneratedItems.contains(MU.material(material)))
             if ((materialGenerationBits & DUST) == 0 || !material.hasDustItems())
                 if ((materialGenerationBits & METAL) == 0 || !material.hasMetalItems())
                     if ((materialGenerationBits & GEM) == 0 || !material.hasGemItems())
@@ -3093,7 +3098,7 @@ public class OrePrefixes {
                                                 return false;
         // spotless:on
 
-        if (mNotGeneratedItems.contains(material)) return false;
+        if (mNotGeneratedItems.contains(MU.material(material))) return false;
         if (mDisabledItems.contains(material)) return false;
         return mCondition == null || mCondition.isTrue(material);
     }
