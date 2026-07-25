@@ -341,6 +341,18 @@ public class MU {
         return flags != null && flags.contains(GTMaterialGenerationFlag.PLASMA);
     }
 
+    /// The legacy `Materials#hasMetalItems()`/`mGenerateMetalItems` flag for a material -- whether
+    /// [GTMaterialProperties#GENERATION_FLAGS] carries [GTMaterialGenerationFlag#METAL], the exact flag
+    /// `LegacyMaterials#build` feeds `MaterialBuilder#addMetalItems` (which sets `mGenerateMetalItems`) from.
+    /// Absent flags mirror the field's own `false` default. Backs [gregtech.api.enums.OrePrefixes#sheetmetal]'s
+    /// `mCondition`, whose legacy lambda read `hasMetalItems()` off the `Materials` facade the condition can no
+    /// longer see once it evaluates against a [MaterialSubTagView].
+    public static boolean hasMetalItems(@Nullable Material material) {
+        if (material == null) return false;
+        EnumSet<GTMaterialGenerationFlag> flags = material.getProperty(GTMaterialProperties.GENERATION_FLAGS);
+        return flags != null && flags.contains(GTMaterialGenerationFlag.METAL);
+    }
+
     /// [#fluid], for `Materials#mSolid`/`Materials#getSolid` -- the `solid()` slot.
     public static @Nullable FluidStack solid(@Nullable Material material, long amount) {
         Fluid fluid = resolveSlotFluid(material, FluidState.SOLID, FluidNames::solid);
