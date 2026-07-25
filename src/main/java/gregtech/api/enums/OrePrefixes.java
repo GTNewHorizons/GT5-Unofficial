@@ -34,6 +34,7 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialSubTagView;
 import gregtech.api.objects.GTArrayList;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
@@ -2742,7 +2743,8 @@ public class OrePrefixes {
         wireFine.mCondition = SubTag.METAL;
 
         sheetmetal.mCondition = new ICondition.And<>(
-            obj -> obj instanceof Materials mat && mat.hasMetalItems(),
+            obj -> (obj instanceof Materials mat && mat.hasMetalItems())
+                || (obj instanceof MaterialSubTagView view && MU.hasMetalItems(view.material)),
             new ICondition.Nor<>(SubTag.STRETCHY, SubTag.SOFT, SubTag.BOUNCY, SubTag.NO_SMASHING));
         // -----
 
@@ -3035,12 +3037,12 @@ public class OrePrefixes {
     /// [MU#oldSubId] for `mMetaItemSubID`, [Materials2ParentMods#hasParentMod] for `mHasParentMod`, and
     /// [GTMaterialProperties#GENERATION_FLAGS] membership for each `has*Items()` category flag (the exact
     /// flag `LegacyMaterials#build` feeds the matching `MaterialBuilder#add*` from, so byte-identical to the
-    /// legacy `mGenerate*` fields). The remaining clauses ([#mGeneratedItems]/[#mNotGeneratedItems]/
-    /// [#mDisabledItems] membership and [#mCondition]) stay keyed on the legacy `Materials` counterpart while
-    /// the facade exists: those collections are `Materials`-keyed and `mCondition` reads an
-    /// [ISubTagContainer], so testing them through [MU#materialOf] is identical to the legacy path by
-    /// construction. A material with no `Materials` counterpart matches the legacy method's own null gate and
-    /// returns false.
+    /// legacy `mGenerate*` fields). The [#mGeneratedItems]/[#mNotGeneratedItems]/[#mDisabledItems] membership
+    /// checks stay keyed on the legacy `Materials` counterpart ([MU#materialOf]) while the facade exists --
+    /// those collections are `Materials`-keyed. [#mCondition] instead evaluates against a [MaterialSubTagView]
+    /// over the [Material], so a prefix's [SubTag] condition reads the material's MaterialLib FLAGS directly
+    /// rather than the facade's tag set. A material with no `Materials` counterpart matches the legacy method's
+    /// own null gate and returns false.
     public boolean doGenerateItem(@Nullable Material material) {
         if (MU.oldSubId(material) == -1) return false;
         if (!Materials2ParentMods.hasParentMod(material)) return false;
@@ -3067,7 +3069,7 @@ public class OrePrefixes {
 
         if (mNotGeneratedItems.contains(legacyMaterial)) return false;
         if (mDisabledItems.contains(legacyMaterial)) return false;
-        return mCondition == null || mCondition.isTrue(legacyMaterial);
+        return mCondition == null || mCondition.isTrue(new MaterialSubTagView(material));
     }
 
     public boolean doGenerateItem(Materials material) {
