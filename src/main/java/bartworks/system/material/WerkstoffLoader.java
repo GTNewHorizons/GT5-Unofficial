@@ -82,7 +82,6 @@ import bartworks.MainMod;
 import bartworks.system.material.CircuitGeneration.CircuitPartsItem;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import bartworks.system.material.werkstoff_loaders.recipe.CasingLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.CellLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.DustLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.GemLoader;
@@ -396,8 +395,7 @@ public class WerkstoffLoader {
                 CLSCompat.initCls();
             }
 
-            IWerkstoffRunnable[] werkstoffRunnables = { new DustLoader(), new GemLoader(), new CasingLoader(),
-                new CellLoader() };
+            IWerkstoffRunnable[] werkstoffRunnables = { new DustLoader(), new GemLoader(), new CellLoader() };
 
             long timepreone = 0;
             int pos = 0;
