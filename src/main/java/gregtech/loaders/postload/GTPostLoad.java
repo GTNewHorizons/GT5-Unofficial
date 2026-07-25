@@ -244,17 +244,15 @@ public class GTPostLoad {
             }
         }
         for (Material material : MaterialLibAPI.getMaterials()) {
-            Materials tMaterial = MU.materialOf(material);
-            if (tMaterial == null) continue;
-            // check if material is scannable
-            GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(tMaterial);
+            if (!MU.isLegacyNamed(material)) continue;
+            GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(material);
             if (scannerResult == null || scannerResult.isNotMet()) continue;
 
             addElementScannerAndReplicatorRecipes(
                 scannerResult,
                 material,
-                GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L),
-                GTOreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L));
+                GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, material, 1L));
         }
 
         // Reconstructed werkstoff elements no longer appear in getMaterialsMap() once minting is retired.
@@ -446,12 +444,16 @@ public class GTPostLoad {
     }
 
     public static void doActualRegistration(Materials m) {
-        String plateName = OrePrefixes.plate.oreDictName(m)
+        Material ml = MU.material(m);
+        String plateName = OrePrefixes.plate.oreDictName(ml)
             .toString();
-        boolean noSmash = !MU.hasFlag(m, GTMaterialFlag.NO_SMASHING);
-        if (m.hasMetalItems()) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getIngots(1));
-        if (m.hasGemItems()) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getGems(1));
-        if (m.getBlocks(1) != null) GTRecipeRegistrator.registerUsagesForMaterials(null, noSmash, m.getBlocks(1));
+        boolean noSmash = !MU.hasFlag(ml, GTMaterialFlag.NO_SMASHING);
+        if (MU.hasMetalItems(ml)) GTRecipeRegistrator
+            .registerUsagesForMaterials(plateName, noSmash, GTOreDictUnificator.get(OrePrefixes.ingot, ml, 1));
+        if (MU.hasGemItems(ml)) GTRecipeRegistrator
+            .registerUsagesForMaterials(plateName, noSmash, GTOreDictUnificator.get(OrePrefixes.gem, ml, 1));
+        ItemStack blocks = GTOreDictUnificator.get(OrePrefixes.block, ml, 1);
+        if (blocks != null) GTRecipeRegistrator.registerUsagesForMaterials(null, noSmash, blocks);
     }
 
     public static void addSolidFakeLargeBoilerFuels() {

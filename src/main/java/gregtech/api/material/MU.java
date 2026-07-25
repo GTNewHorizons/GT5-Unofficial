@@ -355,6 +355,16 @@ public class MU {
         return flags != null && flags.contains(GTMaterialGenerationFlag.METAL);
     }
 
+    /// The legacy `Materials#hasGemItems()`/`mGenerateGemItems` flag for a material -- whether
+    /// [GTMaterialProperties#GENERATION_FLAGS] carries [GTMaterialGenerationFlag#GEM], the exact flag
+    /// `LegacyMaterials#build` feeds `MaterialBuilder#addGemItems` (which sets `mGenerateGemItems`) from.
+    /// Absent flags mirror the field's own `false` default.
+    public static boolean hasGemItems(@Nullable Material material) {
+        if (material == null) return false;
+        EnumSet<GTMaterialGenerationFlag> flags = material.getProperty(GTMaterialProperties.GENERATION_FLAGS);
+        return flags != null && flags.contains(GTMaterialGenerationFlag.GEM);
+    }
+
     /// [#fluid], for `Materials#mSolid`/`Materials#getSolid` -- the `solid()` slot.
     public static @Nullable FluidStack solid(@Nullable Material material, long amount) {
         Fluid fluid = resolveSlotFluid(material, FluidState.SOLID, FluidNames::solid);
