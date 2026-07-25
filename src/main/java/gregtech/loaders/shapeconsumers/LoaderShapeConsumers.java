@@ -13,6 +13,7 @@ public final class LoaderShapeConsumers {
     public static void register() {
         ConsumerStackSizeClamp.register();
         ConsumerBlock.register();
+        ConsumerCasing.register();
         ConsumerOre.register();
         ConsumerRawOre.register();
         ConsumerIceOre.register();
