@@ -228,8 +228,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         private void updateFlags() {
             isDynamicCapacity = isRecipeCheck && isProtectOutput && getCheckMode() && !provider.isDistribution();
             allowAnyInput = !getCheckMode() && availableSpace > 0;
-            if (!isRecipeCheck)
-            {
+            if (!isRecipeCheck) {
                 allowAnyInput |= provider.getLastInputTick() == provider.getTickCounter();
             }
         }

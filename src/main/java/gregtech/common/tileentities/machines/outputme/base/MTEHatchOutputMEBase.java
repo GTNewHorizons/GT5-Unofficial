@@ -552,7 +552,8 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             input.setStackSize(Math.min(input.getStackSize(), rejected == null ? 0 : rejected.getStackSize()));
             return input.getStackSize() == 0;
         }
-        boolean isAllowed = getCheckMode() ? input.getStackSize() < getPhysicalSpace() : hasAvailableSpace() || (tickCounter == lastInputTick);
+        boolean isAllowed = getCheckMode() ? input.getStackSize() < getPhysicalSpace()
+            : hasAvailableSpace() || (tickCounter == lastInputTick);
         if (!isAllowed) return false;
         if (!canStore(input)) return false;
         if (!simulate) {
