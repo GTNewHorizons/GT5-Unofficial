@@ -7,6 +7,8 @@ import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -18,6 +20,7 @@ import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,7 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -58,6 +62,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
         OrePrefixes.dustRefined.add(this);
         OrePrefixes.dustSmall.add(this);
         OrePrefixes.dustTiny.add(this);
+    }
+
+    /// A material's own non-molten fluid, preferring its gas form over its liquid form (mirroring the werkstoff
+    /// `getFluidOrGas` the dust fluid-extractor/solidifier recipes were ported from).
+    private static FluidStack fluidFor(Material material, int amount) {
+        return MU.hasCorrespondingGas(material) ? MU.gas(material, amount) : MU.fluid(material, amount);
     }
 
     @Override
@@ -182,6 +192,27 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         }
                     }
                 }
+                // A material with its own non-molten (liquid/gas) fluid: extract that fluid from its dust and
+                // solidify it back, ported from the retired bartworks CellLoader. GT's other fluid-extractor and
+                // fluid-solidifier autogen only handles the molten fluid, never a material's liquid/gas form.
+                if (MU.hasCorrespondingGas(material) || MU.hasCorrespondingFluid(material)) {
+                    long fluidEut = calculateRecipeEU(material, MU.mass(material) > 128 ? 64 : 30);
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(GTUtility.copyAmount(1, stack))
+                        .fluidOutputs(fluidFor(material, 1000))
+                        .duration((int) MU.mass(material))
+                        .eut(fluidEut)
+                        .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+                        .addTo(fluidExtractionRecipes);
+                    GTValues.RA.stdBuilder()
+                        .circuit(1)
+                        .itemOutputs(GTUtility.copyAmount(1, stack))
+                        .fluidInputs(fluidFor(material, 1000))
+                        .duration((int) MU.mass(material))
+                        .eut(fluidEut)
+                        .addTo(fluidSolidifierRecipes);
+                }
+
                 List<MaterialStack> tMaterialList = MU.materialList(material);
                 if ((!tMaterialList.isEmpty())
                     && (MU.hasElectrolyzerRecipe(material) || MU.hasCentrifugeRecipe(material))) {
