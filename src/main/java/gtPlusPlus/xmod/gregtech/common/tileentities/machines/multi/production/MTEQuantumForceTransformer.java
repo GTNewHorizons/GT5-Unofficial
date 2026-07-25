@@ -43,11 +43,11 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
+import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTAuthors;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -414,12 +414,12 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                         ItemStack item = recipe.getOutput(i);
                         if (item == null) continue;
                         ItemData data = getAssociation(item);
-                        Materials mat = data != null ? MU.materialOf(data.mMaterial.mMaterial) : null;
-                        if (mat != null) {
-                            if (mat.mStandardMoltenFluid != null) {
-                                fluidModeItems[i] = mat.getMolten(1 * INGOTS);
-                            } else if (mat.mFluid != null) {
-                                fluidModeItems[i] = mat.getFluid(1_000);
+                        Material mat = data != null ? data.mMaterial.mMaterial : null;
+                        if (mat != null && MU.isLegacyNamed(mat)) {
+                            if (MU.moltenOf(mat) != null) {
+                                fluidModeItems[i] = MU.molten(mat, 1 * INGOTS);
+                            } else if (MU.fluidOf(mat) != null) {
+                                fluidModeItems[i] = MU.fluid(mat, 1_000);
                             }
                         }
                     }
