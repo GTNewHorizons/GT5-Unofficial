@@ -37,9 +37,6 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        // Blacklist materials which are handled by Werkstoff loader
-        if (material == Materials2Materials.Calcium || material == Materials2Materials.Magnesia) return;
-
         if (MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
             && GTOreDictUnificator.get(OrePrefixes.gem, MU.smeltInto(material), 1L) != null) {
             GTValues.RA.stdBuilder()

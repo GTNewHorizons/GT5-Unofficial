@@ -45,9 +45,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        // Blacklist materials which are handled by Werkstoff loader
-        if (material == Materials2Materials.Calcium || material == Materials2Materials.Magnesia) return;
-
         if (((material == Materials2Materials.Glass)
             || (GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null))
             && (!MU.hasFlag(material, GTMaterialFlag.NO_SMELTING))) {

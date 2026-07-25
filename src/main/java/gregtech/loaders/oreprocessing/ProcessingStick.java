@@ -37,12 +37,6 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        // Blacklist materials which are handled by Werkstoff loader
-        if (material == Materials2Materials.Salt || material == Materials2Materials.RockSalt
-            || material == Materials2Materials.Spodumene
-            || material == Materials2Materials.Calcium
-            || material == Materials2Materials.Magnesia) return;
-
         {
             Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
             if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
