@@ -86,7 +86,6 @@ import bartworks.system.material.werkstoff_loaders.recipe.AspectLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.BlockLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.CasingLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.CellLoader;
-import bartworks.system.material.werkstoff_loaders.recipe.CraftingMaterialLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.CrushedLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.DustLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.GemLoader;
@@ -404,8 +403,8 @@ public class WerkstoffLoader {
             }
 
             IWerkstoffRunnable[] werkstoffRunnables = { new ToolLoader(), new DustLoader(), new GemLoader(),
-                new CasingLoader(), new AspectLoader(), new RawOreLoader(), new CrushedLoader(),
-                new CraftingMaterialLoader(), new CellLoader(), new MoltenCellLoader(), new BlockLoader() };
+                new CasingLoader(), new AspectLoader(), new RawOreLoader(), new CrushedLoader(), new CellLoader(),
+                new MoltenCellLoader(), new BlockLoader() };
 
             long timepreone = 0;
             int pos = 0;
