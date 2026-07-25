@@ -1,7 +1,5 @@
 package gregtech.api.util;
 
-import static gregtech.api.util.GTRecipeMapUtil.SPECIAL_VALUE_ALIASES;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -1156,11 +1154,25 @@ public class GTRecipeBuilder {
         int specialValue = 0;
         if (getMetadataOrDefault(GTRecipeConstants.LOW_GRAVITY, false)) specialValue -= 100;
         if (getMetadataOrDefault(GTRecipeConstants.CLEANROOM, false)) specialValue -= 200;
-        for (RecipeMetadataKey<Integer> ident : SPECIAL_VALUE_ALIASES) {
-            Integer metadata = getMetadataOrDefault(ident, null);
-            if (metadata != null) {
-                specialValue = metadata;
-                break;
+        loop:
+        for (RecipeMetadataKey<? extends Number> ident : GTRecipeMapUtil.SPECIAL_VALUE_ALIASES) {
+            Number metadata = getMetadataOrDefault(ident, null);
+            switch (metadata) {
+                case Byte b:
+                    specialValue = metadata.intValue();
+                    break loop;
+                case Short s:
+                    specialValue = metadata.intValue();
+                    break loop;
+                case Integer i:
+                    specialValue = metadata.intValue();
+                    break loop;
+                case Long l:
+                    specialValue = GTUtility.safeInt(metadata.longValue());
+                    break loop;
+                case null:
+                default:
+                    break;
             }
         }
         recipe.mSpecialValue = specialValue;
