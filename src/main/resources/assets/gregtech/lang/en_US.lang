@@ -3587,6 +3587,7 @@ GT5U.item.toolbox.tooltip.deselect_tool=%s (while sneaking): Deselect active too
 GT5U.item.toolbox.tooltip.open_toolbox=%s: Open toolbox
 # This inserts gt.item.desc.durability into the %s
 GT5U.item.toolbox.tooltip.tool_durability=Tool %s
+GT5U.item.toolbox.tooltip.crafting=§4§lNOTE:§r §bWill craft with any/no tool selected
 
 GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic\n§oengineering journey.
 # The tool-specific bylines are pretty much all jokes. Accuracy in translation isn't important.
@@ -9128,7 +9129,7 @@ GT5U.chat.bec-connected-assembler=Successfully connected to the Observation Arra
 GT5U.chat.bec-no-connect-assembler=Could not connect to the Observation Array
 
 # BEC Waila
-GT5U.chat.bec-processing-speed=Processing Speed: x%s
+GT5U.chat.bec-processing-speed=Processing Speed: %s points per tick
 GT5U.chat.bec-slowdowns=Slowdowns: %s
 
 # Test Factory Machines

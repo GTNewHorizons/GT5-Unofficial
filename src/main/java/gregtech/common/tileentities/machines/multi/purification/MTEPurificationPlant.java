@@ -403,6 +403,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             }
             unit.setActive(false);
         }
+        mLastWorkingTick = mTotalRunTime;
     }
 
     /**
