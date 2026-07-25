@@ -254,7 +254,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.2")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.3")))
-            .beginStructureBlock(63, 63, 49, false)
+            .beginStructureBlock(63, 49, 63, false)
             .addController("Middle of structure, 9th layer")
             // Nanochip Reinforcement Casing
             .addCasing("3956", translateToLocal("gt.blockcasings12.2.name"), false)

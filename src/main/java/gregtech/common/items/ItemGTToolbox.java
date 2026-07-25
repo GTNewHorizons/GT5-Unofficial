@@ -90,6 +90,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     public static final String CURRENT_TOOL_KEY = "gt5u.toolbox:SelectedSlot";
     public static final String RECENTLY_BROKEN_SLOT_KEY = "gt5u.toolbox:RecentlyBroken";
     public static final String BROKEN_TOOL_ANIMATION_END_KEY = "gt5u.toolbox:BrokenToolAnimationEnd";
+    public static final String DISPLAY_CRAFTING_MESSAGE_KEY = "gt5u.toolbox:DisplayCraftingMessage";
     public static final int NO_TOOL_SELECTED = -1;
 
     /**
@@ -269,6 +270,10 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     @Override
     public void addInformation(final ItemStack toolbox, final EntityPlayer player, final List<String> tooltipList,
         final boolean f3mode) {
+
+        if (toolbox.hasTagCompound() && toolbox.getTagCompound().getBoolean(DISPLAY_CRAFTING_MESSAGE_KEY)) {
+            tooltipList.add(StatCollector.translateToLocal("GT5U.item.toolbox.tooltip.crafting"));
+        }
 
         super.addInformation(toolbox, player, tooltipList, f3mode);
 
@@ -867,6 +872,23 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     @Override
     public void damageScrewdriver(final EntityPlayer player, final ItemStack toolbox) {
         ToolboxUtil.damageSelectedTool(toolbox);
+    }
+    // endregion
+
+    // region Vanilla Crafting Methods
+    @Override
+    public boolean hasContainerItem(final ItemStack aStack) {
+        return true;
+    }
+
+    @Override
+    public boolean doesContainerItemLeaveCraftingGrid(final ItemStack p_77630_1_) {
+        return false;
+    }
+
+    @Override
+    public ItemStack getContainerItem(final ItemStack aStack) {
+        return aStack;
     }
     // endregion
 }

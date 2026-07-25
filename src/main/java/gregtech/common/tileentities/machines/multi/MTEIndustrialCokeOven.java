@@ -123,7 +123,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addInfo("Infinity Coils and higher allow for single multi-amp energy hatch")
             .addMultiAmpHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(5, 5, 6, 36, 7, 7, false)
+            .beginVariableStructureBlock(6, 36, 7, 7, 5, 5, false)
             .addController("Front left center, 2nd layer")
             .addEnergyHatch("1+", "Any structural casing on base structure", 1)
             .addMaintenanceHatch("1", "Any structural casing on base structure", 1)
