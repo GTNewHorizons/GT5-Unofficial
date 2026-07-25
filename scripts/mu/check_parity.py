@@ -264,6 +264,20 @@ def load_element_table():
 # werkstoff_special_shape_lines, group_werkstoffs, werkstoff_flag_names).
 WERKSTOFF_LEGACY_ONLY_PREFIXES = {"sheetmetal", "frameGt"}
 
+# Wire, cable, fluid-pipe, item-pipe, and frame shapes are PipeShapeBlock/FrameShapeBlock block-shapes assigned
+# per material by Materials2PipeMaterials (reproducing the legacy per-material pipe/wire/frame MTE
+# registrations) and re-verified at preload by gregtech.loaders.preload.LoaderPipeShapeEntities. Their oredict
+# prefixes are block-kind (never held a metaitem constructor slot), so legacy-variants.json -- the shape ground
+# truth -- records none of them, and every carrying material would otherwise report a spurious "extra". They are
+# dropped from both sides of the shape-set comparison, their membership being owned by that runtime predicate.
+PIPE_BLOCK_SHAPES = frozenset(
+    [f"wireGt{n:02d}" for n in (1, 2, 4, 8, 12, 16)]
+    + [f"cableGt{n:02d}" for n in (1, 2, 4, 8, 12, 16)]
+    + ["pipeTiny", "pipeSmall", "pipeMedium", "pipeLarge", "pipeHuge", "pipeQuadruple", "pipeNonuple"]
+    + [f"itemPipe{s}" for s in ("Tiny", "Small", "Medium", "Large", "Huge")]
+    + [f"itemPipeRestrictive{s}" for s in ("Tiny", "Small", "Medium", "Large", "Huge")]
+    + ["frameGt"])
+
 # Mirrors gen_materials.py's BARTWORKS_CASING_MATERIALS: the dumped casing prefix over-reports membership
 # (legacy hasItemType() granted it to any metalworking-capable werkstoff), so casing shapes are curated to
 # the set legacy bartworks actually shipped a casing for.
@@ -826,7 +840,8 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
         dumped_shapes |= expected_werkstoff_shapes(name, werkstoff_info["prefixes"], included_names)
     if gtpp_info:
         dumped_shapes |= gtpp_expected_shapes(gtpp_info, gt, used_fluid_names)
-    actual_shapes = set(ml["shapes"])
+    dumped_shapes -= PIPE_BLOCK_SHAPES
+    actual_shapes = set(ml["shapes"]) - PIPE_BLOCK_SHAPES
     if dumped_shapes != actual_shapes:
         missing = dumped_shapes - actual_shapes
         extra = actual_shapes - dumped_shapes
@@ -1201,8 +1216,8 @@ def check_gtpp_new_material(errors, entry, ml_by_key, used_fluid_names, display_
     if ml["textureSet"] != entry["textureSet"]:
         errors.append(f"{name}: gtpp textureSet expected {entry['textureSet']!r}, got {ml['textureSet']!r}")
 
-    expected_shapes = gtpp_expected_shapes(entry, None, used_fluid_names)
-    actual_shapes = set(ml["shapes"])
+    expected_shapes = gtpp_expected_shapes(entry, None, used_fluid_names) - PIPE_BLOCK_SHAPES
+    actual_shapes = set(ml["shapes"]) - PIPE_BLOCK_SHAPES
     if expected_shapes != actual_shapes:
         missing = expected_shapes - actual_shapes
         extra = actual_shapes - expected_shapes
