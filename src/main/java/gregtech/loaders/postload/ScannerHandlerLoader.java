@@ -192,10 +192,11 @@ public class ScannerHandlerLoader {
         return aMaterial.getMass() > 0L;
     }
 
-    /// [#getElementScanResult(Materials)] for a MaterialLib material with no legacy [Materials] counterpart,
-    /// keyed on [GTMaterialProperties#ELEMENT] where the legacy overload reads `Materials#mElement`. The
-    /// legacy overload's Magic exclusion has no analog here: Magic is canonical and never reaches this.
+    /// The elemental-scanner result for a MaterialLib material, keyed on [GTMaterialProperties#ELEMENT] where
+    /// the legacy `Materials` overload read `Materials#mElement`. Magic carries a real element but is excluded
+    /// from scanning, matching the legacy `isScannableMaterial` gate.
     public static @Nullable GTScannerResult getElementScanResult(Material material) {
+        if (material == Materials2Materials.Magic) return null;
         Element element = MU.element(material);
         if (element == null || element == Element._NULL) return null;
         if (element.mIsIsotope) return null;
