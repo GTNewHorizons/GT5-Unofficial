@@ -14,6 +14,7 @@ import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
@@ -107,9 +108,16 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     if (MU.blastFurnaceRequired(material)) {
                         GTModHandler.removeFurnaceSmelting(stack);
                         if (MU.autoGenerateBlastFurnaceRecipes(material)) {
+                            // A material carrying the werkstoff AnaerobeSmelting/NobleGasSmelting SubTag blast-
+                            // smelts under a gas: BlastFurnaceWithGas fans one recipe out into a gas-input variant
+                            // per BlastFurnaceGasStat, so it takes circuit 11 and the base gas amount in
+                            // ADDITIVE_AMOUNT rather than the plain circuit-1 recipe. Ported from the retired
+                            // bartworks DustLoader.
+                            boolean gasSmelting = MU.hasSubTag(material, "AnaerobeSmelting")
+                                || MU.hasSubTag(material, "NobleGasSmelting");
                             GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
                             recipeBuilder.itemInputs(GTUtility.copyAmount(1, stack))
-                                .circuit(1);
+                                .circuit(gasSmelting ? 11 : 1);
                             if (MU.blastFurnaceTemp(material) > 1750) {
                                 recipeBuilder.itemOutputs(
                                     GTOreDictUnificator
@@ -121,8 +129,13 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                 .duration(
                                     (Math.max(MU.mass(material) / 40L, 1L) * MU.blastFurnaceTemp(material)) * TICKS)
                                 .eut(TierEU.RECIPE_MV)
-                                .metadata(COIL_HEAT, MU.blastFurnaceTemp(material))
-                                .addTo(blastFurnaceRecipes);
+                                .metadata(COIL_HEAT, MU.blastFurnaceTemp(material));
+                            if (gasSmelting) {
+                                recipeBuilder.metadata(ADDITIVE_AMOUNT, 1000)
+                                    .addTo(BlastFurnaceWithGas);
+                            } else {
+                                recipeBuilder.addTo(blastFurnaceRecipes);
+                            }
                         }
                     } else {
                         GTModHandler.addSmeltingRecipe(stack, tDustStack);
