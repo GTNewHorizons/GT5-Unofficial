@@ -208,8 +208,10 @@ public class LegacyMaterials {
                 (int) stack.amount());
         }
 
-        List<AspectRefStack> aspects = ml.getProperty(GTMaterialProperties.ASPECTS);
-        if (aspects != null) for (AspectRefStack aspect : aspects) {
+        // MU.aspects falls back to the composition-derived aspects (the werkstoff getTCAspects algorithm) when a
+        // material carries no explicit ASPECTS property, so werkstoff-derived materials tag their items through the
+        // same Thaumcraft path GT materials use instead of the retired bartworks AspectLoader.
+        for (AspectRefStack aspect : MU.aspects(ml)) {
             builder.addAspect(TCAspects.valueOf(aspect.name()), aspect.amount());
         }
 
