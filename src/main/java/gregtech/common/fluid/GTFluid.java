@@ -217,7 +217,8 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     /// wet.concrete molten fluid would otherwise be clobbered by the generic molten loop's freshly registered
     /// molten.concrete).
     private void configureMaterialSlots(Materials legacy, Material ml) {
-        if (legacy != null && DUMP_MODE && slotAlreadyWired(legacy)) return;
+        if (DUMP_MODE && ((legacy != null && slotAlreadyWired(legacy))
+            || (ml != null && MU.hasStoredSlotFluid(ml, muFluidState())))) return;
         if (legacy != null) {
             switch (fluidState) {
                 case SLURRY -> legacy.mSolid = registeredFluid;

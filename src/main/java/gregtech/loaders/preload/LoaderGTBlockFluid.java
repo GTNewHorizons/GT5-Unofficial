@@ -956,8 +956,10 @@ public class LoaderGTBlockFluid implements Runnable {
         FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", TileEntityOres.class.getName());
 
         GTLog.out.println("GTMod: Registering Fluids.");
-        Materials.ConstructionFoam.mFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("CFCell", 1L), true)
+        Fluid constructionFoamFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("CFCell", 1L), true)
             .getFluid();
+        Materials.ConstructionFoam.mFluid = constructionFoamFluid;
+        MU.recordSlotFluid(Materials2Materials.ConstructionFoam, MU.FluidState.LIQUID, constructionFoamFluid);
         // UUMatter is GT-owned but its fluid is IC2's, resolved from the filled cell at runtime (no static
         // LEGACY_FLUIDS name to port). Bind MU's slot store from the resolved IC2 fluid directly so the
         // binding survives the facade deletion; the facade field write below only feeds GTProxy's autogen

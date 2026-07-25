@@ -433,6 +433,14 @@ public class MU {
         return fluids == null ? null : fluids.get(state);
     }
 
+    /// Whether a fluid has been recorded into a material's slot store via [#recordSlotFluid] for `state` --
+    /// the raw twin presence, without the [GTMaterialProperties#LEGACY_FLUIDS] fallback the public slot
+    /// getters apply. Backs [gregtech.common.fluid.GTFluid]'s dump-mode already-wired guard, which must ask
+    /// whether a slot was already stamped rather than whether one can be resolved.
+    public static boolean hasStoredSlotFluid(@Nullable Material material, FluidState state) {
+        return storedFluid(material, state) != null;
+    }
+
     private static @Nullable Fluid resolveSlotFluid(@Nullable Material material, FluidState state,
         Function<FluidNames, FluidRef> slot) {
         Fluid stored = storedFluid(material, state);
