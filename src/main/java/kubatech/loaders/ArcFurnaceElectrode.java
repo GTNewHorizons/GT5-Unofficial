@@ -18,7 +18,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.material.MaterialsElements;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 
@@ -87,7 +86,7 @@ public enum ArcFurnaceElectrode {
                 .setInteger("infinityTargetParallel", 1);
         }
     }),
-    HypogenElectrode(10, MaterialsElements.STANDALONE.HYPOGEN, 6.5d, 256, 1d, 4d, 2500, 1.5d, 3.5d),
+    HypogenElectrode(10, Materials2Materials.Hypogen, 6.5d, 256, 1d, 4d, 2500, 1.5d, 3.5d),
 
     // nanite eletrodes
     NeutroniumNaniteElectrode(11, Materials2Materials.Neutronium, 5d, 64, 2d, 4d, 1750, 2d, 5d, event -> {
