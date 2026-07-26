@@ -1,6 +1,6 @@
 package goodgenerator.api.recipe;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -23,11 +23,11 @@ public class AntimatterForgeFrontend extends RecipeMapFrontend {
 
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-        return Arrays.asList(new Pos2d(26, 21));
+        return Collections.singletonList(new Pos2d(26, 21));
     }
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        return Arrays.asList(new Pos2d(128, 21));
+        return Collections.singletonList(new Pos2d(128, 21));
     }
 }
