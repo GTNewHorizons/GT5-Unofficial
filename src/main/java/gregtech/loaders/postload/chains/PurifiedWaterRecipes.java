@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.chains;
 
-import static bartworks.system.material.WerkstoffLoader.FluorBuergerit;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
@@ -29,7 +28,6 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -39,6 +37,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GTOreDictUnificator;
@@ -322,7 +321,7 @@ public class PurifiedWaterRecipes {
             .hidden()
             .addTo(purificationPlasmaHeatingRecipes);
 
-        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(GGMaterial.orundum.get(OrePrefixes.lens, 1));
+        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(MU.stack(OrePrefixes.lens, Materials2Materials.Orundum, 1));
         MTEPurificationUnitUVTreatment.LENS_ITEMS
             .add(MaterialLibAPI.getStack(Materials2Materials.Amber, Materials2Shapes.lens, (int) (1)));
         MTEPurificationUnitUVTreatment.LENS_ITEMS
@@ -335,7 +334,8 @@ public class PurifiedWaterRecipes {
             .add(MaterialLibAPI.getStack(Materials2Materials.BlueTopaz, Materials2Shapes.lens, (int) (1)));
         MTEPurificationUnitUVTreatment.LENS_ITEMS
             .add(MaterialLibAPI.getStack(Materials2Materials.Amethyst, Materials2Shapes.lens, (int) (1)));
-        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(FluorBuergerit.get(OrePrefixes.lens, 1));
+        MTEPurificationUnitUVTreatment.LENS_ITEMS
+            .add(MU.stack(OrePrefixes.lens, Materials2Materials.FluorBuergerite, 1));
         MTEPurificationUnitUVTreatment.LENS_ITEMS
             .add(MaterialLibAPI.getStack(Materials2Materials.Dilithium, Materials2Shapes.lens, (int) (1)));
 

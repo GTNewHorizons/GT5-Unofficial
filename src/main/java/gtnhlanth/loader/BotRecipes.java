@@ -19,7 +19,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -31,7 +30,6 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 
 /*
  * Originally authored by botn365 under the MIT License. See BotdustriesLICENSE
@@ -48,7 +46,7 @@ public class BotRecipes {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.CarbonDioxide, Materials2CellShapes.cell, 1),
-                WerkstoffLoader.CalciumChloride.get(dust, 3))
+                MU.stack(dust, Materials2Materials.CalciumChloride, 3))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 2_000))
@@ -58,7 +56,8 @@ public class BotRecipes {
             .addTo(UniversalChemical);
 
         // tungsten chain
-        FluidStack sodiumTungsten = SodiumTungstate.getFluidOrGas(1_000);
+        FluidStack sodiumTungsten = MaterialLibAPI
+            .getFluidStack(Materials2Materials.SodiumTungstate, Materials2FluidShapes.fluidLiquid, (int) (1_000));
         ItemStack scheelite = MaterialLibAPI.getStack(Materials2Materials.Scheelite, Materials2Shapes.dust, 6);
 
         // Li2WO4 + 2Na = Na2WO4 + 2Li
@@ -76,7 +75,7 @@ public class BotRecipes {
         // MnWO4 + 2Na = Na2WO4 + Mn
         GTValues.RA.stdBuilder()
             .itemInputs(
-                WerkstoffLoader.Huebnerit.get(dust, 6),
+                MU.stack(dust, Materials2Materials.Huebnerite, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, 2))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Manganese, Materials2Shapes.dust, 1))
             .fluidInputs(GTUtility.getWater(4_000))
@@ -88,7 +87,7 @@ public class BotRecipes {
         // FeWO4 + 2Na = Na2WO4 + Fe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                WerkstoffLoader.Ferberite.get(dust, 6),
+                MU.stack(dust, Materials2Materials.Ferberite, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, 2))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dust, 1))
             .fluidInputs(GTUtility.getWater(4_000))
@@ -98,7 +97,7 @@ public class BotRecipes {
             .addTo(autoclaveRecipes);
 
         // CaCl2 + Na2WO4 = 2NaCl + CaWO4
-        ItemStack Ca2Cl = WerkstoffLoader.CalciumChloride.get(dust, 3);
+        ItemStack Ca2Cl = MU.stack(dust, Materials2Materials.CalciumChloride, 3);
         GTValues.RA.stdBuilder()
             .itemInputs(Ca2Cl)
             .itemOutputs(scheelite, MaterialLibAPI.getStack(Materials2Materials.Salt, Materials2Shapes.dust, 4))
@@ -107,7 +106,7 @@ public class BotRecipes {
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
 
-        ItemStack H2WO4 = TungsticAcid.get(dust, 7);
+        ItemStack H2WO4 = MU.stack(dust, Materials2Materials.TungsticAcid, 7);
         // CaWO4 + 2HCl = H2WO4 + CaCl2
         GTValues.RA.stdBuilder()
             .itemInputs(scheelite)
@@ -119,7 +118,7 @@ public class BotRecipes {
             .eut(TierEU.RECIPE_EV)
             .addTo(UniversalChemical);
 
-        ItemStack WO3 = TungstenTrioxide.get(dust, 4);
+        ItemStack WO3 = MU.stack(dust, Materials2Materials.TungstenTrioxide, 4);
         // H2WO4 = WO3 + H2O
         GTValues.RA.stdBuilder()
             .itemInputs(H2WO4)
@@ -145,7 +144,7 @@ public class BotRecipes {
         // 2WO3 + 3C = 2W + 3CO2
         GTValues.RA.stdBuilder()
             .itemInputs(
-                TungstenTrioxide.get(dust, 8),
+                MU.stack(dust, Materials2Materials.TungstenTrioxide, 8),
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, 3))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.ingotHot, 2))
             .fluidOutputs(
@@ -162,7 +161,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.CarbonMonoxide, Materials2CellShapes.cell, 1))
             .circuit(12)
-            .itemOutputs(Phosgene.get(cell, 1))
+            .itemOutputs(MU.stack(cell, Materials2Materials.Phosgene, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.fluidGas, 2_000))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -171,7 +170,9 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Chlorine, Materials2CellShapes.cell, 2))
             .circuit(12)
-            .itemOutputs(Phosgene.get(cell, 1), GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1))
+            .itemOutputs(
+                MU.stack(cell, Materials2Materials.Phosgene, 1),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, 1_000))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -181,7 +182,9 @@ public class BotRecipes {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.CarbonMonoxide, Materials2CellShapes.cell, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Chlorine, Materials2CellShapes.cell, 2))
-            .itemOutputs(Phosgene.get(cell, 1), GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 2))
+            .itemOutputs(
+                MU.stack(cell, Materials2Materials.Phosgene, 1),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 2))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
@@ -191,7 +194,9 @@ public class BotRecipes {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, 1_000))
-            .fluidOutputs(BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Phosgene, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -214,7 +219,11 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(cells)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ammonia, Materials2CellShapes.cell, 1))
-            .fluidInputs(WerkstoffLoader.AmmoniumChloride.getFluidOrGas(1_000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.AmmoniumChloride,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000))
@@ -225,9 +234,9 @@ public class BotRecipes {
         // N2H4O3 + NaOH = NaNO3 + NH3 + H2O
         GTValues.RA.stdBuilder()
             .itemInputs(
-                AmmoniumNitrate.get(dust, 9),
+                MU.stack(dust, Materials2Materials.AmmoniumNitrate, 9),
                 MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 3))
-            .itemOutputs(WerkstoffLoader.SodiumNitrate.get(dust, 5))
+            .itemOutputs(MU.stack(dust, Materials2Materials.SodiumNitrate, 5))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Ammonia, Materials2FluidShapes.fluidGas, 1_000))
             .duration(5 * SECONDS)
@@ -236,10 +245,10 @@ public class BotRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                AmmoniumNitrate.get(dust, 9),
+                MU.stack(dust, Materials2Materials.AmmoniumNitrate, 9),
                 MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 3))
             .circuit(2)
-            .itemOutputs(WerkstoffLoader.SodiumNitrate.get(dust, 5))
+            .itemOutputs(MU.stack(dust, Materials2Materials.SodiumNitrate, 5))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Ammonia, Materials2FluidShapes.fluidGas, 1_000),
                 GTUtility.getWater(1_000))
@@ -250,7 +259,7 @@ public class BotRecipes {
         // N2H4O3 + NaOH + H =H2SO4= NH3 + HNO3 + Na + H2O
         GTValues.RA.stdBuilder()
             .itemInputs(
-                AmmoniumNitrate.get(dust, 9),
+                MU.stack(dust, Materials2Materials.AmmoniumNitrate, 9),
                 MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 3))
             .circuit(24)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, 1))
@@ -273,7 +282,9 @@ public class BotRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Propane, Materials2FluidShapes.fluidGas, 1_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 2_000))
-            .fluidOutputs(Nitromethane.getFluidOrGas(2_000))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Nitromethane, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(crackingRecipes);

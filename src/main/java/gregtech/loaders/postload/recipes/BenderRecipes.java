@@ -10,13 +10,13 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -295,9 +295,9 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GGMaterial.tairitsu.get(OrePrefixes.ingot, 9))
+            .itemInputs(MU.stack(OrePrefixes.ingot, Materials2Materials.Tairitsu, 9))
             .circuit(9)
-            .itemOutputs(GGMaterial.tairitsu.get(OrePrefixes.plateDense, 1))
+            .itemOutputs(MU.stack(OrePrefixes.plateDense, Materials2Materials.Tairitsu, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(benderRecipes);

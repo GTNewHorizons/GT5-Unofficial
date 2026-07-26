@@ -29,7 +29,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -47,7 +46,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import tectech.recipe.TecTechRecipeMaps;
@@ -855,7 +853,7 @@ public class Godforge implements Runnable {
             .put(MaterialLibAPI.getStack(Materials2Materials.Curium, Materials2Shapes.dust, 1), 10000);
 
         // Lanthanides Materials
-        exoticModulePlasmaItemMap.put(WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 1), 6000);
+        exoticModulePlasmaItemMap.put(MU.stack(OrePrefixes.dust, Materials2Materials.Iodine, 1), 6000);
 
         // Mercury is weird, it has neither dust nor gas, so it needs to be added separately
         exoticModulePlasmaFluidMap
@@ -930,7 +928,7 @@ public class Godforge implements Runnable {
             ForgeOfGodsUpgrade.START.addExtraCost(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.SuperconductorUIVBase, 64),
                 ItemList.SuperconductorComposite.get(32),
-                GGMaterial.metastableOganesson.get(OrePrefixes.gearGt, 16),
+                MU.stack(OrePrefixes.gearGt, Materials2Materials.MetastableOganesson, 16),
                 getModItem(EternalSingularity.ID, "eternal_singularity", 8L),
                 ItemList.Robot_Arm_UIV.get(64L),
                 ItemList.Field_Generator_UEV.get(64L));

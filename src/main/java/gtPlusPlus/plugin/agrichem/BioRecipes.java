@@ -33,7 +33,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -138,7 +137,7 @@ public class BioRecipes {
         // Lithium Chloride
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.BrownAlgaeBiomass.get(4))
-            .itemOutputs(GGMaterial.lithiumChloride.get(OrePrefixes.dust, 1))
+            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.LithiumChloride, 1))
             .duration(1 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -612,7 +611,7 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.RockSalt, Materials2Shapes.dust, (int) (8)),
-                GGMaterial.lithiumChloride.get(OrePrefixes.dust, 10))
+                MU.stack(OrePrefixes.dust, Materials2Materials.LithiumChloride, 10))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.dust, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.dustSmall, (int) (3)),
@@ -632,7 +631,7 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Potash, Materials2Shapes.dust, (int) (10)),
-                GGMaterial.lithiumChloride.get(OrePrefixes.dust, 16))
+                MU.stack(OrePrefixes.dust, Materials2Materials.LithiumChloride, 16))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.dust, (int) (3)),
                 MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.dustSmall, (int) (5)),

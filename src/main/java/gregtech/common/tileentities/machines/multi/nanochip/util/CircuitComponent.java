@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Markers;
@@ -41,7 +40,7 @@ public enum CircuitComponent {
     WireLumiium(
         2,
         "gt.circuitcomponent.wirelumiium",
-        () -> GGMaterial.lumiium.get(OrePrefixes.wireFine, 1)),
+        () -> MU.stack(OrePrefixes.wireFine, Materials2Materials.Lumiium, 1)),
     WireProtoHalkonite(
         3,
         "gt.circuitcomponent.wireprotohalkonite",
@@ -354,7 +353,7 @@ public enum CircuitComponent {
     FoilShirabon(
         1603,
         "gt.circuitcomponent.sheet.shirabon",
-        () -> GGMaterial.shirabon.get(OrePrefixes.foil, 1)),
+        () -> MU.stack(OrePrefixes.foil, Materials2Materials.Shirabon, 1)),
     FoilStyreneRubber(
         1604,
         "gt.circuitcomponent.sheet.styrenebutadienerubber",
@@ -408,7 +407,7 @@ public enum CircuitComponent {
     PlateMetastableOganesson(
         1906,
         "gt.circuitcomponent.plate.metastableoganesson",
-        () -> GGMaterial.metastableOganesson.get(OrePrefixes.plate, 1)),
+        () -> MU.stack(OrePrefixes.plate, Materials2Materials.MetastableOganesson, 1)),
     ScrewAstralTitanium(
         1907,
         "gt.circuitcomponent.screw.astraltitanium",

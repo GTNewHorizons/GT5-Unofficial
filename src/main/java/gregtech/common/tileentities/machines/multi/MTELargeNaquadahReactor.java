@@ -34,7 +34,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.util.CrackRecipeAdder;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
@@ -84,7 +83,12 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
         if (excitedLiquid == null) {
             excitedLiquid = Arrays.asList(
                 Pair.of(MU.molten(Materials2Materials.spatialFluid, 20L), ExcitedLiquidCoe[0]),
-                Pair.of(GGMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[1]),
+                Pair.of(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.AtomicSeparationCatalyst,
+                        Materials2FluidShapes.fluidMolten,
+                        (int) (20)),
+                    ExcitedLiquidCoe[1]),
                 Pair.of(
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Naquadah, Materials2FluidShapes.fluidMolten, (int) (20)),

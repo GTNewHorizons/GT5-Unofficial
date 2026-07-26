@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import goodgenerator.items.GGMaterial;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -369,7 +368,10 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                             Materials2Materials.IronIIIChloride,
                             Materials2FluidShapes.fluidLiquid,
                             (int) (0)))) {
-                        impurityFluidStack = GGMaterial.ferrousChloride.getFluidOrGas(0);
+                        impurityFluidStack = MaterialLibAPI.getFluidStack(
+                            Materials2Materials.IronIIChloride,
+                            Materials2FluidShapes.fluidLiquid,
+                            (int) (0));
                     } else if (storedFluidStack.isFluidEqual(
                         MaterialLibAPI.getFluidStack(
                             Materials2Materials.GrowthMediumSterilized,

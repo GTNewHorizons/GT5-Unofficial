@@ -25,8 +25,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.WerkstoffLoader;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.CondensateType;
@@ -81,7 +79,7 @@ public class BECRecipes implements Runnable {
                 ItemList.Sensor_UMV.get(16), ItemList.Field_Generator_UMV.get(4), ItemList.ZPM5.get(1),
                 ItemList.EnergisedTesseract.get(32), GTOreDictUnificator.get("naniteTranscendentMetal", 16),
                 GTOreDictUnificator.get("plateDenseFlerovium_GT5U", 64),
-                GGMaterial.metastableOganesson.get(OrePrefixes.plateDense, 32),
+                MU.stack(OrePrefixes.plateDense, Materials2Materials.MetastableOganesson, 32),
                 ItemList.MetaMaterial_SensorArray1.get(32), ItemList.MetaMaterial_FieldManipulator1.get(32) },
             nanites(1, 2, 4, 4, 4, 3, 2, 4, 1, 1, 2, 3),
             new FluidStack[] { CondensateType.SpaceTime.getEntangled(192 * INGOTS),
@@ -136,7 +134,7 @@ public class BECRecipes implements Runnable {
         addBec(
             CustomItemList.Godforge_MagneticConfinementCasing.get(12),
             new ItemStack[] { GTOreDictUnificator.get("frameGtTranscendentMetal", 12),
-                WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.block, 16),
+                MU.stack(OrePrefixes.block, Materials2Materials.MagnetoResonatic, 16),
                 MaterialLibAPI.getStack(Materials2Materials.TengamAttuned, Materials2Shapes.plateDense, (int) (32)),
                 MaterialLibAPI.getStack(Materials2Materials.Creon, Materials2Shapes.plate, (int) (16)),
                 MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.screw, 8),
@@ -191,7 +189,7 @@ public class BECRecipes implements Runnable {
                 ItemList.StableBosonContainmentUnit.get(6), getModItem(NewHorizonsCoreMod.ID, "RadoxPolymerLens", 9),
                 getModItem(NewHorizonsCoreMod.ID, "ChromaticLens", 9),
                 getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 9),
-                WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.lens, 9),
+                MU.stack(OrePrefixes.lens, Materials2Materials.MagnetoResonatic, 9),
                 MaterialLibAPI.getStack(Materials2Materials.Rhugnor, Materials2Shapes.plate, 24),
                 MaterialLibAPI.getStack(Materials2Materials.Creon, Materials2Shapes.stickLong, (int) (33)),
                 MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.stickLong, (int) (9)),
@@ -314,10 +312,11 @@ public class BECRecipes implements Runnable {
         addBec(
             ItemList.ElectromagneticallyIsolatedCasing.get(8),
             new ItemStack[] { ItemList.BlockQuarkContainmentCasing.get(8),
-                GGMaterial.tairitsu.get(OrePrefixes.frameGt, 8), GTOreDictUnificator.get("frameGtChuritsu", 8),
-                GTOreDictUnificator.get("frameGtShijima", 8), ItemList.MetaMaterial_Shielding1.get(8),
+                MU.stack(OrePrefixes.frameGt, Materials2Materials.Tairitsu, 8),
+                GTOreDictUnificator.get("frameGtChuritsu", 8), GTOreDictUnificator.get("frameGtShijima", 8),
+                ItemList.MetaMaterial_Shielding1.get(8),
                 MaterialLibAPI.getStack(Materials2Materials.SixPhasedCopper, Materials2Shapes.bolt, (int) (32)),
-                GGMaterial.tairitsu.get(OrePrefixes.ring, 16),
+                MU.stack(OrePrefixes.ring, Materials2Materials.Tairitsu, 16),
                 MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.screw, 32),
                 ItemList.Field_Generator_UEV.get(1) },
             nanites(4, 1, 1, 1, 3, 1, 2, 1, 2),
@@ -366,7 +365,8 @@ public class BECRecipes implements Runnable {
             ItemList.CondensateGuidanceCoil.get(1),
             new ItemStack[] { ItemRefer.Field_Restriction_Coil_T3.get(1),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(4), ItemList.MetaMaterial_Waveguide1.get(2),
-                GTOreDictUnificator.get("frameGtChuritsu", 1), GGMaterial.tairitsu.get(OrePrefixes.screw, 16),
+                GTOreDictUnificator.get("frameGtChuritsu", 1),
+                MU.stack(OrePrefixes.screw, Materials2Materials.Tairitsu, 16),
                 MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.bolt, (int) (16)) },
             nanites(3, 1, 4, 1, 1, 1),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(64 * INGOTS),
@@ -443,7 +443,7 @@ public class BECRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Bedrockium, Materials2Shapes.plateSuperdense, (int) (1)),
                 MaterialLibAPI
                     .getStack(Materials2Materials.CosmicNeutronium, Materials2Shapes.plateSuperdense, (int) (1)),
-                GGMaterial.shirabon.get(OrePrefixes.plateSuperdense, 1),
+                MU.stack(OrePrefixes.plateSuperdense, Materials2Materials.Shirabon, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.plateSuperdense, (int) (1)),
                 ItemList.Machine_UV_SolarPanel.get(1), ItemList.AcceleratorUV.get(4),
                 getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3), ItemList.EnergisedTesseract.get(1) },
@@ -463,7 +463,7 @@ public class BECRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Bedrockium, Materials2Shapes.plateSuperdense, (int) (1)),
                 MaterialLibAPI
                     .getStack(Materials2Materials.CosmicNeutronium, Materials2Shapes.plateSuperdense, (int) (1)),
-                GGMaterial.shirabon.get(OrePrefixes.plateSuperdense, 1),
+                MU.stack(OrePrefixes.plateSuperdense, Materials2Materials.Shirabon, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.plateSuperdense, (int) (1)),
                 ItemList.Machine_UV_SolarPanel.get(1), ItemList.Quantum_Chest_IV.get(1),
                 getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3), ItemList.EnergisedTesseract.get(1) },

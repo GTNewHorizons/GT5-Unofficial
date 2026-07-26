@@ -19,7 +19,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
@@ -58,8 +57,8 @@ public class MachineRecipes implements Runnable {
         ItemStack highComputationStationT3_32 = ItemRefer.HiC_T3.get(32);
         ItemStack highComputationStationT4_32 = ItemRefer.HiC_T4.get(32);
         ItemStack highComputationStationT5_32 = ItemRefer.HiC_T5.get(32);
-        ItemStack metaStableOgScrew_64 = GGMaterial.metastableOganesson.get(OrePrefixes.screw, 64);
-        ItemStack titaniumBetaCScrew_64 = GGMaterial.titaniumBetaC.get(OrePrefixes.screw, 64);
+        ItemStack metaStableOgScrew_64 = MU.stack(OrePrefixes.screw, Materials2Materials.MetastableOganesson, 64);
+        ItemStack titaniumBetaCScrew_64 = MU.stack(OrePrefixes.screw, Materials2Materials.TanmolyiumBetaC, 64);
 
         ItemStack voidMiner = ItemRegistry.voidminer[2];
 

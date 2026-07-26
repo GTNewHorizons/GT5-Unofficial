@@ -44,7 +44,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -208,7 +207,7 @@ public class NetheriteRecipes {
             GTValues.RA.stdBuilder() // Crystallization
                 .itemInputs(
                     ItemList.Prismarine_Precipitate.get(1),
-                    WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.lens, 0))
+                    MU.stack(OrePrefixes.lens, Materials2Materials.MagnetoResonatic, 0))
                 .itemOutputs(ItemList.Prismatic_Crystal.get(1))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -288,7 +287,7 @@ public class NetheriteRecipes {
                 .itemInputs(
                     MetaItemCraftingComponent.getInstance()
                         .getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 4),
-                    WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 24))
+                    MU.stack(OrePrefixes.dust, Materials2Materials.RawFluorophlogopite, 24))
                 .fluidInputs(
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.prismaticnaquadah, Materials2FluidShapes.fluidMolten, 576))
@@ -370,7 +369,8 @@ public class NetheriteRecipes {
                     Materials2Materials.NitrogenDioxide,
                     Materials2FluidShapes.fluidGas,
                     (int) (140_000)),
-                WerkstoffLoader.Neon.getFluidOrGas(36_000))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (36_000)))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(distillationTowerRecipes);

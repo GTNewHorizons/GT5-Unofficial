@@ -7,7 +7,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
@@ -70,11 +69,16 @@ public class GasSiphonRecipes {
                 1,
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Deuterium, Materials2FluidShapes.fluidGas, (int) (5_000)))
-            .addFluid(2, WerkstoffLoader.Neon.getFluidOrGas(450))
+            .addFluid(
+                2,
+                MaterialLibAPI.getFluidStack(Materials2Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (450)))
             .addFluid(
                 3,
                 MaterialLibAPI.getFluidStack(Materials2Materials.Argon, Materials2FluidShapes.fluidGas, (int) (250)))
-            .addFluid(4, WerkstoffLoader.Krypton.getFluidOrGas(100))
+            .addFluid(
+                4,
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (100)))
             .build();
 
         // T6 (-> 0.5 to 2A of ZPM)
@@ -87,7 +91,9 @@ public class GasSiphonRecipes {
             .addFluid(
                 3,
                 MaterialLibAPI.getFluidStack(Materials2Materials.Ammonia, Materials2FluidShapes.fluidGas, (int) (400)))
-            .addFluid(4, WerkstoffLoader.Xenon.getFluidOrGas(350))
+            .addFluid(
+                4,
+                MaterialLibAPI.getFluidStack(Materials2Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (350)))
             .build();
     }
 

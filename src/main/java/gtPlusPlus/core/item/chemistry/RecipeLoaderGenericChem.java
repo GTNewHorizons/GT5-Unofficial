@@ -19,7 +19,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -201,7 +200,7 @@ public class RecipeLoaderGenericChem {
         ItemStack aluminaBallOutput = GregtechItemList.Milling_Ball_Alumina.get(8);
         ItemGenericChemBase.createMillingBallNBT(aluminaBallOutput);
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.Alumina.get(OrePrefixes.dust, 64))
+            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.Alumina, 64))
             .circuit(10)
             .itemOutputs(aluminaBallOutput)
             .fluidInputs(new FluidStack(GTPPFluids.Aniline, 4_000))
@@ -328,7 +327,7 @@ public class RecipeLoaderGenericChem {
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(10),
                 MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.dust, (int) (6)),
-                WerkstoffLoader.Ruthenium.get(OrePrefixes.dust, 6))
+                MU.stack(OrePrefixes.dust, Materials2Materials.Ruthenium, 6))
             .circuit(16)
             .itemOutputs(GregtechItemList.PurpleMetalCatalyst.get(10))
             .duration(2 * MINUTES)
@@ -356,7 +355,7 @@ public class RecipeLoaderGenericChem {
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(10),
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.dust, (int) (4)),
-                WerkstoffLoader.Rhodium.get(OrePrefixes.dust, 4))
+                MU.stack(OrePrefixes.dust, Materials2Materials.Rhodium, 4))
             .circuit(12)
             .itemOutputs(GregtechItemList.PinkMetalCatalyst.get(10))
             .duration(30 * SECONDS)

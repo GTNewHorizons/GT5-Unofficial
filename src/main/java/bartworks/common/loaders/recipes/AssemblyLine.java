@@ -10,7 +10,6 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -42,7 +41,8 @@ public class AssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.screw, (int) (36L)))
             .fluidInputs(
                 MU.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS),
-                WerkstoffLoader.Neon.getFluidOrGas(20_000))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (20_000)))
             .itemOutputs(ItemRegistry.voidminer[0].copy())
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * MINUTES)
@@ -59,7 +59,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_LuV.get(1L),
                 ItemList.Emitter_LuV.get(1L),
                 ItemList.Sensor_LuV.get(1L),
-                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.plate, 8))
+                MU.stack(OrePrefixes.plate, Materials2Materials.RhodiumPlatedPalladium, 8))
             .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS))
             .itemOutputs(ItemRegistry.cal.copy())
             .eut(TierEU.RECIPE_ZPM)

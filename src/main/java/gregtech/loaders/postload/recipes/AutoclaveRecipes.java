@@ -16,7 +16,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -357,10 +356,10 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(
                 GTUtility.copyAmount(0, GTOreDictUnificator.get("naniteMagmatter", 1)),
                 MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.gemFlawless, (int) (3)),
-                WerkstoffLoader.Olenit.get(OrePrefixes.gemChipped, 64),
-                WerkstoffLoader.Salt.get(OrePrefixes.gemChipped, 64),
+                MU.stack(OrePrefixes.gemChipped, Materials2Materials.Olenite, 64),
+                MU.stack(OrePrefixes.gemChipped, Materials2Materials.Salt, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.gemChipped, (int) (64)),
-                WerkstoffLoader.VanadioOxyDravit.get(OrePrefixes.gemChipped, 64))
+                MU.stack(OrePrefixes.gemChipped, Materials2Materials.VanadioOxyDravite, 64))
             .fluidInputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.ChromaticGlass), 1_000_000))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.gemExquisite, (int) (1)))

@@ -36,7 +36,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.API.enums.CircuitImprint;
 import bartworks.MainMod;
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.WerkstoffLoader;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -47,6 +46,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -73,8 +73,8 @@ public class CircuitPartsItem extends Item {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 1),
-                WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust, 4))
+                MU.stack(OrePrefixes.dust, Materials2Materials.MagnetoResonatic, 1),
+                MU.stack(OrePrefixes.dust, Materials2Materials.CircuitCompoundMK3, 4))
             .itemOutputs(ItemList.RawImprintBoard.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)

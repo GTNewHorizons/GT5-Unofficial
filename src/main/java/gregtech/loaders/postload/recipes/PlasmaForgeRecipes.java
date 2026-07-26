@@ -17,7 +17,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -54,7 +53,10 @@ public class PlasmaForgeRecipes implements Runnable {
                         Materials2Materials.stablebaryonicmatter,
                         Materials2FluidShapes.fluidLiquid,
                         8_000),
-                    GGMaterial.metastableOganesson.getMolten(4 * INGOTS),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.MetastableOganesson,
+                        Materials2FluidShapes.fluidMolten,
+                        (int) (4 * INGOTS)),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Grade8PurifiedWater,
                         Materials2FluidShapes.fluidLiquid,
@@ -90,7 +92,10 @@ public class PlasmaForgeRecipes implements Runnable {
                         Materials2Materials.stablebaryonicmatter,
                         Materials2FluidShapes.fluidLiquid,
                         2_000),
-                    GGMaterial.metastableOganesson.getMolten(2 * INGOTS),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.MetastableOganesson,
+                        Materials2FluidShapes.fluidMolten,
+                        (int) (2 * INGOTS)),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Grade8PurifiedWater,
                         Materials2FluidShapes.fluidLiquid,
@@ -127,7 +132,10 @@ public class PlasmaForgeRecipes implements Runnable {
                         Materials2Materials.stablebaryonicmatter,
                         Materials2FluidShapes.fluidLiquid,
                         1_000),
-                    GGMaterial.metastableOganesson.getMolten(1 * INGOTS),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.MetastableOganesson,
+                        Materials2FluidShapes.fluidMolten,
+                        (int) (1 * INGOTS)),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Grade8PurifiedWater,
                         Materials2FluidShapes.fluidLiquid,
@@ -161,7 +169,10 @@ public class PlasmaForgeRecipes implements Runnable {
                         Materials2Materials.stablebaryonicmatter,
                         Materials2FluidShapes.fluidLiquid,
                         250),
-                    GGMaterial.metastableOganesson.getMolten(1 * INGOTS),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.MetastableOganesson,
+                        Materials2FluidShapes.fluidMolten,
+                        (int) (1 * INGOTS)),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Grade8PurifiedWater,
                         Materials2FluidShapes.fluidLiquid,

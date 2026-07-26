@@ -13,7 +13,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -421,7 +420,11 @@ public class VacuumFreezerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Harmonic_Compound.get(2))
-            .fluidInputs(GGMaterial.atomicSeparationCatalyst.getMolten(1 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.AtomicSeparationCatalyst,
+                    Materials2FluidShapes.fluidMolten,
+                    (int) (1 * INGOTS)))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.ingot, (int) (1)))
             .fluidOutputs(
                 MaterialLibAPI

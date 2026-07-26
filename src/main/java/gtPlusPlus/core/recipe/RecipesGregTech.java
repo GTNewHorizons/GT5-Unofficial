@@ -59,8 +59,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -238,7 +236,7 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (4)))
             .itemOutputs(
-                WerkstoffLoader.Thorianit.get(OrePrefixes.dust, 3),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Thorianite, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Thorium232, Materials2Shapes.dust, 1))
             .fluidInputs(GTModHandler.getDistilledWater(2_000), new FluidStack(GTPPFluids.BoricAcid, 500))
             .duration(100 * SECONDS)
@@ -591,8 +589,8 @@ public class RecipesGregTech {
                 ItemList.Electric_Motor_LuV.get(4),
                 GregtechItemList.VOLUMETRIC_FLASK_32k.get(4),
                 MaterialLibAPI.getStack(Materials2Materials.LafiumCompound, Materials2Shapes.screw, 16),
-                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.ring, 8),
-                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.stick, 16),
+                MU.stack(OrePrefixes.ring, Materials2Materials.RhodiumPlatedPalladium, 8),
+                MU.stack(OrePrefixes.stick, Materials2Materials.RhodiumPlatedPalladium, 16),
                 MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.plate, (int) (32)))
             .fluidInputs(
                 MU.legacyGtppFluid(Materials2Materials.HeLiCoPtEr, 32 * INGOTS),
@@ -979,7 +977,11 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials2Materials.Ardite, Materials2Shapes.dust, (int) (10)),
                 MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, (int) (50)))
             .circuit(3)
-            .fluidOutputs(GGMaterial.signalium.getMolten(5 * INGOTS))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Signalium,
+                    Materials2FluidShapes.fluidMolten,
+                    (int) (5 * INGOTS)))
             .eut(TierEU.RECIPE_LuV)
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -991,10 +993,12 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dust, (int) (10)),
                 MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.dust, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.dust, (int) (8)),
-                GGMaterial.lumiinessence.get(OrePrefixes.dust, 10),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Lumiinessence, 10),
                 MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.dust, (int) (10)))
             .circuit(6)
-            .fluidOutputs(GGMaterial.lumiium.getMolten(5 * INGOTS))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Lumiium, Materials2FluidShapes.fluidMolten, (int) (5 * INGOTS)))
             .eut(TierEU.RECIPE_LuV)
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -1149,7 +1153,7 @@ public class RecipesGregTech {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Nitinol60, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.dust, (int) (6)),
-                WerkstoffLoader.Ruthenium.get(OrePrefixes.dust, 6),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Ruthenium, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Thallium, Materials2Shapes.dust, 3))
             .circuit(4)
             .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.Botmium, 16 * INGOTS))
@@ -1160,8 +1164,8 @@ public class RecipesGregTech {
         // Lossless Phonon Transfer Medium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 5),
-                GGMaterial.metastableOganesson.get(OrePrefixes.dust, 1),
+                MU.stack(OrePrefixes.dust, Materials2Materials.MagnetoResonatic, 5),
+                MU.stack(OrePrefixes.dust, Materials2Materials.MetastableOganesson, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Praseodymium, Materials2Shapes.dust, (int) (15)),
                 MaterialLibAPI.getStack(Materials2Materials.SuperconductorUIVBase, Materials2Shapes.dust, (int) (6)))
             .circuit(5)
@@ -1181,7 +1185,7 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.dust, (int) (2)),
-                GGMaterial.tairitsu.get(OrePrefixes.dust, 2),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Tairitsu, 2),
                 MaterialLibAPI.getStack(Materials2Materials.Tartarite, Materials2Shapes.dust, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Titansteel, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.dust, (int) (1)))
@@ -1244,7 +1248,11 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials2Materials.Molybdenum, Materials2Shapes.dust, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.dust, (int) (1)))
             .circuit(6)
-            .fluidOutputs(GGMaterial.incoloy903.getMolten(37 * INGOTS))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Incoloy903,
+                    Materials2FluidShapes.fluidMolten,
+                    (int) (37 * INGOTS)))
             .eut(TierEU.RECIPE_EV)
             .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);

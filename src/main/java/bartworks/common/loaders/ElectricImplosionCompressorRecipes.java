@@ -24,7 +24,6 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -36,7 +35,6 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ElectricImplosionCompressorRecipes implements Runnable {
@@ -63,9 +61,9 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         // Manual Add due to werkstoff material system disconnected from autogeneration
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.dust, 4))
+            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.LanthanumHexaboride, 4))
             .itemOutputs(
-                WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.gem, 3),
+                MU.stack(OrePrefixes.gem, Materials2Materials.LanthanumHexaboride, 3),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 12L))
             .duration(1 * TICKS)
             .eut(TierEU.RECIPE_UEV)
@@ -154,7 +152,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.gemChipped, (int) (3)),
                 GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials2Materials.FoolsRuby, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Amethyst, Materials2Shapes.gemFlawless, (int) (64)),
-                WerkstoffLoader.Fluorspar.get(OrePrefixes.gemFlawless, 64),
+                MU.stack(OrePrefixes.gemFlawless, Materials2Materials.Fluorspar, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Tanzanite, Materials2Shapes.gemFlawless, (int) (64)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(

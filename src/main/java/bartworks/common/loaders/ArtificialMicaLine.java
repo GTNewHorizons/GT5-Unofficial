@@ -15,7 +15,6 @@ import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.BWGTMaterialReference;
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -50,7 +49,11 @@ public class ArtificialMicaLine {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 4))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Hydrogen, Materials2CellShapes.cell, 4))
             .fluidInputs(MU.fluid(Materials2Materials.HydrofluoricAcidGT5U, 6_000))
-            .fluidOutputs(WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.HexafluorosilicicAcid,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1_000)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
@@ -69,8 +72,12 @@ public class ArtificialMicaLine {
         // 2KCl + H2SiF6 = 2HCl + K2SiF6
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.RockSalt, Materials2Shapes.dust, 4))
-            .itemOutputs(WerkstoffLoader.Potassiumfluorosilicate.get(OrePrefixes.dust, 9))
-            .fluidInputs(WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1_000))
+            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.Potassiumfluorosilicate, 9))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.HexafluorosilicicAcid,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1_000)))
             .fluidOutputs(MU.fluid(Materials2Materials.HydrochloricAcidGT5U, 2_000))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
@@ -82,7 +89,7 @@ public class ArtificialMicaLine {
                 MaterialLibAPI.getStack(Materials2Materials.Potassium, Materials2Shapes.dust, 2),
                 MaterialLibAPI.getStack(Materials2Materials.CarbonDioxide, Materials2CellShapes.cell, 1))
             .itemOutputs(
-                WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 6),
+                MU.stack(OrePrefixes.dust, Materials2Materials.PotassiumCarbonate, 6),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, 1_000))
@@ -96,7 +103,7 @@ public class ArtificialMicaLine {
                 MaterialLibAPI.getStack(Materials2Materials.Potash, Materials2Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials2Materials.CarbonDioxide, Materials2CellShapes.cell, 1))
             .itemOutputs(
-                WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 6),
+                MU.stack(OrePrefixes.dust, Materials2Materials.PotassiumCarbonate, 6),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -106,13 +113,13 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.QuartzSand, Materials2Shapes.dust, 55),
-                WerkstoffLoader.Potassiumfluorosilicate.get(OrePrefixes.dust, 20),
-                WerkstoffLoader.Alumina.get(OrePrefixes.dust, 12),
-                WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 4))
+                MU.stack(OrePrefixes.dust, Materials2Materials.Potassiumfluorosilicate, 20),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Alumina, 12),
+                MU.stack(OrePrefixes.dust, Materials2Materials.PotassiumCarbonate, 4))
             .circuit(4)
             .itemOutputs(
-                WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
-                WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 27))
+                MU.stack(OrePrefixes.dust, Materials2Materials.RawFluorophlogopite, 64),
+                MU.stack(OrePrefixes.dust, Materials2Materials.RawFluorophlogopite, 27))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -121,14 +128,14 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Quartzite, Materials2Shapes.dust, 55),
-                WerkstoffLoader.Potassiumfluorosilicate.get(OrePrefixes.dust, 20),
-                WerkstoffLoader.Alumina.get(OrePrefixes.dust, 57),
-                WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 4))
+                MU.stack(OrePrefixes.dust, Materials2Materials.Potassiumfluorosilicate, 20),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Alumina, 57),
+                MU.stack(OrePrefixes.dust, Materials2Materials.PotassiumCarbonate, 4))
             .circuit(4)
             .itemOutputs(
-                WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
-                WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
-                WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 8))
+                MU.stack(OrePrefixes.dust, Materials2Materials.RawFluorophlogopite, 64),
+                MU.stack(OrePrefixes.dust, Materials2Materials.RawFluorophlogopite, 64),
+                MU.stack(OrePrefixes.dust, Materials2Materials.RawFluorophlogopite, 8))
             .fluidOutputs()
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -137,14 +144,14 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.NetherQuartz, Materials2Shapes.dust, 55),
-                WerkstoffLoader.Potassiumfluorosilicate.get(OrePrefixes.dust, 20),
-                WerkstoffLoader.Alumina.get(OrePrefixes.dust, 57),
-                WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 4))
+                MU.stack(OrePrefixes.dust, Materials2Materials.Potassiumfluorosilicate, 20),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Alumina, 57),
+                MU.stack(OrePrefixes.dust, Materials2Materials.PotassiumCarbonate, 4))
             .circuit(4)
             .itemOutputs(
-                WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
-                WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
-                WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 8))
+                MU.stack(OrePrefixes.dust, Materials2Materials.RawFluorophlogopite, 64),
+                MU.stack(OrePrefixes.dust, Materials2Materials.RawFluorophlogopite, 64),
+                MU.stack(OrePrefixes.dust, Materials2Materials.RawFluorophlogopite, 8))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -153,13 +160,13 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.dust, 62),
-                WerkstoffLoader.Potassiumfluorosilicate.get(OrePrefixes.dust, 10),
-                WerkstoffLoader.Alumina.get(OrePrefixes.dust, 12),
-                WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 7))
+                MU.stack(OrePrefixes.dust, Materials2Materials.Potassiumfluorosilicate, 10),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Alumina, 12),
+                MU.stack(OrePrefixes.dust, Materials2Materials.PotassiumCarbonate, 7))
             .circuit(4)
             .itemOutputs(
-                WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
-                WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 27))
+                MU.stack(OrePrefixes.dust, Materials2Materials.RawFluorophlogopite, 64),
+                MU.stack(OrePrefixes.dust, Materials2Materials.RawFluorophlogopite, 27))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -176,10 +183,14 @@ public class ArtificialMicaLine {
 
         // 27Raw Fluorophlogopite Dust + 720MgO(l) = 4608Fluorophlogopite(l)
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 27))
+            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.RawFluorophlogopite, 27))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.dust, 1))
             .fluidInputs(BWGTMaterialReference.Magnesia.getMolten(5 * INGOTS))
-            .fluidOutputs(WerkstoffLoader.HotFluorophlogopite.getFluidOrGas(32 * INGOTS))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.UnformedFluorophlogopite,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (32 * INGOTS)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 1700)
@@ -188,8 +199,12 @@ public class ArtificialMicaLine {
         // 144Fluorophlogopite(l) = Fluorophlogopite
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Plate.get(0))
-            .itemOutputs(WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 1))
-            .fluidInputs(WerkstoffLoader.HotFluorophlogopite.getFluidOrGas(1 * INGOTS))
+            .itemOutputs(MU.stack(OrePrefixes.plate, Materials2Materials.Fluorophlogopite, 1))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.UnformedFluorophlogopite,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1 * INGOTS)))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(vacuumFreezerRecipes);
@@ -198,7 +213,7 @@ public class ArtificialMicaLine {
         if (NewHorizonsCoreMod.isModLoaded()) {
 
             GTValues.RA.stdBuilder()
-                .itemInputs(WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 1))
+                .itemInputs(MU.stack(OrePrefixes.plate, Materials2Materials.Fluorophlogopite, 1))
                 .circuit(1)
                 .itemOutputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MicaInsulatorFoil", 4))
                 .duration(10 * TICKS)
