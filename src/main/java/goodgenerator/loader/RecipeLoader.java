@@ -1611,8 +1611,8 @@ public class RecipeLoader {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Protomatter.getFluid(1000))
-            .fluidOutputs(Materials.Antimatter.getFluid(1000))
+            .fluidInputs(Materials.Protomatter.getFluid(0))
+            .fluidOutputs(Materials.Antimatter.getFluid(0))
             .duration(20)
             .eut(10_000_000)
             .addTo(GoodGeneratorRecipeMaps.antimatterForgeRecipes);
