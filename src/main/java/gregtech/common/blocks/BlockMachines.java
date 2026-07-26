@@ -12,6 +12,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
@@ -518,7 +519,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public boolean removedByPlayer(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, boolean aWillHarvest) {
-        if (aPlayer != null && aPlayer.isSneaking()) {
+        if (aPlayer != null && aPlayer.isSneaking() && !EnchantmentHelper.getSilkTouchModifier(aPlayer)) {
             final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if (tTileEntity instanceof CoverableTileEntity coverableTE) {
                 for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
@@ -526,6 +527,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                         coverableTE.dropCover(side, side);
                     }
                 }
+                coverableTE.setStrongRedstone((byte) 0);
             }
 
             if (tTileEntity instanceof BaseMetaTileEntity baseTE) {
