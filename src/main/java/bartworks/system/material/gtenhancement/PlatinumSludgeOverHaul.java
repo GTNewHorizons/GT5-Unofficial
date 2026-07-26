@@ -335,13 +335,13 @@ public class PlatinumSludgeOverHaul {
             .addTo(multiblockChemicalReactorRecipes);
 
         // base solution
-        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
-            if (werkstoff.containsStuff(Materials2Materials.Sulfur)
-                && (werkstoff.containsStuff(Materials2Materials.Copper)
-                    || werkstoff.containsStuff(Materials2Materials.Nickel))) {
+        for (Material ml : MaterialLibAPI.getMaterials()) {
+            if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
+            if (materialsContains(ml, Materials2Materials.Sulfur) && (materialsContains(ml, Materials2Materials.Copper)
+                || materialsContains(ml, Materials2Materials.Nickel))) {
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(crushedPurified))
+                    .itemInputs(MU.stack(crushedPurified, ml, 1))
                     .circuit(1)
                     .fluidInputs(AquaRegia.getFluidOrGas(300))
                     .fluidOutputs(PTConcentrate.getFluidOrGas(300))
@@ -350,7 +350,7 @@ public class PlatinumSludgeOverHaul {
                     .addTo(UniversalChemical);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(crushedPurified, 9))
+                    .itemInputs(MU.stack(crushedPurified, ml, 9))
                     .circuit(9)
                     .fluidInputs(AquaRegia.getFluidOrGas(2_700))
                     .fluidOutputs(PTConcentrate.getFluidOrGas(2_700))
@@ -359,7 +359,7 @@ public class PlatinumSludgeOverHaul {
                     .addTo(UniversalChemical);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(crushedPurified, 9), PTMetallicPowder.get(dust, 9))
+                    .itemInputs(MU.stack(crushedPurified, ml, 9), PTMetallicPowder.get(dust, 9))
                     .itemOutputs(PTResidue.get(dust))
                     .fluidInputs(AquaRegia.getFluidOrGas(20_700))
                     .fluidOutputs(PTConcentrate.getFluidOrGas(20_700))

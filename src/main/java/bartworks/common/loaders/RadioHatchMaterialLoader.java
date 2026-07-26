@@ -12,13 +12,14 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.WerkstoffReconstruction;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Sievert;
@@ -94,19 +95,20 @@ public class RadioHatchMaterialLoader {
          * Radon, Thorium, Uranium, Plutonium241, Uranium235, Oganesson, Californium, Tiberium
          */
 
-        for (Werkstoff material : Werkstoff.werkstoffHashSet) {
-            if (material == null || !material.getStats()
-                .isRadioactive() || material == WerkstoffLoader.Tiberium) {
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null
+                || !Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.IS_RADIOACTIVE))
+                || material == Materials2Materials.Tiberium) {
                 continue;
             }
 
-            int level = (int) material.getStats()
-                .getProtons();
-            if (material.hasItemType(OrePrefixes.stick))
-                radioHatchMaterialAdder(material.get(OrePrefixes.stick), level, 1);
-            if (material.hasItemType(OrePrefixes.stickLong))
-                radioHatchMaterialAdder(material.get(OrePrefixes.stickLong), level, 2);
-
+            int level = (int) MU.protons(material);
+            if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.stick)) {
+                radioHatchMaterialAdder(MU.stack(OrePrefixes.stick, material, 1), level, 1);
+            }
+            if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.stickLong)) {
+                radioHatchMaterialAdder(MU.stack(OrePrefixes.stickLong, material, 1), level, 2);
+            }
         }
 
         for (Material material : MaterialLibAPI.getMaterials()) {
