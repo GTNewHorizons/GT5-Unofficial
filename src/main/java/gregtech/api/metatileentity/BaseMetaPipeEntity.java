@@ -173,7 +173,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 handleBlockUpdateClient();
 
                 if (!mNeedsClientTick) {
-                    if (GregTechAPI.sTextureRefreshPulse) issueTextureUpdate();
                     mWorkUpdate = mInventoryChanged = false;
                     tryDisableTicking();
                     return;
@@ -310,7 +309,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         }
 
         if (isClientSide()) {
-            issueTextureUpdate();
             switch (aEventID) {
                 case GregTechTileClientEvents.CHANGE_COMMON_DATA -> mConnections = (byte) aValue;
                 case GregTechTileClientEvents.CHANGE_CUSTOM_DATA -> {
@@ -322,18 +320,19 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 }
                 case GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT -> setRedstoneOutput(aValue);
                 case GregTechTileClientEvents.DO_SOUND -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
+                    if (hasValidMetaTileEntity() && isClientSettled())
                         mMetaTileEntity.doSound((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
                 case GregTechTileClientEvents.START_SOUND_LOOP -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
+                    if (hasValidMetaTileEntity() && isClientSettled())
                         mMetaTileEntity.startSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
                 case GregTechTileClientEvents.STOP_SOUND_LOOP -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
+                    if (hasValidMetaTileEntity() && isClientSettled())
                         mMetaTileEntity.stopSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
             }
+            issueTextureUpdate();
         }
         return true;
     }

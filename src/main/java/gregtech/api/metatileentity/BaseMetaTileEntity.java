@@ -285,7 +285,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 handleBlockUpdateClient();
 
                 if (!mNeedsClientTick) {
-                    if (GregTechAPI.sTextureRefreshPulse) issueTextureUpdate();
                     mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
                     tryDisableTicking();
                     return;
@@ -745,7 +744,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         }
 
         if (isClientSide()) {
-            issueTextureUpdate();
             switch (aEventID) {
                 case GregTechTileClientEvents.CHANGE_COMMON_DATA -> {
                     mFacing = ForgeDirection.getOrientation((byte) (aValue & 7));
@@ -766,15 +764,15 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 }
                 case GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT -> setRedstoneOutput(aValue);
                 case GregTechTileClientEvents.DO_SOUND -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
+                    if (hasValidMetaTileEntity() && isClientSettled())
                         mMetaTileEntity.doSound((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
                 case GregTechTileClientEvents.START_SOUND_LOOP -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
+                    if (hasValidMetaTileEntity() && isClientSettled())
                         mMetaTileEntity.startSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
                 case GregTechTileClientEvents.STOP_SOUND_LOOP -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
+                    if (hasValidMetaTileEntity() && isClientSettled())
                         mMetaTileEntity.stopSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
                 case GregTechTileClientEvents.CHANGE_LIGHT -> {
@@ -782,6 +780,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                     if (mTickDisabled) applyClientLightValue();
                 }
             }
+            issueTextureUpdate();
             if ((aEventID == GregTechTileClientEvents.CHANGE_COMMON_DATA
                 || aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA) && hasValidMetaTileEntity()) {
                 mMetaTileEntity.onClientSoundStateChanged();

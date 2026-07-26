@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
@@ -162,11 +161,6 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
                     PipeActivity
                         .enqueueUpdate(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord(), isActive);
                 }
-            }
-        } else {
-            if (GTMod.clientProxy()
-                .changeDetected() == 4) {
-                base.issueTextureUpdate();
             }
         }
     }

@@ -417,8 +417,9 @@ public class GTClient extends GTProxy {
                 hideThings = newHideValue;
                 changeDetected = 5;
             }
-            GregTechAPI.sTextureRefreshPulse = changeDetected == 4;
-            if (GregTechAPI.sTextureRefreshPulse) refreshParkedTileEntityTextures();
+            if (changeDetected >= 1 && changeDetected <= 4) {
+                refreshTileEntityTextures(4 - changeDetected);
+            }
             heldItemForcesFullBlockBB = shouldHeldItemForceFullBlockBB();
 
             // Animation related bits need to cease when game is paused in singleplayer.
@@ -506,8 +507,8 @@ public class GTClient extends GTProxy {
         return hideThings;
     }
 
-    /** Refresh rendering for parked tile entities */
-    private static void refreshParkedTileEntityTextures() {
+    /** Re-issues a texture update on every loaded GT tile after the pipe/cover hiding state changes. */
+    private static void refreshTileEntityTextures(int quarter) {
         final Minecraft mc = Minecraft.getMinecraft();
         if (mc.theWorld == null || mc.thePlayer == null) return;
 
@@ -515,12 +516,16 @@ public class GTClient extends GTProxy {
         final int centerX = MathHelper.floor_double(mc.thePlayer.posX) >> 4;
         final int centerZ = MathHelper.floor_double(mc.thePlayer.posZ) >> 4;
 
-        for (int cx = centerX - radius; cx <= centerX + radius; cx++) {
+        final int span = 2 * radius + 1;
+        final int from = centerX - radius + (span * quarter) / 4;
+        final int to = centerX - radius + (span * (quarter + 1)) / 4;
+
+        for (int cx = from; cx < to; cx++) {
             for (int cz = centerZ - radius; cz <= centerZ + radius; cz++) {
                 final Chunk chunk = mc.theWorld.getChunkFromChunkCoords(cx, cz);
                 if (chunk == null || !chunk.isChunkLoaded) continue;
                 for (Object tile : chunk.chunkTileEntityMap.values()) {
-                    if (tile instanceof CommonBaseMetaTileEntity gtTile && gtTile.isTickDisabled()) {
+                    if (tile instanceof CommonBaseMetaTileEntity gtTile) {
                         gtTile.issueTextureUpdate();
                     }
                 }

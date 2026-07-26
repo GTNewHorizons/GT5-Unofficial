@@ -384,6 +384,11 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity base, long aTick) {
         super.onPostTick(base, aTick);
         if (!base.isServerSide()) {

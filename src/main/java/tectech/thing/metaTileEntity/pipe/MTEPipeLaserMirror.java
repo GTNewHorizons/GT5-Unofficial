@@ -11,7 +11,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -129,10 +128,7 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
                 }
             }
 
-        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-            .changeDetected() == 4) {
-                aBaseMetaTileEntity.issueTextureUpdate();
-            }
+        }
     }
 
     public ForgeDirection getBendDirection(ForgeDirection dir) {

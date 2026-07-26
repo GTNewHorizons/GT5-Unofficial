@@ -174,6 +174,9 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      */
     void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 
+    /**
+     * Whether {@link #onPreTick} and {@link #onPostTick} run on the client.
+     */
     boolean needsClientTick();
 
     /**

@@ -13,7 +13,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
@@ -221,10 +220,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
                             256));
                 }
             }
-        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-            .changeDetected() == 4) {
-                aBaseMetaTileEntity.issueTextureUpdate();
-            }
+        }
     }
 
     @Override

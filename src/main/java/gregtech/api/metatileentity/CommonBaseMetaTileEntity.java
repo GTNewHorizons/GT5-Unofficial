@@ -65,6 +65,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     protected boolean mNeedsClientTick = true;
 
+    private long mClientLoadTime = Long.MIN_VALUE;
+
     // Profiling
     private int[] mTimeStatistics;
     private boolean hasTimeStatisticsStarted;
@@ -204,10 +206,22 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         if (isServerSide) {
             checkDropCover();
         } else {
+            mClientLoadTime = worldObj.getTotalWorldTime();
             requestCoverDataIfNeeded();
         }
         worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
         getMetaTileEntity().onFirstTick(this);
+    }
+
+    /** Whether this tile has been on the client long enough to act on sound events. */
+    protected final boolean isClientSettled() {
+        return mClientLoadTime != Long.MIN_VALUE && worldObj.getTotalWorldTime() - mClientLoadTime > 20;
+    }
+
+    @Override
+    public void validate() {
+        super.validate();
+        mClientLoadTime = Long.MIN_VALUE;
     }
 
     /**
@@ -248,7 +262,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         } else {
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
-        getMetaTileEntity().onTextureUpdate();
+        final IMetaTileEntity mte = getMetaTileEntity();
+        if (mte != null) mte.onTextureUpdate();
         mNeedsUpdate = false;
     }
 
