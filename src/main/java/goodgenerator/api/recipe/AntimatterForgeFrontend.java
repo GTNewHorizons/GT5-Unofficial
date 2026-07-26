@@ -11,13 +11,14 @@ import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class AntimatterForgeFrontend extends RecipeMapFrontend {
 
     public AntimatterForgeFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+                                   NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
@@ -29,5 +30,9 @@ public class AntimatterForgeFrontend extends RecipeMapFrontend {
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
         return Collections.singletonList(new Pos2d(128, 21));
+    }
+
+    @Override
+    protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
     }
 }
