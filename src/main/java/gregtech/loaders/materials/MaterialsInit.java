@@ -14585,9 +14585,13 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLightGray)
             .setARGB(0xe1e4dc)
+            .setMeltingPoint(150)
             .addCell()
             .addFluid()
             .addSubTag(SubTag.TRANSPARENT)
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 9)
+            .addMaterial(Materials.Chlorine, 1)
             .constructMaterial();
     }
 
@@ -14632,9 +14636,13 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setARGB(0xe1d29b)
+            .setMeltingPoint(178)
             .addCell()
             .addFluid()
             .addSubTag(SubTag.TRANSPARENT)
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 9)
+            .addMaterial(Materials.Lithium, 1)
             .constructMaterial();
     }
 

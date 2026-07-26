@@ -21,6 +21,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gtPlusPlus.core.fluids.GTPPFluids;
 
 public class ButylLithiumChain {
 
@@ -73,7 +74,6 @@ public class ButylLithiumChain {
             .duration(15 * SECONDS)
             .metadata(DISSOLUTION_TANK_RATIO, 1)
             .addTo(dissolutionTankRecipes);
-        System.out.println(FluidRegistry.getFluid("cyclohexane"));
 
         // n-BuCl + Li -> LiCl + n-BuLi
         GTValues.RA.stdBuilder()
@@ -99,7 +99,7 @@ public class ButylLithiumChain {
             .fluidOutputs(
                 Materials.nButylLithiumSolutionConcentrated.getFluid(6000L),
                 Materials.Octane.getFluid(200L),
-                new FluidStack(FluidRegistry.getFluid("cyclohexane"), 4000))
+                new FluidStack(GTPPFluids.Cyclohexane, 5000))
             .eut(TierEU.RECIPE_LuV)
             .duration(20 * SECONDS)
             .addTo(distillationTowerRecipes);
