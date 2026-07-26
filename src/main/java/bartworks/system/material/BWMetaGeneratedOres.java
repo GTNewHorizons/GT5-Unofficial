@@ -124,7 +124,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         boolean doFortune = GTUtility.isRealPlayer(harvester);
         boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
 
-        try (OreInfo<Werkstoff> info = BWOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
+        try (OreInfo<com.ruling_0.materiallib.api.Material> info = BWOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
             return BWOreAdapter.INSTANCE
                 .getOreDrops(ThreadLocalRandom.current(), info, doSilktouch, doFortune ? fortune : 0);
         }

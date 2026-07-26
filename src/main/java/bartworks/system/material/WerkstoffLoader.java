@@ -310,8 +310,8 @@ public class WerkstoffLoader {
         }
 
         if (orePrefixes == ore || orePrefixes == oreSmall) {
-            try (OreInfo<Werkstoff> info = OreInfo.getNewInfo()) {
-                info.material = werkstoff;
+            try (OreInfo<com.ruling_0.materiallib.api.Material> info = OreInfo.getNewInfo()) {
+                info.material = WerkstoffReconstruction.materialLibOf(werkstoff);
                 info.isSmall = orePrefixes == oreSmall;
 
                 return BWOreAdapter.INSTANCE.getStack(info, amount);

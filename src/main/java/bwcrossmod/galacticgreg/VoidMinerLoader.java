@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.Werkstoff;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.StoneType;
@@ -55,13 +54,13 @@ public class VoidMinerLoader {
     }
 
     private static void initBW() {
-        OreInfo<Werkstoff> info = OreInfo.getNewInfo();
+        OreInfo<com.ruling_0.materiallib.api.Material> info = OreInfo.getNewInfo();
         info.stoneType = StoneType.Stone;
         info.isSmall = false;
 
         var weights = parseWeights(Gregtech.voidMiners.bartworksWeightsDD);
 
-        for (Werkstoff mat : Werkstoff.werkstoffHashSet) {
+        for (com.ruling_0.materiallib.api.Material mat : MaterialLibAPI.getMaterials()) {
             info.material = mat;
 
             if (!BWOreAdapter.INSTANCE.supports(info)) continue;
@@ -69,7 +68,7 @@ public class VoidMinerLoader {
             VoidMinerUtility.addMaterialToDimensionList(
                 DimensionDef.DimNames.DEEPDARK,
                 mat,
-                weights.getFloat(mat.getInternalName()));
+                weights.getFloat(MU.internalName(mat)));
         }
 
         info.release();
