@@ -4,6 +4,7 @@ import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.function.IntFunction;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -70,6 +71,7 @@ public class PosteaTransformers implements Runnable {
         registerMetaItemCutoverTransformer("gt.metaitem.03");
         registerMetaItem99CutoverTransformer();
         registerStorageBlockCutoverTransformers();
+        registerFrameAndSheetmetalCutoverTransformers();
         registerWerkstoffItemCutoverTransformers();
         registerGtppItemCutoverTransformers();
         registerGtppCarryoverCellTransformers();
@@ -325,6 +327,59 @@ public class PosteaTransformers implements Runnable {
             Block mlBlock = Block.getBlockFromItem(cutover.getItem());
             BlockReplacementManager.addSimpleReplacement(originalId, meta, mlBlock, cutover.getItemDamage());
         }
+    }
+
+    /// Migrates saved placed blocks and inventory stacks of the legacy frameGt/sheetmetal blocks
+    /// (`gregtech:bw.frames`, `gregtech:bw.sheetmetal`, `gregtech:gt.sheetmetal`, meta = material id; the
+    /// bw-named blocks are constructed by `LoaderGTBlockFluid` and so registered under the gregtech domain)
+    /// into the equivalent MaterialLib shape stack. None of these blocks carry a TileEntity, unlike
+    /// [#registerWerkstoffBlockCutoverTransformer]'s storage blocks, so only a block leg and an item leg are
+    /// needed.
+    private static void registerFrameAndSheetmetalCutoverTransformers() {
+        registerPartCutoverTransformer(
+            "gregtech:bw.frames",
+            OrePrefixes.frameGt,
+            PosteaTransformers::werkstoffMaterialAt);
+        registerPartCutoverTransformer(
+            "gregtech:bw.sheetmetal",
+            OrePrefixes.sheetmetal,
+            PosteaTransformers::werkstoffMaterialAt);
+        registerPartCutoverTransformer("gregtech:gt.sheetmetal", OrePrefixes.sheetmetal, MU::byId);
+    }
+
+    /// The MaterialLib material a legacy bartworks werkstoff id resolves to, or null when the id is unknown
+    /// (a third-party WerkstoffAdder's) -- the [#registerPartCutoverTransformer] resolver for
+    /// werkstoff-keyed legacy parts.
+    private static Material werkstoffMaterialAt(int meta) {
+        Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) meta);
+        return werkstoff == null ? null : WerkstoffReconstruction.materialLibOf(werkstoff);
+    }
+
+    /// Migrates saved placed blocks and inventory stacks of a legacy non-TE part block whose meta is a
+    /// material id into the equivalent MaterialLib [prefix] stack, resolving the id through
+    /// `materialResolver`. Materials the resolver cannot place (unknown legacy id) or that have not cut over
+    /// to `prefix` are left on their legacy slot.
+    private static void registerPartCutoverTransformer(String legacyId, OrePrefixes prefix,
+        IntFunction<Material> materialResolver) {
+        BlockReplacementManager.addTransformationHandler(legacyId, info -> {
+            Material material = materialResolver.apply(info.metadata);
+            if (material == null) return false;
+            ItemStack cutover = MU.stack(prefix, material, 1);
+            if (cutover == null) return false;
+            info.blockID = Block.getIdFromBlock(Block.getBlockFromItem(cutover.getItem()));
+            info.metadata = cutover.getItemDamage();
+            return true;
+        });
+
+        ItemStackReplacementManager.addTransformationHandler(legacyId, (originalId, tag) -> {
+            Material material = materialResolver.apply(tag.getInteger("Damage"));
+            if (material == null) return false;
+            ItemStack cutover = MU.stack(prefix, material, 1);
+            if (cutover == null) return false;
+            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+            tag.setShort("Damage", (short) cutover.getItemDamage());
+            return true;
+        });
     }
 
     private static void registerMetaItemCutoverTransformer(String itemName) {

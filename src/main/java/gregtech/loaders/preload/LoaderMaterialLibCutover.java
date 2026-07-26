@@ -22,11 +22,13 @@ import gregtech.api.util.GTOreDictUnificator;
 /// soldering-metal and toolbox bookkeeping), run after that constructor so the MaterialLib stack becomes
 /// the unificator's preferred one.
 ///
-/// The pipe-family prefixes get a second, shape-membership-driven pass: their legacy items were meta tile
-/// entities, never generated items, so `OrePrefixes#doGenerateItem` cannot gate them, and their material sets
-/// (superconductor markers included) live only in the MaterialLib registry. Each `set` call makes the shape
-/// stack the prefix's unification target and adds the material association that drives the auto-generated
-/// recycling recipes, as the legacy meta tile entity registrations' ore-dictionary events used to.
+/// The membership-driven prefixes get a second, shape-membership pass over each shape block's served
+/// materials, because the generic loop cannot reach their full material sets: the pipe-family legacy items
+/// were meta tile entities, never generated items, so `OrePrefixes#doGenerateItem` cannot gate them, and
+/// their material sets (superconductor markers included) live only in the MaterialLib registry; `sheetmetal`
+/// additionally serves Werkstoff-backed materials, which have no legacy sub-id for the `MU#byId` spine. Each
+/// `set` call makes the shape stack the prefix's unification target and adds the material association that
+/// drives the auto-generated recycling recipes, as the legacy registrations' ore-dictionary events used to.
 ///
 /// The High Pressure (Redstone) fluid pipes additionally register under the tier-keyed
 /// `pipeSmallUltimate`..`pipeLargeUltimate` names ([TieredItems#ZPM]'s ingredient names), the identity every
@@ -57,20 +59,21 @@ public class LoaderMaterialLibCutover implements Runnable {
             }
         }
 
-        unifyPipeFamily();
+        unifyMembershipDriven();
         registerHighPressureNames();
     }
 
-    private static final OrePrefixes[] PIPE_FAMILY_PREFIXES = { OrePrefixes.wireGt01, OrePrefixes.wireGt02,
+    private static final OrePrefixes[] MEMBERSHIP_DRIVEN_PREFIXES = { OrePrefixes.wireGt01, OrePrefixes.wireGt02,
         OrePrefixes.wireGt04, OrePrefixes.wireGt08, OrePrefixes.wireGt12, OrePrefixes.wireGt16, OrePrefixes.cableGt01,
         OrePrefixes.cableGt02, OrePrefixes.cableGt04, OrePrefixes.cableGt08, OrePrefixes.cableGt12,
         OrePrefixes.cableGt16, OrePrefixes.pipeTiny, OrePrefixes.pipeSmall, OrePrefixes.pipeMedium,
         OrePrefixes.pipeLarge, OrePrefixes.pipeHuge, OrePrefixes.pipeQuadruple, OrePrefixes.pipeNonuple,
         OrePrefixes.pipeRestrictiveTiny, OrePrefixes.pipeRestrictiveSmall, OrePrefixes.pipeRestrictiveMedium,
-        OrePrefixes.pipeRestrictiveLarge, OrePrefixes.pipeRestrictiveHuge, OrePrefixes.frameGt };
+        OrePrefixes.pipeRestrictiveLarge, OrePrefixes.pipeRestrictiveHuge, OrePrefixes.frameGt,
+        OrePrefixes.sheetmetal };
 
-    private static void unifyPipeFamily() {
-        for (OrePrefixes prefix : PIPE_FAMILY_PREFIXES) {
+    private static void unifyMembershipDriven() {
+        for (OrePrefixes prefix : MEMBERSHIP_DRIVEN_PREFIXES) {
             for (Shape shape : MU.shapes(prefix)) {
                 ShapeBlock block = (ShapeBlock) MaterialLibAPI.getBlock(shape);
                 for (Material material : block.getServedMaterials()) {

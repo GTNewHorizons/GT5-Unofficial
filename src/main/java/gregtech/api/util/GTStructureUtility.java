@@ -9,7 +9,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
 import static gregtech.api.GregTechAPI.sBlockSheetmetalBW;
-import static gregtech.api.GregTechAPI.sBlockSheetmetalGT;
 import static gregtech.api.util.GTUtility.isFlowingWater;
 import static gregtech.api.util.GTUtility.isWater;
 
@@ -69,6 +68,7 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
@@ -202,36 +202,105 @@ public class GTStructureUtility {
         return allFilled;
     }
 
-    public static <T> IStructureElement<T> ofSheetMetal(Materials material) {
+    /// The sheetmetal structure element, matching the `sheetmetal` [gregtech.common.blocks.SheetmetalShapeBlock]
+    /// at the target material's index. Mirrors [#ofFrameElement]'s check/place/hint logic against the
+    /// `sheetmetal` shape instead of `frameGt`.
+    public static <T> IStructureElement<T> ofSheetMetal(com.ruling_0.materiallib.api.Material material) {
         if (material == null) throw new IllegalArgumentException("material for sheet metal can not be null!");
-        return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID)) {
+        return new IStructureElement<>() {
+
+            private IIcon[] mIcons;
+
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                Block block = world.getBlock(x, y, z);
+                BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, world.getBlockMetadata(x, y, z));
+                return info != null && info.shape() == Materials2BlockShapes.sheetmetal && info.material() == material;
+            }
+
+            @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return check(t, world, x, y, z);
+            }
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                StructureLibAPI.hintParticleTinted(
+                TextureSet textureSet = MU.textureSetOf(material);
+                short[] rgba = MU.rgbaOf(material);
+                if (textureSet == null || rgba == null) return false;
+                if (mIcons == null && FMLLaunchHandler.side()
+                    .isClient()) {
+                    mIcons = new IIcon[6];
+                    Arrays.fill(mIcons, textureSet.mTextures[OrePrefixes.sheetmetal.getTextureIndex()].getIcon());
+                }
+                StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, rgba);
+                return true;
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                ItemStack tSheetmetalStack = getSheetmetalStack();
+                if (!GTUtility.isStackValid(tSheetmetalStack)
+                    || !(tSheetmetalStack.getItem() instanceof ItemBlock tSheetmetalStackItem)) return false;
+                return tSheetmetalStackItem.placeBlockAt(
+                    tSheetmetalStack,
+                    null,
                     world,
                     x,
                     y,
                     z,
-                    sBlockSheetmetalGT,
-                    material.mMetaItemSubID,
-                    material.getRGBA());
-                return true;
+                    6,
+                    0,
+                    0,
+                    0,
+                    Items.feather.getDamage(tSheetmetalStack));
             }
-        };
-    }
 
-    /// [#ofSheetMetal(Materials)] for callers holding a MaterialLib material instead of a legacy [Materials]
-    /// constant; keys on the same legacy sheet-metal block metadata via [MU#oldSubId].
-    public static <T> IStructureElement<T> ofSheetMetal(com.ruling_0.materiallib.api.Material material) {
-        if (material == null) throw new IllegalArgumentException("material for sheet metal can not be null!");
-        int meta = MU.oldSubId(material);
-        return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalGT, meta)) {
+            private ItemStack getSheetmetalStack() {
+                return GTOreDictUnificator.get(OrePrefixes.sheetmetal, material, 1);
+            }
 
             @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                StructureLibAPI.hintParticleTinted(world, x, y, z, sBlockSheetmetalGT, meta, MU.rgba(material));
-                return true;
+            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                ItemStack tSheetmetalStack = getSheetmetalStack();
+                if (!GTUtility.isStackValid(tSheetmetalStack) || !(tSheetmetalStack.getItem() instanceof ItemBlock))
+                    return BlocksToPlace.errored;
+                return BlocksToPlace.create(tSheetmetalStack);
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                return survivalPlaceBlock(
+                    t,
+                    world,
+                    x,
+                    y,
+                    z,
+                    trigger,
+                    AutoPlaceEnvironment.fromLegacy(s, actor, chatter));
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                if (check(t, world, x, y, z)) return SKIP;
+                ItemStack tSheetmetalStack = getSheetmetalStack();
+                if (!GTUtility.isStackValid(tSheetmetalStack) || !(tSheetmetalStack.getItem() instanceof ItemBlock))
+                    return REJECT;
+                return StructureUtility.survivalPlaceBlock(
+                    tSheetmetalStack,
+                    ItemStackPredicate.NBTMode.IGNORE_KNOWN_INSIGNIFICANT_TAGS,
+                    null,
+                    false,
+                    world,
+                    x,
+                    y,
+                    z,
+                    env.getSource(),
+                    env.getActor(),
+                    env.getChatter());
             }
         };
     }

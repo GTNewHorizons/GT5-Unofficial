@@ -213,9 +213,10 @@ public class GTMaterialProperties {
     /// `BotWerkstoffMaterialPool`/...), consulted by reconstruction's `ownerOf` for the legacy
     /// `Werkstoff#getOwner` attribution.
     public static final Property<String> WERKSTOFF_POOL = Property.of("gregtech", "werkstoffPool");
-    /// The dumped `generatedPrefixes` ground truth (every `OrePrefixes` name `hasItemType` reported),
-    /// including the prefixes that stay on legacy blocks (`sheetmetal`, `frameGt`) and so have no MaterialLib
-    /// shape. Elided when empty.
+    /// The dumped `generatedPrefixes` ground truth (every `OrePrefixes` name `hasItemType` reported), minus
+    /// `sheetmetal`/`frameGt`: those two cut over to MaterialLib shapes through
+    /// [gregtech.api.enums.materials2.Materials2PipeMaterials]'s own declared array rather than through this
+    /// property, so they never appear here. Elided when empty.
     public static final Property<List<String>> WERKSTOFF_PREFIXES = Property.of("gregtech", "werkstoffPrefixes");
     /// The `Werkstoff.Types` enum constant name.
     public static final Property<String> WERKSTOFF_TYPE = Property.of("gregtech", "werkstoffType");
