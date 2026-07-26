@@ -43,6 +43,7 @@ public final class LoaderShapeConsumers {
         ConsumerToolOther.register();
 
         ConsumerCell.register();
+        ConsumerCellMolten.register();
         ConsumerWire.register();
         ConsumerPipe.register();
         ConsumerFrame.register();
