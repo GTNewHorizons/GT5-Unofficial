@@ -27,25 +27,27 @@ import com.ruling_0.materiallib.api.Shape;
 
 import bartworks.system.material.BWItemMetaGeneratedOre;
 import bartworks.system.material.BWMetaGeneratedOres;
-import bartworks.system.material.Werkstoff;
-import bartworks.system.material.WerkstoffReconstruction;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2OreShapes;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 import gregtech.api.material.MUOre;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 
-/// The `Werkstoff`-based [IOreAdapter]: worldgen, mining, prospecting, and the void miner place and read BW ore
-/// blocks through this singleton (via [OreManager], never [BWMetaGeneratedOres] or MaterialLib directly),
-/// mirroring [GTOreAdapter]'s port of the same pattern for GT's own ores.
+/// The MaterialLib-keyed [IOreAdapter] for bartworks' legacy `Werkstoff` ore family: worldgen, mining,
+/// prospecting, and the void miner place and read BW ore blocks through this singleton (via [OreManager], never
+/// [BWMetaGeneratedOres] or MaterialLib directly), mirroring [GTOreAdapter]'s port of the same pattern for GT's
+/// own ores. A legacy `bw.blockores*`/`bw.blockoresTE` meta resolves to its MaterialLib material through
+/// [Materials2WerkstoffIndex]; a meta with no entry there (unknown to MaterialLib) is left unresolved.
 ///
 /// BW only ever generated ore on two [StoneType]s, both of which already have a [Materials2OreShapes] variant
 /// declared for GT's own ores: `StoneType.Stone` -> variant `"stone"` (index 0) and `StoneType.Moon` -> variant
@@ -55,17 +57,17 @@ import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 /// [#init] still constructs the eight legacy [BWMetaGeneratedOres] instances (2 stone types x {big, small} x
 /// {natural, non-natural} -- see [#legacyOres]) exactly as before, registered under their original `bw.blockores*`
 /// ids -- the same "construct, then get superseded by the MaterialLib association" pattern
-/// `BlockMetal`/`GTBlockOre` use. A reconstructed werkstoff's placed/inventory legacy ore actively
-/// converts to the MaterialLib equivalent as it loads (see [#registerCurrentGenTransformers]); a third-party
-/// (non-reconstructed) werkstoff has no MaterialLib ore material at all -- [#getBlock] falls back to the legacy
-/// block for it, same as before the cutover, so it keeps every legacy path.
+/// `BlockMetal`/`GTBlockOre` use. A material's placed/inventory legacy ore actively converts to the MaterialLib
+/// equivalent as it loads (see [#registerCurrentGenTransformers]); a material whose MaterialLib ore/small-ore
+/// shape has no built stack for the requested stone-type variant falls back to the legacy block (see
+/// [#getBlock]), keeping that legacy path alive.
 ///
 /// Legacy `isNatural` distinguished a "world-generated" ore meta from a "player-placeable" one purely for the
 /// fortune-multiplier drop rule in [#getBigOreDrops]; [Materials2OreShapes]' shape space has no natural axis
 /// (mirroring [GTOreAdapter]'s own collapse of the same distinction), so both legacy natural and non-natural
 /// metas of the same (material, stone, size) collapse onto the same MaterialLib block, which always behaves as
 /// the natural case (fortune applies) once cut over.
-public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
+public final class BWOreAdapter implements IOreAdapter<Material> {
 
     public static BWOreAdapter INSTANCE = new BWOreAdapter();
 
@@ -142,8 +144,8 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
     /// switch to [BWMetaGeneratedOres]), and never encoded a natural flag -- mirrors the legacy `transform`
     /// method this replaces, which unconditionally resolved through the `Stone` [Ores] entry.
     private ImmutableBlockMeta resolveLegacyTE(int meta, boolean small) {
-        try (OreInfo<Werkstoff> info = OreInfo.getNewInfo()) {
-            info.material = Werkstoff.werkstoffHashMap.get((short) meta);
+        try (OreInfo<Material> info = OreInfo.getNewInfo()) {
+            info.material = Materials2WerkstoffIndex.get(meta);
             info.stoneType = StoneType.Stone;
             info.isSmall = small;
             info.isNatural = true;
@@ -187,8 +189,8 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
     }
 
     private ImmutableBlockMeta resolveCurrentGenMeta(StoneType stoneType, boolean small, int meta) {
-        try (OreInfo<Werkstoff> info = OreInfo.getNewInfo()) {
-            info.material = Werkstoff.werkstoffHashMap.get((short) meta);
+        try (OreInfo<Material> info = OreInfo.getNewInfo()) {
+            info.material = Materials2WerkstoffIndex.get(meta);
             info.stoneType = stoneType;
             info.isSmall = small;
             info.isNatural = true;
@@ -206,34 +208,28 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
 
     /// Hides every legacy `bw.blockores*` slot whose (material, stone, small-ore) combination now resolves to a
     /// MaterialLib block, mirroring [GTOreAdapter#hideOres]. A combination that stays legacy-canonical (a
-    /// third-party werkstoff, or one this shape never covered) is left visible.
+    /// material this shape never covered) is left visible.
     public void hideOres() {
         for (Ores ores : legacyOres.values()) {
-            for (Werkstoff w : Werkstoff.werkstoffHashSet) {
-                if (w == null) continue;
+            for (Material material : MaterialLibAPI.getMaterials()) {
+                if (!isWerkstoffMaterial(material)) continue;
 
                 for (boolean small : BOOLEANS) {
-                    if (!cutOver(w, ores.stoneType, small)) continue;
+                    try (OreInfo<Material> info = OreInfo.getNewInfo()) {
+                        info.material = material;
+                        info.stoneType = ores.stoneType;
+                        info.isSmall = small;
 
+                        if (!supports(info)) continue;
+                    }
+
+                    int legacyId = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS)
+                        .get(0);
                     for (boolean natural : BOOLEANS) {
-                        API.hideItem(new ItemStack(ores.get(small, natural), 1, w.getmID()));
+                        API.hideItem(new ItemStack(ores.get(small, natural), 1, legacyId));
                     }
                 }
             }
-        }
-    }
-
-    private boolean cutOver(Werkstoff w, StoneType stoneType, boolean small) {
-        try (OreInfo<Werkstoff> info = OreInfo.getNewInfo()) {
-            info.material = w;
-            info.stoneType = stoneType;
-            info.isSmall = small;
-
-            if (!supports(info)) return false;
-
-            Material mlMat = WerkstoffReconstruction.materialLibOf(w);
-            Shape shape = small ? Materials2OreShapes.oreSmall : Materials2OreShapes.ore;
-            return mlMat != null && mlMat.hasShape(shape);
         }
     }
 
@@ -253,33 +249,26 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         return material != null && material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null;
     }
 
-    /// The [Werkstoff] a MaterialLib material was reconstructed from, or null if it carries no
-    /// [GTMaterialProperties#WERKSTOFF_IDS] data.
-    private static Werkstoff werkstoffOf(Material mlMaterial) {
-        List<Integer> ids = mlMaterial.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
-        if (ids == null) return null;
-        return WerkstoffReconstruction.byId(ids.get(0));
-    }
-
     @Override
     public boolean supports(OreInfo<?> info) {
-        if (!(info.material instanceof Werkstoff w)) return false;
+        if (!(info.material instanceof Material material) || !isWerkstoffMaterial(material)) return false;
 
         IStoneType stone = info.stoneType == null ? StoneType.Stone : info.stoneType;
         if (!(stone instanceof StoneType stoneType)) return false;
         if (!legacyOres.containsKey(stoneType)) return false;
 
-        return w.hasItemType(info.isSmall ? OrePrefixes.oreSmall : OrePrefixes.ore);
+        Shape shape = info.isSmall ? Materials2OreShapes.oreSmall : Materials2OreShapes.ore;
+        return material.hasShape(shape);
     }
 
     @Override
-    public OreInfo<Werkstoff> getOreInfo(Block block, int meta) {
+    public OreInfo<Material> getOreInfo(Block block, int meta) {
         if (block instanceof BWMetaGeneratedOres oreBlock) {
-            Werkstoff w = Werkstoff.werkstoffHashMap.get((short) meta);
-            if (w == null) return null;
+            Material material = Materials2WerkstoffIndex.get(meta);
+            if (material == null) return null;
 
-            OreInfo<Werkstoff> info = OreInfo.getNewInfo();
-            info.material = w;
+            OreInfo<Material> info = OreInfo.getNewInfo();
+            info.material = material;
             info.stoneType = oreBlock.stoneType;
             info.isSmall = oreBlock.isSmall;
             info.isNatural = oreBlock.isNatural;
@@ -290,12 +279,11 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         if (blockInfo == null || !isOreShape(blockInfo.shape()) || !isWerkstoffMaterial(blockInfo.material()))
             return null;
 
-        Werkstoff w = werkstoffOf(blockInfo.material());
         StoneType stoneType = Materials2OreShapes.stoneTypeOf(blockInfo.variant());
-        if (w == null || stoneType == null) return null;
+        if (stoneType == null) return null;
 
-        OreInfo<Werkstoff> info = OreInfo.getNewInfo();
-        info.material = w;
+        OreInfo<Material> info = OreInfo.getNewInfo();
+        info.material = blockInfo.material();
         info.stoneType = stoneType;
         info.isSmall = blockInfo.shape() == Materials2OreShapes.oreSmall;
         info.isNatural = true;
@@ -307,17 +295,13 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
     public ImmutableBlockMeta getBlock(OreInfo<?> info) {
         IStoneType stone = info.stoneType == null ? StoneType.Stone : info.stoneType;
         if (!(stone instanceof StoneType stoneType)) return null;
-        if (!(info.material instanceof Werkstoff w)) return null;
+        if (!(info.material instanceof Material material) || !isWerkstoffMaterial(material)) return null;
 
-        OrePrefixes prefix = info.isSmall ? OrePrefixes.oreSmall : OrePrefixes.ore;
-        if (!w.hasItemType(prefix)) return null;
-
-        Material mlMat = WerkstoffReconstruction.materialLibOf(w);
         Shape shape = info.isSmall ? Materials2OreShapes.oreSmall : Materials2OreShapes.ore;
 
-        if (mlMat != null && mlMat.hasShape(shape)) {
+        if (material.hasShape(shape)) {
             String variant = Materials2OreShapes.variantOf(stoneType.name());
-            ItemStack stack = MaterialLibAPI.getStack(mlMat, shape, variant, 1);
+            ItemStack stack = MaterialLibAPI.getStack(material, shape, variant, 1);
             if (stack != null) {
                 return new BlockMeta(Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
             }
@@ -326,7 +310,9 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         Ores ores = legacyOres.get(stoneType);
         if (ores == null) return null;
 
-        return new BlockMeta(ores.get(info.isSmall, false), w.getmID());
+        int legacyId = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS)
+            .get(0);
+        return new BlockMeta(ores.get(info.isSmall, false), legacyId);
     }
 
     /// The harvest level for a MaterialLib werkstoff ore/small-ore material -- legacy [BWMetaGeneratedOres] used a
@@ -340,12 +326,11 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
     /// when the material is werkstoff-backed. See [GTOreAdapter#shapeDrops] for the GT-material equivalent.
     public List<ItemStack> shapeDrops(Material mlMaterial, String variant, int fortune, boolean isSilkTouch,
         boolean isSmall) {
-        Werkstoff w = werkstoffOf(mlMaterial);
         StoneType stoneType = Materials2OreShapes.stoneTypeOf(variant);
-        if (w == null || stoneType == null) return List.of();
+        if (mlMaterial == null || stoneType == null) return List.of();
 
-        try (OreInfo<Werkstoff> info = OreInfo.getNewInfo()) {
-            info.material = w;
+        try (OreInfo<Material> info = OreInfo.getNewInfo()) {
+            info.material = mlMaterial;
             info.stoneType = stoneType;
             info.isSmall = isSmall;
             info.isNatural = true;
@@ -359,7 +344,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
-        OreInfo<Werkstoff> info = (OreInfo<Werkstoff>) info2;
+        OreInfo<Material> info = (OreInfo<Material>) info2;
 
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
         if (!info.isNatural) fortune = 0;
@@ -380,12 +365,12 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
-        OreInfo<Werkstoff> info = (OreInfo<Werkstoff>) info2;
+        OreInfo<Material> info = (OreInfo<Material>) info2;
 
         if (info.isSmall) {
             ObjectLinkedOpenHashSet<ItemId> drops = new ObjectLinkedOpenHashSet<>();
 
-            for (ItemStack stack : SmallOreDrops.getDropList(WerkstoffReconstruction.materialLibOf(info.material))) {
+            for (ItemStack stack : SmallOreDrops.getDropList(info.material)) {
                 ItemId id = ItemId.create(stack);
 
                 drops.add(id);
@@ -403,14 +388,12 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         }
     }
 
-    private ArrayList<ItemStack> getSmallOreDrops(Random random, OreInfo<Werkstoff> info, int fortune) {
-        Material material = WerkstoffReconstruction.materialLibOf(info.material);
-
-        ArrayList<ItemStack> possibleDrops = SmallOreDrops.getDropList(material);
+    private ArrayList<ItemStack> getSmallOreDrops(Random random, OreInfo<Material> info, int fortune) {
+        ArrayList<ItemStack> possibleDrops = SmallOreDrops.getDropList(info.material);
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         if (!possibleDrops.isEmpty()) {
-            int oreMultiplier = MUOre.oreMultiplier(material);
+            int oreMultiplier = MUOre.oreMultiplier(info.material);
             int dropCount = Math
                 .max(1, oreMultiplier + (fortune > 0 ? random.nextInt(1 + fortune * oreMultiplier) : 0) / 2);
 
@@ -426,13 +409,13 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         return drops;
     }
 
-    private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Werkstoff> info,
+    private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Material> info,
         int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         switch (oreDropMode) {
             case Item -> {
-                drops.add(info.material.get(OrePrefixes.rawOre, info.stoneType.isRich() ? 2 : 1));
+                drops.add(MU.stack(OrePrefixes.rawOre, info.material, info.stoneType.isRich() ? 2 : 1));
             }
             case FortuneItem -> {
                 if (fortune > 0) {
@@ -444,16 +427,16 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
                     int amount = (info.stoneType.isRich() ? 2 : 1) * (addedDrops + 1);
 
                     for (int i = 0; i < amount; i++) {
-                        drops.add(info.material.get(OrePrefixes.rawOre, 1));
+                        drops.add(MU.stack(OrePrefixes.rawOre, info.material, 1));
                     }
                 } else {
                     for (int i = 0; i < (info.stoneType.isRich() ? 2 : 1); i++) {
-                        drops.add(info.material.get(OrePrefixes.rawOre, 1));
+                        drops.add(MU.stack(OrePrefixes.rawOre, info.material, 1));
                     }
                 }
             }
             case UnifiedBlock -> {
-                try (OreInfo<Werkstoff> info2 = info.clone()) {
+                try (OreInfo<Material> info2 = info.clone()) {
                     info2.isNatural = false;
 
                     for (int i = 0; i < (info2.stoneType.isRich() ? 2 : 1); i++) {
@@ -463,7 +446,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
                 }
             }
             case PerDimBlock -> {
-                try (OreInfo<Werkstoff> info2 = info.clone()) {
+                try (OreInfo<Material> info2 = info.clone()) {
                     info2.isNatural = false;
 
                     if (!info2.stoneType.isDimensionSpecific()) {
@@ -474,7 +457,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
                 }
             }
             case Block -> {
-                try (OreInfo<Werkstoff> info2 = info.clone()) {
+                try (OreInfo<Material> info2 = info.clone()) {
                     info2.isNatural = false;
 
                     drops.add(getStack(info2, 1));

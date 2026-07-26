@@ -74,6 +74,7 @@ import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -322,6 +323,7 @@ public class GTMod {
         }
 
         Materials2IDIndex.init();
+        Materials2WerkstoffIndex.init();
 
         GTPreLoad.getConfiguration(event.getModConfigurationDirectory());
         GTPreLoad.createLogFiles(

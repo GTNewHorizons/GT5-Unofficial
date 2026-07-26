@@ -26,7 +26,6 @@ import gregtech.GTLoggers;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IStoneType;
-import gregtech.api.material.MU;
 import gregtech.api.objects.DiscreteDistribution;
 import gregtech.api.util.GTUtility;
 import gregtech.common.WorldgenGTOreLayer;
@@ -70,10 +69,8 @@ public class VoidMinerUtility {
          * @param weight   the non normalised weight
          * @param stone    the stone types
          */
-        public void addDrop(Object material, List<StoneType> stone, float weight) {
-            if (material instanceof com.ruling_0.materiallib.api.Material ml) material = MU.legacyMaterialOf(ml);
-
-            try (OreInfo<Object> info = OreInfo.getNewInfo()) {
+        public void addDrop(com.ruling_0.materiallib.api.Material material, List<StoneType> stone, float weight) {
+            try (OreInfo<com.ruling_0.materiallib.api.Material> info = OreInfo.getNewInfo()) {
                 info.material = material;
 
                 for (IStoneType stones : stone) {
@@ -96,10 +93,8 @@ public class VoidMinerUtility {
          * @param material the material
          * @param weight   the non normalised weight
          */
-        public void addDrop(Object material, float weight) {
-            if (material instanceof com.ruling_0.materiallib.api.Material ml) material = MU.legacyMaterialOf(ml);
-
-            try (OreInfo<Object> info = OreInfo.getNewInfo()) {
+        public void addDrop(com.ruling_0.materiallib.api.Material material, float weight) {
+            try (OreInfo<com.ruling_0.materiallib.api.Material> info = OreInfo.getNewInfo()) {
                 info.material = material;
 
                 ItemStack stack = OreManager.getStack(info, 1);
@@ -286,7 +281,8 @@ public class VoidMinerUtility {
      * @param material the material with an ore version
      * @param weight   the non normalised version of the given weight
      */
-    public static void addMaterialToDimensionList(String dimName, Object material, float weight) {
+    public static void addMaterialToDimensionList(String dimName, com.ruling_0.materiallib.api.Material material,
+        float weight) {
         DropMap map = dropMapsByDimName.computeIfAbsent(dimName, ignored -> new DropMap());
 
         map.addDrop(material, weight);

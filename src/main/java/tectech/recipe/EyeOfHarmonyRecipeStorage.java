@@ -17,8 +17,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.google.common.math.LongMath;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.Werkstoff;
-import bartworks.system.material.WerkstoffReconstruction;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
@@ -165,18 +163,16 @@ public class EyeOfHarmonyRecipeStorage {
             }
         }
 
-        OreInfo<Werkstoff> infoWerkstoff = OreInfo.getNewInfo();
+        OreInfo<com.ruling_0.materiallib.api.Material> infoWerkstoff = OreInfo.getNewInfo();
         infoWerkstoff.stoneType = StoneType.Stone;
-        for (Werkstoff mat : Werkstoff.werkstoffHashSet) {
+        for (com.ruling_0.materiallib.api.Material mat : MaterialLibAPI.getMaterials()) {
             infoWerkstoff.material = mat;
 
             infoWerkstoff.isSmall = false;
-            if (BWOreAdapter.INSTANCE.supports(infoWerkstoff))
-                validMaterialSet.add(WerkstoffReconstruction.materialLibOf(mat));
+            if (BWOreAdapter.INSTANCE.supports(infoWerkstoff)) validMaterialSet.add(mat);
 
             infoWerkstoff.isSmall = true;
-            if (BWOreAdapter.INSTANCE.supports(infoWerkstoff))
-                validMaterialSet.add(WerkstoffReconstruction.materialLibOf(mat));
+            if (BWOreAdapter.INSTANCE.supports(infoWerkstoff)) validMaterialSet.add(mat);
         }
         infoWerkstoff.release();
 
