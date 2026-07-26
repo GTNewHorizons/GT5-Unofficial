@@ -79,10 +79,6 @@ BLOCK_CUTOVER_EXCLUDED = {
     "Zinc"
 }
 
-# Mirrors gen_materials.py's GTPP_ANIMATED_BLOCK_EXCLUDED (legacy animated storage blocks stay canonical --
-# see its docstring).
-GTPP_ANIMATED_BLOCK_EXCLUDED = {"AstralTitanium", "CelestialTungsten", "ChromaticGlass", "Hypogen"}
-
 # Mirrors gen_materials.py's GTPP_PRECOLORED_ITEM_MATERIALS (legacy alpha>1 untinted-item rule -- see its
 # docstring): these declare a white tint instead of the packed dumped rgba.
 GTPP_PRECOLORED_ITEM_MATERIALS = {"AstralTitanium", "CelestialTungsten", "ChromaticGlass"}
@@ -1113,15 +1109,15 @@ def gtpp_expected_shapes(entry, gt_entry, used_fluid_names):
     """The MaterialLib shape-name set a gtpp material's dumped `generatedParts` translate to -- see
     gen_materials.py's `gtpp_shape_lines`/`gtpp_fluid_and_cell_shape_lines`/`gtpp_ore_shape_lines`. Raises on
     an unmapped prefix (a future gtpp dump refresh with a new part kind must not silently drop items from this
-    check either). `block` additionally honors `BLOCK_CUTOVER_EXCLUDED`, mirroring `gtpp_shape_lines`; `hasOre`
-    grants `ore`, mirroring `gtpp_ore_shape_lines`."""
+    check either). `block` additionally honors `BLOCK_CUTOVER_EXCLUDED`; `hasOre` grants `ore`, mirroring
+    `gtpp_ore_shape_lines`."""
     names = set()
     for part in entry["generatedParts"]:
         prefix = part["prefix"]
         if prefix in GTPP_SIMPLE_PREFIXES:
             names.add(prefix)
         elif prefix == "block":
-            if entry["unlocalizedName"] not in BLOCK_CUTOVER_EXCLUDED                     and entry["unlocalizedName"] not in GTPP_ANIMATED_BLOCK_EXCLUDED:
+            if entry["unlocalizedName"] not in BLOCK_CUTOVER_EXCLUDED:
                 names.add(prefix)
         elif prefix == "milled":
             names.add(prefix)

@@ -91,10 +91,7 @@ public class BlockBaseModular extends BasicBlock {
     /// `block` part cut over (see [MaterialReconstruction#isBlockCutOver]) associates the MaterialLib
     /// [gregtech.api.enums.materials2.Materials2BlockShapes#block] stack instead of this legacy instance,
     /// which is hidden from NEI but stays constructed and registered -- a pre-migration save's placed/inventory
-    /// block still resolves through it (see `gregtech.loaders.postload.PosteaTransformers`), and identity-based
-    /// callers that need the legacy instance specifically (`gtPlusPlus.core.handler.events.
-    /// AnimatedBlockTextureHandler`) keep working unchanged since [#getMaterialBlock] reads this cache
-    /// regardless of which stack is canonical.
+    /// block still resolves through it (see `gregtech.loaders.postload.PosteaTransformers`).
     private void registerStandardOre(String unlocalizedName) {
         String oreName = "block" + unifyMaterialName(materialName);
         ItemStack canonical = new ItemStack(this);
