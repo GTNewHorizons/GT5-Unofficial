@@ -13,6 +13,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.loaders.oreprocessing.ProcessingDustGeneration;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.RecipeLoaderAgriculturalChem;
@@ -221,6 +222,7 @@ public class CompatHandler {
                 r.run();
             }
         }
+        ProcessingDustGeneration.run();
         RecipeGenRecycling.executeGenerators();
     }
 }
