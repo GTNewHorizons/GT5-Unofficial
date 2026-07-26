@@ -4,9 +4,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
-import java.util.ArrayList;
-import java.util.Set;
-
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
@@ -45,18 +42,8 @@ import gtPlusPlus.core.item.base.screws.BaseItemScrew;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenAlloySmelter;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenAssembler;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenExtruder;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenFluids;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMaterialProcessing;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenPlasma;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenRecycling;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenShapedCrafting;
 
 public class MaterialGenerator {
-
-    public static final ArrayList<Set<Runnable>> mRecipeMapsToGenerate = new ArrayList<>();
 
     /// Whether `matInfo`'s `prefix` part has cut over to MaterialLib (see
     /// `MaterialReconstruction#isPartCutOver`) and legacy `Base*` construction for it should therefore be
@@ -141,17 +128,6 @@ public class MaterialGenerator {
                 FluidUtils.generateFluidNoPrefix(unlocalizedName, materialName, matInfo.getMeltingPointK(), C);
                 return;
             }
-            // Add A jillion Recipes - old code
-            new RecipeGenAlloySmelter(matInfo);
-            new RecipeGenAssembler(matInfo);
-            new RecipeGenExtruder(matInfo);
-            new RecipeGenFluids(matInfo);
-            new RecipeGenShapedCrafting(matInfo);
-            new RecipeGenMaterialProcessing(matInfo);
-
-            new RecipeGenRecycling(matInfo);
-            new RecipeGenPlasma(matInfo);
-
         } catch (final Exception ignored) {}
     }
 
@@ -159,15 +135,6 @@ public class MaterialGenerator {
         if (matInfo.getState() == MaterialState.SOLID) {
             if (!cutOver(matInfo, OrePrefixes.dust)) new BaseItemDust(matInfo);
         }
-
-        // Add A jillion Recipes - old code
-        try {
-            new RecipeGenFluids(matInfo);
-            new RecipeGenMaterialProcessing(matInfo);
-        } catch (Exception t) {
-            t.printStackTrace();
-        }
-        // RecipeGen_Recycling.generateRecipes(matInfo);
     }
 
     public static void generateNuclearDusts(final Material matInfo) {
@@ -210,24 +177,12 @@ public class MaterialGenerator {
             if (generatePlates) {
                 if (!cutOver(matInfo, OrePrefixes.plate)) new BaseItemPlate(matInfo);
                 if (!cutOver(matInfo, OrePrefixes.plateDouble)) new BaseItemPlateDouble(matInfo);
-                new RecipeGenExtruder(matInfo);
-                new RecipeGenAssembler(matInfo);
             }
 
             if (generateRods) {
                 if (!cutOver(matInfo, OrePrefixes.stick)) new BaseItemRod(matInfo);
                 if (!cutOver(matInfo, OrePrefixes.stickLong)) new BaseItemRodLong(matInfo);
             }
-
-            if (!disableOptionalRecipes) {
-                new RecipeGenShapedCrafting(matInfo);
-                new RecipeGenMaterialProcessing(matInfo);
-            }
-
-            new RecipeGenRecycling(matInfo);
-            new RecipeGenExtruder(matInfo);
-            new RecipeGenFluids(matInfo);
-            new RecipeGenPlasma(matInfo);
 
         } catch (final Throwable ignored) {}
     }
@@ -314,15 +269,6 @@ public class MaterialGenerator {
             if (!cutOver(matInfo, OrePrefixes.dustImpure)) new BaseItemImpureDust(matInfo);
             if (!cutOver(matInfo, OrePrefixes.dustPure)) new BaseItemPurifiedDust(matInfo);
             if (!cutOver(matInfo, OrePrefixes.rawOre)) new BaseItemRawOre(matInfo);
-
-            new RecipeGenAlloySmelter(matInfo);
-            new RecipeGenAssembler(matInfo);
-            new RecipeGenExtruder(matInfo);
-            new RecipeGenFluids(matInfo);
-            new RecipeGenShapedCrafting(matInfo);
-            new RecipeGenMaterialProcessing(matInfo);
-            new RecipeGenRecycling(matInfo);
-            new RecipeGenPlasma(matInfo);
         } catch (final Exception t) {
             t.printStackTrace();
         }
