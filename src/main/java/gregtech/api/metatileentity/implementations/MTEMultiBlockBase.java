@@ -662,9 +662,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (mMachine && !mCoils.isEmpty() && isActive && coilLease == null) {
                 coilLease = GTCoilTracker.activate(this, mCoils);
             }
-        } else {
-            startActivitySound();
         }
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return false;
+    }
+
+    @Override
+    public void onClientSoundStateChanged() {
+        startActivitySound();
     }
 
     @Override
