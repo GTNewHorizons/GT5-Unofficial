@@ -30,7 +30,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -205,7 +204,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addUnlimitedTierSkips()
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(15, 15, 21, true)
+            .beginStructureBlock(15, 21, 15, true)
             .addController("Front bottom center of central column")
             .addCasing("236", "Pulse Manipulator Casing", true)
             .addCasing("224", "Force Field Glass", false)
@@ -636,9 +635,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             return;
         }
         mFluidMode = !mFluidMode;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("miscutils.machines.QFTFluidMode") + " " + mFluidMode);
+        GTUtility.sendChatTrans(aPlayer, "miscutils.machines.QFTFluidMode", mFluidMode);
     }
 
     public boolean addCatalystHousingToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {

@@ -87,6 +87,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -181,7 +182,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                     + EnumChatFormatting.GRAY)
             .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1")
             .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation")
-            .beginVariableStructureBlock(3, 3, 2, 7, 3, 3, false)
+            .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
             .addController("First slice, 3rd layer")
             .addEnergyHatch("1", "Any layer 3 casing", 3)
             .addMaintenanceHatch("1", "Any layer 1 side casing", 1)
@@ -326,7 +327,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
         // TODO: Replace with GT5U.MULTI_MACHINE_CHANGE. Requires changing translations
-        GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("chat.cal.mode." + machineMode));
+        GTUtility.sendChatTrans(aPlayer, "chat.cal.mode." + machineMode);
     }
 
     @Override
@@ -366,6 +367,28 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 if (machineMode == MACHINEMODE_ASSEMBLER
                     && recipe.mEUt > MTECircuitAssemblyLine.this.getMaxInputVoltage() / 4) {
                     return CheckRecipeResultRegistry.NO_RECIPE;
+                }
+                if (machineMode == MACHINEMODE_CAL) {
+                    if (mInputBusses.size() < recipe.mInputs.length) {
+                        return CheckRecipeResultRegistry.NO_RECIPE;
+                    }
+
+                    for (int i = 0; i < mInputBusses.size(); i++) {
+                        if (i >= recipe.mInputs.length || !mInputBusses.get(i)
+                            .isValid()) {
+                            continue;
+                        }
+                        MTEHatchInputBus inputBus = mInputBusses.get(i);
+                        ItemStack stack;
+                        if (inputBus instanceof MTEHatchInputBusME meBus) {
+                            stack = meBus.getFirstValidStack(true);
+                        } else {
+                            stack = inputBus.getFirstStack();
+                        }
+                        if (!GTUtility.areStacksEqual(recipe.mInputs[i], stack, true)) {
+                            return CheckRecipeResultRegistry.NO_RECIPE;
+                        }
+                    }
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }

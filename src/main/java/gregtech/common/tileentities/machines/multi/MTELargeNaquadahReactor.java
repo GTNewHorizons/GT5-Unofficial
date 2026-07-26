@@ -400,7 +400,7 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
             .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
             .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
             .addSupportAny()
-            .beginStructureBlock(7, 7, 11, false)
+            .beginStructureBlock(7, 11, 7, false)
             .addController("Front bottom center")
             .addCasing("130-141", "Naquadah Reactor Casing", false)
             .addCasing("81", "Field Restriction Casing", false)

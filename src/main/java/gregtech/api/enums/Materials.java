@@ -1820,14 +1820,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return mName;
     }
 
-    /**
-     * @deprecated Always returns false, apparently.
-     */
-    @Deprecated
-    public boolean isRadioactive() {
-        return false;
-    }
-
     public long getProtons() {
         if (mElement != null) return mElement.getProtons();
         if (mMaterialList.isEmpty()) return Element.Tc.getProtons();

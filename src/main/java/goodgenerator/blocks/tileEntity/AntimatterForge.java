@@ -316,7 +316,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "^(1/3) L of fluid per cycle)")
             .addInfo("1. Depleted Naquadah Fuel Mk V = " + EnumChatFormatting.AQUA + "0.05" + EnumChatFormatting.GRAY)
             .addInfo("2. Depleted Naquadah Fuel Mk VI = " + EnumChatFormatting.AQUA + "0.10" + EnumChatFormatting.GRAY)
-            .beginStructureBlock(47, 53, 53, false)
+            .beginStructureBlock(53, 53, 47, false)
             .addController("Front center, 27th layer")
             .addCasing("2274", "Magnetic Flux Casing", false)
             .addCasing("624-637", "Gravity Stabilization Casing", false)
@@ -444,7 +444,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             if (!amOutputHatches.isEmpty()) {
                 drainEnergyInput(calculateEnergyContainmentCost(totalAntimatterAmount));
             }
-            this.guiAntimatterAmount = totalAntimatterAmount;
+
+            if (!aBaseMetaTileEntity.isActive()) {
+                this.guiAntimatterAmount = totalAntimatterAmount;
+            }
 
             if ((this.mProgresstime >= this.mMaxProgresstime) && (!isAllowedToWork())) {
                 setProtoRender(false);
@@ -566,6 +569,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
 
         this.guiAntimatterChange = ratioLosses + antimatterChange;
+        this.guiAntimatterAmount = totalAntimatterAmount;
 
         if (this.canRender) {
             updateAntimatterSize(this.guiAntimatterAmount);
@@ -792,6 +796,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         aNBT.setBoolean("canRender", this.canRender);
         aNBT.setLong("rollingCost", this.rollingCost);
         aNBT.setFloat("currentMagneticModifier", this.modifiers[MAGNETIC_ID]);
+        aNBT.setLong("guiAntimatterAmount", this.guiAntimatterAmount);
     }
 
     @Override
@@ -805,6 +810,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
         if (aNBT.hasKey("currentMagneticModifier")) {
             this.modifiers[MAGNETIC_ID] = aNBT.getFloat("currentMagneticModifier");
+        }
+        if (aNBT.hasKey("guiAntimatterAmount")) {
+            this.guiAntimatterAmount = aNBT.getLong("guiAntimatterAmount");
         }
     }
 
