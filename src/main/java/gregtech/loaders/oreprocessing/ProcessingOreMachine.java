@@ -413,8 +413,9 @@ public class ProcessingOreMachine {
     /// `LIQUID`-state gtpp material registers its fluid this way). [ProcessingDustGeneration#stackOf]'s own
     /// [gregtech.api.util.GTOreDictUnificator] fallback is deliberately not used here: for a material whose
     /// plain `cell` shape does not exist, that fallback resolves the legacy gtPlusPlus cell item instead of
-    /// `cellMolten`.
-    private static ItemStack cellStack(Material material, long amount) {
+    /// `cellMolten`. Package-visible: [ProcessingPlasmaGtpp] shares this same cell resolution for its own
+    /// plasma-cell cooldown recipe's cell output, which needs the identical cell-then-cellMolten fallback.
+    static ItemStack cellStack(Material material, long amount) {
         ItemStack cell = MU.stack(OrePrefixes.cell, material, amount);
         return cell != null ? cell : MU.stack(OrePrefixes.cellMolten, material, amount);
     }
@@ -484,8 +485,9 @@ public class ProcessingOreMachine {
 
     /// `material`'s state, taken from [GTMaterialProperties#GTPP_STATE] when set and otherwise derived from
     /// which fluid it carries: a molten or solid fluid means `SOLID`, else a liquid fluid means `LIQUID`, else
-    /// a gas means `GAS`, else `SOLID`.
-    private static String gtppState(Material material) {
+    /// a gas means `GAS`, else `SOLID`. Package-visible: [ProcessingMaterialDecompositionGtpp] shares this
+    /// same state derivation for its own composite-part decomposition.
+    static String gtppState(Material material) {
         String state = material.getProperty(GTMaterialProperties.GTPP_STATE);
         if (state != null) return state;
         if (MU.molten(material, 1) != null || MU.solid(material, 1) != null) return "SOLID";
