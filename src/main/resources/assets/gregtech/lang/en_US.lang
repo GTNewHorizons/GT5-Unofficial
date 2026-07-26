@@ -7566,6 +7566,13 @@ GT5U.infodata.fusion.req=EU Required: §c%s§rEU/t
 GT5U.infodata.fusion.plasma=Plasma Output: §e%s§rL/t
 GT5U.infodata.naquadah_refinery.coil_tier=Coil Tier: %s
 
+GT5U.infodata.turbine.output=%s: %s EU/t
+GT5U.infodata.turbine.efficiency=Current Speed: %s %%
+GT5U.infodata.turbine.flow=Optimal Flow: %s L/%s (%s)
+GT5U.infodata.turbine.fuel=Fuel Remaining: %s L
+GT5U.infodata.turbine.dmg=Turbine Damage: %s %%
+GT5U.infodata.turbine.pollution=Pollution reduced to: %s %%
+
 GT5U.infodata.large_fluid_extractor.max_parallels=Max Parallels: %s%d%s
 GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Heating Coil Speed Bonus: +%s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Total Speed Multiplier: %s%.0f%s %%
