@@ -18,7 +18,7 @@ import gregtech.nei.RecipeDisplayInfo;
 public class AntimatterForgeFrontend extends RecipeMapFrontend {
 
     public AntimatterForgeFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-                                   NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
@@ -33,6 +33,5 @@ public class AntimatterForgeFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
-    }
+    protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {}
 }
