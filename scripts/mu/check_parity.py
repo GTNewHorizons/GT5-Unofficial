@@ -22,10 +22,27 @@ captures, never overwrite from a post-stage-10 boot:
 - `fluid-textures.json`: werkstoff fluid texture capture happened at legacy `GTFluid` construction, which the
   flip removed (reconstructed werkstoffe resolve MaterialLib's already-registered fluids instead).
 - `gt-materials.json`: post-flip dumps are semantically identical but reordered (bridge mirrors are created in
-  `werkstoffHashSet` iteration order, which the flip changed to ascending-id).
+  `werkstoffHashSet` iteration order, which the flip changed to ascending-id) for every material that still
+  has one -- see the KNOWN GAP below for the dozen that lost theirs entirely.
 - `gtpp-materials.json`: pinned at its stage-11 commit-1 capture (see `MaterialDataDump#dumpGtppMaterials`'s
   javadoc) -- `Material#setTextureSet`'s composition heuristic is registration-order-sensitive for 15
   materials, so a re-dump could capture a different `textureSet` than the codegen already committed for.
+
+KNOWN GAP (not fixed): ~12 materials are both a werkstoff declaration and a gtPlusPlus fold but have NO
+`gt-materials.json` entry at all (Californium, Hafnium, Iodine, Krypton, Neon, Rhodium, Ruthenium,
+SodiumNitrate, Thorium232, ThoriumTetrafluoride, Xenon, Zirconium) -- the reconstruction flip stopped
+minting a bridge mirror for a reconstructed werkstoff with no native gregtech counterpart, so these fell out
+of `gt-materials.json` post-flip even though `werkstoff.json` still declares them. `fold_gtpp_materials`'s
+`ported_name_set` test (gt-materials names only) therefore misclassifies them as gtpp-only "new" materials,
+routed through `check_gtpp_new_material`, which has no werkstoff awareness at all (`wk_entries` hardcoded to
+`[]`, `check_werkstoff` never called) -- so it reports every one of their real tint/textureSet/property
+values (which won from the werkstoff side, not gtpp's -- verified, e.g. Krypton's actual tint is exactly its
+`werkstoff.json` rgb) as a spurious mismatch. Sourcing tint/textureSet/shapes from werkstoff data instead
+would fix most of this, but the four gas-state members (Krypton/Neon/Xenon/Iodine) also disagree on which
+`FLUID_STATES` slot and temperature their fluid resolved to -- ground truth that lived only in the pre-flip
+`gt-materials.json` bridge mirror this same flip deleted, so it is not reconstructable from any pinned dump.
+Not attempted here (would need the branch author's context on recovering that lost bridge data); left as an
+accurate, reproducible mismatch rather than a partial fix that silently still fails on 4 of the 12.
 
 Usage: python scripts/mu/check_parity.py
 Exit status is nonzero if any mismatch is found.
