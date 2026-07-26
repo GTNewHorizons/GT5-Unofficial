@@ -9,7 +9,7 @@ import com.ruling_0.materiallib.api.Material;
 
 /// gtPlusPlus's curated mixer-recipe composite table (component material + ratio parts), pinning the exact
 /// entries the retired `gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration` mixer generator emitted a
-/// recipe for: a material with 1-4 composites (`gtPlusPlus.core.material.Material#getComposites`), reduced to
+/// recipe for: a material with 1-4 composites (the retired gtPlusPlus `Material#getComposites`), reduced to
 /// gtpp's smallest-ratio form (`gtPlusPlus.core.util.math.MathUtils#simplifyNumbersToSmallestForm`), reached
 /// through one of the construction paths that builds `RecipeGenDustGeneration` with `disableOptional=false` --
 /// `MaterialGenerator.generate`/`generateOreMaterialWithAllExcessComponents` (both construct it unconditionally),

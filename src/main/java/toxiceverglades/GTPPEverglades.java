@@ -1,9 +1,5 @@
 package toxiceverglades;
 
-import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_HIGH;
-import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_LOW;
-import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_MID;
-
 import net.minecraftforge.common.DimensionManager;
 
 import cpw.mods.fml.common.Mod;
@@ -12,8 +8,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.GT_Version;
 import gregtech.api.enums.Mods;
-import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.material.MaterialsOres;
 import toxiceverglades.biome.BiomeEverglades;
 import toxiceverglades.block.DarkWorldContentLoader;
 import toxiceverglades.dimension.DimensionEverglades;
@@ -57,86 +51,6 @@ public class GTPPEverglades {
         // Load World and Biome
         getEvergladesBiome().load();
         Everglades_Dimension.load();
-    }
-
-    public static synchronized void GenerateOreMaterials() {
-        MaterialGenerator.generateOreMaterial(MaterialsOres.CROCROITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.GEIKIELITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.NICHROMITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.TITANITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.ZIMBABWEITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.ZIRCONILITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.GADOLINITE_CE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.GADOLINITE_Y);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.LEPERSONNITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.SAMARSKITE_Y);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.SAMARSKITE_YB);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.XENOTIME);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.YTTRIAITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.YTTRIALITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.YTTROCERITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.ZIRCON);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.POLYCRASE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.ZIRCOPHYLLITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.ZIRKELITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.LANTHANITE_LA);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.LANTHANITE_CE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.LANTHANITE_ND);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.AGARDITE_Y);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.AGARDITE_CD);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.AGARDITE_LA);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.AGARDITE_ND);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.HIBONITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.CERITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.FLUORCAPHITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.FLORENCITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.CRYOLITE);
-
-        MaterialGenerator.generateOreMaterial(MaterialsOres.LAUTARITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.LAFOSSAITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.DEMICHELEITE_BR);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.COMANCHEITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.PERROUDITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.HONEAITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.ALBURNITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.MIESSIITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.KASHINITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.IRARSITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.GREENOCKITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.RADIOBARITE);
-        MaterialGenerator.generateOreMaterial(MaterialsOres.DEEP_EARTH_REACTOR_FUEL_DEPOSIT);
-
-        GenerateRareEarthOreMaterials();
-    }
-
-    public static synchronized void GenerateRareEarthOreMaterials() {
-
-        // Set Material Tiers correctly
-        MaterialsOres.GREENOCKITE.tier = 1;
-        RARE_EARTH_LOW.tier = 1;
-        RARE_EARTH_MID.tier = 3;
-        RARE_EARTH_HIGH.tier = 5;
-
-        // Set Material Voltages correctly
-        MaterialsOres.GREENOCKITE.voltageMultiplier = 30;
-        RARE_EARTH_LOW.voltageMultiplier = 30;
-        RARE_EARTH_MID.voltageMultiplier = 480;
-        RARE_EARTH_HIGH.voltageMultiplier = 7680;
-
-        // Set Material Tooltips to be shorter
-        RARE_EARTH_LOW.chemicalFormula = "??????";
-        RARE_EARTH_MID.chemicalFormula = "??????";
-        RARE_EARTH_HIGH.chemicalFormula = "??????";
-
-        // Set Material Tooltips to be shorter
-        RARE_EARTH_LOW.chemicalSymbol = "??";
-        RARE_EARTH_MID.chemicalSymbol = "??";
-        RARE_EARTH_HIGH.chemicalSymbol = "??";
-
-        // Generate Ore Materials
-        MaterialGenerator.generateOreMaterial(RARE_EARTH_LOW);
-        MaterialGenerator.generateOreMaterial(RARE_EARTH_MID);
-        MaterialGenerator.generateOreMaterial(RARE_EARTH_HIGH);
     }
 
     protected synchronized void setVars(FMLPreInitializationEvent event) {

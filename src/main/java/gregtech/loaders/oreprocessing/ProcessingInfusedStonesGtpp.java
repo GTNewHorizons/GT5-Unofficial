@@ -1,0 +1,45 @@
+package gregtech.loaders.oreprocessing;
+
+import java.util.Set;
+
+import net.minecraft.item.ItemStack;
+
+import com.ruling_0.materiallib.api.Material;
+
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
+
+/// Replays the missed dust-prefix oreDict notification for `InfusedAir`/`InfusedFire`/`InfusedEarth`/
+/// `InfusedWater`, restoring the [ProcessingDust] recipes (implosion compressor, autoclave, magic fuels) that
+/// depend on it.
+///
+/// These four are real legacy `Materials` constants (`GTMaterialProperties#OLD_SUB_ID` 540-543), so MaterialLib
+/// registers their canonical dust item into Forge's `OreDictionary` during its own early resolution, before
+/// `GTProxy#catchUpPreExistingOreDictEntries` replays existing entries -- but that replay itself runs from GT's
+/// preInit before `LoaderOreProcessing` constructs [ProcessingDust] and adds it as a `dust`-prefix listener, so
+/// the replay finds no listener to notify. Nothing re-registers the same (name, stack) pair afterward for
+/// `GTOreDictUnificator` to fire a second event from. The retired gtPlusPlus `ItemUtils#generateSpecialUseDusts`
+/// (called for these four from `ModItems`) papered over the gap by minting a second, separate dust item late
+/// enough (gtPlusPlus's own init) to register as a genuinely new oreDict entry and fire its own event; with
+/// that call gone, this replays the notification directly instead.
+public final class ProcessingInfusedStonesGtpp {
+
+    private ProcessingInfusedStonesGtpp() {}
+
+    private static final Set<Material> MATERIALS = Set.of(
+        Materials2Materials.InfusedAir,
+        Materials2Materials.InfusedFire,
+        Materials2Materials.InfusedEarth,
+        Materials2Materials.InfusedWater);
+
+    public static void run() {
+        if (ProcessingDust.INSTANCE == null) return;
+        for (Material material : MATERIALS) {
+            ItemStack dust = MU.stack(OrePrefixes.dust, material, 1L);
+            if (dust == null) continue;
+            ProcessingDust.INSTANCE
+                .registerOre(OrePrefixes.dust, material, OrePrefixes.dust.oreDictName(material), "gregtech", dust);
+        }
+    }
+}

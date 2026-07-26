@@ -8,9 +8,7 @@ import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gtPlusPlus.core.material.MaterialMisc.BRINE;
 
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -35,14 +33,11 @@ public class RecipesRareEarthProcessing {
 
     public static void init() {
 
-        // Brine Check and assignment
+        // Brine Check and assignment: another mod's "brine"-named fluid (e.g. Forestry) wins over gtpp's own,
+        // avoiding two competing registrations under the same name.
         FluidStack mBrine = FluidRegistry.getFluidStack("brine", 1_000);
         if (mBrine == null) {
-            Fluid f = BRINE.generateFluid();
-            BRINE.registerComponentForMaterial(new FluidStack(f, 1_000));
-            mBrine = MU.legacyGtppFluid(Materials2Materials.Brine, 1000);
-        } else {
-            BRINE.registerComponentForMaterial(new FluidStack(mBrine, 1_000));
+            mBrine = MU.legacyGtppFluid(Materials2Materials.Brine, 1_000);
         }
 
         // Add Process for creating Brine

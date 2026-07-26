@@ -41,7 +41,6 @@ import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.blocks.PipeShapeBlock;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.loaders.postload.GtppItemCutoverTable.Entry;
-import gtPlusPlus.core.material.MaterialReconstruction;
 import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
@@ -155,7 +154,7 @@ public class PosteaTransformers implements Runnable {
     }
 
     private static ItemStack resolveGtppOreCutoverStack(GtppOreCutoverTable.Entry entry) {
-        com.ruling_0.materiallib.api.Material ml = MaterialReconstruction.materialLibOf(entry.unlocalizedName());
+        Material ml = MaterialLibAPI.getMaterial("gregtech", entry.unlocalizedName());
         return MU.stack(OrePrefixes.ore, ml, 1);
     }
 
@@ -187,12 +186,12 @@ public class PosteaTransformers implements Runnable {
     /// resolved through [GtppItemCutoverTable]'s pinned (prefix, material, registry name) rows -- the
     /// gtPlusPlus counterpart of [#registerWerkstoffItemCutoverTransformers], differing only in that each row
     /// is its own registered item/block rather than a damage variant of a shared meta-item, so no damage
-    /// read/branch is needed. `cell`/`cellPlasma` rows resolve through [MaterialReconstruction#cellStack]
-    /// instead of plain [MU#stack], since a row's material may have claimed `cellMolten` rather than
-    /// `cell` -- see that method's javadoc. `frameGt` is out of the table and migrates separately
-    /// (deferred). `block` rows additionally get a [BlockReplacementManager] handler for placed instances,
-    /// since a storage block (unlike every other gtpp part) is placeable, and resolve null (leaving the
-    /// legacy slot canonical) for a row whose material is not [MaterialReconstruction#isBlockCutOver].
+    /// read/branch is needed. `cell` rows resolve through [MU#cellStack] instead of plain [MU#stack], since a
+    /// row's material may have claimed `cellMolten` rather than `cell` -- see that method's javadoc.
+    /// `frameGt` is out of the table and migrates separately (deferred). `block` rows additionally get a
+    /// [BlockReplacementManager] handler for placed instances, since a storage block (unlike every other gtpp
+    /// part) is placeable; a row whose material carries no `block` shape resolves null from [MU#stack] same
+    /// as any other prefix, leaving the legacy slot canonical.
     private static void registerGtppItemCutoverTransformers() {
         for (Entry entry : GtppItemCutoverTable.ENTRIES) {
             ItemStackReplacementManager.addTransformationHandler(entry.registryName(), (originalId, tag) -> {
@@ -218,13 +217,10 @@ public class PosteaTransformers implements Runnable {
     }
 
     private static ItemStack resolveGtppCutoverStack(Entry entry) {
-        if (entry.prefix() == OrePrefixes.block && !MaterialReconstruction.isBlockCutOver(entry.materialName())) {
-            return null;
+        Material material = MaterialLibAPI.getMaterial("gregtech", entry.materialName());
+        if (entry.prefix() == OrePrefixes.cell) {
+            return MU.cellStack(material, 1);
         }
-        if (entry.prefix() == OrePrefixes.cell || entry.prefix() == OrePrefixes.cellPlasma) {
-            return MaterialReconstruction.cellStack(entry.materialName(), entry.prefix(), 1);
-        }
-        com.ruling_0.materiallib.api.Material material = MaterialLibAPI.getMaterial("gregtech", entry.materialName());
         return MU.stack(entry.prefix(), material, 1);
     }
 
@@ -235,7 +231,7 @@ public class PosteaTransformers implements Runnable {
     /// the oredict `cell<Name>` slot before gtpp's `Material` construction ever runs, so their dump never
     /// captured the miscutils registry name at all). [GtppItemCutoverTable] is generated purely from that dump
     /// and so cannot include a row for them; they are migrated by hand instead, to the same fallback
-    /// [MaterialReconstruction#cellStack] every other gtpp cell resolves through.
+    /// [MU#cellStack] every other gtpp cell resolves through.
     private static void registerGtppCarryoverCellTransformers() {
         registerGtppCarryoverCellTransformer("Iodine");
         registerGtppCarryoverCellTransformer("ThoriumTetrafluoride");
@@ -245,7 +241,8 @@ public class PosteaTransformers implements Runnable {
     }
 
     private static void registerGtppCarryoverCellTransformer(String materialName) {
-        ItemStack cutover = MaterialReconstruction.cellStack(materialName, OrePrefixes.cell, 1);
+        Material material = MaterialLibAPI.getMaterial("gregtech", materialName);
+        ItemStack cutover = MU.cellStack(material, 1);
         if (cutover == null) {
             throw new IllegalStateException("No MaterialLib cell stack for carryover material " + materialName);
         }

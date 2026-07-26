@@ -18,7 +18,6 @@ import gregtech.api.enums.StoneCategory;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.material.MU;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.core.material.MaterialReconstruction;
 import it.unimi.dsi.fastutil.shorts.ShortShortPair;
 
 public class OreMixBuilder {
@@ -124,31 +123,6 @@ public class OreMixBuilder {
 
     public OreMixBuilder sporadic(Werkstoff sporadic) {
         return sporadic(SmallOreBuilder.requireMaterialLib(sporadic));
-    }
-
-    public OreMixBuilder primary(gtPlusPlus.core.material.Material primary) {
-        return primary(requireMaterialLib(primary));
-    }
-
-    public OreMixBuilder secondary(gtPlusPlus.core.material.Material secondary) {
-        return secondary(requireMaterialLib(secondary));
-    }
-
-    public OreMixBuilder inBetween(gtPlusPlus.core.material.Material between) {
-        return inBetween(requireMaterialLib(between));
-    }
-
-    public OreMixBuilder sporadic(gtPlusPlus.core.material.Material sporadic) {
-        return sporadic(requireMaterialLib(sporadic));
-    }
-
-    static Material requireMaterialLib(gtPlusPlus.core.material.Material material) {
-        Material ml = MaterialReconstruction.materialLibOf(material.getUnlocalizedName());
-        if (ml == null) {
-            throw new IllegalStateException(
-                "No MaterialLib material for gtPlusPlus material " + material.getUnlocalizedName());
-        }
-        return ml;
     }
 
     public OreMixBuilder stoneCategory(IStoneCategory... stoneCategories) {

@@ -9,8 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizon.gtnhlib.util.font.GlyphReplacements;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 import com.ruling_0.materiallib.api.ShapeBlock;
+import com.ruling_0.materiallib.api.ShapeFluid;
 import com.ruling_0.materiallib.api.ShapeItem;
 
 import codechicken.nei.ItemStackMap;
@@ -19,26 +22,25 @@ import gregtech.api.material.MU;
 import gregtech.api.material.MaterialFormulas;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.material.Material;
 
 public class ChemicalFormulaFilter implements ItemFilter {
 
     private final Pattern pattern;
     private static final Map<Character, Character> SCRIPT_DIGIT_MAP = new HashMap<>(20);
     private static final ItemStackMap<String> formulaCache = new ItemStackMap<>();
-    private static final FutureTask<Void> loadGTPlusPlusMaterial = new FutureTask<>(() -> {
-        Material.mComponentMap.forEach((name, components) -> {
-            Material material = Material.mMaterialsByName.get(name);
-            if (material != null) {
-                String chemicalFormula = material.chemicalFormula;
-                String sanitizedFormula = isValidFormula(chemicalFormula) ? sanitizeFormula(chemicalFormula) : "";
-                components.forEach((orePrefix, stack) -> {
-                    synchronized (formulaCache) {
-                        formulaCache.put(stack, sanitizedFormula);
-                    }
-                });
+    private static final FutureTask<Void> loadMaterialFormulas = new FutureTask<>(() -> {
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            String chemicalFormula = MU.chemicalFormula(material);
+            String sanitizedFormula = isValidFormula(chemicalFormula) ? sanitizeFormula(chemicalFormula) : "";
+            for (Shape shape : material.getShapes()) {
+                if (shape instanceof ShapeFluid) continue;
+                ItemStack stack = MaterialLibAPI.getStack(material, shape, 1);
+                if (stack == null) continue;
+                synchronized (formulaCache) {
+                    formulaCache.put(stack, sanitizedFormula);
+                }
             }
-        });
+        }
         return null;
     });
 
@@ -83,10 +85,10 @@ public class ChemicalFormulaFilter implements ItemFilter {
         return !(formula == null || formula.isEmpty() || "?".equals(formula) || "??".equals(formula));
     }
 
-    private static void ensureLoadGTPlusPlusMaterials() {
-        loadGTPlusPlusMaterial.run();
+    private static void ensureMaterialFormulasLoaded() {
+        loadMaterialFormulas.run();
         try {
-            loadGTPlusPlusMaterial.get();
+            loadMaterialFormulas.get();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -99,7 +101,7 @@ public class ChemicalFormulaFilter implements ItemFilter {
     }
 
     public static String getSearchFormula(ItemStack stack) {
-        ensureLoadGTPlusPlusMaterials();
+        ensureMaterialFormulasLoaded();
 
         String chemicalFormula = formulaCache.get(stack);
 
@@ -122,8 +124,7 @@ public class ChemicalFormulaFilter implements ItemFilter {
     private static String getChemicalFormula(ItemStack itemstack) {
 
         if (itemstack.getItem() instanceof ShapeItem || itemstack.getItem() instanceof ShapeBlock.ShapeBlockItem) {
-            com.ruling_0.materiallib.api.Material material = MaterialLibAPI
-                .getMaterialByIndex(itemstack.getItemDamage());
+            Material material = MaterialLibAPI.getMaterialByIndex(itemstack.getItemDamage());
             String formula = MaterialFormulas.forSearch(material);
             if (formula != null) return formula;
         }

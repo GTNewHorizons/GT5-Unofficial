@@ -138,9 +138,11 @@ public class ProcessingMaterialDecompositionGtpp {
         ItemStack emptyCell = cellCount > 0 ? ItemList.Cell_Empty.get(cellCount) : null;
         ItemStack[] inputs = emptyCell == null ? new ItemStack[] { mainDust } : new ItemStack[] { mainDust, emptyCell };
 
+        // mainDust's amount is the composites' part sum, routinely above 64 (e.g. BlackTitanium's 100) --
+        // itemInputsUnsafe is required so GTOreDictUnificator's unification pass does not clamp it to 64.
         if (composites.size() <= 6) {
             GTValues.RA.stdBuilder()
-                .itemInputs(inputs)
+                .itemInputsUnsafe(inputs)
                 .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
                 .outputChances(strippedChances)
                 .eut(voltage)
@@ -148,7 +150,7 @@ public class ProcessingMaterialDecompositionGtpp {
                 .addTo(centrifugeRecipes);
         } else if (composites.size() <= 9) {
             GTValues.RA.stdBuilder()
-                .itemInputs(inputs)
+                .itemInputsUnsafe(inputs)
                 .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
                 .outputChances(strippedChances)
                 .eut(voltage)

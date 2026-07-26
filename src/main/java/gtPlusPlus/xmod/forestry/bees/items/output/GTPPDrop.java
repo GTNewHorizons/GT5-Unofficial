@@ -13,11 +13,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPDropType;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
@@ -102,14 +106,25 @@ public class GTPPDrop extends Item {
         ItemStack tDrop;
         for (GTPPDropType aDrop : GTPP_Bees.sDropMappings.values()) {
             tDrop = aDrop.getStackForType(1);
-            FluidStack aOutput = new FluidStack(aDrop.mMaterial.getFluid(), sFluidOutputs[aDrop.mMaterial.tier]);
+            int tier = tierOf(aDrop.mMaterial);
+            FluidStack aOutput = new FluidStack(MU.legacyGtppFluidOf(aDrop.mMaterial), sFluidOutputs[tier]);
             GTValues.RA.stdBuilder()
                 .itemInputs(tDrop)
                 .fluidOutputs(aOutput)
-                .duration(aDrop.mMaterial.tier * 30 * SECONDS)
-                .eut(aDrop.mMaterial.voltageMultiplier)
+                .duration(tier * 30 * SECONDS)
+                .eut(voltageMultiplierOf(aDrop.mMaterial))
                 .addTo(fluidExtractionRecipes);
 
         }
+    }
+
+    private static int tierOf(Material material) {
+        Integer tier = material.getProperty(GTMaterialProperties.TIER);
+        return tier == null ? 0 : tier;
+    }
+
+    private static long voltageMultiplierOf(Material material) {
+        Long voltageMultiplier = material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
+        return voltageMultiplier == null ? 16L : voltageMultiplier;
     }
 }

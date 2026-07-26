@@ -148,8 +148,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.blocks.GTBlockOre;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
-import gtPlusPlus.core.block.base.BlockBaseModular;
-import gtPlusPlus.core.item.base.BaseItemComponent;
 import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class PlatinumSludgeOverHaul {
@@ -1325,11 +1323,10 @@ public class PlatinumSludgeOverHaul {
             }
         }
 
-        if (item instanceof BaseItemComponent && !stackUnlocalizedName.contains("dust")
-            && !stackUnlocalizedName.contains("Dust")) {
-            return true;
-        }
-        if (block instanceof BlockBaseModular) {
+        if (association != null && association.mMaterial != null
+            && association.mMaterial.mMaterial != null
+            && association.mMaterial.mMaterial.getProperty(GTMaterialProperties.GTPP_STATE) != null
+            && !ORE_PREFIXES_BLACKLIST.contains(association.mPrefix)) {
             return true;
         }
         if (block instanceof FrameShapeBlock) {
@@ -1368,13 +1365,14 @@ public class PlatinumSludgeOverHaul {
         return MATERIALS_BLACKLIST.contains(association.mMaterial.mMaterial);
     }
 
-    /// Whether `stack` is a MaterialLib storage block (`Materials2BlockShapes#block`) of a
-    /// werkstoff- or gtPlusPlus-backed material -- the cutover equivalent of a legacy `bw.werkstoffblocks.01`/
-    /// `BlockBaseModular` stack, which the bartworks-modid/`instanceof BlockBaseModular` checks above
-    /// blacklisted wholesale. Blacklisting it keeps this overhaul sparing the lossless block-to-dust storage
-    /// cycle (macerating a compressed Ruthenium/Rhodium/gtPlusPlus-material block returns its own dust),
-    /// exactly as it did pre-cutover. Deliberately narrow: a material's other MaterialLib stacks (ore, crushed,
-    /// dust, ...) stay subject to the overhaul the same way GT-modid inputs always were.
+    /// Whether `stack` is a MaterialLib storage block (`Materials2BlockShapes#block`) of a werkstoff- or
+    /// gtPlusPlus-backed material -- the cutover equivalent of the legacy `bw.werkstoffblocks.01`/
+    /// `BlockBaseModular` stacks that the bartworks-modid check above (`WERKSTOFF_IDS`) and the gtpp-material
+    /// association check below (`GTPP_STATE`) blacklisted wholesale. Blacklisting it keeps this overhaul
+    /// sparing the lossless block-to-dust storage cycle (macerating a compressed Ruthenium/Rhodium/gtPlusPlus-
+    /// material block returns its own dust), exactly as it did pre-cutover. Deliberately narrow: a material's
+    /// other MaterialLib stacks (ore, crushed, dust, ...) stay subject to the overhaul the same way GT-modid
+    /// inputs always were.
     private static boolean isCutOverStorageBlock(ItemStack stack) {
         Block block = Block.getBlockFromItem(stack.getItem());
         if (block == null) return false;

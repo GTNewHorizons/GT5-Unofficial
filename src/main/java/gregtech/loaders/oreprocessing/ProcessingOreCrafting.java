@@ -27,7 +27,7 @@ import gregtech.api.util.GTModHandler;
 /// property-based approach failing the recipe census (see its class javadoc).
 ///
 /// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes`, the exact drain point the retired
-/// generator's own `run()` used (queued through `gtPlusPlus.core.material.MaterialGenerator#mRecipeMapsToGenerate`)
+/// generator's own `run()` used (queued through the retired gtPlusPlus `MaterialGenerator#mRecipeMapsToGenerate`)
 /// -- see [ProcessingDustGeneration]'s class javadoc for why the timing matters. [#generateFluoriteChemicalBath]
 /// reproduces `RecipeGenOre`'s one material-specific recipe, gated there the same way (`material ==
 /// MaterialsFluorides.FLUORITE`) rather than through [#ELIGIBLE] membership.

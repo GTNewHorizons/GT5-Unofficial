@@ -2,8 +2,8 @@ package gtPlusPlus.xmod.forestry.bees.items.output;
 
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
 
@@ -13,13 +13,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.core.material.Material;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPDropType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPPropolisType;
@@ -116,8 +118,8 @@ public class GTPPComb extends Item {
 
     public static void addChemicalRecipe(GTPPCombType aInputStack, ItemStack[] aOutputs, int[] aChances) {
         Material aMat = aInputStack.mMaterial;
-        long aEU = aMat.voltageMultiplier;
-        int aTier = Math.max(aMat.tier / 2, 1);
+        long aEU = voltageMultiplierOf(aMat);
+        int aTier = Math.max(tierOf(aMat) / 2, 1);
         GTValues.RA.stdBuilder()
             .itemInputs(aInputStack.getStackForType(aTier))
             .itemOutputs(aOutputs)
@@ -125,5 +127,15 @@ public class GTPPComb extends Item {
             .eut(aEU)
             .metadata(CHEMPLANT_CASING_TIER, aTier)
             .addTo(chemicalPlantRecipes);
+    }
+
+    private static int tierOf(Material material) {
+        Integer tier = material.getProperty(GTMaterialProperties.TIER);
+        return tier == null ? 0 : tier;
+    }
+
+    private static long voltageMultiplierOf(Material material) {
+        Long voltageMultiplier = material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
+        return voltageMultiplier == null ? 16L : voltageMultiplier;
     }
 }

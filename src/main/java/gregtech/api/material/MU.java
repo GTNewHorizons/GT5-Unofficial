@@ -53,7 +53,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.config.Client;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
-import gtPlusPlus.core.material.MaterialReconstruction;
 
 /// Bridges legacy [OrePrefixes]/[Materials] pairs to their cutover MaterialLib [Shape]/[Material]
 /// equivalents.
@@ -124,16 +123,16 @@ public class MU {
         return name == null ? null : MaterialLibAPI.getMaterial("gregtech", name);
     }
 
-    /// The legacy-family material object (a [Materials], a [Werkstoff], or a gtPlusPlus [gtPlusPlus.core.
-    /// material.Material]) that owns worldgen placement for a MaterialLib material, or null when none does --
-    /// the inverse of [#toMaterial] for the worldgen spine, which stores [Material] but places and reads ore
-    /// blocks through the family-dispatched ore adapters. A live, id-backed [Materials] counterpart wins
-    /// first: a merged werkstoff+gregtech declaration (Salt, RockSalt, Spodumene carry
-    /// [GTMaterialProperties#WERKSTOFF_IDS] alongside a live id) was always declared into veins via its
-    /// `Materials` constant, so placement must keep the gregtech adapter's stone-validity gates for it. A
-    /// remaining [GTMaterialProperties#WERKSTOFF_IDS] carrier belongs to the werkstoff that reconstructed it;
-    /// a reconstruction-owned [GTMaterialProperties#GTPP_STATE] carrier resolves to its gtPlusPlus material
-    /// (`GTPPOreAdapter`'s own exclusion rule); an id-less bridge [Materials] is the last resort.
+    /// The legacy-family material object (a [Materials] or a [Werkstoff]) that owns worldgen placement for a
+    /// MaterialLib material, or null when none does -- the inverse of [#toMaterial] for the worldgen spine,
+    /// which stores [Material] but places and reads ore blocks through the family-dispatched ore adapters. A
+    /// live, id-backed [Materials] counterpart wins first: a merged werkstoff+gregtech declaration (Salt,
+    /// RockSalt, Spodumene carry [GTMaterialProperties#WERKSTOFF_IDS] alongside a live id) was always declared
+    /// into veins via its `Materials` constant, so placement must keep the gregtech adapter's stone-validity
+    /// gates for it. A remaining [GTMaterialProperties#WERKSTOFF_IDS] carrier belongs to the werkstoff that
+    /// reconstructed it; an id-less bridge [Materials] is the last resort. A material carrying
+    /// [GTMaterialProperties#GTPP_STATE] with neither of the above resolves to null here, deferring worldgen
+    /// placement to `GTPPOreAdapter`'s own exclusion rule.
     /// TRANSITIONAL -- dies with the legacy families.
     public static @Nullable Object legacyMaterialOf(@Nullable Material material) {
         if (material == null) return null;
@@ -141,10 +140,6 @@ public class MU {
         if (gt != null && gt.mMetaItemSubID >= 0) return gt;
         List<Integer> werkstoffIds = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
         if (werkstoffIds != null) return WerkstoffReconstruction.byId(werkstoffIds.get(0));
-        if (material.getProperty(GTMaterialProperties.GTPP_STATE) != null
-            && MaterialReconstruction.isReconstructed(material.getName())) {
-            return MaterialReconstruction.byName(material.getName());
-        }
         return gt;
     }
 
@@ -248,51 +243,32 @@ public class MU {
         return MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidGas, (int) (1000 * entry.amount()));
     }
 
-    /// Whether a material carries a legacy `Materials#mStandardMoltenFluid` (see [#molten]) -- for callers that
-    /// need the presence check independent of a specific fluid amount, such as one gate guarding several
-    /// [#molten] calls of different amounts. An [#isLegacyNamed] material (one with a live legacy [Materials]
-    /// counterpart) answers whether it carries the [Materials2FluidShapes#fluidMolten] shape or a
-    /// [#recordSlotFluid]-stored MOLTEN fluid -- byte-equal to that counterpart's `mStandardMoltenFluid != null`:
-    /// the field is wired from the [GTMaterialProperties#LEGACY_FLUIDS] `molten` slot (`LegacyMaterials#wireFluids`),
-    /// whose presence is exactly the `fluidMolten` shape's membership, or from a `GTFluid#configureMaterials`
-    /// direct write, which the stored MOLTEN fluid mirrors. A material without a counterpart answers per
-    /// reconstructed population, reproducing the field the retired bridge facade carried:
-    ///
-    /// - Werkstoff-reconstructed ([GTMaterialProperties#WERKSTOFF_PREFIXES] present): whether the prefix list
-    /// contains `cellMolten` -- the `Werkstoff#hasItemType(cellMolten)` ground truth the bartworks bridge
-    /// set its field under. NOT `cellMolten` shape membership: the dual-nature elements (e.g. `Zirconium`/
-    /// `Hafnium`/`Thorium232`) carry the shape from their gtpp fluid capture while the werkstoff side never
-    /// generated the item.
-    /// - gtpp-reconstructed ([GTMaterialProperties#GTPP_STATE] present): whether
-    /// `MaterialReconstruction#build` [#recordLegacyMolten]-ed the material -- the gtpp bridge facade held a
-    /// molten fluid only when the material's own fluid had already resolved at bridge-construction time
-    /// (materials constructed before gtpp's `Material#registerAllPending` gate opened deferred their fluid,
-    /// so their facades stayed molten-less even with a `cellMolten` cutover). A dual werkstoff+gtpp material
-    /// answers true when either side's writer fired, matching the facade both loaders mutated in turn.
-    /// - Otherwise: false -- a pure MaterialLib material with neither a legacy counterpart nor a
-    /// reconstruction carried no `mStandardMoltenFluid`.
+    /// Whether a material has a resolvable molten fluid (see [#molten]) -- for callers that need the presence
+    /// check independent of a specific fluid amount, such as one gate guarding several [#molten] calls of
+    /// different amounts. True whenever the material carries the [Materials2FluidShapes#fluidMolten]
+    /// MaterialLib shape (byte-equal to a legacy-named counterpart's `mStandardMoltenFluid != null`: the
+    /// field is wired from the [GTMaterialProperties#LEGACY_FLUIDS] `molten` slot whose presence is exactly
+    /// this shape's membership) or a [#recordSlotFluid]-stored MOLTEN fluid (a `GTFluid#configureMaterials`
+    /// direct write). This is not restricted to [#isLegacyNamed] materials: every solid/liquid gtPlusPlus-only
+    /// material whose single fluid was ported carries the same shape (`scripts/mu/gen_materials.py`'s
+    /// `gtpp_fluid_and_cell_shape_lines` gave it to the whole set, `Water` the sole exception -- a
+    /// vanilla-fluid special case resolved through its own legacy field instead), so gating the shape/stored
+    /// checks behind [#isLegacyNamed] previously left every gtPlusPlus-only material's mold/fluid-consuming
+    /// recipes ungenerated. A material with neither falls back to whether
+    /// [GTMaterialProperties#WERKSTOFF_PREFIXES] contains `cellMolten` -- the `Werkstoff#hasItemType(cellMolten)`
+    /// ground truth the bartworks bridge facade set its field under. NOT `cellMolten` shape membership: a
+    /// dual-nature element reconstructed from both a werkstoff and a gtPlusPlus population (e.g.
+    /// `Zirconium`/`Hafnium`/`Thorium232`) can carry the shape from its gtPlusPlus fluid capture while the
+    /// werkstoff side never generated the item -- this fallback only runs once the shape/stored checks above
+    /// already missed, so it never overrides either the legacy-named or the gtPlusPlus-only cases.
     public static boolean hasMolten(@Nullable Material material) {
         if (material == null) return false;
-        if (isLegacyNamed(material)) {
-            return material.hasShape(Materials2FluidShapes.fluidMolten)
-                || storedFluid(material, FluidState.MOLTEN) != null;
+        if (material.hasShape(Materials2FluidShapes.fluidMolten) || storedFluid(material, FluidState.MOLTEN) != null) {
+            return true;
         }
+        if (isLegacyNamed(material)) return false;
         List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
-        boolean gtpp = material.getProperty(GTMaterialProperties.GTPP_STATE) != null;
-        if (werkstoffPrefixes != null || gtpp) {
-            return (werkstoffPrefixes != null && werkstoffPrefixes.contains(OrePrefixes.cellMolten.name()))
-                || reconstructedLegacyMolten.contains(material);
-        }
-        return false;
-    }
-
-    private static final java.util.Set<Material> reconstructedLegacyMolten = new java.util.HashSet<>();
-
-    /// Records that `material`'s retired gtpp bridge facade would have carried a `mStandardMoltenFluid` (see
-    /// [#hasMolten]). Called by `MaterialReconstruction#build` at the exact point the facade assignment used
-    /// to run, with the same gate.
-    public static void recordLegacyMolten(Material material) {
-        reconstructedLegacyMolten.add(material);
+        return werkstoffPrefixes != null && werkstoffPrefixes.contains(OrePrefixes.cellMolten.name());
     }
 
     /// The legacy `Materials#mStandardMoltenFluid`-backed `Materials#getMolten` stack for a material, or null
@@ -405,10 +381,9 @@ public class MU {
     }
 
     /// A gtPlusPlus-only material's registered plasma fluid, from [GTMaterialProperties#GTPP_PLASMA_NAME] --
-    /// gtpp reconstruction wires `mPlasma` from that pinned name alone, never from this class's own
-    /// [GTMaterialProperties#LEGACY_FLUIDS]-based [#plasmaOf] (see `gtPlusPlus.core.material.
-    /// MaterialReconstruction#build`), so this is null for every reconstructed material outside the small set
-    /// that property actually carries -- exactly mirroring the retired `Material#getPlasma`.
+    /// never from this class's own [GTMaterialProperties#LEGACY_FLUIDS]-based [#plasmaOf], so this is null for
+    /// every gtPlusPlus-originated material outside the small set that property actually carries -- exactly
+    /// mirroring the retired `Material#getPlasma`.
     public static @Nullable Fluid legacyGtppPlasmaOf(@Nullable Material material) {
         if (material == null) return null;
         String name = material.getProperty(GTMaterialProperties.GTPP_PLASMA_NAME);
@@ -637,21 +612,17 @@ public class MU {
 
     /// The legacy `Materials#mIconSet` texture set for a material, resolved by the same TEXTURE_SET-name lookup
     /// [Materials2Textures#iconSetOf] performs -- byte-identical for every population that reaches a MaterialLib
-    /// [Material]: `LegacyMaterials#build` resolves `mIconSet` through it; `BridgeMaterialsLoader` sets a
+    /// [Material]: `LegacyMaterials#build` resolves `mIconSet` through it, and `BridgeMaterialsLoader` sets a
     /// werkstoff bridge's `mIconSet` from `Werkstoff#getTexSet`, which the werkstoff's own constructor was built
-    /// with [Materials2Textures#iconSetOf]'s result (`WerkstoffReconstruction`); and `GtppBridgeMaterialsLoader`
-    /// sets a gtpp bridge's `mIconSet` from the same [Materials2Textures#iconSetOf] call made directly in
-    /// `MaterialReconstruction#build`. Null when `material` is null.
+    /// with [Materials2Textures#iconSetOf]'s result (`WerkstoffReconstruction`). Null when `material` is null.
     public static @Nullable TextureSet iconSet(@Nullable Material material) {
         return material == null ? null : Materials2Textures.iconSetOf(material);
     }
 
     /// The legacy `Materials#mBlastFurnaceRequired` flag for a material, mirroring its own `= false` default.
     /// Ported byte-identically to [GTMaterialProperties#BLAST_REQUIRED]: `LegacyMaterials#build` sets it from
-    /// this exact `Boolean.TRUE.equals` check, and both `BridgeMaterialsLoader` (via
-    /// `Werkstoff.Stats#isBlastFurnace`) and `GtppBridgeMaterialsLoader` (via
-    /// `Material.GtppScalars#usesBlastFurnace`) compute their bridge's flag from the identical expression
-    /// against the same property.
+    /// this exact `Boolean.TRUE.equals` check, and `BridgeMaterialsLoader` (via `Werkstoff.Stats#isBlastFurnace`)
+    /// computes its bridge's flag from the identical expression against the same property.
     public static boolean blastFurnaceRequired(@Nullable Material material) {
         return material != null && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
     }
@@ -1139,21 +1110,17 @@ public class MU {
 
     private static final Map<Material, Material> reconstructedHandles = new HashMap<>();
 
-    /// Records the tool-handle material `material`'s retired bridge facade would have carried in
-    /// `Materials#mHandleMaterial` (see [#handleMaterial(Material)]). Called by the bridge loaders
-    /// (`MaterialReconstruction#build`, bartworks' `BridgeMaterialsLoader`) at the exact points the facade
-    /// writes used to run; a later write overrides an earlier one, matching the facade both loaders mutated
-    /// in turn for a dual werkstoff+gtpp material.
+    /// Records the tool-handle material `material`'s retired bartworks bridge facade would have carried in
+    /// `Materials#mHandleMaterial` (see [#handleMaterial(Material)]). Called by bartworks' `BridgeMaterialsLoader`
+    /// at the exact point the facade write used to run.
     public static void recordHandleMaterial(Material material, Material handle) {
         reconstructedHandles.put(material, handle);
     }
 
     private static final java.util.Set<Material> reconstructedBridgeRegistrations = new java.util.HashSet<>();
 
-    /// Records that `material`'s retired bridge facade would have entered `Materials#getMaterialsMap` by this
-    /// point in loading. Called by the bridge loaders (`MaterialReconstruction#build`, bartworks'
-    /// `BridgeMaterialsLoader`) at the exact former minting sites; recording twice for a dual werkstoff+gtpp
-    /// material is a no-op, matching the single facade both loaders shared.
+    /// Records that `material`'s retired bartworks bridge facade would have entered `Materials#getMaterialsMap`
+    /// by this point in loading. Called by bartworks' `BridgeMaterialsLoader` at the exact former minting site.
     public static void recordBridgeRegistration(Material material) {
         reconstructedBridgeRegistrations.add(material);
     }
@@ -1346,18 +1313,16 @@ public class MU {
         return list;
     }
 
-    // Union dispatch helpers: the transitional three-family union (Materials / Werkstoff / gtPlusPlus
-    // Material, plus the recognition markers) previously flowed through legacy-interface-typed slots; those
-    // slots are now Object-typed (or MaterialLib Material-typed) and these helpers reproduce the exact
-    // per-family member behavior at the read sites. TRANSITIONAL -- each dies with its last union call site.
+    // Union dispatch helpers: the transitional two-family union (Materials / Werkstoff, plus the recognition
+    // markers) previously flowed through legacy-interface-typed slots; those slots are now Object-typed (or
+    // MaterialLib Material-typed) and these helpers reproduce the exact per-family member behavior at the read
+    // sites. TRANSITIONAL -- each dies with its last union call site.
 
     /// The legacy `findMaterial` lookup for the transitional union: a werkstoff by var name first, then a
-    /// gtPlusPlus material, then a legacy [Materials]. Null on a miss.
+    /// legacy [Materials]. Null on a miss.
     public static @Nullable Object findLegacyMaterial(String name) {
         Werkstoff bw = Werkstoff.werkstoffVarNameHashMap.get(name);
         if (bw != null) return bw;
-        gtPlusPlus.core.material.Material gtpp = gtPlusPlus.core.material.Material.mMaterialsByName.get(name);
-        if (gtpp != null) return gtpp;
         return Materials.getMaterialsMap()
             .get(name);
     }
@@ -1365,7 +1330,6 @@ public class MU {
     /// `getInternalName` across the union; [#internalName] for a [Material]; null for null or a foreign type.
     public static @Nullable String internalNameOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getInternalName();
-        if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getInternalName();
         if (material instanceof Materials legacy) return legacy.getInternalName();
         if (material instanceof RecognitionMarker marker) return marker.getInternalName();
         if (material instanceof Material ml) return internalName(ml);
@@ -1375,7 +1339,6 @@ public class MU {
     /// `getLocalizedNameKey` across the union; null for null or a foreign type.
     public static @Nullable String localizedNameKeyOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getLocalizedNameKey();
-        if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getLocalizedNameKey();
         if (material instanceof Materials legacy) return legacy.getLocalizedNameKey();
         if (material instanceof RecognitionMarker marker) return marker.getLocalizedNameKey();
         if (material instanceof Material ml) {
@@ -1388,7 +1351,6 @@ public class MU {
     /// `getLocalizedName` across the union; null for null or a foreign type.
     public static @Nullable String localizedNameOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getLocalizedName();
-        if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getLocalizedName();
         if (material instanceof Materials legacy) return legacy.getLocalizedName();
         if (material instanceof Material ml) {
             Object legacy = legacyMaterialOf(ml);
@@ -1401,7 +1363,6 @@ public class MU {
     /// `getDefaultLocalName` across the union; [#localName] for a [Material]; null for null or a foreign type.
     public static @Nullable String defaultLocalNameOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getDefaultLocalName();
-        if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getDefaultLocalName();
         if (material instanceof Materials legacy) return legacy.getDefaultLocalName();
         if (material instanceof Material ml) return localName(ml);
         return null;
@@ -1410,7 +1371,6 @@ public class MU {
     /// `getTextureSet` across the union; null for null or a foreign type.
     public static @Nullable TextureSet textureSetOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getTextureSet();
-        if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getTextureSet();
         if (material instanceof Materials legacy) return legacy.getTextureSet();
         if (material instanceof Material ml) {
             Object legacy = legacyMaterialOf(ml);
@@ -1422,7 +1382,6 @@ public class MU {
     /// `getRGBA` across the union; null for null or a foreign type.
     public static @Nullable short[] rgbaOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getRGBA();
-        if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getRGBA();
         if (material instanceof Materials legacy) return legacy.getRGBA();
         if (material instanceof RecognitionMarker marker) return marker.getRGBA();
         if (material instanceof Material ml) {
@@ -1435,7 +1394,6 @@ public class MU {
     /// `getValidStones` across the union; empty for null or a foreign type.
     public static List<IStoneType> validStonesOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getValidStones();
-        if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getValidStones();
         if (material instanceof Materials legacy) return legacy.getValidStones();
         if (material instanceof Material ml) {
             Object legacy = legacyMaterialOf(ml);
@@ -1448,17 +1406,14 @@ public class MU {
     /// `generatesPrefix` across the union; false for null or a foreign type.
     public static boolean generatesPrefix(@Nullable Object material, OrePrefixes prefix) {
         if (material instanceof Werkstoff w) return w.generatesPrefix(prefix);
-        if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.generatesPrefix(prefix);
         if (material instanceof Materials legacy) return legacy.generatesPrefix(prefix);
         if (material instanceof Material ml) return generatesPrefix(legacyMaterialOf(ml), prefix);
         return false;
     }
 
-    /// `ISubTagContainer#contains` across the union (a gtPlusPlus material carries no sub tags and is always
-    /// false, matching its own `contains`); false for null or a foreign type.
+    /// `ISubTagContainer#contains` across the union; false for null or a foreign type.
     public static boolean hasSubTag(@Nullable Object material, SubTag subTag) {
         if (material instanceof Werkstoff w) return w.contains(subTag);
-        if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.contains(subTag);
         if (material instanceof Materials legacy) return legacy.contains(subTag);
         if (material instanceof Material ml) {
             Object legacy = legacyMaterialOf(ml);
@@ -1469,16 +1424,9 @@ public class MU {
         return false;
     }
 
-    /// `getPart` across the union (a gtPlusPlus material reproduces `Materials#getPart` -- through
-    /// its bridge [Materials] when it has one, by ore-dictionary name otherwise); null for null or a foreign
-    /// type.
+    /// `getPart` across the union; null for null or a foreign type.
     public static @Nullable ItemStack partOf(@Nullable Object material, OrePrefixes prefix, int amount) {
         if (material instanceof Werkstoff w) return w.getPart(prefix, amount);
-        if (material instanceof gtPlusPlus.core.material.Material gtpp) {
-            Materials gt = gtpp.tryFindGregtechMaterialEquivalent();
-            if (gt != null) return GTOreDictUnificator.get(prefix, gt, amount);
-            return GTOreDictUnificator.get(prefix.oreDictName(gtpp.getInternalName()), amount);
-        }
         if (material instanceof Materials legacy) return legacy.getPart(prefix, amount);
         if (material instanceof Material ml) {
             Object legacy = legacyMaterialOf(ml);
@@ -1487,13 +1435,12 @@ public class MU {
         return null;
     }
 
-    /// `getGTMaterial` across the union -- the MaterialLib [Material] a werkstoff or gtPlusPlus material maps
-    /// to, or a [Material] passed through unchanged; null for null or a foreign type. Callers that need the
-    /// legacy [Materials] counterpart (e.g. the vein-stat identity match against [#legacyMaterialOf] objects)
-    /// wrap the result in [#materialOf].
+    /// `getGTMaterial` across the union -- the MaterialLib [Material] a werkstoff maps to, or a [Material]
+    /// passed through unchanged; null for null or a foreign type. Callers that need the legacy [Materials]
+    /// counterpart (e.g. the vein-stat identity match against [#legacyMaterialOf] objects) wrap the result in
+    /// [#materialOf].
     public static @Nullable Material gtMaterialOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getGTMaterial();
-        if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getGTMaterial();
         if (material instanceof Material ml) return ml;
         return null;
     }
@@ -1519,7 +1466,6 @@ public class MU {
     /// `getId` across the union; `0` for null or a foreign type.
     public static int idOf(@Nullable Object material) {
         if (material instanceof Werkstoff w) return w.getId();
-        if (material instanceof gtPlusPlus.core.material.Material gtpp) return gtpp.getId();
         if (material instanceof Materials legacy) return legacy.getId();
         if (material instanceof Material ml) {
             Object legacy = legacyMaterialOf(ml);
@@ -1531,7 +1477,6 @@ public class MU {
     /// `addTooltips` across the union; a no-op for null or a foreign type.
     public static void addTooltipsOf(@Nullable Object material, List<String> list) {
         if (material instanceof Werkstoff w) w.addTooltips(list);
-        else if (material instanceof gtPlusPlus.core.material.Material gtpp) gtpp.addTooltips(list);
         else if (material instanceof Materials legacy) legacy.addTooltips(list);
         else if (material instanceof Material ml) {
             Object legacy = legacyMaterialOf(ml);

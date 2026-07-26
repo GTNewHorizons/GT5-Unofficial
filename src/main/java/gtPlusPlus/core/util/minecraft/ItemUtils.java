@@ -28,9 +28,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
-import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.math.MathUtils;
 
 public class ItemUtils {
@@ -132,61 +130,22 @@ public class ItemUtils {
         // Tiny Dusts
         GTModHandler.addCraftingRecipe(
             normalDust,
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(9, tinyDust),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "D  ", "   ", "   ", 'D', normalDust });
 
         // Small Dusts
         GTModHandler.addCraftingRecipe(
             normalDust,
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(4, smallDust),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { " D ", "   ", "   ", 'D', normalDust });
-
-        return output;
-    }
-
-    public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust) {
-        return generateSpecialUseDusts(material, onlyLargeDust, false);
-    }
-
-    public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust,
-        final boolean disableExtraRecipes) {
-        final String materialName = material.getUnlocalizedName();
-        final String unlocalizedName = StringUtils.sanitizeString(materialName);
-        final int Colour = material.getRgbAsHex();
-        final String aChemForm = material.chemicalFormula;
-        final boolean isChemFormvalid = (aChemForm != null && !aChemForm.isEmpty());
-        Item[] output = null;
-        if (!onlyLargeDust) {
-            output = new Item[] {
-                new BaseItemDustUnique(
-                    "itemDust" + unlocalizedName,
-                    materialName,
-                    isChemFormvalid ? aChemForm : "",
-                    Colour,
-                    "Dust"),
-                new BaseItemDustUnique(
-                    "itemDustSmall" + unlocalizedName,
-                    materialName,
-                    isChemFormvalid ? aChemForm : "",
-                    Colour,
-                    "Small"),
-                new BaseItemDustUnique(
-                    "itemDustTiny" + unlocalizedName,
-                    materialName,
-                    isChemFormvalid ? aChemForm : "",
-                    Colour,
-                    "Tiny") };
-        } else {
-            output = new Item[] { new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, Colour, "Dust") };
-        }
 
         return output;
     }
@@ -227,7 +186,7 @@ public class ItemUtils {
                     value = (t2.modId.isEmpty()) ? Minecraft.ID : modname;
                 }
             } catch (final Exception t3) {
-                GTplusplus.logger.error(t3);
+                t3.printStackTrace();
                 value = "bad modid";
             }
         }

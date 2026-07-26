@@ -1,20 +1,14 @@
 package detrav.utils;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
 
-import gregtech.GTMod;
+import com.ruling_0.materiallib.api.Material;
+
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.common.ores.GTPPOreAdapter;
 import gregtech.common.ores.OreInfo;
-import gtPlusPlus.core.block.base.BlockBaseOre;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.MaterialsOres;
-import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 
 public class GTppHelper {
 
@@ -22,42 +16,55 @@ public class GTppHelper {
     private static final HashMap<Short, Material> decodeoresGTpp = new HashMap<>();
     private static final HashMap<Material, Short> encodeoresGTpp = new HashMap<>();
 
+    /// The gtpp ore materials detrav's ore scanner assigns ids to, in the exact order the retired
+    /// `MaterialsOres` pool declared its fields -- detrav's external scanner keys ids by this order (see
+    /// [#generate_OreIDs]), so it must stay stable.
+    // spotless:off
+    private static final Material[] ORE_IDS = {
+        Materials2Materials.AgarditeCd, Materials2Materials.AgarditeLa, Materials2Materials.AgarditeNd,
+        Materials2Materials.AgarditeY, Materials2Materials.Alburnite, Materials2Materials.Cerite,
+        Materials2Materials.Comancheite, Materials2Materials.Crocoite, Materials2Materials.CryoliteF,
+        Materials2Materials.DemicheleiteBr, Materials2Materials.Florencite, Materials2Materials.Fluorcaphite,
+        Materials2Materials.GadoliniteCe, Materials2Materials.GadoliniteY, Materials2Materials.Geikielite,
+        Materials2Materials.Greenockite, Materials2Materials.Hibonite, Materials2Materials.Honeaite,
+        Materials2Materials.Irarsite, Materials2Materials.Kashinite, Materials2Materials.Lafossaite,
+        Materials2Materials.LanthaniteCe, Materials2Materials.LanthaniteLa, Materials2Materials.LanthaniteNd,
+        Materials2Materials.Lautarite, Materials2Materials.Lepersonnite, Materials2Materials.Miessiite,
+        Materials2Materials.Nichromite, Materials2Materials.Perroudite, Materials2Materials.Polycrase,
+        Materials2Materials.BariteRa, Materials2Materials.SamarskiteY, Materials2Materials.SamarskiteYb,
+        Materials2Materials.Titanite, Materials2Materials.Xenotime, Materials2Materials.Yttriaite,
+        Materials2Materials.Yttrialite, Materials2Materials.Yttrocerite, Materials2Materials.Zimbabweite,
+        Materials2Materials.Zircon, Materials2Materials.Zirconolite, Materials2Materials.Zircophyllite,
+        Materials2Materials.Zirkelite, Materials2Materials.RadioactiveMineralMix, };
+    // spotless:on
+
     private static void generate_OreIDs() {
         short n = 0;
-        final Field[] fields = MaterialsOres.class.getFields();
-        for (; n < fields.length; ++n) {
-            try {
-                final Object o = fields[n].get(null);
-                if (o instanceof Material m) {
-                    Short i = (short) (n + 1);
-                    decodeoresGTpp.put(i, m);
-                    encodeoresGTpp.put(m, i);
-                }
-            } catch (Exception e) {
-                GTMod.GT_FML_LOGGER
-                    .error("Exception caught when trying to generate GT++ ore ids for detrav ore scanner", e);
-            }
+        for (; n < ORE_IDS.length; ++n) {
+            Short i = (short) (n + 1);
+            decodeoresGTpp.put(i, ORE_IDS[n]);
+            encodeoresGTpp.put(ORE_IDS[n], i);
         }
         // Manually add ores from other places than the ore class
         // Fluorite
-        decodeoresGTpp.put((short) (++n + 1), MaterialsFluorides.FLUORITE);
-        encodeoresGTpp.put(MaterialsFluorides.FLUORITE, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), Materials2Materials.FluoriteF);
+        encodeoresGTpp.put(Materials2Materials.FluoriteF, (short) (n + 1));
         // Rare Earths
-        decodeoresGTpp.put((short) (++n + 1), MaterialMisc.RARE_EARTH_LOW);
-        encodeoresGTpp.put(MaterialMisc.RARE_EARTH_LOW, (short) (n + 1));
-        decodeoresGTpp.put((short) (++n + 1), MaterialMisc.RARE_EARTH_MID);
-        encodeoresGTpp.put(MaterialMisc.RARE_EARTH_MID, (short) (n + 1));
-        decodeoresGTpp.put((short) (++n + 1), MaterialMisc.RARE_EARTH_HIGH);
-        encodeoresGTpp.put(MaterialMisc.RARE_EARTH_HIGH, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), Materials2Materials.RareEarthI);
+        encodeoresGTpp.put(Materials2Materials.RareEarthI, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), Materials2Materials.RareEarthII);
+        encodeoresGTpp.put(Materials2Materials.RareEarthII, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), Materials2Materials.RareEarthIII);
+        encodeoresGTpp.put(Materials2Materials.RareEarthIII, (short) (n + 1));
         // Koboldite
-        decodeoresGTpp.put((short) (++n + 1), MaterialsAlloy.KOBOLDITE);
-        encodeoresGTpp.put(MaterialsAlloy.KOBOLDITE, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), Materials2Materials.Koboldite);
+        encodeoresGTpp.put(Materials2Materials.Koboldite, (short) (n + 1));
         // Runite
-        decodeoresGTpp.put((short) (++n + 1), MaterialsElements.STANDALONE.RUNITE);
-        encodeoresGTpp.put(MaterialsElements.STANDALONE.RUNITE, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), Materials2Materials.Runite);
+        encodeoresGTpp.put(Materials2Materials.Runite, (short) (n + 1));
         // Ancient granite
-        decodeoresGTpp.put((short) (++n + 1), MaterialsElements.STANDALONE.GRANITE);
-        encodeoresGTpp.put(MaterialsElements.STANDALONE.GRANITE, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), Materials2Materials.AncientGranite);
+        encodeoresGTpp.put(Materials2Materials.AncientGranite, (short) (n + 1));
     }
 
     public static short getMetaFromBlock(Block block) {
@@ -77,14 +84,11 @@ public class GTppHelper {
     }
 
     public static boolean isGTppBlock(Block block) {
-        return block instanceof BlockBaseOre || GTPPOreAdapter.INSTANCE.supports(block, 0);
+        return GTPPOreAdapter.INSTANCE.supports(block, 0);
     }
 
-    /// The gtpp material a world-placed ore block resolves to, whether it is still the legacy [BlockBaseOre]
-    /// instance or (once cut over -- see [GTPPOreAdapter]) the MaterialLib equivalent.
+    /// The gtpp material a world-placed ore block resolves to via [GTPPOreAdapter].
     private static Material materialOf(Block block) {
-        if (block instanceof BlockBaseOre ore) return ore.getMaterialEx();
-
         try (OreInfo<?> info = GTPPOreAdapter.INSTANCE.getOreInfo(block, 0)) {
             return info != null && info.material instanceof Material material ? material : null;
         }

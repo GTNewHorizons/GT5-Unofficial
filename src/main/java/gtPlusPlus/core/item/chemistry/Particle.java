@@ -1,4 +1,4 @@
-package gtPlusPlus.core.material;
+package gtPlusPlus.core.item.chemistry;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.chemistry.IonParticles;
 
 public class Particle {
 
@@ -119,11 +118,10 @@ public class Particle {
     }
 
     public static ItemStack getIon(String aElementName, int aCharge) {
-        for (String g : gtPlusPlus.core.item.chemistry.IonParticles.NameToMetaMap.keySet()) {
+        for (String g : IonParticles.NameToMetaMap.keySet()) {
             if (g.toLowerCase()
                 .equals(StringUtils.sanitizeString(aElementName.toLowerCase()))) {
-                Integer meta = gtPlusPlus.core.item.chemistry.IonParticles.NameToMetaMap
-                    .get(StringUtils.sanitizeString(aElementName.toLowerCase()));
+                Integer meta = IonParticles.NameToMetaMap.get(StringUtils.sanitizeString(aElementName.toLowerCase()));
                 if (meta == null) {
                     meta = 0;
                 }
@@ -143,10 +141,10 @@ public class Particle {
 
     public static ItemStack getBaseParticle(Particle aParticle, int amount) {
         String aPartName = StringUtils.sanitizeString(aParticle.mParticleName.toLowerCase());
-        for (String g : gtPlusPlus.core.item.chemistry.StandardBaseParticles.NameToMetaMap.keySet()) {
+        for (String g : StandardBaseParticles.NameToMetaMap.keySet()) {
             if (g.toLowerCase()
                 .equals(aPartName)) {
-                Integer meta = gtPlusPlus.core.item.chemistry.StandardBaseParticles.NameToMetaMap.get(aPartName);
+                Integer meta = StandardBaseParticles.NameToMetaMap.get(aPartName);
                 if (meta == null) {
                     meta = 0;
                 }

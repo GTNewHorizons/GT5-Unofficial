@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
@@ -84,6 +85,55 @@ public class ProcessingPlasmaGtpp {
     public static void run() {
         for (Material material : ELIGIBLE) {
             generate(material);
+        }
+        generateBromine();
+    }
+
+    /// Bromine's canner and vacuum-freezer recipes, handled separately from [#ELIGIBLE]: `RecipeGenPlasma`
+    /// itself never reached Bromine (excluded by `generate`'s own `PURE_LIQUID` state gate -- see [#ELIGIBLE]'s
+    /// javadoc), so these came from elsewhere in the retired gtpp bootstrap rather than from that generator.
+    /// Bromine's legacy cell item is gone with the rest of `gtPlusPlus.core.item.base.cell`
+    /// (`GtppItemCutoverTable` already carries Postea rows migrating it), so this ports the recipes onto the
+    /// canonical `cellMolten`/`cellPlasmaLight` shapes Bromine already generates.
+    private static void generateBromine() {
+        Material bromine = Materials2Materials.Bromine;
+        ItemStack liquidCell = ProcessingDustGeneration.stackOf(OrePrefixes.cellMolten, bromine, 1L);
+        FluidStack molten = MU.molten(bromine, 1000);
+        if (liquidCell == null || molten == null) return;
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Cell_Empty.get(1))
+            .itemOutputs(liquidCell)
+            .fluidInputs(molten)
+            .duration(molten.amount / 62)
+            .eut(1)
+            .addTo(cannerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, liquidCell))
+            .itemOutputs(ItemList.Cell_Empty.get(1))
+            .fluidOutputs(molten)
+            .duration(molten.amount / 62)
+            .eut(1)
+            .addTo(cannerRecipes);
+
+        ItemStack plasmaCell = ProcessingDustGeneration.stackOf(OrePrefixes.cellPlasma, bromine, 1L);
+        FluidStack plasma = materialPlasma(bromine, 1000);
+        int cooldownDuration = (int) Math.max(MU.mass(bromine) * 2L, 1L);
+        if (plasmaCell != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(plasmaCell)
+                .itemOutputs(GTUtility.copyAmount(1, liquidCell))
+                .duration(cooldownDuration)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(vacuumFreezerRecipes);
+        }
+        if (plasma != null) {
+            GTValues.RA.stdBuilder()
+                .fluidInputs(plasma)
+                .fluidOutputs(molten)
+                .duration(cooldownDuration)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(vacuumFreezerRecipes);
         }
     }
 
