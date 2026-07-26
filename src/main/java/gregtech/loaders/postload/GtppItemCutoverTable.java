@@ -10,10 +10,11 @@ import gregtech.api.enums.OrePrefixes;
 /// already resolved to a non-`miscutils:` item by dump time are hand-migrated in
 /// [PosteaTransformers] instead, since this table can only see registry names the dump captured.
 /// [PosteaTransformers] migrates each row's legacy stack to `MU.stack(prefix, MaterialLibAPI.getMaterial(
-/// "gregtech", materialName), 1)` (`cell`/`cellPlasma` rows through `MaterialReconstruction#cellStack`
-/// instead) in a single loop -- see `scripts/mu/gen_gtpp_item_transformers.py`. `block` rows are
-/// additionally gated on `MaterialReconstruction#isBlockCutOver` and get a `BlockReplacementManager`
-/// handler alongside the `ItemStackReplacementManager` one, since a storage block is placeable.
+/// "gregtech", materialName), 1)` (`cell` rows through `MU#cellStack` instead, for its `cellMolten`
+/// fallback) in a single loop -- see `scripts/mu/gen_gtpp_item_transformers.py`. A `block` row resolves null
+/// (leaving the legacy slot canonical), same as every other prefix here, exactly when the row's material has
+/// no `Materials2BlockShapes#block` shape; it additionally gets a `BlockReplacementManager` handler alongside
+/// the `ItemStackReplacementManager` one, since a storage block is placeable.
 public final class GtppItemCutoverTable {
 
     public record Entry(OrePrefixes prefix, String materialName, String registryName) {}

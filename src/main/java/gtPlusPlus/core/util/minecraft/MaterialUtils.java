@@ -1,156 +1,16 @@
 package gtPlusPlus.core.util.minecraft;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.StringUtils;
 import gregtech.loaders.materials.LegacyNameDomain;
-import gtPlusPlus.core.item.base.BaseItemComponent;
-import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
-import gtPlusPlus.core.item.base.foil.BaseItemFoil;
-import gtPlusPlus.core.item.base.wire.BaseItemFineWire;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialReconstruction;
-import gtPlusPlus.core.material.MaterialStack;
-import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.math.MathUtils;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 public class MaterialUtils {
-
-    private static final Map<String, Material> mGeneratedMaterialMap = new HashMap<>();
-
-    /// Registers `generated` as [#generateMaterialFromGtENUM]'s result for `material`, so a later call with the
-    /// same argument returns it instead of constructing a second, separate `Material`. `MaterialReconstruction`
-    /// calls this for every reconstructed material with a live gregtech equivalent, since reconstruction builds
-    /// those materials directly rather than through `generateMaterialFromGtENUM` itself.
-    public static void seedGeneratedMaterial(com.ruling_0.materiallib.api.Material material, Material generated) {
-        mGeneratedMaterialMap.put(getMaterialName(material).toLowerCase(), generated);
-    }
-
-    public static Material generateMaterialFromGtENUM(com.ruling_0.materiallib.api.Material material) {
-        return generateMaterialFromGtENUM(material, null, null);
-    }
-
-    public static Material generateMaterialFromGtENUM(com.ruling_0.materiallib.api.Material material,
-        TextureSet aCustomTextures) {
-        return generateMaterialFromGtENUM(material, null, aCustomTextures);
-    }
-
-    public static Material generateMaterialFromGtENUM(com.ruling_0.materiallib.api.Material material,
-        short[] customRGB) {
-        return generateMaterialFromGtENUM(material, customRGB, null);
-    }
-
-    public static Material generateMaterialFromGtENUM(com.ruling_0.materiallib.api.Material material, short[] customRGB,
-        TextureSet aCustomTextures) {
-        String aMaterialKey = getMaterialName(material).toLowerCase();
-        if (mGeneratedMaterialMap.containsKey(aMaterialKey)) {
-            return mGeneratedMaterialMap.get(aMaterialKey);
-        }
-
-        try {
-            String name = MU.internalName(material);
-            final String defaultLocalName = MU.localName(material);
-            final short[] rgba = (customRGB == null ? MU.rgba(material) : customRGB);
-            final int melting = MU.meltingPoint(material);
-            final int boiling = MU.blastFurnaceTemp(material);
-            final long protons = MU.protons(material);
-            final long neutrons = MU.neutrons(material);
-            final boolean blastFurnace = MU.blastFurnaceRequired(material);
-            int radioactivity = 0;
-            TextureSet iconSet;
-            if (aCustomTextures == null) {
-                iconSet = MU.iconSet(material);
-            } else {
-                iconSet = aCustomTextures;
-            }
-            if (iconSet == null || iconSet.mSetName.toLowerCase()
-                .contains("fluid")) {
-                iconSet = TextureSet.SET_METALLIC;
-            }
-
-            final int durability = MU.durability(material);
-            boolean mGenerateCell = false;
-            boolean mGenerateFluid = true;
-            MaterialState materialState;
-            String chemicalFormula = StringUtils
-                .subscript(StringUtils.sanitizeString(MU.chemicalTooltip(material, false)));
-            final Element element = MU.element(material);
-
-            // Weird Blacklist of Bad Chemical Strings
-            if (element == Element.Pb || element == Element.Na || element == Element.Ar) {
-                chemicalFormula = StringUtils.subscript(StringUtils.sanitizeString(element.name()));
-            }
-
-            // Determine default state
-            if (MU.molten(material, 1) != null || MU.solid(material, 1) != null) {
-                materialState = MaterialState.SOLID;
-                if (MU.molten(material, 1) == null && MU.solid(material, 1) != null) {
-                    mGenerateCell = true;
-                } else if (MU.molten(material, 1) != null && MU.solid(material, 1) == null) {
-                    // mGenerateCell = true;
-                }
-            } else if (MU.fluid(material, 1) != null) {
-                materialState = MaterialState.LIQUID;
-            } else if (MU.gas(material, 1) != null) {
-                materialState = MaterialState.GAS;
-            } else {
-                materialState = MaterialState.SOLID;
-                mGenerateFluid = false;
-            }
-
-            if (name.toLowerCase()
-                .contains("infused")) {
-                final String tempname = name.substring(7);
-                name = "Infused " + tempname;
-            }
-            if (hasValidRGBA(rgba) || (element == Element.H)
-                || ((material == Materials2Materials.InfusedAir) || (material == Materials2Materials.InfusedFire)
-                    || (material == Materials2Materials.InfusedEarth)
-                    || (material == Materials2Materials.InfusedWater))) {
-                Material M = new Material(
-                    name,
-                    defaultLocalName,
-                    materialState,
-                    iconSet,
-                    durability,
-                    rgba,
-                    melting,
-                    boiling,
-                    protons,
-                    neutrons,
-                    blastFurnace,
-                    chemicalFormula,
-                    radioactivity,
-                    mGenerateCell,
-                    mGenerateFluid);
-                mGeneratedMaterialMap.put(aMaterialKey, M);
-                return M;
-            }
-        } catch (Exception t) {
-            t.printStackTrace();
-        }
-        return null;
-    }
 
     public static boolean hasValidRGBA(final short[] rgba) {
         return rgba != null && rgba.length >= 3 && rgba.length <= 4;
@@ -215,24 +75,6 @@ public class MaterialUtils {
         return mName;
     }
 
-    public static TextureSet getMostCommonTextureSet(List<Material> list) {
-        Object2IntMap<TextureSet> counter = new Object2IntOpenHashMap<>();
-        for (Material m : list) {
-            TextureSet t = m.getTextureSet();
-            if (t == null) {
-                t = MU.iconSet(Materials2Materials.Gold);
-            }
-            if (t != null) {
-                counter.put(t, counter.getInt(t) + 1);
-            }
-        }
-        return counter.object2IntEntrySet()
-            .stream()
-            .max(Comparator.comparingInt(Object2IntMap.Entry::getIntValue))
-            .map(Map.Entry::getKey)
-            .orElse(MU.iconSet(Materials2Materials.Gold));
-    }
-
     public static Materials getMaterial(String aMaterialName, String aFallbackMaterialName) {
         Materials g = getMaterial(aMaterialName);
         if (g == null) {
@@ -254,64 +96,6 @@ public class MaterialUtils {
             m = Materials._NULL;
         }
         return m;
-    }
-
-    public static ArrayList<Material> getCompoundMaterialsRecursively(Material aMat) {
-        return getCompoundMaterialsRecursively_Speiger(aMat);
-    }
-
-    public static ArrayList<Material> getCompoundMaterialsRecursively_Speiger(Material toSearch) {
-        ArrayList<Material> resultList = new ArrayList<>();
-        if (toSearch.getComposites()
-            .isEmpty()) {
-            resultList.add(toSearch);
-            return resultList;
-        }
-        final int HARD_LIMIT = 1000;
-
-        // Could be a Deque but i dont use the interface
-        // enough to use it as default.
-        LinkedList<Material> toCheck = new LinkedList<>();
-
-        toCheck.add(toSearch);
-        int processed = 0;
-        while (!toCheck.isEmpty() && processed < HARD_LIMIT) {
-            Material current = toCheck.remove();
-            if (current.getComposites()
-                .isEmpty()) {
-                resultList.add(current);
-            } else {
-                for (MaterialStack entry : current.getComposites()) {
-                    toCheck.add(entry.getStackMaterial());
-                }
-            }
-            processed++;
-        }
-        return resultList;
-    }
-
-    public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial) {
-        if (MaterialReconstruction.isPartCutOver(aMaterial.getUnlocalizedName(), aType.getGtOrePrefix())) {
-            return;
-        }
-        Item aGC;
-        if (aType == ComponentTypes.FINEWIRE) {
-            aGC = new BaseItemFineWire(aMaterial);
-        } else if (aType == ComponentTypes.FOIL) {
-            aGC = new BaseItemFoil(aMaterial);
-        } else {
-            aGC = new BaseItemComponent(aMaterial, aType);
-        }
-        aMaterial.registerComponentForMaterial(aType, new ItemStack(aGC));
-    }
-
-    public static void generateSpecialDustAndAssignToAMaterial(Material aMaterial, boolean generateMixerRecipes) {
-        Item[] aDusts = ItemUtils.generateSpecialUseDusts(aMaterial, false, !generateMixerRecipes);
-        if (aDusts.length > 0) {
-            aMaterial.registerComponentForMaterial(OrePrefixes.dust, new ItemStack(aDusts[0]));
-            aMaterial.registerComponentForMaterial(OrePrefixes.dustSmall, new ItemStack(aDusts[1]));
-            aMaterial.registerComponentForMaterial(OrePrefixes.dustTiny, new ItemStack(aDusts[2]));
-        }
     }
 
     public static boolean isNullGregtechMaterial(Materials aGregtechMaterial) {

@@ -23,7 +23,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FishPondRecipes;
 import gregtech.api.util.SemiFluidFuelHandler;
@@ -34,7 +33,6 @@ import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMultisUsingFluidInsteadOfCells;
@@ -85,9 +83,6 @@ public class GTplusplus {
     @EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
         PacketHandler.init();
-
-        // Give this a go mate.
-        setupMaterialBlacklist();
 
         // Check for Dev
         GTPPCore.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
@@ -164,29 +159,6 @@ public class GTplusplus {
         RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             GTPPRecipeMaps.reactorProcessingUnitRecipes,
             GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
-    }
-
-    private static void setupMaterialBlacklist() {
-        Material.invalidMaterials.add(Materials2Materials.NULL);
-        Material.invalidMaterials.add(Materials2Materials.Clay);
-        Material.invalidMaterials.add(Materials2Materials.Phosphorus);
-        Material.invalidMaterials.add(Materials2Materials.Steel);
-        Material.invalidMaterials.add(Materials2Materials.Bronze);
-        Material.invalidMaterials.add(Materials2Materials.Hydrogen);
-        // Infused TC stuff
-        Material.invalidMaterials.add(Materials2Materials.InfusedAir);
-        Material.invalidMaterials.add(Materials2Materials.InfusedEarth);
-        Material.invalidMaterials.add(Materials2Materials.InfusedFire);
-        Material.invalidMaterials.add(Materials2Materials.InfusedWater);
-        // EIO Materials
-        Material.invalidMaterials.add(Materials2Materials.SoulSand);
-        Material.invalidMaterials.add(Materials2Materials.EnderPearl);
-        Material.invalidMaterials.add(Materials2Materials.EnderEye);
-        Material.invalidMaterials.add(Materials2Materials.Redstone);
-        Material.invalidMaterials.add(Materials2Materials.Glowstone);
-        Material.invalidMaterials.add(Materials2Materials.Soularium);
-        Material.invalidMaterials.add(Materials2Materials.PhasedIron);
-
     }
 
     private static void fixVanillaOreDict() {

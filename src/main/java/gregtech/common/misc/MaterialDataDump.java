@@ -64,11 +64,10 @@ import gregtech.api.util.GTRecipe;
 import gregtech.client.iconContainers.blocks.GTBlockIconContainer;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.fluid.GTFluid;
-import gtPlusPlus.core.material.Material;
 
-/// Dumps the four legacy material systems -- GregTech `Materials`, `OrePrefixes`, bartworks `Werkstoff`, and
-/// gtPlusPlus `Material` -- plus the resolved MaterialLib registry view of the `Materials2` port, to
-/// JSON, for consumption by the material unification tooling.
+/// Dumps the legacy material systems -- GregTech `Materials`, `OrePrefixes`, and bartworks `Werkstoff` -- plus
+/// the resolved MaterialLib registry view of the `Materials2` port, to JSON, for consumption by the material
+/// unification tooling.
 ///
 /// Triggered from `GTMod`'s `FMLLoadCompleteEvent` handler when the `gt.dumpMaterialData` system property is
 /// set, so a headless server run can produce the dumps non-interactively.
@@ -94,12 +93,10 @@ public final class MaterialDataDump {
         write(new File(directory, "gt-materials.json"), dumpGtMaterials());
         write(new File(directory, "oreprefixes.json"), dumpOrePrefixes());
         write(new File(directory, "werkstoff.json"), dumpWerkstoff());
-        write(new File(directory, "gtpp-materials.json"), dumpGtppMaterials());
         write(new File(directory, "ml-materials.json"), dumpMlMaterials());
         write(new File(directory, "legacy-variants.json"), dumpLegacyVariants());
         write(new File(directory, "fluid-textures.json"), dumpFluidTextures());
         write(new File(directory, "legacy-blocks.json"), dumpLegacyBlocks());
-        write(new File(directory, "gtpp-ores.json"), dumpGtppOres());
         write(new File(directory, "werkstoff-fields.json"), dumpWerkstoffFields());
         write(new File(directory, "legacy-name-domain.json"), dumpLegacyNameDomain());
         write(new File(directory, "recipe-census.json"), dumpRecipeCensus(), COMPACT_GSON);
@@ -592,144 +589,6 @@ public final class MaterialDataDump {
         for (OrePrefixes prefix : OrePrefixes.VALUES) {
             if (werkstoff.hasItemType(prefix)) out.add(prefix.getName());
         }
-        return out;
-    }
-
-    // endregion
-
-    // region gtpp-materials.json
-
-    /// `Material.mMaterialMap` is a `HashSet`, so iteration order is not stable across launches; sort by
-    /// unlocalized name to make the dump byte-identical between runs (see the `gtpp-materials.json` ordering
-    /// note in the material-unification tooling).
-    ///
-    /// PINNED-CAPTURE TRAP: the committed `scripts/mu/dumps/gtpp-materials.json` is a pre-reconstruction
-    /// capture and must not be refreshed from a later boot. `Material#setTextureSet`'s composition
-    /// heuristic is registration-order-sensitive for 15 materials (AceticAnhydride, CopperIISulfate,
-    /// CopperIISulfatePentahydrate, CyanoaceticAcid, EglinSteel, Grisium, HydrogenCyanide, Indalloy140,
-    /// Laurenium, Octiron, PotassiumNitrate, SodiumCyanide, SodiumNitrate, SolidAcidCatalystMixture,
-    /// ThoriumHexafluoride), so a re-dump could capture a different `textureSet` for those than the codegen
-    /// already committed for -- legacy itself varied this run-to-run, so the pinned capture is exactly as
-    /// legacy-faithful as any other.
-    private static List<Map<String, Object>> dumpGtppMaterials() {
-        List<Material> materials = new ArrayList<>(Material.mMaterialMap);
-        materials.sort(java.util.Comparator.comparing(Material::getUnlocalizedName));
-        List<Map<String, Object>> out = new ArrayList<>();
-        for (Material material : materials) out.add(dumpGtppMaterial(material));
-        return out;
-    }
-
-    private static Map<String, Object> dumpGtppMaterial(Material material) {
-        Map<String, Object> json = new LinkedHashMap<>();
-        json.put("unlocalizedName", material.getUnlocalizedName());
-        json.put("localName", material.getDefaultLocalName());
-        json.put(
-            "state",
-            material.getState() != null ? material.getState()
-                .name() : null);
-        json.put("rgba", toIntArray(material.getRGBA()));
-        json.put("textureSet", material.getTextureSet() != null ? material.getTextureSet().mSetName : null);
-        json.put("meltingPointC", material.getMeltingPointC());
-        json.put("boilingPointC", material.getBoilingPointC());
-        json.put("protons", material.getProtons());
-        json.put("neutrons", material.getNeutrons());
-        json.put("tier", material.vTier);
-        json.put("voltageMultiplier", material.vVoltageMultiplier);
-        json.put("chemicalFormula", material.vChemicalFormula);
-        json.put("durability", material.vDurability);
-        json.put("usesBlastFurnace", material.requiresBlastFurnace());
-        json.put("isRadioactive", material.isRadioactive);
-        json.put("radiationLevel", material.vRadiationLevel);
-        json.put("hasOre", material.hasOre());
-        json.put("werkstoffID", material.werkstoffID);
-        json.put("composition", dumpGtppComposition(material.getComposites()));
-        json.put("fluids", dumpGtppFluids(material));
-        json.put("generatedParts", dumpGtppGeneratedParts(material));
-        return json;
-    }
-
-    /// The authoritative per-material generated-part list, read from the live item registry
-    /// (`Material.mComponentMap`, populated by every `BaseItemComponent`/`BaseOreComponent` constructor)
-    /// rather than re-derived from `MaterialGenerator`'s procedural state/flag logic. Covers plates, ingots,
-    /// dusts, and the rest of the part set, and -- for ore materials -- the crushed/raw ore chain, since both
-    /// item families register into the same map. Sorted by ore-prefix name for determinism.
-    private static List<Map<String, Object>> dumpGtppGeneratedParts(Material material) {
-        List<Map<String, Object>> out = new ArrayList<>();
-        Map<String, ItemStack> parts = Material.mComponentMap.get(material.getUnlocalizedName());
-        if (parts == null) return out;
-        List<String> prefixes = new ArrayList<>(parts.keySet());
-        Collections.sort(prefixes);
-        for (String prefix : prefixes) {
-            ItemStack stack = parts.get(prefix);
-            if (stack == null || stack.getItem() == null) continue;
-            UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
-            if (id == null) continue;
-            Map<String, Object> json = new LinkedHashMap<>();
-            json.put("prefix", prefix);
-            json.put("registryName", id.modId + ":" + id.name);
-            json.put("meta", stack.getItemDamage());
-            out.add(json);
-        }
-        return out;
-    }
-
-    private static List<Map<String, Object>> dumpGtppComposition(List<gtPlusPlus.core.material.MaterialStack> stacks) {
-        List<Map<String, Object>> out = new ArrayList<>();
-        for (gtPlusPlus.core.material.MaterialStack stack : stacks) {
-            Material inner = stack.getStackMaterial();
-            if (inner == null) continue;
-            Map<String, Object> json = new LinkedHashMap<>();
-            json.put("name", inner.getUnlocalizedName());
-            json.put("amount", stack.getPartsPerOneHundred());
-            out.add(json);
-        }
-        return out;
-    }
-
-    private static Map<String, Object> dumpGtppFluids(Material material) {
-        Map<String, Object> json = new LinkedHashMap<>();
-        json.put(
-            "fluid",
-            material.getFluid() != null ? material.getFluid()
-                .getName() : null);
-        json.put(
-            "plasma",
-            material.getPlasma() != null ? material.getPlasma()
-                .getName() : null);
-        return json;
-    }
-
-    // endregion
-
-    // region gtpp-ores.json
-
-    /// The legacy `BlockBaseOre` registry name (`domain:name`) of every gtpp material with `hasOre() == true`
-    /// -- not itself a `generatedParts` prefix (see `dumpGtppGeneratedParts`), since `BlockBaseOre` never
-    /// calls `registerComponentForMaterial`/populates `Material.mComponentMap` the way every other legacy part
-    /// item does. Sourced by scanning the live block registry for `BlockBaseOre` instances directly (not via
-    /// `Material#getOre`/`getOreBlock`'s oredict lookup, which -- unlike `mComponentMap` -- resolves whichever
-    /// stack currently WINS the canonical `ore<Name>` association, no longer the legacy block once cut over).
-    /// A supplementary, non-pinned dump (unlike `gtpp-materials.json`) mirroring `dumpLegacyBlocks`'s role for
-    /// GT's own storage blocks -- refresh freely alongside `GTPPOreAdapter`'s Postea migration table. Sorted
-    /// by unlocalized name for determinism.
-    private static List<Map<String, Object>> dumpGtppOres() {
-        List<Map<String, Object>> out = new ArrayList<>();
-        for (net.minecraft.block.Block block : cpw.mods.fml.common.registry.GameData.getBlockRegistry()
-            .typeSafeIterable()) {
-            if (!(block instanceof gtPlusPlus.core.block.base.BlockBaseOre oreBlock)) continue;
-
-            UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(net.minecraft.item.Item.getItemFromBlock(block));
-            if (id == null) continue;
-
-            Map<String, Object> json = new LinkedHashMap<>();
-            json.put(
-                "unlocalizedName",
-                oreBlock.getMaterialEx()
-                    .getUnlocalizedName());
-            json.put("registryName", id.modId + ":" + id.name);
-            out.add(json);
-        }
-        out.sort(java.util.Comparator.comparing(m -> (String) m.get("unlocalizedName")));
         return out;
     }
 

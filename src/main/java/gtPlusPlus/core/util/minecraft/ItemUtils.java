@@ -29,7 +29,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
-import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.math.MathUtils;
 
 public class ItemUtils {
@@ -147,45 +146,6 @@ public class ItemUtils {
             GTUtility.copyAmount(4, smallDust),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { " D ", "   ", "   ", 'D', normalDust });
-
-        return output;
-    }
-
-    public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust) {
-        return generateSpecialUseDusts(material, onlyLargeDust, false);
-    }
-
-    public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust,
-        final boolean disableExtraRecipes) {
-        final String materialName = material.getUnlocalizedName();
-        final String unlocalizedName = StringUtils.sanitizeString(materialName);
-        final int Colour = material.getRgbAsHex();
-        final String aChemForm = material.vChemicalFormula;
-        final boolean isChemFormvalid = (aChemForm != null && !aChemForm.isEmpty());
-        Item[] output = null;
-        if (!onlyLargeDust) {
-            output = new Item[] {
-                new BaseItemDustUnique(
-                    "itemDust" + unlocalizedName,
-                    materialName,
-                    isChemFormvalid ? aChemForm : "",
-                    Colour,
-                    "Dust"),
-                new BaseItemDustUnique(
-                    "itemDustSmall" + unlocalizedName,
-                    materialName,
-                    isChemFormvalid ? aChemForm : "",
-                    Colour,
-                    "Small"),
-                new BaseItemDustUnique(
-                    "itemDustTiny" + unlocalizedName,
-                    materialName,
-                    isChemFormvalid ? aChemForm : "",
-                    Colour,
-                    "Tiny") };
-        } else {
-            output = new Item[] { new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, Colour, "Dust") };
-        }
 
         return output;
     }

@@ -16,16 +16,11 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class RecipesSeleniumProcessing {
 
     public static void init() {
-
-        // We need this
-        MaterialUtils.generateSpecialDustAndAssignToAMaterial(MaterialMisc.SELENIUM_DIOXIDE, false);
 
         // Makes Selenium Dioxide
         processCopperRecipes();

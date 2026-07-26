@@ -3,6 +3,8 @@ package bwcrossmod.galacticgreg;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.system.material.Werkstoff;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.Materials;
@@ -13,7 +15,6 @@ import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.GTPPOreAdapter;
 import gregtech.common.ores.OreInfo;
-import gtPlusPlus.core.material.Material;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 
@@ -75,13 +76,13 @@ public class VoidMinerLoader {
     }
 
     private static void initGTPP() {
-        OreInfo<Material> info = OreInfo.getNewInfo();
+        OreInfo<com.ruling_0.materiallib.api.Material> info = OreInfo.getNewInfo();
         info.stoneType = StoneType.Stone;
         info.isSmall = false;
 
         var weights = parseWeights(Gregtech.voidMiners.gtppWeightsDD);
 
-        for (Material mat : Material.mMaterialMap) {
+        for (com.ruling_0.materiallib.api.Material mat : MaterialLibAPI.getMaterials()) {
             info.material = mat;
 
             if (!GTPPOreAdapter.INSTANCE.supports(info)) continue;
@@ -89,7 +90,7 @@ public class VoidMinerLoader {
             VoidMinerUtility.addMaterialToDimensionList(
                 DimensionDef.DimNames.DEEPDARK,
                 mat,
-                weights.getFloat(mat.getInternalName()));
+                weights.getFloat(MU.internalName(mat)));
         }
 
         info.release();

@@ -9,40 +9,34 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.ruling_0.materiallib.api.BlockMaterialInfo;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.common.GTProxy.OreDropSystem;
-import gtPlusPlus.core.block.base.BlockBaseOre;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialReconstruction;
 
 /// The gtPlusPlus-material [IOreAdapter], reimplemented over MaterialLib the same way [BWOreAdapter]
-/// reimplements [bartworks.system.material.Werkstoff] ore: resolves through a material's MaterialLib
-/// counterpart (see [#materialOf]) before falling back to the legacy [BlockBaseOre] instance, which stays
-/// constructed and registered (see that class) for pre-migration saves and for any gtpp material that never
-/// gained [Materials2OreShapes#ore] membership.
+/// reimplements [bartworks.system.material.Werkstoff] ore: worldgen placement, mining drops, and prospecting
+/// dispatch to this singleton via [OreManager] for any material carrying [GTMaterialProperties#GTPP_STATE]
+/// with no live id-backed [gregtech.api.enums.Materials] counterpart (see [#isGtpp]).
 ///
-/// Unlike [gregtech.api.enums.Materials]/[bartworks.system.material.Werkstoff] ore, gtpp ore only ever
-/// existed on [StoneType#Stone] (the legacy adapter this replaces hardcoded `StoneType.Stone` unconditionally)
-/// and never had a small-ore variant -- both [#supports(OreInfo)] and [#getBlock] enforce this exactly as the
-/// legacy class did, and no gtpp material ever claims `Materials2OreShapes#oreSmall`. [BlockBaseOre] is
-/// also one distinct registered `Block` instance PER MATERIAL (like
-/// [gtPlusPlus.core.block.base.BlockBaseModular], unlike the shared meta-block
-/// [gregtech.common.blocks.GTBlockOre]/[bartworks.system.material.BWMetaGeneratedOres] use), so no per-meta
-/// decode is needed anywhere in this class.
+/// Unlike [gregtech.api.enums.Materials]/[bartworks.system.material.Werkstoff] ore, gtpp ore only ever existed
+/// on [StoneType#Stone] and never had a small-ore variant, both [#supports(OreInfo)] and [#getBlock] enforce
+/// this, and no gtpp material ever claims `Materials2OreShapes#oreSmall`.
 ///
-/// [#materialOf] only ever resolves a *pure* gtpp material (no live [gregtech.api.enums.Materials] counterpart
-/// -- see [MU#materialOf]): a name-merge material's ore is already owned by [GTOreAdapter], tried first in
+/// [#isGtpp] only ever matches a *pure* gtpp material (no live [gregtech.api.enums.Materials] counterpart --
+/// see [MU#materialOf]): a name-merge material's ore is already owned by [GTOreAdapter], tried first in
 /// [OreManager]'s adapter list, and this adapter's own [Materials2OreShapes] drop/harvest-level dispatch (see
 /// that class) gates on the same discriminator so a merge material's ore keeps GT's per-material formulas
 /// instead of gtpp's flat ones.
@@ -54,40 +48,29 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
 
     @Override
     public boolean supports(Block block, int meta) {
-        if (block instanceof BlockBaseOre) return true;
-
         BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, meta);
-        return info != null && info.shape() == Materials2OreShapes.ore && materialOf(info.material()) != null;
+        return info != null && info.shape() == Materials2OreShapes.ore && isGtpp(info.material());
     }
 
     @Override
     public boolean supports(OreInfo<?> info) {
         if (info.stoneType != null && info.stoneType != StoneType.Stone) return false;
-        if (!(info.material instanceof Material gtppMat)) return false;
         if (info.isSmall) return false;
 
-        return gtppMat.hasOre();
+        return info.material instanceof Material material && isGtpp(material)
+            && material.hasShape(Materials2OreShapes.ore);
     }
 
     @Override
     public OreInfo<Material> getOreInfo(Block block, int meta) {
-        if (block instanceof BlockBaseOre gtppOre) {
-            OreInfo<Material> info = OreInfo.getNewInfo();
-            info.stoneType = StoneType.Stone;
-            info.material = gtppOre.getMaterialEx();
-            info.isNatural = true;
-            return info;
+        BlockMaterialInfo blockInfo = MaterialLibAPI.lookupBlock(block, meta);
+        if (blockInfo == null || blockInfo.shape() != Materials2OreShapes.ore || !isGtpp(blockInfo.material())) {
+            return null;
         }
 
-        BlockMaterialInfo blockInfo = MaterialLibAPI.lookupBlock(block, meta);
-        if (blockInfo == null || blockInfo.shape() != Materials2OreShapes.ore) return null;
-
-        Material material = materialOf(blockInfo.material());
-        if (material == null) return null;
-
         OreInfo<Material> info = OreInfo.getNewInfo();
+        info.material = blockInfo.material();
         info.stoneType = StoneType.Stone;
-        info.material = material;
         info.isNatural = true;
         return info;
     }
@@ -96,31 +79,23 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
     public ImmutableBlockMeta getBlock(OreInfo<?> info) {
         if (!supports(info)) return null;
 
-        Material gtppMat = (Material) info.material;
+        ItemStack stack = oreStack((Material) info.material);
+        if (stack == null) return null;
 
-        com.ruling_0.materiallib.api.Material ml = MaterialReconstruction.materialLibOf(gtppMat.getUnlocalizedName());
-        if (ml != null && ml.hasShape(Materials2OreShapes.ore)) {
-            ItemStack stack = MaterialLibAPI
-                .getStack(ml, Materials2OreShapes.ore, Materials2OreShapes.variantOf(StoneType.Stone.name()), 1);
-            if (stack != null) {
-                return new BlockMeta(Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
-            }
-        }
+        return new BlockMeta(Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
+    }
 
-        Block ore = gtppMat.getOreBlock(1);
-        if (ore == null) return null;
-
-        return new BlockMeta(ore, 0);
+    /// The `Materials2OreShapes#ore` stack for a gtpp ore material at its (sole) [StoneType#Stone] variant --
+    /// that shape carries per-stone-type variants, so it cannot resolve through the plain [MU#stack] overload.
+    private static @Nullable ItemStack oreStack(Material material) {
+        return MaterialLibAPI
+            .getStack(material, Materials2OreShapes.ore, Materials2OreShapes.variantOf(StoneType.Stone.name()), 1);
     }
 
     /// The drops for one MaterialLib gtpp ore block, called from [Materials2OreShapes]'s drop hook when the
-    /// material carries [GTMaterialProperties#GTPP] but has no live gregtech counterpart -- see
+    /// material carries [GTMaterialProperties#GTPP_STATE] but has no live gregtech counterpart -- see
     /// [BWOreAdapter#shapeDrops]/[GTOreAdapter#shapeDrops] for the equivalent on the other two ore families.
-    public List<ItemStack> shapeDrops(com.ruling_0.materiallib.api.Material mlMaterial, int fortune,
-        boolean isSilkTouch) {
-        Material material = materialOf(mlMaterial);
-        if (material == null) return List.of();
-
+    public List<ItemStack> shapeDrops(Material material, int fortune, boolean isSilkTouch) {
         try (OreInfo<Material> info = OreInfo.getNewInfo()) {
             info.material = material;
             info.stoneType = StoneType.Stone;
@@ -130,32 +105,24 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
         }
     }
 
-    /// The harvest level for a MaterialLib gtpp ore material -- legacy [BlockBaseOre] used
+    /// The harvest level for a MaterialLib gtpp ore material -- the retired legacy `BlockBaseOre` used
     /// `Math.min(Math.max(material.vTier, 1), 6)` for every material via its `BasicBlock` mining-level
     /// constructor argument, a flat per-material formula unlike GT's/BW's own.
-    public int harvestLevel(com.ruling_0.materiallib.api.Material mlMaterial) {
-        Material material = materialOf(mlMaterial);
-        if (material == null) return 0;
-
-        return Math.min(Math.max(material.vTier, 1), 6);
+    public int harvestLevel(Material material) {
+        Integer tier = material.getProperty(GTMaterialProperties.TIER);
+        return Math.min(Math.max(tier == null ? 0 : tier, 1), 6);
     }
 
-    /// The gtpp material a MaterialLib material was reconstructed from, or null if it carries no
-    /// [GTMaterialProperties#GTPP_STATE] data, is not a [MaterialReconstruction]-owned name, or is a name-merge
-    /// already claimed by a live, id-backed [gregtech.api.enums.Materials] counterpart (see this class's
-    /// javadoc). A [gtPlusPlus.core.material.GtppBridgeMaterialsLoader] bridge Materials also resolves through
-    /// [MU#materialOf], but carries no real legacy id (`mMetaItemSubID` stays at its `-1` default, since a
-    /// [gregtech.api.enums.MaterialBuilder] material is never assigned one) -- ore-block concerns still belong to
-    /// this adapter for those, so only a positive-id resolution excludes.
-    private static Material materialOf(com.ruling_0.materiallib.api.Material mlMaterial) {
-        if (mlMaterial == null || mlMaterial.getProperty(GTMaterialProperties.GTPP_STATE) == null) return null;
-        Materials gtEquivalent = MU.materialOf(mlMaterial);
-        if (gtEquivalent != null && gtEquivalent.mMetaItemSubID >= 0) return null;
-
-        String name = mlMaterial.getName();
-        if (!MaterialReconstruction.isReconstructed(name)) return null;
-
-        return MaterialReconstruction.byName(name);
+    /// Whether a MaterialLib material belongs to the gtPlusPlus ore family -- carries
+    /// [GTMaterialProperties#GTPP_STATE] and has no live id-backed [gregtech.api.enums.Materials] counterpart.
+    /// A bridge [gregtech.api.enums.Materials] also resolves through [MU#materialOf] but carries no real legacy
+    /// id (`mMetaItemSubID` stays at its `-1` default, since a [gregtech.api.enums.MaterialBuilder] material is
+    /// never assigned one) -- ore-block concerns still belong to this adapter for those, so only a
+    /// positive-id resolution excludes.
+    private static boolean isGtpp(@Nullable Material material) {
+        if (material == null || material.getProperty(GTMaterialProperties.GTPP_STATE) == null) return false;
+        Materials gtEquivalent = MU.materialOf(material);
+        return gtEquivalent == null || gtEquivalent.mMetaItemSubID < 0;
     }
 
     @Override
@@ -189,22 +156,20 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         switch (oreDropMode) {
-            case Item -> drops.add(info.material.getRawOre(1));
+            case Item -> drops.add(MU.stack(OrePrefixes.rawOre, info.material, 1));
             case FortuneItem -> {
                 if (fortune > 0) {
                     int aMinAmount = 1;
                     if (fortune > 3) fortune = 3;
                     long amount = (long) random.nextInt(fortune) + aMinAmount;
                     for (int i = 0; i < amount; i++) {
-                        drops.add(info.material.getRawOre(1));
+                        drops.add(MU.stack(OrePrefixes.rawOre, info.material, 1));
                     }
                 } else {
-                    drops.add(info.material.getRawOre(1));
+                    drops.add(MU.stack(OrePrefixes.rawOre, info.material, 1));
                 }
             }
-            case UnifiedBlock, PerDimBlock, Block -> {
-                drops.add(info.material.getOre(1));
-            }
+            case UnifiedBlock, PerDimBlock, Block -> drops.add(oreStack(info.material));
         }
 
         return drops;

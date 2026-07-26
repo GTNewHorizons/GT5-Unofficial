@@ -13,83 +13,52 @@
 
 package bwcrossmod.GTpp.loader;
 
-import java.lang.reflect.Field;
 import java.util.HashSet;
-import java.util.Map;
 
-import net.minecraft.item.Item;
-import net.minecraft.util.RegistryNamespaced;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.util.log.DebugLog;
-import bwcrossmod.BartWorksCrossmod;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.Mods;
-import gtPlusPlus.core.item.base.BaseItemComponent;
-import gtPlusPlus.core.item.base.rods.BaseItemRod;
-import gtPlusPlus.core.item.base.rods.BaseItemRodLong;
-import gtPlusPlus.core.material.Material;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 
 public class RadioHatchCompat {
 
     public static HashSet<String> TranslateSet = new HashSet<>();
 
-    @SuppressWarnings("unchecked")
+    /// Ensures every radioactive material's `stick`/`stickLong` item is reachable under its legacy oredict
+    /// name, for radio hatch machinery that still looks materials up that way. A material MaterialLib never
+    /// generates a rod shape for is skipped -- unlike the retired gtPlusPlus `BaseItemRod`/`BaseItemRodLong`,
+    /// nothing here can mint a rod item from scratch.
     public static void run() {
         DebugLog.log("Starting Generation of missing GT++ rods/longrods");
-        try {
-            Field cOwners = GameData.class.getDeclaredField("customOwners");
-            cOwners.setAccessible(true);
-            Field map = RegistryNamespaced.class.getDeclaredField("field_148758_b");
-            map.setAccessible(true);
-            Map<Item, String> UniqueIdentifierMap = (Map<Item, String>) map.get(GameData.getItemRegistry());
 
-            Map<GameRegistry.UniqueIdentifier, ModContainer> ownerItems = (Map<GameRegistry.UniqueIdentifier, ModContainer>) cOwners
-                .get(null);
-            ModContainer gtpp = null;
-            ModContainer bartworks = null;
+        for (Material mats : MaterialLibAPI.getMaterials()) {
+            if (!Boolean.TRUE.equals(mats.getProperty(GTMaterialProperties.IS_RADIOACTIVE))) continue;
 
-            for (ModContainer container : Loader.instance()
-                .getModList()) {
-                if (gtpp != null && bartworks != null) break;
-                if (BartWorksCrossmod.MOD_ID.equalsIgnoreCase(container.getModId())) {
-                    bartworks = container;
-                } else if (Mods.GTPlusPlus.ID.equalsIgnoreCase(container.getModId())) {
-                    gtpp = container;
+            String name = MU.internalName(mats);
+
+            if (OreDictionary.getOres("stick" + name)
+                .isEmpty()) {
+                ItemStack itemRod = MU.stack(OrePrefixes.stick, mats, 1);
+                if (itemRod != null) {
+                    OreDictionary.registerOre("stick" + name, itemRod);
+                    DebugLog.log("Generate: stick" + name);
                 }
             }
 
-            for (Material mats : Material.mMaterialMap) {
-                if (!mats.isRadioactive) continue;
-
-                if (OreDictionary.getOres("stick" + mats.getUnlocalizedName())
-                    .isEmpty()) {
-                    Item itemRod = new BaseItemRod(mats);
-                    UniqueIdentifierMap.replace(itemRod, "miscutils:" + itemRod.getUnlocalizedName());
-                    GameRegistry.UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(itemRod);
-                    ownerItems.replace(ui, bartworks, gtpp);
-                    String translate = itemRod.getUnlocalizedName() + ".name=" + mats.getDefaultLocalName() + " Rod";
-                    RadioHatchCompat.TranslateSet.add(translate);
-                    DebugLog.log(translate);
-                    DebugLog.log("Generate: " + BaseItemComponent.ComponentTypes.ROD + mats.getUnlocalizedName());
+            if (OreDictionary.getOres("stickLong" + name)
+                .isEmpty()) {
+                ItemStack itemRodLong = MU.stack(OrePrefixes.stickLong, mats, 1);
+                if (itemRodLong != null) {
+                    OreDictionary.registerOre("stickLong" + name, itemRodLong);
+                    DebugLog.log("Generate: stickLong" + name);
                 }
-
-                if (OreDictionary.getOres("stickLong" + mats.getUnlocalizedName())
-                    .isEmpty()) {
-                    Item itemRodLong = new BaseItemRodLong(mats);
-                    UniqueIdentifierMap.replace(itemRodLong, "miscutils:" + itemRodLong.getUnlocalizedName());
-                    GameRegistry.UniqueIdentifier ui2 = GameRegistry.findUniqueIdentifierFor(itemRodLong);
-                    ownerItems.replace(ui2, bartworks, gtpp);
-                    DebugLog.log("Generate: " + BaseItemComponent.ComponentTypes.RODLONG + mats.getUnlocalizedName());
-                }
-
             }
-
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
         }
     }
 

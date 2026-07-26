@@ -190,9 +190,9 @@ public class Materials2OreShapes {
     /// Whether `material` is a *pure* gtpp material with no live, id-backed [gregtech.api.enums.Materials]
     /// counterpart -- [GTOreAdapter] already owns drop/harvest-level behavior for a gtpp name-merge material (its
     /// own dump captured real per-material formulas that predate gtpp entirely), so this excludes any material
-    /// [MU#materialOf] resolves to a real legacy id. A `GtppBridgeMaterialsLoader` bridge Materials also resolves
-    /// through [MU#materialOf] but carries no real id (`mMetaItemSubID` stays `-1`), so it still counts as gtpp
-    /// here, mirroring [GTPPOreAdapter#materialOf]'s own discriminator.
+    /// [MU#materialOf] resolves to a real legacy id. A bridge Materials also resolves through [MU#materialOf]
+    /// but carries no real id (`mMetaItemSubID` stays `-1`), so it still counts as gtpp here, mirroring
+    /// [GTPPOreAdapter]'s own `isGtpp` discriminator.
     private static boolean isGtpp(Material material) {
         if (material.getProperty(GTMaterialProperties.GTPP_STATE) == null) return false;
         gregtech.api.enums.Materials gtEquivalent = MU.materialOf(material);

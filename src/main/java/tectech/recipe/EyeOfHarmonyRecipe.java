@@ -7,6 +7,7 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTUtility.getPlasmaFuelValueInEUPerLiterFromFluid;
 import static java.lang.Math.min;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,13 +34,12 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.material.MUOre;
+import gregtech.api.material.MaterialRefStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialStack;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreSmallHelper;
@@ -368,10 +368,9 @@ public class EyeOfHarmonyRecipe {
 
     private static final double[] ORE_MULTIPLIER = { PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER };
 
-    /// Accumulates output quantities keyed by material. Keys are the MaterialLib [Material] when the source
-    /// resolves to one (so canonical contributions from every source merge -- the facade<->MaterialLib name
-    /// bijection makes this the same merge partition the legacy-keyed map produced), or the gtPlusPlus
-    /// [Material] for a gtpp-typed source with no gregtech counterpart.
+    /// Accumulates output quantities keyed by canonical [com.ruling_0.materiallib.api.Material] -- every source
+    /// (gregtech, bartworks, or a gtpp-flavored material) resolves to the same registry singleton, so
+    /// contributions naming the same material always merge into one entry.
     public static class HashMapHelper extends HashMap<Object, Double> {
 
         private static final long serialVersionUID = 2297018142561480614L;
@@ -392,16 +391,12 @@ public class EyeOfHarmonyRecipe {
         void add(com.ruling_0.materiallib.api.Material material, double value) {
             addRaw(material, value);
         }
-
-        void addGTpp(Material mat, double value) {
-            com.ruling_0.materiallib.api.Material canonical = mat.getGTMaterial();
-            addRaw(canonical != null ? canonical : mat, value);
-        }
     }
 
-    /// Native [Material]-typed body: reads every legacy field through [MU]/[MUOre] property accessors instead
-    /// of a single upfront [MU#materialOf] snapshot, so each read resolves independently against the live
-    /// facade. [MU#directSmelting(Material)] and [MU#directSmelting(Materials)] are documented
+    /// Native [com.ruling_0.materiallib.api.Material]-typed body: reads every legacy field through [MU]/[MUOre]
+    /// property accessors instead of a single upfront [MU#materialOf] snapshot, so each read resolves
+    /// independently against the live facade. [MU#directSmelting(Material)] and [MU#directSmelting(Materials)]
+    /// are documented
     /// byte-identical for any material with a MaterialLib counterpart, and neither the bartworks nor gtpp
     /// bridge loader ever writes `mOreMultiplier`/`mByProductMultiplier`/`mSmeltingMultiplier` independently of
     /// [GTMaterialProperties], so this reads the same single source of truth as the legacy-typed overload does
@@ -481,17 +476,56 @@ public class EyeOfHarmonyRecipe {
     private static final double GTPP_PRIMARY_MULTIPLIER = (2.0 / 9.0 + 0.1);
     private static final double GTPP_SECONDARY_MULTIPLIER = (1.0 / 9.0);
 
-    public static void processHelperGTpp(HashMapHelper outputMap, Material material, double mainMultiplier,
-        double probability) {
-        if (material == null) return;
-        outputMap.addGTpp(material, 2 * mainMultiplier * probability);
+    /// Whether a material carries every shape the gtpp bonus-byproduct algorithm below requires to consider it
+    /// a usable bonus output -- the [GTMaterialProperties#COMPOSITION]-based port of the retired gtPlusPlus
+    /// `Material#hasSolidForm`, which likewise required all four shapes present (not merely one).
+    private static boolean hasSolidForm(com.ruling_0.materiallib.api.Material material) {
+        return MU.stack(OrePrefixes.dust, material, 1) != null && MU.stack(OrePrefixes.block, material, 1) != null
+            && MU.stack(OrePrefixes.dustTiny, material, 1) != null
+            && MU.stack(OrePrefixes.dustSmall, material, 1) != null;
+    }
 
-        // Copied from src/main/java/gtPlusPlus/core/material/Material.java
-        Material bonusA = null; // Ni
-        Material bonusB = null; // Tin
+    /// A breadth-first walk of `material`'s [GTMaterialProperties#COMPOSITION] tree, collecting every leaf
+    /// (a material with no composition of its own) -- the [com.ruling_0.materiallib.api.Material]-based port of
+    /// the retired gtPlusPlus `MaterialUtils#getCompoundMaterialsRecursively`, which walked the equivalent
+    /// legacy composite tree the same way. A composition entry that fails to resolve is dropped rather than
+    /// descended into.
+    private static ArrayList<com.ruling_0.materiallib.api.Material> compoundMaterialsRecursively(
+        com.ruling_0.materiallib.api.Material material) {
+        ArrayList<com.ruling_0.materiallib.api.Material> resultList = new ArrayList<>();
+        ArrayDeque<com.ruling_0.materiallib.api.Material> toCheck = new ArrayDeque<>();
+        toCheck.add(material);
+
+        final int HARD_LIMIT = 1000;
+        int processed = 0;
+        while (!toCheck.isEmpty() && processed < HARD_LIMIT) {
+            com.ruling_0.materiallib.api.Material current = toCheck.remove();
+            List<MaterialRefStack> composition = current.getProperty(GTMaterialProperties.COMPOSITION);
+            if (composition == null || composition.isEmpty()) {
+                resultList.add(current);
+            } else {
+                for (MaterialRefStack entry : composition) {
+                    com.ruling_0.materiallib.api.Material child = entry.material()
+                        .resolve();
+                    if (child != null) toCheck.add(child);
+                }
+            }
+            processed++;
+        }
+        return resultList;
+    }
+
+    public static void processHelperGTpp(HashMapHelper outputMap, com.ruling_0.materiallib.api.Material material,
+        double mainMultiplier, double probability) {
+        if (material == null) return;
+        outputMap.add(material, 2 * mainMultiplier * probability);
+
+        // Copied from the retired src/main/java/gtPlusPlus/core/material/Material.java
+        com.ruling_0.materiallib.api.Material bonusA = null; // Ni
+        com.ruling_0.materiallib.api.Material bonusB = null; // Tin
 
         // Setup Bonuses
-        ArrayList<Material> aMatComp = new ArrayList<>(MaterialUtils.getCompoundMaterialsRecursively(material));
+        ArrayList<com.ruling_0.materiallib.api.Material> aMatComp = compoundMaterialsRecursively(material);
 
         if (aMatComp.size() < 3) {
             while (aMatComp.size() < 3) {
@@ -499,31 +533,31 @@ public class EyeOfHarmonyRecipe {
             }
         }
 
-        final ArrayList<Material> amJ = new ArrayList<>(2);
-        for (Material g : aMatComp) {
-            if (g.hasSolidForm()) {
+        final ArrayList<com.ruling_0.materiallib.api.Material> amJ = new ArrayList<>(2);
+        for (com.ruling_0.materiallib.api.Material g : aMatComp) {
+            if (hasSolidForm(g)) {
                 amJ.add(g);
                 if (amJ.size() >= 2) break;
             }
         }
 
         boolean allFailed = false;
-        final ArrayList<MaterialStack> composites = material.getComposites();
+        List<MaterialRefStack> composites = material.getProperty(GTMaterialProperties.COMPOSITION);
+        if (composites == null) composites = Collections.emptyList();
+
         if (amJ.size() < 2) {
             allFailed = true;
-            if (!composites.isEmpty() && composites.get(0) != null) {
-                bonusA = composites.get(0)
-                    .getStackMaterial();
-            } else {
-                bonusA = material;
-            }
+            bonusA = composites.isEmpty() ? material
+                : composites.get(0)
+                    .material()
+                    .resolve();
 
             // If Secondary Output has no solid output, try the third (If it exists), then the fourth/fifth
-            for (byte i = 1; i < Math.min(composites.size(), 5); i++) {
-                if (composites.get(i) == null) break;
+            for (int i = 1; i < Math.min(composites.size(), 5); i++) {
                 bonusB = composites.get(i)
-                    .getStackMaterial();
-                if (bonusB != null && bonusB.hasSolidForm()) {
+                    .material()
+                    .resolve();
+                if (bonusB != null && hasSolidForm(bonusB)) {
                     allFailed = false;
                     break;
                 }
@@ -534,21 +568,24 @@ public class EyeOfHarmonyRecipe {
             bonusB = amJ.get(1);
         }
 
+        Integer tierProperty = material.getProperty(GTMaterialProperties.TIER);
+        int materialTier = tierProperty == null ? 0 : tierProperty;
+
         // Default out if it's made of fluids or some stuff.
-        if (bonusA == null && material.vTier >= 2) {
+        if (bonusA == null && materialTier >= 2) {
             bonusA = material;
         }
         // Default out if it's made of fluids or some stuff.
-        if ((allFailed || bonusB == null) && material.vTier >= 2) {
+        if ((allFailed || bonusB == null) && materialTier >= 2) {
             bonusB = material;
         }
 
         // Need two valid outputs
-        if (bonusA != null && bonusA.hasSolidForm()) {
-            outputMap.addGTpp(bonusA, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
+        if (bonusA != null && hasSolidForm(bonusA)) {
+            outputMap.add(bonusA, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
         } else outputMap.add(Materials2Materials.Stone, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
-        if (bonusB != null && bonusB.hasSolidForm()) {
-            outputMap.addGTpp(bonusB, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
+        if (bonusB != null && hasSolidForm(bonusB)) {
+            outputMap.add(bonusB, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
         } else outputMap.add(Materials2Materials.Stone, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
     }
 
@@ -557,7 +594,7 @@ public class EyeOfHarmonyRecipe {
         if (material instanceof Materials gtMat) processHelper(outputMap, gtMat, mainMultiplier, probability);
         else if (material instanceof Werkstoff bwMat)
             processHelper(outputMap, WerkstoffReconstruction.materialLibOf(bwMat), mainMultiplier, probability);
-        else if (material instanceof Material gtppMat) {
+        else if (material instanceof com.ruling_0.materiallib.api.Material gtppMat) {
             processHelperGTpp(outputMap, gtppMat, mainMultiplier, probability);
         }
     }
@@ -616,7 +653,6 @@ public class EyeOfHarmonyRecipe {
             final ItemStack dust;
             if (mat instanceof com.ruling_0.materiallib.api.Material ml)
                 dust = getUnificatedOreDictStack(GTOreDictUnificator.get(OrePrefixes.dust, ml, 1L));
-            else if (mat instanceof Material) dust = ((Material) mat).getDust(1);
             else dust = null;
             if (dust != null) {
                 dustList.merge(dust, pair.getRight(), Long::sum);

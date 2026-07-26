@@ -32,7 +32,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTPPOreAdapter;
 import gregtech.common.ores.OreInfo;
-import gtPlusPlus.core.material.Material;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
 import gtneioreplugin.util.DimensionHelper;
@@ -181,10 +180,10 @@ public class EyeOfHarmonyRecipeStorage {
         }
         infoWerkstoff.release();
 
-        final HashSet<Material> validGTPPMaterialSet = new HashSet<>();
-        OreInfo<Material> infoGTPP = OreInfo.getNewInfo();
+        final HashSet<com.ruling_0.materiallib.api.Material> validGTPPMaterialSet = new HashSet<>();
+        OreInfo<com.ruling_0.materiallib.api.Material> infoGTPP = OreInfo.getNewInfo();
         infoGTPP.stoneType = StoneType.Stone;
-        for (Material mat : Material.mMaterialMap) {
+        for (com.ruling_0.materiallib.api.Material mat : MaterialLibAPI.getMaterials()) {
             infoGTPP.material = mat;
 
             infoGTPP.isSmall = false;
@@ -196,7 +195,7 @@ public class EyeOfHarmonyRecipeStorage {
         infoGTPP.release();
 
         ArrayList<com.ruling_0.materiallib.api.Material> validMaterialList = new ArrayList<>(validMaterialSet);
-        ArrayList<Material> validGTPPMaterialList = new ArrayList<>(validGTPPMaterialSet);
+        ArrayList<com.ruling_0.materiallib.api.Material> validGTPPMaterialList = new ArrayList<>(validGTPPMaterialSet);
 
         long rocketTier = 9;
 
@@ -219,7 +218,7 @@ public class EyeOfHarmonyRecipeStorage {
 
     private ArrayList<Pair<Object, Long>> processDD(
         final ArrayList<com.ruling_0.materiallib.api.Material> validMaterialList,
-        ArrayList<Material> validGTPPMaterialList) {
+        ArrayList<com.ruling_0.materiallib.api.Material> validGTPPMaterialList) {
         EyeOfHarmonyRecipe.HashMapHelper outputMap = new EyeOfHarmonyRecipe.HashMapHelper();
 
         // 10 from rocketTier + 1, 6 * 64 = VM3 + Og, 1.4 = time increase per tier.

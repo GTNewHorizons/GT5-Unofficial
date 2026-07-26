@@ -142,6 +142,7 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorEventHandlers;
 import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
@@ -2088,17 +2089,30 @@ public class GTProxy implements IFuelHandler {
         return aMaterial != null ? aMaterial : Materials2Materials.NULL;
     }
 
-    /// The reconstructed (werkstoff- or gtpp-owned) MaterialLib material registered under `tName`, or null when
-    /// the name must keep being dropped as unknown. Exactly the names with a minted bridge facade flowed
-    /// through [#registerOre]'s pipeline before minting retired, and only from the moment that facade entered
-    /// [Materials]'s map -- so dispatch keys on [MU#hasBridgeRegistration], the bridge loaders' record of that
-    /// same moment. An event registered earlier (notably the entire [#catchUpPreExistingOreDictEntries]
-    /// replay, which carries MaterialLib's own item registrations for every reconstructed material) resolved
-    /// `_NULL` in the bridge era and was dropped then too.
+    /// The reconstructed (werkstoff-owned) MaterialLib material registered under `tName`, or null when the name
+    /// must keep being dropped as unknown. Exactly the names with a minted bridge facade flowed through
+    /// [#registerOre]'s pipeline before minting retired, and only from the moment that facade entered
+    /// [Materials]'s map -- so dispatch keys on [MU#hasBridgeRegistration], the bridge loader's record of that
+    /// same moment. An event registered earlier (notably the entire [#catchUpPreExistingOreDictEntries] replay,
+    /// which carries MaterialLib's own item registrations for every reconstructed material) resolved `_NULL` in
+    /// the bridge era and was dropped then too.
+    ///
+    /// A gtPlusPlus-originated material never gets a [MU#hasBridgeRegistration] record (there is no gtpp bridge
+    /// loader left), so it falls to the plain registry-and-shapes check [#resolveCensusMaterial] also uses --
+    /// the timing distinction above never applied to it in the first place, since gtpp names never had a
+    /// declared `Materials` field for [#catchUpPreExistingOreDictEntries] to race against. That fallback is
+    /// gated on [GTMaterialProperties#GTPP_STATE] specifically (the same discriminator
+    /// `gregtech.common.ores.GTPPOreAdapter`'s `isGtpp` uses): an ordinary bartworks werkstoff with no
+    /// bridge-registration record (one that never claimed a gtpp name) has its own working resolution path
+    /// elsewhere and must keep resolving `_NULL` here, not be newly rescued by this fallback.
     private static @Nullable Material reconstructedMaterial(@Nullable String tName) {
         if (tName == null || hasDeclaredMaterialsField(tName)) return null;
         Material ml = MaterialLibAPI.getMaterial("gregtech", tName);
-        return MU.hasBridgeRegistration(ml) ? ml : null;
+        if (ml == null) return null;
+        if (MU.hasBridgeRegistration(ml)) return ml;
+        if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) return null;
+        return ml.getShapes()
+            .isEmpty() ? null : ml;
     }
 
     /// Whether `name` was a declared `public static Materials` field on the `Materials` facade, regardless of

@@ -4,9 +4,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -15,11 +13,9 @@ import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
-import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
@@ -71,28 +67,6 @@ public class BaseItemDustUnique extends Item {
         temp = temp.replace("itemD", "d");
         if (!temp.isEmpty()) {
             GTOreDictUnificator.registerOre(temp, new ItemStack(this));
-        }
-        registerComponent();
-    }
-
-    public boolean registerComponent() {
-        if (this.materialName == null) {
-            return false;
-        }
-        String aName = materialName;
-        // Register Component
-        Map<String, ItemStack> aMap = Material.mComponentMap.get(aName);
-        if (aMap == null) {
-            aMap = new HashMap<>();
-        }
-        String aKey = OrePrefixes.dust.getName();
-        ItemStack x = aMap.get(aKey);
-        if (x == null) {
-            aMap.put(aKey, new ItemStack(this));
-            Material.mComponentMap.put(aName, aMap);
-            return true;
-        } else {
-            return false;
         }
     }
 

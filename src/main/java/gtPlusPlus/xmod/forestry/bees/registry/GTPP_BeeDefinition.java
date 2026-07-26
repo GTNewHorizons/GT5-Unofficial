@@ -12,10 +12,14 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.function.Consumer;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.BiomeDictionary;
 
 import org.apache.commons.lang3.text.WordUtils;
+
+import com.ruling_0.materiallib.api.Material;
 
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeType;
@@ -32,19 +36,20 @@ import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
 import forestry.core.genetics.alleles.EnumAllele.Lifespan;
 import forestry.core.genetics.alleles.EnumAllele.Tolerance;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBeeDefinition;
 import gregtech.loaders.misc.GTBees;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialsElements.STANDALONE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 
 public enum GTPP_BeeDefinition implements IBeeDefinition {
 
-    DRAGONBLOOD(GTPP_BranchDefinition.LEGENDARY, "Dragon Blood", STANDALONE.DRAGON_METAL, true,
+    DRAGONBLOOD(GTPP_BranchDefinition.LEGENDARY, "Dragon Blood", Materials2Materials.Dragonblood, true,
         Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20), beeSpecies -> {
             beeSpecies.addProduct(GTModHandler.getModItem(Forestry.ID, "beeCombs", 1, 8), 0.30f);
             beeSpecies.addSpecialty(GTPP_Bees.combs.getStackForType(GTPPCombType.DRAGONBLOOD), 0.10f);
@@ -63,10 +68,10 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
                 2,
                 1f);
             tMutation.restrictHumidity(ARID);
-            tMutation.requireResource(STANDALONE.DRAGON_METAL.getBlock(), 1);
+            tMutation.requireResource(blockOf(Materials2Materials.Dragonblood), 1);
             tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(1, "End")); // End Dim
         }),
-    FORCE(GTPP_BranchDefinition.LEGENDARY, "Force", STANDALONE.FORCE, true, Utils.rgbtoHexValue(250, 250, 20),
+    FORCE(GTPP_BranchDefinition.LEGENDARY, "Force", Materials2Materials.Force, true, Utils.rgbtoHexValue(250, 250, 20),
         Utils.rgbtoHexValue(200, 200, 5), beeSpecies -> {
             beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.STONE), 0.30f);
             beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.SALT), 0.15f);
@@ -122,6 +127,12 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
             binomial,
             primary,
             secondary);
+    }
+
+    private static Block blockOf(Material material) {
+        ItemStack stack = MU.stack(OrePrefixes.block, material, 1);
+        Block block = stack == null ? null : Block.getBlockFromItem(stack.getItem());
+        return block != null ? block : Blocks.lit_furnace;
     }
 
     public static void initBees() {

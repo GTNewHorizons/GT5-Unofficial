@@ -4,13 +4,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.NotEnoughItems;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
-import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FINEWIRE;
-import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FOIL;
-import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.GEAR;
-import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.PLATESUPERDENSE;
-import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLGEAR;
-import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLSPRING;
-import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SPRING;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
@@ -35,8 +28,6 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.BaseItemDamageable;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.item.base.ore.BaseItemMilledOre;
-import gtPlusPlus.core.item.base.plates.BaseItemPlate;
-import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
 import gtPlusPlus.core.item.bauble.FireProtectionBauble;
 import gtPlusPlus.core.item.chemistry.IonParticles;
@@ -62,24 +53,14 @@ import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.item.tool.misc.ItemGregtechPump;
 import gtPlusPlus.core.item.wearable.WearableLoader;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.MaterialsOther;
-import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
-import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
-import toxiceverglades.GTPPEverglades;
 
 public final class ModItems {
 
@@ -93,7 +74,20 @@ public final class ModItems {
         WearableLoader.run();
         ItemsFoods.load();
 
-        runMaterialGenerator();
+        // Zirconium Tetrafluoride's fluid is registered directly by name rather than through a material
+        // declaration, so MU#legacyGtppFluidOf falls back to its pinned Forge fluid name for it.
+        FluidUtils.generateFluidNoPrefix(
+            "ZirconiumTetrafluoride",
+            "Zirconium Tetrafluoride",
+            500,
+            new short[] { 170, 170, 140, 100 });
+
+        Item[] tumbagaMix = ItemUtils
+            .generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80));
+        GregtechItemList.TumbagaMixDust.set(tumbagaMix[0]);
+        GregtechItemList.SmallTumbagaMixDust.set(tumbagaMix[1]);
+        GregtechItemList.TinyTumbagaMixDust.set(tumbagaMix[2]);
+
         runCustomDustGenerator();
 
         itemDummyResearch = new ItemDummyResearch();
@@ -398,273 +392,7 @@ public final class ModItems {
         return item;
     }
 
-    private static void runMaterialGenerator() {
-        Material.registerAllPending();
-        // Just an unusual plate needed for some black magic.
-        // Clay's plate/plateDouble are cut over to MaterialLib; constructing these
-        // unconditionally would register a second, competing "plateClay"/"plateDoubleClay" oredict entry that
-        // races the MaterialLib one across launches.
-        if (!MU.isCutOver(OrePrefixes.plate, Materials2Materials.Clay)) new BaseItemPlate(MaterialsOther.CLAY);
-        if (!MU.isCutOver(OrePrefixes.plateDouble, Materials2Materials.Clay))
-            new BaseItemPlateDouble(MaterialsOther.CLAY);
-
-        // Springs
-        MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
-        MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsAlloy.NITINOL_60);
-        MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsAlloy.AQUATIC_STEEL);
-        MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsAlloy.EGLIN_STEEL);
-
-        // Small Springs
-        MaterialUtils.generateComponentAndAssignToAMaterial(SMALLSPRING, MaterialsAlloy.MARAGING250);
-        MaterialUtils.generateComponentAndAssignToAMaterial(SMALLSPRING, MaterialsAlloy.STABALLOY);
-        MaterialUtils.generateComponentAndAssignToAMaterial(SMALLSPRING, MaterialsAlloy.BLACK_TITANIUM);
-
-        // Fine Wire
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.getInstance().ZIRCONIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsAlloy.LEAGRISIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsAlloy.BABBIT_ALLOY);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsAlloy.KOBOLDITE);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsAlloy.HG1223);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsAlloy.QUANTUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.HYPOGEN);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.DRAGON_METAL);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.RHUGNOR);
-
-        // Foil
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.BLACK_TITANIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.BOTMIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.TITANSTEEL);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.NITINOL_60);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.QUANTUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.LAURENIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.HYPOGEN);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.ASTRAL_TITANIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.RHUGNOR);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.ADVANCED_NITINOL);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.PIKYONIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.CINOBITE);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.LAFIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.TRINIUM_REINFORCED_STEEL);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
-
-        // Superdense Plate
-        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.BOTMIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.QUANTUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.LAURENIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.ABYSSAL);
-        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.HYPOGEN);
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.ASTRAL_TITANIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.RHUGNOR);
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.ADVANCED_NITINOL);
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
-        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.DRAGON_METAL);
-
-        // Gear
-        MaterialUtils.generateComponentAndAssignToAMaterial(GEAR, MaterialsElements.STANDALONE.RHUGNOR);
-
-        // Small Gear
-        MaterialUtils.generateComponentAndAssignToAMaterial(SMALLGEAR, MaterialsElements.STANDALONE.HYPOGEN);
-
-        // Special Sillyness
-        // Sodium's plate is cut over to MaterialLib; see the Clay comment above the same fix.
-        if (!MU.isCutOver(OrePrefixes.plate, Materials2Materials.Sodium))
-            new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
-
-        // Tumbaga Mix (For Simple Crafting)
-        Item[] tumbagaMix = ItemUtils
-            .generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80));
-        GregtechItemList.TumbagaMixDust.set(tumbagaMix[0]);
-        GregtechItemList.SmallTumbagaMixDust.set(tumbagaMix[1]);
-        GregtechItemList.TinyTumbagaMixDust.set(tumbagaMix[2]);
-
-        // Elements generate first so they can be used in compounds.
-        // Missing Elements
-        MaterialGenerator.generate(MaterialsElements.getInstance().SELENIUM);
-        MaterialGenerator.generate(MaterialsElements.getInstance().BROMINE);
-        MaterialGenerator.generate(MaterialsElements.getInstance().KRYPTON);
-        MaterialGenerator.generate(MaterialsElements.getInstance().IODINE);
-        MaterialGenerator.generate(MaterialsElements.getInstance().RHENIUM);
-        MaterialGenerator.generate(MaterialsElements.getInstance().THALLIUM);
-        MaterialGenerator.generate(MaterialsElements.getInstance().GERMANIUM);
-        MaterialGenerator.generate(MaterialsElements.getInstance().TECHNETIUM);
-
-        // RADIOACTIVE ELEMENTS
-        MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().POLONIUM, false);
-        MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().RADIUM, false);
-        MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().PROTACTINIUM, false);
-        MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().CURIUM, false);
-        MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().NEPTUNIUM, false);
-        MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().FERMIUM, false);
-
-        // Nuclear Isotopes
-        MaterialGenerator.generate(MaterialsElements.getInstance().LITHIUM7, false);
-        MaterialGenerator.generate(MaterialsElements.getInstance().URANIUM232);
-        MaterialGenerator.generate(MaterialsElements.getInstance().URANIUM233);
-        MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().PLUTONIUM238, false);
-
-        // Custom Materials that will have standalone refinery processes
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.ADVANCED_NITINOL, false);
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.ASTRAL_TITANIUM);
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.HYPOGEN);
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
-
-        // Custom Materials that are from Runescape
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.BLACK_METAL);
-        MaterialGenerator.generateOreMaterialWithAllExcessComponents(MaterialsElements.STANDALONE.GRANITE);
-        MaterialGenerator.generateOreMaterialWithAllExcessComponents(MaterialsElements.STANDALONE.RUNITE);
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.DRAGON_METAL);
-
-        MaterialMisc.run();
-
-        MaterialGenerator.generate(MaterialsAlloy.SILICON_CARBIDE);
-        MaterialGenerator.generate(MaterialsAlloy.ZIRCONIUM_CARBIDE);
-        MaterialGenerator.generate(MaterialsAlloy.TANTALUM_CARBIDE);
-        MaterialGenerator.generate(MaterialsAlloy.NIOBIUM_CARBIDE);
-        MaterialGenerator.generate(MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE);
-
-        // LFTR Fuel components
-        MaterialGenerator.generateNuclearDusts(MaterialsFluorides.AMMONIUM_BIFLUORIDE); // LFTR fuel component
-        MaterialGenerator.generateNuclearDusts(MaterialsFluorides.BERYLLIUM_HYDROXIDE); // LFTR fuel component
-        // MaterialGenerator.generateNuclearDusts(FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE); // LFTR fuel component
-
-        // Generate Fluorides
-        MaterialGenerator.generateNuclearDusts(MaterialsFluorides.BERYLLIUM_FLUORIDE);
-        MaterialGenerator.generateNuclearDusts(MaterialsFluorides.LITHIUM_FLUORIDE);
-        MaterialGenerator.generateNuclearDusts(MaterialsFluorides.THORIUM_TETRAFLUORIDE);
-        MaterialGenerator.generateNuclearDusts(MaterialsFluorides.THORIUM_HEXAFLUORIDE);
-        MaterialGenerator.generateNuclearDusts(MaterialsFluorides.URANIUM_TETRAFLUORIDE, false);
-        MaterialGenerator.generateNuclearDusts(MaterialsFluorides.URANIUM_HEXAFLUORIDE, false);
-        MaterialGenerator.generateNuclearDusts(MaterialsFluorides.ZIRCONIUM_TETRAFLUORIDE);
-        // LFTR Fluoride outputs
-        MaterialGenerator.generateNuclearDusts(MaterialsFluorides.NEPTUNIUM_HEXAFLUORIDE);
-        MaterialGenerator.generateNuclearDusts(MaterialsFluorides.TECHNETIUM_HEXAFLUORIDE);
-        MaterialGenerator.generateNuclearDusts(MaterialsFluorides.SELENIUM_HEXAFLUORIDE);
-
-        // Generate Reactor Fuel Salts
-        MaterialGenerator.generateNuclearDusts(MaterialsNuclides.LiFBeF2ZrF4U235);
-        MaterialGenerator.generateNuclearDusts(MaterialsNuclides.LiFBeF2ZrF4UF4);
-        MaterialGenerator.generateNuclearDusts(MaterialsNuclides.LiFBeF2ThF4UF4);
-
-        // Generate some Alloys
-
-        // Misc Alloys
-        MaterialGenerator.generate(MaterialsAlloy.ENERGYCRYSTAL);
-        MaterialGenerator.generate(MaterialsAlloy.BLOODSTEEL);
-        MaterialGenerator.generate(MaterialsAlloy.ZERON_100);
-        MaterialGenerator.generate(MaterialsAlloy.TUMBAGA);
-        MaterialGenerator.generate(MaterialsAlloy.POTIN);
-
-        // Staballoy & Tantalloy
-        MaterialGenerator.generate(MaterialsAlloy.STABALLOY);
-        MaterialGenerator.generate(MaterialsAlloy.TANTALLOY_60);
-        MaterialGenerator.generate(MaterialsAlloy.TANTALLOY_61);
-
-        // Inconel
-        MaterialGenerator.generate(MaterialsAlloy.INCONEL_625);
-        MaterialGenerator.generate(MaterialsAlloy.INCONEL_690);
-        MaterialGenerator.generate(MaterialsAlloy.INCONEL_792);
-
-        // Steels
-        MaterialGenerator.generateDusts(MaterialsAlloy.EGLIN_STEEL_BASE);
-        MaterialGenerator.generate(MaterialsAlloy.EGLIN_STEEL);
-        MaterialGenerator.generate(MaterialsAlloy.MARAGING250);
-        MaterialGenerator.generate(MaterialsAlloy.MARAGING300);
-        MaterialGenerator.generate(MaterialsAlloy.MARAGING350);
-        MaterialGenerator.generate(MaterialsAlloy.AQUATIC_STEEL);
-        MaterialGenerator.generate(MaterialsAlloy.NITINOL_60, true);
-
-        // Composite Alloys
-        MaterialGenerator.generate(MaterialsAlloy.STELLITE);
-        MaterialGenerator.generate(MaterialsAlloy.TALONITE);
-
-        // Hastelloy
-        MaterialGenerator.generate(MaterialsAlloy.HASTELLOY_W);
-        MaterialGenerator.generate(MaterialsAlloy.HASTELLOY_X);
-        MaterialGenerator.generate(MaterialsAlloy.HASTELLOY_C276);
-        MaterialGenerator.generate(MaterialsAlloy.HASTELLOY_N);
-
-        // Incoloy
-        MaterialGenerator.generate(MaterialsAlloy.INCOLOY_020);
-        MaterialGenerator.generate(MaterialsAlloy.INCOLOY_DS);
-        MaterialGenerator.generate(MaterialsAlloy.INCOLOY_MA956);
-
-        // Leagrisium
-        MaterialGenerator.generate(MaterialsAlloy.LEAGRISIUM);
-
-        // Super Conductor
-        MaterialGenerator.generate(MaterialsAlloy.HG1223, false);
-
-        // Generate Fictional Materials
-        MaterialGenerator.generate(MaterialsAlloy.TRINIUM_TITANIUM);
-        MaterialGenerator.generate(MaterialsAlloy.TRINIUM_NAQUADAH, false);
-        MaterialGenerator.generate(MaterialsAlloy.TRINIUM_NAQUADAH_CARBON);
-        MaterialGenerator.generate(MaterialsAlloy.TRINIUM_REINFORCED_STEEL);
-
-        // Top Tier Alloys
-        MaterialGenerator.generate(MaterialsAlloy.HELICOPTER);
-        MaterialGenerator.generate(MaterialsAlloy.LAFIUM);
-        MaterialGenerator.generate(MaterialsAlloy.CINOBITE);
-        MaterialGenerator.generate(MaterialsAlloy.PIKYONIUM);
-        MaterialGenerator.generate(MaterialsAlloy.ABYSSAL);
-        MaterialGenerator.generate(MaterialsAlloy.LAURENIUM);
-        MaterialGenerator.generate(MaterialsAlloy.BOTMIUM, true);
-        MaterialGenerator.generate(MaterialsAlloy.HS188A);
-        MaterialGenerator.generate(MaterialsAlloy.TITANSTEEL);
-        MaterialGenerator.generate(MaterialsAlloy.ARCANITE);
-        MaterialGenerator.generate(MaterialsAlloy.OCTIRON);
-        MaterialGenerator.generate(MaterialsAlloy.BABBIT_ALLOY, false);
-        MaterialGenerator.generate(MaterialsAlloy.BLACK_TITANIUM, false);
-        MaterialGenerator.generate(MaterialsAlloy.INDALLOY_140, false);
-
-        // High Level Bioplastic
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.RHUGNOR, false);
-
-        // Must be the final Alloy to Generate
-        MaterialGenerator.generate(MaterialsAlloy.QUANTUM);
-
-        // Ores
-        MaterialGenerator.generateOreMaterial(MaterialsFluorides.FLUORITE);
-        MaterialGenerator.generateOreMaterial(MaterialsAlloy.KOBOLDITE);
-        GTPPEverglades.GenerateOreMaterials();
-
-        // Formula overrides
-        MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.vChemicalFormula = StringUtils.subscript("(CW)7Ti3");
-
-        // Werkstoff bridge
-        MaterialsElements.getInstance().ZIRCONIUM.setWerkstoffID((short) 3);
-        MaterialsElements.getInstance().THORIUM232.setWerkstoffID((short) 30);
-        MaterialsElements.getInstance().RUTHENIUM.setWerkstoffID((short) 64);
-        MaterialsElements.getInstance().HAFNIUM.setWerkstoffID((short) 11000);
-        MaterialsElements.getInstance().IODINE.setWerkstoffID((short) 11012);
-
-        // Custom fluids
-
-        // Zirconium Tetrafluoride
-        MaterialsFluorides.ZIRCONIUM_TETRAFLUORIDE.setFluid(
-            FluidUtils.generateFluidNoPrefix(
-                "ZirconiumTetrafluoride",
-                "Zirconium Tetrafluoride",
-                500,
-                new short[] { 170, 170, 140, 100 }));
-    }
-
     private static void runCustomDustGenerator() {
-        ItemUtils.generateSpecialUseDusts(MaterialsElements.getInstance().AER, true);
-        ItemUtils.generateSpecialUseDusts(MaterialsElements.getInstance().IGNIS, true);
-        ItemUtils.generateSpecialUseDusts(MaterialsElements.getInstance().TERRA, true);
-        ItemUtils.generateSpecialUseDusts(MaterialsElements.getInstance().AQUA, true);
-
-        ItemUtils.generateSpecialUseDusts(MaterialMisc.WOODS_GLASS, false);
-
         // Nuclear Fuel Dusts
         Item[] lithiumCarbonate = ItemUtils.generateSpecialUseDusts(
             "LithiumCarbonate",
@@ -724,14 +452,11 @@ public final class ModItems {
         GregtechItemList.SmallLi2CO3CaOH2Dust.set(Li2CO3CaOH2[1]);
         GregtechItemList.TinyLi2CO3CaOH2Dust.set(Li2CO3CaOH2[2]);
 
-        MaterialUtils.generateSpecialDustAndAssignToAMaterial(MaterialsFluorides.SODIUM_FLUORIDE, false);
-
-        Item[] Li2BeF4 = ItemUtils.generateSpecialUseDusts(
+        ItemUtils.generateSpecialUseDusts(
             "Li2BeF4",
             "Lithium Tetrafluoroberyllate Fuel Compound",
             "Li2BeF4",
             Utils.rgbtoHexValue(255, 255, 255));
-        Material.registerComponentForMaterial(MaterialsNuclides.Li2BeF4, OrePrefixes.dust, new ItemStack(Li2BeF4[0]));
 
         Item[] phthalicAnhydride = ItemUtils.generateSpecialUseDusts(
             "PhthalicAnhydride",

@@ -24,12 +24,12 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.material.Material;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class GregtechSimpleWasher {
@@ -146,10 +146,13 @@ public class GregtechSimpleWasher {
             addSimpleWashRecipe(dustPure, dustClean);
         }
 
-        for (Material v : Material.mMaterialMap) {
-            dustClean = v.getDust(1);
-            dustDirty = v.getDustImpure(1);
-            dustPure = v.getDustPurified(1);
+        for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
+            if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) {
+                continue;
+            }
+            dustClean = MU.stack(OrePrefixes.dust, ml, 1L);
+            dustDirty = MU.stack(OrePrefixes.dustImpure, ml, 1L);
+            dustPure = MU.stack(OrePrefixes.dustPure, ml, 1L);
             addSimpleWashRecipe(dustDirty, dustClean);
             addSimpleWashRecipe(dustPure, dustClean);
         }
@@ -183,9 +186,12 @@ public class GregtechSimpleWasher {
             addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 
-        for (Material v : Material.mMaterialMap) {
-            crushedClean = v.getCrushedPurified(1);
-            crushedDirty = v.getCrushed(1);
+        for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
+            if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) {
+                continue;
+            }
+            crushedClean = MU.stack(OrePrefixes.crushedPurified, ml, 1L);
+            crushedDirty = MU.stack(OrePrefixes.crushed, ml, 1L);
             addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 

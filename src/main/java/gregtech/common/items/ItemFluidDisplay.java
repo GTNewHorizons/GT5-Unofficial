@@ -33,9 +33,6 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
-import gregtech.common.fluid.GTFluid;
-import gtPlusPlus.api.objects.minecraft.FluidGT6;
-import gtPlusPlus.core.material.Material;
 
 public class ItemFluidDisplay extends GTGenericItem {
 
@@ -138,14 +135,7 @@ public class ItemFluidDisplay extends GTGenericItem {
         if (w != null) {
             return w;
         }
-        if (fluid instanceof FluidGT6 gtppFluid) {
-            final Material material = gtppFluid.getMaterial();
-            if (material != null) return material;
-        }
-        if (fluid instanceof GTFluid gtFluid) {
-            return MU.materialOfFluid(gtFluid);
-        }
-        return null;
+        return MU.materialOfFluid(fluid);
     }
 
     @SideOnly(Side.CLIENT)
