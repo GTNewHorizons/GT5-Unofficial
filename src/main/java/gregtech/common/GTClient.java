@@ -103,6 +103,7 @@ import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.GTWorkAreaRenderer;
 import gregtech.client.Materials2FormulaTooltip;
 import gregtech.client.SeekingOggCodec;
+import gregtech.client.handler.AnimatedBlockTextureHandler;
 import gregtech.client.handler.CondensateAnimationTickHandler;
 import gregtech.client.renderer.entity.RenderDrone;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
@@ -301,6 +302,14 @@ public class GTClient extends GTProxy {
         FMLCommonHandler.instance()
             .bus()
             .register(new CondensateAnimationTickHandler());
+        if (Mods.Angelica.isModLoaded()) {
+            AnimatedBlockTextureHandler animatedBlockTextureHandler = new AnimatedBlockTextureHandler();
+            FMLCommonHandler.instance()
+                .bus()
+                .register(animatedBlockTextureHandler);
+            ((IReloadableResourceManager) Minecraft.getMinecraft()
+                .getResourceManager()).registerReloadListener(animatedBlockTextureHandler);
+        }
 
         RenderManager.instance.entityRenderMap.put(EntityPowderBarrelPrimed.class, new RenderPowderBarrel());
         RenderManager.instance.entityRenderMap.put(EntityDrone.class, new RenderDrone());

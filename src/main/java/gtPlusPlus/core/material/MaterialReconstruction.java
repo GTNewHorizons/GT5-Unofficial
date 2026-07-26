@@ -103,16 +103,6 @@ public final class MaterialReconstruction {
         OrePrefixes.dustPure, OrePrefixes.milled, OrePrefixes.rawOre, OrePrefixes.cell, OrePrefixes.cellPlasma);
     // spotless:on
 
-    /// Reconstructed materials whose `block` part stays legacy-canonical despite otherwise clearing
-    /// [#CUT_OVER_PART_PREFIXES]'s bar: each has its own client-side render hook
-    /// (`gtPlusPlus.core.handler.events.AnimatedBlockTextureHandler`) that forces icon-cycle synchronization on
-    /// the legacy `BlockBaseModular` instance specifically -- MaterialLib's `GTStorageShapeBlock` has no
-    /// equivalent per-material animated-icon path, so cutting these over would silently stop the animation
-    /// on the block a player actually sees in world (the handler would keep animating an instance nobody looks
-    /// at).
-    private static final Set<String> BLOCK_CUTOVER_EXCLUDED = Set
-        .of("AstralTitanium", "CelestialTungsten", "ChromaticGlass", "Hypogen");
-
     private static final Map<String, Material> built = new HashMap<>();
     private static final LinkedHashSet<String> inProgress = new LinkedHashSet<>();
 
@@ -147,10 +137,9 @@ public final class MaterialReconstruction {
     /// over to MaterialLib's [gregtech.api.enums.materials2.Materials2BlockShapes#block] -- block-kind is
     /// handled separately from [#CUT_OVER_PART_PREFIXES] because the cutover happens inside
     /// `BlockBaseModular`'s own constructor (the legacy instance still gets built and registered for every
-    /// material, cut over or not -- see that class), not by skipping construction the way item parts do. See
-    /// [#BLOCK_CUTOVER_EXCLUDED] for the materials this stays false for regardless.
+    /// material, cut over or not -- see that class), not by skipping construction the way item parts do.
     public static boolean isBlockCutOver(String name) {
-        return RECONSTRUCTED_NAMES.contains(name) && !BLOCK_CUTOVER_EXCLUDED.contains(name);
+        return RECONSTRUCTED_NAMES.contains(name);
     }
 
     /// Whether `prefix` is one of the part families [#CUT_OVER_PART_PREFIXES] has cleared for cutover at all,

@@ -191,10 +191,8 @@ public class PosteaTransformers implements Runnable {
     /// instead of plain [MU#stack], since a row's material may have claimed `cellMolten` rather than
     /// `cell` -- see that method's javadoc. `frameGt` is out of the table and migrates separately
     /// (deferred). `block` rows additionally get a [BlockReplacementManager] handler for placed instances,
-    /// since a storage block (unlike every other gtpp part) is placeable, and are skipped entirely (both the
-    /// item and block handler return false/null, leaving the legacy slot canonical) for the small
-    /// [MaterialReconstruction#isBlockCutOver] exclusion list -- the table itself has no way to know about that
-    /// per-material exception since it is generated purely from the dump.
+    /// since a storage block (unlike every other gtpp part) is placeable, and resolve null (leaving the
+    /// legacy slot canonical) for a row whose material is not [MaterialReconstruction#isBlockCutOver].
     private static void registerGtppItemCutoverTransformers() {
         for (Entry entry : GtppItemCutoverTable.ENTRIES) {
             ItemStackReplacementManager.addTransformationHandler(entry.registryName(), (originalId, tag) -> {
