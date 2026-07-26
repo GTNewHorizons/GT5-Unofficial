@@ -759,7 +759,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     + " on lower-tier recipes")
             .addSupportAny()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(41, 41, 52, false)
+            .beginStructureBlock(41, 52, 41, false)
             .addController("Front bottom center")
             .addEnergyHatch("1-2", "Any bottom casing", 1)
             .addMaintenanceHatch("1", "Any bottom casing", 1)

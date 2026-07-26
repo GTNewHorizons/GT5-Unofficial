@@ -117,7 +117,7 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TECTECH_STANDARD;
     }
 
