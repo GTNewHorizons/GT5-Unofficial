@@ -14,6 +14,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -35,6 +36,8 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -48,6 +51,8 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
@@ -177,9 +182,54 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
+        return new ProcessingLogic() {
+
+            @Nonnull
+            @Override
+            protected Stream<GTRecipe> findRecipeMatches(RecipeMap<?> map) {
+                Stream<GTRecipe> recipes = super.findRecipeMatches(map);
+                if (map != RecipeMaps.packagerRecipes) return recipes;
+                GTRecipe schematicRecipe = findSchematicRecipe(inputItems);
+                return schematicRecipe == null ? recipes : Stream.concat(recipes, Stream.of(schematicRecipe));
+            }
+        }.setMaxParallelSupplier(this::getTrueParallel)
             .setEuModifier(EU_EFFICIENCY)
             .setSpeedBonusSupplier(this::getSpeedBonus);
+    }
+
+    private static GTRecipe findSchematicRecipe(ItemStack[] inputs) {
+        ItemStack schematic = null;
+        int size = 0;
+        for (ItemStack input : inputs) {
+            if (ItemList.Schematic_1by1.isStackEqual(input)) size = 1;
+            else if (ItemList.Schematic_2by2.isStackEqual(input)) size = 2;
+            else if (ItemList.Schematic_3by3.isStackEqual(input)) size = 3;
+            else continue;
+            schematic = input;
+            break;
+        }
+        if (schematic == null) return null;
+
+        for (ItemStack input : inputs) {
+            if (GTUtility.isStackInvalid(input) || input == schematic
+                || GTUtility.getContainerItem(input, true) != null) continue;
+            ItemStack output = switch (size) {
+                case 1 -> GTModHandler.getRecipeOutput(input);
+                case 2 -> GTModHandler.getRecipeOutput(input, input, null, input, input);
+                case 3 -> GTModHandler.getRecipeOutput(input, input, input, input, input, input, input, input, input);
+                default -> null;
+            };
+            if (output == null) continue;
+            return GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(size * size, input), GTUtility.copyAmount(0, schematic))
+                .itemOutputs(output)
+                .duration(16 << (size - 1))
+                .eut(30)
+                .nbtSensitive()
+                .build()
+                .orElse(null);
+        }
+        return null;
     }
 
     @Override

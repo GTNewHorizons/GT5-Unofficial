@@ -562,6 +562,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
+    public void onClientSoundStateChanged() {
+        if (activitySoundLoop != null && activitySoundLoop.isDonePlaying()) {
+            activitySoundLoop = null;
+        }
+        updateSounds(getActivitySoundLoop());
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
@@ -678,8 +686,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     mStuttering = true;
                 }
             }
-        } else {
-            updateSounds(getActivitySoundLoop());
         }
         // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
         // machine problems.

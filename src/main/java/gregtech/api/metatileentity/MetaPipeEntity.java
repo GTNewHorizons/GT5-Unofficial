@@ -520,7 +520,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     @Override
-    public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
+    public final void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
+        final IGregTechTileEntity oldBase = mBaseMetaTileEntity;
         if (mBaseMetaTileEntity != null && aBaseMetaTileEntity == null) {
             mBaseMetaTileEntity.getMetaTileEntity()
                 .inValidate();
@@ -529,6 +530,9 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         mBaseMetaTileEntity = aBaseMetaTileEntity;
         if (mBaseMetaTileEntity != null) {
             mBaseMetaTileEntity.setMetaTileEntity(this);
+        }
+        if (oldBase != aBaseMetaTileEntity && oldBase instanceof CommonBaseMetaTileEntity oldMeta) {
+            oldMeta.refreshMetaTileEntityValidity();
         }
     }
 

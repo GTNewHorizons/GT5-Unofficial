@@ -52,6 +52,7 @@ import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
     private final List<MTEHatchLoS> losHatches = new ArrayList<>();
@@ -247,12 +248,6 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
                     }
 
                     this.availableNanites += hatch.getItemCount();
-                }
-
-                for (var node : nodes) {
-                    // Intentionally share the same nanite count between every io node even though it doesn't make
-                    // physical sense, so that proper automation is incentivized even more.
-                    node.setNaniteShare(this.currentNaniteTier, this.availableNanites);
                 }
 
                 igte.setActive(!nodes.isEmpty());

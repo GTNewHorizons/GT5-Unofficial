@@ -47,6 +47,7 @@ import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
     public MTEBECGenerator(int aID, String aName) {
