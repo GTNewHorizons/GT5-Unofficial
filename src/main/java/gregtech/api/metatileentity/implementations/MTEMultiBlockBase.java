@@ -3102,7 +3102,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         List<MTEHatchOutputBusME> busses = GTUtility.getMTEsOfType(mOutputBusses, MTEHatchOutputBusME.class);
         List<MTEHatchOutputBusME> filteredBusses = new ArrayList<>();
         for (MTEHatchOutputBusME bus : busses) {
-            if (!bus.hasPhysicalSpace() || bus.shouldCheck()) continue;
+            if (!bus.hasPhysicalSpace() || bus.getCheckMode()) continue;
             if (!bus.isFiltered()) return true;
             filteredBusses.add(bus);
         }
@@ -3126,7 +3126,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         List<MTEHatchOutputME> hatches = GTUtility.getMTEsOfType(mOutputHatches, MTEHatchOutputME.class);
         List<MTEHatchOutputME> filteredHatches = new ArrayList<>();
         for (MTEHatchOutputME bus : hatches) {
-            if (!bus.hasPhysicalSpace() || bus.shouldCheck()) continue;
+            if (!bus.hasPhysicalSpace() || bus.getCheckMode()) continue;
             if (!bus.isFiltered()) return true;
             filteredHatches.add(bus);
         }
@@ -3155,7 +3155,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             boolean handled = false;
 
             for (MTEHatchOutputME hatch : hatches) {
-                if (!hatch.hasPhysicalSpace() || hatch.shouldCheck()) continue;
+                if (!hatch.hasPhysicalSpace() || hatch.getCheckMode()) continue;
                 if (!hatch.isFiltered() || hatch.isFilteredToFluid(output)) {
                     handled = true;
                     break;
