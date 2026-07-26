@@ -50,7 +50,6 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenAssembler;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenExtruder;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenFluids;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMaterialProcessing;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenOre;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenPlasma;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenRecycling;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenShapedCrafting;
@@ -266,8 +265,6 @@ public class MaterialGenerator {
             if (!cutOver(matInfo, OrePrefixes.dustPure)) new BaseItemPurifiedDust(matInfo);
             if (!cutOver(matInfo, OrePrefixes.rawOre)) new BaseItemRawOre(matInfo);
 
-            new RecipeGenOre(matInfo);
-
             // Fluorite Dehydrator
             if (matInfo.getLocalizedName()
                 .equals("Fluorite (F)")) {
@@ -318,7 +315,6 @@ public class MaterialGenerator {
             if (!cutOver(matInfo, OrePrefixes.dustPure)) new BaseItemPurifiedDust(matInfo);
             if (!cutOver(matInfo, OrePrefixes.rawOre)) new BaseItemRawOre(matInfo);
 
-            new RecipeGenOre(matInfo, true);
             new RecipeGenAlloySmelter(matInfo);
             new RecipeGenAssembler(matInfo);
             new RecipeGenExtruder(matInfo);
