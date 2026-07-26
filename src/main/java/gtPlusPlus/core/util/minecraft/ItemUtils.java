@@ -31,7 +31,6 @@ import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
 public class ItemUtils {
 
@@ -187,8 +186,6 @@ public class ItemUtils {
         } else {
             output = new Item[] { new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, Colour, "Dust") };
         }
-
-        new RecipeGenDustGeneration(material, disableExtraRecipes);
 
         return output;
     }

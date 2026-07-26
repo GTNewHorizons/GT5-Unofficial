@@ -47,7 +47,6 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenAlloySmelter;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenAssembler;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenExtruder;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenFluids;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMaterialProcessing;
@@ -151,7 +150,6 @@ public class MaterialGenerator {
             new RecipeGenShapedCrafting(matInfo);
             new RecipeGenMaterialProcessing(matInfo);
 
-            new RecipeGenDustGeneration(matInfo);
             new RecipeGenRecycling(matInfo);
             new RecipeGenPlasma(matInfo);
 
@@ -230,7 +228,6 @@ public class MaterialGenerator {
             new RecipeGenRecycling(matInfo);
             new RecipeGenExtruder(matInfo);
             new RecipeGenFluids(matInfo);
-            new RecipeGenDustGeneration(matInfo, disableOptionalRecipes);
             new RecipeGenPlasma(matInfo);
 
         } catch (final Throwable ignored) {}
@@ -328,7 +325,6 @@ public class MaterialGenerator {
             new RecipeGenFluids(matInfo);
             new RecipeGenShapedCrafting(matInfo);
             new RecipeGenMaterialProcessing(matInfo);
-            new RecipeGenDustGeneration(matInfo);
             new RecipeGenRecycling(matInfo);
             new RecipeGenPlasma(matInfo);
         } catch (final Exception t) {
