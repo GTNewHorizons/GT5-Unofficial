@@ -54,13 +54,11 @@ public class AnimatedBlockTextureHandler implements IResourceManagerReloadListen
             MaterialsElements.STANDALONE.ASTRAL_TITANIUM, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN,
             MaterialsElements.STANDALONE.HYPOGEN };
         for (Material material : animated) {
-            for (BlockTypes type : new BlockTypes[] { BlockTypes.STANDARD, BlockTypes.FRAME }) {
-                Block block = BlockBaseModular.getMaterialBlock(material, type);
-                if (block != null) {
-                    IIcon icon = block.getIcon(0, 0);
-                    if (icon != null) {
-                        resolved.add(icon);
-                    }
+            Block block = BlockBaseModular.getMaterialBlock(material, BlockTypes.STANDARD);
+            if (block != null) {
+                IIcon icon = block.getIcon(0, 0);
+                if (icon != null) {
+                    resolved.add(icon);
                 }
             }
         }

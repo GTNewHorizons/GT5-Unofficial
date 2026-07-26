@@ -479,11 +479,17 @@ def werkstoff_property_lines(info, ml_names, display_to_var, canonical_melting_p
 GTPP_DUMP_PATH = SCRIPT_DIR / "dumps" / "gtpp-materials.json"
 GTPP_MERGE_REPORT_PATH = SCRIPT_DIR / "gtpp-merge-report.txt"
 
-# `frameGt` is block-kind. GT's own materials cut it over to a MaterialLib shape through
-# Materials2PipeMaterials's own declared array (see WERKSTOFF_CUTOVER_PREFIXES above) rather than through this
-# generator's per-material shape emission -- gtPlusPlus's own `BlockBaseModular` frame blocks stay legacy
-# pending their own block/ore cutover.
-GTPP_LEGACY_ONLY_PREFIXES = {"frameGt"}
+# `frameGt` is block-kind. Every gtpp material's frame box (`generatedParts` prefix `frameGt`) cuts over to a
+# MaterialLib shape through Materials2PipeMaterials's own declared array (gtppFrameMaterials, alongside
+# frameMaterials/werkstoffFrameAndSheetmetalMaterials above) rather than through this generator's per-material
+# shape emission, so it is dropped here the same way WERKSTOFF_CUTOVER_PREFIXES drops the werkstoff-side
+# frame/sheetmetal prefixes.
+GTPP_CUTOVER_PREFIXES = {"frameGt"}
+
+# Empty: every gtpp part prefix is either mapped to a shape by this generator or cut over through a
+# Materials2PipeMaterials declared array (GTPP_CUTOVER_PREFIXES); kept for symmetry with
+# WERKSTOFF_LEGACY_ONLY_PREFIXES and as an extension point for a future prefix that stays legacy-only.
+GTPP_LEGACY_ONLY_PREFIXES = set()
 
 # `cell`/`cellPlasma` are not part of `GTPP_SIMPLE_PREFIXES`'s uniform 1:1 shape mapping: unlike every other
 # part, which shape shape they generate onto depends on which fluid slot the material's fluid claimed (see
@@ -569,11 +575,12 @@ def compute_gtpp_ported(gtpp_materials, base_ported_names):
 def gtpp_shape_lines(entry, owner_prefix=""):
     """`generateShape(...)` lines (without the `.generateShape(` wrapper handled by the caller -- returns bare
     `Owner.field` references) for every dumped gtpp part this stage's codegen can act on, plus the set of
-    prefixes it deliberately left for a later commit (`GTPP_DEFERRED_PREFIXES`/`GTPP_LEGACY_ONLY_PREFIXES`/
-    `GTPP_UNSUPPORTED_PREFIXES`, see their docstrings). Raises if a dumped prefix is not accounted for by any
-    of those sets -- a reference-closure-style fail-loud check mirroring `validate_werkstoff_prefixes`, so a
-    future gtpp dump refresh with a new part kind cannot silently drop items. The `block` case additionally
-    honors `BLOCK_CUTOVER_EXCLUDED`: a gtpp material sharing a name with one of those (e.g. Copper, whose
+    prefixes it deliberately left for a later commit (`GTPP_DEFERRED_PREFIXES`/`GTPP_CUTOVER_PREFIXES`/
+    `GTPP_LEGACY_ONLY_PREFIXES`/`GTPP_UNSUPPORTED_PREFIXES`, see their docstrings). Raises if a dumped prefix
+    is not accounted for by any of those sets -- a reference-closure-style fail-loud check mirroring
+    `validate_werkstoff_prefixes`, so a future gtpp dump refresh with a new part kind cannot silently drop
+    items. The `block` case additionally honors `BLOCK_CUTOVER_EXCLUDED`: a gtpp material sharing a name with
+    one of those (e.g. Copper, whose
     gtpp-side `BlockBaseModular` construction resolves onto the shared legacy `gt.blockmetal2` slot) must not
     gain `shapeBlock` membership through the gtpp fold when the gregtech side of the same declaration was
     deliberately kept off it; likewise `GTPP_ANIMATED_BLOCK_EXCLUDED`, for gtpp materials whose legacy block
@@ -592,7 +599,8 @@ def gtpp_shape_lines(entry, owner_prefix=""):
             refs.append("Materials2GtppShapes.shapeMilled")
         elif prefix in GTPP_DEFERRED_PREFIXES:
             deferred.append(prefix)
-        elif prefix in GTPP_LEGACY_ONLY_PREFIXES or prefix in GTPP_UNSUPPORTED_PREFIXES:
+        elif prefix in GTPP_CUTOVER_PREFIXES or prefix in GTPP_LEGACY_ONLY_PREFIXES \
+                or prefix in GTPP_UNSUPPORTED_PREFIXES:
             pass
         else:
             raise SystemExit(

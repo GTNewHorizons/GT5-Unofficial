@@ -40,6 +40,7 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -56,7 +57,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFrothFlotationCell>
@@ -95,8 +95,8 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.InconelReinforcedCasing.asElement())))
         .addElement('D', Casings.FlotationCellCasings.asElement())
         .addElement('E', Casings.InconelReinforcedCasing.asElement())
-        .addElement('A', ofFrame(MaterialsAlloy.INCONEL_690))
-        .addElement('B', ofFrame(MaterialsAlloy.STABALLOY))
+        .addElement('A', ofFrame(Materials2Materials.Inconel690))
+        .addElement('B', ofFrame(Materials2Materials.Staballoy))
         .addElement('W', ofChain(ofAnyWater(false), isAir()))
         .build();
 

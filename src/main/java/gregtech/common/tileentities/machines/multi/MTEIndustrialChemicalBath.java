@@ -34,6 +34,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -49,7 +50,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MTEIndustrialChemicalBath>
@@ -66,8 +66,22 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
         { "  B  ", "EFDFE", "EFDFE", "EEEEE" }, { "     ", "EFFFE", "EFFFE", "EEEEE" },
         { "  B  ", "EFCFE", "EFCFE", "EEEEE" }, { "AABAA", "AEEEA", "AEEEA", "AEEEA" } };
 
-    // Lazy allocation since ofFrame requires late-registering GTPP MaterialsAlloy
-    private static IStructureDefinition<MTEIndustrialChemicalBath> STRUCTURE_DEFINITION = null;
+    private static final IStructureDefinition<MTEIndustrialChemicalBath> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEIndustrialChemicalBath>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addElement('A', ofFrame(Materials2Materials.WatertightSteel))
+        .addElement('B', Casings.ChemicallyInertMachineCasing.asElement())
+        .addElement('C', ofBlock(GregTechAPI.sBlockMetal2, 7))
+        .addElement('D', ofBlock(GregTechAPI.sBlockMetal8, 6))
+        .addElement(
+            'E',
+            buildHatchAdder(MTEIndustrialChemicalBath.class)
+                .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
+                .casingIndex(114) // WashPlantCasing
+                .hint(1)
+                .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.WashPlantCasing.asElement())))
+        .addElement('F', ofChain(ofAnyWater(false), isAir()))
+        .build();
 
     public MTEIndustrialChemicalBath(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -111,23 +125,6 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     public IStructureDefinition<MTEIndustrialChemicalBath> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialChemicalBath>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, structure)
-                .addElement('A', ofFrame(MaterialsAlloy.AQUATIC_STEEL))
-                .addElement('B', Casings.ChemicallyInertMachineCasing.asElement())
-                .addElement('C', ofBlock(GregTechAPI.sBlockMetal2, 7))
-                .addElement('D', ofBlock(GregTechAPI.sBlockMetal8, 6))
-                .addElement(
-                    'E',
-                    buildHatchAdder(MTEIndustrialChemicalBath.class)
-                        .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
-                        .casingIndex(114) // WashPlantCasing
-                        .hint(1)
-                        .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.WashPlantCasing.asElement())))
-                .addElement('F', ofChain(ofAnyWater(false), isAir()))
-                .build();
-        }
         return STRUCTURE_DEFINITION;
     }
 
