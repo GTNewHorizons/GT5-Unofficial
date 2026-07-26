@@ -147,8 +147,8 @@ public class ToolVajra extends ItemTool implements IElectricItem {
 
     @Override
     public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
-        // By default GTItemTool sneaking will skip the item use. We don't want that since shift-right click
-        // of vajra should be handled by the vajra.
+        // By default GTItemTool sneak-use will trigger block activation. We don't want that since shift-right click
+        // of vajra should be handled by the vajra and we don't want to open any gui.
         return false;
     }
 
