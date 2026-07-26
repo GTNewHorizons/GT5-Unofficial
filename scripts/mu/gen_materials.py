@@ -255,14 +255,17 @@ def load_legacy_variant_prefixes(variants):
 
 # region werkstoff fold (stage 10)
 
-# Werkstoff prefixes that keep their legacy bartworks blocks (GregTechAPI.sBlockSheetmetalBW /
-# sBlockFramesBW): mirrors the gregtech-side decision that frameGt/sheetmetal never cut over to MaterialLib
-# shapes (stage 07 scoped `block` only). They still appear in GTMaterialProperties#WERKSTOFF_PREFIXES so the
-# legacy reconstruction keeps serving them.
-WERKSTOFF_LEGACY_ONLY_PREFIXES = {"sheetmetal", "frameGt"}
+# Werkstoff prefixes that would keep a legacy bartworks block with no MaterialLib shape at all; currently empty.
+WERKSTOFF_LEGACY_ONLY_PREFIXES = set()
 
 # Werkstoff prefixes with a hand-written (non-Materials2Shapes) MaterialLib shape.
 WERKSTOFF_SPECIAL_PREFIXES = {"cell", "cellMolten", "block", "ore", "blockCasing", "blockCasingAdvanced"}
+
+# Werkstoff prefixes that cut over to a MaterialLib shape through Materials2PipeMaterials's own declared array
+# (werkstoffFrameAndSheetmetalMaterials) rather than through this generator's per-material shape emission, so
+# they are dropped from the emitted GTMaterialProperties#WERKSTOFF_PREFIXES list -- the legacy reconstruction
+# no longer needs them there since MU.stack resolves both prefixes directly.
+WERKSTOFF_CUTOVER_PREFIXES = {"sheetmetal", "frameGt"}
 
 WERKSTOFF_FLAG_FIELDS = [
     ("sublimation", "SUBLIMATION"),
@@ -352,7 +355,7 @@ def compute_werkstoff_referenced_names(werkstoff_by_name, display_to_var):
 def validate_werkstoff_prefixes(werkstoff_by_name, included_names):
     """Reference-closure-style fail-loud check: every dumped werkstoff prefix must map to a MaterialLib shape
     or be a deliberate legacy retention, so a new bartworks prefix cannot silently drop items."""
-    known = included_names | WERKSTOFF_SPECIAL_PREFIXES | WERKSTOFF_LEGACY_ONLY_PREFIXES
+    known = included_names | WERKSTOFF_SPECIAL_PREFIXES | WERKSTOFF_LEGACY_ONLY_PREFIXES | WERKSTOFF_CUTOVER_PREFIXES
     for name, info in sorted(werkstoff_by_name.items()):
         unknown = [p for p in info["prefixes"] if p not in known]
         if unknown:
@@ -432,8 +435,9 @@ def werkstoff_property_lines(info, ml_names, display_to_var, canonical_melting_p
     kept_flags = [f for f in flags if f not in MIGRATED_WERKSTOFF_FLAGS]
     if kept_flags:
         emit("WERKSTOFF_FLAGS", "EnumSet.of(" + ", ".join("GTWerkstoffFlag." + f for f in kept_flags) + ")")
-    if info["prefixes"]:
-        emit("WERKSTOFF_PREFIXES", "List.of(" + ", ".join(java_string_literal(p) for p in info["prefixes"]) + ")")
+    emitted_prefixes = [p for p in info["prefixes"] if p not in WERKSTOFF_CUTOVER_PREFIXES]
+    if emitted_prefixes:
+        emit("WERKSTOFF_PREFIXES", "List.of(" + ", ".join(java_string_literal(p) for p in emitted_prefixes) + ")")
 
     def ref_stack(name, kind, amount):
         mapped = ml_names[werkstoff_ref_name(name, kind, display_to_var)]
@@ -475,9 +479,10 @@ def werkstoff_property_lines(info, ml_names, display_to_var, canonical_melting_p
 GTPP_DUMP_PATH = SCRIPT_DIR / "dumps" / "gtpp-materials.json"
 GTPP_MERGE_REPORT_PATH = SCRIPT_DIR / "gtpp-merge-report.txt"
 
-# `frameGt` is block-kind and GT itself never cuts `frameGt` over to a MaterialLib shape (stage 07 scoped
-# `block` only, the same reason `WERKSTOFF_LEGACY_ONLY_PREFIXES` excludes it) -- gtPlusPlus's own
-# `BlockBaseModular` frame blocks stay legacy pending stage 11 commit 4's block/ore cutover.
+# `frameGt` is block-kind. GT's own materials cut it over to a MaterialLib shape through
+# Materials2PipeMaterials's own declared array (see WERKSTOFF_CUTOVER_PREFIXES above) rather than through this
+# generator's per-material shape emission -- gtPlusPlus's own `BlockBaseModular` frame blocks stay legacy
+# pending their own block/ore cutover.
 GTPP_LEGACY_ONLY_PREFIXES = {"frameGt"}
 
 # `cell`/`cellPlasma` are not part of `GTPP_SIMPLE_PREFIXES`'s uniform 1:1 shape mapping: unlike every other

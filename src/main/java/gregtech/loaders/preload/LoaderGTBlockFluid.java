@@ -910,8 +910,6 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockReinforced = new BlockReinforced("gt.blockreinforced");
 
-        GregTechAPI.sBlockSheetmetalGT = new BlockSheetMetal("gt.sheetmetal", meta -> MU.byId(meta), 1000);
-
         GregTechAPI.sBlockSheetmetalBW = new BlockSheetMetal(
             "bw.sheetmetal",
             meta -> Werkstoff.werkstoffHashMap.get((short) meta),

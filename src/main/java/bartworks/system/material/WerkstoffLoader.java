@@ -290,17 +290,17 @@ public class WerkstoffLoader {
     }
 
     public static ItemStack getCorrespondingItemStackUnsafe(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
-        // Item/ore/block/casing cutover: a werkstoff's item prefixes resolve to the MaterialLib stack via
-        // WerkstoffReconstruction#materialLibOf (the reconstruction pairing for a reconstructed werkstoff,
-        // falling back to the bridge material for a proxy; a third-party werkstoff resolves to null and falls
-        // through to the legacy paths). `ore`/`oreSmall`/`block`/`blockCasing`/`blockCasingAdvanced` resolve
-        // through MU too (Materials2OreShapes/Materials2BlockShapes; the multiblock structure matchers
+        // Item/ore/block/casing/sheetmetal/frame cutover: a werkstoff's item prefixes resolve to the MaterialLib
+        // stack via WerkstoffReconstruction#materialLibOf (the reconstruction pairing for a reconstructed
+        // werkstoff, falling back to the bridge material for a proxy; a third-party werkstoff resolves to null
+        // and falls through to the legacy paths). `ore`/`oreSmall`/`block`/`blockCasing`/`blockCasingAdvanced`
+        // resolve through MU too (Materials2OreShapes/Materials2BlockShapes; the multiblock structure matchers
         // referencing the casing blocks by identity resolve dynamically as well, see Casings#bwCasing).
-        // `sheetmetal`/`frameGt` stay legacy-canonical -- not part of the block cutover.
-        if (orePrefixes != OrePrefixes.sheetmetal && orePrefixes != OrePrefixes.frameGt) {
-            ItemStack mlStack = MU.stack(orePrefixes, WerkstoffReconstruction.materialLibOf(werkstoff), amount);
-            if (mlStack != null) return mlStack;
-        }
+        // `sheetmetal`/`frameGt` resolve through MU for the materials
+        // Materials2PipeMaterials#werkstoffFrameAndSheetmetalMaterials declares; the sBlockSheetmetalBW/
+        // sBlockFramesBW fallback below still serves third-party WerkstoffAdder materials outside that set.
+        ItemStack mlStack = MU.stack(orePrefixes, WerkstoffReconstruction.materialLibOf(werkstoff), amount);
+        if (mlStack != null) return mlStack;
         if (!werkstoff.getGenerationFeatures().enforceUnification) {
             ItemStack ret = GTOreDictUnificator
                 .get(orePrefixes, WerkstoffReconstruction.materialLibOf(werkstoff), amount);
