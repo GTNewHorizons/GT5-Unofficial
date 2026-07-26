@@ -47,7 +47,6 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenAlloySmelter;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenAssembler;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenBlastSmelter;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenExtruder;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenFluids;
@@ -74,11 +73,6 @@ public class MaterialGenerator {
     }
 
     public static void generate(final Material matInfo, final boolean generateEverything) {
-        generate(matInfo, generateEverything, true);
-    }
-
-    public static void generate(final Material matInfo, final boolean generateEverything,
-        final boolean generateBlastSmelterRecipes) {
         try {
             final String unlocalizedName = matInfo.getUnlocalizedName();
             final String materialName = matInfo.getDefaultLocalName();
@@ -152,9 +146,6 @@ public class MaterialGenerator {
             // Add A jillion Recipes - old code
             new RecipeGenAlloySmelter(matInfo);
             new RecipeGenAssembler(matInfo);
-            if (generateBlastSmelterRecipes) {
-                new RecipeGenBlastSmelter(matInfo);
-            }
             new RecipeGenExtruder(matInfo);
             new RecipeGenFluids(matInfo);
             new RecipeGenShapedCrafting(matInfo);
@@ -333,7 +324,6 @@ public class MaterialGenerator {
             new RecipeGenOre(matInfo, true);
             new RecipeGenAlloySmelter(matInfo);
             new RecipeGenAssembler(matInfo);
-            new RecipeGenBlastSmelter(matInfo);
             new RecipeGenExtruder(matInfo);
             new RecipeGenFluids(matInfo);
             new RecipeGenShapedCrafting(matInfo);

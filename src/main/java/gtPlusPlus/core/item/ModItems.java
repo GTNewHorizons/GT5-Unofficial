@@ -600,7 +600,7 @@ public final class ModItems {
         MaterialGenerator.generate(MaterialsAlloy.LEAGRISIUM);
 
         // Super Conductor
-        MaterialGenerator.generate(MaterialsAlloy.HG1223, false, false);
+        MaterialGenerator.generate(MaterialsAlloy.HG1223, false);
 
         // Generate Fictional Materials
         MaterialGenerator.generate(MaterialsAlloy.TRINIUM_TITANIUM);
@@ -615,17 +615,17 @@ public final class ModItems {
         MaterialGenerator.generate(MaterialsAlloy.PIKYONIUM);
         MaterialGenerator.generate(MaterialsAlloy.ABYSSAL);
         MaterialGenerator.generate(MaterialsAlloy.LAURENIUM);
-        MaterialGenerator.generate(MaterialsAlloy.BOTMIUM, true, false);
+        MaterialGenerator.generate(MaterialsAlloy.BOTMIUM, true);
         MaterialGenerator.generate(MaterialsAlloy.HS188A);
         MaterialGenerator.generate(MaterialsAlloy.TITANSTEEL);
         MaterialGenerator.generate(MaterialsAlloy.ARCANITE);
         MaterialGenerator.generate(MaterialsAlloy.OCTIRON);
         MaterialGenerator.generate(MaterialsAlloy.BABBIT_ALLOY, false);
         MaterialGenerator.generate(MaterialsAlloy.BLACK_TITANIUM, false);
-        MaterialGenerator.generate(MaterialsAlloy.INDALLOY_140, false, false);
+        MaterialGenerator.generate(MaterialsAlloy.INDALLOY_140, false);
 
         // High Level Bioplastic
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.RHUGNOR, false, false);
+        MaterialGenerator.generate(MaterialsElements.STANDALONE.RHUGNOR, false);
 
         // Must be the final Alloy to Generate
         MaterialGenerator.generate(MaterialsAlloy.QUANTUM);

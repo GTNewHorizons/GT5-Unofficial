@@ -27,6 +27,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FishPondRecipes;
 import gregtech.api.util.SemiFluidFuelHandler;
+import gregtech.loaders.oreprocessing.ProcessingAlloyBlastSmelter;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.Configuration;
@@ -36,7 +37,6 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenBlastSmelterGTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
@@ -143,7 +143,9 @@ public class GTplusplus {
 
     protected void generateGregtechRecipeMaps() {
 
-        RecipeGenBlastSmelterGTNH.generateGTNHBlastSmelterRecipesFromEBFList();
+        ProcessingAlloyBlastSmelter.generateSingleDust();
+        ProcessingAlloyBlastSmelter.generateComposites();
+        ProcessingAlloyBlastSmelter.generateFromExistingBlastFurnaceRecipes();
         FishPondRecipes.generateFishPondRecipes();
         SemiFluidFuelHandler.generateFuels();
 
