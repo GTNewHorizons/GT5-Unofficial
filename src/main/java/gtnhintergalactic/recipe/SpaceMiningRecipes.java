@@ -31,9 +31,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsOres;
+import gregtech.loaders.oreprocessing.ProcessingDustGeneration;
 import gtnhintergalactic.item.ItemMiningDrones;
 
 /**
@@ -585,11 +583,17 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 600, 400, 1500, 1500, 1000, 400, 1000, 600, 1000, 1000, 1000 },
-            new ItemStack[] { MaterialsAlloy.KOBOLDITE.getOre(64), MaterialsOres.CROCROITE.getOre(64),
-                MaterialsOres.GADOLINITE_Y.getOre(64), MaterialsOres.LEPERSONNITE.getOre(64),
-                MaterialsOres.ZIRCON.getOre(64), MaterialsOres.LAUTARITE.getOre(64), MaterialsOres.HONEAITE.getOre(64),
-                MaterialsOres.ALBURNITE.getOre(64), MaterialMisc.RARE_EARTH_LOW.getOre(64),
-                MaterialMisc.RARE_EARTH_MID.getOre(64), MaterialMisc.RARE_EARTH_HIGH.getOre(64) },
+            new ItemStack[] { ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials2Materials.Koboldite, 64),
+                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials2Materials.Crocoite, 64),
+                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials2Materials.GadoliniteY, 64),
+                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials2Materials.Lepersonnite, 64),
+                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials2Materials.Zircon, 64),
+                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials2Materials.Lautarite, 64),
+                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials2Materials.Honeaite, 64),
+                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials2Materials.Alburnite, 64),
+                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials2Materials.RareEarthI, 64),
+                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials2Materials.RareEarthII, 64),
+                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials2Materials.RareEarthIII, 64) },
             10,
             20,
             110,

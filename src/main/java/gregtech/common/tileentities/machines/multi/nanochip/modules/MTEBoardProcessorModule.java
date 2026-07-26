@@ -30,6 +30,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import goodgenerator.items.GGMaterial;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
@@ -49,7 +50,6 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
-import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBoardProcessorModule> {
 
@@ -70,9 +70,9 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             lazy(
                 t -> ofBlock(
                     Block.getBlockFromItem(
-                        MaterialsAlloy.OCTIRON.getFrameBox(1)
+                        MU.stack(OrePrefixes.frameGt, Materials2Materials.Octiron, 1)
                             .getItem()),
-                    MaterialsAlloy.OCTIRON.getFrameBox(1)
+                    MU.stack(OrePrefixes.frameGt, Materials2Materials.Octiron, 1)
                         .getItemDamage())))
         // Nanochip Mesh Interface Casing
         .addElement('B', Casings.NanochipMeshInterfaceCasing.asElement())

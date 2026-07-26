@@ -44,8 +44,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.loaders.materials.RecognitionMaterials;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -473,7 +471,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.dust, 1))
             .circuit(20)
-            .itemOutputs(MaterialsAlloy.EGLIN_STEEL.getDust(48))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.EglinSteel, Materials2Shapes.dust, 48))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(mixerRecipes);
@@ -1843,7 +1841,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.NetherStar, Materials2Shapes.dust, 8),
                 MaterialLibAPI.getStack(Materials2Materials.Terbium, Materials2Shapes.dust, 7),
-                MaterialsElements.getInstance().TECHNETIUM.getDust(4),
+                MaterialLibAPI.getStack(Materials2Materials.Technetium, Materials2Shapes.dust, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Unstable, Materials2Shapes.dust, 4),
                 MaterialLibAPI.getStack(Materials2Materials.FleroviumGT5U, Materials2Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials2Materials.InfinityCatalyst, Materials2Shapes.dust, 1))
@@ -1857,10 +1855,10 @@ public class MixerRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.TinAlloy, Materials2Shapes.dust, 8),
                 WerkstoffLoader.Ruridit.get(OrePrefixes.dust, 7),
-                MaterialsAlloy.TRINIUM_NAQUADAH.getDust(4),
+                MaterialLibAPI.getStack(Materials2Materials.TriniumNaquadahAlloy, Materials2Shapes.dust, 4),
                 GGMaterial.adamantiumAlloy.get(OrePrefixes.dust, 4),
                 WerkstoffLoader.Californium.get(OrePrefixes.dust, 3),
-                MaterialsAlloy.QUANTUM.getDust(1))
+                MaterialLibAPI.getStack(Materials2Materials.Quantum, Materials2Shapes.dust, 1))
             .circuit(6)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.dust, 27))
             .duration(15 * SECONDS)

@@ -202,10 +202,12 @@ public class ProcessingDustGeneration {
     /// A material's stack for `prefix`: the MaterialLib-backed one when the material generates that shape,
     /// falling back to the ore dictionary's unification target otherwise. [GTOreDictUnificator#get] alone is
     /// not enough -- a material with no legacy sub-id never enters the unificator's generated-item pass, so
-    /// for those it keeps returning a legacy item even after the shape exists. Package-visible: every
+    /// for those it keeps returning a legacy item even after the shape exists. Public: every
     /// `gregtech.loaders.oreprocessing` pass ported from a retired gtPlusPlus generator resolves stacks this
-    /// same way, so they share this one instead of each declaring their own copy.
-    static ItemStack stackOf(OrePrefixes prefix, Material material, long amount) {
+    /// same way, so they share this one instead of each declaring their own copy, and outside consumers use it
+    /// wherever the oredict fallback matters (e.g. `ore`, whose retired `Material#getOre` never consulted a
+    /// MaterialLib shape at all).
+    public static ItemStack stackOf(OrePrefixes prefix, Material material, long amount) {
         ItemStack cutover = MU.stack(prefix, material, amount);
         return cutover != null ? cutover : GTOreDictUnificator.get(prefix, material, amount);
     }

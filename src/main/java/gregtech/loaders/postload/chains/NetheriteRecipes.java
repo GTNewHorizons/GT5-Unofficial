@@ -39,7 +39,6 @@ import gregtech.common.items.CombType;
 import gregtech.loaders.materials.RecognitionMaterials;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import kekztech.Items;
 import kekztech.common.items.MetaItemCraftingComponent;
@@ -158,7 +157,7 @@ public class NetheriteRecipes {
 
             GTValues.RA.stdBuilder() // Strontium Hydroxide
                 .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Strontium, Materials2Shapes.dust, (int) (1)))
-                .itemOutputs(MaterialMisc.STRONTIUM_HYDROXIDE.getDust(3))
+                .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.StrontiumHydroxide, Materials2Shapes.dust, 3))
                 .fluidInputs(
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (1000)),
@@ -169,7 +168,7 @@ public class NetheriteRecipes {
                 .addTo(multiblockChemicalReactorRecipes);
 
             GTValues.RA.stdBuilder() // Precipitation
-                .itemInputs(MaterialMisc.STRONTIUM_HYDROXIDE.getDust(42))
+                .itemInputs(MaterialLibAPI.getStack(Materials2Materials.StrontiumHydroxide, Materials2Shapes.dust, 42))
                 .itemOutputs(ItemList.Prismarine_Precipitate.get(8))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(

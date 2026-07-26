@@ -20,7 +20,6 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
 
@@ -187,7 +186,7 @@ public class RecipeIC2 {
                 new ItemStack(Blocks.wool, 64, 4), // Yellow Wool
                 GTUtility.copyAmount(32, Ic2Items.coil),
                 MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.plate, (int) (16)),
-                MaterialsAlloy.SILICON_CARBIDE.getGear(8))
+                MaterialLibAPI.getStack(Materials2Materials.SiliconCarbide, Materials2Shapes.gearGt, 8))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Chest.get(1))
             .fluidInputs(
@@ -204,7 +203,7 @@ public class RecipeIC2 {
                 new ItemStack(Blocks.wool, 32, 4), // Yellow Wool
                 GTUtility.copyAmount(16, Ic2Items.coil),
                 MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.plate, (int) (8)),
-                MaterialsAlloy.SILICON_CARBIDE.getGear(4))
+                MaterialLibAPI.getStack(Materials2Materials.SiliconCarbide, Materials2Shapes.gearGt, 4))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Legs.get(1))
             .fluidInputs(
@@ -221,7 +220,7 @@ public class RecipeIC2 {
                 new ItemStack(Blocks.wool, 16, 15), // Black Wool
                 GTUtility.copyAmount(6, Ic2Items.coil),
                 MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.gearGtSmall, (int) (8)),
-                MaterialsAlloy.TUMBAGA.getGear(4))
+                MaterialLibAPI.getStack(Materials2Materials.Tumbaga, Materials2Shapes.gearGt, 4))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Boots.get(1))
             .fluidInputs(

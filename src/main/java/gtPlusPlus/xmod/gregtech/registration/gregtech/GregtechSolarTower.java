@@ -4,8 +4,9 @@ import static gregtech.api.enums.MetaTileEntityIDs.Industrial_Solar_Tower;
 import static gregtech.api.enums.MetaTileEntityIDs.Solar_Tower_Reflector;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTESolarTower;
 import gtPlusPlus.xmod.gregtech.common.tileentities.misc.MTESolarHeater;
@@ -32,8 +33,8 @@ public class GregtechSolarTower {
 
         // NEI recipe
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialMisc.SOLAR_SALT_COLD.getFluidStack(1000))
-            .fluidOutputs(MaterialMisc.SOLAR_SALT_HOT.getFluidStack(1000))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.SolarSaltCold, 1000))
+            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.SolarSaltHot, 1000))
             .duration(0)
             .eut(0)
             .addTo(GTPPRecipeMaps.solarTowerRecipes);

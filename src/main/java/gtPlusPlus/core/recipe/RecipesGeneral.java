@@ -96,7 +96,7 @@ public class RecipesGeneral {
 
         // Potin
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialsAlloy.POTIN.getDust(5),
+            MaterialLibAPI.getStack(Materials2Materials.Potin, Materials2Shapes.dust, 5),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "dustLead", "dustBronze", "dustTin", "dustLead", "dustBronze" });
 
@@ -106,7 +106,7 @@ public class RecipesGeneral {
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "dustGold", "dustGold", "dustCopper" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialsAlloy.TUMBAGA.getDust(10),
+            MaterialLibAPI.getStack(Materials2Materials.Tumbaga, Materials2Shapes.dust, 10),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.TumbagaMixDust.get(1), GregtechItemList.TumbagaMixDust.get(1),
                 GregtechItemList.TumbagaMixDust.get(1), "dustGold" });
@@ -155,7 +155,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(GregtechItemList.KLEIN_BOTTLE.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(16 * INGOTS))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, 16 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(fluidSolidifierRecipes);

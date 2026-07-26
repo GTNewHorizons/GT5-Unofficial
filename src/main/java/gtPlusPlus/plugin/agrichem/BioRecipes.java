@@ -47,7 +47,6 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.railcraft.utils.RailcraftUtils;
@@ -485,7 +484,7 @@ public class BioRecipes {
 
     private static void recipePelletMold() {
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsAlloy.TUMBAGA.getBlock(1))
+            .itemInputs(MU.stack(OrePrefixes.block, Materials2Materials.Tumbaga, 1))
             .itemOutputs(GregtechItemList.Pellet_Mold.get(1))
             .duration(7 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV / 4 * 3)

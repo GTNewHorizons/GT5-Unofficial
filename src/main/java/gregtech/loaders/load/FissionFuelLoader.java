@@ -30,7 +30,6 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.core.material.MaterialsElements;
 
 public class FissionFuelLoader implements Runnable {
 
@@ -158,10 +157,10 @@ public class FissionFuelLoader implements Runnable {
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
                     MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (2)),
-                    MaterialsElements.getInstance().THORIUM232.getDust(1),
+                    MaterialLibAPI.getStack(Materials2Materials.Thorium232, Materials2Shapes.dust, 1),
                     MaterialLibAPI.getStack(Materials2Materials.Lutetium, Materials2Shapes.dustSmall, (int) (1)),
-                    MaterialsElements.getInstance().POLONIUM.getSmallDust(1),
-                    MaterialsElements.getInstance().THALLIUM.getTinyDust(1))
+                    MaterialLibAPI.getStack(Materials2Materials.Polonium, Materials2Shapes.dustSmall, 1),
+                    MaterialLibAPI.getStack(Materials2Materials.Thallium, Materials2Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
                 .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(30))
                 .duration(2 * MINUTES + 5 * SECONDS)
@@ -172,10 +171,10 @@ public class FissionFuelLoader implements Runnable {
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
                     MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (2)),
-                    MaterialsElements.getInstance().THORIUM232.getDust(1),
+                    MaterialLibAPI.getStack(Materials2Materials.Thorium232, Materials2Shapes.dust, 1),
                     MaterialLibAPI.getStack(Materials2Materials.Lutetium, Materials2Shapes.dustSmall, (int) (1)),
-                    MaterialsElements.getInstance().POLONIUM.getSmallDust(1),
-                    MaterialsElements.getInstance().THALLIUM.getTinyDust(1))
+                    MaterialLibAPI.getStack(Materials2Materials.Polonium, Materials2Shapes.dustSmall, 1),
+                    MaterialLibAPI.getStack(Materials2Materials.Thallium, Materials2Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
                 .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(30))
                 .duration(2 * MINUTES + 5 * SECONDS)
@@ -186,10 +185,10 @@ public class FissionFuelLoader implements Runnable {
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
                     MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (2)),
-                    MaterialsElements.getInstance().THORIUM232.getDust(1),
+                    MaterialLibAPI.getStack(Materials2Materials.Thorium232, Materials2Shapes.dust, 1),
                     MaterialLibAPI.getStack(Materials2Materials.Lutetium, Materials2Shapes.dustSmall, (int) (1)),
-                    MaterialsElements.getInstance().POLONIUM.getSmallDust(1),
-                    MaterialsElements.getInstance().THALLIUM.getTinyDust(1))
+                    MaterialLibAPI.getStack(Materials2Materials.Polonium, Materials2Shapes.dustSmall, 1),
+                    MaterialLibAPI.getStack(Materials2Materials.Thallium, Materials2Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
                 .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(30))
                 .duration(2 * MINUTES + 5 * SECONDS)
@@ -273,8 +272,8 @@ public class FissionFuelLoader implements Runnable {
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
                     MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.dust, (int) (2)),
-                    MaterialsElements.getInstance().URANIUM232.getSmallDust(1),
-                    MaterialsElements.getInstance().URANIUM233.getSmallDust(1),
+                    MaterialLibAPI.getStack(Materials2Materials.Uranium232, Materials2Shapes.dustSmall, 1),
+                    MaterialLibAPI.getStack(Materials2Materials.Uranium233, Materials2Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dustSmall, (int) (1)),
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dustTiny, (int) (1)))
                 .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
@@ -287,8 +286,8 @@ public class FissionFuelLoader implements Runnable {
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
                     MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.dust, (int) (2)),
-                    MaterialsElements.getInstance().URANIUM232.getSmallDust(1),
-                    MaterialsElements.getInstance().URANIUM233.getSmallDust(1),
+                    MaterialLibAPI.getStack(Materials2Materials.Uranium232, Materials2Shapes.dustSmall, 1),
+                    MaterialLibAPI.getStack(Materials2Materials.Uranium233, Materials2Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dustSmall, (int) (1)),
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dustTiny, (int) (1)))
                 .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
@@ -301,8 +300,8 @@ public class FissionFuelLoader implements Runnable {
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
                     MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.dust, (int) (2)),
-                    MaterialsElements.getInstance().URANIUM232.getSmallDust(1),
-                    MaterialsElements.getInstance().URANIUM233.getSmallDust(1),
+                    MaterialLibAPI.getStack(Materials2Materials.Uranium232, Materials2Shapes.dustSmall, 1),
+                    MaterialLibAPI.getStack(Materials2Materials.Uranium233, Materials2Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dustSmall, (int) (1)),
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dustTiny, (int) (1)))
                 .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
@@ -390,7 +389,7 @@ public class FissionFuelLoader implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dust, (int) (2)),
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.dustTiny, (int) (1)),
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dustTiny, (int) (1)),
-                    MaterialsElements.getInstance().PLUTONIUM238.getTinyDust(1),
+                    MaterialLibAPI.getStack(Materials2Materials.Plutonium238, Materials2Shapes.dustTiny, 1),
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dustTiny, (int) (1)))
                 .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
                 .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(90))
@@ -404,7 +403,7 @@ public class FissionFuelLoader implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dust, (int) (2)),
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.dustTiny, (int) (1)),
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dustTiny, (int) (1)),
-                    MaterialsElements.getInstance().PLUTONIUM238.getTinyDust(1),
+                    MaterialLibAPI.getStack(Materials2Materials.Plutonium238, Materials2Shapes.dustTiny, 1),
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dustTiny, (int) (1)))
                 .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
                 .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(90))
@@ -418,7 +417,7 @@ public class FissionFuelLoader implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dust, (int) (2)),
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.dustTiny, (int) (1)),
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dustTiny, (int) (1)),
-                    MaterialsElements.getInstance().PLUTONIUM238.getTinyDust(1),
+                    MaterialLibAPI.getStack(Materials2Materials.Plutonium238, Materials2Shapes.dustTiny, 1),
                     MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dustTiny, (int) (1)))
                 .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
                 .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(90))

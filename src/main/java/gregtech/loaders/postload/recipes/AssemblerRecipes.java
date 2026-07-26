@@ -25,7 +25,6 @@ import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gtPlusPlus.core.material.MaterialsAlloy.INCONEL_690;
 import static kekztech.common.Blocks.lscLapotronicEnergyUnit;
 
 import net.minecraft.init.Blocks;
@@ -52,13 +51,12 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 import tectech.thing.CustomItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -2343,7 +2341,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.TengamAttuned, Materials2Shapes.stick, 1),
-                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFineWire(16))
+                MaterialLibAPI.getStack(Materials2Materials.CelestialTungsten, Materials2Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.UEV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2353,7 +2351,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.TengamAttuned, Materials2Shapes.stick, 1),
-                MaterialsElements.STANDALONE.RHUGNOR.getFineWire(16))
+                MaterialLibAPI.getStack(Materials2Materials.Rhugnor, Materials2Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.UIV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2363,7 +2361,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.TengamAttuned, Materials2Shapes.stick, 1),
-                MaterialsElements.STANDALONE.DRAGON_METAL.getFineWire(16))
+                MaterialLibAPI.getStack(Materials2Materials.Dragonblood, Materials2Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.UMV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -3163,7 +3161,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.plate, 12),
                 MaterialLibAPI.getStack(Materials2Materials.prismaticnaquadah, Materials2Shapes.screw, 4))
             .itemOutputs(ItemList.RadiantNaquadahAlloyCasing.get(4))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Indalloy140, 9 * INGOTS))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -5020,7 +5018,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.LASERpipe.get(1), ItemList.Naquarite_Universal_Insulator_Foil.get(4))
             .itemOutputs(CustomItemList.Pipe_BEC.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(INGOTS))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -7082,7 +7080,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 ItemList.Electric_Pump_EV.get(4),
                 ItemList.Field_Generator_EV.get(4),
-                INCONEL_690.getPlate(4),
+                MaterialLibAPI.getStack(Materials2Materials.Inconel690, Materials2Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.screw, 16),
                 MaterialLibAPI.getStack(Materials2Materials.BorosilicateGlass, Materials2Shapes.ring, 16),
                 GTOreDictUnificator.get("cableGt01Aluminium", 2),

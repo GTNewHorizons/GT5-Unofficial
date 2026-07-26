@@ -28,7 +28,6 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class NaniteChain {
@@ -55,7 +54,7 @@ public class NaniteChain {
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Naquadah, 32),
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.plateSuperdense, (int) (4)))
             .fluidInputs(
-                MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 32 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.HSSS, Materials2FluidShapes.fluidMolten, (int) (32 * INGOTS)),
                 MaterialLibAPI.getFluidStack(
@@ -80,7 +79,7 @@ public class NaniteChain {
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (64)))
             .fluidInputs(
                 MU.fluid(Materials2Materials.UUMatter, 10_000),
-                MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS))
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 32 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Carbon, 2))
             .eut(TierEU.RECIPE_UV)
             .duration(50 * SECONDS)

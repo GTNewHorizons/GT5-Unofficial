@@ -57,6 +57,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -64,9 +65,6 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class RecipeLoader {
@@ -118,7 +116,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Trinium, Materials2FluidShapes.fluidMolten, 4 * INGOTS),
-                MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 8_000))
             .itemOutputs(ItemList.LargeNaquadahReactor.get(1))
             .eut(TierEU.RECIPE_UV)
@@ -375,7 +373,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 4_000))
-            .fluidOutputs(MaterialsFluorides.THORIUM_TETRAFLUORIDE.getFluidStack(1_000))
+            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.ThoriumTetrafluoride, 1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -763,7 +761,7 @@ public class RecipeLoader {
                     Materials2FluidShapes.fluidMolten,
                     32 * INGOTS),
                 GGMaterial.extremelyUnstableNaquadah.getMolten(10 * INGOTS),
-                MaterialsAlloy.INDALLOY_140.getFluidStack(1 * STACKS + 36 * INGOTS))
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 1 * STACKS + 36 * INGOTS))
             .itemOutputs(ItemList.NaquadahFuelRefinery.get(1))
             .eut(TierEU.RECIPE_UHV)
             .duration(60 * SECONDS)
@@ -781,7 +779,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials2Materials.VibrantAlloy, Materials2Shapes.plate, 4),
                 ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(4))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(8 * INGOTS))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Indalloy140, 8 * INGOTS))
             .itemOutputs(ItemRefer.Advanced_Radiation_Protection_Plate.get(1))
             .eut(TierEU.RECIPE_ZPM / 2)
             .duration(50 * SECONDS)
@@ -802,7 +800,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.TungstenSteel, Materials2FluidShapes.fluidMolten, 8 * INGOTS),
-                MaterialsAlloy.INDALLOY_140.getFluidStack(16 * INGOTS))
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 16 * INGOTS))
             .itemOutputs(ItemRefer.Naquadah_Fuel_Refinery_Casing.get(1))
             .eut(TierEU.RECIPE_ZPM / 2)
             .duration(25 * SECONDS)
@@ -1412,7 +1410,7 @@ public class RecipeLoader {
                 ItemRefer.Inverter.get(32),
                 ItemList.Hull_UIV.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Markers.SuperconductorUIV, 4),
-                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(8),
+                MaterialLibAPI.getStack(Materials2Materials.ChromaticGlass, Materials2Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials2Materials.RadoxPoly, Materials2Shapes.plateDouble, 16),
                 ItemList.UEV_Coil.get(8),
                 ItemList.Tesseract.get(8),
@@ -1440,7 +1438,7 @@ public class RecipeLoader {
                 ItemRefer.Inverter.get(64),
                 ItemList.Hull_UMV.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Markers.SuperconductorUMV, 4),
-                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(32),
+                MaterialLibAPI.getStack(Materials2Materials.ChromaticGlass, Materials2Shapes.plate, 32),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials2Materials.RadoxPoly, 1),
                 ItemList.UIV_Coil.get(8),
                 ItemList.EnergisedTesseract.get(12),
@@ -1709,7 +1707,7 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .circuit(1)
-            .fluidInputs(MaterialsFluorides.THORIUM_TETRAFLUORIDE.getFluidStack(4_000))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.ThoriumTetrafluoride, 4_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, 1))
             .fluidOutputs(GGMaterial.thorium232Tetrafluoride.getFluidOrGas(3_000))
             .duration(20 * SECONDS)

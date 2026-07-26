@@ -35,10 +35,12 @@ import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -48,7 +50,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -89,8 +90,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .addInfo("Surround with rings of Solar Reflectors")
             .addInfo("The Reflectors increase the internal heat value of the Tower (see below for formula)")
             .addInfo("Each Reflector ring increases tier, the first ring is required for the Tower to work")
-            .addInfo("Input: " + MaterialMisc.SOLAR_SALT_COLD.getDefaultLocalName())
-            .addInfo("Output: " + MaterialMisc.SOLAR_SALT_HOT.getDefaultLocalName())
+            .addInfo("Input: " + MU.localName(Materials2Materials.SolarSaltCold))
+            .addInfo("Output: " + MU.localName(Materials2Materials.SolarSaltHot))
             .addInfo("Every cycle (10 seconds), heat increases and all the Cold Solar Salt is heated")
             .addInfo("Converting Cold to Hot Solar Salt reduces heat, equal to the amount converted")
             .addInfo("This conversion only happens if heat >= 30000 and controller efficiency = 100%")
@@ -539,10 +540,10 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
 
         if (this.mEfficiency == this.getMaxEfficiency(null) && this.mHeatLevel >= 30000) {
             if (mColdSalt == null) {
-                mColdSalt = MaterialMisc.SOLAR_SALT_COLD.getFluid();
+                mColdSalt = MU.legacyGtppFluidOf(Materials2Materials.SolarSaltCold);
             }
             if (mHotSalt == null) {
-                mHotSalt = MaterialMisc.SOLAR_SALT_HOT.getFluid();
+                mHotSalt = MU.legacyGtppFluidOf(Materials2Materials.SolarSaltHot);
             }
             ArrayList<FluidStack> aFluids = this.getStoredFluids();
             for (FluidStack aFluid : aFluids) {

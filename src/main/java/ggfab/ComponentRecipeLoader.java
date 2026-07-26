@@ -17,8 +17,8 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.recipe.Scanning;
-import gtPlusPlus.core.material.MaterialsAlloy;
 
 class ComponentRecipeLoader implements Runnable {
 
@@ -35,7 +35,7 @@ class ComponentRecipeLoader implements Runnable {
                 new Object[] { Circuits.EV.getIngredient(), 8 },
                 ItemList.Automation_ChestBuffer_LuV.get(1L))
             .fluidInputs(
-                MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 9 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
             .itemOutputs(GGItemList.AdvAssLine.get(1L))

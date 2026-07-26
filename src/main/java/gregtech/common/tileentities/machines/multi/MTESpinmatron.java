@@ -49,6 +49,7 @@ import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -89,7 +90,6 @@ import gregtech.common.tools.ToolTurbineNormal;
 import gregtech.common.tools.ToolTurbineSmall;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 
 public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
@@ -232,7 +232,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             lazy(
                 t -> ofBlock(
                     Block.getBlockFromItem(
-                        MaterialsAlloy.PIKYONIUM.getFrameBox(1)
+                        MU.stack(OrePrefixes.frameGt, Materials2Materials.Pikyonium64B, 1)
                             .getItem()),
                     0))) // t1 frame, Pikyonium
         .addElement(

@@ -21,7 +21,6 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.material.MaterialsElements;
 
 public class ArcFurnaceRecipes implements Runnable {
 
@@ -497,7 +496,7 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Hypogen.get(1))
             .itemOutputs(
-                MaterialsElements.STANDALONE.HYPOGEN.getIngot(9),
+                MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.ingot, 9),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.ingot, (int) (4L)),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(32))
             .duration(20 * SECONDS)
@@ -509,7 +508,7 @@ public class ArcFurnaceRecipes implements Runnable {
             .itemInputs(ItemList.Casing_Coil_Eternal.get(1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.ingot, (int) (9L)),
-                MaterialsElements.STANDALONE.HYPOGEN.getIngot(4),
+                MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.ingot, 4),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)

@@ -190,6 +190,15 @@ public class MU {
         return null;
     }
 
+    /// A material's `cell` item, falling back to `cellMolten` when the plain `cell` shape does not resolve --
+    /// unlike `cellPlasma` (whose [#stack] candidate list already includes `cellPlasmaLight`), `cell` has no
+    /// built-in fallback: a gtpp material whose single fluid claimed [Materials2FluidShapes#fluidMolten]
+    /// instead of a liquid/gas cell-eligible slot carries its full cell only under `cellMolten`.
+    public static @Nullable ItemStack cellStack(@Nullable Material material, long amount) {
+        ItemStack cell = stack(OrePrefixes.cell, material, amount);
+        return cell != null ? cell : stack(OrePrefixes.cellMolten, material, amount);
+    }
+
     /// Whether a legacy (prefix, material) pair has a MaterialLib equivalent (see [#stack]). Unlike [#shape],
     /// which answers whether a prefix has cut over at all, this answers per material -- needed because a
     /// fluid-in-container shape's membership does not always mirror every material with a real legacy slot: a
@@ -369,6 +378,41 @@ public class MU {
     public static @Nullable FluidStack solid(@Nullable Material material, long amount) {
         Fluid fluid = resolveSlotFluid(material, FluidState.SOLID, FluidNames::solid);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
+    }
+
+    /// A gtPlusPlus-only material's single registered legacy fluid, resolved by the name its
+    /// [GTMaterialProperties#LEGACY_FLUIDS] slots declare ([FluidNames#legacyGtppFluidName]) -- unlike [#molten]/
+    /// [#fluid]/[#gas], which read a legacy `Materials` field or a [Shape], neither of which a gtPlusPlus-only
+    /// material carries, so those return null for exactly the materials this resolves. Mirrors the retired
+    /// gtPlusPlus `Material#getFluidStack`: null exactly when gtpp itself registered no fluid for the material.
+    public static @Nullable FluidStack legacyGtppFluid(@Nullable Material material, long amount) {
+        Fluid fluid = legacyGtppFluidOf(material);
+        return fluid == null ? null : new FluidStack(fluid, (int) amount);
+    }
+
+    /// Materials whose fluid is registered directly by name rather than through their own declaration, so
+    /// [GTMaterialProperties#LEGACY_FLUIDS] never captured it.
+    private static final Map<String, String> UNDECLARED_FLUID_NAMES = Map
+        .of("ZirconiumTetrafluoride", "zirconiumtetrafluoride");
+
+    /// [#legacyGtppFluid]'s raw [Fluid], for a bare `Material#getFluid()` read (no stack size).
+    public static @Nullable Fluid legacyGtppFluidOf(@Nullable Material material) {
+        if (material == null) return null;
+        FluidNames fluids = material.getProperty(GTMaterialProperties.LEGACY_FLUIDS);
+        String name = fluids == null ? null : fluids.legacyGtppFluidName();
+        if (name == null) name = UNDECLARED_FLUID_NAMES.get(material.getName());
+        return name == null ? null : FluidRegistry.getFluid(name);
+    }
+
+    /// A gtPlusPlus-only material's registered plasma fluid, from [GTMaterialProperties#GTPP_PLASMA_NAME] --
+    /// gtpp reconstruction wires `mPlasma` from that pinned name alone, never from this class's own
+    /// [GTMaterialProperties#LEGACY_FLUIDS]-based [#plasmaOf] (see `gtPlusPlus.core.material.
+    /// MaterialReconstruction#build`), so this is null for every reconstructed material outside the small set
+    /// that property actually carries -- exactly mirroring the retired `Material#getPlasma`.
+    public static @Nullable Fluid legacyGtppPlasmaOf(@Nullable Material material) {
+        if (material == null) return null;
+        String name = material.getProperty(GTMaterialProperties.GTPP_PLASMA_NAME);
+        return name == null ? null : FluidRegistry.getFluid(name);
     }
 
     /// [#fluidOf]'s raw [Fluid] for the `gas()` slot -- the legacy `Materials#mGas` field value itself.

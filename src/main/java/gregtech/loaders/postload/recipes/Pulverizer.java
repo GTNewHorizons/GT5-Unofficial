@@ -29,7 +29,6 @@ import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -295,7 +294,7 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Hypogen.get(1))
             .itemOutputs(
-                MaterialsElements.STANDALONE.HYPOGEN.getDust(9),
+                MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.dust, (int) (4)),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.prismaticnaquadah, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.dust, (int) (4)))
@@ -308,7 +307,7 @@ public class Pulverizer implements Runnable {
             .itemInputs(ItemList.Casing_Coil_Eternal.get(1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.dust, (int) (9)),
-                MaterialsElements.STANDALONE.HYPOGEN.getDust(4),
+                MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.dust, 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.prismaticnaquadah, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.dust, (int) (8)))
             .duration(20 * SECONDS)

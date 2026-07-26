@@ -28,7 +28,6 @@ import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.material.MaterialsElements;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AutoclaveRecipes implements Runnable {
@@ -362,7 +361,7 @@ public class AutoclaveRecipes implements Runnable {
                 WerkstoffLoader.Salt.get(OrePrefixes.gemChipped, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.gemChipped, (int) (64)),
                 WerkstoffLoader.VanadioOxyDravit.get(OrePrefixes.gemChipped, 64))
-            .fluidInputs(new FluidStack(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlasma(), 1_000_000))
+            .fluidInputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.ChromaticGlass), 1_000_000))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.gemExquisite, (int) (1)))
             .duration(100 * SECONDS)

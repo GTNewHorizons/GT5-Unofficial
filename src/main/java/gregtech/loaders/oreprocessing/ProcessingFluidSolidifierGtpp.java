@@ -3,12 +3,9 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -17,8 +14,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.FluidNames;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 
 /// Reproduces the retired gtPlusPlus `RecipeGenFluids` for every material in [#ELIGIBLE]: the mold-plus-fluid
 /// solidifier recipes for every shape the material carries (ingot, plate, nugget, gear, small gear, block, rod,
@@ -115,20 +112,8 @@ public class ProcessingFluidSolidifierGtpp {
             .addTo(fluidSolidifierRecipes);
     }
 
-    /// `ZirconiumTetrafluoride`'s fluid, registered directly by name (`ModItems`'s "Custom fluids" block, via
-    /// `FluidUtils#generateFluidNoPrefix`) rather than through the material's own constructor -- the only
-    /// material in [#ELIGIBLE] whose [GTMaterialProperties#LEGACY_FLUIDS] carries no data as a result (its
-    /// `GTPP_GENERATES_FLUID` flag was never set, since the fluid was added after construction), so
-    /// [#materialFluid] falls back to this single hardcoded name for it alone.
-    private static final Map<Material, String> CUSTOM_FLUID_NAMES = Map
-        .of(Materials2Materials.ZirconiumTetrafluoride, "zirconiumtetrafluoride");
-
     private static FluidStack materialFluid(Material material, long amount) {
-        FluidNames fluids = material.getProperty(GTMaterialProperties.LEGACY_FLUIDS);
-        String name = fluids == null ? null : fluids.legacyGtppFluidName();
-        if (name == null) name = CUSTOM_FLUID_NAMES.get(material);
-        Fluid fluid = name == null ? null : FluidRegistry.getFluid(name);
-        return fluid == null ? null : new FluidStack(fluid, (int) amount);
+        return MU.legacyGtppFluid(material, amount);
     }
 
     private static long voltageMultiplier(Material material) {

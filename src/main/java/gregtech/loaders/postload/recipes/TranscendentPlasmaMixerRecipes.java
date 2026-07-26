@@ -10,9 +10,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
-import gtPlusPlus.core.material.MaterialsElements;
 
 public class TranscendentPlasmaMixerRecipes implements Runnable {
 
@@ -222,10 +222,10 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(24)
             .fluidInputs(
-                new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 1_000),
+                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Fermium), 1_000),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Thorium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
-                new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1_000),
+                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.CelestialTungsten), 1_000),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Calcium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
@@ -271,8 +271,8 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                     .getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.FleroviumGT5U, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
-                new FluidStack(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlasma(), 1_000),
-                new FluidStack(MaterialsElements.STANDALONE.HYPOGEN.getPlasma(), 1_000),
+                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.ChromaticGlass), 1_000),
+                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Hypogen), 1_000),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Ichorium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
@@ -283,8 +283,8 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                     Materials2Materials.DraconiumAwakened,
                     Materials2FluidShapes.fluidPlasma,
                     (int) (1_000)),
-                new FluidStack(MaterialsElements.STANDALONE.DRAGON_METAL.getPlasma(), 1_000),
-                new FluidStack(MaterialsElements.STANDALONE.RHUGNOR.getPlasma(), 1_000),
+                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Dragonblood), 1_000),
+                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Rhugnor), 1_000),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Draconium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI

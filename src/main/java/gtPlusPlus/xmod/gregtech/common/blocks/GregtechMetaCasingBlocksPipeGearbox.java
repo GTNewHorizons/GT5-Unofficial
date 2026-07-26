@@ -8,8 +8,10 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gregtech.common.blocks.MaterialCasings;
-import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlocksAbstract {
@@ -20,22 +22,22 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
         super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.pipesgears", MaterialCasings.INSTANCE);
 
         int aMappingID = 0;
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.EGLIN_STEEL.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.INCONEL_792.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.INCOLOY_MA956.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.NITINOL_60.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.ZERON_100.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.PIKYONIUM.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.TITANSTEEL.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.ABYSSAL.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.BABBIT_ALLOY.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.INCONEL_690.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.STELLITE.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.NITINOL_60.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.LAFIUM.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.CINOBITE.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.TITANSTEEL.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.ABYSSAL.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.EglinSteel)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Inconel792)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.IncoloyMA956)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Nitinol60)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Zeron100)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Pikyonium64B)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Titansteel)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.AbyssalAlloy)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.BabbitAlloy)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Inconel690)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Stellite)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Nitinol60)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.LafiumCompound)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.CinobiteA243)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Titansteel)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.AbyssalAlloy)));
     }
 
     @Override

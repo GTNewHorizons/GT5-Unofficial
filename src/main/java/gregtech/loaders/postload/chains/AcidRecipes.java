@@ -30,11 +30,9 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 
@@ -145,7 +143,7 @@ public class AcidRecipes {
             .metadata(COIL_HEAT, 1800)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsOres.LAFOSSAITE.getCrushed(2))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Lafossaite, Materials2Shapes.crushed, 2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.PhosphorusChlorineMixture,
@@ -168,7 +166,7 @@ public class AcidRecipes {
                     Materials2Materials.StagnantWasteWater,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (6000)),
-                MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(4000))
+                MU.legacyGtppFluid(Materials2Materials.HydrogenCyanide, 4000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.ActivatedWasteWater,
@@ -253,7 +251,7 @@ public class AcidRecipes {
             .duration(20 * SECONDS)
             .addTo(UniversalChemical);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsElements.STANDALONE.RUNITE.getCrushed(4))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Runite, Materials2Shapes.crushed, 4))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.ToxicSlurry, Materials2FluidShapes.fluidLiquid, (int) (3000)))

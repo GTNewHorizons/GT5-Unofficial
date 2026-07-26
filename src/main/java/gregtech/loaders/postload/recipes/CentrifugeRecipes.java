@@ -37,8 +37,6 @@ import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -1028,7 +1026,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.NetherStar, Materials2Shapes.dust, (int) (8)),
                 MaterialLibAPI.getStack(Materials2Materials.Terbium, Materials2Shapes.dust, (int) (7)),
-                MaterialsElements.getInstance().TECHNETIUM.getDust(4),
+                MaterialLibAPI.getStack(Materials2Materials.Technetium, Materials2Shapes.dust, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Unstable, Materials2Shapes.dust, (int) (4)),
                 MaterialLibAPI.getStack(Materials2Materials.FleroviumGT5U, Materials2Shapes.dust, (int) (3)),
                 MaterialLibAPI.getStack(Materials2Materials.InfinityCatalyst, Materials2Shapes.dust, (int) (1)))
@@ -1041,10 +1039,10 @@ public class CentrifugeRecipes implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.TinAlloy, Materials2Shapes.dust, (int) (8)),
                 WerkstoffLoader.Ruridit.get(OrePrefixes.dust, 7),
-                MaterialsAlloy.TRINIUM_NAQUADAH.getDust(4),
+                MaterialLibAPI.getStack(Materials2Materials.TriniumNaquadahAlloy, Materials2Shapes.dust, 4),
                 GGMaterial.adamantiumAlloy.get(OrePrefixes.dust, 4),
                 WerkstoffLoader.Californium.get(OrePrefixes.dust, 3),
-                MaterialsAlloy.QUANTUM.getDust(1))
+                MaterialLibAPI.getStack(Materials2Materials.Quantum, Materials2Shapes.dust, 1))
             .duration(60 * SECONDS)
             .eut(122880)
             .addTo(centrifugeRecipes);
