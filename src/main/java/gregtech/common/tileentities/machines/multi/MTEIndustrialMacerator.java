@@ -112,7 +112,7 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addInfo("Tier 1: " + EnumChatFormatting.GREEN + "160% speed")
             .addInfo("Tier 2: " + EnumChatFormatting.GREEN + "640% speed")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 5, 7, false)
+            .beginStructureBlock(5, 7, 5, false)
             .addController("Front bottom center")
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)

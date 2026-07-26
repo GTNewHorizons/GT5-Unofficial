@@ -370,7 +370,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                                                                                            // toggle
                                                                                            // wireless mode
             .addSupportAny()
-            .beginVariableStructureBlock(5, 16, 2, 2, 4, 4, false)
+            .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
             .addController("Front left, 2nd layer")
             .addMiscHatch(
                 "1",
@@ -389,6 +389,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 1)
             .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
             .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
+            .addAir("In front of each computer heat vent")
             .addStructureInfo("")
             .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Base"))
             .addCasing("6-17", "Computer Casing", false)

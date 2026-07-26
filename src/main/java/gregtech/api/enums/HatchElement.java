@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.util.StatCollector;
+
 import com.google.common.collect.ImmutableList;
 
 import gregtech.api.interfaces.IHatchElement;
@@ -18,13 +20,14 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.ExoticEnergyInputHelper;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import gtnhlanth.common.hatch.MTEBusInputFocus;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
@@ -136,12 +139,32 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
                 .size();
         }
     },
-    CryotheumHatch("GT5U.MBTT.CryotheumHatch", MTEMultiBlockBase::addCryotheumHatchToMachineList) {
+    CryotheumHatch("GT5U.MBTT.CryotheumHatch", MTEMultiBlockBase::addCryotheumHatchToMachineList,
+        MTEHatchCustomFluidBase.class) {
 
         @Override
         public long count(MTEMultiBlockBase t) {
             return t.getCryotheumHatches()
                 .size();
+        }
+
+        @Override
+        public boolean matchesHatch(IMetaTileEntity mte) {
+            return mte instanceof MTEHatchCustomFluidBase f && f.mLockedFluid == TFFluids.fluidCryotheum;
+        }
+    },
+    PyrotheumHatch("GT5U.MBTT.PyrotheumHatch", MTEMultiBlockBase::addPyrotheumHatchToMachineList,
+        MTEHatchCustomFluidBase.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.getPyrotheumHatches()
+                .size();
+        }
+
+        @Override
+        public boolean matchesHatch(IMetaTileEntity mte) {
+            return mte instanceof MTEHatchCustomFluidBase f && f.mLockedFluid == TFFluids.fluidPyrotheum;
         }
     },
     LaserSource("GT5U.MBTT.LaserSourceHatch", MTEMultiBlockBase::addLaserSourceToMachineList,
@@ -201,7 +224,7 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
 
     @Override
     public String getDisplayName() {
-        return GTUtility.translate(name);
+        return StatCollector.translateToLocal(name);
     }
 
     @Override

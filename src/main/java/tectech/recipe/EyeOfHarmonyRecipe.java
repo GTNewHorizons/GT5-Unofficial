@@ -471,11 +471,11 @@ public class EyeOfHarmonyRecipe {
         }
 
         // Default out if it's made of fluids or some stuff.
-        if (bonusA == null && material.vTier >= 2) {
+        if (bonusA == null && material.tier >= 2) {
             bonusA = material;
         }
         // Default out if it's made of fluids or some stuff.
-        if ((allFailed || bonusB == null) && material.vTier >= 2) {
+        if ((allFailed || bonusB == null) && material.tier >= 2) {
             bonusB = material;
         }
 

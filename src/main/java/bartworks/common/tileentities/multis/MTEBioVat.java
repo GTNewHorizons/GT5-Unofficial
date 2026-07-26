@@ -201,7 +201,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
             .addInfo("Radiation can be either a minimum requirement or an exact value")
             .addInfo("Efficiency depends on Output Hatch fluid level")
             .addInfo("Efficiency peaks at " + EnumChatFormatting.LIGHT_PURPLE + "50%")
-            .beginStructureBlock(5, 5, 4, false)
+            .beginStructureBlock(5, 4, 5, false)
             .addController("Front bottom center")
             .addCasing("19-45", "Stainless Steel Machine Casing", false)
             .addCasing("32", "Any Tiered Glass", true)
@@ -585,8 +585,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                     // TODO check if BioVat still renders correctly, because of the missing ID in culture tag
                     if (this.mCulture == null || aStack == null
                         || aStack.getTagCompound() == null
-                        || this.mCulture.getID() != aStack.getTagCompound()
-                            .getInteger("ID")) {
+                        || this.mCulture != BioCulture.getBioCultureFromNBTTag(aStack.getTagCompound())) {
                         lCulture = (aStack == null) ? null
                             : BioCulture.getBioCultureFromNBTTag(aStack.getTagCompound());
                     }

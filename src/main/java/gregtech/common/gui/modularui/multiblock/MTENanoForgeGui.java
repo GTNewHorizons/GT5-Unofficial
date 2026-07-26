@@ -3,6 +3,7 @@ package gregtech.common.gui.modularui.multiblock;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
@@ -17,7 +18,6 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTENanoForge;
 
@@ -48,7 +48,7 @@ public class MTENanoForgeGui extends MTEMultiBlockBaseGui<MTENanoForge> {
                 }
                 return true;
             })
-            .tooltip(t -> t.addLine(GTUtility.translate("GT5U.machines.nano_forge.t4_info_tooltip")))
+            .tooltip(t -> t.addLine(StatCollector.translateToLocal("GT5U.machines.nano_forge.t4_info_tooltip")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
@@ -79,7 +79,7 @@ public class MTENanoForgeGui extends MTEMultiBlockBaseGui<MTENanoForge> {
     }
 
     private TextWidget<?> createTextEntry(EnumChatFormatting textColor, String langKey) {
-        return IKey.str(textColor + GTUtility.translate(langKey))
+        return IKey.str(textColor + StatCollector.translateToLocal(langKey))
             .alignment(Alignment.CenterLeft)
             .asWidget()
             .width(ADJUSTED_WIDTH - 10)
@@ -91,7 +91,7 @@ public class MTENanoForgeGui extends MTEMultiBlockBaseGui<MTENanoForge> {
             .str(
                 EnumChatFormatting.GOLD + ""
                     + EnumChatFormatting.BOLD
-                    + GTUtility.translate("GT5U.machines.nano_forge.t4_info_header"))
+                    + StatCollector.translateToLocal("GT5U.machines.nano_forge.t4_info_header"))
             .asWidget()
             .horizontalCenter()
             .marginBottom(8);

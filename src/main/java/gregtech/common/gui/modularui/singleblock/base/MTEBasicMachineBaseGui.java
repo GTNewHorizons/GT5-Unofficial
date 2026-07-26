@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -105,7 +106,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             powerfailSyncer,
             machine.mTooltipCache.getData(
                 "GT5U.machines.stalled_stuttering.tooltip",
-                GTUtility.translate("GT5U.machines.powersource.power")));
+                StatCollector.translateToLocal("GT5U.machines.powersource.power")));
     }
 
     @Override
@@ -173,13 +174,14 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .tooltipShowUpTimer(TOOLTIP_DELAY)
             .overlay(overlay);
 
-        if (isEnabled) button[0].addTooltipLine(GTUtility.translate(tooltipKey));
+        if (isEnabled) button[0].addTooltipLine(StatCollector.translateToLocal(tooltipKey));
         if (!isEnabled) button[0].tooltip(
-            t -> t.addLine(GTUtility.translate(BUTTON_FORBIDDEN_TOOLTIP))
+            t -> t.addLine(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP))
                 .addLine(
                     GTUtility.getColoredSecondaryTooltip(
-                        GTUtility
-                            .translate("GT5U.gui.button.forbidden.reason", GTUtility.translate(disabledTooltipKey)))))
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.button.forbidden.reason",
+                            StatCollector.translateToLocal(disabledTooltipKey)))))
             .widgetTheme(GTWidgetThemes.TOGGLE_BUTTON_DISABLED);
 
         return button[0];
@@ -294,8 +296,8 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .backgroundOverlay(
                 properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : IDrawable.NONE)
             .tooltip(
-                t -> t.addLine(GTUtility.translate(tooltipKeys[0]))
-                    .addLine(GTUtility.translate(tooltipKeys[1])))
+                t -> t.addLine(StatCollector.translateToLocal(tooltipKeys[0]))
+                    .addLine(StatCollector.translateToLocal(tooltipKeys[1])))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
@@ -312,7 +314,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
     private String createTooltipForProgressBar() {
         final byte machineTier = machine.mTier;
         String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
-        return GTUtility.translate("GT5U.machines.nei_transfer.voltage.tooltip", tierName);
+        return StatCollector.translateToLocalFormatted("GT5U.machines.nei_transfer.voltage.tooltip", tierName);
     }
 
     protected Widget<?> createErrorWidget(ModularPanel panel, PanelSyncManager syncManager) {

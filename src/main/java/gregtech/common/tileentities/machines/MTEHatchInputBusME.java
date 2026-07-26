@@ -6,7 +6,6 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -79,6 +78,7 @@ import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputBusMEGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -99,7 +99,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     protected int autoPullRefreshTime = 100;
     protected boolean additionalConnection = false;
     protected boolean justHadNewItems = false;
-    private final List<IHatchWatcher> watchers = new ArrayList<>();
     /**
      * The cached activity for this bus. Only valid while processing a recipe. This avoids several expensive operations.
      */
@@ -139,11 +138,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
             if (aTimer % autoPullRefreshTime == 0 && autoPullItemList) {
                 refreshItemList();
                 if (justHadNewItems) {
-                    // Auto-pull only exists on advanced stocking inputs and is already rate-limited by
-                    // autoPullRefreshTime, so a refresh that found new items warrants an immediate check.
-                    for (var multi : watchers) {
-                        multi.scheduleRecipeCheckImmediate();
-                    }
+                    // Advanced hatch auto pull always have immediate check, to not break automations
+                    scheduleRecipeCheck(RecipeCheckReason.IMMEDIATE);
                     justHadNewItems = false;
                 }
             }
@@ -609,6 +605,11 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     }
 
     @Override
+    public boolean needsPeriodicChecks() {
+        return !MachineStats.machines.useStackWatcher;
+    }
+
+    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchInputBusMEGui(this, slots).build(data, syncManager, uiSettings);
     }
@@ -777,8 +778,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
     public void setSlotConfig(int index, ItemStack config) {
         slots[index] = config == null ? null : new Slot(config.copy());
-        // Keep the AE stack watcher in sync, or a bus configured after joining the grid never gets onStackChange for
-        // the new item and a machine idling on it never wakes when the network restocks.
         configureWatchers();
     }
 
@@ -1097,11 +1096,14 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     private void configureWatchers() {
         if (this.watcher != null) {
             this.watcher.clear();
-            for (Slot slot : slots) {
-                if (slot != null && slot.config != null) {
-                    watcher.add(AEItemStack.create(slot.config));
+            if (MachineStats.machines.useStackWatcher) {
+                for (Slot slot : slots) {
+                    if (slot != null && slot.config != null) {
+                        watcher.add(AEItemStack.create(slot.config));
+                    }
                 }
             }
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
         }
     }
 
@@ -1116,11 +1118,13 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         StorageChannel chan) {
         if (diffStack.getStackSize() > 0) {
             justHadNewItems = true;
-            // Push directly: a configured (non-auto-pull) bus may have its GT ticking disabled, so the onPostTick
-            // consume above would never run. The AE watcher callback still fires regardless.
-            for (var multi : watchers) {
-                multi.scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
-            }
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
+        }
+    }
+
+    private void scheduleRecipeCheck(RecipeCheckReason reason) {
+        for (var multi : watchers) {
+            multi.scheduleRecipeCheck(reason);
         }
     }
 }

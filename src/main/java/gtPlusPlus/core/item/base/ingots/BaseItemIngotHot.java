@@ -47,7 +47,7 @@ public class BaseItemIngotHot extends BaseItemIngot {
             .itemInputs(new ItemStack(this))
             .itemOutputs(this.outputIngot.copy())
             .duration(Math.max(this.componentMaterial.getMass() * 3L, 1L) * TICKS)
-            .eut(this.componentMaterial.vVoltageMultiplier)
+            .eut(this.componentMaterial.voltageMultiplier)
             .addTo(vacuumFreezerRecipes);
     }
 

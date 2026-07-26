@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -35,7 +36,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEWorldAccelerator extends MTETieredMachineBlock {
@@ -127,7 +128,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return GTUtility.translateMultiline(
+        return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.basicmachine.accelerator.tooltip",
             mAccelerateStatic[mTier],
             mTier,
@@ -145,8 +146,9 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         List<String> tInfoDisplay = new ArrayList<>();
 
         tInfoDisplay.add(
-            IGregTechDeviceInformation
-                .encode("GT5U.infodata.world_accelerator.mode", GTUtility.translate(mUnlocalizedModeStr[mMode])));
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.world_accelerator.mode",
+                StatCollector.translateToLocal(mUnlocalizedModeStr[mMode])));
         tInfoDisplay.add(
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.world_accelerator.speed",

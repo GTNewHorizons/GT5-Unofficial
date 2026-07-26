@@ -1,7 +1,6 @@
 package gregtech.common.items.armor;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.items.armor.ArmorHelper.SLOT_LEGS;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.List;
@@ -19,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 
@@ -29,6 +29,7 @@ import org.lwjgl.input.Keyboard;
 import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.relauncher.Side;
@@ -91,6 +92,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         this.type = type;
         this.setMaxDamage(0);
         this.setHasSubtypes(false);
+        API.setAliases(new ItemStack(this), "gt.alias.mechanical_armor");
     }
 
     @Override
@@ -178,14 +180,16 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
             for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
                 for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
                     if (!initMessage) {
-                        GTUtility.sendChatToPlayer(player, GTUtility.translate("GT5U.armor.message.systems_online"));
+                        GTUtility.sendChatToPlayer(
+                            player,
+                            StatCollector.translateToLocal("GT5U.armor.message.systems_online"));
                         initMessage = true;
                     }
 
                     if (keyBind.getKeybinding() != null) {
                         GTUtility.sendChatToPlayer(
                             player,
-                            GTUtility.translate(
+                            StatCollector.translateToLocal(
                                 keyBind.getKeybinding()
                                     .getKeyDescription())
                                 + ": "
@@ -272,8 +276,9 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
             if (slot == 2) return GregTech.getResourcePath("textures/items/mech_armor/texture_layer_skeleton2.png");
             return GregTech.getResourcePath("textures/items/mech_armor/texture_layer_skeleton1.png");
         }
-        if (slot == 2) return GregTech.getResourcePath("textures/items/mech_armor/texture_layer2.png");
-        return GregTech.getResourcePath("textures/items/mech_armor/texture_layer1.png");
+
+        if (slot == 2) return GregTech.getResourcePath("textures/items/mech_armor/texture_layer_combined2.png");
+        return GregTech.getResourcePath("textures/items/mech_armor/texture_layer_combined1.png");
     }
 
     @Override
@@ -282,7 +287,13 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         if (modelLegs == null) modelLegs = new ModelMechArmor(0.25F);
         if (modelOther == null) modelOther = new ModelMechArmor(0.5F);
 
-        ModelMechArmor model = (armorSlot == SLOT_LEGS) ? modelLegs : modelOther;
+        ModelMechArmor model = (armorSlot == 2) ? modelLegs : modelOther;
+
+        if (getFrame(itemStack) != null) {
+            model.setColor(getFrame(itemStack).getColor());
+        } else {
+            model.setColor(new short[] { -1 });
+        }
 
         model.bipedHead.showModel = (armorType == 0);
         model.bipedHeadwear.showModel = (armorType == 0);
@@ -306,6 +317,19 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
                 case 2 -> model.core2.showModel = true;
                 case 3 -> model.core3.showModel = true;
                 case 4 -> model.core4.showModel = true;
+            }
+        }
+
+        if (entityLiving != null) {
+            model.isSneak = entityLiving.isSneaking();
+
+            model.isRiding = entityLiving.isRiding();
+            model.isChild = entityLiving.isChild();
+
+            model.heldItemRight = entityLiving.getEquipmentInSlot(0) != null ? 1 : 0;
+
+            if (entityLiving instanceof EntityPlayer player) {
+                model.aimedBow = player.getItemInUseDuration() > 0;
             }
         }
 

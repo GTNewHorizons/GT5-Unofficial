@@ -95,7 +95,7 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
             .addInfo("Regular Bus: Use a programmed circuit to select a variant (see NEI)")
             .addInfo("Also supports ArchitectureCraft shapes as target blocks")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 7, 5, false)
+            .beginStructureBlock(7, 5, 5, false)
             .addController("Front left, 3rd layer")
             .addCasing("40-48", "Sturdy Printer Casing", false)
             .addCasing("37", "Steel Frame Box", false)

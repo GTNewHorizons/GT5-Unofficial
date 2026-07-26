@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
@@ -49,11 +48,12 @@ public class DustDecayable extends BaseItemTickable {
         super.addInformation(stack, player, list, adv);
         if (Client.tooltip.showRadioactiveText) {
             if (this.radLevel > 0) {
-                list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.radLevel));
+                list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
+                list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
             }
         }
         list.add(
-            GTUtility.translate(
+            StatCollector.translateToLocalFormatted(
                 "GTPP.tooltip.dust-decay-hint",
                 ModBlocks.blockDecayablesChest.getLocalizedName(),
                 ItemList.DecayWarehouse.get(1)

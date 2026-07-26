@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,6 +24,7 @@ import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -33,6 +35,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTDataUtils;
@@ -40,6 +43,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.adapter.MTEHatchInputBusMESlotAdapter;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.util.StockingSlot;
+import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
 import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME.Slot;
@@ -157,17 +161,39 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
             .mainAxisAlignment(Alignment.MainAxis.END);
 
         // circuit slot
-        mainColumn.child(createCircuitSlot(syncManager));
+        Widget<?> circuitSlot = createCircuitSlot(syncManager);
+        if (circuitSlot instanceof GhostCircuitSlotWidget widget) {
+            widget.getSlot()
+                .changeListener((newItem, onlyAmountChanged, client, init) -> {
+                    if (newItem != null && !client) {
+                        IGregTechTileEntity base = machine.getBaseMetaTileEntity();
+                        if (base != null) {
+                            base.enableTicking();
+                            machine.onContentsChanged(machine.getCircuitSlot());
+                        }
+                    }
+                });
+        }
+        mainColumn.child(circuitSlot);
 
         // manual slot
         mainColumn.child(
-            new ItemSlot()
-                .slot(new ModularSlot(machine.inventoryHandler, machine.getManualSlot()).slotGroup("item_inv"))
+            new ItemSlot().slot(
+                new ModularSlot(machine.inventoryHandler, machine.getManualSlot()).slotGroup("item_inv")
+                    .changeListener((newItem, onlyAmountChanged, client, init) -> {
+                        if (newItem != null && !client) {
+                            IGregTechTileEntity base = machine.getBaseMetaTileEntity();
+                            if (base != null) {
+                                base.enableTicking();
+                                machine.onContentsChanged(machine.getManualSlot());
+                            }
+                        }
+                    }))
                 .tooltip(t -> {
-                    t.addLine(GTUtility.translate("GT5U.machines.stocking_bus.manual_slot.tooltip.1"));
+                    t.addLine(StatCollector.translateToLocal("GT5U.machines.stocking_bus.manual_slot.tooltip.1"));
                     t.addLine(
                         EnumChatFormatting.GRAY
-                            + GTUtility.translate("GT5U.machines.stocking_bus.manual_slot.tooltip.2")
+                            + StatCollector.translateToLocal("GT5U.machines.stocking_bus.manual_slot.tooltip.2")
                             + EnumChatFormatting.RESET);
                 }));
 
@@ -203,8 +229,8 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
             .setEnabledIf(b -> machine.autoPullAvailable)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_AUTOPULL_ME)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED)
-            .addTooltipLine(GTUtility.translate("GT5U.machines.stocking_bus.auto_pull.tooltip.1"))
-            .addTooltipLine(GTUtility.translate("GT5U.machines.stocking_bus.auto_pull.tooltip.2")));
+            .addTooltipLine(StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.1"))
+            .addTooltipLine(StatCollector.translateToLocal("GT5U.machines.stocking_bus.auto_pull.tooltip.2")));
 
         return mainColumn;
     }
@@ -300,7 +326,7 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
                 return MessageFormat.format(
                     "{0} ({1})",
                     EnumChatFormatting.GREEN + state + EnumChatFormatting.RESET,
-                    GTUtility.translate(
+                    StatCollector.translateToLocal(
                         isAllowedToWorkSyncer.getBoolValue() ? "GT5U.gui.text.enabled" : "GT5U.gui.text.disabled"));
             } else {
                 return EnumChatFormatting.DARK_RED + state + EnumChatFormatting.RESET;

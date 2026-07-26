@@ -123,6 +123,8 @@ public final class CheckRecipeResultRegistry {
 
     public static final CheckRecipeResult LOW_ENERGY = SimpleCheckRecipeResult.ofFailure("gtnhlanth.toolowenergy");
 
+    public static final CheckRecipeResult HIGH_ENERGY = SimpleCheckRecipeResult.ofFailure("gtnhlanth.toohighenergy");
+
     /**
      * Board Module has no fluid stored
      */

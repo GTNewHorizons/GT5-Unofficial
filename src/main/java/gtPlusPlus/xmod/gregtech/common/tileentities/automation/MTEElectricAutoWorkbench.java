@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -728,7 +729,8 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
 
     @Override
     public String[] getDescription() {
-        return new String[] { GTUtility.translate("gt.blockmachines.basicmachine.automation.autoworkbench.tooltip"),
+        return new String[] {
+            StatCollector.translateToLocal("gt.blockmachines.basicmachine.automation.autoworkbench.tooltip"),
             // this.mDescription,
             GTPPCore.GT_Tooltip.get() };
     }
