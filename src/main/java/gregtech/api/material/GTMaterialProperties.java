@@ -111,15 +111,14 @@ public class GTMaterialProperties {
     /// Whether the material is radioactive, unifying the legacy `Werkstoff.Stats.isRadioactive` and
     /// `Material.isRadioactive`.
     public static final Property<Boolean> IS_RADIOACTIVE = Property.of("gregtech", "isRadioactive");
-    /// The `gtPlusPlus.core.material.Material` scalar data of a material that was (or merged with) a legacy
-    /// gtpp material, decomposed into individual keys rather than kept in one composite property so a reader
-    /// needing a single value does not depend on the whole gtpp record shape. Every `GTPP_*` property below
-    /// exists solely so [gtPlusPlus.core.material.MaterialReconstruction] can rebuild the deprecated
-    /// gtPlusPlus `Material` facade, and is removed together with that facade in 5.10.0.0.
-    ///
-    /// [#GTPP_STATE] is always present on a material carrying any gtpp data -- reconstruction and other
-    /// consumers use it (rather than any single scalar below, several of which elide their common default) as
-    /// the "this material has gtpp data" signal.
+    /// The gtPlusPlus-originated scalar data of a material, decomposed into individual keys rather than kept
+    /// in one composite property so a reader needing a single value does not depend on the whole record shape.
+    /// [#GTPP_STATE] is always present on a material carrying any gtpp data and is the "this material has gtpp
+    /// data" signal consulted directly by [gregtech.api.enums.materials2.Materials2OreShapes]'s family dispatch
+    /// and by bartworks' bridge/sludge-overhaul interop; [#GTPP_PLASMA_NAME] backs [MU#legacyGtppPlasmaOf],
+    /// read by the ported gtPlusPlus recipe loaders. [#GTPP_GENERATES_CELLS]/[#GTPP_GENERATES_FLUID] carry no
+    /// reader of their own -- they exist because [gregtech.api.enums.materials2.Materials2Materials]'s
+    /// generator script declares them uniformly alongside [#GTPP_STATE].
     ///
     /// The legacy `Material` constructor's `vGenerateCells` flag, elided when `false`.
     public static final Property<Boolean> GTPP_GENERATES_CELLS = Property.of("gregtech", "gtppGeneratesCells");
@@ -134,8 +133,8 @@ public class GTMaterialProperties {
     /// none of which gtpp itself ever registered a plasma for), so it cannot be trusted as gtpp's own
     /// contribution without this pin.
     public static final Property<String> GTPP_PLASMA_NAME = Property.of("gregtech", "gtppPlasmaName");
-    /// The legacy `gtPlusPlus.core.material.state.MaterialState` enum constant name -- see the class javadoc
-    /// for why this, not a scalar below, is the presence signal for "this material carries gtpp data".
+    /// The legacy gtPlusPlus material state (`SOLID`/`LIQUID`/`GAS`/...) -- see the class javadoc for why this,
+    /// not a scalar above, is the presence signal for "this material carries gtpp data".
     public static final Property<String> GTPP_STATE = Property.of("gregtech", "gtppState");
     public static final Property<FluidNames> LEGACY_FLUIDS = Property.of("gregtech", "legacyFluids");
     public static final Property<String> LOCAL_NAME = Property.of("gregtech", "localName");
@@ -172,9 +171,8 @@ public class GTMaterialProperties {
     /// legacy bartworks `Werkstoff` `SUBTAGS`, consulted broadly by recipe-gen/tooltip logic gating on a
     /// material's kind (gas-type gating, no-blast gating, etc.).
     public static final Property<List<String>> SUB_TAGS = Property.of("gregtech", "subTags");
-    /// The legacy `Material.vTier`; no gregtech equivalent. Elided when `0`. Read pervasively by gtPlusPlus
-    /// `RecipeGen*` codegen (plates, recycling, shaped crafting, conduits) and Forestry bee-drop classes to set
-    /// recipe EU cost/tier.
+    /// The legacy `Material.vTier`; no gregtech equivalent. Elided when `0`. Read by the Forestry bee-drop
+    /// classes (`GTPPComb`/`GTPPDrop`/`GTPPPropolis`) to set recipe EU cost/tier.
     public static final Property<Integer> TIER = Property.of("gregtech", "tier");
     public static final Property<String> TOOL_ENCHANTMENT = Property.of("gregtech", "toolEnchantment");
     public static final Property<Integer> TOOL_ENCHANTMENT_LEVEL = Property.of("gregtech", "toolEnchantmentLevel");

@@ -22,7 +22,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.material.MaterialsElements;
 import tectech.recipe.TecTechRecipeMaps;
 
 /// BEC Meta Material recipes
@@ -49,8 +48,8 @@ public class BECMetaMaterialRecipes implements Runnable {
     private static final Material[] white3Tier = { Materials2Materials.Shijima, Materials2Materials.WhiteDwarfMatter,
         Materials2Materials.Magmatter };
 
-    private static final Object[] black4Tier = { GGMaterial.tairitsu, MaterialsElements.STANDALONE.HYPOGEN,
-        GGMaterial.shirabon, Materials2Materials.SpaceTime };
+    private static final Object[] black4Tier = { GGMaterial.tairitsu, Materials2Materials.Hypogen, GGMaterial.shirabon,
+        Materials2Materials.SpaceTime };
     private static final Material[] gray4Tier = { Materials2Materials.Churitsu, Materials2Materials.WhiteDwarfMatter,
         Materials2Materials.BlackDwarfMatter, Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter };
     private static final Material[] white4Tier = { Materials2Materials.Shijima, Materials2Materials.protohalkonite,
@@ -274,47 +273,41 @@ public class BECMetaMaterialRecipes implements Runnable {
             .addTo(TecTechRecipeMaps.condensateAssemblingRecipes);
     }
 
-    // Material-type adapters: Werkstoff / MaterialLib Material / gtPlusPlus Material
+    // Material-type adapters: Werkstoff / MaterialLib Material
 
     private static ItemStack platePart(Object material, int amount) {
         if (material instanceof Werkstoff w) return w.get(OrePrefixes.plate, amount);
         if (material instanceof Material m) return GTOreDictUnificator.get(OrePrefixes.plate, m, amount);
-        if (material instanceof gtPlusPlus.core.material.Material m) return m.getPlate(amount);
         throw new IllegalArgumentException("Unsupported material kind: " + material);
     }
 
     private static ItemStack foilPart(Object material, int amount) {
         if (material instanceof Werkstoff w) return w.get(OrePrefixes.foil, amount);
         if (material instanceof Material m) return GTOreDictUnificator.get(OrePrefixes.foil, m, amount);
-        if (material instanceof gtPlusPlus.core.material.Material m) return m.getFoil(amount);
         throw new IllegalArgumentException("Unsupported material kind: " + material);
     }
 
     private static ItemStack fineWirePart(Object material, int amount) {
         if (material instanceof Werkstoff w) return w.get(OrePrefixes.wireFine, amount);
         if (material instanceof Material m) return GTOreDictUnificator.get(OrePrefixes.wireFine, m, amount);
-        if (material instanceof gtPlusPlus.core.material.Material m) return m.getFineWire(amount);
         throw new IllegalArgumentException("Unsupported material kind: " + material);
     }
 
     private static ItemStack ringPart(Object material, int amount) {
         if (material instanceof Werkstoff w) return w.get(OrePrefixes.ring, amount);
         if (material instanceof Material m) return GTOreDictUnificator.get(OrePrefixes.ring, m, amount);
-        if (material instanceof gtPlusPlus.core.material.Material m) return m.getRing(amount);
         throw new IllegalArgumentException("Unsupported material kind: " + material);
     }
 
     private static ItemStack rodPart(Object material, int amount) {
         if (material instanceof Werkstoff w) return w.get(OrePrefixes.stick, amount);
         if (material instanceof Material m) return GTOreDictUnificator.get(OrePrefixes.stick, m, amount);
-        if (material instanceof gtPlusPlus.core.material.Material m) return m.getRod(amount);
         throw new IllegalArgumentException("Unsupported material kind: " + material);
     }
 
     private static ItemStack longRodPart(Object material, int amount) {
         if (material instanceof Werkstoff w) return w.get(OrePrefixes.stickLong, amount);
         if (material instanceof Material m) return GTOreDictUnificator.get(OrePrefixes.stickLong, m, amount);
-        if (material instanceof gtPlusPlus.core.material.Material m) return m.getLongRod(amount);
         throw new IllegalArgumentException("Unsupported material kind: " + material);
     }
 }
