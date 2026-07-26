@@ -86,8 +86,7 @@ public class GoodGeneratorRecipeMaps {
         .neiSpecialInfoFormatter(
             recipeInfo -> Arrays.asList(
                 StatCollector.translateToLocal("gg.recipe.antimatter_forge.info.0"),
-                StatCollector.translateToLocal("gg.recipe.antimatter_forge.info.1"),
-                StatCollector.translateToLocal("gg.recipe.antimatter_forge.info.2")))
+                StatCollector.translateToLocal("gg.recipe.antimatter_forge.info.1")))
         .frontend(AntimatterForgeFrontend::new)
         .build();
 }

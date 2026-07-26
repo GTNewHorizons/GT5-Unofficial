@@ -393,9 +393,8 @@ gg.recipe.extreme_heat_exchanger=Extreme Heat Exchanger
 gg.recipe.precise_assembler=Precise Assembler
 gg.recipe.componentassemblyline=Component Assembly Line
 gg.recipe.antimatter_forge=Semi-Stable Antimatter Stabilization Sequencer
-gg.recipe.antimatter_forge.info.0=Protomatter -> Antimatter 1:1
-gg.recipe.antimatter_forge.info.1=10,000,000 EU/t base draw
-gg.recipe.antimatter_forge.info.2=Stabilization fluids improve yield
+gg.recipe.antimatter_forge.info.0=10,000,000 EU/t base draw
+gg.recipe.antimatter_forge.info.1=Stabilizers boost yield
 
 #NEI Info
 value.naquadah_reactor=Basic Output Voltage: %s EU/t
