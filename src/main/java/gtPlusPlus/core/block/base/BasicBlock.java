@@ -34,7 +34,6 @@ public class BasicBlock extends BlockContainer {
     public enum BlockTypes {
 
         STANDARD("blockBlock", "pickaxe", "Block of %s"),
-        FRAME("blockFrameGt", "wrench", "%s Frame Box"),
         ORE("blockStone", "pickaxe", "%s Ore [Old]");
 
         private final String TEXTURE_NAME;

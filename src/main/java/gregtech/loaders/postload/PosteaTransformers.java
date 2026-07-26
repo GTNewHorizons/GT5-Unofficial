@@ -31,6 +31,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MU;
@@ -76,6 +77,7 @@ public class PosteaTransformers implements Runnable {
         registerGtppItemCutoverTransformers();
         registerGtppCarryoverCellTransformers();
         registerGtppOreCutoverTransformers();
+        registerGtppFrameCutoverTransformers();
         registerPipeCutoverTransformers();
     }
 
@@ -155,6 +157,29 @@ public class PosteaTransformers implements Runnable {
     private static ItemStack resolveGtppOreCutoverStack(GtppOreCutoverTable.Entry entry) {
         com.ruling_0.materiallib.api.Material ml = MaterialReconstruction.materialLibOf(entry.unlocalizedName());
         return MU.stack(OrePrefixes.ore, ml, 1);
+    }
+
+    /// Migrates saved placed blocks and inventory stacks of a gtPlusPlus per-material frame block
+    /// (`miscutils:blockFrameGt<Name>`, one distinct registered block per material at meta 0, retired
+    /// alongside `gtPlusPlus.core.block.base.BlockBaseModular`'s `BlockTypes.FRAME` construction) into the
+    /// equivalent MaterialLib `frameGt` shape stack. Unlike every metadata-keyed legacy part, the material is
+    /// fixed by which registry name is being migrated rather than by a damage value, so each of
+    /// [Materials2PipeMaterials#gtppFrameMaterials]'s materials gets its own registration instead of sharing
+    /// one metadata-keyed handler. `addSimpleReplacement`'s block+meta overload registers a matching item
+    /// replacement automatically, so no separate item-side call is needed. A material whose frame shape did
+    /// not generate (`MU.stack` returns null) is left on its legacy slot.
+    private static void registerGtppFrameCutoverTransformers() {
+        Material[] materials = Materials2PipeMaterials.gtppFrameMaterials();
+        int count = 0;
+        for (Material material : materials) {
+            ItemStack cutover = MU.stack(OrePrefixes.frameGt, material, 1);
+            if (cutover == null) continue;
+            String legacyId = "miscutils:blockFrameGt" + material.getName();
+            Block mlBlock = Block.getBlockFromItem(cutover.getItem());
+            BlockReplacementManager.addSimpleReplacement(legacyId, 0, mlBlock, cutover.getItemDamage());
+            count++;
+        }
+        GTLog.out.println("PosteaTransformers: registered gtpp frame transformers for " + count + " legacy blocks");
     }
 
     /// Migrates saved gtPlusPlus per-material part stacks (`miscutils:item*`/`miscutils:block*`, one distinct

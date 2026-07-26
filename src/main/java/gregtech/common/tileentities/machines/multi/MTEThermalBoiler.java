@@ -53,7 +53,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalBoiler>
@@ -305,7 +304,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
                         { "CCFBB", "DFFFE", "DF FE", "DFFFE", "CCFBB" },
                         { "D A E", "DFFFE", "DFFFE", "DFFFE", "DAAAE" },
                         { "     ", "D   E", "C   B", "D   E", "AA AA" } })
-                .addElement('A', ofFrame(MaterialsAlloy.MARAGING350))
+                .addElement('A', ofFrame(Materials2Materials.MaragingSteel350))
                 .addElement('B', Casings.BronzePipeCasing.asElement())
                 .addElement('C', Casings.TungstensteelPipeCasing.asElement())
                 .addElement(

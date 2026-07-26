@@ -10,14 +10,12 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
@@ -83,10 +81,9 @@ public class BlockBaseModular extends BasicBlock {
             StringUtils.sanitizeString(blockType.getTexture() + unlocalizedName));
         switch (this.blockType) {
             case STANDARD -> registerStandardOre(unlocalizedName);
-            case FRAME, ORE -> GTOreDictUnificator
+            case ORE -> GTOreDictUnificator
                 .registerOre("frameGt" + unifyMaterialName(materialName), new ItemStack(this));
         }
-        if (blockType == BlockTypes.FRAME) GregTechAPI.registerMachineBlock(this, -1);
     }
 
     /// Registers the canonical `block<Name>` oredict association for this material's storage block, mirroring
@@ -96,8 +93,7 @@ public class BlockBaseModular extends BasicBlock {
     /// which is hidden from NEI but stays constructed and registered -- a pre-migration save's placed/inventory
     /// block still resolves through it (see `gregtech.loaders.postload.PosteaTransformers`), and identity-based
     /// callers that need the legacy instance specifically (`gtPlusPlus.core.handler.events.
-    /// AnimatedBlockTextureHandler`, `gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.
-    /// advanced.MTEAdvHeatExchanger`) keep working unchanged since [#getMaterialBlock] reads this cache
+    /// AnimatedBlockTextureHandler`) keep working unchanged since [#getMaterialBlock] reads this cache
     /// regardless of which stack is canonical.
     private void registerStandardOre(String unlocalizedName) {
         String oreName = "block" + unifyMaterialName(materialName);
@@ -115,18 +111,6 @@ public class BlockBaseModular extends BasicBlock {
         }
 
         GTOreDictUnificator.registerOre(oreName, canonical);
-    }
-
-    @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        if (blockType == BlockTypes.FRAME) GregTechAPI.causeMachineUpdate(world, x, y, z);
-        super.breakBlock(world, x, y, z, block, meta);
-    }
-
-    @Override
-    public void onBlockAdded(World world, int x, int y, int z) {
-        if (blockType == BlockTypes.FRAME) GregTechAPI.causeMachineUpdate(world, x, y, z);
-        super.onBlockAdded(world, x, y, z);
     }
 
     public static String unifyMaterialName(String rawMaterName) {
@@ -160,9 +144,6 @@ public class BlockBaseModular extends BasicBlock {
             case STANDARD -> {
                 return OrePrefixes.block.getName();
             }
-            case FRAME -> {
-                return OrePrefixes.frameGt.getName();
-            }
             case ORE -> {
                 return OrePrefixes.ore.getName();
             }
@@ -176,9 +157,6 @@ public class BlockBaseModular extends BasicBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {
-        if (this.blockType == BlockTypes.FRAME) {
-            return 1;
-        }
         return 0;
     }
 
@@ -214,7 +192,7 @@ public class BlockBaseModular extends BasicBlock {
 
         String metType = this.material.getTextureSet() != null ? this.material.getTextureSet().mSetName : "METALLIC";
         int tier = this.material.vTier;
-        String aType = (this.blockType == BlockTypes.FRAME) ? "frameGt" : (tier <= 4 ? "block1" : "block5");
+        String aType = tier <= 4 ? "block1" : "block5";
 
         this.blockIcon = Textures.BlockIcons.textureSetWithRegister(metType, "/" + aType, iIcon)
             .getIcon();

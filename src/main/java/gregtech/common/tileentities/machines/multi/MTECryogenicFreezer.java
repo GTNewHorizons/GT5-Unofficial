@@ -31,6 +31,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -44,7 +45,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
@@ -108,7 +108,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
                         { "  B  ", " BBB ", " B B ", " BBB " }, { " ABA ", "ABBBA", "AB BA", "ABBBA" },
                         { "  B  ", " BBB ", " B B ", " BBB " }, { " ABA ", "ABBBA", "AB BA", "ABBBA" },
                         { "     ", " BBB ", " BBB ", " BBB " } })
-                .addElement('A', ofFrame(MaterialsAlloy.LEAGRISIUM))
+                .addElement('A', ofFrame(Materials2Materials.Grisium))
                 .addElement(
                     'B',
                     ofChain(

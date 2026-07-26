@@ -65,7 +65,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.render.IMTERenderer;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCuttingMachine>
@@ -205,7 +204,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                         { "BCCDDDDD ", "CD     C ", "CDB    C ", "CDCCCCCC " },
                         { "  DBBBBB ", " DDAAAADB", " DDAAAADB", " DDDDDDDB" } })
                 .addElement('A', chainAllGlasses())
-                .addElement('B', ofFrame(MaterialsAlloy.TANTALUM_CARBIDE))
+                .addElement('B', ofFrame(Materials2Materials.TantalumCarbide))
                 .addElement('C', ofSheetMetal(Materials2Materials.BlackSteel))
                 .addElement(
                     'D',

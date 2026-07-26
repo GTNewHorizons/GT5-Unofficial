@@ -82,7 +82,6 @@ public class MaterialGenerator {
                         if (!cutOver(matInfo, OrePrefixes.stickLong)) new BaseItemRodLong(matInfo);
                     } else {
                         new BlockBaseModular(matInfo, BlockTypes.STANDARD);
-                        new BlockBaseModular(matInfo, BlockTypes.FRAME);
                         if (!cutOver(matInfo, OrePrefixes.ingot)) new BaseItemIngot(matInfo);
                         if (hotIngot) {
                             if (!cutOver(matInfo, OrePrefixes.ingotHot)) new BaseItemIngotHot(matInfo);

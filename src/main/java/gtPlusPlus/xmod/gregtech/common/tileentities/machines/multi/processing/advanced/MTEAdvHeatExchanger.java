@@ -9,12 +9,12 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -52,9 +52,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
-import gtPlusPlus.core.block.base.BlockBaseModular;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -75,7 +72,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                     { " f f ", "f   f", "     ", "f   f", " f f " },
                     { " f f ", "f   f", "     ", "f   f", " f f " }, }))
         .addElement('P', ofBlock(GregTechAPI.sBlockCasings2, 15))
-        .addElement('f', ofBlock(getFrame(), 0))
+        .addElement('f', ofFrame(Materials2Materials.Talonite))
         .addElement(
             'C',
             ofChain(
@@ -383,15 +380,6 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     @Override
     public int getMaxParallelRecipes() {
         return 0;
-    }
-
-    private static Block sFrame;
-
-    public static Block getFrame() {
-        if (sFrame == null) {
-            sFrame = BlockBaseModular.getMaterialBlock(MaterialsAlloy.TALONITE, BlockTypes.FRAME);
-        }
-        return sFrame;
     }
 
     @Override

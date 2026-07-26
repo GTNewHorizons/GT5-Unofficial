@@ -44,6 +44,7 @@ public class Materials2PipeMaterials {
         applyFluidPipes();
         applyItemPipes();
         applyFrames();
+        applyGtppFrame();
         applyWerkstoffFrameAndSheetmetal();
         applySheetmetal();
     }
@@ -400,6 +401,48 @@ public class Materials2PipeMaterials {
         // ProcessingModSupport drops HSLA from the generated set when RotaryCraft is absent.
         if (Mods.RotaryCraft.isModLoaded()) {
             edit(Materials2Materials.HSLA).generateShape(Materials2PipeShapes.frameGt);
+        }
+    }
+
+    // spotless:off
+    /// gtPlusPlus's own frame membership: every material for which `gtPlusPlus.core.block.base.BlockBaseModular`'s
+    /// now-removed `BlockTypes.FRAME` construction used to run, traced through `MaterialGenerator.generate`'s
+    /// solid-state, non-radioactive gate (`gtPlusPlus.core.item.ModItems#runMaterialGenerator` is the only
+    /// caller). This is the full set: that construction had no other call site, so no gtpp material is left
+    /// generating its own frame block. Cross-checked against `scripts/mu/dumps/gtpp-materials.json`'s
+    /// per-material `generatedParts`, which independently confirms every name here plus one contaminated
+    /// entry: `TungstenCarbide`'s dump entry comes from `Material#getComponentByPrefix` caching a resolved
+    /// MaterialLib stack after a `getFrameBox()` recipe read (gtpp never calls `MaterialGenerator.generate` for
+    /// it -- it is built through `MaterialUtils#generateMaterialFromGtENUM`, which never touches
+    /// `BlockBaseModular`), not a real legacy construction, so it is excluded here.
+    public static Material[] gtppFrameMaterials() {
+        return new Material[] {
+            Materials2Materials.AbyssalAlloy, Materials2Materials.Arcanite, Materials2Materials.ArceusAlloy2B,
+            Materials2Materials.AstralTitanium, Materials2Materials.BlackMetal, Materials2Materials.BloodSteel,
+            Materials2Materials.Botmium, Materials2Materials.CelestialTungsten, Materials2Materials.ChromaticGlass,
+            Materials2Materials.CinobiteA243, Materials2Materials.Dragonblood, Materials2Materials.EglinSteel,
+            Materials2Materials.EnergyCrystal, Materials2Materials.Germanium, Materials2Materials.Grisium,
+            Materials2Materials.HS188A, Materials2Materials.HastelloyC276, Materials2Materials.HastelloyN,
+            Materials2Materials.HastelloyW, Materials2Materials.HastelloyX, Materials2Materials.HeLiCoPtEr,
+            Materials2Materials.Hypogen, Materials2Materials.Incoloy020, Materials2Materials.IncoloyDS,
+            Materials2Materials.IncoloyMA956, Materials2Materials.Inconel625, Materials2Materials.Inconel690,
+            Materials2Materials.Inconel792, Materials2Materials.Iodine, Materials2Materials.LafiumCompound,
+            Materials2Materials.Laurenium, Materials2Materials.MaragingSteel250, Materials2Materials.MaragingSteel300,
+            Materials2Materials.MaragingSteel350, Materials2Materials.NiobiumCarbide, Materials2Materials.Nitinol60,
+            Materials2Materials.Octiron, Materials2Materials.Pikyonium64B, Materials2Materials.Potin,
+            Materials2Materials.Quantum, Materials2Materials.Rhenium, Materials2Materials.Selenium,
+            Materials2Materials.SiliconCarbide, Materials2Materials.Staballoy, Materials2Materials.Stellite,
+            Materials2Materials.Talonite, Materials2Materials.Tantalloy60, Materials2Materials.Tantalloy61,
+            Materials2Materials.TantalumCarbide, Materials2Materials.Thallium, Materials2Materials.Titansteel,
+            Materials2Materials.TriniumNaquadahCarbonite, Materials2Materials.TriniumTitaniumAlloy, Materials2Materials.Tumbaga,
+            Materials2Materials.TungstenTitaniumCarbide, Materials2Materials.WatertightSteel, Materials2Materials.Zeron100,
+            Materials2Materials.ZirconiumCarbide };
+    }
+    // spotless:on
+
+    private static void applyGtppFrame() {
+        for (Material material : gtppFrameMaterials()) {
+            edit(material).generateShape(Materials2PipeShapes.frameGt);
         }
     }
 
