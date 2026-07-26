@@ -83,10 +83,11 @@ public class GoodGeneratorRecipeMaps {
         .minInputs(0, 1)
         .dontUseProgressBar()
         .neiRecipeBackgroundSize(170, 90)
-        .neiSpecialInfoFormatter(recipeInfo -> Arrays.asList(
-            StatCollector.translateToLocal("gg.recipe.antimatter_forge.info.0"),
-            StatCollector.translateToLocal("gg.recipe.antimatter_forge.info.1"),
-            StatCollector.translateToLocal("gg.recipe.antimatter_forge.info.2")))
+        .neiSpecialInfoFormatter(
+            recipeInfo -> Arrays.asList(
+                StatCollector.translateToLocal("gg.recipe.antimatter_forge.info.0"),
+                StatCollector.translateToLocal("gg.recipe.antimatter_forge.info.1"),
+                StatCollector.translateToLocal("gg.recipe.antimatter_forge.info.2")))
         .frontend(AntimatterForgeFrontend::new)
         .build();
 }

@@ -17,7 +17,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 public class AntimatterForgeFrontend extends RecipeMapFrontend {
 
     public AntimatterForgeFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-                                   NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
