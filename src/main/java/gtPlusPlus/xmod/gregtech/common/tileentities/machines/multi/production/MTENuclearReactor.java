@@ -30,10 +30,12 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -57,8 +59,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
@@ -385,7 +385,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                 FluidStack aFuelFluid = null;
                 for (FluidStack aFluidInput : recipe.mFluidInputs) {
                     if (!aFluidInput.getFluid()
-                        .equals(MaterialsNuclides.Li2BeF4.getFluid())) {
+                        .equals(MU.legacyGtppFluidOf(Materials2Materials.LithiumTetrafluoroberyllateLFTB))) {
                         aFuelFluid = aFluidInput;
                         break;
                     }
@@ -395,7 +395,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                         if (fluidStack.isFluidEqual(aFuelFluid)) {
                             mFuelRemaining += fluidStack.amount;
                         } else if (fluidStack.getFluid()
-                            .equals(MaterialsNuclides.Li2BeF4.getFluid())) {
+                            .equals(MU.legacyGtppFluidOf(Materials2Materials.LithiumTetrafluoroberyllateLFTB))) {
                                 li2bef4 += fluidStack.amount;
                             }
                     }
@@ -509,8 +509,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         if (this.mEfficiency == this.getMaxEfficiency(null)) {
             // Try output some Uranium-233
             if (MathUtils.randInt(1, 300) == 1) {
-                this.addOutputPartial(
-                    MaterialsElements.getInstance().URANIUM233.getFluidStack(MathUtils.randInt(1, 10)));
+                this.addOutputPartial(MU.legacyGtppFluid(Materials2Materials.Uranium233, MathUtils.randInt(1, 10)));
             }
         }
         return super.onRunningTick(aStack);

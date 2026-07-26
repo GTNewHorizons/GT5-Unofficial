@@ -30,7 +30,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -52,7 +51,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dust, (int) (56)),
                 MaterialLibAPI.getStack(Materials2Materials.Indium, Materials2Shapes.dust, (int) (64)),
-                MaterialsElements.getInstance().GERMANIUM.getDust(15))
+                MaterialLibAPI.getStack(Materials2Materials.Germanium, Materials2Shapes.dust, 15))
             .fluidInputs(new FluidStack(GTPPFluids.SphaleriteFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
@@ -84,8 +83,8 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.dust, (int) (22)),
                 MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.dust, (int) (56)),
-                MaterialsElements.getInstance().RHODIUM.getDust(32),
-                MaterialsElements.getInstance().RUTHENIUM.getDust(16))
+                MaterialLibAPI.getStack(Materials2Materials.Rhodium, Materials2Shapes.dust, 32),
+                MaterialLibAPI.getStack(Materials2Materials.Ruthenium, Materials2Shapes.dust, 16))
             .fluidInputs(new FluidStack(GTPPFluids.NickelFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_IV)
@@ -97,8 +96,8 @@ public class RecipeLoaderMilling {
             .itemOutputs(
                 PTMetallicPowder.get(OrePrefixes.dust, 64),
                 PTMetallicPowder.get(OrePrefixes.dust, 64),
-                MaterialsElements.getInstance().RHODIUM.getDust(60),
-                MaterialsElements.getInstance().SELENIUM.getDust(40),
+                MaterialLibAPI.getStack(Materials2Materials.Rhodium, Materials2Shapes.dust, 60),
+                MaterialLibAPI.getStack(Materials2Materials.Selenium, Materials2Shapes.dust, 40),
                 MaterialLibAPI.getStack(Materials2Materials.Tellurium, Materials2Shapes.dust, (int) (10)))
             .fluidInputs(new FluidStack(GTPPFluids.PlatinumFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
@@ -115,7 +114,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.dust, (int) (36)),
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.dust, (int) (20)),
-                MaterialsElements.getInstance().HAFNIUM.getDust(10))
+                MaterialLibAPI.getStack(Materials2Materials.Hafnium, Materials2Shapes.dust, 10))
             .fluidInputs(new FluidStack(GTPPFluids.PentlanditeFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
@@ -164,7 +163,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.dust, (int) (46)),
                 MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.dust, (int) (60)),
-                MaterialsElements.getInstance().THALLIUM.getDust(15))
+                MaterialLibAPI.getStack(Materials2Materials.Thallium, Materials2Shapes.dust, 15))
             .fluidInputs(new FluidStack(GTPPFluids.GrossularFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
@@ -195,7 +194,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Manganese, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Manganese, Materials2Shapes.dust, (int) (6)),
                 MaterialLibAPI.getStack(Materials2Materials.Borax, Materials2Shapes.dust, (int) (60)),
-                MaterialsElements.getInstance().RHENIUM.getDust(20))
+                MaterialLibAPI.getStack(Materials2Materials.Rhenium, Materials2Shapes.dust, 20))
             .fluidInputs(new FluidStack(GTPPFluids.PyropeFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_EV)

@@ -22,11 +22,11 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import toxiceverglades.dimension.DimensionEverglades;
 
@@ -89,13 +89,13 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 getModItem(Mods.IndustrialCraft2.ID, "blockGenerator", 1, 6),
-                MaterialsAlloy.NITINOL_60.getPlate(8),
-                MaterialsAlloy.MARAGING350.getGear(4),
+                MaterialLibAPI.getStack(Materials2Materials.Nitinol60, Materials2Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials2Materials.MaragingSteel350, Materials2Shapes.gearGt, 4),
                 ItemList.Field_Generator_EV.get(8),
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.wireFine, (int) (32)),
                 Circuits.LuV.get(4))
             .itemOutputs(GregtechItemList.RTG.get(1))
-            .fluidInputs(MaterialsAlloy.NIOBIUM_CARBIDE.getFluidStack(16 * INGOTS))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.NiobiumCarbide, 16 * INGOTS))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -107,10 +107,10 @@ public class RecipesMachines {
                 new ItemStack(ModBlocks.blockCircuitProgrammer),
                 ItemList.VOLUMETRIC_FLASK.get(8),
                 GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials2Materials.StainlessSteel, 2),
-                MaterialsAlloy.EGLIN_STEEL.getPlate(4))
+                MaterialLibAPI.getStack(Materials2Materials.EglinSteel, Materials2Shapes.plate, 4))
             .circuit(17)
             .itemOutputs(new ItemStack(ModBlocks.blockVolumetricFlaskSetter, 1))
-            .fluidInputs(MaterialsAlloy.SILICON_CARBIDE.getFluidStack(8 * INGOTS))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.SiliconCarbide, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -142,7 +142,8 @@ public class RecipesMachines {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake_Extreme.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "PRP", "IHI", 'P', MaterialsAlloy.PIKYONIUM.getPlate(1), 'C',
+            new Object[] { "PCP", "PRP", "IHI", 'P',
+                MaterialLibAPI.getStack(Materials2Materials.Pikyonium64B, Materials2Shapes.plate, 1), 'C',
                 GregtechItemList.Hatch_Air_Intake, 'R', ItemList.FluidRegulator_ZPM, 'I', "circuitUltimate", 'H',
                 ItemList.Hatch_Input_ZPM });
 
@@ -150,7 +151,8 @@ public class RecipesMachines {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake_Atmospheric.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "PRP", "IHI", 'P', MaterialsAlloy.OCTIRON.getPlate(1), 'C',
+            new Object[] { "PCP", "PRP", "IHI", 'P',
+                MaterialLibAPI.getStack(Materials2Materials.Octiron, Materials2Shapes.plate, 1), 'C',
                 GregtechItemList.Hatch_Air_Intake_Extreme, 'R', ItemList.FluidRegulator_UHV, 'I', "circuitInfinite",
                 'H', ItemList.Hatch_Input_UHV });
 
@@ -161,7 +163,7 @@ public class RecipesMachines {
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Pump_EV, 'C', Circuits.EV.getIngredient(), 'W',
                 OrePrefixes.cableGt08.ingredient(Materials2Materials.Electrum), 'G',
-                MaterialsAlloy.INCONEL_792.getGear(1) });
+                MaterialLibAPI.getStack(Materials2Materials.Inconel792, Materials2Shapes.gearGt, 1) });
 
         // Reservoir Hatch
         if (RemoteIO.isModLoaded()) {
@@ -184,10 +186,10 @@ public class RecipesMachines {
                 ItemList.Field_Generator_HV.get(1),
                 ItemList.Emitter_HV.get(1),
                 ItemList.Sensor_HV.get(1),
-                MaterialsAlloy.PIKYONIUM.getPlate(8),
+                MaterialLibAPI.getStack(Materials2Materials.Pikyonium64B, Materials2Shapes.plate, 8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Naquadah, 4))
             .itemOutputs(new ItemStack(DimensionEverglades.blockPortalFrame, 2))
-            .fluidInputs(MaterialsAlloy.ZERON_100.getFluidStack(8 * INGOTS))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Zeron100, 8 * INGOTS))
             .duration(4 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -196,19 +198,21 @@ public class RecipesMachines {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_MultitankExterior.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "RPR", "PFP", "PPP", 'R', MaterialsAlloy.LEAGRISIUM.getRod(1), 'P',
-                MaterialsAlloy.LEAGRISIUM.getPlate(1), 'F', MaterialsAlloy.LEAGRISIUM.getFrameBox(1) });
+            new Object[] { "RPR", "PFP", "PPP", 'R',
+                MaterialLibAPI.getStack(Materials2Materials.Grisium, Materials2Shapes.stick, 1), 'P',
+                MaterialLibAPI.getStack(Materials2Materials.Grisium, Materials2Shapes.plate, 1), 'F',
+                MU.stack(OrePrefixes.frameGt, Materials2Materials.Grisium, 1) });
 
         // Trinium Plated Casing (unused but craftable)
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getFrameBox(4),
-                MaterialsAlloy.TRINIUM_TITANIUM.getPlateDouble(1),
-                MaterialsAlloy.PIKYONIUM.getGear(2),
-                MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getPlateDouble(4),
+                MU.stack(OrePrefixes.frameGt, Materials2Materials.TriniumNaquadahCarbonite, 4),
+                MaterialLibAPI.getStack(Materials2Materials.TriniumTitaniumAlloy, Materials2Shapes.plateDouble, 1),
+                MaterialLibAPI.getStack(Materials2Materials.Pikyonium64B, Materials2Shapes.gearGt, 2),
+                MaterialLibAPI.getStack(Materials2Materials.ArceusAlloy2B, Materials2Shapes.plateDouble, 4),
                 ItemList.Hull_LuV.get(1))
             .itemOutputs(GregtechItemList.Casing_BedrockMiner.get(1))
-            .fluidInputs(MaterialsAlloy.MARAGING350.getFluidStack(16 * INGOTS))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.MaragingSteel350, 16 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);

@@ -24,7 +24,6 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
@@ -99,7 +98,7 @@ public class BeamlineRecipeLoader {
          * NEUTRON
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsElements.getInstance().CALIFORNIUM.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Californium, Materials2Shapes.dust, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -113,7 +112,7 @@ public class BeamlineRecipeLoader {
             .addTo(sourceChamberRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsElements.getInstance().BERYLLIUM.getLongRod(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Beryllium, Materials2Shapes.stickLong, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()

@@ -47,7 +47,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.loaders.postload.PCBFactoryMaterialLoader;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class MTERecipeLoader implements Runnable {
@@ -1581,8 +1580,10 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialCentrifuge.get(1),
             BUFFERED,
             new Object[] { "ABA", "CDC", "EFE", 'A', "circuitData", 'B', "pipeHugeStainlessSteel", 'C',
-                MaterialsAlloy.MARAGING250.getPlate(1), 'D', ItemList.Machine_EV_Centrifuge, 'E',
-                MaterialsAlloy.INCONEL_792.getPlate(1), 'F', ItemList.Casing_EV });
+                MaterialLibAPI.getStack(Materials2Materials.MaragingSteel250, Materials2Shapes.plate, 1), 'D',
+                ItemList.Machine_EV_Centrifuge, 'E',
+                MaterialLibAPI.getStack(Materials2Materials.Inconel792, Materials2Shapes.plate, 1), 'F',
+                ItemList.Casing_EV });
 
         // Amazon Warehousing Depot
         GTModHandler.addCraftingRecipe(
@@ -1602,22 +1603,29 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialElectrolyzer.get(1),
             BUFFERED,
-            new Object[] { "PCP", "HMH", "PRP", 'P', MaterialsAlloy.STELLITE.getPlate(1), 'C', "circuitElite", 'H',
-                ItemList.Casing_IV, 'M', ItemList.Machine_IV_Electrolyzer, 'R', MaterialsAlloy.STELLITE.getRotor(1) });
+            new Object[] { "PCP", "HMH", "PRP", 'P',
+                MaterialLibAPI.getStack(Materials2Materials.Stellite, Materials2Shapes.plate, 1), 'C', "circuitElite",
+                'H', ItemList.Casing_IV, 'M', ItemList.Machine_IV_Electrolyzer, 'R',
+                MaterialLibAPI.getStack(Materials2Materials.Stellite, Materials2Shapes.rotor, 1) });
 
         // Industrial Mixer
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialMixer.get(1),
             BUFFERED,
-            new Object[] { "PCP", "ZMZ", "PCP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'C', "circuitElite", 'Z',
-                MaterialsAlloy.MARAGING250.getPlate(1), 'M', ItemList.Machine_IV_Mixer });
+            new Object[] { "PCP", "ZMZ", "PCP", 'P',
+                MaterialLibAPI.getStack(Materials2Materials.MaragingSteel300, Materials2Shapes.plate, 1), 'C',
+                "circuitElite", 'Z',
+                MaterialLibAPI.getStack(Materials2Materials.MaragingSteel250, Materials2Shapes.plate, 1), 'M',
+                ItemList.Machine_IV_Mixer });
 
         // Mixer casing, move if there is a better place for it
         GTModHandler.addCraftingRecipe(
             ItemList.CasingMixer.get(1),
             BUFFERED,
-            new Object[] { "PhP", "SFS", "PwP", 'P', MaterialsAlloy.MARAGING300.getPlate(1), 'S',
-                MaterialsAlloy.MARAGING250.getPlate(1), 'F', "frameGtPolytetrafluoroethylene" });
+            new Object[] { "PhP", "SFS", "PwP", 'P',
+                MaterialLibAPI.getStack(Materials2Materials.MaragingSteel300, Materials2Shapes.plate, 1), 'S',
+                MaterialLibAPI.getStack(Materials2Materials.MaragingSteel250, Materials2Shapes.plate, 1), 'F',
+                "frameGtPolytetrafluoroethylene" });
 
         // Forming Core
         GTModHandler.addCraftingRecipe(

@@ -18,9 +18,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
-import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
+import gregtech.api.material.MU;
 
 public class RecipeLoaderLFTR {
 
@@ -41,20 +39,20 @@ public class RecipeLoaderLFTR {
         if (mNobleGases == null) {
             mNobleGases = new ArrayList<>();
             mNobleGases.add(mSpargeGases.get(0));
-            mNobleGases.add(MaterialsElements.getInstance().XENON.getFluid());
-            mNobleGases.add(MaterialsElements.getInstance().NEON.getFluid());
-            mNobleGases.add(MaterialsElements.getInstance().ARGON.getFluid());
-            mNobleGases.add(MaterialsElements.getInstance().KRYPTON.getFluid());
-            mNobleGases.add(MaterialsElements.getInstance().RADON.getFluid());
+            mNobleGases.add(MU.legacyGtppFluidOf(Materials2Materials.Xenon));
+            mNobleGases.add(MU.legacyGtppFluidOf(Materials2Materials.Neon));
+            mNobleGases.add(MU.legacyGtppFluidOf(Materials2Materials.Argon));
+            mNobleGases.add(MU.legacyGtppFluidOf(Materials2Materials.Krypton));
+            mNobleGases.add(MU.legacyGtppFluidOf(Materials2Materials.Radon));
         }
         if (mFluorideGases == null) {
             mFluorideGases = new ArrayList<>();
             mFluorideGases.add(mSpargeGases.get(1));
-            mFluorideGases.add(MaterialsFluorides.LITHIUM_FLUORIDE.getFluid());
-            mFluorideGases.add(MaterialsFluorides.NEPTUNIUM_HEXAFLUORIDE.getFluid());
-            mFluorideGases.add(MaterialsFluorides.TECHNETIUM_HEXAFLUORIDE.getFluid());
-            mFluorideGases.add(MaterialsFluorides.SELENIUM_HEXAFLUORIDE.getFluid());
-            mFluorideGases.add(MaterialsFluorides.THORIUM_TETRAFLUORIDE.getFluid());
+            mFluorideGases.add(MU.legacyGtppFluidOf(Materials2Materials.LithiumFluoride));
+            mFluorideGases.add(MU.legacyGtppFluidOf(Materials2Materials.NeptuniumHexafluoride));
+            mFluorideGases.add(MU.legacyGtppFluidOf(Materials2Materials.TechnetiumHexafluoride));
+            mFluorideGases.add(MU.legacyGtppFluidOf(Materials2Materials.SeleniumHexafluoride));
+            mFluorideGases.add(MU.legacyGtppFluidOf(Materials2Materials.ThoriumTetrafluoride));
         }
     }
 
@@ -67,16 +65,16 @@ public class RecipeLoaderLFTR {
         // 1l/10t= 1000l/2.5hr LiFBeF2ZrF4U235
 
         configureSparging();
-        FluidStack Li2BeF4 = MaterialsNuclides.Li2BeF4.getFluidStack(200);
+        FluidStack Li2BeF4 = MU.legacyGtppFluid(Materials2Materials.LithiumTetrafluoroberyllateLFTB, 200);
 
         // LiFBeF2ThF4UF4 - T3
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsNuclides.LiFBeF2ThF4UF4.getFluidStack(100), Li2BeF4)
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.LFTRFuel3, 100), Li2BeF4)
             .fluidOutputs(
-                MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(100),
-                MaterialsNuclides.LiFBeF2ThF4.getFluidStack(200),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(20),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(10))
+                MU.legacyGtppFluid(Materials2Materials.UraniumDepletedMoltenSaltUSalt, 100),
+                MU.legacyGtppFluid(Materials2Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, 200),
+                MU.legacyGtppFluid(Materials2Materials.UraniumHexafluoride, 20),
+                MU.legacyGtppFluid(Materials2Materials.UraniumHexafluoride, 10))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(LFTR_OUTPUT_POWER, 32768 * 4)
@@ -84,12 +82,12 @@ public class RecipeLoaderLFTR {
 
         // LiFBeF2ZrF4UF4 - T2
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsNuclides.LiFBeF2ZrF4UF4.getFluidStack(100), Li2BeF4)
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.LFTRFuel2, 100), Li2BeF4)
             .fluidOutputs(
-                MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50),
-                MaterialsNuclides.LiFBeF2ThF4.getFluidStack(100),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(10),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(5))
+                MU.legacyGtppFluid(Materials2Materials.UraniumDepletedMoltenSaltUSalt, 50),
+                MU.legacyGtppFluid(Materials2Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, 100),
+                MU.legacyGtppFluid(Materials2Materials.UraniumHexafluoride, 10),
+                MU.legacyGtppFluid(Materials2Materials.UraniumHexafluoride, 5))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(LFTR_OUTPUT_POWER, 8192 * 4)
@@ -97,12 +95,12 @@ public class RecipeLoaderLFTR {
 
         // LiFBeF2ZrF4U235 - T1
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsNuclides.LiFBeF2ZrF4U235.getFluidStack(100), Li2BeF4)
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.LFTRFuel1, 100), Li2BeF4)
             .fluidOutputs(
-                MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(25),
-                MaterialsNuclides.LiFThF4.getFluidStack(50),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(4),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(2))
+                MU.legacyGtppFluid(Materials2Materials.UraniumDepletedMoltenSaltUSalt, 25),
+                MU.legacyGtppFluid(Materials2Materials.ThoriumDepletedMoltenSaltTSalt, 50),
+                MU.legacyGtppFluid(Materials2Materials.UraniumHexafluoride, 4),
+                MU.legacyGtppFluid(Materials2Materials.UraniumHexafluoride, 2))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(LFTR_OUTPUT_POWER, 8192)
@@ -113,9 +111,9 @@ public class RecipeLoaderLFTR {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (1_000)),
-                MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50))
+                MU.legacyGtppFluid(Materials2Materials.UraniumDepletedMoltenSaltUSalt, 50))
             .fluidOutputs(
-                MaterialsNuclides.Sparged_LiFBeF2UF4FP.getFluidStack(50),
+                MU.legacyGtppFluid(Materials2Materials.HeliumSpargedUSalt, 50),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (0)),
                 new FluidStack(mNobleGases.get(1), 0),
                 new FluidStack(mNobleGases.get(2), 0),
@@ -130,9 +128,9 @@ public class RecipeLoaderLFTR {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.fluidGas, (int) (100)),
-                MaterialsNuclides.LiFThF4.getFluidStack(50))
+                MU.legacyGtppFluid(Materials2Materials.ThoriumDepletedMoltenSaltTSalt, 50))
             .fluidOutputs(
-                MaterialsNuclides.Sparged_LiFThF4.getFluidStack(50),
+                MU.legacyGtppFluid(Materials2Materials.FluorineSpargedTSalt, 50),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.fluidGas, (int) (0)),
                 new FluidStack(mFluorideGases.get(1), 0),
                 new FluidStack(mFluorideGases.get(2), 0),
@@ -147,9 +145,9 @@ public class RecipeLoaderLFTR {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.fluidGas, (int) (100)),
-                MaterialsNuclides.LiFBeF2ThF4.getFluidStack(50))
+                MU.legacyGtppFluid(Materials2Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, 50))
             .fluidOutputs(
-                MaterialsNuclides.Sparged_LiFBeF2ThF4.getFluidStack(50),
+                MU.legacyGtppFluid(Materials2Materials.FluorineSpargedTBSalt, 50),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.fluidGas, (int) (0)),
                 new FluidStack(mFluorideGases.get(1), 0),
                 new FluidStack(mFluorideGases.get(2), 0),

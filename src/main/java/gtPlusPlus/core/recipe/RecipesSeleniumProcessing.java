@@ -15,10 +15,10 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
@@ -34,31 +34,33 @@ public class RecipesSeleniumProcessing {
 
         // Liquify the Dried Dioxide
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SeleniumDioxide, Materials2Shapes.dust, 1))
             .fluidInputs(MU.gas(Materials2Materials.Steam, 500))
-            .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(1_000))
+            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.SeleniumDioxide, 1_000))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_EV / 2)
             .addTo(industrialCokeOvenRecipes);
 
         // Produce Selenious Acid
         GTValues.RA.stdBuilder()
-            .fluidInputs(GTModHandler.getHotWater(4_000), MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(1_000))
-            .fluidOutputs(MaterialMisc.SELENIOUS_ACID.getFluidStack(1_000))
+            .fluidInputs(
+                GTModHandler.getHotWater(4_000),
+                MU.legacyGtppFluid(Materials2Materials.SeleniumDioxide, 1_000))
+            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.SeleniousAcid, 1_000))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(industrialCokeOvenRecipes);
 
         // Make Selenium
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsElements.getInstance().CARBON.getDust(16))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, 16))
             .circuit(14)
             .fluidInputs(
-                MaterialMisc.SELENIOUS_ACID.getFluidStack(750),
+                MU.legacyGtppFluid(Materials2Materials.SeleniousAcid, 750),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, (int) (8_000)))
             .fluidOutputs(
-                MaterialsElements.getInstance().SELENIUM.getFluidStack(2 * INGOTS + 1 * QUARTER_INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Selenium, 2 * INGOTS + 1 * QUARTER_INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.DilutedSulfuricAcid,
                     Materials2FluidShapes.fluidLiquid,
@@ -75,10 +77,10 @@ public class RecipesSeleniumProcessing {
             .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials2Materials.Copper, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials2Materials.Copper, 1),
-                MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
+                MaterialLibAPI.getStack(Materials2Materials.SeleniumDioxide, Materials2Shapes.dust, 1))
             .outputChances(100_00, 3_00)
             .fluidInputs(GTModHandler.getHotWater(1_000))
-            .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(20))
+            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.SeleniumDioxide, 20))
             .eut(TierEU.RECIPE_EV / 2)
             .duration(40 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
@@ -88,10 +90,10 @@ public class RecipesSeleniumProcessing {
             .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials2Materials.Tetrahedrite, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials2Materials.Tetrahedrite, 1),
-                MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
+                MaterialLibAPI.getStack(Materials2Materials.SeleniumDioxide, Materials2Shapes.dust, 1))
             .outputChances(100_00, 2_50)
             .fluidInputs(GTModHandler.getHotWater(1_000))
-            .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(10))
+            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.SeleniumDioxide, 10))
             .eut(TierEU.RECIPE_EV / 2)
             .duration(40 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
@@ -101,10 +103,10 @@ public class RecipesSeleniumProcessing {
             .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials2Materials.Chalcopyrite, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials2Materials.Chalcopyrite, 1),
-                MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
+                MaterialLibAPI.getStack(Materials2Materials.SeleniumDioxide, Materials2Shapes.dust, 1))
             .outputChances(100_00, 2_50)
             .fluidInputs(GTModHandler.getHotWater(1_000))
-            .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(10))
+            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.SeleniumDioxide, 10))
             .eut(TierEU.RECIPE_EV / 2)
             .duration(40 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
@@ -114,10 +116,10 @@ public class RecipesSeleniumProcessing {
             .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials2Materials.Malachite, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials2Materials.Malachite, 1),
-                MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
+                MaterialLibAPI.getStack(Materials2Materials.SeleniumDioxide, Materials2Shapes.dust, 1))
             .outputChances(100_00, 2_50)
             .fluidInputs(GTModHandler.getHotWater(1_000))
-            .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(10))
+            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.SeleniumDioxide, 10))
             .eut(TierEU.RECIPE_EV / 2)
             .duration(40 * SECONDS)
             .addTo(chemicalDehydratorRecipes);

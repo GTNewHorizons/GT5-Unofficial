@@ -11,7 +11,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
 import net.minecraft.item.ItemStack;
 
@@ -29,7 +28,6 @@ import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import kekztech.common.Blocks;
 
 public class AssemblyLine implements Runnable {
@@ -130,7 +128,7 @@ public class AssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials2Materials.protohalkonite, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials2Materials.Infinity, 3),
                 ItemList.EnergisedTesseract.get(1),
-                HYPOGEN.getRotor(6),
+                MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.rotor, 6),
                 ItemList.Field_Generator_UHV.get(16),
                 ItemList.Field_Generator_UEV.get(4),
                 new ItemStack(huiCircuit, 4, 3),
@@ -191,7 +189,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_ResistorASMD.get(8),
                 ItemList.Circuit_Parts_TransistorASMD.get(8),
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.wireFine, (int) (64)))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(5 * INGOTS))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Indalloy140, 5 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
             .duration(50 * SECONDS)
             .eut(80_000)
@@ -215,7 +213,9 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_SoC2.get(64),
                 ItemList.Circuit_Parts_DiodeASMD.get(8),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials2Materials.Naquadah, 32))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
+            .fluidInputs(
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 20 * INGOTS),
+                GTModHandler.getIC2Coolant(16_000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(100_000)
@@ -239,7 +239,9 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_HPIC.get(64),
                 ItemList.Circuit_Parts_DiodeASMD.get(16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials2Materials.NaquadahAlloy, 32))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
+            .fluidInputs(
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 20 * INGOTS),
+                GTModHandler.getIC2Coolant(16_000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
             .eut(200_000)
             .duration(1 * MINUTES + 40 * SECONDS)

@@ -38,6 +38,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.XSTR;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
@@ -57,7 +58,6 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtnhintergalactic.item.ItemMiningDrones;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.SpaceMiningData;
@@ -635,7 +635,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 .getFluidStack(Materials2Materials.Plutonium241, Materials2FluidShapes.fluidPlasma, (int) (1)))
             && fluidStack.amount >= PLASMA_PLUTONIUM241_USAGE)) {
             return 5;
-        } else if ((fluidStack.isFluidEqual(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 1))
+        } else if ((fluidStack.isFluidEqual(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Technetium), 1))
             && fluidStack.amount >= PLASMA_TECHNETIUM_USAGE)) {
                 return 4;
             } else if (fluidStack.isFluidEqual(

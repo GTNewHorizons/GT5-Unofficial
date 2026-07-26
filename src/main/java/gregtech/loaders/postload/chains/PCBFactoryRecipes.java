@@ -9,9 +9,6 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.PCB_NANITE_MATERIAL;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
-import static gtPlusPlus.core.material.MaterialsAlloy.QUANTUM;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CHRONOMATIC_GLASS;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +26,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
@@ -36,8 +34,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.PCBFactoryManager;
 import gregtech.api.util.recipe.Scanning;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class PCBFactoryRecipes {
@@ -56,7 +52,7 @@ public class PCBFactoryRecipes {
                 new Object[] { Circuits.LuV.getIngredient(), 16 },
                 ItemList.Robot_Arm_ZPM.get(8))
             .fluidInputs(
-                MaterialsAlloy.INDALLOY_140.getFluidStack(36 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 36 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Naquadah,
                     Materials2FluidShapes.fluidMolten,
@@ -84,8 +80,8 @@ public class PCBFactoryRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFrameBox(1),
-                QUANTUM.getPlate(6),
+                MU.stack(OrePrefixes.frameGt, Materials2Materials.CelestialTungsten, 1),
+                MaterialLibAPI.getStack(Materials2Materials.Quantum, Materials2Shapes.plate, 6),
                 ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(24))
             .itemOutputs(ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1))
             .duration(30 * SECONDS)
@@ -93,7 +89,7 @@ public class PCBFactoryRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                HYPOGEN.getFrameBox(1),
+                MU.stack(OrePrefixes.frameGt, Materials2Materials.Hypogen, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.rotor, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Thulium, Materials2Shapes.plate, (int) (6)))
             .itemOutputs(ItemList.InfinityCooledCasing.get(1))
@@ -794,7 +790,10 @@ public class PCBFactoryRecipes {
                         OrePrefixes.foil,
                         Materials2Materials.InfinityCatalyst,
                         (long) (16 * (Math.sqrt(tier - 6)))),
-                    CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.ChromaticGlass,
+                        Materials2Shapes.foil,
+                        (int) (16 * (Math.sqrt(tier - 6)))))
                 .circuit(1)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -834,7 +833,10 @@ public class PCBFactoryRecipes {
                         OrePrefixes.foil,
                         Materials2Materials.InfinityCatalyst,
                         (long) (16 * (Math.sqrt(tier - 6)))),
-                    CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.ChromaticGlass,
+                        Materials2Shapes.foil,
+                        (int) (16 * (Math.sqrt(tier - 6)))))
                 .circuit(2)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -875,7 +877,10 @@ public class PCBFactoryRecipes {
                         OrePrefixes.foil,
                         Materials2Materials.InfinityCatalyst,
                         (long) (16 * (Math.sqrt(tier - 6)))),
-                    CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.ChromaticGlass,
+                        Materials2Shapes.foil,
+                        (int) (16 * (Math.sqrt(tier - 6)))))
                 .circuit(3)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(

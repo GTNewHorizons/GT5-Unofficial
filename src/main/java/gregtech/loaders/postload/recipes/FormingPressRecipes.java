@@ -26,8 +26,6 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class FormingPressRecipes implements Runnable {
 
@@ -245,7 +243,7 @@ public class FormingPressRecipes implements Runnable {
         // Cutting Sawblades
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.getGear(16),
+                MaterialLibAPI.getStack(Materials2Materials.TungstenTitaniumCarbide, Materials2Shapes.gearGt, 16),
                 GGMaterial.marM200.get(OrePrefixes.plate, 8),
                 WerkstoffLoader.AdemicSteel.get(OrePrefixes.ring, 2),
                 MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.screw, (int) (16)))
@@ -265,7 +263,7 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.plate, (int) (8)),
                 WerkstoffLoader.HDCS.get(OrePrefixes.ring, 2),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials2Materials.prismaticnaquadah, 16L))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS))
             .itemOutputs(ItemList.T2Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -277,7 +275,7 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.plate, (int) (8)),
                 GGMaterial.tairitsu.get(OrePrefixes.ring, 2),
                 MaterialLibAPI.getStack(Materials2Materials.ElectrumFlux, Materials2Shapes.screw, (int) (16)))
-            .fluidInputs(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 10 * INGOTS))
             .itemOutputs(ItemList.T3Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_UHV)

@@ -97,7 +97,6 @@ import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
-import static gtPlusPlus.core.material.MaterialsAlloy.HELICOPTER;
 import static kubatech.loaders.HTGRLoader.HTGRRecipes;
 import static tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
 
@@ -1336,7 +1335,7 @@ public class PlatinumSludgeOverHaul {
         if (block instanceof FrameShapeBlock) {
             return true;
         }
-        if (item == HELICOPTER.getDust(1)
+        if (item == MaterialLibAPI.getStack(Materials2Materials.HeLiCoPtEr, Materials2Shapes.dust, 1)
             .getItem()) {
             return true;
         }

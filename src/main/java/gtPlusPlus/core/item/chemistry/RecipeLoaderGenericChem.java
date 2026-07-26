@@ -27,13 +27,13 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
-import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
@@ -180,7 +180,7 @@ public class RecipeLoaderGenericChem {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Bismuth, Materials2FluidShapes.fluidPlasma, (int) (18_000)),
                 new FluidStack(TFFluids.fluidCryotheum, 4_000))
-            .fluidOutputs(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(4 * STACKS + 24 * INGOTS))
+            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 4 * STACKS + 24 * INGOTS))
             .duration(13 * MINUTES + 20 * SECONDS)
             .eut(3842160)
             .metadata(CHEMPLANT_CASING_TIER, 7)
@@ -383,7 +383,7 @@ public class RecipeLoaderGenericChem {
                 MaterialLibAPI.getStack(Materials2Materials.Lapis, Materials2Shapes.dust, (int) (2)))
             .circuit(12)
             .itemOutputs(GregtechItemList.SolidAcidCatalyst.get(5))
-            .fluidInputs(MaterialMisc.SOLID_ACID_MIXTURE.getFluidStack(1_000))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.SolidAcidCatalystMixture, 1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);

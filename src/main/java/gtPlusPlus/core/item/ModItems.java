@@ -71,6 +71,7 @@ import gtPlusPlus.core.material.MaterialsOther;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
@@ -795,7 +796,7 @@ public final class ModItems {
                 50000,
                 new String[] { StringUtils.superscript("238Np"),
                     "Result: Plutonium 238 (" + StringUtils.superscript("238Pu") + ")" },
-                MaterialsElements.getInstance().PLUTONIUM238.getDust(1),
+                MaterialLibAPI.getStack(Materials2Materials.Plutonium238, Materials2Shapes.dust, 1),
                 5,
                 GTRecipeConstants.DecayType.BetaMinus));
 
@@ -815,12 +816,12 @@ public final class ModItems {
                 "DecayedRadium226",
                 "Decayed Radium-226",
                 "Contains Radon (" + StringUtils.superscript("222Rn") + ")",
-                MaterialsElements.getInstance().RADIUM.getRgbAsHex())[0]);
+                MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Radium)))[0]);
 
         GregtechItemList.Radium226Dust.set(
             new DustDecayable(
                 "dustRadium226",
-                MaterialsElements.getInstance().RADIUM.getRgbAsHex(),
+                MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Radium)),
                 90000,
                 new String[] { StringUtils.superscript("226Ra"),
                     "Result: Radon (" + StringUtils.superscript("222Rn") + ")" },
@@ -831,11 +832,11 @@ public final class ModItems {
         GregtechItemList.Protactinium233Dust.set(
             new DustDecayable(
                 "dustProtactinium233",
-                MaterialsElements.getInstance().PROTACTINIUM.getRgbAsHex(),
+                MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Protactinium)),
                 32000,
                 new String[] { StringUtils.superscript("233Pa"),
                     "Result: Uranium 233 (" + StringUtils.superscript("233U") + ")" },
-                MaterialsElements.getInstance().URANIUM233.getDust(1),
+                MaterialLibAPI.getStack(Materials2Materials.Uranium233, Materials2Shapes.dust, 1),
                 6,
                 GTRecipeConstants.DecayType.BetaMinus));
     }

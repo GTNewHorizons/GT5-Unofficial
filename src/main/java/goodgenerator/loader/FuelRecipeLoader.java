@@ -11,7 +11,6 @@ import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.LNG_BASIC_OUTPUT;
 import static gregtech.api.util.GTRecipeConstants.NFR_COIL_TIER;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CHRONOMATIC_GLASS;
 
 import net.minecraftforge.fluids.FluidStack;
 
@@ -27,7 +26,6 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
-import gtPlusPlus.core.material.MaterialsElements;
 
 public class FuelRecipeLoader {
 
@@ -78,7 +76,7 @@ public class FuelRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GGMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 8),
-                CHRONOMATIC_GLASS.getDust(9),
+                MaterialLibAPI.getStack(Materials2Materials.ChromaticGlass, Materials2Shapes.dust, 9),
                 ItemRefer.High_Density_Uranium.get(2),
                 ItemRefer.High_Density_Plutonium.get(1))
             .fluidInputs(
@@ -116,7 +114,7 @@ public class FuelRecipeLoader {
                 GGMaterial.orundum.get(OrePrefixes.dust, 64))
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2_000),
-                MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(240))
+                MU.legacyGtppFluid(Materials2Materials.Hypogen, 240))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(500))
             .duration(8 * SECONDS)
             .eut(75_000_000)
@@ -133,8 +131,8 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 GGMaterial.heavyNaquadahFuel.getFluidOrGas(4_000),
                 GGMaterial.lightNaquadahFuel.getFluidOrGas(5_000),
-                MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(120),
-                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(45 * INGOTS))
+                MU.legacyGtppFluid(Materials2Materials.Hypogen, 120),
+                MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, 45 * INGOTS))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(250))
             .duration(2 * TICKS)
             .eut(350_000_000)
@@ -175,7 +173,7 @@ public class FuelRecipeLoader {
         // MK VI Naquadah Fuel
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getDust(64),
+                MaterialLibAPI.getStack(Materials2Materials.AstralTitanium, Materials2Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Tritanium, Materials2Shapes.dust, 32))
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2_000),
@@ -189,7 +187,7 @@ public class FuelRecipeLoader {
         // Alternate higher tier recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getDust(64),
+                MaterialLibAPI.getStack(Materials2Materials.CelestialTungsten, Materials2Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Tritanium, Materials2Shapes.dust, 48))
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2_000),

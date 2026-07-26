@@ -21,17 +21,6 @@ import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.COAL_CASING_TIER;
-import static gtPlusPlus.core.material.MaterialMisc.MUTATED_LIVING_SOLDER;
-import static gtPlusPlus.core.material.MaterialsAlloy.CINOBITE;
-import static gtPlusPlus.core.material.MaterialsAlloy.INDALLOY_140;
-import static gtPlusPlus.core.material.MaterialsAlloy.LAFIUM;
-import static gtPlusPlus.core.material.MaterialsAlloy.PIKYONIUM;
-import static gtPlusPlus.core.material.MaterialsAlloy.QUANTUM;
-import static gtPlusPlus.core.material.MaterialsAlloy.TITANSTEEL;
-import static gtPlusPlus.core.material.MaterialsAlloy.TRINIUM_REINFORCED_STEEL;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.ASTRAL_TITANIUM;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
 import net.minecraft.item.ItemStack;
 
@@ -730,7 +719,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.YttriumBariumCuprate, 6))
             .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(48 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 48 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 12_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Ruridit, Materials2FluidShapes.fluidMolten, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.HSSS, Materials2FluidShapes.fluidMolten, 1 * STACKS + 32 * INGOTS))
@@ -748,7 +737,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.YttriumBariumCuprate, 12))
             .circuit(PISTON_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(48 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 48 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 12_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.HSSS, Materials2FluidShapes.fluidMolten, 9 * STACKS + 26 * INGOTS + 6 * NUGGETS))
             .duration(24 * MINUTES)
@@ -766,7 +755,7 @@ public class ComponentAssemblyLineLoader {
                     get(OrePrefixes.cableGt16, Materials2Materials.YttriumBariumCuprate, 6))
                 .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
-                    INDALLOY_140.getFluidStack(48 * INGOTS),
+                    MU.legacyGtppFluid(Materials2Materials.Indalloy140, 48 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 12_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.HSSS, Materials2FluidShapes.fluidMolten, 7 * STACKS + 2 * INGOTS + 6 * NUGGETS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.NiobiumTitanium, Materials2FluidShapes.fluidMolten, 1 * STACKS + 32 * INGOTS),
@@ -786,7 +775,7 @@ public class ComponentAssemblyLineLoader {
                     get(OrePrefixes.plateDense, rubber, 53))
                 .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
-                    INDALLOY_140.getFluidStack(48 * INGOTS),
+                    MU.legacyGtppFluid(Materials2Materials.Indalloy140, 48 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 12_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.HSSS, Materials2FluidShapes.fluidMolten, 3 * STACKS + 26 * INGOTS + 6 * NUGGETS))
                 .duration(24 * MINUTES)
@@ -807,7 +796,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.YttriumBariumCuprate, 18))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(3 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 3 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 12_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.HSSS, Materials2FluidShapes.fluidMolten, 8 * STACKS + 16 * INGOTS))
             .duration(24 * MINUTES)
@@ -827,7 +816,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.YttriumBariumCuprate, 21))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(3 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 3 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Gallium, Materials2FluidShapes.fluidMolten, 36 * STACKS))
             .duration(24 * MINUTES)
             .eut(RECIPE_IV)
@@ -845,7 +834,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.YttriumBariumCuprate, 21))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(3 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 3 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Gallium, Materials2FluidShapes.fluidMolten, 36 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Ruridit, Materials2FluidShapes.fluidMolten, 3 * STACKS))
             .duration(24 * MINUTES)
@@ -865,7 +854,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.YttriumBariumCuprate, 24))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(3 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 3 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Ruridit, Materials2FluidShapes.fluidMolten, 24 * STACKS))
             .duration(24 * MINUTES)
             .eut(RECIPE_IV)
@@ -882,7 +871,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.VanadiumGallium, 24))
             .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 1 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 36_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Europium, Materials2FluidShapes.fluidMolten, 18 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.NaquadahAlloy, Materials2FluidShapes.fluidMolten, 5 * STACKS + 5 * INGOTS + 3 * NUGGETS))
@@ -900,7 +889,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.VanadiumGallium, 48))
             .circuit(PISTON_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 1 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 36_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.NaquadahAlloy, Materials2FluidShapes.fluidMolten, 9 * STACKS + 26 * INGOTS + 6 * NUGGETS))
             .duration(24 * MINUTES)
@@ -919,7 +908,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.IV.getWrap(1), 24))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(6 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 6 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 36_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.VanadiumGallium, Materials2FluidShapes.fluidMolten, 9 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.NaquadahAlloy, Materials2FluidShapes.fluidMolten, 8 * STACKS + 16 * INGOTS))
@@ -938,7 +927,7 @@ public class ComponentAssemblyLineLoader {
                     get(OrePrefixes.cableGt16, Materials2Materials.VanadiumGallium, 24))
                 .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
-                    INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
+                    MU.legacyGtppFluid(Materials2Materials.Indalloy140, 1 * STACKS + 32 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 36_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.NaquadahAlloy, Materials2FluidShapes.fluidMolten, 7 * STACKS + 2 * INGOTS + 6 * NUGGETS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Enderium, Materials2FluidShapes.fluidMolten, 4 * STACKS + 32 * INGOTS),
@@ -957,7 +946,7 @@ public class ComponentAssemblyLineLoader {
                     get(OrePrefixes.cableGt16, Materials2Materials.VanadiumGallium, 24))
                 .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
-                    INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
+                    MU.legacyGtppFluid(Materials2Materials.Indalloy140, 1 * STACKS + 32 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 36_000),
                     MU.molten(rubber, 14 * STACKS + 58 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.NaquadahAlloy, Materials2FluidShapes.fluidMolten, 3 * STACKS + 26 * INGOTS + 6 * NUGGETS))
@@ -978,7 +967,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.ZPM.getWrap(1), 12))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(6 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 6 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Trinium, Materials2FluidShapes.fluidMolten, 36 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.VanadiumGallium, Materials2FluidShapes.fluidMolten, 10 * STACKS + 32 * INGOTS))
             .duration(24 * MINUTES)
@@ -996,7 +985,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.ZPM.getWrap(1), 12))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(6 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 6 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Trinium, Materials2FluidShapes.fluidMolten, 36 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.VanadiumGallium, Materials2FluidShapes.fluidMolten, 10 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Osmiridium, Materials2FluidShapes.fluidMolten, 3 * STACKS))
@@ -1016,7 +1005,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UV.getWrap(1), 12))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(6 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 6 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Europium, Materials2FluidShapes.fluidMolten, 24 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.VanadiumGallium, Materials2FluidShapes.fluidMolten, 12 * STACKS))
             .duration(24 * MINUTES)
@@ -1033,7 +1022,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.NaquadahAlloy, 24))
             .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(6 * STACKS + 48 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 6 * STACKS + 48 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 96_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Americium, Materials2FluidShapes.fluidMolten, 36 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 6 * STACKS + 48 * INGOTS),
@@ -1053,7 +1042,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.NaquadahAlloy, 48))
             .circuit(PISTON_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(6 * STACKS + 48 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 6 * STACKS + 48 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 96_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidMolten, 9 * STACKS + 26 * INGOTS + 6 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 6 * STACKS + 48 * INGOTS))
@@ -1073,7 +1062,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.LuV.getWrap(1), 24))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 96_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.NaquadahAlloy, Materials2FluidShapes.fluidMolten, 9 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidMolten, 8 * STACKS + 16 * INGOTS),
@@ -1093,7 +1082,7 @@ public class ComponentAssemblyLineLoader {
                     get(OrePrefixes.cableGt16, Materials2Materials.NaquadahAlloy, 24))
                 .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
-                    INDALLOY_140.getFluidStack(6 * STACKS + 48 * INGOTS),
+                    MU.legacyGtppFluid(Materials2Materials.Indalloy140, 6 * STACKS + 48 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 96_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Naquadah, Materials2FluidShapes.fluidMolten, 9 * STACKS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidMolten, 7 * STACKS + 2 * INGOTS + 6 * NUGGETS),
@@ -1113,7 +1102,7 @@ public class ComponentAssemblyLineLoader {
                     get(OrePrefixes.cableGt16, Materials2Materials.NaquadahAlloy, 24))
                 .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
-                    INDALLOY_140.getFluidStack(6 * STACKS + 48 * INGOTS),
+                    MU.legacyGtppFluid(Materials2Materials.Indalloy140, 6 * STACKS + 48 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 96_000),
                     MU.molten(rubber, 29 * STACKS + 61 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 6 * STACKS + 48 * INGOTS),
@@ -1135,7 +1124,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UV.getWrap(1), 12))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 42 * STACKS + 48 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.NaquadahAlloy, Materials2FluidShapes.fluidMolten, 10 * STACKS + 32 * INGOTS))
             .duration(24 * MINUTES)
@@ -1153,7 +1142,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UV.getWrap(1), 12))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 42 * STACKS + 48 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.NaquadahAlloy, Materials2FluidShapes.fluidMolten, 10 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidMolten, 3 * STACKS))
@@ -1173,7 +1162,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UHV.getWrap(1), 12))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Americium, Materials2FluidShapes.fluidMolten, 36 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.NaquadahAlloy, Materials2FluidShapes.fluidMolten, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 6 * STACKS + 48 * INGOTS))
@@ -1191,7 +1180,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.Bedrockium, 24))
             .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidMolten, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS),
@@ -1211,7 +1200,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.Bedrockium, 48))
             .circuit(PISTON_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.CosmicNeutronium, Materials2FluidShapes.fluidMolten, 18 * STACKS + 53 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS))
@@ -1231,7 +1220,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.ZPM.getWrap(1), 24))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.CosmicNeutronium, Materials2FluidShapes.fluidMolten, 16 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS),
@@ -1251,7 +1240,7 @@ public class ComponentAssemblyLineLoader {
                     get(OrePrefixes.cableGt16, Materials2Materials.Bedrockium, 24))
                 .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
-                    INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    MU.legacyGtppFluid(Materials2Materials.Indalloy140, 13 * STACKS + 32 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 192_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.CosmicNeutronium, Materials2FluidShapes.fluidMolten, 14 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS),
@@ -1271,7 +1260,7 @@ public class ComponentAssemblyLineLoader {
                     get(OrePrefixes.cableGt16, Materials2Materials.Bedrockium, 24))
                 .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
-                    INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    MU.legacyGtppFluid(Materials2Materials.Indalloy140, 13 * STACKS + 32 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 192_000),
                     MU.molten(rubber, 29 * STACKS + 61 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS),
@@ -1293,7 +1282,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UHV.getWrap(1), 12))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.ElectrumFlux, Materials2FluidShapes.fluidMolten, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Bedrockium, Materials2FluidShapes.fluidMolten, 10 * STACKS + 32 * INGOTS))
@@ -1312,7 +1301,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UHV.getWrap(1), 12))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.ElectrumFlux, Materials2FluidShapes.fluidMolten, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Bedrockium, Materials2FluidShapes.fluidMolten, 10 * STACKS + 32 * INGOTS),
@@ -1333,7 +1322,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UEV.getWrap(1), 12))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
-                INDALLOY_140.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidMolten, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Bedrockium, Materials2FluidShapes.fluidMolten, 12 * STACKS))
@@ -1351,7 +1340,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.Draconium, 24))
             .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.CosmicNeutronium, Materials2FluidShapes.fluidMolten, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, 16 * STACKS + 10 * INGOTS + 6 * NUGGETS),
@@ -1371,7 +1360,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.Draconium, 48))
             .circuit(PISTON_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, 18 * STACKS + 53 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS))
@@ -1391,7 +1380,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UV.getWrap(1), 24))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, 16 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS),
@@ -1412,7 +1401,7 @@ public class ComponentAssemblyLineLoader {
                     get(OrePrefixes.cableGt16, Materials2Materials.Draconium, 24))
                 .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
-                    MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 192_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, 14 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS),
@@ -1431,7 +1420,7 @@ public class ComponentAssemblyLineLoader {
                     get(OrePrefixes.cableGt16, Materials2Materials.Draconium, 24))
                 .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
-                    MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 192_000),
                     MU.molten(rubber, 59 * STACKS + 58 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS),
@@ -1453,7 +1442,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UEV.getWrap(1), 12))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.InfinityCatalyst, Materials2FluidShapes.fluidMolten, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Draconium, Materials2FluidShapes.fluidMolten, 10 * STACKS + 32 * INGOTS))
@@ -1472,7 +1461,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UEV.getWrap(1), 12))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.InfinityCatalyst, Materials2FluidShapes.fluidMolten, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Draconium, Materials2FluidShapes.fluidMolten, 10 * STACKS + 32 * INGOTS),
@@ -1493,7 +1482,7 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UIV.getWrap(1), 12))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Tritanium, Materials2FluidShapes.fluidMolten, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Draconium, Materials2FluidShapes.fluidMolten, 12 * STACKS))
@@ -1518,13 +1507,13 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.NetherStar, 24))
             .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.dimensionallyshiftedsuperfluid, Materials2FluidShapes.fluidLiquid, 32 * STACKS + 53 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.protohalkonitebase, Materials2FluidShapes.fluidLiquid, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.TranscendentMetal, Materials2FluidShapes.fluidMolten, 16 * STACKS + 10 * INGOTS + 6 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.TengamPurified, Materials2FluidShapes.fluidMolten, 12 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1536,14 +1525,14 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.NetherStar, 24))
             .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.dimensionallyshiftedsuperfluid, Materials2FluidShapes.fluidLiquid, 32 * STACKS + 53 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.protohalkonitebase, Materials2FluidShapes.fluidLiquid, 24 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Creon, Materials2FluidShapes.fluidMolten, 24 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Mellion, Materials2FluidShapes.fluidMolten, 24 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.TranscendentMetal, Materials2FluidShapes.fluidMolten, 16 * STACKS + 10 * INGOTS + 6 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.TengamPurified, Materials2FluidShapes.fluidMolten, 12 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1558,10 +1547,10 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.NetherStar, 48))
             .circuit(PISTON_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.dimensionallyshiftedsuperfluid, Materials2FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.TranscendentMetal, Materials2FluidShapes.fluidMolten, 18 * STACKS + 53 * INGOTS + 3 * NUGGETS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1579,10 +1568,10 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.NetherStar, 72))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.dimensionallyshiftedsuperfluid, Materials2FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.TranscendentMetal, Materials2FluidShapes.fluidMolten, 16 * STACKS + 32 * INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1598,12 +1587,12 @@ public class ComponentAssemblyLineLoader {
                     get(OrePrefixes.cableGt16, Materials2Materials.NetherStar, 24))
                 .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
-                    MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.dimensionallyshiftedsuperfluid, Materials2FluidShapes.fluidLiquid, 192_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.TranscendentMetal, Materials2FluidShapes.fluidMolten, 14 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                     MU.molten(rubber, 12 * STACKS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.DraconiumAwakened, Materials2FluidShapes.fluidMolten, 9 * STACKS),
-                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                    MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
                 .duration(40 * MINUTES)
                 .eut(RECIPE_UEV)
                 .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1618,11 +1607,11 @@ public class ComponentAssemblyLineLoader {
                     get(OrePrefixes.cableGt16, Materials2Materials.NetherStar, 24))
                 .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
-                    MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.dimensionallyshiftedsuperfluid, Materials2FluidShapes.fluidLiquid, 192_000),
                     MU.molten(rubber, 59 * STACKS + 58 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.TranscendentMetal, Materials2FluidShapes.fluidMolten, 6 * STACKS + 53 * INGOTS + 3 * NUGGETS),
-                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                    MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
                 .duration(40 * MINUTES)
                 .eut(RECIPE_UEV)
                 .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1641,12 +1630,12 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.NetherStar, 84))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
-                TRINIUM_REINFORCED_STEEL.getFluidStack(12 * STACKS),
-                LAFIUM.getFluidStack(12 * STACKS),
-                CINOBITE.getFluidStack(12 * STACKS),
-                PIKYONIUM.getFluidStack(12 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.ArceusAlloy2B, 12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.LafiumCompound, 12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.CinobiteA243, 12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Pikyonium64B, 12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1663,13 +1652,13 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.NetherStar, 84))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
-                TRINIUM_REINFORCED_STEEL.getFluidStack(12 * STACKS),
-                LAFIUM.getFluidStack(12 * STACKS),
-                CINOBITE.getFluidStack(12 * STACKS),
-                PIKYONIUM.getFluidStack(12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.ArceusAlloy2B, 12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.LafiumCompound, 12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.CinobiteA243, 12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Pikyonium64B, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.TranscendentMetal, Materials2FluidShapes.fluidMolten, 6 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1687,11 +1676,11 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.NetherStar, 96))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.dimensionallyshiftedsuperfluid, Materials2FluidShapes.fluidLiquid, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.protohalkonitebase, Materials2FluidShapes.fluidLiquid, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, 48 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1708,12 +1697,12 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.NetherStar, 96))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.dimensionallyshiftedsuperfluid, Materials2FluidShapes.fluidLiquid, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.protohalkonitebase, Materials2FluidShapes.fluidLiquid, 24 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Creon, Materials2FluidShapes.fluidMolten, 24 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Mellion, Materials2FluidShapes.fluidMolten, 24 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1728,12 +1717,12 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.Quantium, 24))
             .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.dimensionallyshiftedsuperfluid, Materials2FluidShapes.fluidLiquid, 192_000),
-                HYPOGEN.getFluidStack(51 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Hypogen, 51 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.TengamPurified, Materials2FluidShapes.fluidMolten, 24 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 16 * STACKS + 10 * INGOTS + 6 * NUGGETS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1748,11 +1737,11 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.cableGt16, Materials2Materials.Quantium, 48))
             .circuit(PISTON_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.dimensionallyshiftedsuperfluid, Materials2FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 18 * STACKS + 53 * INGOTS + 3 * NUGGETS),
-                HYPOGEN.getFluidStack(3 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                MU.legacyGtppFluid(Materials2Materials.Hypogen, 3 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1769,12 +1758,12 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UEV.getWrap(1), 24))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.dimensionallyshiftedsuperfluid, Materials2FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 16 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 9 * STACKS),
-                HYPOGEN.getFluidStack(3 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                MU.legacyGtppFluid(Materials2Materials.Hypogen, 3 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1790,13 +1779,13 @@ public class ComponentAssemblyLineLoader {
                     get(OrePrefixes.cableGt16, Materials2Materials.Quantium, 24))
                 .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
-                    MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.dimensionallyshiftedsuperfluid, Materials2FluidShapes.fluidLiquid, 192_000),
                     MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 14 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                     MU.molten(rubber, 12 * STACKS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, 9 * STACKS),
-                    HYPOGEN.getFluidStack(3 * STACKS),
-                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                    MU.legacyGtppFluid(Materials2Materials.Hypogen, 3 * STACKS),
+                    MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
                 .duration(40 * MINUTES)
                 .eut(RECIPE_UIV)
                 .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1811,12 +1800,12 @@ public class ComponentAssemblyLineLoader {
                     get(OrePrefixes.cableGt16, Materials2Materials.Quantium, 24))
                 .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
-                    MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.dimensionallyshiftedsuperfluid, Materials2FluidShapes.fluidLiquid, 192_000),
                     MU.molten(rubber, 59 * STACKS + 58 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 6 * STACKS + 53 * INGOTS + 3 * NUGGETS),
-                    HYPOGEN.getFluidStack(3 * STACKS),
-                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                    MU.legacyGtppFluid(Materials2Materials.Hypogen, 3 * STACKS),
+                    MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
                 .duration(40 * MINUTES)
                 .eut(RECIPE_UIV)
                 .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1834,13 +1823,13 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UMV.getWrap(1), 12))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(15 * STACKS),
-                QUANTUM.getFluidStack(12 * STACKS),
-                ASTRAL_TITANIUM.getFluidStack(12 * STACKS),
-                TITANSTEEL.getFluidStack(12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 15 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Quantum, 12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.AstralTitanium, 12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Titansteel, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 10 * STACKS + 32 * INGOTS),
-                HYPOGEN.getFluidStack(3 * STACKS))
+                MU.legacyGtppFluid(Materials2Materials.Hypogen, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1856,14 +1845,14 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UMV.getWrap(1), 12))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(15 * STACKS),
-                QUANTUM.getFluidStack(12 * STACKS),
-                ASTRAL_TITANIUM.getFluidStack(12 * STACKS),
-                TITANSTEEL.getFluidStack(12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 15 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Quantum, 12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.AstralTitanium, 12 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.Titansteel, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 10 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 6 * STACKS),
-                HYPOGEN.getFluidStack(3 * STACKS))
+                MU.legacyGtppFluid(Materials2Materials.Hypogen, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1880,10 +1869,10 @@ public class ComponentAssemblyLineLoader {
                 get(Circuits.UXV.getWrap(1), 12))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
-                HYPOGEN.getFluidStack(51 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 13 * STACKS + 32 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Hypogen, 51 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 12 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -2022,7 +2011,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.nanite, Materials2Materials.Gold, 24))
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(75 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 75 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 36 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, Materials2FluidShapes.fluidMolten, 21 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Eternity, Materials2FluidShapes.fluidMolten, 18 * STACKS),
@@ -2045,7 +2034,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.nanite, Materials2Materials.Gold, 24))
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(75 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 75 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 36 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, Materials2FluidShapes.fluidMolten, 21 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Eternity, Materials2FluidShapes.fluidMolten, 18 * STACKS),
@@ -2068,7 +2057,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.nanite, Materials2Materials.Gold, 36))
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
-                MUTATED_LIVING_SOLDER.getFluidStack(75 * STACKS),
+                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 75 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 27 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, Materials2FluidShapes.fluidMolten, 19 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Eternity, Materials2FluidShapes.fluidMolten, 16 * STACKS + 32 * INGOTS),

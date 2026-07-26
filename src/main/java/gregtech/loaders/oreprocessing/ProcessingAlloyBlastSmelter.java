@@ -10,8 +10,6 @@ import java.util.Set;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -24,7 +22,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2GtppComposites;
 import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.FluidNames;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeCategories;
@@ -193,15 +190,9 @@ public class ProcessingAlloyBlastSmelter {
             .addTo(alloyBlastSmelterRecipes);
     }
 
-    /// A material's single registered fluid, resolved by the name its [GTMaterialProperties#LEGACY_FLUIDS]
-    /// slots declare ([FluidNames#legacyGtppFluidName]) rather than through [MU]'s state-specific accessors:
-    /// those resolve a legacy `Materials` field or a [com.ruling_0.materiallib.api.Shape], neither of which a
-    /// gtPlusPlus-only material carries, so they return null for exactly the materials these recipes need.
+    /// A material's single registered fluid -- see [MU#legacyGtppFluid].
     private static FluidStack materialFluid(Material material, long amount) {
-        FluidNames fluids = material.getProperty(GTMaterialProperties.LEGACY_FLUIDS);
-        String name = fluids == null ? null : fluids.legacyGtppFluidName();
-        Fluid fluid = name == null ? null : FluidRegistry.getFluid(name);
-        return fluid == null ? null : new FluidStack(fluid, (int) amount);
+        return MU.legacyGtppFluid(material, amount);
     }
 
     private static int tierOf(Material material) {

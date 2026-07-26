@@ -9,10 +9,6 @@ import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.core.material.MaterialMisc.BRINE;
-import static gtPlusPlus.core.material.MaterialMisc.HYDROGEN_CHLORIDE_MIX;
-import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_HIGH;
-import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_LOW;
-import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_MID;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -44,7 +40,7 @@ public class RecipesRareEarthProcessing {
         if (mBrine == null) {
             Fluid f = BRINE.generateFluid();
             BRINE.registerComponentForMaterial(new FluidStack(f, 1_000));
-            mBrine = BRINE.getFluidStack(1000);
+            mBrine = MU.legacyGtppFluid(Materials2Materials.Brine, 1000);
         } else {
             BRINE.registerComponentForMaterial(new FluidStack(mBrine, 1_000));
         }
@@ -79,14 +75,14 @@ public class RecipesRareEarthProcessing {
                 MaterialLibAPI.getStack(Materials2Materials.Chlorine, Materials2CellShapes.cell, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Hydrogen, Materials2CellShapes.cell, (int) (1)))
             .circuit(2)
-            .itemOutputs(HYDROGEN_CHLORIDE_MIX.getCell(2))
+            .itemOutputs(MU.cellStack(Materials2Materials.HydrogenChlorideMix, 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.Laser_Lens_WoodsGlass.get(0))
-            .fluidInputs(HYDROGEN_CHLORIDE_MIX.getFluidStack(4_000))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.HydrogenChlorideMix, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 4_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -95,7 +91,10 @@ public class RecipesRareEarthProcessing {
         // LV Rare Earth
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.RareEarth, Materials2Shapes.dust, (int) (3)))
-            .itemOutputs(RARE_EARTH_LOW.getCrushed(2), RARE_EARTH_LOW.getCrushed(2), RARE_EARTH_LOW.getCrushed(2))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthI, Materials2Shapes.crushed, 2),
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthI, Materials2Shapes.crushed, 2),
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthI, Materials2Shapes.crushed, 2))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
@@ -106,7 +105,10 @@ public class RecipesRareEarthProcessing {
         // HV Rare Earth
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.RareEarth, Materials2Shapes.dust, (int) (3)))
-            .itemOutputs(RARE_EARTH_MID.getCrushed(2), RARE_EARTH_MID.getCrushed(2), RARE_EARTH_MID.getCrushed(2))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthII, Materials2Shapes.crushed, 2),
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthII, Materials2Shapes.crushed, 2),
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthII, Materials2Shapes.crushed, 2))
             .outputChances(10000, 9000, 8000)
             .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 1_000))
             .duration(15 * SECONDS)
@@ -115,7 +117,10 @@ public class RecipesRareEarthProcessing {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.RareEarth, Materials2Shapes.dust, (int) (3)))
-            .itemOutputs(RARE_EARTH_MID.getCrushed(2), RARE_EARTH_MID.getCrushed(2), RARE_EARTH_MID.getCrushed(2))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthII, Materials2Shapes.crushed, 2),
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthII, Materials2Shapes.crushed, 2),
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthII, Materials2Shapes.crushed, 2))
             .outputChances(9000, 8000, 7000)
             .fluidInputs(MU.fluid(Materials2Materials.HydrochloricAcidGT5U, 2_000))
             .duration(15 * SECONDS)
@@ -125,7 +130,10 @@ public class RecipesRareEarthProcessing {
         // IV Rare Earth
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.RareEarth, Materials2Shapes.dust, (int) (3)))
-            .itemOutputs(RARE_EARTH_HIGH.getCrushed(2), RARE_EARTH_HIGH.getCrushed(2), RARE_EARTH_HIGH.getCrushed(2))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthIII, Materials2Shapes.crushed, 2),
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthIII, Materials2Shapes.crushed, 2),
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthIII, Materials2Shapes.crushed, 2))
             .outputChances(10000, 9000, 8000)
             .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 1_000))
             .duration(10 * SECONDS)
@@ -134,7 +142,10 @@ public class RecipesRareEarthProcessing {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.RareEarth, Materials2Shapes.dust, (int) (3)))
-            .itemOutputs(RARE_EARTH_HIGH.getCrushed(2), RARE_EARTH_HIGH.getCrushed(2), RARE_EARTH_HIGH.getCrushed(2))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthIII, Materials2Shapes.crushed, 2),
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthIII, Materials2Shapes.crushed, 2),
+                MaterialLibAPI.getStack(Materials2Materials.RareEarthIII, Materials2Shapes.crushed, 2))
             .outputChances(9000, 8000, 7000)
             .fluidInputs(MU.fluid(Materials2Materials.HydrofluoricAcidGT5U, 2_000))
             .duration(10 * SECONDS)
@@ -145,7 +156,10 @@ public class RecipesRareEarthProcessing {
             // Refined Rare Earth Comb Processing
             GTValues.RA.stdBuilder()
                 .itemInputs(GTBees.combs.getStackForType(CombType.REFINEDRAREEARTH, 1))
-                .itemOutputs(RARE_EARTH_LOW.getDust(1), RARE_EARTH_MID.getDust(1), RARE_EARTH_HIGH.getDust(1))
+                .itemOutputs(
+                    MaterialLibAPI.getStack(Materials2Materials.RareEarthI, Materials2Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials2Materials.RareEarthII, Materials2Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials2Materials.RareEarthIII, Materials2Shapes.dust, 1))
                 .outputChances(3300, 3300, 3300)
                 .duration(32 * SECONDS)
                 .eut(TierEU.RECIPE_IV)

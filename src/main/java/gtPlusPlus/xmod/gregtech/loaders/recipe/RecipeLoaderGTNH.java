@@ -21,7 +21,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
-import gtPlusPlus.core.material.MaterialsElements;
 
 public class RecipeLoaderGTNH {
 
@@ -42,7 +41,7 @@ public class RecipeLoaderGTNH {
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (1_000)))
-            .fluidOutputs(MaterialsElements.getInstance().CURIUM.getFluidStack(1 * INGOTS))
+            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.Curium, 1 * INGOTS))
             .duration(4 * SECONDS + 16 * TICKS)
             .eut(98304)
             .metadata(FUSION_THRESHOLD, 500_000_000L)
@@ -51,10 +50,10 @@ public class RecipeLoaderGTNH {
         // MK4
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialsElements.getInstance().CURIUM.getFluidStack(1 * INGOTS),
+                MU.legacyGtppFluid(Materials2Materials.Curium, 1 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
-            .fluidOutputs(MaterialsElements.getInstance().CALIFORNIUM.getFluidStack(1 * INGOTS))
+            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.Californium, 1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(196608)
             .metadata(FUSION_THRESHOLD, 750_000_000L)
@@ -81,7 +80,7 @@ public class RecipeLoaderGTNH {
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)),
                 WerkstoffLoader.Neon.getFluidOrGas(500))
-            .fluidOutputs(new FluidStack(MaterialsElements.getInstance().BROMINE.getPlasma(), 1 * INGOTS))
+            .fluidOutputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Bromine), 1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(196608)
             .metadata(FUSION_THRESHOLD, 1_000_000_000L)
@@ -91,8 +90,8 @@ public class RecipeLoaderGTNH {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.fluidGas, (int) (1_000)),
-                MaterialsElements.getInstance().SELENIUM.getFluidStack(1 * INGOTS))
-            .fluidOutputs(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 2 * INGOTS))
+                MU.legacyGtppFluid(Materials2Materials.Selenium, 1 * INGOTS))
+            .fluidOutputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Technetium), 2 * INGOTS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(196608)
             .metadata(FUSION_THRESHOLD, 800_000_000L)

@@ -7,7 +7,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -389,7 +388,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Materials.Quantium, 2),
                         MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UMV.get(1))
-                    .fluidInputs(HYPOGEN.getFluidStack(1 * INGOTS))
+                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Hypogen, 1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -548,7 +547,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Quantium, 2),
                         MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UMV.get(1))
-                    .fluidInputs(HYPOGEN.getFluidStack(4 * INGOTS))
+                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Hypogen, 4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -714,7 +713,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials2Materials.Quantium, 2),
                         MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UMV.get(1))
-                    .fluidInputs(HYPOGEN.getFluidStack(16 * INGOTS))
+                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Hypogen, 16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -815,7 +814,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Materials.Quantium, 2),
                         MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 8))
                     .itemOutputs(CustomItemList.eM_dynamoMulti256_UMV.get(1))
-                    .fluidInputs(HYPOGEN.getFluidStack(64 * INGOTS))
+                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Hypogen, 64 * INGOTS))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -969,7 +968,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Materials.Quantium, 2),
                         MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UMV.get(1))
-                    .fluidInputs(HYPOGEN.getFluidStack(1 * INGOTS))
+                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Hypogen, 1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -1128,7 +1127,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Quantium, 2),
                         MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UMV.get(1))
-                    .fluidInputs(HYPOGEN.getFluidStack(4 * INGOTS))
+                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Hypogen, 4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -1294,7 +1293,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials2Materials.Quantium, 2),
                         MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UMV.get(1))
-                    .fluidInputs(HYPOGEN.getFluidStack(16 * INGOTS))
+                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Hypogen, 16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);

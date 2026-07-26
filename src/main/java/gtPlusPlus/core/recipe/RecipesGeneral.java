@@ -84,45 +84,45 @@ public class RecipesGeneral {
         // Workbench Blueprint
         GTModHandler.addCraftingRecipe(
             GregtechItemList.BlueprintBase.get(2),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PL ", "PL ", "LL ", 'P', new ItemStack(Items.paper), 'L',
                 MaterialLibAPI.getStack(Materials2Materials.Lazurite, Materials2Shapes.dust, (int) (1)) });
 
         // Rainforest Oak Sapling
         GTModHandler.addCraftingRecipe(
             new ItemStack(BOPBlockRegistrator.sapling_Rainforest),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SSS", "SPS", "SBS", 'S', "stickWood", 'P', "treeSapling", 'B', "dustBone" });
 
         // Potin
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialsAlloy.POTIN.getDust(5),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            MaterialLibAPI.getStack(Materials2Materials.Potin, Materials2Shapes.dust, 5),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "dustLead", "dustBronze", "dustTin", "dustLead", "dustBronze" });
 
         // Tumbaga
         GTModHandler.addShapelessCraftingRecipe(
             GregtechItemList.TumbagaMixDust.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "dustGold", "dustGold", "dustCopper" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialsAlloy.TUMBAGA.getDust(10),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            MaterialLibAPI.getStack(Materials2Materials.Tumbaga, Materials2Shapes.dust, 10),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.TumbagaMixDust.get(1), GregtechItemList.TumbagaMixDust.get(1),
                 GregtechItemList.TumbagaMixDust.get(1), "dustGold" });
 
         // Basic Turbines
         GTModHandler.addCraftingRecipe(
             GregtechItemList.BasicIronTurbine.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "fPS", "PRP", "SPh", 'P', "plateIron", 'R', "ringIron", 'S', "stickIron" });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.BasicBronzeTurbine.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "fPS", "PRP", "SPh", 'P', "plateBronze", 'R', "ringBronze", 'S', "stickBronze" });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.BasicSteelTurbine.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "fPS", "PRP", "SPh", 'P', "plateSteel", 'R', "ringSteel", 'S', "stickSteel" });
 
         // Large Volumetric Flask
@@ -155,7 +155,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(GregtechItemList.KLEIN_BOTTLE.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(16 * INGOTS))
+            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, 16 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(fluidSolidifierRecipes);
@@ -163,14 +163,14 @@ public class RecipesGeneral {
         // Mining Explosives
         GTModHandler.addCraftingRecipe(
             GregtechItemList.MiningExplosives.get(3),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "ITI", "TFT", "STS", 'I', Ic2Items.industrialTnt.copy(), 'T', new ItemStack(Blocks.tnt), 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Iron, 1), 'S', "dustSulfur" });
 
         // Alkalus Disk
         GTModHandler.addCraftingRecipe(
             GregtechItemList.AlkalusDisk.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "ABC", "DEF", "GHI", 'A', "gemExquisiteRuby", 'B', "gemFlawlessDiamond", 'C',
                 "gemExquisiteDiamond", 'D', "gemFlawlessRuby", 'E', ItemList.Credit_Greg_Osmium.get(1), 'F',
                 "gemFlawlessSapphire", 'G', "gemExquisiteEmerald", 'H', "gemFlawlessEmerald", 'I',
@@ -179,7 +179,7 @@ public class RecipesGeneral {
         // Wither Cage
         GTModHandler.addCraftingRecipe(
             GregtechItemList.WitherGuard.get(32),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SPS", "PWP", "SPS", 'S', "stickBlackSteel", 'P', "plateTungstenSteel", 'W',
                 new ItemStack(Items.nether_star) });
 
@@ -359,47 +359,47 @@ public class RecipesGeneral {
     private static void migratedRecipes() {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Muffler_Adv_LV.get(1L),
-            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            BITS,
             new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_LV.get(1), 'P',
                 GregtechItemList.Pollution_Cleaner_LV.get(1) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Muffler_Adv_MV.get(1L),
-            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            BITS,
             new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_MV.get(1), 'P',
                 GregtechItemList.Pollution_Cleaner_MV.get(1) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Muffler_Adv_HV.get(1L),
-            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            BITS,
             new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_HV.get(1), 'P',
                 GregtechItemList.Pollution_Cleaner_HV.get(1) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Muffler_Adv_EV.get(1L),
-            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            BITS,
             new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_EV.get(1), 'P',
                 GregtechItemList.Pollution_Cleaner_EV.get(1) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Muffler_Adv_IV.get(1L),
-            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            BITS,
             new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_IV.get(1), 'P',
                 GregtechItemList.Pollution_Cleaner_IV.get(1) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Muffler_Adv_LuV.get(1L),
-            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            BITS,
             new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_LuV.get(1), 'P',
                 GregtechItemList.Pollution_Cleaner_LuV.get(1) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Muffler_Adv_ZPM.get(1L),
-            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            BITS,
             new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_ZPM.get(1), 'P',
                 GregtechItemList.Pollution_Cleaner_ZPM.get(1) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Muffler_Adv_UV.get(1L),
-            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            BITS,
             new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_UV.get(1), 'P',
                 GregtechItemList.Pollution_Cleaner_UV.get(1) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Muffler_Adv_MAX.get(1L),
-            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            BITS,
             new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_MAX.get(1), 'P',
                 GregtechItemList.Pollution_Cleaner_MAX.get(1) });
     }
