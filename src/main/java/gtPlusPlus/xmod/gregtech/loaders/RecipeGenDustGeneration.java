@@ -1,28 +1,21 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.material.MaterialStack;
-import gtPlusPlus.core.material.state.MaterialState;
 
 public class RecipeGenDustGeneration extends RecipeGenBase {
 
@@ -76,9 +69,6 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         final ItemStack smallDust = material.getSmallDust(1);
         final ItemStack tinyDust = material.getTinyDust(1);
 
-        final ItemStack[] inputStacks = material.getMaterialComposites();
-        final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
-
         if (smallDust != null) {
             generatePackagerRecipes(material);
         }
@@ -87,175 +77,6 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         if (normalDust != null && ingot != null) {
             addFurnaceRecipe(material);
         }
-
-        // Is this a composite?
-        if ((inputStacks == null) || disableOptional) {
-            return;
-        }
-
-        // Is this a composite?
-        if (!((inputStacks.length != 0) && (inputStacks.length <= 4))) {
-            return;
-        }
-        final long[] inputStackSize = material.vSmallestRatio;
-        // Is smallest ratio invalid?
-        if (inputStackSize == null) {
-            return;
-        }
-        // set stack sizes on an input ItemStack[]
-        for (short x = 0; x < inputStacks.length; x++) {
-            if ((inputStacks[x] != null) && (inputStackSize[x] != 0)) {
-                inputStacks[x].stackSize = (int) inputStackSize[x];
-            }
-        }
-
-        ItemStack[] cleanedInputs = Arrays.stream(inputStacks)
-            .filter(Objects::nonNull)
-            .toArray(ItemStack[]::new);
-
-        // Circuit Number Declaration
-        int circuitNumber = -1;
-
-        if (inputStacks.length == 1) {
-            circuitNumber = 11;
-        } else if (inputStacks.length == 2) {
-            circuitNumber = 12;
-        } else if (inputStacks.length == 3) {
-            circuitNumber = 13;
-        }
-
-        // Add mixer Recipe
-        FluidStack oxygen = GTValues.NF;
-        if (material.getComposites() != null) {
-            for (final MaterialStack x : material.getComposites()) {
-                if (material.getComposites()
-                    .isEmpty()) {
-                    continue;
-                }
-                if (x == null) {
-                    continue;
-                }
-                if (x.getStackMaterial() == null) {
-                    continue;
-                }
-
-                if (x.getStackMaterial()
-                    .getDust(1) != null) {
-                    continue;
-                }
-
-                if (x.getStackMaterial()
-                    .getState() != MaterialState.SOLID
-                    && x.getStackMaterial()
-                        .getState() != MaterialState.ORE
-                    && x.getStackMaterial()
-                        .getState() != MaterialState.PLASMA) {
-                    oxygen = x.getStackMaterial()
-                        .getFluidStack(1000);
-                    break;
-                }
-            }
-        }
-
-        // Add mixer Recipe
-        GTRecipeBuilder builder = GTValues.RA.stdBuilder()
-            .itemInputs(cleanedInputs)
-            .itemOutputs(outputStacks);
-        if (oxygen != null) {
-            builder.fluidInputs(oxygen);
-        }
-        if (circuitNumber > 0) {
-            builder.circuit(circuitNumber);
-        }
-        builder.duration((int) Math.max(material.getMass() * 2L, 1))
-            .eut(material.vVoltageMultiplier)
-            .addTo(mixerRecipes);
-    }
-
-    public static void addMixerRecipe_Standalone(final Material material) {
-        final ItemStack[] inputStacks = material.getMaterialComposites();
-        final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
-        // Is this a composite?
-        if (inputStacks == null) {
-            return;
-        }
-
-        // Is this a composite?
-        if (!((inputStacks.length >= 1) && (inputStacks.length <= 4))) {
-            return;
-        }
-        final long[] inputStackSize = material.vSmallestRatio;
-
-        // Is smallest ratio invalid?
-        if (inputStackSize == null) {
-            return;
-        }
-
-        // set stack sizes on an input ItemStack[]
-        for (short x = 0; x < inputStacks.length; x++) {
-            if ((inputStacks[x] != null) && (inputStackSize[x] != 0)) {
-                inputStacks[x].stackSize = (int) inputStackSize[x];
-            }
-        }
-
-        ItemStack[] cleanedInputs = Arrays.stream(inputStacks)
-            .filter(Objects::nonNull)
-            .toArray(ItemStack[]::new);
-
-        boolean addCircuit = inputStacks.length <= 3;
-
-        // Add mixer Recipe
-        FluidStack oxygen = GTValues.NF;
-        if (material.getComposites() != null) {
-            int compSlot = 0;
-            for (final MaterialStack x : material.getComposites()) {
-
-                if (material.getComposites()
-                    .isEmpty()) {
-                    compSlot++;
-                    continue;
-                }
-                if (x == null) {
-                    compSlot++;
-                    continue;
-                }
-
-                if (x.getStackMaterial() == null) {
-                    compSlot++;
-                    continue;
-                }
-
-                if (x.getStackMaterial()
-                    .getDust(1) == null) {
-                    compSlot++;
-                    continue;
-                }
-
-                MaterialState f = x.getStackMaterial()
-                    .getState();
-                if (f == MaterialState.GAS || f == MaterialState.LIQUID
-                    || f == MaterialState.PURE_LIQUID
-                    || f == MaterialState.PURE_GAS) {
-                    oxygen = x.getStackMaterial()
-                        .getFluidStack((int) (material.vSmallestRatio[compSlot] * 1000));
-                }
-                compSlot++;
-            }
-        }
-
-        // Add mixer Recipe
-        GTRecipeBuilder builder = GTValues.RA.stdBuilder()
-            .itemInputs(cleanedInputs)
-            .itemOutputs(outputStacks);
-        if (oxygen != null) {
-            builder.fluidInputs(oxygen);
-        }
-        if (addCircuit) {
-            builder.circuit(20);
-        }
-        builder.duration((int) Math.max(material.getMass() * 2L, 1))
-            .eut(material.vVoltageMultiplier)
-            .addTo(mixerRecipes);
     }
 
     public static boolean generatePackagerRecipes(Material aMatInfo) {

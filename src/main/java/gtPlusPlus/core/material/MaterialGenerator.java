@@ -174,7 +174,6 @@ public class MaterialGenerator {
 
         // Add A jillion Recipes - old code
         try {
-            RecipeGenDustGeneration.addMixerRecipe_Standalone(matInfo);
             new RecipeGenFluids(matInfo);
             new RecipeGenMaterialProcessing(matInfo);
         } catch (Exception t) {
