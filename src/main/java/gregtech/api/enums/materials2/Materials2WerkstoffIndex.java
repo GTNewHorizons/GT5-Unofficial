@@ -8,6 +8,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialProperties;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -60,5 +61,21 @@ public class Materials2WerkstoffIndex {
     /// The number of occupied slots.
     public static int size() {
         return size;
+    }
+
+    /// Whether the werkstoff part set covers `prefix` for this material, read from
+    /// [GTMaterialProperties#WERKSTOFF_PREFIXES]. This is narrower than asking whether the material resolves a
+    /// stack for the prefix: gregtech's own part autogen covers shapes the werkstoff part set never named, so a
+    /// recipe loader that must stay confined to that set has to gate on this rather than on a successful stack
+    /// lookup.
+    ///
+    /// A material that also carries [GTMaterialProperties#OLD_SUB_ID] is a merged declaration whose parts
+    /// gregtech owns outright (Salt, RockSalt, Spodumene and the like, declared in both families), so it names
+    /// no werkstoff parts at all -- gregtech's own loaders already cover it, and answering true here would
+    /// duplicate their recipes.
+    public static boolean generatesPrefix(@Nullable Material material, OrePrefixes prefix) {
+        if (material == null || material.getProperty(GTMaterialProperties.OLD_SUB_ID) != null) return false;
+        List<String> prefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
+        return prefixes != null && prefixes.contains(prefix.name());
     }
 }

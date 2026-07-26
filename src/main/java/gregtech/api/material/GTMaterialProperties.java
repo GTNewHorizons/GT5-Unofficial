@@ -194,18 +194,16 @@ public class GTMaterialProperties {
     /// The legacy `Material.vVoltageMultiplier`; no gregtech equivalent. Elided when `16` (the value every
     /// tier-0 material carries).
     public static final Property<Long> VOLTAGE_MULTIPLIER = Property.of("gregtech", "voltageMultiplier");
-    /// The bartworks-side data of a material that was (or merged with) a `Werkstoff`, decomposed into
-    /// individual keys rather than kept in one composite property so a reader needing a single value
-    /// does not depend on the whole werkstoff record shape. Every `WERKSTOFF_*` property
-    /// below exists solely so [bartworks.system.material.WerkstoffReconstruction] can rebuild the deprecated
-    /// bartworks `Werkstoff` facade, and is removed together with that facade in 5.10.0.0.
+    /// The bartworks-side data of a material that originated as (or merged with) a legacy `Werkstoff`,
+    /// decomposed into individual keys rather than kept in one composite property so a reader needing a single
+    /// value does not depend on the whole record shape.
     ///
-    /// [#WERKSTOFF_IDS] is always present on a material carrying any werkstoff data -- reconstruction and
-    /// other consumers use it as the "this material has werkstoff data" signal, and its first element as the
-    /// declaration-order sort key (every legacy pool declares its werkstoffe in ascending id order).
-    /// Every legacy werkstoff `mID` this material covers (more than one when two same-name werkstoffe folded
-    /// into one MaterialLib declaration) -- see the class javadoc for its role as both the presence signal and
-    /// reconstruction's declaration-order sort key.
+    /// Every legacy werkstoff `mID` this material covers -- more than one when two same-name werkstoffe folded
+    /// into one MaterialLib declaration. This property is PERMANENT: saved worlds address bartworks items and
+    /// ore blocks by their legacy `mID`, so [gregtech.api.enums.materials2.Materials2WerkstoffIndex] must keep
+    /// decoding those ids indefinitely. It doubles as the "this material carries werkstoff data" signal, which
+    /// is how the ore adapters and shape gating distinguish the werkstoff-origin materials from the gregtech
+    /// and gtPlusPlus families.
     public static final Property<List<Integer>> WERKSTOFF_IDS = Property.of("gregtech", "werkstoffIds");
     /// The declaring pool identifier (`WerkstoffLoader`/`GGMaterial`/`WerkstoffMaterialPool`/
     /// `BotWerkstoffMaterialPool`/...), consulted by reconstruction's `ownerOf` for the legacy

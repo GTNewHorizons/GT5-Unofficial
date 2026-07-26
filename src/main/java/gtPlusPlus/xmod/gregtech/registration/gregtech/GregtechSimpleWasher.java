@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -23,6 +22,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
@@ -138,10 +138,13 @@ public class GregtechSimpleWasher {
             addSimpleWashRecipe(dustPure, dustClean);
         }
 
-        for (Werkstoff v : Werkstoff.werkstoffHashSet) {
-            dustClean = v.hasItemType(OrePrefixes.dust) ? v.get(OrePrefixes.dust) : null;
-            dustDirty = v.hasItemType(OrePrefixes.dustImpure) ? v.get(OrePrefixes.dustImpure) : null;
-            dustPure = v.hasItemType(OrePrefixes.dustPure) ? v.get(OrePrefixes.dustPure) : null;
+        for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
+            if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) {
+                continue;
+            }
+            dustClean = werkstoffStack(ml, OrePrefixes.dust);
+            dustDirty = werkstoffStack(ml, OrePrefixes.dustImpure);
+            dustPure = werkstoffStack(ml, OrePrefixes.dustPure);
             addSimpleWashRecipe(dustDirty, dustClean);
             addSimpleWashRecipe(dustPure, dustClean);
         }
@@ -159,6 +162,13 @@ public class GregtechSimpleWasher {
 
         return simpleWasherRecipes.getAllRecipes()
             .size() > mRecipeCount;
+    }
+
+    /// Resolves a part the legacy werkstoff system generated, or null when it did not generate that prefix --
+    /// gregtech's part autogen covers shapes the werkstoff system never had, so a plain stack lookup would
+    /// wash materials this loop never covered.
+    private static ItemStack werkstoffStack(com.ruling_0.materiallib.api.Material material, OrePrefixes prefix) {
+        return Materials2WerkstoffIndex.generatesPrefix(material, prefix) ? MU.stack(prefix, material, 1L) : null;
     }
 
     private static boolean generateDirtyCrushedRecipes() {
@@ -180,9 +190,12 @@ public class GregtechSimpleWasher {
             addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 
-        for (Werkstoff v : Werkstoff.werkstoffHashSet) {
-            crushedClean = v.hasItemType(OrePrefixes.crushedPurified) ? v.get(OrePrefixes.crushedPurified) : null;
-            crushedDirty = v.hasItemType(OrePrefixes.crushed) ? v.get(OrePrefixes.crushed) : null;
+        for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
+            if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) {
+                continue;
+            }
+            crushedClean = werkstoffStack(ml, OrePrefixes.crushedPurified);
+            crushedDirty = werkstoffStack(ml, OrePrefixes.crushed);
             addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 

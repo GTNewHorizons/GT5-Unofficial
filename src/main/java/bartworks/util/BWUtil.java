@@ -50,6 +50,7 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IItemContainer;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.CustomGlyphs;
@@ -70,6 +71,11 @@ public class BWUtil {
         int tier = werkstoff.getStats()
             .getProcessingMaterialTierEU();
         return tier == 0 ? defaultRecipeEUPerTick : tier;
+    }
+
+    public static int calculateRecipeEU(Material material, int defaultRecipeEUPerTick) {
+        Integer tier = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
+        return tier == null || tier == 0 ? defaultRecipeEUPerTick : tier;
     }
 
     public static String translateGTItemStack(ItemStack itemStack) {
