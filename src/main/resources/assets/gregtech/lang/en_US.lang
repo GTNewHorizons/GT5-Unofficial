@@ -3587,6 +3587,7 @@ GT5U.item.toolbox.tooltip.deselect_tool=%s (while sneaking): Deselect active too
 GT5U.item.toolbox.tooltip.open_toolbox=%s: Open toolbox
 # This inserts gt.item.desc.durability into the %s
 GT5U.item.toolbox.tooltip.tool_durability=Tool %s
+GT5U.item.toolbox.tooltip.crafting=§4§lNOTE:§r §bWill craft with any/no tool selected
 
 GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic\n§oengineering journey.
 # The tool-specific bylines are pretty much all jokes. Accuracy in translation isn't important.
@@ -3891,7 +3892,7 @@ GT5U.hatch.filter.tooltip.0=§6Left-Click§8 to remove
 GT5U.hatch.outputme.filter.format=%s: %s:
 GT5U.hatch.outputme.checkMode.true=Check Mode §cOn§r
 GT5U.hatch.outputme.checkMode.false=Check Mode §aOff§r
-GT5U.hatch.outputme.checkMode.desc=NOTE: Simulates insertion into the internal cell during recipe checks, limiting parallel by cell space. (requires a cell to work, increases recipe calculation cost)
+GT5U.hatch.outputme.checkMode.desc=NOTE: Check Mode caps parallelism based on available space during recipe checks (increases recipe calculation cost, especially without equal distribution card).
 GT5U.hatch.outputme.cacheMode.true=Cache Mode §cOn§r
 GT5U.hatch.outputme.cacheMode.false=Cache Mode §aOff§r
 GT5U.hatch.outputme.cacheMode.desc=Stores to the internal cell instead of to the ME Network.
@@ -7565,6 +7566,13 @@ GT5U.infodata.fusion.req=EU Required: §c%s§rEU/t
 GT5U.infodata.fusion.plasma=Plasma Output: §e%s§rL/t
 GT5U.infodata.naquadah_refinery.coil_tier=Coil Tier: %s
 
+GT5U.infodata.turbine.output=%s: %s EU/t
+GT5U.infodata.turbine.efficiency=Current Speed: %s %%
+GT5U.infodata.turbine.flow=Optimal Flow: %s L/%s (%s)
+GT5U.infodata.turbine.fuel=Fuel Remaining: %s L
+GT5U.infodata.turbine.dmg=Turbine Damage: %s %%
+GT5U.infodata.turbine.pollution=Pollution reduced to: %s %%
+
 GT5U.infodata.large_fluid_extractor.max_parallels=Max Parallels: %s%d%s
 GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Heating Coil Speed Bonus: +%s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Total Speed Multiplier: %s%.0f%s %%
@@ -9121,7 +9129,7 @@ GT5U.chat.bec-connected-assembler=Successfully connected to the Observation Arra
 GT5U.chat.bec-no-connect-assembler=Could not connect to the Observation Array
 
 # BEC Waila
-GT5U.chat.bec-processing-speed=Processing Speed: x%s
+GT5U.chat.bec-processing-speed=Processing Speed: %s points per tick
 GT5U.chat.bec-slowdowns=Slowdowns: %s
 
 # Test Factory Machines

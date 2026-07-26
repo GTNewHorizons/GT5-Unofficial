@@ -87,21 +87,21 @@ public class HatchElementBuilder<T> {
                 e -> e.getDescriptionLangKeys()
                     .stream())
             .collect(Collectors.toList());
-        List<? extends Class<? extends IMetaTileEntity>> mteClasses = Arrays.stream(elements)
-            .map(IHatchElement::mteClasses)
-            .flatMap(Collection::stream)
-            .collect(Collectors.toList());
         return adder(
             Arrays.stream(elements)
                 .map(
                     e -> e.adder()
                         .rebrand())
                 .reduce(IGTHatchAdder::orElse)
-                .get()).hatchItemFilter(obj -> GTStructureUtility.filterByMTEClass(mteClasses))
+                .get()).hatchItemFilter(obj -> is -> {
+                    IMetaTileEntity tile = ItemMachines.getMetaTileEntity(is);
+                    return tile != null && Arrays.stream(elements)
+                        .anyMatch(e -> e.matchesHatch(tile));
+                })
                     .shouldSkip(
                         (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c,
-                            t) -> t != null && mteClasses.stream()
-                                .anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())))
+                            t) -> t != null && Arrays.stream(elements)
+                                .anyMatch(e -> e.matchesHatch(t.getMetaTileEntity())))
                     .cacheHint(
                         () -> Arrays.stream(elements)
                             .map(IHatchElement::getDisplayName)
@@ -161,11 +161,6 @@ public class HatchElementBuilder<T> {
             .flatMap(Collection::stream)
             .collect(Collectors.toList());
 
-        List<Class<? extends IMetaTileEntity>> list = elements.keySet()
-            .stream()
-            .map(IHatchElement::mteClasses)
-            .flatMap(Collection::stream)
-            .collect(Collectors.toList());
         // map cannot be null or empty, so assert Optional isPresent
         return adder(
             elements.keySet()
@@ -174,22 +169,23 @@ public class HatchElementBuilder<T> {
                     e -> e.adder()
                         .rebrand())
                 .reduce(IGTHatchAdder::orElse)
-                .orElseThrow(AssertionError::new))
-                    .hatchItemFilter(
-                        obj -> GTStructureUtility.filterByMTEClassWithBlacklist(
-                            elements.entrySet()
-                                .stream()
-                                .filter(
-                                    entry -> entry.getKey()
-                                        .count(obj)
-                                        < entry.getValue()
-                                            .longValue())
-                                .flatMap(
-                                    entry -> entry.getKey()
-                                        .mteClasses()
-                                        .stream())
-                                .collect(Collectors.toList()),
-                            blacklist))
+                .orElseThrow(AssertionError::new)).hatchItemFilter(obj -> {
+                    List<IHatchElement<? super T>> neededElements = elements.entrySet()
+                        .stream()
+                        .filter(
+                            entry -> entry.getKey()
+                                .count(obj)
+                                < entry.getValue()
+                                    .longValue())
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toList());
+                    return is -> {
+                        IMetaTileEntity tile = ItemMachines.getMetaTileEntity(is);
+                        return tile != null && !blacklist.contains(tile.getClass())
+                            && neededElements.stream()
+                                .anyMatch(e -> e.matchesHatch(tile));
+                    };
+                })
                     .shouldReject(
                         obj -> elements.entrySet()
                             .stream()
@@ -200,8 +196,9 @@ public class HatchElementBuilder<T> {
                                         .longValue()))
                     .shouldSkip(
                         (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c,
-                            t) -> t != null && list.stream()
-                                .anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())))
+                            t) -> t != null && elements.keySet()
+                                .stream()
+                                .anyMatch(e -> e.matchesHatch(t.getMetaTileEntity())))
                     .cacheHint(
                         () -> elements.keySet()
                             .stream()

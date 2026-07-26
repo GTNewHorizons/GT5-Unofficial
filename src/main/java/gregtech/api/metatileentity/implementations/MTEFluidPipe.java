@@ -309,6 +309,11 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     }
 
     @Override
+    public boolean needsClientTick() {
+        return false;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aTick % 5 == 0) {
