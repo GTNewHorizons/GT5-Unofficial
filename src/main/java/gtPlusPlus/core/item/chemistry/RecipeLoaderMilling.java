@@ -1,6 +1,5 @@
 package gtPlusPlus.core.item.chemistry;
 
-import static bartworks.system.material.WerkstoffLoader.PTMetallicPowder;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -94,8 +93,8 @@ public class RecipeLoaderMilling {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                PTMetallicPowder.get(OrePrefixes.dust, 64),
-                PTMetallicPowder.get(OrePrefixes.dust, 64),
+                MU.stack(OrePrefixes.dust, Materials2Materials.PlatinumMetallicPowder, 64),
+                MU.stack(OrePrefixes.dust, Materials2Materials.PlatinumMetallicPowder, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Rhodium, Materials2Shapes.dust, 60),
                 MaterialLibAPI.getStack(Materials2Materials.Selenium, Materials2Shapes.dust, 40),
                 MaterialLibAPI.getStack(Materials2Materials.Tellurium, Materials2Shapes.dust, (int) (10)))

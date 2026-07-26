@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -56,7 +55,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.OilDrill4.get(1),
                 TieredItems.ZPM.getPipeLarge(8),
-                GGMaterial.incoloy903.get(OrePrefixes.gearGt, 32),
+                MU.stack(OrePrefixes.gearGt, Materials2Materials.Incoloy903, 32),
                 MaterialLibAPI
                     .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.plateDense, (int) (16)),
                 ItemList.Field_Generator_IV.get(1))

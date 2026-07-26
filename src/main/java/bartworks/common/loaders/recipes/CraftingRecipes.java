@@ -395,7 +395,7 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Materials.Naquadah, 1L), 'C',
                 OrePrefixes.circuit.oreDictName(Circuits.LuV.materialName()), 'F', ItemList.Field_Generator_LuV.get(1L),
                 'E', ItemList.Emitter_LuV.get(1L), 'S', ItemList.Sensor_LuV.get(1L), 'P',
-                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.plate, 1), });
+                MU.stack(OrePrefixes.plate, Materials2Materials.RhodiumPlatedPalladium, 1), });
 
         GTModHandler.addCraftingRecipe(
             ItemRegistry.vat.copy(),

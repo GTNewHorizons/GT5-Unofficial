@@ -35,7 +35,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import goodgenerator.blocks.structures.AntimatterStructures;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.MetaTileEntityIDs;
@@ -77,10 +76,18 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 1),
         MU.molten(Materials2Materials.spatialFluid, 1L),
         MaterialLibAPI.getFluidStack(Materials2Materials.Eternity, Materials2FluidShapes.fluidMolten, 1) };
-    private static final FluidStack[] containmentUpgrades = { GGMaterial.shirabon.getMolten(1),
+    private static final FluidStack[] containmentUpgrades = {
+        MaterialLibAPI.getFluidStack(Materials2Materials.Shirabon, Materials2FluidShapes.fluidMolten, (int) (1)),
         MU.molten(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1L) };
-    private static final FluidStack[] activationUpgrades = { GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),
-        GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1) };
+    private static final FluidStack[] activationUpgrades = {
+        MaterialLibAPI.getFluidStack(
+            Materials2Materials.NaquadahBasedLiquidFuelMkVDepleted,
+            Materials2FluidShapes.fluidLiquid,
+            (int) (1)),
+        MaterialLibAPI.getFluidStack(
+            Materials2Materials.NaquadahBasedLiquidFuelMkVIDepleted,
+            Materials2FluidShapes.fluidLiquid,
+            (int) (1)) };
     private static final FluidStack ZERO_ANTIMATTER = MaterialLibAPI
         .getFluidStack(Materials2Materials.Antimatter, Materials2FluidShapes.fluidLiquid, 0);
 

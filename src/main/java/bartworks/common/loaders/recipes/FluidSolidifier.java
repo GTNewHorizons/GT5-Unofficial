@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -56,7 +55,11 @@ public class FluidSolidifier implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 3))
-            .fluidInputs(WerkstoffLoader.RhodiumPlatedPalladium.getMolten(8 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.RhodiumPlatedPalladium,
+                    Materials2FluidShapes.fluidMolten,
+                    (int) (8 * INGOTS)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(fluidSolidifierRecipes);

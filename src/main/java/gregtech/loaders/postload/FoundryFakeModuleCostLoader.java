@@ -4,12 +4,12 @@ import static gregtech.api.util.GTRecipeConstants.FOUNDRY_MODULE;
 
 import net.minecraft.item.ItemStack;
 
-import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -32,9 +32,9 @@ public class FoundryFakeModuleCostLoader {
                 ItemList.Casing_Fluid_Solidifier.get(64),
                 ItemList.Primary_Casing_ExoFoundry.get(36),
                 ItemList.Radiator_Fluid_Solidifier.get(32),
-                GGMaterial.preciousMetalAlloy.get(OrePrefixes.blockCasing, 8),
-                GGMaterial.preciousMetalAlloy.get(OrePrefixes.blockCasingAdvanced, 4),
-                GGMaterial.preciousMetalAlloy.get(OrePrefixes.sheetmetal, 8),
+                MU.stack(OrePrefixes.blockCasing, Materials2Materials.PreciousMetalsAlloy, 8),
+                MU.stack(OrePrefixes.blockCasingAdvanced, Materials2Materials.PreciousMetalsAlloy, 4),
+                MU.stack(OrePrefixes.sheetmetal, Materials2Materials.PreciousMetalsAlloy, 8),
                 GTOreDictUnificator.get(OrePrefixes.sheetmetal, Materials2Materials.Erbium, 8),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Erbium, 28))
             .itemOutputs(ItemList.Extra_Casting_Basins_ExoFoundry.get(1))

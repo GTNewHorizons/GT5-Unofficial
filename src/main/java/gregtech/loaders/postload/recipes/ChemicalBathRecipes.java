@@ -19,7 +19,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -29,6 +28,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -393,7 +393,7 @@ public class ChemicalBathRecipes implements Runnable {
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.CubicZirconia.get(OrePrefixes.gemExquisite, 1))
+            .itemInputs(MU.stack(OrePrefixes.gemExquisite, Materials2Materials.CubicZirconia, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Firestone, Materials2Shapes.gem, (int) (1)))
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 250))
             .duration(2 * SECONDS)

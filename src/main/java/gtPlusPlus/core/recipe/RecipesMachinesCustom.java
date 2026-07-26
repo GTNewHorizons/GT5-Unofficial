@@ -19,8 +19,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
@@ -238,11 +236,15 @@ public class RecipesMachinesCustom {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.SC_Turbine_Casing.get(1),
-                GGMaterial.lumiium.get(OrePrefixes.plate, 4),
-                GGMaterial.lumiium.get(OrePrefixes.screw, 8))
+                MU.stack(OrePrefixes.plate, Materials2Materials.Lumiium, 4),
+                MU.stack(OrePrefixes.screw, Materials2Materials.Lumiium, 8))
             .circuit(18)
             .itemOutputs(GregtechItemList.Casing_Turbine_SC.get(1))
-            .fluidInputs(GGMaterial.adamantiumAlloy.getMolten(2 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.AdamantiumAlloy,
+                    Materials2FluidShapes.fluidMolten,
+                    (int) (2 * INGOTS)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -251,13 +253,15 @@ public class RecipesMachinesCustom {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.SCSteamTurbine.get(1),
-                GGMaterial.dalisenite.get(OrePrefixes.plate, 8),
-                GGMaterial.dalisenite.get(OrePrefixes.screw, 16),
-                GGMaterial.dalisenite.get(OrePrefixes.gearGt, 4),
+                MU.stack(OrePrefixes.plate, Materials2Materials.Dalisenite, 8),
+                MU.stack(OrePrefixes.screw, Materials2Materials.Dalisenite, 16),
+                MU.stack(OrePrefixes.gearGt, Materials2Materials.Dalisenite, 4),
                 Circuits.ZPM.get(8))
             .circuit(18)
             .itemOutputs(ItemList.SCSteamTurbineXL.get(1))
-            .fluidInputs(GGMaterial.hikarium.getMolten(8 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Hikarium, Materials2FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -668,8 +672,9 @@ public class RecipesMachinesCustom {
             GregtechItemList.Nuclear_Salt_Processing_Plant.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "ABA", "CDC", "AEA", 'A', OrePrefixes.plate.ingredient(Materials2Materials.Osmiridium), 'B',
-                GregtechItemList.ReactorProcessingUnit_IV, 'C', WerkstoffLoader.Ruridit.get(OrePrefixes.plate), 'D',
-                "circuitUltimate", 'E', GregtechItemList.ColdTrap_IV });
+                GregtechItemList.ReactorProcessingUnit_IV, 'C',
+                MU.stack(OrePrefixes.plate, Materials2Materials.Ruridit, 1), 'D', "circuitUltimate", 'E',
+                GregtechItemList.ColdTrap_IV });
     }
 
     private static void cyclotron() {
@@ -804,7 +809,9 @@ public class RecipesMachinesCustom {
                 Circuits.UV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Markers.SuperconductorUV, 2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_MAX.get(1))
-            .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(500))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (500)))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);

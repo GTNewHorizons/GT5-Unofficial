@@ -23,11 +23,11 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class BeamlineRecipeLoader {
 
@@ -60,7 +60,8 @@ public class BeamlineRecipeLoader {
             MaterialLibAPI.getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 1)
                 .getFluid()
                 .getName(),
-            WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(1_000)
+            MaterialLibAPI
+                .getFluidStack(Materials2Materials.HotSuperCoolant, Materials2FluidShapes.fluidLiquid, (int) (1_000))
                 .getFluid());
 
         /*
@@ -81,7 +82,7 @@ public class BeamlineRecipeLoader {
             .addTo(sourceChamberRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.stickLong, 1))
+            .itemInputs(MU.stack(OrePrefixes.stickLong, Materials2Materials.LanthanumHexaboride, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -130,7 +131,7 @@ public class BeamlineRecipeLoader {
          */
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.dust, 1))
-            .itemOutputs(WerkstoffMaterialPool.Thorium234.get(OrePrefixes.dust, 1))
+            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.Thorium234, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -254,7 +255,7 @@ public class BeamlineRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 focusItem,
-                WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
+                MU.stack(OrePrefixes.gemExquisite, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
             .itemOutputs(GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC.get(1)))
             .metadata(
                 TARGET_CHAMBER_METADATA,
@@ -272,7 +273,7 @@ public class BeamlineRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 focusItem,
-                WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
+                MU.stack(OrePrefixes.gemExquisite, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
             .itemOutputs(GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC2.get(1)))
             .metadata(
                 TARGET_CHAMBER_METADATA,
@@ -292,7 +293,7 @@ public class BeamlineRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 focusItem,
-                WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
+                MU.stack(OrePrefixes.gemExquisite, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
             .itemOutputs(GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC2.get(1)))
             .metadata(
                 TARGET_CHAMBER_METADATA,

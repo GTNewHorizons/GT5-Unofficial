@@ -14,13 +14,13 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTRecipeBuilder;
 import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
@@ -34,9 +34,9 @@ public class Centrifuge implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (1)),
-                WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
-                WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
-                WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1))
+                MU.stack(OrePrefixes.dust, Materials2Materials.Thorium232, 1),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Thorium232, 1),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Thorium232, 1))
             .outputChances(800, 375, 22, 22, 5)
             .duration(8 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_EV)

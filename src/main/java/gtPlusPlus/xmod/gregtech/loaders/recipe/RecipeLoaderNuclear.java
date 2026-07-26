@@ -26,7 +26,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -67,7 +66,7 @@ public class RecipeLoaderNuclear {
 
     private static void autoclave() {
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1))
+            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 1))
             .itemOutputs(GregtechItemList.ZirconiumPellet.get(1))
             .fluidInputs(
                 MaterialLibAPI
@@ -103,9 +102,9 @@ public class RecipeLoaderNuclear {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.dust, (int) (12)))
             .itemOutputs(
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 3),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 4),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 5))
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 3),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 4),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 5))
             .outputChances(90_00, 60_00, 30_00)
             .fluidInputs(
                 MaterialLibAPI
@@ -117,7 +116,7 @@ public class RecipeLoaderNuclear {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Rutile, Materials2Shapes.dust, (int) (5)))
             .itemOutputs(
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 3),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Hafnium, Materials2Shapes.dust, 1))
             .outputChances(90_00, 30_00, 10_00)
@@ -410,7 +409,7 @@ public class RecipeLoaderNuclear {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Bauxite, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Rutile, Materials2Shapes.dustSmall, (int) (1)),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.nugget, 1))
+                MU.stack(OrePrefixes.nugget, Materials2Materials.Zirconium, 1))
             .outputChances(100_00, 25_00, 40_00)
             .duration(20 * SECONDS)
             .eut(24)
@@ -626,8 +625,8 @@ public class RecipeLoaderNuclear {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.CastIron, Materials2Shapes.dust, (int) (1)),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 1),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Hafnium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Hafnium, Materials2Shapes.dust, 1))
             .outputChances(50_00, 2_78, 10_00, 10_00, 3_00, 3_00)
@@ -640,10 +639,10 @@ public class RecipeLoaderNuclear {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Zinc, Materials2Shapes.dust, (int) (1)),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1))
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 1),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 1),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 1),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 1))
             .outputChances(100_00, 5_56, 15_00, 10_00, 5_00, 5_00)
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -655,10 +654,10 @@ public class RecipeLoaderNuclear {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Cassiterite, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.dust, (int) (1)),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1))
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 1),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 1),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 1),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 1))
             .outputChances(100_00, 5_56, 15_00, 10_00, 5_00, 5_00)
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)

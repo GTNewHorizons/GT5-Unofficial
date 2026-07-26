@@ -10,7 +10,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -98,11 +97,16 @@ public class SpacePumpingRecipes {
             Pair.of(5, 5),
             MaterialLibAPI
                 .getFluidStack(Materials2Materials.LiquidOxygen, Materials2FluidShapes.fluidGas, (int) (896_000)));
-        RECIPES.put(Pair.of(5, 6), WerkstoffLoader.Neon.getFluidOrGas(32_000));
+        RECIPES.put(
+            Pair.of(5, 6),
+            MaterialLibAPI.getFluidStack(Materials2Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (32_000)));
         RECIPES.put(
             Pair.of(5, 7),
             MaterialLibAPI.getFluidStack(Materials2Materials.Argon, Materials2FluidShapes.fluidGas, (int) (32_000)));
-        RECIPES.put(Pair.of(5, 8), WerkstoffLoader.Krypton.getFluidOrGas(8_000));
+        RECIPES.put(
+            Pair.of(5, 8),
+            MaterialLibAPI
+                .getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (8_000)));
         RECIPES.put(
             Pair.of(5, 9),
             MaterialLibAPI
@@ -127,7 +131,9 @@ public class SpacePumpingRecipes {
         RECIPES.put(
             Pair.of(6, 3),
             MaterialLibAPI.getFluidStack(Materials2Materials.Ammonia, Materials2FluidShapes.fluidGas, (int) (240_000)));
-        RECIPES.put(Pair.of(6, 4), WerkstoffLoader.Xenon.getFluidOrGas(16_000));
+        RECIPES.put(
+            Pair.of(6, 4),
+            MaterialLibAPI.getFluidStack(Materials2Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (16_000)));
         RECIPES.put(
             Pair.of(6, 5),
             MaterialLibAPI

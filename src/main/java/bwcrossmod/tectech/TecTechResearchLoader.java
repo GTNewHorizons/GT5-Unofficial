@@ -21,7 +21,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -48,7 +47,8 @@ public class TecTechResearchLoader {
                 ItemList.Electric_Motor_ZPM.get(9L), ItemList.Sensor_ZPM.get(9L), ItemList.Field_Generator_ZPM.get(9L),
                 MaterialLibAPI.getStack(Materials2Materials.BlackPlutonium, Materials2Shapes.screw, (int) (36)) },
             new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS),
-                WerkstoffLoader.Krypton.getFluidOrGas(20_000) },
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (20_000)) },
             ItemRegistry.voidminer[1].copy(),
             2 * MINUTES,
             (int) TierEU.RECIPE_ZPM);
@@ -66,7 +66,8 @@ public class TecTechResearchLoader {
                 ItemList.Electric_Motor_UV.get(9L), ItemList.Sensor_UV.get(9L), ItemList.Field_Generator_UV.get(9L),
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.screw, (int) (36)) },
             new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS),
-                WerkstoffLoader.Oganesson.getFluidOrGas(20_000) },
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Oganesson, Materials2FluidShapes.fluidLiquid, (int) (20_000)) },
             ItemRegistry.voidminer[2].copy(),
             2 * MINUTES,
             (int) TierEU.RECIPE_UV);

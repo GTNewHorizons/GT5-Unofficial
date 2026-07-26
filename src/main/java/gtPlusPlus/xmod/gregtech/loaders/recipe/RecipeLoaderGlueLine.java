@@ -23,7 +23,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
@@ -194,7 +193,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.CalciumCarbonateDust.get(5))
             .circuit(8)
-            .itemOutputs(WerkstoffLoader.CalciumChloride.get(OrePrefixes.dust, 3))
+            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.CalciumChloride, 3))
             .fluidInputs(MU.fluid(Materials2Materials.HydrochloricAcidGT5U, 2_000))
             .fluidOutputs(
                 MaterialLibAPI

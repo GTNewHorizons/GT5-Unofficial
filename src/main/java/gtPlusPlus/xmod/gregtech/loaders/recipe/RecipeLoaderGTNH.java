@@ -14,7 +14,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
@@ -79,7 +78,7 @@ public class RecipeLoaderGTNH {
                     Materials2Materials.Manganese,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)),
-                WerkstoffLoader.Neon.getFluidOrGas(500))
+                MaterialLibAPI.getFluidStack(Materials2Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (500)))
             .fluidOutputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Bromine), 1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(196608)

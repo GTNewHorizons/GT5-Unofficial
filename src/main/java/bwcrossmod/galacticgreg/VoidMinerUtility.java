@@ -16,14 +16,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.common.configs.Configuration;
-import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.DiscreteDistribution;
@@ -37,9 +39,11 @@ import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 
 public class VoidMinerUtility {
 
-    public static final FluidStack[] NOBLE_GASSES = { WerkstoffLoader.Neon.getFluidOrGas(1),
-        WerkstoffLoader.Krypton.getFluidOrGas(1), WerkstoffLoader.Xenon.getFluidOrGas(1),
-        WerkstoffLoader.Oganesson.getFluidOrGas(1) };
+    public static final FluidStack[] NOBLE_GASSES = {
+        MaterialLibAPI.getFluidStack(Materials2Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (1)),
+        MaterialLibAPI.getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (1)),
+        MaterialLibAPI.getFluidStack(Materials2Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (1)),
+        MaterialLibAPI.getFluidStack(Materials2Materials.Oganesson, Materials2FluidShapes.fluidLiquid, (int) (1)) };
     public static final int[] NOBLE_GASSES_MULTIPLIER = { 4, 8, 16, 64 };
 
     public static class DropMap {

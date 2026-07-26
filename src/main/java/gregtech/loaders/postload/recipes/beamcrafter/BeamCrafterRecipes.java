@@ -25,8 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -225,7 +223,8 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Quark_Catalyst_Housing.get(1))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Down.get(1))
-            .fluidInputs(WerkstoffLoader.Neon.getFluidOrGas(1000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials2Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (1000)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -258,7 +257,9 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Quark_Catalyst_Housing.get(1))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Strange.get(1))
-            .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(1000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (1000)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -274,7 +275,9 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Quark_Catalyst_Housing.get(1))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Bottom.get(1))
-            .fluidInputs(WerkstoffLoader.Xenon.getFluidOrGas(1000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (1000)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -324,7 +327,8 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.StableEmptyContainmentUnit.get(1))
             .itemOutputs(ItemList.StableLeptonContainmentUnit.get(1))
-            .fluidInputs(WerkstoffLoader.Neon.getFluidOrGas(100))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials2Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (100)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -357,7 +361,9 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.StableEmptyContainmentUnit.get(1))
             .itemOutputs(ItemList.StableBosonContainmentUnit.get(1))
-            .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(100))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (100)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -386,8 +392,16 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(GGMaterial.plutoniumBasedLiquidFuel.getFluidOrGas(1000))
-            .fluidOutputs(GGMaterial.plutoniumBasedLiquidFuelExcited.getFluidOrGas(1000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.PlutoniumBasedLiquidFuel,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1000)))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.PlutoniumBasedLiquidFuelExcitedState,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (1000)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()

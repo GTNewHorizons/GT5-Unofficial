@@ -22,7 +22,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
@@ -34,7 +33,6 @@ import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 
 public class AcidRecipes {
 
@@ -44,7 +42,11 @@ public class AcidRecipes {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (4)),
                 MaterialLibAPI.getStack(Materials2Materials.Chromiumtrioxide, Materials2Shapes.dust, (int) (2)))
-            .fluidInputs(WerkstoffLoader.AmmoniumChloride.getFluidOrGas(2000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.AmmoniumChloride,
+                    Materials2FluidShapes.fluidLiquid,
+                    (int) (2000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.ThoriumElutionAdsorbent,
@@ -125,7 +127,7 @@ public class AcidRecipes {
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.Bismuthinit.get(OrePrefixes.crushed, 5))
+            .itemInputs(MU.stack(OrePrefixes.crushed, Materials2Materials.Bismuthinite, 5))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.PhosphorusChlorineMixture,
@@ -217,12 +219,14 @@ public class AcidRecipes {
                     .getFluidStack(Materials2Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, (int) (6700)),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Mercury, Materials2FluidShapes.fluidLiquid, (int) (5000)),
-                BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(3000),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Phosgene, Materials2FluidShapes.fluidLiquid, (int) (3000)),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.UltraContaminatedGas,
                     Materials2FluidShapes.fluidGas,
                     (int) (2000)),
-                WerkstoffLoader.Krypton.getFluidOrGas(1500))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (1500)))
             .eut(TierEU.RECIPE_EV)
             .duration(20 * SECONDS)
             .addTo(distillationTowerRecipes);

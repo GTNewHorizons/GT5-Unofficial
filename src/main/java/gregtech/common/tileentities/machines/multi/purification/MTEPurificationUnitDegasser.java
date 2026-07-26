@@ -38,7 +38,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -118,8 +117,9 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     // Supplier because werkstoff loads later than multiblock controllers... fml
     private static final Supplier<FluidStack[]> INERT_GASES = () -> new FluidStack[] {
         MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (10_000)),
-        WerkstoffLoader.Neon.getFluidOrGas(7_500), WerkstoffLoader.Krypton.getFluidOrGas(5_000),
-        WerkstoffLoader.Xenon.getFluidOrGas(2_500) };
+        MaterialLibAPI.getFluidStack(Materials2Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (7_500)),
+        MaterialLibAPI.getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (5_000)),
+        MaterialLibAPI.getFluidStack(Materials2Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (2_500)) };
 
     private static final class SuperconductorMaterial {
 

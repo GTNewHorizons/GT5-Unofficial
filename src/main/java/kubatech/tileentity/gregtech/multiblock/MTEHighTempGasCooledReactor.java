@@ -55,7 +55,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.items.SimpleSubItemClass;
-import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
@@ -1109,14 +1108,14 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         public static final Fuel_[] sHTGR_Fuel = { new Fuel_(
             "Thorium",
             "Thorium",
-            WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 64),
+            MU.stack(OrePrefixes.dust, Materials2Materials.Thorium232, 64),
             MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (4)),
             GTValues.NF,
             new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Lutetium, Materials2Shapes.dust, (int) (1)),
-                WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1) },
+                MU.stack(OrePrefixes.dust, Materials2Materials.Thorium232, 1) },
             new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 9900 / 4, 162 / 4 },
             "Multiplies coolant by 1"),
             new Fuel_(

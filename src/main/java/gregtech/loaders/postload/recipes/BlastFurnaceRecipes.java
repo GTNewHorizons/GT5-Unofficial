@@ -17,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.WerkstoffLoader;
-import goodgenerator.items.GGMaterial;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -972,7 +971,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(
                 ItemList.Phononic_Seed_Crystal.get(2),
                 MaterialLibAPI.getStack(Materials2Materials.Eternity, Materials2Shapes.dust, (int) (8)),
-                GGMaterial.shirabon.get(OrePrefixes.dust, 8))
+                MU.stack(OrePrefixes.dust, Materials2Materials.Shirabon, 8))
             .circuit(2)
             .fluidInputs(
                 MaterialLibAPI

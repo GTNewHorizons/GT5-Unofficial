@@ -98,6 +98,7 @@ import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.MU;
@@ -708,7 +709,8 @@ public class WerkstoffLoader {
                         .forEach(od -> OreDictionary.registerOre(od + s, werkstoff.get(od))));
         }
 
-        GTOreDictUnificator.registerOre("craftingIndustrialDiamond", WerkstoffLoader.CubicZirconia.get(gemExquisite));
+        GTOreDictUnificator
+            .registerOre("craftingIndustrialDiamond", MU.stack(gemExquisite, Materials2Materials.CubicZirconia, 1));
         BWOreAdapter.INSTANCE.registerOredict();
     }
 

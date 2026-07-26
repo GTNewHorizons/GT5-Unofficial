@@ -7753,7 +7753,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                WerkstoffLoader.CalciumChloride.get(OrePrefixes.dust, 1),
+                MU.stack(OrePrefixes.dust, Materials2Materials.CalciumChloride, 1),
                 MaterialLibAPI.getStack(Materials2Materials.pPhenylenediamine, Materials2Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials2Materials.TerephthaloylChloride, Materials2Shapes.dust, 9))
             .circuit(1)
@@ -7773,7 +7773,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                WerkstoffLoader.CalciumChloride.get(OrePrefixes.dust, 7),
+                MU.stack(OrePrefixes.dust, Materials2Materials.CalciumChloride, 7),
                 MaterialLibAPI.getStack(Materials2Materials.pPhenylenediamine, Materials2Shapes.dust, 63),
                 MaterialLibAPI.getStack(Materials2Materials.TerephthaloylChloride, Materials2Shapes.dust, 63))
             .circuit(9)
@@ -7896,7 +7896,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(
                 GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Magmatter, 1)),
                 MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.gem, 3),
-                WerkstoffLoader.Bismutite.get(OrePrefixes.gemFlawed, 64),
+                MU.stack(OrePrefixes.gemFlawed, Materials2Materials.Bismutite, 64),
                 MaterialLibAPI.getStack(Materials2Materials.GarnetYellow, Materials2Shapes.gemFlawed, 64),
                 MaterialLibAPI.getStack(Materials2Materials.GreenSapphire, Materials2Shapes.gemFlawed, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Olivine, Materials2Shapes.gemFlawed, 64))
