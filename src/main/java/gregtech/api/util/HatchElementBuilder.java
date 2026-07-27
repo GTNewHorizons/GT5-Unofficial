@@ -26,8 +26,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -38,7 +36,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
-import blockrenderer6343.api.utils.CreativeItemSource;
 import gnu.trove.TIntCollection;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.hash.TIntHashSet;
@@ -577,18 +574,15 @@ public class HatchElementBuilder<T> {
                 if (t instanceof IMetaTileEntity metaTile) {
                     player = GTUtility.getFakePlayer(metaTile.getBaseMetaTileEntity());
                 }
-                if (player == null && world instanceof WorldServer) {
-                    try {
-                        player = FakePlayerFactory.getMinecraft((WorldServer) world);
-                    } catch (Exception e) {
-                        return false;
-                    }
-                }
+                if (player == null) return false;
 
                 AutoPlaceEnvironment env = AutoPlaceEnvironment
-                    .fromLegacy(CreativeItemSource.instance, player, chat -> {});
+                    .fromLegacy(GTCreativeHatchSource.instance, player, chat -> {});
                 PlaceResult result = survivalPlaceBlock(t, world, x, y, z, trigger, env);
-                return result == PlaceResult.ACCEPT || result == PlaceResult.ACCEPT_STOP;
+                if (result != PlaceResult.SKIP) {
+                    check(t, world, x, y, z);
+                }
+                return result == PlaceResult.ACCEPT || result == PlaceResult.ACCEPT_STOP || result == PlaceResult.SKIP;
             }
 
             @Override
@@ -663,7 +657,8 @@ public class HatchElementBuilder<T> {
                 if (env.getAPILevel() == AutoPlaceEnvironment.APILevel.Legacy) {
                     // a legacy decorator isn't passing down necessary information
                     // in that case, we just assume all facing is allowed
-                    allowed.addAll(Arrays.asList(ForgeDirection.VALID_DIRECTIONS));
+                    // we use the default of the block placing direction, skip the rotation by using empty list.
+                    // allowed.addAll(Arrays.asList(ForgeDirection.VALID_DIRECTIONS));
                 } else {
                     for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
                         // as noted on getWorldDirection Y axis should be flipped before use

@@ -599,6 +599,11 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
         if (aStack == null) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_nanite"));
+            // For NEI preview
+            if (checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1, null)) return;
+            clearHatches();
+            checkPiece(STRUCTURE_PIECE_TIER4_BASE, 20, 33, 0, null);
+            checkPiece(STRUCTURE_PIECE_TIER4_RENDER, 20, 50, 0, null);
             return;
         }
 
