@@ -109,9 +109,16 @@ public final class LegacyHelperParity {
         for (String key : KEYS) mismatches.put(key, new ArrayList<>());
 
         Map<Materials, Material> pairs = buildPairs(mismatches);
+        Set<String> alreadyLive = new LinkedHashSet<>();
         for (Map.Entry<Materials, Material> entry : pairs.entrySet()) {
             Materials legacy = entry.getKey();
             Material ml = entry.getValue();
+            // A material whose legacyMaterialOf does not yield its facade never reaches the legacy arm, so the ML
+            // tail is what MU already returns and the facade's own answer is not a deletion risk.
+            if (MU.legacyMaterialOf(ml) != legacy) {
+                alreadyLive.add(MU.internalName(ml));
+                continue;
+            }
             checkLocalizedNameKey(mismatches, legacy, ml);
             checkLocalizedName(mismatches, legacy, ml);
             checkTextureSet(mismatches, legacy, ml);
@@ -131,7 +138,7 @@ public final class LegacyHelperParity {
         checkOldSubIdInDomain(mismatches);
         checkNameDomainDiff(mismatches);
 
-        write(mismatches, disabledHotIngotNames);
+        write(mismatches, disabledHotIngotNames, alreadyLive);
         log(mismatches);
     }
 
@@ -578,7 +585,7 @@ public final class LegacyHelperParity {
     }
 
     private static void write(Map<String, List<Map<String, Object>>> mismatches,
-        Map<String, String> disabledHotIngotNames) {
+        Map<String, String> disabledHotIngotNames, Set<String> alreadyLive) {
         Map<String, Integer> summary = new LinkedHashMap<>();
         for (Map.Entry<String, List<Map<String, Object>>> entry : mismatches.entrySet()) {
             summary.put(
@@ -591,6 +598,7 @@ public final class LegacyHelperParity {
         root.put("summary", summary);
         root.put("mismatches", mismatches);
         root.put("disabledHotIngotNames", disabledHotIngotNames);
+        root.put("alreadyLiveMaterials", alreadyLive);
 
         File directory = new File(Launch.minecraftHome, "material-dump");
         directory.mkdirs();

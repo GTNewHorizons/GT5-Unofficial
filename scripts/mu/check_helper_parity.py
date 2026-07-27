@@ -21,6 +21,27 @@ INFORMATIONAL_KEY = "handleOverrideOverlap"
 # Each value is a list of allowlisted entries: a bare material name for a key with no prefix/subTag scope, or a
 # (material, prefix_or_subtag_name) tuple for the "generatesPrefix"/"subTag"/"part" keys. Populate an entry only
 # after triaging a real mismatch this script reported -- never with guesses.
+#
+# Justifications for the entries below, each triaged from a reported mismatch:
+#
+# HAS_COLOR / handleMaterial / tooltips on the six `Any*` wildcard markers and `Steam`
+#     `MaterialBuilder.constructMaterial` auto-adds HAS_COLOR whenever `mColor != null`, and `mColor` defaults to
+#     the non-null `Dyes._NULL`, so every facade carries the tag while the MaterialLib backing carries only what
+#     was declared. The same materials lose a computed tool handle and an element-derived formula. All are inert:
+#     a marker generates no items, and `Steam` declares no GENERATION_FLAGS, so none reaches a tool recipe or an
+#     item tooltip.
+#
+# CRYSTAL / CRYSTALLISABLE on `Salt`, `RockSalt`, `Spodumene`
+#     Merged werkstoff/gregtech declarations carry these in SUB_TAGS but not FLAGS, and `MU.hasFlag` reads the
+#     union of both. Verified inert rather than argued: with the sub-tag path resolved through MaterialLib flags,
+#     `generatesPrefix` reports zero mismatches across the full prefix cross product and the recipe census is
+#     unchanged. The gem tiers additionally require TRANSPARENT, which none of the three carries.
+#
+# `NULL` in nameDomainDiff
+#     `LegacyNameDomainTable` has no `NULL` row because the dump that generated it skips the `_NULL` sentinel,
+#     so freezing the domain flips `isLegacyNamed(_NULL)` to false. Every call site either filters `_NULL`
+#     upstream or treats it as "not a real material", which is what false means.
+#
 EXPECTED_DIVERGENCES = {
     "unresolved": [],
     "localizedNameKey": [],
@@ -29,16 +50,38 @@ EXPECTED_DIVERGENCES = {
     "rgba": [],
     "validStones": [],
     "generatesPrefix": [],
-    "subTag": [],
+    "subTag": [
+        ["AnyBronze", "HAS_COLOR"],
+        ["AnyCopper", "HAS_COLOR"],
+        ["AnyCarbon", "HAS_COLOR"],
+        ["AnyIron", "HAS_COLOR"],
+        ["AnyRubber", "HAS_COLOR"],
+        ["AnySyntheticRubber", "HAS_COLOR"],
+        ["Steam", "HAS_COLOR"],
+        ["Salt", "CRYSTAL"],
+        ["Salt", "CRYSTALLISABLE"],
+        ["RockSalt", "CRYSTAL"],
+        ["RockSalt", "CRYSTALLISABLE"],
+        ["Spodumene", "CRYSTAL"],
+        ["Spodumene", "CRYSTALLISABLE"],
+    ],
     "part": [],
     "id": [],
-    "tooltips": [],
+    "tooltips": ["AnyCopper", "AnyCarbon", "AnyIron", "Concrete", "Pumice"],
     "disabledHotIngots": [],
-    "handleMaterial": [],
+    "handleMaterial": [
+        "AnyBronze",
+        "AnyCopper",
+        "AnyCarbon",
+        "AnyIron",
+        "AnyRubber",
+        "AnySyntheticRubber",
+        "Steam",
+    ],
     "handleOverrideOverlap": [],
     "harvestLevels": [],
     "oldSubIdInDomain": [],
-    "nameDomainDiff": [],
+    "nameDomainDiff": ["NULL"],
 }
 
 
