@@ -30,13 +30,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
+
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.events.OreInteractEvent;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -75,16 +78,18 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     }
 
     public void registerOredict() {
-        Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
+        for (com.ruling_0.materiallib.api.Material material : MaterialLibAPI.getMaterials()) {
+            if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
+            doRegistrationStuff(material);
+        }
     }
 
-    protected void doRegistrationStuff(Werkstoff w) {
-        if (w == null) return;
-        if (!w.hasItemType(OrePrefixes.ore)) return;
+    protected void doRegistrationStuff(com.ruling_0.materiallib.api.Material material) {
+        if (!Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.ore)) return;
 
-        ItemStack self = new ItemStack(this, 1, w.getmID());
+        ItemStack self = new ItemStack(this, 1, Materials2WerkstoffIndex.idOf(material));
 
-        GTOreDictUnificator.registerOre(getPrefix() + w.getVarName(), self);
+        GTOreDictUnificator.registerOre(getPrefix().oreDictName(material), self);
     }
 
     @Override
@@ -115,9 +120,10 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
         if (!isNatural) {
-            for (Werkstoff tMaterial : Werkstoff.werkstoffHashSet) {
-                if (tMaterial != null && tMaterial.hasItemType(OrePrefixes.ore)) {
-                    aList.add(new ItemStack(aItem, 1, tMaterial.getmID()));
+            for (com.ruling_0.materiallib.api.Material material : MaterialLibAPI.getMaterials()) {
+                if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
+                if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.ore)) {
+                    aList.add(new ItemStack(aItem, 1, Materials2WerkstoffIndex.idOf(material)));
                 }
             }
         }
@@ -139,31 +145,6 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
             return BWOreAdapter.INSTANCE
                 .getOreDrops(ThreadLocalRandom.current(), info, doSilktouch, doFortune ? fortune : 0);
         }
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX,
-        float subY, float subZ) {
-        MinecraftForge.EVENT_BUS
-            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
-
-        return false;
-    }
-
-    @Override
-    public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
-        super.onBlockClicked(world, x, y, z, player);
-
-        MinecraftForge.EVENT_BUS
-            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
-    }
-
-    @Override
-    public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
-        super.onBlockHarvested(world, x, y, z, meta, player);
-
-        MinecraftForge.EVENT_BUS
-            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
     }
 
     @Override
@@ -189,15 +170,14 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     @Override
     @Nullable
     public ITexture[][] getTextures(int metadata) {
-        Werkstoff material = Werkstoff.werkstoffHashMap.get((short) metadata);
+        com.ruling_0.materiallib.api.Material material = Materials2WerkstoffIndex.get(metadata);
 
         OrePrefixes prefix = getPrefix();
 
         ITexture oreTexture;
 
         if (material != null) {
-            oreTexture = TextureFactory
-                .of(material.getTexSet().mTextures[prefix.getTextureIndex()], material.getRGBA());
+            oreTexture = TextureFactory.of(MU.iconSet(material).mTextures[prefix.getTextureIndex()], MU.rgba(material));
         } else {
             oreTexture = TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[prefix.getTextureIndex()]);
         }

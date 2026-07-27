@@ -21,9 +21,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import com.ruling_0.materiallib.api.Material;
+
 import bartworks.common.items.BWItemBlocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
@@ -38,9 +42,9 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
         Block block = Block.getBlockFromItem(aStack.getItem());
         if (block instanceof BWMetaGeneratedBlocks metaBlock) {
             int aMetaData = aStack.getItemDamage();
-            Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aMetaData);
-            if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
-            return metaBlock.prefix.getLocalizedNameForItem(werkstoff.getInternalName());
+            Material material = Materials2WerkstoffIndex.get(aMetaData);
+            String internalName = material != null ? MU.internalName(material) : "_NULL";
+            return metaBlock.prefix.getLocalizedNameForItem(internalName);
         }
         return GTLanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".name");
     }
@@ -54,9 +58,9 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
         if (aList == null) {
             aList = new ArrayList<>();
         }
-        Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage());
-        if (werkstoff != null) {
-            werkstoff.addTooltips(aList);
+        Material material = Materials2WerkstoffIndex.get(aStack.getItemDamage());
+        if (material != null) {
+            MU.addTooltipsOf(material, aList);
         }
     }
 

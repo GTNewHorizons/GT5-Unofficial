@@ -12,7 +12,6 @@ import net.minecraft.util.StatCollector;
 
 import com.ruling_0.materiallib.api.Material;
 
-import bartworks.system.material.Werkstoff;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.interfaces.IStoneCategory;
@@ -107,22 +106,6 @@ public class OreMixBuilder {
     public OreMixBuilder sporadic(Material sporadic) {
         this.sporadic = sporadic;
         return this;
-    }
-
-    public OreMixBuilder primary(Werkstoff primary) {
-        return primary(SmallOreBuilder.requireMaterialLib(primary));
-    }
-
-    public OreMixBuilder secondary(Werkstoff secondary) {
-        return secondary(SmallOreBuilder.requireMaterialLib(secondary));
-    }
-
-    public OreMixBuilder inBetween(Werkstoff between) {
-        return inBetween(SmallOreBuilder.requireMaterialLib(between));
-    }
-
-    public OreMixBuilder sporadic(Werkstoff sporadic) {
-        return sporadic(SmallOreBuilder.requireMaterialLib(sporadic));
     }
 
     public OreMixBuilder stoneCategory(IStoneCategory... stoneCategories) {
