@@ -7,7 +7,6 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
 
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;

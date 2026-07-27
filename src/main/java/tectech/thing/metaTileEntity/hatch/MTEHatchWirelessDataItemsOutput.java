@@ -26,7 +26,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
-import gregtech.api.util.GTUtility;
 import gregtech.common.misc.WirelessNetworkManager;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
