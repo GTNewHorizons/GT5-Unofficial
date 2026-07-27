@@ -8,6 +8,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
+import static gregtech.api.GregTechAPI.sBlockBoltedBW;
+import static gregtech.api.GregTechAPI.sBlockReboltedBW;
 import static gregtech.api.GregTechAPI.sBlockSheetmetalBW;
 import static gregtech.api.GregTechAPI.sBlockSheetmetalGT;
 import static gregtech.api.util.GTUtility.isFlowingWater;
@@ -237,6 +239,42 @@ public class GTStructureUtility {
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI
                     .hintParticleTinted(world, x, y, z, sBlockSheetmetalBW, werkstoff.getmID(), werkstoff.getRGBA());
+                return true;
+            }
+        };
+    }
+
+    public static <T> IStructureElement<T> ofBoltedCasing(Werkstoff werkstoff) {
+        if (werkstoff == null) throw new IllegalArgumentException("werkstoff for bolted casing can not be null!");
+        return new ProxyStructureElement<>(ofBlock(sBlockBoltedBW, werkstoff.getmID())) {
+
+            @Override
+            public @Nullable List<String> getDescription(T context) {
+                return Collections.singletonList(OrePrefixes.blockCasing.getLocalizedNameForItem(werkstoff));
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI
+                    .hintParticleTinted(world, x, y, z, sBlockBoltedBW, werkstoff.getmID(), werkstoff.getRGBA());
+                return true;
+            }
+        };
+    }
+
+    public static <T> IStructureElement<T> ofReboltedCasing(Werkstoff werkstoff) {
+        if (werkstoff == null) throw new IllegalArgumentException("werkstoff for rebolted casing can not be null!");
+        return new ProxyStructureElement<>(ofBlock(sBlockReboltedBW, werkstoff.getmID())) {
+
+            @Override
+            public @Nullable List<String> getDescription(T context) {
+                return Collections.singletonList(OrePrefixes.blockCasingAdvanced.getLocalizedNameForItem(werkstoff));
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI
+                    .hintParticleTinted(world, x, y, z, sBlockReboltedBW, werkstoff.getmID(), werkstoff.getRGBA());
                 return true;
             }
         };

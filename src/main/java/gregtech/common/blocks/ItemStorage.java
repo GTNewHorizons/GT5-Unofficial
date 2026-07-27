@@ -52,8 +52,8 @@ public class ItemStorage extends ItemBlock implements IItemFirestoneBurning {
             if (aDamage >= 0 && aDamage < blockMetal.mMats.length) {
                 blockMetal.mMats[aDamage].addTooltips(aList);
             }
-        } else if (this.field_150939_a instanceof BlockSheetMetal sheetMetal) {
-            IOreMaterial material = sheetMetal.materials.get(aDamage);
+        } else if (this.field_150939_a instanceof BlockPrefixMaterial prefixBlock) {
+            IOreMaterial material = prefixBlock.materials.get(aDamage);
             material.addTooltips(aList);
         } else if (this.field_150939_a instanceof BlockDecorativeFrame frame) {
             IOreMaterial material = frame.materials.get(aDamage);

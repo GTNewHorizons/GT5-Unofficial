@@ -12,8 +12,6 @@ GT_LESU_CASING.0.name=LESU корпус
 bw.blockores.01.name=Руда
 bw.blockores.02.name=Маленькая руда
 bw.werkstoffblocks.01.name=Блок
-bw.werkstoffblockscasing.01.name=Заклепочный корпус
-bw.werkstoffblockscasingadvanced.01.name=Переболтованный корпус
 
 GT5U.gui.text.recipe_result.no_imprint=Отсутствует слепок
 GT5U.gui.text.recipe_result.not_enough_length=Мультиблок слишком короткий

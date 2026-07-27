@@ -5,6 +5,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTStructureUtility.ofReboltedCasing;
 import static gtnhintergalactic.recipe.GasSiphonRecipes.calculateEUt;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
@@ -85,10 +86,7 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
                     { " f ", "fcf", " f " }, { " f ", "fcf", " f " }, { " f ", "fcf", " f " },
                     { "b~b", "bcb", "bbb" } }))
         .addElement('f', GTStructureUtility.ofFrame(Materials.TungstenSteel))
-        .addElement(
-            'c',
-            StructureUtility
-                .ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, WerkstoffLoader.RhodiumPlatedPalladium.getmID()))
+        .addElement('c', ofReboltedCasing(WerkstoffLoader.RhodiumPlatedPalladium))
         .addElement(
             'b',
             GTStructureUtility.buildHatchAdder(TileEntityPlanetaryGasSiphonLegacy.class)

@@ -34,6 +34,8 @@ public class PosteaTransformers implements Runnable {
     @Override
     public void run() {
         registerFrameboxTransformers();
+        registerBoltedCasingTransformers();
+        registerReboltedCasingTransformers();
         registerProgrammedCircuitTransformers();
         registerPotassiumHydroxideTransformer();
         registerPTMEGTransformers();
@@ -109,6 +111,41 @@ public class PosteaTransformers implements Runnable {
             tag.setInteger("Damage", indexInMaterialList);
             return true;
         });
+    }
+
+    private void registerBoltedCasingTransformers() {
+        TileEntityReplacementManager.tileEntityTransformer("bw.werkstoffblockcasingTE", (tag, world, chunk) -> {
+            int werkstoffId = tag.getInteger("m");
+            return new BlockInfo(GregTechAPI.sBlockBoltedBW, werkstoffId);
+        });
+
+        ItemStackReplacementManager
+            .addTransformationHandler("bartworks:bw.werkstoffblockscasing.01", (originalId, tag) -> {
+                int werkstoffId = tag.getInteger("Damage");
+                Item boltedItem = GameRegistry.findItem(Mods.GregTech, "bw.boltedCasing");
+                int itemId = Item.getIdFromItem(boltedItem);
+                tag.setInteger("id", itemId);
+                tag.setInteger("Damage", werkstoffId);
+                return true;
+            });
+    }
+
+    private void registerReboltedCasingTransformers() {
+        TileEntityReplacementManager
+            .tileEntityTransformer("bw.werkstoffblockscasingadvancedTE", (tag, world, chunk) -> {
+                int werkstoffId = tag.getInteger("m");
+                return new BlockInfo(GregTechAPI.sBlockReboltedBW, werkstoffId);
+            });
+
+        ItemStackReplacementManager
+            .addTransformationHandler("bartworks:bw.werkstoffblockscasingadvanced.01", (originalId, tag) -> {
+                int werkstoffId = tag.getInteger("Damage");
+                Item boltedItem = GameRegistry.findItem(Mods.GregTech, "bw.reboltedCasing");
+                int itemId = Item.getIdFromItem(boltedItem);
+                tag.setInteger("id", itemId);
+                tag.setInteger("Damage", werkstoffId);
+                return true;
+            });
     }
 
     // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.

@@ -49,6 +49,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IItemContainer;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTLanguageManager;
@@ -64,10 +65,13 @@ public class BWUtil {
     @Deprecated
     public static final int CLEANROOM = -200;
 
-    public static int calculateRecipeEU(Werkstoff werkstoff, int defaultRecipeEUPerTick) {
-        int tier = werkstoff.getStats()
-            .getProcessingMaterialTierEU();
-        return tier == 0 ? defaultRecipeEUPerTick : tier;
+    public static int calculateRecipeEU(IOreMaterial material, int defaultRecipeEUPerTick) {
+        if (material instanceof Werkstoff werkstoff) {
+            int tier = werkstoff.getStats()
+                .getProcessingMaterialTierEU();
+            return tier == 0 ? defaultRecipeEUPerTick : tier;
+        }
+        return defaultRecipeEUPerTick;
     }
 
     public static String translateGTItemStack(ItemStack itemStack) {

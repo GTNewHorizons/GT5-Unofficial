@@ -190,6 +190,14 @@ public class ItemRegistry {
         new String[] { MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlock" },
         MainMod.BIO_TAB);
 
+    // For postea to use, I just grabbed some texture from the line below so it doesn't crash...
+    public static final Block bw_deprecatedBoltedCasing = new BWBlocks(
+        "bw.werkstoffblockscasing.01",
+        new String[] { MainMod.MOD_ID + ":EtchedLapisCell" });
+    public static final Block bw_deprecatedReboltedCasing = new BWBlocks(
+        "bw.werkstoffblockscasingadvanced.01",
+        new String[] { MainMod.MOD_ID + ":EtchedLapisCell" });
+
     public static final Block[] bw_glasses = { bw_realglas, bw_realglas2 };
     public static final Block[] BW_BLOCKS = {
         new BWBlocks(

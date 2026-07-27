@@ -17,7 +17,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_AC
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_GLOW;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofBoltedCasing;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofReboltedCasing;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static gregtech.api.util.GTUtility.getTier;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
@@ -60,7 +62,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.GTMod;
@@ -256,8 +257,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('d', ofFrame(Materials.Erbium))
         .addElement('e', ofBlock(GregTechAPI.sBlockCasingsFoundry,8))
         .addElement('f', ofSheetMetal(Materials.Erbium))
-        .addElement('g',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, GGMaterial.preciousMetalAlloy.getmID())))
-        .addElement('h',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasings, GGMaterial.preciousMetalAlloy.getmID())))
+        .addElement('g', ofReboltedCasing(GGMaterial.preciousMetalAlloy))
+        .addElement('h', ofBoltedCasing(GGMaterial.preciousMetalAlloy))
         .addShape(
             FoundryModule.POWER_EFFICIENT_SUBSYSTEMS.structureID,
             transpose(
