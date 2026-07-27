@@ -37,11 +37,13 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -463,6 +465,15 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         }
     }
 
+    private static final int[][] WERKSTOFF_LENS_COLORS = { { 1, Colors.Yellow.ordinal() },
+        { 4, Colors.White.ordinal() }, { 5, Colors.Black.ordinal() }, { 7, Colors.Green.ordinal() },
+        { 8, Colors.Green.ordinal() }, { 9, Colors.White.ordinal() }, { 19, Colors.Red.ordinal() },
+        { 20, Colors.White.ordinal() }, { 21, Colors.Brown.ordinal() }, { 22, Colors.Orange.ordinal() },
+        { 23, Colors.Black.ordinal() }, { 24, Colors.White.ordinal() }, { 25, Colors.Green.ordinal() },
+        { 35, Colors.Yellow.ordinal() }, { 36, Colors.Purple.ordinal() }, { 43, Colors.Green.ordinal() },
+        { 89, Colors.Green.ordinal() }, { 91, Colors.Purple.ordinal() }, { 10023, Colors.Red.ordinal() },
+        { 11499, Colors.Green.ordinal() }, { 11358, Colors.Red.ordinal() } };
+
     private static final Map<String, Colors> lensColors;
     static {
         lensColors = new HashMap<>();
@@ -579,27 +590,13 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             Colors.Orange);
 
         // Time to manually define a bunch of lenses based on id
-        lensColors.put("gt.bwMetaGeneratedlens1", Colors.Yellow);
-        lensColors.put("gt.bwMetaGeneratedlens4", Colors.White);
-        lensColors.put("gt.bwMetaGeneratedlens5", Colors.Black);
-        lensColors.put("gt.bwMetaGeneratedlens7", Colors.Green);
-        lensColors.put("gt.bwMetaGeneratedlens8", Colors.Green);
-        lensColors.put("gt.bwMetaGeneratedlens9", Colors.White);
-        lensColors.put("gt.bwMetaGeneratedlens19", Colors.Red);
-        lensColors.put("gt.bwMetaGeneratedlens20", Colors.White);
-        lensColors.put("gt.bwMetaGeneratedlens21", Colors.Brown);
-        lensColors.put("gt.bwMetaGeneratedlens22", Colors.Orange);
-        lensColors.put("gt.bwMetaGeneratedlens23", Colors.Black);
-        lensColors.put("gt.bwMetaGeneratedlens24", Colors.White);
-        lensColors.put("gt.bwMetaGeneratedlens25", Colors.Green);
-        lensColors.put("gt.bwMetaGeneratedlens35", Colors.Yellow);
-        lensColors.put("gt.bwMetaGeneratedlens36", Colors.Purple);
-        lensColors.put("gt.bwMetaGeneratedlens43", Colors.Green);
-        lensColors.put("gt.bwMetaGeneratedlens89", Colors.Green);
-        lensColors.put("gt.bwMetaGeneratedlens91", Colors.Purple);
-        lensColors.put("gt.bwMetaGeneratedlens10023", Colors.Red);
-        lensColors.put("gt.bwMetaGeneratedlens11499", Colors.Green);
-        lensColors.put("gt.bwMetaGeneratedlens11358", Colors.Red);
+
+        // Lenses of werkstoff-origin materials, keyed by the legacy werkstoff id their colour was chosen for.
+        for (int[] row : WERKSTOFF_LENS_COLORS) {
+            ItemStack lens = MU.stack(OrePrefixes.lens, Materials2WerkstoffIndex.get(row[0]), 1);
+            if (lens == null) continue;
+            lensColors.put(getUniqueIdentifier(lens), Colors.values()[row[1]]);
+        }
         lensColors.put("MU-metaitem.0132140", Colors.Purple);
 
         //

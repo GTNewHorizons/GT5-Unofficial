@@ -13,8 +13,6 @@
 
 package bartworks.system.material;
 
-import static bartworks.system.material.BWMetaGeneratedItems.metaTab;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -26,6 +24,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -45,6 +44,16 @@ import gregtech.common.render.GTRendererBlock;
 
 public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
+    /// The creative tab the legacy bartworks ore blocks list under. They stay registered so saved worlds keep
+    /// resolving them, so they keep a tab of their own.
+    public static final CreativeTabs ORE_TAB = new CreativeTabs("bartworksMetaMaterials") {
+
+        @Override
+        public Item getTabIconItem() {
+            return new ItemStack(Blocks.iron_ore).getItem();
+        }
+    };
+
     public final String blockName;
     public final StoneType stoneType;
     public final boolean isSmall, isNatural;
@@ -55,7 +64,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         this.setBlockName(blockName);
         this.setHardness(5.0F);
         this.setResistance(5.0F);
-        this.setCreativeTab(metaTab);
+        this.setCreativeTab(ORE_TAB);
 
         this.blockName = blockName;
         this.stoneType = stoneType;

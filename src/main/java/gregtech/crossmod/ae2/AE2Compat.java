@@ -12,11 +12,9 @@ import appeng.api.AEApi;
 import appeng.api.features.IBlockingModeIgnoreItemRegistry;
 import appeng.api.features.IInterfaceTerminalRegistry;
 import appeng.api.storage.IExternalStorageRegistry;
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.AE2DigitalChestHandler;
 import gregtech.api.objects.AE2NonconsumableHatchHandler;
 import gregtech.common.covers.CoverFacadeAE;
@@ -99,8 +97,7 @@ public final class AE2Compat {
         }
 
         registry.register(ItemList.Circuit_Integrated.getItem());
-        // GT lenses are registered by ProcessingLens
-        registry.register(WerkstoffLoader.items.get(OrePrefixes.lens));
+        // Lenses are registered by ProcessingLens
 
         // Exclude woodglass and quantum anomaly
         registry.register(Laser_Lens_WoodsGlass.get(1));

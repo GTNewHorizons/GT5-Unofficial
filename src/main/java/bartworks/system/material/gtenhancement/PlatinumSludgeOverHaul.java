@@ -74,7 +74,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.MainMod;
-import bartworks.system.material.BWMetaGeneratedItems;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
@@ -1519,7 +1518,6 @@ public class PlatinumSludgeOverHaul {
 
         final Item item = stack.getItem();
         if (item == null) return true;
-        if (item instanceof BWMetaGeneratedItems) return true;
 
         final String itemModId = GameRegistry.findUniqueIdentifierFor(item).modId;
         if (MainMod.MOD_ID.equals(itemModId) || BartWorksCrossmod.MOD_ID.equals(itemModId)) return true;

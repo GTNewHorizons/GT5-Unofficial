@@ -15,54 +15,15 @@ package bartworks.system.material;
 
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.OrePrefixes.block;
-import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.cell;
-import static gregtech.api.enums.OrePrefixes.cellPlasma;
-import static gregtech.api.enums.OrePrefixes.crushed;
-import static gregtech.api.enums.OrePrefixes.crushedCentrifuged;
-import static gregtech.api.enums.OrePrefixes.crushedPurified;
-import static gregtech.api.enums.OrePrefixes.dust;
-import static gregtech.api.enums.OrePrefixes.dustImpure;
-import static gregtech.api.enums.OrePrefixes.dustPure;
-import static gregtech.api.enums.OrePrefixes.dustSmall;
-import static gregtech.api.enums.OrePrefixes.dustTiny;
-import static gregtech.api.enums.OrePrefixes.foil;
-import static gregtech.api.enums.OrePrefixes.gearGt;
-import static gregtech.api.enums.OrePrefixes.gearGtSmall;
 import static gregtech.api.enums.OrePrefixes.gem;
-import static gregtech.api.enums.OrePrefixes.gemChipped;
 import static gregtech.api.enums.OrePrefixes.gemExquisite;
-import static gregtech.api.enums.OrePrefixes.gemFlawed;
-import static gregtech.api.enums.OrePrefixes.gemFlawless;
 import static gregtech.api.enums.OrePrefixes.ingot;
-import static gregtech.api.enums.OrePrefixes.ingotHot;
 import static gregtech.api.enums.OrePrefixes.lens;
-import static gregtech.api.enums.OrePrefixes.nugget;
 import static gregtech.api.enums.OrePrefixes.ore;
 import static gregtech.api.enums.OrePrefixes.oreSmall;
-import static gregtech.api.enums.OrePrefixes.plate;
-import static gregtech.api.enums.OrePrefixes.plateDense;
-import static gregtech.api.enums.OrePrefixes.plateDouble;
-import static gregtech.api.enums.OrePrefixes.plateQuadruple;
-import static gregtech.api.enums.OrePrefixes.plateQuintuple;
-import static gregtech.api.enums.OrePrefixes.plateSuperdense;
-import static gregtech.api.enums.OrePrefixes.plateTriple;
-import static gregtech.api.enums.OrePrefixes.rawOre;
-import static gregtech.api.enums.OrePrefixes.ring;
-import static gregtech.api.enums.OrePrefixes.rotor;
-import static gregtech.api.enums.OrePrefixes.screw;
-import static gregtech.api.enums.OrePrefixes.spring;
-import static gregtech.api.enums.OrePrefixes.springSmall;
-import static gregtech.api.enums.OrePrefixes.stick;
-import static gregtech.api.enums.OrePrefixes.stickLong;
-import static gregtech.api.enums.OrePrefixes.toolHeadHammer;
-import static gregtech.api.enums.OrePrefixes.toolHeadSaw;
-import static gregtech.api.enums.OrePrefixes.toolHeadWrench;
-import static gregtech.api.enums.OrePrefixes.turbineBlade;
-import static gregtech.api.enums.OrePrefixes.wireFine;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -257,7 +218,6 @@ public class WerkstoffLoader {
 
     public static final Werkstoff TantalumHafniumCarbide = WerkstoffReconstruction.byId(11503);
 
-    public static HashMap<OrePrefixes, BWMetaGeneratedItems> items = new HashMap<>();
     public static HashBiMap<Werkstoff, Fluid> fluids = HashBiMap.create();
     public static HashBiMap<Werkstoff, Fluid> molten = HashBiMap.create();
     public static Block BWBlocks;
@@ -325,11 +285,7 @@ public class WerkstoffLoader {
             return new ItemStack(GregTechAPI.sBlockFramesBW, amount, werkstoff.getmID());
         }
 
-        if (WerkstoffLoader.items.get(orePrefixes) == null) {
-            return null;
-        }
-
-        return new ItemStack(WerkstoffLoader.items.get(orePrefixes), amount, werkstoff.getmID()).copy();
+        return null;
     }
 
     public static ItemStack getCorrespondingItemStack(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
@@ -345,7 +301,7 @@ public class WerkstoffLoader {
                     + orePrefixes
                     + " OrePrefix for Werkstoff "
                     + werkstoff.getDefaultName()));
-        return new ItemStack(WerkstoffLoader.items.get(orePrefixes), amount, werkstoff.getmID()).copy();
+        return null;
     }
 
     /// Forces this class to be loaded
@@ -490,74 +446,19 @@ public class WerkstoffLoader {
                 | werkstoff.getGenerationFeatures().toGenerate;
         }
         DebugLog.log("GlobalGeneration: " + WerkstoffLoader.toGenerateGlobal);
-        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.DUSTS) != 0) {
-            WerkstoffLoader.items.put(dust, new BWMetaGeneratedItems(dust));
-            WerkstoffLoader.items.put(dustTiny, new BWMetaGeneratedItems(dustTiny));
-            WerkstoffLoader.items.put(dustSmall, new BWMetaGeneratedItems(dustSmall));
-        }
-        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.METALS) != 0) {
-            WerkstoffLoader.items.put(ingot, new BWMetaGeneratedItems(ingot));
-            WerkstoffLoader.items.put(ingotHot, new BWMetaGeneratedItems(ingotHot)); // 1750
-            WerkstoffLoader.items.put(nugget, new BWMetaGeneratedItems(nugget));
-        }
-        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.GEMS) != 0) {
-            WerkstoffLoader.items.put(gem, new BWMetaGeneratedItems(gem));
-            WerkstoffLoader.items.put(gemChipped, new BWMetaGeneratedItems(gemChipped));
-            WerkstoffLoader.items.put(gemExquisite, new BWMetaGeneratedItems(gemExquisite));
-            WerkstoffLoader.items.put(gemFlawed, new BWMetaGeneratedItems(gemFlawed));
-            WerkstoffLoader.items.put(gemFlawless, new BWMetaGeneratedItems(gemFlawless));
-            WerkstoffLoader.items.put(lens, new BWMetaGeneratedItems(lens));
-        }
+        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.METALS) != 0) {}
         if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.ORES) != 0) {
             gameRegistryHandler();
-            WerkstoffLoader.items.put(crushed, new BWMetaGeneratedItems(crushed));
-            WerkstoffLoader.items.put(crushedPurified, new BWMetaGeneratedItems(crushedPurified));
-            WerkstoffLoader.items.put(crushedCentrifuged, new BWMetaGeneratedItems(crushedCentrifuged));
-            WerkstoffLoader.items.put(dustPure, new BWMetaGeneratedItems(dustPure));
-            WerkstoffLoader.items.put(dustImpure, new BWMetaGeneratedItems(dustImpure));
-            WerkstoffLoader.items.put(rawOre, new BWMetaGeneratedItems(rawOre));
         }
-        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.LIQUID_CELLS) != 0) {
-            WerkstoffLoader.items.put(cell, new BWMetaGeneratedItems(cell));
+        for (com.ruling_0.materiallib.api.Material material : com.ruling_0.materiallib.api.MaterialLibAPI
+            .getMaterials()) {
+            java.util.List<String> prefixes = material
+                .getProperty(gregtech.api.material.GTMaterialProperties.WERKSTOFF_PREFIXES);
+            if (prefixes == null) continue;
+            for (OrePrefixes prefix : OrePrefixes.VALUES) {
+                if (prefixes.contains(prefix.name())) ENABLED_ORE_PREFIXES.add(prefix);
+            }
         }
-        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.PLASMA_CELLS) != 0) {
-            WerkstoffLoader.items.put(cellPlasma, new BWMetaGeneratedItems(cellPlasma));
-        }
-        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.MOLTEN_CELLS) != 0) {
-            WerkstoffLoader.items.put(OrePrefixes.cellMolten, new BWMetaGeneratedItems(OrePrefixes.cellMolten));
-        }
-        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.SIMPLE_METALWORKING) != 0) {
-            WerkstoffLoader.items.put(plate, new BWMetaGeneratedItems(plate));
-            WerkstoffLoader.items.put(foil, new BWMetaGeneratedItems(foil));
-            WerkstoffLoader.items.put(stick, new BWMetaGeneratedItems(stick));
-            WerkstoffLoader.items.put(stickLong, new BWMetaGeneratedItems(stickLong));
-            WerkstoffLoader.items.put(toolHeadWrench, new BWMetaGeneratedItems(toolHeadWrench));
-            WerkstoffLoader.items.put(toolHeadHammer, new BWMetaGeneratedItems(toolHeadHammer));
-            WerkstoffLoader.items.put(toolHeadSaw, new BWMetaGeneratedItems(toolHeadSaw));
-            WerkstoffLoader.items.put(turbineBlade, new BWMetaGeneratedItems(turbineBlade));
-        }
-        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.CRAFTING_METALWORKING) != 0) {
-            WerkstoffLoader.items.put(gearGt, new BWMetaGeneratedItems(gearGt));
-            WerkstoffLoader.items.put(gearGtSmall, new BWMetaGeneratedItems(gearGtSmall));
-            WerkstoffLoader.items.put(bolt, new BWMetaGeneratedItems(bolt));
-            WerkstoffLoader.items.put(screw, new BWMetaGeneratedItems(screw));
-            WerkstoffLoader.items.put(ring, new BWMetaGeneratedItems(ring));
-            WerkstoffLoader.items.put(spring, new BWMetaGeneratedItems(spring));
-            WerkstoffLoader.items.put(springSmall, new BWMetaGeneratedItems(springSmall));
-            WerkstoffLoader.items.put(rotor, new BWMetaGeneratedItems(rotor));
-            WerkstoffLoader.items.put(wireFine, new BWMetaGeneratedItems(wireFine));
-        }
-        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.DOUBLE_DENSE_PLATES) != 0) {
-            WerkstoffLoader.items.put(plateDouble, new BWMetaGeneratedItems(plateDouble));
-            WerkstoffLoader.items.put(plateDense, new BWMetaGeneratedItems(plateDense));
-            WerkstoffLoader.items.put(plateSuperdense, new BWMetaGeneratedItems(plateSuperdense));
-        }
-        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.MULTI_PLATES) != 0) {
-            WerkstoffLoader.items.put(plateTriple, new BWMetaGeneratedItems(plateTriple));
-            WerkstoffLoader.items.put(plateQuadruple, new BWMetaGeneratedItems(plateQuadruple));
-            WerkstoffLoader.items.put(plateQuintuple, new BWMetaGeneratedItems(plateQuintuple));
-        }
-        ENABLED_ORE_PREFIXES.addAll(WerkstoffLoader.items.keySet());
         ENABLED_ORE_PREFIXES.add(ore);
         ENABLED_ORE_PREFIXES.add(oreSmall);
         LoaderWerkstoffRegistrations.run();
