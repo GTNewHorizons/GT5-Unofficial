@@ -9,7 +9,6 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import gtPlusPlus.core.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -87,20 +86,11 @@ public class ReplicatorBackend extends RecipeMapBackend {
             return null;
         }
         Materials foundMaterial = getMaterialFromDataOrb(specialSlot);
-        if (foundMaterial == null || fluids.length == 0) {
+        if (foundMaterial == null) {
             return null;
         }
         GTRecipe recipeFound = recipesByMaterial.getOrDefault(foundMaterial, null);
-        if (recipeFound == null) {
-            return null;
-        }
-        FluidStack recipeUUMInput = recipeFound.getRepresentativeFluidInput(0);
-        for (FluidStack fs : fluids) {
-            if (fs.isFluidEqual(recipeUUMInput) && fs.amount >= recipeUUMInput.amount) {
-                return recipeFound;
-            }
-        }
-        return null;
+        return recipeFound.maxParallelCalculatedByInputs(1, fluids, items) < 1 ? null : recipeFound;
     }
 
     @Nullable
