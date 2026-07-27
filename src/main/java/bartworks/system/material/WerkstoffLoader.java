@@ -93,130 +93,16 @@ public class WerkstoffLoader {
     // bot reserved range 29_899-29_999
     // Tec & basdxz reserved range 30_000-31_000
     // GT Material range reserved on 31_767-32_767
-    public static final Werkstoff Bismutite = WerkstoffReconstruction.byId(1);
-    public static final Werkstoff Bismuthinit = WerkstoffReconstruction.byId(2);
-    public static final Werkstoff Zirconium = WerkstoffReconstruction.byId(3);
-    public static final Werkstoff CubicZirconia = WerkstoffReconstruction.byId(4);
-    public static final Werkstoff FluorBuergerit = WerkstoffReconstruction.byId(5);
-    public static final Werkstoff YttriumOxide = WerkstoffReconstruction.byId(6);
-    public static final Werkstoff ChromoAluminoPovondrait = WerkstoffReconstruction.byId(7);
-    public static final Werkstoff VanadioOxyDravit = WerkstoffReconstruction.byId(8);
-    public static final Werkstoff Olenit = WerkstoffReconstruction.byId(9);
-    public static final Werkstoff Arsenopyrite = WerkstoffReconstruction.byId(10);
-    public static final Werkstoff Ferberite = WerkstoffReconstruction.byId(11);
-    public static final Werkstoff Loellingit = WerkstoffReconstruction.byId(12);
-    public static final Werkstoff Roquesit = WerkstoffReconstruction.byId(13);
-    public static final Werkstoff Bornite = WerkstoffReconstruction.byId(14);
-    public static final Werkstoff Wittichenit = WerkstoffReconstruction.byId(15);
-    public static final Werkstoff Djurleit = WerkstoffReconstruction.byId(16);
-    public static final Werkstoff Huebnerit = WerkstoffReconstruction.byId(17);
-    public static final Werkstoff Thorianit = WerkstoffReconstruction.byId(18);
-    public static final Werkstoff RedZircon = WerkstoffReconstruction.byId(19);
 
     // GT Enhancements
-    public static final Werkstoff Salt = WerkstoffReconstruction.byId(20);
-    public static final Werkstoff Spodumen = WerkstoffReconstruction.byId(21);
-    public static final Werkstoff RockSalt = WerkstoffReconstruction.byId(22);
 
     // More NonGT Stuff
-    public static final Werkstoff Fayalit = WerkstoffReconstruction.byId(23);
-    public static final Werkstoff Forsterit = WerkstoffReconstruction.byId(24);
-    public static final Werkstoff Hedenbergit = WerkstoffReconstruction.byId(25);
-    public static final Werkstoff DescloiziteZNVO4 = WerkstoffReconstruction.byId(26);
-    public static final Werkstoff DescloiziteCUVO4 = WerkstoffReconstruction.byId(27);
-    public static final Werkstoff FuchsitAL = WerkstoffReconstruction.byId(28);
 
-    public static final Werkstoff FuchsitCR = WerkstoffReconstruction.byId(29);
-
-    public static final Werkstoff Thorium232 = WerkstoffReconstruction.byId(30);
-    public static final Werkstoff BismuthTellurite = WerkstoffReconstruction.byId(31);
-    public static final Werkstoff Tellurium = WerkstoffReconstruction.byId(32);
-    public static final Werkstoff BismuthHydroBorat = WerkstoffReconstruction.byId(33);
-    public static final Werkstoff ArInGaPhoBiBoTe = WerkstoffReconstruction.byId(34);
-
-    public static final Werkstoff Prasiolite = WerkstoffReconstruction.byId(35);
-
-    public static final Werkstoff MagnetoResonaticDust = WerkstoffReconstruction.byId(36);
-    public static final Werkstoff Xenon = WerkstoffReconstruction.byId(37);
-    public static final Werkstoff Oganesson = WerkstoffReconstruction.byId(38);
-    public static final Werkstoff Californium = WerkstoffReconstruction.byId(39);
-    public static final Werkstoff Calcium = WerkstoffReconstruction.byId(40);
-    public static final Werkstoff Neon = WerkstoffReconstruction.byId(41);
-    public static final Werkstoff Krypton = WerkstoffReconstruction.byId(42);
-    public static final Werkstoff BArTiMaEuSNeK = WerkstoffReconstruction.byId(43);
-    public static final Werkstoff PTConcentrate = WerkstoffReconstruction.byId(44);
-    public static final Werkstoff PTSaltCrude = WerkstoffReconstruction.byId(45);
-    public static final Werkstoff PTSaltRefined = WerkstoffReconstruction.byId(46);
-    public static final Werkstoff PTMetallicPowder = WerkstoffReconstruction.byId(47);
     // TODO: If there is a moment where we are happy with breaking everyone's platline, change Aqua Regia recipes to
     // satisfy Chem
     // TODO: Balance with formula (HCl)3(HNO3) and then add the correct formula to the material
-    public static final Werkstoff AquaRegia = WerkstoffReconstruction.byId(48);
-    public static final Werkstoff PTResidue = WerkstoffReconstruction.byId(49);
-    public static final Werkstoff AmmoniumChloride = WerkstoffReconstruction.byId(50);
-    public static final Werkstoff PTRawPowder = WerkstoffReconstruction.byId(51);
-    public static final Werkstoff PDAmmonia = WerkstoffReconstruction.byId(52);
-    public static final Werkstoff PDMetallicPowder = WerkstoffReconstruction.byId(53);
-    public static final Werkstoff PDRawPowder = WerkstoffReconstruction.byId(54);
-    public static final Werkstoff PDSalt = WerkstoffReconstruction.byId(55);
-    public static final Werkstoff Sodiumformate = WerkstoffReconstruction.byId(56);
-    public static final Werkstoff Sodiumsulfate = WerkstoffReconstruction.byId(57);
-    public static final Werkstoff FormicAcid = WerkstoffReconstruction.byId(58);
-    public static final Werkstoff PotassiumDisulfate = WerkstoffReconstruction.byId(59);
-    public static final Werkstoff LeachResidue = WerkstoffReconstruction.byId(60);
-    public static final Werkstoff RHSulfate = WerkstoffReconstruction.byId(61);
-    public static final Werkstoff RHSulfateSolution = WerkstoffReconstruction.byId(62);
-    public static final Werkstoff CalciumChloride = WerkstoffReconstruction.byId(63);
-    public static final Werkstoff Ruthenium = WerkstoffReconstruction.byId(64);
-    public static final Werkstoff SodiumRuthenate = WerkstoffReconstruction.byId(65);
-    public static final Werkstoff RutheniumTetroxide = WerkstoffReconstruction.byId(66);
-    public static final Werkstoff HotRutheniumTetroxideSollution = WerkstoffReconstruction.byId(67);
-    public static final Werkstoff RutheniumTetroxideSollution = WerkstoffReconstruction.byId(68);
-    public static final Werkstoff IrOsLeachResidue = WerkstoffReconstruction.byId(69);
-    public static final Werkstoff IrLeachResidue = WerkstoffReconstruction.byId(70);
-    public static final Werkstoff PGSDResidue = WerkstoffReconstruction.byId(71);
-    public static final Werkstoff AcidicOsmiumSolution = WerkstoffReconstruction.byId(72);
-    public static final Werkstoff IridiumDioxide = WerkstoffReconstruction.byId(73);
-    public static final Werkstoff OsmiumSolution = WerkstoffReconstruction.byId(74);
-    public static final Werkstoff AcidicIridiumSolution = WerkstoffReconstruction.byId(75);
-    public static final Werkstoff IridiumChloride = WerkstoffReconstruction.byId(76);
-    public static final Werkstoff PGSDResidue2 = WerkstoffReconstruction.byId(77);
-    public static final Werkstoff Rhodium = WerkstoffReconstruction.byId(78);
-    public static final Werkstoff CrudeRhMetall = WerkstoffReconstruction.byId(79);
-    public static final Werkstoff RHSalt = WerkstoffReconstruction.byId(80);
-    public static final Werkstoff RHSaltSolution = WerkstoffReconstruction.byId(81);
-    public static final Werkstoff SodiumNitrate = WerkstoffReconstruction.byId(82);
-    public static final Werkstoff RHNitrate = WerkstoffReconstruction.byId(83);
-    public static final Werkstoff ZincSulfate = WerkstoffReconstruction.byId(84);
-    public static final Werkstoff RhFilterCake = WerkstoffReconstruction.byId(85);
-    public static final Werkstoff RHFilterCakeSolution = WerkstoffReconstruction.byId(86);
-    public static final Werkstoff ReRh = WerkstoffReconstruction.byId(87);
-    public static final Werkstoff RhodiumPlatedPalladium = WerkstoffReconstruction.byId(88);
-    public static final Werkstoff Tiberium = WerkstoffReconstruction.byId(89);
-    public static final Werkstoff Ruridit = WerkstoffReconstruction.byId(90);
-    public static final Werkstoff Fluorspar = WerkstoffReconstruction.byId(91);
-    public static final Werkstoff HDCS = WerkstoffReconstruction.byId(92);
-    public static final Werkstoff Atheneite = WerkstoffReconstruction.byId(93);
-    public static final Werkstoff Temagamite = WerkstoffReconstruction.byId(94);
-    public static final Werkstoff Terlinguaite = WerkstoffReconstruction.byId(95);
-    public static final Werkstoff AdemicSteel = WerkstoffReconstruction.byId(96);
-    public static final Werkstoff RawAdemicSteel = WerkstoffReconstruction.byId(97);
-    public static final Werkstoff HexafluorosilicicAcid = WerkstoffReconstruction.byId(98);
-    public static final Werkstoff Potassiumfluorosilicate = WerkstoffReconstruction.byId(99);
-    public static final Werkstoff Alumina = WerkstoffReconstruction.byId(100);
-    public static final Werkstoff PotassiumCarbonate = WerkstoffReconstruction.byId(101);
-    public static final Werkstoff RawFluorophlogopite = WerkstoffReconstruction.byId(102);
-    public static final Werkstoff HotFluorophlogopite = WerkstoffReconstruction.byId(103);
-    public static final Werkstoff Fluorophlogopite = WerkstoffReconstruction.byId(104);
 
     // Extracted from GalaxySpace
-    public static final Werkstoff LiquidHelium = WerkstoffReconstruction.byId(11500);
-
-    public static final Werkstoff HafniumCarbide = WerkstoffReconstruction.byId(11501);
-
-    public static final Werkstoff TantalumCarbideHafniumCarbideMixture = WerkstoffReconstruction.byId(11502);
-
-    public static final Werkstoff TantalumHafniumCarbide = WerkstoffReconstruction.byId(11503);
 
     public static HashBiMap<Werkstoff, Fluid> fluids = HashBiMap.create();
     public static HashBiMap<Werkstoff, Fluid> molten = HashBiMap.create();
