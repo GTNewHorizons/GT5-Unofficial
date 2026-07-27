@@ -10,7 +10,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.util.BWColorUtil;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -21,6 +20,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
+import gregtech.loaders.materials.LegacyNameDomain;
 import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 
 /// Unification entries for the materials that originated in the bartworks werkstoff pools. A werkstoff-origin
@@ -76,16 +76,20 @@ public class LoaderWerkstoffRegistrations {
     }
 
     /// Mirrors the tool-handle tiering the werkstoff part recipes were built against: a burning or magical
-    /// material takes its themed handle, otherwise durability picks the metal.
+    /// material takes its themed handle, otherwise durability picks the metal. A material in the legacy name
+    /// domain is skipped: gregtech's own declaration owns its handle, which the mass-based tiering behind
+    /// [GTMaterialProperties#HANDLE_MATERIAL] supplies instead.
     private static void registerHandleMaterial(Material material) {
-        Materials handle;
-        if (MU.hasSubTag(material, SubTag.BURNING.mName)) handle = Materials.Blaze;
-        else if (MU.hasSubTag(material, SubTag.MAGICAL.mName)) handle = Materials.Thaumium;
+        if (LegacyNameDomain.lookup(MU.internalName(material)) == material) return;
+        Material handle;
+        if (MU.hasSubTag(material, SubTag.BURNING.mName)) handle = Materials2Materials.Blaze;
+        else if (MU.hasSubTag(material, SubTag.MAGICAL.mName)) handle = Materials2Materials.Thaumium;
         else {
             int durability = MU.durability(material);
-            handle = durability > 5120 ? Materials.TungstenSteel : durability > 1280 ? Materials.Steel : Materials.Wood;
+            handle = durability > 5120 ? Materials2Materials.TungstenSteel
+                : durability > 1280 ? Materials2Materials.Steel : Materials2Materials.Wood;
         }
-        MU.recordHandleMaterial(material, MU.material(handle));
+        MU.recordHandleMaterial(material, handle);
     }
 
     /// Registers the canonical stack for every part the werkstoff set names. This reads

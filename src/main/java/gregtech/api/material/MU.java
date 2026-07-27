@@ -999,17 +999,6 @@ public class MU {
         return resolved != null ? resolved.mDirectSmelting : material;
     }
 
-    /// The legacy `Materials#mHandleMaterial` tool-handle material -- the live field itself, not
-    /// [GTMaterialProperties#HANDLE_MATERIAL]. That property is a MaterialLib load-time snapshot, while
-    /// `mHandleMaterial` is only finalized later, at recipe-registration time, once the bartworks/gtpp bridge
-    /// loaders' `FMLInitializationEvent` handle-material writes have run; the two can disagree for materials
-    /// whose bridge-computed handle differs from the snapshot, so every recipe-registration call site reads
-    /// this live field, matching what it always read directly before this accessor existed.
-    public static @Nullable Materials handleMaterial(@Nullable Materials material) {
-        if (material == null) return null;
-        return material.mHandleMaterial;
-    }
-
     /// [#smeltInto(Materials)] for a MaterialLib [Material] held directly, mirroring the same semantics on
     /// [GTMaterialProperties#SMELT_INTO]: an unset property means the material smelts into itself, and a set
     /// one is chased one more hop through the target's own property (the legacy `setSmeltingInto` indirection).
@@ -1082,22 +1071,12 @@ public class MU {
         return chaseRef(material, GTMaterialProperties.DIRECT_SMELTING);
     }
 
-    /// [#handleMaterial(Materials)] for a MaterialLib [Material] held directly. HYBRID: when `material` has a
-    /// legacy [Materials] counterpart, mirrors [#handleMaterial(Materials)] by reading the live
-    /// `Materials#mHandleMaterial` field and converting the result back through [#material] -- the property
-    /// path below is a load-time snapshot of that field and can diverge from it, same as the `Materials`
-    /// overload. Materials without a legacy counterpart (werkstoffe, gtpp materials) have no live field left,
-    /// so those resolve the [#recordHandleMaterial] override the bridge loaders now push in place of their
-    /// retired facade write; [GTMaterialProperties#HANDLE_MATERIAL] remains the fallback for a reconstructed
-    /// material neither loader touched, one hop only -- the property never chains through another material's
-    /// own handle, so there is nothing further to chase.
+    /// The tool-handle material a material's part recipes pair it with, defaulting to the material itself. A
+    /// material outside the legacy name domain resolves the [#recordHandleMaterial] override its bridge loader
+    /// pushed; [GTMaterialProperties#HANDLE_MATERIAL] is the fallback, one hop only -- the property never chains
+    /// through another material's own handle, so there is nothing further to chase.
     public static @Nullable Material handleMaterial(@Nullable Material material) {
         if (material == null) return null;
-        Materials legacy = materialOf(material);
-        if (legacy != null) {
-            Material handle = material(legacy.mHandleMaterial);
-            return handle != null ? handle : material;
-        }
         Material override = reconstructedHandles.get(material);
         if (override != null) return override;
         MaterialRef ref = material.getProperty(GTMaterialProperties.HANDLE_MATERIAL);
