@@ -11,7 +11,6 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MU;
-import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 
 public class ItemData {
 
@@ -99,12 +98,6 @@ public class ItemData {
 
     public ItemData(Materials material, long amount, Materials byProduct, long byProductAmount) {
         this(new MaterialStack(material, amount), new MaterialStack(byProduct, byProductAmount));
-    }
-
-    /// [#ItemData(Materials, long, MaterialStack...)] for a recognition marker, resolving its registered
-    /// backing.
-    public ItemData(RecognitionMarker material, long amount, MaterialStack... byProducts) {
-        this(new MaterialStack(material, amount), byProducts);
     }
 
     public ItemData(ItemData... data) {

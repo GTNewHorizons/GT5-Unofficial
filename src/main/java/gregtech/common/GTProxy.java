@@ -190,7 +190,6 @@ import gregtech.common.worldgen.HEEIslandScanner;
 import gregtech.loaders.materials.LegacyNameDomain;
 import gregtech.loaders.materials.MaterialsDeclaredFieldsTable;
 import gregtech.loaders.materials.RecognitionMaterials;
-import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 import gregtech.nei.GTNEIDefaultHandler;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -1680,7 +1679,7 @@ public class GTProxy implements IFuelHandler {
                 }
             OrePrefixes aPrefix = OrePrefixes.getOrePrefix(aEvent.Name);
             Material aMaterial = null;
-            RecognitionMarker recognitionMarker = null;
+            Material recognitionMarker = null;
             String tName = null;
             if ((aPrefix == OrePrefixes.nugget) && (aMod.equals(Thaumcraft.ID))
                 && (aEvent.Ore.getItem()
@@ -2023,7 +2022,7 @@ public class GTProxy implements IFuelHandler {
             GTLog.ore.println(tModToName);
 
             Material tCensusMaterial = resolveCensusMaterial(tName, aMaterial, recognitionMarker);
-            RecognitionMarker tCensusRecognitionMarker = isCensusMarker(recognitionMarker) ? recognitionMarker : null;
+            Material tCensusRecognitionMarker = isCensusMarker(recognitionMarker) ? recognitionMarker : null;
             OreDictEventContainer tOre = new OreDictEventContainer(
                 aEvent,
                 aPrefix,
@@ -2048,9 +2047,9 @@ public class GTProxy implements IFuelHandler {
     /// composition of its own, so no other marker routes into the census). Shared by [#resolveCensusMaterial]
     /// and the [OreDictEventContainer] construction in [#registerOre], which both need to agree on when a
     /// registration's census is marker-driven.
-    private static boolean isCensusMarker(RecognitionMarker recognitionMarker) {
-        return recognitionMarker != null && recognitionMarker.unifiable()
-            && recognitionMarker.contains(SubTag.CRYSTALLISABLE);
+    private static boolean isCensusMarker(Material recognitionMarker) {
+        return recognitionMarker != null && MU.unifiable(recognitionMarker)
+            && MU.hasFlag(recognitionMarker, GTMaterialFlag.CRYSTALLISABLE);
     }
 
     /// The MaterialLib material an ore-dictionary registration's event pipeline carries downstream (the
@@ -2075,9 +2074,9 @@ public class GTProxy implements IFuelHandler {
     /// have named yet, splitting the two lookups this method must otherwise keep in lockstep with
     /// [#registerOre]'s own upstream `aMaterial` resolution.
     private static Material resolveCensusMaterial(@Nullable String tName, @Nullable Material aMaterial,
-        RecognitionMarker recognitionMarker) {
+        Material recognitionMarker) {
         if (isCensusMarker(recognitionMarker)) {
-            return MU.toMaterial(recognitionMarker);
+            return recognitionMarker;
         }
         if (tName != null && !hasDeclaredMaterialsField(tName)) {
             Material ml = MaterialLibAPI.getMaterial("gregtech", tName);
@@ -2123,22 +2122,20 @@ public class GTProxy implements IFuelHandler {
         return MaterialsDeclaredFieldsTable.NAMES.contains(name);
     }
 
-    /// Unifies a foreign ore-dictionary entry whose name resolves to a [RecognitionMarker] instead of a
-    /// `Materials` (see [RecognitionMaterials#getRecognitionMarker]). A marker holds no composition and
-    /// re-registers into itself, so this reproduces only what a `Materials`-backed entry contributed: adding the
-    /// stack to its prefix when unifiable, the unconditional gear cross-registration for a `gearGt` entry, and --
-    /// for `Fluix` and `Quartz` specifically -- the `crystal`/`gem`/`craftingQuartz` cross-registrations their
-    /// names steered in the `Materials`-typed branch.
-    private void registerRecognitionOre(OrePrefixes aPrefix, RecognitionMarker aMarker,
-        OreDictionary.OreRegisterEvent aEvent) {
-        if (aMarker.unifiable()) {
+    /// Unifies a foreign ore-dictionary entry whose name resolves to a recognition marker rather than to a
+    /// material in the legacy name domain (see [RecognitionMaterials#getRecognitionMarker]). A marker holds no
+    /// composition and re-registers into itself, so this contributes only the prefix add when unifiable, the
+    /// unconditional gear cross-registration for a `gearGt` entry, and -- for `Fluix` and `Quartz` specifically
+    /// -- the `crystal`/`gem`/`craftingQuartz` cross-registrations their names steer.
+    private void registerRecognitionOre(OrePrefixes aPrefix, Material aMarker, OreDictionary.OreRegisterEvent aEvent) {
+        if (MU.unifiable(aMarker)) {
             aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
         }
         if (aPrefix.getName()
             .equals("gearGt")) {
             GTOreDictUnificator.registerOre(OrePrefixes.gear, aMarker, aEvent.Ore);
         }
-        String tName = aMarker.name();
+        String tName = MU.internalName(aMarker);
         if (tName.equals("Fluix") && aPrefix == OrePrefixes.crystal) {
             GTOreDictUnificator.registerOre(OrePrefixes.gem, aMarker, aEvent.Ore);
         }

@@ -7,7 +7,6 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MU;
-import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 
 public interface IOreRecipeRegistrator {
 
@@ -29,9 +28,9 @@ public interface IOreRecipeRegistrator {
         registerOre(prefix, MU.material(material), oreDictName, modName, stack);
     }
 
-    /// The recognition-marker ore-processing path ([OrePrefixes#processOre(RecognitionMarker, String, String,
+    /// The recognition-marker ore-processing path ([OrePrefixes#processRecognitionOre(Material, String, String,
     /// ItemStack)]). A marker carries no ore-processing recipes, so it is a no-op -- registrators that do
     /// process recognition markers (e.g. `ProcessingDust`) override this entry.
-    default void registerOre(OrePrefixes prefix, RecognitionMarker material, String oreDictName, String modName,
+    default void registerRecognitionOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {}
 }

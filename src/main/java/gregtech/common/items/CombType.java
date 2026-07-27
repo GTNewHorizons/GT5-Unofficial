@@ -9,7 +9,6 @@ import org.apache.commons.lang3.text.WordUtils;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.loaders.materials.RecognitionMaterials;
 
@@ -257,9 +256,7 @@ public enum CombType {
     public static final CombType[] VALUES = values();
     public boolean showInList;
     public final ItemComb.Voltage voltage;
-    /// A legacy `Materials` (resolved from the declaring constant's MaterialLib material), or the
-    /// `RecognitionMarker` of the Fluix comb -- read through `instanceof`/[MU] union accessors in [ItemComb].
-    public final Object material;
+    public final Material material;
     public final int chance;
 
     private final int id;
@@ -267,11 +264,6 @@ public enum CombType {
     private final int[] color;
 
     CombType(int id, String pName, boolean show, Material material, int chance, int color1, int color2,
-        ItemComb.Voltage voltage) {
-        this(id, pName, show, (Object) MU.materialOf(material), chance, color1, color2, voltage);
-    }
-
-    CombType(int id, String pName, boolean show, Object material, int chance, int color1, int color2,
         ItemComb.Voltage voltage) {
         if (id < 0 && !"INVALIDCOMB".equals(pName)) throw new IllegalArgumentException();
         this.id = id;

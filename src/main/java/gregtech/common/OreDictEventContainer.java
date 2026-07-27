@@ -11,7 +11,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
-import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 
 public class OreDictEventContainer {
 
@@ -21,13 +20,13 @@ public class OreDictEventContainer {
     /// The recognition marker this registration's census resolved through (see
     /// `GTProxy#resolveCensusMaterial`), or null for a plain [Materials]-named registration. A marker carries no
     /// legacy [Materials] counterpart, so [#registerRecipes] dispatches ore processing through it directly
-    /// instead of through [#mMaterial]'s backing -- via the marker-typed registrator entries
+    /// instead of through [#mMaterial]'s backing -- via the recognition-marker registrator entries
     /// (e.g. `ProcessingDust`, `ProcessingCrystallized`).
-    public final RecognitionMarker mRecognitionMarker;
+    public final Material mRecognitionMarker;
     public final String mModID;
 
     public OreDictEventContainer(OreDictionary.OreRegisterEvent aEvent, OrePrefixes aPrefix, Material aMaterial,
-        RecognitionMarker aRecognitionMarker, String aModID) {
+        Material aRecognitionMarker, String aModID) {
         this.mEvent = aEvent;
         this.mPrefix = aPrefix;
         this.mMaterial = aMaterial;
@@ -38,8 +37,7 @@ public class OreDictEventContainer {
     public static void registerRecipes(OreDictEventContainer ore) {
         if ((ore.mEvent.Ore == null) || (ore.mEvent.Ore.getItem() == null)
             || (ore.mPrefix == null)
-            || (ore.mRecognitionMarker != null ? ore.mPrefix.isIgnored(ore.mRecognitionMarker)
-                : ore.mPrefix.isIgnored(ore.mMaterial))
+            || ore.mPrefix.isIgnored(ore.mRecognitionMarker != null ? ore.mRecognitionMarker : ore.mMaterial)
             || isMaterialLibItem(ore.mEvent.Ore)) {
             return;
         }
@@ -49,7 +47,7 @@ public class OreDictEventContainer {
 
         ItemStack tStack = GTUtility.copyAmount(1, ore.mEvent.Ore);
         if (ore.mRecognitionMarker != null) {
-            ore.mPrefix.processOre(ore.mRecognitionMarker, ore.mEvent.Name, ore.mModID, tStack);
+            ore.mPrefix.processRecognitionOre(ore.mRecognitionMarker, ore.mEvent.Name, ore.mModID, tStack);
         } else {
             ore.mPrefix.processOre(
                 ore.mMaterial == null ? MU.material(Materials._NULL) : ore.mMaterial,

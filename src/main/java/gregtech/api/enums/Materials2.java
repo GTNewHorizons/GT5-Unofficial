@@ -34,7 +34,6 @@ public class Materials2 {
         Materials2Materials.init();
         Materials2Markers.registerBackingMaterials();
         RecognitionMaterials.registerBackingMaterials();
-        RecognitionMaterials.load();
         Materials2Formulas.init();
         Materials2PipeMaterials.init();
     }

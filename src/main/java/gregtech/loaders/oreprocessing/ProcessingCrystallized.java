@@ -16,7 +16,6 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 
 public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -62,7 +61,7 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
     /// this macerates into `material` itself (mirroring `Materials`' own `mMacerateInto = this` default)
     /// instead of dropping the recipe.
     @Override
-    public void registerOre(OrePrefixes prefix, RecognitionMarker material, String oreDictName, String modName,
+    public void registerRecognitionOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
