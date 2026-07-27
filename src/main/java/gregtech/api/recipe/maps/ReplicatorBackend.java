@@ -86,7 +86,7 @@ public class ReplicatorBackend extends RecipeMapBackend {
             return null;
         }
         Materials foundMaterial = getMaterialFromDataOrb(specialSlot);
-        if (foundMaterial == null) {
+        if (foundMaterial == null || fluids.length == 0) {
             return null;
         }
         return recipesByMaterial.getOrDefault(foundMaterial, null);
