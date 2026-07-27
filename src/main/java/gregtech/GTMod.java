@@ -127,6 +127,7 @@ import gregtech.loaders.load.MTERecipeLoader;
 import gregtech.loaders.materialrecipes.LoaderMaterialRecipes;
 import gregtech.loaders.materials.LegacyHelperParity;
 import gregtech.loaders.materials.LegacyNameDomainTable;
+import gregtech.loaders.materials.LoaderLegacyMaterialPasses;
 import gregtech.loaders.misc.CoverLoader;
 import gregtech.loaders.misc.GTAchievements;
 import gregtech.loaders.misc.GTBees;
@@ -352,6 +353,7 @@ public class GTMod {
         new EnchantmentRadioactivity();
 
         Materials.init();
+        LoaderLegacyMaterialPasses.run();
         OrePrefixes.lateStaticInit();
         sMaterialsReady = true;
         proxy.catchUpPreExistingOreDictEntries();
