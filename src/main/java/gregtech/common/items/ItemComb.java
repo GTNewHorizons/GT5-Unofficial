@@ -156,10 +156,10 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         return getMaterialRenderer(aMetaData) != null;
     }
 
-    /// Only a legacy [Materials] carries a custom renderer; the Fluix comb's recognition marker never does.
+    /// Only a material carries a custom renderer; the Fluix comb's recognition marker never does.
     @Override
     public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
-        return CombType.valueOf(aMetaData).material instanceof Materials legacy ? legacy.getRenderer() : null;
+        return MU.rendererOf(MU.gtMaterialOf(CombType.valueOf(aMetaData).material));
     }
 
     @Override

@@ -35,16 +35,16 @@ public class FuelLoader implements Runnable {
     public void run() {
         GTLog.out.println("GTMod: Initializing various Fuels.");
         ItemList.sBlueVitriol = GTFluidFactory
-            .of("solution.bluevitriol", "Blue Vitriol Water Solution", null, FluidState.LIQUID, 295);
+            .of("solution.bluevitriol", "Blue Vitriol Water Solution", FluidState.LIQUID, 295);
         ItemList.sNickelSulfate = GTFluidFactory
-            .of("solution.nickelsulfate", "Nickel Sulfate Water Solution", null, FluidState.LIQUID, 295);
+            .of("solution.nickelsulfate", "Nickel Sulfate Water Solution", FluidState.LIQUID, 295);
         ItemList.sGreenVitriol = GTFluidFactory
-            .of("solution.greenvitriol", "Green Vitriol Water Solution", null, FluidState.LIQUID, 295);
+            .of("solution.greenvitriol", "Green Vitriol Water Solution", FluidState.LIQUID, 295);
         ItemList.sIndiumConcentrate = GTFluidFactory
-            .of("indiumconcentrate", "Indium Concentrate", null, FluidState.LIQUID, 295); // TODO CHECK NEW x3
+            .of("indiumconcentrate", "Indium Concentrate", FluidState.LIQUID, 295); // TODO CHECK NEW x3
         ItemList.sLeadZincSolution = GTFluidFactory
-            .of("leadzincsolution", "Lead-Zinc Solution", null, FluidState.LIQUID, 295);
-        ItemList.sRocketFuel = GTFluidFactory.of("rocket_fuel", "Rocket Fuel", null, FluidState.LIQUID, 295);
+            .of("leadzincsolution", "Lead-Zinc Solution", FluidState.LIQUID, 295);
+        ItemList.sRocketFuel = GTFluidFactory.of("rocket_fuel", "Rocket Fuel", FluidState.LIQUID, 295);
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.bolt, (int) (1)))

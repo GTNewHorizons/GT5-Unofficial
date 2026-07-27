@@ -42,6 +42,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.input.Keyboard;
 
 import com.gtnewhorizons.navigator.api.NavigatorApi;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibClient;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -63,7 +65,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolboxSlot;
@@ -124,11 +125,19 @@ import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.NanoForgeRenderer;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.CircuitComponentItemRenderer;
+import gregtech.common.render.items.CosmicNeutroniumRenderer;
 import gregtech.common.render.items.DataStickRenderer;
+import gregtech.common.render.items.GaiaSpiritRenderer;
+import gregtech.common.render.items.GeneratedMaterialRenderer;
+import gregtech.common.render.items.GlitchEffectRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
+import gregtech.common.render.items.InfinityRenderer;
 import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
+import gregtech.common.render.items.RainbowOverlayRenderer;
 import gregtech.common.render.items.ToolboxRenderer;
+import gregtech.common.render.items.TranscendentMetalRenderer;
+import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
@@ -185,7 +194,6 @@ public class GTClient extends GTProxy {
             .getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
         mPreference = new GTClientPreference();
-        Materials.initClient();
         registerMaterialItemRenderers();
 
         ClientCommandHandler.instance.registerCommand(new GTPowerfailCommandClient());
@@ -202,24 +210,30 @@ public class GTClient extends GTProxy {
         NavigatorApi.registerLayerManager(PowerfailLayerManager.INSTANCE);
     }
 
-    /// Mirrors the special item-renderer assignments in `Materials#initClient` into [MU]'s [Material]-keyed
-    /// store, so the generated-item, fluid-display, and electrode renderers resolve them by MaterialLib
-    /// [Material] instead of through the legacy `Materials#renderer` facade. Runs immediately after
-    /// `initClient`, which constructs the renderer instances this reads.
+    /// Registers the special item renderers a handful of materials carry, into both stores that resolve them:
+    /// [MaterialLibClient] serves MaterialLib's own shape items, while [MU]'s [Material]-keyed store serves the
+    /// generated-item, fluid-display and electrode renderers.
     private static void registerMaterialItemRenderers() {
-        MU.recordRenderer(Materials2Materials.TranscendentMetal, Materials.TranscendentMetal.getRenderer());
-        MU.recordRenderer(Materials2Materials.GaiaSpirit, Materials.GaiaSpirit.getRenderer());
-        MU.recordRenderer(Materials2Materials.Infinity, Materials.Infinity.getRenderer());
-        MU.recordRenderer(Materials2Materials.CosmicNeutronium, Materials.CosmicNeutronium.getRenderer());
-        MU.recordRenderer(Materials2Materials.Universium, Materials.Universium.getRenderer());
-        MU.recordRenderer(Materials2Materials.Eternity, Materials.Eternity.getRenderer());
-        MU.recordRenderer(Materials2Materials.Magmatter, Materials.MagMatter.getRenderer());
-        MU.recordRenderer(Materials2Materials.SixPhasedCopper, Materials.SixPhasedCopper.getRenderer());
-        MU.recordRenderer(Materials2Materials.GravitonShard, Materials.GravitonShard.getRenderer());
-        MU.recordRenderer(Materials2Materials.exohalkonite, Materials.ExoHalkonite.getRenderer());
-        MU.recordRenderer(Materials2Materials.hotexohalkonite, Materials.HotExoHalkonite.getRenderer());
-        MU.recordRenderer(Materials2Materials.prismaticnaquadah, Materials.PrismaticNaquadah.getRenderer());
-        MU.recordRenderer(Materials2Materials.Amalgatite, Materials.Amalgatite.getRenderer());
+        registerMaterialItemRenderer(Materials2Materials.TranscendentMetal, new TranscendentMetalRenderer());
+        registerMaterialItemRenderer(Materials2Materials.GaiaSpirit, new GaiaSpiritRenderer());
+        registerMaterialItemRenderer(Materials2Materials.Infinity, new InfinityRenderer());
+        registerMaterialItemRenderer(Materials2Materials.CosmicNeutronium, new CosmicNeutroniumRenderer());
+        registerMaterialItemRenderer(Materials2Materials.Universium, new UniversiumRenderer());
+        registerMaterialItemRenderer(Materials2Materials.Eternity, new InfinityRenderer());
+        registerMaterialItemRenderer(Materials2Materials.Magmatter, new InfinityRenderer());
+        registerMaterialItemRenderer(Materials2Materials.SixPhasedCopper, new GlitchEffectRenderer());
+        registerMaterialItemRenderer(Materials2Materials.GravitonShard, new InfinityRenderer());
+        registerMaterialItemRenderer(Materials2Materials.exohalkonite, new InfinityRenderer());
+        registerMaterialItemRenderer(Materials2Materials.hotexohalkonite, new InfinityRenderer());
+        registerMaterialItemRenderer(
+            Materials2Materials.prismaticnaquadah,
+            new RainbowOverlayRenderer(MU.rgba(Materials2Materials.prismaticnaquadah)));
+        registerMaterialItemRenderer(Materials2Materials.Amalgatite, new InfinityRenderer());
+    }
+
+    private static void registerMaterialItemRenderer(Material material, GeneratedMaterialRenderer renderer) {
+        MaterialLibClient.setItemRenderer(material, renderer);
+        MU.recordRenderer(material, renderer);
     }
 
     @Override

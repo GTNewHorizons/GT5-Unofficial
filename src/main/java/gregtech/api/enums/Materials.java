@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.util.GTUtility.formatStringSafe;
@@ -25,13 +24,9 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.ruling_0.materiallib.api.MaterialLibClient;
-
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
-import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.IStoneType;
@@ -42,14 +37,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
-import gregtech.common.render.items.CosmicNeutroniumRenderer;
-import gregtech.common.render.items.GaiaSpiritRenderer;
-import gregtech.common.render.items.GeneratedMaterialRenderer;
-import gregtech.common.render.items.GlitchEffectRenderer;
-import gregtech.common.render.items.InfinityRenderer;
-import gregtech.common.render.items.RainbowOverlayRenderer;
-import gregtech.common.render.items.TranscendentMetalRenderer;
-import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import gregtech.loaders.materials.MaterialsLegacyBridge;
@@ -1061,7 +1048,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public final short[] mRGBa = new short[] { 255, 255, 255, 0 };
     public final short[] mMoltenRGBa = new short[] { 255, 255, 255, 0 };
     public TextureSet mIconSet;
-    public GeneratedMaterialRenderer renderer;
     public List<MaterialStack> mMaterialList = new ArrayList<>();
     public List<Materials> mOreReRegistrations = new ArrayList<>();
     public List<TCAspects.TC_AspectStack> mAspects = new ArrayList<>();
@@ -1492,42 +1478,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         fillGeneratedMaterialsMap();
     }
 
-    /**
-     * Init rendering properties. Will be called at pre init by GT client proxy.
-     */
-    public static void initClient() {
-        Materials.TranscendentMetal.renderer = new TranscendentMetalRenderer();
-        Materials.GaiaSpirit.renderer = new GaiaSpiritRenderer();
-        Materials.Infinity.renderer = new InfinityRenderer();
-        Materials.CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
-        Materials.Universium.renderer = new UniversiumRenderer();
-        Materials.Eternity.renderer = new InfinityRenderer();
-        Materials.MagMatter.renderer = new InfinityRenderer();
-        Materials.SixPhasedCopper.renderer = new GlitchEffectRenderer();
-        Materials.GravitonShard.renderer = new InfinityRenderer();
-        Materials.ExoHalkonite.renderer = new InfinityRenderer();
-        Materials.HotExoHalkonite.renderer = new InfinityRenderer();
-        Materials.PrismaticNaquadah.renderer = new RainbowOverlayRenderer(Materials.PrismaticNaquadah.getRGBA());
-        Materials.Amalgatite.renderer = new InfinityRenderer();
-
-        // These 13 materials' special renderers only ever fired through the legacy MetaGeneratedItemRenderer,
-        // which never sees a MaterialLib shape item; registering the same renderer instance here restores the
-        // effect for whichever of each material's shapes have cut over (see IGT_ItemWithMaterialRenderer#resolve).
-        MaterialLibClient.setItemRenderer(Materials2Materials.TranscendentMetal, Materials.TranscendentMetal.renderer);
-        MaterialLibClient.setItemRenderer(Materials2Materials.GaiaSpirit, Materials.GaiaSpirit.renderer);
-        MaterialLibClient.setItemRenderer(Materials2Materials.Infinity, Materials.Infinity.renderer);
-        MaterialLibClient.setItemRenderer(Materials2Materials.CosmicNeutronium, Materials.CosmicNeutronium.renderer);
-        MaterialLibClient.setItemRenderer(Materials2Materials.Universium, Materials.Universium.renderer);
-        MaterialLibClient.setItemRenderer(Materials2Materials.Eternity, Materials.Eternity.renderer);
-        MaterialLibClient.setItemRenderer(Materials2Materials.Magmatter, Materials.MagMatter.renderer);
-        MaterialLibClient.setItemRenderer(Materials2Materials.SixPhasedCopper, Materials.SixPhasedCopper.renderer);
-        MaterialLibClient.setItemRenderer(Materials2Materials.GravitonShard, Materials.GravitonShard.renderer);
-        MaterialLibClient.setItemRenderer(Materials2Materials.exohalkonite, Materials.ExoHalkonite.renderer);
-        MaterialLibClient.setItemRenderer(Materials2Materials.hotexohalkonite, Materials.HotExoHalkonite.renderer);
-        MaterialLibClient.setItemRenderer(Materials2Materials.prismaticnaquadah, Materials.PrismaticNaquadah.renderer);
-        MaterialLibClient.setItemRenderer(Materials2Materials.Amalgatite, Materials.Amalgatite.renderer);
-    }
-
     private static void fillGeneratedMaterialsMap() {
         for (Materials aMaterial : MATERIALS_ARRAY) {
             if (aMaterial.mMetaItemSubID >= 0) {
@@ -1585,17 +1535,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 .forEach(i -> aMaterial.mToolEnchantment = Enchantment.enchantmentsList[i]);
     }
 
-    private static void addHasGasFluid(Materials aMaterial) {
-        if (aMaterial.mIconSet.is_custom) {
-            return;
-        }
-
-        if (aMaterial.mHasGas) {
-            GTFluidFactory
-                .of(aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName, aMaterial, GAS, aMaterial.mGasTemp);
-        }
-    }
-
     private static String getConfigPath(Materials aMaterial) {
         String cOre = aMaterial.mCustomOre ? aMaterial.mCustomID : aMaterial.mName;
         return "materials." + aMaterial.mConfigSection + "." + cOre;
@@ -1609,7 +1548,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
             addToolValues(aMaterial);
             addEnchantmentValues(aMaterial);
-            addHasGasFluid(aMaterial);
         }
     }
 
@@ -1751,10 +1689,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public Map<Materials, Materials> getArcSmeltIntoWithGas() {
         return mArcSmeltIntoWithGas;
-    }
-
-    public GeneratedMaterialRenderer getRenderer() {
-        return renderer;
     }
 
     public float getHeatDamage() {
