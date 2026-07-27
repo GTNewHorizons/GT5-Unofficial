@@ -19,10 +19,7 @@ import com.gtnewhorizons.postea.utility.BlockInfo;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.BWMetaGeneratedItems;
-import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
@@ -256,24 +253,39 @@ public class PosteaTransformers implements Runnable {
     /// them); storage blocks migrate through [#registerWerkstoffBlockCutoverTransformer]. The casing slots
     /// (`blockCasing`/`blockCasingAdvanced`) stay legacy-canonical for now: multiblock structure matchers
     /// reference the legacy casing blocks by identity, so their cutover is a coordinated block+structure flip.
+    /// The part prefixes the legacy bartworks meta items covered, one item each, registered as
+    /// `bartworks:gt.bwMetaGenerated<prefix>`. Declared rather than read off the live items because the items
+    /// themselves are gone: a saved stack still names them, so the migration has to keep answering for every
+    /// prefix they ever occupied.
+    private static final OrePrefixes[] LEGACY_WERKSTOFF_ITEM_PREFIXES = { OrePrefixes.dust, OrePrefixes.dustTiny,
+        OrePrefixes.dustSmall, OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.nugget, OrePrefixes.gem,
+        OrePrefixes.gemChipped, OrePrefixes.gemExquisite, OrePrefixes.gemFlawed, OrePrefixes.gemFlawless,
+        OrePrefixes.lens, OrePrefixes.crushed, OrePrefixes.crushedPurified, OrePrefixes.crushedCentrifuged,
+        OrePrefixes.dustPure, OrePrefixes.dustImpure, OrePrefixes.rawOre, OrePrefixes.cell, OrePrefixes.cellPlasma,
+        OrePrefixes.plate, OrePrefixes.foil, OrePrefixes.stick, OrePrefixes.stickLong, OrePrefixes.toolHeadWrench,
+        OrePrefixes.toolHeadHammer, OrePrefixes.toolHeadSaw, OrePrefixes.turbineBlade, OrePrefixes.gearGt,
+        OrePrefixes.gearGtSmall, OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.spring,
+        OrePrefixes.springSmall, OrePrefixes.rotor, OrePrefixes.wireFine, OrePrefixes.plateDouble,
+        OrePrefixes.plateDense, OrePrefixes.plateSuperdense, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple,
+        OrePrefixes.plateQuintuple, OrePrefixes.cellMolten };
+
     private static void registerWerkstoffItemCutoverTransformers() {
-        int count = 0;
-        for (Map.Entry<OrePrefixes, BWMetaGeneratedItems> entry : WerkstoffLoader.items.entrySet()) {
-            OrePrefixes prefix = entry.getKey();
-            UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(entry.getValue());
-            ItemStackReplacementManager.addTransformationHandler(id.modId + ":" + id.name, (originalId, tag) -> {
-                int damage = tag.getInteger("Damage");
-                Material material = Materials2WerkstoffIndex.get(damage);
-                if (material == null) return false;
-                ItemStack cutover = MU.stack(prefix, material, 1);
-                if (cutover == null) return false;
-                IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
-                tag.setShort("Damage", (short) cutover.getItemDamage());
-                return true;
-            });
-            count++;
+        for (OrePrefixes prefix : LEGACY_WERKSTOFF_ITEM_PREFIXES) {
+            ItemStackReplacementManager
+                .addTransformationHandler("bartworks:gt.bwMetaGenerated" + prefix.getName(), (originalId, tag) -> {
+                    int damage = tag.getInteger("Damage");
+                    Material material = Materials2WerkstoffIndex.get(damage);
+                    if (material == null) return false;
+                    ItemStack cutover = MU.stack(prefix, material, 1);
+                    if (cutover == null) return false;
+                    IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+                    tag.setShort("Damage", (short) cutover.getItemDamage());
+                    return true;
+                });
         }
-        GTLog.out.println("PosteaTransformers: registered werkstoff item transformers for " + count + " legacy items");
+        GTLog.out.println(
+            "PosteaTransformers: registered werkstoff item transformers for " + LEGACY_WERKSTOFF_ITEM_PREFIXES.length
+                + " legacy items");
     }
 
     /// Migrates saved placed blocks and item stacks of a cut-over material's legacy storage-block slot (see
