@@ -108,14 +108,9 @@ public final class OreManager {
         Object material, boolean small) {
         if (canSetOreForWorldGen(world, x, y, z, defaultStone, material, small)) return true;
 
-        if (material instanceof Material ml) material = MU.legacyMaterialOf(ml);
-
         try (OreInfo<?> info = getOreInfo(world, x, y, z)) {
             if (info == null || !info.isNatural || info.isSmall != small) return false;
-            // The GT family's OreInfo material is a MaterialLib Material; map it back to the same legacy family
-            // object the requested material was normalized to (above) so the identity comparison holds.
-            Object placed = info.material instanceof Material ml ? MU.legacyMaterialOf(ml) : info.material;
-            return placed == material;
+            return info.material == material;
         }
     }
 
@@ -123,7 +118,6 @@ public final class OreManager {
         Object material, boolean small) {
         if (y < 0 || y >= world.getActualHeight()) return null;
 
-        if (material instanceof Material ml) material = MU.legacyMaterialOf(ml);
         if (material == null) return null;
 
         IStoneType existingStone = StoneType.findStoneType(world, x, y, z);

@@ -26,10 +26,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
     implements com.gtnewhorizon.structurelib.structure.ICustomBlockSetting {
@@ -72,7 +77,7 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
     }
 
     @Override
-    protected void doRegistrationStuff(Werkstoff tMaterial) {
+    protected void doRegistrationStuff(com.ruling_0.materiallib.api.Material material) {
         GregTechAPI.registerMachineBlock(this, -1);
     }
 
@@ -86,17 +91,21 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
-        Werkstoff.werkstoffHashSet.stream()
-            .filter(
-                pMaterial -> Werkstoff.Types.BIOLOGICAL.equals(pMaterial.getType())
-                    && pMaterial.hasItemType(OrePrefixes.blockCasing)
-                    || pMaterial.doesOreDictedItemExists(OrePrefixes.plate)
-                        && pMaterial.doesOreDictedItemExists(OrePrefixes.screw)
-                        && pMaterial.doesOreDictedItemExists(OrePrefixes.plateDouble)
-                        && pMaterial.doesOreDictedItemExists(OrePrefixes.gearGt)
-                        && pMaterial.doesOreDictedItemExists(OrePrefixes.gearGtSmall))
-            .map(pMaterial -> new ItemStack(aItem, 1, pMaterial.getmID()))
-            .forEach(aList::add);
+        for (com.ruling_0.materiallib.api.Material material : MaterialLibAPI.getMaterials()) {
+            if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
+
+            boolean biologicalCasing = "BIOLOGICAL".equals(material.getProperty(GTMaterialProperties.WERKSTOFF_TYPE))
+                && Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.blockCasing);
+            boolean fullyPartedCasing = GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null
+                && GTOreDictUnificator.get(OrePrefixes.screw, material, 1L) != null
+                && GTOreDictUnificator.get(OrePrefixes.plateDouble, material, 1L) != null
+                && GTOreDictUnificator.get(OrePrefixes.gearGt, material, 1L) != null
+                && GTOreDictUnificator.get(OrePrefixes.gearGtSmall, material, 1L) != null;
+
+            if (biologicalCasing || fullyPartedCasing) {
+                aList.add(new ItemStack(aItem, 1, Materials2WerkstoffIndex.idOf(material)));
+            }
+        }
     }
 
     /**

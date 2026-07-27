@@ -24,7 +24,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
+import gregtech.api.material.GTMaterialProperties;
 
 public class BWMetaGeneratedWerkstoffBlocks extends BWMetaGeneratedBlocks {
 
@@ -34,7 +38,7 @@ public class BWMetaGeneratedWerkstoffBlocks extends BWMetaGeneratedBlocks {
     }
 
     @Override
-    protected void doRegistrationStuff(Werkstoff tMaterial) {}
+    protected void doRegistrationStuff(com.ruling_0.materiallib.api.Material material) {}
 
     @Override
     public String getUnlocalizedName() {
@@ -53,9 +57,11 @@ public class BWMetaGeneratedWerkstoffBlocks extends BWMetaGeneratedBlocks {
 
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs tab, List<ItemStack> aList) {
-        Werkstoff.werkstoffHashSet.stream()
-            .filter(tMaterial -> tMaterial.hasItemType(OrePrefixes.gem) || tMaterial.hasItemType(OrePrefixes.ingot))
-            .map(tMaterial -> new ItemStack(aItem, 1, tMaterial.getmID()))
-            .forEach(aList::add);
+        for (com.ruling_0.materiallib.api.Material material : MaterialLibAPI.getMaterials()) {
+            if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
+            if (!Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
+                && !Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot)) continue;
+            aList.add(new ItemStack(aItem, 1, Materials2WerkstoffIndex.idOf(material)));
+        }
     }
 }

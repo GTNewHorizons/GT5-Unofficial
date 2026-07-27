@@ -6,8 +6,6 @@ import java.util.Set;
 
 import com.ruling_0.materiallib.api.Material;
 
-import bartworks.system.material.Werkstoff;
-import bartworks.system.material.WerkstoffReconstruction;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.interfaces.IStoneCategory;
 
@@ -60,18 +58,6 @@ public class SmallOreBuilder {
     public SmallOreBuilder ore(Material ore) {
         this.ore = ore;
         return this;
-    }
-
-    public SmallOreBuilder ore(Werkstoff ore) {
-        return ore(requireMaterialLib(ore));
-    }
-
-    static Material requireMaterialLib(Werkstoff werkstoff) {
-        Material ml = WerkstoffReconstruction.materialLibOf(werkstoff);
-        if (ml == null) {
-            throw new IllegalStateException("No MaterialLib material for werkstoff " + werkstoff.getVarName());
-        }
-        return ml;
     }
 
     public SmallOreBuilder stoneType(IStoneCategory... stoneCategories) {

@@ -28,6 +28,8 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.common.blocks.BWTileEntityContainer;
 import bartworks.util.BWUtil;
@@ -35,9 +37,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRendererBlock;
 
@@ -54,7 +59,10 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
         this.setBlockTextureName("stone");
         this.setCreativeTab(ORE_TAB);
         this.prefix = types;
-        Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
+        for (com.ruling_0.materiallib.api.Material material : MaterialLibAPI.getMaterials()) {
+            if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
+            doRegistrationStuff(material);
+        }
     }
 
     @Override
@@ -76,10 +84,10 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
     public @Nullable ITexture[][] getTextures(int meta) {
         ITexture baseTexture = null;
 
-        Werkstoff mat = Werkstoff.werkstoffHashMap.get((short) meta);
+        com.ruling_0.materiallib.api.Material mat = Materials2WerkstoffIndex.get(meta);
 
         if (mat != null) {
-            TextureSet set = mat.getTexSet();
+            TextureSet set = MU.iconSet(mat);
 
             IIconContainer baseIcon = PrefixTextureLinker.texMapBlocks.getOrDefault(prefix, Collections.emptyMap())
                 .get(set);
@@ -88,7 +96,7 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
                 baseIcon = TextureSet.SET_NONE.mTextures[OrePrefixes.block.getTextureIndex()];
             }
 
-            baseTexture = TextureFactory.of(baseIcon, mat.getRGBA());
+            baseTexture = TextureFactory.of(baseIcon, MU.rgba(mat));
         }
 
         if (baseTexture == null) {
@@ -113,7 +121,7 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
         return (TileEntityMetaGeneratedBlock) this.createNewTileEntity(null, 0);
     }
 
-    protected abstract void doRegistrationStuff(Werkstoff w);
+    protected abstract void doRegistrationStuff(com.ruling_0.materiallib.api.Material material);
 
     @Override
     public String getHarvestTool(int metadata) {
