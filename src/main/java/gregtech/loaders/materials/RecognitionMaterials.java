@@ -1,16 +1,21 @@
 package gregtech.loaders.materials;
 
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.GTMod;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 
 /// Recognition entries: names that generate no items of their own but exist so `gregtech.common.GTProxy#registerOre`
@@ -121,16 +126,29 @@ public class RecognitionMaterials {
         }
     }
 
-    /// Registers a shapeless MaterialLib [com.ruling_0.materiallib.api.Material] backing each data-carrying
-    /// marker in [#MARKERS], skipping any whose name already names a MaterialLib material (that name unifies
-    /// into the existing material, so a duplicate would merge its shapes into the marker). Runs during material
-    /// registration, after [gregtech.api.enums.materials2.Materials2Materials#init], so the skip check sees
-    /// every real material.
+    /// Registers a shapeless MaterialLib [com.ruling_0.materiallib.api.Material] backing every marker in
+    /// [#MARKERS] and [#RECOGNITION_MARKERS], skipping any whose name already names a MaterialLib material (that
+    /// name unifies into the existing material, so a duplicate would merge its shapes into the marker) and
+    /// logging every such skip, since a silently-merged marker would otherwise steal that material's identity
+    /// unnoticed. Carries [GTMaterialProperties#UNIFIABLE] and, for a marker with [SubTag]s, a
+    /// [GTMaterialProperties#FLAGS] set of the identically-named [GTMaterialFlag] each [SubTag] maps to, which
+    /// `MU#hasFlag` reads. Runs during material registration, after
+    /// [gregtech.api.enums.materials2.Materials2Materials#init], so the skip check sees every real material.
     public static void registerBackingMaterials() {
-        for (Marker marker : MARKERS) {
-            RecognitionMarker m = marker.marker();
-            if (MaterialLibAPI.getMaterial("gregtech", m.name()) != null) continue;
-            MaterialLibAPI
+        List<RecognitionMarker> markers = Stream.concat(
+            Stream.of(MARKERS)
+                .map(Marker::marker),
+            Stream.of(RECOGNITION_MARKERS))
+            .toList();
+        int registered = 0;
+        for (RecognitionMarker m : markers) {
+            if (MaterialLibAPI.getMaterial("gregtech", m.name()) != null) {
+                GTMod.GT_FML_LOGGER.info(
+                    "RecognitionMaterials: skipping backing material for '{}', a MaterialLib material with that name already exists",
+                    m.name());
+                continue;
+            }
+            com.ruling_0.materiallib.api.MaterialBuilder builder = MaterialLibAPI
                 .newMaterial(
                     "gregtech",
                     m.name(),
@@ -138,8 +156,17 @@ public class RecognitionMaterials {
                 .setProperty(GTMaterialProperties.LEGACY_NAME, m.name())
                 .setProperty(GTMaterialProperties.LOCAL_NAME, m.localName())
                 .setProperty(GTMaterialProperties.ARGB, m.argb())
-                .build();
+                .setProperty(GTMaterialProperties.UNIFIABLE, m.unifiable());
+            if (!m.subTags()
+                .isEmpty()) {
+                EnumSet<GTMaterialFlag> flags = EnumSet.noneOf(GTMaterialFlag.class);
+                for (SubTag tag : m.subTags()) flags.add(GTMaterialFlag.valueOf(tag.mName));
+                builder = builder.setProperty(GTMaterialProperties.FLAGS, flags);
+            }
+            builder.build();
+            registered++;
         }
+        GTMod.GT_FML_LOGGER.info("RecognitionMaterials: registered {} backing materials", registered);
     }
 
     private record Marker(Consumer<RecognitionMarker> field, RecognitionMarker marker) {}
