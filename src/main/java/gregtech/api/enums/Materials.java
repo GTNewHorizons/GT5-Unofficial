@@ -1511,30 +1511,30 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .collect(Collectors.toSet());
         LegacyHelperParity.recordHotIngotSets(legacyHotIngots, mlHotIngots);
 
-        OrePrefixes.ingotHot.mDisabledItems.addAll(legacyHotIngots);
-        OrePrefixes.ingotHot.disableComponent(Materials.Reinforced);
-        OrePrefixes.ingotHot.disableComponent(Materials.ConductiveIron);
-        OrePrefixes.ingotHot.disableComponent(Materials.FierySteel);
-        OrePrefixes.ingotHot.disableComponent(Materials.ElectricalSteel);
-        OrePrefixes.ingotHot.disableComponent(Materials.EndSteel);
-        OrePrefixes.ingotHot.disableComponent(Materials.Soularium);
-        OrePrefixes.ingotHot.disableComponent(Materials.EnergeticSilver);
-        OrePrefixes.ingotHot.disableComponent(Materials.Cheese);
-        OrePrefixes.ingotHot.disableComponent(Materials.Calcium);
-        OrePrefixes.ingotHot.disableComponent(Materials.Flerovium);
-        OrePrefixes.ingotHot.disableComponent(Materials.Cobalt);
-        OrePrefixes.ingotHot.disableComponent(Materials.RedstoneAlloy);
-        OrePrefixes.ingotHot.disableComponent(Materials.Ardite);
-        OrePrefixes.ingotHot.disableComponent(Materials.DarkSteel);
-        OrePrefixes.ingotHot.disableComponent(Materials.BlackSteel);
-        OrePrefixes.ingotHot.disableComponent(Materials.EnergeticAlloy);
-        OrePrefixes.ingotHot.disableComponent(Materials.PulsatingIron);
-        OrePrefixes.ingotHot.disableComponent(Materials.ClayCompound);
-        OrePrefixes.ingotHot.disableComponent(Materials.Netherite);
-        OrePrefixes.ingotHot.disableComponent(Materials.HotProtoHalkonite);
-        OrePrefixes.ingotHot.disableComponent(Materials.ProtoHalkonite);
-        OrePrefixes.ingotHot.disableComponent(Materials.HotExoHalkonite);
-        OrePrefixes.ingotHot.disableComponent(Materials.ExoHalkonite);
+        OrePrefixes.ingotHot.mDisabledItems.addAll(mlHotIngots);
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Reinforced));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.ConductiveIron));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.FierySteel));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.ElectricalSteel));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.EndSteel));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Soularium));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.EnergeticSilver));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Cheese));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Calcium));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Flerovium));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Cobalt));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.RedstoneAlloy));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Ardite));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.DarkSteel));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.BlackSteel));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.EnergeticAlloy));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.PulsatingIron));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.ClayCompound));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Netherite));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.HotProtoHalkonite));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.ProtoHalkonite));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.HotExoHalkonite));
+        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.ExoHalkonite));
     }
 
     /**

@@ -190,16 +190,16 @@ public class GTOreDictUnificator {
 
     public static ItemStack get(OrePrefixes prefix, Material material, ItemStack replacement, long amount) {
         if (material == null) return replacement;
-        if (OrePrefixes.mPreventableComponents.contains(prefix)
-            && prefix.mDisabledItems.contains(MU.materialOf(material))) return replacement;
+        if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material))
+            return replacement;
         return get(prefix.oreDictName(material), replacement, amount, false, true);
     }
 
     public static ItemStack get(OrePrefixes prefix, Materials material, ItemStack replacement, long amount) {
         Material ml = MU.toMaterial(material);
         if (ml == null && material != null) {
-            if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material))
-                return replacement;
+            if (OrePrefixes.mPreventableComponents.contains(prefix)
+                && prefix.mDisabledItems.contains(MU.material(material))) return replacement;
             return get(prefix.oreDictName(material), replacement, amount, false, true);
         }
         return get(prefix, ml, replacement, amount);
@@ -207,16 +207,16 @@ public class GTOreDictUnificator {
 
     public static ItemStack get(OrePrefixes prefix, Material material, long amount, boolean noInvalidAmounts) {
         if (material == null) return null;
-        if (OrePrefixes.mPreventableComponents.contains(prefix)
-            && prefix.mDisabledItems.contains(MU.materialOf(material))) return null;
+        if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material))
+            return null;
         return get(prefix.oreDictName(material), null, amount, false, noInvalidAmounts);
     }
 
     public static ItemStack get(OrePrefixes prefix, Materials material, long amount, boolean noInvalidAmounts) {
         Material ml = MU.toMaterial(material);
         if (ml == null && material != null) {
-            if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material))
-                return null;
+            if (OrePrefixes.mPreventableComponents.contains(prefix)
+                && prefix.mDisabledItems.contains(MU.material(material))) return null;
             return get(prefix.oreDictName(material), null, amount, false, noInvalidAmounts);
         }
         return get(prefix, ml, amount, noInvalidAmounts);
