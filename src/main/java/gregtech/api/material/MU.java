@@ -1411,8 +1411,6 @@ public class MU {
     public static boolean hasSubTag(@Nullable Object material, SubTag subTag) {
         if (material instanceof Materials legacy) return legacy.contains(subTag);
         if (material instanceof Material ml) {
-            Object legacy = legacyMaterialOf(ml);
-            if (legacy != null && legacy != ml) return hasSubTag(legacy, subTag);
             GTMaterialFlag flag = flagForSubTag(subTag);
             return flag != null && hasFlag(ml, flag);
         }
@@ -1484,6 +1482,15 @@ public class MU {
     /// [Material]-side lookup [#hasSubTag] uses to translate a legacy [SubTag] query into the flag its [Material]
     /// carries.
     private static @Nullable GTMaterialFlag flagForSubTag(SubTag subTag) {
+        // Inverts LegacyMaterials#legacySubTagName, whose two flags carry a name no GTMaterialFlag constant spells.
+        switch (subTag.mName) {
+            case "AnaerobeGas":
+                return GTMaterialFlag.ANAEROBE_GAS;
+            case "NobleGas":
+                return GTMaterialFlag.NOBLE_GAS;
+            default:
+                break;
+        }
         try {
             return GTMaterialFlag.valueOf(subTag.mName);
         } catch (IllegalArgumentException e) {
