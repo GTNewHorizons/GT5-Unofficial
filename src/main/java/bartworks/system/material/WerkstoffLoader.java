@@ -92,7 +92,6 @@ import bwcrossmod.cls.CLSCompat;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
-import goodgenerator.items.GGMaterial;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
@@ -106,8 +105,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.loaders.materials.LegacyNameDomain;
-import gtnhlanth.common.register.BotWerkstoffMaterialPool;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 @SuppressWarnings("deprecation")
 public class WerkstoffLoader {
@@ -366,9 +363,6 @@ public class WerkstoffLoader {
     public static void runInit() {
         MainMod.LOGGER.info("Making Meta Items for BW Materials");
         long timepre = System.nanoTime();
-        new GGMaterial().run();
-        new WerkstoffMaterialPool().run();
-        new BotWerkstoffMaterialPool().run();
         addItemsForGeneration();
         addBridgeSubTags();
         runAdditionalOreDict();
