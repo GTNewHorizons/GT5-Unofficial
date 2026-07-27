@@ -125,6 +125,7 @@ import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
 import gregtech.loaders.load.MTERecipeLoader;
 import gregtech.loaders.materialrecipes.LoaderMaterialRecipes;
+import gregtech.loaders.materials.LegacyHelperParity;
 import gregtech.loaders.materials.LegacyNameDomainTable;
 import gregtech.loaders.misc.CoverLoader;
 import gregtech.loaders.misc.GTAchievements;
@@ -649,6 +650,7 @@ public class GTMod {
             Materials2ParentMods.verifyAgainstLegacy();
             MaterialsIDMap.verifyAgainstLegacy();
             LegacyNameDomainTable.verifyResolvable();
+            LegacyHelperParity.verifyAgainstLegacy();
             MaterialDataDump.writeAll(new File(Launch.minecraftHome, "material-dump"));
         }
     }
