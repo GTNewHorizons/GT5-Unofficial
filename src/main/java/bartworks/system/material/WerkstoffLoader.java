@@ -64,7 +64,6 @@ import static gregtech.api.enums.OrePrefixes.wireFine;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
@@ -94,12 +93,10 @@ import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.fluid.GTFluidFactory;
-import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.BWOreAdapter;
@@ -127,7 +124,6 @@ public class WerkstoffLoader {
     public static void setUp() {
         Werkstoff.GenerationFeatures.initPrefixLogic();
         WerkstoffReconstruction.applyGenerationBits();
-        BWGTMaterialReference.init();
     }
 
     // TODO:
@@ -364,7 +360,6 @@ public class WerkstoffLoader {
         MainMod.LOGGER.info("Making Meta Items for BW Materials");
         long timepre = System.nanoTime();
         addItemsForGeneration();
-        addBridgeSubTags();
         runAdditionalOreDict();
         long timepost = System.nanoTime();
         MainMod.LOGGER.info(
@@ -387,8 +382,6 @@ public class WerkstoffLoader {
                 CLSCompat.initCls();
             }
 
-            IWerkstoffRunnable[] werkstoffRunnables = {};
-
             long timepreone = 0;
             int pos = 0;
             for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
@@ -405,13 +398,6 @@ public class WerkstoffLoader {
                     CLSCompat.updateDisplay(werkstoff, pos);
                 }
                 DebugLog.log("Werkstoff: " + werkstoff.getDefaultName() + " " + (System.nanoTime() - timepreone));
-                for (IWerkstoffRunnable runnable : werkstoffRunnables) {
-                    String loaderName = runnable.getClass()
-                        .getSimpleName();
-                    DebugLog.log(loaderName + " started " + (System.nanoTime() - timepreone));
-                    runnable.run(werkstoff);
-                    DebugLog.log(loaderName + " done " + (System.nanoTime() - timepreone));
-                }
                 DebugLog.log("Done" + " " + (System.nanoTime() - timepreone));
                 progressBar.step(werkstoff.getDefaultName());
                 pos++;
@@ -435,14 +421,6 @@ public class WerkstoffLoader {
                     + (timepost - timepre) / 1000000000
                     + "s!");
             registered = true;
-        }
-    }
-
-    private static void addBridgeSubTags() {
-        // add specific GT materials subtags to various werkstoff bridgematerials
-        if (!WerkstoffReconstruction.isReconstructed(RhodiumPlatedPalladium)) {
-            Materials bridge = MU.materialOf(RhodiumPlatedPalladium.getBridgeMaterial());
-            if (bridge != null) SubTag.METAL.addTo(bridge);
         }
     }
 
@@ -651,29 +629,6 @@ public class WerkstoffLoader {
             for (IWerkstoffRunnable registration : registrations) {
                 registration.run(werkstoff);
             }
-        }
-        addOreByProductsForBridgeMaterials();
-    }
-
-    private static void addOreByProductsForBridgeMaterials() {
-        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
-            if (WerkstoffReconstruction.isReconstructed(werkstoff)) continue;
-            Materials bridgeMaterial = MU.materialOf(werkstoff.getBridgeMaterial());
-            if (bridgeMaterial == null) continue;
-            List<Materials> mOreByProducts = bridgeMaterial.mOreByProducts;
-            if (mOreByProducts.size() > 0) continue; // Not to add if there're already oreByProducts.
-
-            int size = werkstoff.getNoOfByProducts();
-            for (int i = 0; i < size; i++) {
-                ISubTagContainer material = werkstoff.getOreByProductRaw(i); // At least not duplicate now.
-                if (material instanceof Materials) mOreByProducts.add((Materials) material);
-                else if (material instanceof Werkstoff w) {
-                    Materials byProduct = MU.materialOf(w.getBridgeMaterial());
-                    if (byProduct != null) mOreByProducts.add(byProduct);
-                } else throw new ClassCastException();
-            }
-            if (size < 3) mOreByProducts.add(bridgeMaterial);
-            // So it should be the same to Materials' mOreByProducts.
         }
     }
 

@@ -19,6 +19,7 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.MainMod;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.common.loaders.ItemRegistry;
+import bartworks.system.material.BWMetaGeneratedItems;
 import bartworks.system.material.WerkstoffLoader;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
@@ -41,39 +42,29 @@ public class NEIBWConfig implements IConfigureNEI {
         return false;
     }
 
+    /// The part prefixes whose bartworks meta items are superseded by their MaterialLib counterparts and so are
+    /// hidden from NEI. Each entry addresses the whole legacy item rather than one material's damage value:
+    /// [BWMetaGeneratedItems] registers one item per prefix and keys the material off the damage, so a wildcard
+    /// damage hides every material at once. Resolving the stack through a material would instead hand back the
+    /// MaterialLib item and hide the replacements.
+    private static final OrePrefixes[] SUPERSEDED_PREFIXES = { OrePrefixes.dustTiny, OrePrefixes.dustSmall,
+        OrePrefixes.crushed, OrePrefixes.crushedPurified, OrePrefixes.crushedCentrifuged, OrePrefixes.nugget,
+        OrePrefixes.gemChipped, OrePrefixes.gemFlawed, OrePrefixes.gemFlawless, OrePrefixes.gemExquisite,
+        OrePrefixes.dustImpure, OrePrefixes.dustPure };
+
+    private static void hideLegacyMetaItems() {
+        for (OrePrefixes prefix : SUPERSEDED_PREFIXES) {
+            BWMetaGeneratedItems item = WerkstoffLoader.items.get(prefix);
+            if (item == null) continue;
+            API.hideItem(new ItemStack(item, 1, Short.MAX_VALUE));
+        }
+    }
+
     @Override
     public void loadConfig() {
         API.hideItem(new ItemStack(ItemRegistry.TAB));
         API.hideItem(new ItemStack(FluidLoader.bioFluidBlock));
-        ItemStack[] prefixesToHide = {
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustTiny, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustSmall, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushed, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushedPurified, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushedCentrifuged, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.nugget, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemChipped, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemFlawed, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemFlawless, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemExquisite, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustImpure, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustPure, WerkstoffLoader.Bismutite)
-                .copy(), };
-        for (ItemStack stack : prefixesToHide) {
-            stack.setItemDamage(Short.MAX_VALUE);
-            API.hideItem(stack);
-        }
+        hideLegacyMetaItems();
 
         NEIBWConfig.sIsAdded = false;
         new BioVatNEIHandler(BartWorksRecipeMaps.bacterialVatRecipes.getDefaultRecipeCategory());

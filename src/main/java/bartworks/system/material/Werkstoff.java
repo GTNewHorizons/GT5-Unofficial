@@ -38,7 +38,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 
@@ -61,7 +60,6 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
@@ -115,29 +113,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     private final Werkstoff.GenerationFeatures generationFeatures;
     private final short mID;
     private final TextureSet texSet;
-    private Material bridgeMaterial;
     private final String owner;
-
-    /// The MaterialLib material this werkstoff's retired gregtech-side bridge pointed at: null for a
-    /// reconstructed werkstoff (its identity lives in [WerkstoffReconstruction]'s registry map, not the field),
-    /// the wrapped GT material for a [BWGTMaterialReference] proxy (set at construction). Prefer
-    /// [WerkstoffReconstruction#materialLibOf] to resolve a werkstoff to its MaterialLib material -- it covers
-    /// both populations.
-    public Material getBridgeMaterial() {
-        return this.bridgeMaterial;
-    }
-
-    /// The MaterialLib [Material] the retired gregtech-side bridge pointed at -- the bridge material itself
-    /// (null for a reconstructed or werkstoff-own material, the wrapped GT material for a proxy). Consumed
-    /// through [MU#gtMaterialOf], whose callers resolve the legacy [Materials] counterpart via [MU#materialOf]
-    /// only when they need it.
-    public @Nullable Material getGTMaterial() {
-        return this.bridgeMaterial;
-    }
-
-    public void setBridgeMaterial(Material bridgeMaterial) {
-        this.bridgeMaterial = bridgeMaterial;
-    }
 
     public static void init() {
         Werkstoff.default_null_Werkstoff = new Werkstoff(
@@ -149,46 +125,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             Werkstoff.DEFAULT_NULL_GENERATION_FEATURES,
             -1,
             TextureSet.SET_NONE);
-    }
-
-    /// GT bridge constructor keyed on the MaterialLib material -- reproduces the `Materials`-typed bridge
-    /// constructor's field reads through the [MU] accessors (each documented byte-identical to the legacy
-    /// field it mirrors). The [ISubTagContainer]-typed slots (the single contents entry and the byproduct
-    /// list) have no MaterialLib representation, so they resolve to the facade constant via
-    /// [MU#materialOf], the same convention [WerkstoffReconstruction]'s content resolution uses; they die
-    /// with the `ISubTagContainer` surface.
-    public Werkstoff(Material material, Werkstoff.GenerationFeatures generationFeatures, Types type, int mID) {
-        this(
-            MU.rgba(material),
-            MU.localName(material),
-            MU.chemicalTooltip(material, false),
-            type == null ? MU.element(material) != null ? Types.ELEMENT : Types.UNDEFINED : type,
-            generationFeatures,
-            mID,
-            MU.iconSet(material),
-            toLegacyByProducts(material),
-            Pair.of(MU.materialOf(material), 1));
-        if (mID <= 31_766 || mID > 32_767) throw new IllegalArgumentException();
-        this.bridgeMaterial = material;
-        this.stats.mass = MU.mass(material);
-        this.stats.protons = MU.protons(material);
-        this.stats.meltingPoint = MU.meltingPoint(material);
-        this.stats.neutrons = MU.neutrons(material);
-        this.stats.speedOverride = MU.toolSpeed(material);
-        this.stats.durOverride = MU.durability(material);
-        this.stats.qualityOverride = (byte) MU.toolQuality(material);
-        this.stats.setGas(Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_GAS)));
-        this.stats.setRadioactive(false);
-        this.stats.setBlastFurnace(MU.blastFurnaceRequired(material));
-        this.stats.setMeltingVoltage(120);
-        this.stats.isProxy = true;
-        if (type == Types.COMPOUND) {
-            this.stats.setElektrolysis(true);
-            this.generationFeatures.addChemicalRecipes();
-        } else if (type == Types.MIXTURE) {
-            this.stats.setCentrifuge(true);
-            this.generationFeatures.addMixerRecipes();
-        }
     }
 
     private static List<ISubTagContainer> toLegacyByProducts(Material material) {
@@ -777,7 +713,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     public boolean hasItemType(OrePrefixes prefix) {
         // Proxy materials are only used to generate (re)bolted casings, so we don't want to generate sheetmetals for
         // them. There's no good way to blacklist this, so we just add a dedicated check for it.
-        if (prefix == OrePrefixes.sheetmetal && stats.isProxy) return false;
 
         // Explicit overrides take priority over the bitmask
         if (this.getGenerationFeatures().disabledPrefixes.contains(prefix)) return false;
@@ -1147,10 +1082,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             return this.neutrons;
         }
 
-        public boolean isProxy() {
-            return this.isProxy;
-        }
-
         public int getMeltingPoint() {
             return this.meltingPoint == -1 ? 1123 : this.meltingPoint;
         }
@@ -1231,7 +1162,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         private double ebfGasRecipeTimeMultiplier = -1.0;
         private double ebfGasRecipeConsumedAmountMultiplier = 1.0;
         /// Whether this material is a proxy for a GT material. See [BWGTMaterialReference].
-        private boolean isProxy = false;
 
         private boolean autoGenerateBlastFurnaceRecipes = true;
         private boolean autoGenerateVacuumFreezerRecipes = true;

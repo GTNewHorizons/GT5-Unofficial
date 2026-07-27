@@ -131,16 +131,11 @@ public final class WerkstoffReconstruction {
         return byId.get((int) werkstoff.getmID()) == werkstoff;
     }
 
-    /// The MaterialLib material backing `werkstoff`: the ML material it was reconstructed from when
-    /// [#isReconstructed] is true. For a non-reconstructed werkstoff, falls back to the wrapped
-    /// [Werkstoff#getBridgeMaterial] -- the `Materials2Materials` constant a `BWGTMaterialReference` proxy was
-    /// built from, and null for a third-party WerkstoffAdder's werkstoff (its retired `Materials` bridge is the
-    /// accepted API break).
+    /// The MaterialLib material `werkstoff` was reconstructed from, or null for a werkstoff this
+    /// reconstruction did not build (a third-party WerkstoffAdder's).
     public static @Nullable Material materialLibOf(Werkstoff werkstoff) {
         ensureBuilt();
-        Material material = materialLib.get(werkstoff);
-        if (material != null) return material;
-        return werkstoff.getBridgeMaterial();
+        return materialLib.get(werkstoff);
     }
 
     /// See the class javadoc; called from `WerkstoffLoader#setUp` after `initPrefixLogic`.

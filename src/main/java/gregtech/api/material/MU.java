@@ -1440,7 +1440,7 @@ public class MU {
     /// counterpart (e.g. the vein-stat identity match against [#legacyMaterialOf] objects) wrap the result in
     /// [#materialOf].
     public static @Nullable Material gtMaterialOf(@Nullable Object material) {
-        if (material instanceof Werkstoff w) return w.getGTMaterial();
+        if (material instanceof Werkstoff w) return WerkstoffReconstruction.materialLibOf(w);
         if (material instanceof Material ml) return ml;
         return null;
     }
