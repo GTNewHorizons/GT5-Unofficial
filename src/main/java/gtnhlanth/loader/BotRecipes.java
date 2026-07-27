@@ -12,7 +12,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtnhlanth.common.register.BotWerkstoffMaterialPool.*;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;

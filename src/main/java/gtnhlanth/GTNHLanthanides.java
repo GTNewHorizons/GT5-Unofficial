@@ -9,7 +9,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.enums.Mods;
 import gtnhlanth.common.CommonProxy;
 import gtnhlanth.common.register.LanthItemList;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.loader.BotRecipes;
 import gtnhlanth.loader.RecipeLoader;
@@ -42,7 +41,6 @@ public class GTNHLanthanides {
     @EventHandler
     public static void init(FMLInitializationEvent e) {
         proxy.init(e);
-        WerkstoffMaterialPool.runInit();
     }
 
     @EventHandler

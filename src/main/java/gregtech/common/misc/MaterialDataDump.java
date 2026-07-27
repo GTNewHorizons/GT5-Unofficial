@@ -126,9 +126,7 @@ public final class MaterialDataDump {
     /// not reliably match werkstoff names (e.g. `Bismuthinit` vs "Bismuthinite").
     private static List<Map<String, Object>> dumpWerkstoffFields() {
         List<Map<String, Object>> out = new ArrayList<>();
-        Class<?>[] pools = { bartworks.system.material.WerkstoffLoader.class, goodgenerator.items.GGMaterial.class,
-            gtnhlanth.common.register.WerkstoffMaterialPool.class,
-            gtnhlanth.common.register.BotWerkstoffMaterialPool.class };
+        Class<?>[] pools = { bartworks.system.material.WerkstoffLoader.class };
         for (Class<?> pool : pools) {
             for (java.lang.reflect.Field field : pool.getFields()) {
                 if (field.getType() != Werkstoff.class) continue;
