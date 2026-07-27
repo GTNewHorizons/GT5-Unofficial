@@ -7,6 +7,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_DEBUG;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Debug_Steam;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_DEBUG;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_DEBUG;
+import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_ME;
 import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_ME;
 
@@ -31,10 +32,11 @@ public class GTCreativeHatchSource implements IItemSource {
     private final List<ItemStack> allHatches = new ArrayList<>();
 
     public GTCreativeHatchSource() {
-        addHatchById(INPUT_BUS_DEBUG.ID);
-        addHatchById(INPUT_HATCH_DEBUG.ID);
         addHatchById(ENERGY_HATCH_DEBUG.ID);
         addHatchById(AutoTapingMaintenanceHatch.ID);
+        addHatchById(MUFFLER_HATCH_UHV.ID);
+        addHatchById(INPUT_BUS_DEBUG.ID);
+        addHatchById(INPUT_HATCH_DEBUG.ID);
         addHatchById(OUTPUT_BUS_ME.ID);
         addHatchById(OUTPUT_HATCH_ME.ID);
         addHatchById(DebugDataHatch.ID);
