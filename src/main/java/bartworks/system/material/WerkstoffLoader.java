@@ -80,10 +80,6 @@ import com.google.common.collect.HashBiMap;
 import bartworks.MainMod;
 import bartworks.system.material.CircuitGeneration.CircuitPartsItem;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;
-import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import bartworks.system.material.werkstoff_loaders.registration.AssociationLoader;
-import bartworks.system.material.werkstoff_loaders.registration.BridgeMaterialsLoader;
-import bartworks.system.material.werkstoff_loaders.registration.CasingRegistrator;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.BWColorUtil;
 import bartworks.util.log.DebugLog;
@@ -102,6 +98,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.loaders.materials.LegacyNameDomain;
+import gregtech.loaders.postload.LoaderWerkstoffRegistrations;
 
 @SuppressWarnings("deprecation")
 public class WerkstoffLoader {
@@ -563,7 +560,7 @@ public class WerkstoffLoader {
         ENABLED_ORE_PREFIXES.addAll(WerkstoffLoader.items.keySet());
         ENABLED_ORE_PREFIXES.add(ore);
         ENABLED_ORE_PREFIXES.add(oreSmall);
-        WerkstoffLoader.runGTItemDataRegistrator();
+        LoaderWerkstoffRegistrations.run();
     }
 
     static void gameRegistryHandler() {
@@ -620,16 +617,6 @@ public class WerkstoffLoader {
         if (MU.stack(prefix, WerkstoffReconstruction.materialLibOf(w), 1) == null) return;
 
         API.hideItem(new ItemStack(legacyBlock, 1, w.getmID()));
-    }
-
-    private static void runGTItemDataRegistrator() {
-        IWerkstoffRunnable[] registrations = { new BridgeMaterialsLoader(), new AssociationLoader(),
-            new CasingRegistrator() };
-        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
-            for (IWerkstoffRunnable registration : registrations) {
-                registration.run(werkstoff);
-            }
-        }
     }
 
     private static void runAdditionalOreDict() {
