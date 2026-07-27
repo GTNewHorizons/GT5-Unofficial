@@ -351,8 +351,8 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
         if (blockInfo == null || !isOreShape(blockInfo.shape()) || blockInfo.material() == null) return null;
 
         Material material = blockInfo.material();
-        // A werkstoff's bridge material (see BridgeMaterialsLoader) shares the legacy-name index with every GT
-        // material; defer to BWOreAdapter, which owns werkstoff ore behavior (see Materials2OreShapes#isWerkstoff).
+        // A werkstoff's bridge Materials instance shares the legacy-name index with every GT material; defer
+        // to BWOreAdapter, which owns werkstoff ore behavior (see Materials2OreShapes#isWerkstoff).
         if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) return null;
         // A gtpp bridge material (see GtppBridgeMaterialsLoader) carries no real legacy id (its OLD_SUB_ID stays
         // unset); defer to GTPPOreAdapter, which owns ore-block concerns for it (see Materials2OreShapes#isGtpp),

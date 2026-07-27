@@ -16,11 +16,10 @@ import gregtech.api.material.GTMaterialProperties;
 import ic2.core.IC2Potion;
 
 /// Applies the toxic/radioactive carry hazards of hazardous materials to MaterialLib items.
-/// `BWMetaGeneratedItems#onUpdate` used to poison/irradiate the carrier of any toxic/radioactive werkstoff
-/// item without the matching hazmat suit; the cut-over MaterialLib shape items are shared across all
-/// materials, so the behavior moves to a player-tick inventory scan reading the canonical
-/// [GTMaterialProperties#TOXIC]/[GTMaterialProperties#IS_RADIOACTIVE] properties instead of per-item
-/// subclassing.
+/// Toxic/radioactive werkstoff items share a single MaterialLib shape item class across all materials, so
+/// poisoning/irradiating the carrier of an item without the matching hazmat suit cannot be a per-item update
+/// override; a player-tick inventory scan reads the canonical
+/// [GTMaterialProperties#TOXIC]/[GTMaterialProperties#IS_RADIOACTIVE] properties instead.
 public class WerkstoffHazardHandler {
 
     @SubscribeEvent

@@ -41,7 +41,7 @@ import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
 
-    // Offset from WerkstoffMaterialPool
+    // Legacy bartworks werkstoff id offset (see Materials2WerkstoffIndex)
     private static final int OFFSET_ID_3 = 11_300;
     private static final int[] WERKSTOFFS_REMOVED_IN_2_9 = new int[] { OFFSET_ID_3, OFFSET_ID_3 + 2, OFFSET_ID_3 + 6,
         OFFSET_ID_3 + 7, OFFSET_ID_3 + 8, OFFSET_ID_3 + 11, OFFSET_ID_3 + 12 };
@@ -247,8 +247,8 @@ public class PosteaTransformers implements Runnable {
 
     /// Migrates saved bartworks werkstoff item stacks (`bartworks:gt.bwMetaGenerated<prefix>`, damage =
     /// werkstoff id) into the equivalent MaterialLib stack, resolved through [Materials2WerkstoffIndex] exactly
-    /// like the live item path (`WerkstoffLoader#getCorrespondingItemStackUnsafe`). Damages of
-    /// werkstoffe unknown to MaterialLib (a third-party WerkstoffAdder's) pass through unchanged. Ore/small ore
+    /// like the live item path ([MU#stack]). Damages of
+    /// werkstoffe unknown to MaterialLib (a third-party mod's own werkstoff ids) pass through unchanged. Ore/small ore
     /// migrate through [BWOreAdapter] instead (block-kind, no `bw.bwMetaGenerated<prefix>` item exists for
     /// them); storage blocks migrate through [#registerWerkstoffBlockCutoverTransformer]. The casing slots
     /// (`blockCasing`/`blockCasingAdvanced`) stay legacy-canonical for now: multiblock structure matchers
@@ -324,7 +324,7 @@ public class PosteaTransformers implements Runnable {
 
     /// Migrates saved placed (TE-based) and inventory bartworks werkstoff storage-block stacks (`m`/`Damage` =
     /// werkstoff id) into the equivalent MaterialLib block stack, resolved through [Materials2WerkstoffIndex]
-    /// exactly like the live item path (`WerkstoffLoader#getCorrespondingItemStackUnsafe`). Third-party
+    /// exactly like the live item path ([MU#stack]). Third-party
     /// werkstoffe unknown to MaterialLib pass through unchanged, leaving the legacy slot canonical for them.
     /// `bw.werkstoffblockTE` already has a handler registered by [#removeWerkstoffTileEntities]; Postea tries
     /// each registered handler in turn until one returns non-null, so the two coexist without conflict.
@@ -377,7 +377,7 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// The MaterialLib material a legacy bartworks werkstoff id resolves to, or null when the id is unknown
-    /// (a third-party WerkstoffAdder's) -- the [#registerPartCutoverTransformer] resolver for
+    /// (a third-party mod's own werkstoff id) -- the [#registerPartCutoverTransformer] resolver for
     /// werkstoff-keyed legacy parts.
     private static Material werkstoffMaterialAt(int meta) {
         return Materials2WerkstoffIndex.get(meta);

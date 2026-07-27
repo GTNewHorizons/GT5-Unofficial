@@ -20,8 +20,7 @@ import gregtech.api.material.GTMaterialProperties;
 /// Every entry is a [RecognitionMarker], looked up through [#getRecognitionMarker]. Most carry only a name and
 /// whether an entry named for them unifies. A handful carry more because something besides name recognition
 /// reads them, and have a declared field here so the rest of the code can reference them directly: `Ammonium`
-/// is read by `bartworks.system.material.WerkstoffReconstruction` as a composition reference
-/// (`AmmoniumChloride`'s contents name it); `Leather` and `Sand` are read by
+/// names the same composition reference `AmmoniumChloride`'s contents use; `Leather` and `Sand` are read by
 /// `gregtech.loaders.preload.LoaderGTItemData` as the material of an `ItemData`/`MaterialStack` for vanilla-item
 /// recycling; `Limestone` and `Prismarine` are read by `ItemComb`/`NetheriteRecipes`/
 /// `RecipeLoaderChemicalSkips` to fetch or register registered-ore stacks; `Fluix` and
@@ -52,8 +51,8 @@ public class RecognitionMaterials {
     /// it is not a material and generates no items. The data-carrying entries in [#MARKERS] flow through the
     /// marker-typed forms of the transitional plumbing (`ItemData`, `MaterialStack`, `GTOreDictUnificator`,
     /// `OrePrefixes#processOre`), which resolve a marker to its registered backing exactly where the
-    /// `Materials`-typed forms resolve a facade. Implements [ISubTagContainer] so
-    /// `bartworks.system.material.WerkstoffReconstruction` can hold a marker as a composition reference.
+    /// `Materials`-typed forms resolve a facade. Implements [ISubTagContainer] so a marker's [SubTag]s test
+    /// through the same `contains` check a `Materials` instance or [MaterialSubTagView] does.
     ///
     /// [#toString] returns the name so a marker routed through a name-keyed path stringifies to the exact
     /// ore-dictionary name a `Materials`-backed marker produced.

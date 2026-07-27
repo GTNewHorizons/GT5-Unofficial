@@ -1745,8 +1745,8 @@ public class GTProxy implements IFuelHandler {
                                     }
                                     // Facade reads without an MU twin hold on the legacy counterpart, which the
                                     // domain lookup guarantees exists: the mMaterialItems add (still read by the
-                                    // legacy contains() gate in RecipeMaps) and mAspects (mutated live by
-                                    // bartworks' BridgeMaterialsLoader).
+                                    // legacy contains() gate in RecipeMaps) and mAspects (populated at
+                                    // construction time from composition, same as every other Materials instance).
                                     Materials legacyMaterial = MU.materialOf(aMaterial);
                                     legacyMaterial.add(GTUtility.copyAmount(1, aEvent.Ore));
 

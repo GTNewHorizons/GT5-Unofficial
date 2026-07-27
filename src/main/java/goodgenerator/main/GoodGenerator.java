@@ -43,7 +43,6 @@ public final class GoodGenerator {
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event) {
         GGConfigLoader.run();
-        // WerkstoffAdderRegistry.addWerkstoffAdder(new IsotopeMaterialLoader());
         Loaders.preInitLoad();
         proxy.preInit(event);
     }
