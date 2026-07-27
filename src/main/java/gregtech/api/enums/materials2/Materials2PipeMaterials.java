@@ -447,9 +447,9 @@ public class Materials2PipeMaterials {
     }
 
     // spotless:off
-    /// Werkstoff-backed frame and sheetmetal membership: every material whose retired
+    /// Bartworks-backed frame and sheetmetal membership: every material whose retired
     /// [gregtech.api.material.GTMaterialProperties#WERKSTOFF_PREFIXES] carried a `frameGt` entry also carried a
-    /// `sheetmetal` entry -- the two sets are identical for Werkstoff-backed materials, so one declared list
+    /// `sheetmetal` entry -- the two sets are identical for bartworks-backed materials, so one declared list
     /// serves both shapes.
     public static Material[] werkstoffFrameAndSheetmetalMaterials() {
         return new Material[] {

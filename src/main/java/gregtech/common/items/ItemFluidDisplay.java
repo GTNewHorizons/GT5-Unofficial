@@ -23,7 +23,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
-import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -130,7 +129,7 @@ public class ItemFluidDisplay extends GTGenericItem {
 
     @SideOnly(Side.CLIENT)
     public static Object getMaterial(Fluid fluid) {
-        final Werkstoff w = WerkstoffLoader.fluids.inverse()
+        final Object w = WerkstoffLoader.fluids.inverse()
             .get(fluid);
         if (w != null) {
             return w;

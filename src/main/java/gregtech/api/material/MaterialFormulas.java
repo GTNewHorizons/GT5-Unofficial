@@ -40,8 +40,8 @@ public final class MaterialFormulas {
     /// Mirrors `Materials#getLocalizedNameKey` (`"Material." + getInternalName().toLowerCase()`) for the
     /// reconstructed legacy `Materials` instance -- `getInternalName()` there is `mName`, i.e.
     /// [GTMaterialProperties#LEGACY_NAME] when present, else the MaterialLib registration name. The
-    /// reconstructed `Werkstoff`'s own key (`getVarName().toLowerCase()`) resolves identically for every
-    /// localized-formula werkstoff, so one scheme serves both facades.
+    /// reconstructed bartworks-origin material's own key (its internal name lowercased) resolves identically for
+    /// every localized-formula werkstoff, so one scheme serves both origins.
     private static String formulaKey(Material ml) {
         String legacyName = ml.getProperty(GTMaterialProperties.LEGACY_NAME);
         return "Material." + (legacyName != null ? legacyName : ml.getName()).toLowerCase() + ".ChemicalFormula";

@@ -16,9 +16,13 @@ package bartworks.common.loaders;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import bartworks.system.material.Werkstoff;
-import bartworks.system.material.WerkstoffReconstruction;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class StaticRecipeChangeLoaders {
@@ -26,34 +30,35 @@ public class StaticRecipeChangeLoaders {
     private StaticRecipeChangeLoaders() {}
 
     public static void unificationRecipeEnforcer() {
-        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
-            StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
-            if (!werkstoff.getGenerationFeatures().enforceUnification) continue;
-            StaticRecipeChangeLoaders.runUnficationDeleter(werkstoff);
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
+            StaticRecipeChangeLoaders.runMaterialLinker(material);
+            if (!Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION))) continue;
+            StaticRecipeChangeLoaders.runUnficationDeleter(material);
         }
     }
 
-    private static void runUnficationDeleter(Werkstoff werkstoff) {
-        for (OrePrefixes prefixes : OrePrefixes.VALUES) if (werkstoff.hasItemType(prefixes)) {
-            GTOreDictUnificator
-                .set(prefixes, WerkstoffReconstruction.materialLibOf(werkstoff), werkstoff.get(prefixes), true, true);
-            for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                GTOreDictUnificator
-                    .addAssociation(prefixes, WerkstoffReconstruction.materialLibOf(werkstoff), stack, false);
-                GTOreDictUnificator.getAssociation(stack).mUnificationTarget = werkstoff.get(prefixes);
+    private static void runUnficationDeleter(Material material) {
+        String internalName = MU.internalName(material);
+        for (OrePrefixes prefixes : OrePrefixes.VALUES)
+            if (Materials2WerkstoffIndex.generatesPrefix(material, prefixes)) {
+                GTOreDictUnificator.set(prefixes, material, MU.stack(prefixes, material, 1), true, true);
+                for (ItemStack stack : OreDictionary.getOres(prefixes + internalName)) {
+                    GTOreDictUnificator.addAssociation(prefixes, material, stack, false);
+                    GTOreDictUnificator.getAssociation(stack).mUnificationTarget = MU.stack(prefixes, material, 1);
+                }
             }
-        }
     }
 
-    private static void runMaterialLinker(Werkstoff werkstoff) {
-        for (OrePrefixes prefixes : OrePrefixes.VALUES) if (werkstoff.hasItemType(prefixes)) {
-            GTOreDictUnificator
-                .set(prefixes, WerkstoffReconstruction.materialLibOf(werkstoff), werkstoff.get(prefixes), true, true);
-            for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                GTOreDictUnificator
-                    .addAssociation(prefixes, WerkstoffReconstruction.materialLibOf(werkstoff), stack, false);
+    private static void runMaterialLinker(Material material) {
+        String internalName = MU.internalName(material);
+        for (OrePrefixes prefixes : OrePrefixes.VALUES)
+            if (Materials2WerkstoffIndex.generatesPrefix(material, prefixes)) {
+                GTOreDictUnificator.set(prefixes, material, MU.stack(prefixes, material, 1), true, true);
+                for (ItemStack stack : OreDictionary.getOres(prefixes + internalName)) {
+                    GTOreDictUnificator.addAssociation(prefixes, material, stack, false);
+                }
             }
-        }
     }
 
     public static void addElectricImplosionCompressorRecipes() {

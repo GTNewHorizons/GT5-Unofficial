@@ -26,7 +26,7 @@ import gregtech.api.util.GTOreDictUnificator;
 /// materials, because the generic loop cannot reach their full material sets: the pipe-family legacy items
 /// were meta tile entities, never generated items, so `OrePrefixes#doGenerateItem` cannot gate them, and
 /// their material sets (superconductor markers included) live only in the MaterialLib registry; `sheetmetal`
-/// additionally serves Werkstoff-backed materials, which have no legacy sub-id for the `MU#byId` spine. Each
+/// additionally serves bartworks-backed materials, which have no legacy sub-id for the `MU#byId` spine. Each
 /// `set` call makes the shape stack the prefix's unification target and adds the material association that
 /// drives the auto-generated recycling recipes, as the legacy registrations' ore-dictionary events used to.
 ///

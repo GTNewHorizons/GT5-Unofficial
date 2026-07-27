@@ -31,7 +31,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.Werkstoff;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -47,6 +46,7 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.items.BlockLongDistancePipe;
 import gregtech.api.items.CircuitComponentFakeItem;
@@ -912,12 +912,12 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockSheetmetalBW = new BlockSheetMetal(
             "bw.sheetmetal",
-            meta -> Werkstoff.werkstoffHashMap.get((short) meta),
+            meta -> Materials2WerkstoffIndex.get(meta),
             Short.MAX_VALUE);
 
         GregTechAPI.sBlockFramesBW = new BlockDecorativeFrame(
             "bw.frames",
-            meta -> Werkstoff.werkstoffHashMap.get((short) meta),
+            meta -> Materials2WerkstoffIndex.get(meta),
             Short.MAX_VALUE);
 
         GTLog.out.println("GTMod: Register TileEntities.");

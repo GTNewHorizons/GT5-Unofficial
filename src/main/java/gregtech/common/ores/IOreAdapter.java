@@ -16,7 +16,8 @@ import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 
 import gregtech.api.enums.StoneType;
 
-/// `TMat` is the adapter's legacy-family material type (`Materials`, `Werkstoff`, or gtPlusPlus `Material`);
+/// `TMat` is the adapter's legacy-family material type (`Materials`, a bartworks-origin material, or gtPlusPlus
+/// `Material`);
 /// the parameter is unbounded because the families share no interface -- adapters dispatch on the concrete
 /// family type of [OreInfo#material] via `instanceof`.
 public interface IOreAdapter<TMat> {

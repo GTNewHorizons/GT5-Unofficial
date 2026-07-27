@@ -74,8 +74,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.MainMod;
-import bartworks.system.material.Werkstoff;
-import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -89,6 +87,7 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.material.GTMaterialProperties;
@@ -1162,11 +1161,11 @@ public class PlatinumSludgeOverHaul {
             ItemData outputAssociation = GTOreDictUnificator.getAssociation(output);
             if (!BWUtil.checkStackAndPrefix(outputAssociation)) continue;
 
-            final Werkstoff newOutput;
+            final Material newOutput;
             if (outputAssociation.mMaterial.mMaterial == Materials2Materials.Platinum) {
-                newOutput = WerkstoffLoader.PTMetallicPowder;
+                newOutput = Materials2WerkstoffIndex.get(47);
             } else if (outputAssociation.mMaterial.mMaterial == Materials2Materials.Palladium) {
-                newOutput = WerkstoffLoader.PDMetallicPowder;
+                newOutput = Materials2WerkstoffIndex.get(53);
             } else {
                 continue;
             }
@@ -1183,7 +1182,7 @@ public class PlatinumSludgeOverHaul {
             if (PlatinumSludgeOverHaul.isInBlackList(input, availableItemList)) continue;
 
             OrePrefixes prefix = outputAssociation.mPrefix == nugget ? dustTiny : dust;
-            entry.setValue(newOutput.get(prefix, output.stackSize * 2));
+            entry.setValue(MU.stack(prefix, newOutput, output.stackSize * 2));
         }
 
         // vanilla crafting
@@ -1329,15 +1328,15 @@ public class PlatinumSludgeOverHaul {
                     ItemData association = GTOreDictUnificator.getAssociation(recipe.mOutputs[i]);
                     if (!BWUtil.checkStackAndPrefix(association)) continue;
 
-                    final Werkstoff replacementMaterial;
+                    final Material replacementMaterial;
                     if (association.mMaterial.mMaterial == Materials2Materials.Platinum) {
-                        replacementMaterial = WerkstoffLoader.PTMetallicPowder;
+                        replacementMaterial = Materials2WerkstoffIndex.get(47);
                     } else if (association.mMaterial.mMaterial == Materials2Materials.Palladium) {
-                        replacementMaterial = WerkstoffLoader.PDMetallicPowder;
+                        replacementMaterial = Materials2WerkstoffIndex.get(53);
                     } else if (association.mMaterial.mMaterial == Materials2Materials.Osmium) {
-                        replacementMaterial = WerkstoffLoader.IrOsLeachResidue;
+                        replacementMaterial = Materials2WerkstoffIndex.get(69);
                     } else if (association.mMaterial.mMaterial == Materials2Materials.Iridium) {
-                        replacementMaterial = WerkstoffLoader.IrLeachResidue;
+                        replacementMaterial = Materials2WerkstoffIndex.get(70);
                     } else {
                         continue;
                     }
@@ -1349,17 +1348,17 @@ public class PlatinumSludgeOverHaul {
                     if (association.mPrefix == dust || association.mPrefix == dustImpure
                         || association.mPrefix == dustPure) {
                         int amount = recipe.mOutputs[i].stackSize;
-                        recipe.mOutputs[i] = BWUtil.setStackSize(replacementMaterial.get(dust), amount * 2);
+                        recipe.mOutputs[i] = MU.stack(dust, replacementMaterial, amount * 2);
                         recipe.reloadOwner();
                         GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
                     } else if (association.mPrefix == dustSmall) {
                         int amount = recipe.mOutputs[i].stackSize;
-                        recipe.mOutputs[i] = BWUtil.setStackSize(replacementMaterial.get(dustSmall), amount * 2);
+                        recipe.mOutputs[i] = MU.stack(dustSmall, replacementMaterial, amount * 2);
                         recipe.reloadOwner();
                         GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
                     } else if (association.mPrefix == dustTiny) {
                         int amount = recipe.mOutputs[i].stackSize;
-                        recipe.mOutputs[i] = BWUtil.setStackSize(replacementMaterial.get(dustTiny), amount * 2);
+                        recipe.mOutputs[i] = MU.stack(dustTiny, replacementMaterial, amount * 2);
                         recipe.reloadOwner();
                         GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
                     }

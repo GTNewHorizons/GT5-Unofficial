@@ -16,9 +16,9 @@ package bartworks.client.textures;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
-import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.MaterialIconRegistry;
@@ -33,6 +33,60 @@ public class PrefixTextureLinker implements Runnable {
     public static Map<OrePrefixes, Map<TextureSet, IIconContainer>> texMap = new HashMap<>();
     public static Map<OrePrefixes, Map<TextureSet, IIconContainer>> texMapBlocks = new HashMap<>();
     public static Map<TextureSet, Short> blockTexMap = new HashMap<>();
+
+    /// The prefixes bartworks' item generation classifies into a dust/metal/gem/ore/cell/metalworking/plate
+    /// category, mirroring the legacy `GenerationFeatures#prefixLogic` table -- only membership is
+    /// needed here, not which category, so the bitmask itself is not reproduced.
+    private static final Set<OrePrefixes> GENERATABLE_PREFIXES = Set.of(
+        OrePrefixes.dust,
+        OrePrefixes.dustTiny,
+        OrePrefixes.dustSmall,
+        OrePrefixes.ingot,
+        OrePrefixes.ingotHot,
+        OrePrefixes.nugget,
+        OrePrefixes.gem,
+        OrePrefixes.gemFlawed,
+        OrePrefixes.gemExquisite,
+        OrePrefixes.gemChipped,
+        OrePrefixes.gemFlawless,
+        OrePrefixes.lens,
+        OrePrefixes.block,
+        OrePrefixes.ore,
+        OrePrefixes.dustImpure,
+        OrePrefixes.dustPure,
+        OrePrefixes.crushed,
+        OrePrefixes.crushedPurified,
+        OrePrefixes.crushedCentrifuged,
+        OrePrefixes.rawOre,
+        OrePrefixes.cell,
+        OrePrefixes.cellMolten,
+        OrePrefixes.plate,
+        OrePrefixes.foil,
+        OrePrefixes.stick,
+        OrePrefixes.stickLong,
+        OrePrefixes.toolHeadHammer,
+        OrePrefixes.toolHeadWrench,
+        OrePrefixes.toolHeadSaw,
+        OrePrefixes.turbineBlade,
+        OrePrefixes.screw,
+        OrePrefixes.gearGt,
+        OrePrefixes.gearGtSmall,
+        OrePrefixes.bolt,
+        OrePrefixes.ring,
+        OrePrefixes.spring,
+        OrePrefixes.springSmall,
+        OrePrefixes.rotor,
+        OrePrefixes.wireFine,
+        OrePrefixes.sheetmetal,
+        OrePrefixes.frameGt,
+        OrePrefixes.plateDouble,
+        OrePrefixes.plateDense,
+        OrePrefixes.plateSuperdense,
+        OrePrefixes.plateTriple,
+        OrePrefixes.plateQuadruple,
+        OrePrefixes.plateQuintuple,
+        OrePrefixes.blockCasing,
+        OrePrefixes.blockCasingAdvanced);
 
     private static void fillBlockTexMap() {
         blockTexMap.put(TextureSet.SET_QUARTZ, (short) MaterialIconRegistry.IconType.BLOCK4.ordinal());
@@ -63,7 +117,7 @@ public class PrefixTextureLinker implements Runnable {
         Arrays.stream(OrePrefixes.VALUES)
             .filter(
                 prefixes -> prefixes != OrePrefixes.rod && prefixes.getTextureIndex() == -1
-                    && Werkstoff.GenerationFeatures.getPrefixDataRaw(prefixes) != 0)
+                    && GENERATABLE_PREFIXES.contains(prefixes))
             .forEach(prefixes -> {
                 HashMap<TextureSet, IIconContainer> curr = new HashMap<>();
                 Arrays.stream(TextureSet.class.getFields())

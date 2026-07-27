@@ -27,11 +27,11 @@ import gregtech.api.material.MU;
 import gregtech.common.GTProxy.OreDropSystem;
 
 /// The gtPlusPlus-material [IOreAdapter], reimplemented over MaterialLib the same way [BWOreAdapter]
-/// reimplements [bartworks.system.material.Werkstoff] ore: worldgen placement, mining drops, and prospecting
+/// reimplements bartworks ore: worldgen placement, mining drops, and prospecting
 /// dispatch to this singleton via [OreManager] for any material carrying [GTMaterialProperties#GTPP_STATE]
 /// with no live id-backed [gregtech.api.enums.Materials] counterpart (see [#isGtpp]).
 ///
-/// Unlike [gregtech.api.enums.Materials]/[bartworks.system.material.Werkstoff] ore, gtpp ore only ever existed
+/// Unlike [gregtech.api.enums.Materials]/bartworks ore, gtpp ore only ever existed
 /// on [StoneType#Stone] and never had a small-ore variant, both [#supports(OreInfo)] and [#getBlock] enforce
 /// this, and no gtpp material ever claims `Materials2OreShapes#oreSmall`.
 ///

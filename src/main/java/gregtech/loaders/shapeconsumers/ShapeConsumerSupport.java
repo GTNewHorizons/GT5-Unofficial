@@ -37,7 +37,8 @@ final class ShapeConsumerSupport {
     /// data (`BlastFurnaceGasStat`) that BartWorks' own `BridgeMaterialsLoader` only populates during
     /// BartWorks' init -- since FML runs every mod's init before any mod's postInit, dispatching from
     /// MaterialLib's init could race BartWorks' init depending on mod processing order (observed as an
-    /// `ExceptionInInitializerError` from `Werkstoff#getFluidOrGas` during a real boot). Postponing to postInit
+    /// `ExceptionInInitializerError` from the bartworks material's fluid lookup during a real boot). Postponing to
+    /// postInit
     /// (still before GregTech's own postInit, which `required-after:materiallib` orders after MaterialLib's)
     /// avoids the race unconditionally.
     ///

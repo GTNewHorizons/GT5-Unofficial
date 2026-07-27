@@ -13,7 +13,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
@@ -26,8 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ruling_0.materiallib.api.Family;
@@ -36,7 +33,6 @@ import com.ruling_0.materiallib.api.Shape;
 import com.ruling_0.materiallib.api.ShapeItem;
 import com.ruling_0.materiallib.api.StandardProperties;
 
-import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.GregTechAPI;
@@ -46,7 +42,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
-import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.FluidNames;
@@ -65,9 +62,9 @@ import gregtech.client.iconContainers.blocks.GTBlockIconContainer;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.fluid.GTFluid;
 
-/// Dumps the legacy material systems -- GregTech `Materials`, `OrePrefixes`, and bartworks `Werkstoff` -- plus
-/// the resolved MaterialLib registry view of the `Materials2` port, to JSON, for consumption by the material
-/// unification tooling.
+/// Dumps the legacy material systems -- GregTech `Materials`, `OrePrefixes`, and bartworks-origin materials --
+/// plus the resolved MaterialLib registry view of the `Materials2` port, to JSON, for consumption by the
+/// material unification tooling.
 ///
 /// Triggered from `GTMod`'s `FMLLoadCompleteEvent` handler when the `gt.dumpMaterialData` system property is
 /// set, so a headless server run can produce the dumps non-interactively.
@@ -97,7 +94,6 @@ public final class MaterialDataDump {
         write(new File(directory, "legacy-variants.json"), dumpLegacyVariants());
         write(new File(directory, "fluid-textures.json"), dumpFluidTextures());
         write(new File(directory, "legacy-blocks.json"), dumpLegacyBlocks());
-        write(new File(directory, "werkstoff-fields.json"), dumpWerkstoffFields());
         write(new File(directory, "legacy-name-domain.json"), dumpLegacyNameDomain());
         write(new File(directory, "recipe-census.json"), dumpRecipeCensus(), COMPACT_GSON);
     }
@@ -119,31 +115,6 @@ public final class MaterialDataDump {
             domain.put(entry.getKey(), ml.getName());
         }
         return domain;
-    }
-
-    /// Maps every public static `Werkstoff` field of the pool declaration classes to its werkstoff id -- the
-    /// field-to-id ground truth behind those classes' `byId(...)` initializers, needed because field names do
-    /// not reliably match werkstoff names (e.g. `Bismuthinit` vs "Bismuthinite").
-    private static List<Map<String, Object>> dumpWerkstoffFields() {
-        List<Map<String, Object>> out = new ArrayList<>();
-        Class<?>[] pools = { bartworks.system.material.WerkstoffLoader.class };
-        for (Class<?> pool : pools) {
-            for (java.lang.reflect.Field field : pool.getFields()) {
-                if (field.getType() != Werkstoff.class) continue;
-                if (!java.lang.reflect.Modifier.isStatic(field.getModifiers())) continue;
-                try {
-                    Werkstoff werkstoff = (Werkstoff) field.get(null);
-                    Map<String, Object> json = new LinkedHashMap<>();
-                    json.put("class", pool.getName());
-                    json.put("field", field.getName());
-                    json.put("id", werkstoff != null ? (int) werkstoff.getmID() : null);
-                    out.add(json);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        return out;
     }
 
     private static void write(File file, Object data) {
@@ -456,81 +427,73 @@ public final class MaterialDataDump {
 
     private static List<Map<String, Object>> dumpWerkstoff() {
         List<Map<String, Object>> out = new ArrayList<>();
-        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) out.add(dumpWerkstoff(werkstoff));
+        for (com.ruling_0.materiallib.api.Material material : MaterialLibAPI.getMaterials()) {
+            if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
+            out.add(dumpWerkstoff(material));
+        }
         return out;
     }
 
-    private static Map<String, Object> dumpWerkstoff(Werkstoff werkstoff) {
-        int id = werkstoff.getId();
-        short[] rgba = werkstoff.getRGBA();
-        Werkstoff.Stats stats = werkstoff.getStats();
+    /// One JSON record per MaterialLib material carrying [GTMaterialProperties#WERKSTOFF_IDS], sourced entirely
+    /// from that material's own properties (the same ground truth [#dumpMlMaterial] reads) rather than a live
+    /// bartworks material instance -- `id` from the first [GTMaterialProperties#WERKSTOFF_IDS] entry, `pool`
+    /// bucketed from it by [#werkstoffPool], and `generatedPrefixes` from the pinned
+    /// [GTMaterialProperties#WERKSTOFF_PREFIXES] capture (not re-derived from a live reroute loop, avoiding the
+    /// staleness the legacy dump had to guard against). `additionalOredict`, `sublimation`,
+    /// `durabilityModifier` and `enchantmentLevel` have no surviving property and are dropped.
+    private static Map<String, Object> dumpWerkstoff(com.ruling_0.materiallib.api.Material material) {
+        int id = Materials2WerkstoffIndex.idOf(material);
+        short[] rgba = MU.rgba(material);
+        TextureSet texSet = MU.iconSet(material);
 
         Map<String, Object> json = new LinkedHashMap<>();
         json.put("id", id);
-        json.put("name", werkstoff.getDefaultName());
-        json.put("varName", werkstoff.getVarName());
-        json.put("rgb", new int[] { rgba[0], rgba[1], rgba[2] });
-        json.put("texSet", werkstoff.getTexSet() != null ? werkstoff.getTexSet().mSetName : null);
-        json.put(
-            "type",
-            werkstoff.getType()
-                .name());
+        json.put("name", material.getProperty(GTMaterialProperties.LOCAL_NAME));
+        json.put("varName", MU.internalName(material));
+        json.put("rgb", rgba != null ? new int[] { rgba[0], rgba[1], rgba[2] } : null);
+        json.put("texSet", texSet != null ? texSet.mSetName : null);
+        json.put("type", material.getProperty(GTMaterialProperties.WERKSTOFF_TYPE));
         json.put("pool", werkstoffPool(id));
-        json.put("meltingPoint", stats.getMeltingPoint());
-        json.put("boilingPoint", stats.getBoilingPoint());
-        json.put("protons", stats.getProtons());
-        json.put("neutrons", stats.getNeutrons());
-        json.put("mass", stats.getMass());
-        json.put("meltingVoltage", stats.getMeltingVoltage());
-        json.put("durability", stats.getDurOverride());
-        json.put("speed", stats.getSpeedOverride());
-        json.put("quality", stats.getQualityOverride());
-        json.put("sublimation", stats.isSublimation());
-        json.put("toxic", stats.isToxic());
-        json.put("radioactive", stats.isRadioactive());
-        json.put("blastFurnace", stats.isBlastFurnace());
-        json.put("elektrolysis", stats.isElektrolysis());
-        json.put("centrifuge", stats.isCentrifuge());
-        json.put("gas", stats.isGas());
-        json.put("contents", dumpWerkstoffContents(werkstoff));
-        json.put("oreByProducts", dumpWerkstoffOreByProducts(werkstoff));
-        json.put("generatedPrefixes", dumpWerkstoffGeneratedPrefixes(werkstoff));
-
-        Werkstoff.GenerationFeatures features = werkstoff.getGenerationFeatures();
-        json.put("enforceUnification", features.enforceUnification);
-        json.put("chemicalRecipes", features.hasChemicalRecipes());
-        json.put("metalCraftingSolidifierRecipes", features.hasMetalCraftingSolidifierRecipes());
-        json.put("metalSolidifierRecipes", features.hasMetaSolidifierRecipes());
-        json.put("mixerRecipes", features.hasMixerRecipes());
-        json.put("sifterRecipes", features.hasSifterRecipes());
-        json.put("mixCircuit", features.mixCircuit);
-        json.put("ebfGasTimeMultiplier", stats.getEbfGasRecipeTimeMultiplier());
-        json.put("ebfGasAmountMultiplier", stats.getEbfGasRecipeConsumedAmountMultiplier());
-        json.put("durabilityModifier", stats.getDurMod());
-        json.put("enchantmentLevel", stats.getEnchantmentlvl());
-        json.put("autoBlastFurnaceRecipes", stats.autoGenerateBlastFurnaceRecipes());
-        json.put("autoVacuumFreezerRecipes", stats.autoGenerateVacuumFreezerRecipes());
+        json.put("meltingPoint", material.getProperty(GTMaterialProperties.MELTING_POINT));
+        json.put("boilingPoint", material.getProperty(GTMaterialProperties.BOILING_POINT));
+        json.put("protons", MU.protons(material));
+        json.put("neutrons", MU.neutrons(material));
+        json.put("mass", MU.mass(material));
+        json.put("meltingVoltage", material.getProperty(GTMaterialProperties.MELTING_VOLTAGE));
+        json.put("durability", material.getProperty(GTMaterialProperties.DURABILITY));
+        json.put("speed", material.getProperty(GTMaterialProperties.TOOL_SPEED));
+        json.put("quality", material.getProperty(GTMaterialProperties.TOOL_QUALITY));
+        json.put("toxic", material.getProperty(GTMaterialProperties.TOXIC));
+        json.put("radioactive", material.getProperty(GTMaterialProperties.IS_RADIOACTIVE));
+        json.put("blastFurnace", material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
+        json.put("elektrolysis", material.getProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE));
+        json.put("centrifuge", material.getProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE));
+        json.put("gas", material.getProperty(GTMaterialProperties.HAS_GAS));
+        json.put("contents", dumpMlMaterialRefStacks(material.getProperty(GTMaterialProperties.COMPOSITION)));
+        json.put("oreByProducts", dumpMlMaterialRefNames(material.getProperty(GTMaterialProperties.ORE_BYPRODUCTS)));
+        json.put("generatedPrefixes", orEmpty(material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES)));
+        json.put("enforceUnification", material.getProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION));
+        json.put("chemicalRecipes", material.getProperty(GTMaterialProperties.HAS_CHEMICAL_RECIPE));
         json.put(
-            "additionalOredict",
-            werkstoff.getAdditionalOredict()
-                .stream()
-                .sorted()
-                .collect(Collectors.toList()));
-        json.put(
-            "subTags",
-            werkstoff.getExplicitSubTags()
-                .stream()
-                .map(tag -> tag.mName)
-                .sorted()
-                .collect(Collectors.toList()));
-        json.put("formula", werkstoff.getFormulaTooltip());
-        json.put("formulaLocalized", werkstoff.isFormulaNeededLocalized());
+            "metalCraftingSolidifierRecipes",
+            material.getProperty(GTMaterialProperties.HAS_METAL_CRAFTING_SOLIDIFIER_RECIPE));
+        json.put("metalSolidifierRecipes", material.getProperty(GTMaterialProperties.HAS_METAL_SOLIDIFIER_RECIPE));
+        json.put("mixerRecipes", material.getProperty(GTMaterialProperties.HAS_MIXER_RECIPE));
+        json.put("sifterRecipes", material.getProperty(GTMaterialProperties.HAS_SIFTER_RECIPE));
+        json.put("mixCircuit", material.getProperty(GTMaterialProperties.MIX_CIRCUIT));
+        json.put("ebfGasTimeMultiplier", material.getProperty(GTMaterialProperties.EBF_GAS_TIME_MULTIPLIER));
+        json.put("ebfGasAmountMultiplier", material.getProperty(GTMaterialProperties.EBF_GAS_AMOUNT_MULTIPLIER));
+        json.put("autoBlastFurnaceRecipes", material.getProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES));
+        json.put("autoVacuumFreezerRecipes", material.getProperty(GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES));
+        json.put("subTags", orEmpty(material.getProperty(GTMaterialProperties.SUB_TAGS)));
+        json.put("formula", material.getProperty(GTMaterialProperties.FORMULA));
+        json.put("formulaLocalized", material.getProperty(GTMaterialProperties.FORMULA_LOCALIZED));
         return json;
     }
 
-    /// Buckets a `Werkstoff` id into its owning pool by id range. The 11500..11599 block belongs to bartworks
-    /// (`WerkstoffLoader` declares 11500-11503 directly, past the gtnhlanth block); ids outside every known
-    /// range fall back to `"unknown"`.
+    /// Buckets a legacy werkstoff id into its owning pool by id range. The 11500..11599 block belongs to
+    /// bartworks (`WerkstoffLoader` declares 11500-11503 directly, past the gtnhlanth block); ids outside every
+    /// known range fall back to `"unknown"`.
     private static String werkstoffPool(int id) {
         if (id > 31765) return "gt-bridge-proxy";
         if (id >= 29900 && id <= 29999) return "gtnhlanth-bot";
@@ -539,52 +502,6 @@ public final class MaterialDataDump {
         if (id >= 10001 && id <= 10999) return "goodgenerator";
         if (id >= 1 && id <= 9999) return "bartworks";
         return "unknown";
-    }
-
-    private static List<Map<String, Object>> dumpWerkstoffContents(Werkstoff werkstoff) {
-        List<Map<String, Object>> out = new ArrayList<>();
-        for (Pair<ISubTagContainer, Integer> entry : werkstoff.getContents()
-            .getValue()) {
-            ISubTagContainer key = entry.getKey();
-            Map<String, Object> json = new LinkedHashMap<>();
-            if (key instanceof Materials material) {
-                json.put("name", material.mName);
-                json.put("kind", "material");
-            } else if (key instanceof Werkstoff other) {
-                json.put("name", other.getDefaultName());
-                json.put("kind", "werkstoff");
-            } else {
-                json.put("name", String.valueOf(key));
-                json.put("kind", "unknown");
-            }
-            json.put("amount", entry.getValue());
-            out.add(json);
-        }
-        return out;
-    }
-
-    private static List<String> dumpWerkstoffOreByProducts(Werkstoff werkstoff) {
-        List<String> out = new ArrayList<>();
-        for (int i = 0; i < werkstoff.getNoOfByProducts(); i++) {
-            ISubTagContainer byProduct = werkstoff.getOreByProductRaw(i);
-            if (byProduct instanceof Materials material) out.add(material.mName);
-            else if (byProduct instanceof Werkstoff other) out.add(other.getDefaultName());
-        }
-        return out;
-    }
-
-    /// PINNED-CAPTURE TRAP: the committed `scripts/mu/dumps/werkstoff.json` is a pre-reconstruction capture and
-    /// must not be refreshed from a post-fold boot. `hasItemType` reflects `addItemsForGeneration`'s reroute
-    /// loop, which removes any prefix whose item the oredict already provides -- on a post-fold tree that
-    /// includes MaterialLib's own unified shapes (generated FROM this dump), so a refresh would shrink the
-    /// ground truth toward whatever is already ported. The pinned capture is the reroute result under
-    /// legacy-only conditions, i.e. what bartworks actually generated.
-    private static List<String> dumpWerkstoffGeneratedPrefixes(Werkstoff werkstoff) {
-        List<String> out = new ArrayList<>();
-        for (OrePrefixes prefix : OrePrefixes.VALUES) {
-            if (werkstoff.hasItemType(prefix)) out.add(prefix.getName());
-        }
-        return out;
     }
 
     // endregion
