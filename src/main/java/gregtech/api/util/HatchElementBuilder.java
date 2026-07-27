@@ -94,7 +94,7 @@ public class HatchElementBuilder<T> {
                 .get()).hatchItemFilter(obj -> is -> {
                     IMetaTileEntity tile = ItemMachines.getMetaTileEntity(is);
                     return tile != null && Arrays.stream(elements)
-                        .anyMatch(e -> e.matchesHatch(tile));
+                        .anyMatch(e -> !e.mteBlacklist().contains(tile.getClass()) && e.matchesHatch(tile));
                 })
                     .shouldSkip(
                         (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c,
