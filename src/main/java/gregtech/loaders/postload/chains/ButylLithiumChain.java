@@ -55,6 +55,16 @@ public class ButylLithiumChain {
             .duration(30 * SECONDS)
             .addTo(chemicalBathRecipes);
 
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.NefariousOil.getFluid(5000L), Materials.nButylChlorideMixture.getFluid(1000L))
+            .fluidOutputs(
+                Materials.nButylChloridePurified.getFluid(4000L),
+                Materials.PhosphoricAcidMixture.getFluid(2000L))
+            .circuit(1)
+            .eut(TierEU.RECIPE_LuV)
+            .duration(15 * SECONDS)
+            .addTo(chemicalBathRecipes);
+
         // dehydrate
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.nButylChloridePurified.getFluid(1000L))
