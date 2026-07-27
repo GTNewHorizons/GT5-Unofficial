@@ -7,9 +7,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
+import gregtech.api.material.MU;
+import gregtech.api.material.MaterialFormulas;
+import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 
 public class BWItemMetaGeneratedOre extends ItemBlock {
@@ -43,15 +49,15 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
     public String getItemStackDisplayName(ItemStack stack) {
         int meta = stack.getItemDamage();
 
-        Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) meta);
+        Material material = Materials2WerkstoffIndex.get(meta);
 
-        if (werkstoff == null) {
+        if (material == null) {
             return blockOre.getPrefix()
                 .getLocalizedNameForItem(Materials._NULL.getInternalName());
         }
 
         return blockOre.getPrefix()
-            .getLocalizedNameForItem(werkstoff.getInternalName());
+            .getLocalizedNameForItem(MU.internalName(material));
     }
 
     @Override
@@ -61,10 +67,11 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
         }
         int meta = stack.getItemDamage();
 
-        Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) meta);
+        Material material = Materials2WerkstoffIndex.get(meta);
 
-        if (werkstoff != null) {
-            werkstoff.addTooltips(desc);
+        if (material != null) {
+            String formula = MaterialFormulas.forSearch(material);
+            if (GTUtility.isStringValid(formula)) desc.add(formula);
         }
     }
 }

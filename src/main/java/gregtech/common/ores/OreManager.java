@@ -85,7 +85,7 @@ public final class OreManager {
         return null;
     }
 
-    /// `material` is a legacy-family material object (`Materials`/`Werkstoff`/gtPlusPlus `Material`) or a
+    /// `material` is a legacy-family material object (`Materials`/gtPlusPlus `Material`) or a
     /// MaterialLib [Material], which is first resolved to the family object owning its ore behavior via
     /// [MU#legacyMaterialOf] -- the adapters dispatch on the family type.
     public static boolean setOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone, Object material,
@@ -216,8 +216,9 @@ public final class OreManager {
         return getMaterial(itemBlock.field_150939_a, Items.feather.getDamage(stack));
     }
 
-    /// The legacy-family material object (`Materials`, `Werkstoff`, or gtPlusPlus `Material`) that owns the ore
-    /// at this block+meta, or null. The GT family's [OreInfo#material] is a MaterialLib [Material], so it is
+    /// The legacy-family material object (`Materials`, a MaterialLib [Material], or gtPlusPlus `Material`) that
+    /// owns the ore at this block+meta, or null. The GT family's [OreInfo#material] is a MaterialLib [Material], so it
+    /// is
     /// mapped back to its legacy family object via [MU#legacyMaterialOf]; callers that compare this against the
     /// worldgen spine's own [MU#legacyMaterialOf]-derived values (the NEI ore-vein tables, prospecting) keep
     /// matching by identity.

@@ -56,7 +56,7 @@ public class GTMaterialProperties {
     public static final Property<Integer> FUEL_POWER = Property.of("gregtech", "fuelPower");
     public static final Property<Integer> FUEL_TYPE = Property.of("gregtech", "fuelType");
     /// The single chemical-formula display string [MaterialFormulas] resolves, whichever legacy system
-    /// sourced it: a werkstoff-backed material carries its `Werkstoff` formula-tooltip string (it beat any
+    /// sourced it: a werkstoff-backed material carries its own bartworks formula-tooltip string (it beat any
     /// same-name gtpp value), a gregtech-dumped material the `Materials#mChemicalFormula` override its legacy
     /// declaration set explicitly (see [gregtech.api.enums.materials2.Materials2Formulas], which also beat
     /// any same-name gtpp value), and a remaining gtpp material its `Material#vChemicalFormula` as displayed
@@ -66,7 +66,7 @@ public class GTMaterialProperties {
     /// [LegacyMaterials] reproduces that derivation unconditionally.
     public static final Property<String> FORMULA = Property.of("gregtech", "formula");
     /// Whether [#FORMULA] is a `GTLanguageManager` localization key rather than literal text (the legacy
-    /// `setChemicalFormula` localized overload / `Werkstoff#isFormulaNeededLocalized`).
+    /// `setChemicalFormula` localized overload / the bartworks material's own localized-formula flag).
     public static final Property<Boolean> FORMULA_LOCALIZED = Property.of("gregtech", "formulaLocalized");
     public static final Property<EnumSet<GTMaterialGenerationFlag>> GENERATION_FLAGS = Property
         .of("gregtech", "generationFlags");
@@ -80,7 +80,7 @@ public class GTMaterialProperties {
     public static final Property<Boolean> HAS_CORRESPONDING_GAS = Property.of("gregtech", "hasCorrespondingGas");
     public static final Property<Boolean> HAS_ELECTROLYZER_RECIPE = Property.of("gregtech", "hasElectrolyzerRecipe");
     /// Whether this material registers a gas-state fluid (the legacy `Materials#mHasGas`/bartworks
-    /// `Werkstoff.Stats#isGas`), read by the werkstoff facade's fluid-registration-temperature formula and
+    /// material's own gas-state flag), read by the werkstoff facade's fluid-registration-temperature formula and
     /// composition-decomposition item-vs-fluid split. Distinct from [#HAS_CORRESPONDING_GAS], which every
     /// cell-bearing werkstoff carries unconditionally for a different purpose (the bridge `Materials#mGas`
     /// mirror) and is not gated on this.
@@ -108,7 +108,7 @@ public class GTMaterialProperties {
     /// `gregtech.loaders.materialrecipes.LoaderSifterRecipes`.
     public static final Property<Boolean> HAS_SIFTER_RECIPE = Property.of("gregtech", "hasSifterRecipe");
     public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "heatDamage");
-    /// Whether the material is radioactive, unifying the legacy `Werkstoff.Stats.isRadioactive` and
+    /// Whether the material is radioactive, unifying the legacy bartworks material's own radioactivity flag and
     /// `Material.isRadioactive`.
     public static final Property<Boolean> IS_RADIOACTIVE = Property.of("gregtech", "isRadioactive");
     /// The gtPlusPlus-originated scalar data of a material, decomposed into individual keys rather than kept
@@ -168,7 +168,7 @@ public class GTMaterialProperties {
     public static final Property<Integer> SMELTING_MULTIPLIER = Property.of("gregtech", "smeltingMultiplier");
     public static final Property<Float> STEAM_MULTIPLIER = Property.of("gregtech", "steamMultiplier");
     /// The explicitly-added `SubTag` names (contents-derived tags stay dynamic), elided when empty. From the
-    /// legacy bartworks `Werkstoff` `SUBTAGS`, consulted broadly by recipe-gen/tooltip logic gating on a
+    /// legacy bartworks material's own `SUBTAGS`, consulted broadly by recipe-gen/tooltip logic gating on a
     /// material's kind (gas-type gating, no-blast gating, etc.).
     public static final Property<List<String>> SUB_TAGS = Property.of("gregtech", "subTags");
     /// The legacy `Material.vTier`; no gregtech equivalent. Elided when `0`. Read by the Forestry bee-drop
@@ -178,8 +178,8 @@ public class GTMaterialProperties {
     public static final Property<Integer> TOOL_ENCHANTMENT_LEVEL = Property.of("gregtech", "toolEnchantmentLevel");
     public static final Property<Integer> TOOL_QUALITY = Property.of("gregtech", "toolQuality");
     public static final Property<Float> TOOL_SPEED = Property.of("gregtech", "toolSpeed");
-    /// Whether the material poisons the carrier of an item/block made from it, from the legacy
-    /// `Werkstoff.Stats.isToxic`.
+    /// Whether the material poisons the carrier of an item/block made from it, from the legacy bartworks
+    /// material's own toxicity flag.
     public static final Property<Boolean> TOXIC = Property.of("gregtech", "toxic");
     public static final Property<Boolean> UNIFIABLE = Property.of("gregtech", "unifiable");
     /// Whether item resolution should skip [gregtech.api.util.GTOreDictUnificator]'s existing association and
@@ -194,7 +194,7 @@ public class GTMaterialProperties {
     /// The legacy `Material.vVoltageMultiplier`; no gregtech equivalent. Elided when `16` (the value every
     /// tier-0 material carries).
     public static final Property<Long> VOLTAGE_MULTIPLIER = Property.of("gregtech", "voltageMultiplier");
-    /// The bartworks-side data of a material that originated as (or merged with) a legacy `Werkstoff`,
+    /// The bartworks-side data of a material that originated as (or merged with) a legacy bartworks material,
     /// decomposed into individual keys rather than kept in one composite property so a reader needing a single
     /// value does not depend on the whole record shape.
     ///
@@ -206,15 +206,15 @@ public class GTMaterialProperties {
     /// and gtPlusPlus families.
     public static final Property<List<Integer>> WERKSTOFF_IDS = Property.of("gregtech", "werkstoffIds");
     /// The declaring pool identifier (`WerkstoffLoader`/`GGMaterial`/`WerkstoffMaterialPool`/
-    /// `BotWerkstoffMaterialPool`/...), consulted by reconstruction's `ownerOf` for the legacy
-    /// `Werkstoff#getOwner` attribution.
+    /// `BotWerkstoffMaterialPool`/...), consulted by reconstruction's `ownerOf` for the legacy bartworks
+    /// material's own owner attribution.
     public static final Property<String> WERKSTOFF_POOL = Property.of("gregtech", "werkstoffPool");
     /// The dumped `generatedPrefixes` ground truth (every `OrePrefixes` name `hasItemType` reported), minus
     /// `sheetmetal`/`frameGt`: those two cut over to MaterialLib shapes through
     /// [gregtech.api.enums.materials2.Materials2PipeMaterials]'s own declared array rather than through this
     /// property, so they never appear here. Elided when empty.
     public static final Property<List<String>> WERKSTOFF_PREFIXES = Property.of("gregtech", "werkstoffPrefixes");
-    /// The `Werkstoff.Types` enum constant name.
+    /// The legacy bartworks material-type enum constant name.
     public static final Property<String> WERKSTOFF_TYPE = Property.of("gregtech", "werkstoffType");
 
     private GTMaterialProperties() {}

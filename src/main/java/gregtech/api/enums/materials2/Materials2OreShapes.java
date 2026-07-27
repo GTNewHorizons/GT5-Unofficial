@@ -177,7 +177,7 @@ public class Materials2OreShapes {
         return false;
     }
 
-    /// Whether `material` was reconstructed from a bartworks `Werkstoff` -- both [GTOreAdapter] and
+    /// Whether `material` was reconstructed from a bartworks material -- both [GTOreAdapter] and
     /// [BWOreAdapter] can resolve *a* [gregtech.api.enums.Materials] for any material sharing this shape (every
     /// werkstoff also owns a legacy bridge `Materials` instance, see `BridgeMaterialsLoader`), so the drop/
     /// harvest-level hooks above dispatch on this property instead of "which adapter resolves it" to route each

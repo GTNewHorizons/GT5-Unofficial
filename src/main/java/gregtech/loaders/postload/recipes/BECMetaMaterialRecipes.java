@@ -10,7 +10,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.Material;
 
-import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -40,14 +39,14 @@ public class BECMetaMaterialRecipes implements Runnable {
 
     private static final Material[] other3Tier = { Materials2Materials.protohalkonite, Materials2Materials.Hexanite,
         Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter };
-    private static final Object[] black3Tier = { Materials2Materials.Tairitsu, Materials2Materials.TranscendentMetal,
+    private static final Material[] black3Tier = { Materials2Materials.Tairitsu, Materials2Materials.TranscendentMetal,
         Materials2Materials.BlackDwarfMatter };
     private static final Material[] gray3Tier = { Materials2Materials.Churitsu, Materials2Materials.SpaceTime,
         Materials2Materials.Eternity };
     private static final Material[] white3Tier = { Materials2Materials.Shijima, Materials2Materials.WhiteDwarfMatter,
         Materials2Materials.Magmatter };
 
-    private static final Object[] black4Tier = { Materials2Materials.Tairitsu, Materials2Materials.Hypogen,
+    private static final Material[] black4Tier = { Materials2Materials.Tairitsu, Materials2Materials.Hypogen,
         Materials2Materials.Shirabon, Materials2Materials.SpaceTime };
     private static final Material[] gray4Tier = { Materials2Materials.Churitsu, Materials2Materials.WhiteDwarfMatter,
         Materials2Materials.BlackDwarfMatter, Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter };
@@ -272,41 +271,27 @@ public class BECMetaMaterialRecipes implements Runnable {
             .addTo(TecTechRecipeMaps.condensateAssemblingRecipes);
     }
 
-    // Material-type adapters: Werkstoff / MaterialLib Material
-
-    private static ItemStack platePart(Object material, int amount) {
-        if (material instanceof Werkstoff w) return w.get(OrePrefixes.plate, amount);
-        if (material instanceof Material m) return GTOreDictUnificator.get(OrePrefixes.plate, m, amount);
-        throw new IllegalArgumentException("Unsupported material kind: " + material);
+    private static ItemStack platePart(Material material, int amount) {
+        return GTOreDictUnificator.get(OrePrefixes.plate, material, amount);
     }
 
-    private static ItemStack foilPart(Object material, int amount) {
-        if (material instanceof Werkstoff w) return w.get(OrePrefixes.foil, amount);
-        if (material instanceof Material m) return GTOreDictUnificator.get(OrePrefixes.foil, m, amount);
-        throw new IllegalArgumentException("Unsupported material kind: " + material);
+    private static ItemStack foilPart(Material material, int amount) {
+        return GTOreDictUnificator.get(OrePrefixes.foil, material, amount);
     }
 
-    private static ItemStack fineWirePart(Object material, int amount) {
-        if (material instanceof Werkstoff w) return w.get(OrePrefixes.wireFine, amount);
-        if (material instanceof Material m) return GTOreDictUnificator.get(OrePrefixes.wireFine, m, amount);
-        throw new IllegalArgumentException("Unsupported material kind: " + material);
+    private static ItemStack fineWirePart(Material material, int amount) {
+        return GTOreDictUnificator.get(OrePrefixes.wireFine, material, amount);
     }
 
-    private static ItemStack ringPart(Object material, int amount) {
-        if (material instanceof Werkstoff w) return w.get(OrePrefixes.ring, amount);
-        if (material instanceof Material m) return GTOreDictUnificator.get(OrePrefixes.ring, m, amount);
-        throw new IllegalArgumentException("Unsupported material kind: " + material);
+    private static ItemStack ringPart(Material material, int amount) {
+        return GTOreDictUnificator.get(OrePrefixes.ring, material, amount);
     }
 
-    private static ItemStack rodPart(Object material, int amount) {
-        if (material instanceof Werkstoff w) return w.get(OrePrefixes.stick, amount);
-        if (material instanceof Material m) return GTOreDictUnificator.get(OrePrefixes.stick, m, amount);
-        throw new IllegalArgumentException("Unsupported material kind: " + material);
+    private static ItemStack rodPart(Material material, int amount) {
+        return GTOreDictUnificator.get(OrePrefixes.stick, material, amount);
     }
 
-    private static ItemStack longRodPart(Object material, int amount) {
-        if (material instanceof Werkstoff w) return w.get(OrePrefixes.stickLong, amount);
-        if (material instanceof Material m) return GTOreDictUnificator.get(OrePrefixes.stickLong, m, amount);
-        throw new IllegalArgumentException("Unsupported material kind: " + material);
+    private static ItemStack longRodPart(Material material, int amount) {
+        return GTOreDictUnificator.get(OrePrefixes.stickLong, material, amount);
     }
 }

@@ -43,7 +43,7 @@ import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 
-/// The MaterialLib-keyed [IOreAdapter] for bartworks' legacy `Werkstoff` ore family: worldgen, mining,
+/// The MaterialLib-keyed [IOreAdapter] for bartworks' legacy ore family: worldgen, mining,
 /// prospecting, and the void miner place and read BW ore blocks through this singleton (via [OreManager], never
 /// [BWMetaGeneratedOres] or MaterialLib directly), mirroring [GTOreAdapter]'s port of the same pattern for GT's
 /// own ores. A legacy `bw.blockores*`/`bw.blockoresTE` meta resolves to its MaterialLib material through

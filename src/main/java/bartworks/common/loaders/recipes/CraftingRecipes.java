@@ -33,7 +33,6 @@ import bartworks.common.tileentities.multis.MTEManualTrafo;
 import bartworks.common.tileentities.multis.MTEWindmill;
 import bartworks.common.tileentities.tiered.MTEBioLab;
 import bartworks.common.tileentities.tiered.MTERadioHatch;
-import bartworks.system.material.Werkstoff;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.CircuitComponents;
 import gregtech.api.enums.Circuits;
@@ -65,7 +64,7 @@ public class CraftingRecipes implements Runnable {
             Materials2Materials.NaquadahAlloy // UV
         };
 
-        Object[] hulls = { // Plate material used in the acid gen, diode and energy distributor below
+        Material[] hulls = { // Plate material used in the acid gen, diode and energy distributor below
             Materials2Materials.CastIron, // ULV
             Materials2Materials.Steel, // LV
             Materials2Materials.Aluminium, // MV
@@ -170,9 +169,7 @@ public class CraftingRecipes implements Runnable {
         for (int i = 0; i < 9; i++) {
             try {
                 Material cable = cables[i];
-                ItemStack hull = hulls[i] instanceof Material hullMaterial
-                    ? GTOreDictUnificator.get(OrePrefixes.plate, hullMaterial, 1L)
-                    : ((Werkstoff) hulls[i]).get(OrePrefixes.plate);
+                ItemStack hull = GTOreDictUnificator.get(OrePrefixes.plate, hulls[i], 1L);
                 ItemStack machinehull = ItemList.MACHINE_HULLS[i].get(1L);
 
                 GTModHandler.addCraftingRecipe(

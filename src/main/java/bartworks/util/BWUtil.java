@@ -45,7 +45,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import bartworks.API.BorosilicateGlass;
 import bartworks.MainMod;
-import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -66,12 +65,6 @@ public class BWUtil {
 
     @Deprecated
     public static final int CLEANROOM = -200;
-
-    public static int calculateRecipeEU(Werkstoff werkstoff, int defaultRecipeEUPerTick) {
-        int tier = werkstoff.getStats()
-            .getProcessingMaterialTierEU();
-        return tier == 0 ? defaultRecipeEUPerTick : tier;
-    }
 
     public static int calculateRecipeEU(Material material, int defaultRecipeEUPerTick) {
         Integer tier = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);

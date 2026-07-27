@@ -64,7 +64,7 @@ public interface IGTRegisteredFluid {
 
     IGTRegisteredFluid addLocalizedName();
 
-    /// `material` is a legacy-family material object (`Materials`/`Werkstoff`) or a MaterialLib material,
+    /// `material` is a legacy-family material object (`Materials`) or a MaterialLib material,
     /// dispatched through `MU`'s union helpers.
     IGTRegisteredFluid addLocalizedName(final Object material);
 

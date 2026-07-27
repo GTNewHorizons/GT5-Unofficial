@@ -13,7 +13,7 @@ import gregtech.api.util.CustomGlyphs;
 /// material whose legacy `Materials#mChemicalFormula` was a real formula -- the explicit `MaterialsInit`
 /// overrides verbatim (cross-material concatenations flattened to the literal the legacy loader computed,
 /// [GTMaterialProperties#FORMULA_LOCALIZED] added where the legacy call used its localized overload), every
-/// other material's constructor-derived string as pinned data. Werkstoff-backed and gtpp-only materials
+/// other material's constructor-derived string as pinned data. Bartworks-backed and gtpp-only materials
 /// carry no entry here: their [GTMaterialProperties#FORMULA] lines live in [Materials2Materials] alongside
 /// the rest of their declaration. Kept separate from [Materials2Materials] so its hand-maintained
 /// declaration blocks stay uncluttered by ~1200 formula lines.

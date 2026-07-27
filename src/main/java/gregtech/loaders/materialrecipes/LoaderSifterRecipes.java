@@ -30,7 +30,8 @@ import gregtech.api.util.GTLog;
 ///
 /// [gregtech.loaders.oreprocessing.ProcessingGem] separately generates a compressor recipe for every gem
 /// material through the shape-consumer path ([gregtech.loaders.shapeconsumers.ConsumerGem]) except RockSalt,
-/// Salt, and Spodumene ("handled by Werkstoff loader"). This loader registers the compressor recipe for every
+/// Salt, and Spodumene ("handled by the bartworks recipe loaders"). This loader registers the compressor recipe for
+/// every
 /// carrier uniformly, so for [#CARRIERS] other than RockSalt it is a second, redundant source of the same
 /// recipe; recipe maps tolerate the duplicate entry.
 ///

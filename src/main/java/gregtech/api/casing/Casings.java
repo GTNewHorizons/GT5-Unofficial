@@ -666,12 +666,13 @@ public enum Casings implements ICasing {
     // ------------------ Bartworks Casings -----------------
 
     // spotless:off
-    // These four materials are ordinary GT Materials, not werkstoffe -- BW's legacy casing generation was
-    // Werkstoff-keyed, so BWGTMaterialReference bridged each one through a proxy Werkstoff (id 31766+N, see its
-    // source) purely to hook it into that system. The proxies were never ported to MaterialLib (see
-    // gen_materials.py's PROXY handling); the corresponding gregtech Materials/MaterialLib material carries the
-    // casing shape membership instead (added directly to it at codegen time), so #bwCasing resolves through
-    // MU#material the same way GTOreAdapter resolves any other GT material, not through WerkstoffReconstruction.
+    // These four materials are ordinary GT Materials, not bartworks-declared ones -- BW's legacy casing
+    // generation was keyed by its own material type, so BWGTMaterialReference bridged each one through a proxy
+    // of that type (id 31766+N, see its source) purely to hook it into that system. The proxies were never
+    // ported to MaterialLib (see gen_materials.py's PROXY handling); the corresponding gregtech Materials/
+    // MaterialLib material carries the casing shape membership instead (added directly to it at codegen time),
+    // so #bwCasing resolves through MU#material the same way GTOreAdapter resolves any other GT material, not
+    // through WerkstoffReconstruction.
     // The block/meta constructor args below are unused (both accessors are overridden to resolve dynamically --
     // see #bwCasing's javadoc); they're kept as the legacy proxy werkstoff id purely so the pair stays readable
     // next to the textureId, which is unaffected by the cutover and keeps its legacy raw-id value.

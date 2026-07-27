@@ -23,8 +23,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.Werkstoff;
-import bartworks.system.material.WerkstoffReconstruction;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
@@ -592,10 +590,12 @@ public class EyeOfHarmonyRecipe {
     public static void processHelperIfPossible(HashMapHelper outputMap, Object material, double mainMultiplier,
         double probability) {
         if (material instanceof Materials gtMat) processHelper(outputMap, gtMat, mainMultiplier, probability);
-        else if (material instanceof Werkstoff bwMat)
-            processHelper(outputMap, WerkstoffReconstruction.materialLibOf(bwMat), mainMultiplier, probability);
-        else if (material instanceof com.ruling_0.materiallib.api.Material gtppMat) {
-            processHelperGTpp(outputMap, gtppMat, mainMultiplier, probability);
+        else if (material instanceof com.ruling_0.materiallib.api.Material ml) {
+            if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
+                processHelper(outputMap, ml, mainMultiplier, probability);
+            } else {
+                processHelperGTpp(outputMap, ml, mainMultiplier, probability);
+            }
         }
     }
 
