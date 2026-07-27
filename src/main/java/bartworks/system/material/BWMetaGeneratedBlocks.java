@@ -13,7 +13,7 @@
 
 package bartworks.system.material;
 
-import static bartworks.system.material.BWMetaGeneratedItems.metaTab;
+import static bartworks.system.material.BWMetaGeneratedOres.ORE_TAB;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,7 +52,7 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
         this.setHardness(5.0F);
         this.setResistance(5.0F);
         this.setBlockTextureName("stone");
-        this.setCreativeTab(metaTab);
+        this.setCreativeTab(ORE_TAB);
         this.prefix = types;
         Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
     }
