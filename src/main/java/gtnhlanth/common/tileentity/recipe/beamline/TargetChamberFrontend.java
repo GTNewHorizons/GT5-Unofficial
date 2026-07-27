@@ -13,6 +13,9 @@ import gregtech.nei.RecipeDisplayInfo;
 
 public class TargetChamberFrontend extends RecipeMapFrontend {
 
+    // Target Chamber recipes are always single-amp, so Usage == Voltage; only the Usage line is shown.
+    private static final int AMPERAGE = 1;
+
     public TargetChamberFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
@@ -34,15 +37,20 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
         // recipeInfo.drawText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
 
         recipeInfo.drawText(getEUtDisplay(recipeInfo.calculator));
-        recipeInfo.drawText(getVoltageString(recipeInfo.calculator));
+        if (AMPERAGE != 1) {
+            recipeInfo.drawText(getVoltageString(recipeInfo.calculator));
+        }
         recipeInfo.drawText(getAmperageString(recipeInfo.calculator));
 
     }
 
     // todo: use an OverclockDescriber here
     private String getEUtDisplay(OverclockCalculator calculator) {
+        String tier = AMPERAGE == 1
+            ? GTUtility.getTierNameWithParentheses(computeVoltageForEURate(calculator.getConsumption()))
+            : "";
         return StatCollector
-            .translateToLocalFormatted("GT5U.nei.display.usage", formatNumber(calculator.getConsumption()), "");
+            .translateToLocalFormatted("GT5U.nei.display.usage", formatNumber(calculator.getConsumption()), tier);
     }
 
     private String getVoltageString(OverclockCalculator calculator) {
@@ -58,7 +66,7 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
     }
 
     private String getAmperageString(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", formatNumber(1));
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", formatNumber(AMPERAGE));
     }
 
 }
