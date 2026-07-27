@@ -55,7 +55,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.BWGTMaterialReference;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Circuits;
@@ -204,7 +203,7 @@ public class RecipeLoader {
         // Accelerator Electrode Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
-                BWGTMaterialReference.Silver.get(blockCasingAdvanced, 1),
+                MU.stack(blockCasingAdvanced, Materials2Materials.Silver, 1),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Materials.Silver, 12),
                 MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.plateDense, 6))
             .circuit(6)

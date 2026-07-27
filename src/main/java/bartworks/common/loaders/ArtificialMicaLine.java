@@ -14,7 +14,6 @@ import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.BWGTMaterialReference;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -185,7 +184,9 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.RawFluorophlogopite, 27))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.dust, 1))
-            .fluidInputs(BWGTMaterialReference.Magnesia.getMolten(5 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Magnesia, Materials2FluidShapes.fluidMolten, (int) (5 * INGOTS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.UnformedFluorophlogopite,

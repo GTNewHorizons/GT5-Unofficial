@@ -464,7 +464,6 @@ public final class MaterialDataDump {
         int id = werkstoff.getId();
         short[] rgba = werkstoff.getRGBA();
         Werkstoff.Stats stats = werkstoff.getStats();
-        com.ruling_0.materiallib.api.Material bridge = werkstoff.getBridgeMaterial();
 
         Map<String, Object> json = new LinkedHashMap<>();
         json.put("id", id);
@@ -477,8 +476,6 @@ public final class MaterialDataDump {
             werkstoff.getType()
                 .name());
         json.put("pool", werkstoffPool(id));
-        json.put("isProxy", stats.isProxy());
-        json.put("bridgeMaterial", bridge != null ? werkstoff.getVarName() : null);
         json.put("meltingPoint", stats.getMeltingPoint());
         json.put("boilingPoint", stats.getBoilingPoint());
         json.put("protons", stats.getProtons());
