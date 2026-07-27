@@ -1296,87 +1296,67 @@ public class MU {
             .get(name);
     }
 
-    /// `getInternalName` across the union; [#internalName] for a [Material]; null for null or a foreign type.
+    /// The legacy internal name of a [Material] (see [#internalName]); null for null or a non-[Material] value.
     public static @Nullable String internalNameOf(@Nullable Object material) {
-        if (material instanceof Materials legacy) return legacy.getInternalName();
         if (material instanceof Material ml) return internalName(ml);
         return null;
     }
 
-    /// `getLocalizedNameKey` across the union; null for null or a foreign type.
+    /// The lang key for a [Material]'s localized name; null for null or a non-[Material] value.
     public static @Nullable String localizedNameKeyOf(@Nullable Object material) {
-        if (material instanceof Materials legacy) return legacy.getLocalizedNameKey();
-        if (material instanceof Material ml) {
-            Object legacy = legacyMaterialOf(ml);
-            return legacy != null && legacy != ml ? localizedNameKeyOf(legacy)
-                : "Material." + internalName(ml).toLowerCase();
-        }
+        if (material instanceof Material ml) return "Material." + internalName(ml).toLowerCase();
         return null;
     }
 
-    /// `getLocalizedName` across the union; null for null or a foreign type.
+    /// The localized display name of a [Material], translated from its [#localizedNameKeyOf] lang key; null for
+    /// null or a non-[Material] value.
     public static @Nullable String localizedNameOf(@Nullable Object material) {
-        if (material instanceof Materials legacy) return legacy.getLocalizedName();
         if (material instanceof Material ml) {
-            Object legacy = legacyMaterialOf(ml);
-            return legacy != null && legacy != ml ? localizedNameOf(legacy)
-                : StatCollector.translateToLocal("Material." + internalName(ml).toLowerCase());
+            return StatCollector.translateToLocal("Material." + internalName(ml).toLowerCase());
         }
         return null;
     }
 
-    /// `getDefaultLocalName` across the union; [#localName] for a [Material]; null for null or a foreign type.
+    /// The default display name of a [Material] (see [#localName]); null for null or a non-[Material] value.
     public static @Nullable String defaultLocalNameOf(@Nullable Object material) {
-        if (material instanceof Materials legacy) return legacy.getDefaultLocalName();
         if (material instanceof Material ml) return localName(ml);
         return null;
     }
 
-    /// `getTextureSet` across the union; null for null or a foreign type.
+    /// The [TextureSet] of a [Material] (see [#iconSet]); null for null or a non-[Material] value.
     public static @Nullable TextureSet textureSetOf(@Nullable Object material) {
-        if (material instanceof Materials legacy) return legacy.getTextureSet();
-        if (material instanceof Material ml) {
-            Object legacy = legacyMaterialOf(ml);
-            return legacy != null && legacy != ml ? textureSetOf(legacy) : iconSet(ml);
-        }
+        if (material instanceof Material ml) return iconSet(ml);
         return null;
     }
 
-    /// `getRGBA` across the union; null for null or a foreign type.
+    /// The `[r, g, b, a]` color of a [Material] (see [#rgba]); null for null or a non-[Material] value.
     public static @Nullable short[] rgbaOf(@Nullable Object material) {
-        if (material instanceof Materials legacy) return legacy.getRGBA();
-        if (material instanceof Material ml) {
-            Object legacy = legacyMaterialOf(ml);
-            return legacy != null && legacy != ml ? rgbaOf(legacy) : rgba(ml);
-        }
+        if (material instanceof Material ml) return rgba(ml);
         return null;
     }
 
-    /// `getValidStones` across the union; empty for null or a foreign type.
+    /// The stone types a [Material]'s ore can generate in -- [StoneType#ICES] when it carries
+    /// [GTMaterialFlag#ICE_ORE], otherwise [StoneType#STONES]. Empty for null or a non-[Material] value.
     public static List<IStoneType> validStonesOf(@Nullable Object material) {
-        if (material instanceof Materials legacy) return legacy.getValidStones();
         if (material instanceof Material ml) {
-            Object legacy = legacyMaterialOf(ml);
-            if (legacy != null && legacy != ml) return validStonesOf(legacy);
             return hasFlag(ml, GTMaterialFlag.ICE_ORE) ? StoneType.ICES : StoneType.STONES;
         }
         return Collections.emptyList();
     }
 
-    /// `generatesPrefix` across the union; false for null or a foreign type.
+    /// Whether a [Material] generates `prefix` -- either through gregtech's own part autogen (see
+    /// [OrePrefixes#doGenerateItem(Material)]) or the werkstoff part set (see
+    /// [Materials2WerkstoffIndex#generatesPrefix]). False for null or a non-[Material] value.
     public static boolean generatesPrefix(@Nullable Object material, OrePrefixes prefix) {
-        if (material instanceof Materials legacy) return legacy.generatesPrefix(prefix);
         if (material instanceof Material ml) {
-            Object legacy = legacyMaterialOf(ml);
-            return legacy != null && legacy != ml ? generatesPrefix(legacy, prefix)
-                : Materials2WerkstoffIndex.generatesPrefix(ml, prefix);
+            return prefix.doGenerateItem(ml) || Materials2WerkstoffIndex.generatesPrefix(ml, prefix);
         }
         return false;
     }
 
-    /// `ISubTagContainer#contains` across the union; false for null or a foreign type.
+    /// Whether a [Material] carries the [GTMaterialFlag] equivalent of a legacy [SubTag] (see
+    /// [#flagForSubTag]); false for null or a non-[Material] value.
     public static boolean hasSubTag(@Nullable Object material, SubTag subTag) {
-        if (material instanceof Materials legacy) return legacy.contains(subTag);
         if (material instanceof Material ml) {
             GTMaterialFlag flag = flagForSubTag(subTag);
             return flag != null && hasFlag(ml, flag);
@@ -1384,14 +1364,10 @@ public class MU {
         return false;
     }
 
-    /// `getPart` across the union; null for null or a foreign type.
+    /// The ore-dictionary-unified [ItemStack] for a [Material] at `prefix` and `amount` (see
+    /// [GTOreDictUnificator#get]); null for null or a non-[Material] value.
     public static @Nullable ItemStack partOf(@Nullable Object material, OrePrefixes prefix, int amount) {
-        if (material instanceof Materials legacy) return legacy.getPart(prefix, amount);
-        if (material instanceof Material ml) {
-            Object legacy = legacyMaterialOf(ml);
-            return legacy != null && legacy != ml ? partOf(legacy, prefix, amount)
-                : GTOreDictUnificator.get(prefix, ml, amount);
-        }
+        if (material instanceof Material ml) return GTOreDictUnificator.get(prefix, ml, amount);
         return null;
     }
 
@@ -1422,26 +1398,18 @@ public class MU {
         return material == null ? null : materialRenderers.get(material);
     }
 
-    /// `getId` across the union; `0` for null or a foreign type.
+    /// The block-form metadata index of a [Material] (see [#oldSubId]); `0` for null or a non-[Material] value.
     public static int idOf(@Nullable Object material) {
-        if (material instanceof Materials legacy) return legacy.getId();
-        if (material instanceof Material ml) {
-            Object legacy = legacyMaterialOf(ml);
-            return legacy != null && legacy != ml ? idOf(legacy) : oldSubId(ml);
-        }
+        if (material instanceof Material ml) return oldSubId(ml);
         return 0;
     }
 
-    /// `addTooltips` across the union; a no-op for null or a foreign type.
+    /// Appends a [Material]'s chemical-formula tooltip (see [#chemicalTooltip]) to `list` when
+    /// `Client.tooltip.showFormula` is enabled; a no-op for null or a non-[Material] value.
     public static void addTooltipsOf(@Nullable Object material, List<String> list) {
-        if (material instanceof Materials legacy) legacy.addTooltips(list);
-        else if (material instanceof Material ml) {
-            Object legacy = legacyMaterialOf(ml);
-            if (legacy != null && legacy != ml) addTooltipsOf(legacy, list);
-            else if (Client.tooltip.showFormula) {
-                String tooltip = chemicalTooltip(ml, false);
-                if (tooltip != null && !tooltip.isEmpty()) list.add(tooltip);
-            }
+        if (material instanceof Material ml && Client.tooltip.showFormula) {
+            String tooltip = chemicalTooltip(ml, false);
+            if (tooltip != null && !tooltip.isEmpty()) list.add(tooltip);
         }
     }
 
