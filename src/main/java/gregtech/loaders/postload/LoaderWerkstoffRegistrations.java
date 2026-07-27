@@ -4,14 +4,16 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
+import bartworks.util.BWColorUtil;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
@@ -19,6 +21,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
+import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 
 /// Unification entries for the materials that originated in the bartworks werkstoff pools. A werkstoff-origin
 /// material owns part shapes that gregtech's own material set never declared, so its stacks need the same
@@ -35,7 +38,32 @@ public class LoaderWerkstoffRegistrations {
             registerHandleMaterial(material);
             registerAssociations(material);
             registerLegacyCasings(material, Materials2WerkstoffIndex.idOf(material));
+            registerAdditionalOreDict(material);
             MU.recordBridgeRegistration(material);
+        }
+        GTOreDictUnificator.registerOre(
+            "craftingIndustrialDiamond",
+            MU.stack(OrePrefixes.gemExquisite, Materials2Materials.CubicZirconia, 1));
+        BWOreAdapter.INSTANCE.registerOredict();
+    }
+
+    /// The oredict entries the werkstoff part set carried beyond its own prefix names: a gem material's lens
+    /// joins the dye-keyed `craftingLens` group the laser engraver selects on, and a gem or ingot material's
+    /// storage block joins the name-keyed block group. A merged declaration is excluded: gregtech's own part
+    /// registration owns those materials' lenses and blocks.
+    private static void registerAdditionalOreDict(Material material) {
+        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)) {
+            ItemStack lens = MU.stack(OrePrefixes.lens, material, 1);
+            short[] rgba = MU.rgba(material);
+            if (lens != null && rgba != null) {
+                OreDictionary
+                    .registerOre("craftingLens" + BWColorUtil.getDyeFromColor(rgba).mName.replace(" ", ""), lens);
+            }
+        }
+        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
+            || Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot)) {
+            ItemStack block = MU.stack(OrePrefixes.block, material, 1);
+            if (block != null) GTOreDictUnificator.registerOre(OrePrefixes.block + MU.internalName(material), block);
         }
     }
 
@@ -97,18 +125,18 @@ public class LoaderWerkstoffRegistrations {
     /// association: a recipe naming one resolves to the MaterialLib casing that supersedes it, and the
     /// materials with no MaterialLib casing shape keep resolving to the legacy block they still use.
     private static void registerLegacyCasings(Material material, int id) {
-        if (WerkstoffLoader.BWBlockCasings != null) {
+        if (LoaderLegacyBartworksBlocks.casings != null) {
             GTOreDictUnificator.addAssociation(
                 OrePrefixes.blockCasing,
                 material,
-                new ItemStack(WerkstoffLoader.BWBlockCasings, 1, id),
+                new ItemStack(LoaderLegacyBartworksBlocks.casings, 1, id),
                 false);
         }
-        if (WerkstoffLoader.BWBlockCasingsAdvanced != null) {
+        if (LoaderLegacyBartworksBlocks.casingsAdvanced != null) {
             GTOreDictUnificator.addAssociation(
                 OrePrefixes.blockCasingAdvanced,
                 material,
-                new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, 1, id),
+                new ItemStack(LoaderLegacyBartworksBlocks.casingsAdvanced, 1, id),
                 false);
         }
     }

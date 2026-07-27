@@ -61,7 +61,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.ruling_0.materiallib.api.Material;
 
-import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.loader.Loaders;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -96,6 +95,7 @@ import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.gui.modularui.multiblock.MTEExoFoundryGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.IMTERenderer;
+import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import tectech.thing.block.BlockGodforgeGlass;
@@ -258,8 +258,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('d', ofFrame(Materials2Materials.Erbium))
         .addElement('e', ofBlock(GregTechAPI.sBlockCasingsFoundry,8))
         .addElement('f', ofSheetMetal(Materials2Materials.Erbium))
-        .addElement('g',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, Materials2WerkstoffIndex.idOf(Materials2Materials.PreciousMetalsAlloy))))
-        .addElement('h',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasings, Materials2WerkstoffIndex.idOf(Materials2Materials.PreciousMetalsAlloy))))
+        .addElement('g',  lazy(() -> ofBlock(LoaderLegacyBartworksBlocks.casingsAdvanced, Materials2WerkstoffIndex.idOf(Materials2Materials.PreciousMetalsAlloy))))
+        .addElement('h',  lazy(() -> ofBlock(LoaderLegacyBartworksBlocks.casings, Materials2WerkstoffIndex.idOf(Materials2Materials.PreciousMetalsAlloy))))
         .addShape(
             FoundryModule.POWER_EFFICIENT_SUBSYSTEMS.structureID,
             transpose(

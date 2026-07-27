@@ -15,7 +15,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Nullable;
 
-import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -38,7 +37,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
  * A purely decorative frame box block (GT++ style): a non-functional, see-through block oredicted under
  * {@link OrePrefixes#frameGt}. Unlike {@link FrameShapeBlock}/{@code MTEFrame} it has no covers, redstone passthrough
  * or
- * scaffolding behavior -- it exists so materials that lack a real frame box (e.g. Werkstoffs) can still
+ * scaffolding behavior -- it exists so materials that lack a real frame box (the bartworks-origin materials) can still
  * satisfy {@code frameGt} in recipes.
  */
 public class BlockDecorativeFrame extends BlockStorage implements IBlockWithTextures {
@@ -52,7 +51,6 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
         this.maxMeta = maxMeta;
 
         GregTechAPI.sAfterGTLoad.add(() -> {
-            WerkstoffLoader.load();
 
             for (int i = 0; i < maxMeta; i++) {
                 Object material = materials.get(i);

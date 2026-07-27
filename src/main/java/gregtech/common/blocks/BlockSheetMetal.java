@@ -12,7 +12,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.Nullable;
 
 import appeng.api.parts.IFacadeControl;
-import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -43,7 +42,6 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
         this.maxMeta = maxMeta;
 
         GregTechAPI.sAfterGTLoad.add(() -> {
-            WerkstoffLoader.load();
 
             for (int i = 0; i < maxMeta; i++) {
                 Object material = materials.get(i);

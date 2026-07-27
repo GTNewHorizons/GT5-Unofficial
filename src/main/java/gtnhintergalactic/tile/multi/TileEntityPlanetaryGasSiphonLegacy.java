@@ -36,7 +36,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -58,6 +57,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import gtnhintergalactic.client.IGTextures;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.recipe.GasSiphonRecipes;
@@ -88,7 +88,7 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
         .addElement(
             'c',
             StructureUtility.ofBlock(
-                WerkstoffLoader.BWBlockCasingsAdvanced,
+                LoaderLegacyBartworksBlocks.casingsAdvanced,
                 Materials2WerkstoffIndex.idOf(Materials2Materials.RhodiumPlatedPalladium)))
         .addElement(
             'b',

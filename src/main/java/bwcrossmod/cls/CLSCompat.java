@@ -13,11 +13,7 @@
 
 package bwcrossmod.cls;
 
-import java.io.IOException;
-
 import alexiil.mods.load.MinecraftDisplayer;
-import alexiil.mods.load.ProgressDisplayer;
-import bartworks.system.material.Werkstoff;
 
 public class CLSCompat {
 
@@ -28,19 +24,6 @@ public class CLSCompat {
 
     public static void initCls() {
         MinecraftDisplayer.isRegisteringBartWorks = true;
-    }
-
-    public static void updateDisplay(Werkstoff werkstoff, int pos) {
-        long time = System.currentTimeMillis();
-        if (time - lastUpdate >= MINIMAL_UPDATE_INTERVAL) {
-            try {
-                ProgressDisplayer
-                    .displayProgress(werkstoff.getLocalizedName(), (float) pos / Werkstoff.werkstoffHashSet.size());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            lastUpdate = time;
-        }
     }
 
     public static void disableCls() {

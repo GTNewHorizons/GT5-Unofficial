@@ -46,11 +46,11 @@ import bartworks.common.loaders.RegisterServerCommands;
 import bartworks.common.loaders.StaticRecipeChangeLoaders;
 import bartworks.server.EventHandler.ServerEventHandler;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
+import bartworks.system.material.CircuitGeneration.CircuitPartsItem;
 import bartworks.system.material.CircuitGeneration.CircuitWraps;
-import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffHazardHandler;
-import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
+import bartworks.system.material.processingLoaders.AdditionalRecipes;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.ResultWrongSievert;
 import bartworks.util.log.DebugLog;
@@ -73,6 +73,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.CasingTier;
 import gregtech.api.util.GlassTier;
+import gregtech.loaders.postload.LoaderWerkstoffRegistrations;
+import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import tectech.loader.recipe.Godforge;
 
 @Mod(
@@ -140,11 +142,8 @@ public final class MainMod {
             }
         }
 
-        WerkstoffLoader.setUp();
-
         BioCultureLoader.run();
 
-        Werkstoff.init();
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
             .isClient()) {
@@ -175,7 +174,8 @@ public final class MainMod {
             .register(serverEventHandler);
         BioLabLoader.run(event);
 
-        WerkstoffLoader.runInit();
+        LoaderLegacyBartworksBlocks.register();
+        LoaderWerkstoffRegistrations.run();
 
         ItemRegistry.run();
         GlassTier.RegisterGlassTiers.run();
@@ -192,7 +192,8 @@ public final class MainMod {
         ArtificialMicaLine.runArtificialMicaRecipe();
         BioObjectAdder.regenerateBioFluids();
 
-        WerkstoffLoader.run();
+        CircuitPartsItem.init();
+        AdditionalRecipes.run();
 
         CheckRecipeResultRegistry.register(new ResultWrongSievert(0, ResultWrongSievert.NeededSievertType.EXACTLY));
 
