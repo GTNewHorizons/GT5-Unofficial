@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -25,6 +26,8 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.MaterialLibClient;
 
 import gregtech.GTMod;
@@ -53,6 +56,7 @@ import gregtech.common.render.items.TranscendentMetalRenderer;
 import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
+import gregtech.loaders.materials.LegacyHelperParity;
 import gregtech.loaders.materials.MaterialsLegacyBridge;
 
 /// @deprecated Terminally deprecated; scheduled for removal in 5.10.0.0. Use the MaterialLib-backed
@@ -1495,12 +1499,20 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void disableUnusedHotIngots() {
-        OrePrefixes.ingotHot.mDisabledItems.addAll(
-            Arrays.stream(Materials.values())
-                .parallel()
-                .filter(OrePrefixes.ingotHot::doGenerateItem)
-                .filter(m -> m.mBlastFurnaceTemp < 1750 && m.mAutoGenerateBlastFurnaceRecipes)
-                .collect(Collectors.toSet()));
+        Set<Materials> legacyHotIngots = Arrays.stream(Materials.values())
+            .parallel()
+            .filter(OrePrefixes.ingotHot::doGenerateItem)
+            .filter(m -> m.mBlastFurnaceTemp < 1750 && m.mAutoGenerateBlastFurnaceRecipes)
+            .collect(Collectors.toSet());
+        Set<Material> mlHotIngots = MaterialLibAPI.getMaterials()
+            .stream()
+            .filter(
+                m -> OrePrefixes.ingotHot.doGenerateItem(m) && MU.blastFurnaceTemp(m) < 1750
+                    && MU.autoGenerateBlastFurnaceRecipes(m))
+            .collect(Collectors.toSet());
+        LegacyHelperParity.recordHotIngotSets(legacyHotIngots, mlHotIngots);
+
+        OrePrefixes.ingotHot.mDisabledItems.addAll(legacyHotIngots);
         OrePrefixes.ingotHot.disableComponent(Materials.Reinforced);
         OrePrefixes.ingotHot.disableComponent(Materials.ConductiveIron);
         OrePrefixes.ingotHot.disableComponent(Materials.FierySteel);
