@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
@@ -1778,7 +1777,7 @@ public class CraftingRecipeLoader implements Runnable {
             ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 1, 88), 'F',
+                MU.stack(OrePrefixes.plate, Materials2Materials.RhodiumPlatedPalladium, 1), 'F',
                 MU.craftIngredient(OrePrefixes.frameGt, Materials2Materials.Chrome) });
 
         if (Forestry.isModLoaded()) {

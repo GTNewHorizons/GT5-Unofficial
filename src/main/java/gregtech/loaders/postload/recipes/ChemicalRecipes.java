@@ -27,7 +27,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -4744,7 +4743,7 @@ public class ChemicalRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, 2),
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 3, 63))
+                MU.stack(OrePrefixes.dust, Materials2Materials.CalciumChloride, 3))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 2_000))
@@ -4761,7 +4760,7 @@ public class ChemicalRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.SiliconSolarGrade, Materials2Shapes.dust, 1),
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 6, 10052))
+                MU.stack(OrePrefixes.dust, Materials2Materials.ZincChloride, 6))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SiliconTetrachloride, Materials2FluidShapes.fluidLiquid, 1_000))
