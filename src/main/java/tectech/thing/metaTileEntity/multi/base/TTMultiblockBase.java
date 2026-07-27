@@ -1016,8 +1016,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
             setMufflersIfChanged(active);
-        } else {
-            doActivitySound(getActivitySoundLoop());
         }
     }
 
@@ -1990,7 +1988,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         @Override
         public String getDisplayName() {
-            return GTUtility.translate(name);
+            return StatCollector.translateToLocal(name);
         }
 
         @Override
@@ -2051,7 +2049,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TECTECH_STANDARD;
     }
 

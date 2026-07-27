@@ -11,9 +11,9 @@ import net.minecraftforge.common.FishingHooks;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialFishingPond;
 import gregtech.mixin.interfaces.accessors.WeightedRandomFishableAccessor;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 
 public class FishPondRecipes {
 
@@ -66,6 +66,6 @@ public class FishPondRecipes {
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .ignoreCollision()
-            .addTo(GTPPRecipeMaps.fishPondRecipes);
+            .addTo(RecipeMaps.fishPondRecipes);
     }
 }

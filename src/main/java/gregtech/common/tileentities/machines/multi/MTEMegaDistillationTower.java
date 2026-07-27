@@ -361,6 +361,8 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     protected int getCurrentLayerBottomOutputHatchCount() {
         int currentLayer = (height * 2) - 2;
+        if (outputHatchesPerLayer.isEmpty()) return 0;
+
         return outputHatchesPerLayer.size() < currentLayer || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
@@ -368,6 +370,8 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     protected int getCurrentLayerTopOutputHatchCount() {
         int currentLayer = (height * 2) - 1;
+        if (outputHatchesPerLayer.isEmpty()) return 0;
+
         return outputHatchesPerLayer.size() < currentLayer || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
@@ -499,10 +503,10 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
-    private static final float DISTILLERY_SPEED = 1.5f;
+    private static final float DISTILLERY_SPEED = 2f;
     private static final float DISTILLERY_EU_EFFICIENCY = 0.5f;
 
-    private static final float TOWER_SPEED = 1.2f;
+    private static final float TOWER_SPEED = 1.5f;
     private static final float TOWER_EU_EFFICIENCY = 0.9f;
 
     @Override
@@ -512,11 +516,11 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         logic.setUnlimitedTierSkips();
         if (this.machineMode == MACHINEMODE_DISTILLERY) {
             // make it compete with dangote somewhat. it will still be less eu efficient. numbers can be tweaked
-            logic.setSpeedBonus(DISTILLERY_SPEED);
+            logic.setSpeedBonus(1f / DISTILLERY_SPEED);
             logic.setEuModifier(DISTILLERY_EU_EFFICIENCY);
         } else {
             // same here, still worse than dangote but with laser
-            logic.setSpeedBonus(TOWER_SPEED);
+            logic.setSpeedBonus(1f / TOWER_SPEED);
             logic.setEuModifier(TOWER_EU_EFFICIENCY);
         }
     }
@@ -572,7 +576,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addSupportAny()
             .addUnlimitedTierSkips()
             .addInfo(EnumChatFormatting.GOLD + "Big Oil will be pleased with this!")
-            .beginVariableStructureBlock(9, 9, 15, 15, 30, 54, true)
+            .beginVariableStructureBlock(15, 15, 30, 54, 9, 9, true)
             .addController("Front center, 3rd Layer")
             .addEnergyHatch("1+", "Any base reinforced distillation casing", 1)
             .addMaintenanceHatch("1+", "Any base reinforced distillation casing", 1)
@@ -595,8 +599,8 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addCasing("48", "Clean Stainless Steel Machine Casing", false)
             .addCasing("57", "Strong Bronze Machine Casing", false)
             .addCasing("32", "Naquadah Sheetmetal", false)
-            .addCasing("16", "Naquadah Reinforced Distillation Casing", false)
             .addCasing("27", "Stainless Steel Frame Box", false)
+            .addCasing("16", "Naquadah Reinforced Distillation Casing", false)
             .addCasing("14", "Bronze Pipe Casing", false)
             .addCasing("6", "Steel Pipe Casing", false)
             .addStructureInfo("")

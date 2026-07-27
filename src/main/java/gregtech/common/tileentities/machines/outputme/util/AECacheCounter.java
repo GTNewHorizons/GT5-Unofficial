@@ -28,7 +28,7 @@ public class AECacheCounter<T> {
         if (old == 0) return;
         if (removed >= old) {
             total -= old;
-            cacheMap.put(key, 0L);
+            cacheMap.removeLong(key);
         } else {
             total -= removed;
             cacheMap.put(key, old - removed);
@@ -46,19 +46,21 @@ public class AECacheCounter<T> {
     }
 
     public void updateAll(EntryProcessor<T> filter) {
-        cacheMap.object2LongEntrySet()
-            .fastForEach(entry -> {
-                long old = entry.getLongValue();
-                if (old <= 0) return;
-                T key = entry.getKey();
-                long remaining = filter.apply(key, old);
-                if (remaining <= 0) {
-                    total -= old;
-                } else if (remaining != old) {
-                    total -= old - remaining;
-                }
-                entry.setValue(Math.max(0, remaining));
-            });
+        var it = cacheMap.object2LongEntrySet()
+            .iterator();
+        while (it.hasNext()) {
+            var entry = it.next();
+            long old = entry.getLongValue();
+            T key = entry.getKey();
+            long remaining = filter.apply(key, old);
+            if (remaining <= 0) {
+                total -= old;
+                it.remove();
+            } else if (remaining != old) {
+                total -= old - remaining;
+                entry.setValue(remaining);
+            }
+        }
     }
 
     public boolean isEmpty() {

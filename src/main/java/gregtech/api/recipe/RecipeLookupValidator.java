@@ -35,7 +35,7 @@ public final class RecipeLookupValidator {
     public static final String VALIDATE_LOOKUP_PROPERTY = "gt.recipe.lookup.validate";
     public static final String CAPTURE_CALLSITE_PROPERTY = VALIDATE_LOOKUP_PROPERTY + ".capture_callsite";
     private static final String LARGE_BOILER_FAKE_FUELS_MAP_NAME = "gt.recipe.largeboilerfakefuels";
-    private static final String QFT_RECIPE_MAP_NAME = "gtpp.recipe.quantumforcesmelter";
+    private static final String QFT_RECIPE_MAP_NAME = "gt.recipe.quantumforcesmelter";
     private static final int RECIPE_PROGRESS_INTERVAL = 100;
     private static final long PROGRESS_LOG_INTERVAL_NANOS = 5_000_000_000L;
     private static final int LOOKUP_MATCH_SAMPLE_LIMIT = 16;

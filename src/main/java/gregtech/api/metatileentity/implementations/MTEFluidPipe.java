@@ -309,6 +309,11 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     }
 
     @Override
+    public boolean needsClientTick() {
+        return false;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aTick % 5 == 0) {
@@ -671,6 +676,9 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
                             if (!mFluids[i].isFluidEqual(nextPipe.mFluids[i])) {
                                 return wasActionPerformed;
                             }
+                        } else if (mFluids[i] == null || nextPipe.mFluids[i] == null) {
+                            // one pipe is empty, so it doesn't matter if the other has fluid.
+                            continue;
                         } else if (mFluids[i] != nextPipe.mFluids[i]) {
                             return wasActionPerformed;
                         }

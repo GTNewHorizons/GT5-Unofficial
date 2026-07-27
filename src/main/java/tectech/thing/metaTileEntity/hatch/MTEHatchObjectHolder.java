@@ -125,7 +125,7 @@ public class MTEHatchObjectHolder extends MTEHatch {
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TECTECH_STANDARD;
     }
 }

@@ -6,6 +6,7 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_ACTI
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -110,7 +111,7 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
             if (aTick % WirelessDataStore.IO_TICK_RATE == WirelessDataStore.DOWNLOAD_TICK_OFFSET) {
                 WirelessDataStore wirelessDataStore = WirelessDataStore
                     .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
-                List<RecipeAssemblyLine> oldRecipes = recipes;
+                List<RecipeAssemblyLine> oldRecipes = recipes != null ? new ArrayList<>(recipes) : null;
                 this.recipes = wirelessDataStore.downloadData(aTick);
                 // Only notify when the available recipe set changed (by content, not count, so a same-size swap of
                 // wireless data sticks still fires), to avoid re-checking every download cycle.

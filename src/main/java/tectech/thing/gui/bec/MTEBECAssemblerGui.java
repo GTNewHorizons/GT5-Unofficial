@@ -4,6 +4,8 @@ import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -13,7 +15,6 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
-import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.sync.NaniteTierSyncValue;
 import tectech.thing.metaTileEntity.multi.bec.MTEBECAssembler;
 
@@ -37,10 +38,10 @@ public class MTEBECAssemblerGui extends MTEBECMultiblockBaseGui<MTEBECAssembler>
 
         TextWidget<?> naniteWidget = IKey
             .dynamic(
-                () -> GRAY + GTUtility.translate("GT5U.gui.text.providing-nanites")
+                () -> GRAY + StatCollector.translateToLocal("GT5U.gui.text.providing-nanites")
                     + "\n  "
                     + AQUA
-                    + (naniteTierSyncer.getEnumValue() == null ? GTUtility.translate("GT5U.gui.text.nil")
+                    + (naniteTierSyncer.getEnumValue() == null ? StatCollector.translateToLocal("GT5U.gui.text.nil")
                         : naniteTierSyncer.getEnumValue()
                             .describe())
                     + GRAY
