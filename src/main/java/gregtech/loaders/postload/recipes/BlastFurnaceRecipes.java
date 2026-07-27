@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -937,7 +936,7 @@ public class BlastFurnaceRecipes implements Runnable {
         // Rh + 3Cl = RhCl3
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 1, 78))
+            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.Rhodium, 1))
             .circuit(2)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.RhodiumChloride, Materials2Shapes.dust, (int) (4)))
             .fluidInputs(

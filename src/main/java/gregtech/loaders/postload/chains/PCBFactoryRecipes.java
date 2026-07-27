@@ -17,7 +17,6 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -782,10 +781,7 @@ public class PCBFactoryRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, PCBFactoryManager.getPlasticMaterialFromTier(tier), 1),
-                    new ItemStack(
-                        WerkstoffLoader.items.get(OrePrefixes.foil),
-                        (int) (16 * (Math.sqrt(tier - 6))),
-                        10106),
+                    MU.stack(OrePrefixes.foil, Materials2Materials.Tairitsu, (int) (16 * (Math.sqrt(tier - 6)))),
                     GTOreDictUnificator.get(
                         OrePrefixes.foil,
                         Materials2Materials.InfinityCatalyst,
@@ -825,10 +821,7 @@ public class PCBFactoryRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, PCBFactoryManager.getPlasticMaterialFromTier(tier), 1),
-                    new ItemStack(
-                        WerkstoffLoader.items.get(OrePrefixes.foil),
-                        (int) (16 * (Math.sqrt(tier - 6))),
-                        10106),
+                    MU.stack(OrePrefixes.foil, Materials2Materials.Tairitsu, (int) (16 * (Math.sqrt(tier - 6)))),
                     GTOreDictUnificator.get(
                         OrePrefixes.foil,
                         Materials2Materials.InfinityCatalyst,
@@ -869,10 +862,7 @@ public class PCBFactoryRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, PCBFactoryManager.getPlasticMaterialFromTier(tier), 1),
-                    new ItemStack(
-                        WerkstoffLoader.items.get(OrePrefixes.foil),
-                        (int) (16 * (Math.sqrt(tier - 6))),
-                        10106),
+                    MU.stack(OrePrefixes.foil, Materials2Materials.Tairitsu, (int) (16 * (Math.sqrt(tier - 6)))),
                     GTOreDictUnificator.get(
                         OrePrefixes.foil,
                         Materials2Materials.InfinityCatalyst,

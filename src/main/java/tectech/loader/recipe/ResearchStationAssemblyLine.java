@@ -34,7 +34,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Circuits;
@@ -541,8 +540,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { ItemList.Circuit_Board_Optical.get(1L), ItemList.Circuit_OpticalProcessor.get(4L),
                 ItemList.Circuit_Parts_InductorXSMD.get(16L), ItemList.Circuit_Parts_CapacitorXSMD.get(20L),
                 ItemList.Circuit_Parts_ResistorXSMD.get(20L), ItemList.Circuit_Chip_NOR.get(32L),
-                ItemList.Circuit_Chip_Ram.get(64L),
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.wireFine), 24, 10101), // Fine
+                ItemList.Circuit_Chip_Ram.get(64L), MU.stack(OrePrefixes.wireFine, Materials2Materials.Lumiium, 24), // Fine
                 // Lumiium
                 // Wire
                 new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L }, },
@@ -566,7 +564,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_TransistorXSMD.get(24L), ItemList.Circuit_Parts_ResistorXSMD.get(24L),
                 ItemList.Circuit_Parts_CapacitorXSMD.get(24L), ItemList.Circuit_Parts_DiodeXSMD.get(24L),
                 ItemList.Circuit_Chip_NOR.get(64L), ItemList.Circuit_Chip_SoC2.get(32L),
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.wireFine), 32, 10101), // Fine
+                MU.stack(OrePrefixes.wireFine, Materials2Materials.Lumiium, 32), // Fine
                 // Lumiium
                 // Wire
                 new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L },

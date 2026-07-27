@@ -27,6 +27,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -196,7 +197,8 @@ public class NaniteChain {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 aUMVTierLens,
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.lens), 0, 36), // Magneto lens
+                GTUtility.copyAmount(0, MU.stack(OrePrefixes.lens, Materials2Materials.MagnetoResonatic, 1)), // Magneto
+                                                                                                              // lens
                 GregtechItemList.Laser_Lens_Special.get(0), // Quantum Anomaly, couldn't find any better
                                                             // naming
                 GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.WhiteDwarfMatter, 8),
@@ -219,7 +221,8 @@ public class NaniteChain {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 aUMVTierLens,
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.lens), 0, 36), // Magneto lens
+                GTUtility.copyAmount(0, MU.stack(OrePrefixes.lens, Materials2Materials.MagnetoResonatic, 1)), // Magneto
+                                                                                                              // lens
                 GregtechItemList.Laser_Lens_Special.get(0), // Quantum Anomaly, couldn't find any better
                                                             // naming
                 GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.BlackDwarfMatter, 8),
@@ -242,7 +245,8 @@ public class NaniteChain {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 aUMVTierLens,
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.lens), 0, 36), // Magneto lens
+                GTUtility.copyAmount(0, MU.stack(OrePrefixes.lens, Materials2Materials.MagnetoResonatic, 1)), // Magneto
+                                                                                                              // lens
                 // Quantum Anomaly, couldn't find any better naming.
                 GregtechItemList.Laser_Lens_Special.get(0),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Universium, 8),

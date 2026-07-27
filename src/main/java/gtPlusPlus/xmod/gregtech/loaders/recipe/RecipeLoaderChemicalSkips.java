@@ -23,7 +23,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
@@ -289,8 +288,8 @@ public class RecipeLoaderChemicalSkips {
                 MaterialLibAPI.getStack(Materials2Materials.Cerium, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Gadolinium, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Samarium, Materials2Shapes.dust, (int) (64)),
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 64, 11002),
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 64, 3),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Hafnia, 64),
+                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 64),
                 ItemList.SuperconductorComposite.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -584,7 +583,7 @@ public class RecipeLoaderChemicalSkips {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 64, 88),
+                MU.stack(OrePrefixes.dust, Materials2Materials.RhodiumPlatedPalladium, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.dust, (int) (64)),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Carbon, 64))
             .circuit(10)
