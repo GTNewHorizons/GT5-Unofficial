@@ -12,7 +12,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -26,8 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.ruling_0.materiallib.api.Material;
-import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.MaterialLibClient;
 
 import gregtech.GTMod;
@@ -45,7 +42,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
-import gregtech.common.config.Gregtech;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
 import gregtech.common.render.items.GaiaSpiritRenderer;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
@@ -56,7 +52,6 @@ import gregtech.common.render.items.TranscendentMetalRenderer;
 import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
-import gregtech.loaders.materials.LegacyHelperParity;
 import gregtech.loaders.materials.MaterialsLegacyBridge;
 
 /// @deprecated Terminally deprecated; scheduled for removal in 5.10.0.0. Use the MaterialLib-backed
@@ -1493,48 +1488,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .toArray(new Materials[0]);
         VALUES = Arrays.asList(MATERIALS_ARRAY);
 
-        disableUnusedHotIngots();
         fillGeneratedMaterialsMap();
-    }
-
-    private static void disableUnusedHotIngots() {
-        Set<Materials> legacyHotIngots = Arrays.stream(Materials.values())
-            .parallel()
-            .filter(OrePrefixes.ingotHot::doGenerateItem)
-            .filter(m -> m.mBlastFurnaceTemp < 1750 && m.mAutoGenerateBlastFurnaceRecipes)
-            .collect(Collectors.toSet());
-        Set<Material> mlHotIngots = MaterialLibAPI.getMaterials()
-            .stream()
-            .filter(
-                m -> OrePrefixes.ingotHot.doGenerateItem(m) && MU.blastFurnaceTemp(m) < 1750
-                    && MU.autoGenerateBlastFurnaceRecipes(m))
-            .collect(Collectors.toSet());
-        LegacyHelperParity.recordHotIngotSets(legacyHotIngots, mlHotIngots);
-
-        OrePrefixes.ingotHot.mDisabledItems.addAll(mlHotIngots);
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Reinforced));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.ConductiveIron));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.FierySteel));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.ElectricalSteel));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.EndSteel));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Soularium));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.EnergeticSilver));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Cheese));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Calcium));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Flerovium));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Cobalt));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.RedstoneAlloy));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Ardite));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.DarkSteel));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.BlackSteel));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.EnergeticAlloy));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.PulsatingIron));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.ClayCompound));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.Netherite));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.HotProtoHalkonite));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.ProtoHalkonite));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.HotExoHalkonite));
-        OrePrefixes.ingotHot.disableComponent(MU.material(Materials.ExoHalkonite));
     }
 
     /**
@@ -1646,23 +1600,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return "materials." + aMaterial.mConfigSection + "." + cOre;
     }
 
-    private static void addHarvestLevelNerfs(Materials aMaterial) {
-        /* Moved the harvest level changes from GTMod to have fewer things iterating over MATERIALS_ARRAY */
-        if (GTMod.proxy.mChangeHarvestLevels && aMaterial.mToolQuality > 0
-            && aMaterial.mMetaItemSubID < GTMod.proxy.mHarvestLevel.length
-            && aMaterial.mMetaItemSubID >= 0) {
-            GTMod.proxy.mHarvestLevel[aMaterial.mMetaItemSubID] = aMaterial.mToolQuality;
-        }
-    }
-
-    private static void addHarvestLevels() {
-        GTMod.proxy.mChangeHarvestLevels = Gregtech.harvestLevel.activateHarvestLevelChange;
-        GTMod.proxy.mMaxHarvestLevel = Math.min(15, Gregtech.harvestLevel.maxHarvestLevel);
-        GTMod.proxy.mGraniteHavestLevel = Gregtech.harvestLevel.graniteHarvestLevel;
-    }
-
     public static void initMaterialProperties() {
-        addHarvestLevels();
         for (Materials aMaterial : MATERIALS_MAP.values()) {
             if (aMaterial == null || aMaterial == Materials._NULL || aMaterial == Materials.Empty) {
                 continue;
@@ -1671,7 +1609,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             addToolValues(aMaterial);
             addEnchantmentValues(aMaterial);
             addHasGasFluid(aMaterial);
-            addHarvestLevelNerfs(aMaterial);
         }
     }
 
