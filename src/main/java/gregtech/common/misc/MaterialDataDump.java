@@ -492,8 +492,8 @@ public final class MaterialDataDump {
     }
 
     /// Buckets a legacy werkstoff id into its owning pool by id range. The 11500..11599 block belongs to
-    /// bartworks (`WerkstoffLoader` declares 11500-11503 directly, past the gtnhlanth block); ids outside every
-    /// known range fall back to `"unknown"`.
+    /// bartworks (11500-11503 sit past the gtnhlanth block); ids outside every known range fall back to
+    /// `"unknown"`.
     private static String werkstoffPool(int id) {
         if (id > 31765) return "gt-bridge-proxy";
         if (id >= 29900 && id <= 29999) return "gtnhlanth-bot";

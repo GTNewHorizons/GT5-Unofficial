@@ -611,7 +611,7 @@ public class MU {
     /// The legacy `Materials#mIconSet` texture set for a material, resolved by the same TEXTURE_SET-name lookup
     /// [Materials2Textures#iconSetOf] performs -- byte-identical for every population that reaches a MaterialLib
     /// [Material]: `LegacyMaterials#build` resolves `mIconSet` through it, and a bartworks-origin material's
-    /// icon set is captured from the identical [Materials2Textures#iconSetOf] result (`WerkstoffReconstruction`).
+    /// icon set is captured from the identical [Materials2Textures#iconSetOf] result.
     /// Null when `material` is null.
     public static @Nullable TextureSet iconSet(@Nullable Material material) {
         return material == null ? null : Materials2Textures.iconSetOf(material);
@@ -816,9 +816,9 @@ public class MU {
 
     /// The legacy `Materials#getProcessingMaterialTierEU()` value for a material, or `0` if unset -- mirrors
     /// `Materials#processingMaterialTierEU`'s own default. Ported byte-identically to
-    /// [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU]: `LegacyMaterials.build` and both bridge loaders
-    /// (`WerkstoffReconstruction`, `GtppBridgeMaterialsLoader`) feed this exact property through
-    /// `setProcessingMaterialTierEU` when present, and otherwise leave the `0` default every population shares.
+    /// [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU]: `LegacyMaterials.build` and the gtpp bridge loader
+    /// (`GtppBridgeMaterialsLoader`) feed this exact property through `setProcessingMaterialTierEU` when
+    /// present, and otherwise leave the `0` default every population shares.
     public static int processingMaterialTierEU(@Nullable Material material) {
         if (material == null) return 0;
         Integer tierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
@@ -1024,8 +1024,8 @@ public class MU {
 
     /// The legacy `Materials#mMaterialInto` unification target for a material: the material itself.
     /// `mMaterialInto` is a proven universal self-reference -- every `Materials` constructor assigns `this`
-    /// and the only later write (bartworks' `BridgeMaterialsLoader`) reassigns it to itself -- so no property
-    /// backs it and this returns its argument, preserving that self-reference default.
+    /// and nothing else ever writes it -- so no property backs it and this returns its argument, preserving
+    /// that self-reference default.
     public static @Nullable Material materialInto(@Nullable Material material) {
         return material;
     }
@@ -1109,8 +1109,8 @@ public class MU {
     private static final Map<Material, Material> reconstructedHandles = new HashMap<>();
 
     /// Records the tool-handle material `material`'s retired bartworks bridge facade would have carried in
-    /// `Materials#mHandleMaterial` (see [#handleMaterial(Material)]). Called by bartworks' `BridgeMaterialsLoader`
-    /// at the exact point the facade write used to run.
+    /// `Materials#mHandleMaterial` (see [#handleMaterial(Material)]). Called by `LoaderWerkstoffRegistrations`
+    /// at the exact point in loading the facade write would have happened.
     public static void recordHandleMaterial(Material material, Material handle) {
         reconstructedHandles.put(material, handle);
     }
@@ -1118,7 +1118,8 @@ public class MU {
     private static final java.util.Set<Material> reconstructedBridgeRegistrations = new java.util.HashSet<>();
 
     /// Records that `material`'s retired bartworks bridge facade would have entered `Materials#getMaterialsMap`
-    /// by this point in loading. Called by bartworks' `BridgeMaterialsLoader` at the exact former minting site.
+    /// by this point in loading. Called by `LoaderWerkstoffRegistrations` at the exact point in loading the
+    /// facade would have minted the material.
     public static void recordBridgeRegistration(Material material) {
         reconstructedBridgeRegistrations.add(material);
     }

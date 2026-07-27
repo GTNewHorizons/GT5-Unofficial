@@ -33,14 +33,11 @@ final class ShapeConsumerSupport {
     /// why this should not happen for a `"gregtech"`-owned shape in practice.
     ///
     /// Dispatch is postInit, not init: several `Processing*` bodies transitively class-load
-    /// `gregtech.api.util.GTRecipeConstants`, whose static initializer reads bartworks `WerkstoffLoader` fluid
-    /// data (`BlastFurnaceGasStat`) that BartWorks' own `BridgeMaterialsLoader` only populates during
-    /// BartWorks' init -- since FML runs every mod's init before any mod's postInit, dispatching from
-    /// MaterialLib's init could race BartWorks' init depending on mod processing order (observed as an
-    /// `ExceptionInInitializerError` from the bartworks material's fluid lookup during a real boot). Postponing to
-    /// postInit
-    /// (still before GregTech's own postInit, which `required-after:materiallib` orders after MaterialLib's)
-    /// avoids the race unconditionally.
+    /// [gregtech.api.util.GTRecipeConstants], whose static initializer reads material data that
+    /// [Materials2Materials] populates from `MaterialRegistrationEvent`. Dispatching at init can reach that
+    /// initializer before the registry resolves, which is the class-init trap [Materials2OreShapes]'s javadoc
+    /// describes. postInit still precedes GregTech's own postInit, since `required-after:materiallib` orders
+    /// MaterialLib's lifecycle first.
     ///
     /// `registrator` is a [Supplier], not a resolved instance: `Consumer*#register` runs during
     /// `MaterialRegistrationEvent`, which MaterialLib fires from its own preInit -- before
