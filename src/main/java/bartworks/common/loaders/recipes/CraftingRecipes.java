@@ -34,7 +34,6 @@ import bartworks.common.tileentities.multis.MTEWindmill;
 import bartworks.common.tileentities.tiered.MTEBioLab;
 import bartworks.common.tileentities.tiered.MTERadioHatch;
 import bartworks.system.material.Werkstoff;
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.CircuitComponents;
 import gregtech.api.enums.Circuits;
@@ -73,7 +72,7 @@ public class CraftingRecipes implements Runnable {
             Materials2Materials.StainlessSteel, // HV
             Materials2Materials.Titanium, // EV
             Materials2Materials.TungstenSteel, // IV
-            WerkstoffLoader.RhodiumPlatedPalladium, // LuV
+            Materials2Materials.RhodiumPlatedPalladium, // LuV
             Materials2Materials.Iridium, // ZPM
             Materials2Materials.Osmium, // UV
             Materials2Materials.Naquadah // UHV

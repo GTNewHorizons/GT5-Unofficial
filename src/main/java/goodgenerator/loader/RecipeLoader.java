@@ -41,7 +41,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import goodgenerator.util.MaterialFix;
@@ -2014,9 +2013,9 @@ public class RecipeLoader {
     }
 
     public static void Fixer() {
-        MaterialFix.MaterialFluidExtractionFix(GGMaterial.atomicSeparationCatalyst);
-        MaterialFix.MaterialFluidExtractionFix(GGMaterial.extremelyUnstableNaquadah);
-        MaterialFix.MaterialFluidExtractionFix(GGMaterial.metastableOganesson);
-        MaterialFix.MaterialFluidExtractionFix(GGMaterial.shirabon);
+        MaterialFix.MaterialFluidExtractionFix(Materials2Materials.AtomicSeparationCatalyst);
+        MaterialFix.MaterialFluidExtractionFix(Materials2Materials.ExtremelyUnstableNaquadah);
+        MaterialFix.MaterialFluidExtractionFix(Materials2Materials.MetastableOganesson);
+        MaterialFix.MaterialFluidExtractionFix(Materials2Materials.Shirabon);
     }
 }

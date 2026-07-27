@@ -72,11 +72,8 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.WerkstoffLoader;
-import bartworks.system.material.WerkstoffReconstruction;
 import bartworks.util.BioCulture;
 import bartworks.util.BioData;
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -269,12 +266,12 @@ public class AdditionalRecipes {
             ImmutablePair.of(Materials2Materials.DilutedSulfuricAcid, 14),
             ImmutablePair.of(Materials2Materials.SulfuricAcid, 28),
             ImmutablePair.of(Materials2Materials.AceticAcid, 21),
-            ImmutablePair.of(WerkstoffReconstruction.materialLibOf(WerkstoffLoader.FormicAcid), 40),
-            ImmutablePair.of(WerkstoffReconstruction.materialLibOf(WerkstoffLoader.HexafluorosilicicAcid), 350),
+            ImmutablePair.of(Materials2Materials.FormicAcid, 40),
+            ImmutablePair.of(Materials2Materials.HexafluorosilicicAcid, 350),
             ImmutablePair.of(Materials2Materials.phtalicacid, 270),
             ImmutablePair.of(Materials2Materials.NaphthenicAcid, 250),
             ImmutablePair.of(Materials2Materials.ChlorosulfonicAcid, 2304),
-            ImmutablePair.of(WerkstoffReconstruction.materialLibOf(GGMaterial.fluoroantimonicAcid), 5760));
+            ImmutablePair.of(Materials2Materials.FluoroantimonicAcid, 5760));
         for (Pair<Material, Integer> fuel : liquidFuels) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, fuel.getLeft(), 1))

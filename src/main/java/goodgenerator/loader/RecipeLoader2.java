@@ -42,8 +42,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffReconstruction;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import goodgenerator.util.MyRecipeAdder;
@@ -107,24 +105,24 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
 
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.extremelyUnstableNaquadah, 8000, 122880, 7000, false);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.zircaloy2, 500, 480, 2800, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.zircaloy4, 500, 480, 2800, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.incoloy903, 1200, 1920, 3700, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.adamantiumAlloy, 2500, 1920, 5500, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.marM200, 200, 7680, 5000, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.signalium, 1600, 30720, 4000, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.lumiium, 1600, 30720, 4000, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.artheriumSn, 500, 122880, 6500, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.titaniumBetaC, 400, 7680, 5300, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.dalisenite, 800, 491520, 8700, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.hikarium, 1200, 30720, 5400, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.tairitsu, 1200, 1966080, 7400, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.preciousMetalAlloy, 2400, 7864320, 10000, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.enrichedNaquadahAlloy, 2400, 7864320, 11000, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.metastableOganesson, 600, 7864320, 12000, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.shirabon, 600, 31457280, 13000, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.atomicSeparationCatalyst, 35000, 120, 5000, false);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.ExtremelyUnstableNaquadah, 8000, 122880, 7000, false);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.Zircaloy2, 500, 480, 2800, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.Zircaloy4, 500, 480, 2800, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.Incoloy903, 1200, 1920, 3700, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.AdamantiumAlloy, 2500, 1920, 5500, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.MARM200Steel, 200, 7680, 5000, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.Signalium, 1600, 30720, 4000, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.Lumiium, 1600, 30720, 4000, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.ArtheriumSn, 500, 122880, 6500, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.TanmolyiumBetaC, 400, 7680, 5300, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.Dalisenite, 800, 491520, 8700, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.Hikarium, 1200, 30720, 5400, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.Tairitsu, 1200, 1966080, 7400, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.PreciousMetalsAlloy, 2400, 7864320, 10000, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.EnrichedNaquadahAlloy, 2400, 7864320, 11000, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.MetastableOganesson, 600, 7864320, 12000, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.Shirabon, 600, 31457280, 13000, true);
+        CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.AtomicSeparationCatalyst, 35000, 120, 5000, false);
 
         GTModHandler.removeFurnaceSmelting(MU.stack(OrePrefixes.dust, Materials2Materials.Dalisenite, 1)); // :doom:
 
@@ -1458,8 +1456,7 @@ public class RecipeLoader2 {
                 .itemInputs(
                     ItemList.Casing_ZPM.get(3),
                     ItemList.Robot_Arm_IV.get(2),
-                    GTOreDictUnificator
-                        .get(OrePrefixes.cableGt04, WerkstoffReconstruction.materialLibOf(GGMaterial.lumiium), 2),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.Lumiium, 2),
                     MU.stack(OrePrefixes.plateDouble, Materials2Materials.MARCeM200Steel, 2),
                     ItemRefer.HiC_T1.get(1),
                     MU.stack(OrePrefixes.bolt, Materials2Materials.Signalium, 32),

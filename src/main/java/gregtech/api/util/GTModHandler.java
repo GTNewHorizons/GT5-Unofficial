@@ -59,8 +59,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
-import bartworks.system.material.WerkstoffReconstruction;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ganymedes01.etfuturum.recipes.BlastFurnaceRecipes;
 import ganymedes01.etfuturum.recipes.SmokerRecipes;
@@ -984,7 +982,7 @@ public class GTModHandler {
                     case 3    -> MU.craftIngredient(OrePrefixes.rotor, Materials2Materials.Steel);
                     case 4    -> MU.craftIngredient(OrePrefixes.rotor, Materials2Materials.StainlessSteel);
                     case 5    -> MU.craftIngredient(OrePrefixes.rotor, Materials2Materials.TungstenSteel);
-                    case 6    -> MU.craftIngredient(OrePrefixes.rotor, WerkstoffReconstruction.materialLibOf(WerkstoffLoader.RhodiumPlatedPalladium));
+                    case 6    -> MU.craftIngredient(OrePrefixes.rotor, Materials2Materials.RhodiumPlatedPalladium);
                     case 7    -> MU.craftIngredient(OrePrefixes.rotor, Materials2Materials.Iridium);
                     default   -> MU.craftIngredient(OrePrefixes.rotor, Materials2Materials.Osmium);
                 };

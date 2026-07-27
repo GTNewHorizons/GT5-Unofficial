@@ -56,7 +56,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.BWGTMaterialReference;
-import bartworks.system.material.WerkstoffReconstruction;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Circuits;
@@ -84,7 +83,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.Tags;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 import ic2.core.Ic2Items;
 
 public class RecipeLoader {
@@ -5550,12 +5548,8 @@ public class RecipeLoader {
 
         // For Cauldron Wash
         GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes to replace cerium sources");
-        registerCauldronCleaningFor(
-            Materials2Materials.Cerium,
-            WerkstoffReconstruction.materialLibOf(WerkstoffMaterialPool.CeriumRichMixture));
-        registerCauldronCleaningFor(
-            Materials2Materials.Samarium,
-            WerkstoffReconstruction.materialLibOf(WerkstoffMaterialPool.SamariumOreConcentrate));
+        registerCauldronCleaningFor(Materials2Materials.Cerium, Materials2Materials.CeriumRichMixture);
+        registerCauldronCleaningFor(Materials2Materials.Samarium, Materials2Materials.SamariumOreConcentrate);
         GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes done!");
 
         // For Crafting Table

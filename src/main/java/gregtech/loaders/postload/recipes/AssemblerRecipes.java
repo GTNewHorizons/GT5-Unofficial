@@ -37,8 +37,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.WerkstoffLoader;
-import bartworks.system.material.WerkstoffReconstruction;
 import goodgenerator.util.ItemRefer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -2318,8 +2316,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.SamariumMagnetic, Materials2Shapes.stick, 1),
-                GTOreDictUnificator
-                    .get(OrePrefixes.wireFine, WerkstoffReconstruction.materialLibOf(WerkstoffLoader.Ruridit), 16))
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials2Materials.Ruridit, 16))
             .circuit(1)
             .itemOutputs(ItemList.LuV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2704,11 +2701,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(
-                    OrePrefixes.plate,
-                    WerkstoffReconstruction.materialLibOf(WerkstoffLoader.RhodiumPlatedPalladium),
-                    8))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials2Materials.RhodiumPlatedPalladium, 8))
             .circuit(8)
             .itemOutputs(ItemList.Casing_LuV.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -7030,10 +7023,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(
-                    OrePrefixes.plate,
-                    WerkstoffReconstruction.materialLibOf(WerkstoffLoader.RhodiumPlatedPalladium),
-                    6),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials2Materials.RhodiumPlatedPalladium, 6),
                 GTOreDictUnificator.get("frameGtChrome", 1))
             .itemOutputs(ItemList.Casing_Advanced_Rhodium_Palladium.get(1))
             .duration(2 * SECONDS + 10 * TICKS)

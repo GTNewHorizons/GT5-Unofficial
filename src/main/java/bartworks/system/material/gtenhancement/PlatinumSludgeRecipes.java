@@ -13,10 +13,6 @@
 
 package bartworks.system.material.gtenhancement;
 
-import static bartworks.system.material.WerkstoffLoader.IrLeachResidue;
-import static bartworks.system.material.WerkstoffLoader.IrOsLeachResidue;
-import static bartworks.system.material.WerkstoffLoader.PDMetallicPowder;
-import static bartworks.system.material.WerkstoffLoader.PTMetallicPowder;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
@@ -80,6 +76,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.MainMod;
 import bartworks.system.material.BWMetaGeneratedItems;
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -1168,9 +1165,9 @@ public class PlatinumSludgeOverHaul {
 
             final Werkstoff newOutput;
             if (outputAssociation.mMaterial.mMaterial == Materials2Materials.Platinum) {
-                newOutput = PTMetallicPowder;
+                newOutput = WerkstoffLoader.PTMetallicPowder;
             } else if (outputAssociation.mMaterial.mMaterial == Materials2Materials.Palladium) {
-                newOutput = PDMetallicPowder;
+                newOutput = WerkstoffLoader.PDMetallicPowder;
             } else {
                 continue;
             }
@@ -1335,13 +1332,13 @@ public class PlatinumSludgeOverHaul {
 
                     final Werkstoff replacementMaterial;
                     if (association.mMaterial.mMaterial == Materials2Materials.Platinum) {
-                        replacementMaterial = PTMetallicPowder;
+                        replacementMaterial = WerkstoffLoader.PTMetallicPowder;
                     } else if (association.mMaterial.mMaterial == Materials2Materials.Palladium) {
-                        replacementMaterial = PDMetallicPowder;
+                        replacementMaterial = WerkstoffLoader.PDMetallicPowder;
                     } else if (association.mMaterial.mMaterial == Materials2Materials.Osmium) {
-                        replacementMaterial = IrOsLeachResidue;
+                        replacementMaterial = WerkstoffLoader.IrOsLeachResidue;
                     } else if (association.mMaterial.mMaterial == Materials2Materials.Iridium) {
-                        replacementMaterial = IrLeachResidue;
+                        replacementMaterial = WerkstoffLoader.IrLeachResidue;
                     } else {
                         continue;
                     }

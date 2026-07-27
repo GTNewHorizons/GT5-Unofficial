@@ -42,6 +42,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -87,8 +88,9 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
         .addElement('f', GTStructureUtility.ofFrame(Materials2Materials.TungstenSteel))
         .addElement(
             'c',
-            StructureUtility
-                .ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, WerkstoffLoader.RhodiumPlatedPalladium.getmID()))
+            StructureUtility.ofBlock(
+                WerkstoffLoader.BWBlockCasingsAdvanced,
+                Materials2WerkstoffIndex.idOf(Materials2Materials.RhodiumPlatedPalladium)))
         .addElement(
             'b',
             GTStructureUtility.buildHatchAdder(TileEntityPlanetaryGasSiphonLegacy.class)
