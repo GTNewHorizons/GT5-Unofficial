@@ -62,7 +62,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.ruling_0.materiallib.api.Material;
 
 import bartworks.system.material.WerkstoffLoader;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -71,6 +70,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -252,14 +252,14 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
                 }
             ))
-        .addElement('a', lazy(()->ofSheetMetal(GGMaterial.preciousMetalAlloy)))
+        .addElement('a', lazy(()->ofSheetMetal(Materials2Materials.PreciousMetalsAlloy)))
         .addElement('b', ofBlock(GregTechAPI.sBlockCasings10, 13))
         .addElement('c', ofBlock(GregTechAPI.sBlockCasings10, 14))
         .addElement('d', ofFrame(Materials2Materials.Erbium))
         .addElement('e', ofBlock(GregTechAPI.sBlockCasingsFoundry,8))
         .addElement('f', ofSheetMetal(Materials2Materials.Erbium))
-        .addElement('g',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, GGMaterial.preciousMetalAlloy.getmID())))
-        .addElement('h',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasings, GGMaterial.preciousMetalAlloy.getmID())))
+        .addElement('g',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, Materials2WerkstoffIndex.idOf(Materials2Materials.PreciousMetalsAlloy))))
+        .addElement('h',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasings, Materials2WerkstoffIndex.idOf(Materials2Materials.PreciousMetalsAlloy))))
         .addShape(
             FoundryModule.POWER_EFFICIENT_SUBSYSTEMS.structureID,
             transpose(

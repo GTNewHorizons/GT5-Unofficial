@@ -18,8 +18,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
-import bartworks.system.material.WerkstoffReconstruction;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -44,7 +42,7 @@ public class AssemblyLineRecipes implements Runnable {
     private final Material LuVMat;
 
     public AssemblyLineRecipes() {
-        LuVMat = WerkstoffReconstruction.materialLibOf(WerkstoffLoader.Ruridit);
+        LuVMat = Materials2Materials.Ruridit;
     }
 
     @Override

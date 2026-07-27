@@ -16,7 +16,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.Werkstoff;
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -48,15 +47,15 @@ public class BECMetaMaterialRecipes implements Runnable {
 
     private static final Material[] other3Tier = { Materials2Materials.protohalkonite, Materials2Materials.Hexanite,
         Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter };
-    private static final Object[] black3Tier = { GGMaterial.tairitsu, Materials2Materials.TranscendentMetal,
+    private static final Object[] black3Tier = { Materials2Materials.Tairitsu, Materials2Materials.TranscendentMetal,
         Materials2Materials.BlackDwarfMatter };
     private static final Material[] gray3Tier = { Materials2Materials.Churitsu, Materials2Materials.SpaceTime,
         Materials2Materials.Eternity };
     private static final Material[] white3Tier = { Materials2Materials.Shijima, Materials2Materials.WhiteDwarfMatter,
         Materials2Materials.Magmatter };
 
-    private static final Object[] black4Tier = { GGMaterial.tairitsu, Materials2Materials.Hypogen, GGMaterial.shirabon,
-        Materials2Materials.SpaceTime };
+    private static final Object[] black4Tier = { Materials2Materials.Tairitsu, Materials2Materials.Hypogen,
+        Materials2Materials.Shirabon, Materials2Materials.SpaceTime };
     private static final Material[] gray4Tier = { Materials2Materials.Churitsu, Materials2Materials.WhiteDwarfMatter,
         Materials2Materials.BlackDwarfMatter, Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter };
     private static final Material[] white4Tier = { Materials2Materials.Shijima, Materials2Materials.protohalkonite,

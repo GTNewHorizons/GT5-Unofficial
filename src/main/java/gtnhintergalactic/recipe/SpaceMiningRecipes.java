@@ -20,9 +20,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.Material;
 
 import akka.japi.Pair;
-import bartworks.system.material.WerkstoffLoader;
-import bartworks.system.material.WerkstoffReconstruction;
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -824,7 +821,7 @@ public class SpaceMiningRecipes {
             null,
             new int[] { 3000, 2450, 2450, 2000, 100 },
             new Material[] { Materials2Materials.Uranium, Materials2Materials.Uranium235, Materials2Materials.Plutonium,
-                Materials2Materials.Plutonium241, WerkstoffReconstruction.materialLibOf(WerkstoffLoader.Thorianit) },
+                Materials2Materials.Plutonium241, Materials2Materials.Thorianite },
             OrePrefixes.ore,
             40,
             180,
@@ -844,8 +841,8 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 2000, 3000, 3000, 2000 },
-            new Material[] { Materials2Materials.Holmium, Materials2Materials.Samarium,
-                WerkstoffReconstruction.materialLibOf(WerkstoffLoader.Tiberium), Materials2Materials.Strontium },
+            new Material[] { Materials2Materials.Holmium, Materials2Materials.Samarium, Materials2Materials.Tiberium,
+                Materials2Materials.Strontium },
             OrePrefixes.ore,
             15,
             50,
@@ -866,8 +863,7 @@ public class SpaceMiningRecipes {
             null,
             new int[] { 3800, 2000, 1500, 500, 1200, 1000 },
             new Material[] { Materials2Materials.Platinum, Materials2Materials.Palladium, Materials2Materials.Iridium,
-                Materials2Materials.Osmium, WerkstoffReconstruction.materialLibOf(WerkstoffLoader.Ruthenium),
-                WerkstoffReconstruction.materialLibOf(WerkstoffLoader.Rhodium) },
+                Materials2Materials.Osmium, Materials2Materials.Ruthenium, Materials2Materials.Rhodium },
             OrePrefixes.dust,
             10,
             30,
@@ -888,7 +884,7 @@ public class SpaceMiningRecipes {
             null,
             new int[] { 4000, 3000, 3000 },
             new Material[] { Materials2Materials.Magnesium, Materials2Materials.Manganese,
-                WerkstoffReconstruction.materialLibOf(WerkstoffLoader.Fluorspar) },
+                Materials2Materials.Fluorspar },
             OrePrefixes.ore,
             10,
             80,
@@ -908,8 +904,8 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 1500, 2000, 3000, 3500 },
-            new Material[] { Materials2Materials.Trinium, Materials2Materials.Lanthanum,
-                WerkstoffReconstruction.materialLibOf(GGMaterial.orundum), Materials2Materials.Silver },
+            new Material[] { Materials2Materials.Trinium, Materials2Materials.Lanthanum, Materials2Materials.Orundum,
+                Materials2Materials.Silver },
             OrePrefixes.ore,
             30,
             120,
@@ -929,8 +925,8 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 100, 1650, 3500, 2250, 2500 },
-            new Material[] { Materials2Materials.Dilithium, WerkstoffReconstruction.materialLibOf(GGMaterial.orundum),
-                Materials2Materials.Vanadium, Materials2Materials.Ytterbium, Materials2Materials.TengamRaw },
+            new Material[] { Materials2Materials.Dilithium, Materials2Materials.Orundum, Materials2Materials.Vanadium,
+                Materials2Materials.Ytterbium, Materials2Materials.TengamRaw },
             OrePrefixes.ore,
             5,
             100,
@@ -950,9 +946,8 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 4000, 3500, 2500 },
-            new Material[] { WerkstoffReconstruction.materialLibOf(GGMaterial.naquadahEarth),
-                WerkstoffReconstruction.materialLibOf(GGMaterial.enrichedNaquadahEarth),
-                WerkstoffReconstruction.materialLibOf(GGMaterial.naquadriaEarth) },
+            new Material[] { Materials2Materials.NaquadahOxideMixture, Materials2Materials.EnrichedNaquadahOxideMixture,
+                Materials2Materials.NaquadriaOxideMixture },
             OrePrefixes.ore,
             20,
             80,

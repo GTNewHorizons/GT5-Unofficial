@@ -43,7 +43,6 @@ import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.crossmod.nei.NEIConfig;
 import goodgenerator.items.GGItem;
 import goodgenerator.items.GGItemBlocks;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.items.RadioactiveItem;
 import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.CrackRecipeAdder;
@@ -55,6 +54,7 @@ import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
@@ -366,9 +366,9 @@ public class Loaders {
             MetaTileEntityIDs.ComponentAssemblyLine.ID,
             "ComponentAssemblyLine",
             "Component Assembly Line").getStackForm(1L);
-        CrackRecipeAdder.registerPipe(GGMaterial.incoloy903);
-        CrackRecipeAdder.registerWire(GGMaterial.signalium);
-        CrackRecipeAdder.registerWire(GGMaterial.lumiium);
+        CrackRecipeAdder.registerPipe(Materials2Materials.Incoloy903);
+        CrackRecipeAdder.registerWire(Materials2Materials.Signalium);
+        CrackRecipeAdder.registerWire(Materials2Materials.Lumiium);
         Loaders.AMForge = new AntimatterForge(
             MetaTileEntityIDs.AntimatterForge.ID,
             "AntimatterForge",
