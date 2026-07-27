@@ -23,7 +23,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -41,6 +40,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
+import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialForgeHammer>
@@ -122,7 +122,7 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
                         .casingIndex(Casings.ForgeCasing.textureId)
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.ForgeCasing.asElement())))
-                .addElement('D', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 32100))
+                .addElement('D', ofBlock(LoaderLegacyBartworksBlocks.casingsAdvanced, 32100))
                 .addElement('E', Casings.ForgeCasing.asElement())
                 .build();
         }

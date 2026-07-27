@@ -16,11 +16,10 @@ package bartworks;
 import static bartworks.common.loaders.BioRecipeLoader.runOnServerStarted;
 import static gregtech.api.enums.Mods.BartWorks;
 
-import java.io.File;
+import java.io.IOException;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -47,13 +46,14 @@ import bartworks.common.loaders.RegisterServerCommands;
 import bartworks.common.loaders.StaticRecipeChangeLoaders;
 import bartworks.server.EventHandler.ServerEventHandler;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
+import bartworks.system.material.CircuitGeneration.CircuitPartsItem;
 import bartworks.system.material.CircuitGeneration.CircuitWraps;
-import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffHazardHandler;
-import bartworks.system.material.WerkstoffLoader;
-import bartworks.system.material.gtenhancement.PlatinumSludgeRecipes;
+import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
+import bartworks.system.material.processingLoaders.AdditionalRecipes;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.ResultWrongSievert;
+import bartworks.util.log.DebugLog;
 import bwcrossmod.galacticgreg.VoidMinerUtility;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -72,8 +72,9 @@ import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.CasingTier;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GlassTier;
+import gregtech.loaders.postload.LoaderWerkstoffRegistrations;
+import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import tectech.loader.recipe.Godforge;
 
 @Mod(
@@ -97,27 +98,12 @@ public final class MainMod {
     public static final String MOD_ID = Mods.ModIDs.BART_WORKS;
     public static final String APIVERSION = "11";
     public static final Logger LOGGER = LogManager.getLogger(MainMod.NAME);
-    public static final Logger BW_DEBUG_LOGGER = GTLog.conditionalLogger("BartWorks Debug");
     public static final CreativeTabs GT2 = new GT2Tab("GT2C");
     public static final CreativeTabs BIO_TAB = new BioTab("BioTab");
     public static final CreativeTabs BWT = new BartWorksTab(BartWorks.ID);
     public static final IGuiHandler GH = new GuiHandler();
 
     public static final boolean DEBUG = Boolean.getBoolean("bw.debug");
-
-    static {
-        File minecraftHome = Launch.minecraftHome == null ? new File(".") : Launch.minecraftHome;
-        try {
-            GTLog.configureRollingLogger(
-                BW_DEBUG_LOGGER,
-                DEBUG,
-                new File(minecraftHome, "logs/BWLog.log"),
-                new File(minecraftHome, "logs/BWLog-%i.log"),
-                "BartWorksDebugFile");
-        } catch (RuntimeException e) {
-            LOGGER.error("Failed to configure BartWorks debug logger", e);
-        }
-    }
 
     @Mod.Instance(MainMod.MOD_ID)
     public static MainMod instance;
@@ -148,11 +134,16 @@ public final class MainMod {
         codechicken.nei.api.API.hideItem(new ItemStack(ItemRegistry.bw_deprecatedglass));
         codechicken.nei.api.API.hideItem(new ItemStack(ItemRegistry.bw_deprecatedglass2));
 
-        WerkstoffLoader.setUp();
+        if (DEBUG) {
+            try {
+                DebugLog.initDebugLog(event);
+            } catch (IOException e) {
+                MainMod.LOGGER.catching(e);
+            }
+        }
 
         BioCultureLoader.run();
 
-        Werkstoff.init();
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
             .isClient()) {
@@ -183,7 +174,8 @@ public final class MainMod {
             .register(serverEventHandler);
         BioLabLoader.run(event);
 
-        WerkstoffLoader.runInit();
+        LoaderLegacyBartworksBlocks.register();
+        LoaderWerkstoffRegistrations.run();
 
         ItemRegistry.run();
         GlassTier.RegisterGlassTiers.run();
@@ -200,7 +192,8 @@ public final class MainMod {
         ArtificialMicaLine.runArtificialMicaRecipe();
         BioObjectAdder.regenerateBioFluids();
 
-        WerkstoffLoader.run();
+        CircuitPartsItem.init();
+        AdditionalRecipes.run();
 
         CheckRecipeResultRegistry.register(new ResultWrongSievert(0, ResultWrongSievert.NeededSievertType.EXACTLY));
 
@@ -220,7 +213,7 @@ public final class MainMod {
     @Mod.EventHandler
     public void onModLoadingComplete(FMLLoadCompleteEvent event) {
         StaticRecipeChangeLoaders.addElectricImplosionCompressorRecipes();
-        PlatinumSludgeRecipes.register();
+        PlatinumSludgeOverHaul.replacePureElements();
 
         runOnServerStarted();
         StaticRecipeChangeLoaders.unificationRecipeEnforcer();

@@ -25,7 +25,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
 import bartworks.API.BorosilicateGlass;
-import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
@@ -41,6 +40,7 @@ import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
+import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import gtPlusPlus.core.block.ModBlocks;
 import gtnhlanth.common.register.LanthItemList;
 import tectech.thing.block.BlockGodforgeGlass;
@@ -676,7 +676,7 @@ public enum Casings implements ICasing {
     // The block/meta constructor args below are unused (both accessors are overridden to resolve dynamically --
     // see #bwCasing's javadoc); they're kept as the legacy proxy werkstoff id purely so the pair stays readable
     // next to the textureId, which is unaffected by the cutover and keeps its legacy raw-id value.
-    BoltedOsmiridiumCasing(() -> WerkstoffLoader.BWBlockCasings, 32083, 32083) {
+    BoltedOsmiridiumCasing(() -> LoaderLegacyBartworksBlocks.casings, 32083, 32083) {
 
         @Override
         public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Osmiridium, false).getBlock(); }
@@ -684,7 +684,7 @@ public enum Casings implements ICasing {
         @Override
         public int getBlockMeta() { return bwCasing(Materials2Materials.Osmiridium, false).getBlockMeta(); }
     },
-    ReboltedOsmiridiumCasing(() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32083, 32083) {
+    ReboltedOsmiridiumCasing(() -> LoaderLegacyBartworksBlocks.casingsAdvanced, 32083, 32083) {
 
         @Override
         public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Osmiridium, true).getBlock(); }
@@ -692,7 +692,7 @@ public enum Casings implements ICasing {
         @Override
         public int getBlockMeta() { return bwCasing(Materials2Materials.Osmiridium, true).getBlockMeta(); }
     },
-    BoltedNaquadahCasing(() -> WerkstoffLoader.BWBlockCasings, 32090, 32090) {
+    BoltedNaquadahCasing(() -> LoaderLegacyBartworksBlocks.casings, 32090, 32090) {
 
         @Override
         public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Naquadah, false).getBlock(); }
@@ -700,7 +700,7 @@ public enum Casings implements ICasing {
         @Override
         public int getBlockMeta() { return bwCasing(Materials2Materials.Naquadah, false).getBlockMeta(); }
     },
-    ReboltedNaquadahCasing(() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32090, 32090) {
+    ReboltedNaquadahCasing(() -> LoaderLegacyBartworksBlocks.casingsAdvanced, 32090, 32090) {
 
         @Override
         public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Naquadah, true).getBlock(); }
@@ -708,7 +708,7 @@ public enum Casings implements ICasing {
         @Override
         public int getBlockMeta() { return bwCasing(Materials2Materials.Naquadah, true).getBlockMeta(); }
     },
-    BoltedNaquadahAlloyCasing(() -> WerkstoffLoader.BWBlockCasings, 32091, 32091) {
+    BoltedNaquadahAlloyCasing(() -> LoaderLegacyBartworksBlocks.casings, 32091, 32091) {
 
         @Override
         public @NotNull Block getBlock() { return bwCasing(Materials2Materials.NaquadahAlloy, false).getBlock(); }
@@ -716,7 +716,7 @@ public enum Casings implements ICasing {
         @Override
         public int getBlockMeta() { return bwCasing(Materials2Materials.NaquadahAlloy, false).getBlockMeta(); }
     },
-    ReboltedNaquadahAlloyCasing(() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32091, 32091) {
+    ReboltedNaquadahAlloyCasing(() -> LoaderLegacyBartworksBlocks.casingsAdvanced, 32091, 32091) {
 
         @Override
         public @NotNull Block getBlock() { return bwCasing(Materials2Materials.NaquadahAlloy, true).getBlock(); }
@@ -724,7 +724,7 @@ public enum Casings implements ICasing {
         @Override
         public int getBlockMeta() { return bwCasing(Materials2Materials.NaquadahAlloy, true).getBlockMeta(); }
     },
-    BoltedIridiumCasing(() -> WerkstoffLoader.BWBlockCasings, 31850, 31850) {
+    BoltedIridiumCasing(() -> LoaderLegacyBartworksBlocks.casings, 31850, 31850) {
 
         @Override
         public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Iridium, false).getBlock(); }
@@ -732,7 +732,7 @@ public enum Casings implements ICasing {
         @Override
         public int getBlockMeta() { return bwCasing(Materials2Materials.Iridium, false).getBlockMeta(); }
     },
-    ReboltedIridiumCasing(() -> WerkstoffLoader.BWBlockCasingsAdvanced, 31850, 31850) {
+    ReboltedIridiumCasing(() -> LoaderLegacyBartworksBlocks.casingsAdvanced, 31850, 31850) {
 
         @Override
         public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Iridium, true).getBlock(); }

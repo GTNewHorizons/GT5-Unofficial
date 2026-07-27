@@ -41,7 +41,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -65,6 +64,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import gtnhintergalactic.client.IGTextures;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.recipe.GasSiphonRecipes;
@@ -160,7 +160,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
                     "             ", "             ", "             ", "             ", "             ",
                     "             ", "             " } })
         .addElement('B', ofFrame(Materials2Materials.TungstenSteel))
-        .addElement('D', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 88))
+        .addElement('D', ofBlock(LoaderLegacyBartworksBlocks.casingsAdvanced, 88))
         .addElement(
             'C',
             ofChain(

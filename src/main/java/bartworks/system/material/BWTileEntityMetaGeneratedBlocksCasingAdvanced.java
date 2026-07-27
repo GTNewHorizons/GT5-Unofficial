@@ -15,10 +15,12 @@ package bartworks.system.material;
 
 import net.minecraft.block.Block;
 
+import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
+
 public class BWTileEntityMetaGeneratedBlocksCasingAdvanced extends TileEntityMetaGeneratedBlock {
 
     @Override
     protected Block getProperBlock() {
-        return WerkstoffLoader.BWBlockCasingsAdvanced;
+        return LoaderLegacyBartworksBlocks.casingsAdvanced;
     }
 }

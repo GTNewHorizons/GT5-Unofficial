@@ -14,7 +14,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
 
 import bartworks.system.material.CircuitGeneration.CircuitPartsItem;
-import bartworks.system.material.WerkstoffLoader;
 import codechicken.lib.config.ConfigTagParent;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.SearchField;
@@ -45,6 +44,7 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
+import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import gregtech.nei.dumper.BatchModeSupportDumper;
 import gregtech.nei.dumper.InputSeparationSupportDumper;
 import gregtech.nei.dumper.MaterialDumper;
@@ -216,7 +216,7 @@ public class NEIGTConfig implements IConfigureNEI {
     private void hideItems() {
         GTOreAdapter.INSTANCE.hideOres();
         BWOreAdapter.INSTANCE.hideOres();
-        WerkstoffLoader.hideBlocks();
+        LoaderLegacyBartworksBlocks.hideSupersededSlots();
     }
 
     @SubscribeEvent
