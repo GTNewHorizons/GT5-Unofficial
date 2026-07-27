@@ -18,6 +18,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -570,17 +571,21 @@ public class HatchElementBuilder<T> {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                EntityPlayerMP player = null;
-                if (t instanceof IMetaTileEntity metaTile) {
-                    player = GTUtility.getFakePlayer(metaTile.getBaseMetaTileEntity());
+                IGregTechTileEntity base = null;
+                if (t instanceof IMetaTileEntity mte) {
+                    base = mte.getBaseMetaTileEntity();
                 }
+                if (base == null) return false;
+
+                EntityPlayerMP player = GTUtility.getFakePlayer(base);
                 if (player == null) return false;
 
                 AutoPlaceEnvironment env = AutoPlaceEnvironment
                     .fromLegacy(GTCreativeHatchSource.instance, player, chat -> {});
                 PlaceResult result = survivalPlaceBlock(t, world, x, y, z, trigger, env);
-                if (result != PlaceResult.SKIP) {
-                    check(t, world, x, y, z);
+
+                if (t instanceof MTEMultiBlockBase multi) {
+                    multi.checkStructure(true, base);
                 }
                 return result == PlaceResult.ACCEPT || result == PlaceResult.ACCEPT_STOP || result == PlaceResult.SKIP;
             }
