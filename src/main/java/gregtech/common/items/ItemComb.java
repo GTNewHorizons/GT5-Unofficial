@@ -71,7 +71,6 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.loaders.materials.RecognitionMaterials;
-import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 import gregtech.loaders.misc.GTBees;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 import vazkii.botania.common.item.ModItems;
@@ -156,10 +155,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         return getMaterialRenderer(aMetaData) != null;
     }
 
-    /// Only a material carries a custom renderer; the Fluix comb's recognition marker never does.
     @Override
     public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
-        return MU.rendererOf(MU.gtMaterialOf(CombType.valueOf(aMetaData).material));
+        return MU.rendererOf(CombType.valueOf(aMetaData).material);
     }
 
     @Override
@@ -1122,9 +1120,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         }
     }
 
-    /// [#addProcessGT] for the recognition-marker combs (Fluix, Slag). No marker comb is one of the
-    /// special-cased metal combs, so this reproduces only the default branch of the legacy overload's switch.
-    public void addProcessGT(CombType comb, RecognitionMarker material, Voltage volt) {
+    /// [#addProcessGT] for a single material (Fluix, Slag). No single-material comb is one of the special-cased
+    /// metal combs, so this reproduces only the default branch of the array overload's switch.
+    public void addProcessGT(CombType comb, Material material, Voltage volt) {
         ItemStack tComb = getStackForType(comb);
         if (GTOreDictUnificator.get(OrePrefixes.crushedPurified, material, 4) != null) {
             GTValues.RA.stdBuilder()
@@ -1161,10 +1159,10 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         addCentrifugeToMaterial(comb, aMaterial, chance, stackSize, volt, volt.getSimpleTime(), beeWax, waxChance);
     }
 
-    /// [#addCentrifugeToMaterial] for a single recognition-marker comb (Fluix), reproducing the legacy array
-    /// overload's per-element dust sizing for one marker.
-    public void addCentrifugeToMaterial(CombType comb, RecognitionMarker material, int[] chance, int[] stackSize,
-        Voltage volt, ItemStack beeWax, int waxChance) {
+    /// [#addCentrifugeToMaterial] for a single material (Fluix), reproducing the array overload's per-element
+    /// dust sizing for one material.
+    public void addCentrifugeToMaterial(CombType comb, Material material, int[] chance, int[] stackSize, Voltage volt,
+        ItemStack beeWax, int waxChance) {
         ItemStack[] aOutPut = new ItemStack[2];
         stackSize = Arrays.copyOf(stackSize, 1);
         chance = Arrays.copyOf(chance, 2);

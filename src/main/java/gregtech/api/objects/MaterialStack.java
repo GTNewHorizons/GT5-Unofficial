@@ -6,7 +6,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
-import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 
 public class MaterialStack implements Cloneable {
 
@@ -21,11 +20,6 @@ public class MaterialStack implements Cloneable {
     /// Transitional: accepts a legacy [Materials] through [MU#toMaterial] until every caller passes a
     /// [Material] directly. An unbacked legacy material collapses to the `_NULL` sentinel.
     public MaterialStack(Materials material, long amount) {
-        this(MU.toMaterial(material), amount);
-    }
-
-    /// [#MaterialStack(Materials, long)] for a recognition marker, resolving its registered backing.
-    public MaterialStack(RecognitionMarker material, long amount) {
         this(MU.toMaterial(material), amount);
     }
 

@@ -30,7 +30,6 @@ import gregtech.api.material.MU;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
-import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 
@@ -90,17 +89,6 @@ public class GTOreDictUnificator {
     }
 
     public static void set(OrePrefixes prefix, Materials material, ItemStack stack) {
-        Material ml = MU.toMaterial(material);
-        if (ml == null && material != null) {
-            set(prefix, material.getInternalName(), stack);
-            return;
-        }
-        set(prefix, ml, stack, true, false);
-    }
-
-    /// The legacy-typed `set` for a recognition marker, resolving its registered backing; a marker whose
-    /// backing has not been registered yet falls back to a name-only registration under its name.
-    public static void set(OrePrefixes prefix, RecognitionMarker material, ItemStack stack) {
         Material ml = MU.toMaterial(material);
         if (ml == null && material != null) {
             set(prefix, material.getInternalName(), stack);
@@ -173,18 +161,6 @@ public class GTOreDictUnificator {
     /// `get` overloads below.
     public static ItemStack get(OrePrefixes prefix, Materials material, long amount) {
         return get(prefix, material, null, amount);
-    }
-
-    /// The legacy-typed `get` for a recognition marker, resolving its registered backing; a marker whose
-    /// backing has not been registered yet falls back to a lookup under its name.
-    public static ItemStack get(OrePrefixes prefix, RecognitionMarker material, long amount) {
-        Material ml = MU.toMaterial(material);
-        if (ml == null && material != null) {
-            if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material))
-                return null;
-            return get(prefix.oreDictName(material), null, amount, false, true);
-        }
-        return get(prefix, ml, null, amount);
     }
 
     public static ItemStack get(OrePrefixes prefix, Material material, ItemStack replacement, long amount) {
@@ -562,11 +538,6 @@ public class GTOreDictUnificator {
     /// legacy name is used directly rather than through [MU#toMaterial] so an unbacked legacy material still
     /// registers under its own name.
     public static boolean registerOre(OrePrefixes prefix, Materials material, ItemStack stack) {
-        return registerOre(prefix.oreDictName(material), stack);
-    }
-
-    /// The legacy-typed `registerOre` for a recognition marker, registering under the marker's own name.
-    public static boolean registerOre(OrePrefixes prefix, RecognitionMarker material, ItemStack stack) {
         return registerOre(prefix.oreDictName(material), stack);
     }
 

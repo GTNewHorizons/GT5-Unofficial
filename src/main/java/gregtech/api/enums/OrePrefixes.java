@@ -45,7 +45,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.config.Gregtech;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
-import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
@@ -3115,12 +3114,6 @@ public class OrePrefixes {
         return mIgnoredMaterials.contains(MU.material(material));
     }
 
-    /// [#isIgnored(Materials)] for a recognition marker. Markers carry no unification redirects of their own,
-    /// so only [#mIgnoredMaterials] membership applies.
-    public boolean isIgnored(RecognitionMarker material) {
-        return mIgnoredMaterials.contains(material);
-    }
-
     public boolean addFamiliarPrefix(OrePrefixes prefix) {
         if (prefix == null || mFamiliarPrefixes.contains(prefix) || prefix == this) return false;
         return mFamiliarPrefixes.add(prefix);
@@ -3132,9 +3125,9 @@ public class OrePrefixes {
     }
 
     /// [#processOre(Material, String, String, ItemStack)] for the recognition-marker path, dispatching each
-    /// registrator's [IOreRecipeRegistrator#registerOre(OrePrefixes, RecognitionMarker, String, String,
-    /// ItemStack)] entry.
-    public void processOre(RecognitionMarker material, String oreDictName, String modName, ItemStack stack) {
+    /// registrator's [IOreRecipeRegistrator#registerRecognitionOre(OrePrefixes, Material, String, String,
+    /// ItemStack)] entry instead of its full-material one.
+    public void processRecognitionOre(Material material, String oreDictName, String modName, ItemStack stack) {
 
         if (material == null) return;
         if (MU.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
@@ -3147,11 +3140,11 @@ public class OrePrefixes {
                         + "' with the Prefix '"
                         + name
                         + "' and the Material '"
-                        + material.getInternalName()
+                        + MU.internalName(material)
                         + "' at "
                         + GTUtility.getClassName(tRegistrator));
             }
-            tRegistrator.registerOre(this, material, oreDictName, modName, GTUtility.copyAmount(1, stack));
+            tRegistrator.registerRecognitionOre(this, material, oreDictName, modName, GTUtility.copyAmount(1, stack));
         }
     }
 
@@ -3201,11 +3194,6 @@ public class OrePrefixes {
     /// [#oreDictName(Material)] for the transitional legacy [Materials], kept until every caller passes a
     /// [Material] directly.
     public String oreDictName(Materials material) {
-        return name + material.getInternalName();
-    }
-
-    /// [#oreDictName(Material)] for a recognition marker.
-    public String oreDictName(RecognitionMarker material) {
         return name + material.getInternalName();
     }
 

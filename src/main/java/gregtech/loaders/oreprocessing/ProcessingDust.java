@@ -48,7 +48,6 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
-import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 
 public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -681,7 +680,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
     /// (`mBlastFurnaceRequired`, `mMaterialList`, `mName`, ...) that a marker never carries, and no recognition
     /// marker other than `Fluix` reaches this registrator to begin with.
     @Override
-    public void registerOre(OrePrefixes prefix, RecognitionMarker material, String oreDictName, String modName,
+    public void registerRecognitionOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         if (prefix != OrePrefixes.dust) {
             return;

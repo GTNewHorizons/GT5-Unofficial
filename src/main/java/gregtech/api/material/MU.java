@@ -51,7 +51,6 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.config.Client;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
-import gregtech.loaders.materials.RecognitionMaterials.RecognitionMarker;
 
 /// Bridges legacy [OrePrefixes]/[Materials] pairs to their cutover MaterialLib [Shape]/[Material]
 /// equivalents.
@@ -104,12 +103,10 @@ public class MU {
         return MaterialLibAPI.getMaterial("gregtech", material.mName);
     }
 
-    /// The MaterialLib [Material] backing a transitional legacy-family material object -- a [Materials], a
-    /// gtPlusPlus `Material`, or a [RecognitionMarker] -- for migrating the plumbing off the
-    /// legacy families onto [Material]. A legacy [Materials]
-    /// (including the `Any*` wildcard facades) resolves through [#material]; anything else by its internal
-    /// name, which for a marker finds its registered shapeless backing or the real material its name unifies
-    /// into (e.g. `Ammonium`). A [Material] passes through unchanged. Null when nothing backs it.
+    /// The MaterialLib [Material] backing a transitional legacy-family material object -- a [Materials] or a
+    /// gtPlusPlus `Material` -- for migrating the plumbing off the legacy families onto [Material]. A legacy
+    /// [Materials] (including the `Any*` wildcard facades) resolves through [#material]; anything else by its
+    /// internal name. A [Material] passes through unchanged. Null when nothing backs it.
     /// TRANSITIONAL -- removed once every call site passes a [Material] directly.
     public static @Nullable Material toMaterial(@Nullable Object material) {
         if (material == null) return null;
@@ -149,7 +146,7 @@ public class MU {
     /// RecognitionMaterials]). `Materials.get` keys its map by `Materials#mName` -- the same string
     /// [#internalName] yields -- so any name it resolves to a facade resolves here to that facade's
     /// [#material]. Marker names `Materials.get` cannot resolve (the superconductors kept out of
-    /// `getMaterialsMap`, the `RecognitionMarker`-typed fields) resolve here to their registered backing.
+    /// `getMaterialsMap`, the recognition-marker fields) resolve here to their registered backing.
     public static @Nullable Material byLegacyName(@Nullable String name) {
         if (name == null) return null;
         Material found = legacyNamedMaterials().get(name);
@@ -1173,12 +1170,6 @@ public class MU {
         return material.contains(SubTag.getNewSubTag(flag.name()));
     }
 
-    /// [#hasFlag(Materials, GTMaterialFlag)] for a recognition marker, consulted through its own sub-tag set
-    /// for the [SubTag] whose name matches `flag` 1:1.
-    public static boolean hasFlag(@Nullable RecognitionMarker material, GTMaterialFlag flag) {
-        return material != null && material.contains(SubTag.getNewSubTag(flag.name()));
-    }
-
     /// The legacy internal name of a MaterialLib material -- [GTMaterialProperties#LEGACY_NAME] when present
     /// (MaterialLib sanitizes registration names), otherwise the registration name. The [Material]-side
     /// equivalent of `Materials#getInternalName`, used to build ore-dictionary names and lang keys.
@@ -1308,7 +1299,6 @@ public class MU {
     /// `getInternalName` across the union; [#internalName] for a [Material]; null for null or a foreign type.
     public static @Nullable String internalNameOf(@Nullable Object material) {
         if (material instanceof Materials legacy) return legacy.getInternalName();
-        if (material instanceof RecognitionMarker marker) return marker.getInternalName();
         if (material instanceof Material ml) return internalName(ml);
         return null;
     }
@@ -1316,7 +1306,6 @@ public class MU {
     /// `getLocalizedNameKey` across the union; null for null or a foreign type.
     public static @Nullable String localizedNameKeyOf(@Nullable Object material) {
         if (material instanceof Materials legacy) return legacy.getLocalizedNameKey();
-        if (material instanceof RecognitionMarker marker) return marker.getLocalizedNameKey();
         if (material instanceof Material ml) {
             Object legacy = legacyMaterialOf(ml);
             return legacy != null && legacy != ml ? localizedNameKeyOf(legacy)
@@ -1356,7 +1345,6 @@ public class MU {
     /// `getRGBA` across the union; null for null or a foreign type.
     public static @Nullable short[] rgbaOf(@Nullable Object material) {
         if (material instanceof Materials legacy) return legacy.getRGBA();
-        if (material instanceof RecognitionMarker marker) return marker.getRGBA();
         if (material instanceof Material ml) {
             Object legacy = legacyMaterialOf(ml);
             return legacy != null && legacy != ml ? rgbaOf(legacy) : rgba(ml);
