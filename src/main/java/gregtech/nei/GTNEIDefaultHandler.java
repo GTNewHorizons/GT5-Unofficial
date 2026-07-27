@@ -259,7 +259,10 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             Material material = bic.componentMaterial;
             if (prefix != null && material != null && !prefix.mFamiliarPrefixes.isEmpty()) {
                 for (OrePrefixes tPrefix : prefix.mFamiliarPrefixes) {
-                    tResults.add(material.getComponentByPrefix(tPrefix, 1));
+                    ItemStack stack = material.getComponentByPrefix(tPrefix, 1);
+                    if (stack != null) {
+                        tResults.add(stack);
+                    }
                 }
             }
         }
