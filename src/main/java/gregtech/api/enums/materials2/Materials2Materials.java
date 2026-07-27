@@ -31342,9 +31342,6 @@ public class Materials2Materials {
             .build();
         MaterialLibAPI.editMaterial("gregtech", "Cerium-dopedLutetiumAluminiumGarnet(CeLuAG)")
             .removeShape(Materials2Shapes.bolt)
-            .removeShape(Materials2Shapes.dust)
-            .removeShape(Materials2Shapes.dustSmall)
-            .removeShape(Materials2Shapes.dustTiny)
             .removeShape(Materials2Shapes.itemCasing)
             .removeShape(Materials2Shapes.screw)
             .removeShape(Materials2Shapes.toolHeadBuzzSaw)

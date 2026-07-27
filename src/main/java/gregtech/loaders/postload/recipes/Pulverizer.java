@@ -28,7 +28,6 @@ import gregtech.api.material.MU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTOreDictUnificator;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class Pulverizer implements Runnable {
@@ -844,7 +843,8 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MU.stack(OrePrefixes.gemChipped, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
-            .itemOutputs(WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.dustSmall, 1))
+            .itemOutputs(
+                MU.stack(OrePrefixes.dustSmall, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
             .duration(25 * TICKS)
             .eut(4)
             .addTo(maceratorRecipes);
@@ -852,14 +852,15 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MU.stack(OrePrefixes.gemFlawed, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
-            .itemOutputs(WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.dustSmall, 2))
+            .itemOutputs(
+                MU.stack(OrePrefixes.dustSmall, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 2))
             .duration(50 * TICKS)
             .eut(4)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(MU.stack(OrePrefixes.gem, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
-            .itemOutputs(WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.dust, 1))
+            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(maceratorRecipes);
@@ -867,7 +868,7 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MU.stack(OrePrefixes.gemFlawless, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
-            .itemOutputs(WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.dust, 2))
+            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 2))
             .duration(10 * SECONDS)
             .eut(4)
             .addTo(maceratorRecipes);
@@ -875,7 +876,7 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MU.stack(OrePrefixes.gemExquisite, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
-            .itemOutputs(WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.dust, 4))
+            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 4))
             .duration(20 * SECONDS)
             .eut(4)
             .addTo(maceratorRecipes);

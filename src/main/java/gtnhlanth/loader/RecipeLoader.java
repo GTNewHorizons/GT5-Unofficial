@@ -4865,7 +4865,7 @@ public class RecipeLoader {
 
         // 1 LuAG Blend = 1 LuAG in Vacuum Furnace
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.dust, 1))
+            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
             .itemOutputs(
                 MU.stack(OrePrefixes.gemExquisite, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
             .fluidInputs(
