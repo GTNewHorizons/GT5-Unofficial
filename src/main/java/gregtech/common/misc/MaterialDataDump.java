@@ -9,18 +9,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -36,12 +33,8 @@ import com.ruling_0.materiallib.api.StandardProperties;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.MaterialIconRegistry;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.items.MetaGeneratedItemX32;
@@ -62,9 +55,8 @@ import gregtech.client.iconContainers.blocks.GTBlockIconContainer;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.fluid.GTFluid;
 
-/// Dumps the legacy material systems -- GregTech `Materials`, `OrePrefixes`, and bartworks-origin materials --
-/// plus the resolved MaterialLib registry view of the `Materials2` port, to JSON, for consumption by the
-/// material unification tooling.
+/// Dumps `OrePrefixes` and bartworks-origin materials, plus the resolved MaterialLib registry view of the
+/// `Materials2` port, to JSON, for consumption by the material unification tooling.
 ///
 /// Triggered from `GTMod`'s `FMLLoadCompleteEvent` handler when the `gt.dumpMaterialData` system property is
 /// set, so a headless server run can produce the dumps non-interactively.
@@ -87,34 +79,13 @@ public final class MaterialDataDump {
 
     public static void writeAll(File directory) {
         directory.mkdirs();
-        write(new File(directory, "gt-materials.json"), dumpGtMaterials());
         write(new File(directory, "oreprefixes.json"), dumpOrePrefixes());
         write(new File(directory, "werkstoff.json"), dumpWerkstoff());
         write(new File(directory, "ml-materials.json"), dumpMlMaterials());
         write(new File(directory, "legacy-variants.json"), dumpLegacyVariants());
         write(new File(directory, "fluid-textures.json"), dumpFluidTextures());
         write(new File(directory, "legacy-blocks.json"), dumpLegacyBlocks());
-        write(new File(directory, "legacy-name-domain.json"), dumpLegacyNameDomain());
         write(new File(directory, "recipe-census.json"), dumpRecipeCensus(), COMPACT_GSON);
-    }
-
-    /// The legacy name domain `Materials.get(name)` reads: every key of `Materials#getMaterialsMap` mapped to
-    /// the name of the MaterialLib material its facade value resolves to (via `MU#material`). The `_NULL`
-    /// sentinel is skipped exactly as `Materials.get` treats a miss. This is the ground truth the frozen
-    /// `LegacyNameDomain` backing is checked against.
-    private static Map<String, String> dumpLegacyNameDomain() {
-        Map<String, String> domain = new TreeMap<>();
-        for (Map.Entry<String, Materials> entry : Materials.getMaterialsMap()
-            .entrySet()) {
-            Materials facade = entry.getValue();
-            if (facade == Materials._NULL) continue;
-            com.ruling_0.materiallib.api.Material ml = MU.material(facade);
-            if (ml == null) {
-                throw new IllegalStateException("No MaterialLib material for legacy name-domain key " + entry.getKey());
-            }
-            domain.put(entry.getKey(), ml.getName());
-        }
-        return domain;
     }
 
     private static void write(File file, Object data) {
@@ -130,179 +101,7 @@ public final class MaterialDataDump {
         GTLog.out.println("MaterialDataDump: wrote " + file);
     }
 
-    // region gt-materials.json
-
-    private static List<Map<String, Object>> dumpGtMaterials() {
-        LinkedHashSet<Materials> materials = new LinkedHashSet<>();
-        for (int id = 0; id < 1000; id++) {
-            Materials material = MU.materialOf(MU.byId(id));
-            // A slot whose material lost its parent mod is skipped, reproducing the mHasParentMod gate of
-            // Materials.fillGeneratedMaterialsMap.
-            if (material != null && material.mHasParentMod) materials.add(material);
-        }
-        materials.addAll(Materials.getAll());
-
-        List<Map<String, Object>> out = new ArrayList<>();
-        for (Materials material : materials) out.add(dumpGtMaterial(material));
-        return out;
-    }
-
-    private static Map<String, Object> dumpGtMaterial(Materials material) {
-        Map<String, Object> json = new LinkedHashMap<>();
-        json.put("name", material.mName);
-        json.put("localName", material.mDefaultLocalName);
-        json.put("subId", material.mMetaItemSubID);
-        json.put("rgba", toIntArray(material.mRGBa));
-        json.put("moltenRgba", toIntArray(material.mMoltenRGBa));
-        json.put("iconSet", material.mIconSet != null ? material.mIconSet.mSetName : null);
-        json.put("color", material.mColor != null && material.mColor != Dyes._NULL ? material.mColor.name() : null);
-        json.put("element", material.mElement != null ? material.mElement.name() : null);
-        json.put("chemicalFormula", material.getChemicalFormula());
-        json.put("meltingPoint", material.mMeltingPoint);
-        json.put("blastTemp", (int) material.mBlastFurnaceTemp);
-        json.put("blastRequired", material.mBlastFurnaceRequired);
-        json.put("autoBlast", material.mAutoGenerateBlastFurnaceRecipes);
-        json.put("autoVacuum", material.mAutoGenerateVacuumFreezerRecipes);
-        json.put("autoRecycle", material.mAutoGenerateRecycleRecipes);
-        json.put("gasTemp", material.mGasTemp);
-        json.put("fuelPower", material.mFuelPower);
-        json.put("fuelType", material.mFuelType);
-        json.put("heatDamage", material.mHeatDamage);
-        json.put("toolSpeed", material.mToolSpeed);
-        json.put("toolDurability", material.mDurability);
-        json.put("toolQuality", material.mToolQuality);
-        json.put("unifiable", material.mUnifiable);
-        json.put("densityMultiplier", material.mDensityMultiplier);
-        json.put("densityDivider", material.mDensityDivider);
-        json.put("steamMultiplier", material.mSteamMultiplier);
-        json.put("gasMultiplier", material.mGasMultiplier);
-        json.put("plasmaMultiplier", material.mPlasmaMultiplier);
-        json.put("generationFlags", dumpGenerationFlags(material));
-        json.put("hasCorrespondingFluid", material.hasCorrespondingFluid());
-        json.put("hasCorrespondingGas", material.hasCorrespondingGas());
-        json.put("hasElectrolyzerRecipe", (material.mExtraData & 1) != 0);
-        json.put("hasCentrifugeRecipe", (material.mExtraData & 2) != 0);
-        json.put("canBeCracked", material.canBeCracked());
-        json.put("hasGlowingOre", material.hasGlowingOre());
-        json.put("processingMaterialTierEU", material.getProcessingMaterialTierEU());
-        json.put("enchants", dumpEnchants(material));
-        json.put("subTags", dumpSubTags(material));
-        json.put("composition", dumpComposition(material.mMaterialList));
-        json.put("smeltInto", selfOrNull(material, material.mSmeltInto));
-        json.put("macerateInto", selfOrNull(material, material.mMacerateInto));
-        json.put("arcSmeltInto", selfOrNull(material, material.mArcSmeltInto));
-        json.put("directSmelting", selfOrNull(material, material.mDirectSmelting));
-        json.put("handleMaterial", selfOrNull(material, material.mHandleMaterial));
-        json.put("materialInto", selfOrNull(material, material.mMaterialInto));
-        json.put("oreByProducts", dumpMaterialNames(material.mOreByProducts));
-        json.put("oreMultiplier", material.mOreMultiplier);
-        json.put("byProductMultiplier", material.mByProductMultiplier);
-        json.put("smeltingMultiplier", material.mSmeltingMultiplier);
-        json.put("aspects", dumpAspects(material.mAspects));
-        json.put("fluids", dumpFluids(material));
-        json.put("crackedFluids", dumpCrackedFluids(material));
-        json.put("hasGas", material.mHasGas);
-        json.put("generatedPrefixes", dumpGeneratedPrefixes(material));
-        json.put("addedPrefixes", dumpAddedPrefixes(material));
-        json.put("removedPrefixes", dumpRemovedPrefixes(material));
-        json.put("prefixLocalNameOverrides", dumpPrefixLocalNameOverrides(material));
-        return json;
-    }
-
-    /// Cutover shapes (see [MU]) whose legacy display name differs from what MaterialLib's plain `%s`
-    /// substitution would produce, so `gen_lang.py` can emit a lang override to keep display names identical
-    /// after the item cutover. The legacy name goes through [OrePrefixes#getLocalizedNameForItem], which,
-    /// unlike MaterialLib's default substitution, can apply an exact per-material lang override or an
-    /// inflection (`.phrase`) key. Where the `gt.oreprefix.*` format key is absent from the lang files
-    /// loaded in this environment (the translate call falls back to the raw key), the intended English
-    /// default is computed from [OrePrefixes#getDefaultLocalNameForItem]'s pure-Java format instead.
-    private static List<Map<String, Object>> dumpPrefixLocalNameOverrides(Materials material) {
-        List<Map<String, Object>> out = new ArrayList<>();
-        for (OrePrefixes prefix : OrePrefixes.VALUES) {
-            if (MU.shape(prefix) == null || !prefix.doGenerateItem(material)) continue;
-            String legacyName = prefix.getLocalizedNameForItem(material.getInternalName());
-            if (legacyName.startsWith("gt.oreprefix.")) {
-                legacyName = prefix.getDefaultLocalNameForItem(material);
-            }
-            String mlDefaultName = String
-                .format(prefix.getMaterialPrefix() + "%s" + prefix.getMaterialPostfix(), material.mDefaultLocalName);
-            if (legacyName.equals(mlDefaultName)) continue;
-            Map<String, Object> json = new LinkedHashMap<>();
-            json.put("prefix", prefix.getName());
-            json.put("legacyName", legacyName);
-            json.put("mlDefaultName", mlDefaultName);
-            out.add(json);
-        }
-        return out;
-    }
-
-    /// `ADDED_PREFIXES` exceptions ([OrePrefixes#mGeneratedItems]): prefixes this material generates regardless
-    /// of its {@link #dumpGenerationFlags generation flags}, e.g. Iron's `nanite`.
-    private static List<String> dumpAddedPrefixes(Materials material) {
-        List<String> out = new ArrayList<>();
-        for (OrePrefixes prefix : OrePrefixes.VALUES) {
-            if (prefix.mGeneratedItems.contains(MU.material(material))) out.add(prefix.getName());
-        }
-        return out;
-    }
-
-    /// `REMOVED_PREFIXES` exceptions ([OrePrefixes#mNotGeneratedItems]): prefixes this material never generates
-    /// despite its {@link #dumpGenerationFlags generation flags}, e.g. Iron's `ingot` (vanilla already supplies one).
-    private static List<String> dumpRemovedPrefixes(Materials material) {
-        List<String> out = new ArrayList<>();
-        for (OrePrefixes prefix : OrePrefixes.VALUES) {
-            if (prefix.mNotGeneratedItems.contains(MU.material(material))) out.add(prefix.getName());
-        }
-        return out;
-    }
-
-    private static String selfOrNull(Materials owner, Materials value) {
-        return value == null || value == owner ? null : value.mName;
-    }
-
-    private static Map<String, Object> dumpEnchants(Materials material) {
-        Map<String, Object> json = new LinkedHashMap<>();
-        json.put("tool", dumpEnchant(material.mToolEnchantment, material.mToolEnchantmentLevel));
-        json.put("armor", dumpEnchant(material.mArmorEnchantment, material.mArmorEnchantmentLevel));
-        return json;
-    }
-
-    private static Map<String, Object> dumpEnchant(Enchantment enchantment, int level) {
-        if (enchantment == null) return null;
-        Map<String, Object> json = new LinkedHashMap<>();
-        json.put("name", enchantment.getName());
-        json.put("level", level);
-        return json;
-    }
-
-    private static List<String> dumpGenerationFlags(Materials material) {
-        List<String> flags = new ArrayList<>();
-        if (material.hasDustItems()) flags.add("DUST");
-        if (material.hasMetalItems()) flags.add("METAL");
-        if (material.hasGemItems()) flags.add("GEM");
-        if (material.hasOresItems()) flags.add("ORE");
-        if (material.hasCell()) flags.add("CELL");
-        if (material.hasPlasma()) flags.add("PLASMA");
-        if (material.hasToolHeadItems()) flags.add("TOOL_HEAD");
-        if (material.hasGearItems()) flags.add("GEAR");
-        if (material.hasEmpty()) flags.add("EMPTY");
-        return flags;
-    }
-
-    private static List<String> dumpSubTags(Materials material) {
-        List<String> tags = new ArrayList<>();
-        for (SubTag tag : SubTag.sSubTags.values()) {
-            if (material.contains(tag)) tags.add(tag.mName);
-        }
-        Collections.sort(tags);
-        return tags;
-    }
-
-    private static List<Map<String, Object>> dumpComposition(List<MaterialStack> stacks) {
-        List<Map<String, Object>> out = new ArrayList<>();
-        for (MaterialStack stack : stacks) out.add(dumpMaterialStack(stack));
-        return out;
-    }
+    // region oreprefixes.json
 
     private static Map<String, Object> dumpMaterialStack(MaterialStack stack) {
         if (stack == null || stack.mMaterial == null) return null;
@@ -311,77 +110,6 @@ public final class MaterialDataDump {
         json.put("amount", stack.mAmount);
         return json;
     }
-
-    private static List<String> dumpMaterialNames(List<Materials> materials) {
-        List<String> out = new ArrayList<>();
-        for (Materials material : materials) if (material != null) out.add(material.mName);
-        return out;
-    }
-
-    private static List<Map<String, Object>> dumpAspects(List<TCAspects.TC_AspectStack> aspects) {
-        List<Map<String, Object>> out = new ArrayList<>();
-        for (TCAspects.TC_AspectStack aspect : aspects) {
-            Map<String, Object> json = new LinkedHashMap<>();
-            json.put("name", aspect.mAspect.name());
-            json.put("amount", aspect.mAmount);
-            out.add(json);
-        }
-        return out;
-    }
-
-    private static Map<String, Object> dumpFluids(Materials material) {
-        Map<String, Object> json = new LinkedHashMap<>();
-        json.put("solid", dumpFluid(material.mSolid));
-        json.put("fluid", dumpFluid(material.mFluid));
-        json.put("gas", dumpFluid(material.mGas));
-        json.put("plasma", dumpFluid(material.mPlasma));
-        json.put("molten", dumpFluid(material.mStandardMoltenFluid));
-        return json;
-    }
-
-    private static Map<String, Object> dumpFluid(Fluid fluid) {
-        if (fluid == null) return null;
-        Map<String, Object> json = new LinkedHashMap<>();
-        json.put("name", fluid.getName());
-        json.put("temperature", fluid.getTemperature());
-        return json;
-    }
-
-    /// The material's hydro/steam-cracked fluids (light/moderate/severe severity each), captured while dumping
-    /// since [GTProxy#addAutoGeneratedHydroCrackedFluids]/`addAutoGeneratedSteamCrackedFluids` populate them
-    /// during preload, well before this load-complete dump runs. Null for a material that was never cracked
-    /// (its uncracked source fluid was absent when GT generated cracked fluids).
-    private static Map<String, Object> dumpCrackedFluids(Materials material) {
-        Map<String, Object> json = new LinkedHashMap<>();
-        json.put("hydroCracked", dumpCrackedFluidArray(material.getHydroCrackedFluids()));
-        json.put("steamCracked", dumpCrackedFluidArray(material.getSteamCrackedFluids()));
-        return json;
-    }
-
-    private static List<Map<String, Object>> dumpCrackedFluidArray(Fluid[] fluids) {
-        if (fluids == null || fluids[0] == null) return null;
-        List<Map<String, Object>> out = new ArrayList<>();
-        for (Fluid fluid : fluids) out.add(dumpFluid(fluid));
-        return out;
-    }
-
-    private static List<String> dumpGeneratedPrefixes(Materials material) {
-        List<String> out = new ArrayList<>();
-        for (OrePrefixes prefix : OrePrefixes.VALUES) {
-            if (prefix.doGenerateItem(material)) out.add(prefix.getName());
-        }
-        return out;
-    }
-
-    private static int[] toIntArray(short[] values) {
-        int[] out = new int[values.length];
-        for (int i = 0; i < values.length; i++) out[i] = values[i];
-        return out;
-    }
-
-    // endregion
-
-    // region oreprefixes.json
 
     private static Map<String, Object> dumpOrePrefixes() {
         List<Map<String, Object>> prefixes = new ArrayList<>();
@@ -797,10 +525,9 @@ public final class MaterialDataDump {
     // region legacy-variants.json
 
     /// Every (metaItemName, prefixName, materialName, damage) tuple a [MetaGeneratedItemX32] constructor
-    /// actually created, captured while `gt.dumpMaterialData` bypassed the item-cutover skip. Ground
-    /// truth for which shapes had a real legacy item, since [#dumpGeneratedPrefixes] alone overcounts:
-    /// capability bits (`doGenerateItem`) can be set for a prefix that never held a constructor slot, and can
-    /// drift between construction time and this dump.
+    /// actually created, captured while `gt.dumpMaterialData` bypassed the item-cutover skip. Ground truth for
+    /// which shapes had a real legacy item: capability bits (`doGenerateItem`) can be set for a prefix that
+    /// never held a constructor slot, and can drift between construction time and this dump.
     private static List<Map<String, Object>> dumpLegacyVariants() {
         List<Map<String, Object>> out = new ArrayList<>();
         for (MetaGeneratedItemX32.LegacyVariant variant : MetaGeneratedItemX32.DUMP_VARIANTS) {

@@ -6,9 +6,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.FluidState;
-import gregtech.api.enums.Materials;
-
 public interface IGTRegisteredFluid {
 
     /**
@@ -45,27 +42,15 @@ public interface IGTRegisteredFluid {
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
     IGTRegisteredFluid registerPContainers(final ItemStack fullContainer, final ItemStack emptyContainer);
 
-    /**
-     * Updates the {@link Materials}'s fluids from this {@link IGTRegisteredFluid}'s state
-     *
-     * @param material the {@link Materials} to configure based on this {@link IGTRegisteredFluid} and
-     *                 {@link FluidState}
-     * @return The {@link IGTRegisteredFluid} for call chaining
-     */
-    @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
-    IGTRegisteredFluid configureMaterials(final Materials material);
-
-    /// Configures a MaterialLib [Material]'s fluids from this fluid's state, the [Material]-typed twin of
-    /// [#configureMaterials(Materials)]. Records the fluid into `MU`'s slot store (so
-    /// `MU.fluid`/`gas`/`molten`/`solid`/`plasma` resolve it post-loader) and the `Fluid`->`Material` twin map,
-    /// and mirrors the legacy facade field write onto the material's [Materials] counterpart when it has one.
+    /// Configures a MaterialLib [Material]'s fluids from this fluid's state. Records the fluid into `MU`'s
+    /// slot store (so `MU.fluid`/`gas`/`molten`/`solid`/`plasma` resolve it post-loader) and the
+    /// `Fluid`->`Material` twin map.
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
     IGTRegisteredFluid configureMaterials(final Material material);
 
     IGTRegisteredFluid addLocalizedName();
 
-    /// `material` is a legacy-family material object (`Materials`) or a MaterialLib material,
-    /// dispatched through `MU`'s union helpers.
+    /// `material` is a MaterialLib material, dispatched through `MU`'s union helpers.
     IGTRegisteredFluid addLocalizedName(final Object material);
 
     /**

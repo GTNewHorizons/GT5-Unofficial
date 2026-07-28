@@ -23,7 +23,6 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
@@ -123,28 +122,11 @@ public class GTOreDictUnificator {
         return get(prefix, material, null, amount);
     }
 
-    /// Kept solely for [Materials#getPart] and the material-instance accessors in `Materials` (`getDust`,
-    /// `getIngot`, etc.), which stay on the legacy family until the facade itself is deleted.
-    public static ItemStack get(OrePrefixes prefix, Materials material, long amount) {
-        return get(prefix, material, null, amount);
-    }
-
     public static ItemStack get(OrePrefixes prefix, Material material, ItemStack replacement, long amount) {
         if (material == null) return replacement;
         if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material))
             return replacement;
         return get(prefix.oreDictName(material), replacement, amount, false, true);
-    }
-
-    /// [#get(OrePrefixes,Materials,long)] with an explicit replacement, kept for the same reason.
-    public static ItemStack get(OrePrefixes prefix, Materials material, ItemStack replacement, long amount) {
-        Material ml = MU.toMaterial(material);
-        if (ml == null && material != null) {
-            if (OrePrefixes.mPreventableComponents.contains(prefix)
-                && prefix.mDisabledItems.contains(MU.material(material))) return replacement;
-            return get(prefix.oreDictName(material), replacement, amount, false, true);
-        }
-        return get(prefix, ml, replacement, amount);
     }
 
     public static ItemStack get(OrePrefixes prefix, Material material, long amount, boolean noInvalidAmounts) {

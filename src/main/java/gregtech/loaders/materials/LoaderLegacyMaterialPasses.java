@@ -1,6 +1,6 @@
 package gregtech.loaders.materials;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -8,10 +8,10 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.common.config.Gregtech;
 
@@ -23,24 +23,44 @@ public final class LoaderLegacyMaterialPasses {
     private LoaderLegacyMaterialPasses() {}
 
     public static void run() {
+        applyPrefixGenerationOverrides();
         disableUnusedHotIngots();
         addHarvestLevels();
         addHarvestLevelNerfs();
     }
 
+    /// Applies each material's per-prefix generation overrides: [GTMaterialProperties#ADDED_PREFIXES] names the
+    /// prefixes it generates beyond its generation-flag categories, and [GTMaterialProperties#REMOVED_PREFIXES]
+    /// the ones it is excluded from. Both feed [OrePrefixes#doGenerateItem], so this runs before any pass that
+    /// consults it.
+    private static void applyPrefixGenerationOverrides() {
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            List<String> added = material.getProperty(GTMaterialProperties.ADDED_PREFIXES);
+            if (added != null) for (String prefixName : added) {
+                requirePrefix(prefixName, material).mGeneratedItems.add(material);
+            }
+            List<String> removed = material.getProperty(GTMaterialProperties.REMOVED_PREFIXES);
+            if (removed != null) for (String prefixName : removed) {
+                requirePrefix(prefixName, material).mNotGeneratedItems.add(material);
+            }
+        }
+    }
+
+    private static OrePrefixes requirePrefix(String name, Material material) {
+        OrePrefixes prefix = OrePrefixes.getPrefix(name, null);
+        if (prefix == null) {
+            throw new IllegalStateException("No OrePrefixes named " + name + " for material " + material.getName());
+        }
+        return prefix;
+    }
+
     private static void disableUnusedHotIngots() {
-        Set<Materials> legacyHotIngots = Arrays.stream(Materials.values())
-            .parallel()
-            .filter(OrePrefixes.ingotHot::doGenerateItem)
-            .filter(m -> m.mBlastFurnaceTemp < 1750 && m.mAutoGenerateBlastFurnaceRecipes)
-            .collect(Collectors.toSet());
         Set<Material> mlHotIngots = MaterialLibAPI.getMaterials()
             .stream()
             .filter(
                 m -> OrePrefixes.ingotHot.doGenerateItem(m) && MU.blastFurnaceTemp(m) < 1750
                     && MU.autoGenerateBlastFurnaceRecipes(m))
             .collect(Collectors.toSet());
-        LegacyHelperParity.recordHotIngotSets(legacyHotIngots, mlHotIngots);
 
         OrePrefixes.ingotHot.mDisabledItems.addAll(mlHotIngots);
         OrePrefixes.ingotHot.disableComponent(Materials2Materials.Reinforced);

@@ -30,17 +30,12 @@ import gregtech.common.ores.GTPPOreAdapter;
 /// legacy small ore never generates on ice stone (`GTOreAdapter#supports`), so those two combinations are
 /// permanently unreachable and were dropped rather than declared and left forever empty.
 ///
-/// [#init] deliberately never touches the live [StoneType] enum (nor, transitively, [gregtech.api.enums.Materials]):
-/// `StoneType`'s constants are built by referencing `Materials.Stone`/`Materials.Netherrack`/etc. directly (see
-/// its source), so resolving even one -- e.g. iterating `StoneType.STONE_TYPES` -- forces `Materials`'
-/// class-initializer to run. `Materials`' static initializer rebuilds every legacy field from
-/// `Materials2Materials` (see `MaterialsLegacyBridge`), which is empty until `Materials2Materials#init` runs;
-/// [Materials2.java] calls this class's [#init] earlier than that (block shapes must resolve before
-/// `Materials2Materials#init` references `ore`/`oreSmall`), so an early touch would silently fall back to
-/// bare-JUnit stub data (`Materials2Materials.Iron == null`) for every legacy material for the rest of the boot,
-/// not just ore's. [#STONE_TYPE_NAMES]/[#SMALL_ORE_EXCLUDED]/[#KNOWN_VARIANT_BASES] are therefore plain string
-/// data, and [#stoneTypeOf] resolves a variant back to its [StoneType] lazily, called only from behavior hooks
-/// that run during real gameplay, long after every mod's preInit (and `Materials2Materials.init`) has finished.
+/// [#init] runs before `Materials2Materials#init` populates every field that class-of-interest data depends
+/// on (block shapes must resolve before `Materials2Materials#init` references `ore`/`oreSmall`), so
+/// [#STONE_TYPE_NAMES]/[#SMALL_ORE_EXCLUDED]/[#KNOWN_VARIANT_BASES] are plain string data rather than derived
+/// from the live [StoneType] enum, and [#stoneTypeOf] resolves a variant back to its [StoneType] lazily,
+/// called only from behavior hooks that run during real gameplay, long after every mod's preInit (and
+/// `Materials2Materials.init`) has finished.
 public class Materials2OreShapes {
 
     // spotless:off
@@ -178,25 +173,22 @@ public class Materials2OreShapes {
     }
 
     /// Whether `material` originates from a bartworks material -- both [GTOreAdapter] and
-    /// [BWOreAdapter] can resolve *a* [gregtech.api.enums.Materials] for any material sharing this shape (every
-    /// werkstoff also owns a legacy bridge `Materials` instance), so the drop/
-    /// harvest-level hooks above dispatch on this property instead of "which adapter resolves it" to route each
-    /// material to the adapter that actually owns its ore behavior (BW ore has a flat harvest level and no
-    /// per-material `isValidForStone` gate, unlike GT's).
+    /// [BWOreAdapter] can resolve behavior for any material sharing this shape (every werkstoff also carries a
+    /// legacy name), so the drop/harvest-level hooks above dispatch on this property instead of "which adapter
+    /// resolves it" to route each material to the adapter that actually owns its ore behavior (BW ore has a
+    /// flat harvest level and no per-material `isValidForStone` gate, unlike GT's).
     private static boolean isWerkstoff(Material material) {
         return material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null;
     }
 
-    /// Whether `material` is a *pure* gtpp material with no live, id-backed [gregtech.api.enums.Materials]
-    /// counterpart -- [GTOreAdapter] already owns drop/harvest-level behavior for a gtpp name-merge material (its
-    /// own dump captured real per-material formulas that predate gtpp entirely), so this excludes any material
-    /// [MU#materialOf] resolves to a real legacy id. A bridge Materials also resolves through [MU#materialOf]
-    /// but carries no real id (`mMetaItemSubID` stays `-1`), so it still counts as gtpp here, mirroring
-    /// [GTPPOreAdapter]'s own `isGtpp` discriminator.
+    /// Whether `material` is a *pure* gtpp material with no live, id-backed legacy counterpart --
+    /// [GTOreAdapter] already owns drop/harvest-level behavior for a gtpp name-merge material (its own dump
+    /// captured real per-material formulas that predate gtpp entirely), so this excludes any material with a
+    /// real legacy id. A bridge material is also legacy-named but carries no real id ([MU#oldSubId] stays
+    /// `-1`), so it still counts as gtpp here, mirroring [GTPPOreAdapter]'s own `isGtpp` discriminator.
     private static boolean isGtpp(Material material) {
         if (material.getProperty(GTMaterialProperties.GTPP_STATE) == null) return false;
-        gregtech.api.enums.Materials gtEquivalent = MU.materialOf(material);
-        return gtEquivalent == null || gtEquivalent.mMetaItemSubID < 0;
+        return !MU.isLegacyNamed(material) || MU.oldSubId(material) < 0;
     }
 
     private static Block stoneBlock(String variant) {

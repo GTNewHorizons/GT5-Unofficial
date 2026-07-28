@@ -44,7 +44,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.config.Gregtech;
-import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import gregtech.loaders.materials.LegacyNameDomain;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
@@ -2620,12 +2619,12 @@ public class OrePrefixes {
         cellSteamCracked2,
         cellSteamCracked3);
 
-    /// The subset of {@link OrePrefixes} static setup that references {@link Materials} constants. Split out
-    /// of a `static {}` block and called explicitly from GT's preInit, immediately after
-    /// {@link Materials#init()}, because {@code OrePrefixes} loads earlier than that: {@code GTMod}'s own
-    /// constructor touches {@link gregtech.common.ores.UnificationOreAdapter}, whose static initializer reads
-    /// {@link #VALUES}, forcing this class to load before any mod's preInit runs -- well before the
-    /// MaterialLib-backed {@code Materials} static initializer can resolve `Materials2Materials` data.
+    /// The subset of {@link OrePrefixes} static setup that references `Materials2Materials` constants. Split
+    /// out of a `static {}` block and called explicitly from GT's preInit, because {@code OrePrefixes} loads
+    /// earlier than that: {@code GTMod}'s own constructor touches
+    /// {@link gregtech.common.ores.UnificationOreAdapter}, whose static initializer reads {@link #VALUES},
+    /// forcing this class to load before any mod's preInit runs -- well before `Materials2Materials` data can
+    /// resolve.
     public static void lateStaticInit() {
         ingotHot.mHeatDamage = 3.0F;
         cellMolten.mHeatDamage = 3;
@@ -2743,8 +2742,7 @@ public class OrePrefixes {
         wireFine.mCondition = SubTag.METAL;
 
         sheetmetal.mCondition = new ICondition.And<>(
-            obj -> (obj instanceof Materials mat && mat.hasMetalItems())
-                || (obj instanceof MaterialSubTagView view && MU.hasMetalItems(view.material)),
+            obj -> obj instanceof MaterialSubTagView view && MU.hasMetalItems(view.material),
             new ICondition.Nor<>(SubTag.STRETCHY, SubTag.SOFT, SubTag.BOUNCY, SubTag.NO_SMASHING));
         // -----
 
@@ -3060,34 +3058,6 @@ public class OrePrefixes {
         return mCondition == null || mCondition.isTrue(new MaterialSubTagView(material));
     }
 
-    /// Kept solely for [gregtech.common.misc.MaterialDataDump] and `LoaderLegacyMaterialPasses`, which stay on
-    /// the legacy family until the facade itself is deleted.
-    public boolean doGenerateItem(Materials material) {
-        if (material == null) return false;
-        if (material == Materials._NULL) return false;
-        if (material.mMetaItemSubID == -1) return false;
-        if (!material.mHasParentMod) return false;
-
-        // This only falls through, returning false, when the material has no overlap with `mMaterialGenerationBits`.
-        // spotless:off
-        if (!mGeneratedItems.contains(MU.material(material)))
-            if ((materialGenerationBits & DUST) == 0 || !material.hasDustItems())
-                if ((materialGenerationBits & METAL) == 0 || !material.hasMetalItems())
-                    if ((materialGenerationBits & GEM) == 0 || !material.hasGemItems())
-                        if ((materialGenerationBits & ORE) == 0 || !material.hasOresItems())
-                            if ((materialGenerationBits & CELL) == 0 || !material.hasCell())
-                                if ((materialGenerationBits & PLASMA) == 0 || !material.hasPlasma())
-                                    if ((materialGenerationBits & TOOL) == 0 || !material.hasToolHeadItems())
-                                        if ((materialGenerationBits & GEAR) == 0 || !material.hasGearItems())
-                                            if ((materialGenerationBits & EMPTY) == 0 || !material.hasEmpty())
-                                                return false;
-        // spotless:on
-
-        if (mNotGeneratedItems.contains(MU.material(material))) return false;
-        if (mDisabledItems.contains(MU.material(material))) return false;
-        return mCondition == null || mCondition.isTrue(material);
-    }
-
     public boolean ignoreMaterials(Material... materials) {
         for (Material tMaterial : materials) if (tMaterial != null) mIgnoredMaterials.add(tMaterial);
         return true;
@@ -3140,7 +3110,7 @@ public class OrePrefixes {
 
         if (material == null) return;
         if (MU.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
-        if (material == MU.material(Materials._NULL) && !isSelfReferencing && isMaterialBased) return;
+        if (material == Materials2Materials.NULL && !isSelfReferencing && isMaterialBased) return;
         if (!GTUtility.isStackValid(stack)) return;
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
@@ -3176,18 +3146,6 @@ public class OrePrefixes {
     /// side is not a material object at all.
     public String oreDictName(String materialName) {
         return name + materialName;
-    }
-
-    /// Kept solely for [gregtech.api.util.GTOreDictUnificator]'s legacy-typed `get` overloads, which stay on
-    /// the legacy family until the facade itself is deleted.
-    public String oreDictName(Materials material) {
-        return name + material.getInternalName();
-    }
-
-    /// Kept solely for [gregtech.common.misc.MaterialDataDump], which stays on the legacy family until the
-    /// facade itself is deleted.
-    public String getDefaultLocalNameForItem(Materials material) {
-        return material.getDefaultLocalizedNameForItem(getDefaultLocalNameFormatForItem(material.getInternalName()));
     }
 
     /// Resolves the format by the material's internal name ([MU#internalName]) and substitutes its default
@@ -3293,17 +3251,15 @@ public class OrePrefixes {
                 if (this == rawOre || this == ore) return materialPrefix + "%material" + " Ice";
             }
         }
-        if (ProcessingModSupport.aEnableThaumcraftMats) {
-            switch (materialName) {
-                case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> {
-                    if (name.startsWith("gem")) return materialPrefix + "Shard of " + "%material";
-                    if (name.startsWith("crystal")) return materialPrefix + "Shard of " + "%material";
-                    if (name.startsWith("plate")) return materialPrefix + "%material" + " Crystal Plate";
-                    if (name.startsWith("dust")) return materialPrefix + "%material" + " Crystal Powder";
-                    switch (name) {
-                        case "crushedCentrifuged", "crushedPurified", "crushed" -> {
-                            return materialPrefix + "%material" + " Crystals";
-                        }
+        switch (materialName) {
+            case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> {
+                if (name.startsWith("gem")) return materialPrefix + "Shard of " + "%material";
+                if (name.startsWith("crystal")) return materialPrefix + "Shard of " + "%material";
+                if (name.startsWith("plate")) return materialPrefix + "%material" + " Crystal Plate";
+                if (name.startsWith("dust")) return materialPrefix + "%material" + " Crystal Powder";
+                switch (name) {
+                    case "crushedCentrifuged", "crushedPurified", "crushed" -> {
+                        return materialPrefix + "%material" + " Crystals";
                     }
                 }
             }

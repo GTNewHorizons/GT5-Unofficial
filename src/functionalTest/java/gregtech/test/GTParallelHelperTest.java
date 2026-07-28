@@ -9,8 +9,10 @@ import net.minecraftforge.fluids.FluidStack;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ParallelHelper;
@@ -25,18 +27,19 @@ public class GTParallelHelperTest {
     @BeforeAll
     static void setup() {
         machine = new MockIVoidableMachine();
-        ItemStack rubberDust = Materials.RubberRaw.getDust(1);
-        ItemStack sulfurDust = Materials.Sulfur.getDust(1);
+        ItemStack rubberDust = MU.stack(OrePrefixes.dust, Materials2Materials.RawRubber, 1);
+        ItemStack sulfurDust = MU.stack(OrePrefixes.dust, Materials2Materials.Sulfur, 1);
         rubberRecipe = new GTRecipe(
             new ItemStack[] { rubberDust.copy(), sulfurDust.copy() },
-            new ItemStack[] { Materials.Rubber.getDust(1), Materials.Rubber.getDustTiny(1) },
+            new ItemStack[] { MU.stack(OrePrefixes.dust, Materials2Materials.Rubber, 1),
+                MU.stack(OrePrefixes.dustTiny, Materials2Materials.Rubber, 1) },
             null,
             null,
             new int[] { 10000, 6667 },
             null,
             null,
             null,
-            new FluidStack[] { Materials.Rubber.getMolten(1_000) },
+            new FluidStack[] { MU.molten(Materials2Materials.Rubber, 1_000) },
             1,
             1,
             0);

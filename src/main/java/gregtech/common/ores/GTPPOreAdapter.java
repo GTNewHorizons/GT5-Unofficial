@@ -28,17 +28,16 @@ import gregtech.common.GTProxy.OreDropSystem;
 /// The gtPlusPlus-material [IOreAdapter], reimplemented over MaterialLib the same way [BWOreAdapter]
 /// reimplements bartworks ore: worldgen placement, mining drops, and prospecting
 /// dispatch to this singleton via [OreManager] for any material carrying [GTMaterialProperties#GTPP_STATE]
-/// with no live id-backed [gregtech.api.enums.Materials] counterpart (see [#isGtpp]).
+/// with no live legacy id counterpart (see [#isGtpp]).
 ///
-/// Unlike [gregtech.api.enums.Materials]/bartworks ore, gtpp ore only ever existed
-/// on [StoneType#Stone] and never had a small-ore variant, both [#supports(OreInfo)] and [#getBlock] enforce
-/// this, and no gtpp material ever claims `Materials2OreShapes#oreSmall`.
+/// Unlike GT/bartworks ore, gtpp ore only ever existed on [StoneType#Stone] and never had a small-ore
+/// variant, both [#supports(OreInfo)] and [#getBlock] enforce this, and no gtpp material ever claims
+/// `Materials2OreShapes#oreSmall`.
 ///
-/// [#isGtpp] only ever matches a *pure* gtpp material (no live [gregtech.api.enums.Materials] counterpart --
-/// see [MU#oldSubId]): a name-merge material's ore is already owned by [GTOreAdapter], tried first in
-/// [OreManager]'s adapter list, and this adapter's own [Materials2OreShapes] drop/harvest-level dispatch (see
-/// that class) gates on the same discriminator so a merge material's ore keeps GT's per-material formulas
-/// instead of gtpp's flat ones.
+/// [#isGtpp] only ever matches a *pure* gtpp material (no live legacy id -- see [MU#oldSubId]): a name-merge
+/// material's ore is already owned by [GTOreAdapter], tried first in [OreManager]'s adapter list, and this
+/// adapter's own [Materials2OreShapes] drop/harvest-level dispatch (see that class) gates on the same
+/// discriminator so a merge material's ore keeps GT's per-material formulas instead of gtpp's flat ones.
 public final class GTPPOreAdapter implements IOreAdapter<Material> {
 
     public static GTPPOreAdapter INSTANCE = new GTPPOreAdapter();
@@ -113,10 +112,9 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
     }
 
     /// Whether a MaterialLib material belongs to the gtPlusPlus ore family -- carries
-    /// [GTMaterialProperties#GTPP_STATE] and has no live id-backed [gregtech.api.enums.Materials] counterpart.
-    /// A bridge [gregtech.api.enums.Materials] also carries no real legacy id ([MU#oldSubId] stays at its `-1`
-    /// default, since a [gregtech.api.enums.MaterialBuilder] material is never assigned one) -- ore-block
-    /// concerns still belong to this adapter for those, so only a positive-id resolution excludes.
+    /// [GTMaterialProperties#GTPP_STATE] and has no live id-backed legacy counterpart ([MU#oldSubId] stays at
+    /// its `-1` default) -- ore-block concerns still belong to this adapter for those, so only a positive-id
+    /// resolution excludes.
     private static boolean isGtpp(@Nullable Material material) {
         if (material == null || material.getProperty(GTMaterialProperties.GTPP_STATE) == null) return false;
         return MU.oldSubId(material) < 0;

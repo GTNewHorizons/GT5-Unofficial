@@ -27,7 +27,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -129,10 +128,6 @@ public class GregTechAPI {
      * Lists of all the active World generation Features, these are getting Initialized in Postload!
      */
     public static final List<GTWorldgen> sWorldgenList = new ArrayList<>();
-    /**
-     * A List containing all the Materials, which are somehow in use by GT and therefor receive a specific Set of Items.
-     */
-    public static final Materials[] sGeneratedMaterials = new Materials[1000];
     /**
      * For the API Version check
      */

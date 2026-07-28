@@ -372,7 +372,7 @@ public class PlatinumSludgeOverHaul {
         }
 
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (MU.materialOf(material) == null) continue;
+            if (!MU.isLegacyNamed(material)) continue;
             if (materialsContains(material, Materials2Materials.Sulfur)
                 && (materialsContains(material, Materials2Materials.Copper)
                     || materialsContains(material, Materials2Materials.Nickel))) {
