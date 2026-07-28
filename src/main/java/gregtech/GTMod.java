@@ -63,16 +63,12 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Materials2;
-import gregtech.api.enums.MaterialsIDMap;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.materials2.Materials2ArcSmelting;
 import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -125,7 +121,6 @@ import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
 import gregtech.loaders.load.MTERecipeLoader;
 import gregtech.loaders.materialrecipes.LoaderMaterialRecipes;
-import gregtech.loaders.materials.LegacyHelperParity;
 import gregtech.loaders.materials.LegacyNameDomainTable;
 import gregtech.loaders.materials.LoaderLegacyMaterialPasses;
 import gregtech.loaders.misc.CoverLoader;
@@ -243,14 +238,14 @@ public class GTMod {
     public static GTProxy gregtechproxy;
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
-    /// Set once {@link gregtech.api.enums.Materials#init()} has resolved every legacy `Materials` field from
-    /// the MaterialLib-backed {@link gregtech.loaders.materials.MaterialsLegacyBridge}. `OreRegisterEvent`
+    /// Set once {@link gregtech.loaders.materials.LoaderLegacyMaterialPasses#run} and
+    /// {@link gregtech.api.enums.OrePrefixes#lateStaticInit} have completed during preInit. `OreRegisterEvent`
     /// listeners registered during mod construction ({@link gregtech.common.GTProxy#registerOre} and
     /// {@link gregtech.common.ores.UnificationOreAdapter#onOreRegistered}) can otherwise fire -- from another
     /// mod registering ores during its own construction or preInit, with no ordering guarantee relative to
-    /// GT's own preInit -- before `Materials2Materials` is populated, and must check this flag and skip
-    /// instead of touching `Materials`; the explicit catch-up calls in {@link #onPreInitialization} process
-    /// whatever was skipped once this flips true.
+    /// GT's own preInit -- before that setup has run, and must check this flag and skip instead of touching
+    /// material state; the explicit catch-up calls in {@link #onPreInitialization} process whatever was
+    /// skipped once this flips true.
     public static volatile boolean sMaterialsReady = false;
 
     public static GTAchievements achievements;
@@ -352,7 +347,6 @@ public class GTMod {
         new EnchantmentEnderDamage();
         new EnchantmentRadioactivity();
 
-        Materials.init();
         LoaderLegacyMaterialPasses.run();
         OrePrefixes.lateStaticInit();
         sMaterialsReady = true;
@@ -648,12 +642,9 @@ public class GTMod {
         GregTechAPI.sFullLoadFinished = true;
 
         if (Boolean.getBoolean("gt.dumpMaterialData")) {
-            Materials2ArcSmelting.verifyAgainstLegacy();
-            Materials2ParentMods.verifyAgainstLegacy();
-            MaterialsIDMap.verifyAgainstLegacy();
             LegacyNameDomainTable.verifyResolvable();
-            LegacyHelperParity.verifyAgainstLegacy();
             MaterialDataDump.writeAll(new File(Launch.minecraftHome, "material-dump"));
+            gregtech.common.misc.MaterialGateDump.write();
         }
     }
 

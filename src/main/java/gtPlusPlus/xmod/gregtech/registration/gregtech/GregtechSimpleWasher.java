@@ -115,7 +115,7 @@ public class GregtechSimpleWasher {
         ItemStack dustDirty;
         ItemStack dustPure;
         for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
-            if (MU.materialOf(ml) == null) {
+            if (!MU.isLegacyNamed(ml)) {
                 continue;
             }
             if (MU.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) {
@@ -176,7 +176,7 @@ public class GregtechSimpleWasher {
         ItemStack crushedClean;
         ItemStack crushedDirty;
         for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
-            if (MU.materialOf(ml) == null) {
+            if (!MU.isLegacyNamed(ml)) {
                 continue;
             }
             if (MU.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) {

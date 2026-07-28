@@ -22,10 +22,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.junit.jupiter.api.Test;
 
+import com.ruling_0.materiallib.api.Material;
+
 import goodgenerator.api.recipe.ExtremeHeatExchangerBackend;
 import goodgenerator.api.recipe.ExtremeHeatExchangerRecipe;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.maps.FormingPressBackend;
@@ -205,8 +207,8 @@ class GTRecipeBackendLifecycleTest {
             .minInputs(0, 1)
             .useSpecialSlot()
             .build();
-        GTRecipe recipe = addReplicatorRecipe(map, Materials.Iron);
-        ItemStack ironOrb = elementalScanOrb(Materials.Iron);
+        GTRecipe recipe = addReplicatorRecipe(map, Materials2Materials.Iron);
+        ItemStack ironOrb = elementalScanOrb(Materials2Materials.Iron);
 
         assertSame(
             recipe,
@@ -221,7 +223,7 @@ class GTRecipeBackendLifecycleTest {
                 .specialSlot(ironOrb)
                 .find());
 
-        GTRecipe secondRecipe = addReplicatorRecipe(map, Materials.Iron);
+        GTRecipe secondRecipe = addReplicatorRecipe(map, Materials2Materials.Iron);
         map.getBackend()
             .reInit();
         assertSame(
@@ -340,9 +342,9 @@ class GTRecipeBackendLifecycleTest {
                 .addTo(map));
     }
 
-    private static GTRecipe addReplicatorRecipe(RecipeMap<ReplicatorBackend> map, Materials material) {
+    private static GTRecipe addReplicatorRecipe(RecipeMap<ReplicatorBackend> map, Material material) {
         GTRecipe recipe = RA.stdBuilder()
-            .metadata(GTRecipeConstants.MATERIAL, gregtech.api.material.MU.material(material))
+            .metadata(GTRecipeConstants.MATERIAL, material)
             .itemOutputs(new ItemStack(iron_ingot, 1))
             .duration(1)
             .eut(1)
@@ -352,10 +354,13 @@ class GTRecipeBackendLifecycleTest {
             .compileRecipe(recipe);
     }
 
-    private static ItemStack elementalScanOrb(Materials material) {
+    private static ItemStack elementalScanOrb(Material material) {
         ItemStack orb = ItemList.Tool_DataOrb.get(1);
         BehaviourDataOrb.setDataTitle(orb, "Elemental-Scan");
-        BehaviourDataOrb.setDataName(orb, material.mElement.name());
+        BehaviourDataOrb.setDataName(
+            orb,
+            gregtech.api.material.MU.element(material)
+                .name());
         return orb;
     }
 

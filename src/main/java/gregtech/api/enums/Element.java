@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -158,12 +157,6 @@ public enum Element {
     public final long mAdditionalMass;
     public final String mName;
     public final boolean mIsIsotope;
-
-    /**
-     * Links to every pure Material containing just this Element.
-     */
-    // Populated by each Materials constant's own constructor via `.add()`, not assigned here.
-    public ArrayList<Materials> mLinkedMaterials = new ArrayList<>();
 
     /**
      * @param aProtons  Amount of Protons. Antiprotons if negative.

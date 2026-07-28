@@ -8,8 +8,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.GTMod;
 import gregtech.api.material.GTMaterialProperties;
 
-/// The legacy 1000-slot generated-material id spine (`GregTechAPI#sGeneratedMaterials`) rebuilt over
-/// MaterialLib materials: every registered material carrying [GTMaterialProperties#OLD_SUB_ID] occupies the
+/// The 1000-slot generated-material id spine, built over MaterialLib materials: every registered material
+/// carrying [GTMaterialProperties#OLD_SUB_ID] occupies the
 /// slot that property names. The property is GT-owned and set only for the legacy id space -- werkstoff and
 /// gtPlusPlus materials key their own id spaces ([GTMaterialProperties#WERKSTOFF_IDS],
 /// [GTMaterialProperties#GTPP_STATE]) and never appear here -- so the population is exactly the legacy facade

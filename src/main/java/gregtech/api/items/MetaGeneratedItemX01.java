@@ -14,7 +14,6 @@ import com.ruling_0.materiallib.api.Material;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
@@ -132,10 +131,14 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
         String aName = super.getItemStackDisplayName(aStack);
         int aDamage = aStack.getItemDamage();
         if (isMaterialItem(aDamage)) {
-            // getLocalizedNameForItem has no MaterialLib accessor; use the legacy call, which retires with the
-            // facade.
-            Materials aMaterial = MU.materialOf(getMaterial(aDamage));
-            if (aMaterial != null) return aMaterial.getLocalizedNameForItem(aName);
+            Material aMaterial = getMaterial(aDamage);
+            if (aMaterial != null) {
+                return GTUtility.formatStringSafe(
+                    aName.replace("%s", "%temp")
+                        .replace("%material", "%s"),
+                    MU.localizedNameOf(aMaterial))
+                    .replace("%temp", "%s");
+            }
         }
         return aName;
     }
