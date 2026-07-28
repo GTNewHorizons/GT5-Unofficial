@@ -25,12 +25,13 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchObjectHolderGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import tectech.util.CommonValues;
 
 /**
  * Created by Tec on 03.04.2017.
  */
-public class MTEHatchObjectHolder extends MTEHatch {
+public class MTEHatchObjectHolder extends MTEHatch implements ISmartInputHatch {
 
     private static IIconContainer EM_H;
     private static IIconContainer EM_H_ACTIVE;
