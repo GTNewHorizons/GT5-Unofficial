@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
@@ -587,15 +588,13 @@ public class EyeOfHarmonyRecipe {
         } else outputMap.add(Materials2Materials.Stone, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
     }
 
-    public static void processHelperIfPossible(HashMapHelper outputMap, Object material, double mainMultiplier,
-        double probability) {
-        if (material instanceof Materials gtMat) processHelper(outputMap, gtMat, mainMultiplier, probability);
-        else if (material instanceof com.ruling_0.materiallib.api.Material ml) {
-            if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
-                processHelper(outputMap, ml, mainMultiplier, probability);
-            } else {
-                processHelperGTpp(outputMap, ml, mainMultiplier, probability);
-            }
+    /// Accumulates a vein material's dust yield. Only a gregtech-declared or werkstoff-origin material carries the
+    /// composition this reads; a vein material from any other family contributes nothing.
+    public static void processHelperIfPossible(HashMapHelper outputMap,
+        @Nullable com.ruling_0.materiallib.api.Material material, double mainMultiplier, double probability) {
+        if (material == null) return;
+        if (MU.isLegacyNamed(material) || material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
+            processHelper(outputMap, material, mainMultiplier, probability);
         }
     }
 

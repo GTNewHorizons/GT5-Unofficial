@@ -52,7 +52,7 @@ import gregtech.common.config.Client;
 /// [MU#generatesPrefix(Object,OrePrefixes)], [MU#hasSubTag(Object,SubTag)], [MU#partOf], [MU#idOf],
 /// [MU#addTooltipsOf]) returns exactly what the live legacy-facade branch returns today, for every material
 /// that currently resolves through the `Materials` facade. Each helper's live shape is `ML arm ->
-/// legacyMaterialOf -> Materials arm -> legacy method`; once `Materials` is deleted every one of those calls
+/// legacy-family resolution -> Materials arm -> legacy method`; once `Materials` is deleted every one of those calls
 /// falls through to the ML-native tail unconditionally. This class reimplements each tail independently
 /// (never by calling the `MU` helper itself, which would compare the live path against itself) and diffs it
 /// against the current legacy result, so a divergence is caught before the facade is deleted rather than
@@ -113,9 +113,12 @@ public final class LegacyHelperParity {
         for (Map.Entry<Materials, Material> entry : pairs.entrySet()) {
             Materials legacy = entry.getKey();
             Material ml = entry.getValue();
-            // A material whose legacyMaterialOf does not yield its facade never reaches the legacy arm, so the ML
-            // tail is what MU already returns and the facade's own answer is not a deletion risk.
-            if (MU.legacyMaterialOf(ml) != legacy) {
+            // A material whose resolved legacy counterpart does not match `legacy` -- directly, or because
+            // `legacy` has no live id and `ml` carries a WERKSTOFF_IDS identity of its own -- never reaches the
+            // legacy arm, so the ML tail is what MU already returns and the facade's own answer is not a
+            // deletion risk.
+            if (MU.materialOf(ml) != legacy
+                || (legacy.mMetaItemSubID < 0 && ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null)) {
                 alreadyLive.add(MU.internalName(ml));
                 continue;
             }
