@@ -39,6 +39,8 @@ public class DebugWriterHelper {
     private static final List<BlockSymbolOverride> symbolOverrides = new ArrayList<>();
 
     private static final Map<Block, String> VANILLA_BLOCK_NAMES = new IdentityHashMap<>();
+    private static final Casings[] CASINGS_VALUES = Casings.values();
+    private static final Materials[] MATERIALS_VALUES = Materials.values();
 
     static {
         // VanillaBlocks
@@ -60,7 +62,7 @@ public class DebugWriterHelper {
 
         // Casings
         registerBlockAssociation((block, meta, symbol) -> {
-            for (Casings casing : Casings.values()) {
+            for (Casings casing : CASINGS_VALUES) {
                 try {
                     if (casing.getBlock() == block && casing.getBlockMeta() == meta) {
                         return symbol + "-> "
@@ -96,7 +98,7 @@ public class DebugWriterHelper {
         // Sheet Metal
         registerBlockAssociation((block, meta, symbol) -> {
             if (block == GregTechAPI.sBlockSheetmetalGT) {
-                for (Materials material : Materials.values()) {
+                for (Materials material : MATERIALS_VALUES) {
                     if (material.mMetaItemSubID == meta) {
                         return symbol + "-> "
                             + "addElement('"
@@ -353,20 +355,17 @@ public class DebugWriterHelper {
 
         builder.append("\nOffsets:\n")
             .append(basePositionA)
-            .append(" ")
+            .append(", ")
             .append(basePositionB)
-            .append(" ")
+            .append(", ")
             .append(basePositionC)
             .append("\n");
 
-        builder.append("\nDimensions:\n")
-            .append("Width: ")
+        builder.append("\nDimensions (Width, Height, Length)\n")
             .append(sizeA)
-            .append(" ")
-            .append("Height: ")
+            .append(", ")
             .append(sizeB)
-            .append(" ")
-            .append("Length: ")
+            .append(", ")
             .append(sizeC)
             .append("\n");
 
