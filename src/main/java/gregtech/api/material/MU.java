@@ -2,7 +2,6 @@ package gregtech.api.material;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -38,8 +37,6 @@ import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2IDIndex;
-import gregtech.api.enums.materials2.Materials2Markers;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
@@ -829,41 +826,6 @@ public class MU {
         return Materials2ArcSmelting.withGas(material);
     }
 
-    private static Map<Material, List<Material>> oreReRegistrations;
-
-    /// The wildcard marker materials an ore registered for `material` is also re-registered under (an Iron
-    /// ore entry also registers as AnyIron, etc.), consulted by the ore-registration dispatch. Empty for a
-    /// material with no wildcard aliases.
-    public static List<Material> oreReRegistrationsOf(@Nullable Material material) {
-        if (material == null) return Collections.emptyList();
-        return oreReRegistrations().getOrDefault(material, Collections.emptyList());
-    }
-
-    private static Map<Material, List<Material>> oreReRegistrations() {
-        if (oreReRegistrations == null) {
-            Map<Material, List<Material>> m = new HashMap<>();
-            m.put(Materials2Materials.Iron, Collections.singletonList(Materials2Markers.AnyIron));
-            m.put(Materials2Materials.PigIron, Collections.singletonList(Materials2Markers.AnyIron));
-            m.put(Materials2Materials.CastIron, Collections.singletonList(Materials2Markers.AnyIron));
-            m.put(Materials2Materials.Copper, Collections.singletonList(Materials2Markers.AnyCopper));
-            m.put(Materials2Materials.AnnealedCopper, Collections.singletonList(Materials2Markers.AnyCopper));
-            m.put(Materials2Materials.Bronze, Collections.singletonList(Materials2Markers.AnyBronze));
-            m.put(Materials2Materials.Rubber, Collections.singletonList(Materials2Markers.AnyRubber));
-            m.put(
-                Materials2Materials.StyreneButadieneRubber,
-                Arrays.asList(Materials2Markers.AnyRubber, Materials2Markers.AnySyntheticRubber));
-            m.put(
-                Materials2Materials.Silicone,
-                Arrays.asList(Materials2Markers.AnyRubber, Materials2Markers.AnySyntheticRubber));
-            m.put(Materials2Materials.Carbon, Collections.singletonList(Materials2Markers.AnyCarbon));
-            m.put(Materials2Materials.Coal, Collections.singletonList(Materials2Markers.AnyCarbon));
-            m.put(Materials2Materials.Charcoal, Collections.singletonList(Materials2Markers.AnyCarbon));
-            m.put(Materials2Materials.Lignite, Collections.singletonList(Materials2Markers.AnyCarbon));
-            oreReRegistrations = m;
-        }
-        return oreReRegistrations;
-    }
-
     /// [#smeltInto(Material)], for [GTMaterialProperties#DIRECT_SMELTING].
     public static @Nullable Material directSmelting(@Nullable Material material) {
         return chaseRef(material, GTMaterialProperties.DIRECT_SMELTING);
@@ -973,10 +935,15 @@ public class MU {
         String formula = material.getProperty(GTMaterialProperties.FORMULA);
         if (formula == null) return "";
         if (Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.FORMULA_LOCALIZED))) {
-            return StatCollector
-                .translateToLocal("Material." + internalName(material).toLowerCase() + ".ChemicalFormula");
+            return StatCollector.translateToLocal(localizedNameKey(material) + ".ChemicalFormula");
         }
         return formula;
+    }
+
+    /// The lang key a material's display name and its derivatives are translated from. Stated once here
+    /// because [MaterialFormulas] and the tooltip paths append their own suffixes to it.
+    public static String localizedNameKey(Material material) {
+        return "Material." + internalName(material).toLowerCase();
     }
 
     public static String chemicalTooltip(@Nullable Material material, boolean showQuestionMarks) {
@@ -1057,16 +1024,14 @@ public class MU {
 
     /// The lang key for a [Material]'s localized name; null for null or a non-[Material] value.
     public static @Nullable String localizedNameKeyOf(@Nullable Object material) {
-        if (material instanceof Material ml) return "Material." + internalName(ml).toLowerCase();
+        if (material instanceof Material ml) return localizedNameKey(ml);
         return null;
     }
 
     /// The localized display name of a [Material], translated from its [#localizedNameKeyOf] lang key; null for
     /// null or a non-[Material] value.
     public static @Nullable String localizedNameOf(@Nullable Object material) {
-        if (material instanceof Material ml) {
-            return StatCollector.translateToLocal("Material." + internalName(ml).toLowerCase());
-        }
+        if (material instanceof Material ml) return StatCollector.translateToLocal(localizedNameKey(ml));
         return null;
     }
 

@@ -1,8 +1,15 @@
 package gregtech.api.enums.materials2;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -45,6 +52,32 @@ public class Materials2Markers {
     private static final int DEFAULT_ARGB = 0x00ffffff;
 
     private static Set<Material> superconductorMarkers;
+
+    private static Map<Material, List<Material>> oreReRegistrations;
+
+    /// The wildcard markers an ore entry for `material` is additionally registered under, so an Iron ore entry
+    /// also answers to `AnyIron`. Empty for a material with no wildcard alias.
+    public static List<Material> oreReRegistrationsOf(@Nullable Material material) {
+        if (material == null) return Collections.emptyList();
+        if (oreReRegistrations == null) {
+            Map<Material, List<Material>> m = new HashMap<>();
+            m.put(Materials2Materials.Iron, Collections.singletonList(AnyIron));
+            m.put(Materials2Materials.PigIron, Collections.singletonList(AnyIron));
+            m.put(Materials2Materials.CastIron, Collections.singletonList(AnyIron));
+            m.put(Materials2Materials.Copper, Collections.singletonList(AnyCopper));
+            m.put(Materials2Materials.AnnealedCopper, Collections.singletonList(AnyCopper));
+            m.put(Materials2Materials.Bronze, Collections.singletonList(AnyBronze));
+            m.put(Materials2Materials.Rubber, Collections.singletonList(AnyRubber));
+            m.put(Materials2Materials.StyreneButadieneRubber, Arrays.asList(AnyRubber, AnySyntheticRubber));
+            m.put(Materials2Materials.Silicone, Arrays.asList(AnyRubber, AnySyntheticRubber));
+            m.put(Materials2Materials.Carbon, Collections.singletonList(AnyCarbon));
+            m.put(Materials2Materials.Coal, Collections.singletonList(AnyCarbon));
+            m.put(Materials2Materials.Charcoal, Collections.singletonList(AnyCarbon));
+            m.put(Materials2Materials.Lignite, Collections.singletonList(AnyCarbon));
+            oreReRegistrations = m;
+        }
+        return oreReRegistrations.getOrDefault(material, Collections.emptyList());
+    }
 
     private Materials2Markers() {}
 
