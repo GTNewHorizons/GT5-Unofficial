@@ -223,7 +223,8 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     }
 
     /// Whether the material's slot for this fluid's state already resolves, counting a
-    /// [GTMaterialProperties#LEGACY_FLUIDS] slot as wired: a hand-declared fluid occupies the slot just as a
+    /// [gregtech.api.enums.materials2.Materials2FluidNames] slot as wired: a hand-declared fluid occupies the slot just
+    /// as a
     /// recorded one does, and re-wiring would replace it with the generic loop's registration.
     private boolean slotAlreadyWired(Material material) {
         return switch (muFluidState()) {

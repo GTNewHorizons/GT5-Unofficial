@@ -35,6 +35,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.Materials2ArcSmelting;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.Materials2FluidNames;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2OreShapes;
@@ -205,7 +206,7 @@ public class MU {
 
     /// The raw [Fluid] for a material's liquid slot, for presence gates and callers building their own
     /// stacks. A [#recordSlotFluid]-stored LIQUID fluid takes precedence; otherwise resolved from
-    /// [GTMaterialProperties#LEGACY_FLUIDS]'s `fluid()` slot by Forge fluid name -- NOT from a
+    /// [gregtech.api.enums.materials2.Materials2FluidNames]'s `fluid()` slot by Forge fluid name -- NOT from a
     /// [Materials2FluidShapes#fluidLiquid] shape lookup, since a material whose fluid is a vanilla or
     /// foreign Forge fluid (`Water` -> `water`, `Milk` -> `milk`) carries the slot without any ML fluid
     /// shape, which a shape-based lookup would miss.
@@ -293,7 +294,8 @@ public class MU {
     }
 
     /// A gtPlusPlus-only material's registered plasma fluid, from [GTMaterialProperties#GTPP_PLASMA_NAME] --
-    /// never from this class's own [GTMaterialProperties#LEGACY_FLUIDS]-based [#plasmaOf], so this is null for
+    /// never from this class's own [gregtech.api.enums.materials2.Materials2FluidNames]-based [#plasmaOf], so this is
+    /// null for
     /// every gtPlusPlus-originated material outside the small set that property actually carries -- exactly
     /// mirroring the retired `Material#getPlasma`.
     public static @Nullable Fluid legacyGtppPlasmaOf(@Nullable Material material) {
@@ -313,7 +315,8 @@ public class MU {
     }
 
     /// [#fluidOf]'s raw [Fluid] for the `molten()` slot, resolved from the same
-    /// [GTMaterialProperties#LEGACY_FLUIDS] `molten` slot (or [#recordSlotFluid] store) as [#molten]. Unlike
+    /// [gregtech.api.enums.materials2.Materials2FluidNames] `molten` slot (or [#recordSlotFluid] store) as [#molten].
+    /// Unlike
     /// [#molten], does not fall back to the [Materials2FluidShapes#fluidMolten] shape lookup -- this is null
     /// exactly when the slot itself is unset, which the fluid autogen loop gates on.
     public static @Nullable Fluid moltenOf(@Nullable Material material) {
@@ -348,7 +351,8 @@ public class MU {
     /// Records the Forge fluid backing one of `material`'s legacy fluid states -- the [Material]-side twin of
     /// the loader-time legacy field writes (`GTFluid#configureMaterials` and `gregtech.loaders.preload.
     /// LoaderGTBlockFluid`'s direct `mFluid`/`mGas`/`mSolid` assignments), for materials whose fluids are
-    /// configured at registration time rather than ported as [GTMaterialProperties#LEGACY_FLUIDS] data. A
+    /// configured at registration time rather than ported as [gregtech.api.enums.materials2.Materials2FluidNames] data.
+    /// A
     /// recorded fluid takes precedence over the property resolution in [#fluidOf]/[#gas]/[#molten]/[#solid]/
     /// [#plasma].
     public static void recordSlotFluid(Material material, FluidState state, Fluid fluid) {
@@ -363,7 +367,7 @@ public class MU {
     }
 
     /// Whether a fluid has been recorded into a material's slot store via [#recordSlotFluid] for `state` --
-    /// the raw twin presence, without the [GTMaterialProperties#LEGACY_FLUIDS] fallback the public slot
+    /// the raw twin presence, without the [gregtech.api.enums.materials2.Materials2FluidNames] fallback the public slot
     /// getters apply. Backs [gregtech.common.fluid.GTFluid]'s dump-mode already-wired guard, which must ask
     /// whether a slot was already stamped rather than whether one can be resolved.
     public static boolean hasStoredSlotFluid(@Nullable Material material, FluidState state) {
@@ -387,7 +391,8 @@ public class MU {
             new Shape[] { Materials2FluidShapes.fluidSolid }));
 
     /// A [#recordSlotFluid]-stored fluid wins; otherwise the material must declare the
-    /// [GTMaterialProperties#LEGACY_FLUIDS] slot, and the fluid is the one MaterialLib registered for the
+    /// [gregtech.api.enums.materials2.Materials2FluidNames] slot, and the fluid is the one MaterialLib registered for
+    /// the
     /// first shape in [#STATE_SHAPES] that the material generates. The slot gate matters independently of the
     /// shapes: it is what distinguishes a material that has no fluid in this state from one whose fluid shares
     /// another state's registration.
@@ -396,7 +401,7 @@ public class MU {
         Fluid stored = storedFluid(material, state);
         if (stored != null) return stored;
         if (material == null) return null;
-        FluidNames legacyFluids = material.getProperty(GTMaterialProperties.LEGACY_FLUIDS);
+        FluidNames legacyFluids = Materials2FluidNames.of(material.getName());
         if (legacyFluids == null || slot.apply(legacyFluids) == null) return null;
         for (Shape shape : STATE_SHAPES.get(state)) {
             if (!material.hasShape(shape)) continue;
@@ -432,7 +437,7 @@ public class MU {
     /// Records the Forge fluid `GTProxy#addAutoGeneratedHydroCrackedFluids`/`addAutoGeneratedSteamCrackedFluids`
     /// built for one of `material`'s three cracking severities (`severity` 0/1/2 = light/moderate/severe),
     /// for materials whose cracked fluids GT autogenerates rather than MaterialLib pre-registering as
-    /// [GTMaterialProperties#CRACKED_HYDRO_FLUIDS]/[#CRACKED_STEAM_FLUIDS] data. A recorded fluid takes
+    /// [gregtech.api.enums.materials2.Materials2FluidNames] data. A recorded fluid takes
     /// precedence over that property resolution in [#crackedFluid].
     public static void recordCrackedFluid(Material material, CrackType type, int severity, Fluid fluid) {
         crackedFluids.computeIfAbsent(material, k -> new EnumMap<>(CrackType.class))

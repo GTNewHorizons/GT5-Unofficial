@@ -43,10 +43,12 @@ import gregtech.common.items.ItemIntegratedCircuit;
 /// status).
 ///
 /// Both shapes need a material's molten fluid, which [MU]'s state-specific accessors (`molten`/`gas`/`fluid`)
-/// cannot resolve for a gtPlusPlus-only material: those read a per-state [GTMaterialProperties#LEGACY_FLUIDS]
+/// cannot resolve for a gtPlusPlus-only material: those read a per-state
+/// [gregtech.api.enums.materials2.Materials2FluidNames]
 /// slot or a [com.ruling_0.materiallib.api.Shape], and a gtPlusPlus-only material carries neither.
 /// [#materialFluid] resolves it instead through [MU#legacyGtppFluid]'s name-priority lookup over the same
-/// [GTMaterialProperties#LEGACY_FLUIDS] data, exactly as gtpp's own `Material#getFluidStack` did (a null result
+/// [gregtech.api.enums.materials2.Materials2FluidNames] data, exactly as gtpp's own `Material#getFluidStack` did (a
+/// null result
 /// here reproduces a null there, which is why some [#SINGLE_DUST] members -- carrying `BLAST_REQUIRED` but no
 /// fluid gtpp ever wired up -- correctly register nothing rather than needing a hand-picked exclusion list).
 ///

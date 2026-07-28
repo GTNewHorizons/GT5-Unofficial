@@ -45,11 +45,6 @@ public class GTMaterialProperties {
     /// The blast-furnace gas recipe's duration multiplier, read by `BlastFurnaceGasStat` when generating a
     /// blast-furnace gas recipe for this material.
     public static final Property<Double> EBF_GAS_TIME_MULTIPLIER = Property.of("gregtech", "ebfGasTimeMultiplier");
-    /// The three hydro-cracked fluids (light/moderate/severe), present only when the dump captured a legacy
-    /// hydro-cracked fluid for this material (see [#CAN_BE_CRACKED]).
-    public static final Property<List<FluidRef>> CRACKED_HYDRO_FLUIDS = Property.of("gregtech", "crackedHydroFluids");
-    /// As [#CRACKED_HYDRO_FLUIDS], for the steam-cracked fluids.
-    public static final Property<List<FluidRef>> CRACKED_STEAM_FLUIDS = Property.of("gregtech", "crackedSteamFluids");
     public static final Property<Integer> DENSITY_DIVIDER = Property.of("gregtech", "densityDivider");
     public static final Property<Integer> DENSITY_MULTIPLIER = Property.of("gregtech", "densityMultiplier");
     public static final Property<MaterialRef> DIRECT_SMELTING = Property.of("gregtech", "directSmelting");
@@ -107,7 +102,6 @@ public class GTMaterialProperties {
     public static final Property<String> GTPP_PLASMA_NAME = Property.of("gregtech", "gtppPlasmaName");
     /// The gtPlusPlus material state (`SOLID`/`LIQUID`/`GAS`/...).
     public static final Property<String> GTPP_STATE = Property.of("gregtech", "gtppState");
-    public static final Property<FluidNames> LEGACY_FLUIDS = Property.of("gregtech", "legacyFluids");
     public static final Property<String> LOCAL_NAME = Property.of("gregtech", "localName");
     public static final Property<MaterialRef> MACERATE_INTO = Property.of("gregtech", "macerateInto");
     /// The programmed-circuit number for the auto-generated Mixer recipe, elided when unset.
