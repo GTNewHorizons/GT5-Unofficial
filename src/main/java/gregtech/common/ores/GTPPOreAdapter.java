@@ -38,7 +38,7 @@ import gregtech.common.GTProxy.OreDropSystem;
 /// material's ore is already owned by [GTOreAdapter], tried first in [OreManager]'s adapter list, and this
 /// adapter's own [Materials2OreShapes] drop/harvest-level dispatch (see that class) gates on the same
 /// discriminator so a merge material's ore keeps GT's per-material formulas instead of gtpp's flat ones.
-public final class GTPPOreAdapter implements IOreAdapter<Material> {
+public final class GTPPOreAdapter implements IOreAdapter {
 
     public static GTPPOreAdapter INSTANCE = new GTPPOreAdapter();
 
@@ -51,22 +51,21 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public boolean supports(OreInfo<?> info) {
+    public boolean supports(OreInfo info) {
         if (info.stoneType != null && info.stoneType != StoneType.Stone) return false;
         if (info.isSmall) return false;
 
-        return info.material instanceof Material material && isGtpp(material)
-            && material.hasShape(Materials2OreShapes.ore);
+        return isGtpp(info.material) && info.material.hasShape(Materials2OreShapes.ore);
     }
 
     @Override
-    public OreInfo<Material> getOreInfo(Block block, int meta) {
+    public OreInfo getOreInfo(Block block, int meta) {
         BlockMaterialInfo blockInfo = MaterialLibAPI.lookupBlock(block, meta);
         if (blockInfo == null || blockInfo.shape() != Materials2OreShapes.ore || !isGtpp(blockInfo.material())) {
             return null;
         }
 
-        OreInfo<Material> info = OreInfo.getNewInfo();
+        OreInfo info = OreInfo.getNewInfo();
         info.material = blockInfo.material();
         info.stoneType = StoneType.Stone;
         info.isNatural = true;
@@ -74,7 +73,7 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public ImmutableBlockMeta getBlock(OreInfo<?> info) {
+    public ImmutableBlockMeta getBlock(OreInfo info) {
         if (!supports(info)) return null;
 
         ItemStack stack = oreStack((Material) info.material);
@@ -94,7 +93,7 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
     /// material carries [GTMaterialProperties#GTPP_STATE] but has no live gregtech counterpart -- see
     /// [BWOreAdapter#shapeDrops]/[GTOreAdapter#shapeDrops] for the equivalent on the other two ore families.
     public List<ItemStack> shapeDrops(Material material, int fortune, boolean isSilkTouch) {
-        try (OreInfo<Material> info = OreInfo.getNewInfo()) {
+        try (OreInfo info = OreInfo.getNewInfo()) {
             info.material = material;
             info.stoneType = StoneType.Stone;
             info.isNatural = true;
@@ -120,11 +119,11 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
+    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo info2, boolean silktouch, int fortune) {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
-        OreInfo<Material> info = (OreInfo<Material>) info2;
+        OreInfo info = (OreInfo) info2;
 
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
 
@@ -136,17 +135,16 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public List<ItemStack> getPotentialDrops(OreInfo<?> info2) {
+    public List<ItemStack> getPotentialDrops(OreInfo info2) {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
-        OreInfo<Material> info = (OreInfo<Material>) info2;
+        OreInfo info = (OreInfo) info2;
 
         return getBigOreDrops(ThreadLocalRandom.current(), GTMod.proxy.oreDropSystem, info, 0);
     }
 
-    private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Material> info,
-        int fortune) {
+    private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo info, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         switch (oreDropMode) {

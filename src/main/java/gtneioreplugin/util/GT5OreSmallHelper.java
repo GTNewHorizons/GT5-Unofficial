@@ -44,7 +44,7 @@ public class GT5OreSmallHelper {
             .arrayListValues()
             .build();
 
-        OreInfo<Object> info = OreInfo.getNewInfo();
+        OreInfo info = OreInfo.getNewInfo();
 
         for (GTWorldgen worldGen : GregTechAPI.sWorldgenList) {
             if (!(worldGen instanceof WorldgenGTOreSmallPieces smallOreWorldGen)) continue;

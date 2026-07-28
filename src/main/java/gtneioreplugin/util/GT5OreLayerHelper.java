@@ -137,7 +137,7 @@ public class GT5OreLayerHelper {
         }
 
         public ItemStack getLayerOre(int veinLayer, IStoneType stoneType) {
-            try (OreInfo<Object> info = OreInfo.getNewInfo()) {
+            try (OreInfo info = OreInfo.getNewInfo()) {
                 info.material = ores[veinLayer];
                 info.stoneType = stoneType;
 

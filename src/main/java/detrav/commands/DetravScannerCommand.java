@@ -90,7 +90,7 @@ public class DetravScannerCommand extends GTBaseCommand {
                 Block b = c.getBlock(x, y, z);
                 int meta = c.getBlockMetadata(x, y, z);
 
-                try (OreInfo<?> info = OreManager.getOreInfo(b, meta)) {
+                try (OreInfo info = OreManager.getOreInfo(b, meta)) {
                     if (info == null || info.isSmall) continue;
 
                     String matName = MU.localizedNameOf(info.material);

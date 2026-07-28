@@ -9,6 +9,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableList;
+import com.ruling_0.materiallib.api.Material;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
@@ -57,8 +58,8 @@ public abstract class PluginGT5OreBase extends PluginBase {
         });
     }
 
-    protected String getGTOreLocalizedName(Object ore, boolean small) {
-        try (OreInfo<Object> info = OreInfo.getNewInfo()) {
+    protected String getGTOreLocalizedName(Material ore, boolean small) {
+        try (OreInfo info = OreInfo.getNewInfo()) {
             info.material = ore;
             info.isSmall = small;
 

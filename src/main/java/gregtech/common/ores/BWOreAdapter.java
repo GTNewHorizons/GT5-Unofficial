@@ -67,7 +67,7 @@ import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 /// (mirroring [GTOreAdapter]'s own collapse of the same distinction), so both legacy natural and non-natural
 /// metas of the same (material, stone, size) collapse onto the same MaterialLib block, which always behaves as
 /// the natural case (fortune applies) once cut over.
-public final class BWOreAdapter implements IOreAdapter<Material> {
+public final class BWOreAdapter implements IOreAdapter {
 
     public static BWOreAdapter INSTANCE = new BWOreAdapter();
 
@@ -144,7 +144,7 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
     /// switch to [BWMetaGeneratedOres]), and never encoded a natural flag -- mirrors the legacy `transform`
     /// method this replaces, which unconditionally resolved through the `Stone` [Ores] entry.
     private ImmutableBlockMeta resolveLegacyTE(int meta, boolean small) {
-        try (OreInfo<Material> info = OreInfo.getNewInfo()) {
+        try (OreInfo info = OreInfo.getNewInfo()) {
             info.material = Materials2WerkstoffIndex.get(meta);
             info.stoneType = StoneType.Stone;
             info.isSmall = small;
@@ -189,7 +189,7 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
     }
 
     private ImmutableBlockMeta resolveCurrentGenMeta(StoneType stoneType, boolean small, int meta) {
-        try (OreInfo<Material> info = OreInfo.getNewInfo()) {
+        try (OreInfo info = OreInfo.getNewInfo()) {
             info.material = Materials2WerkstoffIndex.get(meta);
             info.stoneType = stoneType;
             info.isSmall = small;
@@ -215,7 +215,7 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
                 if (!isWerkstoffMaterial(material)) continue;
 
                 for (boolean small : BOOLEANS) {
-                    try (OreInfo<Material> info = OreInfo.getNewInfo()) {
+                    try (OreInfo info = OreInfo.getNewInfo()) {
                         info.material = material;
                         info.stoneType = ores.stoneType;
                         info.isSmall = small;
@@ -250,8 +250,9 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public boolean supports(OreInfo<?> info) {
-        if (!(info.material instanceof Material material) || !isWerkstoffMaterial(material)) return false;
+    public boolean supports(OreInfo info) {
+        if (!isWerkstoffMaterial(info.material)) return false;
+        Material material = info.material;
 
         IStoneType stone = info.stoneType == null ? StoneType.Stone : info.stoneType;
         if (!(stone instanceof StoneType stoneType)) return false;
@@ -262,12 +263,12 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public OreInfo<Material> getOreInfo(Block block, int meta) {
+    public OreInfo getOreInfo(Block block, int meta) {
         if (block instanceof BWMetaGeneratedOres oreBlock) {
             Material material = Materials2WerkstoffIndex.get(meta);
             if (material == null) return null;
 
-            OreInfo<Material> info = OreInfo.getNewInfo();
+            OreInfo info = OreInfo.getNewInfo();
             info.material = material;
             info.stoneType = oreBlock.stoneType;
             info.isSmall = oreBlock.isSmall;
@@ -282,7 +283,7 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
         StoneType stoneType = Materials2OreShapes.stoneTypeOf(blockInfo.variant());
         if (stoneType == null) return null;
 
-        OreInfo<Material> info = OreInfo.getNewInfo();
+        OreInfo info = OreInfo.getNewInfo();
         info.material = blockInfo.material();
         info.stoneType = stoneType;
         info.isSmall = blockInfo.shape() == Materials2OreShapes.oreSmall;
@@ -292,10 +293,11 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public ImmutableBlockMeta getBlock(OreInfo<?> info) {
+    public ImmutableBlockMeta getBlock(OreInfo info) {
         IStoneType stone = info.stoneType == null ? StoneType.Stone : info.stoneType;
         if (!(stone instanceof StoneType stoneType)) return null;
-        if (!(info.material instanceof Material material) || !isWerkstoffMaterial(material)) return null;
+        if (!isWerkstoffMaterial(info.material)) return null;
+        Material material = info.material;
 
         Shape shape = info.isSmall ? Materials2OreShapes.oreSmall : Materials2OreShapes.ore;
 
@@ -329,7 +331,7 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
         StoneType stoneType = Materials2OreShapes.stoneTypeOf(variant);
         if (mlMaterial == null || stoneType == null) return List.of();
 
-        try (OreInfo<Material> info = OreInfo.getNewInfo()) {
+        try (OreInfo info = OreInfo.getNewInfo()) {
             info.material = mlMaterial;
             info.stoneType = stoneType;
             info.isSmall = isSmall;
@@ -340,11 +342,11 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
+    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo info2, boolean silktouch, int fortune) {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
-        OreInfo<Material> info = (OreInfo<Material>) info2;
+        OreInfo info = (OreInfo) info2;
 
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
         if (!info.isNatural) fortune = 0;
@@ -361,11 +363,11 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public List<ItemStack> getPotentialDrops(OreInfo<?> info2) {
+    public List<ItemStack> getPotentialDrops(OreInfo info2) {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
-        OreInfo<Material> info = (OreInfo<Material>) info2;
+        OreInfo info = (OreInfo) info2;
 
         if (info.isSmall) {
             ObjectLinkedOpenHashSet<ItemId> drops = new ObjectLinkedOpenHashSet<>();
@@ -388,7 +390,7 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
         }
     }
 
-    private ArrayList<ItemStack> getSmallOreDrops(Random random, OreInfo<Material> info, int fortune) {
+    private ArrayList<ItemStack> getSmallOreDrops(Random random, OreInfo info, int fortune) {
         ArrayList<ItemStack> possibleDrops = SmallOreDrops.getDropList(info.material);
         ArrayList<ItemStack> drops = new ArrayList<>();
 
@@ -409,8 +411,7 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
         return drops;
     }
 
-    private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Material> info,
-        int fortune) {
+    private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo info, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         switch (oreDropMode) {
@@ -436,7 +437,7 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
                 }
             }
             case UnifiedBlock -> {
-                try (OreInfo<Material> info2 = info.clone()) {
+                try (OreInfo info2 = info.clone()) {
                     info2.isNatural = false;
 
                     for (int i = 0; i < (info2.stoneType.isRich() ? 2 : 1); i++) {
@@ -446,7 +447,7 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
                 }
             }
             case PerDimBlock -> {
-                try (OreInfo<Material> info2 = info.clone()) {
+                try (OreInfo info2 = info.clone()) {
                     info2.isNatural = false;
 
                     if (!info2.stoneType.isDimensionSpecific()) {
@@ -457,7 +458,7 @@ public final class BWOreAdapter implements IOreAdapter<Material> {
                 }
             }
             case Block -> {
-                try (OreInfo<Material> info2 = info.clone()) {
+                try (OreInfo info2 = info.clone()) {
                     info2.isNatural = false;
 
                     drops.add(getStack(info2, 1));

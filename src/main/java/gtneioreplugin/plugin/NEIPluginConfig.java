@@ -7,8 +7,6 @@ import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 
-import com.ruling_0.materiallib.api.Material;
-
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.event.NEIRegisterHandlerInfosEvent;
@@ -67,7 +65,7 @@ public class NEIPluginConfig implements IConfigureNEI {
         // because new DimensionDisplayItems made tabs a bit taller.
         Map<String, ItemStack> handlers = new HashMap<>();
 
-        OreInfo<Material> info = OreInfo.getNewInfo();
+        OreInfo info = OreInfo.getNewInfo();
 
         info.stoneType = StoneType.Stone;
         info.material = Materials2Materials.Manyullyn;

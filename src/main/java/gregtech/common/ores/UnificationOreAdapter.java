@@ -35,7 +35,7 @@ import gregtech.loaders.materials.LegacyNameDomain;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
-public class UnificationOreAdapter implements IOreAdapter<Material> {
+public class UnificationOreAdapter implements IOreAdapter {
 
     private static final ImmutableList<OrePrefixes> ORE_ORE_PREFIXES = Arrays.stream(OrePrefixes.VALUES)
         .filter(
@@ -106,7 +106,7 @@ public class UnificationOreAdapter implements IOreAdapter<Material> {
             if (ml == null) continue;
 
             // The name lookup runs through the LegacyNameDomain seam; the tables key on the MaterialLib
-            // material directly, matching this adapter's OreInfo<Material> contract.
+            // material directly, matching this adapter's OreInfo contract.
             BLOCK_TABLE.put(ore, ml, bm);
             MAT_BLOCK_TABLE.put(bm, Pair.of(ore, ml));
         }
@@ -162,7 +162,7 @@ public class UnificationOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public boolean supports(OreInfo<?> info) {
+    public boolean supports(OreInfo info) {
         IStoneType stoneType = info.stoneType == null ? StoneType.Stone : info.stoneType;
 
         // noinspection SuspiciousMethodCalls
@@ -170,7 +170,7 @@ public class UnificationOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public OreInfo<Material> getOreInfo(Block block, int meta) {
+    public OreInfo getOreInfo(Block block, int meta) {
         pooled.setBlock(block);
         pooled.setBlockMeta(meta);
 
@@ -178,7 +178,7 @@ public class UnificationOreAdapter implements IOreAdapter<Material> {
 
         if (pair == null) return null;
 
-        OreInfo<Material> info = OreInfo.getNewInfo();
+        OreInfo info = OreInfo.getNewInfo();
 
         info.stoneType = StoneType.findStoneTypeByPrefix(pair.left());
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
@@ -192,7 +192,7 @@ public class UnificationOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public ImmutableBlockMeta getBlock(OreInfo<?> info) {
+    public ImmutableBlockMeta getBlock(OreInfo info) {
         IStoneType stoneType = info.stoneType == null ? StoneType.Stone : info.stoneType;
 
         // noinspection SuspiciousMethodCalls
@@ -202,7 +202,7 @@ public class UnificationOreAdapter implements IOreAdapter<Material> {
     private final GTMockWorld mockWorld = new GTMockWorld();
 
     @Override
-    public @NotNull ArrayList<ItemStack> getOreDrops(Random rng, OreInfo<?> info, boolean silktouch, int fortune) {
+    public @NotNull ArrayList<ItemStack> getOreDrops(Random rng, OreInfo info, boolean silktouch, int fortune) {
         ImmutableBlockMeta bm = getBlock(info);
 
         if (bm == null) return new ArrayList<>();
@@ -221,7 +221,7 @@ public class UnificationOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public List<ItemStack> getPotentialDrops(OreInfo<?> info) {
+    public List<ItemStack> getPotentialDrops(OreInfo info) {
         return Collections.emptyList();
     }
 }

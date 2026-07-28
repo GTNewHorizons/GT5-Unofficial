@@ -1014,7 +1014,7 @@ public class MU {
     }
 
     // Object-typed helpers, for material references reached through an Object-typed slot (generic containers
-    // such as `OreInfo<Object>`). Each checks `instanceof Material` and falls back to null/false/empty.
+    // such as `OreInfo`). Each checks `instanceof Material` and falls back to null/false/empty.
 
     /// The legacy internal name of a [Material] (see [#internalName]); null for null or a non-[Material] value.
     public static @Nullable String internalNameOf(@Nullable Object material) {
