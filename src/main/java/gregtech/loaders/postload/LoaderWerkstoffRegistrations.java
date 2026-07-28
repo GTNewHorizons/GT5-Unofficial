@@ -118,7 +118,7 @@ public class LoaderWerkstoffRegistrations {
         stack = GTOreDictUnificator.get(prefix, material, 1);
         if (stack != null) return stack;
         if (prefix != OrePrefixes.ore && prefix != OrePrefixes.oreSmall) return null;
-        try (OreInfo<Material> info = OreInfo.getNewInfo()) {
+        try (OreInfo info = OreInfo.getNewInfo()) {
             info.material = material;
             info.isSmall = prefix == OrePrefixes.oreSmall;
             return BWOreAdapter.INSTANCE.supports(info) ? BWOreAdapter.INSTANCE.getStack(info, 1) : null;

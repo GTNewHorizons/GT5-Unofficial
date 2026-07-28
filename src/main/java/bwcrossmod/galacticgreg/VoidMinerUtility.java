@@ -74,7 +74,7 @@ public class VoidMinerUtility {
          * @param stone    the stone types
          */
         public void addDrop(com.ruling_0.materiallib.api.Material material, List<StoneType> stone, float weight) {
-            try (OreInfo<com.ruling_0.materiallib.api.Material> info = OreInfo.getNewInfo()) {
+            try (OreInfo info = OreInfo.getNewInfo()) {
                 info.material = material;
 
                 for (IStoneType stones : stone) {
@@ -98,7 +98,7 @@ public class VoidMinerUtility {
          * @param weight   the non normalised weight
          */
         public void addDrop(com.ruling_0.materiallib.api.Material material, float weight) {
-            try (OreInfo<com.ruling_0.materiallib.api.Material> info = OreInfo.getNewInfo()) {
+            try (OreInfo info = OreInfo.getNewInfo()) {
                 info.material = material;
 
                 ItemStack stack = OreManager.getStack(info, 1);

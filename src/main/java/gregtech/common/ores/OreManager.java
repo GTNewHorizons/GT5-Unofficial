@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
@@ -23,16 +24,16 @@ public final class OreManager {
 
     private OreManager() {}
 
-    private static final List<IOreAdapter<?>> ORE_ADAPTERS = ImmutableList
+    private static final List<IOreAdapter> ORE_ADAPTERS = ImmutableList
         .of(GTOreAdapter.INSTANCE, GTPPOreAdapter.INSTANCE, BWOreAdapter.INSTANCE, UnificationOreAdapter.INSTANCE);
 
     public static OptionalBoolean isOre(Block block, int meta) {
         int size = ORE_ADAPTERS.size();
 
         for (int i = 0; i < size; i++) {
-            IOreAdapter<?> oreAdapter = ORE_ADAPTERS.get(i);
+            IOreAdapter oreAdapter = ORE_ADAPTERS.get(i);
 
-            try (OreInfo<?> info = oreAdapter.getOreInfo(block, meta)) {
+            try (OreInfo info = oreAdapter.getOreInfo(block, meta)) {
                 if (info != null) {
                     return info.isNatural ? OptionalBoolean.TRUE : OptionalBoolean.FALSE;
                 }
@@ -42,16 +43,16 @@ public final class OreManager {
         return OptionalBoolean.NONE;
     }
 
-    public static OreInfo<?> getOreInfo(IBlockAccess world, int x, int y, int z) {
+    public static OreInfo getOreInfo(IBlockAccess world, int x, int y, int z) {
         return getOreInfo(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static OreInfo<?> getOreInfo(Block block, int meta) {
+    public static OreInfo getOreInfo(Block block, int meta) {
         int size = ORE_ADAPTERS.size();
 
         for (int i = 0; i < size; i++) {
-            IOreAdapter<?> oreAdapter = ORE_ADAPTERS.get(i);
+            IOreAdapter oreAdapter = ORE_ADAPTERS.get(i);
 
             OreInfo info = oreAdapter.getOreInfo(block, meta);
             if (info != null) {
@@ -63,19 +64,19 @@ public final class OreManager {
         return null;
     }
 
-    public static OreInfo<?> getOreInfo(ItemStack stack) {
+    public static OreInfo getOreInfo(ItemStack stack) {
         if (!(stack.getItem() instanceof ItemBlock itemBlock)) return null;
 
         return getOreInfo(itemBlock.field_150939_a, Items.feather.getDamage(stack));
     }
 
-    public static IOreAdapter<?> getAdapter(OreInfo<?> info) {
+    public static IOreAdapter getAdapter(OreInfo info) {
         if (info.cachedAdapter != null && info.cachedAdapter.supports(info)) return info.cachedAdapter;
 
         int size = ORE_ADAPTERS.size();
 
         for (int i = 0; i < size; i++) {
-            IOreAdapter<?> oreAdapter = ORE_ADAPTERS.get(i);
+            IOreAdapter oreAdapter = ORE_ADAPTERS.get(i);
 
             if (oreAdapter.supports(info)) return oreAdapter;
         }
@@ -83,10 +84,8 @@ public final class OreManager {
         return null;
     }
 
-    /// `material` is `Object`-typed since a caller does not know which adapter will claim it; every current
-    /// adapter narrows it to the MaterialLib [Material] it expects.
-    public static boolean setOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone, Object material,
-        boolean small) {
+    public static boolean setOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone,
+        Material material, boolean small) {
         ImmutableBlockMeta oreBlock = getOreBlockForWorldGen(world, x, y, z, defaultStone, material, small);
 
         if (oreBlock == null) return false;
@@ -97,22 +96,22 @@ public final class OreManager {
     }
 
     public static boolean canSetOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone,
-        Object material, boolean small) {
+        Material material, boolean small) {
         return getOreBlockForWorldGen(world, x, y, z, defaultStone, material, small) != null;
     }
 
     public static boolean canSetOreForWorldGenOrAlreadySet(World world, int x, int y, int z, IStoneType defaultStone,
-        Object material, boolean small) {
+        Material material, boolean small) {
         if (canSetOreForWorldGen(world, x, y, z, defaultStone, material, small)) return true;
 
-        try (OreInfo<?> info = getOreInfo(world, x, y, z)) {
+        try (OreInfo info = getOreInfo(world, x, y, z)) {
             if (info == null || !info.isNatural || info.isSmall != small) return false;
             return info.material == material;
         }
     }
 
     private static ImmutableBlockMeta getOreBlockForWorldGen(World world, int x, int y, int z, IStoneType defaultStone,
-        Object material, boolean small) {
+        Material material, boolean small) {
         if (y < 0 || y >= world.getActualHeight()) return null;
 
         if (material == null) return null;
@@ -127,7 +126,7 @@ public final class OreManager {
             }
         }
 
-        try (OreInfo<Object> info = OreInfo.getNewInfo()) {
+        try (OreInfo info = OreInfo.getNewInfo()) {
             info.material = material;
             info.stoneType = existingStone;
             info.isSmall = small;
@@ -136,7 +135,7 @@ public final class OreManager {
             int size = ORE_ADAPTERS.size();
 
             for (int i = 0; i < size; i++) {
-                IOreAdapter<?> oreAdapter = ORE_ADAPTERS.get(i);
+                IOreAdapter oreAdapter = ORE_ADAPTERS.get(i);
 
                 ImmutableBlockMeta oreBlock = oreAdapter.getBlock(info);
 
@@ -153,12 +152,12 @@ public final class OreManager {
         Block block = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
 
-        try (OreInfo<?> info = getOreInfo(block, meta)) {
+        try (OreInfo info = getOreInfo(block, meta)) {
             if (info == null) return false;
 
             info.stoneType = newStoneType;
 
-            IOreAdapter<?> adapter = getAdapter(info);
+            IOreAdapter adapter = getAdapter(info);
             if (adapter == null) return false;
 
             ImmutableBlockMeta oreBlock = adapter.getBlock(info);
@@ -179,7 +178,7 @@ public final class OreManager {
         List<ItemStack> oreBlockDrops;
         ImmutableBlockMeta replacement;
 
-        try (OreInfo<?> info = getOreInfo(ore, meta)) {
+        try (OreInfo info = getOreInfo(ore, meta)) {
             if (info != null) {
                 oreBlockDrops = info.cachedAdapter.getOreDrops(random, info, silktouch, fortune);
 
@@ -217,17 +216,17 @@ public final class OreManager {
     /// [OreInfo#material]. Callers compare this against the worldgen spine's own material identity (the NEI
     /// ore-vein tables, prospecting) by reference.
     public static Object getMaterial(Block block, int meta) {
-        try (OreInfo<?> info = getOreInfo(block, meta)) {
+        try (OreInfo info = getOreInfo(block, meta)) {
             if (info == null) return null;
             return info.material;
         }
     }
 
-    public static ItemStack getStack(OreInfo<?> info, int amount) {
+    public static ItemStack getStack(OreInfo info, int amount) {
         int size = ORE_ADAPTERS.size();
 
         for (int i = 0; i < size; i++) {
-            IOreAdapter<?> oreAdapter = ORE_ADAPTERS.get(i);
+            IOreAdapter oreAdapter = ORE_ADAPTERS.get(i);
 
             ItemStack stack = oreAdapter.getStack(info, amount);
 
@@ -237,7 +236,7 @@ public final class OreManager {
         return null;
     }
 
-    public static String getLocalizedName(OreInfo<?> info) {
+    public static String getLocalizedName(OreInfo info) {
         ItemStack stack = getStack(info, 1);
 
         if (stack == null) return "<illegal ore>";
@@ -245,11 +244,11 @@ public final class OreManager {
         return stack.getDisplayName();
     }
 
-    public static List<ItemStack> getPotentialDrops(OreInfo<?> info) {
+    public static List<ItemStack> getPotentialDrops(OreInfo info) {
         int size = ORE_ADAPTERS.size();
 
         for (int i = 0; i < size; i++) {
-            IOreAdapter<?> oreAdapter = ORE_ADAPTERS.get(i);
+            IOreAdapter oreAdapter = ORE_ADAPTERS.get(i);
 
             if (oreAdapter.supports(info)) {
                 return oreAdapter.getPotentialDrops(info);

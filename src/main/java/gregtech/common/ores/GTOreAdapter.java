@@ -57,7 +57,7 @@ import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 /// pre-migration saves have somewhere for their placed blocks to resolve to; [#registerCurrentGenTransformers]
 /// actively converts any of those placed blocks to the MaterialLib equivalent as their chunk loads, so in
 /// practice a fully-loaded world never has a live `GTBlockOre` block a player can interact with.
-public final class GTOreAdapter implements IOreAdapter<Material> {
+public final class GTOreAdapter implements IOreAdapter {
 
     public static GTOreAdapter INSTANCE = new GTOreAdapter();
 
@@ -167,7 +167,7 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
     /// MaterialLib block/meta -- shared by the `GT_TileEntity_Ores` tile-entity transformer and the single
     /// `gregtech:gt.blockores` item transformer, both of which used this exact packing.
     private ImmutableBlockMeta resolveLegacyMeta(int meta, boolean natural) {
-        try (OreInfo<Material> info = OreInfo.getNewInfo()) {
+        try (OreInfo info = OreInfo.getNewInfo()) {
             info.stoneType = GTUtility.getIndexSafe(LEGACY_STONES, (meta % 16000) / 1000);
             info.material = MU.byId(meta % 1000);
             info.isSmall = meta >= 16000;
@@ -215,7 +215,7 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
         StoneType stoneType = oreBlock.getStoneType(meta);
         if (mat == null || stoneType == null) return null;
 
-        try (OreInfo<Material> info = OreInfo.getNewInfo()) {
+        try (OreInfo info = OreInfo.getNewInfo()) {
             info.material = mat;
             info.stoneType = stoneType;
             info.isSmall = oreBlock.isSmallOre(meta);
@@ -249,7 +249,7 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
                     if (stoneType == null) continue;
 
                     for (boolean isSmall : BOOLEANS) {
-                        try (OreInfo<Material> info = OreInfo.getNewInfo()) {
+                        try (OreInfo info = OreInfo.getNewInfo()) {
                             info.material = material;
                             info.stoneType = stoneType;
                             info.isSmall = isSmall;
@@ -293,7 +293,7 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public boolean supports(OreInfo<?> info) {
+    public boolean supports(OreInfo info) {
         Material mlMat = gtFamilyOf(info.material);
         if (mlMat == null) return false;
 
@@ -310,13 +310,12 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
 
     /// The MaterialLib [Material] backing an [OreInfo] this adapter is handed, or null when `material` is not a
     /// GT material. [OreInfo#material] is `Object`-typed since the worldgen dispatch is shared across ore
-    /// families, so this narrows to [Material] first. The gate is [MU#isLegacyNamed] (in the legacy name
+    /// families. The gate is [MU#isLegacyNamed] (in the legacy name
     /// domain), broader than [#isGtFamily] because a merged declaration (a material carrying both
     /// [GTMaterialProperties#WERKSTOFF_IDS] and a live legacy id, such as Salt) is a GT ore here even though
     /// [#getOreInfo]'s build path defers it to [BWOreAdapter].
-    private static @Nullable Material gtFamilyOf(@Nullable Object material) {
-        if (!(material instanceof Material ml)) return null;
-        return MU.isLegacyNamed(ml) ? ml : null;
+    private static @Nullable Material gtFamilyOf(@Nullable Material material) {
+        return MU.isLegacyNamed(material) ? material : null;
     }
 
     /// Whether a MaterialLib material belongs to GT's own ore family -- the exact discrimination [#getOreInfo]
@@ -336,7 +335,7 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public OreInfo<Material> getOreInfo(Block block, int meta) {
+    public OreInfo getOreInfo(Block block, int meta) {
         BlockMaterialInfo blockInfo = MaterialLibAPI.lookupBlock(block, meta);
         if (blockInfo == null || !isOreShape(blockInfo.shape()) || blockInfo.material() == null) return null;
 
@@ -355,7 +354,7 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
         StoneType stoneType = Materials2OreShapes.stoneTypeOf(blockInfo.variant());
         if (stoneType == null) return null;
 
-        OreInfo<Material> info = OreInfo.getNewInfo();
+        OreInfo info = OreInfo.getNewInfo();
 
         info.material = material;
         info.stoneType = stoneType;
@@ -366,7 +365,7 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public ImmutableBlockMeta getBlock(OreInfo<?> info) {
+    public ImmutableBlockMeta getBlock(OreInfo info) {
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
 
         Material mlMat = gtFamilyOf(info.material);
@@ -405,7 +404,7 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
         StoneType stoneType = Materials2OreShapes.stoneTypeOf(variant);
         if (mlMaterial == null || stoneType == null) return List.of();
 
-        try (OreInfo<Material> info = OreInfo.getNewInfo()) {
+        try (OreInfo info = OreInfo.getNewInfo()) {
             info.material = mlMaterial;
             info.stoneType = stoneType;
             info.isSmall = isSmall;
@@ -416,11 +415,11 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
+    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo info2, boolean silktouch, int fortune) {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
-        OreInfo<Material> info = (OreInfo<Material>) info2;
+        OreInfo info = (OreInfo) info2;
         info.material = gtFamilyOf(info.material);
 
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
@@ -437,11 +436,11 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public List<ItemStack> getPotentialDrops(OreInfo<?> info2) {
+    public List<ItemStack> getPotentialDrops(OreInfo info2) {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
-        OreInfo<Material> info = (OreInfo<Material>) info2;
+        OreInfo info = (OreInfo) info2;
         info.material = gtFamilyOf(info.material);
 
         if (info.isSmall) {
@@ -465,7 +464,7 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
         }
     }
 
-    private ArrayList<ItemStack> getSmallOreDrops(Random random, OreInfo<Material> info, int fortune) {
+    private ArrayList<ItemStack> getSmallOreDrops(Random random, OreInfo info, int fortune) {
         ArrayList<ItemStack> possibleDrops = SmallOreDrops.getDropList(info.material);
         ArrayList<ItemStack> drops = new ArrayList<>();
 
@@ -486,8 +485,7 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
         return drops;
     }
 
-    private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Material> info,
-        int fortune) {
+    private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo info, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         // For Sake of god of balance!
@@ -516,7 +514,7 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
                 }
             }
             case UnifiedBlock -> {
-                try (OreInfo<Material> info2 = info.clone()) {
+                try (OreInfo info2 = info.clone()) {
                     for (int i = 0; i < (info2.stoneType.isRich() ? 2 : 1); i++) {
                         info2.stoneType = StoneType.Stone;
                         drops.add(getStack(info2, 1));
@@ -524,7 +522,7 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
                 }
             }
             case PerDimBlock -> {
-                try (OreInfo<Material> info2 = info.clone()) {
+                try (OreInfo info2 = info.clone()) {
                     if (!info2.stoneType.isDimensionSpecific()) {
                         info2.stoneType = StoneType.Stone;
                     }
@@ -533,7 +531,7 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
                 }
             }
             case Block -> {
-                try (OreInfo<Material> info2 = info.clone()) {
+                try (OreInfo info2 = info.clone()) {
                     drops.add(getStack(info2, 1));
                 }
             }

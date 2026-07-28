@@ -116,11 +116,11 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
 
     private void getOresAndDusts(OreSmallWrapper smallOre, Iterable<StoneType> stoneTypes, List<ItemStack> ores,
         List<ItemStack> dusts) {
-        try (OreInfo<Object> info = OreInfo.getNewInfo()) {
+        try (OreInfo info = OreInfo.getNewInfo()) {
             info.material = smallOre.material;
             info.isSmall = true;
 
-            IOreAdapter<?> adapter = OreManager.getAdapter(info);
+            IOreAdapter adapter = OreManager.getAdapter(info);
             assert adapter != null;
             for (StoneType stoneType : stoneTypes) {
                 info.stoneType = stoneType;

@@ -297,7 +297,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                         Block tBlock = chunk.getBlock(cx, cy, cz);
                         short tMetaID = (short) chunk.getBlockMetadata(cx, cy, cz);
 
-                        try (OreInfo<?> info = OreManager.getOreInfo(tBlock, tMetaID)) {
+                        try (OreInfo info = OreManager.getOreInfo(tBlock, tMetaID)) {
                             if (info != null) {
                                 if (!info.isNatural) continue;
                                 if (data != DetravMetaGeneratedTool01.MODE_ALL_ORES && info.isSmall) continue;

@@ -244,7 +244,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
 
             ItemStack stoneDust = null;
 
-            try (OreInfo<?> info = OreManager.getOreInfo(oreStack)) {
+            try (OreInfo info = OreManager.getOreInfo(oreStack)) {
                 if (info != null) {
                     stoneDust = info.stoneType.getDust(true, 1);
                 }

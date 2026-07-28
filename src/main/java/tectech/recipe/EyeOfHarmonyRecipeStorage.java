@@ -163,7 +163,7 @@ public class EyeOfHarmonyRecipeStorage {
             }
         }
 
-        OreInfo<com.ruling_0.materiallib.api.Material> infoWerkstoff = OreInfo.getNewInfo();
+        OreInfo infoWerkstoff = OreInfo.getNewInfo();
         infoWerkstoff.stoneType = StoneType.Stone;
         for (com.ruling_0.materiallib.api.Material mat : MaterialLibAPI.getMaterials()) {
             infoWerkstoff.material = mat;
@@ -177,7 +177,7 @@ public class EyeOfHarmonyRecipeStorage {
         infoWerkstoff.release();
 
         final HashSet<com.ruling_0.materiallib.api.Material> validGTPPMaterialSet = new HashSet<>();
-        OreInfo<com.ruling_0.materiallib.api.Material> infoGTPP = OreInfo.getNewInfo();
+        OreInfo infoGTPP = OreInfo.getNewInfo();
         infoGTPP.stoneType = StoneType.Stone;
         for (com.ruling_0.materiallib.api.Material mat : MaterialLibAPI.getMaterials()) {
             infoGTPP.material = mat;

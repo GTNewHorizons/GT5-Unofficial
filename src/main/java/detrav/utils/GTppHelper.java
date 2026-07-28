@@ -89,8 +89,8 @@ public class GTppHelper {
 
     /// The gtpp material a world-placed ore block resolves to via [GTPPOreAdapter].
     private static Material materialOf(Block block) {
-        try (OreInfo<?> info = GTPPOreAdapter.INSTANCE.getOreInfo(block, 0)) {
-            return info != null && info.material instanceof Material material ? material : null;
+        try (OreInfo info = GTPPOreAdapter.INSTANCE.getOreInfo(block, 0)) {
+            return info != null ? info.material : null;
         }
     }
 

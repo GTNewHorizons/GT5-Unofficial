@@ -27,7 +27,7 @@ public class VoidMinerLoader {
     }
 
     private static void initGT() {
-        OreInfo<com.ruling_0.materiallib.api.Material> info = OreInfo.getNewInfo();
+        OreInfo info = OreInfo.getNewInfo();
         info.stoneType = StoneType.Stone;
         info.isSmall = false;
 
@@ -53,7 +53,7 @@ public class VoidMinerLoader {
     }
 
     private static void initBW() {
-        OreInfo<com.ruling_0.materiallib.api.Material> info = OreInfo.getNewInfo();
+        OreInfo info = OreInfo.getNewInfo();
         info.stoneType = StoneType.Stone;
         info.isSmall = false;
 
@@ -74,7 +74,7 @@ public class VoidMinerLoader {
     }
 
     private static void initGTPP() {
-        OreInfo<com.ruling_0.materiallib.api.Material> info = OreInfo.getNewInfo();
+        OreInfo info = OreInfo.getNewInfo();
         info.stoneType = StoneType.Stone;
         info.isSmall = false;
 

@@ -78,7 +78,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
             }
         }
 
-        OreInfo<com.ruling_0.materiallib.api.Material> info = new OreInfo<>();
+        OreInfo info = new OreInfo();
 
         for (int matId = 0; matId < 1000; matId++) {
             info.material = getMaterial(matId);
@@ -117,7 +117,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         // meta = 0 is always hidden in the nei plugin
         list.add(new ItemStack(this, 1, 0));
 
-        OreInfo<com.ruling_0.materiallib.api.Material> info = new OreInfo<>();
+        OreInfo info = new OreInfo();
 
         for (int matId = 0; matId < 1000; matId++) {
             info.material = getMaterial(matId);
@@ -192,7 +192,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
      */
     public ArrayList<ItemStack> getDropsForPlayer(World world, int x, int y, int z, int metadata, int fortune,
         EntityPlayer harvester) {
-        try (OreInfo<com.ruling_0.materiallib.api.Material> info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
+        try (OreInfo info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
             if (info == null) return new ArrayList<>();
 
             boolean doFortune = GTUtility.isRealPlayer(harvester);
@@ -293,7 +293,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
     @Override
     public int damageDropped(int meta) {
-        try (OreInfo<com.ruling_0.materiallib.api.Material> info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
+        try (OreInfo info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
             if (info == null) return 0;
 
             info.isNatural = false;
@@ -305,7 +305,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
     @Override
     public int getHarvestLevel(int meta) {
-        try (OreInfo<com.ruling_0.materiallib.api.Material> info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
+        try (OreInfo info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
             if (info == null) return 0;
 
             int smallOreBonus = info.isSmall ? -1 : 0;
@@ -319,7 +319,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
     @Override
     public float getBlockHardness(World world, int x, int y, int z) {
-        try (OreInfo<?> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
+        try (OreInfo info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
             if (info == null) return 0;
 
             return info.stoneType.getStone()
@@ -330,7 +330,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
     @Override
     public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX,
         double explosionY, double explosionZ) {
-        try (OreInfo<?> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
+        try (OreInfo info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
             if (info == null) return 0;
 
             return info.stoneType.getStone()
@@ -341,7 +341,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
     @Override
     public Block.SoundType getSound(World world, int x, int y, int z) {
-        try (OreInfo<?> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
+        try (OreInfo info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
             if (info == null) return Blocks.stone.stepSound;
 
             return info.stoneType.getStone()
@@ -354,8 +354,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         float subY, float subZ) {
         if (!world.isRemote) {
             if (player.capabilities.isCreativeMode && player.isSneaking() && player.getHeldItem() == null) {
-                try (OreInfo<com.ruling_0.materiallib.api.Material> info = GTOreAdapter.INSTANCE
-                    .getOreInfo(world, x, y, z);) {
+                try (OreInfo info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z);) {
                     info.isNatural = !info.isNatural;
 
                     world.setBlockMetadataWithNotify(
