@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MU;
 
@@ -36,16 +35,6 @@ public class ItemData {
 
     public ItemData(OrePrefixes prefix, Material material) {
         this(prefix, material, false);
-    }
-
-    /// Transitional: accepts a legacy [Materials] through [MU#toMaterial] until every caller passes a
-    /// [Material] directly.
-    public ItemData(OrePrefixes prefix, Materials material, boolean blackListed) {
-        this(prefix, MU.toMaterial(material), blackListed);
-    }
-
-    public ItemData(OrePrefixes prefix, Materials material) {
-        this(prefix, MU.toMaterial(material), false);
     }
 
     /// An ingredient that names an ore-dictionary entry and carries no composition, for the entries whose
@@ -87,16 +76,6 @@ public class ItemData {
     }
 
     public ItemData(Material material, long amount, Material byProduct, long byProductAmount) {
-        this(new MaterialStack(material, amount), new MaterialStack(byProduct, byProductAmount));
-    }
-
-    /// Transitional: accepts a legacy [Materials] through [MU#toMaterial] until every caller passes a
-    /// [Material] directly.
-    public ItemData(Materials material, long amount, MaterialStack... byProducts) {
-        this(new MaterialStack(material, amount), byProducts);
-    }
-
-    public ItemData(Materials material, long amount, Materials byProduct, long byProductAmount) {
         this(new MaterialStack(material, amount), new MaterialStack(byProduct, byProductAmount));
     }
 

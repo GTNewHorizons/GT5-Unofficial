@@ -12,6 +12,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTToolHarvestHelper;
 import gregtech.common.items.behaviors.BehaviourSoftMallet;
 import gregtech.common.items.behaviors.BehaviourSwitchMode;
@@ -81,16 +82,16 @@ public class ToolSoftMallet extends GTTool {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadMallet
+            ? MU.iconSet(MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[OrePrefixes.toolHeadMallet
                 .getTextureIndex()]
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.handleMallet
+            : MU.iconSet(MetaGeneratedTool.getSecondaryMaterialML(aStack)).mTextures[OrePrefixes.handleMallet
                 .getTextureIndex()];
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MU.rgba(MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override

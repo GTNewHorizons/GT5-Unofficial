@@ -19,6 +19,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTToolHarvestHelper;
 import gregtech.common.items.behaviors.BehaviourScrewdriver;
 
@@ -89,14 +90,14 @@ public class ToolSolderingIron extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[49]
+        return !aIsToolHead ? MU.iconSet(MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[49]
             : Textures.ItemIcons.HANDLE_SOLDERING;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+        return !aIsToolHead ? MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MU.rgba(MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override

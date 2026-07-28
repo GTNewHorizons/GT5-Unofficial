@@ -17,12 +17,6 @@ public class MaterialStack implements Cloneable {
         mAmount = amount;
     }
 
-    /// Transitional: accepts a legacy [Materials] through [MU#toMaterial] until every caller passes a
-    /// [Material] directly. An unbacked legacy material collapses to the `_NULL` sentinel.
-    public MaterialStack(Materials material, long amount) {
-        this(MU.toMaterial(material), amount);
-    }
-
     public MaterialStack copy(long amount) {
         return new MaterialStack(mMaterial, amount);
     }

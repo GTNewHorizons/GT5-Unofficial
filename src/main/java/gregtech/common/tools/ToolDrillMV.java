@@ -53,13 +53,15 @@ public class ToolDrillMV extends ToolDrillLV {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
+        return aIsToolHead ? MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
             : MU.rgba(Materials2Materials.Aluminium);
     }
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadDrill
-            .getTextureIndex()] : Textures.ItemIcons.POWER_UNIT_MV;
+        return aIsToolHead
+            ? MU.iconSet(MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[OrePrefixes.toolHeadDrill
+                .getTextureIndex()]
+            : Textures.ItemIcons.POWER_UNIT_MV;
     }
 }

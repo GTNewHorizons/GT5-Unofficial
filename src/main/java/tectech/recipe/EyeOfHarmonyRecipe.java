@@ -27,7 +27,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -392,14 +391,10 @@ public class EyeOfHarmonyRecipe {
         }
     }
 
-    /// Native [com.ruling_0.materiallib.api.Material]-typed body: reads every legacy field through [MU]/[MUOre]
-    /// property accessors instead of a single upfront [MU#materialOf] snapshot, so each read resolves
-    /// independently against the live facade. [MU#directSmelting(Material)] and [MU#directSmelting(Materials)]
-    /// are documented
-    /// byte-identical for any material with a MaterialLib counterpart, and neither the bartworks nor gtpp
-    /// bridge loader ever writes `mOreMultiplier`/`mByProductMultiplier`/`mSmeltingMultiplier` independently of
-    /// [GTMaterialProperties], so this reads the same single source of truth as the legacy-typed overload does
-    /// through its bridge facade.
+    /// Reads every legacy field through [MU]/[MUOre] property accessors, each resolving independently against
+    /// the live facade rather than a single upfront snapshot. Neither the bartworks nor gtpp bridge loader ever
+    /// writes `mOreMultiplier`/`mByProductMultiplier`/`mSmeltingMultiplier` independently of
+    /// [GTMaterialProperties], so this reads the same single source of truth those legacy fields do.
     public static void processHelper(HashMapHelper outputMap, com.ruling_0.materiallib.api.Material material,
         double mainMultiplier, double probability) {
         if (material == null) return;
@@ -462,14 +457,6 @@ public class EyeOfHarmonyRecipe {
             outputMap.add(MU.directSmelting(byProductMaterial), mainMultiplier * (ORE_MULTIPLIER[i] * 2) * probability);
             // Since it's duplicate, do not check if it can Mercury/chem bath.
         }
-    }
-
-    /// [#processHelper(HashMapHelper, com.ruling_0.materiallib.api.Material, double, double)] for callers still
-    /// holding the legacy [Materials] enum constant -- delegates through [MU#material].
-    public static void processHelper(HashMapHelper outputMap, Materials material, double mainMultiplier,
-        double probability) {
-        if (material == null) return;
-        processHelper(outputMap, MU.material(material), mainMultiplier, probability);
     }
 
     private static final double GTPP_PRIMARY_MULTIPLIER = (2.0 / 9.0 + 0.1);

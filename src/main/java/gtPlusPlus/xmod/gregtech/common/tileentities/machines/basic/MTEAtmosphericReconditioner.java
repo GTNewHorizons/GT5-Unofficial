@@ -20,9 +20,9 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -31,6 +31,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.render.TextureFactory;
@@ -389,9 +390,9 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                     return true;
                 }
             } else if (rotorStack.getItem() instanceof MetaGeneratedTool01) {
-                Materials t1 = MetaGeneratedTool.getPrimaryMaterial(rotorStack);
-                Materials t2 = MetaGeneratedTool.getSecondaryMaterial(rotorStack);
-                if (t1 == Materials._NULL && t2 == Materials._NULL) {
+                Material t1 = MetaGeneratedTool.getPrimaryMaterialML(rotorStack);
+                Material t2 = MetaGeneratedTool.getSecondaryMaterialML(rotorStack);
+                if (t1 == Materials2Materials.NULL && t2 == Materials2Materials.NULL) {
                     creativeRotor = true;
                 }
             } else {
@@ -401,7 +402,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             if (mInventory[SLOT_ROTOR].getItem() instanceof MetaGeneratedTool01
                 && ((MetaGeneratedTool) mInventory[SLOT_ROTOR].getItem()).getToolStats(mInventory[SLOT_ROTOR])
                     .getSpeedMultiplier() > 0
-                && MetaGeneratedTool.getPrimaryMaterial(mInventory[SLOT_ROTOR]).mToolSpeed > 0) {
+                && MU.toolSpeed(MetaGeneratedTool.getPrimaryMaterialML(mInventory[SLOT_ROTOR])) > 0) {
 
                 long damageValue = (long) Math
                     .floor(Math.abs(MathUtils.randFloat(1, 2) - MathUtils.randFloat(1, 3)) * (1 + 3 - 1) + 1);
@@ -594,9 +595,9 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
         ItemStack rotorStack = this.mInventory[SLOT_ROTOR];
         if (rotorStack != null) {
             if (rotorStack.getItem() instanceof MetaGeneratedTool01) {
-                Materials t1 = MetaGeneratedTool.getPrimaryMaterial(rotorStack);
-                Materials t2 = MetaGeneratedTool.getSecondaryMaterial(rotorStack);
-                if (t1 == Materials._NULL && t2 == Materials._NULL) {
+                Material t1 = MetaGeneratedTool.getPrimaryMaterialML(rotorStack);
+                Material t2 = MetaGeneratedTool.getSecondaryMaterialML(rotorStack);
+                if (t1 == Materials2Materials.NULL && t2 == Materials2Materials.NULL) {
                     creativeRotor = true;
                 }
             }
@@ -751,7 +752,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
         return (int) Math.max(
             Float.MIN_NORMAL,
             ((MetaGeneratedTool) aStackRotor.getItem()).getToolStats(aStackRotor)
-                .getSpeedMultiplier() * MetaGeneratedTool.getPrimaryMaterial(aStackRotor).mToolSpeed * 50);
+                .getSpeedMultiplier() * MU.toolSpeed(MetaGeneratedTool.getPrimaryMaterialML(aStackRotor)) * 50);
     }
 
     @Override

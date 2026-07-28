@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import static gregtech.api.items.MetaGeneratedTool.getPrimaryMaterial;
+import static gregtech.api.items.MetaGeneratedTool.getPrimaryMaterialML;
 import static gregtech.api.items.MetaGeneratedTool.getToolMode;
 
 import java.util.Arrays;
@@ -32,6 +32,7 @@ import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTToolHarvestHelper;
 import gregtech.common.items.behaviors.BehaviourSwitchMode;
 import gregtech.common.items.behaviors.BehaviourWrench;
@@ -98,14 +99,15 @@ public class ToolWrench extends GTTool {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.TOOL_WRENCH
-                .ordinal()]
+            ? MU.iconSet(
+                MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[MaterialIconRegistry.IconType.TOOL_WRENCH
+                    .ordinal()]
             : null;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? getPrimaryMaterial(aStack).mRGBa : null;
+        return aIsToolHead ? MU.rgba(getPrimaryMaterialML(aStack)) : null;
     }
 
     @Override

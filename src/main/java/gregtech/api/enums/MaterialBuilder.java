@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.enchantment.Enchantment;
 
+import gregtech.api.material.MU;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTLanguageManager;
 
@@ -507,7 +508,7 @@ public class MaterialBuilder {
     }
 
     public MaterialBuilder addMaterial(Materials material, int amount) {
-        this.materialList.add(new MaterialStack(material, amount));
+        this.materialList.add(new MaterialStack(MU.toMaterial(material), amount));
         return this;
     }
 

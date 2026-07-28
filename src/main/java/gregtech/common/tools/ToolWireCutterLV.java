@@ -23,14 +23,15 @@ public class ToolWireCutterLV extends ToolWireCutter {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : MU.rgba(Materials2Materials.Steel);
+        return aIsToolHead ? MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MU.rgba(Materials2Materials.Steel);
     }
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-            ? MetaGeneratedTool
-                .getPrimaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.TOOL_HEAD_ELECTRIC_SNIPS
+        return aIsToolHead ? MU.iconSet(
+            MetaGeneratedTool
+                .getPrimaryMaterialML(aStack)).mTextures[MaterialIconRegistry.IconType.TOOL_HEAD_ELECTRIC_SNIPS
                     .ordinal()]
             : Textures.ItemIcons.POWER_UNIT_LV;
     }

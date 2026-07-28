@@ -12,6 +12,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTToolHarvestHelper;
 import gregtech.common.items.behaviors.BehaviourPlungerEssentia;
 import gregtech.common.items.behaviors.BehaviourPlungerFluid;
@@ -51,16 +52,16 @@ public class ToolPlunger extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.TOOL_PLUNGER
+        return aIsToolHead ? MU.iconSet(
+            MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[MaterialIconRegistry.IconType.TOOL_PLUNGER
                 .ordinal()]
             : null;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MU.rgba(MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override

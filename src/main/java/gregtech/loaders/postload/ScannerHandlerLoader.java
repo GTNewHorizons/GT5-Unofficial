@@ -23,7 +23,6 @@ import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IIndividual;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -167,34 +166,8 @@ public class ScannerHandlerLoader {
         return getElementScanResult(material);
     }
 
-    public static @Nullable GTScannerResult getElementScanResult(Materials aMaterial) {
-        if (!isScannableMaterial(aMaterial)) return null;
-        ItemStack output = ItemList.Tool_DataOrb.get(1L);
-        BehaviourDataOrb.setDataTitle(output, "Elemental-Scan");
-        BehaviourDataOrb.setDataName(output, aMaterial.mElement.name());
-        return new GTScannerResult(
-            ELEMENT_SCAN_EUT,
-            GTUtility.safeInt(aMaterial.getMass() * ELEMENT_SCAN_DURATION_MULTIPLIER),
-            1,
-            1,
-            0,
-            output);
-    }
-
-    public static boolean isScannableMaterial(Materials aMaterial) {
-        // must be a raw element
-        if (aMaterial.mElement == null) return false;
-        // must not be an isotope
-        if (aMaterial.mElement.mIsIsotope) return false;
-        // must not be magical
-        if (MU.material(aMaterial) == Materials2Materials.Magic) return false;
-        // must have mass > 1
-        return aMaterial.getMass() > 0L;
-    }
-
-    /// The elemental-scanner result for a MaterialLib material, keyed on [GTMaterialProperties#ELEMENT] where
-    /// the legacy `Materials` overload read `Materials#mElement`. Magic carries a real element but is excluded
-    /// from scanning, matching the legacy `isScannableMaterial` gate.
+    /// The elemental-scanner result for a MaterialLib material, keyed on [GTMaterialProperties#ELEMENT]. Magic
+    /// carries a real element but is excluded from scanning.
     public static @Nullable GTScannerResult getElementScanResult(Material material) {
         if (material == Materials2Materials.Magic) return null;
         Element element = MU.element(material);

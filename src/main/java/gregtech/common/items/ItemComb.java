@@ -22,7 +22,6 @@ import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.CLEANROOM;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
@@ -55,7 +54,6 @@ import forestry.api.core.Tabs;
 import forestry.api.recipes.RecipeManagers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -972,32 +970,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         if (Botania.isModLoaded()) {
             registerBotaniaItems();
         }
-    }
-
-    /**
-     * Currently only used for CombType.MOLYBDENUM
-     *
-     * @param circuitNumber should not conflict with addProcessGT
-     *
-     **/
-    public void addAutoclaveProcess(CombType comb, Materials aMaterial, Voltage volt, int circuitNumber) {
-        if (GTOreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4) == NI) {
-            return;
-        }
-        GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-        recipeBuilder.itemInputs(GTUtility.copyAmount(9, getStackForType(comb)))
-            .circuit(circuitNumber)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
-            .fluidInputs(
-                MU.fluid(
-                    Materials2Materials.UUMatter,
-                    Math.max(1, ((aMaterial.getMass() + volt.getUUAmplifier()) / 10))))
-            .duration(((int) (aMaterial.getMass() * 128)) * TICKS)
-            .eut(volt.getAutoClaveEnergy());
-        if (volt.compareTo(Voltage.HV) > 0) {
-            recipeBuilder.requiresCleanRoom();
-        }
-        recipeBuilder.addTo(autoclaveRecipes);
     }
 
     public void addFluidExtractorProcess(CombType comb, FluidStack fluid, Voltage volt) {

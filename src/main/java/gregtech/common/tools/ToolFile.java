@@ -12,6 +12,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTToolHarvestHelper;
 
 public class ToolFile extends GTTool {
@@ -54,16 +55,17 @@ public class ToolFile extends GTTool {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadFile
+            ? MU.iconSet(MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[OrePrefixes.toolHeadFile
                 .getTextureIndex()]
-            : MetaGeneratedTool
-                .getSecondaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.HANDLE_FILE.ordinal()];
+            : MU.iconSet(
+                MetaGeneratedTool.getSecondaryMaterialML(aStack)).mTextures[MaterialIconRegistry.IconType.HANDLE_FILE
+                    .ordinal()];
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+        return !aIsToolHead ? MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MU.rgba(MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override

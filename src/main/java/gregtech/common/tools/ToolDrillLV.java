@@ -80,13 +80,16 @@ public class ToolDrillLV extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadDrill
-            .getTextureIndex()] : Textures.ItemIcons.POWER_UNIT_LV;
+        return aIsToolHead
+            ? MU.iconSet(MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[OrePrefixes.toolHeadDrill
+                .getTextureIndex()]
+            : Textures.ItemIcons.POWER_UNIT_LV;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : MU.rgba(Materials2Materials.Steel);
+        return aIsToolHead ? MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MU.rgba(Materials2Materials.Steel);
     }
 
     @Override

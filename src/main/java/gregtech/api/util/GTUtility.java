@@ -1198,21 +1198,18 @@ public class GTUtility {
         return fullContainer;
     }
 
-    public static int calculateRecipeEU(Materials aMaterial, int defaultRecipeEUPerTick) {
-        return aMaterial.getProcessingMaterialTierEU() == 0 ? defaultRecipeEUPerTick
-            : aMaterial.getProcessingMaterialTierEU();
-    }
-
-    /// [#calculateRecipeEU(Materials, int)] for a MaterialLib [Material], routed through the legacy
-    /// `Materials#processingMaterialTierEU` field via [MU#materialOf] whenever one exists. Recipe registration
-    /// for MaterialLib-cutover shapes (`gregtech.loaders.shapeconsumers`) can run before
-    /// `Materials#init()` has ported [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU] onto that field, so
-    /// reading the property directly here returned an already-populated but not-yet-live value, diverging from
-    /// the legacy field for materials whose tier EU is set. Falling back to the property is for materials with
-    /// no legacy counterpart only.
+    /// The legacy `Materials#processingMaterialTierEU` value for a material when a legacy counterpart exists,
+    /// preferred over [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU] because recipe registration for
+    /// MaterialLib-cutover shapes (`gregtech.loaders.shapeconsumers`) can run before `Materials#init()` has
+    /// ported that property onto the legacy field, so reading the property directly would return an
+    /// already-populated but not-yet-live value, diverging from the legacy field for materials whose tier EU is
+    /// set. Falling back to the property is for materials with no legacy counterpart only.
     public static long calculateRecipeEU(Material material, long defaultEU) {
         Materials legacy = MU.materialOf(material);
-        if (legacy != null) return calculateRecipeEU(legacy, (int) defaultEU);
+        if (legacy != null) {
+            int tierEU = legacy.getProcessingMaterialTierEU();
+            return tierEU == 0 ? defaultEU : tierEU;
+        }
         Integer tierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
         return tierEU == null || tierEU == 0 ? defaultEU : tierEU;
     }
@@ -3183,11 +3180,6 @@ public class GTUtility {
             };
         }
         return new String(chars);
-    }
-
-    public static boolean isPartOfMaterials(ItemStack aStack, Materials aMaterials) {
-        return GTOreDictUnificator.getAssociation(aStack) != null
-            && GTOreDictUnificator.getAssociation(aStack).mMaterial.mMaterial.equals(aMaterials);
     }
 
     public static boolean isPartOfOrePrefix(ItemStack aStack, OrePrefixes aPrefix) {

@@ -10,7 +10,7 @@ public class ToolBuzzSawMV extends ToolBuzzSawLV {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
+        return !aIsToolHead ? MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
             : MU.rgba(Materials2Materials.Aluminium);
     }
 

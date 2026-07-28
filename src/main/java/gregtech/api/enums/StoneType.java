@@ -544,13 +544,6 @@ public enum StoneType implements IStoneType {
             return this;
         }
 
-        public StoneBuilder setDust(Materials mat) {
-            pureDust = new LazyItem(Mods.GregTech, () -> mat.getDust(1));
-            impureDust = new LazyItem(Mods.GregTech, () -> GTOreDictUnificator.get(OrePrefixes.dustImpure, mat, 1));
-
-            return this;
-        }
-
         public StoneBuilder setDust(Material mat) {
             pureDust = new LazyItem(Mods.GregTech, () -> GTOreDictUnificator.get(OrePrefixes.dust, mat, 1));
             impureDust = new LazyItem(Mods.GregTech, () -> GTOreDictUnificator.get(OrePrefixes.dustImpure, mat, 1));

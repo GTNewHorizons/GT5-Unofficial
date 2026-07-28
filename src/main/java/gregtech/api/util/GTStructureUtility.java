@@ -62,7 +62,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
@@ -301,13 +300,6 @@ public class GTStructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> ofFrame(Materials aFrameMaterial) {
-        if (aFrameMaterial == null) throw new IllegalArgumentException();
-        return ofFrameElement(() -> MU.material(aFrameMaterial));
-    }
-
-    /// [#ofFrame(Materials)] for callers holding a MaterialLib material instead of a legacy [Materials]
-    /// constant; matches the same frame shape block directly.
     public static <T> IStructureElement<T> ofFrame(com.ruling_0.materiallib.api.Material material) {
         if (material == null) throw new IllegalArgumentException();
         return ofFrameElement(() -> material);
