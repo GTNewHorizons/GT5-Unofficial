@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
@@ -116,11 +115,10 @@ public class GregtechSimpleWasher {
         ItemStack dustDirty;
         ItemStack dustPure;
         for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
-            Materials v = MU.materialOf(ml);
-            if (v == null) {
+            if (MU.materialOf(ml) == null) {
                 continue;
             }
-            if (MU.hasFlag(v, GTMaterialFlag.NO_ORE_PROCESSING)) {
+            if (MU.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) {
                 continue;
             }
             if (ml == Materials2Materials.Platinum || ml == Materials2Materials.Osmium
@@ -131,9 +129,9 @@ public class GregtechSimpleWasher {
                 continue;
             }
 
-            dustClean = GTOreDictUnificator.get(OrePrefixes.dust, v, 1L);
-            dustDirty = GTOreDictUnificator.get(OrePrefixes.dustImpure, v, 1L);
-            dustPure = GTOreDictUnificator.get(OrePrefixes.dustPure, v, 1L);
+            dustClean = GTOreDictUnificator.get(OrePrefixes.dust, ml, 1L);
+            dustDirty = GTOreDictUnificator.get(OrePrefixes.dustImpure, ml, 1L);
+            dustPure = GTOreDictUnificator.get(OrePrefixes.dustPure, ml, 1L);
             addSimpleWashRecipe(dustDirty, dustClean);
             addSimpleWashRecipe(dustPure, dustClean);
         }
@@ -178,15 +176,14 @@ public class GregtechSimpleWasher {
         ItemStack crushedClean;
         ItemStack crushedDirty;
         for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
-            Materials v = MU.materialOf(ml);
-            if (v == null) {
+            if (MU.materialOf(ml) == null) {
                 continue;
             }
-            if (MU.hasFlag(v, GTMaterialFlag.NO_ORE_PROCESSING)) {
+            if (MU.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) {
                 continue;
             }
-            crushedClean = GTOreDictUnificator.get(OrePrefixes.crushedPurified, v, 1L);
-            crushedDirty = GTOreDictUnificator.get(OrePrefixes.crushed, v, 1L);
+            crushedClean = GTOreDictUnificator.get(OrePrefixes.crushedPurified, ml, 1L);
+            crushedDirty = GTOreDictUnificator.get(OrePrefixes.crushed, ml, 1L);
             addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 

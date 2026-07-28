@@ -1160,62 +1160,62 @@ public class GTProxy implements IFuelHandler {
             if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)) {
                 if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_ORE_PROCESSING)) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crushedCentrifuged.ingredient(aMaterial) });
+                        new Object[] { "h", "X", 'X', OrePrefixes.crushedCentrifuged.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crystalline.ingredient(aMaterial) });
+                        new Object[] { "h", "X", 'X', OrePrefixes.crystalline.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crystal.ingredient(aMaterial) });
+                        new Object[] { "h", "X", 'X', OrePrefixes.crystal.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustPure, MU.macerateInto(aMaterial), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dustPure, MU.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crushedPurified.ingredient(aMaterial) });
+                        new Object[] { "h", "X", 'X', OrePrefixes.crushedPurified.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustPure, MU.macerateInto(aMaterial), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dustPure, MU.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.cleanGravel.ingredient(aMaterial) });
+                        new Object[] { "h", "X", 'X', OrePrefixes.cleanGravel.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustPure, MU.macerateInto(aMaterial), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dustPure, MU.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.reduced.ingredient(aMaterial) });
+                        new Object[] { "h", "X", 'X', OrePrefixes.reduced.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MU.macerateInto(aMaterial), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MU.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.clump.ingredient(aMaterial) });
+                        new Object[] { "h", "X", 'X', OrePrefixes.clump.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MU.macerateInto(aMaterial), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MU.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.shard.ingredient(aMaterial) });
+                        new Object[] { "h", "X", 'X', OrePrefixes.shard.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MU.macerateInto(aMaterial), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MU.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crushed.ingredient(aMaterial) });
+                        new Object[] { "h", "X", 'X', OrePrefixes.crushed.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MU.macerateInto(aMaterial), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MU.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.dirtyGravel.ingredient(aMaterial) });
+                        new Object[] { "h", "X", 'X', OrePrefixes.dirtyGravel.ingredient(material) });
                 }
                 GTModHandler.addCraftingRecipe(
-                    GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 4L),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { " X ", "   ", "   ", 'X', OrePrefixes.dust.ingredient(aMaterial) });
+                    new Object[] { " X ", "   ", "   ", 'X', OrePrefixes.dust.ingredient(material) });
                 GTModHandler.addCraftingRecipe(
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 9L),
+                    GTOreDictUnificator.get(OrePrefixes.dustTiny, material, 9L),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "X  ", "   ", "   ", 'X', OrePrefixes.dust.ingredient(aMaterial) });
+                    new Object[] { "X  ", "   ", "   ", 'X', OrePrefixes.dust.ingredient(material) });
                 GTModHandler.addCraftingRecipe(
-                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "XX", "XX", 'X', OrePrefixes.dustSmall.ingredient(aMaterial) });
+                    new Object[] { "XX", "XX", 'X', OrePrefixes.dustSmall.ingredient(material) });
                 GTModHandler.addCraftingRecipe(
-                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.dustTiny.ingredient(aMaterial) });
+                    new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.dustTiny.ingredient(material) });
             }
         }
         // Cover GUI needs to know text color which can be configured with resource packs. In theory it's not needed on
