@@ -45,7 +45,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -157,18 +156,6 @@ public class GTRecipeRegistrator {
         GregTechAPI.sAfterGTPostload.add(() -> indexedRecipeListCache = null);
     }
 
-    public static void registerMaterialRecycling(ItemStack stack, Materials material, long materialAmount,
-        MaterialStack byproduct) {
-        if (GTUtility.isStackInvalid(stack)) return;
-        if (byproduct != null) {
-            byproduct = byproduct.clone();
-            byproduct.mAmount /= stack.stackSize;
-        }
-        GTOreDictUnificator.addItemData(
-            GTUtility.copyAmount(1, stack),
-            new ItemData(material, materialAmount / stack.stackSize, byproduct));
-    }
-
     public static void registerMaterialRecycling(ItemStack stack, ItemData data) {
         if (GTUtility.isStackInvalid(stack) || GTUtility.areStacksEqual(new ItemStack(Items.blaze_rod), stack)
             || GTUtility
@@ -203,8 +190,6 @@ public class GTRecipeRegistrator {
      * @param materialAmount the amount of it in Material Units.
      * @param isRecycling    whether to put in recycling tab.
      */
-    /// [#registerReverseFluidSmelting(ItemStack, Materials, long, MaterialStack, boolean)] for callers holding a
-    /// [Material] directly -- the native ML body; the [Materials]-typed overload now delegates into this one.
     public static void registerReverseFluidSmelting(ItemStack stack, Material material, long materialAmount,
         MaterialStack byproduct, boolean isRecycling) {
         if (stack == null || material == null) return;
@@ -246,19 +231,12 @@ public class GTRecipeRegistrator {
         builder.addTo(fluidExtractionRecipes);
     }
 
-    public static void registerReverseFluidSmelting(ItemStack stack, Materials material, long materialAmount,
-        MaterialStack byproduct, boolean isRecycling) {
-        registerReverseFluidSmelting(stack, MU.material(material), materialAmount, byproduct, isRecycling);
-    }
-
     /**
      * @param stack             the stack to be recycled.
      * @param material          the Material.
      * @param materialAmount    the amount of it in Material Units.
      * @param allowAlloySmelter if it is allowed to be recycled inside the Alloy Smelter.
      */
-    /// [#registerReverseSmelting(ItemStack, Materials, long, boolean)] for callers holding a [Material] directly
-    /// -- the native ML body; the [Materials]-typed overload now delegates into this one.
     public static void registerReverseSmelting(ItemStack stack, Material material, long materialAmount,
         boolean allowAlloySmelter) {
         if (stack == null || material == null
@@ -279,15 +257,8 @@ public class GTRecipeRegistrator {
             GTOreDictUnificator.getIngot(MU.smeltInto(material), materialAmount));
     }
 
-    public static void registerReverseSmelting(ItemStack stack, Materials material, long materialAmount,
-        boolean allowAlloySmelter) {
-        registerReverseSmelting(stack, MU.material(material), materialAmount, allowAlloySmelter);
-    }
-
-    /// [#registerReverseArcSmelting(ItemStack, Materials, long, MaterialStack, MaterialStack, MaterialStack)] for
-    /// callers holding a [Material] directly -- the native ML body; the [Materials]-typed overload now delegates
-    /// into this one. Builds the [ItemData] straight from `material`, which already carries every read the
-    /// [ItemStack, ItemData] overload below needs, without a legacy round trip.
+    /// Builds the [ItemData] straight from `material`, which already carries every read the [ItemStack, ItemData]
+    /// overload below needs, without a legacy round trip.
     public static void registerReverseArcSmelting(ItemStack stack, Material material, long materialAmount,
         MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03) {
         registerReverseArcSmelting(
@@ -299,14 +270,7 @@ public class GTRecipeRegistrator {
                 byProduct03));
     }
 
-    public static void registerReverseArcSmelting(ItemStack stack, Materials material, long materialAmount,
-        MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03) {
-        registerReverseArcSmelting(stack, MU.material(material), materialAmount, byProduct01, byProduct02, byProduct03);
-    }
-
-    /// [#hasReverseArcSmeltingRecipe(Materials)] for callers holding a [Material] directly -- the native ML body;
-    /// the [Materials]-typed overload now delegates into this one. The gas-conditional arc-smelting recipe is
-    /// consulted through [MU#arcSmeltIntoWithGas]'s declared table
+    /// The gas-conditional arc-smelting recipe is consulted through [MU#arcSmeltIntoWithGas]'s declared table
     /// ([gregtech.api.enums.materials2.Materials2ArcSmelting]), which carries exactly the rows the legacy
     /// `Materials#mArcSmeltIntoWithGas` maps ever held.
     public static boolean hasReverseArcSmeltingRecipe(Material material) {
@@ -315,10 +279,6 @@ public class GTRecipeRegistrator {
         if (arcSmeltingMaterial != material) return true;
         return !MU.arcSmeltIntoWithGas(arcSmeltingMaterial)
             .isEmpty();
-    }
-
-    public static boolean hasReverseArcSmeltingRecipe(Materials material) {
-        return hasReverseArcSmeltingRecipe(MU.material(material));
     }
 
     static void setArcFurnaceRecyclingCategorySupplier(Supplier<RecipeCategory> supplier) {
@@ -506,11 +466,8 @@ public class GTRecipeRegistrator {
         return replacedOutput ? gasOutputs : null;
     }
 
-    /// [#registerReverseMacerating(ItemStack, Materials, long, MaterialStack, MaterialStack, MaterialStack,
-    /// boolean, boolean)] for callers holding a [Material] directly -- the native ML body; the
-    /// [Materials]-typed overload now delegates into this one. Builds the [ItemData] straight from `material`,
-    /// which already carries every read the [ItemStack, ItemData, boolean, boolean] overload below needs,
-    /// without a legacy round trip.
+    /// Builds the [ItemData] straight from `material`, which already carries every read the [ItemStack, ItemData,
+    /// boolean, boolean] overload below needs, without a legacy round trip.
     public static void registerReverseMacerating(ItemStack stack, Material material, long materialAmount,
         MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03, boolean allowHammer,
         boolean isRecycling) {
@@ -521,20 +478,6 @@ public class GTRecipeRegistrator {
                 byProduct01,
                 byProduct02,
                 byProduct03),
-            allowHammer,
-            isRecycling);
-    }
-
-    public static void registerReverseMacerating(ItemStack stack, Materials material, long materialAmount,
-        MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03, boolean allowHammer,
-        boolean isRecycling) {
-        registerReverseMacerating(
-            stack,
-            MU.material(material),
-            materialAmount,
-            byProduct01,
-            byProduct02,
-            byProduct03,
             allowHammer,
             isRecycling);
     }
@@ -825,8 +768,6 @@ public class GTRecipeRegistrator {
      * @param eut          EU/t for recipe If you provide a proper EU tier for recipe processing then eut will be
      *                     overriden with it.
      */
-    /// [#registerWiremillRecipes(Materials, int, int)] for callers holding a [Material] directly -- the native
-    /// ML body; the [Materials]-typed overload now delegates into this one.
     public static void registerWiremillRecipes(Material material, int baseDuration, int eut) {
         registerWiremillRecipes(
             material,
@@ -835,10 +776,6 @@ public class GTRecipeRegistrator {
             OrePrefixes.ingot,
             OrePrefixes.stick,
             2);
-    }
-
-    public static void registerWiremillRecipes(Materials material, int baseDuration, int eut) {
-        registerWiremillRecipes(MU.material(material), baseDuration, eut);
     }
 
     /**
@@ -851,8 +788,6 @@ public class GTRecipeRegistrator {
      * @param prefix2      prefix corresponds to stick
      * @param multiplier   amount of wires created from 1 ingot
      */
-    /// [#registerWiremillRecipes(Materials, int, int, OrePrefixes, OrePrefixes, int)] for callers holding a
-    /// [Material] directly -- the native ML body; the [Materials]-typed overload now delegates into this one.
     public static void registerWiremillRecipes(Material material, int baseDuration, int eut, OrePrefixes prefix1,
         OrePrefixes prefix2, int multiplier) {
         if (GTOreDictUnificator.get(prefix1, material, 1L) != null
@@ -968,20 +903,9 @@ public class GTRecipeRegistrator {
         }
     }
 
-    public static void registerWiremillRecipes(Materials material, int baseDuration, int eut, OrePrefixes prefix1,
-        OrePrefixes prefix2, int multiplier) {
-        registerWiremillRecipes(MU.material(material), baseDuration, eut, prefix1, prefix2, multiplier);
-    }
-
-    /// [#hasVanillaRecipes(Materials)] for callers holding a [Material] directly -- the native ML body; the
-    /// [Materials]-typed overload now delegates into this one.
     public static boolean hasVanillaRecipes(Material material) {
         return Arrays.stream(VANILLA_MATS)
             .anyMatch(mat -> mat == material);
-    }
-
-    public static boolean hasVanillaRecipes(Materials materials) {
-        return hasVanillaRecipes(MU.material(materials));
     }
 
     private static int getRecipeWidth(ShapedOreRecipe r) {

@@ -32,7 +32,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
@@ -47,7 +46,6 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.GTOreAdapter;
@@ -274,16 +272,6 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
     public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
         GTRendererBlock.addDestroyEffects(effectRenderer, this, world, x, y, z);
         return true;
-    }
-
-    public String getLocalizedNameFormat(Materials material) {
-        String base = OrePrefixes.ore.getDefaultLocalNameForItem(material);
-
-        if (GTLanguageManager.i18nPlaceholder) {
-            return base;
-        } else {
-            return material.getDefaultLocalizedNameForItem(base);
-        }
     }
 
     @Override

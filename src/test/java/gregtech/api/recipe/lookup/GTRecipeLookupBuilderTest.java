@@ -23,7 +23,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.junit.jupiter.api.Test;
 
 import cpw.mods.fml.common.registry.RegistryDelegate;
-import gregtech.api.enums.Materials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -134,15 +133,15 @@ class GTRecipeLookupBuilderTest {
         Item equivalentItem = item("builder.item.unified.equivalent");
         ItemStack representative = new ItemStack(representativeItem, 1, 0);
         ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
-        String unificationName = circuit.oreDictName(Materials.Tin);
+        String unificationName = circuit.oreDictName("Tin");
         boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
             .containsKey(unificationName);
         ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.Tin));
-            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, Materials.Tin));
+            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, "Tin"));
+            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, "Tin"));
             GTOreDictUnificator.resetUnificationEntries();
             GTRecipe recipe = recipe(new ItemStack[] { equivalent }, null);
 

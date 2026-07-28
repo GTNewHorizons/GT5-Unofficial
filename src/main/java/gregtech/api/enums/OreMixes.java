@@ -57,7 +57,6 @@ import com.ruling_0.materiallib.api.Material;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IStoneType;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.OreMixBuilder;
@@ -1567,17 +1566,6 @@ public enum OreMixes {
      * @param stackSize The stacksize of the variants
      * @return The array containing all the stone variants of the given ore, with the given stack size
      */
-    public static ItemStack[] getOreVariants(Materials material, int stackSize) {
-        return getOreVariants(MU.toMaterial(material), stackSize);
-    }
-
-    /**
-     * Give all the stone variants of an ore, with the specified stack size.
-     *
-     * @param material  The material of the ore
-     * @param stackSize The stacksize of the variants
-     * @return The array containing all the stone variants of the given ore, with the given stack size
-     */
     public static ItemStack[] getOreVariants(Material material, int stackSize) {
         List<ItemStack> variants = new ArrayList<>();
         Set<StoneType> stoneTypes = getStoneTypesFromMixes(material);
@@ -1608,10 +1596,6 @@ public enum OreMixes {
         return false;
     }
 
-    public static List<OreMixes> getOreMixes(Materials material) {
-        return getOreMixes(MU.toMaterial(material));
-    }
-
     public static List<OreMixes> getOreMixes(Material material) {
         List<OreMixes> mixes = new ArrayList<>();
         for (OreMixes mix : OreMixes.VALUES) {
@@ -1621,10 +1605,6 @@ public enum OreMixes {
         }
 
         return mixes;
-    }
-
-    public static Set<StoneType> getStoneTypesFromMixes(Materials material) {
-        return getStoneTypesFromMixes(MU.toMaterial(material));
     }
 
     public static Set<StoneType> getStoneTypesFromMixes(Material material) {
@@ -1682,12 +1662,6 @@ public enum OreMixes {
             }
             return;
         }
-    }
-
-    /// The builder stores MaterialLib materials; a legacy caller's [Materials] resolves to its MaterialLib
-    /// backing (a canonical singleton) before the identity comparison.
-    public boolean containMaterial(Materials material) {
-        return containMaterial(MU.toMaterial(material));
     }
 
     public boolean containMaterial(Material material) {

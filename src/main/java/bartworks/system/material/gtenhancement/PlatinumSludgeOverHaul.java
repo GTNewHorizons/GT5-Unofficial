@@ -79,7 +79,6 @@ import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
@@ -1448,11 +1447,6 @@ public class PlatinumSludgeOverHaul {
                         mutableRecipe.gt5u$setRecipeOutputItem(
                             MU.stack(dust, Materials2Materials.RarestMetalResidue, output.stackSize));
                     }
-    }
-
-    /// Transitional overload for external callers still passing legacy [Materials] constants.
-    public static boolean checkRecipe(Object input, Materials material) {
-        return checkRecipe(input, MU.material(material));
     }
 
     public static boolean checkRecipe(Object input, Material material) {

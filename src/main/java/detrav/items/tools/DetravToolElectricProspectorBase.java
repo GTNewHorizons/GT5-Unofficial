@@ -24,6 +24,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 
 /**
  * Created by wital_000 on 19.03.2016. modified by bartimaeusnek on 05.06.2018
@@ -193,14 +194,15 @@ public class DetravToolElectricProspectorBase implements IToolStats {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[mProspectorTextures[0]]
+        return aIsToolHead
+            ? MU.iconSet(MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[mProspectorTextures[0]]
             : null;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MU.rgba(MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override

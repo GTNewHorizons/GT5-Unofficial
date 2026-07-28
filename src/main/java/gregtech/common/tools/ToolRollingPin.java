@@ -11,6 +11,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 
 public class ToolRollingPin extends GTTool {
 
@@ -36,7 +37,7 @@ public class ToolRollingPin extends GTTool {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Dyes._NULL.getRGBA();
+        return aIsToolHead ? MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack)) : Dyes._NULL.getRGBA();
     }
 
     @Override

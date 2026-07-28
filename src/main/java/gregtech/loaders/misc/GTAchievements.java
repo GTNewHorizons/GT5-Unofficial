@@ -27,7 +27,6 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -388,9 +387,6 @@ public class GTAchievements {
         }
     }
 
-    public static void registerOre(Materials aMaterial, int min, int max, int chance, boolean overworld, boolean nether,
-        boolean end) {}
-
     public Achievement registerAchievement(String textId, int x, int y, ItemStack icon, Achievement requirement,
         boolean special) {
         if (!GTMod.proxy.mAchievements) {
@@ -437,10 +433,6 @@ public class GTAchievements {
         }
         this.achievementList.put(textId, achievement);
         return achievement;
-    }
-
-    public Achievement registerOreAchievement(Materials aMaterial) {
-        return null;
     }
 
     public Achievement registerAssAchievement(GTRecipe recipe) {

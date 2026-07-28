@@ -6,6 +6,7 @@ import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 import gregtech.common.items.behaviors.BehaviourSwitchMetadata;
 import gregtech.common.tools.ToolBranchCutter;
 
@@ -25,14 +26,15 @@ public class ToolPocketBranchCutter extends ToolBranchCutter {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.POCKET_MULTI_TOOL_BRANCH_CUTTER.ordinal()]
+            ? MU.iconSet(
+                MetaGeneratedTool.getPrimaryMaterialML(
+                    aStack)).mTextures[MaterialIconRegistry.IconType.POCKET_MULTI_TOOL_BRANCH_CUTTER.ordinal()]
             : Textures.GlobalIcons.VOID;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa;
+        return MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack));
     }
 
     @Override

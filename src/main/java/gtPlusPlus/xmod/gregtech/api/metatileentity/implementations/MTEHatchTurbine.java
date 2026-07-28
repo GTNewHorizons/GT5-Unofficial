@@ -17,15 +17,16 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.RenderOverlay;
@@ -334,10 +335,10 @@ public class MTEHatchTurbine extends MTEHatch {
                     .isActive());
             GTUtility.sendChatToPlayer(aPlayer, "Has Turbine inserted? " + this.hasTurbine());
             if (this.hasTurbine()) {
-                Materials aMat = MetaGeneratedTool.getPrimaryMaterial(getTurbine());
+                Material aMat = MetaGeneratedTool.getPrimaryMaterialML(getTurbine());
                 String aSize = MTELargerTurbineBaseLegacy
                     .getTurbineSizeString(MTELargerTurbineBaseLegacy.getTurbineSize(getTurbine()));
-                GTUtility.sendChatToPlayer(aPlayer, "Using: " + aMat.getLocalizedName() + " " + aSize);
+                GTUtility.sendChatToPlayer(aPlayer, "Using: " + MU.localizedNameOf(aMat) + " " + aSize);
             }
         } else {
             this.mUsingAnimation = !mUsingAnimation;

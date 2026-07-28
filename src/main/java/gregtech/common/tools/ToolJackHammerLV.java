@@ -17,6 +17,7 @@ import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTToolHarvestHelper;
@@ -78,9 +79,9 @@ public class ToolJackHammerLV extends ToolDrillLV {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-            ? MetaGeneratedTool
-                .getPrimaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.TOOL_JACKHAMMER.ordinal()]
+        return aIsToolHead ? MU.iconSet(
+            MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[MaterialIconRegistry.IconType.TOOL_JACKHAMMER
+                .ordinal()]
             : Textures.ItemIcons.JACKHAMMER_BASE;
     }
 

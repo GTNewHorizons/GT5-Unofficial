@@ -51,20 +51,12 @@ public class MaterialUtils {
             if (m == null) {
                 continue;
             }
-            if (MaterialUtils.getMaterialName(m)
+            if (MaterialUtils.getMaterialName(ml)
                 .equalsIgnoreCase(materialName)) {
                 return m;
             }
         }
         return null;
-    }
-
-    public static String getMaterialName(Materials mat) {
-        String mName = mat.mDefaultLocalName;
-        if (mName == null || mName.isEmpty()) {
-            mName = mat.mName;
-        }
-        return mName;
     }
 
     public static String getMaterialName(com.ruling_0.materiallib.api.Material mat) {

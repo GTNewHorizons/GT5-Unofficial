@@ -12,6 +12,7 @@ import net.minecraft.util.IChatComponent;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 
 public class ToolButcheryKnife extends GTTool {
 
@@ -57,22 +58,21 @@ public class ToolButcheryKnife extends GTTool {
 
     @Override
     public int[] getEnchantmentLevels(ItemStack aStack) {
-        return new int[] { (2 + MetaGeneratedTool.getPrimaryMaterial(aStack).mToolQuality) / 2 };
+        return new int[] { (2 + MU.toolQuality(MetaGeneratedTool.getPrimaryMaterialML(aStack))) / 2 };
     }
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-            ? MetaGeneratedTool
-                .getPrimaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.TOOL_KNIFE_BUTCHERY
-                    .ordinal()]
+        return aIsToolHead ? MU.iconSet(
+            MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[MaterialIconRegistry.IconType.TOOL_KNIFE_BUTCHERY
+                .ordinal()]
             : null;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MU.rgba(MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override

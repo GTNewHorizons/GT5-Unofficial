@@ -14,7 +14,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.minecraft.FluidGT6;
@@ -340,14 +339,4 @@ public class FluidUtils {
         return tFStack;
     }
 
-    public static FluidStack getWildcardFluidStack(Materials aMaterial, int amount) {
-        FluidStack tFStack = aMaterial.getFluid(amount);
-        if (tFStack != null) return tFStack;
-        tFStack = aMaterial.getGas(amount);
-        if (tFStack != null) return tFStack;
-        tFStack = aMaterial.getMolten(amount);
-        if (tFStack != null) return tFStack;
-        tFStack = aMaterial.getSolid(amount);
-        return tFStack;
-    }
 }

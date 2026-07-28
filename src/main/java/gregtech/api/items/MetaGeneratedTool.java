@@ -53,7 +53,6 @@ import crazypants.enderio.api.tool.ITool;
 import forestry.api.arboriculture.IToolGrafter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentRadioactivity;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -75,7 +74,7 @@ import mrtjp.projectred.api.IScrewdriver;
 /**
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
  * GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(MetaGeneratedTool01.WRENCH, 1,
- * Materials.Bismuth, Materials.Bismuth, null);
+ * Materials2Materials.Bismuth, Materials2Materials.Bismuth, null);
  */
 @Optional.InterfaceList(
     value = { @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.ModIDs.FORESTRY),
@@ -114,26 +113,11 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     /* ---------- FOR ADDING CUSTOM ITEMS INTO THE REMAINING 766 RANGE ---------- */
 
-    /// [#getPrimaryMaterialML] mapped back to its legacy [Materials] facade, with [Materials#_NULL] on a
-    /// missing/unresolvable name -- the same result [Materials#getRealMaterial] produced from the stored name,
-    /// kept for legacy-typed callers.
-    public static Materials getPrimaryMaterial(ItemStack aStack) {
-        Materials legacy = MU.materialOf(getPrimaryMaterialML(aStack));
-        return legacy == null ? Materials._NULL : legacy;
-    }
-
-    /// [#getPrimaryMaterial], for the secondary (rod/handle) material.
-    public static Materials getSecondaryMaterial(ItemStack aStack) {
-        Materials legacy = MU.materialOf(getSecondaryMaterialML(aStack));
-        return legacy == null ? Materials._NULL : legacy;
-    }
-
     /// The MaterialLib material a tool's `PrimaryMaterial` NBT string resolves to, via [MU#byLegacyName] --
     /// which covers both what [#getToolWithStats(int, int, com.ruling_0.materiallib.api.Material,
     /// com.ruling_0.materiallib.api.Material, long[])] writes ([MU#internalName] strings) and the legacy
     /// `Materials#mName` strings older saves contain (byte-identical for every ported material). Falls back to
-    /// [Materials#_NULL]'s own material on a missing/unresolvable name, mirroring the legacy
-    /// sentinel-on-absent default.
+    /// [Materials2Materials#NULL] on a missing/unresolvable name.
     public static com.ruling_0.materiallib.api.Material getPrimaryMaterialML(ItemStack aStack) {
         return resolveMaterialML(aStack, "PrimaryMaterial");
     }
@@ -155,19 +139,16 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return Materials2Materials.NULL;
     }
 
-    /// Reproduces [gregtech.api.enums.Materials#getLocalizedName]'s `"Material." + internalName`
-    /// lang key directly off a MaterialLib material's [MU#internalName], without resolving a legacy [Materials]
-    /// instance just to call it on -- that facade disappears for a werkstoff/gtpp material once minting retires.
+    /// The `"Material." + internalName` lang key for a MaterialLib material, resolved directly off
+    /// [MU#internalName].
     private static String getMaterialLocalizedName(com.ruling_0.materiallib.api.Material aMaterial) {
         return translateToLocal(
             "Material." + MU.internalName(aMaterial)
                 .toLowerCase());
     }
 
-    /// Tool durability/speed/quality/enchant are read from [GTMaterialProperties] on the MaterialLib material a
-    /// legacy [Materials] ported from, not from the legacy fields directly, even though the legacy facade
-    /// populates those fields from the same properties (see `LegacyMaterials#build`) -- this keeps
-    /// `MetaGeneratedTool`'s stat computation off the deprecated legacy type.
+    /// Tool durability/speed/quality/enchant are read from [GTMaterialProperties] on the MaterialLib material
+    /// itself, keeping stat computation off the legacy material facade.
     private static int getToolDurability(com.ruling_0.materiallib.api.Material aMaterial) {
         Integer durability = aMaterial == null ? null : aMaterial.getProperty(GTMaterialProperties.DURABILITY);
         return durability == null ? 0 : durability;
@@ -318,11 +299,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     /**
      * This Function gets an ItemStack Version of this Tool
      * <p/>
-     * NATIVE implementation: the tool NBT (material name strings, durability) is written directly off the
-     * MaterialLib materials, byte-identical to what the legacy [Materials] overload below wrote by delegating
-     * here through [MU#material] -- [MU#internalName] equals `Materials#mName` for every material that ever
-     * reached this method (canonical, werkstoff, gtpp), and [#getToolDurability] already read
-     * [GTMaterialProperties#DURABILITY] rather than `Materials#mDurability`.
+     * The tool NBT (material name strings, durability) is written directly off the MaterialLib materials'
+     * [MU#internalName] and [GTMaterialProperties#DURABILITY].
      *
      * @param aToolID            the ID of the Tool Class
      * @param aAmount            Amount of Items (well normally you only need 1)
@@ -360,20 +338,6 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         }
         isItemStackUsable(rStack);
         return rStack;
-    }
-
-    /// [#getToolWithStats(int, int, com.ruling_0.materiallib.api.Material, com.ruling_0.materiallib.api.Material,
-    /// long[])] for legacy-[Materials]-typed callers; converts through [MU#material] and delegates to the
-    /// native overload. Fully qualified parameter type because this file imports
-    /// `net.minecraft.block.material.Material`.
-    public final ItemStack getToolWithStats(int aToolID, int aAmount, Materials aPrimaryMaterial,
-        Materials aSecondaryMaterial, long[] aElectricArray) {
-        return getToolWithStats(
-            aToolID,
-            aAmount,
-            MU.material(aPrimaryMaterial),
-            MU.material(aSecondaryMaterial),
-            aElectricArray);
     }
 
     /**

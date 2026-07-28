@@ -189,8 +189,7 @@ public class MU {
     }
 
     /// Whether `stack`'s unification association ([GTOreDictUnificator#getAssociation]) names `material` as
-    /// its primary material, compared by identity -- the [Material]-side form of
-    /// `GTUtility#isPartOfMaterials`.
+    /// its primary material, compared by identity.
     public static boolean isPartOf(@Nullable ItemStack stack, @Nullable Material material) {
         if (material == null) return false;
         ItemData association = GTOreDictUnificator.getAssociation(stack);

@@ -41,7 +41,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import cpw.mods.fml.common.registry.RegistryDelegate;
-import gregtech.api.enums.Materials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.lookup.GTFluidLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemDataLookupIngredient;
@@ -593,15 +592,15 @@ class RecipeMapBackendLookupTest {
         Item circuitItem = item("lookup.validation.cross_unification.circuit");
         ItemStack representative = new ItemStack(representativeItem, 1, 0);
         ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
-        String unificationName = circuit.oreDictName(Materials.Iron);
+        String unificationName = circuit.oreDictName("Iron");
         boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
             .containsKey(unificationName);
         ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.Iron));
-            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, Materials.Iron));
+            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, "Iron"));
+            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, "Iron"));
             GTOreDictUnificator.resetUnificationEntries();
 
             backend.compileRecipe(
@@ -646,15 +645,15 @@ class RecipeMapBackendLookupTest {
         Item equivalentItem = item("lookup.validation.item_data.equivalent");
         ItemStack representative = new ItemStack(representativeItem, 1, 0);
         ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
-        String unificationName = circuit.oreDictName(Materials.Copper);
+        String unificationName = circuit.oreDictName("Copper");
         boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
             .containsKey(unificationName);
         ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.Copper));
-            ItemData equivalentData = new ItemData(circuit, Materials.Copper);
+            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, "Copper"));
+            ItemData equivalentData = new ItemData(circuit, "Copper");
             equivalentData.mBlackListed = true;
             GTOreDictUnificator.setItemData(equivalent, equivalentData);
             GTOreDictUnificator.resetUnificationEntries();
@@ -789,15 +788,15 @@ class RecipeMapBackendLookupTest {
         Item equivalentItem = item("lookup.unified.equivalent");
         ItemStack representative = new ItemStack(representativeItem, 1, 0);
         ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
-        String unificationName = circuit.oreDictName(Materials.Tin);
+        String unificationName = circuit.oreDictName("Tin");
         boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
             .containsKey(unificationName);
         ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.Tin));
-            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, Materials.Tin));
+            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, "Tin"));
+            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, "Tin"));
             GTOreDictUnificator.resetUnificationEntries();
 
             List<GTRecipeLookupIngredient> group = new ArrayList<>();

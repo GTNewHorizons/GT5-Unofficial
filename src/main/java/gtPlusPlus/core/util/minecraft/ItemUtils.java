@@ -21,7 +21,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
@@ -235,14 +234,6 @@ public class ItemUtils {
         return getItemStackOfAmountFromOreDictNoBroken(oredictName, amount);
     }
 
-    public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Materials mMat, int mAmount) {
-        if (mPrefix == OrePrefixes.rod) {
-            mPrefix = OrePrefixes.stick;
-        }
-        return GTOreDictUnificator.get(mPrefix, mMat, mAmount);
-    }
-
-    /// The MaterialLib-typed overload for callers migrating off [Materials]; see [MU#stack].
     public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, com.ruling_0.materiallib.api.Material mMat,
         int mAmount) {
         if (mPrefix == OrePrefixes.rod) {

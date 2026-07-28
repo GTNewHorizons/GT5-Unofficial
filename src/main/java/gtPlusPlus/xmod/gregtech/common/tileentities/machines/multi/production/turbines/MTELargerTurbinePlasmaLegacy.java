@@ -8,9 +8,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -140,9 +143,13 @@ public class MTELargerTurbinePlasmaLegacy extends MTELargerTurbineBaseLegacy {
                         aTotalOptimalFlow = 100;
                     }
 
-                    flowMultipliers[0] = MetaGeneratedTool.getPrimaryMaterial(aStack).mSteamMultiplier;
-                    flowMultipliers[1] = MetaGeneratedTool.getPrimaryMaterial(aStack).mGasMultiplier;
-                    flowMultipliers[2] = MetaGeneratedTool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
+                    Material aMaterial = MetaGeneratedTool.getPrimaryMaterialML(aStack);
+                    Float steamMultiplier = aMaterial.getProperty(GTMaterialProperties.STEAM_MULTIPLIER);
+                    flowMultipliers[0] = steamMultiplier == null ? 1.0f : steamMultiplier;
+                    Float gasMultiplier = aMaterial.getProperty(GTMaterialProperties.GAS_MULTIPLIER);
+                    flowMultipliers[1] = gasMultiplier == null ? 1.0f : gasMultiplier;
+                    Float plasmaMultiplier = aMaterial.getProperty(GTMaterialProperties.PLASMA_MULTIPLIER);
+                    flowMultipliers[2] = plasmaMultiplier == null ? 1.0f : plasmaMultiplier;
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
                     optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     euPerTurbine = MathUtils.roundToClosestInt(aEUPerTurbine);
