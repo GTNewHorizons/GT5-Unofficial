@@ -811,6 +811,11 @@ public class Material implements IOreMaterial {
         return this.usesBlastFurnace;
     }
 
+    @Override
+    public ItemStack getPart(OrePrefixes prefix, int amount) {
+        return getComponentByPrefix(prefix, amount);
+    }
+
     public final ItemStack getComponentByPrefix(OrePrefixes aPrefix, int stacksize) {
         String aKey = aPrefix.getName();
         Map<String, ItemStack> g = mComponentMap.get(this.unlocalizedName);
