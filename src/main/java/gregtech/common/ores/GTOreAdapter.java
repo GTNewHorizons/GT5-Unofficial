@@ -29,7 +29,6 @@ import com.ruling_0.materiallib.api.Shape;
 
 import codechicken.nei.api.API;
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
@@ -310,22 +309,13 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
     }
 
     /// The MaterialLib [Material] backing an [OreInfo] this adapter is handed, or null when `material` is not a
-    /// GT material -- the [Material]-side replacement for the legacy `info.material instanceof Materials`
-    /// dispatch. Accepts either a MaterialLib [Material] (what the retyped [OreInfo] carries) or a legacy
-    /// [Materials] object, since [OreInfo#material] is `Object`-typed; both resolve to the same [Material]. The
-    /// gate is [MU#isLegacyNamed] (has a live GT facade), reproducing `instanceof Materials` exactly -- broader
-    /// than [#isGtFamily] because a merged declaration (a material carrying both
+    /// GT material. [OreInfo#material] is `Object`-typed since the worldgen dispatch is shared across ore
+    /// families, so this narrows to [Material] first. The gate is [MU#isLegacyNamed] (has a live GT facade),
+    /// broader than [#isGtFamily] because a merged declaration (a material carrying both
     /// [GTMaterialProperties#WERKSTOFF_IDS] and a live legacy id, such as Salt) is a GT ore here even though
     /// [#getOreInfo]'s build path defers it to [BWOreAdapter].
     private static @Nullable Material gtFamilyOf(@Nullable Object material) {
-        Material ml;
-        if (material instanceof Material m) {
-            ml = m;
-        } else if (material instanceof Materials legacy) {
-            ml = MU.material(legacy);
-        } else {
-            return null;
-        }
+        if (!(material instanceof Material ml)) return null;
         return MU.isLegacyNamed(ml) ? ml : null;
     }
 

@@ -19,7 +19,6 @@ import detrav.DetravScannerMod;
 import detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
@@ -32,12 +31,6 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
 
     public ProcessingDetravToolProspector() {
         OrePrefixes.toolHeadDrill.add(this);
-    }
-
-    @Override
-    public void registerOre(OrePrefixes aPrefix, Materials material, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        registerOre(aPrefix, MU.material(material), aOreDictName, aModName, aStack);
     }
 
     @Override

@@ -25,7 +25,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -161,16 +160,9 @@ public class BlockStonesAbstract extends GTGenericBlock implements IOreRecipeReg
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        registerOre(aPrefix, MU.material(aMaterial), aOreDictName, aModName, aStack);
-    }
-
-    @Override
     public void registerOre(OrePrefixes aPrefix, com.ruling_0.materiallib.api.Material aMaterial, String aOreDictName,
         String aModName, ItemStack aStack) {
-        Materials legacyMaterial = MU.materialOf(aMaterial);
-        if (legacyMaterial == null) return;
+        if (!MU.isLegacyNamed(aMaterial)) return;
 
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
 

@@ -104,18 +104,14 @@ public class MU {
         return MaterialLibAPI.getMaterial("gregtech", material.mName);
     }
 
-    /// The MaterialLib [Material] backing a transitional legacy-family material object -- a [Materials] or a
-    /// gtPlusPlus `Material` -- for migrating the plumbing off the legacy families onto [Material]. A legacy
-    /// [Materials] (including the `Any*` wildcard facades) resolves through [#material]; anything else by its
-    /// internal name. A [Material] passes through unchanged. Null when nothing backs it.
+    /// The MaterialLib [Material] backing a transitional legacy-family material object -- a gtPlusPlus `Material`
+    /// -- for migrating the plumbing off the legacy families onto [Material]. Resolved by internal name. A
+    /// [Material] passes through unchanged. Null when nothing backs it.
     /// TRANSITIONAL -- removed once every call site passes a [Material] directly.
     public static @Nullable Material toMaterial(@Nullable Object material) {
         if (material == null) return null;
         if (material instanceof Material ml) return ml;
-        if (material instanceof Materials legacy) {
-            Material ml = material(legacy);
-            if (ml != null) return ml;
-        }
+        if (material instanceof Materials legacy) return material(legacy);
         String name = internalNameOf(material);
         return name == null ? null : MaterialLibAPI.getMaterial("gregtech", name);
     }

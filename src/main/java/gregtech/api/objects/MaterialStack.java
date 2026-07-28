@@ -2,7 +2,6 @@ package gregtech.api.objects;
 
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
@@ -35,7 +34,6 @@ public class MaterialStack implements Cloneable {
         if (object == this) return true;
         if (object == null) return false;
         if (object instanceof Material) return object == mMaterial;
-        if (object instanceof Materials legacy) return MU.material(legacy) == mMaterial;
         if (object instanceof MaterialStack stack)
             return stack.mMaterial == mMaterial && (mAmount < 0 || stack.mAmount < 0 || stack.mAmount == mAmount);
         return false;

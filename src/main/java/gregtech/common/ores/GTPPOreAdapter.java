@@ -18,7 +18,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2OreShapes;
@@ -36,7 +35,7 @@ import gregtech.common.GTProxy.OreDropSystem;
 /// this, and no gtpp material ever claims `Materials2OreShapes#oreSmall`.
 ///
 /// [#isGtpp] only ever matches a *pure* gtpp material (no live [gregtech.api.enums.Materials] counterpart --
-/// see [MU#materialOf]): a name-merge material's ore is already owned by [GTOreAdapter], tried first in
+/// see [MU#oldSubId]): a name-merge material's ore is already owned by [GTOreAdapter], tried first in
 /// [OreManager]'s adapter list, and this adapter's own [Materials2OreShapes] drop/harvest-level dispatch (see
 /// that class) gates on the same discriminator so a merge material's ore keeps GT's per-material formulas
 /// instead of gtpp's flat ones.
@@ -115,14 +114,12 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
 
     /// Whether a MaterialLib material belongs to the gtPlusPlus ore family -- carries
     /// [GTMaterialProperties#GTPP_STATE] and has no live id-backed [gregtech.api.enums.Materials] counterpart.
-    /// A bridge [gregtech.api.enums.Materials] also resolves through [MU#materialOf] but carries no real legacy
-    /// id (`mMetaItemSubID` stays at its `-1` default, since a [gregtech.api.enums.MaterialBuilder] material is
-    /// never assigned one) -- ore-block concerns still belong to this adapter for those, so only a
-    /// positive-id resolution excludes.
+    /// A bridge [gregtech.api.enums.Materials] also carries no real legacy id ([MU#oldSubId] stays at its `-1`
+    /// default, since a [gregtech.api.enums.MaterialBuilder] material is never assigned one) -- ore-block
+    /// concerns still belong to this adapter for those, so only a positive-id resolution excludes.
     private static boolean isGtpp(@Nullable Material material) {
         if (material == null || material.getProperty(GTMaterialProperties.GTPP_STATE) == null) return false;
-        Materials gtEquivalent = MU.materialOf(material);
-        return gtEquivalent == null || gtEquivalent.mMetaItemSubID < 0;
+        return MU.oldSubId(material) < 0;
     }
 
     @Override

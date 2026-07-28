@@ -11,14 +11,12 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -28,12 +26,6 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
 
     public RecipesLaserEngraver() {
         OrePrefixes.crafting.add(this);
-    }
-
-    @Override
-    public void registerOre(final OrePrefixes aPrefix, final Materials aMaterial, final String aOreDictName,
-        final String aModName, final ItemStack aStack) {
-        registerOre(aPrefix, MU.material(aMaterial), aOreDictName, aModName, aStack);
     }
 
     @Override

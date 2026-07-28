@@ -2,9 +2,10 @@ package gtPlusPlus.core.util.minecraft;
 
 import net.minecraft.util.StatCollector;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.loaders.materials.LegacyNameDomain;
@@ -45,21 +46,20 @@ public class MaterialUtils {
 
     }
 
-    private static Materials getMaterialByName(String materialName) {
-        for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
-            Materials m = MU.materialOf(ml);
-            if (m == null) {
+    private static Material getMaterialByName(String materialName) {
+        for (Material ml : MaterialLibAPI.getMaterials()) {
+            if (!LegacyNameDomain.contains(ml)) {
                 continue;
             }
             if (MaterialUtils.getMaterialName(ml)
                 .equalsIgnoreCase(materialName)) {
-                return m;
+                return ml;
             }
         }
         return null;
     }
 
-    public static String getMaterialName(com.ruling_0.materiallib.api.Material mat) {
+    public static String getMaterialName(Material mat) {
         String mName = MU.localName(mat);
         if (mName == null || mName.isEmpty()) {
             mName = MU.internalName(mat);
@@ -67,8 +67,8 @@ public class MaterialUtils {
         return mName;
     }
 
-    public static Materials getMaterial(String aMaterialName, String aFallbackMaterialName) {
-        Materials g = getMaterial(aMaterialName);
+    public static Material getMaterial(String aMaterialName, String aFallbackMaterialName) {
+        Material g = getMaterial(aMaterialName);
         if (g == null) {
             g = getMaterial(aFallbackMaterialName);
         }
@@ -78,21 +78,19 @@ public class MaterialUtils {
         return g;
     }
 
-    public static Materials getMaterial(String aMaterialName) {
-        com.ruling_0.materiallib.api.Material ml = LegacyNameDomain.lookup(aMaterialName);
-        Materials m = ml == null ? null : MU.materialOf(ml);
+    public static Material getMaterial(String aMaterialName) {
+        Material m = LegacyNameDomain.lookup(aMaterialName);
         if (m == null) {
             m = getMaterialByName(aMaterialName);
         }
         if (m == null) {
-            m = Materials._NULL;
+            m = Materials2Materials.NULL;
         }
         return m;
     }
 
-    public static boolean isNullGregtechMaterial(Materials aGregtechMaterial) {
-        return aGregtechMaterial == Materials._NULL || aGregtechMaterial.equals(Materials._NULL)
-            || aGregtechMaterial.mName.equals(Materials._NULL.mName);
+    public static boolean isNullGregtechMaterial(Material aGregtechMaterial) {
+        return aGregtechMaterial == Materials2Materials.NULL;
     }
 
     public static void generateMaterialLocalizedName(String materialNameForKey, String materialDefaultLocalName) {
