@@ -116,12 +116,15 @@ public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
                 status = (byte) 0b11111111;
             } else {
                 aBaseMetaTileEntity.setActive(true);
+
+                int oldStatus = status;
+
                 if (!stopChecking) { // No point in making calculations if the entire matrix has faded to 0
                     shift();
                     compute();
-
-                    if (stopChecking) notifyWatchers();
                 }
+
+                if (status == 0 && oldStatus != status) notifyWatchers();
             }
         }
     }
