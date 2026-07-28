@@ -12,10 +12,10 @@ import gregtech.api.material.GTMaterialProperties;
 /// carrying [GTMaterialProperties#OLD_SUB_ID] occupies the
 /// slot that property names. The property is GT-owned and set only for the legacy id space -- werkstoff and
 /// gtPlusPlus materials key their own id spaces ([GTMaterialProperties#WERKSTOFF_IDS],
-/// [GTMaterialProperties#GTPP_STATE]) and never appear here -- so the population is exactly the legacy facade
-/// set. Populated at the start of GT's preInit -- listing the registry requires MaterialLib to have resolved
-/// it, which happens only after every MaterialRegistrationEvent handler (including [Materials2Materials]'s
-/// registration) has completed.
+/// [GTMaterialProperties#GTPP_STATE]) and never appear here -- so the population is exactly the gregtech-native
+/// legacy material set. Populated at the start of GT's preInit -- listing the registry requires MaterialLib to
+/// have resolved it, which happens only after every MaterialRegistrationEvent handler (including
+/// [Materials2Materials]'s registration) has completed.
 public class Materials2IDIndex {
 
     private static final Material[] INDEX = new Material[1000];

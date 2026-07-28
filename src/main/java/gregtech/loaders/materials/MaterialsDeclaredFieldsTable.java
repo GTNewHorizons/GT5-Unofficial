@@ -4,12 +4,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-/// The frozen set of names that were declared `public static Materials` fields on the `Materials` facade,
-/// pinned so [gregtech.common.GTProxy]'s census-material resolution keeps the exact declared-field domain
-/// once the facade -- and the reflective `Materials.class.getFields()` scan that read it -- is gone. A name
-/// here steered an ore-dictionary registration through the legacy resolution path rather than a MaterialLib
-/// registry hit; the declaration alone is the signal, so bridged fields assigned later by bartworks/gtPlusPlus
-/// still count from the moment their field exists.
+/// The frozen set of names GT reserves as its own declared materials, regardless of whether MaterialLib
+/// currently has anything registered under that name. Pinned so [gregtech.common.GTProxy]'s census-material
+/// resolution keeps a fixed boundary between these declared names and reconstructed werkstoff/gtPlusPlus
+/// names. A name here steers an ore-dictionary registration through the legacy resolution path rather than
+/// a MaterialLib registry hit; membership in this set alone is the signal -- not whether MaterialLib
+/// currently resolves the name -- so bridged names assigned later by bartworks/gtPlusPlus still count from
+/// the moment they appear here.
 public final class MaterialsDeclaredFieldsTable {
 
     public static final Set<String> NAMES = new HashSet<>(

@@ -17,10 +17,10 @@ public class OreDictEventContainer {
     public final OrePrefixes mPrefix;
     public final Material mMaterial;
     /// The recognition marker this registration's census resolved through (see
-    /// `GTProxy#resolveCensusMaterial`), or null for a plain [Materials]-named registration. A marker carries no
-    /// legacy [Materials] counterpart, so [#registerRecipes] dispatches ore processing through it directly
-    /// instead of through [#mMaterial]'s backing -- via the recognition-marker registrator entries
-    /// (e.g. `ProcessingDust`, `ProcessingCrystallized`).
+    /// `GTProxy#resolveCensusMaterial`), or null for a plain material-named registration. A marker carries no
+    /// composition of its own, so [#registerRecipes] dispatches ore processing through it directly instead of
+    /// through [#mMaterial]'s backing -- via the recognition-marker registrator entries (e.g. `ProcessingDust`,
+    /// `ProcessingCrystallized`).
     public final Material mRecognitionMarker;
     public final String mModID;
 

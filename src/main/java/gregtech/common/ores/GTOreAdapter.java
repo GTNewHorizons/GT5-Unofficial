@@ -310,8 +310,8 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
 
     /// The MaterialLib [Material] backing an [OreInfo] this adapter is handed, or null when `material` is not a
     /// GT material. [OreInfo#material] is `Object`-typed since the worldgen dispatch is shared across ore
-    /// families, so this narrows to [Material] first. The gate is [MU#isLegacyNamed] (has a live GT facade),
-    /// broader than [#isGtFamily] because a merged declaration (a material carrying both
+    /// families, so this narrows to [Material] first. The gate is [MU#isLegacyNamed] (in the legacy name
+    /// domain), broader than [#isGtFamily] because a merged declaration (a material carrying both
     /// [GTMaterialProperties#WERKSTOFF_IDS] and a live legacy id, such as Salt) is a GT ore here even though
     /// [#getOreInfo]'s build path defers it to [BWOreAdapter].
     private static @Nullable Material gtFamilyOf(@Nullable Object material) {
@@ -328,8 +328,8 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
             && MU.oldSubId(material) >= 0;
     }
 
-    /// Legacy `Materials#isValidForStone` on the [Material] side: an ice-ore material generates only on
-    /// ice-category stone, every other material only on stone-category stone.
+    /// Whether a material may generate ore on `stoneType`: an ice-ore material only on ice-category stone,
+    /// every other material only on stone-category stone.
     private static boolean isValidForStone(Material material, StoneType stoneType) {
         StoneCategory required = MU.hasFlag(material, GTMaterialFlag.ICE_ORE) ? StoneCategory.Ice : StoneCategory.Stone;
         return stoneType.getCategory() == required;
@@ -341,13 +341,15 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
         if (blockInfo == null || !isOreShape(blockInfo.shape()) || blockInfo.material() == null) return null;
 
         Material material = blockInfo.material();
-        // A werkstoff's bridge Materials instance shares the legacy-name index with every GT material; defer
-        // to BWOreAdapter, which owns werkstoff ore behavior (see Materials2OreShapes#isWerkstoff).
+        // A werkstoff-origin material is still in the legacy name domain (MU#isLegacyNamed), so that gate
+        // alone would not exclude it here; defer explicitly to BWOreAdapter, which owns werkstoff ore
+        // behavior (see Materials2OreShapes#isWerkstoff).
         if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) return null;
-        // A gtpp bridge material (see GtppBridgeMaterialsLoader) carries no real legacy id (its OLD_SUB_ID stays
-        // unset); defer to GTPPOreAdapter, which owns ore-block concerns for it (see Materials2OreShapes#isGtpp),
-        // instead of returning an id-less OreInfo callers would index arrays with. isGtFamily folds both that
-        // gtpp exclusion and the "no legacy counterpart" case into the OLD_SUB_ID gate.
+        // A gtpp-originated material (GTMaterialProperties#GTPP_STATE) carries no real legacy id (its
+        // OLD_SUB_ID stays unset); defer to GTPPOreAdapter, which owns ore-block concerns for it (see
+        // Materials2OreShapes#isGtpp), instead of returning an id-less OreInfo callers would index arrays
+        // with. isGtFamily folds both that gtpp exclusion and the "no legacy counterpart" case into the
+        // OLD_SUB_ID gate.
         if (!isGtFamily(material)) return null;
 
         StoneType stoneType = Materials2OreShapes.stoneTypeOf(blockInfo.variant());

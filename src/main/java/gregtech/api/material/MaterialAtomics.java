@@ -9,12 +9,11 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.Element;
 
-/// Computes a material's atomic quantities from declaration data, reproducing the legacy
-/// `Materials#getProtons`/`#getNeutrons`/`#getMass` semantics as the single canonical formula: an
-/// [GTMaterialProperties#ELEMENT]-backed material reads the [Element] table, a composition-backed one takes
-/// the density-weighted average over [GTMaterialProperties#COMPOSITION]
+/// Computes a material's atomic quantities -- protons, neutrons, and mass -- from declaration data using a
+/// single canonical formula: an [GTMaterialProperties#ELEMENT]-backed material reads the [Element] table, a
+/// composition-backed one takes the density-weighted average over [GTMaterialProperties#COMPOSITION]
 /// (`density * sum(amount * component) / (totalAmount * M)`), and a material with neither falls back to
-/// [Element#Tc] exactly as the legacy formula does.
+/// [Element#Tc].
 public final class MaterialAtomics {
 
     private MaterialAtomics() {}

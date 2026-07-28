@@ -666,8 +666,8 @@ public enum Casings implements ICasing {
     // ------------------ Bartworks Casings -----------------
 
     // spotless:off
-    // These four materials are ordinary GT Materials, not bartworks-declared ones. The corresponding gregtech
-    // Materials/MaterialLib material carries the casing shape membership directly (added at codegen time), so
+    // These four materials are ordinary MaterialLib materials, not bartworks-declared ones. The corresponding
+    // MaterialLib material carries the casing shape membership directly (added at codegen time), so
     // #bwCasing resolves through MU#material the same way GTOreAdapter resolves any other GT material.
     // The block/meta constructor args below are unused (both accessors are overridden to resolve dynamically --
     // see #bwCasing's javadoc); they're kept as the legacy werkstoff id purely so the pair stays readable next

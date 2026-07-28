@@ -39,7 +39,6 @@ public class GTValues {
 
     // TODO: Rename Material Units to 'U'
     // TODO: Rename OrePrefixes Class to 'P'
-    // TODO: Rename Materials Class to 'M'
 
     /**
      * Empty String for an easier Call Hierarchy

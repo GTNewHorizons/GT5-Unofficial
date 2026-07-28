@@ -1924,13 +1924,12 @@ public class GTProxy implements IFuelHandler {
                                         return;
                                     }
                                 } else if (reconstructedMaterial(tName) != null) {
-                                    // A reconstructed werkstoff/gtpp material has no Materials entry once minting
-                                    // is retired, but its bridge facade used to carry this registration through the
-                                    // full pipeline (census, unification entries, ore processing). The facade was
-                                    // always a plain unifiable material with mMaterialInto = self and no
-                                    // re-registrations, so nothing facade-specific needs reproducing here -- fall
-                                    // through to the common tail, whose census re-resolves the name
-                                    // ML-registry-first on its own.
+                                    // aMaterial is null here (tName is outside the legacy name domain), so this
+                                    // branch exists only to keep tName out of the unknown-material drop below --
+                                    // the switch and aMaterial-keyed re-registration handling in the branch above
+                                    // never match a reconstructed werkstoff/gtpp material's identity in the first
+                                    // place. The common tail's census resolution re-resolves tName
+                                    // ML-registry-first regardless.
                                 } else {
                                     for (Dyes tDye : Dyes.VALUES) {
                                         if (aEvent.Name.endsWith(
@@ -2050,22 +2049,13 @@ public class GTProxy implements IFuelHandler {
     /// [#isCensusMarker], that marker's own backing; otherwise resolved ML-registry-first, by the same raw
     /// name [#registerOre] already stripped the prefix down to (`tName`), falling back to `aMaterial` (the
     /// [LegacyNameDomain#lookup] result, null when unresolved -- a null resolves to the `NULL` placeholder
-    /// material, the same object the `_NULL` facade's conversion always produced) when the registry has
-    /// nothing under that exact name, or when `tName` still names a declared [Materials] field (see
-    /// [#hasDeclaredMaterialsField]). The registry-first lookup is the repoint this seam always meant (its own
-    /// prior comment): a name with no [Materials] field at all resolves independent of whether a legacy bridge
-    /// facade exists for it, so a reconstructed werkstoff/gtpp material keeps a census once minting no longer
-    /// mints one.
-    ///
-    /// The declared-field check matters because this runs during {@link #catchUpPreExistingOreDictEntries},
-    /// GT's own preInit -- before mods ordered `required-after:gregtech` (bartworks, gtPlusPlus) have built
-    /// their werkstoff-bridged `Materials` facades. A bridged field like `Materials#WoodSealed` already exists
-    /// as a declared field at that point (so this method can see it), but its value is still unassigned, so
-    /// `aMaterial` resolves to `_NULL` even though the ML registry -- populated independently, during
-    /// MaterialLib's own earlier preInit -- already has the material under that exact name. Preferring the
-    /// registry hit there would give the census a material the legacy `Materials.get(tName)` lookup could not
-    /// have named yet, splitting the two lookups this method must otherwise keep in lockstep with
-    /// [#registerOre]'s own upstream `aMaterial` resolution.
+    /// material) when the registry has nothing under that exact name, or when `tName` is in the domain
+    /// [MaterialsDeclaredFieldsTable] freezes (see [#hasDeclaredMaterialsField]). The declared-name check
+    /// keeps this in lockstep with [#registerOre]'s own upstream `aMaterial` resolution: a name in that
+    /// domain returns exactly what [LegacyNameDomain#lookup] already resolved it to, rather than substituting
+    /// an independent registry hit under the same string. A name outside the domain resolves
+    /// ML-registry-first regardless, so a reconstructed werkstoff/gtpp material -- never a
+    /// [MaterialsDeclaredFieldsTable] entry -- keeps a census through the registry hit.
     private static Material resolveCensusMaterial(@Nullable String tName, @Nullable Material aMaterial,
         Material recognitionMarker) {
         if (isCensusMarker(recognitionMarker)) {
@@ -2081,22 +2071,19 @@ public class GTProxy implements IFuelHandler {
         return aMaterial != null ? aMaterial : Materials2Materials.NULL;
     }
 
-    /// The reconstructed (werkstoff-owned) MaterialLib material registered under `tName`, or null when the name
-    /// must keep being dropped as unknown. Exactly the names with a minted bridge facade flowed through
-    /// [#registerOre]'s pipeline before minting retired, and only from the moment that facade entered
-    /// [Materials]'s map -- so dispatch keys on [MU#hasBridgeRegistration], the bridge loader's record of that
-    /// same moment. An event registered earlier (notably the entire [#catchUpPreExistingOreDictEntries] replay,
-    /// which carries MaterialLib's own item registrations for every reconstructed material) resolved `_NULL` in
-    /// the bridge era and was dropped then too.
+    /// The reconstructed (werkstoff- or gtpp-owned) MaterialLib material registered under `tName`, or null when
+    /// the name must keep being dropped as unknown. Dispatches on [MU#hasBridgeRegistration], which
+    /// `LoaderWerkstoffRegistrations` sets only once its own pass (bartworks' init) reaches a werkstoff-origin
+    /// material -- so an event processed before that pass runs, notably the entire
+    /// [#catchUpPreExistingOreDictEntries] preInit replay, is dropped here too.
     ///
-    /// A gtPlusPlus-originated material never gets a [MU#hasBridgeRegistration] record (there is no gtpp bridge
-    /// loader left), so it falls to the plain registry-and-shapes check [#resolveCensusMaterial] also uses --
-    /// the timing distinction above never applied to it in the first place, since gtpp names never had a
-    /// declared `Materials` field for [#catchUpPreExistingOreDictEntries] to race against. That fallback is
-    /// gated on [GTMaterialProperties#GTPP_STATE] specifically (the same discriminator
-    /// `gregtech.common.ores.GTPPOreAdapter`'s `isGtpp` uses): an ordinary bartworks werkstoff with no
-    /// bridge-registration record (one that never claimed a gtpp name) has its own working resolution path
-    /// elsewhere and must keep resolving `_NULL` here, not be newly rescued by this fallback.
+    /// A gtPlusPlus-originated material never gets a [MU#hasBridgeRegistration] record
+    /// (`LoaderWerkstoffRegistrations` only records materials carrying [GTMaterialProperties#WERKSTOFF_IDS]),
+    /// so it falls to the plain registry-and-shapes check [#resolveCensusMaterial] also uses, gated on
+    /// [GTMaterialProperties#GTPP_STATE] specifically (the same discriminator
+    /// `gregtech.common.ores.GTPPOreAdapter`'s `isGtpp` uses): an ordinary bartworks werkstoff not yet
+    /// [MU#hasBridgeRegistration]-recorded has its own working resolution path elsewhere and must keep
+    /// resolving to `_NULL` here, not be newly rescued by the GTPP_STATE fallback.
     private static @Nullable Material reconstructedMaterial(@Nullable String tName) {
         if (tName == null || hasDeclaredMaterialsField(tName)) return null;
         Material ml = MaterialLibAPI.getMaterial("gregtech", tName);
@@ -2107,10 +2094,8 @@ public class GTProxy implements IFuelHandler {
             .isEmpty() ? null : ml;
     }
 
-    /// Whether `name` was a declared `public static Materials` field on the `Materials` facade, regardless of
-    /// whether that field was ever assigned. See [#resolveCensusMaterial] for why the declaration itself, not
-    /// the current value, is the signal this needs. Backed by [MaterialsDeclaredFieldsTable], the frozen set
-    /// that former `Materials.class.getFields()` scan produced.
+    /// Whether `name` is in the frozen domain [MaterialsDeclaredFieldsTable] backs. See
+    /// [#resolveCensusMaterial] for how this steers between `aMaterial` and a direct MaterialLib registry hit.
     private static boolean hasDeclaredMaterialsField(String name) {
         return MaterialsDeclaredFieldsTable.NAMES.contains(name);
     }

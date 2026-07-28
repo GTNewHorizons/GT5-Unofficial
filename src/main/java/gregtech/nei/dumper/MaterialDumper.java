@@ -24,8 +24,8 @@ public class MaterialDumper extends GregTechIDDumper {
         List<String[]> dump = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
             Material material = MU.byId(i);
-            // A slot whose material lost its parent mod counts as free, reproducing the mHasParentMod gate
-            // of Materials.fillGeneratedMaterialsMap.
+            // A slot whose material has no available parent mod never generates an item, so it counts as free
+            // rather than used.
             boolean used = material != null && Materials2ParentMods.hasParentMod(material);
             if (mode == Mode.FREE && !used) {
                 dump.add(new String[] { String.valueOf(i), "", });

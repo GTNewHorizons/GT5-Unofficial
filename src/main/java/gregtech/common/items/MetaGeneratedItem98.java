@@ -303,7 +303,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
     }
 
     private void registerOreDict() {
-        // The GregTech ore dictionary requires an entry in the Materials enum, and since the whole
+        // The GregTech ore dictionary requires an entry in Materials2Materials, and since the whole
         // point of this class is to add cell items for non-GregTech fluids, the vast majority of
         // cell items won't have an associated material. So only a rare few cell items will need to
         // be registered.

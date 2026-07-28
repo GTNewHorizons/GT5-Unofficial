@@ -9,9 +9,9 @@ import gregtech.api.interfaces.ISubTagContainer;
 
 /// Transitional MaterialLib view over a [Material], letting a legacy [ICondition] of [ISubTagContainer] -- the
 /// [gregtech.api.enums.OrePrefixes#mCondition] a prefix carries -- evaluate directly against MaterialLib state
-/// instead of the legacy `Materials` facade the conditions were authored for. Every [SubTag] a prefix
-/// condition tests carries a same-named [GTMaterialFlag], so membership routes through the material's
-/// MaterialLib FLAGS property via [MU#hasSubTag].
+/// without rewriting the conditions themselves. Every [SubTag] a prefix condition tests carries a same-named
+/// [GTMaterialFlag], so membership routes through the material's MaterialLib FLAGS property via
+/// [MU#hasSubTag].
 ///
 /// Condition evaluation only ever calls [#contains]: [ICondition.And], [ICondition.Not], [ICondition.Or],
 /// [ICondition.Nor], [ICondition.Nand], [ICondition.Xor], and [ICondition.Equal] each recurse into their

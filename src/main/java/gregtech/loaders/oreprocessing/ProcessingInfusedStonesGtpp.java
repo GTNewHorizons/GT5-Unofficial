@@ -14,10 +14,11 @@ import gregtech.api.material.MU;
 /// `InfusedWater`, restoring the [ProcessingDust] recipes (implosion compressor, autoclave, magic fuels) that
 /// depend on it.
 ///
-/// These four are real legacy `Materials` constants (`GTMaterialProperties#OLD_SUB_ID` 540-543), so MaterialLib
-/// registers their canonical dust item into Forge's `OreDictionary` during its own early resolution, before
-/// `GTProxy#catchUpPreExistingOreDictEntries` replays existing entries -- but that replay itself runs from GT's
-/// preInit before `LoaderOreProcessing` constructs [ProcessingDust] and adds it as a `dust`-prefix listener, so
+/// These four are real legacy-named materials (carrying a `GTMaterialProperties#OLD_SUB_ID` of 540-543), so
+/// MaterialLib registers their canonical dust item into Forge's `OreDictionary` during its own early
+/// resolution, before `GTProxy#catchUpPreExistingOreDictEntries` replays existing entries -- but that replay
+/// itself runs from GT's preInit before `LoaderOreProcessing` constructs [ProcessingDust] and adds it as a
+/// `dust`-prefix listener, so
 /// the replay finds no listener to notify. Nothing re-registers the same (name, stack) pair afterward for
 /// `GTOreDictUnificator` to fire a second event from. The retired gtPlusPlus `ItemUtils#generateSpecialUseDusts`
 /// (called for these four from `ModItems`) papered over the gap by minting a second, separate dust item late

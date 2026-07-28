@@ -254,9 +254,8 @@ public class GTPostLoad {
                 GTOreDictUnificator.get(OrePrefixes.cell, material, 1L));
         }
 
-        // Reconstructed werkstoff elements no longer appear in getMaterialsMap() once minting is retired.
-        // The cell-bearing ones -- the population whose facades CellLoader's element branch used to link
-        // before this loop ran -- get the same recipes from the MaterialLib registry instead.
+        // A reconstructed werkstoff material is outside MU#isLegacyNamed, so the loop above skips it; this
+        // second pass covers the cell-bearing ones with the same scanner/replicator recipes.
         for (Material material : MaterialLibAPI.getMaterials()) {
             if (MU.isLegacyNamed(material)) continue;
             List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
@@ -488,8 +487,6 @@ public class GTPostLoad {
         OrePrefixes[] washablePrefixes = { OrePrefixes.dustImpure, OrePrefixes.dustPure, OrePrefixes.crushed,
             OrePrefixes.dust };
 
-        // The washing recipes come from the MaterialLib registry, through the same lookups the legacy facades
-        // used to route (a material without washable entries contributes nothing, exactly as its facade did).
         for (Material material : MaterialLibAPI.getMaterials()) {
             for (OrePrefixes prefix : washablePrefixes) {
                 ItemStack input = GTOreDictUnificator.get(prefix, material, 1);

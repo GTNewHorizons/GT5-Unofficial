@@ -431,8 +431,8 @@ public class EyeOfHarmonyRecipe {
                 .add(MU.directSmelting(byProductMaterial), mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
             // For Materials that index is > 3, normally they will not be used (unless using Chem bath).
 
-            // mMaterialInto is always self (Materials's constructor sets it once, never reassigned -- see
-            // MU#oreByProducts), so the legacy self-byproduct check collapses to reference identity; Material
+            // mMaterialInto is always self (MU#materialInto returns its argument unconditionally -- see
+            // MU#oreByProducts), so the self-byproduct check collapses to reference identity; Material
             // instances are canonical singletons (see the a2 cookbook), so == is stable here too.
             if (byProductMaterial == material) continue;
 

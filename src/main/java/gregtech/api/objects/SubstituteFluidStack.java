@@ -28,8 +28,8 @@ public class SubstituteFluidStack {
      * <pre>
      * {@code new SubstituteFluidStack(
      *          // Each fluid has its own amount
-     *          Materials.Lava.get(1_000),
-     *          Materials.Water.get(500)
+     *          GTUtility.getLava(1_000),
+     *          GTUtility.getWater(500)
      *   )
      *   }
      * </pre>
