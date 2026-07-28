@@ -14,11 +14,9 @@ import net.minecraft.world.World;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
-import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
-import gregtech.api.material.MU;
 import gregtech.api.util.OptionalBoolean;
 
 public final class OreManager {
@@ -86,8 +84,7 @@ public final class OreManager {
     }
 
     /// `material` is a legacy-family material object (`Materials`/gtPlusPlus `Material`) or a
-    /// MaterialLib [Material], which is first resolved to the family object owning its ore behavior via
-    /// [MU#legacyMaterialOf] -- the adapters dispatch on the family type.
+    /// MaterialLib [Material] -- the adapters dispatch on the family type.
     public static boolean setOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone, Object material,
         boolean small) {
         ImmutableBlockMeta oreBlock = getOreBlockForWorldGen(world, x, y, z, defaultStone, material, small);
@@ -217,15 +214,12 @@ public final class OreManager {
     }
 
     /// The legacy-family material object (`Materials`, a MaterialLib [Material], or gtPlusPlus `Material`) that
-    /// owns the ore at this block+meta, or null. The GT family's [OreInfo#material] is a MaterialLib [Material], so it
-    /// is
-    /// mapped back to its legacy family object via [MU#legacyMaterialOf]; callers that compare this against the
-    /// worldgen spine's own [MU#legacyMaterialOf]-derived values (the NEI ore-vein tables, prospecting) keep
-    /// matching by identity.
+    /// owns the ore at this block+meta, or null. Callers compare this against the worldgen spine's own material
+    /// identity (the NEI ore-vein tables, prospecting) by reference.
     public static Object getMaterial(Block block, int meta) {
         try (OreInfo<?> info = getOreInfo(block, meta)) {
             if (info == null) return null;
-            return info.material instanceof Material ml ? MU.legacyMaterialOf(ml) : info.material;
+            return info.material;
         }
     }
 

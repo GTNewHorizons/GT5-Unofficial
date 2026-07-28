@@ -13,6 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableMap;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.GTLoggers;
 import gregtech.api.enums.OreMixes;
@@ -75,28 +76,27 @@ public class GT5OreLayerHelper {
 
         public final String veinName, worldGenHeightRange;
         public final Map<String, String> dimWorldGenHeightRange;
-        /// The vein's four layer materials as legacy-family objects (resolved from the builder's MaterialLib
-        /// materials via [MU#legacyMaterialOf]), the same objects the ore adapters dispatch on.
-        public final Object[] ores = new Object[4];
+        /// The vein's four layer materials, the same objects the ore adapters dispatch on.
+        public final Material[] ores = new Material[4];
         public final short randomWeight, size, density;
         /** {full dim name} */
         public final Set<String> allowedDimWithOrigNames;
         /** {abbr dim name} */
         public final Set<String> abbrDimNames;
 
-        public final Object mPrimaryVeinMaterial;
-        public final Object mSecondaryMaterial;
-        public final Object mBetweenMaterial;
-        public final Object mSporadicMaterial;
+        public final Material mPrimaryVeinMaterial;
+        public final Material mSecondaryMaterial;
+        public final Material mBetweenMaterial;
+        public final Material mSporadicMaterial;
         public final Supplier<String> localizedName;
 
         public OreLayerWrapper(OreMixBuilder mix) {
             this.veinName = mix.oreMixName;
             this.localizedName = mix::getLocalizedName;
-            this.ores[0] = MU.legacyMaterialOf(mix.primary);
-            this.ores[1] = MU.legacyMaterialOf(mix.secondary);
-            this.ores[2] = MU.legacyMaterialOf(mix.between);
-            this.ores[3] = MU.legacyMaterialOf(mix.sporadic);
+            this.ores[0] = mix.primary;
+            this.ores[1] = mix.secondary;
+            this.ores[2] = mix.between;
+            this.ores[3] = mix.sporadic;
 
             this.mPrimaryVeinMaterial = this.ores[0];
             this.mSecondaryMaterial = this.ores[1];

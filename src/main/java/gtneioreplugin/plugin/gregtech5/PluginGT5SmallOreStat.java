@@ -8,15 +8,16 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 
+import com.ruling_0.materiallib.api.Material;
+
 import codechicken.nei.PositionedStack;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.OrePrefixes.ParsedOreDictName;
 import gregtech.api.enums.StoneType;
-import gregtech.api.material.MU;
 import gregtech.common.ores.IOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
+import gregtech.loaders.materials.LegacyNameDomain;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.GT5OreSmallHelper;
 import gtneioreplugin.util.GT5OreSmallHelper.OreSmallWrapper;
@@ -59,13 +60,10 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
         for (ParsedOreDictName oredict : OrePrefixes.detectPrefix(stack)) {
             if (!PluginGT5VeinStat.PREFIX_WHITELIST.contains(oredict.prefix)) continue;
 
-            mat = MU.findLegacyMaterial(oredict.material);
+            Material legacyMat = LegacyNameDomain.lookup(oredict.material);
 
-            if (mat != null) {
-                isMatItem |= loadSmallOre(mat);
-                if (!(mat instanceof Materials)) {
-                    isMatItem |= loadSmallOre(MU.materialOf(MU.gtMaterialOf(mat)));
-                }
+            if (legacyMat != null) {
+                isMatItem |= loadSmallOre(legacyMat);
             }
         }
 

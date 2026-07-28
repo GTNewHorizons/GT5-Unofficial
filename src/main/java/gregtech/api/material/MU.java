@@ -51,6 +51,7 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.config.Client;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
+import gregtech.loaders.materials.LegacyNameDomain;
 
 /// Bridges legacy [OrePrefixes]/[Materials] pairs to their cutover MaterialLib [Shape]/[Material]
 /// equivalents.
@@ -117,25 +118,6 @@ public class MU {
         }
         String name = internalNameOf(material);
         return name == null ? null : MaterialLibAPI.getMaterial("gregtech", name);
-    }
-
-    /// The legacy-family material object (a [Materials] material) that owns worldgen placement for a
-    /// MaterialLib material, or null when none does -- the inverse of [#toMaterial] for the worldgen spine,
-    /// which stores [Material] but places and reads ore blocks through the family-dispatched ore adapters. A
-    /// live, id-backed [Materials] counterpart wins first: a merged bartworks+gregtech declaration (Salt,
-    /// RockSalt, Spodumene carry [GTMaterialProperties#WERKSTOFF_IDS] alongside a live id) was always declared
-    /// into veins via its `Materials` constant, so placement must keep the gregtech adapter's stone-validity
-    /// gates for it. A remaining [GTMaterialProperties#WERKSTOFF_IDS] carrier is returned as itself; an
-    /// id-less bridge [Materials] is the last resort. A material carrying
-    /// [GTMaterialProperties#GTPP_STATE] with neither of the above resolves to null here, deferring worldgen
-    /// placement to `GTPPOreAdapter`'s own exclusion rule.
-    /// TRANSITIONAL -- dies with the legacy families.
-    public static @Nullable Object legacyMaterialOf(@Nullable Material material) {
-        if (material == null) return null;
-        Materials gt = materialOf(material);
-        if (gt != null && gt.mMetaItemSubID >= 0) return gt;
-        if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) return material;
-        return gt;
     }
 
     /// The MaterialLib material a legacy `Materials.get(name)` lookup cuts over to, or null on a miss --
@@ -537,11 +519,10 @@ public class MU {
     /// Whether `material` belongs to the legacy name domain -- the [Material]-side existence predicate the
     /// control-flow gates use when they only need to know whether a material has a legacy [Materials]
     /// counterpart, not the counterpart object itself (the reverse-recipe, element-scan, and
-    /// plasma/molten conversion loops that must skip reconstructed werkstoff/gtpp materials). Backed today by
-    /// [#materialOf] being non-null; its backing freezes to [gregtech.loaders.materials.LegacyNameDomain]'s
-    /// frozen table once the legacy facade is deleted, the same pattern that class uses.
+    /// plasma/molten conversion loops that must skip reconstructed werkstoff/gtpp materials). Backed by
+    /// [gregtech.loaders.materials.LegacyNameDomain]'s frozen membership set.
     public static boolean isLegacyNamed(@Nullable Material material) {
-        return materialOf(material) != null;
+        return LegacyNameDomain.contains(material);
     }
 
     /// The crafting-table ingredient a legacy `OrePrefixes.get(Materials)` call produced, built directly from the
@@ -1287,15 +1268,6 @@ public class MU {
     // Object-typed (or MaterialLib Material-typed) and these helpers reproduce the exact per-family member
     // behavior at the read sites. TRANSITIONAL -- each dies with its last union call site.
 
-    /// The legacy `findMaterial` lookup for the transitional union: a bartworks-origin material by internal
-    /// name first, then a legacy [Materials]. Null on a miss.
-    public static @Nullable Object findLegacyMaterial(String name) {
-        Material ml = MaterialLibAPI.getMaterial("gregtech", name);
-        if (ml != null && ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) return ml;
-        return Materials.getMaterialsMap()
-            .get(name);
-    }
-
     /// The legacy internal name of a [Material] (see [#internalName]); null for null or a non-[Material] value.
     public static @Nullable String internalNameOf(@Nullable Object material) {
         if (material instanceof Material ml) return internalName(ml);
@@ -1368,15 +1340,6 @@ public class MU {
     /// [GTOreDictUnificator#get]); null for null or a non-[Material] value.
     public static @Nullable ItemStack partOf(@Nullable Object material, OrePrefixes prefix, int amount) {
         if (material instanceof Material ml) return GTOreDictUnificator.get(prefix, ml, amount);
-        return null;
-    }
-
-    /// `getGTMaterial` across the union -- the MaterialLib [Material] a werkstoff maps to, or a [Material]
-    /// passed through unchanged; null for null or a foreign type. Callers that need the legacy [Materials]
-    /// counterpart (e.g. the vein-stat identity match against [#legacyMaterialOf] objects) wrap the result in
-    /// [#materialOf].
-    public static @Nullable Material gtMaterialOf(@Nullable Object material) {
-        if (material instanceof Material ml) return ml;
         return null;
     }
 

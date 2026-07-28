@@ -23,6 +23,8 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import org.lwjgl.opengl.GL11;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.OrePrefixes;
@@ -33,6 +35,7 @@ import gregtech.api.material.MU;
 import gregtech.client.renderer.BillboardRenderHelper;
 import gregtech.client.renderer.BillboardRenderHelper.Plane;
 import gregtech.common.config.Client;
+import gregtech.loaders.materials.LegacyNameDomain;
 import gtneioreplugin.util.DimensionHelper;
 
 /**
@@ -72,7 +75,7 @@ public class DetravOreMarkerRenderer {
     @Nullable
     private static IIconContainer resolveIcon(String materialName) {
         if (materialName == null || materialName.isEmpty()) return null;
-        Object mat = MU.findLegacyMaterial(materialName);
+        Material mat = LegacyNameDomain.lookup(materialName);
         if (mat == null) return null;
         TextureSet ts = MU.textureSetOf(mat);
         if (ts == null) return null;

@@ -12,6 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.material.MU;
@@ -114,7 +116,7 @@ public class ElectrodeItem extends Item implements IGT_ItemWithMaterialRenderer 
     @Override
     public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
         ArcFurnaceElectrode electrode = ArcFurnaceElectrode.getById(aMetaData);
-        if (electrode != null) return MU.rendererOf(MU.gtMaterialOf(electrode.associatedMaterial));
+        if (electrode != null && electrode.associatedMaterial instanceof Material ml) return MU.rendererOf(ml);
         return null;
     }
 

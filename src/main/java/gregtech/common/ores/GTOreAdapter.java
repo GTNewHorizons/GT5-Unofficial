@@ -312,11 +312,11 @@ public final class GTOreAdapter implements IOreAdapter<Material> {
     /// The MaterialLib [Material] backing an [OreInfo] this adapter is handed, or null when `material` is not a
     /// GT material -- the [Material]-side replacement for the legacy `info.material instanceof Materials`
     /// dispatch. Accepts either a MaterialLib [Material] (what the retyped [OreInfo] carries) or a legacy
-    /// [Materials] object, which the worldgen spine still stores in [OreInfo#material] through
-    /// [MU#legacyMaterialOf]; both resolve to the same [Material]. The gate is [MU#isLegacyNamed] (has a live
-    /// GT facade), reproducing `instanceof Materials` exactly -- broader than [#isGtFamily] because a merged
-    /// declaration (a material carrying both [GTMaterialProperties#WERKSTOFF_IDS] and a live legacy id, such as
-    /// Salt) is a GT ore here even though [#getOreInfo]'s build path defers it to [BWOreAdapter].
+    /// [Materials] object, since [OreInfo#material] is `Object`-typed; both resolve to the same [Material]. The
+    /// gate is [MU#isLegacyNamed] (has a live GT facade), reproducing `instanceof Materials` exactly -- broader
+    /// than [#isGtFamily] because a merged declaration (a material carrying both
+    /// [GTMaterialProperties#WERKSTOFF_IDS] and a live legacy id, such as Salt) is a GT ore here even though
+    /// [#getOreInfo]'s build path defers it to [BWOreAdapter].
     private static @Nullable Material gtFamilyOf(@Nullable Object material) {
         Material ml;
         if (material instanceof Material m) {

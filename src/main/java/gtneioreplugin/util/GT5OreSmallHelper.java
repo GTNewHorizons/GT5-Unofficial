@@ -12,10 +12,10 @@ import net.minecraft.item.ItemStack;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SmallOres;
-import gregtech.api.material.MU;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.SmallOreBuilder;
 import gregtech.common.WorldgenGTOreSmallPieces;
@@ -26,7 +26,7 @@ public class GT5OreSmallHelper {
 
     public static final List<ItemStack> SMALL_ORE_LIST = new ArrayList<>();
     public static final HashMap<String, OreSmallWrapper> SMALL_ORES_BY_NAME = new HashMap<>();
-    /// Keyed/valued by the legacy-family material objects (see [OreSmallWrapper#material]).
+    /// Keyed by the material (see [OreSmallWrapper#material]).
     public static final HashMap<Object, OreSmallWrapper> SMALL_ORES_BY_MAT = new HashMap<>();
     public static final HashMap<String, Object> ORE_DROP_TO_MAT = new HashMap<>();
     public static final HashMap<Object, List<ItemStack>> ORE_MAT_TO_DROPS = new HashMap<>();
@@ -49,7 +49,7 @@ public class GT5OreSmallHelper {
         for (GTWorldgen worldGen : GregTechAPI.sWorldgenList) {
             if (!(worldGen instanceof WorldgenGTOreSmallPieces smallOreWorldGen)) continue;
 
-            Object material = MU.legacyMaterialOf(smallOreWorldGen.getMaterial());
+            Material material = smallOreWorldGen.getMaterial();
 
             OreSmallWrapper wrapper = new OreSmallWrapper(smallOreDefMap.get(smallOreWorldGen.mWorldGenName));
             SMALL_ORES_BY_NAME.put(worldGen.mWorldGenName, wrapper);
@@ -109,9 +109,8 @@ public class GT5OreSmallHelper {
     public static class OreSmallWrapper {
 
         public final String oreGenName;
-        /// The small ore's material as the legacy-family object (resolved via [MU#legacyMaterialOf]), the same
-        /// object the ore adapters dispatch on.
-        public final Object material;
+        /// The small ore's material, the same object the ore adapters dispatch on.
+        public final Material material;
         public final String worldGenHeightRange;
         public final short amountPerChunk;
 
@@ -122,7 +121,7 @@ public class GT5OreSmallHelper {
 
         public OreSmallWrapper(SmallOreBuilder ore) {
             this.oreGenName = ore.smallOreName;
-            this.material = MU.legacyMaterialOf(ore.ore);
+            this.material = ore.ore;
             this.worldGenHeightRange = ore.minY + "-" + ore.maxY;
             this.amountPerChunk = (short) ore.amount;
 
