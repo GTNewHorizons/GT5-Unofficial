@@ -71,30 +71,8 @@ public class GTOreDictUnificator {
         set(prefix, material, stack, false, false);
     }
 
-    /// Transitional: accepts a legacy [Materials] through [MU#toMaterial] until every caller passes a
-    /// [Material] directly. An unbacked legacy material falls back to a name-only registration under its
-    /// legacy name, keeping the ore-dictionary entry alive without a material association. The same applies
-    /// to the legacy-typed `set`/`addAssociation` overloads below.
-    public static void add(OrePrefixes prefix, Materials material, ItemStack stack) {
-        Material ml = MU.toMaterial(material);
-        if (ml == null && material != null) {
-            set(prefix, material.getInternalName(), stack);
-            return;
-        }
-        set(prefix, ml, stack, false, false);
-    }
-
     public static void set(OrePrefixes prefix, Material material, ItemStack stack) {
         set(prefix, material, stack, true, false);
-    }
-
-    public static void set(OrePrefixes prefix, Materials material, ItemStack stack) {
-        Material ml = MU.toMaterial(material);
-        if (ml == null && material != null) {
-            set(prefix, material.getInternalName(), stack);
-            return;
-        }
-        set(prefix, ml, stack, true, false);
     }
 
     /// Registers `stack` under the ore-dictionary name for `prefix` and `materialName`, makes it that name's
@@ -110,16 +88,6 @@ public class GTOreDictUnificator {
         setItemData(stack, new ItemData(prefix, materialName));
         sName2StackMap.put(name, stack);
         isAddingOre--;
-    }
-
-    public static void set(OrePrefixes prefix, Materials material, ItemStack stack, boolean overwrite,
-        boolean alreadyRegistered) {
-        Material ml = MU.toMaterial(material);
-        if (ml == null && material != null) {
-            set(prefix, material.getInternalName(), stack);
-            return;
-        }
-        set(prefix, ml, stack, overwrite, alreadyRegistered);
     }
 
     public static void set(OrePrefixes prefix, Material material, ItemStack stack, boolean overwrite,
@@ -155,10 +123,8 @@ public class GTOreDictUnificator {
         return get(prefix, material, null, amount);
     }
 
-    /// Transitional: accepts a legacy [Materials] through [MU#toMaterial] until every caller passes a
-    /// [Material] directly. An unbacked legacy material falls back to a lookup under its legacy name, so
-    /// entries other mods registered under that name still resolve. The same applies to the legacy-typed
-    /// `get` overloads below.
+    /// Kept solely for [Materials#getPart] and the material-instance accessors in `Materials` (`getDust`,
+    /// `getIngot`, etc.), which stay on the legacy family until the facade itself is deleted.
     public static ItemStack get(OrePrefixes prefix, Materials material, long amount) {
         return get(prefix, material, null, amount);
     }
@@ -170,6 +136,7 @@ public class GTOreDictUnificator {
         return get(prefix.oreDictName(material), replacement, amount, false, true);
     }
 
+    /// [#get(OrePrefixes,Materials,long)] with an explicit replacement, kept for the same reason.
     public static ItemStack get(OrePrefixes prefix, Materials material, ItemStack replacement, long amount) {
         Material ml = MU.toMaterial(material);
         if (ml == null && material != null) {
@@ -185,16 +152,6 @@ public class GTOreDictUnificator {
         if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material))
             return null;
         return get(prefix.oreDictName(material), null, amount, false, noInvalidAmounts);
-    }
-
-    public static ItemStack get(OrePrefixes prefix, Materials material, long amount, boolean noInvalidAmounts) {
-        Material ml = MU.toMaterial(material);
-        if (ml == null && material != null) {
-            if (OrePrefixes.mPreventableComponents.contains(prefix)
-                && prefix.mDisabledItems.contains(MU.material(material))) return null;
-            return get(prefix.oreDictName(material), null, amount, false, noInvalidAmounts);
-        }
-        return get(prefix, ml, amount, noInvalidAmounts);
     }
 
     public static ItemStack get(Object name, ItemStack replacement, long amount, boolean mentionPossibleTypos,
@@ -483,15 +440,6 @@ public class GTOreDictUnificator {
         setItemData(stack, new ItemData(prefix, material, blackListed));
     }
 
-    public static void addAssociation(OrePrefixes prefix, Materials material, ItemStack stack, boolean blackListed) {
-        Material ml = MU.toMaterial(material);
-        if (ml == null && material != null) {
-            addAssociation(prefix, material.getInternalName(), stack, blackListed);
-            return;
-        }
-        addAssociation(prefix, ml, stack, blackListed);
-    }
-
     public static void addAssociation(OrePrefixes prefix, String materialName, ItemStack stack, boolean blackListed) {
         if (prefix == null || materialName == null || GTUtility.isStackInvalid(stack)) return;
         if (Items.feather.getDamage(stack) == WILDCARD) for (byte i = 0; i < 16; i++)
@@ -534,13 +482,6 @@ public class GTOreDictUnificator {
         return registerOre(prefix.oreDictName(material), stack);
     }
 
-    /// Transitional: accepts a legacy [Materials] until every caller passes a [Material] directly. The
-    /// legacy name is used directly rather than through [MU#toMaterial] so an unbacked legacy material still
-    /// registers under its own name.
-    public static boolean registerOre(OrePrefixes prefix, Materials material, ItemStack stack) {
-        return registerOre(prefix.oreDictName(material), stack);
-    }
-
     public static boolean registerOre(Object name, ItemStack stack) {
         if (name == null || GTUtility.isStackInvalid(stack)) return false;
 
@@ -577,25 +518,6 @@ public class GTOreDictUnificator {
         return material == null ? null : getGem(material, prefix.getMaterialAmount());
     }
 
-    /// Transitional: accepts a legacy [Materials] until every caller passes a [Material] directly.
-    /// Routes through the legacy-typed [#get] overloads so an unbacked legacy material keeps its
-    /// legacy-name lookup. The same applies to the legacy-typed overloads of `getDust`/`getIngot`/
-    /// `getIngotOrDust`/`getDustOrIngot` below.
-    public static ItemStack getGem(Materials material, OrePrefixes prefix) {
-        return material == null ? null : getGem(material, prefix.getMaterialAmount());
-    }
-
-    public static ItemStack getGem(Materials material, long materialAmount) {
-        ItemStack rStack = null;
-        if (((materialAmount >= M))) rStack = get(OrePrefixes.gem, material, materialAmount / M);
-        if (rStack == null) {
-            if ((((materialAmount * 2) % M == 0) || materialAmount >= M * 16))
-                rStack = get(OrePrefixes.gemFlawed, material, (materialAmount * 2) / M);
-            if ((((materialAmount * 4) >= M))) rStack = get(OrePrefixes.gemChipped, material, (materialAmount * 4) / M);
-        }
-        return rStack;
-    }
-
     public static ItemStack getGem(Material material, long materialAmount) {
         ItemStack rStack = null;
         if (((materialAmount >= M))) rStack = get(OrePrefixes.gem, material, materialAmount / M);
@@ -613,22 +535,6 @@ public class GTOreDictUnificator {
 
     public static ItemStack getDust(Material material, OrePrefixes prefix) {
         return material == null ? null : getDust(material, prefix.getMaterialAmount());
-    }
-
-    public static ItemStack getDust(Materials material, OrePrefixes prefix) {
-        return material == null ? null : getDust(material, prefix.getMaterialAmount());
-    }
-
-    public static ItemStack getDust(Materials material, long materialAmount) {
-        if (materialAmount <= 0) return null;
-        ItemStack rStack = null;
-        if (((materialAmount % M == 0) || materialAmount >= M * 16))
-            rStack = get(OrePrefixes.dust, material, materialAmount / M);
-        if (rStack == null && (((materialAmount * 4) % M == 0) || materialAmount >= M * 8))
-            rStack = get(OrePrefixes.dustSmall, material, (materialAmount * 4) / M);
-        if (rStack == null && (((materialAmount * 9) >= M)))
-            rStack = get(OrePrefixes.dustTiny, material, (materialAmount * 9) / M);
-        return rStack;
     }
 
     public static ItemStack getDust(Material material, long materialAmount) {
@@ -651,22 +557,6 @@ public class GTOreDictUnificator {
         return material == null ? null : getIngot(material, prefix.getMaterialAmount());
     }
 
-    public static ItemStack getIngot(Materials material, OrePrefixes prefix) {
-        return material == null ? null : getIngot(material, prefix.getMaterialAmount());
-    }
-
-    public static ItemStack getIngot(Materials material, long materialAmount) {
-        if (materialAmount <= 0) return null;
-        ItemStack rStack = null;
-        if (((materialAmount % (M * 9) == 0 && materialAmount / (M * 9) > 1) || materialAmount >= M * 72))
-            rStack = get(OrePrefixes.block, material, materialAmount / (M * 9));
-        if (rStack == null && ((materialAmount % M == 0) || materialAmount >= M * 8))
-            rStack = get(OrePrefixes.ingot, material, materialAmount / M);
-        if (rStack == null && (((materialAmount * 9) >= M)))
-            rStack = get(OrePrefixes.nugget, material, (materialAmount * 9) / M);
-        return rStack;
-    }
-
     public static ItemStack getIngot(Material material, long materialAmount) {
         if (materialAmount <= 0) return null;
         ItemStack rStack = null;
@@ -686,13 +576,6 @@ public class GTOreDictUnificator {
         return rStack;
     }
 
-    public static ItemStack getIngotOrDust(Materials material, long materialAmount) {
-        if (materialAmount <= 0) return null;
-        ItemStack rStack = getIngot(material, materialAmount);
-        if (rStack == null) rStack = getDust(material, materialAmount);
-        return rStack;
-    }
-
     public static ItemStack getIngotOrDust(MaterialStack material) {
         ItemStack rStack = getIngot(material);
         if (rStack == null) rStack = getDust(material);
@@ -700,13 +583,6 @@ public class GTOreDictUnificator {
     }
 
     public static ItemStack getDustOrIngot(Material material, long materialAmount) {
-        if (materialAmount <= 0) return null;
-        ItemStack rStack = getDust(material, materialAmount);
-        if (rStack == null) rStack = getIngot(material, materialAmount);
-        return rStack;
-    }
-
-    public static ItemStack getDustOrIngot(Materials material, long materialAmount) {
         if (materialAmount <= 0) return null;
         ItemStack rStack = getDust(material, materialAmount);
         if (rStack == null) rStack = getIngot(material, materialAmount);
@@ -723,13 +599,6 @@ public class GTOreDictUnificator {
      * @return a Copy of the OreDictionary.getOres() List
      */
     public static ArrayList<ItemStack> getOres(OrePrefixes prefix, Material material) {
-        return getOres(prefix.oreDictName(material));
-    }
-
-    /**
-     * @return a Copy of the OreDictionary.getOres() List
-     */
-    public static ArrayList<ItemStack> getOres(OrePrefixes prefix, Materials material) {
         return getOres(prefix.oreDictName(material));
     }
 

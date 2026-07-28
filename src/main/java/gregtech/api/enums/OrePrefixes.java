@@ -2996,8 +2996,9 @@ public class OrePrefixes {
         return Materials.getRealMaterial(oreName.replaceFirst(prefix.toString(), ""));
     }
 
-    public void enableComponent(Materials material) {
-        this.mDisabledItems.remove(MU.material(material));
+    /// Removes a [Material] from [#mDisabledItems] if present.
+    public void enableComponent(Material material) {
+        this.mDisabledItems.remove(material);
     }
 
     public boolean add(ItemStack stack) {
@@ -3024,15 +3025,13 @@ public class OrePrefixes {
         return false;
     }
 
-    /// Twin of [#doGenerateItem(Materials)] for a MaterialLib [Material]. The sub-ID, parent-mod, and
-    /// generation-bit-overlap clauses are computed natively from MaterialLib state:
-    /// [MU#oldSubId] for `mMetaItemSubID`, [Materials2ParentMods#hasParentMod] for `mHasParentMod`, and
-    /// [GTMaterialProperties#GENERATION_FLAGS] membership for each `has*Items()` category flag (the exact
-    /// flag `LegacyMaterials#build` feeds the matching `MaterialBuilder#add*` from, so byte-identical to the
-    /// legacy `mGenerate*` fields). The [#mGeneratedItems]/[#mNotGeneratedItems]/[#mDisabledItems] membership
-    /// checks read the [Material] directly, as those collections are ML-keyed. [#mCondition] instead
-    /// evaluates against a [MaterialSubTagView] over the [Material], so a prefix's [SubTag] condition reads the
-    /// material's MaterialLib FLAGS directly rather than the facade's tag set.
+    /// Whether this prefix generates an item for `material`. The sub-ID, parent-mod, and generation-bit-overlap
+    /// clauses are computed from MaterialLib state: [MU#oldSubId] for the block-form metadata index,
+    /// [Materials2ParentMods#hasParentMod], and [GTMaterialProperties#GENERATION_FLAGS] membership for each
+    /// generation category. The [#mGeneratedItems]/[#mNotGeneratedItems]/[#mDisabledItems] membership checks
+    /// read the [Material] directly, as those collections are ML-keyed. [#mCondition] evaluates against a
+    /// [MaterialSubTagView] over the [Material], so a prefix's [SubTag] condition reads the material's
+    /// MaterialLib FLAGS directly.
     public boolean doGenerateItem(@Nullable Material material) {
         if (MU.oldSubId(material) == -1) return false;
         if (!Materials2ParentMods.hasParentMod(material)) return false;
@@ -3060,6 +3059,8 @@ public class OrePrefixes {
         return mCondition == null || mCondition.isTrue(new MaterialSubTagView(material));
     }
 
+    /// Kept solely for [gregtech.common.misc.MaterialDataDump] and `LoaderLegacyMaterialPasses`, which stay on
+    /// the legacy family until the facade itself is deleted.
     public boolean doGenerateItem(Materials material) {
         if (material == null) return false;
         if (material == Materials._NULL) return false;
@@ -3091,27 +3092,11 @@ public class OrePrefixes {
         return true;
     }
 
-    /// [#ignoreMaterials(Material...)] for legacy [Materials] constants, keyed through their MaterialLib
-    /// counterparts ([#mIgnoredMaterials] is ML-keyed); a facade without one has no key to add.
-    public boolean ignoreMaterials(Materials... materials) {
-        for (Materials tMaterial : materials) {
-            Material ml = MU.material(tMaterial);
-            if (ml != null) mIgnoredMaterials.add(ml);
-        }
-        return true;
-    }
-
     /// Whether unification ignores this (prefix, material) pair: an explicitly ignored material
-    /// ([#ignoreMaterials]), or one that is not unifiable at all. Mirrors the legacy overload below, whose
-    /// `mMaterialInto` redirect clause is a proven universal no-op (see [MU#materialInto]).
+    /// ([#ignoreMaterials]), or one that is not unifiable at all.
     public boolean isIgnored(@Nullable Material material) {
         if (material != null && !MU.unifiable(material)) return true;
         return mIgnoredMaterials.contains(material);
-    }
-
-    public boolean isIgnored(Materials material) {
-        if (material != null && (!material.mUnifiable || material != material.mMaterialInto)) return true;
-        return mIgnoredMaterials.contains(MU.material(material));
     }
 
     public boolean addFamiliarPrefix(OrePrefixes prefix) {
@@ -3176,11 +3161,6 @@ public class OrePrefixes {
     /// additionally carries the material composition that reversible crafting recipes
     /// ([gregtech.api.util.GTModHandler#addCraftingRecipe]) and
     /// [gregtech.api.util.GTOreDictUnificator#addItemDataFromInputs] account against.
-    public ItemData ingredient(Materials material) {
-        return new ItemData(this, material);
-    }
-
-    /// [#ingredient(Materials)] for a MaterialLib [Material] directly.
     public ItemData ingredient(Material material) {
         return new ItemData(this, material);
     }
@@ -3191,25 +3171,26 @@ public class OrePrefixes {
         return name + MU.internalName(material);
     }
 
-    /// [#oreDictName(Material)] for the transitional legacy [Materials], kept until every caller passes a
-    /// [Material] directly.
-    public String oreDictName(Materials material) {
-        return name + material.getInternalName();
-    }
-
     /// The ore-dictionary name for this prefix and a material named directly, for the entries whose material
     /// side is not a material object at all.
     public String oreDictName(String materialName) {
         return name + materialName;
     }
 
+    /// Kept solely for [gregtech.api.util.GTOreDictUnificator]'s legacy-typed `get` overloads, which stay on
+    /// the legacy family until the facade itself is deleted.
+    public String oreDictName(Materials material) {
+        return name + material.getInternalName();
+    }
+
+    /// Kept solely for [gregtech.common.misc.MaterialDataDump], which stays on the legacy family until the
+    /// facade itself is deleted.
     public String getDefaultLocalNameForItem(Materials material) {
         return material.getDefaultLocalizedNameForItem(getDefaultLocalNameFormatForItem(material.getInternalName()));
     }
 
-    /// [#getDefaultLocalNameForItem(Materials)] for a MaterialLib material: resolves the format by the legacy
-    /// internal name ([MU#internalName]) and substitutes the legacy default local name ([MU#localName]), the
-    /// same two strings the legacy overload reads from `mName`/`mDefaultLocalName`.
+    /// Resolves the format by the material's internal name ([MU#internalName]) and substitutes its default
+    /// local name ([MU#localName]).
     public String getDefaultLocalNameForItem(Material material) {
         String format = getDefaultLocalNameFormatForItem(MU.internalName(material));
         return GTUtility.formatStringSafe(
@@ -3340,7 +3321,7 @@ public class OrePrefixes {
     }
 
     public String getDefaultLocalNameFormatForItem() {
-        return getDefaultLocalNameForItem(Materials._NULL);
+        return getDefaultLocalNameForItem(Materials2Materials.NULL);
     }
 
     public static String getOreprefixKey(String prefix, String formatString) {
