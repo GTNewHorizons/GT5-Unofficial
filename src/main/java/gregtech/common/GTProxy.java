@@ -1729,7 +1729,8 @@ public class GTProxy implements IFuelHandler {
                                     aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
                                 }
                                 if (aMaterial != null) {
-                                    for (Material tReRegisteredMaterial : MU.oreReRegistrationsOf(aMaterial)) {
+                                    for (Material tReRegisteredMaterial : Materials2Markers
+                                        .oreReRegistrationsOf(aMaterial)) {
                                         GTOreDictUnificator.registerOre(aPrefix, tReRegisteredMaterial, aEvent.Ore);
                                     }
                                     if (GregTechAPI.sThaumcraftCompat != null && aPrefix.doGenerateItem(aMaterial)
