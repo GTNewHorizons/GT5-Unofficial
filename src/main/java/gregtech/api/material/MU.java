@@ -259,28 +259,34 @@ public class MU {
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
-    /// A gtPlusPlus-only material's registered fluid, resolved by the name its
-    /// [GTMaterialProperties#LEGACY_FLUIDS] slots declare ([FluidNames#legacyGtppFluidName]), or by the
-    /// `UNDECLARED_FLUID_NAMES` override when a material's fluid was never declared there -- unlike
-    /// [#molten]/[#fluid]/[#gas], which resolve a distinct [GTMaterialProperties#LEGACY_FLUIDS] slot or a
-    /// [Shape], neither of which a gtPlusPlus-only material carries, so those return null for exactly the
-    /// materials this resolves. Null when the material has no such fluid registered.
+    /// A gtPlusPlus-originated material's single fluid, whichever state backs it. Unlike
+    /// [#molten]/[#fluid]/[#gas], which each answer for one state, this takes the first the material has, so
+    /// callers porting a gtPlusPlus recipe do not have to know which state the material ended up in. Null when
+    /// the material has no fluid at all.
     public static @Nullable FluidStack legacyGtppFluid(@Nullable Material material, long amount) {
         Fluid fluid = legacyGtppFluidOf(material);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
-    /// Materials whose fluid is registered directly by name rather than through their own declaration, so
-    /// [GTMaterialProperties#LEGACY_FLUIDS] never captured it.
+    /// The shapes [#legacyGtppFluidOf] tries, in the order the legacy gtPlusPlus fluid name was derived:
+    /// molten first, then liquid, then gas.
+    private static final Shape[] GTPP_FLUID_SHAPES = { Materials2FluidShapes.fluidMolten,
+        Materials2FluidShapes.fluidLiquid, Materials2FluidShapes.fluidGas };
+
+    /// Materials whose fluid is registered directly by name rather than through a shape of their own, so no
+    /// shape lookup can reach it.
     private static final Map<String, String> UNDECLARED_FLUID_NAMES = Map
         .of("ZirconiumTetrafluoride", "zirconiumtetrafluoride");
 
-    /// [#legacyGtppFluid]'s raw [Fluid], for a bare `Material#getFluid()` read (no stack size).
+    /// [#legacyGtppFluid]'s raw [Fluid], for a bare fluid read with no stack size.
     public static @Nullable Fluid legacyGtppFluidOf(@Nullable Material material) {
         if (material == null) return null;
-        FluidNames fluids = material.getProperty(GTMaterialProperties.LEGACY_FLUIDS);
-        String name = fluids == null ? null : fluids.legacyGtppFluidName();
-        if (name == null) name = UNDECLARED_FLUID_NAMES.get(material.getName());
+        for (Shape shape : GTPP_FLUID_SHAPES) {
+            if (!material.hasShape(shape)) continue;
+            FluidStack stack = MaterialLibAPI.getFluidStack(material, shape, 1);
+            if (stack != null) return stack.getFluid();
+        }
+        String name = UNDECLARED_FLUID_NAMES.get(material.getName());
         return name == null ? null : FluidRegistry.getFluid(name);
     }
 
@@ -362,18 +368,40 @@ public class MU {
         return storedFluid(material, state) != null;
     }
 
+    /// The shapes that can back each fluid state, in resolution order. A state usually maps to its own shape,
+    /// but a material declaring both a liquid and a gas registers only one MaterialLib fluid when the two
+    /// share a Forge fluid name, so each of those two states falls back to the other's shape.
+    private static final EnumMap<FluidState, Shape[]> STATE_SHAPES = new EnumMap<>(
+        Map.of(
+            FluidState.LIQUID,
+            new Shape[] { Materials2FluidShapes.fluidLiquid, Materials2FluidShapes.fluidGas },
+            FluidState.GAS,
+            new Shape[] { Materials2FluidShapes.fluidGas, Materials2FluidShapes.fluidLiquid },
+            FluidState.MOLTEN,
+            new Shape[] { Materials2FluidShapes.fluidMolten },
+            FluidState.PLASMA,
+            new Shape[] { Materials2FluidShapes.fluidPlasma },
+            FluidState.SOLID,
+            new Shape[] { Materials2FluidShapes.fluidSolid }));
+
+    /// A [#recordSlotFluid]-stored fluid wins; otherwise the material must declare the
+    /// [GTMaterialProperties#LEGACY_FLUIDS] slot, and the fluid is the one MaterialLib registered for the
+    /// first shape in [#STATE_SHAPES] that the material generates. The slot gate matters independently of the
+    /// shapes: it is what distinguishes a material that has no fluid in this state from one whose fluid shares
+    /// another state's registration.
     private static @Nullable Fluid resolveSlotFluid(@Nullable Material material, FluidState state,
         Function<FluidNames, FluidRef> slot) {
         Fluid stored = storedFluid(material, state);
-        return stored != null ? stored : slotFluid(material, slot);
-    }
-
-    private static @Nullable Fluid slotFluid(@Nullable Material material, Function<FluidNames, FluidRef> slot) {
+        if (stored != null) return stored;
         if (material == null) return null;
         FluidNames legacyFluids = material.getProperty(GTMaterialProperties.LEGACY_FLUIDS);
-        if (legacyFluids == null) return null;
-        FluidRef ref = slot.apply(legacyFluids);
-        return ref == null ? null : FluidRegistry.getFluid(ref.name());
+        if (legacyFluids == null || slot.apply(legacyFluids) == null) return null;
+        for (Shape shape : STATE_SHAPES.get(state)) {
+            if (!material.hasShape(shape)) continue;
+            FluidStack stack = MaterialLibAPI.getFluidStack(material, shape, 1);
+            if (stack != null) return stack.getFluid();
+        }
+        return null;
     }
 
     private static final Map<Fluid, Material> fluidMaterials = new LinkedHashMap<>();
@@ -409,10 +437,19 @@ public class MU {
             .computeIfAbsent(type, k -> new Fluid[3])[severity] = fluid;
     }
 
+    /// The six cracked-fluid shapes, indexed by [CrackType] then by severity.
+    private static final EnumMap<CrackType, Shape[]> CRACKED_SHAPES = new EnumMap<>(
+        Map.of(
+            CrackType.HYDRO,
+            new Shape[] { Materials2FluidShapes.fluidHydroCracked1, Materials2FluidShapes.fluidHydroCracked2,
+                Materials2FluidShapes.fluidHydroCracked3 },
+            CrackType.STEAM,
+            new Shape[] { Materials2FluidShapes.fluidSteamCracked1, Materials2FluidShapes.fluidSteamCracked2,
+                Materials2FluidShapes.fluidSteamCracked3 }));
+
     /// The cracked Forge fluid for `material`'s `type` cracking family at `severity` (0/1/2 =
     /// light/moderate/severe), or null when the material carries none. A [#recordCrackedFluid] autogenerated
-    /// fluid wins; otherwise resolves the [GTMaterialProperties#CRACKED_HYDRO_FLUIDS]/[#CRACKED_STEAM_FLUIDS]
-    /// [FluidRef] MaterialLib pre-registered, by Forge fluid name.
+    /// fluid wins; otherwise the fluid MaterialLib registered for the matching cracked shape.
     public static @Nullable Fluid crackedFluid(@Nullable Material material, CrackType type, int severity) {
         if (material == null) return null;
         EnumMap<CrackType, Fluid[]> byType = crackedFluids.get(material);
@@ -420,12 +457,10 @@ public class MU {
             Fluid[] recorded = byType.get(type);
             if (recorded != null && recorded[severity] != null) return recorded[severity];
         }
-        List<FluidRef> refs = material.getProperty(
-            type == CrackType.HYDRO ? GTMaterialProperties.CRACKED_HYDRO_FLUIDS
-                : GTMaterialProperties.CRACKED_STEAM_FLUIDS);
-        if (refs == null || severity >= refs.size()) return null;
-        FluidRef ref = refs.get(severity);
-        return ref == null ? null : FluidRegistry.getFluid(ref.name());
+        Shape shape = CRACKED_SHAPES.get(type)[severity];
+        if (!material.hasShape(shape)) return null;
+        FluidStack stack = MaterialLibAPI.getFluidStack(material, shape, 1);
+        return stack == null ? null : stack.getFluid();
     }
 
     /// Whether `material` belongs to the legacy name domain -- the [Material]-side existence predicate
