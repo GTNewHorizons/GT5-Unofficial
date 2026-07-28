@@ -88,18 +88,6 @@ public class GTMaterialProperties {
     /// carries unconditionally, and is not gated on this.
     public static final Property<Boolean> HAS_GAS = Property.of("gregtech", "hasGas");
     public static final Property<Boolean> HAS_GLOWING_ORE = Property.of("gregtech", "hasGlowingOre");
-    /// The werkstoff facade's `GenerationFeatures#hasMetalCraftingSolidifierRecipes` marker (stickLong/stick/
-    /// plate solidification). No recipe generator reads it: the canonical solidifier autogen
-    /// (`ProcessingShaping`/`ProcessingPlate`, dispatched by `gregtech.loaders.shapeconsumers`) covers those
-    /// molds unconditionally for any material with a molten fluid. Retained because `MaterialDataDump` dumps
-    /// this property directly and `scripts/mu/check_parity.py` verifies it against the pinned werkstoff dump.
-    public static final Property<Boolean> HAS_METAL_CRAFTING_SOLIDIFIER_RECIPE = Property
-        .of("gregtech", "hasMetalCraftingSolidifierRecipe");
-    /// As [#HAS_METAL_CRAFTING_SOLIDIFIER_RECIPE], for the screw/gear/gearSmall/bolt/ring/rotor molds (the
-    /// `GenerationFeatures#hasMetaSolidifierRecipes` marker, covered canonically by `ProcessingShaping`/
-    /// `ProcessingGear`/`ProcessingRotor`).
-    public static final Property<Boolean> HAS_METAL_SOLIDIFIER_RECIPE = Property
-        .of("gregtech", "hasMetalSolidifierRecipe");
     /// Whether the auto-generated Mixer recipe (from [#COMPOSITION] plus [#MIX_CIRCUIT]) should be built (the
     /// werkstoff facade's `GenerationFeatures#hasMixerRecipes` marker). Read by
     /// `gregtech.loaders.materialrecipes.LoaderMixerRecipes`.
@@ -112,10 +100,6 @@ public class GTMaterialProperties {
     /// Whether the material is radioactive, unifying the legacy bartworks material's own radioactivity flag and
     /// `Material.isRadioactive`.
     public static final Property<Boolean> IS_RADIOACTIVE = Property.of("gregtech", "isRadioactive");
-    /// Whether a gtPlusPlus-originated material generates cells.
-    public static final Property<Boolean> GTPP_GENERATES_CELLS = Property.of("gregtech", "gtppGeneratesCells");
-    /// Whether a gtPlusPlus-originated material generates a fluid.
-    public static final Property<Boolean> GTPP_GENERATES_FLUID = Property.of("gregtech", "gtppGeneratesFluid");
     /// The `FluidRegistry` name of a gtPlusPlus-originated material's plasma fluid, present only for the 37
     /// materials where it is not [FluidNames#plasma] on [#LEGACY_FLUIDS]. A merged material's combined
     /// `LEGACY_FLUIDS.plasma` may be a gregtech-side plasma sharing the slot, so the gtPlusPlus contribution
@@ -191,9 +175,6 @@ public class GTMaterialProperties {
     /// is how the ore adapters and shape gating distinguish the werkstoff-origin materials from the gregtech
     /// and gtPlusPlus families.
     public static final Property<List<Integer>> WERKSTOFF_IDS = Property.of("gregtech", "werkstoffIds");
-    /// The identifier of the pool the material is declared in (`"bartworks"`/`"goodgenerator"`/`"gtnhlanth"`/
-    /// `"gtnhlanth-bot"`), dumped by `MaterialDataDump` alongside the rest of a material's werkstoff-side data.
-    public static final Property<String> WERKSTOFF_POOL = Property.of("gregtech", "werkstoffPool");
     /// The dumped `generatedPrefixes` ground truth (every `OrePrefixes` name `hasItemType` reported), minus
     /// `sheetmetal`/`frameGt`: those two cut over to MaterialLib shapes through
     /// [gregtech.api.enums.materials2.Materials2PipeMaterials]'s own declared array rather than through this

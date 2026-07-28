@@ -5,8 +5,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
-/// Hand-maintained fluid-in-container [Shape] declarations for GT's cells (unlike [Materials2Shapes], not
-/// `gen_shapes.py`-generated: cells are containers, which that generator excludes). Empty container is IC2's
+/// Hand-maintained fluid-in-container [Shape] declarations for GT's cells. Empty container is IC2's
 /// cell (`IC2:itemCellEmpty`), resolved once at MaterialLib's init -- after IC2's own preInit has registered it
 /// -- via the deferred-by-name mechanism, since IC2 loads and registers items independently of MaterialLib's
 /// own preInit-time resolve.
@@ -20,15 +19,14 @@ public class Materials2CellShapes {
     private static final String EMPTY_CELL = "IC2:itemCellEmpty";
 
     /// Untinted container base for [#cell] and the six cracked-cell shapes, converted from the legacy
-    /// `cell_OVERLAY.png` shared by 61 of 66 material icon sets (see `scripts/mu/convert_textures.py`); the
-    /// legacy `cellHydroCracked*`/`cellSteamCracked*` `OrePrefixes` all render through the same `CELL` texture
-    /// slot as plain `cell` (see `dumps/oreprefixes.json`'s `textureIndex`).
+    /// `cell_OVERLAY.png` shared by 61 of 66 material icon sets. The `cellHydroCracked*`/`cellSteamCracked*`
+    /// `OrePrefixes` all render through the same `CELL` texture slot as plain `cell`.
     private static final String CELL_BASE = "gregtech:materials/cell_base";
 
     /// Untinted container base for [#cellPlasma]/[#cellPlasmaLight]/[#cellMolten], converted from
     /// the legacy `cellPlasma_OVERLAY.png` shared by 13 of 16 sets that have plasma-cell art. `cellMolten`
-    /// renders through the same `CELL_PLASMA` texture slot as `cellPlasma` (see `dumps/oreprefixes.json`'s
-    /// `textureIndex`), not a slot of its own -- there is no separate legacy `cellMolten` art.
+    /// renders through the same `CELL_PLASMA` texture slot as `cellPlasma`, not one of its own: there is no
+    /// separate `cellMolten` art.
     private static final String CELL_PLASMA_BASE = "gregtech:materials/cell_plasma_base";
 
     // spotless:off

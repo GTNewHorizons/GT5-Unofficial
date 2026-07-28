@@ -204,8 +204,8 @@ public final class MaterialDataDump {
         json.put("chemicalRecipes", material.getProperty(GTMaterialProperties.HAS_CHEMICAL_RECIPE));
         json.put(
             "metalCraftingSolidifierRecipes",
-            material.getProperty(GTMaterialProperties.HAS_METAL_CRAFTING_SOLIDIFIER_RECIPE));
-        json.put("metalSolidifierRecipes", material.getProperty(GTMaterialProperties.HAS_METAL_SOLIDIFIER_RECIPE));
+            MaterialDumpData.hasMetalCraftingSolidifierRecipe(material.getName()));
+        json.put("metalSolidifierRecipes", MaterialDumpData.hasMetalSolidifierRecipe(material.getName()));
         json.put("mixerRecipes", material.getProperty(GTMaterialProperties.HAS_MIXER_RECIPE));
         json.put("sifterRecipes", material.getProperty(GTMaterialProperties.HAS_SIFTER_RECIPE));
         json.put("mixCircuit", material.getProperty(GTMaterialProperties.MIX_CIRCUIT));
@@ -330,8 +330,8 @@ public final class MaterialDataDump {
         json.put("hasSifterRecipe", material.getProperty(GTMaterialProperties.HAS_SIFTER_RECIPE));
         json.put(
             "hasMetalCraftingSolidifierRecipe",
-            material.getProperty(GTMaterialProperties.HAS_METAL_CRAFTING_SOLIDIFIER_RECIPE));
-        json.put("hasMetalSolidifierRecipe", material.getProperty(GTMaterialProperties.HAS_METAL_SOLIDIFIER_RECIPE));
+            MaterialDumpData.hasMetalCraftingSolidifierRecipe(material.getName()));
+        json.put("hasMetalSolidifierRecipe", MaterialDumpData.hasMetalSolidifierRecipe(material.getName()));
         json.put("canBeCracked", material.getProperty(GTMaterialProperties.CAN_BE_CRACKED));
         json.put("hasGlowingOre", material.getProperty(GTMaterialProperties.HAS_GLOWING_ORE));
         json.put("processingMaterialTierEU", material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU));
@@ -353,14 +353,12 @@ public final class MaterialDataDump {
         if (state == null) return null;
 
         FluidNames legacyFluids = material.getProperty(GTMaterialProperties.LEGACY_FLUIDS);
-        boolean generatesFluid = Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.GTPP_GENERATES_FLUID));
+        boolean generatesFluid = MaterialDumpData.gtppGeneratesFluid(material.getName());
 
         Map<String, Object> json = new LinkedHashMap<>();
         json.put("state", state);
         json.put("generatesFluid", generatesFluid);
-        json.put(
-            "generatesCells",
-            Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.GTPP_GENERATES_CELLS)));
+        json.put("generatesCells", MaterialDumpData.gtppGeneratesCells(material.getName()));
         json.put("fluidName", generatesFluid && legacyFluids != null ? legacyFluids.legacyGtppFluidName() : null);
         json.put("plasmaName", generatesFluid ? material.getProperty(GTMaterialProperties.GTPP_PLASMA_NAME) : null);
         return json;
@@ -380,7 +378,7 @@ public final class MaterialDataDump {
         Map<String, Object> json = new LinkedHashMap<>();
         json.put("ids", ids);
         json.put("type", material.getProperty(GTMaterialProperties.WERKSTOFF_TYPE));
-        json.put("pool", material.getProperty(GTMaterialProperties.WERKSTOFF_POOL));
+        json.put("pool", MaterialDumpData.werkstoffPool(material.getName()));
         // Always empty (every recipe-gen flag is a top-level canonical property); emitted because
         // check_parity.py compares this list against the pinned dump's unmigrated-flag remainder.
         json.put("flags", List.of());
