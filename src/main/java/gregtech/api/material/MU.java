@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -70,7 +71,6 @@ import gregtech.loaders.materials.LegacyNameDomain;
 public class MU {
 
     private static Map<String, List<Shape>> prefixToShapes;
-    private static Map<String, Material> legacyNameToMaterial;
 
     private MU() {}
 
@@ -92,18 +92,23 @@ public class MU {
         return shapes == null ? Collections.emptyList() : shapes;
     }
 
-    /// The MaterialLib material registered under a legacy internal name, or null on a miss. Looks up
-    /// `name` in the [Materials2Materials]-field map first (keyed by [#internalName]), then falls back to
-    /// a direct MaterialLib registry lookup for materials with no declared field there -- the
-    /// superconductor and wildcard markers [gregtech.api.enums.materials2.Materials2Markers] registers,
-    /// and the [gregtech.loaders.materials.RecognitionMaterials] backings -- both registered under the
-    /// same name string.
+    /// The MaterialLib material whose [#internalName] is `name`, or null on a miss. Deliberately wider than
+    /// [gregtech.loaders.materials.LegacyNameDomain#lookup], whose frozen table does not cover every material
+    /// whose registration name MaterialLib had to sanitize.
     public static @Nullable Material byLegacyName(@Nullable String name) {
         if (name == null) return null;
-        Material found = legacyNamedMaterials().get(name);
-        if (found != null) return found;
-        return MaterialLibAPI.getMaterial("gregtech", name);
+        if (legacyNameToMaterial == null) {
+            Map<String, Material> map = new HashMap<>();
+            for (Material material : MaterialLibAPI.getMaterials()) {
+                if ("gregtech".equals(material.getModId())) map.putIfAbsent(internalName(material), material);
+            }
+            legacyNameToMaterial = map;
+        }
+        Material found = legacyNameToMaterial.get(name);
+        return found != null ? found : MaterialLibAPI.getMaterial("gregtech", name);
     }
+
+    private static Map<String, Material> legacyNameToMaterial;
 
     /// The material occupying a legacy generated-material id slot ([Materials2IDIndex]). Null for an empty slot
     /// or an out-of-range id.
@@ -1171,6 +1176,11 @@ public class MU {
         }
     }
 
+    /// The shapes serving each ore-dictionary prefix, keyed by the prefix strings the shapes themselves
+    /// declare. Where several shapes share a prefix (`cellPlasma` holds both plasma cell sizes, and a fluid
+    /// pipe shares `pipeTiny`..`pipeHuge` with an item pipe), the shape whose own name is the prefix comes
+    /// first and the rest follow in name order, so the candidate order does not depend on field or reflection
+    /// order.
     private static Map<String, List<Shape>> prefixShapes() {
         if (prefixToShapes == null) {
             Map<String, List<Shape>> map = new HashMap<>();
@@ -1179,36 +1189,18 @@ public class MU {
             collectShapes(map, Materials2BlockShapes.class);
             collectShapes(map, Materials2OreShapes.class);
             collectShapes(map, Materials2PipeShapes.class);
-            // cellPlasmaLight is a second candidate shape for the cellPlasma prefix, not a prefix of its own
-            // (see Materials2CellShapes); its field name deliberately does not match an OrePrefixes name, so
-            // fold it into "cellPlasma"'s candidate list instead of collecting it under its own key.
-            if (Materials2CellShapes.cellPlasmaLight != null) {
-                map.get("cellPlasma")
-                    .add(Materials2CellShapes.cellPlasmaLight);
+            for (Map.Entry<String, List<Shape>> entry : map.entrySet()) {
+                String prefix = entry.getKey();
+                entry.getValue()
+                    .sort(
+                        Comparator.comparing(
+                            (Shape shape) -> !shape.getName()
+                                .equals(prefix))
+                            .thenComparing(Shape::getName));
             }
-            // The item-pipe shapes' field names likewise differ from their oredict prefixes (fluid and item
-            // pipes share the pipeTiny..pipeHuge prefix strings, see Materials2PipeShapes); fold each under
-            // its prefix key, after the fluid shape where one exists.
-            foldPipeShapes(map, "itemPipeTiny", "pipeTiny");
-            foldPipeShapes(map, "itemPipeSmall", "pipeSmall");
-            foldPipeShapes(map, "itemPipeMedium", "pipeMedium");
-            foldPipeShapes(map, "itemPipeLarge", "pipeLarge");
-            foldPipeShapes(map, "itemPipeHuge", "pipeHuge");
-            foldPipeShapes(map, "itemPipeRestrictiveTiny", "pipeRestrictiveTiny");
-            foldPipeShapes(map, "itemPipeRestrictiveSmall", "pipeRestrictiveSmall");
-            foldPipeShapes(map, "itemPipeRestrictiveMedium", "pipeRestrictiveMedium");
-            foldPipeShapes(map, "itemPipeRestrictiveLarge", "pipeRestrictiveLarge");
-            foldPipeShapes(map, "itemPipeRestrictiveHuge", "pipeRestrictiveHuge");
             prefixToShapes = map;
         }
         return prefixToShapes;
-    }
-
-    private static void foldPipeShapes(Map<String, List<Shape>> map, String fieldName, String prefixName) {
-        List<Shape> folded = map.remove(fieldName);
-        if (folded == null) return;
-        map.computeIfAbsent(prefixName, k -> new ArrayList<>())
-            .addAll(folded);
     }
 
     private static void collectShapes(Map<String, List<Shape>> map, Class<?> shapesClass) {
@@ -1216,22 +1208,11 @@ public class MU {
             if (field.getType() != Shape.class) continue;
             Shape shape = readStatic(field);
             if (shape == null) continue;
-            map.computeIfAbsent(field.getName(), k -> new ArrayList<>())
-                .add(shape);
-        }
-    }
-
-    private static Map<String, Material> legacyNamedMaterials() {
-        if (legacyNameToMaterial == null) {
-            Map<String, Material> map = new HashMap<>();
-            for (Field field : Materials2Materials.class.getFields()) {
-                if (field.getType() != Material.class) continue;
-                Material material = readStatic(field);
-                if (material != null) map.put(internalName(material), material);
+            for (String oreDict : shape.getOreDicts()) {
+                map.computeIfAbsent(oreDict, k -> new ArrayList<>())
+                    .add(shape);
             }
-            legacyNameToMaterial = map;
         }
-        return legacyNameToMaterial;
     }
 
     @SuppressWarnings("unchecked")
