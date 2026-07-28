@@ -191,7 +191,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addInfo("Right click the controller with screwdriver to change mode")
             .addSeparator()
             .addInfo(EnumChatFormatting.WHITE + "Distillery Mode")
-            .addInfo("Outputs only one fluid and requires max height tower")
+            .addInfo("Outputs only one fluid")
             .addInfo(TooltipHelper.parallelText("(2 * floor(Height / 3)) * Voltage Tier") + " Parallels")
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(0.15f)
