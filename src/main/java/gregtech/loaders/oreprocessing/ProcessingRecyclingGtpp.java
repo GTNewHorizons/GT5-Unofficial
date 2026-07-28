@@ -28,7 +28,8 @@ import gregtech.api.util.GTUtility;
 /// [#PREFIXES] shape the material carries, a macerator recipe into the best-fitting dust size, a universal arc
 /// furnace recipe into ingot or nugget, and a fluid extractor recipe into the material's own fluid.
 ///
-/// [#materialFluid] resolves the fluid extractor output by name ([GTMaterialProperties#LEGACY_FLUIDS] ->
+/// [#materialFluid] resolves the fluid extractor output by name ([gregtech.api.enums.materials2.Materials2FluidNames]
+/// ->
 /// [FluidNames#legacyGtppFluidName]) rather than through [MU]'s state-specific accessors, which cannot resolve
 /// a gtPlusPlus-only material's fluid -- see [ProcessingAlloyBlastSmelter]'s class javadoc for the same
 /// resolution.
