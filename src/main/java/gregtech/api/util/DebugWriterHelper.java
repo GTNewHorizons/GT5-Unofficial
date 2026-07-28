@@ -401,6 +401,8 @@ public class DebugWriterHelper {
         builder.append("\n")
             .append(scanType)
             .append(" Scan:\n")
+            .append("\n")
+            .append("//spotless:off\n")
             .append("new String[][]{\n    {\"");
 
         Runnable nextRow = transpose ? () -> builder.append("\",\"") : () -> builder.append("\",\n    \"");
@@ -458,6 +460,7 @@ public class DebugWriterHelper {
 
         int trimLength = transpose ? 2 : 8;
         builder.setLength(builder.length() - trimLength);
-        builder.append(transpose ? "\n}\n\n" : "}\n\n");
+        builder.append(transpose ? "\n}\n" : "}\n");
+        builder.append("//spotless:on\n");
     }
 }
