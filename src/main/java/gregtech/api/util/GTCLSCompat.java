@@ -9,11 +9,12 @@ import java.util.function.Function;
 
 import net.minecraft.util.StatCollector;
 
+import com.ruling_0.materiallib.api.Material;
+
 import alexiil.mods.load.MinecraftDisplayer;
 import alexiil.mods.load.ProgressDisplayer;
 import cpw.mods.fml.common.ProgressManager;
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
 import gregtech.api.material.MU;
 import gregtech.common.OreDictEventContainer;
 import gregtech.loaders.postload.GTPostLoad;
@@ -100,13 +101,13 @@ public class GTCLSCompat {
     }
 
     public static void doActualRegistrationCLS(ProgressManager.ProgressBar progressBar,
-        Set<Materials> replacedVanillaItemsSet) {
+        Set<Material> replacedVanillaItemsSet) {
         MinecraftDisplayer.isReplacingVanillaMaterials = true;
         registerAndReportProgression(
             "Vanilla materials",
             replacedVanillaItemsSet,
             progressBar,
-            Materials::getLocalizedName,
+            MU::localizedNameOf,
             GTPostLoad::doActualRegistration);
     }
 

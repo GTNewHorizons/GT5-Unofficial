@@ -45,6 +45,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.config.Gregtech;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
+import gregtech.loaders.materials.LegacyNameDomain;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
@@ -2984,16 +2985,16 @@ public class OrePrefixes {
         return replacement;
     }
 
-    public static Materials getMaterial(String oreName) {
-        return Materials.get(stripPrefix(oreName));
+    public static Material getMaterial(String oreName) {
+        return LegacyNameDomain.lookup(stripPrefix(oreName));
     }
 
-    public static Materials getMaterial(String oreName, OrePrefixes prefix) {
-        return Materials.get(oreName.replaceFirst(prefix.toString(), ""));
+    public static Material getMaterial(String oreName, OrePrefixes prefix) {
+        return LegacyNameDomain.lookup(oreName.replaceFirst(prefix.toString(), ""));
     }
 
-    public static Materials getRealMaterial(String oreName, OrePrefixes prefix) {
-        return Materials.getRealMaterial(oreName.replaceFirst(prefix.toString(), ""));
+    public static Material getRealMaterial(String oreName, OrePrefixes prefix) {
+        return MU.materialInto(LegacyNameDomain.lookup(oreName.replaceFirst(prefix.toString(), "")));
     }
 
     /// Removes a [Material] from [#mDisabledItems] if present.

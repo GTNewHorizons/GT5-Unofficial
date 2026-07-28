@@ -19,11 +19,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.MU;
@@ -72,7 +72,7 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
     public String getLocalizedName(int meta) {
         Object material = materials.get(meta);
 
-        if (material == null) material = Materials._NULL;
+        if (material == null) material = Materials2Materials.NULL;
 
         return OrePrefixes.frameGt.getLocalizedNameForItem(MU.internalNameOf(material));
     }

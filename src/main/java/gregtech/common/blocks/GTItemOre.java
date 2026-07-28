@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -52,7 +51,7 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
     public String getItemStackDisplayName(ItemStack stack) {
         com.ruling_0.materiallib.api.Material mat = blockOre.getMaterial(stack.getItemDamage());
 
-        String matName = mat == null ? Materials._NULL.getInternalName() : MU.internalName(mat);
+        String matName = mat == null ? MU.internalName(Materials2Materials.NULL) : MU.internalName(mat);
 
         boolean small = blockOre.isSmallOre(stack.getItemDamage());
 
@@ -64,7 +63,7 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
         com.ruling_0.materiallib.api.Material mat = blockOre.getMaterial(stack.getItemDamage());
 
         if (mat == null) {
-            Materials._NULL.addTooltips(desc);
+            MU.addTooltipsOf(Materials2Materials.NULL, desc);
         } else {
             MU.addTooltipsOf(mat, desc);
         }

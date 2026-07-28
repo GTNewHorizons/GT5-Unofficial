@@ -959,8 +959,8 @@ public class LoaderGTBlockFluid implements Runnable {
         MU.recordSlotFluid(Materials2Materials.ConstructionFoam, MU.FluidState.LIQUID, constructionFoamFluid);
         // UUMatter is GT-owned but its fluid is IC2's, resolved from the filled cell at runtime (no static
         // LEGACY_FLUIDS name to port). Bind MU's slot store from the resolved IC2 fluid directly so the
-        // binding survives the facade deletion; the facade field write below only feeds GTProxy's autogen
-        // readers until they die with the facade.
+        // binding survives the facade deletion; the facade field write below only feeds
+        // MaterialDataDump's census capture until that verifier dies with the facade.
         Fluid uuMatterFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("uuMatterCell", 1L), true)
             .getFluid();
         Materials.UUMatter.mFluid = uuMatterFluid;
