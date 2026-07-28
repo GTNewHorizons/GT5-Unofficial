@@ -263,5 +263,10 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         public String getDisplayName() {
             return StatCollector.translateToLocal(name);
         }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 }

@@ -197,6 +197,11 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
         }
 
         @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
+
+        @Override
         public IGTHatchAdder<? super MTEBeamMultiBase<?>> adder() {
             return adder;
         }

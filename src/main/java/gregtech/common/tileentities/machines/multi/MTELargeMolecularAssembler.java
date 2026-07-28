@@ -867,6 +867,12 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         public String getDisplayName() {
             return StatCollector.translateToLocal(name);
         }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
+
     }
 
 }
