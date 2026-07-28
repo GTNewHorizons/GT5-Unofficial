@@ -236,6 +236,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 bmte.getYCoord(),
                 bmte.getZCoord(),
                 s.queenStack);
+            item.delayBeforeCanPickup = 10;
             bmte.getWorld()
                 .spawnEntityInWorld(item);
         }
