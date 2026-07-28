@@ -1154,26 +1154,23 @@ public class GTRecipeBuilder {
         int specialValue = 0;
         if (getMetadataOrDefault(GTRecipeConstants.LOW_GRAVITY, false)) specialValue -= 100;
         if (getMetadataOrDefault(GTRecipeConstants.CLEANROOM, false)) specialValue -= 200;
-        loop:
         for (RecipeMetadataKey<? extends Number> ident : GTRecipeMapUtil.SPECIAL_VALUE_ALIASES) {
             Number metadata = getMetadataOrDefault(ident, null);
-            switch (metadata) {
-                case Byte b:
-                    specialValue = metadata.intValue();
-                    break loop;
-                case Short s:
-                    specialValue = metadata.intValue();
-                    break loop;
-                case Integer i:
-                    specialValue = metadata.intValue();
-                    break loop;
-                case Long l:
-                    specialValue = GTUtility.safeInt(metadata.longValue());
-                    break loop;
-                case null:
-                default:
-                    break;
+
+            if (metadata instanceof Byte b) {
+                specialValue = metadata.intValue();
+                break;
+            } else if (metadata instanceof Short s) {
+                specialValue = metadata.intValue();
+                break;
+            } else if (metadata instanceof Integer i) {
+                specialValue = metadata.intValue();
+                break;
+            } else if (metadata instanceof Long l) {
+                specialValue = GTUtility.safeInt(metadata.longValue());
+                break;
             }
+
         }
         recipe.mSpecialValue = specialValue;
     }
