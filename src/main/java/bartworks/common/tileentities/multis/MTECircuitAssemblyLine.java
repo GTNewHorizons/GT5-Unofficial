@@ -366,7 +366,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 // limit CA mode recipes to hatch tier - 1
                 if (machineMode == MACHINEMODE_ASSEMBLER
                     && recipe.mEUt > MTECircuitAssemblyLine.this.getMaxInputVoltage() / 4) {
-                    return CheckRecipeResultRegistry.NO_RECIPE;
+                    return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt * 4L);
                 }
                 if (machineMode == MACHINEMODE_CAL) {
                     if (mInputBusses.size() < recipe.mInputs.length) {
