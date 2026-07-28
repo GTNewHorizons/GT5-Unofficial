@@ -75,7 +75,7 @@ public class MU {
     private MU() {}
 
     /// The MaterialLib shape a legacy item [OrePrefixes] cuts over to, or null if that prefix is not part of
-    /// the cutover (e.g. a not-yet-cut-over container prefix). For a multi-candidate prefix (`cellPlasma`,
+    /// the cutover (e.g. a container prefix with no MaterialLib shape). For a multi-candidate prefix (`cellPlasma`,
     /// `pipeTiny`..`pipeHuge`), the shape a specific material actually generates may differ -- see [#stack];
     /// callers that must see every candidate use [#shapes].
     public static @Nullable Shape shape(OrePrefixes prefix) {
@@ -175,24 +175,11 @@ public class MU {
         return MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidGas, (int) (1000 * entry.amount()));
     }
 
-    /// Whether a material has a resolvable molten fluid (see [#molten]) -- for callers that need the presence
-    /// check independent of a specific fluid amount, such as one gate guarding several [#molten] calls of
-    /// different amounts. True whenever the material carries the [Materials2FluidShapes#fluidMolten]
-    /// MaterialLib shape (byte-equal to a legacy-named counterpart's `mStandardMoltenFluid != null`: the
-    /// field is wired from the [GTMaterialProperties#LEGACY_FLUIDS] `molten` slot whose presence is exactly
-    /// this shape's membership) or a [#recordSlotFluid]-stored MOLTEN fluid (a `GTFluid#configureMaterials`
-    /// direct write). This is not restricted to [#isLegacyNamed] materials: every solid/liquid gtPlusPlus-only
-    /// material whose single fluid was ported carries the same shape (`scripts/mu/gen_materials.py`'s
-    /// `gtpp_fluid_and_cell_shape_lines` gave it to the whole set, `Water` the sole exception -- a
-    /// vanilla-fluid special case resolved through its own legacy field instead), so gating the shape/stored
-    /// checks behind [#isLegacyNamed] previously left every gtPlusPlus-only material's mold/fluid-consuming
-    /// recipes ungenerated. A material with neither falls back to whether
-    /// [GTMaterialProperties#WERKSTOFF_PREFIXES] contains `cellMolten` -- the bartworks part-generation ground
-    /// truth recorded for the material. NOT `cellMolten` shape membership: a
-    /// dual-nature element reconstructed from both a bartworks and a gtPlusPlus population (e.g.
-    /// `Zirconium`/`Hafnium`/`Thorium232`) can carry the shape from its gtPlusPlus fluid capture while the
-    /// werkstoff side never generated the item -- this fallback only runs once the shape/stored checks above
-    /// already missed, so it never overrides either the legacy-named or the gtPlusPlus-only cases.
+    /// Whether a material has a resolvable molten fluid (see [#molten]), for callers needing the presence
+    /// check independent of a fluid amount, such as one gate guarding several [#molten] calls of different
+    /// amounts. True when the material carries the [Materials2FluidShapes#fluidMolten] shape or a
+    /// [#recordSlotFluid]-stored MOLTEN fluid, which `GTFluid#configureMaterials` writes for the materials
+    /// excluded from the shape-backed fluids.
     public static boolean hasMolten(@Nullable Material material) {
         if (material == null) return false;
         return material.hasShape(Materials2FluidShapes.fluidMolten) || storedFluid(material, FluidState.MOLTEN) != null;
@@ -1019,10 +1006,8 @@ public class MU {
         return list;
     }
 
-    // Object-typed helpers: some material references still live in an Object-typed slot elsewhere (generic
-    // containers such as `OreInfo<Object>`, or fields not yet narrowed to `Material`) rather than a
-    // MaterialLib `Material`-typed one; each helper below checks `instanceof Material` and falls back to
-    // null/false/empty for anything else.
+    // Object-typed helpers, for material references reached through an Object-typed slot (generic containers
+    // such as `OreInfo<Object>`). Each checks `instanceof Material` and falls back to null/false/empty.
 
     /// The legacy internal name of a [Material] (see [#internalName]); null for null or a non-[Material] value.
     public static @Nullable String internalNameOf(@Nullable Object material) {

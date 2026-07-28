@@ -20,10 +20,7 @@ import gregtech.api.material.MU;
 /// itself runs from GT's preInit before `LoaderOreProcessing` constructs [ProcessingDust] and adds it as a
 /// `dust`-prefix listener, so
 /// the replay finds no listener to notify. Nothing re-registers the same (name, stack) pair afterward for
-/// `GTOreDictUnificator` to fire a second event from. The retired gtPlusPlus `ItemUtils#generateSpecialUseDusts`
-/// (called for these four from `ModItems`) papered over the gap by minting a second, separate dust item late
-/// enough (gtPlusPlus's own init) to register as a genuinely new oreDict entry and fire its own event; with
-/// that call gone, this replays the notification directly instead.
+/// `GTOreDictUnificator` to fire a second event from, so this replays the notification directly.
 public final class ProcessingInfusedStonesGtpp {
 
     private ProcessingInfusedStonesGtpp() {}

@@ -403,16 +403,11 @@ public class Materials2PipeMaterials {
     }
 
     // spotless:off
-    /// gtPlusPlus's own frame membership: every material for which `gtPlusPlus.core.block.base.BlockBaseModular`'s
-    /// now-removed `BlockTypes.FRAME` construction used to run, traced through `MaterialGenerator.generate`'s
-    /// solid-state, non-radioactive gate (`gtPlusPlus.core.item.ModItems#runMaterialGenerator` is the only
-    /// caller). This is the full set: that construction had no other call site, so no gtpp material is left
-    /// generating its own frame block. Cross-checked against `scripts/mu/dumps/gtpp-materials.json`'s
-    /// per-material `generatedParts`, which independently confirms every name here plus one contaminated
-    /// entry: `TungstenCarbide`'s dump entry comes from `Material#getComponentByPrefix` caching a resolved
-    /// MaterialLib stack after a `getFrameBox()` recipe read (gtpp never calls `MaterialGenerator.generate` for
-    /// it -- it is built through `MaterialUtils#generateMaterialFromGtENUM`, which never touches
-    /// `BlockBaseModular`), not a real legacy construction, so it is excluded here.
+    /// gtPlusPlus's frame membership: every material reached by `MaterialGenerator.generate`'s solid-state,
+    /// non-radioactive gate. `TungstenCarbide` is deliberately absent -- it is built through
+    /// `MaterialUtils#generateMaterialFromGtENUM`, which never runs that gate. The entry that suggests
+    /// otherwise comes from `Material#getComponentByPrefix` caching a resolved MaterialLib stack after a
+    /// `getFrameBox()` recipe read, not from a real frame-block construction.
     public static Material[] gtppFrameMaterials() {
         return new Material[] {
             Materials2Materials.AbyssalAlloy, Materials2Materials.Arcanite, Materials2Materials.ArceusAlloy2B,

@@ -184,7 +184,7 @@ public class PosteaTransformers implements Runnable {
     /// is its own registered item/block rather than a damage variant of a shared meta-item, so no damage
     /// read/branch is needed. `cell` rows resolve through [MU#cellStack] instead of plain [MU#stack], since a
     /// row's material may have claimed `cellMolten` rather than `cell` -- see that method's javadoc.
-    /// `frameGt` is out of the table and migrates separately (deferred). `block` rows additionally get a
+    /// `frameGt` is out of the table and migrates separately. `block` rows additionally get a
     /// [BlockReplacementManager] handler for placed instances, since a storage block (unlike every other gtpp
     /// part) is placeable; a row whose material carries no `block` shape resolves null from [MU#stack] same
     /// as any other prefix, leaving the legacy slot canonical.
@@ -220,10 +220,10 @@ public class PosteaTransformers implements Runnable {
         return MU.stack(entry.prefix(), material, 1);
     }
 
-    /// The five materials whose legacy `cell` item was `miscutils:itemCell<Name>` (the same naming convention
-    /// as every other gtpp-owned cell -- see `scripts/mu/gen_gtpp_item_transformers.py`) at some point in
-    /// history, but had already resolved to a gregtech-owned `materiallib:cell` stack by the time the pinned
-    /// dump was captured (these five are also plain gregtech elements whose own fluid/cell cutover claims
+    /// The five materials whose legacy `cell` item was `miscutils:itemCell<Name>`, the same naming convention
+    /// as every other gtPlusPlus-owned cell, but which had already resolved to a gregtech-owned
+    /// `materiallib:cell` stack by the time the pinned dump was captured (these five are also plain gregtech elements
+    /// whose own fluid/cell cutover claims
     /// the oredict `cell<Name>` slot before gtpp's `Material` construction ever runs, so their dump never
     /// captured the miscutils registry name at all). [GtppItemCutoverTable] is generated purely from that dump
     /// and so cannot include a row for them; they are migrated by hand instead, to the same fallback
@@ -251,8 +251,8 @@ public class PosteaTransformers implements Runnable {
     /// werkstoffe unknown to MaterialLib (a third-party mod's own werkstoff ids) pass through unchanged. Ore/small ore
     /// migrate through [BWOreAdapter] instead (block-kind, no `bw.bwMetaGenerated<prefix>` item exists for
     /// them); storage blocks migrate through [#registerWerkstoffBlockCutoverTransformer]. The casing slots
-    /// (`blockCasing`/`blockCasingAdvanced`) stay legacy-canonical for now: multiblock structure matchers
-    /// reference the legacy casing blocks by identity, so their cutover is a coordinated block+structure flip.
+    /// (`blockCasing`/`blockCasingAdvanced`) stay legacy-canonical: multiblock structure matchers reference
+    /// the legacy casing blocks by identity.
     /// The part prefixes the legacy bartworks meta items covered, one item each, registered as
     /// `bartworks:gt.bwMetaGenerated<prefix>`. Declared rather than read off the live items because the items
     /// themselves are gone: a saved stack still names them, so the migration has to keep answering for every
@@ -291,7 +291,7 @@ public class PosteaTransformers implements Runnable {
     /// Migrates saved placed blocks and item stacks of a cut-over material's legacy storage-block slot (see
     /// [BlockMetal], [MU]) into the equivalent MaterialLib block stack. `addSimpleReplacement`'s block+meta
     /// overload registers a matching item replacement automatically, so no separate item-side call is needed.
-    /// Materials that did not cut over (see `gen_materials.py`'s `BLOCK_CUTOVER_EXCLUDED`) are skipped: their
+    /// Materials that did not cut over are skipped: their
     /// slot stays legacy, and the legacy block instance itself is never removed (see [BlockMetal]'s javadoc), so
     /// nothing needs migrating for them.
     private static void registerStorageBlockCutoverTransformers() {

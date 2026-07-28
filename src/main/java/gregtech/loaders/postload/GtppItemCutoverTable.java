@@ -6,12 +6,12 @@ import gregtech.api.enums.OrePrefixes;
 /// The gtPlusPlus item-cutover Postea migration table: one row per legacy
 /// `miscutils:item*`/`miscutils:block*`-registered gtPlusPlus per-material part whose prefix has cut
 /// over to a MaterialLib shape, read from the pinned `gtpp-materials.json` dump's `generatedParts`.
-/// `frameGt` migrates separately (deferred); a handful of `cell` rows for materials whose legacy cell
+/// `frameGt` is not covered by this table; a handful of `cell` rows for materials whose legacy cell
 /// already resolved to a non-`miscutils:` item by dump time are hand-migrated in
 /// [PosteaTransformers] instead, since this table can only see registry names the dump captured.
 /// [PosteaTransformers] migrates each row's legacy stack to `MU.stack(prefix, MaterialLibAPI.getMaterial(
 /// "gregtech", materialName), 1)` (`cell` rows through `MU#cellStack` instead, for its `cellMolten`
-/// fallback) in a single loop -- see `scripts/mu/gen_gtpp_item_transformers.py`. A `block` row resolves null
+/// fallback) in a single loop. A `block` row resolves null
 /// (leaving the legacy slot canonical), same as every other prefix here, exactly when the row's material has
 /// no `Materials2BlockShapes#block` shape; it additionally gets a `BlockReplacementManager` handler alongside
 /// the `ItemStackReplacementManager` one, since a storage block is placeable.

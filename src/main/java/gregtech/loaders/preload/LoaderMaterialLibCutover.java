@@ -28,7 +28,7 @@ import gregtech.api.util.GTOreDictUnificator;
 /// their material sets (superconductor markers included) live only in the MaterialLib registry; `sheetmetal`
 /// additionally serves bartworks-backed materials, which have no legacy sub-id for the `MU#byId` spine. Each
 /// `set` call makes the shape stack the prefix's unification target and adds the material association that
-/// drives the auto-generated recycling recipes, as the legacy registrations' ore-dictionary events used to.
+/// drives the auto-generated recycling recipes.
 ///
 /// The High Pressure (Redstone) fluid pipes additionally register under the tier-keyed
 /// `pipeSmallUltimate`..`pipeLargeUltimate` names ([TieredItems#ZPM]'s ingredient names), the identity every

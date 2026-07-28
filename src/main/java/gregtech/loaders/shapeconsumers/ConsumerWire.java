@@ -9,12 +9,10 @@ import gregtech.loaders.oreprocessing.ProcessingWire;
 
 /// Dispatches [ProcessingWire]'s recipe generation for the six wire shapes.
 ///
-/// The superconductor wire markers ([Materials2Markers]) generate the wire shapes but were absent from the
-/// legacy oredict dispatch (their facades are missing from the legacy registry), so the deleted pipe loader
-/// emitted their five `wireGt02`..`wireGt16` assembler recipes by hand. Those recipes now come from the
-/// `wireGt01` dispatch's wire-combining branch, which fires for the markers like for any other wire material;
-/// the thicker wire shapes skip the markers so no shapeless down-crafting recipes appear that the legacy
-/// system never had.
+/// The superconductor wire markers ([Materials2Markers]) generate the wire shapes, and their
+/// `wireGt02`..`wireGt16` assembler recipes come from the `wireGt01` dispatch's wire-combining branch, which
+/// fires for the markers like for any other wire material. The thicker wire shapes skip the markers, so no
+/// shapeless down-crafting recipes are emitted for them.
 public final class ConsumerWire {
 
     private ConsumerWire() {}

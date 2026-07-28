@@ -342,12 +342,11 @@ public final class MaterialDataDump {
         return json;
     }
 
-    /// Serializes the gtpp-specific data still pinned in `GTPP_*` properties -- null when `material` carries
-    /// none (see [GTMaterialProperties#GTPP_STATE]). Scalars the U1 collapse moved onto canonical properties
-    /// (tier, voltage multiplier, melting/boiling point, durability, blast-furnace use, radioactivity,
-    /// composition, and the chemical formula) now appear only at the top level of the ML material JSON, and
-    /// the proton/neutron counts are computed (see [gregtech.api.material.MaterialAtomics]);
-    /// `check_parity.py` reads them there.
+    /// Serializes the gtPlusPlus-specific data, or null when `material` carries none (see
+    /// [GTMaterialProperties#GTPP_STATE]). Scalars shared with the other material origins -- tier, voltage
+    /// multiplier, melting and boiling point, durability, blast-furnace use, radioactivity, composition and
+    /// the chemical formula -- are canonical properties serialized at the top level instead, and the
+    /// proton/neutron counts are computed (see [gregtech.api.material.MaterialAtomics]).
     private static Map<String, Object> dumpMlGtpp(com.ruling_0.materiallib.api.Material material) {
         String state = material.getProperty(GTMaterialProperties.GTPP_STATE);
         if (state == null) return null;
@@ -364,13 +363,12 @@ public final class MaterialDataDump {
         return json;
     }
 
-    /// Serializes the werkstoff-specific data still pinned in `WERKSTOFF_*` properties -- null when
-    /// `material` carries none (see [GTMaterialProperties#WERKSTOFF_IDS]). Scalars the U1 collapse moved onto
-    /// canonical properties (melting/boiling point, melting voltage, tool-stat overrides, EBF gas multipliers,
-    /// mix circuit, sub tags, contents, ore byproducts, the chemical formula, and the
-    /// toxic/radioactive/blast-furnace/auto-recipe flag members) now appear only at the top level of the ML
-    /// material JSON, and the proton/mass counts are computed (see [gregtech.api.material.MaterialAtomics]);
-    /// `check_parity.py` reads them there.
+    /// Serializes the bartworks-specific data, or null when `material` carries none (see
+    /// [GTMaterialProperties#WERKSTOFF_IDS]). Scalars shared with the other material origins -- melting and
+    /// boiling point, melting voltage, tool-stat overrides, EBF gas multipliers, mix circuit, sub tags,
+    /// contents, ore byproducts, the chemical formula, and the toxic/radioactive/blast-furnace/auto-recipe
+    /// flags -- are canonical properties serialized at the top level instead, and the proton/mass counts are
+    /// computed (see [gregtech.api.material.MaterialAtomics]).
     private static Map<String, Object> dumpMlWerkstoff(com.ruling_0.materiallib.api.Material material) {
         List<Integer> ids = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
         if (ids == null) return null;
@@ -379,8 +377,8 @@ public final class MaterialDataDump {
         json.put("ids", ids);
         json.put("type", material.getProperty(GTMaterialProperties.WERKSTOFF_TYPE));
         json.put("pool", MaterialDumpData.werkstoffPool(material.getName()));
-        // Always empty (every recipe-gen flag is a top-level canonical property); emitted because
-        // check_parity.py compares this list against the pinned dump's unmigrated-flag remainder.
+        // Always empty: every recipe-gen flag is a top-level canonical property. Emitted so the JSON shape
+        // stays stable.
         json.put("flags", List.of());
         json.put("prefixes", orEmpty(material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES)));
         return json;
