@@ -10,12 +10,10 @@ import gregtech.api.material.MU;
  */
 public interface ILocalizedMetaPipeEntity {
 
-    /**
-     * Get the material of the pipe: a legacy-family material object ({@code Materials} or gtPlusPlus
-     * {@code Material}), dispatched through {@link MU}'s union helpers.
-     *
-     * @apiNote if this returns <code>null</code>, you need to rewrite {@link #getLocalizedName()}.
-     */
+    /// The material of the pipe: a MaterialLib {@link com.ruling_0.materiallib.api.Material} or a gtPlusPlus
+    /// `Material`, dispatched through {@link MU}'s union helpers.
+    ///
+    /// @apiNote a null return here requires overriding {@link #getLocalizedName()}.
     Object getMaterial();
 
     /**

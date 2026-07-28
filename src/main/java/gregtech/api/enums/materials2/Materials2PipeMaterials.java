@@ -291,12 +291,10 @@ public class Materials2PipeMaterials {
     // spotless:off
     /// Frame membership: the materials the legacy frame registrations serve, i.e. every generated legacy
     /// material whose dumped [gregtech.api.material.GTMaterialProperties#GENERATION_FLAGS] carry `METAL`
-    /// (the `Materials#hasMetalItems` mirror) and whose
+    /// (the [gregtech.api.material.MU#hasMetalItems] mirror) and whose
     /// [gregtech.api.material.GTMaterialProperties#OLD_SUB_ID] marks a generated slot. The list is declared
-    /// rather than derived because membership must be settled during material registration, where neither the
-    /// legacy `Materials` class (its static initializer rebuilds from the resolved MaterialLib registry) nor
-    /// MaterialLib property reads are available yet; [gregtech.loaders.preload.LoaderPipeShapeEntities]
-    /// re-evaluates the live legacy predicate at preload and logs any divergence from this list.
+    /// rather than derived because membership must be settled during material registration, before MaterialLib
+    /// property reads are available.
     public static Material[] frameMaterials() {
         return new Material[] {
             Materials2Materials.Adamantium, Materials2Materials.Alduorite, Materials2Materials.Aluminium,
@@ -398,7 +396,7 @@ public class Materials2PipeMaterials {
         for (Material material : frameMaterials()) {
             edit(material).generateShape(Materials2PipeShapes.frameGt);
         }
-        // ProcessingModSupport drops HSLA from the generated set when RotaryCraft is absent.
+        // HSLA's frame recipe requires RotaryCraft, so it is generated here instead of through frameMaterials().
         if (Mods.RotaryCraft.isModLoaded()) {
             edit(Materials2Materials.HSLA).generateShape(Materials2PipeShapes.frameGt);
         }

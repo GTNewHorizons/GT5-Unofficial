@@ -19,8 +19,8 @@ import gregtech.api.material.MaterialRefStack;
 
 // One-time output of scripts/mu/gen_materials.py (RETIRED, see its module docstring); hand-maintained from here -- edit
 // this file directly.
-/// The materials maintenance surface: one [Material] field per ported material (name matches the legacy `Materials`
-/// field where the dump's name is already a valid Java identifier, else a sanitized variant -- see
+/// The materials maintenance surface: one [Material] field per ported material (name matches the material's
+/// dumped name where that name is already a valid Java identifier, else a sanitized variant -- see
 /// `scripts/mu/gen_materials.py`), then every material's complete final declaration
 /// (tint, texture set, family membership, shape adds/removes, properties, fluids) as one contiguous statement run in
 /// `initPartN()` (split only to stay under the JVM's 64KB bytecode-per-method limit -- see `MATERIALS_PER_INIT_CHUNK`).
@@ -14983,11 +14983,10 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.REMOVED_PREFIXES, List.of("cell", "bucket", "bucketClay"))
             .setProperty(GTMaterialProperties.DYE, "dyeOrange")
             .build();
-        // Steam carries no item/block/fluid shapes and no OLD_SUB_ID: it never existed as a legacy material
-        // (the facade aliased Materials.Steam to Water), so its only backing is the "steam" Forge fluid GT
-        // hand-registers in LoaderGTBlockFluid. That fluid is wired onto the facade and MU's slot store there
-        // (after it registers), not through a LEGACY_FLUIDS gas row -- LegacyMaterials.wireFluids resolves
-        // LEGACY_FLUIDS eagerly at Materials.init(), which runs before LoaderGTBlockFluid registers "steam".
+        // Steam carries no item/block/fluid shapes and no OLD_SUB_ID; its only backing is the "steam" Forge
+        // fluid GT hand-registers in LoaderGTBlockFluid, after material registration completes. That fluid is
+        // wired onto MU's slot store there instead of through a LEGACY_FLUIDS gas row, since this material
+        // never sets one.
         Materials2Materials.Steam = MaterialLibAPI.newMaterial("gregtech", "Steam", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.all)

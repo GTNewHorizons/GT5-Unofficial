@@ -5,11 +5,12 @@ import java.util.Map;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-/// The frozen legacy material name domain: every facade `mName` that `Materials.get` resolved, pinned to
-/// its MaterialLib material name. Generated from the live `Materials.getMaterialsMap()` domain (the exact
-/// set `Materials.get` reads) so [LegacyNameDomain] resolves identically once the `Materials` facade is
-/// gone. Only the `LEGACY_NAME` divergents differ from an identity mapping; every value is a registered
-/// `gregtech` MaterialLib material -- [#verifyResolvable] fails loud if any row stops resolving.
+/// The frozen legacy material name domain: every legacy material name GT recognizes, pinned to its
+/// MaterialLib material name. [LegacyNameDomain] resolves through this fixed table rather than any live
+/// registry scan, so its domain stays exactly this declared set. Only a handful of sanitized names (spaces
+/// stripped to form a valid Java identifier, e.g. `"Computation Base"` -> `"ComputationBase"`) differ from
+/// an identity mapping; every value is a registered `gregtech` MaterialLib material --
+/// [#verifyResolvable] fails loud if any row stops resolving.
 public final class LegacyNameDomainTable {
 
     static final Map<String, String> DOMAIN = build();

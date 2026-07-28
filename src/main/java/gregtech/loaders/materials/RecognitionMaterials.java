@@ -36,9 +36,10 @@ import gregtech.api.material.GTMaterialProperties;
 /// `Fluix` additionally reaches `OrePrefixes#processRecognitionOre` so its crystal and dust recipes generate.
 /// `Advanced`
 /// names IC2's advanced alloy plate for `OrePrefixes#plateAlloy`, which is unifiable but not material-based: an
-/// entry registered under it without a material resolves to `Materials#_NULL` in
-/// `GTProxy#registerUnificationEntries`, and every `plateAlloy` entry then contends for that one shared
-/// unification key, so such an entry unifies into whichever plate claims it first.
+/// entry registered under it without a material resolves to `Materials2Materials#NULL`
+/// (`GTProxy#resolveCensusMaterial`'s fallback), and every `plateAlloy` entry then contends for that one
+/// shared unification key in `GTProxy#registerUnificationEntries`, so such an entry unifies into whichever
+/// plate claims it first.
 public class RecognitionMaterials {
 
     public static Material Quartz;

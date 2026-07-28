@@ -1127,8 +1127,9 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L));
 
         // The dedicated Steam material carries no LEGACY_FLUIDS gas row (see Materials2Materials.Steam), so
-        // point MU's gas slot at the "steam" Forge fluid registered above -- the same fluid the Water facade
-        // holds -- read straight from the registry so the binding survives the facade deletion.
+        // point MU's gas slot at the "steam" Forge fluid registered above -- the same fluid configureMaterials
+        // wired to Water -- read directly from the fluid registry since Steam has no property-based route to
+        // it.
         Fluid steamFluid = FluidRegistry.getFluid("steam");
         MU.recordSlotFluid(Materials2Materials.Steam, MU.FluidState.GAS, steamFluid);
 

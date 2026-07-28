@@ -4094,7 +4094,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Material aMaterial) {
-        // Materials has a plasma fluid
+        // Requires the material to carry a registered plasma fluid
         FluidStack plasma = MU.plasma(aMaterial, 1L);
         if (aPrefix == OrePrefixes.cellPlasma && plasma != null) {
             if (MU.hasPlasma(aMaterial)) return true;

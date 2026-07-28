@@ -12,17 +12,15 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialRef;
 
-/// The shapeless marker backings for the `Materials` fields MaterialLib carries no data for: the eleven
-/// superconductor wire markers (`SuperconductorMV`..`SuperconductorUMV`) and the six wildcard markers
+/// The shapeless marker backings for materials with no real ore/item/fluid data: the eleven superconductor
+/// wire markers (`SuperconductorMV`..`SuperconductorUMV`) and the six wildcard markers
 /// (`AnyBronze`/`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`). Held as declared fields
 /// so call sites reference them directly instead of looking them up by registry name.
 ///
 /// [#registerBackingMaterials] registers them during material registration (from
 /// [gregtech.api.enums.Materials2#init], after [Materials2Materials#init]) and assigns the fields from the
 /// same builders; `SuperconductorUHV` in particular must bind by builder reference, since its backing's
-/// registry name is `Superconductor`, not `SuperconductorUHV`. The facade-side `Materials.AnyBronze`/
-/// `Materials.SuperconductorMV` markers that carry no MaterialLib data are built separately in
-/// `gregtech.loaders.materials.LegacyMarkerMaterials`.
+/// registry name is `Superconductor`, not `SuperconductorUHV`.
 public class Materials2Markers {
 
     public static Material AnyBronze;
@@ -132,10 +130,10 @@ public class Materials2Markers {
             null);
     }
 
-    /// Registers a shapeless MaterialLib backing for a wildcard `Materials` (`AnyCopper`, `AnyIron`, ...), which
-    /// `MU#material` resolves by [GTMaterialProperties#LEGACY_NAME]. Ports the smelt/macerate/arc targets, the
-    /// metal flag, and the `setUnifiable(false)` every wildcard facade carries; a name that already names a
-    /// real MaterialLib material is returned as-is instead of re-registered.
+    /// Registers a shapeless MaterialLib backing for a wildcard marker material (`AnyCopper`, `AnyIron`, ...),
+    /// which `MU#material` resolves by [GTMaterialProperties#LEGACY_NAME]. Ports the smelt/macerate/arc
+    /// targets, the metal flag, and `setUnifiable(false)` that every wildcard marker carries; a name that
+    /// already names a real MaterialLib material is returned as-is instead of re-registered.
     private static Material registerWildcard(String name, String localName, TextureSet texture, GTMaterialFlag flag,
         String smeltInto, String macerateInto, String arcSmeltInto) {
         Material existing = MaterialLibAPI.getMaterial("gregtech", name);
@@ -156,10 +154,10 @@ public class Materials2Markers {
         return builder.build();
     }
 
-    /// The eleven superconductor wire marker backings, in tier order. The marker facades are absent from
-    /// `Materials#getMaterialsMap`, so the material lang-registration pass in
-    /// `gregtech.loaders.preload.GTPreLoad` skips them; their display-name keys are registered from this array
-    /// instead. Evaluated after [#registerBackingMaterials] has populated the fields.
+    /// The eleven superconductor wire marker backings, in tier order. The markers fall outside the legacy
+    /// name domain ([gregtech.loaders.materials.LegacyNameDomain]), so the legacy-named lang-registration
+    /// pass in `gregtech.loaders.preload.GTPreLoad` skips them; their display-name keys are registered from
+    /// this array instead. Evaluated after [#registerBackingMaterials] has populated the fields.
     public static Material[] getSuperconductorMarkers() {
         return new Material[] { SuperconductorMV, SuperconductorHV, SuperconductorEV, SuperconductorIV,
             SuperconductorLuV, SuperconductorZPM, SuperconductorUV, SuperconductorUHV, SuperconductorUEV,

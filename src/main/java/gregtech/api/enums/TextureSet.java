@@ -135,7 +135,7 @@ public class TextureSet {
      * you explicitly list the MaterialIconRegistry.IconType entries you want to replace.
      *
      * <p>
-     * <strong>Example icon set for Materials.Copper:</strong>
+     * <strong>Example icon set for Copper:</strong>
      *
      * <pre>
      *     .setIconSet(

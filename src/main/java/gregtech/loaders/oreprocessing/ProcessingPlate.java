@@ -75,7 +75,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
      *
      * @param prefix      always != null, the {@link OrePrefixes} of the {@link ItemStack}
      * @param material    always != null, and can be == _NULL if the Prefix is Self Referencing or not Material based!
-     *                    the {@link Materials} of the {@link ItemStack}
+     *                    the {@link Material} of the {@link ItemStack}
      * @param oreDictName the Ore Dictionary Name {@link String} of the {@link ItemStack}
      * @param modName     the ModID {@link String} of the mod providing this {@link ItemStack}
      * @param stack       always != null, the {@link ItemStack} to register
@@ -588,7 +588,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             stack,
             // If there is an ItemStack of Block for Materials
             tStack == NI ?
-            // Use Materials mRGBa dyed blocs/materialicons/MATERIALSET/block1 icons
+            // Use the material's RGBA-dyed blocs/materialicons/MATERIALSET/block1 icons
                 TextureFactory.builder()
                     .addIcon(MU.iconSet(material).mTextures[MaterialIconRegistry.IconType.BLOCK1.ordinal()])
                     .setRGBA(MU.rgba(material))

@@ -28,9 +28,9 @@ final class ShapeConsumerSupport {
     /// Registers `registrator` to run once per material generating `shape`, at MaterialLib's postInit, passing
     /// the MaterialLib material straight through to `registrator`'s
     /// [IOreRecipeRegistrator#registerOre(OrePrefixes, com.ruling_0.materiallib.api.Material, String, String,
-    /// ItemStack)] entry, which resolves any legacy [Materials] counterpart itself. A shape/material pair with
-    /// no resolvable stack is skipped rather than failing the whole dispatch -- see [ShapeConsumerSupport] for
-    /// why this should not happen for a `"gregtech"`-owned shape in practice.
+    /// ItemStack)] entry. A shape/material pair with no resolvable stack is skipped rather than failing the
+    /// whole dispatch -- see [ShapeConsumerSupport] for why this should not happen for a `"gregtech"`-owned
+    /// shape in practice.
     ///
     /// Dispatch is postInit, not init: several `Processing*` bodies transitively class-load
     /// [gregtech.api.util.GTRecipeConstants], whose static initializer reads material data that

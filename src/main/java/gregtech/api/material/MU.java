@@ -53,7 +53,7 @@ import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.loaders.materials.LegacyNameDomain;
 
 /// Bridges legacy [OrePrefixes] to their cutover MaterialLib [Shape]/[Material] equivalents, and provides
-/// [Material]-side accessors for the data legacy code once read off `gregtech.api.enums.Materials`.
+/// [Material]-side accessors for a material's data.
 ///
 /// The prefix-to-shape map reflects [Materials2Shapes]'s, [Materials2CellShapes]'s, [Materials2BlockShapes]'s,
 /// [Materials2OreShapes]'s, and [Materials2PipeShapes]'s [Shape] fields (each named identically to the
@@ -102,15 +102,12 @@ public class MU {
         return name == null ? null : MaterialLibAPI.getMaterial("gregtech", name);
     }
 
-    /// The MaterialLib material a legacy `Materials.get(name)` lookup cuts over to, or null on a miss --
-    /// replacing the `_NULL` sentinel with null. Resolves through [#material]'s exact chain, keyed by the
-    /// name directly: the [Materials2Materials]-field map (keyed by legacy internal name), then the
-    /// MaterialLib registry for the shapeless marker backings without a declared field
-    /// ([gregtech.loaders.materials.LegacyMarkerMaterials], [gregtech.loaders.materials.
-    /// RecognitionMaterials]). `Materials.get` keys its map by `Materials#mName` -- the same string
-    /// [#internalName] yields -- so any name it resolves to a facade resolves here to that facade's
-    /// [#material]. Marker names `Materials.get` cannot resolve (the superconductors kept out of
-    /// `getMaterialsMap`, the recognition-marker fields) resolve here to their registered backing.
+    /// The MaterialLib material registered under a legacy internal name, or null on a miss. Looks up
+    /// `name` in the [Materials2Materials]-field map first (keyed by [#internalName]), then falls back to
+    /// a direct MaterialLib registry lookup for materials with no declared field there -- the
+    /// superconductor and wildcard markers [gregtech.api.enums.materials2.Materials2Markers] registers,
+    /// and the [gregtech.loaders.materials.RecognitionMaterials] backings -- both registered under the
+    /// same name string.
     public static @Nullable Material byLegacyName(@Nullable String name) {
         if (name == null) return null;
         Material found = legacyNamedMaterials().get(name);
@@ -216,13 +213,9 @@ public class MU {
         return werkstoffPrefixes != null && werkstoffPrefixes.contains(OrePrefixes.cellMolten.name());
     }
 
-    /// The legacy `Materials#mStandardMoltenFluid`-backed `Materials#getMolten` stack for a material, or null
-    /// when [#hasMolten] is false -- mirrors `getMolten`'s own null-on-absent behavior. The
-    /// [Materials2FluidShapes#fluidMolten] Forge fluid this resolves is the same one every population's
-    /// `mStandardMoltenFluid` was set from (`LegacyMaterials#build`'s `wireFluids` resolves it by
-    /// [GTMaterialProperties#LEGACY_FLUIDS]'s `molten` slot name; both bridge loaders set their field from a
-    /// `Material#getFluid` gated on this same shape), so once [#hasMolten] is true this is byte-identical to
-    /// `getMolten`'s own stack.
+    /// The molten fluid stack for a material at `amount`, or null when [#hasMolten] is false. A
+    /// [#recordSlotFluid]-stored MOLTEN fluid takes precedence; otherwise resolves the
+    /// [Materials2FluidShapes#fluidMolten] MaterialLib shape stack directly.
     public static @Nullable FluidStack molten(@Nullable Material material, long amount) {
         Fluid stored = storedFluid(material, FluidState.MOLTEN);
         if (stored != null) return new FluidStack(stored, (int) amount);
@@ -230,82 +223,76 @@ public class MU {
         return MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) amount);
     }
 
-    /// The legacy `Materials#mFluid`-backed `Materials#getFluid` stack for a material, or null when it carries
-    /// no fluid slot. Resolved from [GTMaterialProperties#LEGACY_FLUIDS]'s `fluid()` slot by Forge fluid name
-    /// -- the exact resolution `LegacyMaterials#wireFluids` assigns `mFluid` from -- NOT from a
-    /// [Materials2FluidShapes#fluidLiquid] shape lookup: a material whose legacy fluid is a vanilla or foreign
-    /// Forge fluid (`Water` -> `water`, `Milk` -> `milk`) carries the slot without any ML fluid shape, so a
-    /// shape-based lookup would miss it.
+    /// [#fluidOf], as a sized [FluidStack]; null when the material carries no fluid slot.
     public static @Nullable FluidStack fluid(@Nullable Material material, long amount) {
         Fluid fluid = fluidOf(material);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
-    /// [#fluid]'s raw [Fluid] -- the legacy `Materials#mFluid` field value itself, for presence gates and
-    /// callers building their own stacks.
+    /// The raw [Fluid] for a material's liquid slot, for presence gates and callers building their own
+    /// stacks. A [#recordSlotFluid]-stored LIQUID fluid takes precedence; otherwise resolved from
+    /// [GTMaterialProperties#LEGACY_FLUIDS]'s `fluid()` slot by Forge fluid name -- NOT from a
+    /// [Materials2FluidShapes#fluidLiquid] shape lookup, since a material whose fluid is a vanilla or
+    /// foreign Forge fluid (`Water` -> `water`, `Milk` -> `milk`) carries the slot without any ML fluid
+    /// shape, which a shape-based lookup would miss.
     public static @Nullable Fluid fluidOf(@Nullable Material material) {
         return resolveSlotFluid(material, FluidState.LIQUID, FluidNames::fluid);
     }
 
-    /// [#fluid], for `Materials#mGas`/`Materials#getGas` -- the `gas()` slot. Wherever the former
-    /// [Materials2FluidShapes#fluidGas] shape lookup succeeded this resolves the identical fluid: a material
-    /// only generates that shape when it carries the slot ([Materials2FluidShapes]'s `requireRef` fails fluid
-    /// registration otherwise), and the shape registers its Forge fluid under the slot's own name. The slot
-    /// additionally covers materials whose legacy gas fluid never became an ML shape.
+    /// [#fluid], for a material's `gas()` slot; null when it carries none. Agrees with any
+    /// [Materials2FluidShapes#fluidGas] shape the material generates -- that shape only registers when the
+    /// material carries the slot ([Materials2FluidShapes]'s `requireRef` fails fluid registration
+    /// otherwise), under the slot's own Forge fluid name -- but also resolves gas fluids that never became
+    /// an ML shape.
     public static @Nullable FluidStack gas(@Nullable Material material, long amount) {
         Fluid fluid = resolveSlotFluid(material, FluidState.GAS, FluidNames::gas);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
-    /// [#fluid], for `Materials#mPlasma`/`Materials#getPlasma` -- the `plasma()` slot.
+    /// [#fluid], for a material's `plasma()` slot.
     public static @Nullable FluidStack plasma(@Nullable Material material, long amount) {
         Fluid fluid = resolveSlotFluid(material, FluidState.PLASMA, FluidNames::plasma);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
-    /// The legacy `Materials#hasPlasma()`/`mGeneratePlasma` flag for a material -- whether
-    /// [GTMaterialProperties#GENERATION_FLAGS] carries [GTMaterialGenerationFlag#PLASMA], the exact flag
-    /// `LegacyMaterials#build` feeds `MaterialBuilder#addPlasma` (which sets `mGeneratePlasma`) from. Absent
-    /// flags mirror `mGeneratePlasma`'s own `false` default.
+    /// Whether a material generates a plasma item/fluid set -- [GTMaterialProperties#GENERATION_FLAGS]
+    /// carries [GTMaterialGenerationFlag#PLASMA]. False when absent or when `material` is null.
     public static boolean hasPlasma(@Nullable Material material) {
         if (material == null) return false;
         EnumSet<GTMaterialGenerationFlag> flags = material.getProperty(GTMaterialProperties.GENERATION_FLAGS);
         return flags != null && flags.contains(GTMaterialGenerationFlag.PLASMA);
     }
 
-    /// The legacy `Materials#hasMetalItems()`/`mGenerateMetalItems` flag for a material -- whether
-    /// [GTMaterialProperties#GENERATION_FLAGS] carries [GTMaterialGenerationFlag#METAL], the exact flag
-    /// `LegacyMaterials#build` feeds `MaterialBuilder#addMetalItems` (which sets `mGenerateMetalItems`) from.
-    /// Absent flags mirror the field's own `false` default. Backs [gregtech.api.enums.OrePrefixes#sheetmetal]'s
-    /// `mCondition`, whose legacy lambda read `hasMetalItems()` off the `Materials` facade the condition can no
-    /// longer see once it evaluates against a [MaterialSubTagView].
+    /// Whether a material generates the metal item set -- [GTMaterialProperties#GENERATION_FLAGS] carries
+    /// [GTMaterialGenerationFlag#METAL]. False when absent or when `material` is null. Backs
+    /// [gregtech.api.enums.OrePrefixes#sheetmetal]'s `mCondition`, which evaluates against a
+    /// [MaterialSubTagView] and so cannot read this flag any other way.
     public static boolean hasMetalItems(@Nullable Material material) {
         if (material == null) return false;
         EnumSet<GTMaterialGenerationFlag> flags = material.getProperty(GTMaterialProperties.GENERATION_FLAGS);
         return flags != null && flags.contains(GTMaterialGenerationFlag.METAL);
     }
 
-    /// The legacy `Materials#hasGemItems()`/`mGenerateGemItems` flag for a material -- whether
-    /// [GTMaterialProperties#GENERATION_FLAGS] carries [GTMaterialGenerationFlag#GEM], the exact flag
-    /// `LegacyMaterials#build` feeds `MaterialBuilder#addGemItems` (which sets `mGenerateGemItems`) from.
-    /// Absent flags mirror the field's own `false` default.
+    /// Whether a material generates the gem item set -- [GTMaterialProperties#GENERATION_FLAGS] carries
+    /// [GTMaterialGenerationFlag#GEM]. False when absent or when `material` is null.
     public static boolean hasGemItems(@Nullable Material material) {
         if (material == null) return false;
         EnumSet<GTMaterialGenerationFlag> flags = material.getProperty(GTMaterialProperties.GENERATION_FLAGS);
         return flags != null && flags.contains(GTMaterialGenerationFlag.GEM);
     }
 
-    /// [#fluid], for `Materials#mSolid`/`Materials#getSolid` -- the `solid()` slot.
+    /// [#fluid], for a material's `solid()` slot.
     public static @Nullable FluidStack solid(@Nullable Material material, long amount) {
         Fluid fluid = resolveSlotFluid(material, FluidState.SOLID, FluidNames::solid);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
-    /// A gtPlusPlus-only material's single registered legacy fluid, resolved by the name its
-    /// [GTMaterialProperties#LEGACY_FLUIDS] slots declare ([FluidNames#legacyGtppFluidName]) -- unlike [#molten]/
-    /// [#fluid]/[#gas], which read a legacy `Materials` field or a [Shape], neither of which a gtPlusPlus-only
-    /// material carries, so those return null for exactly the materials this resolves. Mirrors the retired
-    /// gtPlusPlus `Material#getFluidStack`: null exactly when gtpp itself registered no fluid for the material.
+    /// A gtPlusPlus-only material's registered fluid, resolved by the name its
+    /// [GTMaterialProperties#LEGACY_FLUIDS] slots declare ([FluidNames#legacyGtppFluidName]), or by the
+    /// `UNDECLARED_FLUID_NAMES` override when a material's fluid was never declared there -- unlike
+    /// [#molten]/[#fluid]/[#gas], which resolve a distinct [GTMaterialProperties#LEGACY_FLUIDS] slot or a
+    /// [Shape], neither of which a gtPlusPlus-only material carries, so those return null for exactly the
+    /// materials this resolves. Null when the material has no such fluid registered.
     public static @Nullable FluidStack legacyGtppFluid(@Nullable Material material, long amount) {
         Fluid fluid = legacyGtppFluidOf(material);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
@@ -335,34 +322,32 @@ public class MU {
         return name == null ? null : FluidRegistry.getFluid(name);
     }
 
-    /// [#fluidOf]'s raw [Fluid] for the `gas()` slot -- the legacy `Materials#mGas` field value itself.
+    /// [#fluidOf]'s raw [Fluid] for the `gas()` slot.
     public static @Nullable Fluid gasOf(@Nullable Material material) {
         return resolveSlotFluid(material, FluidState.GAS, FluidNames::gas);
     }
 
-    /// [#fluidOf]'s raw [Fluid] for the `plasma()` slot -- the legacy `Materials#mPlasma` field value itself.
+    /// [#fluidOf]'s raw [Fluid] for the `plasma()` slot.
     public static @Nullable Fluid plasmaOf(@Nullable Material material) {
         return resolveSlotFluid(material, FluidState.PLASMA, FluidNames::plasma);
     }
 
-    /// [#fluidOf]'s raw [Fluid] for the `molten()` slot -- the legacy `Materials#mStandardMoltenFluid` field
-    /// value itself, resolved from the same [GTMaterialProperties#LEGACY_FLUIDS] `molten` slot (or
-    /// [#recordSlotFluid] store) `LegacyMaterials#wireFluids` and `GTFluid#configureMaterials` assign the field
-    /// from. Unlike [#molten], resolves the raw field rather than the [Materials2FluidShapes#fluidMolten] shape
-    /// fallback, so it is null exactly when the legacy field is -- what the fluid autogen loop gates on.
+    /// [#fluidOf]'s raw [Fluid] for the `molten()` slot, resolved from the same
+    /// [GTMaterialProperties#LEGACY_FLUIDS] `molten` slot (or [#recordSlotFluid] store) as [#molten]. Unlike
+    /// [#molten], does not fall back to the [Materials2FluidShapes#fluidMolten] shape lookup -- this is null
+    /// exactly when the slot itself is unset, which the fluid autogen loop gates on.
     public static @Nullable Fluid moltenOf(@Nullable Material material) {
         return resolveSlotFluid(material, FluidState.MOLTEN, FluidNames::molten);
     }
 
-    /// The legacy `Materials#hasCorrespondingFluid()` flag for a material, from
-    /// [GTMaterialProperties#HAS_CORRESPONDING_FLUID] -- the `MaterialBuilder#addFluid` flag
-    /// `LegacyMaterials#build` feeds it, mirroring the field's own `false` default when absent.
+    /// Whether a material has a corresponding registered fluid -- [GTMaterialProperties#HAS_CORRESPONDING_FLUID],
+    /// `false` when absent.
     public static boolean hasCorrespondingFluid(@Nullable Material material) {
         return material != null
             && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID));
     }
 
-    /// [#hasCorrespondingFluid], for `Materials#hasCorrespondingGas()`/[GTMaterialProperties#HAS_CORRESPONDING_GAS].
+    /// [#hasCorrespondingFluid], for [GTMaterialProperties#HAS_CORRESPONDING_GAS].
     public static boolean hasCorrespondingGas(@Nullable Material material) {
         return material != null
             && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS));
@@ -421,22 +406,20 @@ public class MU {
 
     private static final Map<Fluid, Material> fluidMaterials = new LinkedHashMap<>();
 
-    /// Records that `fluid` was registered for `material` -- the [Material]-side twin of
-    /// `Materials#FLUID_MAP`, written at the same two points (`LegacyMaterials`'s fluid wiring and
-    /// `GTFluid#configureMaterials`). A `FLUID_MAP` entry whose legacy material has no MaterialLib
-    /// counterpart is not mirrored here, so readers null-check exactly as they do against `FLUID_MAP`.
+    /// Records that `fluid` was registered for `material`. Written from [gregtech.common.fluid.GTFluid]'s
+    /// material-slot configuration and [gregtech.loaders.preload.LoaderGTBlockFluid]'s direct water
+    /// registration -- see [#materialOfFluid] for the read side.
     public static void recordFluidMaterial(Fluid fluid, Material material) {
         fluidMaterials.put(fluid, material);
     }
 
-    /// The material [#recordFluidMaterial] recorded for a fluid -- the `Materials#getGtMaterialFromFluid`/
-    /// `FLUID_MAP` lookup on the [Material] side. Null when no recorded material owns the fluid.
+    /// The material [#recordFluidMaterial] recorded for a fluid, or null when none owns it.
     public static @Nullable Material materialOfFluid(@Nullable Fluid fluid) {
         return fluid == null ? null : fluidMaterials.get(fluid);
     }
 
-    /// The two cracking families a material's autogenerated cracked fluids belong to -- the legacy
-    /// `Materials#hydroCrackedFluids`/`steamCrackedFluids` arrays, keyed by [#recordCrackedFluid].
+    /// The two cracking families a material's autogenerated cracked fluids belong to, keyed by
+    /// [#recordCrackedFluid].
     public enum CrackType {
         HYDRO,
         STEAM
@@ -445,12 +428,10 @@ public class MU {
     private static final Map<Material, EnumMap<CrackType, Fluid[]>> crackedFluids = new HashMap<>();
 
     /// Records the Forge fluid `GTProxy#addAutoGeneratedHydroCrackedFluids`/`addAutoGeneratedSteamCrackedFluids`
-    /// built for one of `material`'s three cracking severities (`severity` 0/1/2 = light/moderate/severe,
-    /// matching the legacy array index) -- the [Material]-side twin of the facade
-    /// `Materials#setHydroCrackedFluids`/`setSteamCrackedFluids` array write, for the materials whose cracked
-    /// fluids GT autogenerates rather than MaterialLib pre-registering as [GTMaterialProperties#CRACKED_HYDRO_FLUIDS]/
-    /// [#CRACKED_STEAM_FLUIDS] data. A recorded fluid takes precedence over that property resolution in
-    /// [#crackedFluid].
+    /// built for one of `material`'s three cracking severities (`severity` 0/1/2 = light/moderate/severe),
+    /// for materials whose cracked fluids GT autogenerates rather than MaterialLib pre-registering as
+    /// [GTMaterialProperties#CRACKED_HYDRO_FLUIDS]/[#CRACKED_STEAM_FLUIDS] data. A recorded fluid takes
+    /// precedence over that property resolution in [#crackedFluid].
     public static void recordCrackedFluid(Material material, CrackType type, int severity, Fluid fluid) {
         crackedFluids.computeIfAbsent(material, k -> new EnumMap<>(CrackType.class))
             .computeIfAbsent(type, k -> new Fluid[3])[severity] = fluid;
@@ -459,9 +440,7 @@ public class MU {
     /// The cracked Forge fluid for `material`'s `type` cracking family at `severity` (0/1/2 =
     /// light/moderate/severe), or null when the material carries none. A [#recordCrackedFluid] autogenerated
     /// fluid wins; otherwise resolves the [GTMaterialProperties#CRACKED_HYDRO_FLUIDS]/[#CRACKED_STEAM_FLUIDS]
-    /// [FluidRef] MaterialLib pre-registered, by the same Forge-fluid-name lookup `LegacyMaterials#resolveFluids`
-    /// assigned the facade `Materials#getHydroCrackedFluids`/`getSteamCrackedFluids` array from -- so this is
-    /// byte-identical to the legacy array element.
+    /// [FluidRef] MaterialLib pre-registered, by Forge fluid name.
     public static @Nullable Fluid crackedFluid(@Nullable Material material, CrackType type, int severity) {
         if (material == null) return null;
         EnumMap<CrackType, Fluid[]> byType = crackedFluids.get(material);
@@ -477,24 +456,24 @@ public class MU {
         return ref == null ? null : FluidRegistry.getFluid(ref.name());
     }
 
-    /// Whether `material` belongs to the legacy name domain -- the [Material]-side existence predicate the
-    /// control-flow gates use when they only need to know whether a material has a legacy [Materials]
-    /// counterpart, not the counterpart object itself (the reverse-recipe, element-scan, and
-    /// plasma/molten conversion loops that must skip reconstructed werkstoff/gtpp materials). Backed by
-    /// [gregtech.loaders.materials.LegacyNameDomain]'s frozen membership set.
+    /// Whether `material` belongs to the legacy name domain -- the [Material]-side existence predicate
+    /// control-flow gates use when they only need that membership, not a counterpart object (the
+    /// reverse-recipe, element-scan, and plasma/molten conversion loops that must skip reconstructed
+    /// werkstoff/gtpp materials). Backed by [gregtech.loaders.materials.LegacyNameDomain]'s frozen
+    /// membership set.
     public static boolean isLegacyNamed(@Nullable Material material) {
         return LegacyNameDomain.contains(material);
     }
 
-    /// The crafting-table ingredient a legacy `OrePrefixes.get(Materials)` call produced, built directly from the
-    /// MaterialLib [Material] rather than routed through its legacy [Materials] counterpart. Returns the
-    /// [ItemData] that [gregtech.api.util.GTModHandler#addCraftingRecipe] resolves to an ore-dictionary name
-    /// (through [ItemData#toString]) so the ingredient still accepts any matching item, while also carrying the
-    /// material association that drives a reversible recipe's auto-generated recycling recipes. A bare
-    /// ore-dictionary [String] ingredient supplies only the name, not that association, so a reversible recipe
-    /// built from one silently loses its recycling; this preserves both. Null when `prefix` or `material` is
-    /// null -- a marker such as `AnyIron` carries no MaterialLib [Material] to pass here in the first place, so
-    /// callers building its ingredient use `OrePrefixes#ingredient(Materials)` instead.
+    /// The crafting-table ingredient for `prefix` and `material`, built directly from the MaterialLib
+    /// [Material]. Returns the [ItemData] that [gregtech.api.util.GTModHandler#addCraftingRecipe] resolves
+    /// to an ore-dictionary name (through [ItemData#toString]) so the ingredient still accepts any matching
+    /// item, while also carrying the material association that drives a reversible recipe's auto-generated
+    /// recycling recipes. A bare ore-dictionary [String] ingredient supplies only the name, not that
+    /// association, so a reversible recipe built from one silently loses its recycling; this preserves
+    /// both. Null when `prefix` or `material` is null. Callers whose ingredient should not carry a
+    /// material association -- e.g. a marker material such as a superconductor wire that unifies under its
+    /// own name without being composed of it -- use [#namedIngredient] instead.
     public static @Nullable ItemData craftIngredient(OrePrefixes prefix, @Nullable Material material) {
         return prefix == null || material == null ? null : new ItemData(prefix, material);
     }
@@ -507,21 +486,18 @@ public class MU {
         return prefix == null || material == null ? null : new ItemData(prefix, internalName(material));
     }
 
-    /// The legacy `mMetaItemSubID` a material was assigned (block-form metadata index, e.g. the frame and
-    /// storage-block variant selector), or -1 if unset -- mirrors legacy `Materials#mMetaItemSubID`'s own
-    /// unset default. Ported byte-identically to [GTMaterialProperties#OLD_SUB_ID]; callers reading
-    /// block-form metadata (frame tiers, worldgen) use this instead of the legacy field.
+    /// The block-form metadata index a material was assigned (e.g. the frame and storage-block variant
+    /// selector), from [GTMaterialProperties#OLD_SUB_ID], or -1 if unset. Callers reading block-form
+    /// metadata (frame tiers, worldgen) use this accessor.
     public static int oldSubId(@Nullable Material material) {
         if (material == null) return -1;
         Integer id = material.getProperty(GTMaterialProperties.OLD_SUB_ID);
         return id == null ? -1 : id;
     }
 
-    /// The legacy `Materials#mRGBa`-format `[r, g, b, a]` short array for a material, or null if it has no
-    /// [GTMaterialProperties#ARGB] (unported markers). Unpacks the property with the identical shift/mask math
-    /// `Materials`'s own constructor uses on the same value -- `LegacyMaterials.build` feeds this exact
-    /// property through that constructor via `MaterialBuilder#setARGB`, so this is byte-identical to the
-    /// legacy field for every ported material, not merely observationally equal. Unlike
+    /// The `[r, g, b, a]` short array for a material's [GTMaterialProperties#ARGB] color, or null if it has
+    /// no ARGB property set (unported markers). Unpacks the packed int as `(argb >>> 16) & 0xFF` /
+    /// `(argb >>> 8) & 0xFF` / `(argb) & 0xFF` / `(argb >>> 24) & 0xFF` for r/g/b/a respectively. Unlike
     /// [com.ruling_0.materiallib.api.StandardProperties#TINT], preserves alpha `0x00` (see
     /// [GTMaterialProperties#ARGB]'s javadoc) -- do not substitute this for TINT in ML-side rendering code.
     public static @Nullable short[] rgba(@Nullable Material material) {
@@ -532,11 +508,10 @@ public class MU {
             (short) ((argb >>> 24) & 0xFF) };
     }
 
-    /// The legacy `Materials#mMoltenRGBa`-format `[r, g, b, a]` short array for a material -- the exact value
-    /// the molten/plasma fluid autogen passes to `withColorRGBA`. Unpacks [GTMaterialProperties#MOLTEN_ARGB]
-    /// when present (the `argbMolten` `MaterialBuilder#setMoltenARGB` was given); otherwise defaults to
-    /// [#rgba] (`mMoltenRGBa` mirrors `mRGBa` when no separate molten color was set), and to the legacy field's
-    /// own `{255, 255, 255, 0}` default when neither color is present. Never null, unlike [#rgba].
+    /// The `[r, g, b, a]` short array for a material's molten/plasma fluid color -- the value the fluid
+    /// autogen passes to `withColorRGBA`. Unpacks [GTMaterialProperties#MOLTEN_ARGB] when present;
+    /// otherwise falls back to [#rgba], and to `{255, 255, 255, 0}` when neither is present. Never null,
+    /// unlike [#rgba].
     public static short[] moltenRgba(@Nullable Material material) {
         Integer moltenArgb = material == null ? null : material.getProperty(GTMaterialProperties.MOLTEN_ARGB);
         if (moltenArgb == null) {
@@ -547,27 +522,22 @@ public class MU {
             (short) (moltenArgb & 0xFF), (short) ((moltenArgb >>> 24) & 0xFF) };
     }
 
-    /// The legacy `Materials#mIconSet` texture set for a material, resolved by the same TEXTURE_SET-name lookup
-    /// [Materials2Textures#iconSetOf] performs -- byte-identical for every population that reaches a MaterialLib
-    /// [Material]: `LegacyMaterials#build` resolves `mIconSet` through it, and a bartworks-origin material's
-    /// icon set is captured from the identical [Materials2Textures#iconSetOf] result.
-    /// Null when `material` is null.
+    /// The texture set for a material, resolved via [Materials2Textures#iconSetOf]. Null when `material`
+    /// is null.
     public static @Nullable TextureSet iconSet(@Nullable Material material) {
         return material == null ? null : Materials2Textures.iconSetOf(material);
     }
 
-    /// The legacy `Materials#mBlastFurnaceRequired` flag for a material, mirroring its own `= false` default.
-    /// Ported byte-identically to [GTMaterialProperties#BLAST_REQUIRED]: `LegacyMaterials#build` sets it from
-    /// this exact `Boolean.TRUE.equals` check, and a bartworks-origin material's blast-furnace requirement is
-    /// computed from the identical expression against the same property.
+    /// Whether a material requires a blast furnace to smelt -- [GTMaterialProperties#BLAST_REQUIRED],
+    /// `false` when absent.
     public static boolean blastFurnaceRequired(@Nullable Material material) {
         return material != null && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
     }
 
-    /// The legacy `Materials#getDensity()` value for a material -- `(M * densityMultiplier) / densityDivider`,
-    /// from [GTMaterialProperties#DENSITY_MULTIPLIER]/[#DENSITY_DIVIDER] (each `1` when absent, mirroring
-    /// `MaterialBuilder`'s own default), the exact integer math `Materials`'s constructor performs on the ported
-    /// data (`LegacyMaterials.build`'s `builder.setDensity`). `null` mirrors the same 1/1 default.
+    /// The density value for a material: `(M * densityMultiplier) / densityDivider`, from
+    /// [GTMaterialProperties#DENSITY_MULTIPLIER]/[#DENSITY_DIVIDER] (each `1` when absent), using integer
+    /// division with no rounding. `M` (`GTValues.M`) is returned directly for a null `material`, equivalent
+    /// to the 1/1 default.
     public static long density(@Nullable Material material) {
         if (material == null) return GTValues.M;
         Integer multiplier = material.getProperty(GTMaterialProperties.DENSITY_MULTIPLIER);
@@ -575,30 +545,28 @@ public class MU {
         return (GTValues.M * (multiplier == null ? 1 : multiplier)) / (divider == null ? 1 : divider);
     }
 
-    /// The legacy `Materials#getMass()` value for a material -- [MaterialAtomics#mass], which reproduces the
-    /// identical formula (linked [Element] mass when [GTMaterialProperties#ELEMENT] is present, else
-    /// `Element.Tc`'s mass when [GTMaterialProperties#COMPOSITION] is empty or absent, else the
-    /// density-weighted average of the composition's own values). `null` mirrors the composition-absent
-    /// default.
+    /// A material's mass -- [MaterialAtomics#mass]: the linked [Element] mass when
+    /// [GTMaterialProperties#ELEMENT] is present, else `Element.Tc`'s mass when
+    /// [GTMaterialProperties#COMPOSITION] is empty or absent, else the density-weighted average of the
+    /// composition's own values. `Element.Tc`'s mass is also returned for a null `material`.
     public static long mass(@Nullable Material material) {
         return material == null ? Element.Tc.getMass() : MaterialAtomics.mass(material);
     }
 
-    /// [#mass], for `Materials#getProtons()`/[MaterialAtomics#protons].
+    /// [#mass], for [MaterialAtomics#protons].
     public static long protons(@Nullable Material material) {
         return material == null ? Element.Tc.getProtons() : MaterialAtomics.protons(material);
     }
 
-    /// [#mass], for `Materials#getNeutrons()`/[MaterialAtomics#neutrons].
+    /// [#mass], for [MaterialAtomics#neutrons].
     public static long neutrons(@Nullable Material material) {
         return material == null ? Element.Tc.getNeutrons() : MaterialAtomics.neutrons(material);
     }
 
-    /// The legacy `Materials#mOreByProducts` list for a material, resolved from
-    /// [GTMaterialProperties#ORE_BYPRODUCTS] in declaration order; empty when absent. A reference that fails to
-    /// resolve is skipped. The [Material]-side equivalent of the legacy field -- `Materials#setOreByproducts`'s
-    /// `.mMaterialInto` remap is a proven no-op (every `Materials` instance's `mMaterialInto` is itself), so
-    /// unlike that method this does not repeat it.
+    /// The ore byproducts list for a material, resolved from [GTMaterialProperties#ORE_BYPRODUCTS] in
+    /// declaration order; empty when absent. A reference that fails to resolve is skipped and each resolved
+    /// material is used as-is -- applying [#materialInto] to it would be a no-op, since that accessor
+    /// always returns its argument unchanged.
     public static List<Material> oreByProducts(@Nullable Material material) {
         if (material == null) return Collections.emptyList();
         List<MaterialRefStack> oreByProducts = material.getProperty(GTMaterialProperties.ORE_BYPRODUCTS);
@@ -612,31 +580,26 @@ public class MU {
         return list;
     }
 
-    /// The legacy `(Materials#mExtraData & 1) != 0` electrolyzer-recipe gate for a material, from
-    /// [GTMaterialProperties#HAS_ELECTROLYZER_RECIPE] -- absent mirrors `mExtraData`'s `0` default (bit unset).
+    /// Whether a material has an electrolyzer recipe -- [GTMaterialProperties#HAS_ELECTROLYZER_RECIPE],
+    /// `false` when absent.
     public static boolean hasElectrolyzerRecipe(@Nullable Material material) {
         return material != null
             && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE));
     }
 
-    /// [#hasElectrolyzerRecipe], for the legacy `(Materials#mExtraData & 2) != 0` centrifuge-recipe gate /
-    /// [GTMaterialProperties#HAS_CENTRIFUGE_RECIPE].
+    /// [#hasElectrolyzerRecipe], for [GTMaterialProperties#HAS_CENTRIFUGE_RECIPE].
     public static boolean hasCentrifugeRecipe(@Nullable Material material) {
         return material != null
             && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE));
     }
 
-    /// The legacy `Materials#canBeCracked()`/`mCanBeCracked` flag for a material, from
-    /// [GTMaterialProperties#CAN_BE_CRACKED] -- absent mirrors `mCanBeCracked`'s own `false` default.
-    /// `LegacyMaterials#build` feeds this exact property through `MaterialBuilder#addCrackingRecipes` (which
-    /// sets `mCanBeCracked`) when present.
+    /// Whether a material can be cracked -- [GTMaterialProperties#CAN_BE_CRACKED], `false` when absent.
     public static boolean canBeCracked(@Nullable Material material) {
         return material != null && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.CAN_BE_CRACKED));
     }
 
-    /// The legacy `Materials#mColor` [Dyes] for a material, from [GTMaterialProperties#DYE] -- or [Dyes#_NULL]
-    /// when absent, mirroring `mColor`'s own default (and, since [Dyes#_NULL]'s name never matches a real lens
-    /// ore-dict suffix, its practical never-generates behavior).
+    /// A material's [Dyes] -- [GTMaterialProperties#DYE] when present, otherwise [#nearestDye]. [Dyes#_NULL]
+    /// for a null `material`.
     public static Dyes dye(@Nullable Material material) {
         if (material == null) return Dyes._NULL;
         String dye = material.getProperty(GTMaterialProperties.DYE);
@@ -666,139 +629,116 @@ public class MU {
         return best;
     }
 
-    /// The legacy `Materials#mAutoGenerateBlastFurnaceRecipes` flag for a material, from
-    /// [GTMaterialProperties#AUTO_BLAST_FURNACE_RECIPES] -- `true` when absent, mirroring the field's own
-    /// default (`LegacyMaterials.build` only overrides it when the property is present).
+    /// Whether a material auto-generates blast furnace recipes --
+    /// [GTMaterialProperties#AUTO_BLAST_FURNACE_RECIPES], `true` when absent.
     public static boolean autoGenerateBlastFurnaceRecipes(@Nullable Material material) {
         if (material == null) return true;
         Boolean value = material.getProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES);
         return value == null || value;
     }
 
-    /// [#autoGenerateBlastFurnaceRecipes], for `Materials#mAutoGenerateVacuumFreezerRecipes`/
-    /// [GTMaterialProperties#AUTO_VACUUM_FREEZER_RECIPES].
+    /// [#autoGenerateBlastFurnaceRecipes], for [GTMaterialProperties#AUTO_VACUUM_FREEZER_RECIPES].
     public static boolean autoGenerateVacuumFreezerRecipes(@Nullable Material material) {
         if (material == null) return true;
         Boolean value = material.getProperty(GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES);
         return value == null || value;
     }
 
-    /// The legacy `Materials#mAutoGenerateRecycleRecipes` flag for a material, from
-    /// [GTMaterialProperties#AUTO_RECYCLE_RECIPES] -- `true` when absent, mirroring the field's own default
-    /// (`LegacyMaterials#build` only overrides it when the property is present).
-    /// [GTMaterialProperties#AUTO_RECYCLE_RECIPES] is a gregtech-dump-only property, so any material carrying
-    /// it also has a legacy [Materials] counterpart;
-    /// a reverse-recipe gate that skipped only counterpart-bearing materials with the flag unset therefore
-    /// stays byte-identical when it reads this predicate directly.
+    /// Whether a material auto-generates recycle recipes -- [GTMaterialProperties#AUTO_RECYCLE_RECIPES],
+    /// `true` when absent. A gregtech-dump-only property: only materials in the legacy name domain (see
+    /// [#isLegacyNamed]) ever carry it, so a reverse-recipe gate that only means to skip legacy-named
+    /// materials with the flag unset can read this predicate directly without an additional domain check.
     public static boolean autoGenerateRecycleRecipes(@Nullable Material material) {
         if (material == null) return true;
         Boolean value = material.getProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES);
         return value == null || value;
     }
 
-    /// The legacy `Materials#mMeltingPoint` Kelvin melting point for a material, or `0` if unset -- mirrors
-    /// `MaterialBuilder`'s own default. Ported byte-identically to [GTMaterialProperties#MELTING_POINT]:
-    /// `LegacyMaterials.build` feeds this exact property through `MaterialBuilder#setMeltingPoint` when
-    /// present, and otherwise leaves the builder's `0` default that `mMeltingPoint` itself falls back to.
+    /// The Kelvin melting point for a material -- [GTMaterialProperties#MELTING_POINT], or `0` if unset.
     public static int meltingPoint(@Nullable Material material) {
         if (material == null) return 0;
         Integer meltingPoint = material.getProperty(GTMaterialProperties.MELTING_POINT);
         return meltingPoint == null ? 0 : meltingPoint;
     }
 
-    /// The legacy `Materials#getGasTemperature()` value for a material: room temperature (295 K) when
-    /// [GTMaterialProperties#GAS_TEMP] is unset or zero, otherwise the material's [#meltingPoint] -- the
-    /// legacy accessor reads `mMeltingPoint`, not `mGasTemp`, whenever the gas temperature is set
-    /// (`Materials#getGasTemperature`), and the fluid registration temperatures built from it depend on that
-    /// exact value.
+    /// A material's gas registration temperature in Kelvin: room temperature (295 K) when
+    /// [GTMaterialProperties#GAS_TEMP] is unset or zero, otherwise the material's [#meltingPoint] -- not the
+    /// `GAS_TEMP` property's own value -- since the fluid registration temperatures built from this depend
+    /// on that exact value.
     public static int gasTemperature(@Nullable Material material) {
         Integer gasTemp = material == null ? null : material.getProperty(GTMaterialProperties.GAS_TEMP);
         return gasTemp == null || gasTemp == 0 ? 295 : meltingPoint(material);
     }
 
-    /// The legacy `Materials#getLiquidTemperature()` value for a material: room temperature (295 K) when its
-    /// [#meltingPoint] is zero, otherwise the melting point -- the exact `mMeltingPoint == 0 ? 295 :
-    /// mMeltingPoint` the corresponding-fluid autogen registers its fluid at.
+    /// A material's liquid registration temperature in Kelvin: room temperature (295 K) when its
+    /// [#meltingPoint] is zero, otherwise the melting point -- the temperature the corresponding-fluid
+    /// autogen registers its fluid at.
     public static int liquidTemperature(@Nullable Material material) {
         int meltingPoint = meltingPoint(material);
         return meltingPoint == 0 ? 295 : meltingPoint;
     }
 
-    /// The legacy `Materials#mBlastFurnaceTemp` Kelvin blast furnace temperature for a material, or `0` if
-    /// unset. Ported byte-identically to [GTMaterialProperties#BLAST_TEMP]: `MaterialDataDump` captured the
-    /// property already truncated to `mBlastFurnaceTemp`'s `short` range, so `LegacyMaterials.build`'s
-    /// `MaterialBuilder#setBlastFurnaceTemp` re-truncation is a no-op and this `int` widening loses nothing.
+    /// The Kelvin blast furnace temperature for a material -- [GTMaterialProperties#BLAST_TEMP], or `0` if
+    /// unset.
     public static int blastFurnaceTemp(@Nullable Material material) {
         if (material == null) return 0;
         Integer blastTemp = material.getProperty(GTMaterialProperties.BLAST_TEMP);
         return blastTemp == null ? 0 : blastTemp;
     }
 
-    /// The legacy `Materials#getProcessingMaterialTierEU()` value for a material, or `0` if unset -- mirrors
-    /// `Materials#processingMaterialTierEU`'s own default. Ported byte-identically to
-    /// [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU]: `LegacyMaterials.build` and the gtpp bridge loader
-    /// (`GtppBridgeMaterialsLoader`) feed this exact property through `setProcessingMaterialTierEU` when
-    /// present, and otherwise leave the `0` default every population shares.
+    /// The processing material tier EU value for a material --
+    /// [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU], or `0` if unset.
     public static int processingMaterialTierEU(@Nullable Material material) {
         if (material == null) return 0;
         Integer tierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
         return tierEU == null ? 0 : tierEU;
     }
 
-    /// The legacy `Materials#mDurability` tool durability for a material, or `0` if unset -- the same default
-    /// `LegacyMaterials#build` feeds `MaterialBuilder#setTool` when [GTMaterialProperties#DURABILITY] is
-    /// absent, itself mirroring `mDurability`'s own field default.
+    /// The tool durability for a material -- [GTMaterialProperties#DURABILITY], or `0` if unset.
     public static int durability(@Nullable Material material) {
         if (material == null) return 0;
         Integer durability = material.getProperty(GTMaterialProperties.DURABILITY);
         return durability == null ? 0 : durability;
     }
 
-    /// [#durability], for `Materials#mToolQuality`/[GTMaterialProperties#TOOL_QUALITY].
+    /// [#durability], for [GTMaterialProperties#TOOL_QUALITY].
     public static int toolQuality(@Nullable Material material) {
         if (material == null) return 0;
         Integer toolQuality = material.getProperty(GTMaterialProperties.TOOL_QUALITY);
         return toolQuality == null ? 0 : toolQuality;
     }
 
-    /// [#durability], for `Materials#mToolSpeed`/[GTMaterialProperties#TOOL_SPEED] -- absent defaults to
-    /// `1.0f`, the `setTool` default `LegacyMaterials#build` passes and `mToolSpeed`'s own field default.
+    /// [#durability], for [GTMaterialProperties#TOOL_SPEED] -- absent defaults to `1.0f`.
     public static float toolSpeed(@Nullable Material material) {
         if (material == null) return 1.0f;
         Float toolSpeed = material.getProperty(GTMaterialProperties.TOOL_SPEED);
         return toolSpeed == null ? 1.0f : toolSpeed;
     }
 
-    /// The legacy `Materials#getToolEnchantment()`/`mToolEnchantment` for a material -- the [Enchantment]
-    /// named by [GTMaterialProperties#TOOL_ENCHANTMENT], resolved by the same unlocalized-name lookup
-    /// `LegacyMaterials#findEnchantment` performs against `Enchantment#enchantmentsList` (the property stores
-    /// the `Enchantment#getName` string `MaterialDataDump` captured). Null when the material has no tool
-    /// enchantment, mirroring `mToolEnchantment`'s own null default.
+    /// The tool [Enchantment] for a material, named by [GTMaterialProperties#TOOL_ENCHANTMENT] (an
+    /// `Enchantment#getName` string) and resolved against `Enchantment#enchantmentsList`. Null when the
+    /// material has no tool enchantment.
     public static @Nullable Enchantment getToolEnchantment(@Nullable Material material) {
         if (material == null) return null;
         return findEnchantment(material.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT));
     }
 
-    /// The legacy `Materials#getToolEnchantmentLevel()`/`mToolEnchantmentLevel` for a material, from
-    /// [GTMaterialProperties#TOOL_ENCHANTMENT_LEVEL]. `LegacyMaterials#build` reads the level only alongside a
-    /// [GTMaterialProperties#TOOL_ENCHANTMENT] name (defaulting `1` there), leaving `MaterialBuilder`'s own
-    /// `1` default when no enchantment is set -- so this returns `1` whenever the name is absent, matching the
-    /// field every material carries.
+    /// The tool enchantment level for a material -- [GTMaterialProperties#TOOL_ENCHANTMENT_LEVEL], `1` when
+    /// absent. Also `1` whenever [GTMaterialProperties#TOOL_ENCHANTMENT] itself is absent, since a level
+    /// with no named enchantment has nothing to apply to.
     public static int getToolEnchantmentLevel(@Nullable Material material) {
         if (material == null || material.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT) == null) return 1;
         Integer level = material.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT_LEVEL);
         return level == null ? 1 : level;
     }
 
-    /// [#getToolEnchantment], for `Materials#getArmorEnchantment()`/`mArmorEnchantment` /
-    /// [GTMaterialProperties#ARMOR_ENCHANTMENT].
+    /// [#getToolEnchantment], for [GTMaterialProperties#ARMOR_ENCHANTMENT].
     public static @Nullable Enchantment getArmorEnchantment(@Nullable Material material) {
         if (material == null) return null;
         return findEnchantment(material.getProperty(GTMaterialProperties.ARMOR_ENCHANTMENT));
     }
 
-    /// [#getToolEnchantmentLevel], for `Materials#getArmorEnchantmentLevel()`/`mArmorEnchantmentLevel` /
-    /// [GTMaterialProperties#ARMOR_ENCHANTMENT_LEVEL].
+    /// [#getToolEnchantmentLevel], for [GTMaterialProperties#ARMOR_ENCHANTMENT_LEVEL].
     public static int getArmorEnchantmentLevel(@Nullable Material material) {
         if (material == null || material.getProperty(GTMaterialProperties.ARMOR_ENCHANTMENT) == null) return 1;
         Integer level = material.getProperty(GTMaterialProperties.ARMOR_ENCHANTMENT_LEVEL);
@@ -813,34 +753,28 @@ public class MU {
         return null;
     }
 
-    /// The legacy `Materials#mHeatDamage` for a material, or `0` if unset -- mirrors `MaterialBuilder`'s own
-    /// default (`LegacyMaterials#build` only calls `setHeatDamage` when [GTMaterialProperties#HEAT_DAMAGE] is
-    /// present).
+    /// The heat damage for a material -- [GTMaterialProperties#HEAT_DAMAGE], or `0` if unset.
     public static float heatDamage(@Nullable Material material) {
         if (material == null) return 0f;
         Float heatDamage = material.getProperty(GTMaterialProperties.HEAT_DAMAGE);
         return heatDamage == null ? 0f : heatDamage;
     }
 
-    /// The legacy `Materials#mUnifiable` flag for a material -- `true` unless [GTMaterialProperties#UNIFIABLE]
-    /// is explicitly `false`, mirroring `MaterialBuilder`'s `true` default (`LegacyMaterials#build` only calls
-    /// `setUnifiable(false)` on an explicit `false`).
+    /// Whether a material's items unify under the ore dictionary -- `true` unless
+    /// [GTMaterialProperties#UNIFIABLE] is explicitly `false`.
     public static boolean unifiable(@Nullable Material material) {
         return material == null || !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE));
     }
 
-    /// The legacy `Materials#mFuelPower` fuel value for a material, or `0` if unset -- mirrors
-    /// `MaterialBuilder`'s own default (`LegacyMaterials.build` only calls `MaterialBuilder#setFuel` when
-    /// [GTMaterialProperties#FUEL_TYPE] or [GTMaterialProperties#FUEL_POWER] is present).
+    /// The fuel power for a material -- [GTMaterialProperties#FUEL_POWER], or `0` if unset.
     public static int fuelPower(@Nullable Material material) {
         if (material == null) return 0;
         Integer fuelPower = material.getProperty(GTMaterialProperties.FUEL_POWER);
         return fuelPower == null ? 0 : fuelPower;
     }
 
-    /// The legacy `Materials#mFuelType` `MaterialBuilder.FuelType` ordinal for a material, or `0`
-    /// (`MaterialBuilder.FuelType#Diesel`) if unset -- mirrors `MaterialBuilder`'s own default, see
-    /// [#fuelPower(Material)].
+    /// The fuel type ordinal for a material into [gregtech.api.util.GTRecipeConstants.FuelType], or `0`
+    /// (`FuelType#DieselFuel`) if unset -- [GTMaterialProperties#FUEL_TYPE], see [#fuelPower(Material)].
     public static int fuelType(@Nullable Material material) {
         if (material == null) return 0;
         Integer fuelType = material.getProperty(GTMaterialProperties.FUEL_TYPE);
@@ -859,10 +793,8 @@ public class MU {
         return chaseRef(material, GTMaterialProperties.MACERATE_INTO);
     }
 
-    /// The legacy `Materials#mMaterialInto` unification target for a material: the material itself.
-    /// `mMaterialInto` is a proven universal self-reference -- every `Materials` constructor assigns `this`
-    /// and nothing else ever writes it -- so no property backs it and this returns its argument, preserving
-    /// that self-reference default.
+    /// The unification target a material maps into: the material itself. No property backs this -- every
+    /// material's own unification target is itself -- so this returns its argument directly.
     public static @Nullable Material materialInto(@Nullable Material material) {
         return material;
     }
@@ -872,17 +804,16 @@ public class MU {
         return chaseRef(material, GTMaterialProperties.ARC_SMELT_INTO);
     }
 
-    /// The legacy `Materials#mArcSmeltIntoWithGas` gas-conditional arc-smelting mapping for a material
-    /// (gas -> result), from [Materials2ArcSmelting]'s declared table; empty when the material has none.
+    /// The gas-conditional arc-smelting mapping for a material (gas -> result), from
+    /// [Materials2ArcSmelting]'s declared table; empty when the material has none.
     public static Map<Material, Material> arcSmeltIntoWithGas(@Nullable Material material) {
         return Materials2ArcSmelting.withGas(material);
     }
 
     private static Map<Material, List<Material>> oreReRegistrations;
 
-    /// The wildcard marker materials an ore registered for `material` is also re-registered under -- the
-    /// [Material]-side replacement for the legacy `Materials#mOreReRegistrations` wildcard wiring (an Iron ore
-    /// entry also registers as AnyIron, etc.), consulted by the ore-registration dispatch. Empty for a
+    /// The wildcard marker materials an ore registered for `material` is also re-registered under (an Iron
+    /// ore entry also registers as AnyIron, etc.), consulted by the ore-registration dispatch. Empty for a
     /// material with no wildcard aliases.
     public static List<Material> oreReRegistrationsOf(@Nullable Material material) {
         if (material == null) return Collections.emptyList();
@@ -935,26 +866,25 @@ public class MU {
 
     private static final Map<Material, Material> reconstructedHandles = new HashMap<>();
 
-    /// Records the tool-handle material `material`'s retired bartworks bridge facade would have carried in
-    /// `Materials#mHandleMaterial` (see [#handleMaterial(Material)]). Called by `LoaderWerkstoffRegistrations`
-    /// at the exact point in loading the facade write would have happened.
+    /// Records the tool-handle material override `material` carries for [#handleMaterial(Material)] --
+    /// pushed by `LoaderWerkstoffRegistrations` for materials reconstructed from a bartworks werkstoff, at
+    /// the point in loading such a material's handle is decided.
     public static void recordHandleMaterial(Material material, Material handle) {
         reconstructedHandles.put(material, handle);
     }
 
     private static final java.util.Set<Material> reconstructedBridgeRegistrations = new java.util.HashSet<>();
 
-    /// Records that `material`'s retired bartworks bridge facade would have entered `Materials#getMaterialsMap`
-    /// by this point in loading. Called by `LoaderWerkstoffRegistrations` at the exact point in loading the
-    /// facade would have minted the material.
+    /// Records that `material` (a reconstructed bartworks-origin material) has reached this point in
+    /// loading -- called by `LoaderWerkstoffRegistrations` once its other per-material registration steps
+    /// have run, for [#hasBridgeRegistration]'s timing check.
     public static void recordBridgeRegistration(Material material) {
         reconstructedBridgeRegistrations.add(material);
     }
 
-    /// Whether [#recordBridgeRegistration] has run for `material` -- the reconstructed-material equivalent of
-    /// the bridge era's `Materials.get(name) != _NULL`, which flipped true at the same moment. Keys
-    /// `GTProxy#registerOre`'s reconstructed-name dispatch, so an ore-dictionary event registered before this
-    /// point (notably GregTech's own preInit catch-up replay) is dropped exactly as the bridge era dropped it.
+    /// Whether [#recordBridgeRegistration] has run for `material`. Keys `GTProxy#registerOre`'s
+    /// reconstructed-name dispatch, so an ore-dictionary event registered before this point (notably
+    /// GregTech's own preInit catch-up replay) is dropped.
     public static boolean hasBridgeRegistration(@Nullable Material material) {
         return material != null && reconstructedBridgeRegistrations.contains(material);
     }
@@ -971,13 +901,11 @@ public class MU {
         return hopped != null ? hopped : target;
     }
 
-    /// Whether a material carries a legacy [gregtech.api.enums.SubTag], ported 1:1 to [GTMaterialFlag] of the
-    /// same name -- see [GTMaterialProperties#FLAGS]. Also true when [GTMaterialProperties#SUB_TAGS] (the
-    /// werkstoff facade's raw SubTag list, captured separately from FLAGS -- see that property's
-    /// javadoc) names `flag`: a werkstoff-backed material's FLAGS reflects only what its dumped bridge
-    /// `Materials` carried, which never included the bartworks material's own SubTags, so this reads SUB_TAGS as a
-    /// second source for the same 1:1 name mapping FLAGS already uses. Mirrors legacy
-    /// `Materials#contains(SubTag)`/`mSubTags`.
+    /// Whether a material carries a legacy [gregtech.api.enums.SubTag], ported 1:1 to [GTMaterialFlag] of
+    /// the same name -- see [GTMaterialProperties#FLAGS]. Also true when [GTMaterialProperties#SUB_TAGS]
+    /// (see that property's own javadoc) names `flag`: a werkstoff-backed material's FLAGS only reflects
+    /// what a gregtech-side dump captured for it, which never included the werkstoff's own SubTags, so this
+    /// reads SUB_TAGS as a second source for the same 1:1 name mapping FLAGS already uses.
     public static boolean hasFlag(@Nullable Material material, GTMaterialFlag flag) {
         if (material == null) return false;
         EnumSet<GTMaterialFlag> flags = material.getProperty(GTMaterialProperties.FLAGS);
@@ -996,22 +924,21 @@ public class MU {
     }
 
     /// The legacy internal name of a MaterialLib material -- [GTMaterialProperties#LEGACY_NAME] when present
-    /// (MaterialLib sanitizes registration names), otherwise the registration name. The [Material]-side
-    /// equivalent of `Materials#getInternalName`, used to build ore-dictionary names and lang keys.
+    /// (MaterialLib sanitizes registration names), otherwise the registration name. Used to build
+    /// ore-dictionary names and lang keys.
     public static String internalName(Material material) {
         String legacyName = material.getProperty(GTMaterialProperties.LEGACY_NAME);
         return legacyName != null ? legacyName : material.getName();
     }
 
-    /// The exact legacy `Materials#mName` string for a material -- an alias for [#internalName], which already
-    /// resolves the [GTMaterialProperties#LEGACY_NAME] override before the registration name.
+    /// An alias for [#internalName], which already resolves the [GTMaterialProperties#LEGACY_NAME] override
+    /// before the registration name.
     public static String legacyName(Material material) {
         return internalName(material);
     }
 
-    /// The legacy `Materials#mDefaultLocalName` display name for a material --
-    /// [GTMaterialProperties#LOCAL_NAME] when present, otherwise the registration name, the exact fallback
-    /// `LegacyMaterials#build` feeds `setDefaultLocalName`. Null when `material` is null.
+    /// The default display name for a material -- [GTMaterialProperties#LOCAL_NAME] when present, otherwise
+    /// the registration name. Null when `material` is null.
     public static @Nullable String localName(@Nullable Material material) {
         if (material == null) return null;
         String localName = material.getProperty(GTMaterialProperties.LOCAL_NAME);
@@ -1043,9 +970,9 @@ public class MU {
         return chemicalTooltip(material, 1, showQuestionMarks);
     }
 
-    /// The chemical-formula tooltip of a MaterialLib material, matching the legacy `Materials` rendering: a
-    /// bare `?` formula is hidden unless `showQuestionMarks`, and a composed material at two or more full
-    /// units is parenthesized and suffixed with the multiplier.
+    /// The chemical-formula tooltip of a MaterialLib material: a bare `?` formula is hidden unless
+    /// `showQuestionMarks`, and a composed material at two or more full units is parenthesized and suffixed
+    /// with the multiplier.
     public static String chemicalTooltip(@Nullable Material material, long multiplier, boolean showQuestionMarks) {
         String formula = chemicalFormula(material);
         if (!showQuestionMarks && formula.equals("?")) return "";
@@ -1072,12 +999,11 @@ public class MU {
         return list;
     }
 
-    /// The legacy `Materials#mAspects` Thaumcraft aspect list for a material, as [AspectRefStack]s. An
-    /// explicit [GTMaterialProperties#ASPECTS] list is returned as-is (the legacy builder's `addAspect`
-    /// path); without one, a composed material derives its aspects exactly as `Materials`'s constructor
-    /// does -- each component's own aspects merged in first-seen order with amounts summed per aspect, then
-    /// divided by the density-scaled component count, minimum `1` each. Empty when neither source applies,
-    /// mirroring the legacy field's empty-list default.
+    /// The Thaumcraft aspect list for a material, as [AspectRefStack]s. An explicit
+    /// [GTMaterialProperties#ASPECTS] list is returned as-is; without one, a composed material derives its
+    /// aspects from its [GTMaterialProperties#COMPOSITION]: each component's own aspects merged in
+    /// first-seen order with amounts summed per aspect, then divided by the density-scaled component
+    /// count, minimum `1` each. Empty when neither source applies.
     public static List<AspectRefStack> aspects(@Nullable Material material) {
         if (material == null) return Collections.emptyList();
         List<AspectRefStack> aspects = material.getProperty(GTMaterialProperties.ASPECTS);
@@ -1107,10 +1033,10 @@ public class MU {
         return list;
     }
 
-    // Union dispatch helpers: the transitional two-family union (Materials / bartworks-origin materials, plus
-    // the recognition markers) previously flowed through legacy-interface-typed slots; those slots are now
-    // Object-typed (or MaterialLib Material-typed) and these helpers reproduce the exact per-family member
-    // behavior at the read sites. TRANSITIONAL -- each dies with its last union call site.
+    // Object-typed helpers: some material references still live in an Object-typed slot elsewhere (generic
+    // containers such as `OreInfo<Object>`, or fields not yet narrowed to `Material`) rather than a
+    // MaterialLib `Material`-typed one; each helper below checks `instanceof Material` and falls back to
+    // null/false/empty for anything else.
 
     /// The legacy internal name of a [Material] (see [#internalName]); null for null or a non-[Material] value.
     public static @Nullable String internalNameOf(@Nullable Object material) {
@@ -1190,17 +1116,15 @@ public class MU {
     private static final Map<Material, GeneratedMaterialRenderer> materialRenderers = new HashMap<>();
 
     /// Registers `renderer` as the special item renderer for `material`, keyed by the MaterialLib [Material].
-    /// Mirrors the client-side renderer assignments in `Materials#initClient`; populated once from the client
-    /// proxy (`GTClient#onPreInitialization`) after `initClient` has constructed the renderer instances, so the
-    /// GT-owned store, `MaterialLibClient`'s registry, and the legacy `Materials#renderer` field all hold the
-    /// same instances.
+    /// Called once from `GTClient#onPreInitialization`, alongside
+    /// [com.ruling_0.materiallib.api.MaterialLibClient#setItemRenderer] -- both stores are populated
+    /// together so [#rendererOf] and MaterialLib's own renderer lookup agree.
     public static void recordRenderer(Material material, GeneratedMaterialRenderer renderer) {
         materialRenderers.put(material, renderer);
     }
 
     /// The [GeneratedMaterialRenderer] [#recordRenderer] registered for `material`, or null when it has no
-    /// special renderer. The [Material]-keyed replacement for the legacy `Materials#getRenderer`/`renderer`
-    /// facade read that the generated-item, fluid-display, and electrode renderers used.
+    /// special renderer. Read by the generated-item, fluid-display, and electrode renderers.
     public static @Nullable GeneratedMaterialRenderer rendererOf(@Nullable Material material) {
         return material == null ? null : materialRenderers.get(material);
     }
@@ -1224,7 +1148,8 @@ public class MU {
     /// [Material]-side lookup [#hasSubTag] uses to translate a legacy [SubTag] query into the flag its [Material]
     /// carries.
     private static @Nullable GTMaterialFlag flagForSubTag(SubTag subTag) {
-        // Inverts LegacyMaterials#legacySubTagName, whose two flags carry a name no GTMaterialFlag constant spells.
+        // AnaerobeGas/NobleGas are the two GTMaterialFlag constants whose SubTag name does not match the enum
+        // constant name directly, so they need an explicit mapping before the general valueOf fallback below.
         switch (subTag.mName) {
             case "AnaerobeGas":
                 return GTMaterialFlag.ANAEROBE_GAS;

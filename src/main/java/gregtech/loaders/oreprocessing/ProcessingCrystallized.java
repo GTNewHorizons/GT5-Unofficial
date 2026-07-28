@@ -58,7 +58,7 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
     }
 
     /// A recognition marker carries no macerate target, so unlike the legacy overload above
-    /// this macerates into `material` itself (mirroring `Materials`' own `mMacerateInto = this` default)
+    /// this macerates into `material` itself (reproducing every material's own macerate-into-self default)
     /// instead of dropping the recipe.
     @Override
     public void registerRecognitionOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

@@ -10,12 +10,12 @@ import gregtech.api.util.GTUtility;
 
 /// Resolves the chemical-formula display string for a MaterialLib [Material] from
 /// [GTMaterialProperties#FORMULA] (see its javadoc for which legacy system sourced each value), translating
-/// through the legacy `Materials` localization key when [GTMaterialProperties#FORMULA_LOCALIZED] is set.
+/// through the [#formulaKey] localization key when [GTMaterialProperties#FORMULA_LOCALIZED] is set.
 ///
 /// [#forSearch] feeds [gregtech.nei.searchprovider.ChemicalFormulaFilter] and returns the stored string --
 /// unsanitized, including `"?"`/`"??"` placeholders; the filter applies its own validity check and
 /// sanitization. [#forTooltip] returns the ready-to-display line (or null for none), suppressing the
-/// exact-`"?"` placeholder the way the legacy `Materials#addTooltips` did.
+/// exact-`"?"` placeholder.
 public final class MaterialFormulas {
 
     private MaterialFormulas() {}
@@ -37,11 +37,10 @@ public final class MaterialFormulas {
         return GTUtility.isStringValid(formula) && !"?".equals(formula) ? formula : null;
     }
 
-    /// Mirrors `Materials#getLocalizedNameKey` (`"Material." + getInternalName().toLowerCase()`) for the
-    /// reconstructed legacy `Materials` instance -- `getInternalName()` there is `mName`, i.e.
-    /// [GTMaterialProperties#LEGACY_NAME] when present, else the MaterialLib registration name. The
-    /// reconstructed bartworks-origin material's own key (its internal name lowercased) resolves identically for
-    /// every localized-formula werkstoff, so one scheme serves both origins.
+    /// Builds the `"Material." + name.toLowerCase() + ".ChemicalFormula"` localization key the lang files use
+    /// for a material's formula string, where `name` is [GTMaterialProperties#LEGACY_NAME] when present, else
+    /// the MaterialLib registration name. A bartworks-origin material's own internal name (lowercased) resolves
+    /// to the same key format, so one scheme serves every localized-formula material regardless of origin.
     private static String formulaKey(Material ml) {
         String legacyName = ml.getProperty(GTMaterialProperties.LEGACY_NAME);
         return "Material." + (legacyName != null ? legacyName : ml.getName()).toLowerCase() + ".ChemicalFormula";

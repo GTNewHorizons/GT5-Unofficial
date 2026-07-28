@@ -410,11 +410,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                     .floor(Math.abs(MathUtils.randFloat(1f, 2f) - MathUtils.randFloat(1f, 2f)) * (1f + 2f - 1f) + 1f);
                 damageValue -= fDam;
 
-                /*
-                 * Materials M1 = GT_MetaGenerated_Tool.getPrimaryMaterial(this.mInventory[this.SLOT_ROTOR]); Materials
-                 * M2 = GT_MetaGenerated_Tool.getSecondaryMaterial(this.mInventory[this.SLOT_ROTOR]);
-                 */
-
                 // Damage Rotor
                 // int rotorDurability = this.mInventory[this.SLOT_ROTOR].getItemDamage();
                 long rotorDamage = creativeRotor ? 0

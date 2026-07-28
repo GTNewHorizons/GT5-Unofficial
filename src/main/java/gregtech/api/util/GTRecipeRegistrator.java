@@ -271,8 +271,7 @@ public class GTRecipeRegistrator {
     }
 
     /// The gas-conditional arc-smelting recipe is consulted through [MU#arcSmeltIntoWithGas]'s declared table
-    /// ([gregtech.api.enums.materials2.Materials2ArcSmelting]), which carries exactly the rows the legacy
-    /// `Materials#mArcSmeltIntoWithGas` maps ever held.
+    /// ([gregtech.api.enums.materials2.Materials2ArcSmelting]).
     public static boolean hasReverseArcSmeltingRecipe(Material material) {
         if (material == null) return false;
         Material arcSmeltingMaterial = MU.arcSmeltInto(MU.smeltInto(material));
@@ -314,11 +313,10 @@ public class GTRecipeRegistrator {
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
             if (!MU.isLegacyNamed(tMaterial.mMaterial) && tMaterial.mMaterial.getShapes()
                 .isEmpty()) {
-                // An unbacked RecognitionMaterials/LegacyMarkerMaterials marker's shapeless wildcard backing
-                // never defaults to smelting into itself: unlike a shaped material, it only has an arc-smelting
-                // target when one was explicitly declared. A shaped material without a live legacy counterpart
-                // (a reconstructed werkstoff/gtpp material) instead takes the flag ladder below, exactly as it
-                // did through its facade before minting retired.
+                // An unbacked recognition marker's shapeless wildcard backing never defaults to smelting into
+                // itself: unlike a shaped material, it only has an arc-smelting target when one was explicitly
+                // declared. A shaped material without a live legacy counterpart (a reconstructed werkstoff/gtpp
+                // material) instead takes the flag ladder below.
                 boolean declaresSmeltTarget = tMaterial.mMaterial.getProperty(GTMaterialProperties.SMELT_INTO) != null
                     || tMaterial.mMaterial.getProperty(GTMaterialProperties.ARC_SMELT_INTO) != null;
                 Material arcTarget = declaresSmeltTarget ? MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial)) : null;

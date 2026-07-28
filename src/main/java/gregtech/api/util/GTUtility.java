@@ -1261,22 +1261,20 @@ public class GTUtility {
         return FluidContainerRegistry.getFluidForFilledItem(stack);
     }
 
-    /// A [FluidStack] of the vanilla `water` fluid -- the exact lookup the legacy `Materials.Water.mFluid`
-    /// field held. Water is a vanilla fluid, not part of the material system, so it resolves directly through
-    /// [FluidRegistry] rather than any material accessor.
+    /// A [FluidStack] of the vanilla `water` fluid. Water is a vanilla fluid, not part of the material system,
+    /// so it resolves directly through [FluidRegistry] rather than any material accessor.
     public static FluidStack getWater(long aAmount) {
         return FluidRegistry.getFluidStack("water", (int) aAmount);
     }
 
-    /// A [FluidStack] of the vanilla `lava` fluid -- the exact lookup the legacy `Materials.Lava.mFluid` field
-    /// held. See [#getWater].
+    /// A [FluidStack] of the vanilla `lava` fluid. See [#getWater].
     public static FluidStack getLava(long aAmount) {
         return FluidRegistry.getFluidStack("lava", (int) aAmount);
     }
 
-    /// A [FluidStack] of GregTech's `ice` solid fluid -- the exact lookup the legacy `Materials.Ice.mSolid`
-    /// field held (registered by `gregtech.loaders.preload.LoaderGTBlockFluid`). Ice's crushed-ice fluid is not
-    /// modelled as a material fluid slot, so it resolves directly through [FluidRegistry]. See [#getWater].
+    /// A [FluidStack] of GregTech's `ice` solid fluid, registered by `gregtech.loaders.preload.LoaderGTBlockFluid`.
+    /// Ice's crushed-ice fluid is not modelled as a material fluid slot, so it resolves directly through
+    /// [FluidRegistry]. See [#getWater].
     public static FluidStack getIceSolid(long aAmount) {
         return FluidRegistry.getFluidStack("ice", (int) aAmount);
     }

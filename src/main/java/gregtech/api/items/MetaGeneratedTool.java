@@ -116,7 +116,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     /// The MaterialLib material a tool's `PrimaryMaterial` NBT string resolves to, via [MU#byLegacyName] --
     /// which covers both what [#getToolWithStats(int, int, com.ruling_0.materiallib.api.Material,
     /// com.ruling_0.materiallib.api.Material, long[])] writes ([MU#internalName] strings) and the legacy
-    /// `Materials#mName` strings older saves contain (byte-identical for every ported material). Falls back to
+    /// internal name strings older saves contain (byte-identical for every ported material). Falls back to
     /// [Materials2Materials#NULL] on a missing/unresolvable name.
     public static com.ruling_0.materiallib.api.Material getPrimaryMaterialML(ItemStack aStack) {
         return resolveMaterialML(aStack, "PrimaryMaterial");

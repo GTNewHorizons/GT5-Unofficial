@@ -5,7 +5,7 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
 
-/// The materials whose legacy meta-item generation included the metal item set (`Materials#hasMetalItems`),
+/// The materials whose legacy meta-item generation included the metal item set (`MU#hasMetalItems`),
 /// keyed by their legacy 1000-slot generated-material id, for [PosteaTransformers]' framebox item migration:
 /// the legacy per-material framebox items existed exactly for this set, and foreign item ids sharing the
 /// framebox damage range (e.g. DEFC overlapping the Bastnasite slot) must not be migrated.

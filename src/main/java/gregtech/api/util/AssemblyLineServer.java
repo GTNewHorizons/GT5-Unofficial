@@ -23,8 +23,8 @@ public class AssemblyLineServer {
 
     /// The material-name token substituted into a generated item or ore block's server-side name, or null
     /// when the id slot never yielded items -- empty, or its material's parent mod absent
-    /// (`Materials#mHasParentMod`), which left the slot without items or names. These tokens feed
-    /// assembly-line data packets, so they must be byte-identical to the legacy `Materials#mName`;
+    /// (`Materials2ParentMods#hasParentMod`), which left the slot without items or names. These tokens feed
+    /// assembly-line data packets, so they must be byte-identical to the legacy internal name;
     /// [MU#legacyName] resolves exactly that string, including the LEGACY_NAME divergents.
     private static @Nullable String generatedMaterialName(int id) {
         Material material = MU.byId(id);

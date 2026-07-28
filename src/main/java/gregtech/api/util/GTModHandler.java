@@ -188,7 +188,7 @@ public class GTModHandler {
     /**
      * Returns a Liquid Stack with given amount of Water.
      *
-     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
+     * @deprecated Use {@link GTUtility#getWater} directly.
      */
     @Deprecated
     public static FluidStack getWater(long aAmount) {
@@ -232,7 +232,7 @@ public class GTModHandler {
     /**
      * Returns a Liquid Stack with given amount of Lava.
      *
-     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
+     * @deprecated Use {@link GTUtility#getLava} directly.
      */
     @Deprecated
     public static FluidStack getLava(long aAmount) {
@@ -264,7 +264,7 @@ public class GTModHandler {
     /**
      * Returns a Liquid Stack with given amount of Steam.
      *
-     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
+     * @deprecated Use {@link MU#gas} with the desired material instead.
      */
     @Deprecated
     public static FluidStack getSteam(long aAmount) {
@@ -274,7 +274,7 @@ public class GTModHandler {
     /**
      * Returns a Liquid Stack with given amount of Milk.
      *
-     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
+     * @deprecated Use {@link MaterialLibAPI#getFluidStack} with the desired material instead.
      */
     @Deprecated
     public static FluidStack getMilk(long aAmount) {
