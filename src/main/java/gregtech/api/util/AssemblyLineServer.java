@@ -25,12 +25,12 @@ public class AssemblyLineServer {
     /// when the id slot never yielded items -- empty, or its material's parent mod absent
     /// (`Materials2ParentMods#hasParentMod`), which left the slot without items or names. These tokens feed
     /// assembly-line data packets, so they must be byte-identical to the legacy internal name;
-    /// [MU#legacyName] resolves exactly that string, including the LEGACY_NAME divergents.
+    /// [MU#internalName] resolves exactly that string, including the LEGACY_NAME divergents.
     private static @Nullable String generatedMaterialName(int id) {
         Material material = MU.byId(id);
         if (material == null) return null;
         if (!Materials2ParentMods.hasParentMod(material)) return null;
-        return MU.legacyName(material);
+        return MU.internalName(material);
     }
 
     public static void fillMap(FMLPreInitializationEvent aEvent) {

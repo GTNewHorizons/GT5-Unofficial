@@ -73,40 +73,32 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
     private boolean registerStandardOreRecipes(OrePrefixes prefix, Material material, ItemStack oreStack,
         int multiplier) {
         if ((oreStack == null) || (material == null)) return false;
-        Material tMaterial = MUOre.oreReplacement(material);
         Material tPrimaryByMaterial = null;
         multiplier = Math.max(1, multiplier);
         oreStack = GTUtility.copyAmount(1, oreStack);
         oreStack.stackSize = 1;
         ItemStack tIngot = GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(material), 1L);
-        ItemStack tGem = GTOreDictUnificator.get(OrePrefixes.gem, tMaterial, 1L);
-        ItemStack tSmeltInto = tIngot
-            == null
-                ? null
-                : MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
-                    ? GTOreDictUnificator.get(
-                        OrePrefixes.gem,
-                        MU.directSmelting(tMaterial),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.crystal,
-                            MU.directSmelting(tMaterial),
-                            GTOreDictUnificator.get(
-                                OrePrefixes.gem,
-                                tMaterial,
-                                GTOreDictUnificator.get(OrePrefixes.crystal, tMaterial, 1L),
-                                1L),
-                            1L),
-                        1L)
-                    : tIngot;
-        ItemStack tDust = GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, tGem, 1L);
-        ItemStack tCleaned = GTOreDictUnificator.get(OrePrefixes.crushedPurified, tMaterial, tDust, 1L);
-        ItemStack tCrushed = GTOreDictUnificator.get(OrePrefixes.crushed, tMaterial, MUOre.oreMultiplier(material));
+        ItemStack tGem = GTOreDictUnificator.get(OrePrefixes.gem, material, 1L);
+        ItemStack tSmeltInto = tIngot == null ? null
+            : MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM) ? GTOreDictUnificator.get(
+                OrePrefixes.gem,
+                MU.directSmelting(material),
+                GTOreDictUnificator.get(
+                    OrePrefixes.crystal,
+                    MU.directSmelting(material),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.gem, material, GTOreDictUnificator.get(OrePrefixes.crystal, material, 1L), 1L),
+                    1L),
+                1L) : tIngot;
+        ItemStack tDust = GTOreDictUnificator.get(OrePrefixes.dust, material, tGem, 1L);
+        ItemStack tCleaned = GTOreDictUnificator.get(OrePrefixes.crushedPurified, material, tDust, 1L);
+        ItemStack tCrushed = GTOreDictUnificator.get(OrePrefixes.crushed, material, MUOre.oreMultiplier(material));
         ItemStack tPrimaryByProduct = null;
 
         if (tCrushed == null) {
             tCrushed = GTOreDictUnificator.get(
                 OrePrefixes.dustImpure,
-                tMaterial,
+                material,
                 GTUtility.copyAmount(MUOre.oreMultiplier(material), tCleaned, tDust, tGem),
                 MUOre.oreMultiplier(material));
         }
@@ -124,7 +116,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .get(OrePrefixes.dustTiny, tMat, GTOreDictUnificator.get(OrePrefixes.nugget, tMat, 2L), 2L);
         }
 
-        if (tPrimaryByMaterial == null) tPrimaryByMaterial = tMaterial;
+        if (tPrimaryByMaterial == null) tPrimaryByMaterial = material;
         if (tPrimaryByProduct == null) tPrimaryByProduct = tDust;
         boolean tHasSmelting = false;
 
@@ -202,7 +194,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 oreStack,
                 GTOreDictUnificator.get(
                     OrePrefixes.gem,
-                    MU.directSmelting(tMaterial),
+                    MU.directSmelting(material),
                     Math.max(1, MUOre.smeltingMultiplier(material) / 2)));
         }
 
@@ -225,7 +217,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .itemInputs(oreStack)
                 .itemOutputs(
                     GTUtility.mul(2, tCrushed),
-                    MU.hasFlag(tMaterial, GTMaterialFlag.PULVERIZING_CINNABAR) ? GTOreDictUnificator.get(
+                    MU.hasFlag(material, GTMaterialFlag.PULVERIZING_CINNABAR) ? GTOreDictUnificator.get(
                         OrePrefixes.crystal,
                         Materials2Materials.Cinnabar,
                         GTOreDictUnificator

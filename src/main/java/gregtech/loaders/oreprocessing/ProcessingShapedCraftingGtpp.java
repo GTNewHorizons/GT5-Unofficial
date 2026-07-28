@@ -10,6 +10,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 
 /// Reproduces the retired gtPlusPlus `RecipeGenShapedCrafting` for every material in [#ELIGIBLE]: the
@@ -62,7 +63,7 @@ public class ProcessingShapedCraftingGtpp {
     }
 
     private static void generate(Material material) {
-        if (voltageMultiplier(material) > TierEU.RECIPE_IV) return;
+        if (MU.voltageMultiplier(material) > TierEU.RECIPE_IV) return;
         boolean radioactive = isRadioactive(material);
 
         ItemStack ingot = ProcessingDustGeneration.stackOf(OrePrefixes.ingot, material, 1L);
@@ -135,10 +136,5 @@ public class ProcessingShapedCraftingGtpp {
 
     private static boolean isRadioactive(Material material) {
         return Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.IS_RADIOACTIVE));
-    }
-
-    private static long voltageMultiplier(Material material) {
-        Long multiplier = material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
-        return multiplier != null ? multiplier : 16L;
     }
 }

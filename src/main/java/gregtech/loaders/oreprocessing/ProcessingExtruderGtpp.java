@@ -12,7 +12,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 
 /// Reproduces the retired gtPlusPlus `RecipeGenExtruder` for every material in [#ELIGIBLE]: the block-to-ingot
@@ -83,12 +82,7 @@ public class ProcessingExtruderGtpp {
             .itemInputs(block, ItemList.Shape_Extruder_Ingot.get(0))
             .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.ingot, material, 9L))
             .duration((int) Math.max(MU.mass(material) * 2L, 1L))
-            .eut(voltageMultiplier(material))
+            .eut(MU.voltageMultiplier(material))
             .addTo(extruderRecipes);
-    }
-
-    private static long voltageMultiplier(Material material) {
-        Long multiplier = material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
-        return multiplier != null ? multiplier : 16L;
     }
 }

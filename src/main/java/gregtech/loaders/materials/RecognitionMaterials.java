@@ -127,7 +127,6 @@ public class RecognitionMaterials {
                         "gregtech",
                         m.name(),
                         com.ruling_0.materiallib.api.TextureSet.of("gregtech", m.textureSet().mSetName))
-                    .setProperty(GTMaterialProperties.LEGACY_NAME, m.name())
                     .setProperty(GTMaterialProperties.LOCAL_NAME, m.localName())
                     .setProperty(GTMaterialProperties.ARGB, m.argb())
                     .setProperty(GTMaterialProperties.UNIFIABLE, m.unifiable());

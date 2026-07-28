@@ -283,9 +283,9 @@ public class GTPreLoad {
                                 if (mlMaterial != null && Materials2ParentMods.hasParentMod(mlMaterial)) {
                                     final String tag;
                                     if (tags.length > prefix) {
-                                        tag = tags[prefix] + MU.legacyName(mlMaterial);
+                                        tag = tags[prefix] + MU.internalName(mlMaterial);
                                     } else {
-                                        tag = MU.legacyName(mlMaterial);
+                                        tag = MU.internalName(mlMaterial);
                                     }
                                     if (!oreTags.contains(tag)) oreTags.add(tag);
                                 } else if (material > 0) {

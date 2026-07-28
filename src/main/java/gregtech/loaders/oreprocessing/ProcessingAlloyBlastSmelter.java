@@ -94,7 +94,7 @@ public class ProcessingAlloyBlastSmelter {
             int totalParts = composites.stream()
                 .mapToInt(Component::parts)
                 .sum();
-            int tier = Math.max(1, tierOf(material));
+            int tier = Math.max(1, MU.tier(material));
             int duration = tier <= 4 ? 20 * tier * 10 : 120 * tier * 10;
             composite(material, composites, totalParts, GTValues.VP[tier], duration);
         }
@@ -135,10 +135,10 @@ public class ProcessingAlloyBlastSmelter {
             if (!Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED))) continue;
             ItemStack dust = MU.stack(OrePrefixes.dust, material, 1);
             if (dust == null) continue;
-            FluidStack fluidOutput = materialFluid(material, 144);
+            FluidStack fluidOutput = MU.legacyGtppFluid(material, 144);
             if (fluidOutput == null) continue;
 
-            int tier = Math.max(1, tierOf(material));
+            int tier = Math.max(1, MU.tier(material));
             int duration = tier <= 4 ? 20 * tier * 10 : 120 * tier * 10;
             int totalParts = Materials2GtppComposites.composites(material)
                 .stream()
@@ -170,7 +170,7 @@ public class ProcessingAlloyBlastSmelter {
             if (dust != null) {
                 items[i] = dust;
             } else if (parts > 0 && parts <= 100) {
-                componentFluid = materialFluid(component.material(), parts * 1000L);
+                componentFluid = MU.legacyGtppFluid(component.material(), parts * 1000L);
             }
         }
 
@@ -184,21 +184,13 @@ public class ProcessingAlloyBlastSmelter {
         if (count < 9) builder.circuit(count);
         if (componentFluid != null) builder.fluidInputs(componentFluid);
         boolean ebf = Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
-        builder.fluidOutputs(materialFluid(material, 144L * totalParts))
+        builder.fluidOutputs(MU.legacyGtppFluid(material, 144L * totalParts))
             .eut(ebf ? voltage : voltage / 2)
             .duration(duration)
             .addTo(alloyBlastSmelterRecipes);
     }
 
     /// A material's single registered fluid -- see [MU#legacyGtppFluid].
-    private static FluidStack materialFluid(Material material, long amount) {
-        return MU.legacyGtppFluid(material, amount);
-    }
-
-    private static int tierOf(Material material) {
-        Integer tier = material.getProperty(GTMaterialProperties.TIER);
-        return tier != null ? tier : 0;
-    }
 
     private static Map<String, FluidStack> ingotToFluid;
     private static Map<String, String> hotToCold;

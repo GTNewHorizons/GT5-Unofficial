@@ -566,13 +566,13 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         aNBT.setInteger("burnedfuels", this.mStoredBurnedFuels.size());
         int i = 0;
         for (Map.Entry<Material, Double> entry : this.mStoredFuels.entrySet()) {
-            aNBT.setString("fuels" + i, MU.legacyName(entry.getKey()));
+            aNBT.setString("fuels" + i, MU.internalName(entry.getKey()));
             aNBT.setDouble("fuelsamount" + i, entry.getValue());
             i++;
         }
         i = 0;
         for (Map.Entry<Material, Double> entry : this.mStoredBurnedFuels.entrySet()) {
-            aNBT.setString("burnedfuels" + i, MU.legacyName(entry.getKey()));
+            aNBT.setString("burnedfuels" + i, MU.internalName(entry.getKey()));
             aNBT.setDouble("burnedfuelsamount" + i, entry.getValue());
             i++;
         }

@@ -20,7 +20,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
-import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPDropType;
@@ -118,8 +118,8 @@ public class GTPPComb extends Item {
 
     public static void addChemicalRecipe(GTPPCombType aInputStack, ItemStack[] aOutputs, int[] aChances) {
         Material aMat = aInputStack.mMaterial;
-        long aEU = voltageMultiplierOf(aMat);
-        int aTier = Math.max(tierOf(aMat) / 2, 1);
+        long aEU = MU.voltageMultiplier(aMat);
+        int aTier = Math.max(MU.tier(aMat) / 2, 1);
         GTValues.RA.stdBuilder()
             .itemInputs(aInputStack.getStackForType(aTier))
             .itemOutputs(aOutputs)
@@ -129,13 +129,4 @@ public class GTPPComb extends Item {
             .addTo(chemicalPlantRecipes);
     }
 
-    private static int tierOf(Material material) {
-        Integer tier = material.getProperty(GTMaterialProperties.TIER);
-        return tier == null ? 0 : tier;
-    }
-
-    private static long voltageMultiplierOf(Material material) {
-        Long voltageMultiplier = material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
-        return voltageMultiplier == null ? 16L : voltageMultiplier;
-    }
 }

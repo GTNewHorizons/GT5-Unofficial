@@ -30,7 +30,7 @@ public class MaterialDumper extends GregTechIDDumper {
             if (mode == Mode.FREE && !used) {
                 dump.add(new String[] { String.valueOf(i), "", });
             } else if (mode == Mode.USED && used) {
-                dump.add(new String[] { String.valueOf(i), MU.legacyName(material), });
+                dump.add(new String[] { String.valueOf(i), MU.internalName(material), });
             }
         }
         return dump;

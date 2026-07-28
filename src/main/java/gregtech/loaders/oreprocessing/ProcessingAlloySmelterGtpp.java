@@ -12,7 +12,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 
 /// Reproduces the retired gtPlusPlus `RecipeGenAlloySmelter` for every material in [#ELIGIBLE]: the
@@ -64,7 +63,7 @@ public class ProcessingAlloySmelterGtpp {
 
     private static void generate(Material material) {
         long duration = Math.max(MU.mass(material) * 2L, 1L);
-        long voltage = voltageMultiplier(material);
+        long voltage = MU.voltageMultiplier(material);
 
         ItemStack ingot = ProcessingDustGeneration.stackOf(OrePrefixes.ingot, material, 1L);
         ItemStack nugget = ProcessingDustGeneration.stackOf(OrePrefixes.nugget, material, 1L);
@@ -100,10 +99,5 @@ public class ProcessingAlloySmelterGtpp {
                 .eut(voltage)
                 .addTo(alloySmelterRecipes);
         }
-    }
-
-    private static long voltageMultiplier(Material material) {
-        Long multiplier = material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
-        return multiplier != null ? multiplier : 16L;
     }
 }

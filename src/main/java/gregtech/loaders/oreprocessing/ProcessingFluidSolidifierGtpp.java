@@ -14,7 +14,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 
 /// Reproduces the retired gtPlusPlus `RecipeGenFluids` for every material in [#ELIGIBLE]: the mold-plus-fluid
@@ -80,7 +79,7 @@ public class ProcessingFluidSolidifierGtpp {
     }
 
     private static void generate(Material material) {
-        if (materialFluid(material, 1) == null) return;
+        if (MU.legacyGtppFluid(material, 1) == null) return;
 
         solidify(material, OrePrefixes.ingot, ItemList.Shape_Mold_Ingot, 1, 144, 3 * SECONDS);
         solidify(material, OrePrefixes.plate, ItemList.Shape_Mold_Plate, 1, 144, 3 * SECONDS);
@@ -100,7 +99,7 @@ public class ProcessingFluidSolidifierGtpp {
         int fluidAmount, int duration) {
         ItemStack output = ProcessingDustGeneration.stackOf(shapePrefix, material, shapeAmount);
         if (output == null) return;
-        FluidStack fluid = materialFluid(material, fluidAmount);
+        FluidStack fluid = MU.legacyGtppFluid(material, fluidAmount);
         if (fluid == null) return;
 
         GTValues.RA.stdBuilder()
@@ -108,16 +107,8 @@ public class ProcessingFluidSolidifierGtpp {
             .itemOutputs(output)
             .fluidInputs(fluid)
             .duration(duration)
-            .eut(voltageMultiplier(material))
+            .eut(MU.voltageMultiplier(material))
             .addTo(fluidSolidifierRecipes);
     }
 
-    private static FluidStack materialFluid(Material material, long amount) {
-        return MU.legacyGtppFluid(material, amount);
-    }
-
-    private static long voltageMultiplier(Material material) {
-        Long multiplier = material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
-        return multiplier != null ? multiplier : 16L;
-    }
 }

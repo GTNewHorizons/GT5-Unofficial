@@ -2,17 +2,15 @@ package gregtech.api.material;
 
 import com.github.bsideup.jabel.Desugar;
 
-/// The legacy fluids a material declares, one slot per state; a null slot means the legacy material never
-/// registered a fluid for that state. Stages 04 and 06 consume this to recreate the same fluids byte-identical
-/// to the legacy system.
+/// The Forge fluid a material declares for each state; a null slot means the material has no fluid in that
+/// state. [gregtech.api.enums.materials2.Materials2FluidShapes] and
+/// `gregtech.loaders.preload.LoaderGTBlockFluid` register fluids under exactly these names, which world NBT
+/// resolves fluid stacks against.
 @Desugar
 public record FluidNames(FluidRef solid, FluidRef fluid, FluidRef gas, FluidRef plasma, FluidRef molten) {
 
-    /// The name a legacy gtPlusPlus `Material#performFluidAndCellRegistration` would have registered this
-    /// material's non-plasma fluid under -- `molten` for a solid/liquid material's `molten.<name>` fluid,
-    /// else `fluid`, else `gas` (verified against every gtpp-carrying material's pinned dump to reproduce the
-    /// legacy `Material.vFluidName`/`fluidName` value exactly, with zero exceptions). Null when none of the
-    /// three slots are set.
+    /// The name of a gtPlusPlus-originated material's non-plasma fluid: `molten` first, else `fluid`, else
+    /// `gas`. Null when none of the three slots is set.
     public String legacyGtppFluidName() {
         if (molten != null) return molten.name();
         if (fluid != null) return fluid.name();

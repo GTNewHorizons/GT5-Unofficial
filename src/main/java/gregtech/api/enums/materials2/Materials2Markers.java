@@ -86,7 +86,6 @@ public class Materials2Markers {
                             "gregtech",
                             sc.internalName(),
                             com.ruling_0.materiallib.api.TextureSet.of("gregtech", TextureSet.SET_SHINY.mSetName))
-                        .setProperty(GTMaterialProperties.LEGACY_NAME, sc.internalName())
                         .setProperty(GTMaterialProperties.LOCAL_NAME, sc.localName())
                         .setProperty(GTMaterialProperties.ARGB, sc.argb())
                         .build());
@@ -140,7 +139,6 @@ public class Materials2Markers {
         if (existing != null) return existing;
         com.ruling_0.materiallib.api.MaterialBuilder builder = MaterialLibAPI
             .newMaterial("gregtech", name, com.ruling_0.materiallib.api.TextureSet.of("gregtech", texture.mSetName))
-            .setProperty(GTMaterialProperties.LEGACY_NAME, name)
             .setProperty(GTMaterialProperties.LOCAL_NAME, localName)
             .setProperty(GTMaterialProperties.ARGB, DEFAULT_ARGB)
             .setProperty(GTMaterialProperties.UNIFIABLE, false);

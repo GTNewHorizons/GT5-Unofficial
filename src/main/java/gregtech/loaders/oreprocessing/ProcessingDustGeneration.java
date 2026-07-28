@@ -15,7 +15,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -177,26 +176,16 @@ public class ProcessingDustGeneration {
     }
 
     private static void addBlastFurnaceRecipe(Material material, ItemStack input, ItemStack output) {
-        int tier = tierOf(material);
+        int tier = MU.tier(material);
         int timeTaken = tier <= 4 ? 25 * tier * 10 : 125 * tier * 10;
 
         GTValues.RA.stdBuilder()
             .itemInputs(input)
             .itemOutputs(output)
             .duration(timeTaken)
-            .eut(voltageMultiplier(material))
+            .eut(MU.voltageMultiplier(material))
             .metadata(COIL_HEAT, MU.meltingPoint(material))
             .addTo(blastFurnaceRecipes);
-    }
-
-    private static int tierOf(Material material) {
-        Integer tier = material.getProperty(GTMaterialProperties.TIER);
-        return tier != null ? tier : 0;
-    }
-
-    private static long voltageMultiplier(Material material) {
-        Long multiplier = material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
-        return multiplier != null ? multiplier : 16L;
     }
 
     /// A material's stack for `prefix`: the MaterialLib-backed one when the material generates that shape,

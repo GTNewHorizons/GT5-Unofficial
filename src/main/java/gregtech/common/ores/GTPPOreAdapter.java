@@ -107,8 +107,7 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
     /// `Math.min(Math.max(material.vTier, 1), 6)` for every material via its `BasicBlock` mining-level
     /// constructor argument, a flat per-material formula unlike GT's/BW's own.
     public int harvestLevel(Material material) {
-        Integer tier = material.getProperty(GTMaterialProperties.TIER);
-        return Math.min(Math.max(tier == null ? 0 : tier, 1), 6);
+        return Math.min(Math.max(MU.tier(material), 1), 6);
     }
 
     /// Whether a MaterialLib material belongs to the gtPlusPlus ore family -- carries

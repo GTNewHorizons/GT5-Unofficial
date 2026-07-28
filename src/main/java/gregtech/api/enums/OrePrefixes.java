@@ -2992,7 +2992,7 @@ public class OrePrefixes {
     }
 
     public static Material getRealMaterial(String oreName, OrePrefixes prefix) {
-        return MU.materialInto(LegacyNameDomain.lookup(oreName.replaceFirst(prefix.toString(), "")));
+        return LegacyNameDomain.lookup(oreName.replaceFirst(prefix.toString(), ""));
     }
 
     /// Removes a [Material] from [#mDisabledItems] if present.
