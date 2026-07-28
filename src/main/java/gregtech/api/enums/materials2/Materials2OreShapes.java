@@ -16,12 +16,8 @@ import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.GTPPOreAdapter;
 
-/// Hand-maintained block [Shape] declarations for GT's ores (unlike [Materials2Shapes], not
-/// `gen_shapes.py`-generated: `ore`/`oreSmall` are block-kind, which that generator excludes -- see
-/// `scripts/mu/gen_shapes.py`'s `is_block_kind`). Membership is driven by the dumped `generatedPrefixes`
-/// ground truth (see `scripts/mu/gen_materials.py`'s `ore_shape_lines`), same as any other capability-bit
-/// prefix; unlike `block`, `ore`/`oreSmall` carry a real generation bit (`ORE`) so no `legacy-blocks.json`-style
-/// curated membership dump was needed.
+/// Hand-maintained block [Shape] declarations for GT's ores. Unlike `block`, `ore` and `oreSmall` carry a real
+/// generation bit (`ORE`), so membership follows the capability-bit pipeline rather than a curated list.
 ///
 /// Variants are named after [StoneType]'s enum constants, lowercased, in declaration order -- see
 /// [#STONE_TYPE_NAMES]. This name list is fixed permanently once shipped: a variant name is part of a placed

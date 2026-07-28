@@ -8,12 +8,10 @@ import gregtech.common.blocks.GTStorageShapeBlock;
 import gregtech.common.blocks.SheetmetalShapeBlock;
 
 /// Hand-maintained block [Shape] declarations for GT's compressed storage blocks and the decorative sheetmetal
-/// block (unlike [Materials2Shapes], not `gen_shapes.py`-generated: `block` is block-kind, which that generator
-/// excludes -- see `scripts/mu/gen_shapes.py`'s `is_block_kind`). `block`'s membership is driven by
-/// `dumps/legacy-blocks.json`, captured directly from the legacy `gregtech.common.blocks.BlockMetal` instances
-/// (see `MaterialDataDump#dumpLegacyBlocks`), since the `block` `OrePrefixes` entry generates through a
-/// hand-curated per-instance `Materials[]` array rather than the generic capability-bit pipeline every other
-/// prefix uses (its dumped `generationBits` is `0`). `sheetmetal` generates through that generic pipeline, same
+/// block. `block`'s membership is a curated list rather than a capability-bit query, because the `block`
+/// `OrePrefixes` entry generates through a per-instance `Materials[]` array on each
+/// `gregtech.common.blocks.BlockMetal` rather than the generic pipeline every other prefix uses (its
+/// `generationBits` is `0`). `sheetmetal` generates through that generic pipeline, same
 /// as the pipe/frame shapes in [Materials2PipeShapes].
 public class Materials2BlockShapes {
 
