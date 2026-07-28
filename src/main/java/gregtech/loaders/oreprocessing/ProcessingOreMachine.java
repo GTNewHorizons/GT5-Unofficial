@@ -110,7 +110,6 @@ public class ProcessingOreMachine {
         Material bonusA = null;
         Material bonusB = null;
 
-        // Setup Bonuses
         List<Material> aMatComp = new ArrayList<>(compoundMaterialsRecursively(material));
         while (aMatComp.size() < 3) {
             aMatComp.add(material);
@@ -175,7 +174,6 @@ public class ProcessingOreMachine {
         ItemStack matDustA = getDust(bonusA);
         ItemStack matDustB = getDust(bonusB);
 
-        // Macerate ore to Crushed
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.ore, material, 1))
             .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 2), matDustA, dustStone)
@@ -184,7 +182,6 @@ public class ProcessingOreMachine {
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
-        // Macerate raw ore to Crushed
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.rawOre, material, 1))
             .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 2), matDustA, dustStone)
@@ -193,7 +190,6 @@ public class ProcessingOreMachine {
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
-        // Macerate Crushed to Impure Dust
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 1))
             .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.dustImpure, material, 1), matDustA)
@@ -202,7 +198,6 @@ public class ProcessingOreMachine {
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
-        // Macerate Washed to Purified Dust
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, material, 1))
             .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.dustPure, material, 1), matDustA)
@@ -211,7 +206,6 @@ public class ProcessingOreMachine {
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
-        // Macerate Centrifuged to Pure Dust
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushedCentrifuged, material, 1))
             .itemOutputs(matDust, matDustA)
@@ -220,7 +214,6 @@ public class ProcessingOreMachine {
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
-        // Wash
         RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 1))
             .itemOutputs(
@@ -245,7 +238,6 @@ public class ProcessingOreMachine {
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(oreWasherRecipes);
 
-        // Thermal Centrifuge
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 1))
             .itemOutputs(
@@ -268,7 +260,6 @@ public class ProcessingOreMachine {
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
 
-        // Forge Hammer
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushedCentrifuged, material, 1))
             .itemOutputs(matDust)
@@ -297,7 +288,6 @@ public class ProcessingOreMachine {
             .eut(tVoltageMultiplier / 4)
             .addTo(hammerRecipes);
 
-        // Centrifuge
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.dustPure, material, 1))
             .itemOutputs(matDust, matDustA)
@@ -314,7 +304,6 @@ public class ProcessingOreMachine {
             .duration((int) Math.max(1L, MU.mass(material) * 8L))
             .addTo(centrifugeRecipes);
 
-        // Electrolyzer / Chemical Dehydrator
         if (!disableOptional) {
             if (!componentMap.isEmpty() && componentMap.size() <= 6) {
                 registerDecomposition(material, componentMap, 6, false, tVoltageMultiplier);

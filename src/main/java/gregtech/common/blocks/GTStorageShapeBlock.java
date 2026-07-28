@@ -26,9 +26,8 @@ public class GTStorageShapeBlock extends ShapeBlock {
         super(modid, name, displayNameFormat, oreDicts);
     }
 
-    /// The converted legacy per-material storage-block art (`scripts/mu/convert_textures.py`'s
-    /// `convert_per_material_blocks`), keyed by the material's legacy name rather than its MaterialLib one --
-    /// legacy art is per-material, not per-texture-set, and the two names can differ (a unified material takes
+    /// The per-material storage-block art, keyed by the material's legacy name rather than its MaterialLib
+    /// one: the art is per-material, not per-texture-set, and the two names can differ (a unified material takes
     /// its canonical name from whichever legacy material won unification). [MU#internalName] yields that legacy
     /// name (the legacy `mName`); a material whose converted art file does not exist falls back to this shape's
     /// texture-set candidates.

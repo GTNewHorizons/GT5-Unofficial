@@ -114,7 +114,7 @@ public class GTMaterialProperties {
     public static final Property<Integer> MIX_CIRCUIT = Property.of("gregtech", "mixCircuit");
     /// The material's true legacy `mName`, when it contains characters `Names#validate` rejects (`:` or
     /// whitespace, e.g. `"Computation Base"`) and MaterialLib's own registration name is therefore a sanitized
-    /// variant. Absent when the two already match -- see `ml_name()` in `scripts/mu/gen_materials.py`.
+    /// variant. Absent when the two already match.
     public static final Property<String> LEGACY_NAME = Property.of("gregtech", "legacyName");
     public static final Property<Integer> MELTING_POINT = Property.of("gregtech", "meltingPoint");
     /// The EU/t voltage tier the auto-generated blast furnace recipe should require, elided when unset.

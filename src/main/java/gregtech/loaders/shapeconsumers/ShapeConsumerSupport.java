@@ -18,9 +18,8 @@ import gregtech.api.material.MU;
 /// counterpart already implements, resolving the canonical stack through [MaterialLibAPI] instead of an
 /// oredict event.
 ///
-/// The `Processing*` class itself is untouched: it keeps running through the legacy oredict-event path
-/// (`gregtech.common.OreDictEventContainer`) for foreign mods' items of the same prefix, and only stops seeing
-/// MaterialLib's own items once that path is taught to skip them.
+/// Each `Processing*` class also runs through the oredict-event path (`gregtech.common.OreDictEventContainer`)
+/// for foreign mods' items of the same prefix.
 final class ShapeConsumerSupport {
 
     private ShapeConsumerSupport() {}
@@ -28,9 +27,7 @@ final class ShapeConsumerSupport {
     /// Registers `registrator` to run once per material generating `shape`, at MaterialLib's postInit, passing
     /// the MaterialLib material straight through to `registrator`'s
     /// [IOreRecipeRegistrator#registerOre(OrePrefixes, com.ruling_0.materiallib.api.Material, String, String,
-    /// ItemStack)] entry. A shape/material pair with no resolvable stack is skipped rather than failing the
-    /// whole dispatch -- see [ShapeConsumerSupport] for why this should not happen for a `"gregtech"`-owned
-    /// shape in practice.
+    /// ItemStack)] entry. A shape/material pair with no resolvable stack is skipped.
     ///
     /// Dispatch is postInit, not init: several `Processing*` bodies transitively class-load
     /// [gregtech.api.util.GTRecipeConstants], whose static initializer reads material data that

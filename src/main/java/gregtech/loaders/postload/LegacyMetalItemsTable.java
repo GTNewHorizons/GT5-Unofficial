@@ -10,9 +10,8 @@ import gregtech.api.material.MU;
 /// the legacy per-material framebox items existed exactly for this set, and foreign item ids sharing the
 /// framebox damage range (e.g. DEFC overlapping the Bastnasite slot) must not be migrated.
 ///
-/// Rows transcribe the live `METAL` generation flag over the id space at the spine cutover
-/// (`scripts/mu/dumps/gt-materials.json` `generationFlags`, cross-checked identical against the
-/// `GENERATION_FLAGS` capture in `ml-materials.json`), declared in ascending id order.
+/// Rows are the materials whose [gregtech.api.material.GTMaterialProperties#GENERATION_FLAGS] carry `METAL`,
+/// declared in ascending id order.
 public final class LegacyMetalItemsTable {
 
     private static final boolean[] IDS = build();

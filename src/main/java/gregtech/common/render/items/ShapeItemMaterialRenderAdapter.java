@@ -7,15 +7,14 @@ import com.ruling_0.materiallib.api.ShapeItem;
 
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 
-/// Adapts a MaterialLib {@link ShapeItem} to the legacy {@link IGT_ItemWithMaterialRenderer} surface the
-/// {@link GeneratedMaterialRenderer} family reads from, so a material's special renderer (assigned through
-/// {@link gregtech.api.material.MU#recordRenderer}) keeps working once that material's item shapes cut over
-/// from {@code MetaGeneratedItem} to MaterialLib. See {@link IGT_ItemWithMaterialRenderer#resolve} for
-/// construction.
+/// Adapts a MaterialLib [ShapeItem] to the [IGT_ItemWithMaterialRenderer] surface the
+/// [GeneratedMaterialRenderer] family reads from, so a material's special renderer (assigned through
+/// [gregtech.api.material.MU#recordRenderer]) works on shape-backed items. See
+/// [IGT_ItemWithMaterialRenderer#resolve] for construction.
 ///
 /// A shape item has no per-pass icon list -- only a base icon and an optional overlay -- so this always reports
 /// a single render pass and folds the base/overlay distinction into that one pass, matching how
-/// {@link GeneratedMaterialRenderer} already treats a single non-multi-pass item.
+/// [GeneratedMaterialRenderer] already treats a single non-multi-pass item.
 public final class ShapeItemMaterialRenderAdapter implements IGT_ItemWithMaterialRenderer {
 
     private final ShapeItem item;

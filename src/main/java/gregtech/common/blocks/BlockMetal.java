@@ -22,9 +22,8 @@ import gregtech.api.util.GTOreDictUnificator;
 /// in `LoaderGTBlockFluid` regardless of whether any of its materials cut over to the MaterialLib `block` shape
 /// (see [gregtech.api.enums.materials2.Materials2BlockShapes]) -- unlike the item cutover, which skips
 /// constructing a legacy slot entirely, several of these 13 instances are hard-referenced by `Block` identity
-/// from multiblock casing matchers, a machine-block-update listener, and a client-side icon fallback (see
-/// `scripts/mu/gen_materials.py`'s `BLOCK_CUTOVER_EXCLUDED`), so the instances themselves must keep existing and
-/// registering exactly as before for every material, cut over or not. Only the canonical
+/// from multiblock casing matchers, a machine-block-update listener, and a client-side icon fallback, so the
+/// instances themselves must keep existing and registering for every material, cut over or not. Only the canonical
 /// [gregtech.api.util.GTOreDictUnificator] association moves to the MaterialLib stack for a cut-over material's
 /// slot (and that slot is hidden from NEI); the legacy item and block remain fully functional at every slot.
 public class BlockMetal extends BlockStorage {

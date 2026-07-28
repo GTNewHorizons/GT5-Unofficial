@@ -15,9 +15,9 @@ import gregtech.api.material.FluidNames;
 import gregtech.api.material.FluidRef;
 import gregtech.api.material.GTMaterialProperties;
 
-/// Hand-maintained fluid [Shape] declarations (unlike [Materials2Shapes], not `gen_shapes.py`-generated: there
-/// are few, and each needs a per-slot [FluidRef] extractor rather than a uniform mapping). One shape per legacy
-/// [GTMaterialProperties#LEGACY_FLUIDS] slot (solid/fluid/gas/plasma/molten) plus the six cracked-fluid slots.
+/// Hand-maintained fluid [Shape] declarations, one per [GTMaterialProperties#LEGACY_FLUIDS] slot
+/// (solid/fluid/gas/plasma/molten) plus the six cracked-fluid slots. Each needs its own [FluidRef] extractor
+/// rather than a uniform mapping.
 ///
 /// Each shape's `FluidNamer` returns the exact legacy dumped fluid name and its `FluidConfigurer` reproduces
 /// `GTFluid#configureFromStateTemperature`'s temperature/gaseous/density/viscosity/luminosity attributes, so a
