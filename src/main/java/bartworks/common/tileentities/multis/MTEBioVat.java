@@ -344,6 +344,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
         if (!(aMetaTileEntity instanceof MTERadioHatch radioHatch)) {
             return false;
         } else {
+            addIfSmartInput(radioHatch);
             radioHatch.updateTexture(CasingIndex);
             return this.mRadHatches.add(radioHatch);
         }
@@ -639,9 +640,6 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (this.height != this.reCalculateHeight()) this.needsVisualUpdate = true;
-        this.doAllVisualThings();
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mRadHatches.size() == 1) {
                 this.mSievert = this.mRadHatches.get(0)
@@ -655,6 +653,10 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                 this.mMaxProgresstime = 0;
             }
         }
+
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (this.height != this.reCalculateHeight()) this.needsVisualUpdate = true;
+        this.doAllVisualThings();
     }
 
     @Override
