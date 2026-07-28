@@ -40,7 +40,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
 import gregtech.api.events.OreDrillScanEvent;
-import gregtech.api.events.OreDrillScanEvent.ScanType;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -337,9 +336,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         return tryProcessOreList();
     }
 
-    private void postScanEvent(ScanType scanType, int minX, int minY, int minZ, int maxX, int maxY, int maxZ,
-        LongList orePositions) {
-        if (orePositions.isEmpty() && scanType != ScanType.CHUNK_COLUMN) return;
+    private void postScanEvent(LongList orePositions) {
+        if (orePositions.isEmpty()) return;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base == null) return;
@@ -350,8 +348,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         UUID owner = base.getOwnerUuid();
         if (owner == null) return;
 
-        MinecraftForge.EVENT_BUS
-            .post(new OreDrillScanEvent(world, owner, scanType, minX, minY, minZ, maxX, maxY, maxZ, orePositions));
+        MinecraftForge.EVENT_BUS.post(new OreDrillScanEvent(world, owner, orePositions));
     }
 
     @Override
@@ -997,7 +994,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             }
         }
 
-        postScanEvent(ScanType.CHUNK_COLUMN, minX, yHead, minZ, maxX, yDrill, maxZ, oreBlockPositions);
+        postScanEvent(oreBlockPositions);
     }
 
     private void fillMineListIfEmpty(int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead) {
@@ -1008,15 +1005,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         int firstOre = oreBlockPositions.size();
         tryAddOreBlockToMineList(xPipe, yHead - 1, zPipe);
         if (oreBlockPositions.size() > firstOre) {
-            postScanEvent(
-                ScanType.BLOCK,
-                xPipe,
-                yHead - 1,
-                zPipe,
-                xPipe + 1,
-                yHead,
-                zPipe + 1,
-                oreBlockPositions.subList(firstOre, oreBlockPositions.size()));
+            postScanEvent(oreBlockPositions.subList(firstOre, oreBlockPositions.size()));
         }
         if (yHead == yDrill) return; // skip controller block layer
 
@@ -1029,15 +1018,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                     tryAddOreBlockToMineList(x, yHead, z);
                 }
             }
-            postScanEvent(
-                ScanType.LAYER,
-                startX,
-                yHead,
-                startZ,
-                startX + 16,
-                yHead + 1,
-                startZ + 16,
-                oreBlockPositions.subList(firstOre, oreBlockPositions.size()));
+            postScanEvent(oreBlockPositions.subList(firstOre, oreBlockPositions.size()));
         } else {
             int radius = chunkRadiusConfig << 4;
             for (int xOff = -radius; xOff <= radius; xOff++) {
@@ -1045,15 +1026,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                     tryAddOreBlockToMineList(xDrill + xOff, yHead, zDrill + zOff);
                 }
             }
-            postScanEvent(
-                ScanType.LAYER,
-                xDrill - radius,
-                yHead,
-                zDrill - radius,
-                xDrill + radius + 1,
-                yHead + 1,
-                zDrill + radius + 1,
-                oreBlockPositions.subList(firstOre, oreBlockPositions.size()));
+            postScanEvent(oreBlockPositions.subList(firstOre, oreBlockPositions.size()));
         }
     }
 
