@@ -24,7 +24,6 @@ public class Materials2Families {
     public static Family plasmas;
     public static Family toolParts;
     public static Family gears;
-    public static Family empties;
     // spotless:on
 
     public static void init() {
@@ -109,8 +108,6 @@ public class Materials2Families {
             .build();
         gears = MaterialLibAPI.newFamily("gregtech", "Gears")
             .generateShapes(Materials2Shapes.gearGt, Materials2Shapes.gearGtSmall, Materials2Shapes.rotor)
-            .build();
-        empties = MaterialLibAPI.newFamily("gregtech", "Empties")
             .build();
     }
 

@@ -15,7 +15,6 @@ import gregtech.api.enums.materials2.Materials2GtppComposites;
 import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTRecipeBuilder;
 
@@ -76,7 +75,7 @@ public class ProcessingMixerGtpp implements IOreRecipeRegistrator {
             .itemOutputs(output);
         if (circuit > 0) builder.circuit(circuit);
         builder.duration((int) Math.max(MU.mass(material) * 2L, 1))
-            .eut(voltageMultiplier(material))
+            .eut(MU.voltageMultiplier(material))
             .addTo(mixerRecipes);
     }
 
@@ -91,10 +90,5 @@ public class ProcessingMixerGtpp implements IOreRecipeRegistrator {
             case 3 -> 13;
             default -> -1;
         };
-    }
-
-    private static long voltageMultiplier(Material material) {
-        Long multiplier = material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
-        return multiplier != null ? multiplier : 16L;
     }
 }

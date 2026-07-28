@@ -4,9 +4,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 
-/// Ore-processing accessors for [Material], mirroring [MU]'s accessor pattern -- [GTMaterialProperties]-backed
-/// reads with a documented default, or a direct passthrough for values that never vary from the material
-/// itself.
+/// Ore-processing accessors for [Material], mirroring [MU]'s accessor pattern: [GTMaterialProperties]-backed
+/// reads with a documented default.
 public class MUOre {
 
     private MUOre() {}
@@ -30,11 +29,5 @@ public class MUOre {
         if (material == null) return 1;
         Integer value = material.getProperty(GTMaterialProperties.BYPRODUCT_MULTIPLIER);
         return value == null ? 1 : value;
-    }
-
-    /// The substitute material for the ore-processing byproduct chain (gem/dust/crushed lookups); always
-    /// `material` itself. No [GTMaterialProperties] property backs it.
-    public static @Nullable Material oreReplacement(@Nullable Material material) {
-        return material;
     }
 }

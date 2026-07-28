@@ -95,7 +95,7 @@ public class MTEOilDrillInfiniteLegacy extends MTEOilDrillBase {
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base")
             .addOtherStructurePart(
-                MU.legacyName(getFrameMaterial()) + " Frame Box",
+                MU.internalName(getFrameMaterial()) + " Frame Box",
                 "Each pillar's side and 1x3x1 on top")
             .addEnergyHatch("1x " + VN[getMinTier()] + "+, any base Casing", 1)
             .addMaintenanceHatch("Any base Casing", 1)

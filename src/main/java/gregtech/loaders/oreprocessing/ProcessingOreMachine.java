@@ -104,8 +104,7 @@ public class ProcessingOreMachine {
     }
 
     private static void generate(final Material material, final boolean disableOptional) {
-        Integer tier = material.getProperty(GTMaterialProperties.TIER);
-        int tVoltageMultiplier = voltageForTier(tier != null ? tier : 0);
+        int tVoltageMultiplier = voltageForTier(MU.tier(material));
         final ItemStack dustStone = ProcessingDustGeneration.stackOf(OrePrefixes.dust, mStone, 1);
 
         Material bonusA = null;

@@ -20,7 +20,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTUtility;
@@ -168,10 +167,10 @@ public class ProcessingRecyclingGtpp {
     private static void registerFluidExtraction(Material material, ItemStack input, long materialAmount) {
         int fluidAmount = (int) ((materialAmount * INGOTS) / (M * input.stackSize));
         int duration = (int) Math.max(1L, (24 * materialAmount) / M);
-        FluidStack fluidOutput = materialFluid(material, fluidAmount);
+        FluidStack fluidOutput = MU.legacyGtppFluid(material, fluidAmount);
         if (fluidOutput == null) return;
 
-        long powerUsage = Math.max(8L, voltageMultiplier(material));
+        long powerUsage = Math.max(8L, MU.voltageMultiplier(material));
         int powerTier = GTUtility.getTier(powerUsage);
         if (powerTier > 0 && powerTier < VP.length && powerUsage > VP[powerTier]) {
             powerUsage = VP[powerTier];
@@ -203,12 +202,4 @@ public class ProcessingRecyclingGtpp {
         return stack;
     }
 
-    private static FluidStack materialFluid(Material material, long amount) {
-        return MU.legacyGtppFluid(material, amount);
-    }
-
-    private static long voltageMultiplier(Material material) {
-        Long multiplier = material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
-        return multiplier != null ? multiplier : 16L;
-    }
 }

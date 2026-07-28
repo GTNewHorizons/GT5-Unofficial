@@ -431,9 +431,8 @@ public class EyeOfHarmonyRecipe {
                 .add(MU.directSmelting(byProductMaterial), mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
             // For Materials that index is > 3, normally they will not be used (unless using Chem bath).
 
-            // mMaterialInto is always self (MU#materialInto returns its argument unconditionally -- see
-            // MU#oreByProducts), so the self-byproduct check collapses to reference identity; Material
-            // instances are canonical singletons (see the a2 cookbook), so == is stable here too.
+            // MaterialLib hands out one canonical instance per material, so reference identity is the
+            // self-byproduct test.
             if (byProductMaterial == material) continue;
 
             // Will never duplicate since mOreByProducts does not support duplicate.
@@ -554,8 +553,7 @@ public class EyeOfHarmonyRecipe {
             bonusB = amJ.get(1);
         }
 
-        Integer tierProperty = material.getProperty(GTMaterialProperties.TIER);
-        int materialTier = tierProperty == null ? 0 : tierProperty;
+        int materialTier = MU.tier(material);
 
         // Default out if it's made of fluids or some stuff.
         if (bonusA == null && materialTier >= 2) {

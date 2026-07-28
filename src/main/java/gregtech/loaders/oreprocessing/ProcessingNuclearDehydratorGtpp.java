@@ -17,7 +17,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 
 /// Reproduces the retired gtPlusPlus `MaterialGenerator#generateNuclearDusts`'s chemical-dehydrator recipe (a
@@ -59,7 +58,7 @@ public class ProcessingNuclearDehydratorGtpp {
         FluidStack fluid = MU.legacyGtppFluid(material, INGOTS);
         if (fluid == null) return;
 
-        long voltage = voltageMultiplier(material);
+        long voltage = MU.voltageMultiplier(material);
         GTValues.RA.stdBuilder()
             .circuit(20)
             .itemOutputs(dust)
@@ -90,10 +89,5 @@ public class ProcessingNuclearDehydratorGtpp {
             .eut(RECIPE_HV / 2)
             .duration(10 * MINUTES)
             .addTo(chemicalDehydratorRecipes);
-    }
-
-    private static long voltageMultiplier(Material material) {
-        Long multiplier = material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
-        return multiplier != null ? multiplier : 16L;
     }
 }

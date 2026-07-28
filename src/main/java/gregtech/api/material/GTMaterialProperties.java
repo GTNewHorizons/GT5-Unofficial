@@ -7,6 +7,12 @@ import com.ruling_0.materiallib.api.Property;
 
 /// Typed property keys GregTech attaches to MaterialLib materials; values referencing other materials use
 /// [MaterialRef] because registration order is unspecified.
+///
+/// The gtPlusPlus-originated (`GTPP_*`) and bartworks-originated (`WERKSTOFF_*`) groups are each decomposed
+/// into individual keys rather than one composite property, so a reader needing a single value does not depend
+/// on the whole record shape. [#GTPP_STATE] is the "this material carries gtPlusPlus data" signal and
+/// [#WERKSTOFF_IDS] the bartworks equivalent; both are consulted directly by shape gating and the ore
+/// adapters to tell the three material origins apart.
 public class GTMaterialProperties {
 
     public static final Property<MaterialRef> ARC_SMELT_INTO = Property.of("gregtech", "arcSmeltInto");
@@ -106,30 +112,16 @@ public class GTMaterialProperties {
     /// Whether the material is radioactive, unifying the legacy bartworks material's own radioactivity flag and
     /// `Material.isRadioactive`.
     public static final Property<Boolean> IS_RADIOACTIVE = Property.of("gregtech", "isRadioactive");
-    /// The gtPlusPlus-originated scalar data of a material, decomposed into individual keys rather than kept
-    /// in one composite property so a reader needing a single value does not depend on the whole record shape.
-    /// [#GTPP_STATE] is always present on a material carrying any gtpp data and is the "this material has gtpp
-    /// data" signal consulted directly by [gregtech.api.enums.materials2.Materials2OreShapes]'s family dispatch
-    /// and by bartworks' bridge/sludge-overhaul interop; [#GTPP_PLASMA_NAME] backs [MU#legacyGtppPlasmaOf],
-    /// read by the ported gtPlusPlus recipe loaders. [#GTPP_GENERATES_CELLS]/[#GTPP_GENERATES_FLUID] carry no
-    /// reader of their own -- they exist because [gregtech.api.enums.materials2.Materials2Materials]'s
-    /// generator script declares them uniformly alongside [#GTPP_STATE].
-    ///
-    /// The legacy `Material` constructor's `vGenerateCells` flag, elided when `false`.
+    /// Whether a gtPlusPlus-originated material generates cells.
     public static final Property<Boolean> GTPP_GENERATES_CELLS = Property.of("gregtech", "gtppGeneratesCells");
-    /// The legacy `Material` constructor's `generateFluid` flag, elided when `false`.
+    /// Whether a gtPlusPlus-originated material generates a fluid.
     public static final Property<Boolean> GTPP_GENERATES_FLUID = Property.of("gregtech", "gtppGeneratesFluid");
-    /// The exact `FluidRegistry` name a legacy gtpp `Material#performFluidAndCellRegistration` registered
-    /// this material's plasma fluid under, present only for the 37 materials where it is not
-    /// [FluidNames#plasma] on [GTMaterialProperties#LEGACY_FLUIDS] -- unlike the non-plasma fluid slot (whose
-    /// [FluidNames#molten]/[FluidNames#fluid]/[FluidNames#gas] priority reliably reconstructs
-    /// [#GTPP_GENERATES_FLUID]'s fluid), a merged material's combined `LEGACY_FLUIDS.plasma` may instead be a
-    /// gregtech-side plasma sharing the slot (e.g. every noble gas/metal element gregtech itself plasma-ionizes,
-    /// none of which gtpp itself ever registered a plasma for), so it cannot be trusted as gtpp's own
-    /// contribution without this pin.
+    /// The `FluidRegistry` name of a gtPlusPlus-originated material's plasma fluid, present only for the 37
+    /// materials where it is not [FluidNames#plasma] on [#LEGACY_FLUIDS]. A merged material's combined
+    /// `LEGACY_FLUIDS.plasma` may be a gregtech-side plasma sharing the slot, so the gtPlusPlus contribution
+    /// cannot be derived from that slot and is pinned here instead. Backs [MU#legacyGtppPlasmaOf].
     public static final Property<String> GTPP_PLASMA_NAME = Property.of("gregtech", "gtppPlasmaName");
-    /// The legacy gtPlusPlus material state (`SOLID`/`LIQUID`/`GAS`/...) -- see the class javadoc for why this,
-    /// not a scalar above, is the presence signal for "this material carries gtpp data".
+    /// The gtPlusPlus material state (`SOLID`/`LIQUID`/`GAS`/...).
     public static final Property<String> GTPP_STATE = Property.of("gregtech", "gtppState");
     public static final Property<FluidNames> LEGACY_FLUIDS = Property.of("gregtech", "legacyFluids");
     public static final Property<String> LOCAL_NAME = Property.of("gregtech", "localName");

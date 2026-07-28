@@ -98,43 +98,35 @@ public class ProcessingOre implements IOreRecipeRegistrator {
     private boolean registerStandardOreRecipes(OrePrefixes prefix, Material material, ItemStack oreStack,
         int multiplier) {
         if ((oreStack == null) || (material == null)) return false;
-        Material tMaterial = MUOre.oreReplacement(material);
         Material tPrimaryByMaterial = null;
         multiplier = Math.max(1, multiplier);
         oreStack = GTUtility.copyAmount(1, oreStack);
         oreStack.stackSize = 1;
 
         ItemStack tIngot = GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(material), 1L);
-        ItemStack tGem = GTOreDictUnificator.get(OrePrefixes.gem, tMaterial, 1L);
-        ItemStack tSmeltInto = tIngot
-            == null
-                ? null
-                : MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
-                    ? GTOreDictUnificator.get(
-                        OrePrefixes.gem,
-                        MU.directSmelting(tMaterial),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.crystal,
-                            MU.directSmelting(tMaterial),
-                            GTOreDictUnificator.get(
-                                OrePrefixes.gem,
-                                tMaterial,
-                                GTOreDictUnificator.get(OrePrefixes.crystal, tMaterial, 1L),
-                                1L),
-                            1L),
-                        1L)
-                    : tIngot;
+        ItemStack tGem = GTOreDictUnificator.get(OrePrefixes.gem, material, 1L);
+        ItemStack tSmeltInto = tIngot == null ? null
+            : MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM) ? GTOreDictUnificator.get(
+                OrePrefixes.gem,
+                MU.directSmelting(material),
+                GTOreDictUnificator.get(
+                    OrePrefixes.crystal,
+                    MU.directSmelting(material),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.gem, material, GTOreDictUnificator.get(OrePrefixes.crystal, material, 1L), 1L),
+                    1L),
+                1L) : tIngot;
 
-        ItemStack tDust = GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, tGem, 1L);
-        ItemStack tCleaned = GTOreDictUnificator.get(OrePrefixes.crushedPurified, tMaterial, tDust, 1L);
+        ItemStack tDust = GTOreDictUnificator.get(OrePrefixes.dust, material, tGem, 1L);
+        ItemStack tCleaned = GTOreDictUnificator.get(OrePrefixes.crushedPurified, material, tDust, 1L);
         ItemStack tCrushed = GTOreDictUnificator
-            .get(OrePrefixes.crushed, tMaterial, (long) MUOre.oreMultiplier(material) * multiplier);
+            .get(OrePrefixes.crushed, material, (long) MUOre.oreMultiplier(material) * multiplier);
         ItemStack tPrimaryByProduct = null;
 
         if (tCrushed == null) {
             tCrushed = GTOreDictUnificator.get(
                 OrePrefixes.dustImpure,
-                tMaterial,
+                material,
                 GTUtility.copyAmount((long) MUOre.oreMultiplier(material) * multiplier, tCleaned, tDust, tGem),
                 (long) MUOre.oreMultiplier(material) * multiplier);
         }
@@ -152,7 +144,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                 .get(OrePrefixes.dustTiny, tMat, GTOreDictUnificator.get(OrePrefixes.nugget, tMat, 2L), 2L);
         }
 
-        if (tPrimaryByMaterial == null) tPrimaryByMaterial = tMaterial;
+        if (tPrimaryByMaterial == null) tPrimaryByMaterial = material;
         if (tPrimaryByProduct == null) tPrimaryByProduct = tDust;
         boolean tHasSmelting = false;
 
@@ -231,7 +223,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                 oreStack,
                 GTOreDictUnificator.get(
                     OrePrefixes.gem,
-                    MU.directSmelting(tMaterial),
+                    MU.directSmelting(material),
                     Math.max(1, multiplier * MUOre.smeltingMultiplier(material) / 2)));
         }
 
@@ -246,7 +238,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
             ItemStack byproduct = GTOreDictUnificator
                 .get(OrePrefixes.gem, tPrimaryByMaterial, GTUtility.copyAmount(1, tPrimaryByProduct), 1L);
 
-            if (MU.hasFlag(tMaterial, GTMaterialFlag.PULVERIZING_CINNABAR)) {
+            if (MU.hasFlag(material, GTMaterialFlag.PULVERIZING_CINNABAR)) {
                 byproduct = GTOreDictUnificator.get(OrePrefixes.crystal, Materials2Materials.Cinnabar, byproduct, 1L);
             }
 

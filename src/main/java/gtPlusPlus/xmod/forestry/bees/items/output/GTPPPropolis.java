@@ -12,15 +12,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import com.ruling_0.materiallib.api.Material;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPPropolisType;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
@@ -85,26 +82,16 @@ public class GTPPPropolis extends Item {
             if (aOutput == null) {
                 continue;
             }
-            int tier = tierOf(aProp.mMaterial);
+            int tier = MU.tier(aProp.mMaterial);
             GTValues.RA.stdBuilder()
                 .itemInputs(tDrop)
                 .itemOutputs(aOutput)
                 .outputChances(Math.min(Math.max(10000 - (tier * 625), 100), 10000))
                 .duration(tier * 15 * SECONDS)
-                .eut(voltageMultiplierOf(aProp.mMaterial))
+                .eut(MU.voltageMultiplier(aProp.mMaterial))
                 .addTo(extractorRecipes);
 
         }
-    }
-
-    private static int tierOf(Material material) {
-        Integer tier = material.getProperty(GTMaterialProperties.TIER);
-        return tier == null ? 0 : tier;
-    }
-
-    private static long voltageMultiplierOf(Material material) {
-        Long voltageMultiplier = material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
-        return voltageMultiplier == null ? 16L : voltageMultiplier;
     }
 
 }

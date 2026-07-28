@@ -92,16 +92,6 @@ public class MU {
         return shapes == null ? Collections.emptyList() : shapes;
     }
 
-    /// The MaterialLib [Material] backing a legacy-family material object -- a gtPlusPlus `Material` -- for
-    /// migrating the plumbing off the legacy families onto [Material]. Resolved by internal name. A [Material]
-    /// passes through unchanged. Null when nothing backs it.
-    public static @Nullable Material toMaterial(@Nullable Object material) {
-        if (material == null) return null;
-        if (material instanceof Material ml) return ml;
-        String name = internalNameOf(material);
-        return name == null ? null : MaterialLibAPI.getMaterial("gregtech", name);
-    }
-
     /// The MaterialLib material registered under a legacy internal name, or null on a miss. Looks up
     /// `name` in the [Materials2Materials]-field map first (keyed by [#internalName]), then falls back to
     /// a direct MaterialLib registry lookup for materials with no declared field there -- the
@@ -205,12 +195,7 @@ public class MU {
     /// already missed, so it never overrides either the legacy-named or the gtPlusPlus-only cases.
     public static boolean hasMolten(@Nullable Material material) {
         if (material == null) return false;
-        if (material.hasShape(Materials2FluidShapes.fluidMolten) || storedFluid(material, FluidState.MOLTEN) != null) {
-            return true;
-        }
-        if (isLegacyNamed(material)) return false;
-        List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
-        return werkstoffPrefixes != null && werkstoffPrefixes.contains(OrePrefixes.cellMolten.name());
+        return material.hasShape(Materials2FluidShapes.fluidMolten) || storedFluid(material, FluidState.MOLTEN) != null;
     }
 
     /// The molten fluid stack for a material at `amount`, or null when [#hasMolten] is false. A
@@ -564,9 +549,7 @@ public class MU {
     }
 
     /// The ore byproducts list for a material, resolved from [GTMaterialProperties#ORE_BYPRODUCTS] in
-    /// declaration order; empty when absent. A reference that fails to resolve is skipped and each resolved
-    /// material is used as-is -- applying [#materialInto] to it would be a no-op, since that accessor
-    /// always returns its argument unchanged.
+    /// declaration order; empty when absent. A reference that fails to resolve is skipped.
     public static List<Material> oreByProducts(@Nullable Material material) {
         if (material == null) return Collections.emptyList();
         List<MaterialRefStack> oreByProducts = material.getProperty(GTMaterialProperties.ORE_BYPRODUCTS);
@@ -686,6 +669,21 @@ public class MU {
         return blastTemp == null ? 0 : blastTemp;
     }
 
+    /// The material tier -- [GTMaterialProperties#TIER], or `0` if unset.
+    public static int tier(@Nullable Material material) {
+        if (material == null) return 0;
+        Integer tier = material.getProperty(GTMaterialProperties.TIER);
+        return tier == null ? 0 : tier;
+    }
+
+    /// The recipe voltage multiplier for a material -- [GTMaterialProperties#VOLTAGE_MULTIPLIER], or `16` if
+    /// unset, which is the value every tier-0 material carries.
+    public static long voltageMultiplier(@Nullable Material material) {
+        if (material == null) return 16L;
+        Long multiplier = material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
+        return multiplier != null ? multiplier : 16L;
+    }
+
     /// The processing material tier EU value for a material --
     /// [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU], or `0` if unset.
     public static int processingMaterialTierEU(@Nullable Material material) {
@@ -791,12 +789,6 @@ public class MU {
     /// [#smeltInto(Material)], for [GTMaterialProperties#MACERATE_INTO].
     public static @Nullable Material macerateInto(@Nullable Material material) {
         return chaseRef(material, GTMaterialProperties.MACERATE_INTO);
-    }
-
-    /// The unification target a material maps into: the material itself. No property backs this -- every
-    /// material's own unification target is itself -- so this returns its argument directly.
-    public static @Nullable Material materialInto(@Nullable Material material) {
-        return material;
     }
 
     /// [#smeltInto(Material)], for [GTMaterialProperties#ARC_SMELT_INTO].
@@ -929,12 +921,6 @@ public class MU {
     public static String internalName(Material material) {
         String legacyName = material.getProperty(GTMaterialProperties.LEGACY_NAME);
         return legacyName != null ? legacyName : material.getName();
-    }
-
-    /// An alias for [#internalName], which already resolves the [GTMaterialProperties#LEGACY_NAME] override
-    /// before the registration name.
-    public static String legacyName(Material material) {
-        return internalName(material);
     }
 
     /// The default display name for a material -- [GTMaterialProperties#LOCAL_NAME] when present, otherwise

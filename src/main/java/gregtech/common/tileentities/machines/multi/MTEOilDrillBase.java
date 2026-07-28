@@ -307,7 +307,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                         : formatNumber(baseCycleTime / 20.0) + " seconds"))
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
-            .addCasing("15", MU.legacyName(getFrameMaterial()) + " Frame Box", false)
+            .addCasing("15", MU.internalName(getFrameMaterial()) + " Frame Box", false)
             .addCasing("7-8", casings, false)
             .addEnergyHatch("1", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
             .addMaintenanceHatch("1", "Any bottom casing", 1)

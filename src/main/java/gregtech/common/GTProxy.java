@@ -1156,7 +1156,7 @@ public class GTProxy implements IFuelHandler {
         GTLog.out.println("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Material material : MaterialLibAPI.getMaterials()) {
             if (!MU.isLegacyNamed(material)) continue;
-            if (MU.unifiable(material) && MU.materialInto(material) == material) {
+            if (MU.unifiable(material)) {
                 if (!MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L),
@@ -1725,15 +1725,6 @@ public class GTProxy implements IFuelHandler {
                             if (recognitionMarker != null) {
                                 registerRecognitionOre(aPrefix, recognitionMarker, aEvent);
                             } else {
-                                if (MU.materialInto(aMaterial) != aMaterial) {
-                                    GTOreDictUnificator.registerOre(aPrefix, MU.materialInto(aMaterial), aEvent.Ore);
-                                    if (!GTOreDictUnificator.isRegisteringOres()) {
-                                        GTLog.ore.println(
-                                            tModToName + " uses a deprecated Material and is getting re-registered as "
-                                                + aPrefix.oreDictName(MU.materialInto(aMaterial)));
-                                    }
-                                    return;
-                                }
                                 if (!aPrefix.isIgnored(aMaterial)) {
                                     aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
                                 }
@@ -1776,7 +1767,7 @@ public class GTProxy implements IFuelHandler {
                                                 || aMaterial == Materials2Materials.InfusedOrder
                                                 || aMaterial == Materials2Materials.InfusedEntropy) {
                                                     GTOreDictUnificator.registerOre(
-                                                        MU.legacyName(aMaterial)
+                                                        MU.internalName(aMaterial)
                                                             .replaceFirst("Infused", "shard"),
                                                         aEvent.Ore);
                                                 } else if (aMaterial == Materials2Materials.Chocolate) {
