@@ -73,7 +73,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
                 String tOreName = getOreDictString(tPrefix, tMaterial);
                 tPrefix = OrePrefixes.getOrePrefix(tOreName);
                 if (tPrefix != null && tPrefix.isUnifiable()) {
-                    GTOreDictUnificator.set(tPrefix, MU.material(OrePrefixes.getMaterial(tOreName, tPrefix)), tStack);
+                    GTOreDictUnificator.set(tPrefix, OrePrefixes.getMaterial(tOreName, tPrefix), tStack);
                 } else {
                     GTOreDictUnificator.registerOre(tOreName, tStack);
                 }

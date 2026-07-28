@@ -2,7 +2,8 @@ package gregtech.common.items;
 
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.util.GTLanguageManager;
 
 public enum PollenType {
@@ -11,7 +12,7 @@ public enum PollenType {
 
     private static final int[][] colours = new int[][] { { 0x19191B, 0x303032 }, };
     public boolean showInList;
-    public Materials material;
+    public Material material;
     public int chance;
     private final String name;
 

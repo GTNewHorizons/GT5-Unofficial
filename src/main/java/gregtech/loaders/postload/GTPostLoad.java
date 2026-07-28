@@ -39,7 +39,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -420,11 +419,9 @@ public class GTPostLoad {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
         GTMod.GT_FML_LOGGER.info("Replacing Vanilla Materials in recipes, please wait.");
-        Set<Materials> replaceVanillaItemsSet = MaterialLibAPI.getMaterials()
+        Set<Material> replaceVanillaItemsSet = MaterialLibAPI.getMaterials()
             .stream()
             .filter(GTRecipeRegistrator::hasVanillaRecipes)
-            .map(MU::materialOf)
-            .filter(Objects::nonNull)
             .collect(Collectors.toSet());
 
         ProgressManager.ProgressBar progressBar = ProgressManager
@@ -434,7 +431,7 @@ public class GTPostLoad {
             GTCLSCompat.pushToDisplayProgress();
         } else {
             replaceVanillaItemsSet.forEach(m -> {
-                progressBar.step(m.mDefaultLocalName);
+                progressBar.step(MU.localName(m));
                 doActualRegistration(m);
             });
         }
@@ -443,8 +440,7 @@ public class GTPostLoad {
         GTMod.GT_FML_LOGGER.info("Replaced Vanilla Materials (" + stopwatch.stop() + "). Have a Cake.");
     }
 
-    public static void doActualRegistration(Materials m) {
-        Material ml = MU.material(m);
+    public static void doActualRegistration(Material ml) {
         String plateName = OrePrefixes.plate.oreDictName(ml)
             .toString();
         boolean noSmash = !MU.hasFlag(ml, GTMaterialFlag.NO_SMASHING);

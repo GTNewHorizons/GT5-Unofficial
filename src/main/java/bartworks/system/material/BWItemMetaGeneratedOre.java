@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.MU;
 import gregtech.api.material.MaterialFormulas;
@@ -53,7 +53,7 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
 
         if (material == null) {
             return blockOre.getPrefix()
-                .getLocalizedNameForItem(Materials._NULL.getInternalName());
+                .getLocalizedNameForItem(MU.internalName(Materials2Materials.NULL));
         }
 
         return blockOre.getPrefix()

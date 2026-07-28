@@ -126,6 +126,7 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
@@ -141,6 +142,7 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorEventHandlers;
 import gregtech.api.items.armor.ArmorKeybinds;
+import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
@@ -1742,21 +1744,15 @@ public class GTProxy implements IFuelHandler {
                                     for (Material tReRegisteredMaterial : MU.oreReRegistrationsOf(aMaterial)) {
                                         GTOreDictUnificator.registerOre(aPrefix, tReRegisteredMaterial, aEvent.Ore);
                                     }
-                                    // Facade reads without an MU twin hold on the legacy counterpart, which the
-                                    // domain lookup guarantees exists: the mMaterialItems add (still read by the
-                                    // legacy contains() gate in RecipeMaps) and mAspects (populated at
-                                    // construction time from composition, same as every other Materials instance).
-                                    Materials legacyMaterial = MU.materialOf(aMaterial);
-                                    legacyMaterial.add(GTUtility.copyAmount(1, aEvent.Ore));
-
                                     if (GregTechAPI.sThaumcraftCompat != null && aPrefix.doGenerateItem(aMaterial)
                                         && !aPrefix.isIgnored(aMaterial)) {
                                         List<TC_AspectStack> tAspects = new ArrayList<>();
                                         for (TC_AspectStack tAspect : aPrefix.mAspects)
                                             tAspect.addToAspectList(tAspects);
                                         if (aPrefix.getMaterialAmount() >= 3628800 || aPrefix.getMaterialAmount() < 0)
-                                            for (TC_AspectStack tAspect : legacyMaterial.mAspects)
-                                                tAspect.addToAspectList(tAspects);
+                                            for (AspectRefStack tAspect : MU.aspects(aMaterial))
+                                                new TC_AspectStack(TCAspects.valueOf(tAspect.name()), tAspect.amount())
+                                                    .addToAspectList(tAspects);
                                         GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(
                                             GTUtility.copyAmount(1, aEvent.Ore),
                                             tAspects,

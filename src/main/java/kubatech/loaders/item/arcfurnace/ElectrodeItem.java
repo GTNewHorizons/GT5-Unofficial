@@ -14,7 +14,7 @@ import net.minecraft.util.IIcon;
 
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.material.MU;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
@@ -139,6 +139,6 @@ public class ElectrodeItem extends Item implements IGT_ItemWithMaterialRenderer 
     public short[] getRGBa(ItemStack aStack) {
         ArcFurnaceElectrode electrode = getElectrodeFromStack(aStack);
         if (electrode != null) return MU.rgbaOf(electrode.associatedMaterial);
-        return Materials._NULL.getRGBA();
+        return MU.rgba(Materials2Materials.NULL);
     }
 }

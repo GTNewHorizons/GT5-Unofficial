@@ -154,9 +154,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         OrePrefixes prefix = getOrePrefix(aStack.getItemDamage());
         Material material = getMaterial(aStack.getItemDamage());
         if (prefix == cellMolten) {
-            // Molten RGBa has no MaterialLib accessor; read the legacy field, which retires with the facade.
-            Materials legacy = MU.materialOf(material);
-            return (legacy != null ? legacy : Materials._NULL).mMoltenRGBa;
+            return MU.moltenRgba(material);
         }
         short[] rgba = MU.rgba(material);
         return rgba != null ? rgba : MU.rgba(Materials2Materials.NULL);

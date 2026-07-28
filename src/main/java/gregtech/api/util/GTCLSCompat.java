@@ -9,11 +9,12 @@ import java.util.function.Function;
 
 import net.minecraft.util.StatCollector;
 
+import com.ruling_0.materiallib.api.Material;
+
 import alexiil.mods.load.MinecraftDisplayer;
 import alexiil.mods.load.ProgressDisplayer;
 import cpw.mods.fml.common.ProgressManager;
-import gregtech.GTLoggers;
-import gregtech.api.enums.Materials;
+import gregtech.GTMod;
 import gregtech.api.material.MU;
 import gregtech.common.OreDictEventContainer;
 import gregtech.loaders.postload.GTPostLoad;
@@ -28,13 +29,13 @@ public class GTCLSCompat {
         try {
             cpwProgressBar = Class.forName("cpw.mods.fml.common.ProgressManager$ProgressBar");
         } catch (ClassNotFoundException ex) {
-            GTLoggers.GT_FML_LOGGER.catching(ex);
+            GTMod.GT_FML_LOGGER.catching(ex);
         }
         try {
             progressBarStep = cpwProgressBar.getDeclaredField("step");
             progressBarStep.setAccessible(true);
         } catch (NoSuchFieldException ex) {
-            GTLoggers.GT_FML_LOGGER.catching(ex);
+            GTMod.GT_FML_LOGGER.catching(ex);
         }
     }
 
@@ -59,27 +60,28 @@ public class GTCLSCompat {
                 try {
                     ProgressDisplayer.displayProgress(materialName, (float) currentStep / sizeStep);
                 } catch (IOException e) {
-                    GTLoggers.GT_FML_LOGGER.error("While updating progression", e);
+                    GTMod.GT_FML_LOGGER.error("While updating progression", e);
                 }
                 try {
                     progressBarStep.set(progressBar, currentStep);
                 } catch (IllegalAccessException iae) {
-                    GTLoggers.GT_FML_LOGGER.error("While updating intermediate progression steps number", iae);
+                    GTMod.GT_FML_LOGGER.error("While updating intermediate progression steps number", iae);
                 }
                 progressBar.step(materialName);
             }
             if (nextBakingMsgAt < now) {
                 nextBakingMsgAt = now + bakingMsgEvery;
-                GTLoggers.GT_FML_LOGGER.info("{} - Baking: {}%", materialsType, currentStep * 100 / sizeStep);
+                GTMod.GT_FML_LOGGER
+                    .info(String.format("%s - Baking: %d%%", materialsType, currentStep * 100 / sizeStep));
             }
             action.accept(m);
             currentStep += 1;
         }
-        GTLoggers.GT_FML_LOGGER.info("{} - Baking: Done", materialsType);
+        GTMod.GT_FML_LOGGER.info(String.format("%s - Baking: Done", materialsType));
         try {
             progressBarStep.set(progressBar, currentStep);
         } catch (IllegalAccessException iae) {
-            GTLoggers.GT_FML_LOGGER.error("While updating final progression steps number", iae);
+            GTMod.GT_FML_LOGGER.error("While updating final progression steps number", iae);
         }
     }
 
@@ -99,13 +101,13 @@ public class GTCLSCompat {
     }
 
     public static void doActualRegistrationCLS(ProgressManager.ProgressBar progressBar,
-        Set<Materials> replacedVanillaItemsSet) {
+        Set<Material> replacedVanillaItemsSet) {
         MinecraftDisplayer.isReplacingVanillaMaterials = true;
         registerAndReportProgression(
             "Vanilla materials",
             replacedVanillaItemsSet,
             progressBar,
-            Materials::getLocalizedName,
+            MU::localizedNameOf,
             GTPostLoad::doActualRegistration);
     }
 
@@ -113,10 +115,10 @@ public class GTCLSCompat {
         MinecraftDisplayer.isReplacingVanillaMaterials = false;
         try {
             ProgressDisplayer.displayProgress(
-                StatCollector.translateToLocal("gt.loading.progress.post_init.loading_gt"),
+                StatCollector.translateToLocal("gt.loading.progress.post-init.loading-gt"),
                 MinecraftDisplayer.getLastPercent());
         } catch (IOException e) {
-            GTLoggers.GT_FML_LOGGER.error("Exception caught when updating loading screen", e);
+            GTMod.GT_FML_LOGGER.error("Exception caught when updating loading screen", e);
         }
     }
 }
