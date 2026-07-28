@@ -1198,18 +1198,8 @@ public class GTUtility {
         return fullContainer;
     }
 
-    /// The legacy `Materials#processingMaterialTierEU` value for a material when a legacy counterpart exists,
-    /// preferred over [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU] because recipe registration for
-    /// MaterialLib-cutover shapes (`gregtech.loaders.shapeconsumers`) can run before `Materials#init()` has
-    /// ported that property onto the legacy field, so reading the property directly would return an
-    /// already-populated but not-yet-live value, diverging from the legacy field for materials whose tier EU is
-    /// set. Falling back to the property is for materials with no legacy counterpart only.
+    /// The recipe voltage a material's processing tier calls for, or `defaultEU` when it declares no tier.
     public static long calculateRecipeEU(Material material, long defaultEU) {
-        Materials legacy = MU.materialOf(material);
-        if (legacy != null) {
-            int tierEU = legacy.getProcessingMaterialTierEU();
-            return tierEU == 0 ? defaultEU : tierEU;
-        }
         Integer tierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
         return tierEU == null || tierEU == 0 ? defaultEU : tierEU;
     }
