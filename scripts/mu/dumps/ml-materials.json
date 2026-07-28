@@ -131,7 +131,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Gases",
       "Plasmas"
     ],
     "localName": "Hydrogen",
@@ -261,7 +261,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Gases",
       "Plasmas"
     ],
     "localName": "Deuterium",
@@ -380,7 +380,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Gases",
       "Plasmas"
     ],
     "localName": "Tritium",
@@ -499,7 +499,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Gases",
       "Plasmas"
     ],
     "localName": "Helium",
@@ -624,7 +624,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Gases",
       "Plasmas"
     ],
     "localName": "Helium-3",
@@ -771,8 +771,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -946,10 +946,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Beryllium",
@@ -1088,8 +1089,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Dusts",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Boron",
@@ -1257,6 +1258,7 @@
       "Metals",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Carbon",
@@ -1395,7 +1397,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Gases",
       "Plasmas"
     ],
     "localName": "Nitrogen",
@@ -1528,7 +1530,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Gases",
       "Plasmas"
     ],
     "localName": "Oxygen",
@@ -1658,7 +1660,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Gases",
       "Plasmas"
     ],
     "localName": "Fluorine",
@@ -1787,8 +1789,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Dusts",
+      "Liquids",
       "Plasmas"
     ],
     "localName": "Sodium",
@@ -1951,8 +1953,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas"
     ],
@@ -2153,11 +2156,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Aluminium",
@@ -2326,8 +2331,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -2722,7 +2727,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Gases",
       "Plasmas"
     ],
     "localName": "Chlorine",
@@ -2850,7 +2855,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Gases",
       "Plasmas"
     ],
     "localName": "Argon",
@@ -2997,8 +3002,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Potassium",
@@ -3143,8 +3148,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas",
       "ToolParts"
     ],
@@ -3332,8 +3337,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -3531,11 +3536,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Titanium",
@@ -3704,8 +3711,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -3880,11 +3887,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Chrome",
@@ -4061,10 +4069,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Manganese",
@@ -4254,11 +4263,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Iron",
@@ -4462,11 +4473,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Cobalt",
@@ -4668,11 +4681,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Nickel",
@@ -4869,9 +4884,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas"
     ],
@@ -5056,8 +5072,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -5226,8 +5242,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -5391,8 +5407,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -5553,8 +5569,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -5720,9 +5736,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -5888,8 +5904,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -6054,8 +6070,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -6227,10 +6243,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Molybdenum",
@@ -6407,11 +6424,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Palladium",
@@ -6600,11 +6618,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Silver",
@@ -6915,8 +6935,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -7108,9 +7128,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas"
     ],
@@ -7282,8 +7303,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -7457,8 +7478,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
       "ToolParts"
@@ -7642,8 +7663,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -7806,8 +7827,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -7966,8 +7987,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -8131,8 +8152,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -8296,8 +8317,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -8472,11 +8493,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Neodymium",
@@ -8645,8 +8667,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -8810,8 +8832,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -8989,8 +9011,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas"
     ],
@@ -9155,8 +9178,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -9320,8 +9343,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -9485,8 +9508,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -9646,8 +9669,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -9812,8 +9835,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -9978,8 +10001,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -10143,8 +10166,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -10309,8 +10332,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -10475,8 +10498,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -10675,11 +10698,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Tungsten",
@@ -10884,11 +10909,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Osmium",
@@ -11076,11 +11103,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Iridium",
@@ -11284,11 +11313,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Platinum",
@@ -11481,11 +11512,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Gold",
@@ -11631,7 +11664,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Liquids",
       "Plasmas"
     ],
     "localName": "Mercury",
@@ -11829,11 +11862,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Lead",
@@ -12016,11 +12051,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Bismuth",
@@ -12154,7 +12190,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Gases",
       "Plasmas"
     ],
     "localName": "Radon",
@@ -12443,10 +12479,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Thorium",
@@ -12621,10 +12658,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Uranium 235",
@@ -12796,10 +12834,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Uranium 238",
@@ -12977,10 +13016,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Plutonium 239",
@@ -13149,10 +13190,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Plutonium 241",
@@ -13319,8 +13361,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas"
     ],
@@ -13450,7 +13493,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Spatially Enlarged Fluid",
     "meltingPoint": null,
@@ -13556,7 +13600,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Excited Dimensionally Transcendent Crude Catalyst",
     "meltingPoint": 500000000,
@@ -13817,9 +13861,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Purified Tengam",
@@ -13972,9 +14017,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Attuned Tengam",
@@ -14094,7 +14140,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Excited Dimensionally Transcendent Prosaic Catalyst",
     "meltingPoint": 500000000,
@@ -14200,7 +14246,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Inactive Cosmic Solder",
     "meltingPoint": 500,
@@ -14306,7 +14352,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Boundless Cosmic Solder",
     "meltingPoint": 500,
@@ -14410,7 +14456,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Computation Base",
     "meltingPoint": 100000000,
@@ -14515,7 +14562,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Nether Air",
     "meltingPoint": null,
@@ -14620,7 +14667,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Nether Semifluid",
     "meltingPoint": null,
@@ -14725,7 +14772,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Nefarious Gas",
     "meltingPoint": null,
@@ -14830,7 +14877,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Excited Dimensionally Transcendent Resplendent Catalyst",
     "meltingPoint": 500000000,
@@ -14936,7 +14983,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Nefarious Oil",
     "meltingPoint": null,
@@ -15041,7 +15088,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Poor Nether Waste",
     "meltingPoint": null,
@@ -15146,7 +15193,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Rich Nether Waste",
     "meltingPoint": null,
@@ -15272,8 +15319,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Hellish Metal",
     "meltingPoint": 1200,
@@ -15383,7 +15430,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Excited Dimensionally Transcendent Exotic Catalyst",
     "meltingPoint": 500000000,
@@ -15489,7 +15536,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Excited Dimensionally Transcendent Stellar Catalyst",
     "meltingPoint": 500000000,
@@ -15649,11 +15696,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Neutronium",
@@ -15788,7 +15837,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Dimensionally Transcendent Stellar Catalyst",
     "meltingPoint": 100000000,
@@ -15923,8 +15972,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Superconductor Base UIV",
     "meltingPoint": 12700,
@@ -16163,7 +16212,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Activated Netherite",
     "meltingPoint": null,
@@ -16297,8 +16347,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Superconductor Base UMV",
     "meltingPoint": 13600,
@@ -16411,7 +16461,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Prismarine Solution",
     "meltingPoint": null,
@@ -16516,7 +16566,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Prismarine-Contaminated Hydrogen Peroxide",
     "meltingPoint": null,
@@ -16621,7 +16671,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Prismarine-Rich Nitrobenzene Solution",
     "meltingPoint": null,
@@ -16726,7 +16776,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Prismarine-Contaminated Nitrobenzene Solution",
     "meltingPoint": null,
@@ -16863,9 +16913,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Universium",
@@ -16988,7 +17039,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Super Coolant",
     "meltingPoint": 1,
@@ -17127,9 +17178,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Eternity",
@@ -17249,7 +17301,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Liquid Primordial Matter",
     "meltingPoint": 2000000000,
@@ -17389,9 +17441,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Magmatter",
@@ -17511,7 +17564,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Degenerate Quark Gluon Plasma",
     "meltingPoint": 2000000000,
@@ -17617,7 +17670,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Lossless Phonon Transfer Medium",
     "meltingPoint": 500,
@@ -17723,7 +17776,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Saturated Phononic Crystal Solution",
     "meltingPoint": 500,
@@ -17865,10 +17918,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Six-Phased Copper",
@@ -18024,9 +18078,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Mellion",
@@ -18178,10 +18233,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Creon",
@@ -18407,7 +18463,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Dimensionally Shifted Superfluid",
     "meltingPoint": null,
@@ -18513,7 +18569,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Molten Proto-Halkonite Steel Base",
     "meltingPoint": null,
@@ -18645,6 +18701,7 @@
       "All",
       "Gears",
       "Metals",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Hot Proto-Halkonite Steel",
@@ -18795,6 +18852,7 @@
       "All",
       "Gears",
       "Metals",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Proto-Halkonite Steel",
@@ -18921,7 +18979,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Molten Exo-Halkonite Steel Preparation Base",
     "meltingPoint": null,
@@ -19049,6 +19107,7 @@
       "All",
       "Gears",
       "Metals",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Hot Exo-Halkonite Steel",
@@ -19199,6 +19258,7 @@
       "All",
       "Gears",
       "Metals",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Exo-Halkonite Steel",
@@ -19326,7 +19386,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Semi-Stable Antimatter",
     "meltingPoint": null,
@@ -19432,7 +19492,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Protomatter",
     "meltingPoint": null,
@@ -19538,7 +19598,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Stargate Crystal Slurry",
     "meltingPoint": null,
@@ -19643,7 +19703,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Prismatic Gas",
     "meltingPoint": null,
@@ -19748,7 +19808,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Prismatic Acid",
     "meltingPoint": null,
@@ -19875,8 +19935,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Prismatic Naquadah",
     "meltingPoint": null,
@@ -19984,7 +20044,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Prismatic Naquadah Composite Slurry",
     "meltingPoint": null,
@@ -20090,7 +20150,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Bright Lumipod Extract",
     "meltingPoint": 298,
@@ -20196,7 +20256,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Biocatalyzed Propulsion Fluid",
     "meltingPoint": 303,
@@ -21019,7 +21079,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Unformed Hexanite",
     "meltingPoint": 9000,
@@ -21261,7 +21321,8 @@
       "fluidLiquid"
     ],
     "families": [
-      "All"
+      "All",
+      "Liquids"
     ],
     "localName": "Impure Francium Solution",
     "meltingPoint": null,
@@ -21362,7 +21423,8 @@
       "fluidLiquid"
     ],
     "families": [
-      "All"
+      "All",
+      "Liquids"
     ],
     "localName": "Francium Slurry",
     "meltingPoint": null,
@@ -21580,7 +21642,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Thorium Elution Adsorbent",
     "meltingPoint": null,
@@ -21686,7 +21748,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Phosphorus-Chlorine Mixture",
     "meltingPoint": null,
@@ -21792,7 +21854,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Phosphorus Pentachloride",
     "meltingPoint": null,
@@ -21907,7 +21969,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Toxic Air",
     "meltingPoint": null,
@@ -22013,7 +22075,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Toxic Slurry",
     "meltingPoint": null,
@@ -22118,7 +22180,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Destabilization Slurry",
     "meltingPoint": null,
@@ -22223,7 +22285,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Agitating Slurry",
     "meltingPoint": null,
@@ -22329,7 +22391,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Ultra Contaminated Gas",
     "meltingPoint": null,
@@ -22435,7 +22497,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Stagnant Waste Water",
     "meltingPoint": null,
@@ -22540,7 +22602,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Activated Waste Water",
     "meltingPoint": null,
@@ -22646,7 +22708,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Chlorosulfonic Acid",
     "meltingPoint": null,
@@ -22799,9 +22861,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens",
+      "MultiPlates"
     ],
     "localName": "Shijima",
     "meltingPoint": null,
@@ -22941,9 +23004,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens",
+      "MultiPlates"
     ],
     "localName": "Churitsu",
     "meltingPoint": null,
@@ -23053,7 +23117,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Poisonous Slurry",
     "meltingPoint": null,
@@ -23162,6 +23226,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems"
     ],
     "localName": "Amalgatite",
@@ -23304,9 +23369,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Manasteel",
@@ -23459,9 +23525,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Terrasteel",
@@ -23618,9 +23685,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Elven Elementium",
@@ -23901,9 +23969,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Gaia Spirit",
@@ -24308,6 +24377,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems"
     ],
     "localName": "Mana Diamond",
@@ -24428,6 +24498,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems"
     ],
     "localName": "Dragonstone",
@@ -24536,7 +24607,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Dense Steam",
     "meltingPoint": null,
@@ -24641,7 +24712,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Dense Superheated Steam",
     "meltingPoint": null,
@@ -24746,7 +24817,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Dense Supercritical Steam",
     "meltingPoint": null,
@@ -24951,7 +25022,8 @@
       "fluidLiquid"
     ],
     "families": [
-      "All"
+      "All",
+      "Liquids"
     ],
     "localName": "Weed-EX 9000",
     "meltingPoint": null,
@@ -25456,9 +25528,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Bronze",
@@ -25642,9 +25716,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Brass",
@@ -25811,9 +25886,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Invar",
@@ -26013,10 +26089,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Electrum",
@@ -26182,9 +26259,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Cast Iron",
@@ -26363,9 +26441,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Steel",
@@ -26550,9 +26630,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Stainless Steel",
@@ -26726,9 +26808,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Pig Iron",
@@ -26883,8 +26966,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Red Alloy",
     "meltingPoint": 500,
@@ -27041,8 +27124,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Blue Alloy",
     "meltingPoint": null,
@@ -27207,8 +27290,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Cupronickel",
@@ -27371,8 +27455,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Nichrome",
@@ -27541,8 +27626,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Kanthal",
@@ -27705,9 +27791,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Magnalium",
@@ -27862,8 +27949,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Soldering Alloy",
     "meltingPoint": 400,
@@ -28006,8 +28093,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Battery Alloy",
     "meltingPoint": null,
@@ -28181,9 +28268,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Tungstensteel",
@@ -28349,9 +28438,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Osmiridium",
@@ -28518,9 +28609,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Sunnarium",
@@ -28678,10 +28771,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Adamantium",
@@ -28847,10 +28942,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Fluxed Electrum",
@@ -29004,9 +29100,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Enderium",
@@ -29182,10 +29279,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Infused Gold",
@@ -29367,11 +29465,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Naquadah",
@@ -29557,9 +29657,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Naquadah Alloy",
@@ -29721,9 +29822,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Enriched Naquadah",
@@ -29901,10 +30003,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Naquadria",
@@ -30085,8 +30189,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Duranium",
@@ -30238,10 +30343,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Tritanium",
@@ -30403,9 +30509,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Thaumium",
@@ -30585,9 +30693,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Mithril",
@@ -30744,8 +30854,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Astral Silver",
@@ -30919,9 +31030,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Black Steel",
@@ -31089,9 +31202,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Damascus Steel",
@@ -31247,9 +31361,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Shadow Iron",
@@ -31404,8 +31519,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Shadow Steel",
@@ -31558,9 +31674,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Ironwood",
@@ -31722,6 +31839,7 @@
       "All",
       "Gears",
       "Metals",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Steeleaf",
@@ -31899,10 +32017,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Meteoric Iron",
@@ -32066,8 +32186,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Meteoric Steel",
@@ -32238,9 +32359,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Deep Dark Iron",
@@ -32387,9 +32509,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Cobalt Brass",
@@ -32548,9 +32671,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Ultimet",
@@ -32716,9 +32840,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Annealed Copper",
     "meltingPoint": null,
@@ -32868,9 +32992,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
+      "Liquids",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Fiery Steel",
@@ -33168,9 +33294,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Red Steel",
@@ -33333,9 +33460,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Blue Steel",
@@ -33497,9 +33625,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Sterling Silver",
@@ -33653,9 +33782,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Rose Gold",
@@ -33810,9 +33940,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Black Bronze",
@@ -33970,9 +34101,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Bismuth Bronze",
@@ -34130,6 +34262,7 @@
       "All",
       "Gears",
       "Metals",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Magnetic Iron",
@@ -34287,6 +34420,7 @@
       "All",
       "Gears",
       "Metals",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Magnetic Steel",
@@ -34448,6 +34582,7 @@
       "All",
       "Gears",
       "Metals",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Magnetic Neodymium",
@@ -34609,9 +34744,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Vanadium-Gallium",
     "meltingPoint": 4500,
@@ -34765,8 +34900,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Yttrium Barium Cuprate",
     "meltingPoint": 4500,
@@ -34915,8 +35050,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Niobium Nitride",
     "meltingPoint": 2573,
@@ -35076,8 +35211,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Niobium-Titanium",
     "meltingPoint": 4500,
@@ -35217,8 +35352,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Chromium Dioxide",
     "meltingPoint": 650,
@@ -35378,9 +35513,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Knightmetal",
@@ -35543,9 +35679,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Tin Alloy",
@@ -35713,9 +35850,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Dark Steel",
@@ -35873,9 +36011,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Electrical Steel",
@@ -36034,9 +36173,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Energetic Alloy",
@@ -36194,9 +36334,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Vibrant Alloy",
@@ -36366,10 +36507,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Shadow Metal",
@@ -36514,9 +36657,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Conductive Iron",
@@ -36677,9 +36821,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Tungstencarbide",
@@ -36840,9 +36985,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Vanadiumsteel",
@@ -37016,9 +37162,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "HSS-G",
@@ -37182,9 +37330,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "HSS-E",
@@ -37350,9 +37499,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "HSS-S",
@@ -37597,7 +37748,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Titaniumtetrachloride",
     "meltingPoint": null,
@@ -37855,9 +38006,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Pulsating Iron",
@@ -38015,9 +38167,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Soularium",
@@ -38174,9 +38327,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Enderium Base",
@@ -38353,9 +38507,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Redstone Alloy",
@@ -38524,11 +38679,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Ardite",
@@ -38678,9 +38834,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Reinforced",
@@ -38823,9 +38980,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Galgadorian",
@@ -38968,9 +39126,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Enhanced Galgadorian",
@@ -39122,10 +39281,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Manyullyn",
@@ -39295,10 +39455,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Mytryl",
@@ -39469,10 +39631,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Black Plutonium",
@@ -39628,10 +39792,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Callisto Ice",
@@ -39787,10 +39953,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Ledox",
@@ -39958,10 +40126,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Quantium",
@@ -40117,10 +40287,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Duralumin",
@@ -40296,11 +40468,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Oriharukon",
@@ -40475,10 +40649,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Infinity Catalyst",
@@ -40633,8 +40809,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -40916,10 +41092,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Infinity",
@@ -41087,10 +41265,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Mysterious Crystal",
@@ -41235,6 +41415,7 @@
       "All",
       "Gears",
       "Metals",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Magnetic Samarium",
@@ -41394,9 +41575,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Obzinite",
@@ -41558,9 +41740,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "End Steel",
@@ -41717,9 +41900,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Clay Compound",
@@ -41877,9 +42061,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Crystalline Alloy",
@@ -42040,9 +42225,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Melodic Alloy",
@@ -42200,9 +42387,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Stellar Alloy",
@@ -42364,9 +42552,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Crystalline Pink Slime",
@@ -42522,9 +42712,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Energetic Silver",
@@ -42682,9 +42873,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Vivid Alloy",
@@ -42808,7 +43000,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Bauxite Slurry",
     "meltingPoint": 295,
@@ -42913,7 +43105,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Heated Bauxite Slurry",
     "meltingPoint": 295,
@@ -43018,7 +43210,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Sluice Juice",
     "meltingPoint": 295,
@@ -43429,7 +43621,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Green Sapphire Juice",
     "meltingPoint": null,
@@ -43534,7 +43726,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Sapphire Juice",
     "meltingPoint": null,
@@ -43639,7 +43831,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Ruby Juice",
     "meltingPoint": null,
@@ -43744,7 +43936,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "MTBE Reaction Mixture (Butane)",
     "meltingPoint": null,
@@ -43862,7 +44054,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Hydrogen Sulfide",
     "meltingPoint": null,
@@ -44007,9 +44199,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Epoxid",
@@ -44162,9 +44355,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Silicone Rubber",
     "meltingPoint": 900,
@@ -44333,9 +44526,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Polycaprolactam (PCL)",
@@ -44504,9 +44699,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens",
+      "MultiPlates"
     ],
     "localName": "Polytetrafluoroethylene (PTFE)",
     "meltingPoint": 600,
@@ -44681,10 +44877,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Alduorite",
@@ -44837,10 +45034,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Rubracium",
@@ -44996,10 +45194,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Vulcanite",
@@ -45111,7 +45310,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Liquid Oxygen",
     "meltingPoint": 4,
@@ -45222,7 +45421,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Liquid Nitrogen",
     "meltingPoint": 4,
@@ -45333,7 +45532,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Liquid Air",
     "meltingPoint": 4,
@@ -45456,7 +45655,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Noble Gases",
     "meltingPoint": 4,
@@ -45581,7 +45780,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Carbon Dioxide",
     "meltingPoint": 25,
@@ -45725,6 +45924,7 @@
     "families": [
       "All",
       "Gears",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -45876,6 +46076,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -46040,6 +46241,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -46197,6 +46399,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -46350,6 +46553,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -46503,6 +46707,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -46797,6 +47002,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -46961,6 +47167,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -47125,6 +47332,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -47277,6 +47485,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -47425,6 +47634,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -47570,6 +47780,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -47725,6 +47936,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -47889,6 +48101,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -48897,12 +49110,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Gems",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Force",
@@ -49788,6 +50002,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -49942,6 +50157,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores"
     ],
@@ -50117,11 +50333,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Gems",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Vinteum",
@@ -51278,6 +51495,7 @@
       "All",
       "Gems",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Jade",
@@ -53278,7 +53496,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filtered Water (Grade 1)",
     "meltingPoint": 273,
@@ -53389,7 +53607,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Ozonated Water (Grade 2)",
     "meltingPoint": 273,
@@ -53500,7 +53718,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Flocculated Water (Grade 3)",
     "meltingPoint": 273,
@@ -53611,7 +53829,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "pH Neutralized Water (Grade 4)",
     "meltingPoint": 273,
@@ -53722,7 +53940,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Extreme-Temperature Treated Water (Grade 5)",
     "meltingPoint": 273,
@@ -53833,7 +54051,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Ultraviolet Treated Electrically Neutral Water (Grade 6)",
     "meltingPoint": 273,
@@ -53944,7 +54162,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Degassed Decontaminant-Free Water (Grade 7)",
     "meltingPoint": 273,
@@ -54055,7 +54273,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Subatomically Perfect Water (Grade 8)",
     "meltingPoint": 273,
@@ -54166,7 +54384,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Flocculation Waste Liquid",
     "meltingPoint": 273,
@@ -54606,7 +54824,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Polyaluminium Chloride",
     "meltingPoint": null,
@@ -54711,7 +54929,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Advanced Glue",
     "meltingPoint": null,
@@ -54821,7 +55039,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Ozone",
     "meltingPoint": null,
@@ -54931,7 +55149,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Stabilised Baryonic Matter",
     "meltingPoint": null,
@@ -55037,7 +55255,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Very Heavy Oil",
     "meltingPoint": null,
@@ -55188,9 +55406,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "TPV-Alloy",
@@ -55355,9 +55574,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Transcendent Metal",
@@ -55501,8 +55721,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Enriched Holmium",
     "meltingPoint": null,
@@ -55638,9 +55858,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Magnetohydrodynamically Constrained Star Matter",
@@ -55772,7 +55993,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Condensed Raw Stellar Plasma Mixture",
     "meltingPoint": null,
@@ -55911,9 +56132,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
+      "Liquids",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "White Dwarf Matter",
@@ -56066,9 +56289,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
+      "Liquids",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Black Dwarf Matter",
@@ -56184,7 +56409,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Tachyon Rich Temporal Fluid",
     "meltingPoint": null,
@@ -56336,9 +56562,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "SpaceTime",
@@ -56454,7 +56681,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Dimensionally Transcendent Residue",
     "meltingPoint": 25,
@@ -56562,7 +56789,8 @@
     ],
     "families": [
       "All",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Potassium Nitrate",
     "meltingPoint": 424,
@@ -56797,7 +57025,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "2-Nitrochlorobenzene",
     "meltingPoint": null,
@@ -56923,7 +57151,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "1,2-Dimethylbenzene",
     "meltingPoint": 248,
@@ -57152,7 +57380,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Phthalic Acid",
     "meltingPoint": null,
@@ -57270,7 +57498,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "3,3-Dichlorobenzidine",
     "meltingPoint": null,
@@ -57392,7 +57620,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "3,3-Diaminobenzidine",
     "meltingPoint": null,
@@ -57510,7 +57738,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Diphenyl Isophthalate",
     "meltingPoint": null,
@@ -57662,9 +57890,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens",
+      "MultiPlates"
     ],
     "localName": "Polybenzimidazole (PBI)",
     "meltingPoint": 1450,
@@ -57799,7 +58028,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Soul Infused Medium",
     "meltingPoint": null,
@@ -57904,7 +58133,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Reinforced Glass",
     "meltingPoint": 2000,
@@ -58010,7 +58239,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Raw Bio Catalyst Medium",
     "meltingPoint": null,
@@ -58115,7 +58344,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Sterilized Bio Catalyst Medium",
     "meltingPoint": null,
@@ -58220,7 +58449,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Chlorobenzene",
     "meltingPoint": null,
@@ -58338,7 +58567,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Diluted Hydrochloric Acid",
     "meltingPoint": null,
@@ -58580,7 +58809,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Raw Growth Catalyst Medium",
     "meltingPoint": null,
@@ -58685,7 +58914,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Growth Catalyst Medium",
     "meltingPoint": null,
@@ -58821,9 +59050,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Fiber-Reinforced Epoxy Resin",
@@ -58960,8 +59190,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Borosilicate Glass",
     "meltingPoint": null,
@@ -59227,9 +59457,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Nickel-Zinc Ferrite",
@@ -60152,8 +60383,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Magnesia",
@@ -60838,7 +61069,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Bio Diesel",
     "meltingPoint": null,
@@ -60943,7 +61174,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Nitration Mixture",
     "meltingPoint": null,
@@ -61048,7 +61279,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Glycerol",
     "meltingPoint": null,
@@ -61309,9 +61540,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Polyphenylene Sulfide (PPS)",
     "meltingPoint": null,
@@ -61436,7 +61667,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Dichlorobenzene",
     "meltingPoint": null,
@@ -61807,9 +62038,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Styrene-Butadiene Rubber (SBR)",
     "meltingPoint": null,
@@ -61954,9 +62185,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Polystyrene (PS)",
     "meltingPoint": null,
@@ -62078,7 +62309,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Styrene",
     "meltingPoint": null,
@@ -62192,7 +62423,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Isoprene",
     "meltingPoint": null,
@@ -62306,7 +62537,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Tetranitromethane",
     "meltingPoint": null,
@@ -62424,7 +62655,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Diluted Sulfuric Acid",
     "meltingPoint": null,
@@ -62534,7 +62765,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Ethenone",
     "meltingPoint": null,
@@ -62664,7 +62895,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Ethane",
     "meltingPoint": null,
@@ -62822,7 +63053,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Propane",
     "meltingPoint": null,
@@ -62980,7 +63211,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Butane",
     "meltingPoint": null,
@@ -63138,7 +63369,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Butene",
     "meltingPoint": null,
@@ -63296,7 +63527,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Butadiene",
     "meltingPoint": null,
@@ -63442,7 +63673,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Toluene",
     "meltingPoint": null,
@@ -63556,7 +63787,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Epichlorohydrin",
     "meltingPoint": null,
@@ -63707,9 +63938,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Polyvinyl Chloride (PVC)",
     "meltingPoint": null,
@@ -63835,7 +64066,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Vinyl Chloride",
     "meltingPoint": null,
@@ -63955,7 +64186,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Sulfur Dioxide",
     "meltingPoint": null,
@@ -64074,7 +64305,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Sulfur Trioxide",
     "meltingPoint": null,
@@ -64188,7 +64419,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Nitric Acid",
     "meltingPoint": null,
@@ -64306,7 +64537,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "1,1-Dimethylhydrazine",
     "meltingPoint": null,
@@ -64424,7 +64655,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Chloramine",
     "meltingPoint": null,
@@ -64542,7 +64773,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Dimethylamine",
     "meltingPoint": null,
@@ -64660,7 +64891,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Dinitrogen Tetroxide",
     "meltingPoint": null,
@@ -64774,7 +65005,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Nitric Oxide",
     "meltingPoint": null,
@@ -64890,7 +65121,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Ammonia",
     "meltingPoint": 196,
@@ -65019,7 +65250,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Wood Gas",
     "meltingPoint": null,
@@ -65124,7 +65355,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Wood Vinegar",
     "meltingPoint": null,
@@ -65229,7 +65460,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Wood Tar",
     "meltingPoint": null,
@@ -65334,7 +65565,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Dimethyldichlorosilane",
     "meltingPoint": null,
@@ -65456,7 +65687,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Chloromethane",
     "meltingPoint": null,
@@ -65686,7 +65917,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Tetrafluoroethylene",
     "meltingPoint": null,
@@ -65800,7 +66031,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Hydrofluoric Acid",
     "meltingPoint": null,
@@ -65914,7 +66145,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Chloroform",
     "meltingPoint": null,
@@ -66032,7 +66263,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Bisphenol A",
     "meltingPoint": null,
@@ -66150,7 +66381,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Acetic Acid",
     "meltingPoint": null,
@@ -66268,7 +66499,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Calcium Acetate Solution",
     "meltingPoint": null,
@@ -66390,7 +66621,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Acetone",
     "meltingPoint": null,
@@ -66508,7 +66739,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Methanol",
     "meltingPoint": null,
@@ -66626,7 +66857,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Carbon Monoxide",
     "meltingPoint": null,
@@ -66740,7 +66971,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Charcoal Byproducts",
     "meltingPoint": null,
@@ -66959,7 +67190,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Ethylene",
     "meltingPoint": null,
@@ -67117,7 +67348,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Propene",
     "meltingPoint": null,
@@ -67263,7 +67494,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Vinyl Acetate",
     "meltingPoint": null,
@@ -67381,7 +67612,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Polyvinyl Acetate",
     "meltingPoint": null,
@@ -67499,7 +67730,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Methyl Acetate",
     "meltingPoint": null,
@@ -67617,7 +67848,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Allyl Chloride",
     "meltingPoint": null,
@@ -67735,7 +67966,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Hydrochloric Acid",
     "meltingPoint": null,
@@ -67849,7 +68080,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Hypochlorous Acid",
     "meltingPoint": null,
@@ -68082,7 +68313,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Benzene",
     "meltingPoint": null,
@@ -68196,7 +68427,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Phenol",
     "meltingPoint": null,
@@ -68314,7 +68545,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Isopropylbenzene",
     "meltingPoint": null,
@@ -68428,7 +68659,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Phosphoric Acid",
     "meltingPoint": null,
@@ -68544,7 +68775,8 @@
       "fluidLiquid"
     ],
     "families": [
-      "All"
+      "All",
+      "Liquids"
     ],
     "localName": "Vinegar",
     "meltingPoint": null,
@@ -68647,7 +68879,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Fermented Biomass",
     "meltingPoint": null,
@@ -68752,7 +68984,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Salt Water",
     "meltingPoint": 425,
@@ -68872,7 +69104,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Iron III Chloride",
     "meltingPoint": null,
@@ -68986,7 +69218,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Life",
     "meltingPoint": null,
@@ -70240,7 +70472,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Forestry Biomass",
     "meltingPoint": null,
@@ -70345,7 +70577,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Ethanol",
     "meltingPoint": null,
@@ -70472,7 +70704,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Oil",
     "meltingPoint": null,
@@ -70577,7 +70809,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Diesel",
     "meltingPoint": null,
@@ -70682,7 +70914,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Cetane-Boosted Diesel",
     "meltingPoint": null,
@@ -70890,7 +71122,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Fish Oil",
     "meltingPoint": null,
@@ -71001,7 +71233,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Creosote",
     "meltingPoint": null,
@@ -71106,7 +71338,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Seed Oil",
     "meltingPoint": null,
@@ -71217,7 +71449,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Glyceryl Trinitrate",
     "meltingPoint": null,
@@ -71345,7 +71577,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Methane",
     "meltingPoint": null,
@@ -71574,7 +71806,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Nitrogen Dioxide",
     "meltingPoint": null,
@@ -71688,7 +71920,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Sodium Persulfate",
     "meltingPoint": null,
@@ -71917,7 +72149,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Sulfuric Acid",
     "meltingPoint": null,
@@ -72035,7 +72267,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "UU-Amplifier",
     "meltingPoint": null,
@@ -72346,7 +72578,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Lubricant",
     "meltingPoint": null,
@@ -72460,7 +72692,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Honey",
     "meltingPoint": null,
@@ -72566,7 +72798,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Refined Glue",
     "meltingPoint": null,
@@ -72676,7 +72908,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Hot Frying Oil",
     "meltingPoint": null,
@@ -72911,7 +73143,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Holy Water",
     "meltingPoint": null,
@@ -73034,7 +73266,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Heavy Oil",
     "meltingPoint": null,
@@ -73139,7 +73371,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Raw Oil",
     "meltingPoint": null,
@@ -73244,7 +73476,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Light Oil",
     "meltingPoint": null,
@@ -73349,7 +73581,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Natural Gas",
     "meltingPoint": null,
@@ -73454,7 +73686,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Sulfuric Gas",
     "meltingPoint": null,
@@ -73571,7 +73803,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Refinery Gas",
     "meltingPoint": null,
@@ -73708,7 +73940,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Sulfuric Naphtha",
     "meltingPoint": null,
@@ -73813,7 +74045,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Sulfuric Light Fuel",
     "meltingPoint": null,
@@ -73918,7 +74150,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Sulfuric Heavy Fuel",
     "meltingPoint": null,
@@ -74035,7 +74267,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naphtha",
     "meltingPoint": null,
@@ -74184,7 +74416,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Light Fuel",
     "meltingPoint": null,
@@ -74333,7 +74565,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Heavy Fuel",
     "meltingPoint": null,
@@ -74470,7 +74702,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "LPG",
     "meltingPoint": null,
@@ -74575,7 +74807,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Red Mud",
     "meltingPoint": null,
@@ -74791,7 +75023,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Dimensionally Transcendent Exotic Catalyst",
     "meltingPoint": 100000000,
@@ -74897,7 +75129,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Dimensionally Transcendent Resplendent Catalyst",
     "meltingPoint": 75000000,
@@ -75003,7 +75235,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Dimensionally Transcendent Prosaic Catalyst",
     "meltingPoint": 50000000,
@@ -75109,7 +75341,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Dimensionally Transcendent Crude Catalyst",
     "meltingPoint": 25000000,
@@ -75334,7 +75566,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Trimethyl Borate",
     "meltingPoint": 239,
@@ -75570,8 +75802,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Liquids"
     ],
     "localName": "Phosphorus Trichloride",
     "meltingPoint": 179,
@@ -76478,7 +76710,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naphthenic Acid",
     "meltingPoint": null,
@@ -76702,7 +76934,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "1,4-Dimethylbenzene",
     "meltingPoint": 286,
@@ -76816,7 +77048,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "1,3-Dimethylbenzene",
     "meltingPoint": 225,
@@ -76930,7 +77162,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Terephthalic Acid",
     "meltingPoint": 480,
@@ -77074,9 +77306,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens",
+      "MultiPlates"
     ],
     "localName": "Kevlar",
     "meltingPoint": null,
@@ -77188,7 +77421,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Dimethyl Terephthalate",
     "meltingPoint": 415,
@@ -77306,7 +77539,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Sulfur Dichloride",
     "meltingPoint": null,
@@ -77411,7 +77644,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Thionyl Chloride",
     "meltingPoint": null,
@@ -77668,10 +77901,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Endium",
@@ -77917,8 +78151,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Nickel Aluminide",
     "meltingPoint": 1668,
@@ -78149,7 +78383,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Liquid Crystal Kevlar",
     "meltingPoint": null,
@@ -78365,7 +78599,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "gamma-Butyrolactone",
     "meltingPoint": 229,
@@ -78483,7 +78717,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Trimethylamine",
     "meltingPoint": 156,
@@ -78601,7 +78835,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Methylamine",
     "meltingPoint": 180,
@@ -78843,7 +79077,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "4-Nitroaniline",
     "meltingPoint": 420,
@@ -78974,7 +79208,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Acetylene",
     "meltingPoint": 192,
@@ -79216,7 +79450,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "N-Methyl-2-pyrrolidone",
     "meltingPoint": 249,
@@ -79347,7 +79581,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Polyurethane Resin",
     "meltingPoint": null,
@@ -79576,7 +79810,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Acetaldehyde",
     "meltingPoint": 150,
@@ -79703,7 +79937,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Ethylene Glycol",
     "meltingPoint": 260,
@@ -79830,7 +80064,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Silicon Oil",
     "meltingPoint": 473,
@@ -79944,7 +80178,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Ethylene Oxide",
     "meltingPoint": 160,
@@ -80182,7 +80416,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Nickel Tetracarbonyl",
     "meltingPoint": 256,
@@ -80309,7 +80543,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Isobutyraldehyde",
     "meltingPoint": 208,
@@ -80436,7 +80670,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Butyraldehyde",
     "meltingPoint": 176,
@@ -80563,7 +80797,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Diphenylmethane Diisocyanate Mixture",
     "meltingPoint": 310,
@@ -80694,7 +80928,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Diaminodiphenylmethane Mixture",
     "meltingPoint": 365,
@@ -81078,7 +81312,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Silane",
     "meltingPoint": 88,
@@ -81197,7 +81431,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Dichlorosilane",
     "meltingPoint": 151,
@@ -81445,8 +81679,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Blaze",
     "meltingPoint": 6400,
@@ -81716,8 +81950,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Sugar",
     "meltingPoint": null,
@@ -81866,8 +82100,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Obsidian",
     "meltingPoint": null,
@@ -82666,7 +82900,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -82829,8 +83063,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Glowstone",
     "meltingPoint": 273,
@@ -82975,7 +83209,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Moltens",
       "Ores"
     ],
     "localName": "Electrotine",
@@ -83573,6 +83807,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -83848,6 +84083,7 @@
     "families": [
       "All",
       "Dusts",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Graphene",
@@ -85169,9 +85405,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Deep Iron",
@@ -87792,7 +88029,8 @@
     "families": [
       "All",
       "Dusts",
-      "Gears"
+      "Gears",
+      "Moltens"
     ],
     "localName": "Black Granite",
     "meltingPoint": null,
@@ -87931,7 +88169,8 @@
     "families": [
       "All",
       "Dusts",
-      "Gears"
+      "Gears",
+      "Moltens"
     ],
     "localName": "Red Granite",
     "meltingPoint": null,
@@ -88558,8 +88797,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores"
     ],
     "localName": "Silicon Solar Grade (Poly SI)",
@@ -89295,10 +89535,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Trinium",
@@ -89944,9 +90186,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Polyethylene (PE)",
     "meltingPoint": 400,
@@ -90426,7 +90668,8 @@
     ],
     "families": [
       "All",
-      "Dusts"
+      "Dusts",
+      "MultiPlates"
     ],
     "localName": "Paper",
     "meltingPoint": null,
@@ -90567,9 +90810,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Rubber",
     "meltingPoint": 400,
@@ -91102,11 +91345,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Desh",
@@ -91236,8 +91481,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Liquids"
     ],
     "localName": "Milk",
     "meltingPoint": null,
@@ -91820,8 +92065,9 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Gems"
+      "GemQualities",
+      "Gems",
+      "Moltens"
     ],
     "localName": "Glass",
     "meltingPoint": 1500,
@@ -92279,7 +92525,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Moltens",
       "Ores"
     ],
     "localName": "Cheese",
@@ -92607,7 +92853,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Complexity Catalyst",
     "meltingPoint": null,
@@ -92844,7 +93090,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Entropic Catalyst",
     "meltingPoint": null,
@@ -94544,10 +94790,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Chrysotile",
@@ -94709,10 +94956,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Realgar",
@@ -95627,6 +95875,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -98749,6 +98998,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -99154,8 +99404,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Concrete",
     "meltingPoint": 300,
@@ -99578,9 +99828,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Vyroxeres",
@@ -99733,10 +99984,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Ceruclase",
@@ -99879,8 +100131,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores"
     ],
     "localName": "Tartarite",
@@ -100032,10 +100284,11 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Orichalcum",
@@ -100147,7 +100400,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Silicon Tetrafluoride",
     "meltingPoint": 178,
@@ -100271,7 +100524,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Silicon Tetrachloride",
     "meltingPoint": 204,
@@ -100556,9 +100809,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Void Metal",
@@ -100805,7 +101059,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Trichlorosilane",
     "meltingPoint": 139,
@@ -100932,7 +101186,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Hexachlorodisilane",
     "meltingPoint": 272,
@@ -101080,8 +101334,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Superconductor Base UEV",
     "meltingPoint": 11700,
@@ -101237,11 +101491,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Draconium",
@@ -101410,11 +101665,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Awakened Draconium",
@@ -101566,9 +101822,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Blood Infused Iron",
@@ -101738,11 +101995,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Ichorium",
@@ -101897,8 +102155,10 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Gases",
       "Metals",
+      "Moltens",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Radox Polymer",
@@ -102062,8 +102322,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Gallium Arsenide",
     "meltingPoint": null,
@@ -102200,8 +102460,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Indium Gallium Phosphide",
     "meltingPoint": null,
@@ -102367,11 +102627,13 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Cosmic Neutronium",
@@ -102491,7 +102753,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "MTBE Reaction Mixture (Butene)",
     "meltingPoint": null,
@@ -102652,11 +102914,12 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas",
+      "PoweredToolParts",
       "ToolParts"
     ],
     "localName": "Flerovium",
@@ -102811,8 +103074,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Superconductor Base UHV",
     "meltingPoint": 10800,
@@ -102971,8 +103234,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Superconductor Base UV",
     "meltingPoint": 9900,
@@ -103131,8 +103394,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Superconductor Base MV",
     "meltingPoint": 2500,
@@ -103287,8 +103550,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Superconductor Base HV",
     "meltingPoint": 3300,
@@ -103447,8 +103710,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Superconductor Base EV",
     "meltingPoint": 4400,
@@ -103599,8 +103862,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Superconductor Base IV",
     "meltingPoint": 5200,
@@ -103751,8 +104014,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Superconductor Base LuV",
     "meltingPoint": 6000,
@@ -103919,8 +104182,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Superconductor Base ZPM",
     "meltingPoint": 8100,
@@ -104050,7 +104313,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Nitrous Oxide",
     "meltingPoint": null,
@@ -104164,7 +104427,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Anti-Knock Agent",
     "meltingPoint": null,
@@ -104282,7 +104545,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Octane",
     "meltingPoint": null,
@@ -104396,7 +104659,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Raw Gasoline",
     "meltingPoint": null,
@@ -104501,7 +104764,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Gasoline",
     "meltingPoint": null,
@@ -104606,7 +104869,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "High Octane Gasoline",
     "meltingPoint": null,
@@ -104711,7 +104974,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Mc Guffium 239",
     "meltingPoint": null,
@@ -104857,7 +105120,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Ammonium",
     "meltingPoint": 311,
@@ -104975,7 +105238,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Adluorite",
     "meltingPoint": null,
@@ -105084,7 +105348,8 @@
       "fluidGas"
     ],
     "families": [
-      "All"
+      "All",
+      "Gases"
     ],
     "localName": "Air",
     "meltingPoint": null,
@@ -105205,7 +105470,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Aluminium Brass",
     "meltingPoint": null,
@@ -105312,7 +105578,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Amordrine",
     "meltingPoint": null,
@@ -105422,7 +105689,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Aqua Regia",
     "meltingPoint": 1123,
@@ -105539,7 +105806,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Aredrite",
     "meltingPoint": null,
@@ -105649,6 +105917,7 @@
     ],
     "families": [
       "All",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Magic",
@@ -105778,7 +106047,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Blutonium",
     "meltingPoint": null,
@@ -105884,7 +106154,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Dark Thaumium",
     "meltingPoint": null,
@@ -105991,7 +106262,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Desichalkos",
     "meltingPoint": null,
@@ -106099,7 +106371,8 @@
       "fluidLiquid"
     ],
     "families": [
-      "All"
+      "All",
+      "Liquids"
     ],
     "localName": "Enriched Bacterial Sludge",
     "meltingPoint": null,
@@ -106200,7 +106473,8 @@
       "fluidLiquid"
     ],
     "families": [
-      "All"
+      "All",
+      "Liquids"
     ],
     "localName": "Fermented Bacterial Sludge",
     "meltingPoint": null,
@@ -106414,7 +106688,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "HSLA Steel",
     "meltingPoint": 1811,
@@ -106534,7 +106809,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Hematite",
     "meltingPoint": null,
@@ -106641,7 +106917,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Lumium",
     "meltingPoint": null,
@@ -106747,7 +107024,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Mercassium",
     "meltingPoint": null,
@@ -106965,7 +107243,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Fluxed Obsidian",
     "meltingPoint": null,
@@ -107071,7 +107350,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Osmonium",
     "meltingPoint": null,
@@ -107179,7 +107459,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Phased Gold",
     "meltingPoint": null,
@@ -107285,7 +107566,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Phased Iron",
     "meltingPoint": 3300,
@@ -107391,7 +107673,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Phoenixite",
     "meltingPoint": null,
@@ -107499,7 +107782,8 @@
       "fluidLiquid"
     ],
     "families": [
-      "All"
+      "All",
+      "Liquids"
     ],
     "localName": "Pollution",
     "meltingPoint": null,
@@ -107600,7 +107884,8 @@
       "fluidGas"
     ],
     "families": [
-      "All"
+      "All",
+      "Gases"
     ],
     "localName": "Cracked Radox",
     "meltingPoint": null,
@@ -107701,7 +107986,8 @@
       "fluidGas"
     ],
     "families": [
-      "All"
+      "All",
+      "Gases"
     ],
     "localName": "Radox Gas",
     "meltingPoint": null,
@@ -107802,7 +108088,8 @@
       "fluidLiquid"
     ],
     "families": [
-      "All"
+      "All",
+      "Liquids"
     ],
     "localName": "Heavy Radox",
     "meltingPoint": null,
@@ -107903,7 +108190,8 @@
       "fluidGas"
     ],
     "families": [
-      "All"
+      "All",
+      "Gases"
     ],
     "localName": "Light Radox",
     "meltingPoint": null,
@@ -108004,7 +108292,8 @@
       "fluidLiquid"
     ],
     "families": [
-      "All"
+      "All",
+      "Liquids"
     ],
     "localName": "Raw Radox",
     "meltingPoint": null,
@@ -108105,7 +108394,8 @@
       "fluidLiquid"
     ],
     "families": [
-      "All"
+      "All",
+      "Liquids"
     ],
     "localName": "Super Heavy Radox",
     "meltingPoint": null,
@@ -108206,7 +108496,8 @@
       "fluidGas"
     ],
     "families": [
-      "All"
+      "All",
+      "Gases"
     ],
     "localName": "Super Light Radox",
     "meltingPoint": null,
@@ -108307,7 +108598,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Serpentine",
     "meltingPoint": null,
@@ -108413,7 +108705,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Signalum",
     "meltingPoint": null,
@@ -108519,7 +108812,8 @@
       "fluidLiquid"
     ],
     "families": [
-      "All"
+      "All",
+      "Liquids"
     ],
     "localName": "Sodium Potassium",
     "meltingPoint": null,
@@ -108732,7 +109026,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Teslatite",
     "meltingPoint": null,
@@ -108950,7 +109245,8 @@
       "fluidLiquid"
     ],
     "families": [
-      "All"
+      "All",
+      "Liquids"
     ],
     "localName": "Xenoxene",
     "meltingPoint": null,
@@ -109051,7 +109347,8 @@
       "fluidLiquid"
     ],
     "families": [
-      "All"
+      "All",
+      "Liquids"
     ],
     "localName": "Diluted Xenoxene",
     "meltingPoint": null,
@@ -109152,7 +109449,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Yellorium",
     "meltingPoint": null,
@@ -109258,7 +109556,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Zectium",
     "meltingPoint": null,
@@ -109493,6 +109792,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -109807,8 +110107,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas",
       "ToolParts"
     ],
@@ -109969,6 +110269,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "ToolParts"
     ],
@@ -110137,6 +110438,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -110460,6 +110762,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -110657,6 +110960,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -110854,6 +111158,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -112338,6 +112643,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -112519,6 +112825,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -112701,6 +113008,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -112882,6 +113190,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -113661,8 +113970,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas",
       "ToolParts"
     ],
@@ -114214,6 +114523,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -114388,6 +114698,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "ToolParts"
     ],
@@ -114544,7 +114855,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Liquids",
       "Plasmas"
     ],
     "localName": "Xenon",
@@ -114679,7 +114990,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Oganesson",
     "meltingPoint": 1123,
@@ -114820,8 +115131,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas",
       "ToolParts"
     ],
@@ -114969,7 +115280,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Liquids",
       "Plasmas"
     ],
     "localName": "Neon",
@@ -115105,7 +115416,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Liquids",
       "Plasmas"
     ],
     "localName": "Krypton",
@@ -115268,9 +115579,10 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "GemQualities",
       "Gems",
       "Metals",
+      "Moltens",
       "Ores",
       "ToolParts"
     ],
@@ -115455,7 +115767,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Platinum Concentrate",
     "meltingPoint": 1123,
@@ -116064,7 +116376,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Ammonium Chloride",
     "meltingPoint": 1123,
@@ -116310,7 +116622,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Palladium Enriched Ammonia",
     "meltingPoint": 1123,
@@ -116812,7 +117124,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Sodium Formate",
     "meltingPoint": 1123,
@@ -117071,7 +117383,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Formic Acid",
     "meltingPoint": 1123,
@@ -117208,8 +117520,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Potassium Disulfate",
     "meltingPoint": 1123,
@@ -117473,7 +117785,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Rhodium Sulfate",
     "meltingPoint": 1123,
@@ -117594,7 +117906,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Rhodium Sulfate Solution",
     "meltingPoint": 1123,
@@ -117718,8 +118030,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Liquids"
     ],
     "localName": "Calcium Chloride",
     "meltingPoint": 1123,
@@ -117880,9 +118192,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Plasmas",
       "ToolParts"
     ],
@@ -118156,8 +118468,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Liquids"
     ],
     "localName": "Ruthenium Tetroxide",
     "meltingPoint": 313,
@@ -118281,7 +118593,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Hot Ruthenium Tetroxide Solution",
     "meltingPoint": 700,
@@ -118402,7 +118714,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Ruthenium Tetroxide Solution",
     "meltingPoint": 313,
@@ -118930,7 +119242,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Acidic Osmium Solution",
     "meltingPoint": 1123,
@@ -119167,7 +119479,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Osmium Solution",
     "meltingPoint": 1123,
@@ -119288,7 +119600,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Acidic Iridium Solution",
     "meltingPoint": 1123,
@@ -119678,9 +119990,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Plasmas",
       "ToolParts"
     ],
@@ -120091,7 +120403,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Rhodium Salt Solution",
     "meltingPoint": 1123,
@@ -120214,7 +120526,8 @@
     ],
     "families": [
       "All",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Sodium Nitrate",
     "meltingPoint": 435,
@@ -120713,7 +121026,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Rhodium Filter Cake Solution",
     "meltingPoint": 1123,
@@ -120981,9 +121294,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Rhodium-Plated Palladium",
@@ -121178,6 +121491,7 @@
     "families": [
       "All",
       "Gears",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -121362,9 +121676,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Ruridit",
@@ -121546,6 +121860,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "Ores",
       "ToolParts"
@@ -121730,9 +122045,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "High Durability Compound Steel",
@@ -122367,9 +122682,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Ademic Steel",
@@ -122664,7 +122979,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Hexafluorosilicic Acid",
     "meltingPoint": 1123,
@@ -123172,7 +123487,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Unformed Fluorophlogopite",
     "meltingPoint": 1123,
@@ -123436,7 +123751,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Liquid Helium",
     "meltingPoint": 1,
@@ -123804,8 +124119,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Tantalum Hafnium Carbide",
@@ -124065,7 +124380,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Uranium Based Liquid Fuel",
     "meltingPoint": 1123,
@@ -124186,7 +124501,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Uranium Based Liquid Fuel (Excited State)",
     "meltingPoint": 1123,
@@ -124307,7 +124622,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Uranium Based Liquid Fuel (Depleted)",
     "meltingPoint": 1123,
@@ -124561,7 +124876,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Thorium Based Liquid Fuel",
     "meltingPoint": 1123,
@@ -124682,7 +124997,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Thorium Based Liquid Fuel (Excited State)",
     "meltingPoint": 1123,
@@ -124803,7 +125118,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Thorium Based Liquid Fuel (Depleted)",
     "meltingPoint": 1123,
@@ -125057,7 +125372,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Plutonium Based Liquid Fuel",
     "meltingPoint": 1123,
@@ -125178,7 +125493,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Plutonium Based Liquid Fuel (Excited State)",
     "meltingPoint": 1123,
@@ -125299,7 +125614,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Plutonium Based Liquid Fuel (Depleted)",
     "meltingPoint": 1123,
@@ -125420,7 +125735,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Oxalic Acid",
     "meltingPoint": 1123,
@@ -125679,7 +125994,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Thorium Nitrate",
     "meltingPoint": 1123,
@@ -126148,7 +126463,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Thorium Tetrachloride",
     "meltingPoint": 1123,
@@ -126274,8 +126589,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Liquids"
     ],
     "localName": "Thorium Tetrafluoride",
     "meltingPoint": 1357,
@@ -126411,7 +126726,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Thorium-232 Tetrafluoride",
     "meltingPoint": 1123,
@@ -126567,8 +126882,9 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "GemQualities",
       "Gems",
+      "Moltens",
       "Ores",
       "ToolParts"
     ],
@@ -126748,9 +127064,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Atomic Separation Catalyst",
@@ -126941,9 +127257,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Extremely Unstable Naquadah",
@@ -127090,7 +127406,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Light Naquadah Fuel",
     "meltingPoint": 1123,
@@ -127211,7 +127527,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Heavy Naquadah Fuel",
     "meltingPoint": 1123,
@@ -127332,7 +127648,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Gas",
     "meltingPoint": 1123,
@@ -127453,7 +127769,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Asphalt",
     "meltingPoint": 1123,
@@ -127574,7 +127890,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Ether",
     "meltingPoint": 1123,
@@ -127708,7 +128024,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Antimony Trichloride Solution",
     "meltingPoint": 1123,
@@ -127829,7 +128145,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Antimony Pentachloride Solution",
     "meltingPoint": 1123,
@@ -127950,7 +128266,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Antimony Pentachloride",
     "meltingPoint": 1123,
@@ -128071,7 +128387,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Antimony Pentafluoride",
     "meltingPoint": 1123,
@@ -128192,7 +128508,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Fluoroantimonic Acid",
     "meltingPoint": 1123,
@@ -128429,7 +128745,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Acid Naquadah Emulsion",
     "meltingPoint": 1123,
@@ -128550,7 +128866,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Emulsion",
     "meltingPoint": 1123,
@@ -128671,7 +128987,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Solution",
     "meltingPoint": 1123,
@@ -128792,7 +129108,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Based Liquid Fuel MkI",
     "meltingPoint": 1123,
@@ -128913,7 +129229,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Based Liquid Fuel MkI (Depleted)",
     "meltingPoint": 1123,
@@ -129034,7 +129350,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Based Liquid Fuel MkII",
     "meltingPoint": 1123,
@@ -129155,7 +129471,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Based Liquid Fuel MkII (Depleted)",
     "meltingPoint": 1123,
@@ -129276,7 +129592,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Based Liquid Fuel MkIII",
     "meltingPoint": 1123,
@@ -129397,7 +129713,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Based Liquid Fuel MkIII (Depleted)",
     "meltingPoint": 1123,
@@ -129518,7 +129834,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Based Liquid Fuel MkIV",
     "meltingPoint": 1123,
@@ -129639,7 +129955,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Based Liquid Fuel MkIV (Depleted)",
     "meltingPoint": 1123,
@@ -129760,7 +130076,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Based Liquid Fuel MkV",
     "meltingPoint": 1123,
@@ -129881,7 +130197,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Based Liquid Fuel MkV (Depleted)",
     "meltingPoint": 1123,
@@ -130002,7 +130318,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Based Liquid Fuel MkVI",
     "meltingPoint": 1123,
@@ -130123,7 +130439,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Based Liquid Fuel MkVI (Depleted)",
     "meltingPoint": 1123,
@@ -130384,8 +130700,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Zn-Th Alloy",
@@ -130785,7 +131101,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Low Quality Naquadah Emulsion",
     "meltingPoint": 1123,
@@ -131035,7 +131351,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Low Quality Naquadah Solution",
     "meltingPoint": 1123,
@@ -131156,7 +131472,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "2-Ethyl-1-Hexanol",
     "meltingPoint": 1123,
@@ -131290,7 +131606,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "P-507",
     "meltingPoint": 1123,
@@ -131428,7 +131744,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah-Adamantium Solution",
     "meltingPoint": 1123,
@@ -131549,7 +131865,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah-Rich Solution",
     "meltingPoint": 1123,
@@ -131795,7 +132111,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Fluorine-Rich Waste Liquid",
     "meltingPoint": 1123,
@@ -131916,7 +132232,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Waste Liquid",
     "meltingPoint": 1123,
@@ -132422,7 +132738,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Enriched-Naquadah-Rich Solution",
     "meltingPoint": 1123,
@@ -133164,7 +133480,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadria-Rich Solution",
     "meltingPoint": 1123,
@@ -133288,8 +133604,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Liquids"
     ],
     "localName": "Low Quality Naquadria Sulphate",
     "meltingPoint": 1123,
@@ -133543,7 +133859,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadah Goo",
     "meltingPoint": 1123,
@@ -133664,7 +133980,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Enriched Naquadah Goo",
     "meltingPoint": 1123,
@@ -133785,7 +134101,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Naquadria Goo",
     "meltingPoint": 1123,
@@ -133932,9 +134248,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Zircaloy-4",
@@ -134123,9 +134439,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Zircaloy-2",
@@ -134325,9 +134641,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Incoloy-903",
@@ -134529,9 +134845,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Adamantium Alloy",
@@ -134691,7 +135007,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Ethanol Gasoline",
     "meltingPoint": 1123,
@@ -134812,7 +135128,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Cyclopentadiene",
     "meltingPoint": 1123,
@@ -134933,7 +135249,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Iron II Chloride",
     "meltingPoint": 1123,
@@ -135054,7 +135370,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Diethylamine",
     "meltingPoint": 1123,
@@ -135175,7 +135491,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Impure Ferrocene Mixture",
     "meltingPoint": 1123,
@@ -135296,7 +135612,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Ferrocene Solution",
     "meltingPoint": 1123,
@@ -135417,7 +135733,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Ferrocene Waste",
     "meltingPoint": 1123,
@@ -135654,7 +135970,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Jet Fuel No.3",
     "meltingPoint": 1123,
@@ -135775,7 +136091,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Jet Fuel A",
     "meltingPoint": 1123,
@@ -135927,9 +136243,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "MAR-M200 Steel",
@@ -136136,9 +136452,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "MAR-Ce-M200 Steel",
@@ -136309,8 +136625,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Lithium Chloride",
@@ -136492,9 +136808,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Signalium",
@@ -136805,9 +137121,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Lumiium",
@@ -136990,9 +137306,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Artherium-Sn",
@@ -137187,9 +137503,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Tanmolyium Beta-C",
@@ -137380,9 +137696,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Dalisenite",
@@ -137577,9 +137893,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Hikarium",
@@ -137767,9 +138083,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Tairitsu",
@@ -137941,7 +138257,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Antimony Pentafluoride Solution",
     "meltingPoint": 1123,
@@ -138222,9 +138538,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Precious Metals Alloy",
@@ -138427,9 +138743,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Enriched Naquadah Alloy",
@@ -138624,9 +138940,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "ToolParts"
     ],
     "localName": "Metastable Oganesson",
@@ -138807,9 +139123,10 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
+      "MultiPlates",
       "ToolParts"
     ],
     "localName": "Shirabon",
@@ -139339,8 +139656,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas",
       "ToolParts"
     ],
@@ -139833,7 +140150,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Hafnium Tetrachloride Solution",
     "meltingPoint": 1123,
@@ -140418,7 +140735,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Zirconium Tetrachloride Solution",
     "meltingPoint": 1123,
@@ -140674,8 +140991,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
+      "Liquids",
       "Metals",
       "Plasmas"
     ],
@@ -140811,7 +141128,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Muddy Monazite Rare Earth Solution",
     "meltingPoint": 1123,
@@ -140932,7 +141249,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Diluted Monazite Rare Earth Mud",
     "meltingPoint": 1123,
@@ -141053,7 +141370,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Diluted Monazite Sulfate",
     "meltingPoint": 1123,
@@ -141174,7 +141491,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Nitrogenated Monazite Rare Earth Concentrate",
     "meltingPoint": 1123,
@@ -141295,7 +141612,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Nitric Monazite Leached Concentrate",
     "meltingPoint": 1123,
@@ -143281,7 +143598,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Ammonium Nitrate Solution",
     "meltingPoint": 1123,
@@ -143982,7 +144299,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Seaweed Concentrate",
     "meltingPoint": 1123,
@@ -144219,7 +144536,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Potassium Permanganate Solution",
     "meltingPoint": 1123,
@@ -144340,7 +144657,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Seaweed Byproducts",
     "meltingPoint": 1123,
@@ -144461,7 +144778,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Nitric-Leached Monazite Mixture",
     "meltingPoint": 1123,
@@ -145046,7 +145363,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Muddy Bastnasite Rare Earth Solution",
     "meltingPoint": 1123,
@@ -145167,7 +145484,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Sodiumfluorosilicate",
     "meltingPoint": 1123,
@@ -145288,7 +145605,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Steam-Cracked Bastnasite Mud",
     "meltingPoint": 1123,
@@ -145409,7 +145726,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Conditioned Bastnasite Mud",
     "meltingPoint": 1123,
@@ -145530,7 +145847,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Diluted Bastnasite Mud",
     "meltingPoint": 1123,
@@ -145651,7 +145968,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filtered Bastnasite Mud",
     "meltingPoint": 1123,
@@ -146586,7 +146903,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Nitrogenated Bastnasite Rarer Earth Oxides",
     "meltingPoint": 1123,
@@ -146707,7 +147024,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Bastnasite Rarer Earth Oxide Suspension",
     "meltingPoint": 1123,
@@ -147431,8 +147748,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Liquids"
     ],
     "localName": "Calcium Fluoride",
     "meltingPoint": 1123,
@@ -148158,7 +148475,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "1,4-Butanediol",
     "meltingPoint": 1123,
@@ -148627,7 +148944,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Dinitrotoluene",
     "meltingPoint": 1123,
@@ -148748,7 +149065,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Diaminotoluene",
     "meltingPoint": 1123,
@@ -148872,8 +149189,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Potassium Chlorate",
     "meltingPoint": 1123,
@@ -148993,7 +149310,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Diluted Acetone",
     "meltingPoint": 1123,
@@ -149230,7 +149547,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Muddy Samarium Rare Earth Solution",
     "meltingPoint": 1123,
@@ -149351,7 +149668,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Samarium Rare Earth Mud",
     "meltingPoint": 1123,
@@ -149472,7 +149789,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Diluted Samarium Rare Earth Solution",
     "meltingPoint": 1123,
@@ -149712,8 +150029,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Samarium(III)-Chloride",
     "meltingPoint": 1123,
@@ -150190,7 +150507,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Chlorinated Rare Earth Concentrate",
     "meltingPoint": 1123,
@@ -150311,7 +150628,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Chlorinated Rare Earth Enriched Solution",
     "meltingPoint": 1123,
@@ -150432,7 +150749,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Chlorinated Rare Earth Diluted Solution",
     "meltingPoint": 1123,
@@ -150669,7 +150986,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Lanthanum Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -150790,7 +151107,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filled Lanthanum Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -150911,7 +151228,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Praseodymium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -151032,7 +151349,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filled Praseodymium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -151153,7 +151470,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Cerium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -151274,7 +151591,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filled Cerium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -151395,7 +151712,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Neodymium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -151516,7 +151833,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filled Neodymium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -151637,7 +151954,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Samarium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -151758,7 +152075,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filled Samarium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -151879,7 +152196,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Europium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -152000,7 +152317,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filled Europium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -152121,7 +152438,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Gadolinium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -152242,7 +152559,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filled Gadolinium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -152363,7 +152680,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Terbium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -152484,7 +152801,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filled Terbium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -152605,7 +152922,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Dysprosium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -152726,7 +153043,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filled Dysprosium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -152847,7 +153164,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Holmium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -152968,7 +153285,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filled Holmium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -153089,7 +153406,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Erbium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -153210,7 +153527,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filled Erbium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -153331,7 +153648,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Thulium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -153452,7 +153769,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filled Thulium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -153573,7 +153890,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Ytterbium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -153694,7 +154011,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filled Ytterbium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -153815,7 +154132,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Lutetium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -153936,7 +154253,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Filled Lutetium Extracting Nano Resin",
     "meltingPoint": 1123,
@@ -154057,7 +154374,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Lanthanum Chloride Concentrate",
     "meltingPoint": 1123,
@@ -154178,7 +154495,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Praseodymium Chloride Concentrate",
     "meltingPoint": 1123,
@@ -154299,7 +154616,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Cerium Chloride Concentrate",
     "meltingPoint": 1123,
@@ -154420,7 +154737,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Neodymium Chloride Concentrate",
     "meltingPoint": 1123,
@@ -154541,7 +154858,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Promethium Chloride Concentrate",
     "meltingPoint": 1123,
@@ -154662,7 +154979,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Samarium Chloride Concentrate",
     "meltingPoint": 1123,
@@ -154783,7 +155100,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Europium Chloride Concentrate",
     "meltingPoint": 1123,
@@ -154904,7 +155221,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Gadolinium Chloride Concentrate",
     "meltingPoint": 1123,
@@ -155025,7 +155342,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Terbium Chloride Concentrate",
     "meltingPoint": 1123,
@@ -155146,7 +155463,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Dysprosium Chloride Concentrate",
     "meltingPoint": 1123,
@@ -155267,7 +155584,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Holmium Chloride Concentrate",
     "meltingPoint": 1123,
@@ -155388,7 +155705,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Erbium Chloride Concentrate",
     "meltingPoint": 1123,
@@ -155509,7 +155826,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Thulium Chloride Concentrate",
     "meltingPoint": 1123,
@@ -155630,7 +155947,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Ytterbium Chloride Concentrate",
     "meltingPoint": 1123,
@@ -155751,7 +156068,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Lutetium Chloride Concentrate",
     "meltingPoint": 1123,
@@ -157383,8 +157700,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Cerium-doped Lutetium Aluminium Oxygen Blend",
     "meltingPoint": 1123,
@@ -157520,6 +157837,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "ToolParts"
     ],
@@ -158255,7 +158573,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Fluoroform",
     "meltingPoint": 1123,
@@ -158389,7 +158707,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Reactive-Ion Etching Mixture",
     "meltingPoint": 1123,
@@ -158635,7 +158953,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Boron Trichloride",
     "meltingPoint": 1123,
@@ -158781,6 +159099,7 @@
     ],
     "families": [
       "All",
+      "GemQualities",
       "Gems",
       "ToolParts"
     ],
@@ -159042,7 +159361,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Silane-Nitrogen Plasma Mixture",
     "meltingPoint": 1123,
@@ -159163,7 +159482,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Hot Super Coolant",
     "meltingPoint": 1123,
@@ -159667,7 +159986,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Sodium Tungstate",
     "meltingPoint": 1123,
@@ -159788,7 +160107,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Phosgene",
     "meltingPoint": 1123,
@@ -159909,7 +160228,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Liquids"
     ],
     "localName": "Nitromethane",
     "meltingPoint": 1123,
@@ -160049,9 +160368,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Abyssal Alloy",
     "meltingPoint": 9923,
@@ -160191,7 +160510,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Acetic Anhydride",
     "meltingPoint": 200,
@@ -160323,8 +160642,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Advanced Nitinol",
@@ -161113,8 +161432,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Ammonium Bifluoride",
     "meltingPoint": 399,
@@ -161234,7 +161553,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Ammonium Tetrafluoroberyllate",
     "meltingPoint": 553,
@@ -161369,6 +161688,7 @@
     "families": [
       "All",
       "Metals",
+      "Moltens",
       "Ores"
     ],
     "localName": "Ancient Granite",
@@ -161527,9 +161847,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Arcanite",
     "meltingPoint": 5939,
@@ -161672,9 +161992,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Arceus Alloy 2B",
     "meltingPoint": 7828,
@@ -161824,9 +162144,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Astral Titanium",
@@ -161947,8 +162267,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Babbit Alloy",
     "meltingPoint": 541,
@@ -162205,8 +162525,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Beryllium Fluoride",
     "meltingPoint": 1079,
@@ -162327,8 +162647,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Beryllium Hydroxide",
     "meltingPoint": 815,
@@ -162465,9 +162785,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Black Metal",
     "meltingPoint": 2623,
@@ -162597,8 +162917,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Black Titanium",
     "meltingPoint": 8037,
@@ -162759,9 +163079,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Blood Steel",
     "meltingPoint": 2773,
@@ -162897,9 +163217,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Botmium",
     "meltingPoint": 8493,
@@ -163021,7 +163341,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Moltens"
     ],
     "localName": "Brine",
     "meltingPoint": 484,
@@ -163139,7 +163460,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Bromine",
@@ -163251,7 +163572,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Burnt Reactor Fuel I",
     "meltingPoint": 1128,
@@ -163375,7 +163696,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Burnt Reactor Fuel II",
     "meltingPoint": 1128,
@@ -163523,9 +163844,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Celestial Tungsten",
@@ -163781,7 +164102,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Chloroacetic Acid",
     "meltingPoint": 336,
@@ -163905,7 +164226,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Chloroacetic Mixture",
     "meltingPoint": 313,
@@ -164051,9 +164372,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Chromatic Glass",
@@ -164184,9 +164505,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Cinobite A243",
     "meltingPoint": 7623,
@@ -164464,7 +164785,8 @@
     ],
     "families": [
       "All",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Copper(II) Sulfate",
     "meltingPoint": 863,
@@ -164586,7 +164908,8 @@
     ],
     "families": [
       "All",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Copper(II) Sulfate Pentahydrate",
     "meltingPoint": 863,
@@ -164968,8 +165291,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Curium",
@@ -165083,7 +165406,8 @@
     ],
     "families": [
       "All",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Cyanoacetic Acid",
     "meltingPoint": 339,
@@ -165207,7 +165531,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Cyanoacrylate Polymer",
     "meltingPoint": 248,
@@ -165455,7 +165779,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Dichloroacetic Acid",
     "meltingPoint": 286,
@@ -165601,9 +165925,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Dragonblood",
@@ -165733,9 +166057,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Eglin Steel",
     "meltingPoint": 1321,
@@ -165862,8 +166186,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Eglin Steel Base Compound",
     "meltingPoint": 1476,
@@ -166001,9 +166325,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Energy Crystal",
     "meltingPoint": 4933,
@@ -166127,7 +166451,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Ethyl Cyanoacetate",
     "meltingPoint": 251,
@@ -166251,7 +166575,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Ethyl Cyanoacrylate (Super Glue)",
     "meltingPoint": 248,
@@ -166385,8 +166709,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Fermium",
@@ -166770,7 +167094,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Fluorinated Uranium Hexafluoride (F-UF6)",
     "meltingPoint": 460,
@@ -166886,7 +167210,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Fluorine Sparged TB Salt",
     "meltingPoint": 987,
@@ -167006,7 +167330,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Fluorine Sparged T Salt",
     "meltingPoint": 941,
@@ -167131,6 +167455,7 @@
     ],
     "families": [
       "All",
+      "Moltens",
       "Ores"
     ],
     "localName": "Fluorite (F)",
@@ -167694,9 +168019,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Germanium",
@@ -167947,9 +168272,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Grisium",
     "meltingPoint": 4123,
@@ -168089,8 +168414,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "HG-1223",
     "meltingPoint": 6630,
@@ -168236,9 +168561,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "HS188-A",
     "meltingPoint": 5143,
@@ -168396,9 +168721,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Hastelloy-C276",
     "meltingPoint": 4623,
@@ -168548,9 +168873,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Hastelloy-N",
     "meltingPoint": 4623,
@@ -168696,9 +169021,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Hastelloy-W",
     "meltingPoint": 3623,
@@ -168851,9 +169176,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Hastelloy-X",
     "meltingPoint": 3623,
@@ -169003,9 +169328,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "HeLiCoPtEr",
     "meltingPoint": 6036,
@@ -169133,7 +169458,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Helium Sparged U Salt",
     "meltingPoint": 1077,
@@ -169517,7 +169842,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Hydrogen Chloride Mix",
     "meltingPoint": 365,
@@ -169633,7 +169958,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Gases"
     ],
     "localName": "Hydrogen Cyanide",
     "meltingPoint": 277,
@@ -169783,9 +170108,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Hypogen",
@@ -169915,9 +170240,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Incoloy-020",
     "meltingPoint": 3698,
@@ -170059,9 +170384,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Incoloy-DS",
     "meltingPoint": 3698,
@@ -170203,9 +170528,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Incoloy-MA956",
     "meltingPoint": 4698,
@@ -170347,9 +170672,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Inconel-625",
     "meltingPoint": 2698,
@@ -170502,9 +170827,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Inconel-690",
     "meltingPoint": 3698,
@@ -170653,9 +170978,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Inconel-792",
     "meltingPoint": 3698,
@@ -170787,8 +171112,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Indalloy 140",
     "meltingPoint": 5473,
@@ -171191,7 +171516,7 @@
     ],
     "families": [
       "All",
-      "Cells",
+      "Moltens",
       "Ores"
     ],
     "localName": "Koboldite",
@@ -171317,8 +171642,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "LFTR Fuel 1",
     "meltingPoint": 863,
@@ -171447,8 +171772,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "LFTR Fuel 2",
     "meltingPoint": 923,
@@ -171577,8 +171902,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "LFTR Fuel 3",
     "meltingPoint": 839,
@@ -171702,7 +172027,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "LFTR Fuel Base",
     "meltingPoint": 833,
@@ -171837,9 +172162,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Lafium Compound",
     "meltingPoint": 6623,
@@ -172519,9 +172844,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Laurenium",
     "meltingPoint": 7098,
@@ -172920,7 +173245,8 @@
     ],
     "families": [
       "All",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Lithium 7",
     "meltingPoint": 727,
@@ -173032,8 +173358,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Lithium Fluoride",
     "meltingPoint": 526,
@@ -173152,7 +173478,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Lithium Tetrafluoroberyllate (LFTB)",
     "meltingPoint": 839,
@@ -173287,9 +173613,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Maraging Steel 250",
     "meltingPoint": 2686,
@@ -173442,9 +173768,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Maraging Steel 300",
     "meltingPoint": 2686,
@@ -173597,9 +173923,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Maraging Steel 350",
     "meltingPoint": 2686,
@@ -173851,7 +174177,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Mutated Living Solder",
     "meltingPoint": 73,
@@ -173977,8 +174303,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Neptunium",
@@ -174095,8 +174421,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Gases"
     ],
     "localName": "Neptunium Hexafluoride",
     "meltingPoint": 619,
@@ -174366,9 +174692,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Niobium Carbide",
     "meltingPoint": 2750,
@@ -174504,9 +174830,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Nitinol 60",
     "meltingPoint": 5924,
@@ -174640,9 +174966,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Octiron",
     "meltingPoint": 9393,
@@ -174906,7 +175232,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Phosphorous Uranium Hexafluoride (P-UF6)",
     "meltingPoint": 503,
@@ -175045,9 +175371,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Pikyonium 64B",
     "meltingPoint": 7123,
@@ -175197,8 +175523,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Plutonium-238",
@@ -175320,8 +175646,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Polonium",
@@ -175605,9 +175931,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Potin",
     "meltingPoint": 1573,
@@ -175737,8 +176063,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Protactinium",
@@ -175871,9 +176197,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Quantum",
     "meltingPoint": 10773,
@@ -176173,8 +176499,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Radium",
@@ -176749,9 +177075,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Rhenium",
@@ -176877,8 +177203,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Rhugnor",
@@ -177007,8 +177333,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Ores",
       "Plasmas"
     ],
@@ -177393,7 +177719,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Selenious Acid",
     "meltingPoint": 340,
@@ -177532,9 +177858,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Selenium",
@@ -177649,8 +177975,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Selenium Dioxide",
     "meltingPoint": 408,
@@ -177771,8 +178097,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Gases"
     ],
     "localName": "Selenium Hexafluoride",
     "meltingPoint": 408,
@@ -177905,9 +178231,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Silicon Carbide",
     "meltingPoint": 1687,
@@ -178133,7 +178459,8 @@
     ],
     "families": [
       "All",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Sodium Cyanide",
     "meltingPoint": 836,
@@ -178256,8 +178583,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Sodium Fluoride",
     "meltingPoint": 484,
@@ -178373,7 +178700,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Solar Salt (Cold)",
     "meltingPoint": 429,
@@ -178489,7 +178816,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Solar Salt (Hot)",
     "meltingPoint": 1473,
@@ -178605,7 +178932,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Solid Acid Catalyst Mixture",
     "meltingPoint": 263,
@@ -178751,9 +179078,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Staballoy",
     "meltingPoint": 3723,
@@ -178869,7 +179196,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Stable Molten Salt Base",
     "meltingPoint": 802,
@@ -179003,9 +179330,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Stellite",
     "meltingPoint": 4583,
@@ -179131,7 +179458,8 @@
     ],
     "families": [
       "All",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Strontium Hydroxide",
     "meltingPoint": 645,
@@ -179253,7 +179581,8 @@
     ],
     "families": [
       "All",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Strontium Oxide",
     "meltingPoint": 825,
@@ -179387,9 +179716,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Talonite",
     "meltingPoint": 3727,
@@ -179538,9 +179867,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Tantalloy-60",
     "meltingPoint": 3298,
@@ -179681,9 +180010,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Tantalloy-61",
     "meltingPoint": 3303,
@@ -179821,9 +180150,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Tantalum Carbide",
     "meltingPoint": 3253,
@@ -179950,8 +180279,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Technetium",
@@ -180068,8 +180397,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Gases"
     ],
     "localName": "Technetium Hexafluoride",
     "meltingPoint": 1399,
@@ -180204,9 +180533,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Thallium",
@@ -180318,7 +180647,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Thorium-Beryllium Depleted Molten Salt (TB Salt)",
     "meltingPoint": 987,
@@ -180438,7 +180767,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Thorium Depleted Molten Salt (T Salt)",
     "meltingPoint": 941,
@@ -180559,8 +180888,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Thorium Hexafluoride",
     "meltingPoint": 1700,
@@ -180831,9 +181160,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Titansteel",
     "meltingPoint": 8523,
@@ -180957,7 +181286,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Trichloroacetic Acid",
     "meltingPoint": 330,
@@ -181089,8 +181418,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Trinium Naquadah Alloy",
     "meltingPoint": 4473,
@@ -181231,9 +181560,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Trinium Naquadah Carbonite",
     "meltingPoint": 6773,
@@ -181367,9 +181696,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Trinium Titanium Alloy",
     "meltingPoint": 4023,
@@ -181502,9 +181831,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Tumbaga",
     "meltingPoint": 1573,
@@ -181638,9 +181967,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Tungsten Titanium Carbide",
     "meltingPoint": 4695,
@@ -181767,8 +182096,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Uranium 232",
@@ -181891,8 +182220,8 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Metals",
+      "Moltens",
       "Plasmas"
     ],
     "localName": "Uranium 233",
@@ -182004,7 +182333,7 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Moltens"
     ],
     "localName": "Uranium Depleted Molten Salt (U Salt)",
     "meltingPoint": 1077,
@@ -182133,8 +182462,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Uranium Hexafluoride",
     "meltingPoint": 595,
@@ -182255,8 +182584,8 @@
     ],
     "families": [
       "All",
-      "Cells",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Uranium Tetrafluoride",
     "meltingPoint": 865,
@@ -182391,9 +182720,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Watertight Steel",
     "meltingPoint": 2946,
@@ -182531,7 +182860,8 @@
     ],
     "families": [
       "All",
-      "Dusts"
+      "Dusts",
+      "Moltens"
     ],
     "localName": "Wood's Glass",
     "meltingPoint": 1615,
@@ -183197,9 +183527,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Zeron-100",
     "meltingPoint": 6373,
@@ -183616,9 +183946,9 @@
     ],
     "families": [
       "All",
-      "Cells",
       "Gears",
-      "Metals"
+      "Metals",
+      "Moltens"
     ],
     "localName": "Zirconium Carbide",
     "meltingPoint": 1828,
@@ -184262,7 +184592,7 @@
   },
   {
     "name": "SuperconductorMV",
-    "legacyName": "SuperconductorMV",
+    "legacyName": null,
     "tint": -1,
     "argb": 5592405,
     "moltenArgb": null,
@@ -184360,7 +184690,7 @@
   },
   {
     "name": "SuperconductorHV",
-    "legacyName": "SuperconductorHV",
+    "legacyName": null,
     "tint": -1,
     "argb": 3348736,
     "moltenArgb": null,
@@ -184458,7 +184788,7 @@
   },
   {
     "name": "SuperconductorEV",
-    "legacyName": "SuperconductorEV",
+    "legacyName": null,
     "tint": -1,
     "argb": 34560,
     "moltenArgb": null,
@@ -184556,7 +184886,7 @@
   },
   {
     "name": "SuperconductorIV",
-    "legacyName": "SuperconductorIV",
+    "legacyName": null,
     "tint": -1,
     "argb": 3342387,
     "moltenArgb": null,
@@ -184654,7 +184984,7 @@
   },
   {
     "name": "SuperconductorLuV",
-    "legacyName": "SuperconductorLuV",
+    "legacyName": null,
     "tint": -1,
     "argb": 10046464,
     "moltenArgb": null,
@@ -184752,7 +185082,7 @@
   },
   {
     "name": "SuperconductorZPM",
-    "legacyName": "SuperconductorZPM",
+    "legacyName": null,
     "tint": -1,
     "argb": 657930,
     "moltenArgb": null,
@@ -184850,7 +185180,7 @@
   },
   {
     "name": "SuperconductorUV",
-    "legacyName": "SuperconductorUV",
+    "legacyName": null,
     "tint": -1,
     "argb": 14733831,
     "moltenArgb": null,
@@ -184948,7 +185278,7 @@
   },
   {
     "name": "Superconductor",
-    "legacyName": "Superconductor",
+    "legacyName": null,
     "tint": -1,
     "argb": 2523581,
     "moltenArgb": null,
@@ -185046,7 +185376,7 @@
   },
   {
     "name": "SuperconductorUEV",
-    "legacyName": "SuperconductorUEV",
+    "legacyName": null,
     "tint": -1,
     "argb": 11405320,
     "moltenArgb": null,
@@ -185144,7 +185474,7 @@
   },
   {
     "name": "SuperconductorUIV",
-    "legacyName": "SuperconductorUIV",
+    "legacyName": null,
     "tint": -1,
     "argb": 15030449,
     "moltenArgb": null,
@@ -185242,7 +185572,7 @@
   },
   {
     "name": "SuperconductorUMV",
-    "legacyName": "SuperconductorUMV",
+    "legacyName": null,
     "tint": -1,
     "argb": 11871949,
     "moltenArgb": null,
@@ -185340,7 +185670,7 @@
   },
   {
     "name": "AnyBronze",
-    "legacyName": "AnyBronze",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -185433,7 +185763,7 @@
   },
   {
     "name": "AnyCopper",
-    "legacyName": "AnyCopper",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -185526,7 +185856,7 @@
   },
   {
     "name": "AnyCarbon",
-    "legacyName": "AnyCarbon",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -185617,7 +185947,7 @@
   },
   {
     "name": "AnyIron",
-    "legacyName": "AnyIron",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -185710,7 +186040,7 @@
   },
   {
     "name": "AnyRubber",
-    "legacyName": "AnyRubber",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -185801,7 +186131,7 @@
   },
   {
     "name": "AnySyntheticRubber",
-    "legacyName": "AnySyntheticRubber",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -185892,7 +186222,7 @@
   },
   {
     "name": "Advanced",
-    "legacyName": "Advanced",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -185983,7 +186313,7 @@
   },
   {
     "name": "Fluix",
-    "legacyName": "Fluix",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -186080,7 +186410,7 @@
   },
   {
     "name": "Leather",
-    "legacyName": "Leather",
+    "legacyName": null,
     "tint": -1,
     "argb": 2140575312,
     "moltenArgb": null,
@@ -186171,7 +186501,7 @@
   },
   {
     "name": "Limestone",
-    "legacyName": "Limestone",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -186262,7 +186592,7 @@
   },
   {
     "name": "Prismarine",
-    "legacyName": "Prismarine",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -186353,7 +186683,7 @@
   },
   {
     "name": "Quartz",
-    "legacyName": "Quartz",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -186450,7 +186780,7 @@
   },
   {
     "name": "Sand",
-    "legacyName": "Sand",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -186541,7 +186871,7 @@
   },
   {
     "name": "Adamite",
-    "legacyName": "Adamite",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -186632,7 +186962,7 @@
   },
   {
     "name": "Agate",
-    "legacyName": "Agate",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -186723,7 +187053,7 @@
   },
   {
     "name": "Alfium",
-    "legacyName": "Alfium",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -186814,7 +187144,7 @@
   },
   {
     "name": "Debris",
-    "legacyName": "Debris",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -186905,7 +187235,7 @@
   },
   {
     "name": "Andesite",
-    "legacyName": "Andesite",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -186996,7 +187326,7 @@
   },
   {
     "name": "Aquamarine",
-    "legacyName": "Aquamarine",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -187087,7 +187417,7 @@
   },
   {
     "name": "Bitumen",
-    "legacyName": "Bitumen",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -187178,7 +187508,7 @@
   },
   {
     "name": "Black",
-    "legacyName": "Black",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -187269,7 +187599,7 @@
   },
   {
     "name": "Bloodstone",
-    "legacyName": "Bloodstone",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -187360,7 +187690,7 @@
   },
   {
     "name": "BrickNether",
-    "legacyName": "BrickNether",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -187451,7 +187781,7 @@
   },
   {
     "name": "Chimerite",
-    "legacyName": "Chimerite",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -187542,7 +187872,7 @@
   },
   {
     "name": "Chrysocolla",
-    "legacyName": "Chrysocolla",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -187633,7 +187963,7 @@
   },
   {
     "name": "Citrine",
-    "legacyName": "Citrine",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -187724,7 +188054,7 @@
   },
   {
     "name": "Cluster",
-    "legacyName": "Cluster",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -187815,7 +188145,7 @@
   },
   {
     "name": "Cobblestone",
-    "legacyName": "Cobblestone",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -187906,7 +188236,7 @@
   },
   {
     "name": "Coral",
-    "legacyName": "Coral",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -187997,7 +188327,7 @@
   },
   {
     "name": "Crystal",
-    "legacyName": "Crystal",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -188088,7 +188418,7 @@
   },
   {
     "name": "CrystalFlux",
-    "legacyName": "CrystalFlux",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -188179,7 +188509,7 @@
   },
   {
     "name": "Cyanite",
-    "legacyName": "Cyanite",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -188270,7 +188600,7 @@
   },
   {
     "name": "DarkStone",
-    "legacyName": "DarkStone",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -188361,7 +188691,7 @@
   },
   {
     "name": "Demonite",
-    "legacyName": "Demonite",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -188452,7 +188782,7 @@
   },
   {
     "name": "Draconic",
-    "legacyName": "Draconic",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -188543,7 +188873,7 @@
   },
   {
     "name": "Drulloy",
-    "legacyName": "Drulloy",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -188634,7 +188964,7 @@
   },
   {
     "name": "Ender",
-    "legacyName": "Ender",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -188725,7 +189055,7 @@
   },
   {
     "name": "Energized",
-    "legacyName": "Energized",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -188816,7 +189146,7 @@
   },
   {
     "name": "Fluorite",
-    "legacyName": "Fluorite",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -188907,7 +189237,7 @@
   },
   {
     "name": "Flux",
-    "legacyName": "Flux",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -188998,7 +189328,7 @@
   },
   {
     "name": "Infernal",
-    "legacyName": "Infernal",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -189089,7 +189419,7 @@
   },
   {
     "name": "InfusedDull",
-    "legacyName": "InfusedDull",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -189180,7 +189510,7 @@
   },
   {
     "name": "InfusedTeslatite",
-    "legacyName": "InfusedTeslatite",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -189271,7 +189601,7 @@
   },
   {
     "name": "InfusedVis",
-    "legacyName": "InfusedVis",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -189362,7 +189692,7 @@
   },
   {
     "name": "Invisium",
-    "legacyName": "Invisium",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -189453,7 +189783,7 @@
   },
   {
     "name": "IridiumSodiumOxide",
-    "legacyName": "IridiumSodiumOxide",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -189544,7 +189874,7 @@
   },
   {
     "name": "Lodestone",
-    "legacyName": "Lodestone",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -189635,7 +189965,7 @@
   },
   {
     "name": "Luminite",
-    "legacyName": "Luminite",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -189726,7 +190056,7 @@
   },
   {
     "name": "Magma",
-    "legacyName": "Magma",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -189817,7 +190147,7 @@
   },
   {
     "name": "Mawsitsit",
-    "legacyName": "Mawsitsit",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -189908,7 +190238,7 @@
   },
   {
     "name": "Metal",
-    "legacyName": "Metal",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -189999,7 +190329,7 @@
   },
   {
     "name": "Meteorite",
-    "legacyName": "Meteorite",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -190090,7 +190420,7 @@
   },
   {
     "name": "Mimichite",
-    "legacyName": "Mimichite",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -190181,7 +190511,7 @@
   },
   {
     "name": "Moonstone",
-    "legacyName": "Moonstone",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -190272,7 +190602,7 @@
   },
   {
     "name": "Mud",
-    "legacyName": "Mud",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -190363,7 +190693,7 @@
   },
   {
     "name": "Mutation",
-    "legacyName": "Mutation",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -190454,7 +190784,7 @@
   },
   {
     "name": "Nano",
-    "legacyName": "Nano",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -190545,7 +190875,7 @@
   },
   {
     "name": "Nether",
-    "legacyName": "Nether",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -190636,7 +190966,7 @@
   },
   {
     "name": "Onyx",
-    "legacyName": "Onyx",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -190727,7 +191057,7 @@
   },
   {
     "name": "Organic",
-    "legacyName": "Organic",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -190818,7 +191148,7 @@
   },
   {
     "name": "OsmiumTetroxide",
-    "legacyName": "OsmiumTetroxide",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -190909,7 +191239,7 @@
   },
   {
     "name": "Painite",
-    "legacyName": "Painite",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -191000,7 +191330,7 @@
   },
   {
     "name": "Peanutwood",
-    "legacyName": "Peanutwood",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -191091,7 +191421,7 @@
   },
   {
     "name": "Peat",
-    "legacyName": "Peat",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -191182,7 +191512,7 @@
   },
   {
     "name": "Petroleum",
-    "legacyName": "Petroleum",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -191273,7 +191603,7 @@
   },
   {
     "name": "Pewter",
-    "legacyName": "Pewter",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -191364,7 +191694,7 @@
   },
   {
     "name": "Piko",
-    "legacyName": "Piko",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -191455,7 +191785,7 @@
   },
   {
     "name": "PurpleAlloy",
-    "legacyName": "PurpleAlloy",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -191546,7 +191876,7 @@
   },
   {
     "name": "Randomite",
-    "legacyName": "Randomite",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -191637,7 +191967,7 @@
   },
   {
     "name": "Red",
-    "legacyName": "Red",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -191728,7 +192058,7 @@
   },
   {
     "name": "RubberTreeSap",
-    "legacyName": "RubberTreeSap",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -191819,7 +192149,7 @@
   },
   {
     "name": "SodiumPeroxide",
-    "legacyName": "SodiumPeroxide",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -191910,7 +192240,7 @@
   },
   {
     "name": "SolutionBlueVitriol",
-    "legacyName": "SolutionBlueVitriol",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -192001,7 +192331,7 @@
   },
   {
     "name": "SolutionNickelSulfate",
-    "legacyName": "SolutionNickelSulfate",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -192092,7 +192422,7 @@
   },
   {
     "name": "Sunstone",
-    "legacyName": "Sunstone",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -192183,7 +192513,7 @@
   },
   {
     "name": "TNT",
-    "legacyName": "TNT",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -192274,7 +192604,7 @@
   },
   {
     "name": "Tar",
-    "legacyName": "Tar",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -192365,7 +192695,7 @@
   },
   {
     "name": "Unknown",
-    "legacyName": "Unknown",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -192456,7 +192786,7 @@
   },
   {
     "name": "Unstableingot",
-    "legacyName": "Unstableingot",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
@@ -192547,7 +192877,7 @@
   },
   {
     "name": "Voidstone",
-    "legacyName": "Voidstone",
+    "legacyName": null,
     "tint": -1,
     "argb": 16777215,
     "moltenArgb": null,
