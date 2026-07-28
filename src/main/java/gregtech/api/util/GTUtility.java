@@ -155,7 +155,6 @@ import gregtech.api.damagesources.GTDamageSources.DamageSourceHotItem;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
@@ -4103,8 +4102,8 @@ public class GTUtility {
         }
     }
 
-    public static int getPlasmaFuelValueInEUPerLiterFromMaterial(Materials material) {
-        return getPlasmaFuelValueInEUPerLiterFromFluid(material.getPlasma(1));
+    public static int getPlasmaFuelValueInEUPerLiterFromMaterial(Material material) {
+        return getPlasmaFuelValueInEUPerLiterFromFluid(MU.plasma(material, 1));
     }
 
     public static int getPlasmaFuelValueInEUPerLiterFromFluid(FluidStack aLiquid) {

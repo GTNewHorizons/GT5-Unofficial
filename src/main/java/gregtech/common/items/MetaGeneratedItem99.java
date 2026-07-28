@@ -1,6 +1,5 @@
 package gregtech.common.items;
 
-import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
 import static gregtech.api.enums.OrePrefixes.material;
 
@@ -18,7 +17,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
@@ -222,8 +220,6 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         final Material material = getMaterial(damage);
         final OrePrefixes prefix = getOrePrefix(damage);
         if (material == null || prefix == null) return;
-        // Tooltip-with-amount has no MaterialLib accessor; use the legacy call, which retires with the facade.
-        Materials legacy = MU.materialOf(material);
-        if (legacy != null) legacy.addTooltips(aList, prefix.getMaterialAmount() / M);
+        MU.addTooltipsOf(material, aList);
     }
 }

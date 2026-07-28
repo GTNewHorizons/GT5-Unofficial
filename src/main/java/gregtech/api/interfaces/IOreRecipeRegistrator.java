@@ -4,9 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.material.MU;
 
 public interface IOreRecipeRegistrator {
 
@@ -20,13 +18,6 @@ public interface IOreRecipeRegistrator {
      * @param stack    always != null
      */
     void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName, ItemStack stack);
-
-    /// Bridges the legacy [Materials]-typed ore-processing pipeline to the [Material]-typed registrator,
-    /// resolving `material`'s MaterialLib counterpart through [MU#material].
-    default void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
-        ItemStack stack) {
-        registerOre(prefix, MU.material(material), oreDictName, modName, stack);
-    }
 
     /// The recognition-marker ore-processing path ([OrePrefixes#processRecognitionOre(Material, String, String,
     /// ItemStack)]). A marker carries no ore-processing recipes, so it is a no-op -- registrators that do

@@ -57,12 +57,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -2093,8 +2093,8 @@ public class RecipesGregTech {
             }
             FluidStack plasmaFromName = FluidRegistry.getFluidStack("plasma." + y.toLowerCase(), 1_000);
 
-            Materials particleMaterial = MaterialUtils.getMaterial(y);
-            FluidStack recipePlasma = particleMaterial != null ? particleMaterial.getPlasma(1_000) : plasmaFromName;
+            Material particleMaterial = MaterialUtils.getMaterial(y);
+            FluidStack recipePlasma = particleMaterial != null ? MU.plasma(particleMaterial, 1_000) : plasmaFromName;
 
             // Ionize Plasma
             if (recipePlasma != null && !recipePlasma.isFluidEqual(MU.plasma(Materials2Materials.NULL, 1))) {
