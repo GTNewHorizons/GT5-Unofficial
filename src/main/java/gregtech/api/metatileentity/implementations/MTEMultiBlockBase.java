@@ -2292,6 +2292,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             && mteHatchCryotheum.mLockedFluid == TFFluids.fluidCryotheum) {
             mteHatchCryotheum.updateTexture(aBaseCasingIndex);
             mteHatchCryotheum.updateCraftingIcon(this.getMachineCraftingIcon());
+            addIfSmartInput(mteHatchCryotheum);
             return mCryotheumHatches.add(mteHatchCryotheum);
         }
         return false;
@@ -2305,6 +2306,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             && mteHatchPyrotheum.mLockedFluid == TFFluids.fluidPyrotheum) {
             mteHatchPyrotheum.updateTexture(aBaseCasingIndex);
             mteHatchPyrotheum.updateCraftingIcon(this.getMachineCraftingIcon());
+            addIfSmartInput(mteHatchPyrotheum);
             return mPyrotheumHatches.add(mteHatchPyrotheum);
         }
         return false;
