@@ -11,6 +11,7 @@ import java.util.TreeMap;
 
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -37,10 +38,18 @@ public final class MaterialGateDump {
             row.put("legacyNamed", MU.isLegacyNamed(material));
             row.put("oldSubId", MU.oldSubId(material));
             row.put("hasMolten", MU.hasMolten(material));
+            row.put("solid", name(MU.solid(material, 1)));
             row.put("liquid", name(MU.fluidOf(material)));
             row.put("gas", name(MU.gasOf(material)));
             row.put("molten", name(MU.moltenOf(material)));
             row.put("plasma", name(MU.plasmaOf(material)));
+            row.put("legacyGtppFluid", name(MU.legacyGtppFluidOf(material)));
+            row.put("legacyGtppPlasma", name(MU.legacyGtppPlasmaOf(material)));
+            for (MU.CrackType type : MU.CrackType.values()) {
+                for (int severity = 0; severity < 3; severity++) {
+                    row.put(crackedKey(type, severity), name(MU.crackedFluid(material, type, severity)));
+                }
+            }
             out.put(MU.internalName(material), row);
         }
         File file = new File(directory, "material-gates.json");
@@ -57,7 +66,17 @@ public final class MaterialGateDump {
         write(directory);
     }
 
+    private static String crackedKey(MU.CrackType type, int severity) {
+        return (type == MU.CrackType.HYDRO ? "hydroCracked" : "steamCracked") + (severity + 1);
+    }
+
     private static String name(Fluid fluid) {
         return fluid == null ? null : fluid.getName();
+    }
+
+    private static String name(FluidStack stack) {
+        return stack == null ? null
+            : stack.getFluid()
+                .getName();
     }
 }
