@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -32,6 +33,8 @@ import gregtech.api.structure.IStructureChannels;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.api.util.tooltip.macros.TooltipMacroHandler;
+import gregtech.api.util.tooltip.macros.TooltipMacroProcessor;
 
 /**
  * This makes it easier to build multiblock tooltips, with a standardized format. <br>
@@ -119,6 +122,8 @@ public class MultiblockTooltipBuilder {
     private String[] sArray;
     private String[] hArray;
 
+    private final TooltipMacroHandler macroHandler;
+
     public MultiblockTooltipBuilder() {
         iLines = new LinkedList<>();
         sLines = new LinkedList<>();
@@ -127,6 +132,7 @@ public class MultiblockTooltipBuilder {
         structureAuthors = new LinkedList<>();
         hBlocks = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
         hBlocks.put(StructureLibAPI.HINT_BLOCK_META_AIR, TT_air);
+        macroHandler = new TooltipMacroHandler();
     }
 
     /**
@@ -149,6 +155,92 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addInfo(String info) {
         iLines.add(info);
+        return this;
+    }
+
+    /**
+     * Sets the content to append after each macro invocation
+     *
+     * @param content the content, or {@code null} to disable this behavior.
+     * @return Instance this method was called on.
+     * @apiNote This method is deliberately designed to accept a String
+     *          instance rather than {@link EnumChatFormatting} to account for
+     *          the possibility of needing to chain multiple formatting styles
+     *          (for example, gray + italic)
+     */
+    public MultiblockTooltipBuilder setPostMacroContent(Object content) {
+        this.macroHandler.setPostfix(content);
+        return this;
+    }
+
+    /**
+     * Add a line of information, translating '&' color/format codes (e.g. &a, &l, &r)
+     * into Minecraft's '§' formatting codes, and resolving macros of the form
+     * {macro_name:param} using registered {@link TooltipMacroProcessor}s.
+     * <p>
+     * Use '&&' to escape and insert a literal '&' character.
+     *
+     * @param info The line to be formatted and added
+     * @return Instance this method was called on.
+     * @apiNote Macros called without a parameter is treated as an invocation with an empty string.
+     */
+    public MultiblockTooltipBuilder addFormatted(String info) {
+        iLines.add(macroHandler.processString(info));
+        return this;
+    }
+
+    /**
+     * Registers this macro processor for the builder
+     *
+     * @param name        the name of the macro
+     * @param transformer the string transformation
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addMacro(String name, UnaryOperator<String> transformer) {
+        return addMacro(TooltipMacroProcessor.of(name, transformer));
+    }
+
+    /**
+     * Registers this macro processor for the builder
+     *
+     * @param macro the macro processor
+     * @return Instance this method was called on.
+     * @apiNote macros with duplicate names will be replaced
+     */
+    public MultiblockTooltipBuilder addMacro(TooltipMacroProcessor macro) {
+        this.macroHandler.addProcessor(macro);
+        return this;
+    }
+
+    /**
+     * Registers multiple macro processors for the builder
+     *
+     * @param macros the macro processors
+     * @return Instance this method was called on.
+     * @apiNote this method is a convenience method, identical to:
+     *
+     *          <pre>
+     *          for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
+     *          </pre>
+     */
+    public MultiblockTooltipBuilder addMacros(TooltipMacroProcessor... macros) {
+        for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
+        return this;
+    }
+
+    /**
+     * Registers multiple macro processors for the builder
+     *
+     * @param macros the macro processor collection
+     * @return Instance this method was called on.
+     * @apiNote this method is a convenience method, identical to:
+     *
+     *          <pre>
+     *          for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
+     *          </pre>
+     */
+    public MultiblockTooltipBuilder addMacros(Iterable<TooltipMacroProcessor> macros) {
+        for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
         return this;
     }
 
@@ -1733,6 +1825,7 @@ public class MultiblockTooltipBuilder {
         authors = null;
         structureAuthors = null;
         hBlocks = null;
+        macroHandler.clear();
         return this;
     }
 
@@ -1747,4 +1840,5 @@ public class MultiblockTooltipBuilder {
     public String[] getStructureHint() {
         return hArray;
     }
+
 }
