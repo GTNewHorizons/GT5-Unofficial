@@ -13,11 +13,11 @@ import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Dyes;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class BaseItemDustUnique extends Item {
 
@@ -40,7 +40,7 @@ public class BaseItemDustUnique extends Item {
         this.setCreativeTab(tabMisc);
         this.colour = colour == 0 ? Dyes._NULL.toInt() : colour;
         this.materialName = materialName;
-        MaterialUtils.generateMaterialLocalizedName(materialName);
+        registerLocalizedName(materialName);
         if (mChemicalFormula == null || mChemicalFormula.isEmpty() || mChemicalFormula.equals("NullFormula")) {
             this.chemicalNotation = StringUtils.subscript(materialName);
         } else {
@@ -72,7 +72,7 @@ public class BaseItemDustUnique extends Item {
 
     @Override
     public String getItemStackDisplayName(final ItemStack iStack) {
-        return translateToLocalFormatted(typeLoc, MaterialUtils.getMaterialLocalizedName(this.materialName));
+        return translateToLocalFormatted(typeLoc, localizedName(this.materialName));
     }
 
     private String getCorrectTexture(final String pileSize) {
@@ -110,4 +110,25 @@ public class BaseItemDustUnique extends Item {
     public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
         return this.colour;
     }
+
+    /// Registers `name` as its own display name under [#nameKey].
+    private static void registerLocalizedName(String name) {
+        GTLanguageManager.addStringLocalization(nameKey(name), name);
+    }
+
+    /// The display name registered for `name`, or the key itself when the lang file has no entry.
+    private static String localizedName(String name) {
+        return StatCollector.translateToLocal(nameKey(name));
+    }
+
+    /// The lang key for a unique dust's display name. These dusts back no MaterialLib material, so their
+    /// names are free-form display strings ("Tumbaga Mix", "Cooked ZrCl4") rather than material names --
+    /// hence the non-alphanumeric stripping, which the material-backed
+    /// [gregtech.api.material.MaterialUtils#localizedNameKey] scheme does not do. The two schemes are not
+    /// interchangeable.
+    private static String nameKey(String name) {
+        return "Material." + name.toLowerCase()
+            .replaceAll("[^a-zA-Z0-9]", "");
+    }
+
 }
