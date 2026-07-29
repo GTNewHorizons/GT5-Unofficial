@@ -1674,6 +1674,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
