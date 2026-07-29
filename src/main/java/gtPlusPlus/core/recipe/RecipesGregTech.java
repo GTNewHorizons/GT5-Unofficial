@@ -2086,14 +2086,13 @@ public class RecipesGregTech {
         int IonCount = 2;
         int tenCountA = 2;
         int tenCountB = 0;
-        for (String y : IonParticles.MetaToNameMap.values()) {
-            if (y.toLowerCase()
-                .contains("hydrogen")) {
+        for (String y : IonParticles.ions) {
+            if (y.equalsIgnoreCase("Hydrogen")) {
                 continue;
             }
             FluidStack plasmaFromName = FluidRegistry.getFluidStack("plasma." + y.toLowerCase(), 1_000);
 
-            Material particleMaterial = gtPlusPlus.core.util.minecraft.MaterialUtils.getMaterial(y);
+            Material particleMaterial = MaterialUtils.byLegacyName(y);
             FluidStack recipePlasma = particleMaterial != null ? MaterialUtils.plasma(particleMaterial, 1_000)
                 : plasmaFromName;
 
