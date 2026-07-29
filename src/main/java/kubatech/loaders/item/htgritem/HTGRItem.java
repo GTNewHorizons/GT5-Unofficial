@@ -72,7 +72,7 @@ public abstract class HTGRItem extends Item {
     public String getItemStackDisplayName(ItemStack stack) {
         Material material = getItemMaterial(stack);
         return StatCollector
-            .translateToLocalFormatted(getNameKey(), (material == null ? "NULL" : MU.localizedNameOf(material)));
+            .translateToLocalFormatted(getNameKey(), (material == null ? "NULL" : MU.localizedName(material)));
     }
 
     @Override
@@ -92,7 +92,7 @@ public abstract class HTGRItem extends Item {
         tooltipList.add(StatCollector.translateToLocal("kubatech.tooltip.htgr_material"));
         Material material = getItemMaterial(stack);
         if (material != null) {
-            tooltipList.add(" - " + MU.localizedNameOf(material));
+            tooltipList.add(" - " + MU.localizedName(material));
             Triple<Double, Double, Double> properties = fuelProperties.getOrDefault(material, DEFAULT_FUEL_PROPERTIES);
             tooltipList.add(
                 StatCollector.translateToLocalFormatted(

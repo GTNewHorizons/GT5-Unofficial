@@ -65,8 +65,8 @@ public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection, int connections,
         int colorIndex, boolean active, boolean redstoneLevel) {
-        final TextureSet textureSet = MU.textureSetOf(getMaterial());
-        final short[] rgba = MU.rgbaOf(getMaterial());
+        final TextureSet textureSet = MU.iconSet(getMaterial());
+        final short[] rgba = MU.rgba(getMaterial());
         if (textureSet == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING;
         return new ITexture[] { TextureFactory
             .of(textureSet.mTextures[OrePrefixes.frameGt.getTextureIndex()], Dyes.getModulation(colorIndex, rgba)) };
@@ -140,7 +140,7 @@ public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity
     }
 
     @Override
-    public Object getMaterial() {
+    public Material getMaterial() {
         return shapeMaterial();
     }
 

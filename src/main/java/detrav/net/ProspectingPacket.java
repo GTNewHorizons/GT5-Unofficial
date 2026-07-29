@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+import com.ruling_0.materiallib.api.Material;
 
 import detrav.DetravScannerMod;
 import detrav.gui.DetravScannerGUI;
@@ -156,13 +157,13 @@ public class ProspectingPacket extends DetravPacket {
         } else {
             objectId = nextId++;
 
-            Object mat = OreManager.getMaterial(block, meta);
+            Material mat = OreManager.getMaterial(block, meta);
 
-            short[] rgba = mat == null ? new short[] { 125, 125, 125, 255 } : MU.rgbaOf(mat);
+            short[] rgba = mat == null ? new short[] { 125, 125, 125, 255 } : MU.rgba(mat);
 
             nameLookup.put(stackName, objectId);
             objects.put(objectId, ObjectIntPair.of(stackName, rgba(rgba)));
-            oreMaterialNames.put(objectId, mat == null ? "" : MU.internalNameOf(mat));
+            oreMaterialNames.put(objectId, mat == null ? "" : MU.internalName(mat));
         }
 
         map.put(CoordinatePacker.pack(aX, y, aZ), objectId);

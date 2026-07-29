@@ -77,7 +77,7 @@ public class DetravOreMarkerRenderer {
         if (materialName == null || materialName.isEmpty()) return null;
         Material mat = LegacyNameDomain.lookup(materialName);
         if (mat == null) return null;
-        TextureSet ts = MU.textureSetOf(mat);
+        TextureSet ts = MU.iconSet(mat);
         if (ts == null) return null;
         int idx = OrePrefixes.ore.getTextureIndex();
         if (idx < 0 || idx >= ts.mTextures.length) return null;

@@ -123,7 +123,7 @@ public class GT5OreLayerHelper {
 
         public List<ItemStack> getVeinLayerOre(int veinLayer, Set<StoneType> stoneTypes) {
             List<ItemStack> stackList = new ArrayList<>();
-            List<IStoneType> validStones = MU.validStonesOf(ores[veinLayer]);
+            List<IStoneType> validStones = MU.validStones(ores[veinLayer]);
             for (IStoneType stoneType : validStones) {
                 if (stoneType instanceof StoneType && stoneTypes.contains(stoneType)) {
                     stackList.add(getLayerOre(veinLayer, stoneType));

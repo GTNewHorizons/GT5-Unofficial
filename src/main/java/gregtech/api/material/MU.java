@@ -857,7 +857,8 @@ public class MU {
     /// The legacy internal name of a MaterialLib material -- [GTMaterialProperties#LEGACY_NAME] when present
     /// (MaterialLib sanitizes registration names), otherwise the registration name. Used to build
     /// ore-dictionary names and lang keys.
-    public static String internalName(Material material) {
+    public static @Nullable String internalName(@Nullable Material material) {
+        if (material == null) return null;
         String legacyName = material.getProperty(GTMaterialProperties.LEGACY_NAME);
         return legacyName != null ? legacyName : material.getName();
     }
@@ -885,8 +886,9 @@ public class MU {
 
     /// The lang key a material's display name and its derivatives are translated from. Stated once here
     /// because [MaterialFormulas] and the tooltip paths append their own suffixes to it.
-    public static String localizedNameKey(Material material) {
-        return "Material." + internalName(material).toLowerCase();
+    public static @Nullable String localizedNameKey(@Nullable Material material) {
+        String name = internalName(material);
+        return name == null ? null : "Material." + name.toLowerCase();
     }
 
     public static String chemicalTooltip(@Nullable Material material, boolean showQuestionMarks) {
@@ -956,80 +958,39 @@ public class MU {
         return list;
     }
 
-    // Object-typed helpers, for material references reached through an Object-typed slot (generic containers
-    // such as `OreInfo`). Each checks `instanceof Material` and falls back to null/false/empty.
-
-    /// The legacy internal name of a [Material] (see [#internalName]); null for null or a non-[Material] value.
-    public static @Nullable String internalNameOf(@Nullable Object material) {
-        if (material instanceof Material ml) return internalName(ml);
-        return null;
-    }
-
-    /// The lang key for a [Material]'s localized name; null for null or a non-[Material] value.
-    public static @Nullable String localizedNameKeyOf(@Nullable Object material) {
-        if (material instanceof Material ml) return localizedNameKey(ml);
-        return null;
-    }
-
-    /// The localized display name of a [Material], translated from its [#localizedNameKeyOf] lang key; null for
-    /// null or a non-[Material] value.
-    public static @Nullable String localizedNameOf(@Nullable Object material) {
-        if (material instanceof Material ml) return StatCollector.translateToLocal(localizedNameKey(ml));
-        return null;
-    }
-
-    /// The default display name of a [Material] (see [#localName]); null for null or a non-[Material] value.
-    public static @Nullable String defaultLocalNameOf(@Nullable Object material) {
-        if (material instanceof Material ml) return localName(ml);
-        return null;
-    }
-
-    /// The [TextureSet] of a [Material] (see [#iconSet]); null for null or a non-[Material] value.
-    public static @Nullable TextureSet textureSetOf(@Nullable Object material) {
-        if (material instanceof Material ml) return iconSet(ml);
-        return null;
-    }
-
-    /// The `[r, g, b, a]` color of a [Material] (see [#rgba]); null for null or a non-[Material] value.
-    public static @Nullable short[] rgbaOf(@Nullable Object material) {
-        if (material instanceof Material ml) return rgba(ml);
-        return null;
+    /// The localized display name of a [Material], translated from its [#localizedNameKey] lang key; null
+    /// for a null material.
+    public static @Nullable String localizedName(@Nullable Material material) {
+        return material == null ? null : StatCollector.translateToLocal(localizedNameKey(material));
     }
 
     /// The stone types a [Material]'s ore can generate in -- [StoneType#ICES] when it carries
-    /// [GTMaterialFlag#ICE_ORE], otherwise [StoneType#STONES]. Empty for null or a non-[Material] value.
-    public static List<IStoneType> validStonesOf(@Nullable Object material) {
-        if (material instanceof Material ml) {
-            return hasFlag(ml, GTMaterialFlag.ICE_ORE) ? StoneType.ICES : StoneType.STONES;
-        }
-        return Collections.emptyList();
+    /// [GTMaterialFlag#ICE_ORE], otherwise [StoneType#STONES]. Empty for a null material.
+    public static List<IStoneType> validStones(@Nullable Material material) {
+        if (material == null) return Collections.emptyList();
+        return hasFlag(material, GTMaterialFlag.ICE_ORE) ? StoneType.ICES : StoneType.STONES;
     }
 
     /// Whether a [Material] generates `prefix` -- either through gregtech's own part autogen (see
     /// [OrePrefixes#doGenerateItem(Material)]) or the werkstoff part set (see
-    /// [Materials2WerkstoffIndex#generatesPrefix]). False for null or a non-[Material] value.
-    public static boolean generatesPrefix(@Nullable Object material, OrePrefixes prefix) {
-        if (material instanceof Material ml) {
-            return prefix.doGenerateItem(ml) || Materials2WerkstoffIndex.generatesPrefix(ml, prefix);
-        }
-        return false;
+    /// [Materials2WerkstoffIndex#generatesPrefix]). False for a null material.
+    public static boolean generatesPrefix(@Nullable Material material, OrePrefixes prefix) {
+        if (material == null) return false;
+        return prefix.doGenerateItem(material) || Materials2WerkstoffIndex.generatesPrefix(material, prefix);
     }
 
     /// Whether a [Material] carries the [GTMaterialFlag] equivalent of a legacy [SubTag] (see
-    /// [#flagForSubTag]); false for null or a non-[Material] value.
-    public static boolean hasSubTag(@Nullable Object material, SubTag subTag) {
-        if (material instanceof Material ml) {
-            GTMaterialFlag flag = flagForSubTag(subTag);
-            return flag != null && hasFlag(ml, flag);
-        }
-        return false;
+    /// [#flagForSubTag]); false for a null material.
+    public static boolean hasSubTag(@Nullable Material material, SubTag subTag) {
+        if (material == null) return false;
+        GTMaterialFlag flag = flagForSubTag(subTag);
+        return flag != null && hasFlag(material, flag);
     }
 
     /// The ore-dictionary-unified [ItemStack] for a [Material] at `prefix` and `amount` (see
-    /// [GTOreDictUnificator#get]); null for null or a non-[Material] value.
-    public static @Nullable ItemStack partOf(@Nullable Object material, OrePrefixes prefix, int amount) {
-        if (material instanceof Material ml) return GTOreDictUnificator.get(prefix, ml, amount);
-        return null;
+    /// [GTOreDictUnificator#get]); null for a null material.
+    public static @Nullable ItemStack partOf(@Nullable Material material, OrePrefixes prefix, int amount) {
+        return material == null ? null : GTOreDictUnificator.get(prefix, material, amount);
     }
 
     private static final Map<Material, GeneratedMaterialRenderer> materialRenderers = new HashMap<>();
@@ -1048,19 +1009,12 @@ public class MU {
         return material == null ? null : materialRenderers.get(material);
     }
 
-    /// The block-form metadata index of a [Material] (see [#oldSubId]); `0` for null or a non-[Material] value.
-    public static int idOf(@Nullable Object material) {
-        if (material instanceof Material ml) return oldSubId(ml);
-        return 0;
-    }
-
     /// Appends a [Material]'s chemical-formula tooltip (see [#chemicalTooltip]) to `list` when
-    /// `Client.tooltip.showFormula` is enabled; a no-op for null or a non-[Material] value.
-    public static void addTooltipsOf(@Nullable Object material, List<String> list) {
-        if (material instanceof Material ml && Client.tooltip.showFormula) {
-            String tooltip = chemicalTooltip(ml, false);
-            if (tooltip != null && !tooltip.isEmpty()) list.add(tooltip);
-        }
+    /// `Client.tooltip.showFormula` is enabled; a no-op for a null material.
+    public static void addTooltips(@Nullable Material material, List<String> list) {
+        if (material == null || !Client.tooltip.showFormula) return;
+        String tooltip = chemicalTooltip(material, false);
+        if (tooltip != null && !tooltip.isEmpty()) list.add(tooltip);
     }
 
     /// The [GTMaterialFlag] whose enum-constant name equals `subTag`'s name, or null when none does -- the

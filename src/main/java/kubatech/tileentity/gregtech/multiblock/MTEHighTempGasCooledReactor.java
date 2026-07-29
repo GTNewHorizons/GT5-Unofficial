@@ -839,7 +839,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             sb.append(
                 IGregTechDeviceInformation.encode(
                     "kubatech.infodata.htgr.stored_fuel_entry",
-                    MU.localizedNameOf(entry.getKey()),
+                    MU.localizedName(entry.getKey()),
                     formatNumber(entry.getValue()),
                     formatNumber(prop.getLeft()),
                     formatNumber(prop.getMiddle()),
@@ -865,7 +865,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             sb.append(
                 IGregTechDeviceInformation.encode(
                     "kubatech.infodata.htgr.burned_fuel_entry",
-                    MU.localizedNameOf(entry.getKey()),
+                    MU.localizedName(entry.getKey()),
                     formatNumber(entry.getValue() * 100d)))
                 .append("\n");
         }

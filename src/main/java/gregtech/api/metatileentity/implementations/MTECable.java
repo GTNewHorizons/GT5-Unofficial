@@ -107,8 +107,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         int facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        final TextureSet textureSet = MU.textureSetOf(getMaterial());
-        final short[] rgba = MU.rgbaOf(getMaterial());
+        final TextureSet textureSet = MU.iconSet(getMaterial());
+        final short[] rgba = MU.rgba(getMaterial());
         if (textureSet == null || rgba == null) {
             if (mInsulated) return new ITexture[] { TextureFactory.of(
                 Textures.BlockIcons.INSULATION_FULL,
@@ -731,7 +731,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     }
 
     @Override
-    public Object getMaterial() {
+    public Material getMaterial() {
         return shapeMaterial();
     }
 

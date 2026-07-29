@@ -339,7 +339,7 @@ public class MTEHatchTurbine extends MTEHatch {
                 Material aMat = MetaGeneratedTool.getPrimaryMaterialML(getTurbine());
                 String aSize = MTELargerTurbineBaseLegacy
                     .getTurbineSizeString(MTELargerTurbineBaseLegacy.getTurbineSize(getTurbine()));
-                GTUtility.sendChatToPlayer(aPlayer, "Using: " + MU.localizedNameOf(aMat) + " " + aSize);
+                GTUtility.sendChatToPlayer(aPlayer, "Using: " + MU.localizedName(aMat) + " " + aSize);
             }
         } else {
             this.mUsingAnimation = !mUsingAnimation;

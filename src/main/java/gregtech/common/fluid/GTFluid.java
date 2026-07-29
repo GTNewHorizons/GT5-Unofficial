@@ -245,18 +245,18 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
         return this;
     }
 
-    private boolean addLocalizedNameHasOreprefix(Object material, String[] oreprefixNames) {
+    private boolean addLocalizedNameHasOreprefix(Material material, String[] oreprefixNames) {
         return Arrays.stream(oreprefixNames)
             .anyMatch(oreprefixName -> addLocalizedNameHasOreprefix(material, oreprefixName));
     }
 
-    private boolean addLocalizedNameHasOreprefix(Object material, String oreprefixName) {
+    private boolean addLocalizedNameHasOreprefix(Material material, String oreprefixName) {
         final String oreprefixNameRemovedFormat = oreprefixName.replace("%s", "");
         if (defaultLocalName.contains(oreprefixNameRemovedFormat)) {
-            if (String.format(oreprefixName, MU.defaultLocalNameOf(material))
+            if (String.format(oreprefixName, MU.localName(material))
                 .equals(defaultLocalName)) {
                 localizedName = () -> OrePrefixes
-                    .getLocalizedNameForItem(oreprefixName, "%s", MU.internalNameOf(material));
+                    .getLocalizedNameForItem(oreprefixName, "%s", MU.internalName(material));
                 return true;
             }
         }
@@ -283,9 +283,9 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
      *           If a pattern matches, it uses formatted localization with the appropriate oreprefix key.
      */
     @Override
-    public IGTRegisteredFluid addLocalizedName(Object material) {
+    public IGTRegisteredFluid addLocalizedName(Material material) {
         if (material == null) return addLocalizedName();
-        if (!MU.defaultLocalNameOf(material)
+        if (!MU.localName(material)
             .equals(defaultLocalName)) {
             if (addLocalizedNameHasOreprefix(
                 material,
@@ -296,7 +296,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
             }
             return addLocalizedName();
         }
-        localizedName = () -> MU.localizedNameOf(material);
+        localizedName = () -> MU.localizedName(material);
         return this;
     }
 

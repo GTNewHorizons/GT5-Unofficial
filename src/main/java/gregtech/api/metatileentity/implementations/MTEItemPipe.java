@@ -169,8 +169,8 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int aColorIndex, boolean aConnected, boolean redstoneLevel) {
-        final TextureSet textureSet = MU.textureSetOf(getMaterial());
-        final short[] rgba = MU.rgbaOf(getMaterial());
+        final TextureSet textureSet = MU.iconSet(getMaterial());
+        final short[] rgba = MU.rgba(getMaterial());
         if (textureSet == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING;
         if (mIsRestrictive) {
             if (aConnected) {
@@ -540,7 +540,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     }
 
     @Override
-    public Object getMaterial() {
+    public Material getMaterial() {
         return shapeMaterial();
     }
 

@@ -220,8 +220,8 @@ public class GTStructureUtility {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                TextureSet textureSet = MU.textureSetOf(material);
-                short[] rgba = MU.rgbaOf(material);
+                TextureSet textureSet = MU.iconSet(material);
+                short[] rgba = MU.rgba(material);
                 if (textureSet == null || rgba == null) return false;
                 if (mIcons == null && FMLLaunchHandler.side()
                     .isClient()) {
@@ -330,8 +330,8 @@ public class GTStructureUtility {
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 com.ruling_0.materiallib.api.Material material = materialSupplier.get();
-                TextureSet textureSet = MU.textureSetOf(material);
-                short[] rgba = MU.rgbaOf(material);
+                TextureSet textureSet = MU.iconSet(material);
+                short[] rgba = MU.rgba(material);
                 if (textureSet == null || rgba == null) return false;
                 if (mIcons == null && FMLLaunchHandler.side()
                     .isClient()) {

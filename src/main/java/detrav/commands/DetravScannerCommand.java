@@ -93,7 +93,7 @@ public class DetravScannerCommand extends GTBaseCommand {
                 try (OreInfo info = OreManager.getOreInfo(b, meta)) {
                     if (info == null || info.isSmall) continue;
 
-                    String matName = MU.localizedNameOf(info.material);
+                    String matName = MU.localizedName(info.material);
 
                     if (fName == null || matName.toLowerCase()
                         .contains(fName)) {

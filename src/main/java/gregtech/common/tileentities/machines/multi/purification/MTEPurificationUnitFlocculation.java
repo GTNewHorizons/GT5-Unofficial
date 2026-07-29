@@ -278,18 +278,18 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addSeparator()
             .addInfo(
                 "Supply with " + EnumChatFormatting.WHITE
-                    + addFormattedString(MU.localizedNameOf(INPUT_CHEMICAL))
+                    + addFormattedString(MU.localizedName(INPUT_CHEMICAL))
                     + EnumChatFormatting.GRAY
                     + " to operate")
             .addInfo(
                 "Outputs " + EnumChatFormatting.WHITE
-                    + addFormattedString(MU.localizedNameOf(OUTPUT_WASTE))
+                    + addFormattedString(MU.localizedName(OUTPUT_WASTE))
                     + EnumChatFormatting.GRAY
                     + " that can be recycled")
             .addSeparator()
             .addInfo(
                 "During operation, will consume ALL " + EnumChatFormatting.WHITE
-                    + addFormattedString(MU.localizedNameOf(INPUT_CHEMICAL))
+                    + addFormattedString(MU.localizedName(INPUT_CHEMICAL))
                     + EnumChatFormatting.GRAY
                     + " in the input hatch")
             .addInfo(
@@ -299,7 +299,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + "of "
                     + EnumChatFormatting.WHITE
-                    + addFormattedString(MU.localizedNameOf(INPUT_CHEMICAL))
+                    + addFormattedString(MU.localizedName(INPUT_CHEMICAL))
                     + EnumChatFormatting.GRAY
                     + " consumed")
             .addInfo(
@@ -433,7 +433,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         infoData.add(
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_flocculation.consumed",
-                MU.localizedNameOf(INPUT_CHEMICAL),
+                MU.localizedName(INPUT_CHEMICAL),
                 "" + EnumChatFormatting.RED + inputFluidConsumed));
         return infoData.toArray(new String[] {});
     }

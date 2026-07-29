@@ -28,7 +28,7 @@ public class OreMixBuilder {
     public Map<String, ShortShortPair> dimVeinHeights = new HashMap<>();
     public int minY, maxY, weight, density, size;
     public Material primary, secondary, between, sporadic;
-    public Object representative;
+    public Material representative;
     public Set<IStoneCategory> stoneCategories = new HashSet<>(Arrays.asList(StoneCategory.Stone));
     public boolean defaultStoneCategories = true;
     public List<String> materialKeys = new ArrayList<>();
@@ -88,7 +88,7 @@ public class OreMixBuilder {
         this.primary = primary;
         if (representative == null || materialKeys.isEmpty()) {
             representative = primary;
-            materialKeys.add(MU.localizedNameKeyOf(primary));
+            materialKeys.add(MU.localizedNameKey(primary));
         }
         return this;
     }
@@ -126,10 +126,10 @@ public class OreMixBuilder {
      * @param materials The materials to be used for localization. The first material in the array will be used to
      *                  represent to ore mix in GUI's. If none are provided the {@link #primary} will be used.
      */
-    public OreMixBuilder setLocalizedName(Object... materials) {
+    public OreMixBuilder setLocalizedName(Material... materials) {
         if (materials.length == 1) this.representative = materials[0];
-        for (Object m : materials) {
-            materialKeys.add(MU.localizedNameKeyOf(m));
+        for (Material m : materials) {
+            materialKeys.add(MU.localizedNameKey(m));
         }
         return this;
     }

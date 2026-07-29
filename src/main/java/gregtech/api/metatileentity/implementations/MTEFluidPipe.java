@@ -183,8 +183,8 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     }
 
     protected ITexture getBaseTexture(boolean connected, int colorIndex) {
-        TextureSet textureSet = MU.textureSetOf(getMaterial());
-        short[] rgba = MU.rgbaOf(getMaterial());
+        TextureSet textureSet = MU.iconSet(getMaterial());
+        short[] rgba = MU.rgba(getMaterial());
         if (textureSet == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING[0];
         return getBaseTexture(mThickNess, mPipeAmount, textureSet, rgba, connected, colorIndex);
     }
@@ -930,7 +930,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     }
 
     @Override
-    public Object getMaterial() {
+    public Material getMaterial() {
         return shapeMaterial();
     }
 

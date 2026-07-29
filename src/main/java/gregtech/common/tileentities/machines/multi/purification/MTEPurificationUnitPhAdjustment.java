@@ -185,7 +185,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .cacheHint(
                         () -> StatCollector.translateToLocalFormatted(
                             "GT5U.MBTT.InputBus.WithFormat",
-                            MU.localizedNameOf(ALKALINE_MATERIAL)))
+                            MU.localizedName(ALKALINE_MATERIAL)))
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -199,7 +199,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .cacheHint(
                         () -> StatCollector.translateToLocalFormatted(
                             "GT5U.MBTT.InputHatch.WithFormat",
-                            MU.localizedNameOf(ACIDIC_MATERIAL)))
+                            MU.localizedName(ACIDIC_MATERIAL)))
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -348,11 +348,11 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + " ticks, consumes ALL "
                     + EnumChatFormatting.WHITE
-                    + addFormattedString(MU.localizedNameOf(ALKALINE_MATERIAL))
+                    + addFormattedString(MU.localizedName(ALKALINE_MATERIAL))
                     + EnumChatFormatting.GRAY
                     + " and "
                     + EnumChatFormatting.WHITE
-                    + addFormattedString(MU.localizedNameOf(ACIDIC_MATERIAL))
+                    + addFormattedString(MU.localizedName(ACIDIC_MATERIAL))
                     + EnumChatFormatting.GRAY
                     + " in the special hatches")
             .addInfo(

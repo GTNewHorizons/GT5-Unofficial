@@ -23,6 +23,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
@@ -127,15 +129,15 @@ public class ItemFluidDisplay extends GTGenericItem {
     }
 
     @SideOnly(Side.CLIENT)
-    public static Object getMaterial(Fluid fluid) {
+    public static Material getMaterial(Fluid fluid) {
         return MU.materialOfFluid(fluid);
     }
 
     @SideOnly(Side.CLIENT)
     public static void addTooltipForFluid(Fluid fluid, List<String> list) {
-        Object material = getMaterial(fluid);
+        Material material = getMaterial(fluid);
         if (material != null) {
-            MU.addTooltipsOf(material, list);
+            MU.addTooltips(material, list);
         }
     }
 

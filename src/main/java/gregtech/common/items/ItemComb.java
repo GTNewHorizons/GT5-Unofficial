@@ -175,7 +175,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        return MU.rgbaOf(CombType.valueOf(aStack.getItemDamage()).material);
+        return MU.rgba(CombType.valueOf(aStack.getItemDamage()).material);
     }
 
     public void initCombsRecipes() {

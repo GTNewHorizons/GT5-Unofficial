@@ -32,7 +32,7 @@ public class CSVMaker implements Runnable {
                 GT5OreSmallHelper.OreSmallWrapper oreLayer = pair.getValue();
 
                 oremix.setOreName(oreLayer.oreGenName);
-                oremix.setOreMaterial(MU.internalNameOf(oreLayer.material));
+                oremix.setOreMaterial(MU.internalName(oreLayer.material));
                 oremix.setHeight(oreLayer.worldGenHeightRange);
                 oremix.setAmount(oreLayer.amountPerChunk);
                 oremix.setDims(oreLayer.enabledDims);
@@ -80,21 +80,21 @@ public class CSVMaker implements Runnable {
                 Set<String> Dims = pair.getValue().abbrDimNames;
                 OreLayerWrapper oreLayer = pair.getValue();
                 oremix.setOreMixName(oreLayer.veinName);
-                oremix.setPrimary(MU.internalNameOf(oreLayer.ores[0]));
-                oremix.setSecondary(MU.internalNameOf(oreLayer.ores[1]));
-                oremix.setInbetween(MU.internalNameOf(oreLayer.ores[2]));
-                oremix.setSporadic(MU.internalNameOf(oreLayer.ores[3]));
+                oremix.setPrimary(MU.internalName(oreLayer.ores[0]));
+                oremix.setSecondary(MU.internalName(oreLayer.ores[1]));
+                oremix.setInbetween(MU.internalName(oreLayer.ores[2]));
+                oremix.setSporadic(MU.internalName(oreLayer.ores[3]));
                 oremix.setSize(oreLayer.size);
                 oremix.setHeight(oreLayer.worldGenHeightRange);
                 oremix.setDensity(oreLayer.density);
                 oremix.setWeight(oreLayer.randomWeight);
                 oremix.setOreMixIDs(
-                    MU.internalNameOf(oreLayer.ores[0]) + "|"
-                        + MU.internalNameOf(oreLayer.ores[1])
+                    MU.internalName(oreLayer.ores[0]) + "|"
+                        + MU.internalName(oreLayer.ores[1])
                         + "|"
-                        + MU.internalNameOf(oreLayer.ores[2])
+                        + MU.internalName(oreLayer.ores[2])
                         + "|"
-                        + MU.internalNameOf(oreLayer.ores[3]));
+                        + MU.internalName(oreLayer.ores[3]));
                 oremix.setDims(Dims);
                 OreVeins.add(oremix);
 

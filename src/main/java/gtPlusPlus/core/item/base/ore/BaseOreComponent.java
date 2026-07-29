@@ -68,7 +68,7 @@ public class BaseOreComponent extends Item {
     @Override
     public final void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> tooltip,
         final boolean adv) {
-        MU.addTooltipsOf(componentMaterial, tooltip);
+        MU.addTooltips(componentMaterial, tooltip);
         super.addInformation(stack, player, tooltip, adv);
     }
 

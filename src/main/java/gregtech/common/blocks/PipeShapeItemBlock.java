@@ -81,7 +81,7 @@ public class PipeShapeItemBlock extends ItemBlock {
         if (material == null) return null;
         String display = MATERIAL_DISPLAY_OVERRIDES.get(MU.internalName(material));
         if (display == null) return null;
-        String key = MU.localizedNameKeyOf(material) + suffix;
+        String key = MU.localizedNameKey(material) + suffix;
         GTLanguageManager.addStringLocalization(key, display);
         return key;
     }

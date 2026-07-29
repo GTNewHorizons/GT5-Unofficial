@@ -220,6 +220,6 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         final Material material = getMaterial(damage);
         final OrePrefixes prefix = getOrePrefix(damage);
         if (material == null || prefix == null) return;
-        MU.addTooltipsOf(material, aList);
+        MU.addTooltips(material, aList);
     }
 }

@@ -73,7 +73,7 @@ public class SheetmetalShapeBlock extends ShapeBlock implements IBlockWithTextur
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        TextureSet textureSet = MU.textureSetOf(MaterialLibAPI.getMaterialByIndex(meta));
+        TextureSet textureSet = MU.iconSet(MaterialLibAPI.getMaterialByIndex(meta));
         if (textureSet == null) return super.getIcon(side, meta);
         return textureSet.mTextures[OrePrefixes.sheetmetal.getTextureIndex()].getIcon();
     }
@@ -82,8 +82,8 @@ public class SheetmetalShapeBlock extends ShapeBlock implements IBlockWithTextur
     public ITexture[][] getTextures(int meta) {
         return texturesByIndex.computeIfAbsent(meta, index -> {
             Material material = MaterialLibAPI.getMaterialByIndex(index);
-            TextureSet textureSet = MU.textureSetOf(material);
-            short[] rgba = MU.rgbaOf(material);
+            TextureSet textureSet = MU.iconSet(material);
+            short[] rgba = MU.rgba(material);
             if (textureSet == null || rgba == null) return null;
             ITexture[] texture = { TextureFactory
                 .of(textureSet.mTextures[OrePrefixes.sheetmetal.getTextureIndex()], Dyes.getModulation(-1, rgba)) };
