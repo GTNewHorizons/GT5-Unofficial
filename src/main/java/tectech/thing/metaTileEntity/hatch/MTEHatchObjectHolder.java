@@ -129,4 +129,12 @@ public class MTEHatchObjectHolder extends MTEHatch implements ISmartInputHatch {
     public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TECTECH_STANDARD;
     }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        super.onPostTick(baseMetaTileEntity, tick);
+        if (baseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
+        }
+    }
 }
