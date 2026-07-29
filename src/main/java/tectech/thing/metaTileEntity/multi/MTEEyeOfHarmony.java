@@ -80,6 +80,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
+import gregtech.common.tileentities.machines.RecipeCheckReason;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
@@ -1146,11 +1147,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
 
     private EyeOfHarmonyRecipe currentRecipe;
 
-    // Counter for lag prevention.
-    private long lagPreventer = 0;
-
-    // Check for recipe every recipeCheckInterval ticks.
-    private static final long RECIPE_CHECK_INTERVAL = 3 * 20;
+    private boolean shouldDrainHatches = true;
+    private boolean justDrainedHatches = false;
     private long currentCircuitMultiplier = 0;
     private long astralArrayAmount = 0;
     private long parallelAmount = 1;
@@ -1161,6 +1159,14 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     private FluidStackLong starMatter;
 
     @Override
+    public void scheduleRecipeCheck(RecipeCheckReason reason) {
+        super.scheduleRecipeCheck(reason);
+        // Input hatch sends a recipe check schedule
+        // we will reschedule again when the fluids are drained from the hatches
+        shouldDrainHatches = true;
+    }
+
+    @Override
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
         ItemStack controllerStack = getControllerSlot();
@@ -1168,20 +1174,20 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             return SimpleCheckRecipeResult.ofFailure("no_planet_block");
         }
 
-        lagPreventer++;
-        if (lagPreventer < RECIPE_CHECK_INTERVAL) {
-            lagPreventer = 0;
-            // No item in multi gui slot.
-
-            currentRecipe = TecTech.eyeOfHarmonyRecipeStorage.recipeLookUp(controllerStack);
-            if (currentRecipe == null) {
-                return CheckRecipeResultRegistry.NO_RECIPE;
-            }
-            CheckRecipeResult result = processRecipe(currentRecipe);
-            if (!result.wasSuccessful()) currentRecipe = null;
-            return result;
+        // Delay recipe-check until hatches are drained
+        if (!justDrainedHatches) {
+            return checkRecipeResult;
         }
-        return CheckRecipeResultRegistry.NO_RECIPE;
+
+        justDrainedHatches = false;
+
+        currentRecipe = TecTech.eyeOfHarmonyRecipeStorage.recipeLookUp(controllerStack);
+        if (currentRecipe == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+        CheckRecipeResult result = processRecipe(currentRecipe);
+        if (!result.wasSuccessful()) currentRecipe = null;
+        return result;
     }
 
     private long getHydrogenStored() {
@@ -1482,6 +1488,9 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
 
         // Do other stuff from TT superclasses. E.g. outputting fluids.
         super.outputAfterRecipe_EM();
+
+        // Schedule drain after output
+        shouldDrainHatches = true;
     }
 
     @Override
@@ -1494,8 +1503,11 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         }
 
         if (!recipeRunning && mMachine) {
-            if ((aTick % TICKS_BETWEEN_HATCH_DRAIN) == 0) {
+            if ((aTick % TICKS_BETWEEN_HATCH_DRAIN) == 0 && shouldDrainHatches) {
                 drainFluidFromHatchesAndStoreInternally();
+                scheduleRecipeCheckImmediate();
+                shouldDrainHatches = false;
+                justDrainedHatches = true;
             }
         }
     }
