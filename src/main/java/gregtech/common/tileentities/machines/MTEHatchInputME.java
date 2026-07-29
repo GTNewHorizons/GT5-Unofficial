@@ -35,7 +35,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import appeng.api.config.Actionable;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
@@ -59,6 +58,7 @@ import appeng.api.util.DimensionalCoord;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
+import appeng.util.IterationCounter;
 import appeng.util.Platform;
 import appeng.util.item.AEFluidStack;
 import gregtech.api.enums.Dyes;
@@ -330,9 +330,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 if (slot == null) continue;
 
                 IAEFluidStack request = AEFluidStack.create(slot.config);
-                request.setStackSize(Integer.MAX_VALUE);
 
-                IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
+                IAEFluidStack result = sg.getAvailableItem(request, IterationCounter.fetchNewId());
 
                 if (result == null) continue;
 
@@ -411,7 +410,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
                 updateAllInformationSlots();
             } else {
-                result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
+                result = sg.getAvailableItem(request, IterationCounter.fetchNewId());
             }
 
             return result == null ? null : result.getFluidStack();
@@ -647,7 +646,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         IAEFluidStack request = AEFluidStack.create(slot.config);
         request.setStackSize(Integer.MAX_VALUE);
 
-        IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
+        IAEFluidStack result = sg.getAvailableItem(request, IterationCounter.fetchNewId());
 
         slot.extracted = result != null ? result.getFluidStack() : null;
         slot.extractedAmount = slot.extracted == null ? 0 : slot.extracted.amount;

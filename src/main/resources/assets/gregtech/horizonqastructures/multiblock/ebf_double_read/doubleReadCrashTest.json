@@ -1,0 +1,43 @@
+{
+  "format_version": 2,
+  "size": [4, 4, 3],
+  "palette": {
+    "A": {"name": "appliedenergistics2:tile.BlockCableBus", "meta": 0, "label": "AE2 Cable and/or Bus"},
+    "B": {"name": "appliedenergistics2:tile.BlockCreativeEnergyController", "meta": 1, "label": "ME Self-Powered Controller"},
+    "C": {"name": "gregtech:gt.blockcasings5", "meta": 13, "label": "Eternal Coil Block"},
+    "D": {"name": "gregtech:gt.blockcasings", "meta": 11, "label": "Heat Proof Machine Casing"},
+    "E": {"name": "gregtech:gt.blockmachines", "meta": 1, "label": "Bronze Hull"},
+    "F": {"name": "gregtech:gt.blockmachines", "meta": 2, "label": "Bricked Bronze Hull"},
+    "G": {"name": "gregtech:gt.blockmachines", "meta": 3, "label": "Steel Hull"},
+    "H": {"name": "minecraft:chest", "meta": 4, "label": "Chest"}
+  },
+  "layers": [
+    [
+      "BDDD",
+      "AEDE",
+      "AGFF"
+    ],
+    [
+      ".CCC",
+      "AC.C",
+      "HCCC"
+    ],
+    [
+      ".CCC",
+      ".C.C",
+      ".CCC"
+    ],
+    [
+      ".DDD",
+      ".DGD",
+      ".DDD"
+    ]
+  ],
+  "annotations": {
+    "labels": {
+      "ebfController": [2, 0, 2],
+      "inputChest": [0, 1, 2],
+      "outputBus": [3, 0, 1]
+    }
+  }
+}
