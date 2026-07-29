@@ -25,7 +25,6 @@ import static gregtech.api.enums.Mods.InfernalMobs;
 import static kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher.DIAMOND_SPIKES_DAMAGE;
 import static kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher.MOB_SPAWN_INTERVAL;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -67,18 +66,10 @@ public class MobHandlerLoader {
 
         public final int mEUt = 1920;
         public final int mDuration;
-        public final EntityLiving entityCopy;
 
         public MobEECRecipe(List<MobDrop> transformedDrops, MobRecipe recipe) {
             this.mOutputs = transformedDrops;
             this.recipe = recipe;
-            try {
-                this.entityCopy = this.recipe.createEntityCopy();
-                this.entityCopy.setWorld(null);
-            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException
-                | IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
             mDuration = getProgressTimeForAttackDamage(DIAMOND_SPIKES_DAMAGE);
         }
 
@@ -91,7 +82,11 @@ public class MobHandlerLoader {
             MTE.lEUt = mEUt;
             MTE.mMaxProgresstime = getProgressTimeForAttackDamage(attackDamage);
             ArrayList<ItemStack> stacks = new ArrayList<>(this.mOutputs.size());
-            this.entityCopy.setPosition(
+            // Shares MobsInfo's instance rather than keeping a second live entity per recipe. The weapon hit
+            // simulation in MTEExtremeEntityCrusher already uses this same instance, and unlike the copy it used to
+            // hold, this one has a world attached, which is what any chance modifier reaching for one would expect.
+            final EntityLiving victim = this.recipe.entity;
+            victim.setPosition(
                 MTE.getBaseMetaTileEntity()
                     .getXCoord(),
                 MTE.getBaseMetaTileEntity()
@@ -110,7 +105,7 @@ public class MobHandlerLoader {
                             .getWorld(),
                         stacks,
                         MTE.EECPlayer,
-                        this.entityCopy);
+                        victim);
                 }
 
                 chance = (int) (dChance * 100d);
