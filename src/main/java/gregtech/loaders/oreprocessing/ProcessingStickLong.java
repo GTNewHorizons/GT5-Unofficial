@@ -18,7 +18,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -42,7 +42,8 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.spring, material, 1L),
                     GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { " s ", "fSx", " S ", 'S', MU.craftIngredient(OrePrefixes.stickLong, material) });
+                    new Object[] { " s ", "fSx", " S ", 'S',
+                        MaterialParts.craftIngredient(OrePrefixes.stickLong, material) });
             }
         }
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
@@ -119,11 +120,13 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stickLong, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "sf", "G ", 'G', MU.craftIngredient(OrePrefixes.gemFlawless, material) });
+                        new Object[] { "sf", "G ", 'G',
+                            MaterialParts.craftIngredient(OrePrefixes.gemFlawless, material) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stickLong, material, 2L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "sf", "G ", 'G', MU.craftIngredient(OrePrefixes.gemExquisite, material) });
+                        new Object[] { "sf", "G ", 'G',
+                            MaterialParts.craftIngredient(OrePrefixes.gemExquisite, material) });
                 }
             }
         }
@@ -147,7 +150,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stickLong, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "ShS", 'S', MU.craftIngredient(OrePrefixes.stick, material) });
+                        new Object[] { "ShS", 'S', MaterialParts.craftIngredient(OrePrefixes.stick, material) });
                 }
             }
         }

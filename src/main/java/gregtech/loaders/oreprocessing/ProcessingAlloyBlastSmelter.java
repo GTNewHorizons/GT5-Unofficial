@@ -43,7 +43,8 @@ import gregtech.common.items.ItemIntegratedCircuit;
 /// retired generator's other recipe shape (`if (Material#requiresBlastFurnace())`, unconditional on composite
 /// status).
 ///
-/// Both shapes need a material's molten fluid, which [MU]'s state-specific accessors (`molten`/`gas`/`fluid`)
+/// Both shapes need a material's molten fluid, which [MaterialParts]'s state-specific accessors
+/// (`molten`/`gas`/`fluid`)
 /// cannot resolve for a gtPlusPlus-only material: those read a per-state
 /// [gregtech.api.enums.materials2.Materials2FluidNames]
 /// slot or a [com.ruling_0.materiallib.api.Shape], and a gtPlusPlus-only material carries neither.

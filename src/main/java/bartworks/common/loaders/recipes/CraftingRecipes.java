@@ -42,7 +42,6 @@ import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -571,14 +570,14 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "DCD", "PWP", "DCD", 'D',
                 OrePrefixes.plateDense.ingredient(Materials2Materials.NeodymiumMagnetic), 'C', ItemList.HV_Coil, 'P',
                 OrePrefixes.plate.ingredient(Materials2Materials.Silver), 'W',
-                MU.namedIngredient(OrePrefixes.wireGt12, Materials2Markers.SuperconductorIV) });
+                MaterialParts.namedIngredient(OrePrefixes.wireGt12, Materials2Markers.SuperconductorIV) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Vajra_Core.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "wEh", "ITI", "SRS", 'E', OrePrefixes.plate.ingredient(Materials2Materials.Silver), 'I',
                 OrePrefixes.plateDense.ingredient(Materials2Materials.Iridium), 'T', ItemList.Transformer_EV_HV.get(1),
-                'S', MU.namedIngredient(OrePrefixes.wireGt12, Materials2Markers.SuperconductorIV), 'R',
+                'S', MaterialParts.namedIngredient(OrePrefixes.wireGt12, Materials2Markers.SuperconductorIV), 'R',
                 ItemList.Transformer_IV_EV.get(1) });
     }
 }

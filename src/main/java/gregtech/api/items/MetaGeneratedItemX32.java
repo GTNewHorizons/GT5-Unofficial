@@ -23,7 +23,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRenderers;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -83,7 +83,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
             if (tPrefix == OrePrefixes.___placeholder___) continue;
             Material tMaterial = generatedMaterial(i % 1000);
             if (tMaterial == null) continue;
-            if (!DUMP_MODE && MU.isCutOver(tPrefix, tMaterial)) continue;
+            if (!DUMP_MODE && MaterialParts.isCutOver(tPrefix, tMaterial)) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 if (DUMP_MODE) {
                     DUMP_VARIANTS.add(
@@ -201,7 +201,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
         for (int i = 0; i < 32000; i++) {
             OrePrefixes aPrefix = getOrePrefix(i);
             Material aMaterial = generatedMaterial(i % 1000);
-            if (aPrefix != null && aMaterial != null && !MU.isCutOver(aPrefix, aMaterial)) {
+            if (aPrefix != null && aMaterial != null && !MaterialParts.isCutOver(aPrefix, aMaterial)) {
                 if (doesMaterialAllowGeneration(aPrefix, aMaterial)
                     && doesShowInCreative(aPrefix, aMaterial, GregTechAPI.sDoShowAllItemsInCreative)) {
                     ItemStack tStack = new ItemStack(this, 1, i);

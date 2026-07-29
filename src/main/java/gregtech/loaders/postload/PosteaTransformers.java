@@ -34,7 +34,6 @@ import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.items.MetaGeneratedItemX32;
-import gregtech.api.material.MU;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.BlockMetal;
@@ -64,7 +63,7 @@ public class PosteaTransformers implements Runnable {
 
     /// Migrates saved [MetaGeneratedItemX32] stacks (`gt.metaitem.01/02/03`, damage < 32000) and
     /// [MetaGeneratedItem99] stacks (`gt.metaitem.99`, cell molten/cracked prefixes) whose prefix cut over to
-    /// a MaterialLib shape (see [MU]) into the equivalent MaterialLib stack. Hand-listed custom parts
+    /// a MaterialLib shape (see [MaterialParts]) into the equivalent MaterialLib stack. Hand-listed custom parts
     /// (damage >= 32000 on `metaitem.01/02/03`) and prefixes that have not cut over pass through unchanged.
     private void registerMaterialLibCutoverTransformers() {
         registerMetaItemCutoverTransformer("gt.metaitem.01");
@@ -167,7 +166,7 @@ public class PosteaTransformers implements Runnable {
     /// [Materials2PipeMaterials#gtppFrameMaterials]'s materials gets its own registration instead of sharing
     /// one metadata-keyed handler. `addSimpleReplacement`'s block+meta overload registers a matching item
     /// replacement automatically, so no separate item-side call is needed. A material whose frame shape did
-    /// not generate (`MU.stack` returns null) is left on its legacy slot.
+    /// not generate (`MaterialParts.stack` returns null) is left on its legacy slot.
     private static void registerGtppFrameCutoverTransformers() {
         Material[] materials = Materials2PipeMaterials.gtppFrameMaterials();
         int count = 0;
@@ -187,11 +186,12 @@ public class PosteaTransformers implements Runnable {
     /// resolved through [GtppItemCutoverTable]'s pinned (prefix, material, registry name) rows -- the
     /// gtPlusPlus counterpart of [#registerWerkstoffItemCutoverTransformers], differing only in that each row
     /// is its own registered item/block rather than a damage variant of a shared meta-item, so no damage
-    /// read/branch is needed. `cell` rows resolve through [MU#cellStack] instead of plain [MU#stack], since a
+    /// read/branch is needed. `cell` rows resolve through [MaterialParts#cellStack] instead of plain
+    /// [MaterialParts#stack], since a
     /// row's material may have claimed `cellMolten` rather than `cell` -- see that method's javadoc.
     /// `frameGt` is out of the table and migrates separately. `block` rows additionally get a
     /// [BlockReplacementManager] handler for placed instances, since a storage block (unlike every other gtpp
-    /// part) is placeable; a row whose material carries no `block` shape resolves null from [MU#stack] same
+    /// part) is placeable; a row whose material carries no `block` shape resolves null from [MaterialParts#stack] same
     /// as any other prefix, leaving the legacy slot canonical.
     private static void registerGtppItemCutoverTransformers() {
         for (Entry entry : GtppItemCutoverTable.ENTRIES) {
@@ -222,7 +222,7 @@ public class PosteaTransformers implements Runnable {
         if (entry.prefix() == OrePrefixes.cell) {
             return MaterialParts.cell(material, 1);
         }
-        return MU.stack(entry.prefix(), material, 1);
+        return MaterialParts.stack(entry.prefix(), material, 1);
     }
 
     /// The five materials whose legacy `cell` item was `miscutils:itemCell<Name>`, the same naming convention
@@ -232,7 +232,7 @@ public class PosteaTransformers implements Runnable {
     /// the oredict `cell<Name>` slot before gtpp's `Material` construction ever runs, so their dump never
     /// captured the miscutils registry name at all). [GtppItemCutoverTable] is generated purely from that dump
     /// and so cannot include a row for them; they are migrated by hand instead, to the same fallback
-    /// [MU#cellStack] every other gtpp cell resolves through.
+    /// [MaterialParts#cellStack] every other gtpp cell resolves through.
     private static void registerGtppCarryoverCellTransformers() {
         registerGtppCarryoverCellTransformer("Iodine");
         registerGtppCarryoverCellTransformer("ThoriumTetrafluoride");
@@ -252,7 +252,7 @@ public class PosteaTransformers implements Runnable {
 
     /// Migrates saved bartworks werkstoff item stacks (`bartworks:gt.bwMetaGenerated<prefix>`, damage =
     /// werkstoff id) into the equivalent MaterialLib stack, resolved through [Materials2WerkstoffIndex] exactly
-    /// like the live item path ([MU#stack]). Damages of
+    /// like the live item path ([MaterialParts#stack]). Damages of
     /// werkstoffe unknown to MaterialLib (a third-party mod's own werkstoff ids) pass through unchanged. Ore/small ore
     /// migrate through [BWOreAdapter] instead (block-kind, no `bw.bwMetaGenerated<prefix>` item exists for
     /// them); storage blocks migrate through [#registerWerkstoffBlockCutoverTransformer]. The casing slots
@@ -281,7 +281,7 @@ public class PosteaTransformers implements Runnable {
                     int damage = tag.getInteger("Damage");
                     Material material = Materials2WerkstoffIndex.get(damage);
                     if (material == null) return false;
-                    ItemStack cutover = MU.stack(prefix, material, 1);
+                    ItemStack cutover = MaterialParts.stack(prefix, material, 1);
                     if (cutover == null) return false;
                     IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
                     tag.setShort("Damage", (short) cutover.getItemDamage());
@@ -294,7 +294,7 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// Migrates saved placed blocks and item stacks of a cut-over material's legacy storage-block slot (see
-    /// [BlockMetal], [MU]) into the equivalent MaterialLib block stack. `addSimpleReplacement`'s block+meta
+    /// [BlockMetal], [MaterialParts]) into the equivalent MaterialLib block stack. `addSimpleReplacement`'s block+meta
     /// overload registers a matching item replacement automatically, so no separate item-side call is needed.
     /// Materials that did not cut over are skipped: their
     /// slot stays legacy, and the legacy block instance itself is never removed (see [BlockMetal]'s javadoc), so
@@ -329,7 +329,7 @@ public class PosteaTransformers implements Runnable {
 
     /// Migrates saved placed (TE-based) and inventory bartworks werkstoff storage-block stacks (`m`/`Damage` =
     /// werkstoff id) into the equivalent MaterialLib block stack, resolved through [Materials2WerkstoffIndex]
-    /// exactly like the live item path ([MU#stack]). Third-party
+    /// exactly like the live item path ([MaterialParts#stack]). Third-party
     /// werkstoffe unknown to MaterialLib pass through unchanged, leaving the legacy slot canonical for them.
     /// `bw.werkstoffblockTE` already has a handler registered by [#removeWerkstoffTileEntities]; Postea tries
     /// each registered handler in turn until one returns non-null, so the two coexist without conflict.
@@ -337,7 +337,7 @@ public class PosteaTransformers implements Runnable {
         TileEntityReplacementManager.tileEntityTransformer(teId, (tag, world, chunk) -> {
             Material material = Materials2WerkstoffIndex.get(tag.getShort("m"));
             if (material == null) return null;
-            ItemStack cutover = MU.stack(prefix, material, 1);
+            ItemStack cutover = MaterialParts.stack(prefix, material, 1);
             if (cutover == null) return null;
             return new BlockInfo(Block.getBlockFromItem(cutover.getItem()), cutover.getItemDamage());
         });
@@ -345,7 +345,7 @@ public class PosteaTransformers implements Runnable {
         ItemStackReplacementManager.addTransformationHandler(itemId, (originalId, tag) -> {
             Material material = Materials2WerkstoffIndex.get(tag.getInteger("Damage"));
             if (material == null) return false;
-            ItemStack cutover = MU.stack(prefix, material, 1);
+            ItemStack cutover = MaterialParts.stack(prefix, material, 1);
             if (cutover == null) return false;
             IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
             tag.setShort("Damage", (short) cutover.getItemDamage());
@@ -397,7 +397,7 @@ public class PosteaTransformers implements Runnable {
         BlockReplacementManager.addTransformationHandler(legacyId, info -> {
             Material material = materialResolver.apply(info.metadata);
             if (material == null) return false;
-            ItemStack cutover = MU.stack(prefix, material, 1);
+            ItemStack cutover = MaterialParts.stack(prefix, material, 1);
             if (cutover == null) return false;
             info.blockID = Block.getIdFromBlock(Block.getBlockFromItem(cutover.getItem()));
             info.metadata = cutover.getItemDamage();
@@ -407,7 +407,7 @@ public class PosteaTransformers implements Runnable {
         ItemStackReplacementManager.addTransformationHandler(legacyId, (originalId, tag) -> {
             Material material = materialResolver.apply(tag.getInteger("Damage"));
             if (material == null) return false;
-            ItemStack cutover = MU.stack(prefix, material, 1);
+            ItemStack cutover = MaterialParts.stack(prefix, material, 1);
             if (cutover == null) return false;
             IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
             tag.setShort("Damage", (short) cutover.getItemDamage());
@@ -422,7 +422,7 @@ public class PosteaTransformers implements Runnable {
             if (damage >= 32000) return false;
             OrePrefixes prefix = item.getOrePrefix(damage);
             Material material = item.getMaterial(damage);
-            ItemStack cutover = MU.stack(prefix, material, 1);
+            ItemStack cutover = MaterialParts.stack(prefix, material, 1);
             if (cutover == null) return false;
             IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
             tag.setShort("Damage", (short) cutover.getItemDamage());
@@ -436,7 +436,7 @@ public class PosteaTransformers implements Runnable {
             int damage = tag.getInteger("Damage");
             OrePrefixes prefix = item.getOrePrefix(damage);
             Material material = item.getMaterial(damage);
-            ItemStack cutover = MU.stack(prefix, material, 1);
+            ItemStack cutover = MaterialParts.stack(prefix, material, 1);
             if (cutover == null) return false;
             IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
             tag.setShort("Damage", (short) cutover.getItemDamage());

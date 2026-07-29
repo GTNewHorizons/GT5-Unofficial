@@ -42,7 +42,7 @@ public interface IGTRegisteredFluid {
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
     IGTRegisteredFluid registerPContainers(final ItemStack fullContainer, final ItemStack emptyContainer);
 
-    /// Configures a MaterialLib [Material]'s fluids from this fluid's state. Records the fluid into `MU`'s
+    /// Configures a MaterialLib [Material]'s fluids from this fluid's state. Records the fluid into `MaterialUtils`'s
     /// slot store (so `MaterialUtils.fluid`/`gas`/`molten`/`solid`/`plasma` resolve it post-loader) and the
     /// `Fluid`->`Material` twin map.
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
@@ -50,7 +50,7 @@ public interface IGTRegisteredFluid {
 
     IGTRegisteredFluid addLocalizedName();
 
-    /// `material` is a MaterialLib material, dispatched through `MU`'s union helpers.
+    /// `material` is a MaterialLib material.
     IGTRegisteredFluid addLocalizedName(final Material material);
 
     /**

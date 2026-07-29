@@ -23,7 +23,7 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -108,7 +108,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { ToolDictNames.craftingToolMortar,
-                            MU.craftIngredient(OrePrefixes.ingot, material) });
+                            MaterialParts.craftIngredient(OrePrefixes.ingot, material) });
                 }
                 if (!noSmashing) {
                     // Forge hammer recipes

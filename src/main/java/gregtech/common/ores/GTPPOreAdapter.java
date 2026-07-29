@@ -84,7 +84,8 @@ public final class GTPPOreAdapter implements IOreAdapter {
     }
 
     /// The `Materials2OreShapes#ore` stack for a gtpp ore material at its (sole) [StoneType#Stone] variant --
-    /// that shape carries per-stone-type variants, so it cannot resolve through the plain [MU#stack] overload.
+    /// that shape carries per-stone-type variants, so it cannot resolve through the plain [MaterialParts#stack]
+    /// overload.
     private static @Nullable ItemStack oreStack(Material material) {
         return MaterialLibAPI
             .getStack(material, Materials2OreShapes.ore, Materials2OreShapes.variantOf(StoneType.Stone.name()), 1);

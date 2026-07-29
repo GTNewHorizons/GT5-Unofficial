@@ -18,7 +18,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
@@ -50,10 +50,11 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                         GTOreDictUnificator.get(OrePrefixes.rotor, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "PhP", "SRf", "PdP", 'P',
-                            material == Materials2Materials.Wood ? MU.craftIngredient(OrePrefixes.plank, material)
-                                : MU.craftIngredient(OrePrefixes.plate, material),
-                            'R', MU.craftIngredient(OrePrefixes.ring, material), 'S',
-                            MU.craftIngredient(OrePrefixes.screw, material) });
+                            material == Materials2Materials.Wood
+                                ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
+                                : MaterialParts.craftIngredient(OrePrefixes.plate, material),
+                            'R', MaterialParts.craftIngredient(OrePrefixes.ring, material), 'S',
+                            MaterialParts.craftIngredient(OrePrefixes.screw, material) });
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(tPlate.copy(), tRing.copy())

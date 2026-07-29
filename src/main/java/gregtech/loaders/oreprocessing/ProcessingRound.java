@@ -13,7 +13,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -45,11 +45,11 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.round, material, 1L),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "fX", "Xh", 'X', MU.craftIngredient(OrePrefixes.nugget, material) });
+                    new Object[] { "fX", "Xh", 'X', MaterialParts.craftIngredient(OrePrefixes.nugget, material) });
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.round, material, 4L),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "fXh", 'X', MU.craftIngredient(OrePrefixes.ingot, material) });
+                    new Object[] { "fXh", 'X', MaterialParts.craftIngredient(OrePrefixes.ingot, material) });
             }
         }
         Api.INSTANCE.registries()

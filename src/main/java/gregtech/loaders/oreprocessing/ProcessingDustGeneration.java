@@ -15,7 +15,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -198,7 +198,7 @@ public class ProcessingDustGeneration {
     /// wherever the oredict fallback matters (e.g. `ore`, whose retired `Material#getOre` never consulted a
     /// MaterialLib shape at all).
     public static ItemStack stackOf(OrePrefixes prefix, Material material, long amount) {
-        ItemStack cutover = MU.stack(prefix, material, amount);
+        ItemStack cutover = MaterialParts.stack(prefix, material, amount);
         return cutover != null ? cutover : GTOreDictUnificator.get(prefix, material, amount);
     }
 }

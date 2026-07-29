@@ -31,7 +31,7 @@ import gregtech.api.util.GTUtility;
 ///
 /// [#materialPlasma] resolves the plasma fluid by name ([gregtech.api.enums.materials2.Materials2FluidNames]'s `plasma`
 /// slot)
-/// rather than through [MU]'s state-specific accessors, which cannot resolve a gtPlusPlus-only material's
+/// rather than through [MaterialParts]'s state-specific accessors, which cannot resolve a gtPlusPlus-only material's
 /// fluid -- see [ProcessingAlloyBlastSmelter]'s class javadoc for the same resolution. The cooldown recipe's
 /// cell output resolves through [ProcessingOreMachine#cellStack] rather than a plain `cell` shape lookup: every
 /// material here carries a molten fluid, so its single cell-eligible shape is `cellMolten`, not `cell`.

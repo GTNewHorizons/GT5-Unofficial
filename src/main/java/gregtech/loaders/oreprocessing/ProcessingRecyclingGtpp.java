@@ -30,7 +30,8 @@ import gregtech.api.util.GTUtility;
 ///
 /// [#materialFluid] resolves the fluid extractor output by name ([gregtech.api.enums.materials2.Materials2FluidNames]
 /// ->
-/// [FluidNames#legacyGtppFluidName]) rather than through [MU]'s state-specific accessors, which cannot resolve
+/// [FluidNames#legacyGtppFluidName]) rather than through [MaterialParts]'s state-specific accessors, which cannot
+/// resolve
 /// a gtPlusPlus-only material's fluid -- see [ProcessingAlloyBlastSmelter]'s class javadoc for the same
 /// resolution.
 ///

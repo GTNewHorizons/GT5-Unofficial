@@ -24,7 +24,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -49,7 +49,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
                 Material material = materials.get(i);
 
                 if (material == null) continue;
-                if (!MU.generatesPrefix(material, OrePrefixes.sheetmetal)) continue;
+                if (!MaterialParts.generatesPrefix(material, OrePrefixes.sheetmetal)) continue;
 
                 OreDictionary.registerOre(
                     OrePrefixes.sheetmetal.oreDictName(MaterialUtils.internalName(material))
@@ -77,7 +77,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
             Material material = materials.get(i);
 
             if (material == null) continue;
-            if (!MU.generatesPrefix(material, OrePrefixes.sheetmetal)) continue;
+            if (!MaterialParts.generatesPrefix(material, OrePrefixes.sheetmetal)) continue;
 
             stacks.add(new ItemStack(self, 1, i));
         }
@@ -148,12 +148,12 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
             Material material = materials.get(i);
 
             if (material == null) continue;
-            if (!MU.generatesPrefix(material, OrePrefixes.sheetmetal)) continue;
+            if (!MaterialParts.generatesPrefix(material, OrePrefixes.sheetmetal)) continue;
             if (MaterialUtils.hasSubTag(material, SubTag.NO_RECIPES)) continue;
 
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.partOf(material, OrePrefixes.plate, 2), GTUtility.getIntegratedCircuit(11))
-                .itemOutputs(MU.partOf(material, OrePrefixes.sheetmetal, 1))
+                .itemInputs(MaterialParts.partOf(material, OrePrefixes.plate, 2), GTUtility.getIntegratedCircuit(11))
+                .itemOutputs(MaterialParts.partOf(material, OrePrefixes.sheetmetal, 1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(10)
                 .addTo(RecipeMaps.benderRecipes);

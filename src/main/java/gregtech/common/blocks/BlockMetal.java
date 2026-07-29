@@ -14,7 +14,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -45,8 +45,9 @@ public class BlockMetal extends BlockStorage {
         for (int i = 0; i < aMats.length; i++) {
             if (MaterialUtils.oldSubId(aMats[i]) > 0 && Materials2ParentMods.hasParentMod(aMats[i])) {
                 Material material = aMats[i];
-                boolean cutOver = MU.isCutOver(aPrefix, material);
-                ItemStack canonicalStack = cutOver ? MU.stack(aPrefix, material, 1) : new ItemStack(this, 1, i);
+                boolean cutOver = MaterialParts.isCutOver(aPrefix, material);
+                ItemStack canonicalStack = cutOver ? MaterialParts.stack(aPrefix, material, 1)
+                    : new ItemStack(this, 1, i);
                 if (aPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(aPrefix, material, canonicalStack);
                 } else {

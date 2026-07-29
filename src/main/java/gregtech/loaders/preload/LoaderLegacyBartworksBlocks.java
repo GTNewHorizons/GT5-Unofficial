@@ -16,7 +16,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.common.ores.BWOreAdapter;
 
 /// The storage, casing and ore blocks the bartworks werkstoff materials were placed as. Their MaterialLib
@@ -68,7 +68,7 @@ public class LoaderLegacyBartworksBlocks {
     private static void hideSlot(Material material, OrePrefixes prefix, Block legacyBlock) {
         if (legacyBlock == null) return;
         if (!Materials2WerkstoffIndex.generatesPrefix(material, prefix)) return;
-        if (MU.stack(prefix, material, 1) == null) return;
+        if (MaterialParts.stack(prefix, material, 1) == null) return;
         API.hideItem(new ItemStack(legacyBlock, 1, Materials2WerkstoffIndex.idOf(material)));
     }
 }

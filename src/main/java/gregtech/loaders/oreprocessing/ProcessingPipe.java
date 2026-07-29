@@ -18,7 +18,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -57,13 +57,15 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeTiny, material, 8L),
                         GTModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "PPP", "h w", "PPP", 'P', MU.craftIngredient(OrePrefixes.plate, material) });
+                        new Object[] { "PPP", "h w", "PPP", 'P',
+                            MaterialParts.craftIngredient(OrePrefixes.plate, material) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeSmall, material, 6L),
                         GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "PWP", "P P", "PHP", 'P',
-                            material == Materials2Materials.Wood ? MU.craftIngredient(OrePrefixes.plank, material)
-                                : MU.craftIngredient(OrePrefixes.plate, material),
+                            material == Materials2Materials.Wood
+                                ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
+                                : MaterialParts.craftIngredient(OrePrefixes.plate, material),
                             'H',
                             MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
@@ -73,8 +75,9 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTOreDictUnificator.get(OrePrefixes.pipeMedium, material, 2L),
                         GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "PPP", "W H", "PPP", 'P',
-                            material == Materials2Materials.Wood ? MU.craftIngredient(OrePrefixes.plank, material)
-                                : MU.craftIngredient(OrePrefixes.plate, material),
+                            material == Materials2Materials.Wood
+                                ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
+                                : MaterialParts.craftIngredient(OrePrefixes.plate, material),
                             'H',
                             MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
@@ -84,8 +87,9 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTOreDictUnificator.get(OrePrefixes.pipeLarge, material, 1L),
                         GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "PHP", "P P", "PWP", 'P',
-                            material == Materials2Materials.Wood ? MU.craftIngredient(OrePrefixes.plank, material)
-                                : MU.craftIngredient(OrePrefixes.plate, material),
+                            material == Materials2Materials.Wood
+                                ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
+                                : MaterialParts.craftIngredient(OrePrefixes.plate, material),
                             'H',
                             MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
@@ -95,7 +99,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTOreDictUnificator.get(OrePrefixes.pipeHuge, material, 1L),
                         GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "DhD", "D D", "DwD", 'D',
-                            MU.craftIngredient(OrePrefixes.plateDouble, material) });
+                            MaterialParts.craftIngredient(OrePrefixes.plateDouble, material) });
                 }
             }
             case "pipeRestrictiveHuge", "pipeRestrictiveLarge", "pipeRestrictiveMedium", "pipeRestrictiveSmall", "pipeRestrictiveTiny" -> {

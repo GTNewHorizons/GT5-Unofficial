@@ -32,7 +32,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -117,7 +117,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "Xx", 'X', MU.craftIngredient(OrePrefixes.plate, material) });
+                        new Object[] { "Xx", 'X', MaterialParts.craftIngredient(OrePrefixes.plate, material) });
 
                 }
 
@@ -170,8 +170,8 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt01, material),
-                        MU.craftIngredient(OrePrefixes.wireGt01, material) });
+                    new Object[] { MaterialParts.craftIngredient(OrePrefixes.wireGt01, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt01, material) });
             }
             case "wireGt04" -> {
                 cableWidth = 4;
@@ -183,14 +183,14 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt01, material),
-                        MU.craftIngredient(OrePrefixes.wireGt01, material),
-                        MU.craftIngredient(OrePrefixes.wireGt01, material),
-                        MU.craftIngredient(OrePrefixes.wireGt01, material) });
+                    new Object[] { MaterialParts.craftIngredient(OrePrefixes.wireGt01, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt01, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt01, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt01, material) });
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt02, material),
-                        MU.craftIngredient(OrePrefixes.wireGt02, material) });
+                    new Object[] { MaterialParts.craftIngredient(OrePrefixes.wireGt02, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt02, material) });
             }
             case "wireGt08" -> {
                 cableWidth = 8;
@@ -202,18 +202,18 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt01, material),
-                        MU.craftIngredient(OrePrefixes.wireGt01, material),
-                        MU.craftIngredient(OrePrefixes.wireGt01, material),
-                        MU.craftIngredient(OrePrefixes.wireGt01, material),
-                        MU.craftIngredient(OrePrefixes.wireGt01, material),
-                        MU.craftIngredient(OrePrefixes.wireGt01, material),
-                        MU.craftIngredient(OrePrefixes.wireGt01, material),
-                        MU.craftIngredient(OrePrefixes.wireGt01, material) });
+                    new Object[] { MaterialParts.craftIngredient(OrePrefixes.wireGt01, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt01, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt01, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt01, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt01, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt01, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt01, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt01, material) });
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt04, material),
-                        MU.craftIngredient(OrePrefixes.wireGt04, material) });
+                    new Object[] { MaterialParts.craftIngredient(OrePrefixes.wireGt04, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt04, material) });
             }
             case "wireGt12" -> {
                 cableWidth = 12;
@@ -225,8 +225,8 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt08, material),
-                        MU.craftIngredient(OrePrefixes.wireGt04, material) });
+                    new Object[] { MaterialParts.craftIngredient(OrePrefixes.wireGt08, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt04, material) });
             }
             case "wireGt16" -> {
                 cableWidth = 16;
@@ -238,12 +238,12 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt08, material),
-                        MU.craftIngredient(OrePrefixes.wireGt08, material) });
+                    new Object[] { MaterialParts.craftIngredient(OrePrefixes.wireGt08, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt08, material) });
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
-                    new Object[] { MU.craftIngredient(OrePrefixes.wireGt12, material),
-                        MU.craftIngredient(OrePrefixes.wireGt04, material) });
+                    new Object[] { MaterialParts.craftIngredient(OrePrefixes.wireGt12, material),
+                        MaterialParts.craftIngredient(OrePrefixes.wireGt04, material) });
 
                 AE2addNewAttunement(stack);
             }
@@ -263,7 +263,8 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 ArrayList<Object> craftingListRubber = new ArrayList<>();
                 craftingListRubber.add(oreDictName);
                 for (int i = 0; i < costMultiplier; i++) {
-                    craftingListRubber.add(MU.craftIngredient(OrePrefixes.plate, Materials2Materials.Rubber));
+                    craftingListRubber
+                        .add(MaterialParts.craftIngredient(OrePrefixes.plate, Materials2Materials.Rubber));
                 }
 
                 // shapeless crafting

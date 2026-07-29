@@ -13029,7 +13029,7 @@ public class Materials2Materials {
             .build();
         // Steam carries no item/block/fluid shapes and no OLD_SUB_ID; its only backing is the "steam" Forge
         // fluid GT hand-registers in LoaderGTBlockFluid, after material registration completes. That fluid is
-        // wired onto MU's slot store there instead of through a LEGACY_FLUIDS gas row, since this material
+        // wired onto MaterialUtils' slot store there instead of through a LEGACY_FLUIDS gas row, since this material
         // never sets one.
         Materials2Materials.Steam = MaterialLibAPI.newMaterial("gregtech", "Steam", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)

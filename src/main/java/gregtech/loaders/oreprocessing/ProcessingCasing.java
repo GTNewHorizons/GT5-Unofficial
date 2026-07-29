@@ -12,7 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -44,9 +44,9 @@ public class ProcessingCasing implements IOreRecipeRegistrator {
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(1, stack),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PSP", "PGP", "PSP", 'P', MU.craftIngredient(OrePrefixes.plate, material), 'S',
-                MU.craftIngredient(OrePrefixes.screw, material), 'G',
-                MU.craftIngredient(OrePrefixes.gearGtSmall, material) });
+            new Object[] { "PSP", "PGP", "PSP", 'P', MaterialParts.craftIngredient(OrePrefixes.plate, material), 'S',
+                MaterialParts.craftIngredient(OrePrefixes.screw, material), 'G',
+                MaterialParts.craftIngredient(OrePrefixes.gearGtSmall, material) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -64,9 +64,9 @@ public class ProcessingCasing implements IOreRecipeRegistrator {
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(1, advanced),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PSP", "PGP", "PSP", 'P', MU.craftIngredient(outer, material), 'S',
-                MU.craftIngredient(OrePrefixes.screw, material), 'G',
-                MU.craftIngredient(OrePrefixes.gearGt, material) });
+            new Object[] { "PSP", "PGP", "PSP", 'P', MaterialParts.craftIngredient(outer, material), 'S',
+                MaterialParts.craftIngredient(OrePrefixes.screw, material), 'G',
+                MaterialParts.craftIngredient(OrePrefixes.gearGt, material) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
