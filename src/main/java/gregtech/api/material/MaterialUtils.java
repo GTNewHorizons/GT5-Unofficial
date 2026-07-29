@@ -181,9 +181,8 @@ public class MaterialUtils {
     public static @Nullable Fluid legacyGtppFluidOf(@Nullable Material material) {
         if (material == null) return null;
         for (Shape shape : GTPP_FLUID_SHAPES) {
-            if (!material.hasShape(shape)) continue;
-            FluidStack stack = MaterialLibAPI.getFluidStack(material, shape, 1);
-            if (stack != null) return stack.getFluid();
+            Fluid fluid = MaterialLibAPI.getFluid(material, shape);
+            if (fluid != null) return fluid;
         }
         String name = UNDECLARED_FLUID_NAMES.get(material.getName());
         return name == null ? null : FluidRegistry.getFluid(name);
@@ -290,9 +289,8 @@ public class MaterialUtils {
         FluidNames legacyFluids = Materials2FluidNames.of(material.getName());
         if (legacyFluids == null || slot.apply(legacyFluids) == null) return null;
         for (Shape shape : STATE_SHAPES.get(state)) {
-            if (!material.hasShape(shape)) continue;
-            FluidStack stack = MaterialLibAPI.getFluidStack(material, shape, 1);
-            if (stack != null) return stack.getFluid();
+            Fluid fluid = MaterialLibAPI.getFluid(material, shape);
+            if (fluid != null) return fluid;
         }
         return null;
     }
@@ -350,10 +348,7 @@ public class MaterialUtils {
             Fluid[] recorded = byType.get(type);
             if (recorded != null && recorded[severity] != null) return recorded[severity];
         }
-        Shape shape = CRACKED_SHAPES.get(type)[severity];
-        if (!material.hasShape(shape)) return null;
-        FluidStack stack = MaterialLibAPI.getFluidStack(material, shape, 1);
-        return stack == null ? null : stack.getFluid();
+        return MaterialLibAPI.getFluid(material, CRACKED_SHAPES.get(type)[severity]);
     }
 
     /// The block-form metadata index a material was assigned (e.g. the frame and storage-block variant
