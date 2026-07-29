@@ -846,7 +846,7 @@ public final class RecipeMaps {
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
         .neiHandlerInfo(
             builder -> builder.setShiftY(8)
-                .setHeight(156))
+                .setHeight(166))
         .frontend(LargeNEIFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> transcendentPlasmaMixerRecipes = RecipeMapBuilder

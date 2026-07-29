@@ -131,7 +131,6 @@ import org.joml.Vector3i;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -2611,74 +2610,6 @@ public class GTUtility {
         }
     }
 
-    /**
-     * Translates a localization key to a localized string.
-     *
-     * @param key the localization key to translate
-     * @return the translated string
-     * @deprecated use {@link StatCollector#translateToLocal(String)} directly
-     */
-    @Deprecated
-    public static String translate(String key) {
-        return StatCollector.translateToLocal(key);
-    }
-
-    /**
-     * Translates a localization key to a localized string.
-     * If parameters are provided, they are substituted into the translated string via
-     * {@link StatCollector#translateToLocalFormatted(String, Object...)}.
-     *
-     * @param key        the localization key to translate
-     * @param parameters optional substitution arguments for the translated string
-     * @return the translated string
-     * @deprecated use {@link StatCollector#translateToLocalFormatted(String, Object...)} directly
-     */
-    @Deprecated
-    public static String translate(String key, Object... parameters) {
-        return parameters == null || parameters.length == 0 ? StatCollector.translateToLocal(key)
-            : StatCollector.translateToLocalFormatted(key, parameters);
-    }
-
-    /**
-     * Translates a localization key and splits the result into multiple lines.
-     * Lines are split on the literal {@code \n} sequence (backslash + n),
-     * as used in Minecraft lang files.
-     *
-     * @param key        the localization key to translate
-     * @param parameters optional substitution arguments for the translated string
-     * @return an array of lines from the translated string
-     * @see #translate(String, Object...)
-     */
-    public static String[] translateMultiline(String key, Object... parameters) {
-        return Iterables.toArray(NEWLINE_SPLITTER.split(translate(key, parameters)), String.class);
-    }
-
-    /**
-     * Translates a localization key, splits the result into multiple lines,
-     * and adds each line directly into the provided collection.
-     * Lines are split on the literal {@code \n} sequence (backslash + n),
-     * as used in Minecraft lang files.
-     *
-     * <p>
-     * This overload avoids allocating an intermediate array and is preferred
-     * when the caller already holds a {@link Collection}, such as the tooltip
-     * list in {@code addInformation}.
-     *
-     * <p>
-     * Note: the literal text {@code \n} cannot appear in tooltip lines,
-     * as it is used as the line separator.
-     *
-     * @param tooltip the collection to add translated lines into
-     * @param key     the localization key to translate
-     * @param args    optional substitution arguments for the translated string
-     * @see #translateMultiline(String, Object...)
-     */
-    public static void translateMultiline(Collection<String> tooltip, String key, Object... args) {
-        for (String line : NEWLINE_SPLITTER.split(translate(key, args))) {
-            tooltip.add(line);
-        }
-    }
-
     /*
      * Check if stack has enough items of given type and subtract from stack, if there's no creative or 111 stack.
      */
@@ -3676,6 +3607,19 @@ public class GTUtility {
         }
 
         return result;
+    }
+
+    /// Multiplies two integers, clamping to the min/max for an int if the result overflows.
+    public static int mulSafe(int a, int b) {
+        try {
+            return Math.multiplyExact(a, b);
+        } catch (ArithmeticException ignored) {
+            if (a > 0 == b > 0) {
+                return Integer.MAX_VALUE;
+            } else {
+                return Integer.MIN_VALUE;
+            }
+        }
     }
 
     /**
