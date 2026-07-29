@@ -97,7 +97,7 @@ import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -2587,7 +2587,8 @@ public enum GTBeeDefinition implements IBeeDefinition {
             tMutation.requireResource("blockNeodymium");
         }),
     EUROPIUM(GTBranchDefinition.RAREMETAL, "Europium", false, new Color(0xDAA0E2), new Color(0xAB7EB1), beeSpecies -> {
-        beeSpecies.addProduct(MU.stack(OrePrefixes.dust, Materials2Materials.EuropiumIIIOxide, 1), 0.10F);
+        beeSpecies
+            .addProduct(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.EuropiumIIIOxide, 1), 0.10F);
         beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.EUROPIUM), 0.075f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(HOT);

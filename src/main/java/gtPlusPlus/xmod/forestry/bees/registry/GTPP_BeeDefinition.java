@@ -36,9 +36,9 @@ import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
 import forestry.core.genetics.alleles.EnumAllele.Lifespan;
 import forestry.core.genetics.alleles.EnumAllele.Tolerance;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.CombType;
@@ -130,7 +130,7 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
     }
 
     private static Block blockOf(Material material) {
-        ItemStack stack = MU.stack(OrePrefixes.block, material, 1);
+        ItemStack stack = MaterialParts.stack(Materials2BlockShapes.block, material, 1);
         Block block = stack == null ? null : Block.getBlockFromItem(stack.getItem());
         return block != null ? block : Blocks.lit_furnace;
     }

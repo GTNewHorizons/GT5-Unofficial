@@ -1,13 +1,5 @@
 package gregtech.loaders.materialrecipes;
 
-import static gregtech.api.enums.OrePrefixes.block;
-import static gregtech.api.enums.OrePrefixes.crushedPurified;
-import static gregtech.api.enums.OrePrefixes.dust;
-import static gregtech.api.enums.OrePrefixes.gem;
-import static gregtech.api.enums.OrePrefixes.gemChipped;
-import static gregtech.api.enums.OrePrefixes.gemExquisite;
-import static gregtech.api.enums.OrePrefixes.gemFlawed;
-import static gregtech.api.enums.OrePrefixes.gemFlawless;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -20,9 +12,11 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTLog;
 
 /// Generates the sifter (crushed ore -> gem grade) recipe and the compressor (gem -> block) recipe for
@@ -76,8 +70,8 @@ public final class LoaderSifterRecipes {
     }
 
     private static void registerCompressor(Material material) {
-        ItemStack gemInput = MU.stack(gem, material, 9);
-        ItemStack blockOutput = MU.stack(block, material, 1);
+        ItemStack gemInput = MaterialParts.stack(Materials2Shapes.gem, material, 9);
+        ItemStack blockOutput = MaterialParts.stack(Materials2BlockShapes.block, material, 1);
         if (gemInput == null || blockOutput == null) return;
         GTValues.RA.stdBuilder()
             .itemInputs(gemInput)
@@ -88,13 +82,13 @@ public final class LoaderSifterRecipes {
     }
 
     private static void registerSifter(Material material) {
-        ItemStack crushedPurifiedInput = MU.stack(crushedPurified, material, 1);
-        ItemStack gemExquisiteOutput = MU.stack(gemExquisite, material, 1);
-        ItemStack gemFlawlessOutput = MU.stack(gemFlawless, material, 1);
-        ItemStack gemOutput = MU.stack(gem, material, 1);
-        ItemStack gemFlawedOutput = MU.stack(gemFlawed, material, 1);
-        ItemStack gemChippedOutput = MU.stack(gemChipped, material, 1);
-        ItemStack dustOutput = MU.stack(dust, material, 1);
+        ItemStack crushedPurifiedInput = MaterialParts.stack(Materials2Shapes.crushedPurified, material, 1);
+        ItemStack gemExquisiteOutput = MaterialParts.stack(Materials2Shapes.gemExquisite, material, 1);
+        ItemStack gemFlawlessOutput = MaterialParts.stack(Materials2Shapes.gemFlawless, material, 1);
+        ItemStack gemOutput = MaterialParts.stack(Materials2Shapes.gem, material, 1);
+        ItemStack gemFlawedOutput = MaterialParts.stack(Materials2Shapes.gemFlawed, material, 1);
+        ItemStack gemChippedOutput = MaterialParts.stack(Materials2Shapes.gemChipped, material, 1);
+        ItemStack dustOutput = MaterialParts.stack(Materials2Shapes.dust, material, 1);
         if (crushedPurifiedInput == null || gemExquisiteOutput == null
             || gemFlawlessOutput == null
             || gemOutput == null

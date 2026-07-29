@@ -20,7 +20,7 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -56,7 +56,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.OilDrill4.get(1),
                 TieredItems.ZPM.getPipeLarge(8),
-                MU.stack(OrePrefixes.gearGt, Materials2Materials.Incoloy903, 32),
+                MaterialParts.stack(Materials2Shapes.gearGt, Materials2Materials.Incoloy903, 32),
                 MaterialLibAPI
                     .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.plateDense, (int) (16)),
                 ItemList.Field_Generator_IV.get(1))

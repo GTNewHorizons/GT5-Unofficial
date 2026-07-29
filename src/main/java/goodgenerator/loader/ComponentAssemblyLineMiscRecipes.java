@@ -38,7 +38,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
@@ -224,15 +224,15 @@ public class ComponentAssemblyLineMiscRecipes {
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Europium, 1),
-                MU.stack(OrePrefixes.plateDense, Materials2Materials.RhodiumPlatedPalladium, 6),
+                MaterialParts.stack(Materials2Shapes.plateDense, Materials2Materials.RhodiumPlatedPalladium, 6),
                 ComponentType.Robot_Arm.getComponent(t)
                     .get(8),
                 ComponentType.Electric_Piston.getComponent(t)
                     .get(10),
                 ComponentType.Electric_Motor.getComponent(t)
                     .get(16),
-                MU.stack(OrePrefixes.gearGt, Materials2Materials.RhodiumPlatedPalladium, 4),
-                MU.stack(OrePrefixes.gearGtSmall, Materials2Materials.RhodiumPlatedPalladium, 16),
+                MaterialParts.stack(Materials2Shapes.gearGt, Materials2Materials.RhodiumPlatedPalladium, 4),
+                MaterialParts.stack(Materials2Shapes.gearGtSmall, Materials2Materials.RhodiumPlatedPalladium, 16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.VanadiumGallium, 8),
                 getALCircuit(t, 8),
                 getALCircuit(t - 1, 16))

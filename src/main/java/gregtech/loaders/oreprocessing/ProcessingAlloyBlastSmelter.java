@@ -18,12 +18,12 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2GtppComposites;
 import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
@@ -136,7 +136,7 @@ public class ProcessingAlloyBlastSmelter {
     public static void generateSingleDust() {
         for (Material material : SINGLE_DUST) {
             if (!Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED))) continue;
-            ItemStack dust = MU.stack(OrePrefixes.dust, material, 1);
+            ItemStack dust = MaterialParts.stack(Materials2Shapes.dust, material, 1);
             if (dust == null) continue;
             FluidStack fluidOutput = MaterialUtils.legacyGtppFluid(material, 144);
             if (fluidOutput == null) continue;
@@ -169,7 +169,7 @@ public class ProcessingAlloyBlastSmelter {
             boolean solid = "SOLID".equals(
                 component.material()
                     .getProperty(GTMaterialProperties.GTPP_STATE));
-            ItemStack dust = solid ? MU.stack(OrePrefixes.dust, component.material(), parts) : null;
+            ItemStack dust = solid ? MaterialParts.stack(Materials2Shapes.dust, component.material(), parts) : null;
             if (dust != null) {
                 items[i] = dust;
             } else if (parts > 0 && parts <= 100) {

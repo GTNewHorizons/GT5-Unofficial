@@ -30,13 +30,13 @@ import bartworks.system.material.BWMetaGeneratedOres;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2OreShapes;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
@@ -416,7 +416,7 @@ public final class BWOreAdapter implements IOreAdapter {
 
         switch (oreDropMode) {
             case Item -> {
-                drops.add(MU.stack(OrePrefixes.rawOre, info.material, info.stoneType.isRich() ? 2 : 1));
+                drops.add(MaterialParts.stack(Materials2Shapes.rawOre, info.material, info.stoneType.isRich() ? 2 : 1));
             }
             case FortuneItem -> {
                 if (fortune > 0) {
@@ -428,11 +428,11 @@ public final class BWOreAdapter implements IOreAdapter {
                     int amount = (info.stoneType.isRich() ? 2 : 1) * (addedDrops + 1);
 
                     for (int i = 0; i < amount; i++) {
-                        drops.add(MU.stack(OrePrefixes.rawOre, info.material, 1));
+                        drops.add(MaterialParts.stack(Materials2Shapes.rawOre, info.material, 1));
                     }
                 } else {
                     for (int i = 0; i < (info.stoneType.isRich() ? 2 : 1); i++) {
-                        drops.add(MU.stack(OrePrefixes.rawOre, info.material, 1));
+                        drops.add(MaterialParts.stack(Materials2Shapes.rawOre, info.material, 1));
                     }
                 }
             }

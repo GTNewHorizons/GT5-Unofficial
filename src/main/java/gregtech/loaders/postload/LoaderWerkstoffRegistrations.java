@@ -12,10 +12,13 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.util.BWColorUtil;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
@@ -44,7 +47,7 @@ public class LoaderWerkstoffRegistrations {
         }
         GTOreDictUnificator.registerOre(
             "craftingIndustrialDiamond",
-            MU.stack(OrePrefixes.gemExquisite, Materials2Materials.CubicZirconia, 1));
+            MaterialParts.stack(Materials2Shapes.gemExquisite, Materials2Materials.CubicZirconia, 1));
         BWOreAdapter.INSTANCE.registerOredict();
     }
 
@@ -54,7 +57,7 @@ public class LoaderWerkstoffRegistrations {
     /// registration owns those materials' lenses and blocks.
     private static void registerAdditionalOreDict(Material material) {
         if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)) {
-            ItemStack lens = MU.stack(OrePrefixes.lens, material, 1);
+            ItemStack lens = MaterialParts.stack(Materials2Shapes.lens, material, 1);
             short[] rgba = MaterialUtils.rgba(material);
             if (lens != null && rgba != null) {
                 OreDictionary
@@ -63,7 +66,7 @@ public class LoaderWerkstoffRegistrations {
         }
         if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
             || Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot)) {
-            ItemStack block = MU.stack(OrePrefixes.block, material, 1);
+            ItemStack block = MaterialParts.stack(Materials2BlockShapes.block, material, 1);
             if (block != null)
                 GTOreDictUnificator.registerOre(OrePrefixes.block + MaterialUtils.internalName(material), block);
         }

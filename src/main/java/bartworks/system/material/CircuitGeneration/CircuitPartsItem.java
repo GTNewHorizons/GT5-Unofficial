@@ -42,11 +42,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -73,8 +73,8 @@ public class CircuitPartsItem extends Item {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MU.stack(OrePrefixes.dust, Materials2Materials.MagnetoResonatic, 1),
-                MU.stack(OrePrefixes.dust, Materials2Materials.CircuitCompoundMK3, 4))
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.MagnetoResonatic, 1),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.CircuitCompoundMK3, 4))
             .itemOutputs(ItemList.RawImprintBoard.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)

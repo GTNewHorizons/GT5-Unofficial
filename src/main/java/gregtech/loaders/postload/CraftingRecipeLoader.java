@@ -24,6 +24,7 @@ import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -1778,7 +1779,7 @@ public class CraftingRecipeLoader implements Runnable {
             ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
-                MU.stack(OrePrefixes.plate, Materials2Materials.RhodiumPlatedPalladium, 1), 'F',
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.RhodiumPlatedPalladium, 1), 'F',
                 MU.craftIngredient(OrePrefixes.frameGt, Materials2Materials.Chrome) });
 
         if (Forestry.isModLoaded()) {

@@ -17,8 +17,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.material.MU;
+import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPPropolisType;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
@@ -79,7 +79,7 @@ public class GTPPPropolis extends Item {
         ItemStack tDrop;
         for (GTPPPropolisType aProp : GTPP_Bees.sPropolisMappings.values()) {
             tDrop = aProp.getStackForType(1);
-            ItemStack aOutput = MU.stack(OrePrefixes.dust, aProp.mMaterial, 1);
+            ItemStack aOutput = MaterialParts.stack(Materials2Shapes.dust, aProp.mMaterial, 1);
             if (aOutput == null) {
                 continue;
             }

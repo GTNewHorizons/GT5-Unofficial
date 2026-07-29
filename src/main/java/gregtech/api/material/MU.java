@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
-import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
@@ -70,18 +69,10 @@ public class MU {
         List<Shape> shapes = prefixShapes().get(prefix.name());
         if (shapes == null) return null;
         for (Shape shape : shapes) {
-            if (material.hasShape(shape)) return MaterialLibAPI.getStack(material, shape, (int) amount);
+            ItemStack stack = MaterialParts.stack(shape, material, amount);
+            if (stack != null) return stack;
         }
         return null;
-    }
-
-    /// A material's `cell` item, falling back to `cellMolten` when the plain `cell` shape does not resolve --
-    /// unlike `cellPlasma` (whose [#stack] candidate list already includes `cellPlasmaLight`), `cell` has no
-    /// built-in fallback: a gtpp material whose single fluid claimed [Materials2FluidShapes#fluidMolten]
-    /// instead of a liquid/gas cell-eligible slot carries its full cell only under `cellMolten`.
-    public static @Nullable ItemStack cellStack(@Nullable Material material, long amount) {
-        ItemStack cell = stack(OrePrefixes.cell, material, amount);
-        return cell != null ? cell : stack(OrePrefixes.cellMolten, material, amount);
     }
 
     /// Whether a (prefix, material) pair has a MaterialLib equivalent (see [#stack]). Unlike [#shape], which

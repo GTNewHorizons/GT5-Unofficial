@@ -24,7 +24,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeCategories;
@@ -47,7 +47,7 @@ public class Pulverizer implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getIC2Item("iridiumOre", 1))
-            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.IridiumMetalResidue, 1))
+            .itemOutputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.IridiumMetalResidue, 1))
             .duration(16 * TICKS)
             .eut(4)
             .recipeCategory(RecipeCategories.maceratorRecycling)
@@ -843,41 +843,61 @@ public class Pulverizer implements Runnable {
         // LUAG gems
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MU.stack(OrePrefixes.gemChipped, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
+                MaterialParts.stack(
+                    Materials2Shapes.gemChipped,
+                    Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
+                    1))
             .itemOutputs(
-                MU.stack(OrePrefixes.dustSmall, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
+                MaterialParts
+                    .stack(Materials2Shapes.dustSmall, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
             .duration(25 * TICKS)
             .eut(4)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MU.stack(OrePrefixes.gemFlawed, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
+                MaterialParts
+                    .stack(Materials2Shapes.gemFlawed, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
             .itemOutputs(
-                MU.stack(OrePrefixes.dustSmall, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 2))
+                MaterialParts
+                    .stack(Materials2Shapes.dustSmall, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 2))
             .duration(50 * TICKS)
             .eut(4)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.gem, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
-            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
+            .itemInputs(
+                MaterialParts
+                    .stack(Materials2Shapes.gem, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
+            .itemOutputs(
+                MaterialParts
+                    .stack(Materials2Shapes.dust, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MU.stack(OrePrefixes.gemFlawless, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
-            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 2))
+                MaterialParts.stack(
+                    Materials2Shapes.gemFlawless,
+                    Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
+                    1))
+            .itemOutputs(
+                MaterialParts
+                    .stack(Materials2Shapes.dust, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 2))
             .duration(10 * SECONDS)
             .eut(4)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MU.stack(OrePrefixes.gemExquisite, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 1))
-            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 4))
+                MaterialParts.stack(
+                    Materials2Shapes.gemExquisite,
+                    Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
+                    1))
+            .itemOutputs(
+                MaterialParts
+                    .stack(Materials2Shapes.dust, Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, 4))
             .duration(20 * SECONDS)
             .eut(4)
             .addTo(maceratorRecipes);

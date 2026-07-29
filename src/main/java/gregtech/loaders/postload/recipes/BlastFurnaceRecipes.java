@@ -24,7 +24,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -937,7 +937,7 @@ public class BlastFurnaceRecipes implements Runnable {
         // Rh + 3Cl = RhCl3
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.Rhodium, 1))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Rhodium, 1))
             .circuit(2)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.RhodiumChloride, Materials2Shapes.dust, (int) (4)))
             .fluidInputs(
@@ -971,7 +971,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(
                 ItemList.Phononic_Seed_Crystal.get(2),
                 MaterialLibAPI.getStack(Materials2Materials.Eternity, Materials2Shapes.dust, (int) (8)),
-                MU.stack(OrePrefixes.dust, Materials2Materials.Shirabon, 8))
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Shirabon, 8))
             .circuit(2)
             .fluidInputs(
                 MaterialLibAPI

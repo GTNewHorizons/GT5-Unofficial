@@ -17,7 +17,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -27,7 +27,7 @@ public class Mixer implements Runnable {
     public void run() {
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MU.stack(OrePrefixes.dust, Materials2Materials.Thorium232, 10),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Thorium232, 10),
                 MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (1)))
             .circuit(2)
             .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials))

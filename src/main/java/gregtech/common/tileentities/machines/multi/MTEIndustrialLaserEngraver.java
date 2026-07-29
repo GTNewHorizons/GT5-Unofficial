@@ -37,13 +37,14 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -590,7 +591,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
 
         // Lenses of werkstoff-origin materials, keyed by the legacy werkstoff id their colour was chosen for.
         for (int[] row : WERKSTOFF_LENS_COLORS) {
-            ItemStack lens = MU.stack(OrePrefixes.lens, Materials2WerkstoffIndex.get(row[0]), 1);
+            ItemStack lens = MaterialParts.stack(Materials2Shapes.lens, Materials2WerkstoffIndex.get(row[0]), 1);
             if (lens == null) continue;
             lensColors.put(getUniqueIdentifier(lens), Colors.values()[row[1]]);
         }

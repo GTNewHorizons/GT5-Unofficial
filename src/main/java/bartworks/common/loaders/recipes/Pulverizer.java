@@ -9,11 +9,10 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 
 public class Pulverizer implements Runnable {
 
@@ -42,7 +41,7 @@ public class Pulverizer implements Runnable {
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 3))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.BorosilicateGlass, Materials2Shapes.dust, (int) (9)),
-                MU.stack(OrePrefixes.dust, Materials2Materials.RhodiumPlatedPalladium, 8))
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.RhodiumPlatedPalladium, 8))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(maceratorRecipes);

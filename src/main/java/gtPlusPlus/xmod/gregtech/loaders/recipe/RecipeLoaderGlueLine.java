@@ -33,7 +33,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -198,7 +198,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.CalciumCarbonateDust.get(5))
             .circuit(8)
-            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.CalciumChloride, 3))
+            .itemOutputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.CalciumChloride, 3))
             .fluidInputs(MaterialUtils.fluid(Materials2Materials.HydrochloricAcidGT5U, 2_000))
             .fluidOutputs(
                 MaterialLibAPI
@@ -279,7 +279,7 @@ public class RecipeLoaderGlueLine {
 
     private static void mixerRecipes() {
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.cellStack(Materials2Materials.DichloroaceticAcid, 1))
+            .itemInputs(MaterialParts.cell(Materials2Materials.DichloroaceticAcid, 1))
             .circuit(1)
             .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.TrichloroaceticAcid, 1_000))

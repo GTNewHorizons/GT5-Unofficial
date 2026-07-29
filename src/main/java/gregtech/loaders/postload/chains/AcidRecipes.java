@@ -24,12 +24,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -128,7 +127,7 @@ public class AcidRecipes {
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.crushed, Materials2Materials.Bismuthinite, 5))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.crushed, Materials2Materials.Bismuthinite, 5))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.PhosphorusChlorineMixture,

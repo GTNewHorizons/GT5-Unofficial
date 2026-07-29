@@ -37,7 +37,7 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -1853,10 +1853,10 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.TinAlloy, Materials2Shapes.dust, 8),
-                MU.stack(OrePrefixes.dust, Materials2Materials.Ruridit, 7),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Ruridit, 7),
                 MaterialLibAPI.getStack(Materials2Materials.TriniumNaquadahAlloy, Materials2Shapes.dust, 4),
-                MU.stack(OrePrefixes.dust, Materials2Materials.AdamantiumAlloy, 4),
-                MU.stack(OrePrefixes.dust, Materials2Materials.Californium, 3),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.AdamantiumAlloy, 4),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Californium, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Quantum, Materials2Shapes.dust, 1))
             .circuit(6)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.dust, 27))
@@ -1984,11 +1984,11 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Tritanium, Materials2Shapes.dust, 11),
-                MU.stack(OrePrefixes.dust, Materials2Materials.Orundum, 8),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Orundum, 8),
                 MaterialLibAPI.getStack(Materials2Materials.Rubidium, Materials2Shapes.dust, 11),
                 MaterialLibAPI.getStack(Materials2Materials.FierySteel, Materials2Shapes.dust, 7),
                 MaterialLibAPI.getStack(Materials2Materials.Firestone, Materials2Shapes.dust, 13),
-                MU.stack(OrePrefixes.dust, Materials2Materials.AtomicSeparationCatalyst, 13))
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.AtomicSeparationCatalyst, 13))
             .circuit(6)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.dust, 63))
             .fluidInputs(

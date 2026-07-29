@@ -54,8 +54,9 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
@@ -125,25 +126,26 @@ public class RecipeLoader2 {
         CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.Shirabon, 600, 31457280, 13000, true);
         CrackRecipeAdder.reAddBlastRecipe(Materials2Materials.AtomicSeparationCatalyst, 35000, 120, 5000, false);
 
-        GTModHandler.removeFurnaceSmelting(MU.stack(OrePrefixes.dust, Materials2Materials.Dalisenite, 1)); // :doom:
+        GTModHandler
+            .removeFurnaceSmelting(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Dalisenite, 1)); // :doom:
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.ingotHot, Materials2Materials.Dalisenite, 1))
-            .itemOutputs(MU.stack(OrePrefixes.ingot, Materials2Materials.Dalisenite, 1))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.ingotHot, Materials2Materials.Dalisenite, 1))
+            .itemOutputs(MaterialParts.stack(Materials2Shapes.ingot, Materials2Materials.Dalisenite, 1))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(vacuumFreezerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.ingotHot, Materials2Materials.Shirabon, 1))
-            .itemOutputs(MU.stack(OrePrefixes.ingot, Materials2Materials.Shirabon, 1))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.ingotHot, Materials2Materials.Shirabon, 1))
+            .itemOutputs(MaterialParts.stack(Materials2Shapes.ingot, Materials2Materials.Shirabon, 1))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_UHV)
             .addTo(vacuumFreezerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MU.stack(OrePrefixes.plate, Materials2Materials.Zircaloy4, 4),
-                MU.stack(OrePrefixes.ring, Materials2Materials.Zircaloy2, 2))
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.Zircaloy4, 4),
+                MaterialParts.stack(Materials2Shapes.ring, Materials2Materials.Zircaloy2, 2))
             .circuit(2)
             .itemOutputs(ItemRefer.Advanced_Fuel_Rod.get(1))
             .duration(10 * SECONDS)
@@ -496,7 +498,7 @@ public class RecipeLoader2 {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.TungstenSteel, 1),
                 ItemRefer.Fluid_Storage_Core_T2.get(10),
-                MU.stack(OrePrefixes.plate, Materials2Materials.RhodiumPlatedPalladium, 4),
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.RhodiumPlatedPalladium, 4),
                 ItemList.Electric_Pump_EV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials2Materials.Enderium, 4))
             .circuit(5)
@@ -520,7 +522,7 @@ public class RecipeLoader2 {
                 new Object[] { Circuits.LuV.getIngredient(), 8 },
                 ItemList.Electric_Pump_IV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials2Materials.NiobiumTitanium, 8),
-                MU.stack(OrePrefixes.plate, Materials2Materials.AdamantiumAlloy, 32))
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.AdamantiumAlloy, 32))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 10 * INGOTS),
@@ -834,10 +836,10 @@ public class RecipeLoader2 {
             .addTo(unpackagerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.Tiberium, 1))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Tiberium, 1))
             .itemOutputs(
-                MU.stack(OrePrefixes.gem, Materials2Materials.Tiberium, 1),
-                MU.stack(OrePrefixes.gem, Materials2Materials.Tiberium, 1))
+                MaterialParts.stack(Materials2Shapes.gem, Materials2Materials.Tiberium, 1),
+                MaterialParts.stack(Materials2Shapes.gem, Materials2Materials.Tiberium, 1))
             .outputChances(10000, 2000)
             .fluidInputs(
                 MaterialLibAPI
@@ -853,7 +855,7 @@ public class RecipeLoader2 {
                     Materials2Materials.LightNaquadahFuel,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1 * INGOTS)))
-            .itemOutputs(MU.stack(OrePrefixes.gem, Materials2Materials.Tiberium, 1))
+            .itemOutputs(MaterialParts.stack(Materials2Shapes.gem, Materials2Materials.Tiberium, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(chemicalBathRecipes);
@@ -865,7 +867,7 @@ public class RecipeLoader2 {
                     Materials2Materials.HeavyNaquadahFuel,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1 * INGOTS)))
-            .itemOutputs(MU.stack(OrePrefixes.gem, Materials2Materials.Tiberium, 1))
+            .itemOutputs(MaterialParts.stack(Materials2Shapes.gem, Materials2Materials.Tiberium, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(chemicalBathRecipes);
@@ -927,7 +929,7 @@ public class RecipeLoader2 {
 
         // FeCl2 + Cl = FeCl3
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.cell, Materials2Materials.IronIIChloride, 1))
+            .itemInputs(MaterialParts.stack(Materials2CellShapes.cell, Materials2Materials.IronIIChloride, 1))
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.fluidGas, 1_000))
@@ -945,7 +947,7 @@ public class RecipeLoader2 {
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000))
-            .itemOutputs(MU.stack(OrePrefixes.cell, Materials2Materials.IronIIChloride, 1))
+            .itemOutputs(MaterialParts.stack(Materials2CellShapes.cell, Materials2Materials.IronIIChloride, 1))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
@@ -957,7 +959,7 @@ public class RecipeLoader2 {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Ethanol, Materials2FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(GTUtility.getWater(2_000))
-            .itemOutputs(MU.stack(OrePrefixes.cell, Materials2Materials.Diethylamine, 1))
+            .itemOutputs(MaterialParts.stack(Materials2CellShapes.cell, Materials2Materials.Diethylamine, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
@@ -986,14 +988,14 @@ public class RecipeLoader2 {
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.cell, Materials2Materials.Ether, 1))
+            .itemInputs(MaterialParts.stack(Materials2CellShapes.cell, Materials2Materials.Ether, 1))
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.ImpureFerroceneMixture,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (7_500)))
-            .itemOutputs(MU.stack(OrePrefixes.cell, Materials2Materials.FerroceneSolution, 1))
+            .itemOutputs(MaterialParts.stack(Materials2CellShapes.cell, Materials2Materials.FerroceneSolution, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.FerroceneWaste,
@@ -1020,13 +1022,13 @@ public class RecipeLoader2 {
                 .getFluidStack(Materials2Materials.FerroceneSolution, Materials2FluidShapes.fluidLiquid, (int) (2_000)),
             new FluidStack[] { MaterialLibAPI
                 .getFluidStack(Materials2Materials.Ether, Materials2FluidShapes.fluidLiquid, (int) (2_000)) },
-            MU.stack(OrePrefixes.dust, Materials2Materials.Ferrocene, 1),
+            MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Ferrocene, 1),
             30 * SECONDS,
             TierEU.RECIPE_MV);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MU.stack(OrePrefixes.dust, Materials2Materials.Ferrocene, 4),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Ferrocene, 4),
                 MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 8))
             .fluidInputs(
                 FluidRegistry.getFluidStack("fluid.kerosene", 40_000),
@@ -1041,7 +1043,7 @@ public class RecipeLoader2 {
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.Ferrocene, 4))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Ferrocene, 4))
             .fluidInputs(
                 FluidRegistry.getFluidStack("combustionpromotor", 4_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Naphtha, Materials2FluidShapes.fluidLiquid, 40_000),
@@ -1103,7 +1105,7 @@ public class RecipeLoader2 {
                     .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.RockSalt, Materials2Shapes.dust, 1),
-                MU.stack(OrePrefixes.dust, Materials2Materials.LithiumChloride, 3),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.LithiumChloride, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Cryolite, Materials2Shapes.dust, 4))
             .outputChances(8000, 8000, 8000)
             .duration(7 * SECONDS)
@@ -1112,7 +1114,7 @@ public class RecipeLoader2 {
 
         // dust to fluid extraction, which isn't autogenned in Bartworks
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.LithiumChloride, 1))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.LithiumChloride, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.LithiumChloride,
@@ -1124,14 +1126,14 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MU.stack(OrePrefixes.ingot, Materials2Materials.MARM200Steel, 18),
+                MaterialParts.stack(Materials2Shapes.ingot, Materials2Materials.MARM200Steel, 18),
                 MaterialLibAPI.getStack(Materials2Materials.Cerium, Materials2Shapes.ingot, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.LithiumChloride,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
-            .itemOutputs(MU.stack(OrePrefixes.ingotHot, Materials2Materials.MARCeM200Steel, 19))
+            .itemOutputs(MaterialParts.stack(Materials2Shapes.ingotHot, Materials2Materials.MARCeM200Steel, 19))
             .duration(4 * MINUTES + 45 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(COIL_HEAT, 5400)
@@ -1140,14 +1142,15 @@ public class RecipeLoader2 {
         GTModHandler.addCraftingRecipe(
             ItemRefer.SC_Turbine_Casing.get(1),
             GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "PhP", "GCG", "PwP", 'G', MU.stack(OrePrefixes.gearGt, Materials2Materials.MARM200Steel, 1),
-                'C', ItemList.Casing_Turbine.get(1), 'P',
-                MU.stack(OrePrefixes.plate, Materials2Materials.MARCeM200Steel, 1), });
+            new Object[] { "PhP", "GCG", "PwP", 'G',
+                MaterialParts.stack(Materials2Shapes.gearGt, Materials2Materials.MARM200Steel, 1), 'C',
+                ItemList.Casing_Turbine.get(1), 'P',
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.MARCeM200Steel, 1), });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MU.stack(OrePrefixes.gearGt, Materials2Materials.MARM200Steel, 2),
-                MU.stack(OrePrefixes.plate, Materials2Materials.MARCeM200Steel, 4),
+                MaterialParts.stack(Materials2Shapes.gearGt, Materials2Materials.MARM200Steel, 2),
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.MARCeM200Steel, 4),
                 ItemList.Casing_Turbine.get(1))
             .itemOutputs(ItemRefer.SC_Turbine_Casing.get(1))
             .duration(15 * SECONDS)
@@ -1158,15 +1161,16 @@ public class RecipeLoader2 {
             ItemList.SCSteamTurbine.get(1),
             GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "NPN", "GHG", "IPI", 'N', "circuitMaster", 'P',
-                MU.stack(OrePrefixes.plate, Materials2Materials.MARM200Steel, 1), 'H', ItemList.Hull_IV.get(1), 'G',
-                MU.stack(OrePrefixes.gearGt, Materials2Materials.MARCeM200Steel, 1), 'I',
-                MU.stack(OrePrefixes.pipeLarge, Materials2Materials.Incoloy903, 1) });
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.MARM200Steel, 1), 'H',
+                ItemList.Hull_IV.get(1), 'G',
+                MaterialParts.stack(Materials2Shapes.gearGt, Materials2Materials.MARCeM200Steel, 1), 'I',
+                MaterialParts.stack(Materials2PipeShapes.pipeLarge, Materials2Materials.Incoloy903, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MU.stack(OrePrefixes.plate, Materials2Materials.MARM200Steel, 2),
-                MU.stack(OrePrefixes.gearGt, Materials2Materials.MARCeM200Steel, 2),
-                MU.stack(OrePrefixes.pipeLarge, Materials2Materials.Incoloy903, 2),
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.MARM200Steel, 2),
+                MaterialParts.stack(Materials2Shapes.gearGt, Materials2Materials.MARCeM200Steel, 2),
+                MaterialParts.stack(Materials2PipeShapes.pipeLarge, Materials2Materials.Incoloy903, 2),
                 Circuits.LuV.get(2),
                 ItemList.Hull_IV.get(1))
             .itemOutputs(ItemList.SCSteamTurbine.get(1))
@@ -1176,8 +1180,8 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MU.stack(OrePrefixes.plate, Materials2Materials.Incoloy903, 4),
-                MU.stack(OrePrefixes.plate, Materials2Materials.MARCeM200Steel, 4),
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.Incoloy903, 4),
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.MARCeM200Steel, 4),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.NiobiumTitanium, 1))
             .circuit(8)
             .itemOutputs(ItemRefer.Pressure_Resistant_Wall.get(1))
@@ -1190,7 +1194,8 @@ public class RecipeLoader2 {
             GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "EPE", "PHP", "SPS", 'P',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials2Materials.TungstenSteel, 1), 'H',
-                ItemList.Hull_IV.get(1), 'S', MU.stack(OrePrefixes.plate, Materials2Materials.MARCeM200Steel, 1), 'E',
+                ItemList.Hull_IV.get(1), 'S',
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.MARCeM200Steel, 1), 'E',
                 GTModHandler.getIC2Item("reactorHeatSwitchDiamond", 1L, 1) });
 
         if (NewHorizonsCoreMod.isModLoaded()) {
@@ -1200,10 +1205,10 @@ public class RecipeLoader2 {
                     ItemRefer.HiC_T1.get(4),
                     ItemList.Tool_DataOrb.get(3),
                     GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials2Materials.Titanium, 4),
-                    MU.stack(OrePrefixes.gearGt, Materials2Materials.Hikarium, 4),
-                    MU.stack(OrePrefixes.plateDouble, Materials2Materials.MARM200Steel, 2),
+                    MaterialParts.stack(Materials2Shapes.gearGt, Materials2Materials.Hikarium, 4),
+                    MaterialParts.stack(Materials2Shapes.plateDouble, Materials2Materials.MARM200Steel, 2),
                     GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials2Materials.Iridium, 2),
-                    MU.stack(OrePrefixes.bolt, Materials2Materials.Lumiium, 48))
+                    MaterialParts.stack(Materials2Shapes.bolt, Materials2Materials.Lumiium, 48))
                 .fluidInputs(
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Palladium, Materials2FluidShapes.fluidMolten, 8 * INGOTS))
@@ -1438,7 +1443,7 @@ public class RecipeLoader2 {
                     ItemList.Casing_LuV.get(3),
                     ItemList.Robot_Arm_EV.get(2),
                     GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials2Materials.Osmiridium, 2),
-                    MU.stack(OrePrefixes.plateDouble, Materials2Materials.MARM200Steel, 2),
+                    MaterialParts.stack(Materials2Shapes.plateDouble, Materials2Materials.MARM200Steel, 2),
                     Circuits.EV.get(1),
 
                     MaterialLibAPI.getStack(Materials2Materials.Ruthenium, Materials2Shapes.bolt, 32),
@@ -1458,10 +1463,10 @@ public class RecipeLoader2 {
                     ItemList.Casing_ZPM.get(3),
                     ItemList.Robot_Arm_IV.get(2),
                     GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.Lumiium, 2),
-                    MU.stack(OrePrefixes.plateDouble, Materials2Materials.MARCeM200Steel, 2),
+                    MaterialParts.stack(Materials2Shapes.plateDouble, Materials2Materials.MARCeM200Steel, 2),
                     ItemRefer.HiC_T1.get(1),
-                    MU.stack(OrePrefixes.bolt, Materials2Materials.Signalium, 32),
-                    MU.stack(OrePrefixes.gearGtSmall, Materials2Materials.TanmolyiumBetaC, 8))
+                    MaterialParts.stack(Materials2Shapes.bolt, Materials2Materials.Signalium, 32),
+                    MaterialParts.stack(Materials2Shapes.gearGtSmall, Materials2Materials.TanmolyiumBetaC, 8))
                 .fluidInputs(
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.BlackSteel, Materials2FluidShapes.fluidMolten, 4 * INGOTS))
@@ -1477,8 +1482,8 @@ public class RecipeLoader2 {
                     GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.ElectrumFlux, 4),
                     ItemRefer.HiC_T2.get(1),
                     ItemRefer.Precise_Electronic_Unit_T1.get(1),
-                    MU.stack(OrePrefixes.bolt, Materials2Materials.MARCeM200Steel, 32),
-                    MU.stack(OrePrefixes.gearGtSmall, Materials2Materials.ArtheriumSn, 8))
+                    MaterialParts.stack(Materials2Shapes.bolt, Materials2Materials.MARCeM200Steel, 32),
+                    MaterialParts.stack(Materials2Shapes.gearGtSmall, Materials2Materials.ArtheriumSn, 8))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.AdamantiumAlloy,
@@ -1496,8 +1501,8 @@ public class RecipeLoader2 {
                     GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.Bedrockium, 4),
                     ItemRefer.HiC_T3.get(1),
                     ItemRefer.Precise_Electronic_Unit_T2.get(1),
-                    MU.stack(OrePrefixes.bolt, Materials2Materials.TanmolyiumBetaC, 32),
-                    MU.stack(OrePrefixes.gearGtSmall, Materials2Materials.Dalisenite, 8))
+                    MaterialParts.stack(Materials2Shapes.bolt, Materials2Materials.TanmolyiumBetaC, 32),
+                    MaterialParts.stack(Materials2Shapes.gearGtSmall, Materials2Materials.Dalisenite, 8))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.ArtheriumSn,
@@ -1515,8 +1520,8 @@ public class RecipeLoader2 {
                     GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.NetherStar, 8),
                     ItemRefer.HiC_T4.get(1),
                     ItemRefer.Precise_Electronic_Unit_T3.get(1),
-                    MU.stack(OrePrefixes.bolt, Materials2Materials.EnrichedNaquadahAlloy, 32),
-                    MU.stack(OrePrefixes.gearGtSmall, Materials2Materials.Tairitsu, 8))
+                    MaterialParts.stack(Materials2Shapes.bolt, Materials2Materials.EnrichedNaquadahAlloy, 32),
+                    MaterialParts.stack(Materials2Shapes.gearGtSmall, Materials2Materials.Tairitsu, 8))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.PreciousMetalsAlloy,
@@ -1592,11 +1597,11 @@ public class RecipeLoader2 {
             .itemInputs(
                 ItemList.FusionComputer_LuV.get(48),
                 ItemRefer.HiC_T1.get(8),
-                MU.stack(OrePrefixes.plate, Materials2Materials.MARCeM200Steel, 32),
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.MARCeM200Steel, 32),
                 Circuits.LuV.get(8),
                 ItemList.Circuit_Wafer_HPIC.get(16),
                 ItemList.Field_Generator_LuV.get(4),
-                MU.stack(OrePrefixes.stickLong, Materials2Materials.MARM200Steel, 8))
+                MaterialParts.stack(Materials2Shapes.stickLong, Materials2Materials.MARM200Steel, 8))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.AdamantiumAlloy,
@@ -1619,7 +1624,7 @@ public class RecipeLoader2 {
                 ItemList.Neutron_Reflector.get(4),
                 ItemRefer.HiC_T2.get(8),
                 ItemList.Field_Generator_ZPM.get(8),
-                MU.stack(OrePrefixes.gearGtSmall, Materials2Materials.ArtheriumSn, 32))
+                MaterialParts.stack(Materials2Shapes.gearGtSmall, Materials2Materials.ArtheriumSn, 32))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.MARCeM200Steel,
@@ -1650,7 +1655,7 @@ public class RecipeLoader2 {
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(8),
                 ItemRefer.HiC_T3.get(8),
                 ItemList.Field_Generator_UV.get(8),
-                MU.stack(OrePrefixes.gearGtSmall, Materials2Materials.HighDurabilityCompoundSteel, 64))
+                MaterialParts.stack(Materials2Shapes.gearGtSmall, Materials2Materials.HighDurabilityCompoundSteel, 64))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.TanmolyiumBetaC,
@@ -1702,7 +1707,7 @@ public class RecipeLoader2 {
                 ItemList.UHV_Coil.get(16),
                 MaterialLibAPI.getStack(Materials2Materials.Titansteel, Materials2Shapes.plateDense, 8),
                 ItemRefer.HiC_T4.get(8), ItemList.Field_Generator_UHV.get(8),
-                MU.stack(OrePrefixes.gearGtSmall, Materials2Materials.EnrichedNaquadahAlloy, 64) },
+                MaterialParts.stack(Materials2Shapes.gearGtSmall, Materials2Materials.EnrichedNaquadahAlloy, 64) },
             new FluidStack[] {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.RadoxPoly, Materials2FluidShapes.fluidMolten, 9 * INGOTS),
@@ -1746,7 +1751,7 @@ public class RecipeLoader2 {
                 ItemList.UEV_Coil.get(16),
                 MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.plateDense, 8),
                 ItemRefer.HiC_T5.get(8), ItemList.Field_Generator_UEV.get(8),
-                MU.stack(OrePrefixes.gearGtSmall, Materials2Materials.MetastableOganesson, 64) },
+                MaterialParts.stack(Materials2Shapes.gearGtSmall, Materials2Materials.MetastableOganesson, 64) },
             new FluidStack[] { MaterialLibAPI
                 .getFluidStack(Materials2Materials.Tairitsu, Materials2FluidShapes.fluidMolten, (int) (16 * INGOTS)),
                 MaterialUtils.legacyGtppFluid(Materials2Materials.Octiron, 8 * INGOTS),
@@ -1827,7 +1832,7 @@ public class RecipeLoader2 {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.PhosphoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 4_000))
-            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.Lumiinessence, 1))
+            .itemOutputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Lumiinessence, 1))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(fluidSolidifierRecipes);
@@ -1841,7 +1846,7 @@ public class RecipeLoader2 {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Redstone, Materials2FluidShapes.fluidMolten, 2 * INGOTS))
-            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.Signalium, 1))
+            .itemOutputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Signalium, 1))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -1850,12 +1855,12 @@ public class RecipeLoader2 {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.TinAlloy, Materials2Shapes.dust, 4),
                 MaterialLibAPI.getStack(Materials2Materials.SterlingSilver, Materials2Shapes.dust, 2),
-                MU.stack(OrePrefixes.dust, Materials2Materials.Lumiinessence, 2))
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Lumiinessence, 2))
             .circuit(4)
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Glowstone, Materials2FluidShapes.fluidMolten, 2 * INGOTS))
-            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.Lumiium, 1))
+            .itemOutputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Lumiium, 1))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -1895,7 +1900,7 @@ public class RecipeLoader2 {
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.MetastableOganesson, 1))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.MetastableOganesson, 1))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Oganesson, Materials2FluidShapes.fluidLiquid, (int) (250)))
